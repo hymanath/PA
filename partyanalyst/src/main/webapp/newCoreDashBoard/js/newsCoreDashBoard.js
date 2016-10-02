@@ -224,8 +224,8 @@
 		var state = globalState;
 		$("#newsBlockMainId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			mainNewsBlock(result);
 			/*if(result != null && result.length > 0){
@@ -403,11 +403,11 @@
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-capital responsiveFont">Main Edition</p>';
-							str+='<p class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+result[0].totalCount+'</p>';
+							str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+result[0].totalCount+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountMain+'</span>';
+							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountMain+'</a></span>';
 							if(result[0].totalCount > 0){
 								str+='<small id="" class="text-success"> '+((result[0].positiveCountMain*100)/(result[0].totalCount)).toFixed(2)+' %</small>';
 							}else{
@@ -416,7 +416,7 @@
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountMain+'</span>';
+							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountMain+'</a></span>';
 							if(result[0].totalCount > 0){
 								str+='<small id="" class="text-danger"> '+((result[0].negativCountMain*100)/(result[0].totalCount)).toFixed(2)+' %</small>';
 							}else{
@@ -432,11 +432,11 @@
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-capital">Dist edition</p>';
-							str+='<p class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+result[0].count+'</p>';
+							str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+result[0].count+'</a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted">Positive</p>';
-							str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountDist+'</span>';
+							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountDist+'</a></span>';
 							if(result[0].count > 0){
 								str+='<small class="text-success" id=""> '+((result[0].positiveCountDist*100)/(result[0].count)).toFixed(2)+' %</small>';
 							}else{
@@ -445,7 +445,7 @@
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted">Negative</p>';
-							str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountDist+'</span>';
+							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountDist+'</a></span>';
 							if(result[0].count > 0){
 								str+='<small class="text-danger" id=""> '+((result[0].negativCountDist*100)/(result[0].count)).toFixed(2)+' %</small>';
 							}else{
@@ -476,11 +476,11 @@
 							}
 						
 								str+='<p class="text-capital">Main Edition</p>';
-								str+='<p class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="1117,362,163">'+mTot+'</p>';
+								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="1117,362,163">'+mTot+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="1117,362,163">'+mPos+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="1117,362,163">'+mPos+'</a></span>';
 								if(mTot>0)
 									str+='<small id="" class="text-success"> '+((mPos*100)/mTot).toFixed(2)+' %</small>';
 								else
@@ -488,7 +488,7 @@
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="1117,362,163">'+mNeg+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="1117,362,163">'+mNeg+'</a></span>';
 								if(mTot > 0)
 									str+='<small class="text-danger" id=""> '+((mNeg*100)/mTot).toFixed(2)+' %</small>';
 								else
@@ -499,10 +499,10 @@
 					{
 						str+='<tr>';
 							str+='<td>';
-								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].totalCount+'</span>';
+								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].totalCount+'</a></span>';
 							str+='</td>';
 							str+='<td>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</a></span>';
 								if(result[i].totalCount > 0){
 									str+='<small class="text-success"> '+((result[i].positiveCountMain*100)/(result[i].totalCount)).toFixed(2)+' %</small>';
 								}else{
@@ -510,7 +510,7 @@
 								}
 							str+='</td>';
 							str+='<td>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</a></span>';
 								if(result[i].totalCount > 0){
 									str+='<small class="text-danger"> '+((result[i].negativCountMain*100)/(result[i].totalCount)).toFixed(2)+' %</small>';
 								}else{
@@ -526,11 +526,11 @@
 						str+='<tr class="bg_ED">';
 							str+='<td>';
 								str+='<p class="text-capital">Dist Edition</p>';
-								str+='<p class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="1117,362,163">'+dTot+'</p>';
+								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="1117,362,163">'+dTot+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="1117,362,163">'+dPos+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="1117,362,163">'+dPos+'</a></span>';
 								if(dTot > 0)
 									str+='<small class="text-success" id=""> '+((dPos*100)/dTot).toFixed(2)+' %</small>';
 								else
@@ -538,7 +538,7 @@
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="1117,362,163">'+dNeg+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="1117,362,163">'+dNeg+'</a></span>';
 								if(dTot > 0)
 									str+='<small class="text-danger" id=""> '+((dNeg*100)/dTot).toFixed(2)+' %</small>';
 								else
@@ -550,10 +550,10 @@
 					{
 						str+='<tr>';
 							str+='<td>';
-								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].count+'</span>';
+								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].count+'</a></span>';
 							str+='</td>';
 							str+='<td>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</a></span>';
 								if(result[i].count > 0){
 									str+='<small class="text-success"> '+((result[i].positiveCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
 								}else{
@@ -561,7 +561,7 @@
 								}
 							str+='</td>';
 							str+='<td>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</a></span>';
 								if(result[i].count > 0){
 									str+='<small class="text-danger" id=""> '+((result[i].negativCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
 								}else{
@@ -584,11 +584,11 @@
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">Main Edition</p>';
-								str+='<p class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+result[t].totalCount+'</p>';
+								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+result[t].totalCount+'</a></p>';
 								str+='</td>';
 								str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountMain+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountMain+'</a></span>';
 									if(result[t].totalCount>0){
 										str+='<small class="text-success" id=""> '+((result[t].positiveCountMain*100)/(result[t].totalCount)).toFixed(2)+' %</small>';
 									}else{
@@ -597,7 +597,7 @@
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountMain+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountMain+'</a></span>';
 								if(result[t].totalCount>0){
 									str+='<small class="text-danger" id=""> '+((result[t].negativCountMain*100)/(result[t].totalCount)).toFixed(2)+'  %</small>';
 								}else{
@@ -612,11 +612,11 @@
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">Dist Edition</p>';
-								str+='<p class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+result[t].count+'</p>';
+								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+result[t].count+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">positive</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountDist+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountDist+'</a></span>';
 								if(result[t].count > 0){
 									str+='<small class="text-success" id=""> '+((result[t].positiveCountDist*100)/(result[t].count)).toFixed(2)+' %</small>';
 								}else{
@@ -625,7 +625,7 @@
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">negative</p>';
-								str+='<span class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountDist+'</span>';
+								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountDist+'</a></span>';
 								if(result[t].count > 0){
 									str+='<small class="text-danger" id=""> '+((result[t].negativCountDist*100)/(result[t].count)).toFixed(2)+' %</small>';
 								}else{
@@ -982,8 +982,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
 		}).then(function(result){
 			$("#mainEditiongraphId").html('');
 			buildMainEditionPartieWiseGraph(result);
@@ -1012,8 +1012,8 @@
 		}
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			$("#districtWiseNewsReport").html();
 			buildDetailedPartyDistrictEditionsOverview(result);
@@ -1043,8 +1043,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			$("#newsTypeAnalysisDiv").html();
 			if(result != null && result.length > 0){
@@ -1083,8 +1083,8 @@
 		//var searchType = "publication";
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			
 			
@@ -1124,8 +1124,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			$("#districtWiseNewsReportGovtDetailed").html('');
 			buildgetDetailedGovtDepartmentWiseDistrictsOverview(result);
@@ -1163,8 +1163,8 @@
 		//var propertyId=0;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+impactScopeIdsStr
 		}).then(function(result){
 			if(propertyId == 7){
 				$("#problemsDetailedOverview").html('');
@@ -1199,8 +1199,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildDetailedGovernamentTrendingTrackedIssues(result);
 		});
@@ -1231,16 +1231,16 @@
 		if(globalUserAccessLevelId==2){
 			$("#districtWiseArticleRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
-				url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr
-				//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr      
+				//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr      
 			}).then(function(result){
 				buildDistrictWiseArticleRelatedToProblem(result)
 			});
 			
 			$("#stateWiseArticleRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
-				url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+impactScopeIdsStr 
-				//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+impactScopeIdsStr      
+				//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+impactScopeIdsStr 
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+impactScopeIdsStr      
 			}).then(function(result){
 				buildStateWiseArticleRelatedToProblem(result);
 			});
@@ -1248,8 +1248,8 @@
 		}else{     
 			$("#districtWiseArticleRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
-				url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr 
-				//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr    
+				//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr 
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+impactScopeIdsStr    
 			}).then(function(result){
 				buildDistrictWiseArticleRelatedToProblem(result);
 			});
@@ -1344,8 +1344,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				buildgetComparisionPartyNewsTypeAnalysis(result,NewsSelectedMemberName,NewsSelectedUserType);
@@ -1369,8 +1369,8 @@
 		}
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			
 			buildgetComparisionPartyDistrictEditionsOverview(result,NewsSelectedMemberName,NewsSelectedUserType);
@@ -1396,8 +1396,8 @@
 		//var searchType = "publication";
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			var str='';
 			
@@ -1480,8 +1480,8 @@
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+type
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+type
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+type
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+type
 		}).then(function(result){
 			//$("#comparisonGovtMinistriesInfo").html('');
 			buildComparisonGovtMinistriesInfo(result);
@@ -1510,8 +1510,8 @@
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildgetAllDepartmentEditionsWiseDetails(result,ministerName,ministerSubLevelId);
 		});
@@ -1540,8 +1540,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildComparisonGovernamentTrendingTrackedIssues(result);
 		});
@@ -1573,8 +1573,8 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getCompareGovtCandidateDepartmentsWiseDistrictOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+orgIdStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovtCandidateDepartmentsWiseDistrictOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+orgIdStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovtCandidateDepartmentsWiseDistrictOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+orgIdStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovtCandidateDepartmentsWiseDistrictOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+orgIdStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildCompareGovtCandidateDepartmentsWiseDistrictOverview(result);
 		});
@@ -1606,15 +1606,15 @@
 		if(globalUserAccessLevelId==2){
 			$("#compareDistrictWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			$.ajax({
-				url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr
-				//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr  
+				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr  
 			}).then(function(result){
 				buildCompareDistrictWiseArticleRelatedToProblem(result)
 			});
 			$("#compareStateWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			$.ajax({
-				url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+"/"+impactScopeIdsStr
-				//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+"/"+impactScopeIdsStr    
+				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+"/"+impactScopeIdsStr
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+"/"+impactScopeIdsStr    
 			}).then(function(result){
 				buildCompareStateWiseArticleRelatedToProblem(result)
 			});
@@ -1622,8 +1622,8 @@
 		}else{   
 			$("#compareDistrictWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');		
 			$.ajax({
-				url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr 
-				//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr    
+				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr 
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"/"+impactScopeIdsStr    
 			}).then(function(result){
 				buildCompareDistrictWiseArticleRelatedToProblem(result);
 			});
@@ -1663,8 +1663,8 @@
 		
 		//var propertyId=0;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			if(propertyId == 7){
 				$("#comparisonGovtProblemsDistrictLevelOverview").html('');
@@ -2026,10 +2026,12 @@
 						for (var j in result[i].coreDashBoardVOList){
 							 PartyCountPerc = result[i].coreDashBoardVOList[j].count;
 							 partyName = result[i].coreDashBoardVOList[j].organization;
+							 var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
 							
 							var obj = {
 								name: partyName,
-								y:PartyCountPerc
+								y:PartyCountPerc,
+								color:color
 								
 							}
 							
@@ -2040,10 +2042,10 @@
 					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0 && result[i].coreDashBoardVOList1 !=null && result[i].coreDashBoardVOList1.length >0){
 						for (var j in result[i].coreDashBoardVOList1){
 							districtNameArray.push(result[i].coreDashBoardVOList1[j].districtName)
-							tdpPercArray.push(result[i].coreDashBoardVOList1[j].tdpPerc)
-							ysrcPercArray.push(result[i].coreDashBoardVOList1[j].ysrcPerc)
-							incPercArray.push(result[i].coreDashBoardVOList1[j].incPerc)
-							bjpPercArray.push(result[i].coreDashBoardVOList1[j].bjpPerc)
+							tdpPercArray.push(result[i].coreDashBoardVOList1[j].tdpCount)
+							ysrcPercArray.push(result[i].coreDashBoardVOList1[j].ysrcCount)
+							incPercArray.push(result[i].coreDashBoardVOList1[j].incCount)
+							bjpPercArray.push(result[i].coreDashBoardVOList1[j].bjpCount)
 							
 							
 						}
@@ -2052,7 +2054,7 @@
 					$(function () {
 						if(partyNameAndCountArray.length !=0){
 							$('#newsTypeAnalysisPieChart'+i).highcharts({
-								colors: ['#FD9832','#3D9834','#FFCB00','#005DB0'],
+								//colors: ['#FD9832','#3D9834','#FFCB00','#005DB0'],
 								chart: {
 									type: 'pie',
 									options3d: {
@@ -2163,30 +2165,29 @@
 								
 							},
 							tooltip: {
-								//headerFormat: '<b>{point.x}</b>',
-								//pointFormat: '<span style="color:{series.color}">: <b>'+{point.percentage:.1f}+'% '+({point.y})+'</b></span><br>',
-								formatter: function () {
-									var s = '<b>' + this.x + '</b>';
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
 
-									$.each(this.points, function () {
-										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :' +
-											(this.y)+'%';
-									});
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,2)+'%' +' - ' +
+												(this.y);
+										});
 
-									return s;
+										return s;
+									},
+									shared: true
 								},
-								shared: true
-							},
 							plotOptions: {
 								column: {
-									 
+									 stacking: 'percent',
 									dataLabels: {
 										enabled: false,
 										 formatter: function() {
 											if (this.y === 0) {
 												return null;
 											} else {
-												return Highcharts.numberFormat(this.y,0)+'%';
+												return Highcharts.numberFormat(this.percentage,2)+'%';
 											}
 										}
 									  
@@ -5239,8 +5240,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	
     function getRescentArticleTime(){
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/"
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
+			//url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/"
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
 		}).then(function(result){
 			if(result != null){
 				$("#lastUpdatedId").html("Last Updated : "+ result[0].benefit);
@@ -5253,8 +5254,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	
 	function getAllNewsPapers(){
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
+			//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
 		}).then(function(result){
 			$("#newsPapersUlId").html("");
 			if(result != null && result.length > 0){
@@ -5359,8 +5360,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		var startDate=currentFromDate,endDate=currentToDate;
 	
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildComparisonPartyWisePoorLocations(result,NewsSelectedMemberName,NewsSelectedUserType);
 		});
@@ -6046,8 +6047,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildgetAllDepartmentEditionsWiseDetails(result,ministerName,ministerSubLevelId);
 		});
@@ -6089,8 +6090,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		var startDate=currentFromDate,endDate=currentToDate;
 		var state = globalState;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getPaperWiseNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPaperWiseNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getPaperWiseNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getPaperWiseNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			buildPaperWiseNewsBasicCounts(result);
 		});
@@ -6112,15 +6113,15 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			str2+='<tr>';
 			str2+='<td>';
 			str2+='<p class="text-capital responsiveFont">Main Count</p>';
-			str2+='<p id="totalUniqueMainTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " " attr_npids="'+newsPaperIdsStr+'" attr_partyids=" ">'+result[0].editionUniqueCountMain+'</p>';
+			str2+='<p><a id="totalUniqueMainTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " " attr_npids="'+newsPaperIdsStr+'" attr_partyids=" ">'+result[0].editionUniqueCountMain+'</a></p>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-			str2+='<span id="totalUniqueMainPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_npids="'+newsPaperIdsStr+'" attr_partyids=" ">'+result[0].positiveCountMain+'</span><small id="totalUniqueMainPositivePercent" class="text-success"> 0.0 %</small>';
+			str2+='<span><a id="totalUniqueMainPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_npids="'+newsPaperIdsStr+'" attr_partyids=" ">'+result[0].positiveCountMain+'</a></span><small id="totalUniqueMainPositivePercent" class="text-success"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-			str2+='<span id="totalUniqueMainNegative" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].negativCountMain+'</span><small id="totalUniqueMainNegativePercent" class="text-danger"> 0.0 %</small>';
+			str2+='<span><a id="totalUniqueMainNegative" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].negativCountMain+'</a></span><small id="totalUniqueMainNegativePercent" class="text-danger"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='</tr>';
 			str2+='</table>';
@@ -6131,15 +6132,15 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			str2+='<tr>';
 			str2+='<td>';
 			str2+='<p class="text-capital">Dist Count</p>';
-			str2+='	<p id="totalUniqueDistTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].editionUniqueCountDist+'</p>';
+			str2+='<p><a id="totalUniqueDistTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].editionUniqueCountDist+'</a></p>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted">Positive</p>';
-			str2+='<span id="totalUniqueDistPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].positiveCountDist+'</span><small class="text-success" id="totalUniqueDistPositivePercent"> 0.0 %</small>';
+			str2+='<span><a id="totalUniqueDistPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].positiveCountDist+'</a></span><small class="text-success" id="totalUniqueDistPositivePercent"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted">Negative</p>';
-			str2+='<span id="totalUniqueDistNegative" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].negativCountDist+'</span><small class="text-danger" id="totalUniqueDistNegativePercent"> 0.0 %</small>';
+			str2+='<span><a id="totalUniqueDistNegative" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].negativCountDist+'</a></span><small class="text-danger" id="totalUniqueDistNegativePercent"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='</tr>';
 			str2+='</table>';
@@ -6161,17 +6162,17 @@ $(document).on("click",".btnCustomCreateNews",function(){
 				
 				str+='<tr>';
 					str+='<td>';
-							str+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " "attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].totalCount+'</span>';
+							str+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " "attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].totalCount+'</a></span>';
 						str+='</td>';
 						str+='<td>';
 							if(result[i].totalCount > 0)
-								str+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</span><small class="text-success"> '+((result[i].positiveCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
+								str+='<span><a class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</a></span><small class="text-success"> '+((result[i].positiveCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
 							else
 								str+='<span>'+result[i].positiveCountMain+'</span><small class="text-success"> 0 %</small>';
 						str+='</td>';
 						str+='<td>';
 							if(result[i].totalCount > 0)
-								str+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</span><small class="text-danger"> '+((result[i].negativCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
+								str+='<span><a class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</a></span><small class="text-danger"> '+((result[i].negativCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
 							else
 								str+='<span>'+result[i].negativCountMain+'</span><small class="text-danger"> 0 %</small>';
 						str+='</td>';
@@ -6179,17 +6180,17 @@ $(document).on("click",".btnCustomCreateNews",function(){
 					
 					str1+='<tr>';
 					str1+='<td>';
-							str1+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].count+'</span>';
+							str1+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].count+'</a></span>';
 						str1+='</td>';
 						str1+='<td>';
 							if(result[i].count > 0)
-								str1+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = " " attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</span><small class="text-success"> '+((result[i].positiveCountDist/result[i].count)*100).toFixed(2)+' %</small>';
+								str1+='<span><a class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = " " attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</a></span><small class="text-success"> '+((result[i].positiveCountDist/result[i].count)*100).toFixed(2)+' %</small>';
 							else
 								str1+='<span>'+result[i].positiveCountDist+'</span><small class="text-success"> 0 %</small>';
 						str1+='</td>';
 						str1+='<td>';
 							if(result[i].count > 0)
-								str1+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</span><small class="text-danger"> '+((result[i].negativCountDist/result[i].count)*100).toFixed(2)+' %</small>';
+								str1+='<span><a class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</a></span><small class="text-danger"> '+((result[i].negativCountDist/result[i].count)*100).toFixed(2)+' %</small>';
 							else
 								str1+='<span>'+result[i].negativCountDist+'</span><small class="text-danger"> 0 %</small>';
 						str1+='</td>';
