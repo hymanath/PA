@@ -124,4 +124,27 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    }
 	    return regCountVO;
 	  }
+	public String getCadreLastUpdatedTime(){
+		String status = null;
+	    try {
+	      
+	      
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getCadreLastUpdatedTime";
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         status = webResource.accept("application/json").post(String.class);
+	        
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at getCadreLastUpdatedTime", e);
+	    }
+	    return status;
+	  }
+	
 }
