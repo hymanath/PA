@@ -392,7 +392,7 @@ $('#attendance').highcharts({
 			str+='</td>';
 			str+='<td>';
 			var presentPrecent = (result.availableCount*(100/result.actualCount)).toFixed(2);
-				str+='<p class="text-muted text-capital">prsent</p>';
+				str+='<p class="text-muted text-capital">present</p>';  
 				str+='<h4>'+result.availableCount+'<span class="font-10 text-success"> '+presentPrecent+'</span></h4>';
 			str+='</td>';
 			str+='<td>';
@@ -443,7 +443,7 @@ $('#attendance').highcharts({
 					str+='</td>';
 					str+='<td>';
 					var presentPrecent = (result[i].availableCount*(100/result[i].actualCount)).toFixed(2);
-						str+='<p class="text-muted text-capital">prsent</p>';
+						str+='<p class="text-muted text-capital">present</p>';  
 						str+='<h4>'+result[i].availableCount+'<span class="font-10 text-success"> '+presentPrecent+'</span></h4>';
 					str+='</td>';
 					str+='<td>';
