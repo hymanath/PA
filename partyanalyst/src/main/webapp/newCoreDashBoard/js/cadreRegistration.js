@@ -862,3 +862,27 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 		str+='</table>';
 		$("#noOfSamplesDetailsDiv").html(str);
 	}
+	
+	getCadreRecentTime();
+	function getCadreRecentTime(){
+ 	$.ajax({
+		type : 'POST',
+		url : 'getCadreLastUpdatedTimeAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify( )}
+	}).done(function(result){
+		if(result != null){
+		setLastUpdatedTime(result)	
+		}
+	});
+}
+setInterval(function() {
+    cadreRegistrationBasicCall();
+  }, 60 * 5000);
+  
+  setInterval(function() {
+    getCadreRecentTime();
+  }, 60 * 1000);
+function setLastUpdatedTime(lastUpdatedTime){
+	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");
+}
