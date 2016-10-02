@@ -19,7 +19,8 @@ public class CadreRegistratedCountVO implements Serializable {
 	private String newPercCnt;
 	private String todyNewPercCnt;
 	private String todyRenewalPercCnt;
-
+	private Long   todayFieldMembersCount;
+	
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -146,6 +147,14 @@ public class CadreRegistratedCountVO implements Serializable {
 
 	public void setTodyRenewalPercCnt(String todyRenewalPercCnt) {
 		this.todyRenewalPercCnt = todyRenewalPercCnt;
+	}
+
+	public Long getTodayFieldMembersCount() {
+		return todayFieldMembersCount;
+	}
+
+	public void setTodayFieldMembersCount(Long todayFieldMembersCount) {
+		this.todayFieldMembersCount = todayFieldMembersCount;
 	}
 	
 	
