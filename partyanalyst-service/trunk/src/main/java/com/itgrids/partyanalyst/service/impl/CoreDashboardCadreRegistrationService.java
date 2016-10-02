@@ -102,5 +102,26 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    return null;    
 	  }
 	
-	
+	public CadreRegistratedCountVO getEnumeratorsInfo(){
+	    CadreRegistratedCountVO regCountVO = null;
+	    try {
+	      
+	      
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getEnumeratorsInfo";
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         regCountVO = webResource.accept("application/json").post(CadreRegistratedCountVO.class);
+	        
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at getEnumeratorsInfo", e);
+	    }
+	    return regCountVO;
+	  }
 }
