@@ -2004,6 +2004,9 @@
                             <div class="row">
 							
 							   <div id="enumeratorsInfoDivId"></div>
+							   <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency detailed report</button>
+							   </div>
 								
 								
                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -2049,22 +2052,12 @@
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="row">';
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<h4 class="text-center text-capital">Kuppam Constitency Detailed Report</h4>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<label class="radio-inline">
-										 <input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" checked><h5>Booth Wise</h5>
-										</label>
-										<label class="radio-inline">
-										 <input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5>Panchayat Wise</h5>
-										</label>
-										<label class="radio-inline">
-										 <input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5>Mandal Wise</h5>
-										</label>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											
+											
+										</div>
 									</div>
-								 </div>
-								  </div>
-                                <div id="constituenctDetailedReport"></div>	
+                                <div id="constituenctDetailedReport"></div>	     
                                 </div>
                                 
                             </div>
@@ -2391,6 +2384,7 @@
 </div> 
 <!--model start -->
 <!-- Modal -->
+
 <div class="modal fade" id="myModelId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-radius:0px">
@@ -2421,6 +2415,47 @@
 </div>
 
 <!--model end -->
+<!-- Modal -->
+<div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document" style="width:85%">
+    <div class="modal-content" style="border-radius:0px">
+      <div class="modal-header" style="background-color:#CCC">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Kuppam Constituency Detailed Report</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+				<label class="radio-inline">
+					<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="overall" style="margin-top: 0px;" checked><h5>Over All</h5>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio2" value="today" style="margin-top: 0px;"><h5>Today</h5>
+				</label>  
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top10">     
+				<label class="radio-inline">
+					<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" checked><h5>Booth Wise</h5>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5>Panchayat Wise</h5>
+				</label>
+				<label class="radio-inline">
+					<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5>Mandal Wise</h5>
+				</label>
+			</div>
+      <div class="col-md-12 col-xs-12 col-sm-12">
+		<div id="kupamRegDtlsId"></div>
+      </div>
+    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end-->  
 <!--attended model-->
 <div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:80%;margin:auto">
