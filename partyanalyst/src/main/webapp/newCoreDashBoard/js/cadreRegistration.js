@@ -276,11 +276,11 @@ $('#genSec').highcharts({
 					str+='<div class="row">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">total</h5>';
-							str+='<h3>'+emptyCheck(result.totalCount)+'</h3>';
+							str+='<h3 class="cadreCount">'+emptyCheck(result.totalCount)+'</h3>';
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
-							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right">'+emptyCheck(result.renewalCount)+'</span></h4>';
-							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right">'+emptyCheck(result.newCount)+'</span></h4>';
+							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
+							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
 						str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>';
 					str+='</div>';
@@ -292,11 +292,11 @@ $('#genSec').highcharts({
 					str+='<div class="row">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">today</h5>';
-							str+='<h3>'+emptyCheck(result.todayTotalCount)+'</h3>';
+							str+='<h3 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
-							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
-							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right">'+emptyCheck(result.todayNewCount)+'</span></h4>';
+							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
+							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
 						str+='</div>';
 						str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>';
 					str+='</div>';
@@ -305,7 +305,17 @@ $('#genSec').highcharts({
 		str+='</div>';
 		
 		$("#totalTodayCadreRegistrationBlockDivId").html(str);
-		
+		$('.cadreCount').each(function () {
+				$(this).prop('Counter',0).animate({
+					Counter: $(this).text()
+				}, {
+					duration: 1500,
+					easing: 'swing',
+					step: function (now) {
+						$(this).text(Math.ceil(now));
+					}
+				});
+			});
 		//total block graph.
 			var totalRenewalCountArray = [];
 			var totalNewCountArray =[];
@@ -521,17 +531,17 @@ $('#genSec').highcharts({
 								/* if(result.totalCount != null && result.totalCount > 0){
 									str1+='- <span class="text-muted">'+result.+'%</span></h5>';
 								} */
-								str1+='<h3>'+emptyCheck(result.totalCount)+'</h3>';
+								str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.totalCount)+'</h3>';
 							str1+='</td>';
 							str1+='<td>';
 								str1+='<h5>Today'; 
 								if(result.todayPercenCount != null && result.todayPercenCount > 0){
 									str1+='- <span class="text-muted">'+result.todayPercenCount+'%</span></h5>';
 								}
-								str1+='<h3>'+emptyCheck(result.todayTotalCount)+'</h3>';
+								str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<h5>'+emptyCheck(result.totalStartConstituCount)+' ';
+								str1+='<h5 class="EnumCadreCount">'+emptyCheck(result.totalStartConstituCount)+' ';
 								if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
 									str1+='- <small class="text-muted">'+result.totalStartConstituPer+'%</small></h5>';
 								}
@@ -544,17 +554,29 @@ $('#genSec').highcharts({
 					str1+='<span style="position: relative; text-align: center; top: -30px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-6 text-center">';
-							str1+='<h3>'+emptyCheck(result.inFieldCount)+'</h3>';
+							str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.inFieldCount)+'</h3>';
 							str1+='<h5 class="text-capital">in field now</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-6 text-center">';
-							str1+='<h3>'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+							str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
 							str1+='<h5 class="text-capital">today submitted data</h5>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
 			str1+='</div>';
 			$("#enumeratorsInfoDivId").html(str1);
+			$('.EnumCadreCount').each(function () {
+				$(this).prop('Counter',0).animate({
+					Counter: $(this).text()
+				}, {
+					duration: 1500,
+					easing: 'swing',
+					step: function (now) {
+						$(this).text(Math.ceil(now));
+					}
+				});
+			});
+			
 	}
 	
 	function getRegistrationCountDtls(location){
@@ -688,7 +710,7 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 	function buildCadreRegistrationOverViewResult(result){
 		
 			var str='';
-			str+='<table class="table table-bordered table-condensed"> ';
+			str+='<table class="table table-bordered table-condensed" id="tabUserWiseReportDataTableId"> ';
 				str+='<thead> ';
 					str+='<tr>';
 						str+='<th>Survey UserName</th>';
@@ -745,6 +767,7 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 		str+='</table>';
 		
 		$("#tabUserWiseReportDiv").html(str);
+		$("#tabUserWiseReportDataTableId").dataTable();  
 	}
 	
 	function setDefaultImage(img){
