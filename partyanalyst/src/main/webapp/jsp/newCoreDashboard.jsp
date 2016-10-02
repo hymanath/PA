@@ -1993,6 +1993,9 @@
                 </div>
                 <div class="panel-body">
                 	<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
+						</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
 						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
 						
