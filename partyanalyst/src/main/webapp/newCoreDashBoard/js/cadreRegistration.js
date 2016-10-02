@@ -22,7 +22,7 @@ $(document).on("click",".cadreExpand",function(){
 		$(".moreCadreBlock,.moreBlocksCadreIcon").toggle();
 		//getSpokesPersonWiseDebate("top");
 	},800);
-	getRegistrationCountDtls("booth"); 
+	//getRegistrationCountDtls("booth","overall"); 
 	$("#constituencySeletBoxId").val(0);
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		setTimeout(function(){
@@ -584,74 +584,118 @@ $('#genSec').highcharts({
 			
 	}
 	
-	function getRegistrationCountDtls(location){
-		$("#constituenctDetailedReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	function getRegistrationCountDtls(location,scope){
+		$("#kupamRegDtlsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		//var location = "booth";
 		var jsObj={  
-			location : location,      
-			constId : 282
+			location : location,       
+			constId : 282,
+			scope : scope,
+			option : "compair"      
 		};
 		$.ajax({          
-			type : 'GET',    
+			type : 'GET',      
 			url : 'getRegistrationCountDtlsAction.action',  
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-			$("#constituenctDetailedReport").html('');
-			buildRegistrationCountDtls(result,location);    
+			$("#kupamRegDtlsId").html('');
+			//console.log(result);
+			buildRegistrationCountDtls(result,location,scope);       
 		});
 	}
-	
-	function buildRegistrationCountDtls(result,location){  
-	//console.log(result);  
-	var str='';
-		str+='<div class="row">';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-		str+='<table class="table table-bordered table-condensed" id="regCadreCountTableId"> ';
-			str+='<thead> ';
-			str+='<tr>';
-			str+='<th>Mandal</th>';
-			if(location == "panchayat"){
-				str+='<th>Panchayat</th>';
-			}
-			if(location == "booth"){
-				str+='<th>Panchayat</th>';
-				str+='<th>Booth Name</th>';
-			}
-					str+='<th>Total Voters</th>';
-					str+='<th>2014 Cadre Count</th>';
-					str+='<th>2016 Cadre Count</th>';  
-				str+='</tr>'; 
-			str+='</thead>'; 
-			str+='<tbody>';
+	function buildRegistrationCountDtls(result,location,scope){
+		//debugger;
+		var str = '';
+		str+='<div class="table-responsive m_top20">';
+          str+='<table class="table table-bordered" id="regCadreCountTableId">';
+            str+='<thead class="text-capital text-center">';
+              str+='<tr>';
+                str+='<th rowspan="2">mandal</th>';
+				if(location == "panchayat"){
+					str+='<th rowspan="2">panchayat</th>';
+				}
+                if(location == "booth"){
+					str+='<th rowspan="2">panchayat</th>';
+					str+='<th rowspan="2">Booth Name</th>';
+				}
+                str+='<th rowspan="2">total voters</th>';
+                str+='<th rowspan="2">2014 Total Cadre</th>';
+				if(scope == "today"){
+					str+='<th colspan="6" class="text-capital text-center">2016 Cadre</th>';
+				}else{
+					str+='<th colspan="5" class="text-capital text-center">2016 Cadre</th>';
+				}
+                    
+              str+='</tr>';
+              str+='<tr>';
+                str+='<th>total Cadre</th>';
+				if(scope == "today"){
+					str+='<th>total Cadre On Today</th>'; 
+				}
+                str+='<th>renewal Cadre</th>';
+                str+='<th>renewal %</th>';
+                str+='<th>new cadre</th>';
+                str+='<th>new %</th>';
+              str+='</tr>';
+            str+='</thead>';
 			for(var i in result.responseData){  
-				str+='<tr> ';
-					str+='<td>'+result.responseData[i].mandalName+'</td> ';
-					if(location == "panchayat"){
-						str+='<td>'+result.responseData[i].panchayatName+'</td>';
-					}
-					if(location == "booth"){
-						str+='<td>'+result.responseData[i].panchayatName+'</td>';
-						str+='<td>'+result.responseData[i].boothName+'</td>'; 
-					}
-					str+='<td>'+result.responseData[i].totalVoter+'</td>';  
-					str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
-					str+='<td>'+result.responseData[i].cadreCount2016+'</td>';    
-				str+='</tr>';
-			}  
-		str+='</tbody>'; 
-	str+='</table>';
-		str+='</div>';
-		str+='</div>';
+            str+='<tr>';
+              str+='<td>'+result.responseData[i].mandalName+'</td> ';
+              if(location == "panchayat"){
+					str+='<td>'+result.responseData[i].panchayatName+'</td>';
+			  }
+              if(location == "booth"){
+					str+='<td>'+result.responseData[i].panchayatName+'</td>';
+					str+='<td>'+result.responseData[i].boothName+'</td>'; 
+			 }
+			   str+='<td>'+result.responseData[i].totalVoter+'</td>';  
+              str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
+              str+='<td>'+result.responseData[i].cadreCount2016OverAll+'</td>';
+				if(scope == "today"){
+					str+='<td>'+result.responseData[i].cadreCount2016Today+'</td>';  
+				}			  
+              str+='<td>'+result.responseData[i].renewalCount+'</td>';
+			if(result.responseData[i].cadreCount2016OverAll > 0){
+				var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);
+				str+='<td>'+precent+'</td>';
+			}else{
+				str+='<td>0</td>';
+			}
+              
+              str+='<td>'+result.responseData[i].newCount+'</td>'; 
+			  if(result.responseData[i].cadreCount2016OverAll > 0){
+				var precent = (result.responseData[i].newCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);  
+				str+='<td>'+precent+'</td>'; 
+				}else{
+				str+='<td>0</td>';  
+				}
+              
+            str+='</tr>';
+			}
+          str+='</table>';
+        str+='</div>';
+		$("#kupamRegDtlsId").html(str);  
+		$("#regCadreCountTableId").dataTable();   
+	}
 	
-								
-	$("#constituenctDetailedReport").html(str);
-	$("#regCadreCountTableId").dataTable();   
-}
+	
 $(document).on('click','.locationRadioCls',function(){
 	var selectionType=$("input:radio[name=selectionType]:checked").val();
-	getRegistrationCountDtls(selectionType);  
+	var scopeType=$("input:radio[name=scopeType]:checked").val();
+	getRegistrationCountDtls(selectionType,scopeType);  
 });
+$(document).on('click','.scopeRadioCls',function(){
+	var selectionType=$("input:radio[name=selectionType]:checked").val();
+	var scopeType=$("input:radio[name=scopeType]:checked").val();
+	getRegistrationCountDtls(selectionType,scopeType);    
+});
+$(document).on('click','#cadreModalDivid',function(){
+	$("#cadreModal").modal('show');
+	var location = $("input:radio[name=selectionType]:checked").val();
+	var scope = $("input:radio[name=scopeType]:checked").val();
+	getRegistrationCountDtls(location,scope);  
+});  
 $(document).on("click",".applyBtn",function(){
 		
 		var constituencyId = $("#constituencySeletBoxId").val();
