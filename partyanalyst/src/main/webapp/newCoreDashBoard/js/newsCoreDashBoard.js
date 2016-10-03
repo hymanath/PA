@@ -1048,7 +1048,7 @@
 		}).then(function(result){
 			$("#newsTypeAnalysisDiv").html();
 			if(result != null && result.length > 0){
-				buildDetailedPartyNewsTypeAnalysis(result);
+				buildDetailedPartyNewsTypeAnalysis(result,temp);
 			}
 		});
 	}
@@ -2011,7 +2011,7 @@
 		
 	}
 	
-	function buildDetailedPartyNewsTypeAnalysis(result){
+	function buildDetailedPartyNewsTypeAnalysis(result,temp){
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
@@ -2077,12 +2077,18 @@
 					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0 && result[i].coreDashBoardVOList1 !=null && result[i].coreDashBoardVOList1.length >0){
 						for (var j in result[i].coreDashBoardVOList1){
 							districtNameArray.push(result[i].coreDashBoardVOList1[j].districtName)
-							tdpPercArray.push(result[i].coreDashBoardVOList1[j].tdpCount)
-							ysrcPercArray.push(result[i].coreDashBoardVOList1[j].ysrcCount)
-							incPercArray.push(result[i].coreDashBoardVOList1[j].incCount)
-							bjpPercArray.push(result[i].coreDashBoardVOList1[j].bjpCount)
 							
-							
+							if(globalUserAccessLevelId == 2 && j > 0){
+								tdpPercArray.push({"y":result[i].coreDashBoardVOList1[j].tdpCount,"extra":"3-"+result[i].coreDashBoardVOList1[j].id+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+								ysrcPercArray.push({"y":result[i].coreDashBoardVOList1[j].ysrcCount,"extra":"3-"+result[i].coreDashBoardVOList1[j].id+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+								incPercArray.push({"y":result[i].coreDashBoardVOList1[j].incCount,"extra":"3-"+result[i].coreDashBoardVOList1[j].id+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+								bjpPercArray.push({"y":result[i].coreDashBoardVOList1[j].bjpCount,"extra":"3-"+result[i].coreDashBoardVOList1[j].id+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+							}else{
+								tdpPercArray.push({"y":result[i].coreDashBoardVOList1[j].tdpCount,"extra":globalUserAccessLevelId+"-"+temp+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+								ysrcPercArray.push({"y":result[i].coreDashBoardVOList1[j].ysrcCount,"extra":globalUserAccessLevelId+"-"+temp+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+								incPercArray.push({"y":result[i].coreDashBoardVOList1[j].incCount,"extra":globalUserAccessLevelId+"-"+temp+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+								bjpPercArray.push({"y":result[i].coreDashBoardVOList1[j].bjpCount,"extra":globalUserAccessLevelId+"-"+temp+"-"+result[i].coreDashBoardVOList1[j].organizationId+""});
+							}
 						}
 					}
 						
@@ -2227,7 +2233,18 @@
 										}
 									  
 									}
-								}
+								},
+								series: {
+										cursor: 'pointer',
+										point: {
+											events: {
+												click: function () {
+													//getArticlesForPartyDetailedDistEdiPartiesOverView(this.extra);
+													alert(this.extra);
+												}
+											}
+										}
+									}
 							},
 							series: [{
 								name: 'TDP',
