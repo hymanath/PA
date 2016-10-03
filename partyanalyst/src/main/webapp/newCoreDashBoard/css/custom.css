@@ -1945,7 +1945,7 @@ margin-top: 5px; margin-bottom: 2px;
 	src:url(../fonts/DIGITALDREAM.ttf);
 	src:url(../fonts/DIGITALDREAMFATNARROW.ttf);
 }
-.cadreCount
+.cadreCount , .cadreCount1
 {
 	font-family:'Digital Dream';
 	font-weight:bolder;
