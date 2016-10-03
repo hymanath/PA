@@ -2103,7 +2103,7 @@
 								subtitle: {
 									text: null
 								},
-								tooltip: {
+								/* tooltip: {
 									formatter: function () {
 										var s = '<b>' + this.x + '</b>';
 
@@ -2116,7 +2116,7 @@
 										return s;
 									},
 									shared: true
-								},
+								}, */
 								plotOptions: {
 									pie: {
 										innerSize: 65,
@@ -4417,8 +4417,8 @@
 					
 						for(var j in result[i].coreDashBoardVOList){
 							candidateNameArray.push(result[i].coreDashBoardVOList[j].districtName)
-							PositivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc)
-							NegativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc)
+							PositivePercArray.push(result[i].coreDashBoardVOList[j].positiveCountDist)
+							NegativePercArray.push(result[i].coreDashBoardVOList[j].negativCountDist)
 								
 						}
 					
@@ -4464,7 +4464,20 @@
 									enabled: false
 								},
 								
-										
+								 tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},		
 								plotOptions: {
 									column: {
 										stacking: 'percent',
@@ -4480,21 +4493,6 @@
 										  
 										}
 									}
-								},
-
-								 tooltip: {
-									formatter: function () {
-										var s = '<b>' + this.x + '</b>';
-
-										$.each(this.points, function () {
-											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												Highcharts.numberFormat(this.percentage,2)+'%' +' - ' +
-												(this.y);
-										});
-
-										return s;
-									},
-									shared: true
 								},
 
 								series: [{
