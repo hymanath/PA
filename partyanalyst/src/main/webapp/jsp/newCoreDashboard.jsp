@@ -2352,12 +2352,12 @@
 
 <!--model end -->
 <!-- Modal -->
-<div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
   <div class="modal-dialog modal-lg" role="document" style="width:85%">
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">KUPPAM CONSTITUENCY DETAILED REPORT</h4>
+        <h4 class="modal-title" id="myModalLabel1">KUPPAM CONSTITUENCY DETAILED REPORT</h4>
       </div>
       <div class="modal-body">
 		<div class="row tabModal" style="display:none;">

@@ -720,16 +720,19 @@ $(document).on('click','#cadreModalDivid',function(){
 	$("#cadreModal").modal('show');
 	$(".tabModal").hide();
 	$(".webModal").show();
+	$("#myModalLabel1").html("KUPPAM CONSTITUENCY DETAILED REPORT");
 	var location = $("input:radio[name=selectionType]:checked").val();
 	var scope = $("input:radio[name=scopeType]:checked").val();
 	getRegistrationCountDtls(location,scope);  
 });  
 $(document).on('click','#cadreModalTabDivid',function(){
+	
 	$("#tabUserWiseReportDiv").html(' ');
 	$("#cadreModal").modal('show');
 	$(".tabModal").show();
 	$(".webModal").hide();
-	$("#myModalLabel").html("Kuppam Constitency Tab User Detailed Report");
+	$("#myModalLabel1").html("KUPPAM CONSTITUENCY TAB USER DETAILED REPORT");
+	
 	  var constituencyId = $("#constituencySeletBoxId").val();
 		var dates = $("#dateRangeIdForCadre").val();
 		 var fromDate;
@@ -807,13 +810,12 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 		  }
 		});
 	}
-	function buildCadreRegistrationOverViewResult(result){
+	function buildCadreRegistrationOverViewResult(tabUserInfoList){
 		
 			var str='';
 			str+='<table class="table table-bordered table-condensed" id="tabUserWiseReportDataTableId"> ';
 				str+='<thead> ';
 					str+='<tr>';
-						str+='<th>Survey User Id</th>';
 						str+='<th>Field Staff Name </th>';
 						str+='<th>Image</th>';
 						str+='<th>MobileNo</th>';
@@ -823,21 +825,22 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 					str+='</tr>'; 
 				str+='</thead>'; 
 				str+='<tbody>';
-				for(var i in result){
-					var tabUserInfoList = result[i].subList;
-					  if(tabUserInfoList != null && tabUserInfoList.length > 0){
-						  for(var j in tabUserInfoList){
+				for(var j in tabUserInfoList){
 						str+='<tr> ';
-						    if(result[i].name != null && result[i].name.length > 0){
-							str+='<td>'+result[i].name+'</td> ';	
-							}else{
-							str+='<td> - </td> ';	
-							}
-							if(tabUserInfoList[j].name != null){
+						   if(tabUserInfoList[j].sampleCount > 0){
+							 	if(tabUserInfoList[j].name != null){
 							str+='<td>'+tabUserInfoList[j].name+'</td>';
 							}else{
 								str+='<td> - </td>';	
-							}
+							}  
+						   }else{
+							if(tabUserInfoList[j].name != null){
+							str+='<td style="color:red;">'+tabUserInfoList[j].name+'</td>';
+							}else{
+								str+='<td> - </td>';	
+							}  
+						   }
+						 
 							str+='<td><img src="http://mytdp.in/tab_user_images/'+tabUserInfoList[j].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 							 if(tabUserInfoList[j].mobileNo != null && tabUserInfoList[j].mobileNo.length > 0){
 							 str+='<td>'+tabUserInfoList[j].mobileNo+'</td> ';	 	 
@@ -845,7 +848,7 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 							 str+='<td> - </td> ';	 
 							  }
 							 if(tabUserInfoList[j].sampleCount != null && tabUserInfoList[j].sampleCount> 0){
-							 str+='<td><a style="cursor:pointer;" class="noOfSamplesDetailsPopUpView" attr_tab_user_info_id='+tabUserInfoList[j].id+' attr_survey_user_info_id='+result[i].id+'>'+tabUserInfoList[j].sampleCount+'</a></td> ';	 	 
+							 str+='<td><a style="cursor:pointer;" class="noOfSamplesDetailsPopUpView" attr_tab_user_info_id='+tabUserInfoList[j].id+'>'+tabUserInfoList[j].sampleCount+'</a></td> ';	 	 
 							 }else{
 							 str+='<td> - </td> ';	 
 							  }
@@ -861,8 +864,6 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 							  }
 						str+='</tr>';
 						  }
-					  }
-				}
 			str+='</tbody>'; 
 		str+='</table>';
 		
@@ -887,9 +888,9 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
 		 }
 		var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
-		var surveyUserId = $(this).attr("attr_survey_user_info_id");
+		//var surveyUserId = $(this).attr("attr_survey_user_info_id");
 		$("#noOfSamplesModal").modal("show");
-		getDaysByCadreRegistrationCount(constituencyId,fromDate.trim(),toDate.trim(),tabUserInfoId,surveyUserId);
+		getDaysByCadreRegistrationCount(constituencyId,fromDate.trim(),toDate.trim(),tabUserInfoId,0);
 	});	
 
 function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserInfoId,surveyUserId){
