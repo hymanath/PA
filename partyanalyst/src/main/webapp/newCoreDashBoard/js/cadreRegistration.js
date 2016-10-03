@@ -762,8 +762,8 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 			str+='<table class="table table-bordered table-condensed" id="tabUserWiseReportDataTableId"> ';
 				str+='<thead> ';
 					str+='<tr>';
-						str+='<th>Survey UserName</th>';
-						str+='<th>Tab UserInfo Name</th>';
+						str+='<th>Survey User Id</th>';
+						str+='<th>Field Staff Name </th>';
 						str+='<th>Image</th>';
 						str+='<th>MobileNo</th>';
 						str+='<th>No.Of Samples</th>';
