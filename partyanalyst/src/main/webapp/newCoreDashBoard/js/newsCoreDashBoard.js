@@ -2009,7 +2009,6 @@
 		var t = val.split("-");
 		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&bfIdStr='+t[1]+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&edTypeIdStr=0&npsStr='+newsPaperIdsStr+'&ediDistIdsStr='+t[0]+'&callFrom=dpdepok&stIdx=0&edIdx=6','_blank');
 		
-		alert(val);
 	}
 	
 	function buildDetailedPartyNewsTypeAnalysis(result){
