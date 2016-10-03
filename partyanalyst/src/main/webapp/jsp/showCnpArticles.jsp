@@ -552,7 +552,8 @@ var ediDistIdsStr = "${param.ediDistIdsStr}";
 					hrefTextPrefix: '#pages-',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*6;
-							getArticlesOfNewsBasicCounts(num);							
+							getArticlesOfNewsBasicCounts(num);	
+							getArticlesForPartyDetailedDistEdiPartiesOverView(num);							
 					}
 					
 				});
@@ -1023,7 +1024,7 @@ var ediDistIdsStr = "${param.ediDistIdsStr}";
 		getOverAllDetailsOfAnArticle(articleId);
 	});
 	
-	function getArticlesForPartyDetailedDistEdiPartiesOverView(startIndex){
+	function getArticlesForPartyDetailedDistEdiPartiesOverView(stIndex){
 		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
 		$.ajax({
