@@ -2357,7 +2357,7 @@
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Kuppam Constituency Detailed Report</h4>
+        <h4 class="modal-title" id="myModalLabel">Report KUPPAM CONSTITUENCY DETAILED REPORT</h4>
       </div>
       <div class="modal-body">
 		<div class="row tabModal" style="display:none;">
