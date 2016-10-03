@@ -616,8 +616,7 @@ $('#genSec').highcharts({
 		var jsObj={  
 			location : location,       
 			constId : 282,
-			scope : scope,
-			option : "compair"      
+			scope : scope    
 		};
 		$.ajax({          
 			type : 'GET',      
@@ -631,7 +630,6 @@ $('#genSec').highcharts({
 		});
 	}
 	function buildRegistrationCountDtls(result,location,scope){
-		//debugger;
 		var str = '';
 		str+='<div class="table-responsive m_top20">';
           str+='<table class="table table-bordered" id="regCadreCountTableId">';
@@ -655,14 +653,15 @@ $('#genSec').highcharts({
                     
               str+='</tr>';
               str+='<tr>';
-                str+='<th>total Cadre</th>';
+				str+='<th>renewal Cadre 2016</th>';
+                str+='<th>renewal cadre percent(%)</th>';
+                str+='<th>total Cadre 2016</th>';
 				if(scope == "today"){
 					str+='<th>total Cadre On Today</th>'; 
 				}
-                str+='<th>renewal Cadre</th>';
-                str+='<th>renewal %</th>';
+                
                 str+='<th>new cadre</th>';
-                str+='<th>new %</th>';
+                str+='<th>new cadre percent(%)</th>';
               str+='</tr>';
             str+='</thead>';
 			for(var i in result.responseData){  
@@ -677,22 +676,23 @@ $('#genSec').highcharts({
 			 }
 			   str+='<td>'+result.responseData[i].totalVoter+'</td>';  
               str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
-              str+='<td>'+result.responseData[i].cadreCount2016OverAll+'</td>';
-				if(scope == "today"){
-					str+='<td>'+result.responseData[i].cadreCount2016Today+'</td>';  
-				}			  
-              str+='<td>'+result.responseData[i].renewalCount+'</td>';
-			if(result.responseData[i].cadreCount2016OverAll > 0){
-				var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);
+			  str+='<td>'+result.responseData[i].renewalCount+'</td>';
+			if(result.responseData[i].cadreCount2014 > 0){
+				var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);
 				str+='<td>'+precent+'</td>';
 			}else{
 				str+='<td>0</td>';
 			}
+              str+='<td>'+result.responseData[i].cadreCount2016OverAll+'</td>';
+				if(scope == "today"){
+					str+='<td>'+result.responseData[i].cadreCount2016Today+'</td>';  
+				}			  
+            
               
               str+='<td>'+result.responseData[i].newCount+'</td>'; 
-			  if(result.responseData[i].cadreCount2016OverAll > 0){
-				var precent = (result.responseData[i].newCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);  
-				str+='<td>'+precent+'</td>'; 
+			  if(result.responseData[i].cadreCount2016OverAll > 0){    
+				var precent = (result.responseData[i].newCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);   
+				str+='<td>'+precent+'</td>';     
 				}else{
 				str+='<td>0</td>';  
 				}
