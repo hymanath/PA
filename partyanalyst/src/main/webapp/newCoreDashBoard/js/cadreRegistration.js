@@ -768,7 +768,7 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 						str+='<th>MobileNo</th>';
 						str+='<th>No.Of Samples</th>';
 						str+='<th>First Record Time</th>';
-						str+='<th>Second Record Time</th>';
+						str+='<th>Last Record Time</th>';
 					str+='</tr>'; 
 				str+='</thead>'; 
 				str+='<tbody>';
