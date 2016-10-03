@@ -324,6 +324,7 @@ $('#genSec').highcharts({
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
 						str+='</div>';
+
 					str+='</div>';
 				str+='</div>';
 				str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>';
@@ -717,19 +718,44 @@ $(document).on('click','.scopeRadioCls',function(){
 });
 $(document).on('click','#cadreModalDivid',function(){
 	$("#cadreModal").modal('show');
+	$(".tabModal").hide();
+	$(".webModal").show();
 	var location = $("input:radio[name=selectionType]:checked").val();
 	var scope = $("input:radio[name=scopeType]:checked").val();
 	getRegistrationCountDtls(location,scope);  
 });  
+$(document).on('click','#cadreModalTabDivid',function(){
+	$("#tabUserWiseReportDiv").html(' ');
+	$("#cadreModal").modal('show');
+	$(".tabModal").show();
+	$(".webModal").hide();
+	$("#myModalLabel").html("Kuppam Constitency Tab User Detailed Report");
+	  var constituencyId = $("#constituencySeletBoxId").val();
+		var dates = $("#dateRangeIdForCadre").val();
+		 var fromDate;
+		 var toDate;
+		 if(dates != null ){
+			 var datesArr = dates.split("-");
+			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
+			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
+		 }
+		$(".showTabUserWiseDetails").show();
+		getCadreRegistrationCountByConstituency(constituencyId,fromDate.trim(),toDate.trim());
+});  
+$(document).on('click','.closeModal',function(){
+	$("#noOfSamplesModal").modal('hide');
+	$("body").addClass('modal-open');
+});
+
 $(document).on("click",".applyBtn",function(){
 		
 		var constituencyId = $("#constituencySeletBoxId").val();
 		var dates = $("#dateRangeIdForCadre").val();
-		if(constituencyId == 0){
+		/* if(constituencyId == 0){
 			$("#constituencyErrorId").html("Please Select Constituency.");
 			return;
 		}
-		$("#constituencyErrorId").html(' ');
+		$("#constituencyErrorId").html(' '); */
 		 var fromDate;
 		 var toDate;
 		 if(dates != null ){
