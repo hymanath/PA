@@ -299,7 +299,7 @@ $('#genSec').highcharts({
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
 						str+='</div>';
-						str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>';
+						str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
