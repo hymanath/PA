@@ -38,7 +38,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    }
 	    return regCountVO;
 	  }
-	public Object getRegistrationCountDtls(String location, Long constId, String scope, String option){  
+	public Object getRegistrationCountDtls(String location, Long constId, String scope){  
 	    Object regCountVO = null;
 	    try {
 	      
@@ -48,7 +48,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 	       
-	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getRegistrationCountDtls/"+location+"/"+constId+"/"+scope+"/"+option;
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getRegistrationCountDtls/"+location+"/"+constId+"/"+scope;
 	           
 	         WebResource webResource = client.resource( webServiceUrl );
 	           
@@ -56,7 +56,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	         return regCountVO;
 	        
 	    } catch (Exception e) {
-	      LOG.error("Exception raised at showCadreRegistreredCount", e);  
+	      LOG.error("Exception raised at showCadreRegistreredCount", e);    
 	    }
 	    return null;    
 	  }
