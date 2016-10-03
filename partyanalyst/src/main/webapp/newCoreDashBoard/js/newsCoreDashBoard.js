@@ -2007,7 +2007,7 @@
 	//window.open('showArticlesAction.action?edTypeIdStr='+$(this).attr("attr_editiontype")+'&bfIdStr='+$(this).attr("attr_benefitid")+'&orgType='+$(this).attr("attr_isdepartment")+'&orgIdStr='+$(this).attr("attr_partyids")+'&callFrom=fblk&stIdx=0&edIdx=6&levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&npsStr='+newsPaperIdsStr+'','_blank');
 		
 		var t = val.split("-");
-		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&bfIdStr='+t[1]+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&edTypeIdStr=0&npsStr='+newsPaperIdsStr+'&ediDistIdsStr='+t[0]+'&callFrom=dpdepok&stIdx=0&edIdx=6','_blank');
+		//window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&bfIdStr='+t[1]+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&edTypeIdStr=0&npsStr='+newsPaperIdsStr+'&ediDistIdsStr='+t[0]+'&callFrom=dpdepok&stIdx=0&edIdx=6','_blank');//san
 		
 	}
 	
@@ -2278,7 +2278,7 @@
 	
 		
 		var t = val.split("-");
-		window.open('showArticlesAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+t[3]+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');
+		//window.open('showArticlesAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+t[3]+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');//san
 		
 		
 	}
@@ -2307,7 +2307,7 @@
 		} 
 		
 		
-		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+$(this).attr("attr_orgIdStr")+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+$(this).attr("attr_propIdsStr")+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');
+		//window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+$(this).attr("attr_orgIdStr")+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+$(this).attr("attr_propIdsStr")+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');//san
 		
 	});
 	
@@ -2830,7 +2830,7 @@
 		} 
 		
 		var t = val.split("-");
-		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[0]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[1]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');
+		//window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[0]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[1]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');//San
 		
 	}
 	
