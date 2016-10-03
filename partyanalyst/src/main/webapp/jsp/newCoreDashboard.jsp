@@ -2004,47 +2004,12 @@
                             <div class="row">
 							
 							   <div id="enumeratorsInfoDivId"></div>
-							   <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency detailed report</button>
+							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
+									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
 							   </div>
-								
-								
-                               <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                	<div class="bg_ED pad_15">
-                                    	<table class="table text-capital">
-                                        	<tr>
-                                            	<td>
-                                                	<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana" style="width:65px"/>
-                                                </td>
-                                                <td>
-                                                	<h5>Total - <span class="text-muted">55%</span></h5>
-                                                    <h3>130000</h3>
-                                                </td>
-                                                <td>
-                                                	<h5>Today - <span class="text-muted">55%</span></h5>
-                                                    <h3>130000</h3>
-                                                </td>
-                                                <td>
-                                                	<h5>119 - <small class="text-muted">100%</small></h5>
-                                                    <h5>Started Contituencies</h5>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <hr style="border-color:#B0B4B7;"/>
-                                        <span style="position: relative; text-align: center; top: -30px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>
-                                        <div class="row">
-                                        	<div class="col-md-6 col-xs-12 col-sm-6 text-center">
-                                            	<h3>1200</h3>
-                                                <h5 class="text-capital">in field now</h5>
-                                            </div>
-                                            <div class="col-md-6 col-xs-12 col-sm-6 text-center">
-                                            	<h3>1200</h3>
-                                                <h5 class="text-capital">today submitted data</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
+							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
+									<button class="btn btn-success btn-block text-capital " id="cadreModalTabDivid">Kuppam Constitency Tab User<br/> Detailed Report</button>
+							   </div>
                             </div>
                         </div>
 						
@@ -2064,36 +2029,7 @@
 								
                         </div>
 						
-						<div class="col-md-12 col-xs-12 col-sm-12 moreCadreBlock m_top20">
-								<h4 class="text-capital">Kuppam Constitency Tab User Detailed Report</h4>
-									<div class="row m_top10">
-										<div class="col-md-3 col-xs-12 col-sm-3">
-											<select class="form-control" id="constituencySeletBoxId">
-											  <option value="0">Select Constituency</option>
-											  <option value="282">Kuppam</option>
-											  <select>
-											  <span id="constituencyErrorId" style="color:red"></span>
-										</div>
-										
-										<div class="col-md-3 col-xs-12 col-sm-3">
-											<span class="input-group pull-right">
-												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</span>
-										</div>
-										<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
-											<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
-										</div>
-										
-									</div>
-									<div class="row showTabUserWiseDetails" style="display:none">
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<div id="tabUserWiseReportDiv"></div>
-										</div>
-									</div>
-							 </div>
+						
 							 
                         <!--<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
@@ -2424,30 +2360,60 @@
         <h4 class="modal-title" id="myModalLabel">Kuppam Constituency Detailed Report</h4>
       </div>
       <div class="modal-body">
-        <div class="row">
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-				<label class="radio-inline">
-					<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="overall" style="margin-top: 0px;" checked><h5>Over All</h5>
-				</label>
-				<label class="radio-inline">
-					<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio2" value="today" style="margin-top: 0px;"><h5>Today</h5>
-				</label>  
-			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top10">     
-				<label class="radio-inline">
-					<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" checked><h5>Booth Wise</h5>
-				</label>
-				<label class="radio-inline">
-					<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5>Panchayat Wise</h5>
-				</label>
-				<label class="radio-inline">
-					<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5>Mandal Wise</h5>
-				</label>
-			</div>
-      <div class="col-md-12 col-xs-12 col-sm-12">
-		<div id="kupamRegDtlsId"></div>
-      </div>
-    </div>
+		<div class="row tabModal" style="display:none;">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="row m_top10">
+					<div class="col-md-3 col-xs-12 col-sm-3">
+						<select class="form-control" id="constituencySeletBoxId">
+						  <option value="282">Kuppam</option>
+						  <select>
+						  <span id="constituencyErrorId" style="color:red"></span>
+					</div>
+					
+					<div class="col-md-3 col-xs-12 col-sm-3">
+						<span class="input-group pull-right">
+							<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</span>
+					</div>
+					<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
+						<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+					</div>
+					
+				</div>
+				<div class="row showTabUserWiseDetails" style="display:none">
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div id="tabUserWiseReportDiv"></div>
+					</div>
+				</div>
+			 </div>
+		</div>
+        <div class="row webModal">
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+					<label class="radio-inline">
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="overall" style="margin-top: 0px;" checked><h5>Over All</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio2" value="today" style="margin-top: 0px;"><h5>Today</h5>
+					</label>  
+				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">     
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" checked><h5>Booth Wise</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5>Panchayat Wise</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5>Mandal Wise</h5>
+					</label>
+				</div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<div id="kupamRegDtlsId"></div>
+		  </div>
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -2568,7 +2534,7 @@
 		  <div class="modal-dialog modal-lg" style="width:65%">
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">No.Of Samples Day Wise Tab User Details</h4>
 			  </div>
 			  <div class="modal-body">
@@ -2579,7 +2545,7 @@
 				</div>
 			  </div>
 			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
