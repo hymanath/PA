@@ -2686,15 +2686,9 @@
 				
 				for(var j in result[i].coreDashBoardVOList){
 					
-						govtDetailedDistrictNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
-						
-						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
-							govtDetailedDistrictWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountDist);
-						//}
-						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
-							govtDetailedDistrictWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountDist);
-						//}
-						
+							govtDetailedDistrictNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
+							govtDetailedDistrictWisePositiveCountArray.push({"y":result[i].coreDashBoardVOList[j].positiveCountDist,"extra":result[i].coreDashBoardVOList[j].organizationId+"-1"});
+							govtDetailedDistrictWiseNegativeCountArray.push({"y":result[i].coreDashBoardVOList[j].negativCountDist,"extra":result[i].coreDashBoardVOList[j].organizationId+"-2"});
 					}
 			}	
 					if(govtDetailedDistrictWisePositiveCountArray.length !=0 && govtDetailedDistrictWiseNegativeCountArray.length !=0 && govtDetailedDistrictNamesArray.length !=0){
@@ -2779,6 +2773,16 @@
 												}
 											}
 										  
+										},
+									},
+									series: {
+										cursor: 'pointer',
+										point: {
+											events: {
+												click: function () {
+													getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(this.extra);
+												}
+											}
 										}
 									}
 								},
@@ -2799,6 +2803,34 @@
 		}else{
 			$("#districtWiseNewsReportGovtDetailed").html("No Data Available")
 		}	
+		
+	}
+	
+	function getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(val){
+		
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		} 
+		
+		var t = val.split("-");
+		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[0]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[1]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');
 		
 	}
 	
