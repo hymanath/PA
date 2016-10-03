@@ -109,6 +109,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String scops;
 	private String npsStr;
 	private String ediDistIdsStr;
+	private String propIdsStr;
+	
 	
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
@@ -427,6 +429,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCoreDashboardCadreRegistrationService(
 			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
 		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
+	}
+	
+	
+	public String getPropIdsStr() {
+		return propIdsStr;
+	}
+
+	public void setPropIdsStr(String propIdsStr) {
+		this.propIdsStr = propIdsStr;
 	}
 
 	//Implementation method
