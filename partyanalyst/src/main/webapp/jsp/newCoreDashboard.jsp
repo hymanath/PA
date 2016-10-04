@@ -1982,7 +1982,7 @@
 							 <!--<span class="cadreExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span> -->
-							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
+							<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
