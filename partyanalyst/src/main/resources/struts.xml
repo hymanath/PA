@@ -12261,7 +12261,7 @@
 		</result>
 	</action>
 	
-	<action name="getCadreDetailsAction" class="bloodBankAction" method="getCadreDetails">
+	<action name="testgetCadreDetailsAction" class="bloodBankAction" method="getCadreDetails">
 		<result type="json" name="success">
 			<param name="root">bloodBankVO</param>
 		</result>
