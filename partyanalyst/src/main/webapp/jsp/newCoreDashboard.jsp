@@ -2322,7 +2322,7 @@
 <!-- Modal -->
 
 <div class="modal fade" id="myModelId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" style="width:75%"> 
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

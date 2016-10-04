@@ -622,7 +622,7 @@ var globalUserWiseMemberRslt;
 	}
 function stateLevelCampDetails(){ 
 	$("#stateLevelCampId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	var programIdArr = [6]; 
+	var programIdArr = [6,7];
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	var jsObj={
 		programIdArr : programIdArr,
@@ -1992,7 +1992,7 @@ function buildStateLevelCampDetailsDistWise(result){
 							});
 						});
 		//}districtIdArr
-		$.each($("#districtWiseProgramCntDivId").find(".highcharts-xaxis-labels").find("tspan"),function(index,item){ 
+		$.each($('#trainingLocationDivId'+i).find(".highcharts-xaxis-labels").find("tspan"),function(index,item){   
 			$(this).attr("style","cursor:pointer;");    
 			//$(this).addClass("distDtlsCls");
 			$(this).attr("class","distDtlsCls");    
@@ -2096,7 +2096,12 @@ function buildMemberRslt(result,status){
 			attendedMember+=1;
 		}
 		str+='<tr>'; 
-			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			
+			if(result[i].wish == "absent"){
+				str+='<td style="color:#F0AD4E">'+result[i].name.toUpperCase()+'</td>';
+			}else{  
+				str+='<td>'+result[i].name.toUpperCase()+'</td>';  
+			}
 			if(result[i].status==""){ 
 				str+='<td>-</td>';
 			}else{    
@@ -2104,7 +2109,12 @@ function buildMemberRslt(result,status){
 			}  
 			str+='<td>'+result[i].mobileNo+'</td>'; 
 			if(status=="camp"){
-				str+='<td>'+result[i].wish.toUpperCase()+'</td>';
+				if(result[i].wish == "absent"){
+					str+='<td style="color:#F0AD4E">'+result[i].wish.toUpperCase()+'</td>';  
+				}else{
+					str+='<td>'+result[i].wish.toUpperCase()+'</td>';  
+				}
+				
 			}else{
 				if(result[i].wish=="absent"){
 					str+='<td>YET TO TRAIN</td>';      
@@ -2115,12 +2125,12 @@ function buildMemberRslt(result,status){
 		str+='</tr>';   
 	}
 	absent = totalMember - attendedMember;
-	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
-	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>'; 
+	str2+='<span class="label label-primary" style="margin-right: 5px;">All-'+totalMember+'</span>'; 
+	str2+='<span class="label label-default" style="margin-right: 5px;">Attended-'+attendedMember+'</span>'; 
 	if(status=="camp"){
-		str2+='<span class="label label-warning">Absent-'+absent+'</span>';  
+		str2+='<span class="label label-warning" style="margin-right: 5px;">Absent-'+absent+'</span>';  
 	}else{
-		str2+='<span class="label label-warning">Yet to train-'+absent+'</span>';    
+		str2+='<span class="label label-warning" style="margin-right: 5px;">Yet to train-'+absent+'</span>';    
 	}
 	 
 	str+='</tbody>';
