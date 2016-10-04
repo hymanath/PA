@@ -3362,6 +3362,15 @@ public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,
 			}
 		}
 		idNameVOs = new ArrayList<IdNameVO>(idAndIdNameVoMap.values());
+		Collections.sort(idNameVOs, new Comparator<IdNameVO>(){
+			public int compare(IdNameVO obj1, IdNameVO obj2){
+				if(obj1.getId() == obj2.getId()){
+					return 0;
+				}else{
+					return obj1.getId() > obj2.getId() ? -1 : 1;
+				}
+			}
+		});
 		return idNameVOs;
 		
 	}catch(Exception e){
@@ -3502,7 +3511,7 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 		//for Constituency Incharge-21
 		count = idAndValueMapInvite.get(21l);
 		if(count != null){
-			idNameVO = new IdNameVO();
+			idNameVO = new IdNameVO();     
 			idNameVO.setId(21l);
 			idNameVO.setCount(count);
 			idNameVO.setStatus(idAndLocationMapInvite.get(21l) != null ? idAndLocationMapInvite.get(21l) : "");
@@ -3632,8 +3641,8 @@ public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> progra
 			}
 		}
 		if(programIdAndInvitedProgramCountMap.size() > 0){
-			Set<Long> programIdSet = programIdAndInvitedProgramCountMap.keySet();
-			for(Long programId : programIdSet){
+			//Set<Long> programIdSet = programIdAndInvitedProgramCountMap.keySet();
+			for(Long programId : programIdAndInvitedProgramCountMap.keySet()){
 				idAndLocationInviteMap.clear();
 				idAndValueInviteMap.clear();
 				idAndLocationAttendedMap.clear();
@@ -3672,7 +3681,17 @@ public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> progra
 				
 			}   
 		}
-		
+		if(listOfIdNameVoList != null && listOfIdNameVoList.size() > 0){
+			Collections.sort(listOfIdNameVoList, new Comparator<List<IdNameVO>>(){
+				public int compare(List<IdNameVO> obj1, List<IdNameVO> obj2){
+					if(obj1.get(0).getApplicationStatusId() == obj2.get(0).getApplicationStatusId()){
+						return 0;
+					}else{
+						return obj1.get(0).getApplicationStatusId() > obj2.get(0).getApplicationStatusId() ? -1 : 1;
+					}
+				}
+			});    
+		}
 		return listOfIdNameVoList;
 	}catch(Exception e){
 		e.printStackTrace();
