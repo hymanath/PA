@@ -780,9 +780,22 @@ var GmembershipNo;
 	 $("#submitBtnId").prop('disabled', false);
 	 $("#cdrDtlsSrchPrcssngImgId").show();
 	 
-	 var jObj = {
+	/* var jObj = {
 		   memberShipNo:membserShipId
 		}
+	*/
+	var jObj = {
+		locationLevel:2,
+		locationValue:0,
+		mobileNo:"",
+		memberShipCardNo:membserShipId,
+		voterCardNo:"",
+		startIndex:0,
+		maxIndex:5000,
+		removedStatus:false,
+		task:"tdpCadreSearchForBloodBank"
+	}
+	
 		GmembershipNo = membserShipId;
 		$.ajax({
 		  type:'GET',
