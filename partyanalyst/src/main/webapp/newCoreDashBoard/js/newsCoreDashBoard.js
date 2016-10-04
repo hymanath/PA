@@ -2004,10 +2004,9 @@
 			}
 		} 
 		
-	//window.open('showArticlesAction.action?edTypeIdStr='+$(this).attr("attr_editiontype")+'&bfIdStr='+$(this).attr("attr_benefitid")+'&orgType='+$(this).attr("attr_isdepartment")+'&orgIdStr='+$(this).attr("attr_partyids")+'&callFrom=fblk&stIdx=0&edIdx=6&levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&npsStr='+newsPaperIdsStr+'','_blank');
-		
 		var t = val.split("-");
-		//window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&bfIdStr='+t[1]+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&edTypeIdStr=0&npsStr='+newsPaperIdsStr+'&ediDistIdsStr='+t[0]+'&callFrom=dpdepok&stIdx=0&edIdx=6','_blank');//san
+		
+		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&bfIdStr='+t[1]+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&edTypeIdStr=0&npsStr='+newsPaperIdsStr+'&ediDistIdsStr='+t[0]+'&callFrom=dpdepok&stIdx=0&edIdx=6','_blank');//san
 		
 	}
 	
@@ -2278,7 +2277,7 @@
 	
 		
 		var t = val.split("-");
-		//window.open('showArticlesAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+t[3]+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');//san
+		window.open('showArticlesAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+t[3]+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');//san
 		
 		
 	}
@@ -2307,7 +2306,7 @@
 		} 
 		
 		
-		//window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+$(this).attr("attr_orgIdStr")+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+$(this).attr("attr_propIdsStr")+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');//san
+		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+$(this).attr("attr_orgIdStr")+'&orgType=N&npsStr='+newsPaperIdsStr+'&propIdsStr='+$(this).attr("attr_propIdsStr")+'&callFrom=dpnta&stIdx=0&edIdx=6','_blank');//san
 		
 	});
 	
@@ -2830,7 +2829,8 @@
 		} 
 		
 		var t = val.split("-");
-		//window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[0]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[1]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');//San
+		
+		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[0]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[1]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');//San
 		
 	}
 	
@@ -2976,7 +2976,7 @@
 								if(result[i].name !=null && result[i].name.length>55){
 									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
 								}else{
-									str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+									str+='<li>'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
 								}
 							}
 							str+='</ul>';
@@ -3193,7 +3193,7 @@
 									if(result[i].name !=null && result[i].name.length>55){
 										str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
 									}else{
-										str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+										str+='<li>'+result[i].name+'  <span attr_propIdsStr="'+propertyId+'" attr_orgIdStr = "'+result[i].id+'" class="problemsRelatedDetailedGovtArticles pull-right cursorPo">'+result[i].count+'</span></li>';
 									}
 								}
 								str+='</ul>';
@@ -3313,6 +3313,32 @@
 		
 	});
 	
+	$(document).on("click",".problemsRelatedDetailedGovtArticles",function(){
+		
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		} 
+		
+		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+$(this).attr("attr_orgIdStr")+'&propIdsStr='+$(this).attr("attr_propIdsStr")+'&orgType=Y&npsStr='+newsPaperIdsStr+'&callFrom=detailgovtimmedproblems&stIdx=0&edIdx=6','_blank');//san
+	
+	});	
 	function buildDetailedGovernamentTrendingTrackedIssues(result){
 		$("#topTrendingTracked").html(' ');
 		if(result != null && result.length > 0){
@@ -3519,7 +3545,8 @@
 		for(var i in result){
 			var obj1 = {
 				name: result[i].name,
-				y: result[i].posPercent
+				y: result[i].posPercent,
+				extra:result[i].posCount
 			};
 			distWiseArticlesRelated.push(obj1);
 		}
@@ -3585,7 +3612,7 @@
 
 				tooltip: {
 					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}% - {point.extra}</b>'
 				},
 
 				series: [{
