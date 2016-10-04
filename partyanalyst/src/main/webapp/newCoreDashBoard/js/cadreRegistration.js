@@ -641,7 +641,7 @@ $('#genSec').highcharts({
 				}
                 if(location == "booth"){
 					str+='<th rowspan="2">panchayat</th>';
-					str+='<th rowspan="2">Booth Name</th>';
+					str+='<th rowspan="2">Booth No</th>'; 
 				}
                 str+='<th rowspan="2">total voters</th>';
                 str+='<th rowspan="2">2014 Total Cadre</th>';
@@ -665,39 +665,39 @@ $('#genSec').highcharts({
               str+='</tr>';
             str+='</thead>';
 			for(var i in result.responseData){  
-            str+='<tr>';
-              str+='<td>'+result.responseData[i].mandalName+'</td> ';
-              if(location == "panchayat"){
+				str+='<tr>';
+				str+='<td>'+result.responseData[i].mandalName+'</td> ';
+				if(location == "panchayat"){
 					str+='<td>'+result.responseData[i].panchayatName+'</td>';
-			  }
-              if(location == "booth"){
+				}
+				if(location == "booth"){
 					str+='<td>'+result.responseData[i].panchayatName+'</td>';
 					str+='<td>'+result.responseData[i].boothName+'</td>'; 
-			 }
+				}
 			   str+='<td>'+result.responseData[i].totalVoter+'</td>';  
-              str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
-			  str+='<td>'+result.responseData[i].renewalCount+'</td>';
-			if(result.responseData[i].cadreCount2014 > 0){
-				var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);
-				str+='<td>'+precent+'</td>';
-			}else{
-				str+='<td>0</td>';
-			}
-              str+='<td>'+result.responseData[i].cadreCount2016OverAll+'</td>';
-				if(scope == "today"){
+			   str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
+			   str+='<td>'+result.responseData[i].renewalCount+'</td>';
+			   if(result.responseData[i].cadreCount2014 > 0){
+				   var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);
+				   str+='<td>'+precent+'</td>';
+			   }else{
+				   str+='<td>0</td>';
+			   }
+			   str+='<td>'+result.responseData[i].cadreCount2016OverAll+'</td>';
+			   if(scope == "today"){
 					str+='<td>'+result.responseData[i].cadreCount2016Today+'</td>';  
-				}			  
+			   }			  
             
               
               str+='<td>'+result.responseData[i].newCount+'</td>'; 
 			  if(result.responseData[i].cadreCount2016OverAll > 0){    
-				var precent = (result.responseData[i].newCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);   
-				str+='<td>'+precent+'</td>';     
-				}else{
-				str+='<td>0</td>';  
-				}
+				  var precent = (result.responseData[i].newCount*(100/result.responseData[i].cadreCount2016OverAll)).toFixed(0);   
+				  str+='<td>'+precent+'</td>';     
+			  }else{
+				  str+='<td>0</td>';  
+			  }
               
-            str+='</tr>';
+			  str+='</tr>';
 			}
           str+='</table>';
         str+='</div>';
