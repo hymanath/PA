@@ -1180,7 +1180,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 						   " TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where " +
 				        
 				           " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
-				           " TCA.attendance.attendedTime <= (:toDate) and ");
+				           " date(TCA.attendance.attendedTime) <= (:toDate) and ");  
 		if(stateId.longValue() == 1){
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 11 and 23 and ");
 		}else{
