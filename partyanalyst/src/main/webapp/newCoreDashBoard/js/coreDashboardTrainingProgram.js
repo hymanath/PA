@@ -1781,9 +1781,9 @@ function buildStateLevelCampDetails(result){
 		for(var i in result){  
 			var  jsonDataArrAttended=[]; 
 			var  jsonDataArrYettotrain=[];
-			var precent = (result[i].actualCount*(100/result[i].count)).toFixed(2);
+			var precent = parseFloat((result[i].actualCount*(100/result[i].count)).toFixed(2));  
 			jsonDataArrAttended.push(parseFloat(precent));          
-			var abs = 100-precent;
+			var abs = parseFloat((100 - precent).toFixed(2));    
 			jsonDataArrYettotrain.push(abs);      
 			var chartWidth = $("#programHighChartId"+i).parent().width()/2;
 			$("#programHighChartId"+i).width(chartWidth);  
