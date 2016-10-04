@@ -16,7 +16,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistrationService.class);
 	
 	
-	public CadreRegistratedCountVO showCadreRegistreredCount(){
+	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
 	    try {
 	      
@@ -26,11 +26,11 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 	       
-	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/showCadreRegisteredCount";
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/showCadreRegisteredCount/"+retrieveType;
 	           
 	         WebResource webResource = client.resource( webServiceUrl );
 	           
-	         regCountVO = webResource.accept("application/json").post(CadreRegistratedCountVO.class);
+	         regCountVO = webResource.accept("application/json").get(CadreRegistratedCountVO.class);
 	        
 	        
 	    } catch (Exception e) {
@@ -102,7 +102,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    return null;    
 	  }
 	
-	public CadreRegistratedCountVO getEnumeratorsInfo(){
+	public CadreRegistratedCountVO getEnumeratorsInfo(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
 	    try {
 	      
@@ -112,11 +112,11 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 	       
-	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getEnumeratorsInfo";
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getEnumeratorsInfo/"+retrieveType;
 	           
 	         WebResource webResource = client.resource( webServiceUrl );
 	           
-	         regCountVO = webResource.accept("application/json").post(CadreRegistratedCountVO.class);
+	         regCountVO = webResource.accept("application/json").get(CadreRegistratedCountVO.class);
 	        
 	        
 	    } catch (Exception e) {
