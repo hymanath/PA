@@ -8381,7 +8381,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		if(constId != null && constId.longValue()>0L)
 			query.setParameter("constId", constId);
 		
-		query.setParameter("publicationDateId", IConstants.VOTER_PUBLICATION_ID);
+		query.setParameter("publicationDateId", IConstants.AFFILIATED_VOTER_PUBLICATION_ID);
 		
 		return query.list();
 	}
