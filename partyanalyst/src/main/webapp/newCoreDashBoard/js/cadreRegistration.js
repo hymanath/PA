@@ -251,7 +251,7 @@ $('#genSec').highcharts({
 		
 		$("#totalTodayCadreRegistrationBlockDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		
-		
+		var cadreDataRetrieveType = "intermediate";
 		$.ajax({
 			type : 'GET',
 			url : 'showCadreRegistreredCountAction.action',
@@ -528,7 +528,7 @@ $('#genSec').highcharts({
 	function getEnumeratorsInfo(){
 		
 		$("#enumeratorsInfoDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		
+		var cadreDataRetrieveType  = "intermediate";
 		$.ajax({
 			type : 'GET',
 			url : 'getEnumeratorsInfoAction.action',
@@ -975,11 +975,11 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 }
 setInterval(function() {
     cadreRegistrationBasicCall();
-  }, 60 * 5000);
+  }, 60 * 500000);
   
   setInterval(function() {
     getCadreRecentTime();
-  }, 60 * 1000);
+  }, 60 * 1000000);
 function setLastUpdatedTime(lastUpdatedTime){
 	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");
 }
