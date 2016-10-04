@@ -72,6 +72,8 @@ var globalPropIdsStr = "${param.propIdsStr}";
 			getArticlesForDetailedPartyNewsTypeAnalysisOverView(0);
 		else if(globalCallFrom == "govdepwisedistoverview")
 			getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(0);
+		else if(globalCallFrom == "detailgovtimmedproblems")
+			getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(0);
 	});
 	
 	var url = window.location.href;
@@ -567,7 +569,10 @@ var globalPropIdsStr = "${param.propIdsStr}";
 							getArticlesForDetailedPartyNewsTypeAnalysisOverView(num);
 						}else if(globalCallFrom == "govdepwisedistoverview"){
 							getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(num);
+						}else if(globalCallFrom == "detailgovtimmedproblems"){
+							getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(num);
 						}
+							
 					}
 					
 				});
@@ -631,7 +636,7 @@ var globalPropIdsStr = "${param.propIdsStr}";
 					str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 					str+='<h4 class="modal-title" id="myModalLabel">';
 					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
-					str+='<p class="m_bottom0 text-italic font-10" id="mdlArtclDesc">Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</p>';
+					str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
 					str+='</h4>';
 					str+='</div>';
 					str+='<div class="modal-body">';
@@ -641,7 +646,7 @@ var globalPropIdsStr = "${param.propIdsStr}";
 					str+='</div>';
 					str+='<div class="col-md-12 m_top10">';
 					str+='<h4 class="panel-title text-success">Description</h4>';
-					str+='<p class="m_0">'+result.description+'</p>';
+					str+='<p class="m_0 f_14">'+result.description+'</p>';
 					str+='</div>';
 					str+='<div class="col-md-12">';
 					if( result.subList != null && result.subList.length > 0){
@@ -1073,6 +1078,20 @@ var globalPropIdsStr = "${param.propIdsStr}";
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseDistrictsOverviewArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalNewsPaperIdsStr+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDepartmentWiseDistrictsOverviewArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalNewsPaperIdsStr+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			
+		}).then(function(results){
+			$("#articlesDivId").html('');
+			var countByDate = 0;
+			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
+		});
+	}
+	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(globalStIndex){
+		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsPaperIdsStr+"/"+globalPropIdsStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+""
+			
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsPaperIdsStr+"/"+globalPropIdsStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
