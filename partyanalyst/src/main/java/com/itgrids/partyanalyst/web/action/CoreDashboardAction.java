@@ -2332,7 +2332,9 @@ public String showArticles(){
 public String showCadreRegistreredCount(){
     try{
       
-      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.showCadreRegistreredCount();
+    	String retrieveType = request.getParameter("retrieveType");
+    	
+      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.showCadreRegistreredCount(retrieveType);
       
     }catch(Exception e){
       LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
@@ -2511,7 +2513,8 @@ public String getDaysByCadreRegistrationCount(){
 public String getEnumeratorsInfo(){
 try{
   
-  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getEnumeratorsInfo();
+  String retrieveType = request.getParameter("retrieveType");
+  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getEnumeratorsInfo(retrieveType);
   
 }catch(Exception e){
   LOG.error("Exception raised at getEnumeratorsInfo() method of CoreDashBoard", e);
