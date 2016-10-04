@@ -256,7 +256,7 @@ $('#genSec').highcharts({
 			type : 'GET',
 			url : 'showCadreRegistreredCountAction.action',
 			dataType : 'json',
-			data : {}
+			data : { retrieveType : cadreDataRetrieveType }
 		}).done(function(result){
             if(result != null){
 				buildTotalTodayRegistrations(result);
@@ -533,7 +533,7 @@ $('#genSec').highcharts({
 			type : 'GET',
 			url : 'getEnumeratorsInfoAction.action',
 			dataType : 'json',
-			data : {}
+			data : { retrieveType : cadreDataRetrieveType }
 		}).done(function(result){
             if(result != null){
 				buildEnumeratorsInfo(result);
@@ -589,7 +589,8 @@ $('#genSec').highcharts({
 							str1+='<h5 class="text-capital">in field now</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
 							str1+='<h5 class="text-capital">today submitted data</h5>';
 						str1+='</div>';
 					str1+='</div>';
