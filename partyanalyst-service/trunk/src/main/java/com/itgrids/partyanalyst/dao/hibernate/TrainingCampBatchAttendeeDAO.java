@@ -563,7 +563,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
 						   " date(TCBA.trainingCampBatch.fromDate) <= (:toDate) and" );    
 		if(stateId.longValue() == 1){
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 11 and 23 and ");
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
 		}else{
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
 		}
@@ -603,7 +603,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");
 	   if(stateId == 1l){
-		   queryString.append(" (D.district_id between 11 and 23) and ");
+		   queryString.append(" (D.district_id between 1 and 23) and ");
 	   }else{  
 		   queryString.append(" (D.district_id between 1 and 10) and ");
 	   }
@@ -651,7 +651,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");
 	   if(stateId == 1l){
-		   queryString.append(" (D.district_id between 11 and 23) ");
+		   queryString.append(" (D.district_id between 1 and 23) ");
 	   }else{  
 		   queryString.append(" (D.district_id between 1 and 10) ");
 	   }
@@ -681,7 +681,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");  
 	   if(stateId == 1l){
-		   queryString.append(" (D.district_id BETWEEN 11 and 23) ");
+		   queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 	   }else{
 		   queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 	   }
@@ -742,7 +742,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");  
 	   if(stateId == 1l){
-		   queryString.append(" (D.district_id between 11 and 23) and ");
+		   queryString.append(" (D.district_id between 1 and 23) and ");
 	   }else{  
 		   queryString.append(" (D.district_id between 1 and 10) and ");
 	   }
@@ -791,7 +791,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " UA.district_id = D.district_id and " +
 			   			  " date(TCB.from_date) <= (:toDate) and ");
 	   if(stateId == 1l){
-		   queryString.append(" (D.district_id between 11 and 23) ");
+		   queryString.append(" (D.district_id between 1 and 23) ");
 	   }else{  
 		   queryString.append(" (D.district_id between 1 and 10) ");
 	   }
