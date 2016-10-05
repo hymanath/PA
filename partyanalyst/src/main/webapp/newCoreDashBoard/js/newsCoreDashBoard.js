@@ -1128,7 +1128,7 @@
 			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			$("#districtWiseNewsReportGovtDetailed").html('');
-			buildgetDetailedGovtDepartmentWiseDistrictsOverview(result);
+			buildgetDetailedGovtDepartmentWiseDistrictsOverview(result,temp);
 		});
 	}
 	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,propertyName){
@@ -2652,7 +2652,7 @@
 	
 	//Government Building Blocks Start
 	
-	function buildgetDetailedGovtDepartmentWiseDistrictsOverview(result){
+	function buildgetDetailedGovtDepartmentWiseDistrictsOverview(result,temp){
 		$("#districtWiseNewsReportGovtDetailed").html(' ');
 		if(result != null && result.length > 0){
 			var str='';
