@@ -281,6 +281,13 @@ $(document).on("click",".casteGroupCls",function(){
           }
         }
         $("#locationLevelId").trigger("chosen:updated");
+		var locationLevelId = $("#locationLevelId").val();		
+		var locationLevelName = $("#locationLevelId option:selected").text();  
+		if(locationLevelId==0){
+		 $(".locationCls").html("All location level");	
+		}else{
+		 $(".locationCls").html(""+locationLevelName+" Level");		
+		}
       }
     });
   }
@@ -1217,9 +1224,9 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		$(".casteGroupsCls").html(casteGroup);		
 		}
 		if(positionStatusId==0){
-		$(".gOssuedCls").html("G.O Issued");	
+		$(".gOssuedCls").html(" All Application Status ");	
 		}else{
-		$(".gOssuedCls").html(postionStatus);		
+		$(".gOssuedCls").html(postionStatus+" Applications ");		
 		}
 	});  
 	
