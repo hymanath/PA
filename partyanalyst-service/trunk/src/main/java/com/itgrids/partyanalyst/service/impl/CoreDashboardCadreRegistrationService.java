@@ -146,5 +146,44 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    }
 	    return status;
 	  }
-	
+	public Object getNoRegistrationReceiveTabUserPersonCountByTimeWise(Long constituencyId,String date){  
+	    Object regCountVO = null;
+	    try {
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getNotReceiveRegistrationPerson/"+constituencyId+"/"+date;
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         regCountVO = webResource.accept("application/json").get(Object.class);
+	         return regCountVO;
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at getNoRegistrationReceiveTabUserPersonCountByTimeWise", e);
+	    }
+	    return null;    
+	  }
+	public Object getTabUserInfoDetails(String tabUserInfoIds){  
+	    Object regCountVO = null;
+	    try {
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getTabUserInfoDetails/"+tabUserInfoIds;
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         regCountVO = webResource.accept("application/json").get(Object.class);
+	         return regCountVO;
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at getTabUserInfoDetails", e);
+	    }
+	    return null;    
+	  }
 }
