@@ -605,6 +605,7 @@ $('#genSec').highcharts({
 					duration: 1500,
 					easing: 'swing',
 					step: function (now) {
+						if(now != null && now > 0)
 						$(this).text(Math.ceil(now));
 					}
 				});
