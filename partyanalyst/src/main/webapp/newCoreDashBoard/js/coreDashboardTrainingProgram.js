@@ -1293,7 +1293,7 @@ function buildTrainingProgramRslt(result){
 		  }
 		str+='</ul>';
 	$("#programsDivId").html(str);
-	 $(".trainingsUl").slick({ //santosh
+	 $(".trainingsUl").slick({ 
 			 slide: 'li',
 			 slidesToShow: 4,
 			 slidesToScroll: 4,
@@ -1722,13 +1722,13 @@ function getStateLevelCampCount(programIdArr){
 	}).done(function(result){ 
 		$("#programsDivId").html(' ');
 		if(result != null){    
-			buildStateLevelCampDetails(result);
+			buildStateLevelCampDetails(result,programIdArr);
 		}else{
 			$("#programsDivId").html("NO DATA AVAILABLE");
 		}
 	});
 }
-function buildStateLevelCampDetails(result){ 
+function buildStateLevelCampDetails(result,programIdArr){ 
 	var str='';
 	str+='<ul class="trainingsUl">';
 	for(var i in result){
@@ -1781,7 +1781,12 @@ function buildStateLevelCampDetails(result){
 	if(result != null){
 		for(var i in result){
 			var datesArray = [];
-			datesArray.push(result[i].dateStr);  
+			datesArray.push(result[i].dateStr); 
+			if(programIdArr.length == 1){
+				 var text = result[i].dateStr+"<br>Day"+(parseInt(i)+1);  
+			}else{
+				text = "";  
+			}
 			var  jsonDataArrAttended=[]; 
 			var  jsonDataArrYettotrain=[];
 			var precent = parseFloat((result[i].actualCount*(100/result[i].count)).toFixed(2));  
@@ -1819,10 +1824,10 @@ function buildStateLevelCampDetails(result){
 				},
 				yAxis: {
 					min: 0,
-					gridLineWidth: 0,
+					gridLineWidth: 0, 
 					minorGridLineWidth: 0, 
 					title: {
-						text: result[i].dateStr   
+						text: text     
 					},
 					labels: {
 						enabled: false,
