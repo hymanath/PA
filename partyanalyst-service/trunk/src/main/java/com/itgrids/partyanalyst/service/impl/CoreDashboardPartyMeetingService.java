@@ -1845,7 +1845,7 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		}
 		absentCadreIds.removeAll(attendedCadreIds);
 		if(attendedCadreIds.size() > 0){
-			List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getAttendedMembersForDist(new ArrayList<Long>(attendedCadreIds)); 
+			List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(attendedCadreIds)); 
 			if(destWiseAttendedMembersDesignation != null && destWiseAttendedMembersDesignation.size() > 0){  
 				for(Object[] obj : destWiseAttendedMembersDesignation){
 					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
@@ -1896,7 +1896,7 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 			idAndMemberDtlsMap.clear();
 		}
 		if(absentCadreIds.size() > 0){
-			List<Object[]> destWiseAbsaentMembersDesignation = trainingCampAttendanceDAO.getAbsaentMembersForDist(new ArrayList<Long>(absentCadreIds));  
+			List<Object[]> destWiseAbsaentMembersDesignation = trainingCampAttendanceDAO.getMembersDetails(new ArrayList<Long>(absentCadreIds));  
 			if(destWiseAbsaentMembersDesignation != null && destWiseAbsaentMembersDesignation.size() > 0){
 				for(Object[] obj : destWiseAbsaentMembersDesignation){
 					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
