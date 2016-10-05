@@ -2038,14 +2038,16 @@ function buildStateLevelCampDetailsDistWise(result){
 								}]
 							});
 						});
-		//}districtIdArr
+		//}districtIdArraaaaa
 		$.each($('#trainingLocationDivId'+i).find(".highcharts-xaxis-labels").find("tspan"),function(index,item){   
 			$(this).attr("style","cursor:pointer;");    
 			//$(this).addClass("distDtlsCls");
 			$(this).attr("class","distDtlsCls");    
 			$(this).attr("state_Program_Id",result[i][0].applicationStatusId);         
 			$(this).attr("attr_dist_id",districtIdArr[index]);      
-			$(this).attr("attr_position_id","camp");	  		
+			$(this).attr("attr_position_id","camp");
+			$(this).attr("attr_area_name",districtNamesArray[index]);
+			$(this).attr("date_str",0 );		  		
 		});
 	  }		
 	}		
@@ -2212,7 +2214,7 @@ $(document).on("click",".distDtlsCls",function(){
 		getCampMemberDtlsPerDist(distId,programId,stateId,dateSrt,areaName);
 	}else{
 		distId = $(this).attr("attr_dist_id");
-		getLeaderShipMemDtlsPerDist(distId);
+		getLeaderShipMemDtlsPerDist(distId,dateSrt,areaName);
 	}
 	
  	
@@ -2247,9 +2249,11 @@ function getCampMemberDtlsPerDist(distId,programId,stateId,dateSrt,areaName){
 			}
 		});	
 }
-function getLeaderShipMemDtlsPerDist(distId){
+function getLeaderShipMemDtlsPerDist(distId,dateSrt,areaName){
 	
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	if(dateSrt == '0')
+		dateStr = 0;
 	var jsObj ={ 
 		userAccessLevelId : globalUserAccessLevelId,
 		userAccessLevelValuesArray : globalUserAccessLevelValues,
@@ -2265,7 +2269,7 @@ function getLeaderShipMemDtlsPerDist(distId){
 		}).done(function(result){
 			$("#processingImgId").hide();    
 			if(result != null && result.length > 0){
-				buildMemberRslt(result,"leadership",dateStr,''); 
+				buildMemberRslt(result,"leadership",dateStr,areaName); 
 				
 			}else{  
 				$("#memberId").html('No Data Available');   
@@ -2279,6 +2283,7 @@ function buildMemberRslt(result,status,dateStr,areaName){
 	var absent = 0;
 	
 	var str = '';
+	if(dateStr !=0){
 	if(result[0].idnameList != null && result[0].idnameList.length>0){
 		if(areaName.length>0)
 			
@@ -2297,6 +2302,7 @@ function buildMemberRslt(result,status,dateStr,areaName){
 		str+='</table> </div> ';
 	
 	}
+	}
 	str+='<div  style="margin-top:5px;" > <table class="table table-condensed" id="campMemberDtlsId">';
 	str+='<thead>';
 		str+='<th>NAME</th>';
@@ -2305,7 +2311,9 @@ function buildMemberRslt(result,status,dateStr,areaName){
 		str+='<th>STATUS</th>';
 	str+='</thead>';
 	str+='<tbody>';
-	str+='<div style="background-color:lightgrey;border-radius:5px;padding:5px;text-align:center;margin-bottom: 10px;"><span style="color:green;font-weight:bold;">'+areaName.toUpperCase()+'</span> DISTRICT ATTENDENCE DETAILS ON : '+dateStr+'  </div>';
+	if(dateStr !=0)
+		str+='<div style="background-color:lightgrey;border-radius:5px;padding:5px;text-align:center;margin-bottom: 10px;"><span style="color:green;font-weight:bold;">'+areaName.toUpperCase()+'</span> DISTRICT ATTENDENCE DETAILS ON : '+dateStr+'  </div>';
+	
 	for(var i in result){
 		if(result[i].wish=="attended"){
 			attendedMember+=1;
