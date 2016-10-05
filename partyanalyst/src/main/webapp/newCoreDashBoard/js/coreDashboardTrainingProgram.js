@@ -1780,10 +1780,13 @@ function buildStateLevelCampDetails(result,programIdArr){
 	}); 
 	if(result != null){
 		for(var i in result){
+			var text = '';
 			var datesArray = [];
 			datesArray.push(result[i].dateStr); 
 			if(programIdArr.length == 1){
-				 var text = result[i].dateStr+"<br>Day"+(parseInt(i)+1);  
+				if(result[i].dateStr != null){
+					text = result[i].dateStr+"<br>Day"+(parseInt(i)+1); 
+				}  
 			}else{
 				text = "";  
 			}
