@@ -2329,7 +2329,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Training Program Member Details</h4>
       </div>
-      // <div class="modal-body">
+       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="pull-right" id="positionId">  

@@ -1808,10 +1808,10 @@ function buildStateLevelCampDetails(result,programIdArr){
 		for(var i in result){
 			var text = '';
 			var datesArray = [];
-			datesArray.push(result[i].dateStr); 
+			datesArray.push(result[i].dateStr);   
 			if(programIdArr.length == 1){
 				if(result[i].dateStr != null){
-					text = result[i].dateStr+"<br>Day"+(parseInt(i)+1); 
+					text = "Day"+(parseInt(i)+1); 
 				}  
 			}else{
 				text = "";  
@@ -1918,11 +1918,15 @@ function stateLevelCampMembersDistWise(programIdArr){
 		}).done(function(result){ 
 			$("#districtWiseProgramCntDivId").html(" ");
 			if(result != null && result.length > 0){
-				if(programIdArr.length >0)
+				if(programIdArr.length > 0 && programIdArr.length == 1){
 					if(programIdArr[0] == 7)
 						spreciluildStateLevelCampDetailsDistWise(result,programIdArr);
 					else
 						buildStateLevelCampDetailsDistWise(result);
+				}
+				else{
+					buildStateLevelCampDetailsDistWise(result);
+				}
 			}else{
 			$("#districtWiseProgramCntDivId").html("NO DATA AVAILABLE");	
 			}
@@ -1940,7 +1944,8 @@ function buildStateLevelCampDetailsDistWise(result){
 		}   
 		$("#districtWiseProgramCntDivId").html(str);  
 		if(result != null && result.length > 0){
-		for(var i in result){   
+		for(var i in result){
+			if(result != null){
 			var districtIdArr=[];
 			var districtNamesArray =[];
 			var districtWiseAttendedPercArray = [];
@@ -2041,7 +2046,8 @@ function buildStateLevelCampDetailsDistWise(result){
 			$(this).attr("state_Program_Id",result[i][0].applicationStatusId);         
 			$(this).attr("attr_dist_id",districtIdArr[index]);      
 			$(this).attr("attr_position_id","camp");	  		
-		}); 
+		});
+	  }		
 	}		
 	}else{
 		$("#districtWiseProgramCntDivId").html("No Data Available");
@@ -2073,7 +2079,7 @@ function spreciluildStateLevelCampDetailsDistWise(myFirstresult,programIdArr){
 				var districtWiseTotalCountArray = [];				
 				for(var i in result){   
 					 
-					//if(result[i] !=null && result[i].length > 0){
+					if(result[i] !=null){
 						//debugger; 
 						//for(var j in result){
 							districtNamesArray.push(result[i].name);
@@ -2087,7 +2093,7 @@ function spreciluildStateLevelCampDetailsDistWise(myFirstresult,programIdArr){
 							districtWiseYetToTrainPercArray.push(parseFloat(abs.toFixed(2)));
 							districtWiseTotalCountArray.push(result[i].count);
 						//}  
-					//}
+					}
 				}					
 								$(function () {
 									$('#trainingLocationDivId'+z).highcharts({  
@@ -2540,7 +2546,9 @@ function getTrainingRecentTime(){
 	  $("#lastUpdatedTimeTrainingCampId").html("Last Updated : "+lastUPdatedTime+"");
   }
   $(document).on("click",".memberDtlsCls",function(){ 
+  $("#positionId").html(''); 
   $("#myModelId").modal('show');
+  
   $("#memberId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var programIdArr = [];
 		programIdArr.push($(this).attr("attr_program_id"));
@@ -2582,6 +2590,7 @@ function getTrainingRecentTime(){
 		str+='<th>STATUS</th>';
 	str+='</thead>';
 	str+='<tbody>';
+	
 	for(var i in result){
 		
 		str+='<tr>';
@@ -2600,6 +2609,7 @@ function getTrainingRecentTime(){
 	}
 
 	str+='</tbody>'; 
+	
 	
 	$("#memberId").html(str); 
 	$("#campMemberDtlsId").dataTable();    
