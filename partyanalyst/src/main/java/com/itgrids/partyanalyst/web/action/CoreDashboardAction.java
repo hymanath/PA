@@ -1390,7 +1390,10 @@ public String getRoleBasedPerformanceCohort(){
 					programIdList.add(Long.valueOf(programIdArr.getString(i)));
 				}
 			}
-			idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr);   
+			String option = jObj.getString("option");
+			
+			idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr,option);   
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e); 
 		}
