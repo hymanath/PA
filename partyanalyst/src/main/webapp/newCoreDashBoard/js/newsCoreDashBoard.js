@@ -2690,8 +2690,15 @@
 				for(var j in result[i].coreDashBoardVOList){
 					
 							govtDetailedDistrictNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
-							govtDetailedDistrictWisePositiveCountArray.push({"y":result[i].coreDashBoardVOList[j].positiveCountDist,"extra":result[i].coreDashBoardVOList[j].organizationId+"-1"});
-							govtDetailedDistrictWiseNegativeCountArray.push({"y":result[i].coreDashBoardVOList[j].negativCountDist,"extra":result[i].coreDashBoardVOList[j].organizationId+"-2"});
+							  if(globalUserAccessLevelId == 2 && j > 0){
+								govtDetailedDistrictWisePositiveCountArray.push({"y":result[i].coreDashBoardVOList[j].positiveCountDist,"extra":"3-"+result[i].coreDashBoardVOList[j].districtId+"-"+result[i].coreDashBoardVOList[j].organizationId+"-1"});
+								
+								govtDetailedDistrictWiseNegativeCountArray.push({"y":result[i].coreDashBoardVOList[j].negativCountDist,"extra":"3-"+result[i].coreDashBoardVOList[j].districtId+"-"+result[i].coreDashBoardVOList[j].organizationId+"-2"});
+							  }else{
+								govtDetailedDistrictWisePositiveCountArray.push({"y":result[i].coreDashBoardVOList[j].positiveCountDist,"extra":globalUserAccessLevelId+"-"+temp+"-"+result[i].coreDashBoardVOList[j].organizationId+"-1"});
+								
+								govtDetailedDistrictWiseNegativeCountArray.push({"y":result[i].coreDashBoardVOList[j].negativCountDist,"extra":globalUserAccessLevelId+"-"+temp+"-"+result[i].coreDashBoardVOList[j].organizationId+"-2"});
+							  }
 					}
 			}	
 					if(govtDetailedDistrictWisePositiveCountArray.length !=0 && govtDetailedDistrictWiseNegativeCountArray.length !=0 && govtDetailedDistrictNamesArray.length !=0){
@@ -2745,7 +2752,7 @@
 									borderWidth: 1,
 									shadow: false
 								},
-								/*tooltip: {
+								tooltip: {
 									formatter: function () {
 										var s = '<b>' + this.x + '</b>';
 
@@ -2758,11 +2765,8 @@
 										return s;
 									},
 									shared: true
-								},*/
-								tooltip: {
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b> {point.percentage:.1f}% - {point.y} </b><br/>',
-									shared: true
 								},
+								
 								plotOptions: {
 									pointPadding: 0.2,
 									borderWidth: 2,
@@ -2814,12 +2818,12 @@
 	
 	function getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(val){
 		
-		var temp="";
+		/* var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
-		}
+		} */
 		
 		var impactScopeIdsStr="";
 		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
@@ -2837,7 +2841,7 @@
 		
 		var t = val.split("-");
 		
-		window.open('showArticlesAction.action?levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[0]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[1]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');//San
+		window.open('showArticlesAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&orgIdStr='+t[2]+'&orgType=Y&npsStr='+newsPaperIdsStr+'&bfIdStr='+t[3]+'&callFrom=govdepwisedistoverview&stIdx=0&edIdx=6','_blank');//Ara
 		
 	}
 	
