@@ -578,9 +578,21 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	}
    public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
 	   StringBuilder queryString = new StringBuilder();
-	   queryString.append(" select TCL.tdp_committee_level_id as id, TCL.tdp_committee_level as level,count(distinct TCM.tdp_cadre_id) as total from "+
-			   			  " tdp_committee_member TCM, tdp_committee_role TCR, tdp_committee TC, tdp_committee_level TCL, tdp_cadre TDP, "+
-			   			  " training_camp_batch_attendee TCBA, training_camp_batch TCB, training_camp CAMP, training_camp_program TCP, training_camp_schedule TCS, " +
+	   queryString.append(" select " +
+	   					  " TCL.tdp_committee_level_id as id, " +
+	   					  " TCL.tdp_committee_level as level, " +
+	   					  " count(distinct TCM.tdp_cadre_id) as total " +
+	   					  " from "+
+			   			  " tdp_committee_member TCM, " + 
+			   			  " tdp_committee_role TCR, " +
+			   			  " tdp_committee TC, " +
+			   			  " tdp_committee_level TCL, " +
+			   			  " tdp_cadre TDP, "+
+			   			  " training_camp_batch_attendee TCBA, " +
+			   			  " training_camp_batch TCB, " +
+			   			  " training_camp CAMP, " +
+			   			  " training_camp_program TCP, " +
+			   			  " training_camp_schedule TCS, " +
 			   			  " user_address UA, district D "+
 			   			  " where  "+
 			   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and  "+
@@ -609,11 +621,22 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
    }
    public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
 	   StringBuilder queryString = new StringBuilder();
-	   queryString.append(" select PRT.public_representative_type_id as id,PRT.position as position ,count(distinct TDP.tdp_cadre_id) as total" +
+	   queryString.append(" select " +
+	   					  " PRT.public_representative_type_id as id, " +
+	   					  " PRT.position as position , " +
+	   					  " count(distinct TDP.tdp_cadre_id) as total " +
 	   					  " from "+
-	   					  " candidate CND, tdp_cadre_candidate TCC, public_representative PR, public_representative_type PRT, tdp_cadre TDP, "+
-	   					  " training_camp_batch_attendee TCBA, training_camp_batch TCB, training_camp TC, training_camp_program TCP, training_camp_schedule TCS, " +
-	   					  " user_address UA, district D "+
+	   					  " candidate CND, tdp_cadre_candidate TCC, " +
+	   					  " public_representative PR, " +
+	   					  " public_representative_type PRT, " +
+	   					  " tdp_cadre TDP, "+
+	   					  " training_camp_batch_attendee TCBA, " +
+	   					  " training_camp_batch TCB, " +
+	   					  " training_camp TC, " +
+	   					  " training_camp_program TCP, " +
+	   					  " training_camp_schedule TCS, " +
+	   					  " user_address UA, " +
+	   					  " district D "+
 	   					  " where "+
 	   					  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and "+
 	   					  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
@@ -692,5 +715,91 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   query.setParameter("programId", programId);  
 	  
 	   return query.list();  
+   }
+   public List<Object[]> getStDistTrainingPrgInvitedDtlsCmtLvL(Long campId, List<Long> programIdList, Long stateId, Date toDate, List<Long> designationIdList){
+	   StringBuilder queryString = new StringBuilder();
+	   queryString.append(" select distinct " +
+	   					  " TCL.tdp_committee_level_id as id, " +
+	   					  " TCL.tdp_committee_level as level," +
+	   					  " TCM.tdp_cadre_id as cadreId " +
+	   					  " from "+  
+			   			  " tdp_committee_member TCM, " +
+			   			  " tdp_committee_role TCR, " +
+			   			  " tdp_committee TC, " +
+			   			  " tdp_committee_level TCL, " +
+			   			  " tdp_cadre TDP, "+
+			   			  " training_camp_batch_attendee TCBA, " +
+			   			  " training_camp_batch TCB, training_camp CAMP, " +
+			   			  " training_camp_program TCP, " +
+			   			  " training_camp_schedule TCS, " +
+			   			  " user_address UA, district D "+
+			   			  " where  "+
+			   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and  "+
+			   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and  "+
+			   			  " TCS.training_camp_program_id in (:programIdList) and  "+
+			   			  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and  " +
+			   			  " TDP.address_id = UA.user_address_id and " +  
+			   			  " UA.district_id = D.district_id and " +
+			   			  " date(TCB.from_date) <= (:toDate) and ");  
+	   if(stateId == 1l){
+		   queryString.append(" (D.district_id between 11 and 23) and ");
+	   }else{  
+		   queryString.append(" (D.district_id between 1 and 10) and ");
+	   }
+	   queryString.append(" TCM.tdp_committee_role_id = TCR.tdp_committee_role_id and  "+
+			   			  " TCR.tdp_committee_id = TC.tdp_committee_id and  "+
+			   			  " TC.tdp_committee_level_id = TCL.tdp_committee_level_id and  " +
+			   			  " TCL.tdp_committee_level_id in (:designationIdList) and "+
+			   			  " TCM.tdp_cadre_id = TDP.tdp_cadre_id and TDP.enrollment_year = 2014 ");
+	  SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("level", Hibernate.STRING).addScalar("cadreId", Hibernate.LONG);
+	  //query.setParameter("campId", campId);
+	  query.setParameterList("programIdList", programIdList);
+	  query.setDate("toDate", toDate);
+	  query.setParameterList("designationIdList", designationIdList);
+	  return query.list();
+   }
+   public List<Object[]> getMlaMpInchargeTrngPrgInvitedDtlsPubRep(Long campId, List<Long> programIdList, Long stateId, Date toDate, List<Long> designationIdList){
+	   StringBuilder queryString = new StringBuilder();
+	   queryString.append(" select distinct " +
+	   					  " PRT.public_representative_type_id as id, " +
+	   					  " PRT.position as position , " +
+	   					  " TDP.tdp_cadre_id as tdpCadre " +
+	   					  " from "+
+	   					  " candidate CND, tdp_cadre_candidate TCC, " +
+	   					  " public_representative PR, " +
+	   					  " public_representative_type PRT, " +
+	   					  " tdp_cadre TDP, "+
+	   					  " training_camp_batch_attendee TCBA, " +
+	   					  " training_camp_batch TCB, " +
+	   					  " training_camp TC, " +
+	   					  " training_camp_program TCP, " +
+	   					  " training_camp_schedule TCS, " +
+	   					  " user_address UA, " +
+	   					  " district D "+
+	   					  " where "+
+	   					  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and "+
+	   					  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
+	   					  //" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+ 
+	   					  " TCS.training_camp_program_id in (:programIdList) and "+ 
+	   					  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
+	   					  " TCC.candidate_id = CND.candidate_id and "+
+	   					  " PR.candidate_id = CND.candidate_id and "+
+	   					  " PR.public_representative_type_id = PRT.public_representative_type_id and " +
+	   					  " PRT.public_representative_type_id in (:designationIdList) and "+
+	   					  " TCC.tdp_cadre_id = TDP.tdp_cadre_id and TDP.enrollment_year = 2014 and " +
+	   					  " TDP.address_id = UA.user_address_id and " +  
+			   			  " UA.district_id = D.district_id and " +
+			   			  " date(TCB.from_date) <= (:toDate) and ");
+	   if(stateId == 1l){
+		   queryString.append(" (D.district_id between 11 and 23) ");
+	   }else{  
+		   queryString.append(" (D.district_id between 1 and 10) ");
+	   }
+	   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("position", Hibernate.STRING).addScalar("tdpCadre", Hibernate.LONG);
+	   //query.setParameter("campId", campId);
+	   query.setParameterList("programIdList", programIdList);
+	   query.setParameterList("designationIdList", designationIdList);
+	   query.setDate("toDate", toDate);  
+	   return query.list(); 
    }
 }
