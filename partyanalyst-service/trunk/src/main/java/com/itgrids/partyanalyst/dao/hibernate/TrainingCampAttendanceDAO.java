@@ -1172,15 +1172,23 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   }
 		  return query.list();    
   }
-	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate){   
+	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate, List<Date> dateList, String option){   
 		StringBuilder queryString = new StringBuilder();
-		queryString.append(" select TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
-						   " TCA.trainingCampSchedule.trainingCampProgram.programName ," +
-						   " count(distinct ATT.tdpCadre.tdpCadreId) from " +
+		queryString.append(" select " +
+						   " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+						   " TCA.trainingCampSchedule.trainingCampProgram.programName ,");
+		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
+			queryString.append(" date(TCA.attendance.attendedTime), ");     
+		}
+		queryString.append(" count(distinct ATT.tdpCadre.tdpCadreId) from " +
 						   " TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where " +
 				        
-				           " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
-				           " date(TCA.attendance.attendedTime) <= (:toDate) and ");  
+				           " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and ");
+		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
+			queryString.append(" date(TCA.attendance.attendedTime) in (:dateList) and ");  
+		}else{
+			queryString.append(" date(TCA.attendance.attendedTime) <= (:toDate) and ");  
+		}
 		if(stateId.longValue() == 1){
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 11 and 23 and ");
 		}else{
@@ -1188,12 +1196,23 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		}
 		queryString.append(" TCA.attendance.attendanceId = ATT.attendanceId and " +
 				           " ATT.tdpCadre.tdpCadreId = TC.tdpCadreId and " +    
-				           " TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 " +
-				           " group by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
-				           " order by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");  
+				           " TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TC.enrollmentYear = 2014 ");
+		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
+			queryString.append("group by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCA.attendance.attendedTime) " +
+							   " order by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, date(TCA.attendance.attendedTime) ");
+		}else{
+			queryString.append(" group by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
+			           		   " order by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
+		}
+				    
 		Query query = getSession().createQuery(queryString.toString()); 
 		query.setParameterList("programIdList", programIdList);
-		query.setDate("toDate", toDate);
+		if(option.equalsIgnoreCase("dayWise") && programIdList.size() == 1 && programIdList.get(0) != 6){
+			query.setParameterList("dateList", dateList);
+		}else{
+			query.setDate("toDate", toDate);  
+		}
+		
 		return  query.list();
 	}
 	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate){
@@ -1260,17 +1279,23 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 }
 	 public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate){
 		 StringBuilder queryString = new StringBuilder();
-		 queryString.append(" select TCP.training_camp_program_id as programId,TCP.program_name as programName,D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, training_camp_program TCP,  attendance A, training_camp_batch_attendee TCBA, " +
-		 					" tdp_cadre TC, user_address UA, district D "+
+		 queryString.append(" select TCP.training_camp_program_id as programId,TCP.program_name as programName," +
+		 					" D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total " +
+		 					" from " +
+		 					" training_camp_attendance TCA, training_camp_schedule TCS, training_camp_program TCP," +
+		 					" attendance A, training_camp_batch_attendee TCBA,  " +
+		 					" tdp_cadre TC, user_address UA, district D, training_camp_batch TCB "+
 				   			  " where "+
 				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and " +
 				   			  " TCS.training_camp_program_id = TCP.training_camp_program_id and "+
 				   			  //" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
 				   			  " TCP.training_camp_program_id in (:programIdList) and "+
 				   			  " TCA.attendance_id = A.attendance_id and "+
-				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
-				   			  " TC.address_id = UA.user_address_id and " +
-				   			  " UA.district_id = D.district_id and " +
+				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and " +
+				   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and " +
+				   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+    
+				   			  " TC.address_id = UA.user_address_id and " +  
+				   			  " UA.district_id = D.district_id and " + 
 				   			  " date(A.attended_time) <= (:toDate) and ");
 		 if(stateId == 1l){
 			   queryString.append(" (D.district_id BETWEEN 11 and 23) ");  

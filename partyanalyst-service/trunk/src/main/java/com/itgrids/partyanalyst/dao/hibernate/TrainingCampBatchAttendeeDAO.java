@@ -561,7 +561,7 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 						   " count(distinct TC.tdpCadreId) from TrainingCampBatchAttendee TCBA, TdpCadre TC " +  
 						   " where " +
 						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
-						   " TCBA.trainingCampBatch.fromDate <= (:toDate) and" );    
+						   " date(TCBA.trainingCampBatch.fromDate) <= (:toDate) and" );    
 		if(stateId.longValue() == 1){
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 11 and 23 and ");
 		}else{
@@ -641,8 +641,12 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
    }
    public List<Object[]> getDistWiseInvitedMembers(List<Long> programIdList,Long stateId,Date toDate){
 	   StringBuilder queryString = new StringBuilder();
-	   queryString.append(" select TCP.training_camp_program_id as programId,TCP.program_name as programName,D.district_id as id, D.district_name as name, count(distinct TDP.tdp_cadre_id) as total from "+
-			   			  " training_camp_batch_attendee TCBA, training_camp_batch TCB, training_camp TC, training_camp_program TCP, training_camp_schedule TCS, tdp_cadre TDP, user_address UA, district D "+
+	   queryString.append(" select " +
+	   					  " TCP.training_camp_program_id as programId,TCP.program_name as programName,D.district_id as id, D.district_name as name, " +
+	   					  " count(distinct TDP.tdp_cadre_id) as total " +
+	   					  " from "+
+			   			  " training_camp_batch_attendee TCBA, training_camp_batch TCB, " +
+			   			  " training_camp TC, training_camp_program TCP, training_camp_schedule TCS, tdp_cadre TDP, user_address UA, district D "+
 			   			  " where "+
 			   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and "+
 			   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and " +
