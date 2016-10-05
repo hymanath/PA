@@ -13866,5 +13866,15 @@
 	  		<param name="root">status</param>   
 	 	</result>
 	</action>
+		<action name="getNotReceiveRegistrationPersonAction" class="coreDashboardAction" method="getNotReceiveRegistrationPerson">
+		<result type="json" name="success">
+				<param name="root">object</param>   
+		</result>
+	</action>
+		<action name="getTabUserInfoDetailsAction" class="coreDashboardAction" method="getTabUserInfoDetails">
+		<result type="json" name="success">
+				<param name="root">object</param>   
+		</result>
+	</action>
 </package>
 </struts>

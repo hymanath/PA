@@ -2369,7 +2369,6 @@
 						  <select>
 						  <span id="constituencyErrorId" style="color:red"></span>
 					</div>
-					
 					<div class="col-md-3 col-xs-12 col-sm-3">
 						<span class="input-group pull-right">
 							<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
@@ -2381,9 +2380,11 @@
 					<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
 						<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
 					</div>
-					
 				</div>
 				<div class="row showTabUserWiseDetails" style="display:none">
+				  <div class="col-md-12 col-xs-12 col-sm-12 m_top20 mtop-20">
+				     <div id="notReceiveRegistrationFieldStaffDivId"></div>
+					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<div id="tabUserWiseReportDiv"></div>
 					</div>
@@ -2535,12 +2536,15 @@
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">No.Of Samples Day Wise Tab User Details</h4>
+				<h4 class="modal-title" id="tabUserInfoDetailsHeadingId"></h4>
 			  </div>
 			  <div class="modal-body">
 				<div class="row">
 				  <div class="col-md-12 col-xs-12 col-sm-12">
 					<div id="noOfSamplesDetailsDiv" ></div>	
+				  </div>
+				   <div class="col-md-12 col-xs-12 col-sm-12">
+					<div id="tabUserInfoDivId" ></div>	
 				  </div>
 				</div>
 			  </div>
