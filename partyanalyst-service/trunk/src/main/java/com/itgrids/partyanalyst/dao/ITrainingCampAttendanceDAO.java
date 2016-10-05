@@ -59,12 +59,12 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);
 	public List<Object[]> getMlaMpInchargeTrainingProgramAttendedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);  
 	public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate);   
-	public List<Object[]> getAttendedMemberCadreId(Long distId,Long programId);
+	public List<Object[]> getAttendedMemberCadreId(Long distId,Long programId,List<Date> datesList);
 	public List<Object[]> getAttendedMembersForDist(List<Long> attendedCadreIds);
 	public List<Object[]> getAbsaentMembersForDist(List<Long> absentCadreIds); 
-
+	public List<Object[]> getAttendedMemberCadreOverview(Long distId,Long programId);
 
 	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long locationId,String locationType,Long userType,String levelType);
 	public Date getLastUpdatedTime();
-
+	 public List<Object[]> getDestictWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate);
 }
