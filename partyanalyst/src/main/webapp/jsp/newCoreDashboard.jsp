@@ -2733,6 +2733,10 @@
 	}
 	
 /* New Design */
+
+         //cadreRegistration
+		cadreRegistrationBasicCall();
+		
       initialiseDatePicker();
 	  initialiseDatePickerForTrainingProgram();
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
@@ -2789,8 +2793,6 @@
 		//Debates
 		getPartyWiseTotalDebateDetails();
 		
-		//cadreRegistration
-		cadreRegistrationBasicCall();
 	}
 	
 	
