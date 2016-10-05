@@ -735,8 +735,7 @@ $(document).on('click','#cadreModalTabDivid',function(){
 	$(".tabModal").show();
 	$(".webModal").hide();
 	$("#myModalLabel1").html("KUPPAM CONSTITUENCY TAB USER DETAILED REPORT");
-	
-	  var constituencyId = $("#constituencySeletBoxId").val();
+	 var constituencyId = $("#constituencySeletBoxId").val();
 		var dates = $("#dateRangeIdForCadre").val();
 		 var fromDate;
 		 var toDate;
@@ -745,9 +744,30 @@ $(document).on('click','#cadreModalTabDivid',function(){
 			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
 			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
 		 }
+		var d = new Date();
+		var curr_date = d.getDate();
+		var curr_month = d.getMonth()+1;
+		var curr_year = d.getFullYear();
+		var fromDates= new Date(convertRequiredDate(fromDate.trim()));
+		var toDates= new Date(convertRequiredDate(toDate.trim()));
+		var currentDate =curr_date+ "-"+curr_month+"-"+curr_year;
+		var currentDates = currentDate;
+		var currentDates = new Date(convertRequiredDate(currentDates.trim()));
+	   if(currentDates.getTime() == fromDates.getTime() && currentDates.getTime() == toDates.getTime()){
+		   $("#notReceiveRegistrationFieldStaffDivId").show();
+		  getNotReceiveRegistrationPerson(constituencyId,currentDate);
+	   }else{
+			$("#notReceiveRegistrationFieldStaffDivId").html(' ');   
+			$("#notReceiveRegistrationFieldStaffDivId").hide();   
+	   }
+	   
 		$(".showTabUserWiseDetails").show();
 		getCadreRegistrationCountByConstituency(constituencyId,fromDate.trim(),toDate.trim());
 });  
+ function convertRequiredDate(date){
+	   var dateArr=date.split("-");
+	   return dateArr[1]+"/"+dateArr[0]+"/"+dateArr[2];
+   }
 $(document).on('click','.closeModal',function(){
 	$("#noOfSamplesModal").modal('hide');
 	$("body").addClass('modal-open');
@@ -769,6 +789,22 @@ $(document).on("click",".applyBtn",function(){
 			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
 			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
 		 }
+		 var d = new Date();
+		var curr_date = d.getDate();
+		var curr_month = d.getMonth()+1;
+		var curr_year = d.getFullYear();
+		var fromDates= new Date(convertRequiredDate(fromDate.trim()));
+		var toDates= new Date(convertRequiredDate(toDate.trim()));
+		var currentDate =curr_date+ "-"+curr_month+"-"+curr_year;
+		var currentDates = currentDate;
+		var currentDates = new Date(convertRequiredDate(currentDates.trim()));
+	   if(currentDates.getTime() == fromDates.getTime() && currentDates.getTime() == toDates.getTime()){
+		   $("#notReceiveRegistrationFieldStaffDivId").show();
+		   getNotReceiveRegistrationPerson(constituencyId,currentDate);
+	   }else{
+			$("#notReceiveRegistrationFieldStaffDivId").html(' ');   
+			$("#notReceiveRegistrationFieldStaffDivId").hide();   
+	   }
 		$(".showTabUserWiseDetails").show();
 		getCadreRegistrationCountByConstituency(constituencyId,fromDate.trim(),toDate.trim());
 	});
@@ -789,6 +825,23 @@ $(document).on("click",".tabUserWiseDetails",function(){
 			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
 			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
 		 }
+		var d = new Date();
+		var curr_date = d.getDate();
+		var curr_month = d.getMonth()+1;
+		var curr_year = d.getFullYear();
+		var fromDates= new Date(convertRequiredDate(fromDate.trim()));
+		var toDates= new Date(convertRequiredDate(toDate.trim()));
+		var currentDate =curr_date+ "-"+curr_month+"-"+curr_year;
+		var currentDates = currentDate;
+		var currentDates = new Date(convertRequiredDate(currentDates.trim()));
+		if(currentDates.getTime() == fromDates.getTime() && currentDates.getTime() == toDates.getTime()){
+			   $("#notReceiveRegistrationFieldStaffDivId").show();
+			  getNotReceiveRegistrationPerson(constituencyId,currentDate);
+		}else{
+			$("#notReceiveRegistrationFieldStaffDivId").html(' ');   
+			$("#notReceiveRegistrationFieldStaffDivId").hide();   
+		 }
+		   
 		$(".showTabUserWiseDetails").show();
 		getCadreRegistrationCountByConstituency(constituencyId,fromDate.trim(),toDate.trim());
 	});
@@ -816,9 +869,11 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 	function buildCadreRegistrationOverViewResult(tabUserInfoList){
 		
 			var str='';
-			str+='<table class="table table-bordered table-condensed" id="tabUserWiseReportDataTableId"> ';
+			str+='<h4>FIELD USER REGISTRATION DETAILS</h4>';
+			str+='<table class="table table-bordered table-condensed m_top10" id="tabUserWiseReportDataTableId"> ';
 				str+='<thead> ';
 					str+='<tr>';
+					    str+='<th>Survey UserId</th>';
 						str+='<th>Field Staff Name </th>';
 						str+='<th>Image</th>';
 						str+='<th>MobileNo</th>';
@@ -830,6 +885,11 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 				str+='<tbody>';
 				for(var j in tabUserInfoList){
 						str+='<tr> ';
+						   if(tabUserInfoList[j].userName != null && tabUserInfoList[j].userName.length > 0){
+							str+='<td>'+tabUserInfoList[j].userName+'</td>';   
+						   }else{
+							 str+='<td> - </td>';  
+						   }
 						   if(tabUserInfoList[j].sampleCount > 0){
 							 	if(tabUserInfoList[j].name != null){
 							str+='<td>'+tabUserInfoList[j].name+'</td>';
@@ -892,6 +952,8 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 		 }
 		var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
 		//var surveyUserId = $(this).attr("attr_survey_user_info_id");
+		$("#tabUserInfoDivId").html(' ');
+		$("#tabUserInfoDetailsHeadingId").html("No.Of Samples Day Wise Tab User Details");
 		$("#noOfSamplesModal").modal("show");
 		getDaysByCadreRegistrationCount(constituencyId,fromDate.trim(),toDate.trim(),tabUserInfoId,0);
 	});	
@@ -985,3 +1047,112 @@ setInterval(function() {
 function setLastUpdatedTime(lastUpdatedTime){
 	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");
 }
+
+function getNotReceiveRegistrationPerson(constituencyId,currentDate){
+	$("#notReceiveRegistrationFieldStaffDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj={  
+			constituencyId : constituencyId,      
+			date : currentDate
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getNotReceiveRegistrationPersonAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#notReceiveRegistrationFieldStaffDivId").html(' ');
+		  if(result != null && result.length > 0){
+			  buildNotReceivedFieldStaffResult(result);
+		  }else{
+		  $("#notReceiveRegistrationFieldStaffDivId").html("No Data Available.");  
+		  }
+		});
+	}
+	var htmlColorCodeArr=[];
+	    htmlColorCodeArr.push("#FFA500");
+	    htmlColorCodeArr.push("#FF8D00");
+	    htmlColorCodeArr.push("#ff3232");
+	    htmlColorCodeArr.push("#FF0000");
+	function buildNotReceivedFieldStaffResult(result){
+	var str='';
+			str+='<h4>IDLE TAB USER DETAILS</h4>';
+			str+='<table class="table table-bordered table-condensed m_top10">';
+				str+='<tbody>';
+				str+='<tr> ';
+				for(var i in result){
+					if(result[i].count != null && result[i].count>0){
+				     str+='<td><h2><a style="cursor:pointer;" class="tabUserCountcls" attr_Ids='+result[i].idsList+'>'+result[i].count+'</a></h2>';
+				     str+='<p style="color:'+htmlColorCodeArr[i]+'">'+result[i].name+'</p></td> ';
+					}else{
+					  str+='<td><h2>'+result[i].count+'</h2>';
+			          str+='<p style="color:'+htmlColorCodeArr[i]+'">'+result[i].name+'</p></td> ';
+					}
+				}
+			 str+='</tr>';
+			str+='</tbody>'; 
+		str+='</table>';
+		$("#notReceiveRegistrationFieldStaffDivId").html(str);
+	}
+$(document).on("click",".tabUserCountcls",function(){
+	var tabUserIdsString = $(this).attr("attr_Ids");
+	var idsArr = tabUserIdsString.split(",");
+	var tabUserIdStr;
+	for(var i=0;i<idsArr.length;i++){
+		if(i==0){
+		tabUserIdStr = 	idsArr[i];
+		}else{
+		tabUserIdStr = tabUserIdStr+","+idsArr[i];	
+		}
+	}
+	$("#noOfSamplesDetailsDiv").html(' ');
+	$("#tabUserInfoDetailsHeadingId").html("IDLE TAB USER DETAILS.");
+	$("#noOfSamplesModal").modal("show");
+    getTabUserInfoDetails(tabUserIdStr);
+});		
+function getTabUserInfoDetails(tabUserIdStr){
+	$("#tabUserInfoDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div   class="dot2"></div></div></div>');
+		var jsObj={  
+			tabUserInfoStrIds :tabUserIdStr      
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getTabUserInfoDetailsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+		  if(result != null && result.length > 0){
+			buildNotReceivedTabUserDetails(result);  
+		  }else{
+			$("#tabUserInfoDivId").html("NO DATA AVAILABLE.");  
+		  }
+		});
+	}	
+	function buildNotReceivedTabUserDetails(result){
+		var str=''
+		str+='<table class="table table-bordered table-condensed" id="fieldStaffDetailsDataTableId"> ';
+		        str+='<thead>';
+				 str+='<th>Name</th>'
+				 str+='<th>MobileNo</th>'
+				 str+='<th>Image</th>'
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr> ';
+					 if(result[i].name != null && result[i].name.length > 0){
+							str+='<td>'+result[i].name+'</td> '; 
+					 }else{
+							str+='<td> - </td> ';
+					 }
+					 if(result[i].mobileNo != null && result[i].mobileNo.length > 0){
+					 str+='<td>'+result[i].mobileNo+'</td> ';	 	 
+					 }else{
+					 str+='<td> - </td> ';	 
+					  }
+					 str+='<td><img src="http://mytdp.in/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+				   str+='</tr>';
+				}
+			str+='</tbody>'; 
+		str+='</table>';
+		$("#tabUserInfoDivId").html(str);
+		$("#fieldStaffDetailsDataTableId").dataTable();
+	}

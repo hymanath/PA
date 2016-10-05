@@ -2532,4 +2532,26 @@ public String getCadreLastUpdatedTime(){
 	}
 	return Action.SUCCESS;
 }
+public String getNotReceiveRegistrationPerson(){  
+    try{
+    	jObj = new JSONObject(getTask()); 
+    	String date = jObj.getString("date");
+    	Long constituencyId = jObj.getLong("constituencyId");
+      object = coreDashboardCadreRegistrationService.getNoRegistrationReceiveTabUserPersonCountByTimeWise(constituencyId,date);
+      
+    }catch(Exception e){  
+      LOG.error("Exception raised at getNotReceiveRegistrationPerson() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getTabUserInfoDetails(){  
+    try{
+    	jObj = new JSONObject(getTask()); 
+    	String tabUserInfoStrIds = jObj.getString("tabUserInfoStrIds");
+      object = coreDashboardCadreRegistrationService.getTabUserInfoDetails(tabUserInfoStrIds);
+    }catch(Exception e){  
+      LOG.error("Exception raised at getTabUserInfoDetails() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
 }
