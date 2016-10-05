@@ -2554,4 +2554,23 @@ public String getTabUserInfoDetails(){
     }
     return Action.SUCCESS;
   }
+public String getTrainingProgramMemberDtlsStatusWise(){
+	try{
+		jObj = new JSONObject(getTask());
+		String dateStr = jObj.getString("dateStr");
+		Long stateId = jObj.getLong("stateId");
+		String status = jObj.getString("status");
+		String designation = jObj.getString("designation");
+		Long designationId = jObj.getLong("designationId");
+		JSONArray programIdArr = jObj.getJSONArray("programIdArr");
+		List<Long> programIdList = new ArrayList<Long>();
+		for( int i=0;i<programIdArr.length();i++){
+			programIdList.add(Long.valueOf(programIdArr.getString(i)));
+		}
+		idNameVoList = coreDashboardMainService.getTrainingProgramMemberDtlsStatusWise(programIdList,stateId,dateStr,status,designation,designationId);
+	}catch(Exception e){
+		LOG.error("Exception raised at getTrainingProgramMemberDtlsStatusWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
 }
