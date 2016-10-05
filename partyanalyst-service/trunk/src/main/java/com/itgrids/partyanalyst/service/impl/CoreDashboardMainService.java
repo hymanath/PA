@@ -3605,8 +3605,8 @@ public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> progra
 	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
 	try{
 		
-		if(programIdList.contains(7L))
-			return getSpecialDistrictWiseCampAttendedMembers(programIdList,stateId,dateStr);
+		if(programIdList != null && programIdList.size() == 1 && programIdList.contains(7L))
+			return getSpecialDistrictWiseCampAttendedMembers(programIdList,stateId,dateStr);  
 		
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -3712,6 +3712,7 @@ public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> progra
 				Set<Long> distIdList = idAndLocationInviteMap.keySet();
 				if(distIdList != null && distIdList.size() > 0){
 					idNameVOs = new ArrayList<IdNameVO>(0);
+					Map<Long,IdNameVO> districtsMap = new HashMap<Long, IdNameVO>(0);
 					for(Long distId : distIdList){
 						idNameVO = new IdNameVO();
 						
@@ -3721,7 +3722,20 @@ public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> progra
 						idNameVO.setActualCount(idAndValueAttendedMap.get(distId) != null ? idAndValueAttendedMap.get(distId) : 0l);
 						idNameVO.setApplicationStatus(programIdAndNameMap.get(programId));
 						idNameVO.setApplicationStatusId(programId);  
-						idNameVOs.add(idNameVO);
+						//idNameVOs.add(idNameVO);
+						districtsMap.put(distId,idNameVO);
+					}
+					
+					for(int k=11;k<=23;k++){//for Andra Pradesh Districts
+						IdNameVO idNameVO1 = districtsMap.get(Long.valueOf(String.valueOf(k)));
+						if(idNameVO1 != null)
+							idNameVOs.add(idNameVO1);									
+					}
+					
+					for(int k=1;k<=10;k++){//for Telangana Districts
+						IdNameVO idNameVO1 = districtsMap.get(Long.valueOf(String.valueOf(k)));
+						if(idNameVO1 != null)
+							idNameVOs.add(idNameVO1);									
 					}
 				}
 				listOfIdNameVoList.add(idNameVOs);   
@@ -3876,6 +3890,7 @@ public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long>
 								}
 								Set<Long> distIdList = idAndLocationInviteMap.keySet();
 								List<IdNameVO> idNameVOsList = new ArrayList<IdNameVO>(0);
+								Map<Long,IdNameVO> districtsMap = new HashMap<Long,IdNameVO>(0);
 								if(distIdList != null && distIdList.size() > 0){
 									
 									for(Long distId : distIdList){
@@ -3887,8 +3902,22 @@ public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long>
 										idNameVO.setActualCount(idAndValueAttendedMap.get(distId) != null ? idAndValueAttendedMap.get(distId) : 0l);
 										idNameVO.setApplicationStatus(programIdAndNameMap.get(programId));
 										idNameVO.setApplicationStatusId(programId);  
-										idNameVOsList.add(idNameVO);
+										//idNameVOsList.add(idNameVO);
+										districtsMap.put(distId, idNameVO);
 									}
+									
+									for(int k=11;k<=23;k++){//for Andra Pradesh Districts
+										IdNameVO idNameVO1 = districtsMap.get(Long.valueOf(String.valueOf(k)));
+										if(idNameVO1 != null)
+											idNameVOsList.add(idNameVO1);										
+									}
+									
+									for(int k=1;k<=10;k++){//for Telangana Districts
+										IdNameVO idNameVO1 = districtsMap.get(Long.valueOf(String.valueOf(k)));
+										if(idNameVO1 != null)
+											idNameVOsList.add(idNameVO1);									
+									}
+									
 									idNamVO.setSubList1(idNameVOsList);
 								}
 								idNameVOs.add(idNamVO);
@@ -4075,6 +4104,13 @@ public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long>
 						daysCountList.add(vo);
 					}
 				}
+				
+				Collections.sort(daysCountList, new Comparator<IdNameVO>() {
+					public int compare(IdNameVO o1, IdNameVO o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+				});
+				
 				idNameVOs.get(0).getIdnameList().addAll(daysCountList);
 			}
 		}

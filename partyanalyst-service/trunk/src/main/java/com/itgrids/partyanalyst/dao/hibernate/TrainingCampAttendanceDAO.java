@@ -913,7 +913,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				 query.setParameter("stateId", stateId);  
 		}
 		if(toDate!=null){
-		  query.setDate("toDate", toDate);  
+		  query.setDate("toDate", toDate);    
 		}
 		  	return query.list();  
 	}
@@ -923,7 +923,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  StringBuilder queryStr= new StringBuilder();
 			  
 		  queryStr.append(" select ");
-		  if(status.equalsIgnoreCase("camp")){
+		  if(status.equalsIgnoreCase("camp")){ 
 			  queryStr.append(" distinct ");
 		  }
 		  queryStr.append(" model.trainingCampProgram.trainingCampProgramId," +//0
@@ -1190,7 +1190,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			queryString.append(" date(TCA.attendance.attendedTime) <= (:toDate) and ");  
 		}
 		if(stateId.longValue() == 1){
-			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 11 and 23 and ");
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
 		}else{
 			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
 		}
@@ -1250,7 +1250,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 						   " TDP.address_id = UA.user_address_id and " +
 						   " UA.district_id = D.district_id and ");
 		if(stateId == 1l){
-			queryString.append(" (D.district_id BETWEEN 11 and 23) ");
+			queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 		}else{
 			queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		}	   		  
@@ -1298,7 +1298,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				 			" TDP.address_id = UA.user_address_id and " +
 				 			" UA.district_id = D.district_id and ");
 		 if(stateId == 1l){
-				queryString.append(" (D.district_id BETWEEN 11 and 23) ");
+				queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 		}else{
 				queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		}	   		  
@@ -1330,7 +1330,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   			  " UA.district_id = D.district_id and " + 
 				   			  " date(A.attended_time) <= (:toDate) and ");
 		 if(stateId == 1l){
-			   queryString.append(" (D.district_id BETWEEN 11 and 23) ");  
+			   queryString.append(" (D.district_id BETWEEN 1 and 23) ");  
 		 }else{
 			   queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		 }
@@ -1599,7 +1599,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 						   " TDP.address_id = UA.user_address_id and " +
 						   " UA.district_id = D.district_id and ");
 		if(stateId == 1l){
-			queryString.append(" (D.district_id BETWEEN 11 and 23) ");
+			queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 		}else{
 			queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		}  
@@ -1647,7 +1647,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				 			" TDP.address_id = UA.user_address_id and " +
 				 			" UA.district_id = D.district_id and ");
 		 if(stateId == 1l){  
-				queryString.append(" (D.district_id BETWEEN 11 and 23) ");
+				queryString.append(" (D.district_id BETWEEN 1 and 23) ");
 		}else{
 				queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		}	   		  
@@ -1675,7 +1675,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   			  " UA.district_id = D.district_id  and " +
 				   			  " date(A.attended_time) <= (:toDate) and ");
 		 if(stateId == 1l){
-			   queryString.append(" (D.district_id BETWEEN 11 and 23) ");  
+			   queryString.append(" (D.district_id BETWEEN 1 and 23) ");  
 		 }else{
 			   queryString.append(" (D.district_id BETWEEN 1 and 10) ");
 		 }
