@@ -3959,7 +3959,8 @@ public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long>
 				Map<Long,IdNameVO> absentIdAndMemberDtlsMap = new HashMap<Long,IdNameVO>();
 				List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
 				List<Date> datesList  = new ArrayList<Date>(0);
-				datesList.add(new SimpleDateFormat("yyyy-MM-dd").parse(strDate));
+				if(strDate != null && !strDate.equalsIgnoreCase("0"))
+					datesList.add(new SimpleDateFormat("yyyy-MM-dd").parse(strDate));
 				
 				List<Object[]> getInvitedMemberCadreId = trainingCampBatchAttendeeDAO.getInvitedMemberCadreId(distId,programId);
 				List<Object[]> getAttendedMemberCadreId = trainingCampAttendanceDAO.getAttendedMemberCadreId(distId,programId,datesList);
