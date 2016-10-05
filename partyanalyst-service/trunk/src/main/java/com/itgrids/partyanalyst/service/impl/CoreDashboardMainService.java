@@ -3600,9 +3600,14 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 	}
 	return null;
 }
+
 public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> programIdList,Long stateId,String dateStr){
 	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
 	try{
+		
+		if(programIdList.contains(7L))
+			return getSpecialDistrictWiseCampAttendedMembers(programIdList,stateId,dateStr);
+		
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		if(dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0){
@@ -3741,7 +3746,179 @@ public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> progra
 	}
 	return null;
 }
-public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate){
+
+public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long> programIdList,Long stateId,String dateStr){
+	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
+	try{
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0){
+			 toDate = sdf.parse(dateStr);  
+		}
+		Map<Long,String> programIdAndNameMap = new HashMap<Long,String>(0);
+		IdNameVO idNameVO = null;
+		//programId and invitedprogramCountList map
+		Map<Long,List<IdNameVO>> programIdAndInvitedProgramCountMap = new HashMap<Long,List<IdNameVO>>(0);
+		//day wise program performance
+		Map<String,Map<Long,List<IdNameVO>>> daywiseProgramIdAndAttendedProgramCountMap = new HashMap<String,Map<Long,List<IdNameVO>>>(0);
+		//programId and attendedprogramCountList map
+		//Map<Long,List<IdNameVO>> programIdAndAttendedProgramCountMap = new HashMap<Long,List<IdNameVO>>(0);
+		//invitedCountList
+		List<IdNameVO> invitedCountList = null;
+		//attendedCountList
+		List<IdNameVO> attendedCountList = null; 
+		List<List<IdNameVO>> listOfIdNameVoList = new ArrayList<List<IdNameVO>>(0);
+		List<IdNameVO> idNameVOs = null;
+		//distId and distName map for invite->idAndLocationInviteMap
+		//distId and count map for invite ->idAndValueInviteMap
+		Map<Long,String> idAndLocationInviteMap = new HashMap<Long,String>();
+		Map<Long,Long> idAndValueInviteMap = new HashMap<Long,Long>();   
+		//distId and distName map for Attended->idAndLocationAttendedMap
+		//distId and count map for Attended ->idAndValueAttendedMap
+		Map<Long,String> idAndLocationAttendedMap = new HashMap<Long,String>(); 
+		Map<Long,Long> idAndValueAttendedMap = new HashMap<Long,Long>();
+		
+		List<Object[]> distWiseInvitedMembers = trainingCampBatchAttendeeDAO.getDistWiseInvitedMembers(programIdList,stateId,toDate);
+		if(distWiseInvitedMembers != null && distWiseInvitedMembers.size() > 0){
+			for(Object [] obj : distWiseInvitedMembers){
+				programIdAndNameMap.put(obj[0] != null ? (Long)obj[0] : 0l, obj[1] != null ? obj[1].toString() : "");
+				idNameVOs = programIdAndInvitedProgramCountMap.get(obj[0] != null ? (Long)obj[0] : 0l); 
+				if(idNameVOs != null){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(obj[0] != null ? (Long)obj[0] : 0l);
+					idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+					idNameVO.setDistrictid(obj[2] != null ? (Long)obj[2] : 0l);
+					idNameVO.setDistrictName(obj[3] != null ? obj[3].toString() : "");
+					idNameVO.setCount(obj[4] != null ? (Long)obj[4] : 0l);
+					idNameVOs.add(idNameVO);
+					programIdAndInvitedProgramCountMap.put(obj[0] != null ? (Long)obj[0] : 0l, idNameVOs);
+				}else{
+					idNameVOs = new ArrayList<IdNameVO>(0);
+					idNameVO = new IdNameVO();
+					idNameVO.setId(obj[0] != null ? (Long)obj[0] : 0l);
+					idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+					idNameVO.setDistrictid(obj[2] != null ? (Long)obj[2] : 0l);
+					idNameVO.setDistrictName(obj[3] != null ? obj[3].toString() : "");
+					idNameVO.setCount(obj[4] != null ? (Long)obj[4] : 0l);
+					idNameVOs.add(idNameVO);
+					programIdAndInvitedProgramCountMap.put(obj[0] != null ? (Long)obj[0] : 0l, idNameVOs);
+				}
+			}
+		} 
+		List<Object[]> destWiseAttendedMembers = trainingCampAttendanceDAO.getDestictWiseAttendedMembers(programIdList,stateId,toDate); 
+		if(destWiseAttendedMembers != null && destWiseAttendedMembers.size() > 0){
+			
+			for(Object [] obj : destWiseAttendedMembers){
+				String date = commonMethodsUtilService.getStringValueForObject(obj[5]);
+				Map<Long,List<IdNameVO>> programIdAndAttendedProgramCountMap = new HashMap<Long,List<IdNameVO>>(0);
+				
+				if(daywiseProgramIdAndAttendedProgramCountMap.get(date) != null){
+					programIdAndAttendedProgramCountMap = daywiseProgramIdAndAttendedProgramCountMap.get(date);
+				}
+				
+				idNameVOs = programIdAndAttendedProgramCountMap.get(obj[0] != null ? (Long)obj[0] : 0l);
+				if(idNameVOs != null){  
+					idNameVO = new IdNameVO();
+					idNameVO.setId(obj[0] != null ? (Long)obj[0] : 0l);
+					idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+					idNameVO.setDistrictid(obj[2] != null ? (Long)obj[2] : 0l);
+					idNameVO.setDistrictName(obj[3] != null ? obj[3].toString() : "");
+					idNameVO.setCount(obj[4] != null ? (Long)obj[4] : 0l);
+					idNameVOs.add(idNameVO);
+					programIdAndAttendedProgramCountMap.put(obj[0] != null ? (Long)obj[0] : 0l, idNameVOs);
+				}else{
+					idNameVOs = new ArrayList<IdNameVO>(0);
+					idNameVO = new IdNameVO();
+					idNameVO.setId(obj[0] != null ? (Long)obj[0] : 0l);
+					idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+					idNameVO.setDistrictid(obj[2] != null ? (Long)obj[2] : 0l);
+					idNameVO.setDistrictName(obj[3] != null ? obj[3].toString() : "");
+					idNameVO.setCount(obj[4] != null ? (Long)obj[4] : 0l);
+					idNameVOs.add(idNameVO);
+					programIdAndAttendedProgramCountMap.put(obj[0] != null ? (Long)obj[0] : 0l, idNameVOs);
+				} 
+				
+				daywiseProgramIdAndAttendedProgramCountMap.put(date, programIdAndAttendedProgramCountMap);
+			}
+		}
+		if(programIdAndInvitedProgramCountMap.size() > 0){
+			//Set<Long> programIdSet = programIdAndInvitedProgramCountMap.keySet();
+			for(Long programId : programIdAndInvitedProgramCountMap.keySet()){
+				idAndLocationInviteMap.clear();
+				idAndValueInviteMap.clear();
+				idAndLocationAttendedMap.clear();
+				idAndValueAttendedMap.clear();
+				invitedCountList = programIdAndInvitedProgramCountMap.get(programId);
+				
+				if(invitedCountList != null && invitedCountList.size() > 0){  
+					for(IdNameVO obj : invitedCountList){
+						idAndLocationInviteMap.put(obj.getDistrictid(), obj.getDistrictName());
+						idAndValueInviteMap.put(obj.getDistrictid(), obj.getCount());
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(daywiseProgramIdAndAttendedProgramCountMap)){
+					int i=1;
+					idNameVOs = new ArrayList<IdNameVO>(0);
+					for (String Datestr : daywiseProgramIdAndAttendedProgramCountMap.keySet()) {
+						IdNameVO idNamVO = new IdNameVO();
+						idNamVO.setName("DAY-"+i);
+						idNamVO.setDateStr(Datestr);
+						
+						Map<Long,List<IdNameVO>> programIdAndAttendedProgramCountMap = daywiseProgramIdAndAttendedProgramCountMap.get(Datestr);
+						
+						attendedCountList = programIdAndAttendedProgramCountMap.get(programId);
+						if(attendedCountList != null && attendedCountList.size() > 0){
+							for(IdNameVO obj : attendedCountList){
+								idAndLocationAttendedMap.put(obj.getDistrictid(), obj.getDistrictName());
+								idAndValueAttendedMap.put(obj.getDistrictid(), obj.getCount()); 
+							}
+						}
+						Set<Long> distIdList = idAndLocationInviteMap.keySet();
+						List<IdNameVO> idNameVOsList = new ArrayList<IdNameVO>(0);
+						if(distIdList != null && distIdList.size() > 0){
+							
+							for(Long distId : distIdList){
+								idNameVO = new IdNameVO();
+								
+								idNameVO.setDistrictid(distId);
+								idNameVO.setName(idAndLocationInviteMap.get(distId));
+								idNameVO.setCount(idAndValueInviteMap.get(distId));
+								idNameVO.setActualCount(idAndValueAttendedMap.get(distId) != null ? idAndValueAttendedMap.get(distId) : 0l);
+								idNameVO.setApplicationStatus(programIdAndNameMap.get(programId));
+								idNameVO.setApplicationStatusId(programId);  
+								idNameVOsList.add(idNameVO);
+							}
+							idNamVO.setSubList1(idNameVOsList);
+						}
+						idNameVOs.add(idNamVO);
+						
+						i=i+1;
+					}
+				}
+				
+				listOfIdNameVoList.add(idNameVOs);   
+			}   
+		}
+		/*if(listOfIdNameVoList != null && listOfIdNameVoList.size() > 0){
+			Collections.sort(listOfIdNameVoList, new Comparator<List<IdNameVO>>(){
+				public int compare(List<IdNameVO> obj1, List<IdNameVO> obj2){
+					if(obj1.get(0).getApplicationStatusId() == obj2.get(0).getApplicationStatusId()){
+						return 0;
+					}else{
+						return obj1.get(0).getApplicationStatusId() > obj2.get(0).getApplicationStatusId() ? -1 : 1;
+					}
+				}
+			});    
+		}*/
+		return listOfIdNameVoList;
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at getDistrictWiseCampAttendedMembers() in CoreDashBoardMainService ",e); 
+	}
+	return null;
+}
+public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate){//String dateStr
 	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
 	try{
 		List<Long> invitedCadreIds = new ArrayList<Long>();
@@ -3750,9 +3927,13 @@ public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long 
 		IdNameVO idNameVO = null;
 		Long cadreId = null;
 		Map<Long,IdNameVO> idAndMemberDtlsMap = new HashMap<Long,IdNameVO>();
+		Map<Long,IdNameVO> absentIdAndMemberDtlsMap = new HashMap<Long,IdNameVO>();
 		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		List<Date> datesList  = new ArrayList<Date>(0);
+		datesList.add(new SimpleDateFormat("yyyy-MM-dd").parse(strDate));
+		
 		List<Object[]> getInvitedMemberCadreId = trainingCampBatchAttendeeDAO.getInvitedMemberCadreId(distId,programId);
-		List<Object[]> getAttendedMemberCadreId = trainingCampAttendanceDAO.getAttendedMemberCadreId(distId,programId);
+		List<Object[]> getAttendedMemberCadreId = trainingCampAttendanceDAO.getAttendedMemberCadreId(distId,programId,datesList);
 		if(getInvitedMemberCadreId != null && getInvitedMemberCadreId.size() > 0){
 			for(Object[] obj : getInvitedMemberCadreId){
 				invitedCadreIds.add(obj[2] != null ? (Long)obj[2] : 0l);
@@ -3807,27 +3988,27 @@ public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long 
 				}
 			}
 		}
-		if(idAndMemberDtlsMap.size() > 0){
+		/*if(idAndMemberDtlsMap.size() > 0){
 			idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
-			idAndMemberDtlsMap.clear();
-		}
+				//idAndMemberDtlsMap.clear();
+		}*/
 		if(absentCadreIds.size() > 0){
 			List<Object[]> destWiseAbsaentMembersDesignation = trainingCampAttendanceDAO.getAbsaentMembersForDist(absentCadreIds);  
 			if(destWiseAbsaentMembersDesignation != null && destWiseAbsaentMembersDesignation.size() > 0){
 				for(Object[] obj : destWiseAbsaentMembersDesignation){
 					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
-					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					idNameVO = absentIdAndMemberDtlsMap.get(cadreId);
 					if(idNameVO != null){
 						String status = idNameVO.getStatus();
 						if(obj[2] != null){
 							status = status+","+obj[2].toString();
 							idNameVO.setStatus(status);
-							idAndMemberDtlsMap.put(cadreId, idNameVO);
+							absentIdAndMemberDtlsMap.put(cadreId, idNameVO);
 						}else{
 							if(obj[3] != null){
 								status = status+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
 								idNameVO.setStatus(status);
-								idAndMemberDtlsMap.put(cadreId, idNameVO);
+								absentIdAndMemberDtlsMap.put(cadreId, idNameVO);
 							}
 						}
 						
@@ -3844,13 +4025,58 @@ public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long 
 						}
 						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
 						idNameVO.setWish("absent");
-						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+						absentIdAndMemberDtlsMap.put(cadreId, idNameVO); 
 					}
 				}
 			}
 		}  
-		if(idAndMemberDtlsMap.size() > 0){
+		if(idAndMemberDtlsMap.size() > 0 || absentIdAndMemberDtlsMap.size()>0){
 			idNameVOs.addAll(new ArrayList<IdNameVO>(idAndMemberDtlsMap.values()));
+			idNameVOs.addAll(new ArrayList<IdNameVO>(absentIdAndMemberDtlsMap.values()));
+			
+			List<Object[]> attendedMemberCadreOverviewDtls = trainingCampAttendanceDAO.getAttendedMemberCadreOverview(distId,programId);
+			
+			if(commonMethodsUtilService.isListOrSetValid(attendedMemberCadreOverviewDtls)){
+				Long totalDayscount = Long.valueOf(String.valueOf(attendedMemberCadreOverviewDtls.get(0)[3]));
+				Map<String,Long> daywiseAttendedCountMap = new HashMap<String, Long>(0);
+				
+				for (int i = 1; i <= totalDayscount; i++) {
+					daywiseAttendedCountMap.put(i+"", 0L);
+				}
+				
+				for (Object[] param : attendedMemberCadreOverviewDtls) {
+					Long count = commonMethodsUtilService.getLongValueForObject(param[3]);
+					Long attendencecount = 0L;
+					if(daywiseAttendedCountMap.get(count.toString().trim()) != null){
+						attendencecount = daywiseAttendedCountMap.get(count.toString().trim());
+					}
+					/*if(count>1){
+						for (int i = 1; i < count; i++) {
+							Long tempCount =0L;
+							Long previousDayNo=Long.valueOf(String.valueOf(i));
+							if(daywiseAttendedCountMap.get(previousDayNo.toString().trim()) != null){
+								tempCount = daywiseAttendedCountMap.get(previousDayNo.toString().trim());
+							}
+							tempCount=tempCount+1;
+							daywiseAttendedCountMap.put(previousDayNo.toString().trim(),tempCount);
+						}
+					}*/
+					
+					attendencecount =attendencecount+1;
+					daywiseAttendedCountMap.put(count.toString().trim(), attendencecount);
+				}
+				
+				List<IdNameVO> daysCountList = new ArrayList<IdNameVO>(0);
+				if(commonMethodsUtilService.isMapValid(daywiseAttendedCountMap)){
+					for (String dayStr : daywiseAttendedCountMap.keySet()) {
+						IdNameVO vo = new IdNameVO();
+						vo.setName(dayStr+"-DAY(s)");
+						vo.setCount(daywiseAttendedCountMap.get(dayStr));
+						daysCountList.add(vo);
+					}
+				}
+				idNameVOs.get(0).getIdnameList().addAll(daysCountList);
+			}
 		}
 		
 		return idNameVOs;
