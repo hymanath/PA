@@ -3952,7 +3952,7 @@ public List<List<IdNameVO>> getSpecialDistrictWiseCampAttendedMembers(List<Long>
 					}
 				}
 				if(attendedCadreIds.size() > 0){
-					List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getAttendedMembersForDist(attendedCadreIds); 
+					List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getMembersDetails(attendedCadreIds); 
 					if(destWiseAttendedMembersDesignation != null && destWiseAttendedMembersDesignation.size() > 0){
 				for(Object[] obj : destWiseAttendedMembersDesignation){
 					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
