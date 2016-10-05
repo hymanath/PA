@@ -321,8 +321,7 @@ function buildLocationWiseTrainingProgramDetails(result){
 						});
 						$.each($('#locationDivId'+i+'').find(".highcharts-xaxis-labels").find("tspan"),function(index,item){ 
 							$(this).attr("style","cursor:pointer;");
-							$(this).attr("class","distDtlsCls");    
-							//$(this).attr("state_Program_Id","6");
+							$(this).attr("class","distDtlsCls");
 							$(this).attr("attr_dist_id",distIdArray[index]); 
 							$(this).attr("attr_position_id","leadership");
 						});   
@@ -627,7 +626,8 @@ function stateLevelCampDetails(){
 	var jsObj={
 		programIdArr : programIdArr,
 		stateId : globalStateId,
-		dateStr : dateStr
+		dateStr : dateStr,
+		option : "total" 
 	}
 	$.ajax({
 		type : 'GET',
@@ -1704,14 +1704,15 @@ $(document).on("click",".trainingCampDetailed",function(){
 	getStateLevelCampCount(programIdArr);
 	stateLevelCampMembersDistWise(programIdArr);
 });
-function getStateLevelCampCount(programIdArr){
+function getStateLevelCampCount(programIdArr){     
 	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	//var programIdArr = [6]; 
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	var jsObj={  
 		programIdArr : programIdArr,
 		stateId : globalStateId,
-		dateStr : dateStr
+		dateStr : dateStr,
+		option : "dayWise"   
 	} 
 	$.ajax({
 		type : 'GET',
@@ -1778,7 +1779,9 @@ function buildStateLevelCampDetails(result){
 			]
 	}); 
 	if(result != null){
-		for(var i in result){  
+		for(var i in result){
+			var datesArray = [];
+			datesArray.push(result[i].dateStr);  
 			var  jsonDataArrAttended=[]; 
 			var  jsonDataArrYettotrain=[];
 			var precent = parseFloat((result[i].actualCount*(100/result[i].count)).toFixed(2));  
@@ -1801,6 +1804,7 @@ function buildStateLevelCampDetails(result){
 						textTransform: "uppercase"
 					}
 				},
+				  
 				subtitle: {
 					text: null
 				},
@@ -1808,6 +1812,7 @@ function buildStateLevelCampDetails(result){
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
+					categories: datesArray,  
 					labels: {
 						enabled: false,
 					}
@@ -1815,9 +1820,9 @@ function buildStateLevelCampDetails(result){
 				yAxis: {
 					min: 0,
 					gridLineWidth: 0,
-					minorGridLineWidth: 0,
+					minorGridLineWidth: 0, 
 					title: {
-						text: ''
+						text: result[i].dateStr   
 					},
 					labels: {
 						enabled: false,
@@ -2156,11 +2161,11 @@ function stateLevelCampDetailsRepresentativeWise(programIdArr){
 	}).done(function(result){ 
 	
 		if(result != null && result.length >0){
-			buildstateLevelCampDetailsRepresentativeWise(result);
+			buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateStr);
 		}  
 	});
 }
-function buildstateLevelCampDetailsRepresentativeWise(result){
+function buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateStr){
 	$(".hideCls").hide();   
 	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
 		var str='';
@@ -2282,6 +2287,18 @@ function buildstateLevelCampDetailsRepresentativeWise(result){
 						}]
 					});
 				});
+				//add dynamic id here...
+				var len = programIdArr.length;
+				if(len == 1){ 
+					$.each($('#genCampId'+k+'').find(".highcharts-xaxis-labels").find("text"),function(index,item){
+						$(this).attr("style","cursor:pointer;");       
+						$(this).attr("class","memberDtlsCls");
+						$(this).attr("attr_program_id",programIdArr); 
+						$(this).attr("attr_date_id",dateStr);  
+						$(this).attr("attr_state_id",globalStateId);
+						$(this).attr("attr_status_id",$(this).html());       
+					}); 
+				}
 				k+=1;
 			}
 		}
