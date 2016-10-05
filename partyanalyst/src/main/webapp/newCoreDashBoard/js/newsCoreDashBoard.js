@@ -2552,8 +2552,8 @@
 							
 									partyName.push(result[i].coreDashBoardVOList[j].organization);
 									
-									positivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc)
-									negativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc)
+									positivePercArray.push({"y":result[i].coreDashBoardVOList[j].positivePerc,"count":result[i].coreDashBoardVOList[j].positiveCountDist})
+									negativePercArray.push({"y":result[i].coreDashBoardVOList[j].negativePerc,"count":result[i].coreDashBoardVOList[j].negativCountDist})
 						
 							if(partyName.length !=0 && positivePercArray.length !=0 && negativePercArray.length !=0){
 								$(function () {
@@ -2588,7 +2588,7 @@
 											}
 										},
 										tooltip: {
-											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b> <br/>',
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}% - {point.count}</b> <br/>',
 											shared: true
 										},
 										legend: {
@@ -2664,7 +2664,11 @@
 						departmentName = result[i].coreDashBoardVOList[j].organization
 					}
 				}
-				str+='<span style="font-size:15px;">'+departmentName+' - <small><i>'+result[i].name+'</i></small></span>';
+				if(result[i].name !=null && $.trim(result[i].name.length) > 0){
+					str+='<span style="font-size:15px;">'+departmentName+' - <small><i>'+result[i].name+'</i></small></span>';
+				}else{
+					str+='<span style="font-size:15px;">'+departmentName+'</span>';
+				}
 				str+='<p>Total - <i>'+result[i].count+'</i> : Positive Perc - <span title="'+result[i].positiveCountDist+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+result[i].positivePerc+' %</i></span> : Negative Prec - <span title="'+result[i].negativCountDist+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+result[i].negativePerc+' %</i></span></p>';
 				str+='<div id="districtWiseNewsGovtDetailed'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
@@ -2741,7 +2745,7 @@
 									borderWidth: 1,
 									shadow: false
 								},
-								tooltip: {
+								/*tooltip: {
 									formatter: function () {
 										var s = '<b>' + this.x + '</b>';
 
@@ -2754,8 +2758,11 @@
 										return s;
 									},
 									shared: true
+								},*/
+								tooltip: {
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b> {point.percentage:.1f}% - {point.y} </b><br/>',
+									shared: true
 								},
-								
 								plotOptions: {
 									pointPadding: 0.2,
 									borderWidth: 2,
