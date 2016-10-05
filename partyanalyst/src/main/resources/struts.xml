@@ -13866,7 +13866,7 @@
 	  		<param name="root">status</param>   
 	 	</result>
 	</action>
-		<action name="getNotReceiveRegistrationPersonAction" class="coreDashboardAction" method="getNotReceiveRegistrationPerson">
+	<action name="getNotReceiveRegistrationPersonAction" class="coreDashboardAction" method="getNotReceiveRegistrationPerson">
 		<result type="json" name="success">
 				<param name="root">object</param>   
 		</result>
@@ -13875,6 +13875,11 @@
 		<result type="json" name="success">
 				<param name="root">object</param>   
 		</result>
+	</action>
+	<action name="getTrainingProgramMemberDtlsStatusWiseAction" class="coreDashboardAction" method="getTrainingProgramMemberDtlsStatusWise">
+		<result type="json" name="success">
+	  		<param name="root">idNameVoList</param>   
+	 	</result>
 	</action>
 </package>
 </struts>

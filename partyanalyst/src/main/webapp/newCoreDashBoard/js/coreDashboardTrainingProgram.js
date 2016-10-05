@@ -698,17 +698,35 @@ $(document).on("click",".liCls",function(){
 /* Training Funcitons Start*/
 $(document).on("click",".stateLevelTrainingInd",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	$(".stateLevelTraining").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	$(".stateLevelTraining,.programSkillsCls").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 	$(".trainingIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".trainingsHiddenBlock,.trainingDetailedBlock").hide();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}else if($(".trainingsBlockExpand").hasClass("col-md-6")){
+		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
+		var programId = [];
+		programId.push($(this).attr("attr_program_id"));
+		getStateLevelCampCount(programId);         
+		stateLevelCampMembersDistWise(programId); 
+		stateLevelCampDetailsRepresentativeWise(programId);
+		var val = $(this).attr("attr_location");
+		$("#clickInfoId").html(val); 
+		$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
+		$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");   
+		$("#detailedId").removeClass("trainingDetailed");
+		$("#detailedId").addClass("trainingCampDetailed");
+		$("#clickInfoId").show();
+		$(".trainingComparison").hide();
+		$(".trainingCampDetailed").attr("attr_program_id",$(this).attr("attr_program_id"));  
 	}else{
-		if($(".trainingIconExpand").hasClass("glyphicon-fullscreen"))
+		
+		if(!$(".trainingIconExpand").hasClass("glyphicon-fullscreen"))
 		{
 			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$(".trainingIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 		}
 		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
 		var programId = [];
@@ -740,14 +758,20 @@ $(document).on("click",".programSkillsCls",function(){
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		alert(1)
 		$(".moreTrainingBlocks").hide();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".trainingIconExpand").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	}else if($(".trainingsBlockExpand").hasClass("col-md-6")){
+		alert(3)
+		getUserTypeWiseTotalEligibleAndAttendedCnt();
 	}else{
+		alert(2)
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
 	}
 	if( !$(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".moreBlocks").hide();
@@ -1289,8 +1313,8 @@ function buildTrainingProgramRslt(result){
 		str+='<ul class="trainingsUl">';
 		  for(var i in result){
 			  str+='<li>';
-			  str+='<h4 class="text-capitalize text-muted">'+result[i].name+'</h4>';
-			  str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
+				str+='<h4 class="text-capitalize text-muted">'+result[i].name+'</h4>';
+				str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
 			  str+='</li>';
 		  }
 		str+='</ul>';
@@ -1346,8 +1370,6 @@ function buildTrainingProgramRslt(result){
 			jsonDataArrAttended.push(result[i].totalAttenedCountPer);
 			jsonDataArrYettotrain.push(result[i].totalNotAttenedCountPer); 
 			
-		var chartWidth = $("#programHighChartId"+i).parent().width()/2;
-		$("#programHighChartId"+i).width(chartWidth);
 		$(function () {
 		  $('#programHighChartId'+i).highcharts({
 			colors: ['#F56800','#53BF8B','#66728C'],   
@@ -1800,8 +1822,6 @@ function buildStateLevelCampDetails(result,programIdArr){
 			jsonDataArrAttended.push(parseFloat(precent));          
 			var abs = parseFloat((100 - precent).toFixed(2));    
 			jsonDataArrYettotrain.push(abs);      
-			var chartWidth = $("#programHighChartId"+i).parent().width()/2;
-			$("#programHighChartId"+i).width(chartWidth);  
 			$(function () {
 				$('#programHighChartId'+i).highcharts({  
 				colors: ['#F56800','#53BF8B','#66728C'],         
@@ -2385,6 +2405,7 @@ function buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateSt
 				k=0;
 			for(var i in result){
 				for(var j in result[i]){
+					var cnt = (result[i][j].count)-(result[i][j].actualCount);
 					var trainingProgramCountArray = [];
 					trainingProgramCountArray.push(100);
 					trainingProgramCountArray.push(100);
@@ -2474,15 +2495,23 @@ function buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateSt
 				});
 				//add dynamic id here...
 				var len = programIdArr.length;
-				if(len == 1){ 
-					$.each($('#genCampId'+k+'').find(".highcharts-xaxis-labels").find("text"),function(index,item){
-						$(this).attr("style","cursor:pointer;");       
-						$(this).attr("class","memberDtlsCls");
-						$(this).attr("attr_program_id",programIdArr); 
-						$(this).attr("attr_date_id",dateStr);  
-						$(this).attr("attr_state_id",globalStateId);
-						$(this).attr("attr_status_id",$(this).html());       
+				if(len == 1){
+						//if((result[i][j].count)-(result[i][j].actualCount) > 0){ 
+						$.each($('#genCampId'+k+'').find(".highcharts-xaxis-labels").find("text"),function(index,item){
+							//if(cnt == 0 && $(this).html() != "ABSENT"){  
+								$(this).attr("style","cursor:pointer;");       
+								$(this).attr("class","memberDtlsCls");
+								$(this).attr("attr_program_id",programIdArr); 
+								$(this).attr("attr_date_id",dateStr);  
+								$(this).attr("attr_state_id",globalStateId);
+								$(this).attr("attr_status",$(this).html());
+								$(this).attr("attr_designation",result[i][j].applicationStatus);
+								$(this).attr("attr_designation_id",result[i][j].id);   
+							//}
+						
 					}); 
+				//}
+					
 				}
 				k+=1;
 			}
@@ -2509,4 +2538,69 @@ function getTrainingRecentTime(){
 }
   function setTrainingLastUpdateTime(lastUPdatedTime){
 	  $("#lastUpdatedTimeTrainingCampId").html("Last Updated : "+lastUPdatedTime+"");
+  }
+  $(document).on("click",".memberDtlsCls",function(){ 
+  $("#myModelId").modal('show');
+  $("#memberId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var programIdArr = [];
+		programIdArr.push($(this).attr("attr_program_id"));
+		var dateStr = $(this).attr("attr_date_id");
+		var stateId = $(this).attr("attr_state_id");
+		var status = $(this).attr("attr_status");
+		var designation = $(this).attr("attr_designation");
+		var designationId = $(this).attr("attr_designation_id");
+		var jsObj ={ 
+			programIdArr : programIdArr,
+			dateStr : dateStr,
+			stateId : stateId,
+			status : status,
+			designation : designation,
+			designationId : designationId                 
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getTrainingProgramMemberDtlsStatusWiseAction.action',     
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 $("#memberId").html('');
+			if(result != null && result.length > 0){
+				buildTrainingProgramMemberDtlsStatusWise(result,status)	
+			}else{
+				$("#memberId").html('No Data Available');  
+			}
+		});
+  });
+  function buildTrainingProgramMemberDtlsStatusWise(result,status){
+	
+	var str = '';
+	str+='<table class="table table-condensed" id="campMemberDtlsId">';
+	str+='<thead>';
+		str+='<th>NAME</th>';
+		str+='<th>DESIGNATION</th>';
+		str+='<th>CONTACT NUMBER</th>'; 
+		str+='<th>STATUS</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+		
+		str+='<tr>';
+		str+='<td>'+result[i].name.toUpperCase()+'</td>';  
+		
+		if(result[i].status==""){ 
+			str+='<td>-</td>';
+		}else{    
+			str+='<td>'+result[i].status.toUpperCase()+'</td>';   
+		}  
+		str+='<td>'+result[i].mobileNo+'</td>'; 
+		
+		str+='<td>'+status+'</td>';  
+				
+		str+='</tr>';   
+	}
+
+	str+='</tbody>'; 
+	
+	$("#memberId").html(str); 
+	$("#campMemberDtlsId").dataTable();    
   }
