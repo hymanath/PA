@@ -450,4 +450,14 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		query.setParameterList("batchIds",batchIds);
 	    return query.list();
 	}
+	public List<Object[]> getFromAndToDate(Long programId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select TCB.fromDate, TCB.toDate from TrainingCampBatch TCB " +
+						" where " +
+						" TCB.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = :programId and " +
+						" TCB.isCancelled = 'false' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("programId", programId);
+		return query.list();
+	}
 }

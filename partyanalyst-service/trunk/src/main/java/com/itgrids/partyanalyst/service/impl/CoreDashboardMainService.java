@@ -39,12 +39,12 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
-import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.model.Characteristics;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
@@ -85,6 +86,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private SetterAndGetterUtilService setterAndGetterUtilService;
 	 private IDebateDAO debateDAO;
 	 private IDebateSubjectDAO debateSubjectDAO;
+	 private ITrainingCampBatchDAO trainingCampBatchDAO;
 	 
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
@@ -180,10 +182,11 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	public void setDebateDAO(IDebateDAO debateDAO) {
 		this.debateDAO = debateDAO;
 	}
-	
-	
 	public void setDebateSubjectDAO(IDebateSubjectDAO debateSubjectDAO) {
 		this.debateSubjectDAO = debateSubjectDAO;
+	}
+	public void setTrainingCampBatchDAO(ITrainingCampBatchDAO trainingCampBatchDAO) {
+		this.trainingCampBatchDAO = trainingCampBatchDAO;
 	}
 	/**
 	  * @param  Long userAccessLevelId
@@ -3328,11 +3331,13 @@ public List<UserDataVO> getbasicCommitteeDetails(){
 	}
 	return basicCommitteeList;
 }
-public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr){    
+public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option){    
 	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
 	try{
+		DateUtilService dateUtilService = new DateUtilService();
 		Date toDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 		if(dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0){
 			 toDate = sdf.parse(dateStr);  
 		}
@@ -3340,8 +3345,45 @@ public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,
 		Map<Long,IdNameVO> idAndIdNameVoMap = new HashMap<Long,IdNameVO>();
 		List<IdNameVO> idNameVOs  = new ArrayList<IdNameVO>();
 		
-		List<Object[]> inviteCountList = trainingCampBatchAttendeeDAO.getTotalInvitedForTrainingCampStateLevel(programIdList, stateId, toDate); 
-		List<Object[]> attendedCountList = trainingCampAttendanceDAO.getTotalAttendedForTrainingCampStateLevel(programIdList, stateId, toDate); 
+		List<Object[]> inviteCountList = trainingCampBatchAttendeeDAO.getTotalInvitedForTrainingCampStateLevel(programIdList, stateId, toDate);
+		List<Object[]> attendedCountList = null;
+		if(option.equalsIgnoreCase("dayWise") && programIdList.size() ==1 && programIdList.get(0) != 6){    
+			List<Object[]> fromAndToDate = trainingCampBatchDAO.getFromAndToDate(programIdList.get(0));
+			String frmDateStr = "";
+			String toDateStr = "";
+			Date fromDate = null; 
+			Date toDt = null;
+			if(fromAndToDate != null && fromAndToDate.size() > 0){
+				frmDateStr = fromAndToDate.get(0)[0].toString().substring(0, 10);
+				toDateStr = fromAndToDate.get(0)[1].toString().substring(0, 10);
+				fromDate = sdf1.parse(frmDateStr);
+				toDt = sdf1.parse(toDateStr); 
+			}
+			
+			List<String> dateStrList = dateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDt);
+			List<Date> dateList = new ArrayList<Date>();
+			if(dateStrList != null && dateStrList.size() > 0){  
+				for(String param : dateStrList){
+					dateList.add(sdf1.parse(param));
+				}
+			}
+			attendedCountList = trainingCampAttendanceDAO.getTotalAttendedForTrainingCampStateLevel(programIdList, stateId, toDate,dateList,option); 
+			if(attendedCountList != null && attendedCountList.size() > 0){
+				for(Object[] param : attendedCountList){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(param[0] != null ? (Long)param[0] : 0l);
+					idNameVO.setName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setDateStr(param[2] != null ? param[2].toString() : "");
+					idNameVO.setActualCount(param[3] != null ? (Long)param[3] : 0l);
+					idNameVO.setCount(inviteCountList.get(0)[2] != null ? (Long)inviteCountList.get(0)[2] : 0l);  
+					idNameVOs.add(idNameVO);      
+				}
+				return idNameVOs;    
+			}
+		}else{
+			attendedCountList = trainingCampAttendanceDAO.getTotalAttendedForTrainingCampStateLevel(programIdList, stateId, toDate,null,option); 
+		}
+		
 		if(inviteCountList != null && inviteCountList.size() > 0){
 			for(Object[] obj : inviteCountList){
 				idNameVO = new IdNameVO();
@@ -3350,9 +3392,9 @@ public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,
 				idNameVO.setCount(obj[2] != null ? (Long)obj[2] : 0l);
 				idAndIdNameVoMap.put(obj[0] != null ? (Long)obj[0] : 0l, idNameVO);
 				
-			}
+			}  
 			
-		}
+		}  
 		if(attendedCountList != null && attendedCountList.size() > 0){
 			for(Object[] obj : attendedCountList){
 				idNameVO = idAndIdNameVoMap.get(obj[0] != null ? (Long)obj[0] : 0l);

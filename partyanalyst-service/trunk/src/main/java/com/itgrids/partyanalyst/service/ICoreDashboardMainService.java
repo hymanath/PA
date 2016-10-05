@@ -37,7 +37,7 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state);
 	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state);
 	public List<UserDataVO> getbasicCommitteeDetails();
-	public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr);
+	public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr,String option);
 	public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr);
 	public List<List<IdNameVO>> getDistrictWiseCampAttendedMembers(List<Long> programIdList, Long stateId, String dateStr);
 	public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state);
