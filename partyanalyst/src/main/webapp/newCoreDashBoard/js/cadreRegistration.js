@@ -244,6 +244,7 @@ $('#genSec').highcharts({
 	function cadreRegistrationBasicCall(){
 		showCadreRegistreredCount();
 		getEnumeratorsInfo();
+		getCadreRecentTime();
 	}
 
 	
@@ -1024,7 +1025,7 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 		$("#noOfSamplesDetailsDiv").html(str);
 	}
 	
-	getCadreRecentTime();
+	
 	function getCadreRecentTime(){
  	$.ajax({
 		type : 'POST',
@@ -1041,9 +1042,7 @@ setInterval(function() {
     cadreRegistrationBasicCall();
   }, 60 * 500000);
   
-  setInterval(function() {
-    getCadreRecentTime();
-  }, 60 * 1000000);
+
 function setLastUpdatedTime(lastUpdatedTime){
 	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");
 }
