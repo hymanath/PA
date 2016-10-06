@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
@@ -110,13 +111,23 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String npsStr;
 	private String ediDistIdsStr;
 	private String propIdsStr;
-	
+	private CadreRegistrationVO cadreRegistrationVO;
 	
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
 	//setters And Getters
+	
+	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public CadreRegistrationVO getCadreRegistrationVO() {
+		return cadreRegistrationVO;
+	}
+
+	public void setCadreRegistrationVO(CadreRegistrationVO cadreRegistrationVO) {
+		this.cadreRegistrationVO = cadreRegistrationVO;
 	}
 
 	public List<IdAndNameVO> getIdAndNameVOList() {
@@ -2570,6 +2581,21 @@ public String getTrainingProgramMemberDtlsStatusWise(){
 		idNameVoList = coreDashboardMainService.getTrainingProgramMemberDtlsStatusWise(programIdList,stateId,dateStr,status,designation,designationId);
 	}catch(Exception e){
 		LOG.error("Exception raised at getTrainingProgramMemberDtlsStatusWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getRegistrationPersonDetails(){
+	try{
+		jObj = new JSONObject(getTask());
+		String status = jObj.getString("status");
+		Long voterId = jObj.getLong("voterId");
+		Long familyVoterId = jObj.getLong("familyVoterId");
+		Long cadreId = jObj.getLong("cadreId");
+		
+		cadreRegistrationVO = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterId,familyVoterId,cadreId,status);
+	}catch(Exception e){
+		LOG.error("Exception raised at getRegistrationPersonDetails() method of CoreDashBoardAction", e);
 	}
 	return Action.SUCCESS;
 }

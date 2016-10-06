@@ -13915,5 +13915,10 @@
 	<action name="cadreRegistrationAction" class="cadreRegistrationAction" method="newCadreRegistration">
 			<result name="success">/jsp/cadreRegistration2016.jsp</result>
 	</action>
+	<action name="getRegistrationPersonDetailsAction" class="coreDashboardAction" method="getRegistrationPersonDetails">
+		<result type="json" name="success">
+	  		<param name="root">cadreRegistrationVO</param>   
+	 	</result>
+	</action>
 </package>
 </struts>
