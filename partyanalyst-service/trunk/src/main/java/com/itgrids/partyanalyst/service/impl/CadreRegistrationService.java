@@ -48,6 +48,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
 import com.google.gson.Gson;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -74,6 +75,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IDynamicKeysDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -137,8 +139,10 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -167,6 +171,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CardReceiver;
 import com.itgrids.partyanalyst.model.CardSender;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -318,7 +323,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	private IPaymentGatewayService paymentGatewayService;
 	private ICadreDetailsService cadreDetailsService;
-	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
+	private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
 		return printedCardDetailsDAO;
@@ -328,8 +335,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			IPrintedCardDetailsDAO printedCardDetailsDAO) {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
-	
-	
 	
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
@@ -832,6 +837,25 @@ public class CadreRegistrationService implements ICadreRegistrationService {
     
 	public void setRtcDepotDAO(IRtcDepotDAO rtcDepotDAO) {
 		this.rtcDepotDAO = rtcDepotDAO;
+	}
+	
+
+	public IDelimitationConstituencyMandalDetailsDAO getDelimitationConstituencyMandalDetailsDAO() {
+		return delimitationConstituencyMandalDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDetailsDAO(
+			IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO) {
+		this.delimitationConstituencyMandalDetailsDAO = delimitationConstituencyMandalDetailsDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -13219,5 +13243,119 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return status;
 	}
+	public List<IdAndNameVO> getStateWiseDistrict(Long stateId) {
+		List<IdAndNameVO> districtList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> alldistrictlist = districtDAO.getStateWiseDistrict(stateId);
+			if (alldistrictlist != null && alldistrictlist.size() > 0) {
+				for (Object[] objects : alldistrictlist) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					districtList.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getStateWiseConstituency() in CadreRegistrationService class", e);
+		}
+		return districtList;
+	}
+	public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId) {
+		List<IdAndNameVO> constituencyList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> allConstituencylist = constituencyDAO.getDistrictWiseConstituency(districtId);
+			if (allConstituencylist != null && allConstituencylist.size() > 0) {
+				for (Object[] objects : allConstituencylist) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					constituencyList.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getDistrictWiseConstituency() in CadreRegistrationService class", e);
+		}
+		return constituencyList;
+	}
+	public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId) {
+		List<IdAndNameVO> tehsilList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> allTehsilList = delimitationConstituencyMandalDetailsDAO.getConstitencyWiseTehsil(constituencyId);
+			
+			if (allTehsilList != null && allTehsilList.size() > 0) {
+				for (Object[] objects : allTehsilList) {
+					IdAndNameVO vo = new IdAndNameVO();
+					  Long mandalId=Long.valueOf("1"+objects[0].toString());
+					vo.setId(mandalId);
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal");
+					tehsilList.add(vo);
+
+				}
+			}
+		List<Object[]> allTownsList = assemblyLocalElectionBodyDAO.getConstitencyWiseTowns(constituencyId);
+		if(allTownsList!=null && allTownsList.size() > 0)
+		{
+			for(Object[] objects : allTownsList)
+			{
+				IdAndNameVO vo = new IdAndNameVO();
+				 Long townId=Long.valueOf("2"+objects[0].toString());
+				vo.setId(townId);
+				vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Town" );
+				tehsilList.add(vo);
+			}
+		}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+			LOG.error("Exception raised in getConstitencyWiseTehsil() in WebServiceHandlerService class", e);
+		}
+		return tehsilList;
+	}
+	/*public CadreRegistrationVO getFamilyVoterDetails(Long voterId,CadreRegistrationVO vo)
+	{
+		List<CadreRegistrationVO> returnList = new ArrayList<CadreRegistrationVO>();
+	  	try{
+	  		String houseNo=null;
+	  		Long boothId=null;
+	  		List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetails(voterId);
+	  		if(voterDetails!=null && voterDetails.size()>0)
+	  		{
+	  			for(Object[] objects :voterDetails)
+	  			{
+	  				CadreRegistrationVO cadreRegistration = new CadreRegistrationVO();
+	  				cadreRegistration.setTdpCadreId(objects[0] != null ? (Long) objects[0] : 0l);
+	  				vo.setHouseNo(objects[1] != null ? objects[1].toString() : "");
+	  				
+	  			}
+	  		}
+	  		List<Object[]> familyVoterDetails = boothPublicationVoterDAO.getFamilyVoterDetails(boothId,houseNo);
+	  		if(familyVoterDetails != null && familyVoterDetails.size() > 0){
+	  			for (Object[] objects : familyVoterDetails) {
+	  				CadreRegistrationVO cadreRegistration = new CadreRegistrationVO();
+	  				cadreRegistration.setTdpCadreId(objects[0] != null ? (Long) objects[0] : 0l);
+	  				vo.setHouseNo(objects[1] != null ? objects[1].toString() : "");
+	  				vo.setRelativeName(objects[2] != null ? objects[2].toString() : "");
+	  				vo.setVoterName(objects[3] != null ? objects[3].toString() : "");
+	  				vo.setGender(objects[4] != null ? objects[4].toString() : "");
+	  				vo.setAge(objects[5] != null ? (Long) objects[5] : 0l);
+	  				returnList.add(vo);
+	  			}
+	  		}
+	  	}
+	  	catch(Exception e)
+	  	{
+	  		e.printStackTrace();
+	  		LOG.error("Exception Occured in getFamilyVoterDetails() Method - Exception is : ",e);
+	  	}
+	  	return returnList;
+	  	
+		
+	}*/
+
 
 }
