@@ -77,5 +77,6 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	public List<Object[]> getAllLocalBodiesInAConstituencyList(List<Long> constituencyIds);
 	
 	public List<Long> getConstituencyIdByAssemblyLocalEleBodyId(Long localEleBodyId);
+	public List<Object[]> getConstitencyWiseTowns(Long constituencyId);
 	
 }

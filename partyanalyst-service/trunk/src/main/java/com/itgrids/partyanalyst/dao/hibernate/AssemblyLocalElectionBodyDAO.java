@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -327,6 +326,15 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		Query query = getSession().createQuery("select distinct model.constituency.constituencyId from AssemblyLocalElectionBody model where model.localElectionBody.localElectionBodyId =:localEleBodyId ");
 		query.setParameter("localEleBodyId", localEleBodyId);
 		return query.list();
+	}
+	public List<Object[]> getConstitencyWiseTowns(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct model.localElectionBody.localElectionBodyId,model.localElectionBody.name from AssemblyLocalElectionBody model " +
+				" where model.constituency.constituencyId = :constituencyId and model.year=2009 order by model.localElectionBody.name ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	
 	}
 	 
 	

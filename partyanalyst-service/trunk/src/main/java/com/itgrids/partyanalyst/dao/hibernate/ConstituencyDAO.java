@@ -1901,6 +1901,21 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("stateId",stateId);
 		return query.list();
 	}
+	public List<Object[]> getStateWiseConstituency() {
+		Query query = getSession()
+				.createQuery("select distinct  model.constituencyId,model.name from Constituency model"
+						+ " where model.state.stateId in(1,36) and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 order by model.name");
+		
+		return query.list();
+	}
+	public List<Object[]> getDistrictWiseConstituency(Long districtId) {
+		Query query = getSession()
+				.createQuery("select distinct  model.constituencyId,model.name from Constituency model"
+						+ " where model.district.districtId = :districtId and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 order by model.name");
+		query.setParameter("districtId",districtId);
+		return query.list();
+	}
+	
 	
 }
 
