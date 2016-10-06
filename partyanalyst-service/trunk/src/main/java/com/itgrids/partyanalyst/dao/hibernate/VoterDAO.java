@@ -7,7 +7,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Voter;
 
 public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoterDAO{
@@ -454,6 +453,19 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				
 				query.setMaxResults(1);
 				 return query.list();
+			}
+			
+			public Voter getVoterDetailsByVoterId(Long voterId){
+				StringBuilder str = new StringBuilder(); 
+				
+				str.append(" select model " 
+                + " from Voter model  "
+                + " where model.voterId = :voterId  ");
+				
+				Query query = getSession().createQuery(str.toString());
+				
+				query.setParameter("voterId", voterId);
+				return (Voter)query.uniqueResult();
 			}
 			
 			

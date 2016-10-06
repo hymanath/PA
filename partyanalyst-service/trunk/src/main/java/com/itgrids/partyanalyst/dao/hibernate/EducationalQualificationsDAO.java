@@ -29,7 +29,7 @@ public class EducationalQualificationsDAO extends GenericDaoHibernate<Educationa
 	}
 	public List<Object[]> getEducationalQualifications()
 	{
-		Query query = getSession().createQuery("select distinct model.eduQualificationId,model.qualificationfrom EducationalQualifications model");
+		Query query = getSession().createQuery("select distinct model.eduQualificationId,model.qualification from EducationalQualifications model");
 		 return query.list();
 		
 	}

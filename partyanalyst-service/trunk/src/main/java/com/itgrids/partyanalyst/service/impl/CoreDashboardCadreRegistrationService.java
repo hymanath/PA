@@ -3,16 +3,26 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -21,6 +31,12 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadreRegistrationService {
+	
+private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistrationService.class);
+	
+	private ITdpCadreDAO tdpCadreDAO ;
+	private CommonMethodsUtilService commonMethodsUtilService ;
+	private IVoterDAO voterDAO ;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;   
 	private IEducationalQualificationsDAO educationalQualificationsDAO;       
 	private ICasteStateDAO casteStateDAO;
@@ -45,8 +61,27 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 		this.casteStateDAO = casteStateDAO;
 	}
-	private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistrationService.class);
 	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
 	
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -218,7 +253,8 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    }
 	    return null;    
 	  }
-	/*public CadreRegistrationVO getFamilyVoterDetails(Long voterId,CadreRegistrationVO vo)
+	
+	public CadreRegistrationVO getFamilyVoterDetails(Long voterId,CadreRegistrationVO vo)
 	{
 		List<CadreFamilyVO> returnList = new ArrayList<CadreFamilyVO>();
 	  	try{
@@ -265,7 +301,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	}
 	
 	public List<IdAndNameVO> getEducationalQualifications( ) {
-		List<IdAndNameVO> QualificationList = new ArrayList<IdAndNameVO>();
+		List<IdAndNameVO> qualificationList = new ArrayList<IdAndNameVO>();
 		try {
 			List<Object[]> educationalQualifications = educationalQualificationsDAO.getEducationalQualifications();
 			if (educationalQualifications != null && educationalQualifications.size() > 0) {
@@ -273,7 +309,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 					IdAndNameVO vo = new IdAndNameVO();
 					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
 					vo.setName(objects[1] != null ? objects[1].toString() : "");
-					QualificationList.add(vo);
+					qualificationList.add(vo);
 				}
 			}
 
@@ -281,7 +317,7 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 			e.printStackTrace();
 			LOG.error("Exception raised in getStateWiseConstituency() in CoreDashboardCadreRegistrationService class", e);
 		}
-		return QualificationList;
+		return qualificationList;
 	}
 	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) {
 		List<IdAndNameVO> castNamesList = new ArrayList<IdAndNameVO>();
@@ -301,8 +337,145 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 			LOG.error("Exception raised in getStatewisesCastNames() in CoreDashboardCadreRegistrationService class", e);
 		}
 		return castNamesList;
-	}*/
+	}
 
+	
+	/**
+	* @param  Long voterId,Long familyVoterId,Long tdpCadreId
+	* @return  CadreRegistrationVO
+	* @author Hymavathi 
+	* @Description : Showing Cadre Data 
+	*  @Date 10-October-2016
+	*/
+	public CadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status){
+	
+		CadreRegistrationVO returnVO = new CadreRegistrationVO(); 
+		try{
 
+			if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
+				TdpCadre tdpCadre = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId);
+				setCadreDetailsToVO(returnVO,tdpCadre);
+			}
+			if(voterId != null && voterId.longValue() >0l){
+				Voter voter = voterDAO.getVoterDetailsByVoterId(voterId);
+				setVoterDetailsToVO(returnVO,voter);
+				getFamilyVoterDetails(voterId,returnVO);
+			}else if(familyVoterId != null && familyVoterId.longValue() >0l){
+				getFamilyVoterDetails(familyVoterId,returnVO);
+			}
+			returnVO.setCasteList(getStatewisesCastNames(1l));
+			returnVO.setEduQualftnList(getEducationalQualifications());
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			 LOG.error("Exception raised at getRegistrationPersonDetails", e);
+		}
+		return returnVO;
+	}
+	
+	/**
+	* @param  CadreRegistrationVO returnVO,TdpCadre tdpCadre
+	* @return  void
+	* @author Hymavathi 
+	* @Description : 
+	*  @since 10-October-2016
+	*/
+	public void setCadreDetailsToVO(CadreRegistrationVO returnVO,TdpCadre tdpCadre){
+		try{
+		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+		if(tdpCadre != null){
+			
+			returnVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getTdpCadreId()));//cadreId
+			returnVO.setLastName(commonMethodsUtilService.getStringValueForObject(tdpCadre.getFirstname()));//firstName
+			returnVO.setNameType(commonMethodsUtilService.getStringValueForObject(tdpCadre.getLastname()));//lastName
+			returnVO.setMemberTypeId(commonMethodsUtilService.getStringValueForObject(tdpCadre.getMemberShipNo()));//memberShipNo
+			returnVO.setGender(commonMethodsUtilService.getStringValueForObject(tdpCadre.getGender()));//gender
+			returnVO.setAge(commonMethodsUtilService.getLongValueForObject(tdpCadre.getAge()));//age 
+			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && tdpCadre.getDateOfBirth()  != null)
+			{
+				String dateOfBirth = 	tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0,10):" "	;
+				if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+				{
+					Calendar startDate = new GregorianCalendar();
+					Calendar endDate = new GregorianCalendar();
+					
+					startDate.setTime(format.parse(dateOfBirth.trim()));
+					
+					endDate.setTime(new Date());
 
+					int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+					
+					returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+				}
+			}
+			returnVO.setDobStr(commonMethodsUtilService.getStringValueForObject(tdpCadre.getDateOfBirth()));//DOB
+			returnVO.setImageBase64String(commonMethodsUtilService.getStringValueForObject(tdpCadre.getImage()));//ImagePath
+			returnVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(tdpCadre.getMobileNo()));//mobileNo
+			returnVO.setEmail(commonMethodsUtilService.getStringValueForObject(tdpCadre.getEmailId()));//emailId
+			returnVO.setCandidateAadherNo(commonMethodsUtilService.getStringValueForObject(tdpCadre.getCadreAadherNo()));//cadreAadharNo
+			returnVO.setCasteId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getCasteStateId()));//casteId
+			returnVO.setEducationId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getEducationId()));//educationId
+			returnVO.setOccupationId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getOccupationId()));//occupationId
+			returnVO.setNomineeName(commonMethodsUtilService.getStringValueForObject(tdpCadre.getNomineeName()));//nomineeName
+			returnVO.setNomineeGender(commonMethodsUtilService.getStringValueForObject(tdpCadre.getNomineeGender()));//nomineeGender
+			returnVO.setNomineeAge(commonMethodsUtilService.getLongValueForObject(tdpCadre.getNomineeAge()));//nomineeAge
+			returnVO.setRelativeType(commonMethodsUtilService.getStringValueForObject(tdpCadre.getRelationType()));//relativeType
+			
+			if(tdpCadre.getVoter().getVoterId() != null && tdpCadre.getVoter().getVoterId().longValue() > 0l){
+				returnVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(tdpCadre.getVoter().getVoterIDCardNo()));//votercardNo
+			}else if(tdpCadre.getFamilyVoter().getVoterId() != null && tdpCadre.getFamilyVoter().getVoterId().longValue() > 0l){
+				returnVO.setVoterCardNumber(commonMethodsUtilService.getStringValueForObject(tdpCadre.getFamilyVoter().getVoterIDCardNo()));//familyVotercardNo
+			}
+			
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			 LOG.error("Exception raised at setCadreDetailsToVO", e);
+		}
+	}
+	
+	/**
+	* @param  CadreRegistrationVO returnVO,TdpCadre tdpCadre
+	* @return  void
+	* @author Hymavathi 
+	* @Description : 
+	*  @since 10-October-2016
+	*/
+	public void setVoterDetailsToVO(CadreRegistrationVO returnVO,Voter voter){
+		try{
+		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+		if(voter != null){
+			
+			returnVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(voter.getVoterId()));//voterId
+			returnVO.setLastName(commonMethodsUtilService.getStringValueForObject(voter.getName()));//Name
+			returnVO.setGender(commonMethodsUtilService.getStringValueForObject(voter.getGender()));//gender
+			returnVO.setAge(commonMethodsUtilService.getLongValueForObject(voter.getAge()));//age 
+			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && voter.getDateOfBirth()  != null)
+			{
+				String dateOfBirth = 	voter.getDateOfBirth() != null ? voter.getDateOfBirth().toString().substring(0,10):" "	;
+				if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+				{
+					Calendar startDate = new GregorianCalendar();
+					Calendar endDate = new GregorianCalendar();
+					
+					startDate.setTime(format.parse(dateOfBirth.trim()));
+					
+					endDate.setTime(new Date());
+
+					int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+					
+					returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+				}
+			}
+			returnVO.setDobStr(commonMethodsUtilService.getStringValueForObject(voter.getDateOfBirth()));//DOB
+			returnVO.setImageBase64String(commonMethodsUtilService.getStringValueForObject(voter.getImagePath()));//ImagePath
+			returnVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(voter.getMobileNo()));//mobileNo
+			returnVO.setRelativeType(commonMethodsUtilService.getStringValueForObject(voter.getRelationshipType()));//relativeType
+			
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			 LOG.error("Exception raised at setCadreDetailsToVO", e);
+		}
+	}
 }
