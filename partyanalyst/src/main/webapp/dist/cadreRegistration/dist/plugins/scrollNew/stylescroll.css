@@ -1,0 +1,72 @@
+/* stylesheet for demo and examples */
+
+@import url(http://fonts.googleapis.com/css?family=Lobster+Two:700italic,700);
+@import url(http://fonts.googleapis.com/css?family=Oswald:300);
+
+
+#demo.showcase{ min-width: 740px; }
+
+.showcase .content{
+	float: left;
+	width: 340px;
+	height: 300px;
+}
+
+.showcase .horizontal-images.content{
+	height: 140px;
+	width: 700px;
+	max-width: 97%;
+	padding: 5px 5px 0 5px;
+}
+
+.showcase .horizontal-images.content h2, .showcase .horizontal-images.content li img{ height: 119px; }
+
+.showcase .horizontal-images.content h2{
+	color: #fff;
+	background-color: #eb3755;
+	padding: 10px 20px;
+	margin: 0;
+	-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
+	font-size: 165%;
+}
+
+.horizontal-images.content ul, .vertical-images.content ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: hidden;
+}
+
+.horizontal-images.content li{
+	margin: 0 3px;
+	float: left;
+}
+
+.vertical-images.content li{ margin: 3px 0; }
+
+.horizontal-images.content li:first-child{ margin-left: 0; }
+
+.vertical-images.content li:first-child{
+	margin-bottom: 3px;
+	margin-top: 0;
+}
+
+.horizontal-images.content li:last-child{ margin-right: 0; }
+
+.vertical-images.content li:last-child{ margin-bottom: 0; }
+
+.horizontal-images.content li img{
+	width: auto;
+	padding: 0;
+}
+
+
+
+
+
+.scrollTo-demo .demo-yx{ background-color: #424242; }
+
+.scrollTo-demo .demo-yx p{ width: 1000px; }
+
+
+
