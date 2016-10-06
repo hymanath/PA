@@ -8448,12 +8448,12 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	public List<Object[]> getFamilyVoterDetails(Long boothId, String houseNo) {
 		Query query = getSession()
 				.createQuery(
-						"select distinct model.voter.voterId,model.voter.houseNo"
-								+ " model.voter.relativeName,model.voter.name,model.voter.gender,model.voter.age "
-								+ " model.voter.relationshipType,model.voter.voterIDCardNo,model.voter.mobileNo "
+						"select distinct model.voter.voterId,model.voter.houseNo,"
+								+ " model.voter.relativeName,model.voter.name,model.voter.gender,model.voter.age ,"
+								+ " model.voter.relationshipType,model.voter.voterIDCardNo,model.voter.mobileNo, "
 								+ " model.voter.imagePath"
 								+ " from BoothPublicationVoter model  "
-								+ " where model.voter.voterId = :voterId and model.voter.houseNo = :houseNo");
+								+ " where model.booth.boothId = :boothId and model.voter.houseNo = :houseNo");
 		query.setParameter("boothId", boothId);
 		query.setParameter("houseNo", houseNo);
 		return query.list();

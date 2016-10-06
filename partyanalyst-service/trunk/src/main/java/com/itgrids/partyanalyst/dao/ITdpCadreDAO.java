@@ -450,4 +450,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getApplicationMemberDetails(Long tdpCadreId,String searchType);
 	
 	  public List<Object[]> getCadreBasicLocationDetails(Long tdpCadreId);
+	  public TdpCadre getRegisteredDetailsByCadreId(Long voterId,Long familyVoterId,Long tdpCadreId);
 } 

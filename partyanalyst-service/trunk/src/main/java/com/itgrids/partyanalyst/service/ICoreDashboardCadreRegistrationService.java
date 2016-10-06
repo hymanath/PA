@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 
 public interface ICoreDashboardCadreRegistrationService {
@@ -13,8 +14,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public Object getDaysByCadreRegistrationCount(Long constituencyId,Long cadreSurveyUserId,Long tabUserInfoId,String fromDate,String toDate);
 	public CadreRegistratedCountVO getEnumeratorsInfo(String retrieveType);
 	public String getCadreLastUpdatedTime();
-	
 	public Object getNoRegistrationReceiveTabUserPersonCountByTimeWise(Long constituencyId,String date);
 	public Object getTabUserInfoDetails(String tabUserInfoIds);
-	//public List<IdAndNameVO> getEducationalQualifications(); 
+	public CadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
 }

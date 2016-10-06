@@ -7106,4 +7106,20 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		  return query.list();
 	}
 	
+	public TdpCadre getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model ");
+		 
+		str.append(" from TdpCadre model  where model.tdpCadreId = :tdpCadreId and model.isDeleted='N' and model.enrollmentYear= 2014l ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
+			query.setParameter("tdpCadreId", tdpCadreId);
+		}
+		
+		return (TdpCadre)query.uniqueResult();
+	}
+	
 }

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.File;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -178,8 +179,23 @@ public class CadreRegistrationVO implements Serializable{
 	private String otherDesignationStr;
 	private String userIpAddress;
 	private Long parentTdpCadreId;
+	private List<IdAndNameVO> casteList = new ArrayList<IdAndNameVO>();
+	private List<IdAndNameVO> eduQualftnList = new ArrayList<IdAndNameVO>();
 	
 	
+	
+	public List<IdAndNameVO> getEduQualftnList() {
+		return eduQualftnList;
+	}
+	public void setEduQualftnList(List<IdAndNameVO> eduQualftnList) {
+		this.eduQualftnList = eduQualftnList;
+	}
+	public List<IdAndNameVO> getCasteList() {
+		return casteList;
+	}
+	public void setCasteList(List<IdAndNameVO> casteList) {
+		this.casteList = casteList;
+	}
 	public Long getParentTdpCadreId() {
 		return parentTdpCadreId;
 	}
