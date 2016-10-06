@@ -164,4 +164,11 @@ public List<Object[]> getAllCasteInfoDetails(){
 		return query.list();	
 	}
 	
+   public List<Object[]> getStatewisesCastNames(Long stateId){
+		
+		Query query = getSession().createQuery("select distinct model.caste.casteId,model.caste.casteName from CasteState model where model.state.stateId = :stateId order by model.caste.casteName ");
+		query.setParameter("stateId", stateId);	
+		return query.list();
+	}
+	
 }

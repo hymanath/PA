@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 
 public interface ICoreDashboardCadreRegistrationService {
 	
@@ -15,4 +16,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	
 	public Object getNoRegistrationReceiveTabUserPersonCountByTimeWise(Long constituencyId,String date);
 	public Object getTabUserInfoDetails(String tabUserInfoIds);
+	//public List<IdAndNameVO> getEducationalQualifications(); 
 }

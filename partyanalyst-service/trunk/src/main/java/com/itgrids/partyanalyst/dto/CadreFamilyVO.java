@@ -13,9 +13,13 @@ public class CadreFamilyVO implements Serializable{
 	private String voterName;
 	private Long age;
 	private String gender;
-	private Long familyRelationId;
+	private Long familyRelationId;        
+	private String  houseNo;                  
+	private String relativeName;
+	private String relationshipType;    
+	private String mobileNo;
+	private String imagePath;
 	
-
 	public Long getVoterId() {
 		return voterId;
 	}
@@ -63,6 +67,36 @@ public class CadreFamilyVO implements Serializable{
 	}
 	public void setFamilyRelationId(Long familyRelationId) {
 		this.familyRelationId = familyRelationId;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public String getRelationshipType() {
+		return relationshipType;
+	}
+	public void setRelationshipType(String relationshipType) {
+		this.relationshipType = relationshipType;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	

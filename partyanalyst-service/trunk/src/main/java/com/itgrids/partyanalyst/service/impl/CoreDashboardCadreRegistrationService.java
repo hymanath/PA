@@ -1,8 +1,17 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
+import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.sun.jersey.api.client.Client;
@@ -12,7 +21,30 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadreRegistrationService {
-		
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;   
+	private IEducationalQualificationsDAO educationalQualificationsDAO;       
+	private ICasteStateDAO casteStateDAO;
+	
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+	public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
+		return educationalQualificationsDAO;
+	}
+	public void setEducationalQualificationsDAO(
+			IEducationalQualificationsDAO educationalQualificationsDAO) {
+		this.educationalQualificationsDAO = educationalQualificationsDAO;
+	}
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
 	private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistrationService.class);
 	
 	
@@ -186,4 +218,91 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    }
 	    return null;    
 	  }
+	/*public CadreRegistrationVO getFamilyVoterDetails(Long voterId,CadreRegistrationVO vo)
+	{
+		List<CadreFamilyVO> returnList = new ArrayList<CadreFamilyVO>();
+	  	try{
+	  		String houseNo=null;
+	  		Long boothId=null;
+	  		List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetails(voterId);
+	  		if(voterDetails!=null && voterDetails.size()>0)
+	  		{
+	  			for(Object[] objects :voterDetails)
+	  			{
+	  				
+	  				boothId=objects[0] != null ? (Long) objects[0] : 0l;
+	  				houseNo=objects[1] != null ? objects[1].toString() : "";
+	  				
+	  			}
+	  		}
+	  		List<Object[]> familyVoterDetails = boothPublicationVoterDAO.getFamilyVoterDetails(boothId,houseNo);
+	  		if(familyVoterDetails != null && familyVoterDetails.size() > 0){
+	  			for (Object[] objects : familyVoterDetails) {
+	  				CadreFamilyVO cadreRegistration = new CadreFamilyVO();
+	  				cadreRegistration.setVoterId(objects[0] != null ? (Long) objects[0] : 0l);
+	  				cadreRegistration.setHouseNo(objects[1] != null ? objects[1].toString() : "");
+	  				cadreRegistration.setRelativeName(objects[2] != null ? objects[2].toString() : "");
+	  				cadreRegistration.setVoterName(objects[3] != null ? objects[3].toString() : "");
+	  				cadreRegistration.setGender(objects[4] != null ? objects[4].toString() : "");
+	  				cadreRegistration.setAge(objects[5] != null ? (Long) objects[5] : 0l);
+	  				cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
+	  				cadreRegistration.setVoterCadreNO(objects[7] != null ? objects[7].toString() : "");
+	  				cadreRegistration.setMobileNo(objects[8] != null ? objects[8].toString() : "");
+	  				cadreRegistration.setImagePath(objects[9] != null ? objects[9].toString() : "");
+	  				returnList.add(cadreRegistration);
+	  			}
+	  			vo.setCadreFamilyDetails(returnList);
+	  		}
+	  	}
+	  	catch(Exception e)
+	  	{
+	  		e.printStackTrace();
+	  		LOG.error("Exception Occured in getFamilyVoterDetails() Method - Exception is : ",e);
+	  	}
+	  	return vo;
+	  	
+		
+	}
+	
+	public List<IdAndNameVO> getEducationalQualifications( ) {
+		List<IdAndNameVO> QualificationList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> educationalQualifications = educationalQualificationsDAO.getEducationalQualifications();
+			if (educationalQualifications != null && educationalQualifications.size() > 0) {
+				for (Object[] objects : educationalQualifications) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					QualificationList.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getStateWiseConstituency() in CoreDashboardCadreRegistrationService class", e);
+		}
+		return QualificationList;
+	}
+	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) {
+		List<IdAndNameVO> castNamesList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> castNames = casteStateDAO.getStatewisesCastNames(stateId);
+			if (castNames != null && castNames.size() > 0) {
+				for (Object[] objects : castNames) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					castNamesList.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getStatewisesCastNames() in CoreDashboardCadreRegistrationService class", e);
+		}
+		return castNamesList;
+	}*/
+
+
+
 }
