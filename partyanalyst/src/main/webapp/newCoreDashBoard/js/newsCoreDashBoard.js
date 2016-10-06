@@ -466,14 +466,14 @@
 						str+='<tr class="bg_ED">';
 							str+='<td>';
 							var mTot=0,mPos=0,mNeg=0,dTot=0,dPos=0,dNeg=0;
-							for(var i=1;i<(result.length-1);i++){
-								mTot = mTot+result[i].totalCount;
-								dTot = dTot+result[i].count;
-								mPos = mPos+result[i].positiveCountMain;
-								dPos = dPos+result[i].positiveCountDist;
-								mNeg = mNeg+result[i].negativCountMain;
-								dNeg = dNeg+result[i].negativCountDist;
-							}
+							//for(var i=1;i<(result.length-1);i++){
+								mTot = result[1].totalCount;
+								dTot = result[1].count;
+								mPos = result[1].positiveCountMain;
+								dPos = result[1].positiveCountDist;
+								mNeg = result[1].negativCountMain;
+								dNeg = result[1].negativCountDist;
+							//}
 						
 								str+='<p class="text-capital">Main Edition</p>';
 								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="1117,362,163">'+mTot+'</a></p>';
@@ -495,9 +495,10 @@
 									str+='<small class="text-danger" id=""> 0.0 %</small>';
 							str+='</td>';
 						str+='</tr>';
-					for(var i=1;i<(result.length-1);i++)
+					for(var i=2;i<(result.length-1);i++)
 					{
-						str+='<tr>';
+						if(result[i].organization !="GOVT" || result[i].organization !=""){
+							str+='<tr>';
 							str+='<td>';
 								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].totalCount+'</a></span>';
 							str+='</td>';
@@ -518,6 +519,8 @@
 								}
 							str+='</td>';
 						str+='</tr>';
+						}
+						
 					}
 					str+='</table>';
 				str+='</div>';
@@ -546,29 +549,31 @@
 							str+='</td>';
 						str+='</tr>';
 						
-					for(var i=1;i<(result.length-1);i++)
+					for(var i=2;i<(result.length-1);i++)
 					{
-						str+='<tr>';
-							str+='<td>';
-								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].count+'</a></span>';
-							str+='</td>';
-							str+='<td>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</a></span>';
-								if(result[i].count > 0){
-									str+='<small class="text-success"> '+((result[i].positiveCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
-								}else{
-									str+='<small class="text-success"> 0.0 %</small>';
-								}
-							str+='</td>';
-							str+='<td>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</a></span>';
-								if(result[i].count > 0){
-									str+='<small class="text-danger" id=""> '+((result[i].negativCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
-								}else{
-									str+='<small class="text-danger" id=""> 0.0 %</small>';
-								}
-							str+='</td>';
-						str+='</tr>';
+						if(result[i].organization !="GOVT" || result[i].organization !=""){
+							str+='<tr>';
+								str+='<td>';
+									str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].count+'</a></span>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</a></span>';
+									if(result[i].count > 0){
+										str+='<small class="text-success"> '+((result[i].positiveCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
+									}else{
+										str+='<small class="text-success"> 0.0 %</small>';
+									}
+								str+='</td>';
+								str+='<td>';
+									str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</a></span>';
+									if(result[i].count > 0){
+										str+='<small class="text-danger" id=""> '+((result[i].negativCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
+									}else{
+										str+='<small class="text-danger" id=""> 0.0 %</small>';
+									}
+								str+='</td>';
+							str+='</tr>';
+						}
 					}
 					str+='</table>';
 					
