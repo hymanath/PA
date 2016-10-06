@@ -1003,6 +1003,11 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 });
 	
 function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
+		 
+    	   $("#childUserTypeDetailsDivIdForMeeting").html('');
+	       $("#childActivityMemberDivIdForMeeting").html(' ');
+		   $("#directChildActivityMeetingMemberDiv").html(' ');
+		   $("#topPoorLocationsMeetingDiv").html('');
 		
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
@@ -1011,18 +1016,23 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildgetChildUserTypesByItsParentUserTypeForMeeting(result)
+			if(result != null && result.length > 0){
+			 buildgetChildUserTypesByItsParentUserTypeForMeeting(result)	
+			}else{
+			 $("#childUserTypeDetailsDivIdForMeeting").html('NO DATA AVAILABLE.');	
+			}
 		});			 
 	}
 	function buildgetChildUserTypesByItsParentUserTypeForMeeting(result){
-		$("#childUserTypeDetailsDivIdForMeeting").html('');
+		
 		var str='';
 		 str+='<ul class="comparisonSelect">';
 		 
 		 var firstChildUserTypeIdString;
-		 
+		 var userType;
 		 if(result !=null && result.length >0){
 			 firstChildUserTypeIdString = result[0].shortName;
+			 userType=result[0].userType;
 			 for(var i in result){
 				 str+='<li attr_usertypeid="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\'  class="childUserTypeClsForMeeting">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
@@ -1031,7 +1041,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 		$("#childUserTypeDetailsDivIdForMeeting").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeIdString," ");
+		getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeIdString,userType);
 		
 	}
 	function getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString,userType){

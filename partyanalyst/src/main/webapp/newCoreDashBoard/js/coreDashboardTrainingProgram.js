@@ -965,6 +965,11 @@ $(document).on("click",".unExpandTrainingBlock",function(){
 		$(".moreTrainingBlocks").hide();
 	});
   function getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram(){
+	     
+		 $("#childActivityMemberDivId").html(' ');
+		 $("#userTypeWiseChildDtlsTabId").html(' ');
+		 $("#poorPerformancTrainingPrograLocationsDivId").html('');
+		 
 		 $("#childUserTypeDetailsDivForTrainingProgram").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
@@ -987,9 +992,10 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		 str+='<ul class="comparisonSelect">';
 		 
 		 var firstChildUserTypeIdString;
-		 
+		 var userType;
 		 if(result !=null && result.length >0){
 			  firstChildUserTypeIdString = result[0].shortName;
+			  userType=result[0].userType;
 			 for(var i in result){
               str+='<li attr_userTypeId="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeClsForTrainingProgram">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
@@ -998,7 +1004,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		$("#childUserTypeDetailsDivForTrainingProgram").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString," ");
+		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString,userType);
 		//getTrainingProgramPoorCompletedLocationDtls();
 	}
 	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString,childUserType){
