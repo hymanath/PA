@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
@@ -133,9 +134,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	private IPaymentGatewayService paymentGatewayService;
+	private List<VoterVO> voterList = new ArrayList<VoterVO>();
+	
 	private List<IdAndNameVO> idAndNameVO;
 	
 	
+	public List<VoterVO> getVoterList() {
+		return voterList;
+	}
+	public void setVoterList(List<VoterVO> voterList) {
+		this.voterList = voterList;
+	}
 	public IPaymentGatewayService getPaymentGatewayService() {
 		return paymentGatewayService;
 	}
@@ -2449,6 +2458,25 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				status="failure";
 			}
 			
+		} catch (Exception e) {
+			LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVotersBySearch(){
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			Long mandalId = jobj.getLong("mandalId");
+			Long villageId = jobj.getLong("villageId");
+			Long boothId = jobj.getLong("boothId");
+			String name = jobj.getString("name");
+			String mobileNo = jobj.getString("mobileNo");
+			String hNo = jobj.getString("hNo");
+			
+			voterList = cadreRegistrationService.getVotersBySearch(constituencyId, mandalId, villageId, boothId, name, mobileNo, hNo);
 		} catch (Exception e) {
 			LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
 		}
