@@ -26,6 +26,7 @@ public class TdpCadreEnrollmentYear {
 	private Long tdpCadreEnrollmentYearId;
 	private TdpCadre tdpCadre;
 	private EnrollmentYear enrollmentYear;
+	private String isDeleted;
 	
 	private Long tdpCadreId;
 	private Long enrollmentYearId;
@@ -78,4 +79,11 @@ public class TdpCadreEnrollmentYear {
 		this.enrollmentYearId = enrollmentYearId;
 	}
 	
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 }
