@@ -1589,6 +1589,7 @@
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/DropDown/dropkick.js" type="text/javascript"></script>
+<script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
 <script type="text/javascript">
 var a = $(window).height();
 var b = $(window).width();
