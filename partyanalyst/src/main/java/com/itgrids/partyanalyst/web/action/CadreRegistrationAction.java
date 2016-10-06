@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -132,6 +133,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	private IPaymentGatewayService paymentGatewayService;
+	private List<IdAndNameVO> idAndNameVO;
 	
 	
 	public IPaymentGatewayService getPaymentGatewayService() {
@@ -697,7 +699,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	public void setRegisteredOrNot(String registeredOrNot) {
 		this.registeredOrNot = registeredOrNot;
 	}
+	
 
+	public List<IdAndNameVO> getIdAndNameVO() {
+		return idAndNameVO;
+	}
+	public void setIdAndNameVO(List<IdAndNameVO> idAndNameVO) {
+		this.idAndNameVO = idAndNameVO;
+	}
 	public String execute()
 	{
 		try {
@@ -2445,4 +2454,58 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+
+	public String getStateWiseDistrict() {
+
+		try {
+			jobj = new JSONObject(getTask());
+
+			Long stateId = jobj.getLong("stateId");
+
+			idAndNameVO = cadreRegistrationService
+					.getStateWiseDistrict(stateId);
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised in getStateWiseDistrict method in CadreRegistrationAction Action",
+					e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDistrictWiseConstituency() {
+
+		try {
+			jobj = new JSONObject(getTask());
+
+			Long districtId = jobj.getLong("districtId");
+
+			idAndNameVO = cadreRegistrationService
+					.getDistrictWiseConstituency(districtId);
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised in getStateWiseDistrict method in CadreRegistrationAction Action",
+					e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getConstitencyWiseTehsil() {
+
+		try {
+			jobj = new JSONObject(getTask());
+
+			Long constituencyId = jobj.getLong("constituencyId");
+
+			idAndNameVO = cadreRegistrationService
+					.getConstitencyWiseTehsil(constituencyId);
+
+		} catch (Exception e) {
+			LOG.error(
+					"Exception raised in getConstitencyWiseTehsil method in CadreRegistrationAction Action",
+					e);
+		}
+		return Action.SUCCESS;
+	}
+
+
 }
