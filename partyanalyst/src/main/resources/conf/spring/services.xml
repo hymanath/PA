@@ -2219,6 +2219,9 @@
 	  <property name="tdpMemberUnionTabUserRelationDAO" ref="tdpMemberUnionTabUserRelationDAO"/> 
 	  <property name="unionTypeDesignationDAO" ref="unionTypeDesignationDAO"/> 
 	  <property name="notificationService" ref="notificationService"/> 
+	  <property name="constituencyDAO" ref="constituencyDAO"/> 
+	  <property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"/> 
+	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>  
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -2510,8 +2513,10 @@
 		<property name="tdpMemberTypeDAO" ref="tdpMemberTypeDAO" />
 		<property name="userFeedbackDAO" ref="userFeedbackDAO" />
 		<property name="mailService" ref="mailService" />
-		<property name="paymentGatewayService" ref="paymentGatewayService" />
+		<property name="paymentGatewayService" ref="paymentGatewayService" /> 
 		<property name="cadreDetailsService" ref="cadreDetailsService"/>
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO" />  
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -3448,7 +3453,7 @@
 	  <property name="setterAndGetterUtilService"  ref="setterAndGetterUtilService"></property>
 	  <property name="debateDAO"  ref="debateDAO"></property>
 	  <property name="debateSubjectDAO"  ref="debateSubjectDAO"></property>
-	  <property name="trainingCampBatchDAO"  ref="trainingCampBatchDAO"></property>
+	 <!--  <property name="trainingCampBatchDAO"  ref="trainingCampBatchDAO"></property>-->
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">

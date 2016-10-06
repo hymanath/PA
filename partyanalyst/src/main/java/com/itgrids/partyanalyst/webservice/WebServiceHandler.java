@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
@@ -1999,5 +2000,19 @@ public class WebServiceHandler {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo){
 		 return webServiceHandlerService.getAccommodationTrackingInfoByNotificationType(inputvo);
+		}
+
+		@GET
+		@Path("/StateWiseConstituency")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IdAndNameVO> getStateWiseConstituency(){
+		 return webServiceHandlerService.getStateWiseConstituency();
+		}
+		
+		@GET
+		@Path("/getConstitencyWiseTehsil/{constituencyId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IdAndNameVO> getConstitencyWiseTehsil(@PathParam("constituencyId") Long constituencyId){
+		 return webServiceHandlerService.getConstitencyWiseTehsil(constituencyId);
 		}
 }

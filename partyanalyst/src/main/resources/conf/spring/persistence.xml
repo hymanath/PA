@@ -979,6 +979,7 @@
 				     <value>com.itgrids.partyanalyst.model.PartyMeetingStatus</value>
 				     <value>com.itgrids.partyanalyst.model.PartyMeetingMainType</value>
 				     <value>com.itgrids.partyanalyst.model.Holiday</value>
+				     <value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandalDetails</value>
 				 </list>
 			
 		</property>
