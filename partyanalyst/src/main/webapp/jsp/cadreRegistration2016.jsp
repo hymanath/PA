@@ -9,14 +9,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cadre Registration</title>
-<link href="cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
-<link href="cadreRegistration/dist/css/responsive.css" rel="stylesheet" type="text/css"/>
-<link href="cadreRegistration/dist/css/animate.css" rel="stylesheet" type="text/css"/>
+<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/dist/css/responsive.css" rel="stylesheet" type="text/css"/>
+<link href="dist/cadreRegistration/dist/css/animate.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
-<link href="cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
-<link href="cadreRegistration/dist/plugins/DropDown/dropkick.css" rel="stylesheet" type="text/css"/>
+<link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
+<link href="dist/cadreRegistration/dist/plugins/DropDown/dropkick.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1585,10 +1585,10 @@
         </div>
 	</div>
 </div>
-<script src="cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
-<script src="cadreRegistration/dist/plugins/DropDown/dropkick.js" type="text/javascript"></script>
+<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
+<script src="dist/cadreRegistration/dist/plugins/DropDown/dropkick.js" type="text/javascript"></script>
 <script type="text/javascript">
 var a = $(window).height();
 var b = $(window).width();
