@@ -90,8 +90,35 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private List<VoterVO> categoriesList;
 	private Long CategoryValuesId;
 	private String name;
+	private String imagePath;
+	private Long tdpCadreId;
+	private String memberShipNo;
 	
 	
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
 	public Long getUvdId() {
 		return uvdId;
 	}

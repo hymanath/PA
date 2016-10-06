@@ -8436,6 +8436,65 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 
+	public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String mobileNo,String hNo){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.voter.voterId," +
+						" model.voter.name," +
+						" model.voter.relationshipType," +
+						" model.voter.relativeName," +
+						" model.voter.gender," +
+						" model.voter.age," +
+						" model.voter.voterIDCardNo," +
+						//" model.voter.mobileNo," +
+						" model.voter.imagePath," +
+						" model.voter.houseNo" +
+						" from BoothPublicationVoter model" +
+						" where model.booth.publicationDate.publicationDateId = 22");
+		
+		if(searchType != null && searchType.equalsIgnoreCase("const") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.constituency.constituencyId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("mandal") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.tehsil.tehsilId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("munci") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.localBody.localElectionBodyId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("village") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.panchayat.panchayatId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("booth") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.boothId = :searchVal");
+		
+		if(name != null && name.trim().length() > 0l)
+			sb.append(" and model.voter.name like '%"+name+"%'");
+		if(mobileNo != null && mobileNo.trim().length() > 0l)
+			sb.append(" and model.voter.mobileNo = :mobileNo");
+		if(hNo != null && hNo.trim().length() > 0l)
+			sb.append(" and model.voter.houseNo = :hNo");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(searchVal != null && searchVal.longValue() > 0l)
+			query.setParameter("searchVal", searchVal);
+		if(mobileNo != null && mobileNo.trim().length() > 0l)
+			query.setParameter("mobileNo", mobileNo);
+		if(hNo != null && hNo.trim().length() > 0l)
+			query.setParameter("hNo", hNo);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getRegisteredCadresForVoterIds(List<Long> voterIds){
+		Query query = getSession().createQuery("select model.tdpCadre.voter.voterId," +
+												" model.tdpCadre.tdpCadreId," +
+												" model.tdpCadre.memberShipNo," +
+												" model.enrollmentYearId" +
+												" from TdpCadreEnrollmentYear model" +
+												" where model.isDeleted = 'N'" +
+												" and model.tdpCadre.isDeleted = 'N'" +
+												" and model.tdpCadre.enrollmentYear = :enrollmentYear" +
+												" and model.tdpCadre.voter.voterId in (:voterIds)");
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		
+		return query.list();
+	}
 	public List<Object[]> getVoterDetails(Long voterId) {
 		Query query = getSession().createQuery(
 				"select distinct model.booth.boothId,model.voter.houseNo "
