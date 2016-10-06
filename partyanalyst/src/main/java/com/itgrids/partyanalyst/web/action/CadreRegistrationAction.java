@@ -2506,6 +2506,27 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+	public String getAllPanchayatsForMandal(){
+		try{
+			jobj=new JSONObject(getTask());
+			idAndNameVO=cadreRegistrationService.getPanchayatOrConsList(jobj.getLong("mandalId"));
+		}catch(Exception e){
+			LOG.error("Entered into getAllPanchayatsForMandal method in CadreRegistrationAction....");
+		}
+		return Action.SUCCESS;
+	}
+  public String getAllBoothsForPanchayat(){
+	  try{
+		  jobj=new JSONObject(getTask());
+		  idAndNameVO=cadreRegistrationService.getBoothsList(jobj.getLong("panchayatId"));
+		  
+	  }catch(Exception e){
+		  LOG.error("Entered into getAllBoothsForPanchayat method in CadreRegistrationAction....");
+	  }
+	  return Action.SUCCESS;
+  }
 
-
+  public String newCadreRegistration(){
+	  return Action.SUCCESS;
+  }
 }
