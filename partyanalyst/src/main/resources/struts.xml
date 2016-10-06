@@ -13866,7 +13866,7 @@
 	  		<param name="root">status</param>   
 	 	</result>
 	</action>
-	<action name="getNotReceiveRegistrationPersonAction" class="coreDashboardAction" method="getNotReceiveRegistrationPerson">
+		<action name="getNotReceiveRegistrationPersonAction" class="coreDashboardAction" method="getNotReceiveRegistrationPerson">
 		<result type="json" name="success">
 				<param name="root">object</param>   
 		</result>
@@ -13880,6 +13880,40 @@
 		<result type="json" name="success">
 	  		<param name="root">idNameVoList</param>   
 	 	</result>
+	</action>
+	
+	<action name="tabUserAccountDetailsAction" class="userAction"  method="getAllDistrictsForSurvey">
+			<result>/jsp/tabUserAccountDetails.jsp</result>
+	</action>
+	<action name="getAllDistrictsForSurveyAction" class="userAction"  method="getAllDistrictsForSurvey">
+			<result type="json" name="success">
+			<param name="root">districts</param>
+		</result>
+	</action>
+	
+	<action name="getAllConstituenciesForDistrictAction" class="userAction"  method="getAllConstituenciesForDistrict">
+			<result type="json" name="success">
+			<param name="root">constituencies</param>
+		</result>
+	</action>
+	<action name="getTabUserAccountDetailsInformationAction" class="userAction"  method="getTabUserAccountDetailsInformation">
+			<result type="json" name="success">
+			<param name="root">regionList</param>
+		</result>
+	</action>
+	<!-- <action name="getAllPanchayatsForMandalAction" class="CadreRegistrationAction"  method="getAllPanchayatsForMandal">
+			<result type="json" name="success">
+			<param name="root">idAndNameVO</param>
+		</result>
+	</action>
+   <action name="getAllBoothsForPanchayatAction" class="CadreRegistrationAction"  method="getAllBoothsForPanchayat">
+			<result type="json" name="success">
+			<param name="root">idAndNameVO</param>
+		</result>
+	</action> -->
+	
+	<action name="cadreRegistrationAction" class="cadreRegistrationAction" method="newCadreRegistration">
+			<result name="success">/jsp/cadreRegistration2016.jsp</result>
 	</action>
 </package>
 </struts>
