@@ -868,6 +868,11 @@ $(document).on("click",".subLevelEventMemberCls",function(){
 	}
 });
  function getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString){
+	     
+		  $("#childEvnetMemberDivId").html(' ');
+		  $("#directChildMemberForEventDivId").html(' ');
+		  $("#topPoorLocationsEventDivId").html(' ');
+		  
 		 $("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
@@ -890,9 +895,10 @@ function buildgetChildUserTypesByItsParentUserTypeForEvent(result,attrEventIdsSt
 		 str+='<ul class="comparisonSelect">';
 		 
 		 var firstChildUserTypeIdString;
-		 
+		 var userType;
 		 if(result !=null && result.length >0){
 			  firstChildUserTypeIdString = result[0].shortName;
+			  userType=result[0].userType;
 			 for(var i in result){
 				 str+='<li attr_userTypeId="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\'  attr_event_idsString='+attrEventIdsString+' class="allItsSubUserTypeClsForEvent">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
@@ -901,7 +907,7 @@ function buildgetChildUserTypesByItsParentUserTypeForEvent(result,attrEventIdsSt
 		$("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString," ");
+		getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString,userType);
 	}
 function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString,childUserType){
 	 $("#childEvnetMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');

@@ -217,7 +217,11 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildgetChildUserTypesByItsParentUserType(result)
+			if(result != null && result.length > 0){
+			 buildgetChildUserTypesByItsParentUserType(result)
+			}else{
+			 $("#childUserTypeDetailsDiv").html('NO DATA AVAILABLE.');	
+			}
 		});			 
 	}
 	
@@ -869,9 +873,10 @@
 		 str+='<ul class="comparisonSelect">';
 		 
 		 var firstChildUserTypeIdString;
-		 
+		 var userType;
 		 if(result !=null && result.length >0){
 			 firstChildUserTypeIdString = result[0].shortName;
+			 userType=result[0].userType;
 			 for(var i in result){
 				 str+='<li attr_usertypeid="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
@@ -880,7 +885,7 @@
 		$("#childUserTypeDetailsDiv").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildUserTypeMembers(firstChildUserTypeIdString," ");
+		getSelectedChildUserTypeMembers(firstChildUserTypeIdString,userType);
 		
 	}
 	
