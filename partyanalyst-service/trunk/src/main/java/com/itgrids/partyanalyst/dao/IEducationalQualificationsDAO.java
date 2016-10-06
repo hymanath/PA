@@ -11,5 +11,6 @@ public interface IEducationalQualificationsDAO extends GenericDao<EducationalQua
 	public List<EducationalQualifications> getEducationalQualificationsByQualificationType(String qualificationType);
 	
 	public List<EducationalQualifications> getEducationalQualificationsList();
+	public List<Object[]> getEducationalQualifications();
 	
 }

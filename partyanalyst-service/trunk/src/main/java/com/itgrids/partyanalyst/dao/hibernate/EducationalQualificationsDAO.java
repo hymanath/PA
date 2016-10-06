@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
@@ -25,5 +26,11 @@ public class EducationalQualificationsDAO extends GenericDaoHibernate<Educationa
 	public List<EducationalQualifications> getEducationalQualificationsList()
 	{
 		return getHibernateTemplate().find(" from EducationalQualifications model ");
+	}
+	public List<Object[]> getEducationalQualifications()
+	{
+		Query query = getSession().createQuery("select distinct model.eduQualificationId,model.qualificationfrom EducationalQualifications model");
+		 return query.list();
+		
 	}
 }
