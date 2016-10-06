@@ -1,0 +1,15 @@
+body
+{
+  	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size:14px;
+}
+h1,h2,h3,h4,h5,h6,ul,.table
+{
+	margin:0px;
+}
+.text-capital
+{
+	text-transform:uppercase;
+}

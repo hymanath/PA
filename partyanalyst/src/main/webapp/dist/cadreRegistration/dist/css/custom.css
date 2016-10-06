@@ -1,0 +1,289 @@
+* , select
+{
+	outline: 0 !important;
+}
+body
+{
+  	font-family: 'Varela Round', sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size:14px;
+	background-color:#ECF0F1;
+}
+h1,h2,h3,h4,h5,h6,ul,.table,p
+{
+	margin:0px;
+}
+.path {
+  stroke-dasharray: 100; 
+  stroke-dashoffset: 1000;
+  animation: dash 5s linear alternate infinite;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+input.form-control
+{
+	border-radius:0px;
+}
+.text-capital
+{
+	text-transform:uppercase;
+}
+.mainHeading
+{
+	color:#59AB5F;
+	position: relative; 
+	text-align: center; 
+	top: -43px; 
+	padding: 3px 8px; 
+	background-color:#ECF0F1;
+	left:25%;
+	text-transform:uppercase;
+	font-weight:600;
+}
+.mainHeading span
+{
+	background:#fff;
+}
+.rulerLine
+{
+	border-color:#354751;
+	border-width:8px;
+}
+.mainBlock
+{
+	position:relative;
+	background-color:#fff;	
+	border:1px solid #ddd;
+	padding:30px 20px 50px;
+}
+.new:before
+{
+	background-image: url("../img/NewRegistration.png");
+    background-size: 130px 150px;
+    content: " ";
+    display: block;
+    height: 150px;
+    left: 0;
+	top:0px;
+    position: absolute;
+    width: 130px;
+}
+.renewal:before
+{
+	background-image:url("../img/Renewal.png");
+	background-size: 130px 150px;
+    content: " ";
+    display: block;
+    height: 150px;
+    left: 0;
+	top:0px;
+    position: absolute;
+    width: 130px;
+}
+.m_top20
+{
+	margin-top:20px;
+}
+.m_top5
+{
+	margin-top:5px;
+}
+.m_top30
+{
+	margin-top:30px;
+}
+.m_top50
+{
+	margin-top:50px;
+}
+.m_top10
+{
+	margin-top:10px;
+}
+label
+{
+	font-weight:500;
+}
+.panelRegistration
+{
+	box-shadow:0px 0px 4px rgba(0,0,0,0.3);
+}
+.panelRegistration .panel-heading
+{
+	background:#fff;
+	padding-left:80px;
+	position:relative;
+}
+.panelRegistration .panel-heading.new:before
+{
+	background-image: url("../img/NewRegistration.png");
+    background-size: 60px 70px;
+    content: " ";
+    display: block;
+    height: 70px;
+    left: 0;
+	top:0px;
+    position: absolute;
+    width: 60px;
+}
+.panelRegistration .panel-heading.renewal:before
+{
+	background-image:url("../img/Renewal.png");
+	background-size: 60px 70px;
+    content: " ";
+    display: block;
+    height: 70px;
+    left: 0;
+	top:0px;
+    position: absolute;
+    width: 60px;
+}
+
+.panelRegistration .panel-body
+{
+	padding:30px;
+}
+.checkbox-custom, .radio-custom {
+    opacity: 0;
+    position: absolute;   
+}
+
+.checkbox-custom, .checkbox-custom-label, .radio-custom, .radio-custom-label {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.checkbox-custom-label, .radio-custom-label {
+    position: relative;
+}
+
+.checkbox-custom + .checkbox-custom-label:before, .radio-custom + .radio-custom-label:before {
+    content: '';
+    background: #fff;
+    border: 2px solid #39464F;
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+	line-height:14px;
+    margin-right: 10px;
+	border-radius:0px;
+    text-align: center;
+	font-weight:200
+}
+
+.checkbox-custom:checked + .checkbox-custom-label:before {
+	content: "✔";    /*content: "\e013";*/
+    font-family: 'Glyphicons Halflings';
+    background: #fff;
+    color: #E8543C;
+	font-size:16px;
+	font-weight:600;
+}
+
+.radio-custom + .radio-custom-label:before {
+    border-radius: 50%;
+}
+
+.radio-custom:checked + .radio-custom-label:before {
+    content: "\e013";
+    font-family: 'Glyphicons Halflings';
+    color:#A4A9AF;
+}
+
+.checkbox-custom:focus + .checkbox-custom-label, .radio-custom:focus + .radio-custom-label {
+  outline: 1px solid #ddd; /* focus style */
+}
+.searchResults
+{
+	padding:0px;
+}
+
+.searchResults li
+{
+	width:49%;
+	list-style:none;
+	position:relative;
+	border-bottom:1px solid #ddd;
+	padding:8px;
+	height:100px;
+	display:inline-block;
+}
+.searchResults li .cadreImage
+{
+	width:80px;
+	height:80px;
+	border:1px solid #F80206;
+}
+.renewalSearchResults
+{
+	padding:0px;
+}
+
+.renewalSearchResults li
+{
+	width:100%;
+	list-style:none;
+	position:relative;
+	border-bottom:1px solid #ddd;
+	padding:8px;
+	height:100px;
+	display:inline-block;
+}
+.renewalSearchResults li .cadreImage
+{
+	width:80px;
+	height:80px;
+	border:1px solid #F80206;
+}
+.checkboxAlign
+{
+	position:absolute;
+	right:0px;
+	top:12px;
+}
+.imageDiv
+{
+	padding:10px;
+	border:1px solid #ddd;
+}
+.imageDiv .cadreImage
+{
+	height:90px;
+	width:90px;
+	margin:auto;
+	display:block;
+	border:1px solid #FF0004;
+}
+.formExtra .form-control
+{
+	padding-left:34.5px;
+}
+.formExtra .form-control-feedback
+{
+	display: block;
+    height: 34px;
+    line-height: 34px;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    top: 0;
+    width: 34px;
+    z-index: 2;
+}
+.pad_20
+{
+	padding:20px;
+}
