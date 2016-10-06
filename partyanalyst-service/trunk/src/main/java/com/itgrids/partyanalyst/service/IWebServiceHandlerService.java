@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -158,4 +160,7 @@ public interface IWebServiceHandlerService {
     public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
     public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType);
     public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo);
+    public List<IdAndNameVO> getStateWiseConstituency();
+    public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId);
+    
 }

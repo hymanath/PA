@@ -17,8 +17,11 @@ import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IActivityTabRequestBackupDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
@@ -70,6 +73,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
@@ -223,7 +227,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
     private IUnionTypeDesignationDAO unionTypeDesignationDAO;
     private INotificationService notificationService;
-    
+    private IConstituencyDAO constituencyDAO;            
+    private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO; 
+    private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     
 	public INotificationService getNotificationService() {
 		return notificationService;
@@ -606,6 +612,35 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 	public void setSurveyUserAuthDAO(ISurveyUserAuthDAO surveyUserAuthDAO) {
 		this.surveyUserAuthDAO = surveyUserAuthDAO;
+	}
+	
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	
+
+	public IDelimitationConstituencyMandalDetailsDAO getDelimitationConstituencyMandalDetailsDAO() {
+		return delimitationConstituencyMandalDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDetailsDAO(
+			IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO) {
+		this.delimitationConstituencyMandalDetailsDAO = delimitationConstituencyMandalDetailsDAO;
+	}
+	
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
 	public String checkForUserAuthentication(String userName , String passWord)
@@ -4116,5 +4151,38 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return returnList;
 	  }
+
+	public List<IdAndNameVO> getStateWiseConstituency() {
+		List<IdAndNameVO> consList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> allConslist = constituencyDAO
+					.getStateWiseConstituency();
+			if (allConslist != null && allConslist.size() > 0) {
+				for (Object[] objects : allConslist) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					consList.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			log.error(
+					"Exception raised in getStateWiseConstituency() in WebServiceHandlerService class",
+					e);
+		}
+		return consList;
+	}
+
+	public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId) {
+		List<IdAndNameVO> returnList = null;
+		try {
+			returnList = cadreRegistrationService
+					.getConstitencyWiseTehsil(constituencyId);
+		} catch (Exception e) {
+			log.debug("Entered into the getConstitencyWiseTehsil  method in WebServiceHandlerService");
+		}
+		return returnList;
+	}
 }
 

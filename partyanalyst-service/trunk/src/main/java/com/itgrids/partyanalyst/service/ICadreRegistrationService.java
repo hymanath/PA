@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -198,5 +199,8 @@ public interface ICadreRegistrationService {
 	public String  checkPaymentStatus(String memberShipNo);
 	public String  updatePaymentStatus(Long tdpCadreId);
 	public List<PartyMeetingWSVO> getRegistrationCadreDetailsSourceWise(RtcUnionInputVO inputVO);
+	public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId);
+	public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
+	public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
 }
 
