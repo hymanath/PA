@@ -13451,4 +13451,44 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return returnList;
 	}
+	
+	public List<TdpCadreVO> getTdpCadresBySearch(String membershipNo,String name,String mobileNo,String voterId){
+		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>();
+		try {
+			String searchType = "";
+			
+			if(membershipNo != null && membershipNo.trim().length() > 0)
+				searchType = "memberShip";
+			else
+				searchType = "other";
+			
+			List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearch(searchType, membershipNo, name, mobileNo, voterId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					TdpCadreVO vo = new TdpCadreVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setMemberShipNo(obj[1] != null ? obj[1].toString():"");
+					vo.setName(obj[2] != null ? obj[2].toString():"");
+					vo.setRelativeName(obj[3] != null ? obj[3].toString():"");
+					vo.setRelativeType(obj[4] != null ? obj[4].toString():"");
+					vo.setHouseNo(obj[5] != null ? obj[5].toString():"");
+					vo.setImageURL("images/"+ IConstants.CADRE_IMAGES + "/" +(obj[6] != null ? obj[6].toString():""));
+					vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
+					vo.setGender(obj[8] != null ? obj[8].toString():"");
+					vo.setAge(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					vo.setVoterId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
+					vo.setVoterCardNo(obj[11] != null ? obj[11].toString():"");
+					vo.setFamilyVoterId(Long.valueOf(obj[12] != null ? obj[12].toString():"0"));
+					vo.setFamilyVoterCardNo(obj[13] != null ? obj[13].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getTdpCadresBySearch in CadreRegistrationService Service class", e);
+		}
+		return returnList;
+	}
 }
