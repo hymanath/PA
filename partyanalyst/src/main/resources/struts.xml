@@ -13925,6 +13925,11 @@
 	  		<param name="root">cadreRegistrationVO</param>   
 	 	</result>
 	</action>
+	<action name="getTdpCadresBySearchAction" class="cadreRegistrationAction" method="getTdpCadresBySearch">
+		<result type="json" name="success">
+			<param name="root">cadreList</param>
+		</result>
+	</action>
 	<action name="stateLevelCampDetailsDayWiseAction" class="coreDashboardAction" method="getStateLevelCampDetailsDayWise"> 
 		<result type="json" name="success">
 	  		<param name="root">idNameVOsList</param>    
