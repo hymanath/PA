@@ -99,6 +99,9 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
   function buildCadreFamilyDetails(result) {
 	$(".cadreFamilyDetailsCls").html('');
 	var str = '';
+	str += '<div class="col-md-12 col-xs-12 col-sm-12">';
+    str += '<h4 class="panel-title text-capital">select nominee</h4>';
+    str += '</div>';
 	str += '<ul class="searchResults">';
 	if (result.cadreFamilyDetails != null
 			&& result.cadreFamilyDetails.length > 0) {
@@ -124,8 +127,8 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 					+ ' </span>';
 			str += '</p>';
 			str += '<div class="checkboxAlign">';
-			str += '<input id="checkbox-18" class="checkbox-custom" name="checkbox-1" type="checkbox">';
-			str += '<label for="checkbox-18" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+			str += '<input id="checkbox'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox">';
+			str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			str += '</div>';
 			str += '</div>';
 			str += '</div>';
@@ -133,12 +136,12 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 		}
 	}
 	str += '</ul>';
-	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a href="#" class="text-capital" id="addNewNomineeId"> add new nominee</a></p>';
+	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a  class="text-capital" id="addNewNomineeId"> add new nominee</a></p>';
 	$(".cadreFamilyDetailsCls").html(str);
 
 }
-  $(document).on("click","#addNewNomineeId",function(){       
-	$("#newNomineeDetailsId").show();
+  $(document).on("click","#addNewNomineeId",function(){
+      $("#addNewNominatedId").show();  
    });
 
 function buildCadreRelativesDetails(result) {
@@ -158,4 +161,8 @@ function buildCadreRelativesDetails(result) {
 	   $("#relativeId").trigger("chosen:updated");       
 	}
 		     
-   }	  
+   }
+  $(document).on("click",".checkboxCls",function(){
+     $(".checkboxCls").prop( "checked" ,false);
+	 $( this ).prop( 'checked', true );
+     })   
