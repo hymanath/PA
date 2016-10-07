@@ -7128,4 +7128,48 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		return (TdpCadre)query.uniqueResult();
 	}
 	
+	public List<Object[]> getTdpCadreDetailsBySearch(String searchType,String memberShipNo,String name,String mobileNo,String voterId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tdpCadreId," +		//0
+						" model.memberShipNo," +	//1
+						" model.firstname," +		//2
+						" model.relativename," +	//3
+						" model.relativeType," +	//4
+						" model.houseNo," +			//5
+						" model.image," +			//6
+						" model.mobileNo," +		//7
+						" model.gender," +			//8
+						" model.age," +				//9
+						" model1.voterId," +		//10
+						" model1.voterIDCardNo," +	//11
+						" model2.voterId," +		//12
+						" model2.voterIDCardNo" +	//13
+						" from TdpCadre model" +	
+						" left join model.voter model1" +
+						" left join model.familyVoter model2" +
+						" where model.isDeleted = 'N'");
+		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip")){
+			sb.append(" and model.memberShipNo = :memberShipNo");
+		}
+		else if(searchType != null && searchType.trim().equalsIgnoreCase("other")){
+			if(name != null && name.trim().length() > 0)
+				sb.append(" and model.firstname like '%"+name+"%'");
+			if(mobileNo != null && mobileNo.trim().length() > 0)
+				sb.append(" and model.mobileNo = :mobileNo");
+			if(voterId != null && voterId.trim().length() > 0)
+				sb.append(" and model1.voterIDCardNo = :voterId");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip"))
+			query.setParameter("memberShipNo", memberShipNo);
+		else if(searchType != null && searchType.trim().equalsIgnoreCase("other")){
+			if(mobileNo != null && mobileNo.trim().length() > 0)
+				query.setParameter("mobileNo", mobileNo);
+			if(voterId != null && voterId.trim().length() > 0)
+				query.setParameter("voterId", voterId);
+		}
+		
+		return query.list();
+	}
 }

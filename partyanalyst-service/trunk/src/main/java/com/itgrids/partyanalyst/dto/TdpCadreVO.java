@@ -48,7 +48,7 @@ public class TdpCadreVO implements java.io.Serializable
 	private String dateOfBirth;
 	private String designation;
 	private String wished = "false";
-	
+	private String relativeType;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
@@ -61,7 +61,28 @@ public class TdpCadreVO implements java.io.Serializable
 	private String paymentStatus;
 	
 	private Long onlineCount;
+	private Long familyVoterId;
+	private String familyVoterCardNo;
 	
+	
+	public Long getFamilyVoterId() {
+		return familyVoterId;
+	}
+	public void setFamilyVoterId(Long familyVoterId) {
+		this.familyVoterId = familyVoterId;
+	}
+	public String getFamilyVoterCardNo() {
+		return familyVoterCardNo;
+	}
+	public void setFamilyVoterCardNo(String familyVoterCardNo) {
+		this.familyVoterCardNo = familyVoterCardNo;
+	}
+	public String getRelativeType() {
+		return relativeType;
+	}
+	public void setRelativeType(String relativeType) {
+		this.relativeType = relativeType;
+	}
 	public String getAlreadyRegistered() {
 		return alreadyRegistered;
 	}
