@@ -7106,12 +7106,18 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		  return query.list();
 	}
 	
-	public TdpCadre getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId){
+	public TdpCadre getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId,String status){
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select model ");
 		 
-		str.append(" from TdpCadre model  where model.tdpCadreId = :tdpCadreId and model.isDeleted='N' and model.enrollmentYear= 2014l ");
+		str.append(" from TdpCadre model  where model.tdpCadreId = :tdpCadreId and model.isDeleted='N'  ");
+		
+		if(status.equalsIgnoreCase("update")){
+			str.append(" and model.enrollmentYear = 2016l ");	
+		}else if(status.equalsIgnoreCase("renewal")){
+			str.append(" and model.enrollmentYear = 2014l ");
+		}
 		
 		Query query = getSession().createQuery(str.toString());
 		

@@ -379,16 +379,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 
 			if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
-				TdpCadre tdpCadre = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId);
+				TdpCadre tdpCadre = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId,status);
 				setCadreDetailsToVO(returnVO,tdpCadre);
-			}
-			if(voterId != null && voterId.longValue() >0l){
+			}else if(voterId != null && voterId.longValue() >0l){
 				Voter voter = voterDAO.getVoterDetailsByVoterId(voterId);
 				setVoterDetailsToVO(returnVO,voter);
-				getFamilyVoterDetails(voterId,returnVO);
-			}else if(familyVoterId != null && familyVoterId.longValue() >0l){
+			} 
+			if(familyVoterId != null && familyVoterId.longValue() >0l){
 				getFamilyVoterDetails(familyVoterId,returnVO);
+			}else if(voterId != null && voterId.longValue() >0l){
+				getFamilyVoterDetails(voterId,returnVO);
 			}
+			
 			returnVO.setCasteList(getStatewisesCastNames(1l));
 			returnVO.setEduQualftnList(getEducationalQualifications());          
 			returnVO.setRelativesList(getAllRelationDetails());
@@ -415,7 +417,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setLastName(commonMethodsUtilService.getStringValueForObject(tdpCadre.getFirstname()));//firstName
 			returnVO.setNameType(commonMethodsUtilService.getStringValueForObject(tdpCadre.getLastname()));//lastName
 			returnVO.setMemberTypeId(commonMethodsUtilService.getStringValueForObject(tdpCadre.getMemberShipNo()));//memberShipNo
-			returnVO.setGender(commonMethodsUtilService.getStringValueForObject(tdpCadre.getGender()));//gender
+			String gender = null;
+			if(tdpCadre.getGender().equalsIgnoreCase("M")){
+				gender = "Male";
+			}else if(tdpCadre.getGender().equalsIgnoreCase("F")){
+				gender = "Female";
+			}
+			returnVO.setGender(gender);//gender
 			returnVO.setAge(commonMethodsUtilService.getLongValueForObject(tdpCadre.getAge()));//age 
 			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && tdpCadre.getDateOfBirth()  != null)
 			{
@@ -472,7 +480,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		if(voter != null){
 			
-			returnVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(voter.getVoterId()));//voterId
+			returnVO.setVoterRelationId(commonMethodsUtilService.getLongValueForObject(voter.getVoterId()));//voterId
 			returnVO.setLastName(commonMethodsUtilService.getStringValueForObject(voter.getName()));//Name
 			returnVO.setGender(commonMethodsUtilService.getStringValueForObject(voter.getGender()));//gender
 			returnVO.setAge(commonMethodsUtilService.getLongValueForObject(voter.getAge()));//age 
@@ -497,6 +505,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setImageBase64String(commonMethodsUtilService.getStringValueForObject(voter.getImagePath()));//ImagePath
 			returnVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(voter.getMobileNo()));//mobileNo
 			returnVO.setRelativeType(commonMethodsUtilService.getStringValueForObject(voter.getRelationshipType()));//relativeType
+			returnVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(voter.getVoterIDCardNo()));//votercardNo
 			
 		}
 		}catch(Exception e){
