@@ -2599,4 +2599,21 @@ public String getRegistrationPersonDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getStateLevelCampDetailsDayWise(){
+	try{
+		jObj = new JSONObject(getTask());
+		Long stateId = jObj.getLong("stateId");
+		String dateStr = jObj.getString("dateStr");
+		JSONArray programIdArr = jObj.getJSONArray("programIdArr");  
+		List<Long> programIdList = new ArrayList<Long>();
+		for( int i=0;i<programIdArr.length();i++){
+			programIdList.add(Long.valueOf(programIdArr.getString(i)));
+		}
+		idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsDayWise(programIdList,stateId,dateStr);
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getStateLevelCampDetailsDayWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
 }
