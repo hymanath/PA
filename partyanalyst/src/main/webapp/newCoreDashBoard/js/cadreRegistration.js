@@ -885,6 +885,9 @@ function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate)
 				str+='</thead>'; 
 				str+='<tbody>';
 				for(var j in tabUserInfoList){
+					if(tabUserInfoList[j].name == "prasad" || tabUserInfoList[j].name == "abhi" || tabUserInfoList[j].name == "lakshman" || tabUserInfoList[j].name == "nagaraju" || tabUserInfoList[j].name == "mahi" || tabUserInfoList[j].name == "dhj" || tabUserInfoList[j].name == "sri" || tabUserInfoList[j].name == "Sudhakar" || tabUserInfoList[j].name == "H.Jyothi kumar"){
+						continue;   
+					}
 						str+='<tr> ';
 						   if(tabUserInfoList[j].userName != null && tabUserInfoList[j].userName.length > 0){
 							str+='<td>'+tabUserInfoList[j].userName+'</td>';   
