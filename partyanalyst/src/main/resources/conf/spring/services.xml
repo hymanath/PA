@@ -798,6 +798,9 @@
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
 		<property name="userCalendarService" ref="userCalendarService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />	
+		<property name="surveyAnswerInfoDAO" ref="surveyAnswerInfoDAO" />	
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>
 	
 	<bean name="constituencyManagementService" class="com.itgrids.partyanalyst.service.impl.ConstituencyManagementService" >		
@@ -2221,7 +2224,8 @@
 	  <property name="notificationService" ref="notificationService"/> 
 	  <property name="constituencyDAO" ref="constituencyDAO"/> 
 	  <property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"/> 
-	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>  
+	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/> 
+	   <property name="panchayatDAO" ref="panchayatDAO"/> 
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
