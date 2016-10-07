@@ -205,5 +205,7 @@ public interface ICadreRegistrationService {
 	public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
 	public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
 	public List<TdpCadreVO> getTdpCadresBySearch(String membershipNo,String name,String mobileNo,String voterId);
+	 public List<IdAndNameVO> getPanchayatOrConsList(Long mandalOrMunpaId);
+	 public List<IdAndNameVO> getBoothsList(Long panchayatId);
 }
 
