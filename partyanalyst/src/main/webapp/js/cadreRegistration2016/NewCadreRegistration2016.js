@@ -214,7 +214,7 @@
       str += '</p>';
       str += '<div class="checkboxAlign">';
       str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
-      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxCls" attr_voterId="'+result[i].voterIDCardNo+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
       str += '</div>';
 	  str += '</div>';
       str += '</div>';
@@ -250,28 +250,6 @@
 	
   });
   
- function getSearchByMyVoterIdDetails(){
-	 var voterId1=$("#voterId").val();
-	 var familyVoterId=0;
-	 var tdpCadreId=$("#tdpCadreId").val();
-	 var status=$("#statusId").val();
-	 
-	 var jsObj={
-		 voterId:voterId1,
-		 familyVoterId:familyVoterId,
-		 tdpCadreId:tdpCadreId,
-		 status:status
-	 }
-	 $.ajax({
-		 type:'GET',
-		 url: 'getSearchByMyVoterIdDetailsAction.action',
-         dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
-	 })
-	
-  }
-  
    function getSearchByRelativeVoterIdDetails(){
 	 var voterId1=0;
 	 var familyVoterId=$("#voterId").val();
@@ -281,12 +259,12 @@
 	 var jsObj={
 		 voterId:voterId1,
 		 familyVoterId:familyVoterId,
-		 tdpCadreId:tdpCadreId,
+		 cadreId:tdpCadreId,
 		 status:status
 	 }
 	 $.ajax({
 		 type:'GET',
-		 url: 'getSearchByRelativeVoterIdDetailsAction.action',
+		 url: 'getRegistrationPersonDetailsAction.action',
          dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){

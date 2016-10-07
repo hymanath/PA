@@ -1,11 +1,15 @@
-function getRegistrationPersonDetails(){
-var status = "renewal";
-var jsObj={  
-			status :"renewal",
-			voterId : 10,
-			familyVoterId :0 ,
-			cadreId : 5238680
-		};
+function getSearchByMyVoterIdDetails(){
+	 var voterId1=$("#voterId").val();
+	 var familyVoterId=0;
+	 var tdpCadreId=$("#tdpCadreId").val();
+	 var status=$("#statusId").val();
+	 alert(voterId1)
+	 var jsObj={
+		 voterId:voterId1,
+		 familyVoterId:familyVoterId,
+		 cadreId:tdpCadreId,
+		 status:status
+	 }
 		$.ajax({          
 			type : 'GET',    
 			url : 'getRegistrationPersonDetailsAction.action',  
@@ -22,6 +26,7 @@ var jsObj={
 				buildCadreRelativesDetails(result,"relativeId");
 			}else if(status == "update" || status == "renewal"){
 				buildCadreRelativesDetails(result,"prevNomneReltvId");
+				buildCadreRelativesDetails(result,"relativeId");
 			}
 			
 		});
@@ -34,6 +39,7 @@ if(status == "new"){
 	$("#voterDvId").show();
 	$("#emailDivId").show();
 }else if(status == "update" || status == "renewal"){
+alert(89)
 	$("#cadreMembrSpId").show();
 	$("#cadrePrvNomneDivId").show();
 	$("#cadreVoterDivId").show();
@@ -82,13 +88,13 @@ var str = "";
 			$("#aadharId").val(result.candidateAadherNo);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeName != null && result.nomineeName != ""){
-			$("#nomineeNameId").val(result.nomineeName);
+			$("#prvNomneNameId").val(result.nomineeName);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != ""){
-			$("#nomineeAgeId").val(result.nomineeAge);
+			$("#prevNomneAgeId").val(result.nomineeAge);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeGender != null && result.nomineeGender != ""){
-			$("#nomineeGenderId").val(result.nomineeGender);
+			$("#prvNomneGendrId").val(result.nomineeGender);
 		 }
 		  
 }

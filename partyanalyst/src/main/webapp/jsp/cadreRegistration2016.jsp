@@ -1455,7 +1455,7 @@
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
-<script src="js/NewCadreRegistration2016.js" type="text/javascript"></script>
+<script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
 <script type="text/javascript">
 var a = $(window).height();
 var b = $(window).width();
@@ -1515,7 +1515,6 @@ $(document).on("click",".voterIdBtn",function(){
 		$(".profileDetailsBlock").removeClass("hide");
 		$(".profileDetailsBlock").addClass("animated fadeInDown");	
    	},500);
-	getRegistrationPersonDetails();
 });
 
 
@@ -1568,7 +1567,6 @@ $(document).on("click",".voterIdBtnR",function(){
 		$(".profileDetailsBlockR").removeClass("hide");
 		$(".profileDetailsBlockR").addClass("animated fadeInDown");		
 	},500);
-	getRegistrationPersonDetails();
 });
 </script>
 </body>
