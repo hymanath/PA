@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserSmsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
+import com.itgrids.partyanalyst.dto.BoothReportVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -83,6 +85,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
@@ -230,6 +233,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IConstituencyDAO constituencyDAO;            
     private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO; 
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+    private IPanchayatDAO panchayatDAO;
+  
     
 	public INotificationService getNotificationService() {
 		return notificationService;
@@ -642,6 +647,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	
 
 	public String checkForUserAuthentication(String userName , String passWord)
 	{
@@ -4151,38 +4164,63 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return returnList;
 	  }
-
-	public List<IdAndNameVO> getStateWiseConstituency() {
-		List<IdAndNameVO> consList = new ArrayList<IdAndNameVO>();
-		try {
-			List<Object[]> allConslist = constituencyDAO
-					.getStateWiseConstituency();
-			if (allConslist != null && allConslist.size() > 0) {
-				for (Object[] objects : allConslist) {
-					IdAndNameVO vo = new IdAndNameVO();
-					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
-					vo.setName(objects[1] != null ? objects[1].toString() : "");
-					consList.add(vo);
+	  
+	  public List<IdAndNameVO> getStateWiseConstituency() {
+			List<IdAndNameVO> consList = new ArrayList<IdAndNameVO>();
+			try {
+				List<Object[]> allConslist = constituencyDAO
+						.getStateWiseConstituency();
+				if (allConslist != null && allConslist.size() > 0) {
+					for (Object[] objects : allConslist) {
+						IdAndNameVO vo = new IdAndNameVO();
+						vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+						vo.setName(objects[1] != null ? objects[1].toString() : "");
+						consList.add(vo);
+					}
 				}
+
+			} catch (Exception e) {
+				log.error(
+						"Exception raised in getStateWiseConstituency() in WebServiceHandlerService class",
+						e);
 			}
-
-		} catch (Exception e) {
-			log.error(
-					"Exception raised in getStateWiseConstituency() in WebServiceHandlerService class",
-					e);
+			return consList;
 		}
-		return consList;
-	}
 
-	public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId) {
-		List<IdAndNameVO> returnList = null;
-		try {
-			returnList = cadreRegistrationService
-					.getConstitencyWiseTehsil(constituencyId);
-		} catch (Exception e) {
-			log.debug("Entered into the getConstitencyWiseTehsil  method in WebServiceHandlerService");
+		public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId) {
+			List<IdAndNameVO> returnList = null;
+			try {
+				returnList = cadreRegistrationService
+						.getConstitencyWiseTehsil(constituencyId);
+			} catch (Exception e) {
+				log.debug("Entered into the getConstitencyWiseTehsil  method in WebServiceHandlerService");
+			}
+			return returnList;
 		}
-		return returnList;
-	}
+	  
+	  public List<IdAndNameVO> getPanchayatOrConsList(Long mandalOrMunpaId)
+	  {
+		  List<IdAndNameVO> returnList=null;
+		  try{
+			  returnList=cadreRegistrationService.getPanchayatOrConsList(mandalOrMunpaId);
+		  }catch(Exception e){
+			  log.error("Error occured at getPanchayatOrConsList() in WebServiceHandlerService {}",e);
+			  
+		  }
+		  return returnList;
+	  }
+	 
+	  public List<IdAndNameVO> getBoothsList(Long panchayatId){
+		  List<IdAndNameVO> returnList=null;
+		  try{
+			  returnList=cadreRegistrationService.getBoothsList(panchayatId);
+			  
+		  }catch(Exception e){
+			  log.error("Error occured at getBoothsList() in WebServiceHandlerService {}",e);
+		  }
+		  return returnList;
+	  }
+	 
+	 
 }
 
