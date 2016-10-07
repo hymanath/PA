@@ -802,4 +802,24 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   query.setDate("toDate", toDate);  
 	   return query.list(); 
    }
+   public List<Object[]> getTotalInvitedCadreIdForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate){  
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select distinct TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName, " +
+						   " TC.tdpCadreId from TrainingCampBatchAttendee TCBA, TdpCadre TC " +  
+						   " where " +  
+						   " TCBA.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
+						   " date(TCBA.trainingCampBatch.fromDate) <= (:toDate) and" );    
+		if(stateId.longValue() == 1){
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 23 and ");
+		}else{
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
+		}
+		queryString.append(" TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId and TCBA.isDeleted = 'false' ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("programIdList", programIdList);
+		query.setDate("toDate", toDate); 
+		return query.list();       
+		
+	}
 }

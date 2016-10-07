@@ -1686,5 +1686,38 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 query.setDate("toDate", toDate);  
 		 return query.list();
 	}
+	public List<Object[]> getDayWisePresent(List<Long> programIdList,Long stateId,List<String> dateList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" date(A.attended_time) as date, A.tdp_cadre_id as  tdpCadre "+
+						" from "+
+						" training_camp_attendance TCA, training_camp_schedule TCS, "+
+						" training_camp_program TCP,  attendance A, "+
+						" training_camp_batch_attendee TCBA,  tdp_cadre TC, "+
+						" user_address UA, district D, training_camp_batch TCB  "+
+						" where  "+
+						" TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and  "+
+						" TCS.training_camp_program_id = TCP.training_camp_program_id and  "+
+						" TCP.training_camp_program_id in (:programIdList) and  "+
+						" TCA.attendance_id = A.attendance_id and  "+
+						" TC.tdp_cadre_id = A.tdp_cadre_id and "+
+						" TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
+						" TCBA.training_camp_batch_id = TCB.training_camp_batch_id and "+
+						" TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
+						" TC.address_id = UA.user_address_id and  "+
+						" UA.district_id = D.district_id and  "+
+						" date(A.attended_time) in (:dateList) and  ");
+		if(stateId == 1l){
+			queryStr.append(" (D.district_id BETWEEN 1 and 23) ");  
+		}else{
+			queryStr.append(" (D.district_id BETWEEN 1 and 10) ");
+		}
+		queryStr.append(" group by date(A.attended_time),A.tdp_cadre_id order by A.tdp_cadre_id");
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString()).addScalar("date", Hibernate.STRING).addScalar("tdpCadre",Hibernate.LONG);
+		query.setParameterList("programIdList",programIdList);
+		query.setParameterList("dateList",dateList);
+		return query.list();
+		
+	}
 }
 
