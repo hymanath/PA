@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
+import com.itgrids.partyanalyst.dto.BoothReportVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
@@ -162,5 +164,6 @@ public interface IWebServiceHandlerService {
     public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo);
     public List<IdAndNameVO> getStateWiseConstituency();
     public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId);
-    
+    public List<IdAndNameVO> getPanchayatOrConsList(Long panchaConsistId);
+    public List<IdAndNameVO> getBoothsList(Long panchayatId);
 }
