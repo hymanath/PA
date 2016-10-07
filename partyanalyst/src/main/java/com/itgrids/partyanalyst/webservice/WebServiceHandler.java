@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.BoothReportVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -2001,7 +2003,7 @@ public class WebServiceHandler {
 		public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo){
 		 return webServiceHandlerService.getAccommodationTrackingInfoByNotificationType(inputvo);
 		}
-
+		
 		@GET
 		@Path("/StateWiseConstituency")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -2015,4 +2017,19 @@ public class WebServiceHandler {
 		public List<IdAndNameVO> getConstitencyWiseTehsil(@PathParam("constituencyId") Long constituencyId){
 		 return webServiceHandlerService.getConstitencyWiseTehsil(constituencyId);
 		}
+		
+		@GET
+		@Path("/getPanchyatAndBoothsList/{tehsilId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IdAndNameVO> getPanchyatAndBoothsList(@PathParam("tehsilId") Long tehsilId){
+			return webServiceHandlerService.getPanchayatOrConsList(tehsilId);
+		}
+		
+		@GET
+		@Path("/getBoothsListForPancyat/{panchayatId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IdAndNameVO> getBoothsListForPancyat(@PathParam("panchayatId") Long panchayatId){
+			return webServiceHandlerService.getBoothsList(panchayatId);
+		}
+		
 }
