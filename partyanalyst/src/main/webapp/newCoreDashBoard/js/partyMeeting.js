@@ -2595,11 +2595,11 @@ function getMeetingRecentTime(){
 		data : {task:JSON.stringify( )}
 	}).done(function(result){
 		if(result != null){
-		 setLastUpdatedTime(result)	
+		 setMeeingLastUpdatedTime(result)	
 		}
 	});
 }
-function setLastUpdatedTime(lastUpdatedTime){
+function setMeeingLastUpdatedTime(lastUpdatedTime){
  $("#lastMeetingUpdatedIdTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 }
 
