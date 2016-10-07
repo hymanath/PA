@@ -189,6 +189,7 @@
     </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
+       		<pattern>/cadreRegistrationOverviewAction*</pattern>   
             <pattern>/newhomePageAction*</pattern>
             <pattern>/newconnectPeoplePage*</pattern>
 	    	<!--<pattern>/voters*</pattern>-->
@@ -687,7 +688,9 @@
 		<pattern>/govtOrderIssuedAction*</pattern> 
 		 <pattern>/tabUserAccountDetailsAction*</pattern>
 		<pattern>/showArticlesAction*</pattern> 
-		<pattern>/cadreRegistrationAction*</pattern> 
+		<pattern>/cadreRegistrationAction*</pattern>
+		<pattern>/cadreRegistrationOverviewAction*</pattern>           
+		
 		
 	</decorator> 
 </decorators>

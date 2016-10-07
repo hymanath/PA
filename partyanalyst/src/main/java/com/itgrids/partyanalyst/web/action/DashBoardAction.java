@@ -566,6 +566,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			Long userId = user.getRegistrationID();
+			if(entitlements.contains("MEMBERSHIP_DRIVE_CONSTITUENCY_OVERVIEW_ENTITLEMENT".trim())){
+				return "membershipDriveConstituencyOverviewEntitlement";
+			}
 			if(entitlements.contains("LEADER_OCCASIONS_ENTITLEMENT".trim())){
 				
 				birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(null,null,null,null);
