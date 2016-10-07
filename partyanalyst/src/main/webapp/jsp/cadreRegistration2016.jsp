@@ -17,6 +17,7 @@
 <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+
 </head>
 <body>
 <svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -237,272 +238,80 @@
                         </div>
                     </div>
                     <div class="row m_top30">
+					
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>State</label>
-                            <select class="select">
-                            	<option>Andhra Pradesh</option>
-                            </select>
+                          
+						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
+							<option value="0">Select State</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="36">Telangana</option>
+						  </select>
+						 
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>District</label>
-                            <select class="select">
-                            	<option>Distreict Name</option>
-                            </select>
+                            <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
+							<option value="0">Select District</option>
+							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Constituency</label>
-                            <select class="select">
-                            	<option>Constituency</option>
-                            </select>
+                            <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
+							<option value="0">Select Constituency</option>
+							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Mandal</label>
-                            <select class="select">
-                            	<option>Mandal</option>
-                            </select>
+                            <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value)">
+							<option value="0">Select Mandal</option>
+							</select>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Village</label>
-                            <select class="select">
-                            	<option>Andhra Pradesh</option>
-                            </select>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
+                        	<label>Village/Panchayat</label>
+                           <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
+						   <option value="0">Select Village/Panchayat</option>
+							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Booth</label>
-                            <select class="select">
-                            	<option>Andhra Pradesh</option>
-                            </select>
+                             <select class="select" id="boothsList" class="form-control" onchange="getBoothsByPanchayat(this.value)">
+							  <option value="0">Select Booth</option>
+							</select>
                         </div>
                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Name</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="nameId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Mobile No</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="mobileId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>House Number</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="huseNOId"/>
                         </div>
-                        <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 m_top10 col-sm-offset-6 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch">serach voter id</button>
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
+							<span id="voterIdBack" class="backBtn"> ← Back</span>
+						</div>
+                        <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails()">Search voter id</button>
                         </div>
                     </div>
                 </div>
                 <!-- Voter ID Search Block End-->
                 <!-- search Results Block -->
-                <div class="panel-body searchResultsBlock hide">
+                <div class="panel-body searchResultsBlock hide" >
                 	<div class="row">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<ul class="searchResults">
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-7" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-7" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-8" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-8" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-9" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-9" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-10" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-10" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-11" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-11" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-12" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-12" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-13" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-13" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-14" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-14" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-15" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-15" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-16" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-16" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-4 col-sm-offset-2 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn">relative voter id</button>
+                    	<div class="col-md-12 col-xs-12 col-sm-12" id="searchVoterDetailsId"></div>
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
+							<span id="searchResultsBack" class="backBtn"> ← Back</span>
+						</div>
+                        <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
+                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-4 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn">my voter id</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
                         </div>
                     </div>
                 </div>
@@ -659,15 +468,220 @@
                             	<input type="checkbox" id="changeNomineeId" />Change Nominee
                             </label>
                         </div>
-                       <!-- <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
+                        <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
                     	<!--<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="panel-title text-capital">select nominee</h4>
                         </div>-->
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls" >
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                        	<ul class="searchResults">
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-18" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-18" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-19" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-20" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-1" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-1" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-2" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-2" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-3" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-3" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-4" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-4" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-5" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-5" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-6" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-6" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-20" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-20" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-21" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-21" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <p class="m_top30">Note: If no nominee is present in the above list. Please click <a href="#" class="text-capital"> add new nominee</a></p>
                         </div>
                     </div>
                     <div class="row">
@@ -1431,11 +1445,17 @@
         </div>
 	</div>
 </div>
+
+<input type="hidden" id="voterId"/>
+<input type="hidden" id="tdpCadreId"/>
+<input type="hidden" id="statusId"/>
+
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
+<script src="js/NewCadreRegistration2016.js" type="text/javascript"></script>
 <script type="text/javascript">
 var a = $(window).height();
 var b = $(window).width();
@@ -1446,6 +1466,9 @@ setTimeout(function(){
 	$(".cadreRegistration").removeClass("hide");
 	$(".mainBlocks").addClass("animated fadeInDown");
 },1000)
+setTimeout(function(){
+	$(".mainBlocks").removeClass("animated fadeInDown");
+},1500);
 $(".searchResults").mCustomScrollbar({
 	setHeight:'300px'
 });
@@ -1460,6 +1483,22 @@ $(document).on("click",".registerNew",function(){
 		$(".subBlock,.voterIdSearch").removeClass("hide");
 		$(".subBlock,.voterIdSearch").addClass("animated fadeInDown");
 	},500)
+	setTimeout(function(){
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeInDown");
+		$(".mainBlocks").removeClass("animated fadeOutUp");
+	},1000);
+});
+$(document).on("click","#voterIdBack",function(){
+	$(".voterIdSearch").addClass("animated fadeOutUp");
+	setTimeout(function(){
+		$(".subBlock,.voterIdSearch").addClass("hide");
+		$(".mainBlocks").addClass("animated fadeInDown");
+		$(".mainBlocks").removeClass("hide");
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeInDown");
+		$(".mainBlocks").removeClass("animated fadeInDown");
+	},1000)
 });
 $(document).on("click",".voterSearch",function(){
 	$(".voterIdSearch").addClass("animated fadeOutUp");
