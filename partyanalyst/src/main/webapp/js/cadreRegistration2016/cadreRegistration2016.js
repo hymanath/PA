@@ -1,10 +1,10 @@
 function getRegistrationPersonDetails(){
 
 var jsObj={  
-			status :"new",
+			status :"renewal",
 			voterId : 10,
 			familyVoterId :0 ,
-			cadreId : 1400698
+			cadreId : 5238680
 		};
 		$.ajax({          
 			type : 'GET',    
@@ -12,13 +12,91 @@ var jsObj={
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-			buildCadreFamilyDetails(result);
+			buildProfileDetails(result);
+		 	buildCasteDetails(result);
+		 	buildEductnQualifns(result);
+		 	buildCadreFamilyDetails(result);
 			buildCadreRelativesDetails(result);
-		  console.log(result);
 		});
 
 }
-function buildCadreFamilyDetails(result) {
+function buildProfileDetails(result){
+var str = "";
+		 if(result.lastName != null){
+			$("#nameId").val(result.lastName);
+		 }
+		 if(result.gender != null){
+			$("#genderId").val(result.gender);
+		 }
+		 if(result.age != null){
+			$("#ageId").val(result.age);
+		 }
+		 if(result.dobStr != null && result.dobStr != ""){
+			 var dob = result.dobStr.substring(0, 11);
+			 $("#dobId").val(dob);
+		 }
+		 if(result.tdpCadreId != null && result.imageBase64String != null){
+			$("#existImgId").attr('src','https://mytdp.com/images/cadre_images/'+result.imageBase64String+'');
+		}else if(result.voterRelationId != null && result.imageBase64String != null){
+			$("#existImgId").attr('src','https://mytdp.com/images/voter_images/'+result.imageBase64String+'');
+		 }else{
+			str+='<img src="dist/img/default_image.png" class="cadreImage img-responsive" alt="existing image"/>';
+		 }
+		 
+		 if(result.mobileNumber != null){
+			$("#mobileId").val(result.mobileNumber);
+		 }
+		 if(result.email != null && result.email != ""){
+			$("#emailId").val(result.email);
+		 }
+		 if(result.voterCardNo != null && result.voterCardNo != ""){
+			 $("#relVotCls").addClass("text-muted");
+			 $("#selfVotCls").addClass("text-success");
+			 $("#voterId").val(result.voterCardNo);
+		 }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
+			 $("#relVotCls").addClass("text-success");
+			 $("#selfVotCls").addClass("text-muted");
+			 $("#voterId").val(result.voterCardNumber);
+		 }
+		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
+			$("#aadharId").val(result.candidateAadherNo);
+		 }
+		 if(result.nomineeName != null && result.nomineeName != ""){
+			$("#nomineeNameId").val(result.nomineeName);
+		 }
+		 if(result.nomineeAge != null && result.nomineeAge != ""){
+			$("#nomineeAgeId").val(result.nomineeAge);
+		 }
+		 if(result.nomineeGender != null && result.nomineeGender != ""){
+			$("#nomineeGenderId").val(result.nomineeGender);
+		 }
+		  
+}
+function buildCasteDetails(result) {
+$("#casteListId").append('<option value="0">Select Caste</option>');
+   if (result.casteList != null && result.casteList.length > 0) {
+     for ( var i in result.casteList) {
+	 if(result.casteId == result.casteList[i].id)
+       $("#casteListId").append('<option selected value="'+result.casteList[i].id+'">'+result.casteList[i].name+'</option>');
+	 else
+	   $("#casteListId").append('<option value="'+result.casteList[i].id+'">'+result.casteList[i].name+'</option>');
+     }
+	 $("#casteListId").trigger("chosen:updated");
+  }
+  }
+  function buildEductnQualifns(result) {
+   $("#eductnQualId").append('<option  value="0">Select Caste</option>');
+   if (result.eduQualftnList != null && result.eduQualftnList.length > 0) {
+     for ( var i in result.eduQualftnList) {
+	 if(result.educationId == result.eduQualftnList[i].id)
+       $("#eductnQualId").append('<option selected value="'+result.eduQualftnList[i].id+'">'+result.eduQualftnList[i].name+'</option>');
+	 else
+	   $("#eductnQualId").append('<option value="'+result.eduQualftnList[i].id+'">'+result.eduQualftnList[i].name+'</option>');
+     }
+	 $("#eductnQualId").trigger("chosen:updated");
+  }
+  }
+  function buildCadreFamilyDetails(result) {
 	$(".cadreFamilyDetailsCls").html('');
 	var str = '';
 	str += '<ul class="searchResults">';
@@ -80,4 +158,4 @@ function buildCadreRelativesDetails(result) {
 	   $("#relativeId").trigger("chosen:updated");       
 	}
 		     
-   }	   
+   }	  
