@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -135,10 +136,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	private IPaymentGatewayService paymentGatewayService;
 	private List<VoterVO> voterList = new ArrayList<VoterVO>();
-	
+	private List<TdpCadreVO> cadreList = new ArrayList<TdpCadreVO>();
 	private List<IdAndNameVO> idAndNameVO;
 	
 	
+	public List<TdpCadreVO> getCadreList() {
+		return cadreList;
+	}
+	public void setCadreList(List<TdpCadreVO> cadreList) {
+		this.cadreList = cadreList;
+	}
 	public List<VoterVO> getVoterList() {
 		return voterList;
 	}
@@ -2555,6 +2562,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   }*/
 
   public String newCadreRegistration(){
+	  return Action.SUCCESS;
+  }
+  
+  public String getTdpCadresBySearch(){
+	  try {
+		jobj = new JSONObject(getTask());
+		
+		String memberShipNo = jobj.getString("memberShipNo");
+		String name = jobj.getString("name");
+		String mobileNo = jobj.getString("mobileNo");
+		String voterNo = jobj.getString("voterNo");
+		
+		cadreList = cadreRegistrationService.getTdpCadresBySearch(memberShipNo, name, mobileNo, voterNo);
+	} catch (Exception e) {
+		LOG.error("Entered into getTdpCadresBySearch method in CadreRegistrationAction....");
+	}
 	  return Action.SUCCESS;
   }
 }
