@@ -3494,6 +3494,7 @@
 		 <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"></property>
 		 <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
 		 <property name="casteStateDAO" ref="casteStateDAO"></property>
+		 <property name="voterRelationDAO" ref="voterRelationDAO"></property>
 	</bean>
 
 </beans>		

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
-<link href="dist/cadreRegistration/dist/plugins/DropDown/dropkick.css" rel="stylesheet" type="text/css"/>
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -192,7 +192,7 @@
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock new">
             	<div class="row">
-                	<div class="col-md-4 col-xs-12 col-sm-6 col-md-offset-3">
+                	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
                     	<h2 class="text-left text-muted">కొత్త సభ్యత్వం</h2>
                     </div>
                     <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
@@ -620,8 +620,8 @@
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="panel-title text-capital">select nominee</h4>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<ul class="searchResults">
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls">
+                        	<!--<ul class="searchResults">
                                 <li>
                                     <div class="media">
                                         <div class="media-left">
@@ -823,10 +823,10 @@
                                     </div>
                                 </li>
                             </ul>
-                            <p class="m_top30">Note: If no nominee is present in the above list. Please click <a href="#" class="text-capital"> add new nominee</a></p>
+                            <p class="m_top30">Note: If no nominee is present in the above list. Please click <a href="#" class="text-capital"> add new nominee</a></p>-->
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="newNomineeDetailsId" style="display:none;">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
                             <input type="text" class="form-control"/>
@@ -841,8 +841,8 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Relative Relationship</label>
-                            <select class="select">
-                            	<option>Brother</option>
+                            <select class="select" id="relativeId">
+                            	<!--<option></option>-->
                             </select>
                         </div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
@@ -1572,7 +1572,7 @@
                             </label>
                             <span ><i>/Or/</i></span>
                             <label class="checkbox-inline">
-                            	<input type="checkbox"/>Change Nominee
+                            	<input type="checkbox" id="changeNomineeId" />Change Nominee
                             </label>
                         </div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
@@ -1588,7 +1588,7 @@
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
-<script src="dist/cadreRegistration/dist/plugins/DropDown/dropkick.js" type="text/javascript"></script>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
 <script type="text/javascript">
 var a = $(window).height();
@@ -1606,7 +1606,7 @@ $(".searchResults").mCustomScrollbar({
 $(".renewalSearchResults").mCustomScrollbar({
 	setHeight:'300px'
 });
-$(".select").dropkick();
+$('.select').chosen({width:'100%'});
 $(document).on("click",".registerNew",function(){
 	$(".mainBlocks").addClass("animated fadeOutUp");
 	setTimeout(function(){
@@ -1628,8 +1628,9 @@ $(document).on("click",".voterIdBtn",function(){
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".profileDetailsBlock").removeClass("hide");
-		$(".profileDetailsBlock").addClass("animated fadeInDown");		
-	},500);
+		$(".profileDetailsBlock").addClass("animated fadeInDown");	
+   	},500);
+	getRegistrationPersonDetails();
 });
 
 
@@ -1682,6 +1683,7 @@ $(document).on("click",".voterIdBtnR",function(){
 		$(".profileDetailsBlockR").removeClass("hide");
 		$(".profileDetailsBlockR").addClass("animated fadeInDown");		
 	},500);
+	getRegistrationPersonDetails();
 });
 </script>
 </body>
