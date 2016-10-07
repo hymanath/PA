@@ -13246,10 +13246,11 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return status;
 	}
+	
 	public List<IdAndNameVO> getStateWiseDistrict(Long stateId) {
 		List<IdAndNameVO> districtList = new ArrayList<IdAndNameVO>();
 		try {
-			List<Object[]> alldistrictlist = districtDAO.getStateWiseDistrict(stateId);
+			List<Object[]> alldistrictlist = districtDAO.getDistrictsForState(stateId);
 			if (alldistrictlist != null && alldistrictlist.size() > 0) {
 				for (Object[] objects : alldistrictlist) {
 					IdAndNameVO vo = new IdAndNameVO();
@@ -13359,6 +13360,58 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 	  	
 		
 	}*/
+	
+	 public List<IdAndNameVO> getPanchayatOrConsList(Long mandalOrMunpaId){
+			List<IdAndNameVO> retunList=new ArrayList<IdAndNameVO>();
+			try{
+				String subStrId=mandalOrMunpaId.toString().substring(0,1);
+				if(subStrId.trim().equalsIgnoreCase("1")){
+					List<Object[]> panchList=panchayatDAO.getPanchayatList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
+					for (Object[] objects : panchList) {
+						IdAndNameVO idAndNameVO =new IdAndNameVO();
+						
+						idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+						idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");
+						retunList.add(idAndNameVO);
+					}
+				}
+				if(subStrId.trim().equalsIgnoreCase("2")){
+					List<Object[]> consiList=boothDAO.getboothList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
+					for (Object[] objects : consiList) {
+						IdAndNameVO  idAndNameVO=new IdAndNameVO();
+						idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+						idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");//partNo
+						idAndNameVO.setName("Booth NO: "+idAndNameVO.getName());
+						retunList.add(idAndNameVO);
+					}
+				}
+				
+			}catch(Exception e){
+				 LOG.error("Error occured at getPanchayatOrConsList() in CadreRegistrationService {}",e);
+				
+			}
+			return retunList;
+			
+		}
+	 
+	 public List<IdAndNameVO> getBoothsList(Long panchayatId){
+		  List<IdAndNameVO> retunBoothList=new ArrayList<IdAndNameVO>();
+		  try{
+				  List<Object[]> boothListForPan=boothDAO.getBoothListFrPanchayat(panchayatId);
+				  for (Object[] objects : boothListForPan) {
+					  IdAndNameVO idAndNameVO=new IdAndNameVO();
+					  idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+					  idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");
+					  idAndNameVO.setName("Booth No:"+idAndNameVO.getName());
+					retunBoothList.add(idAndNameVO);
+				}
+			
+		  }catch(Exception e){
+			  LOG.error("Error occured at getBoothsList() in WebServiceHandlerService {}",e); 
+		  }
+		  return retunBoothList;
+
+}
 
 
 	public List<VoterVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String mobileNo,String hNo){
@@ -13408,8 +13461,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					vo.setAge(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
 					vo.setVoterIDCardNo(obj[6] != null ? obj[6].toString():"");
 					//vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
-					vo.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(obj[8] != null ? obj[8].toString():""));
-					vo.setHouseNo(obj[9] != null ? obj[9].toString():"");
+					vo.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(obj[7] != null ? obj[7].toString():""));
+					vo.setHouseNo(obj[8] != null ? obj[8].toString():"");
 					returnList.add(vo);
 					voterIds.add(voterId);
 				}
@@ -13442,6 +13495,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						if(vo != null){
 							voterVO.setTdpCadreId(vo.getAttenteeCount());
 							voterVO.setMemberShipNo(vo.getName());
+							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
 						}
 					}
 				}
