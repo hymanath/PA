@@ -1,5 +1,5 @@
 function getRegistrationPersonDetails(){
-var status = "new";
+var status = "renewal";
 var jsObj={  
 			status :"renewal",
 			voterId : 10,
@@ -28,17 +28,16 @@ var jsObj={
 
 }
 function hideShowDivs(status){
-
 if(status == "new"){
-$("#teluguNameDivId").show();
-$("#familyDetailsDivId").show();
-$("#voterDvId").show();
-$("#emailDivId").show();
+	$("#teluguNameDivId").show();
+	$("#familyDetailsDivId").show();
+	$("#voterDvId").show();
+	$("#emailDivId").show();
 }else if(status == "update" || status == "renewal"){
-$("#cadreMembrSpId").show();
-$("#cadrePrvNomneDivId").show();
-$("#cadreVoterDivId").show();
-$("#cadreUpdateVotrDivId").show();
+	$("#cadreMembrSpId").show();
+	$("#cadrePrvNomneDivId").show();
+	$("#cadreVoterDivId").show();
+	$("#cadreUpdateVotrDivId").show();
 }
 }
 function buildProfileDetails(result){
@@ -59,7 +58,7 @@ var str = "";
 		 if(result.tdpCadreId != null && result.imageBase64String != null){
 			$("#existImgId").attr('src','https://mytdp.com/images/cadre_images/'+result.imageBase64String+'');
 		}else if(result.voterRelationId != null && result.imageBase64String != null){
-			$("#existImgId").attr('src','https://mytdp.com/images/voter_images/'+result.imageBase64String+'');
+			$("#existImgId").attr('src','https://mytdp.com/voter_images/'+result.imageBase64String+'');
 		 }else{
 			str+='<img src="dist/img/default_image.png" class="cadreImage img-responsive" alt="existing image"/>';
 		 }
@@ -130,7 +129,7 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 			str += '<li>';
 			str += '<div class="media">';
 			str += '<div class="media-left">';
-			str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
+			str += '<img src="https://mytdp.com/voter_images/'+result.cadreFamilyDetails[i].imagePath+'" class="media-object cadreImage" alt=""/>';
 			str += '</div>';
 			str += '<div class="media-body">';
 			str += '<h5 class="text-capitalize">'
