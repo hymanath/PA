@@ -13925,5 +13925,10 @@
 	  		<param name="root">cadreRegistrationVO</param>   
 	 	</result>
 	</action>
+	<action name="stateLevelCampDetailsDayWiseAction" class="coreDashboardAction" method="getStateLevelCampDetailsDayWise"> 
+		<result type="json" name="success">
+	  		<param name="root">idNameVOsList</param>    
+	 	</result> 
+	</action>
 </package>
 </struts>

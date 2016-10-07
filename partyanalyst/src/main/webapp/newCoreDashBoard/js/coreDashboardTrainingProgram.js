@@ -1901,12 +1901,93 @@ function buildStateLevelCampDetails(result,programIdArr){
 							data: jsonDataArrAttended
 						}]
 				});
-			});  
+			});
+			if(programIdArr.length == 1 && result[i].dateStr != null){  
+				$.each($('#programHighChartId'+i+'').find(".highcharts-axis").find("text"),function(index,item){
+					$(this).attr("style","cursor:pointer;");       
+					$(this).attr("class","memberDtlsDayWiseCls");  
+					$(this).attr("attr_program_id",programIdArr); 
+					$(this).attr("attr_date_id",result[i].dateStr);  
+					$(this).attr("attr_state_id",globalStateId);  
+				});       
+			}
 		}
 	}
-	
 }
-function stateLevelCampMembersDistWise(programIdArr){
+	$(document).on("click",".memberDtlsDayWiseCls",function(){  
+		$("#memberId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#positionId").html('');  
+		$("#myModelId").modal('show');    
+		var programIdArr = [];
+		programIdArr.push($(this).attr("attr_program_id")); 
+		var dateStr = $(this).attr("attr_date_id");  
+		var stateId = $(this).attr("attr_state_id");
+		var jsObj={  
+			programIdArr : programIdArr,      
+			stateId : globalStateId,
+			dateStr : dateStr
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'stateLevelCampDetailsDayWiseAction.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			$("#memberId").html('');
+			if(result != null && result.length > 0){
+				buildStateLevelCampDetailsDayWise(result);
+			}else{
+				$("#memberId").html('Data Not Available');
+			}  
+		});
+	});
+	function buildStateLevelCampDetailsDayWise(result){
+		var present = 0;
+		var absent = 0;
+		var total = 0;
+		var str = '';
+		var str2 = '';
+		str+='<table class="table table-condensed" id="campMemberDtlsId">';
+	str+='<thead>';
+		str+='<th>NAME</th>';
+		str+='<th>DESIGNATION</th>';
+		str+='<th>CONTACT NUMBER</th>';
+		str+='<th>STATUS</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+		total += result[i].length;
+		for(var j in result[i]){ 
+		if(result[i][j].wish == "attended"){  
+			present++;  
+		}
+			str+='<tr>';
+		str+='<td>'+result[i][j].name.toUpperCase()+'</td>'; 
+		if(result[i][j].status==""){ 
+			str+='<td>-</td>';  
+		}else{    
+			str+='<td>'+result[i][j].status.toUpperCase()+'</td>';   
+		}  
+		str+='<td>'+result[i][j].mobileNo+'</td>';
+		if(result[i][j].wish == "absent"){
+			str+='<td style="color:#F0AD4E;">'+result[i][j].wish+'</td>';   
+		}else{
+			str+='<td>'+result[i][j].wish+'</td>'; 
+		}
+		
+		str+='</tr>';    
+		}
+	}
+	str+='</tbody>';
+	absent = total - present;
+	str2+='<span class="label label-primary" style="margin-right: 5px;">All-'+total+'</span>'; 
+	str2+='<span class="label label-default" style="margin-right: 5px;">Attended-'+present+'</span>'; 
+	str2+='<span class="label label-warning" style="margin-right: 5px;">Absent-'+absent+'</span>'; 
+	$("#positionId").html(str2);     
+	$("#memberId").html(str); 
+	$("#campMemberDtlsId").dataTable();        
+	}  
+	function stateLevelCampMembersDistWise(programIdArr){
 	$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$("#districtWiseProgramsCntDivId").html(" ");
 	//var programIdArr = [6]; 
@@ -2425,7 +2506,8 @@ function buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateSt
 				k=0;
 			for(var i in result){
 				for(var j in result[i]){
-					var cnt = (result[i][j].count)-(result[i][j].actualCount);
+					//var cnt = (result[i][j].count)-(result[i][j].actualCount);
+					//alert(cnt);
 					var trainingProgramCountArray = [];
 					trainingProgramCountArray.push(100);
 					trainingProgramCountArray.push(100);
@@ -2480,7 +2562,7 @@ function buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateSt
 								 
 								pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
 								shared: true,
-								valueSuffix: '%'
+								valueSuffix: '%'    
 							},
 						plotOptions: {
 								column: {
@@ -2516,22 +2598,18 @@ function buildstateLevelCampDetailsRepresentativeWise(result,programIdArr,dateSt
 				//add dynamic id here...
 				var len = programIdArr.length;
 				if(len == 1){
-						//if((result[i][j].count)-(result[i][j].actualCount) > 0){ 
-						$.each($('#genCampId'+k+'').find(".highcharts-xaxis-labels").find("text"),function(index,item){
-							//if(cnt == 0 && $(this).html() != "ABSENT"){  
-								$(this).attr("style","cursor:pointer;");       
-								$(this).attr("class","memberDtlsCls");
-								$(this).attr("attr_program_id",programIdArr); 
-								$(this).attr("attr_date_id",dateStr);  
-								$(this).attr("attr_state_id",globalStateId);
-								$(this).attr("attr_status",$(this).html());
-								$(this).attr("attr_designation",result[i][j].applicationStatus);
-								$(this).attr("attr_designation_id",result[i][j].id);   
-							//}
-						
+					$.each($('#genCampId'+k+'').find(".highcharts-xaxis-labels").find("text"),function(index,item){
+						if(result[i][j].count != result[i][j].actualCount || $(this).html() != "ABSENT"){  
+							$(this).attr("style","cursor:pointer;");       
+							$(this).attr("class","memberDtlsCls");
+							$(this).attr("attr_program_id",programIdArr); 
+							$(this).attr("attr_date_id",dateStr);  
+							$(this).attr("attr_state_id",globalStateId);
+							$(this).attr("attr_status",$(this).html());
+							$(this).attr("attr_designation",result[i][j].applicationStatus);
+							$(this).attr("attr_designation_id",result[i][j].id);   
+						}
 					}); 
-				//}
-					
 				}
 				k+=1;
 			}
@@ -2596,35 +2674,69 @@ function getTrainingRecentTime(){
   function buildTrainingProgramMemberDtlsStatusWise(result,status){
 	
 	var str = '';
-	str+='<table class="table table-condensed" id="campMemberDtlsId">';
+	str+='<table class="table table-condensed table-bordered" id="campMemberDtlsId">';
 	str+='<thead>';
-		str+='<th>NAME</th>';
-		str+='<th>DESIGNATION</th>';
-		str+='<th>CONTACT NUMBER</th>'; 
-		str+='<th>STATUS</th>';
+		if(status == "ATTENDED"){
+			str+='<tr>';
+		}
+			if(status == "ATTENDED"){
+				str+='<th rowspan="2">NAME</th>';
+			}else{
+				str+='<th >NAME</th>';
+			}
+			if(status == "ATTENDED"){
+				str+='<th rowspan="2">DESIGNATION</th>';
+			}else{
+				str+='<th >DESIGNATION</th>';
+			}
+			if(status == "ATTENDED"){
+				str+='<th rowspan="2">CONTACT NUMBER</th>';
+			}else{
+				str+='<th>CONTACT NUMBER</th>';
+			}
+			if(status == "ATTENDED"){
+					str+='<th colspan="'+result[0].count+'" class="text-capital text-center">ATTENDANCE</th>';
+				str+='</tr>';
+				str+='<tr>';
+			}
+			
+			
+		if(status == "ATTENDED"){
+			for(var i = 1; i <= result[0].count; i++){    
+				str+='<th>DAY '+i+'</th>';
+			}
+		}else{
+			str+='<th>STATUS</th>';    
+		}
+		if(status == "ATTENDED"){
+			str+='</tr>';
+		}
+		
 	str+='</thead>';
 	str+='<tbody>';
-	
 	for(var i in result){
-		
 		str+='<tr>';
-		str+='<td>'+result[i].name.toUpperCase()+'</td>';  
-		
+		str+='<td>'+result[i].name.toUpperCase()+'</td>'; 
 		if(result[i].status==""){ 
-			str+='<td>-</td>';
+			str+='<td>-</td>';  
 		}else{    
 			str+='<td>'+result[i].status.toUpperCase()+'</td>';   
 		}  
 		str+='<td>'+result[i].mobileNo+'</td>'; 
-		
-		str+='<td>'+status+'</td>';  
-				
-		str+='</tr>';   
+		if(status == "ATTENDED"){
+			for(var k in result[i].subList){
+				if(result[i].subList[k] == "No"){
+					str+='<td class="text-danger">'+result[i].subList[k]+'</td>'; 
+				}else{
+					str+='<td class="text-success">'+result[i].subList[k]+'</td>'; 
+				}   
+			}
+		}else{
+			str+='<td>'+status+'</td>';  
+		}	
+		str+='</tr>';      
 	}
-
 	str+='</tbody>'; 
-	
-	
 	$("#memberId").html(str); 
-	$("#campMemberDtlsId").dataTable();    
+	$("#campMemberDtlsId").dataTable();        
   }
