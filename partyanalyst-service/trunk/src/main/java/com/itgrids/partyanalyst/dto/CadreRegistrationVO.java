@@ -181,6 +181,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long parentTdpCadreId;
 	private List<IdAndNameVO> casteList = new ArrayList<IdAndNameVO>();
 	private List<IdAndNameVO> eduQualftnList = new ArrayList<IdAndNameVO>();
+	private List<IdAndNameVO> relativesList = new ArrayList<IdAndNameVO>();
 	
 	
 	
@@ -1089,6 +1090,13 @@ public class CadreRegistrationVO implements Serializable{
 	public void setRelativeType(String relativeType) {
 		this.relativeType = relativeType;
 	}
+	public List<IdAndNameVO> getRelativesList() {
+		return relativesList;
+	}
+	public void setRelativesList(List<IdAndNameVO> relativesList) {
+		this.relativesList = relativesList;
+	}
+	
 	
 	
 }

@@ -1,21 +1,21 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
-import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
+import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -38,8 +38,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	private CommonMethodsUtilService commonMethodsUtilService ;
 	private IVoterDAO voterDAO ;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;   
-	private IEducationalQualificationsDAO educationalQualificationsDAO;       
+	private IEducationalQualificationsDAO educationalQualificationsDAO;         
 	private ICasteStateDAO casteStateDAO;
+	private IVoterRelationDAO voterRelationDAO;
 	
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -83,6 +84,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 	
+	public IVoterRelationDAO getVoterRelationDAO() {
+		return voterRelationDAO;
+	}
+	public void setVoterRelationDAO(IVoterRelationDAO voterRelationDAO) {
+		this.voterRelationDAO = voterRelationDAO;
+	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
 	    try {
@@ -253,7 +260,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	    }
 	    return null;    
 	  }
-	
+	/**
+	* @param  Long voterId,CadreRegistrationVO vo
+	* @return  CadreRegistrationVO
+	* @author srujana 
+	* @Description : 
+	*  @since 10-October-2016
+	*/
 	public CadreRegistrationVO getFamilyVoterDetails(Long voterId,CadreRegistrationVO vo)
 	{
 		List<CadreFamilyVO> returnList = new ArrayList<CadreFamilyVO>();
@@ -299,7 +312,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  	
 		
 	}
-	
+	/**
+	* @param  
+	* @return  List<IdAndNameVO>
+	* @author srujana 
+	* @Description : 
+	*  @since 10-October-2016
+	*/
 	public List<IdAndNameVO> getEducationalQualifications( ) {
 		List<IdAndNameVO> qualificationList = new ArrayList<IdAndNameVO>();
 		try {
@@ -319,6 +338,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return qualificationList;
 	}
+	/**
+	* @param Long stateId
+	* @return  List<IdAndNameVO>
+	* @author srujana 
+	* @Description : 
+	*  @since 10-October-2016
+	*/
 	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) {
 		List<IdAndNameVO> castNamesList = new ArrayList<IdAndNameVO>();
 		try {
@@ -364,8 +390,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				getFamilyVoterDetails(familyVoterId,returnVO);
 			}
 			returnVO.setCasteList(getStatewisesCastNames(1l));
-			returnVO.setEduQualftnList(getEducationalQualifications());
-			
+			returnVO.setEduQualftnList(getEducationalQualifications());          
+			returnVO.setRelativesList(getAllRelationDetails());
 		}catch(Exception e){
 			e.printStackTrace();
 			 LOG.error("Exception raised at getRegistrationPersonDetails", e);
@@ -478,4 +504,27 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			 LOG.error("Exception raised at setCadreDetailsToVO", e);
 		}
 	}
+	/**
+	* @param  
+	* @return  List<IdAndNameVO>
+	* @author srujana 
+	* @Description : 
+	*  @since 10-October-2016
+	*/
+	public List<IdAndNameVO> getAllRelationDetails(){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try{
+		List<Object[]> results = voterRelationDAO.getAllRelationDetails();
+		for(Object[] objects:results){
+			IdAndNameVO vo = new IdAndNameVO();
+			vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+			vo.setName(objects[1] != null ? objects[1].toString() : "");
+			returnList.add(vo);
+		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllRelationDetails in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
+
 }
