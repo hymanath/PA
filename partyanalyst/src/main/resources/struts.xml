@@ -221,6 +221,7 @@
 			<result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>
 			<result type="redirect" name="activitiesUpdatedPage">updateActivityAction.action</result>
 			<result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
+			<result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5657,7 +5658,7 @@
 		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
 		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	
 		    <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>   
-		    <result type="redirect" name="activitiesUpdatedPage">updateActivityAction.action</result>    
+		    <result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>   
 		    <result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
 		    <result type="redirect" name="appointmentsManagmentPage">appointmentsAction.action</result>
 			<result type="redirect" name="eventDashboard">eventDashboardAction.action?eventId=30</result>
@@ -5666,7 +5667,7 @@
 			 <result type="redirect"  name="bloodBankBleeding" >bloodBankBleadingAction.action</result>
 			 <result type="redirect"  name="debate" >debateAction.action</result>
 			 <result type="redirect" name="nominatedPostProfileAction">nominatedPostProfileAction.action</result> 
-			 <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>
+			 <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>			 
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -13932,8 +13933,13 @@
 	</action>
 	<action name="stateLevelCampDetailsDayWiseAction" class="coreDashboardAction" method="getStateLevelCampDetailsDayWise"> 
 		<result type="json" name="success">
-	  		<param name="root">idNameVOsList</param>    
+	  		<param name="root">idNameVOsList</param>     
 	 	</result> 
+	</action>
+	<action name="cadreRegistrationOverviewAction" class="coreDashboardAction" method="cadreRegistrationOverviewAction">
+		<result name="input">/jsp/loginForm.jsp?src=cadreRegistrationOverviewAction</result>
+		<result name="success">/jsp/cadreRegistrationOverview.jsp</result>    
+		<result name="error" type="redirect">login.action</result>
 	</action>
 	<action name="getDistrictsForStateAction" class="cadreRegistrationAction"  method="getStateWiseDistrict">
 			<result type="json" name="success">

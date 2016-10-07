@@ -112,7 +112,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String ediDistIdsStr;
 	private String propIdsStr;
 	private CadreRegistrationVO cadreRegistrationVO;
-	
+	private  Long constId;
+	private String constName;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
 	//setters And Getters
@@ -574,6 +575,22 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setEdiDistIdsStr(String ediDistIdsStr) {
 		this.ediDistIdsStr = ediDistIdsStr;
+	}
+	
+	public Long getConstId() {
+		return constId;
+	}
+
+	public void setConstId(Long constId) {
+		this.constId = constId;
+	}
+
+	public String getConstName() {
+		return constName;
+	}
+
+	public void setConstName(String constName) {
+		this.constName = constName;
 	}
 
 	//business methods
@@ -2613,6 +2630,37 @@ public String getStateLevelCampDetailsDayWise(){
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getStateLevelCampDetailsDayWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+
+public String cadreRegistrationOverviewAction(){
+	try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			if(regVO==null){
+				return "input";
+			}
+			boolean noaccess = false;
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!(entitlements.contains("MEMBERSHIP_DRIVE_CONSTITUENCY_OVERVIEW_ENTITLEMENT") || entitlements.contains("MEMBERSHIP_DRIVE_CONSTITUENCY_OVERVIEW_ADMIN_ENTITLEMENT"))){
+					noaccess = true ;
+				}
+		
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "error";  
+			}
+		}
+		constId = Long.valueOf(regVO.getAccessValue());
+		constName = regVO.getFirstName();
+		
+	} catch (Exception e) {
+		// TODO: handle exception
 	}
 	return Action.SUCCESS;
 }
