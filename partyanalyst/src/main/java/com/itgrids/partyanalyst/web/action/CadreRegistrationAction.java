@@ -2529,7 +2529,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		try {
 			jobj = new JSONObject(getTask());
 
-			Long constituencyId = jobj.getLong("constituencyId");
+			Long constituencyId = jobj.getLong("consistencyId");
 
 			idAndNameVO = cadreRegistrationService
 					.getConstitencyWiseTehsil(constituencyId);
@@ -2541,7 +2541,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
-	/*public String getAllPanchayatsForMandal(){
+	public String getAllPanchayatsForMandal(){
 		try{
 			jobj=new JSONObject(getTask());
 			idAndNameVO=cadreRegistrationService.getPanchayatOrConsList(jobj.getLong("mandalId"));
@@ -2559,7 +2559,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  LOG.error("Entered into getAllBoothsForPanchayat method in CadreRegistrationAction....");
 	  }
 	  return Action.SUCCESS;
-  }*/
+  }
 
   public String newCadreRegistration(){
 	  return Action.SUCCESS;
