@@ -509,7 +509,7 @@
                 <!-- search Results Block End -->
                 <!-- profile details Block -->
                 <div class="panel-body profileDetailsBlock hide">
-                	<div class="row">
+                	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="text-capital">profile details</h4>
                         </div>
@@ -517,7 +517,7 @@
                         	<div class="row">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Name</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="nameId"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Telugu Name</label>
@@ -525,22 +525,22 @@
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="genderId"/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Age</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="ageId"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6 m_top20">
                                     <label>Date Of Birth</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="dobId"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
-                                	<img src="dist/img/default_image.png" class="cadreImage img-responsive" alt="existing image"/>
+                                	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
                                     	<input type="checkbox"/>Existing Image
                                     </label>
@@ -584,36 +584,36 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Mobile Number</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="mobileId">
                               <span class="form-control-feedback text-muted" aria-hidden="true">+91</span>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Email Id</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="emailId">
                               <span class="form-control-feedback text-muted" aria-hidden="true">@</span>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Voter Id -<i> <span class="text-warning">Relative V.ID</span> / <span class="text-danger">Self V.ID</span></i></label>
-                            <input type="text" class="form-control"/>
+                        	<label>Voter Id -<i> <span class="" id="relVotCls">Relative V.ID</span> / <span class="" id="selfVotCls">Self V.ID</span></i></label>
+                            <input type="text" class="form-control" id="voterId"/>
                         </div>
                      </div>
                      <div class="row">
                      	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Aadhar Number</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="aadharId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Caste</label>
-                            <select class="select">
-                            	<option>SC</option>
+                            <select class="select" id="casteListId">
                             </select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Education</label>
-                            <input type="text" class="form-control"/>
+                           <select class="select" id="eductnQualId">
+                            </select>
                         </div>
                     </div>
                     <div class="row m_top30">
@@ -829,15 +829,15 @@
                     <div class="row" id="newNomineeDetailsId" style="display:none;">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="nomineeNameId"/>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Gender</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="nomineeGenderId"/>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Age</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="nomineeAgeId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Relative Relationship</label>
