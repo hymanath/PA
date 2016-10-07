@@ -1,5 +1,5 @@
 function getRegistrationPersonDetails(){
-
+var status = "new";
 var jsObj={  
 			status :"renewal",
 			voterId : 10,
@@ -12,13 +12,34 @@ var jsObj={
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-			buildProfileDetails(result);
+			hideShowDivs(status);
+			buildProfileDetails(result,status);
 		 	buildCasteDetails(result);
 		 	buildEductnQualifns(result);
 		 	buildCadreFamilyDetails(result);
-			buildCadreRelativesDetails(result);
+			
+			if(status == "new"){
+				buildCadreRelativesDetails(result,"relativeId");
+			}else if(status == "update" || status == "renewal"){
+				buildCadreRelativesDetails(result,"prevNomneReltvId");
+			}
+			
 		});
 
+}
+function hideShowDivs(status){
+
+if(status == "new"){
+$("#teluguNameDivId").show();
+$("#familyDetailsDivId").show();
+$("#voterDvId").show();
+$("#emailDivId").show();
+}else if(status == "update" || status == "renewal"){
+$("#cadreMembrSpId").show();
+$("#cadrePrvNomneDivId").show();
+$("#cadreVoterDivId").show();
+$("#cadreUpdateVotrDivId").show();
+}
 }
 function buildProfileDetails(result){
 var str = "";
@@ -61,13 +82,13 @@ var str = "";
 		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
 			$("#aadharId").val(result.candidateAadherNo);
 		 }
-		 if(result.nomineeName != null && result.nomineeName != ""){
+		 if(result.tdpCadreId != null && result.nomineeName != null && result.nomineeName != ""){
 			$("#nomineeNameId").val(result.nomineeName);
 		 }
-		 if(result.nomineeAge != null && result.nomineeAge != ""){
+		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != ""){
 			$("#nomineeAgeId").val(result.nomineeAge);
 		 }
-		 if(result.nomineeGender != null && result.nomineeGender != ""){
+		 if(result.tdpCadreId != null && result.nomineeGender != null && result.nomineeGender != ""){
 			$("#nomineeGenderId").val(result.nomineeGender);
 		 }
 		  
@@ -144,25 +165,31 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
       $("#addNewNominatedId").show();  
    });
 
-function buildCadreRelativesDetails(result) {
-	$("#relativeId").append('<option  value="0">Select Relationship</option>');
+function buildCadreRelativesDetails(result,id) {
+	$('#'+id+'').append('<option  value="0">Select Relationship</option>');
 	 if (result.relativesList != null
 			&& result.relativesList.length > 0) {
 				
 	   for ( var i in result.relativesList) {           
 		   if(result.relativeType == result.relativesList[i].name)
 		   {
-			    $("#relativeId").append('<option selected value="'+result.relativesList[i].id+'">'+result.relativesList[i].name+'</option>');
+			    $('#'+id+'').append('<option selected value="'+result.relativesList[i].id+'">'+result.relativesList[i].name+'</option>');
 		   }else
 		   {
-		   $("#relativeId").append('<option value="'+result.relativesList[i].id+'">'+result.relativesList[i].name+'</option>');
+		   $('#'+id+'').append('<option value="'+result.relativesList[i].id+'">'+result.relativesList[i].name+'</option>');
 		   }
 	   }
-	   $("#relativeId").trigger("chosen:updated");       
+	   $('#'+id+'').trigger("chosen:updated");       
 	}
-		     
-   }
-  $(document).on("click",".checkboxCls",function(){
+}	
+$(document).on("click",".checkboxCls",function(){
      $(".checkboxCls").prop( "checked" ,false);
 	 $( this ).prop( 'checked', true );
-     })   
+     }) 
+$(document).on("click", "#changeNomineeId", function(e) {
+       if($(this).is(":checked")) {
+           $("#familyDetailsDivId").show();
+       } else {
+           $("#familyDetailsDivId").hide();
+       }
+    });  
