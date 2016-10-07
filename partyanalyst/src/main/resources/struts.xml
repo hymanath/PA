@@ -13906,16 +13906,16 @@
 			<param name="root">regionList</param>
 		</result>
 	</action>
-	<!-- <action name="getAllPanchayatsForMandalAction" class="CadreRegistrationAction"  method="getAllPanchayatsForMandal">
+	<action name="getPanchayatsForMandalAction" class="cadreRegistrationAction"  method="getAllPanchayatsForMandal">
 			<result type="json" name="success">
 			<param name="root">idAndNameVO</param>
 		</result>
 	</action>
-   <action name="getAllBoothsForPanchayatAction" class="CadreRegistrationAction"  method="getAllBoothsForPanchayat">
+   <action name="getBoothsForPanchayatAction" class="cadreRegistrationAction"  method="getAllBoothsForPanchayat">
 			<result type="json" name="success">
 			<param name="root">idAndNameVO</param>
 		</result>
-	</action> -->
+	</action>
 	
 	<action name="cadreRegistrationAction" class="cadreRegistrationAction" method="newCadreRegistration">
 			<result name="success">/jsp/cadreRegistration2016.jsp</result>
@@ -13934,6 +13934,22 @@
 		<result type="json" name="success">
 	  		<param name="root">idNameVOsList</param>    
 	 	</result> 
+	</action>
+	<action name="getDistrictsForStateAction" class="cadreRegistrationAction"  method="getStateWiseDistrict">
+			<result type="json" name="success">
+			<param name="root">idAndNameVO</param>
+		</result>
+	</action>
+	
+	<action name="getConstituenciesListForDistrictAction" class="cadreRegistrationAction"  method="getDistrictWiseConstituency">
+			<result type="json" name="success">
+			<param name="root">idAndNameVO</param>
+		</result>
+	</action>
+	<action name="getMandalsForConstituencyAction" class="cadreRegistrationAction"  method="getConstitencyWiseTehsil">
+			<result type="json" name="success">
+			<param name="root">idAndNameVO</param>
+		</result>
 	</action>
 </package>
 </struts>
