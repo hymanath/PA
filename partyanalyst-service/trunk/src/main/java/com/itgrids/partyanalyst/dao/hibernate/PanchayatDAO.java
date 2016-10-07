@@ -296,4 +296,12 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 		return query.list();  
 	}
 	
+	public List<Object[]> getPanchayatList(Long tehsilId){
+		Query query=getSession().createQuery("select distinct model.panchayatId,model.panchayatName"
+				+ " from Panchayat model"
+				+ " where model.tehsil.tehsilId=:tehsilId");
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
+	
 }
