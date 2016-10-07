@@ -659,9 +659,9 @@
                             	<input type="checkbox" id="changeNomineeId" />Change Nominee
                             </label>
                         </div>
-                        <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
+                       <!-- <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
                     	<!--<div class="col-md-12 col-xs-12 col-sm-12">
