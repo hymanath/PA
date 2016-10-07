@@ -93,8 +93,17 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String imagePath;
 	private Long tdpCadreId;
 	private String memberShipNo;
+	private Long enrollmentYearId;
 	
 	
+	public Long getEnrollmentYearId() {
+		return enrollmentYearId;
+	}
+
+	public void setEnrollmentYearId(Long enrollmentYearId) {
+		this.enrollmentYearId = enrollmentYearId;
+	}
+
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
