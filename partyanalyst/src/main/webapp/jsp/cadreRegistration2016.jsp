@@ -617,9 +617,9 @@
                         </div>
                     </div>
                     <div class="row m_top30">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
+                    	<!--<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="panel-title text-capital">select nominee</h4>
-                        </div>
+                        </div>-->
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls">
                         	<!--<ul class="searchResults">
                                 <li>
@@ -826,25 +826,27 @@
                             <p class="m_top30">Note: If no nominee is present in the above list. Please click <a href="#" class="text-capital"> add new nominee</a></p>-->
                         </div>
                     </div>
-                    <div class="row" id="newNomineeDetailsId" style="display:none;">
+                    <div class="row">
+					<div id="addNewNominatedId" style="display:none;">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
-                            <input type="text" class="form-control" id="nomineeNameId"/>
+                            <input type="text" class="form-control"/>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Gender</label>
-                            <input type="text" class="form-control" id="nomineeGenderId"/>
+                            <input type="text" class="form-control"/>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Age</label>
-                            <input type="text" class="form-control" id="nomineeAgeId"/>
+                            <input type="text" class="form-control"/>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top20" >
                             <label>Relative Relationship</label>
                             <select class="select" id="relativeId">
                             	<!--<option></option>-->
                             </select>
                         </div>
+						 </div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
                         </div>
