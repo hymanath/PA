@@ -39,6 +39,8 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -2032,4 +2034,12 @@ public class WebServiceHandler {
 			return webServiceHandlerService.getBoothsList(panchayatId);
 		}
 		
+		
+		@POST
+		@Path("/getMembershipDriveVisualizationDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<GISVisualizationDetailsVO> getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
+		 return webServiceHandlerService.getMembershipDriveVisualizationDetails(inputVO);
+		}
 }
