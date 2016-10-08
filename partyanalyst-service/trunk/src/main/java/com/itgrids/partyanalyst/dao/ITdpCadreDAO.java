@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
@@ -450,6 +451,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getApplicationMemberDetails(Long tdpCadreId,String searchType);
 	
 	  public List<Object[]> getCadreBasicLocationDetails(Long tdpCadreId);
+	  public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
 	  public TdpCadre getRegisteredDetailsByCadreId(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
 	  public List<Object[]> getTdpCadreDetailsBySearch(String searchType,String memberShipNo,String name,String mobileNo,String voterId);
 } 
