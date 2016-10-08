@@ -407,3 +407,27 @@ $("#boothsList").trigger("chosen:updated");
 	}); 
   }
   }
+  
+getAllConstitencyList();
+function getAllConstitencyList()
+  {
+	  var jsObj={
+		  
+	  }
+	  $.ajax({
+		  type:'GET',
+		  url:'getAllConstitencyListAction.action',
+		 dataType:'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    for(var i in result){
+	   if(result[i].id == 0){
+          $("#renewalconstitId").append('<option value='+result[i].id+'>Select District</option>');
+	   }else{
+	      $("#renewalconstitId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+	  $("#renewalconstitId").trigger("chosen:updated");
+	
+  })
+  }
