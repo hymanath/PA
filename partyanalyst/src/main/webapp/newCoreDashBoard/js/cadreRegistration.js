@@ -1066,7 +1066,7 @@ function getNotReceiveRegistrationPerson(constituencyId,currentDate){
 		  if(result != null && result.length > 0){
 			  buildNotReceivedFieldStaffResult(result);
 		  }else{
-		  $("#notReceiveRegistrationFieldStaffDivId").html("No Data Available.");  
+		  $("#notReceiveRegistrationFieldStaffDivId").html("NO DATA AVAILABLE.");  
 		  }
 		});
 	}

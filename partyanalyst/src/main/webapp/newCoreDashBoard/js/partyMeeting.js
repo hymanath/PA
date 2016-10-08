@@ -1940,6 +1940,7 @@ $(document).on("click",".selectAllSpecialMeeting",function(){
    }	
 });
 function getPartyMeetingsMainTypeStateLevelOverview(){
+	$("#stateLevelMeetingBasicCnt").closest(".panelBlock").show();
 	$("#stateLevelMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeArr=[];
 	   $("#stateLevelMeetingUlId li").each(function() {
@@ -1961,7 +1962,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 					 state : state,
 					 startDateString : fromDateStr,
 					 endDateString : toDateStr,
-					 partyMeetingTypeIds:partyMeetingTypeArr
+				     partyMeetingTypeIds:partyMeetingTypeArr
 					 
 				  }
 		$.ajax({
@@ -1981,6 +1982,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 	
 }
 function getPartySpecialMeetingsMainTypeOverview(){
+	$("#specialMeetingBasicCnt").closest(".panelBlock").show();
 	$("#specialMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeArr=[];
 	   $("#specialMeetingUlId li").each(function() {
