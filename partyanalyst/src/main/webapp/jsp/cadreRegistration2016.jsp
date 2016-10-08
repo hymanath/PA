@@ -726,8 +726,8 @@
                     	<div class="col-md-6 col-xs-12 col-sm-6 m_top30" style="border-right:1px solid #333;">
                         	<div class="pad_20">
                             	<label>Please Enter your existing membership number</label>
-                                <input type="text" class="form-control"/>
-                                <button class="btn btn-success btn-block m_top30 text-capital validateNumber">validate membership number</button>
+                                <input type="text" class="form-control" id="validateRenMemshipId"/>
+                                <button class="btn btn-success btn-block m_top30 text-capital validateNumber" onclick="validateRenewalMemshipDetails()">validate membership number</button>
                                 <p class="m_top50">Note: <i>If you forgot your membership number search using your Name,Mobile Number, Voter Id</i></p>
                             </div>
                         </div>
@@ -739,18 +739,18 @@
                                     </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                                         <label>Name</label>
-                                        <input type="text" class="form-control"/>
+                                        <input type="text" class="form-control" id="renewalNameId"/>
                                     </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+                                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10" id="renewalMobileId">
                                         <label>Mobile Number</label>
                                         <input type="text" class="form-control"/>
                                     </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                                         <label>Voter ID</label>
-                                        <input type="text" class="form-control"/>
+                                        <input type="text" class="form-control" id="renewalVoterId"/>
                                     </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-                                        <button class="btn btn-success btn-block text-capital validateNumber">search membership number</button>
+                                        <button class="btn btn-success btn-block text-capital validateNumber" onclick="searchRenewalMemshipDetails()">search membership number</button>
                                     </div>
                                 </div>
                             </div>
@@ -767,9 +767,9 @@
                                 <p class="m_top50">Note: <i>If you forgot your membership number search using your Name,Mobile Number, Voter Id</i></p>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-6">
+                        <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId">
                              <div class="pad_20">
-                                <ul class="renewalSearchResults">
+                              <!-- <ul class="renewalSearchResults">
                                     <li>
                                         <div class="media">
                                             <div class="media-left">
@@ -970,7 +970,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                </ul>
+                                </ul>-->
                             </div>
                         </div>
                     </div>
