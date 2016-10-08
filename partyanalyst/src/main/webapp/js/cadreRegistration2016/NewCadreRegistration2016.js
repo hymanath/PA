@@ -271,3 +271,94 @@
 	 })
 	
   }
+  
+  
+   function validateRenewalMemshipDetails(){
+	  var membershipId=$("#validateRenMemshipId").val();
+	  var name=0;
+	  var mobileNo=0;
+	  var voterId=0;
+	  
+	  var jsObj={
+		  memberShipNo:membershipId,
+		  name:name,
+		  mobileNo:mobileNo,
+		  voterNo:voterId
+	  }
+	  $.ajax({
+		 type:'GET',
+		 url: 'getTdpCadresBySearchAction.action',
+         dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result!=null && result.length>0){
+		   renewalSearchMembershipDetails(result);
+	   }
+	 })
+	   
+  }
+  
+  function searchRenewalMemshipDetails(){
+	  var memshipId=0;
+	  var name=$("#renewalNameId").val();
+	  var mobileNo=$("#renewalMobileId").val();
+	  var voterId=$("#renewalVoterId").val();
+	  
+	  var jsObj={
+		  memberShipNo:memshipId,
+		  name:name,
+		  mobileNo:mobileNo,
+		  voterNo:voterId
+	  }
+	    $.ajax({
+		 type:'GET',
+		 url: 'getTdpCadresBySearchAction.action',
+         dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result!=null && result.length>0){
+		   renewalSearchMembershipDetails(result);
+	   }
+	 })
+  }
+  
+  
+ function renewalSearchMembershipDetails(result){
+	   var str = '';
+  str += '<ul class="searchResults">';
+  if (result!= null && result.length > 0) {
+    for ( var i in result) {
+      str += '<li>';
+      str += '<div class="media">';
+      str += '<div class="media-left">';
+      str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
+      str += '</div>';
+      str += '<div class="media-body">';
+      str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
+      str += '<p>S/o:'+result[i].relativeName+'</p>';
+      str += '<p>V.ID:'+result[i].voterId+'&nbsp;&nbsp;';
+	  if(result[i].memberShipNo!=null){
+	   str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
+		  }
+      str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
+      str += '<span>&nbsp;&nbsp;Gender : '+result[i].gender+'&nbsp;&nbsp;|</span>';
+      str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
+      str += '</p>';
+      str += '<div class="checkboxAlign">';
+      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
+      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxCls" attr_voterId="'+result[i].voterIDCardNo+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+      str += '</div>';
+	  str += '</div>';
+      str += '</div>';
+      str += '</li>';
+    }
+  }
+  str += '</ul>';
+  $("#renewalMembershipId").html(str);
+  if(result.length > 6)
+  {
+	$(".searchResults").mCustomScrollbar({
+		setHeight:'300px'
+	}); 
+  }
+  }
