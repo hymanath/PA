@@ -2194,5 +2194,31 @@ public class DebateService implements IDebateService{
 		 return null;
 	 }
 	 
-	 
+	 public void convertDebateContentToUnicode()
+	 {
+		 try{
+			 List<Debate> debateList = debateDAO.getAll();
+			 List<DebateSubject> subjectList = debateSubjectDAO.getAll();
+			 
+			 if(debateList != null && debateList.size() > 0)
+			 {
+				 for(Debate debate : debateList)
+				 {
+					 debate.setSummaryUnicode(StringEscapeUtils.unescapeJava(debate.getSummary()));
+					 debateDAO.save(debate);
+				 }
+			 }
+			 if(subjectList != null && subjectList.size() > 0)
+			 {
+				 for(DebateSubject debateSubject : subjectList)
+				 {
+					 debateSubject.setSubjectUnicode(StringEscapeUtils.unescapeJava(debateSubject.getSubject()));
+					 debateSubjectDAO.save(debateSubject);
+				 }
+			 }
+		 }catch(Exception e)
+		 {
+			 LOG.error("Exception occured in convertDebateContentToUnicode Method",e);
+		 }
+	 }
 }
