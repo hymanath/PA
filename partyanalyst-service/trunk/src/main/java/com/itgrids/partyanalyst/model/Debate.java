@@ -40,6 +40,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	private String isDeleted;
 	private String summary;
 	private Date createdDate;
+	private String summaryUnicode;
 	
 	//private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
 	//private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
@@ -140,6 +141,17 @@ public class Debate extends BaseModel implements java.io.Serializable{
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+
+	@Column(name="summery_unicode")
+	public String getSummaryUnicode() {
+		return summaryUnicode;
+	}
+
+
+	public void setSummaryUnicode(String summaryUnicode) {
+		this.summaryUnicode = summaryUnicode;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "debate")
