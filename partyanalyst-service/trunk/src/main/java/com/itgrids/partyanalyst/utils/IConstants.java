@@ -1171,5 +1171,7 @@ public interface IConstants {
 	public static final String[] EXCLUDE_URL_LIST = {};
 	
 	public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
+	public static final String MEMBERSHIP_DRIVE_PERFORMANCE_PARAMETERS[] = {"VERY GOOD-90-#196F3D","GOOD-80-#27AE60","OK-60-#A9DFBF","POOR-30-F5B7B1","VERY POOR-10-#FF5733","OTHERS-0-#FBFCFC"};
+	public static final Long DAY_WISE_TARGET_REGISTRATIONS_COUNT = 7000L;
 	
 }
