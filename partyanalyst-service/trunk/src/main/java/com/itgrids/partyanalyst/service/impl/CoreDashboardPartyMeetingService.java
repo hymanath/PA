@@ -1959,6 +1959,22 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	  }
 	  return lastUpdatedTimeStr;
 }
+	/**
+	* @param  Long activityMemberId
+	* @param  Long stateId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @param  List<Long> partyMeetingTypeValues
+	* @Param String meetingStatus
+	* @param String partyMeetingLevel
+	* @param String isComment
+	* @param Long locationId
+	* @param String locationType
+	* @return List<PartyMeetingsVO>
+	* @author Santosh 
+	* @Description :This method is used to get Meeting comment details. 
+	* @since 28-SEP-2016
+	*/
  public List<PartyMeetingsVO> getPartyMeetingCommentsDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment,Long locationId,String locationType){
 	 
 	     List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>();
@@ -2064,6 +2080,23 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		 LOG.error("Error occured at setMeetingCommentsDtla() in CoreDashboardPartyMeetingService {}",e);	 
 	 }
  }
+ /**
+	* @param  Long activityMemberId
+	* @param  Long stateId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @param  List<Long> partyMeetingTypeValues
+	* @Param String meetingStatus
+	* @param String partyMeetingLevel
+	* @param String isComment
+	* @param String reportType
+	* @param Long locationId
+	* @param String locationType
+	* @return List<PartyMeetingsVO>
+	* @author Santosh 
+	* @Description :This method is used to get Meeting Comulative count details. 
+	* @since 29-SEP-2016
+	*/
  public List<PartyMeetingsVO> getPartyMeetingComulativeCommentDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment,String reportType,Long locationId,String locationType){
 	     
 	    List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>();
@@ -2160,7 +2193,20 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		 LOG.error("Error occured at setMeetingCommentsComulativeDetailsToMap() in CoreDashboardPartyMeetingService {}",e);	
 	}
  }
- 
+ /**
+	* @param  Long activityMemberId
+	* @param  Long stateId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @param  List<Long> partyMeetingTypeValues
+	* @Param String meetingStatus
+	* @param String partyMeetingLevel
+	* @param String isComment
+	* @return List<PartyMeetingsVO>
+	* @author Santosh 
+	* @Description :This method is used to get only those district which has comment.. 
+	* @since 29-SEP-2016
+	*/
  public List<PartyMeetingsVO> getDistrictByState(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment){
 	 List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>();
 	 try{
@@ -2211,6 +2257,20 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	 }
 	 return resultList;
  }
+ /** @param  Long districtId
+	* @param Long activityMemberId
+	* @param Long stateId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @param  List<Long> partyMeetingTypeValues
+	* @Param String meetingStatus
+	* @param String partyMeetingLevel
+	* @param String isComment
+	* @return List<PartyMeetingsVO>
+	* @author Santosh 
+	* @Description :This method is used to get only those Constituency which has comment.. 
+	* @since 29-SEP-2016
+	*/
  public List<PartyMeetingsVO> getConstituencyByDistrictId(Long districtId,Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment){
 	    
 	     List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>();
@@ -2263,6 +2323,20 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	 }
 	 return resultList;
  }
+ /** @param Long constituenyId
+	* @param  Long activityMemberId
+	* @param  Long stateId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @param  List<Long> partyMeetingTypeValues
+	* @Param String meetingStatus
+	* @param String partyMeetingLevel
+	* @param String isComment
+	* @return List<PartyMeetingsVO>
+	* @author Santosh 
+	* @Description :This method is used to get only those Mandal Town/Division which has comment.. 
+	* @since 29-SEP-2016
+	*/
  public List<PartyMeetingsVO> getMandalByConstituyId(Long constituenyId,Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment){
 	 List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>();
 	     Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>();
