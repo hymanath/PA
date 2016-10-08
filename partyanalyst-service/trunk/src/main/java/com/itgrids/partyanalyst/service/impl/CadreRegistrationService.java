@@ -13511,7 +13511,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		try {
 			String searchType = "";
 			
-			if(membershipNo != null && membershipNo.trim().length() > 0)
+			if(membershipNo != null && !membershipNo.trim().equalsIgnoreCase("0") && membershipNo.trim().length() > 0)
 				searchType = "memberShip";
 			else
 				searchType = "other";
