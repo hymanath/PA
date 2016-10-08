@@ -237,11 +237,12 @@
                         	<h4 class="panel-title text-capital">search your voter id</h4>
                         </div>
                     </div>
+					<div id="errorDivId" style="color:red;"></div>
                     <div class="row m_top30">
 					
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>State</label>
-                          
+                           <span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
 						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
@@ -251,31 +252,35 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>District</label>
+							<span id="districtDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
                             <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							<option value="0">Select District</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Constituency</label>
+							<span id="constituencyDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
                             <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
 							<option value="0">Select Constituency</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Mandal</label>
+							<span id="mandalDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
                             <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value)">
 							<option value="0">Select Mandal</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
                         	<label>Village/Panchayat</label>
+							<span id="panchayatDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
                            <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
 						   <option value="0">Select Village/Panchayat</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Booth</label>
-                             <select class="select" id="boothsList" class="form-control" onchange="getBoothsByPanchayat(this.value)">
+                             <select class="select" id="boothsList" class="form-control">
 							  <option value="0">Select Booth</option>
 							</select>
                         </div>
@@ -295,7 +300,7 @@
 							<span id="voterIdBack" class="backBtn"> ← Back</span>
 						</div>
                         <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails()">Search voter id</button>
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails();">Search voter id</button>
                         </div>
                     </div>
                 </div>
@@ -314,6 +319,7 @@
                         	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
                         </div>
                     </div>
+					<div id="checkVoterId" style="color:red;"></div>
                 </div>
                 <!-- search Results Block End -->
                 <!-- profile details Block -->
@@ -1500,22 +1506,22 @@ $(document).on("click","#voterIdBack",function(){
 		$(".mainBlocks").removeClass("animated fadeInDown");
 	},1000)
 });
-$(document).on("click",".voterSearch",function(){
+function searchVoterDetails(){
 	$(".voterIdSearch").addClass("animated fadeOutUp");
 	setTimeout(function(){
 		$(".voterIdSearch").addClass("hide");
 		$(".searchResultsBlock").removeClass("hide");
 		$(".searchResultsBlock").addClass("animated fadeInDown");		
 	},500);
-});
-$(document).on("click",".voterIdBtn",function(){
+}
+function myVoterButtonDetails(){
 	$(".searchResultsBlock").addClass("animated fadeOutUp");
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".profileDetailsBlock").removeClass("hide");
 		$(".profileDetailsBlock").addClass("animated fadeInDown");	
    	},500);
-});
+}
 
 
 /* Renewal Click Actions*/
