@@ -60,7 +60,6 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
-import com.itgrids.partyanalyst.dto.BoothReportVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -75,6 +74,8 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -85,7 +86,6 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
-import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
@@ -132,6 +132,7 @@ import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -230,12 +231,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
     private IUnionTypeDesignationDAO unionTypeDesignationDAO;
     private INotificationService notificationService;
+    private IGISVisualizationService gisVisualizationService;
     private IConstituencyDAO constituencyDAO;            
     private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO; 
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     private IPanchayatDAO panchayatDAO;
   
     
+    
+	public IGISVisualizationService getGisVisualizationService() {
+		return gisVisualizationService;
+	}
+
+	public void setGisVisualizationService(
+			IGISVisualizationService gisVisualizationService) {
+		this.gisVisualizationService = gisVisualizationService;
+	}
+
 	public INotificationService getNotificationService() {
 		return notificationService;
 	}
@@ -4161,6 +4173,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  returnList = notificationService.getAccommodationTrackingInfoByNotificationType(inputvo);
 		} catch (Exception e) {
 			 log.debug("Entered into the getAccommodationTrackingInfoByNotificationType  method in WebServiceHandlerService");
+		}
+		  return returnList;
+	  }
+	  
+	  public List<GISVisualizationDetailsVO> getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
+		  List<GISVisualizationDetailsVO> returnList = new ArrayList<GISVisualizationDetailsVO>(0);
+		  try {
+			  GISVisualizationDetailsVO  vo =  gisVisualizationService.getMembershipDriveVisualizationDetails(inputVO);
+			  if(vo != null)
+				  returnList.add(vo);
+		} catch (Exception e) {
+			log.debug("Entered into the getMembershipDriveVisualizationDetails  method in WebServiceHandlerService");
 		}
 		  return returnList;
 	  }
