@@ -743,6 +743,13 @@
                                     <div class="col-md-12 col-xs-12 col-sm-12">
                                         <h4 class="text-capital">Search membership no 2014</h4>
                                     </div>
+									
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<label>Constituency</label>
+											<select class="select" id="renewalconstitId" class="form-control" onclick="getAllConstitencyList();">
+												<option value="0">Select Constituency</option>
+											</select>
+									</div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                                         <label>Name</label>
                                         <input type="text" class="form-control" id="renewalNameId"/>
