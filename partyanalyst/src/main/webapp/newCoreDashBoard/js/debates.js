@@ -377,6 +377,7 @@ function buildChannelAndPartyWiseDetails(result)
 			  str+='<tbody>';
 				
 					for(var i in result){
+						if(result[i].coreDebateVOList[0].name !=null){
 						str+='<tr>';
 							
 							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].coreDebateVOList[0].name+'</td>';
@@ -396,6 +397,7 @@ function buildChannelAndPartyWiseDetails(result)
 								str+='</td>';
 							}
 						str+='</tr>';
+						}
 					}
 			  str+='</tbody>';
 			str+='</table>';
