@@ -2222,6 +2222,7 @@
 	  <property name="tdpMemberUnionTabUserRelationDAO" ref="tdpMemberUnionTabUserRelationDAO"/> 
 	  <property name="unionTypeDesignationDAO" ref="unionTypeDesignationDAO"/> 
 	  <property name="notificationService" ref="notificationService"/> 
+	  <property name="gisVisualizationService" ref="gisVisualizationService"/> 
 	  <property name="constituencyDAO" ref="constituencyDAO"/> 
 	  <property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"/> 
 	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/> 
@@ -3499,6 +3500,23 @@
 		 <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
 		 <property name="casteStateDAO" ref="casteStateDAO"></property>
 		 <property name="voterRelationDAO" ref="voterRelationDAO"></property>
+	</bean>
+	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
+		<property name="stateDAO" ref="stateDAO"/>
+		<property name="districtDAO" ref="districtDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
+		<property name="tehsilDAO" ref="tehsilDAO"></property>	
+		<property name="panchayatDAO" ref="panchayatDAO"></property>	
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+		<property name="boothDAO" ref="boothDAO"/>
 	</bean>
 
 </beans>		
