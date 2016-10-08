@@ -13266,6 +13266,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return districtList;
 	}
+	
 	public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId) {
 		List<IdAndNameVO> constituencyList = new ArrayList<IdAndNameVO>();
 		try {
@@ -13545,4 +13546,23 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return returnList;
 	}
-}
+	public List<IdAndNameVO> getStateWiseConstituency() {
+		List<IdAndNameVO> consList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> allConslist = constituencyDAO.getStateWiseConstituency();
+			if (allConslist != null && allConslist.size() > 0) {
+				for (Object[] objects : allConslist) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					consList.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised in getStateWiseConstituency() in WebServiceHandlerService class",e);
+		}
+		return consList;
+	}
+	
+	}
