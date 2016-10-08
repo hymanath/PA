@@ -62,7 +62,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	* @param  List<Long> eventIds
 	* @return List<EventDetailsVO>
 	* @author Santosh 
-	* @Description :This Service Method is used to basic event invitee attended and invitee attended count.. 
+	* @Description :This Service Method is used to basic event invitee attended and attended count.. 
 	*  @since 15-SEPTEMBEr-2016
 	*/
 	public List<EventDetailsVO> getEventBasicCountDetails(List<Long> eventIds,Long activityMemberId,Long stateId){
@@ -484,10 +484,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 					 eventVO.setId(entry.getKey());
 					 eventVO.setName(twnDivsionidNameMap.get(entry.getKey()));
 					 eventVO.getLocationList().addAll(entry.getValue().values());
-					 if(eventInviteeMapDtls != null && eventInviteeMapDtls.size() > 0){ // merging mandal data if there.
-					 eventVO.getLocationList().addAll(eventInviteeMapDtls.get(entry.getKey()).values());
-					 }
-				  resultList.add(eventVO); 
+				     resultList.add(eventVO); 
 				}
 			}
 		 }

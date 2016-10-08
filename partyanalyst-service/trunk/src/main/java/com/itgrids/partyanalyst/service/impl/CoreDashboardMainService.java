@@ -1882,9 +1882,6 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 						        programVO.setId(entry.getKey());
 						        programVO.setName(twnDivisionProgramIdNameMap.get(entry.getKey()));
 						        programVO.getLocationList().addAll(entry.getValue());
-						         if(programDtlsMap != null && programDtlsMap.size() >0){
-						          programVO.getLocationList().addAll(programDtlsMap.get(entry.getKey()));	 //town division details adding 
-								 }
 						        resultList.add(programVO);
 					 }
 					}
