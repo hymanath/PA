@@ -122,7 +122,8 @@
 	          }else{
 	      $("#boothsList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 					}
-					}			
+					}
+$("#boothsList").trigger("chosen:updated");						
 				});
 	}
 
@@ -325,7 +326,7 @@
   
  function renewalSearchMembershipDetails(result){
 	   var str = '';
-  str += '<ul class="searchResults">';
+  str += '<ul class="renewalSearchResults">';
   if (result!= null && result.length > 0) {
     for ( var i in result) {
       str += '<li>';
