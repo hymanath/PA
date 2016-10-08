@@ -146,7 +146,7 @@
 	}
     $.ajax({
           type:'GET',
-          url: 'getDistrictsForStateAction.action',
+          url: 'getDistrictsWiseStateAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
