@@ -15,9 +15,9 @@ public class ActivityAttendanceDAOHibernateTest extends BaseDaoTestCase{
 		this.activityAttendanceDAO = activityAttendanceDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		List<Object[]> list = activityAttendanceDAO.getActivityScopeAndLevels(10864861l);
 		System.out.println(list.get(0));
-	}
+	}*/
 }
