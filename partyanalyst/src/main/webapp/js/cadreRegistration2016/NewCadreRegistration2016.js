@@ -1,4 +1,5 @@
  function getConstituenciesForDistricts(district){
+	 $("#districtDivIdImg").show();
 	 
 	$("#constituencyId  option").remove();
 	$("#constituencyId").append('<option value="0">Select Constituency</option>');
@@ -19,7 +20,7 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  
+	  $("#districtDivIdImg").hide();
 	    for(var i in result){
 	   if(result[i].id == 0){
           $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
@@ -34,6 +35,7 @@
 
 
  function getMandalCorporationsByConstituency(consistency){
+	 $("#constituencyDivIdImg").show();
 	 
 	$("#mandalList  option").remove();
 	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
@@ -53,6 +55,7 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#constituencyDivIdImg").hide();
 	    for(var i in result){
 		   if(result[i].id == 0){
 			  $("#mandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
@@ -65,7 +68,8 @@
   }
   
   function getPanchayatWardByMandal(mandal)
-	{	
+	{
+    $("#mandalDivIdImg").show();		
 	$("#panchayatList  option").remove();
 	$("#panchayatList").append('<option value="0">Select Panchayat</option>');
 	$("#boothsList  option").remove();
@@ -81,6 +85,7 @@
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
 			  for(var i in result){
+				  $("#mandalDivIdImg").hide();
 			if(mandalSubStrId==1){
 			if(result[i].id == 0){
                   $("#panchayatList").append('<option value='+result[i].id+'>Select Panchayat</option>');
@@ -103,7 +108,7 @@
 	
 	function getAllCadreInPanchayat(panchayat)
 	{	
-	
+	$("#panchayatDivIdImg").show();
 	$("#boothsList  option").remove();
 	$("#boothsList").append('<option value="0">Select Booth</option>');
 			
@@ -115,6 +120,7 @@
 					url : "getBoothsForPanchayatAction.action",
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
+					$("#panchayatDivIdImg").hide();
 					for(var i in result)
 					{
 					if(result[i].id == 0){
@@ -128,7 +134,7 @@ $("#boothsList").trigger("chosen:updated");
 	}
 
  function getDistrictsForStates(state){
-	
+	$("#statesDivIdImg").show();
 	 $("#districtId  option").remove();
 	$("#districtId").append('<option value="0">Select District</option>');
 	$("#constituencyId  option").remove();
@@ -151,6 +157,7 @@ $("#boothsList").trigger("chosen:updated");
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#statesDivIdImg").hide();
      for(var i in result){
 	   if(result[i].id == 0){
           $("#districtId").append('<option value='+result[i].id+'>Select District</option>');
@@ -170,7 +177,33 @@ $("#boothsList").trigger("chosen:updated");
 	  var name=$("#nameId").val();
 	  var mobileNo=$("#mobileId").val();
 	  var hNo=$("#huseNOId").val();
-	  
+      var state=$("#statesDivId").val();
+	  var district=$("#districtId").val();
+	  var constituency=$("#constituencyId").val();          
+	  var names=$("#nameId").val(); 
+	  var mobileNo=$("#mobileId").val();
+	  var houseNo=$("#huseNOId").val();
+     if(state == 0)
+	  {
+		 $("#errorDivId").html("please select state");
+		 return;
+	   }
+	  if(district == 0)
+	  {
+		 $("#errorDivId").html("please select district");
+		 return;
+	   }
+	  if(constituency == 0)
+	  {
+		 $("#errorDivId").html("please select constituency");
+		 return;
+	   }
+	  if(names.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
+	   {
+		  $("#errorDivId").html("please select name or mobileNo or houseNo");
+		 return; 
+	   }
+	   searchVoterDetails();
 	  var jsObj={
 		  constituencyId:constituency,
 		  mandalId:mandal,
@@ -191,7 +224,7 @@ $("#boothsList").trigger("chosen:updated");
 	   }
   });
   }
-  
+		
   function searchCadreVoterDetails(result){
 	   var str = '';
   str += '<ul class="searchResults">';
@@ -214,7 +247,7 @@ $("#boothsList").trigger("chosen:updated");
       str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
       str += '</p>';
       str += '<div class="checkboxAlign">';
-      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
+      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom searchChkboxCls"/>';
       str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
       str += '</div>';
 	  str += '</div>';
@@ -232,7 +265,7 @@ $("#boothsList").trigger("chosen:updated");
   }
   
   }
-  
+ 
   $(document).on("click",".searchChkboxCls",function(){
 	  var voterId = $(this).attr("attr_voterId");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
@@ -252,6 +285,18 @@ $("#boothsList").trigger("chosen:updated");
   });
   
    function getSearchByRelativeVoterIdDetails(){
+	   var flag = 0;
+   $(".searchChkboxCls").each(function(){
+	  if($(this).is(":checked")){  
+		  flag=1;
+	  }
+   });
+   if(flag ==  0)
+	  {
+		  $("#checkVoterId").html("please check the voterDetails");
+		  return;
+	  }
+	  myVoterButtonDetails();
 	 var voterId1=0;
 	 var familyVoterId=$("#voterId").val();
 	 var tdpCadreId=$("#tdpCadreId").val();
@@ -272,9 +317,8 @@ $("#boothsList").trigger("chosen:updated");
 	 })
 	
   }
-  
-  
-   function validateRenewalMemshipDetails(){
+ 
+  function validateRenewalMemshipDetails(){
 	  var membershipId=$("#validateRenMemshipId").val();
 	  var name=0;
 	  var mobileNo=0;

@@ -1,4 +1,17 @@
 function getSearchByMyVoterIdDetails(){
+ var flag = 0;
+  $(".searchChkboxCls").each(function(){
+	  if($(this).is(":checked")){
+		    flag=1;
+	  }
+  });
+      if(flag == 0)
+	  {
+		  $("#checkVoterId").html("please check the voterDetails");
+		  return;
+	  }
+	myVoterButtonDetails();
+	
 	 var voterId1=$("#voterId").val();
 	 var familyVoterId=0;
 	 var tdpCadreId=$("#tdpCadreId").val();
