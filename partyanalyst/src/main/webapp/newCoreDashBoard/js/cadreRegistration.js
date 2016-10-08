@@ -574,7 +574,7 @@ $('#genSec').highcharts({
 								if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
 									str1+='- <small class="text-muted">'+result.totalStartConstituPer+'%</small></h5>';
 								}
-								str1+='<h5>Started<br> Contituencies</h5>';
+								str1+='<h5>Started<br> Constituencies</h5>';
 							str1+='</td>';
 						str1+='</tr>';
 					str1+='</table>';
