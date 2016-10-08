@@ -3518,6 +3518,10 @@
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="boothDAO" ref="boothDAO"/>
 	</bean>
-
+	
+	<bean name="webServiceHandlerServiceForCadre" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerServiceForCadre" >
+	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
+	</bean>
+	
 </beans>		
 	

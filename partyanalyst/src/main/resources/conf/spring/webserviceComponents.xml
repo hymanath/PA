@@ -8,10 +8,16 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
   <bean name="webServiceHandlerService1"  class="com.itgrids.partyanalyst.webservice.android.concreteservice.WebServiceHandlerService1"  > </bean>
-        <bean name="webServiceHandler2"  class="com.itgrids.partyanalyst.webservice.android.components.WebServiceHandler2"  > 
-                      <property name="webServiceHandlerService1" ref="webServiceHandlerService1" />
-                       <property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService" />
-         </bean>
+  <bean name="webServiceHandler2"  class="com.itgrids.partyanalyst.webservice.android.components.WebServiceHandler2"  > 
+           <property name="webServiceHandlerService1" ref="webServiceHandlerService1" />
+           <property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService" />
+   </bean>
+   
+    <bean name="webServiceHandlerForCadre"  class="com.itgrids.partyanalyst.webservice.WebServiceHandlerForCadre"> 
+          
+           <property name="webServiceHandlerServiceForCadre" ref="webServiceHandlerServiceForCadre" />
+   </bean>      
+      
 	<context:component-scan base-package="com.itgrids.partyanalyst.webservice" /> 
 	
 </beans>
