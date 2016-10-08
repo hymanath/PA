@@ -26,6 +26,7 @@ public class DebateSubject {
 private Long debateSubjectId;
 private Debate debate;
 private String subject;
+private String subjectUnicode;
 
 
 
@@ -61,7 +62,7 @@ public void setDebate(Debate debate) {
 }
 
 
-@Column(name = "subject",length=50)
+@Column(name = "subject")
 public String getSubject() {
 	return subject;
 }
@@ -70,6 +71,16 @@ public String getSubject() {
 
 public void setSubject(String subject) {
 	this.subject = subject;
+}
+
+@Column(name = "subject_unicode",length=50)
+public String getSubjectUnicode() {
+	return subjectUnicode;
+}
+
+
+public void setSubjectUnicode(String subjectUnicode) {
+	this.subjectUnicode = subjectUnicode;
 }
 
 
