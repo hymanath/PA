@@ -3,7 +3,6 @@ function getSearchByMyVoterIdDetails(){
 	 var familyVoterId=0;
 	 var tdpCadreId=$("#tdpCadreId").val();
 	 var status=$("#statusId").val();
-	 alert(voterId1)
 	 var jsObj={
 		 voterId:voterId1,
 		 familyVoterId:familyVoterId,
@@ -39,7 +38,6 @@ if(status == "new"){
 	$("#voterDvId").show();
 	$("#emailDivId").show();
 }else if(status == "update" || status == "renewal"){
-alert(89)
 	$("#cadreMembrSpId").show();
 	$("#cadrePrvNomneDivId").show();
 	$("#cadreVoterDivId").show();
@@ -47,9 +45,11 @@ alert(89)
 }
 }
 function buildProfileDetails(result){
+	//$("#nomineeId").html("use"+result.nomineeName+" As Nominee");
+	
 var str = "";
-		 if(result.lastName != null){
-			$("#nameId").val(result.lastName);
+		 if(result.lastName != null){                    
+			$("#nameId1").val(result.lastName);
 		 }
 		 if(result.gender != null){
 			$("#genderId").val(result.gender);
@@ -70,7 +70,7 @@ var str = "";
 		 }
 		 
 		 if(result.mobileNumber != null){
-			$("#mobileId").val(result.mobileNumber);
+			$("#mobileId1").val(result.mobileNumber);
 		 }
 		 if(result.email != null && result.email != ""){
 			$("#emailId").val(result.email);
@@ -95,6 +95,9 @@ var str = "";
 		 }
 		 if(result.tdpCadreId != null && result.nomineeGender != null && result.nomineeGender != ""){
 			$("#prvNomneGendrId").val(result.nomineeGender);
+		 }
+		 if(result.memberTypeId != null){                    
+			$("#membershipId").val(result.memberTypeId);
 		 }
 		  
 }

@@ -326,7 +326,7 @@
                         	<div class="row">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Name</label>
-                                    <input type="text" class="form-control" id="nameId"/>
+                                    <input type="text" class="form-control" id="nameId1"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
@@ -334,7 +334,7 @@
                                 </div>
 								<div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="cadreMembrSpId">
                                     <label>Existing Membership Number</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="membershipId"/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender</label>
@@ -397,7 +397,7 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Mobile Number</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="mobileId">
+                              <input type="text" class="form-control" id="mobileId1">
                               <span class="form-control-feedback text-muted" aria-hidden="true">+91</span>
                             </div>
                         </div>
@@ -461,7 +461,7 @@
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
                         	<label class="checkbox-inline">
-                            	<input type="checkbox"/>Use Ramesh As Nominee
+                            	<input type="checkbox" id="nomineeId"/>Use Ramesh As Nominee
                             </label>
                             <span ><i>/Or/</i></span>
                             <label class="checkbox-inline">
