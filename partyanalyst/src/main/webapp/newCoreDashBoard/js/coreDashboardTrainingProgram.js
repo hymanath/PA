@@ -758,16 +758,13 @@ $(document).on("click",".programSkillsCls",function(){
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		alert(1)
 		$(".moreTrainingBlocks").hide();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".trainingIconExpand").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	}else if($(".trainingsBlockExpand").hasClass("col-md-6")){
-		alert(3)
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
 	}else{
-		alert(2)
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
