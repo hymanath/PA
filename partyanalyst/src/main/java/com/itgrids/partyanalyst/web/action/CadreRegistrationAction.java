@@ -2580,4 +2580,13 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	  return Action.SUCCESS;
   }
+  
+  public String getAllConstitencyList(){
+	  try{
+		  idAndNameVO=cadreRegistrationService.getStateWiseConstituency();
+	  }catch(Exception e){
+		  LOG.error("Entered into getAllConstitencyList method in CadreRegistrationAction.");
+	  }
+	  return Action.SUCCESS;
+  }
 }
