@@ -84,25 +84,26 @@
 					url : "getPanchayatsForMandalAction.action",
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
-			  for(var i in result){
-				  $("#mandalDivIdImg").hide();
-			if(mandalSubStrId==1){
-			if(result[i].id == 0){
-                  $("#panchayatList").append('<option value='+result[i].id+'>Select Panchayat</option>');
-						}else{
-				$("#panchayatList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-					}
-					$("#panchayatList").trigger("chosen:updated");
-					}else{
-					$("#panchayatTwnId").hide();
-					if(result[i].id == 0){
-                  $("#boothsList").append('<option value='+result[i].id+'>Selct Booth</option>');
-						}else{
-				$("#boothsList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-					}
-					$("#boothsList").trigger("chosen:updated");	
-					}
-			  }					
+				  for(var i in result){
+					  $("#mandalDivIdImg").hide();
+						if(mandalSubStrId==1){
+							$("#panchayatTwnId").show();
+						if(result[i].id == 0){
+							  $("#panchayatList").append('<option value='+result[i].id+'>Select Panchayat</option>');
+							}else{
+							$("#panchayatList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+							}
+							$("#panchayatList").trigger("chosen:updated");
+							}else{
+								$("#panchayatTwnId").hide();
+							if(result[i].id == 0){
+								$("#boothsList").append('<option value='+result[i].id+'>Selct Booth</option>');
+							}else{
+								$("#boothsList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+							}
+						$("#boothsList").trigger("chosen:updated");	
+						}
+				  }					
 				});
 	}
 	
@@ -247,8 +248,8 @@ $("#boothsList").trigger("chosen:updated");
       str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
       str += '</p>';
       str += '<div class="checkboxAlign">';
-      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom searchChkboxCls"/>';
-      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"/>';
+      str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
       str += '</div>';
 	  str += '</div>';
       str += '</div>';
@@ -320,13 +321,11 @@ $("#boothsList").trigger("chosen:updated");
  
   function validateRenewalMemshipDetails(){
 	  var membershipId=$("#validateRenMemshipId").val();
-	  var name=0;
-	  var mobileNo=0;
-	  var voterId=0;
+	  var mobileNo=$("#renewalMobileId").val();
+	  var voterId=$("#renewalVoterId").val();
 	  
 	  var jsObj={
 		  memberShipNo:membershipId,
-		  name:name,
 		  mobileNo:mobileNo,
 		  voterNo:voterId
 	  }
@@ -343,7 +342,7 @@ $("#boothsList").trigger("chosen:updated");
 	   
   }
   
-  function searchRenewalMemshipDetails(){
+  /*function searchRenewalMemshipDetails(){
 	  var memshipId=0;
 	  var name=$("#renewalNameId").val();
 	  var mobileNo=$("#renewalMobileId").val();
@@ -365,7 +364,7 @@ $("#boothsList").trigger("chosen:updated");
 		   renewalSearchMembershipDetails(result);
 	   }
 	 })
-  }
+  }*/
   
   
  function renewalSearchMembershipDetails(result){
@@ -381,17 +380,18 @@ $("#boothsList").trigger("chosen:updated");
       str += '<div class="media-body">';
       str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
       str += '<p>S/o:'+result[i].relativeName+'</p>';
-      str += '<p>V.ID:'+result[i].voterId+'&nbsp;&nbsp;';
-	  if(result[i].memberShipNo!=null){
-	   str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
-		  }
-      str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
+	  if(result[i].voterId != null && result[i].voterId > 0)
+		str += '<p>V.ID:'+result[i].voterCardNo+'&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
+	  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
+		  str += '<p>V.ID:'+result[i].voterCardNo+'&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
+	  str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
+	  str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
       str += '<span>&nbsp;&nbsp;Gender : '+result[i].gender+'&nbsp;&nbsp;|</span>';
       str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
       str += '</p>';
       str += '<div class="checkboxAlign">';
       str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
-      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxCls" attr_voterId="'+result[i].voterIDCardNo+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
       str += '</div>';
 	  str += '</div>';
       str += '</div>';
