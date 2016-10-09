@@ -8489,7 +8489,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 												" where model.isDeleted = 'N'" +
 												" and model.tdpCadre.isDeleted = 'N'" +
 												" and model.tdpCadre.enrollmentYear = :enrollmentYear" +
-												" and model.tdpCadre.voter.voterId in (:voterIds)");
+												" and model.tdpCadre.voter.voterId in (:voterIds)" +
+												" order by model.enrollmentYear.enrollmentYearId");
 		query.setParameterList("voterIds", voterIds);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
