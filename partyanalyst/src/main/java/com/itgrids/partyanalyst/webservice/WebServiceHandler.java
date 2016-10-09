@@ -2036,7 +2036,7 @@ public class WebServiceHandler {
 		
 		
 		@POST
-		@Path("/getMembershipDriveVisualizationDetails")
+		@Path("/Secure/getMembershipDriveVisualizationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<GISVisualizationDetailsVO> getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
