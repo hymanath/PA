@@ -2790,8 +2790,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			Query query=getSession().createQuery("select model.boothId,model.partNo"
 					+ " from Booth model"
 					+ " where model.localBody.localElectionBodyId =:localElecBdyId " +
-					" and model.publicationDate.publicationDateId = 22l");
+					" and model.publicationDate.publicationDateId = :publicationDate");
+			
 			query.setParameter("localElecBdyId", localElecBdyId);
+			query.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
 			
 			return query.list();
 		}
@@ -2799,8 +2801,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			Query query=getSession().createQuery("select distinct model.boothId,model.partNo" +
 					" from Booth model" +
 					" where model.panchayat.panchayatId=:panchayId" +
-					" and model.publicationDate.publicationDateId = 22l");
+					" and model.publicationDate.publicationDateId = :publicationDate");
+			
 			query.setParameter("panchayId", panchayId);
+			query.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+			
 			return query.list();
 					
 			

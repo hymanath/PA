@@ -7232,47 +7232,49 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		return (TdpCadre)query.uniqueResult();
 	}
 	
-	public List<Object[]> getTdpCadreDetailsBySearch(String searchType,String memberShipNo,String name,String mobileNo,String voterId){
+	public List<Object[]> getTdpCadreDetailsBySearch(String searchType,String memberShipNo,String mobileNo,String voterId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.tdpCadreId," +		//0
-						" model.memberShipNo," +	//1
-						" model.firstname," +		//2
-						" model.relativename," +	//3
-						" model.relativeType," +	//4
-						" model.houseNo," +			//5
-						" model.image," +			//6
-						" model.mobileNo," +		//7
-						" model.gender," +			//8
-						" model.age," +				//9
-						" model1.voterId," +		//10
-						" model1.voterIDCardNo," +	//11
-						" model2.voterId," +		//12
-						" model2.voterIDCardNo" +	//13
-						" from TdpCadre model" +	
-						" left join model.voter model1" +
-						" left join model.familyVoter model2" +
-						" where model.isDeleted = 'N'");
-		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip")){
-			sb.append(" and model.memberShipNo = :memberShipNo");
-		}
-		else if(searchType != null && searchType.trim().equalsIgnoreCase("other")){
-			if(name != null && name.trim().length() > 0)
-				sb.append(" and model.firstname like '%"+name+"%'");
-			if(mobileNo != null && mobileNo.trim().length() > 0)
-				sb.append(" and model.mobileNo = :mobileNo");
-			if(voterId != null && voterId.trim().length() > 0)
-				sb.append(" and model1.voterIDCardNo = :voterId");
-		}
+		sb.append("select model.tdpCadre.tdpCadreId," +		//0
+						" model.tdpCadre.memberShipNo," +	//1
+						" model.tdpCadre.firstname," +		//2
+						" model.tdpCadre.relativename," +	//3
+						" model.tdpCadre.relativeType," +	//4
+						" model.tdpCadre.houseNo," +		//5
+						" model.tdpCadre.image," +			//6
+						" model.tdpCadre.mobileNo," +		//7
+						" model.tdpCadre.gender," +			//8
+						" model.tdpCadre.age," +			//9
+						" model1.voterId," +				//10
+						" model1.voterIDCardNo," +			//11
+						" model2.voterId," +				//12
+						" model2.voterIDCardNo," +			//13
+						" model.tdpCadre.enrollmentYear" +	//14
+						" from TdpCadreEnrollmentYear model" +	
+						" left join model.tdpCadre.voter model1" +
+						" left join model.tdpCadre.familyVoter model2" +
+						" where model.tdpCadre.isDeleted = 'N'" +
+						" and model.isDeleted = 'N'" +
+						" and model.tdpCadre.enrollmentYear = :enrollmentYear");
+		
+		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip") && memberShipNo != null)
+			sb.append(" and model.tdpCadre.memberShipNo = :memberShipNo");
+		else if(searchType != null && searchType.trim().equalsIgnoreCase("mobile") && mobileNo != null)
+			sb.append(" and model.tdpCadre.mobileNo = :mobileNo");
+		else if(searchType != null && searchType.trim().equalsIgnoreCase("voter") && voterId != null)
+			sb.append(" and model1.voterIDCardNo = :voterId");
+		
+		sb.append(" order by model.enrollmentYear.enrollmentYearId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip"))
+		
+		if(searchType != null && searchType.trim().equalsIgnoreCase("memberShip") && memberShipNo != null)
 			query.setParameter("memberShipNo", memberShipNo);
-		else if(searchType != null && searchType.trim().equalsIgnoreCase("other")){
-			if(mobileNo != null && mobileNo.trim().length() > 0)
-				query.setParameter("mobileNo", mobileNo);
-			if(voterId != null && voterId.trim().length() > 0)
-				query.setParameter("voterId", voterId);
-		}
+		else if(searchType != null && searchType.trim().equalsIgnoreCase("mobile") && mobileNo != null)
+			query.setParameter("mobileNo", mobileNo);
+		else if(searchType != null && searchType.trim().equalsIgnoreCase("voter") && voterId != null)
+			query.setParameter("voterId", voterId);
+		
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
 		return query.list();
 	}
