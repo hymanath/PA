@@ -2497,8 +2497,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 			Long stateId = jobj.getLong("stateId");
 
-			idAndNameVO = cadreRegistrationService
-					.getStateWiseDistrict(stateId);
+			idAndNameVO = cadreRegistrationService.getStateWiseDistrict(stateId);
 
 		} catch (Exception e) {
 			LOG.error(
@@ -2514,8 +2513,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 			Long districtId = jobj.getLong("districtId");
 
-			idAndNameVO = cadreRegistrationService
-					.getDistrictWiseConstituency(districtId);
+			idAndNameVO = cadreRegistrationService.getDistrictWiseConstituency(districtId);
 
 		} catch (Exception e) {
 			LOG.error(
@@ -2531,8 +2529,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 			Long constituencyId = jobj.getLong("consistencyId");
 
-			idAndNameVO = cadreRegistrationService
-					.getConstitencyWiseTehsil(constituencyId);
+			idAndNameVO = cadreRegistrationService.getConstitencyWiseTehsil(constituencyId);
 
 		} catch (Exception e) {
 			LOG.error(
@@ -2570,11 +2567,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		jobj = new JSONObject(getTask());
 		
 		String memberShipNo = jobj.getString("memberShipNo");
-		String name = jobj.getString("name");
 		String mobileNo = jobj.getString("mobileNo");
 		String voterNo = jobj.getString("voterNo");
 		
-		cadreList = cadreRegistrationService.getTdpCadresBySearch(memberShipNo, name, mobileNo, voterNo);
+		cadreList = cadreRegistrationService.getTdpCadresBySearch(memberShipNo, mobileNo, voterNo);
 	} catch (Exception e) {
 		LOG.error("Entered into getTdpCadresBySearch method in CadreRegistrationAction....");
 	}
