@@ -7144,9 +7144,9 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 			queryStr.append(" left join userAddress.panchayat panchayat ");
 			queryStr.append(" left join userAddress.booth booth where ");
 			queryStr.append(" tdpCadre.isDeleted='N' and tdpCadre.enrollmentYear=2014 ");
-			//if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
-				queryStr.append(" and (date(tdpCadre.insertedTime) between '2016-10-06' and '2016-10-07') ");
-			//}
+			if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+				queryStr.append(" and (date(tdpCadre.insertedTime) between :startDate and :endDate) ");
+			}
 			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
 			{
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
