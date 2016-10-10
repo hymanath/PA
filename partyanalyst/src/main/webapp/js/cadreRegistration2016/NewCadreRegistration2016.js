@@ -320,6 +320,7 @@ $("#boothsList").trigger("chosen:updated");
   }
  
   function validateRenewalMemshipDetails(){
+	  $("#renewalMembershipId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var membershipId=$("#validateRenMemshipId").val();
 	  var mobileNo=$("#renewalMobileId").val();
 	  var voterId=$("#renewalVoterId").val();
@@ -337,6 +338,8 @@ $("#boothsList").trigger("chosen:updated");
    }).done(function(result){
 	   if(result!=null && result.length>0){
 		   renewalSearchMembershipDetails(result);
+	   }else{
+		   $("#renewalMembershipId").html('<h4 class="text-center text-danger">NO DATA AVAILABLE</h4>');
 	   }
 	 })
 	   
@@ -372,35 +375,36 @@ $("#boothsList").trigger("chosen:updated");
   str += '<ul class="renewalSearchResults">';
   if (result!= null && result.length > 0) {
     for ( var i in result) {
-      str += '<li>';
-      str += '<div class="media">';
-      str += '<div class="media-left">';
-      str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
-      str += '</div>';
-      str += '<div class="media-body">';
-      str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
-      str += '<p>S/o:'+result[i].relativeName+'</p>';
-	  if(result[i].voterId != null && result[i].voterId > 0)
-		str += '<p>V.ID:'+result[i].voterCardNo+'&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
-	  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
-		  str += '<p>V.ID:'+result[i].voterCardNo+'&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
-	  str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
-	  str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
-      str += '<span>&nbsp;&nbsp;Gender : '+result[i].gender+'&nbsp;&nbsp;|</span>';
-      str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
-      str += '</p>';
-      str += '<div class="checkboxAlign">';
-      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
-      str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
-      str += '</div>';
-	  str += '</div>';
-      str += '</div>';
+      str += '<li class="profileData" attr_pid="'+i+'" id="profileId'+i+'" attr_img="'+result[i].imageURL+'">';
+		  str += '<div class="media">';
+			  str += '<div class="media-left">';
+				str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
+			  str += '</div>';
+			  str += '<div class="media-body" id="profileDataId'+i+'">';
+				  str += '<h5 class="text-capitalize" id="candidateName'+i+'">'+result[i].name+ '</h5>';
+				  str += '<p>S/o:'+result[i].relativeName+'</p>';
+				  if(result[i].voterId != null && result[i].voterId > 0)
+					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
+				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
+					  str += '<p id="relativeVID'+i+'" class="voterCls relativeVID">V.ID:'+result[i].voterCardNo+'&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
+				  str += '<b>MemShip.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
+				  str += '<p>H.no:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
+				  str += '<span>&nbsp;&nbsp;Gender : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
+				  str += '<span>&nbsp;&nbsp;Age :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
+				  str += '</p>';
+				  str += '<div class="checkboxAlign">';
+					str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+				  str += '</div>';
+				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
+			  str += '</div>';
+		  str += '</div>';
       str += '</li>';
     }
   }
   str += '</ul>';
   $("#renewalMembershipId").html(str);
-  if(result.length > 6)
+  if(result.length > 5)
   {
 	$(".searchResults").mCustomScrollbar({
 		setHeight:'300px'

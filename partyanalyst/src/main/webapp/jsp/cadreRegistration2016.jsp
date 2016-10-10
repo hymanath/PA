@@ -729,7 +729,7 @@
                 </div>
                 <div class="panel-body selectMembership hide">
                 	<div class="row">
-                    	<div class="col-md-6 col-xs-12 col-sm-6 m_top30" style="border-right:1px solid #333;">
+                    	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Please Enter your existing membership number</label>
@@ -751,37 +751,7 @@
 								</div>
                             </div>
                         </div>
-                        <!--<div class="col-md-6 col-xs-12 col-sm-6">
-                             <div class="pad_20">
-                                <div class="row">
-                                    <div class="col-md-12 col-xs-12 col-sm-12">
-                                        <h4 class="text-capital">Search membership no 2014</h4>
-                                    </div>
-									
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<label>Constituency</label>
-											<select class="select" id="renewalconstitId" class="form-control" onclick="getAllConstitencyList();">
-												<option value="0">Select Constituency</option>
-											</select>
-									</div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-                                        <label>Name</label>
-                                        <input type="text" class="form-control" id="renewalNameId"/>
-                                    </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10" id="renewalMobileId">
-                                        <label>Mobile Number</label>
-                                        <input type="text" class="form-control"/>
-                                    </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-                                        <label>Voter ID</label>
-                                        <input type="text" class="form-control" id="renewalVoterId"/>
-                                    </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-                                        <button class="btn btn-success btn-block text-capital validateNumber" onclick="searchRenewalMemshipDetails()">search membership number</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
+                        <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId"></div>
                     </div>
                 </div>
                 <div class="panel-body existingMembershipR hide">
@@ -794,212 +764,7 @@
                                 <p class="m_top50">Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId">
-                             <div class="pad_20">
-                              <!-- <ul class="renewalSearchResults">
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-7" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-7" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-8" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-8" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-9" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-9" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-29" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-29" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-28" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-28" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-27" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-27" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-26" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-26" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-25" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-25" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-24" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-24" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-23" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-23" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>-->
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="panel-body updateProfileR hide">
@@ -1016,7 +781,7 @@
                                             <div class="media-left">
                                                 <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
                                             </div>
-                                            <div class="media-body">
+                                            <div class="media-body" id="relativeUpdateId">
                                                 <h5 class="text-capitalize">Harish Kumar</h5>
                                                 <p>S/o: Balaraj</p>
                                                 <p>V.ID VD32564789</p>
@@ -1040,6 +805,9 @@
                                         <div class="m_top20 text-center">/Or/</div>
                                         <button class="btn btn-success btn-block text-capital m_top20 updateId">continue with relative voter id</button>
                                     </div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+										<span id="profileBackBtnR" class="backBtn pull-right"> ← Back To Search</span>
+									</div>
                                 </div>
                             </div>
                         </div>
@@ -1333,30 +1101,30 @@
                         	<div class="row">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Name</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="profileNameR"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Existing Membership Number</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="membershipNoR"/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="profileGenderR"/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Age</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="profileAgeR"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6 m_top20">
                                     <label>Date Of Birth</label>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="profileDobR"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
-                                	<img src="dist/img/default_image.png" class="cadreImage img-responsive" alt="existing image"/>
+                                	<img src="dist/img/default_image.png" id="profileImageR" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
                                     	<input type="checkbox"/>Existing Image
                                     </label>
@@ -1375,7 +1143,7 @@
                  	<div class="row">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Apartment Name</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="profileAdd1"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Street Name</label>
@@ -1400,13 +1168,13 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Mobile Number</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control">
+                              <input type="text" id="profileMobileR" class="form-control">
                               <span class="form-control-feedback text-muted" aria-hidden="true">+91</span>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Voter Id -<i> <span class="text-warning">Voter ID</span></i></label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="ownVIDR"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Updated Voter Id -<i> <span class="text-danger">Self V.ID</span></i></label>
@@ -1462,7 +1230,10 @@
                             	<input type="checkbox" />Change Nominee
                             </label>
                         </div>
-                        <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
+							<span id="profileBackR" class="backBtn"> ← Back</span>
+						</div>
+                        <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
                         </div>
                     </div>
@@ -1491,10 +1262,10 @@ $(".page-load-svg").width(b);
 setTimeout(function(){
 	$(".page-load-svg").remove();
 	$(".cadreRegistration").removeClass("hide");
-	$(".mainBlocks").addClass("animated fadeInDown");
+	$(".mainBlocks").addClass("animated fadeIn");
 },1000)
 setTimeout(function(){
-	$(".mainBlocks").removeClass("animated fadeInDown");
+	$(".mainBlocks").removeClass("animated fadeIn");
 },1500);
 $(".searchResults").mCustomScrollbar({
 	setHeight:'300px'
@@ -1504,95 +1275,188 @@ $(".renewalSearchResults").mCustomScrollbar({
 });
 $('.select').chosen({width:'100%'});
 $(document).on("click",".registerNew",function(){
-	$(".mainBlocks").addClass("animated fadeOutUp");
+	$(".mainBlocks").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
-		$(".subBlock,.voterIdSearch").addClass("animated fadeInDown");
+		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
 	},500)
 	setTimeout(function(){
-		$(".subBlock,.voterIdSearch").removeClass("animated fadeInDown");
-		$(".mainBlocks").removeClass("animated fadeOutUp");
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
+		$(".mainBlocks").removeClass("animated fadeOut");
 	},1000);
 });
 $(document).on("click","#voterIdBack",function(){
-	$(".voterIdSearch").addClass("animated fadeOutUp");
+	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".subBlock,.voterIdSearch").addClass("hide");
-		$(".mainBlocks").addClass("animated fadeInDown");
+		$(".mainBlocks").addClass("animated fadeIn");
 		$(".mainBlocks").removeClass("hide");
 	},500)
 	setTimeout(function(){
-		$(".subBlock,.voterIdSearch").removeClass("animated fadeInDown");
-		$(".mainBlocks").removeClass("animated fadeInDown");
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
+		$(".mainBlocks").removeClass("animated fadeIn");
 	},1000)
 });
 function searchVoterDetails(){
-	$(".voterIdSearch").addClass("animated fadeOutUp");
+	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdSearch").addClass("hide");
 		$(".searchResultsBlock").removeClass("hide");
-		$(".searchResultsBlock").addClass("animated fadeInDown");		
+		$(".searchResultsBlock").addClass("animated fadeIn");		
 	},500);
 }
 function myVoterButtonDetails(){
-	$(".searchResultsBlock").addClass("animated fadeOutUp");
+	$(".searchResultsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".profileDetailsBlock").removeClass("hide");
-		$(".profileDetailsBlock").addClass("animated fadeInDown");	
+		$(".profileDetailsBlock").addClass("animated fadeIn");	
    	},500);
 }
 
 
 /* Renewal Click Actions*/
 $(document).on("click",".renewalBtn",function(){
-	$(".mainBlocks").addClass("animated fadeOutUp");
+	$(".mainBlocks").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
 		$(".subBlockR,.selectMembership").removeClass("hide");
-		$(".subBlockR,.selectMembership").addClass("animated fadeInDown");
+		$(".subBlockR,.selectMembership").addClass("animated fadeIn");
 	},500)
+	setTimeout(function(){
+		$(".mainBlocks").removeClass("animated fadeOut");
+		$(".subBlockR,.selectMembership").removeClass("animated fadeIn");
+	},1500)
 });
-$(document).on("click",".validateNumber",function(){
-	$(".selectMembership").addClass("animated fadeOutUp");
+
+$(document).on("click","#profileBackR",function(){
+	$(".profileDetailsBlockR").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".profileDetailsBlockR").addClass("hide");
+		$(".selectMembership").removeClass("hide");
+		$(".selectMembership").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".profileDetailsBlockR").removeClass("animated fadeOut");
+		$(".selectMembership").removeClass("animated fadeIn");
+	},1500)
+	/* empty field*/
+	$("#profileNameR").val(' ');
+	$("#membershipNoR").val(' ');
+	$("#profileGenderR").val(' ');
+	$("#profileAgeR").val(' ');
+	$("#profileDobR").val(' ');
+	$("#profileImageR").attr("src","dist/img/default_image.png");
+	$("#profileAdd1").val(' ');
+	$("#profileMobileR").val(' ');
+	$("#ownVIDR").val(' ');
+});
+$(document).on("click","#profileBackBtnR",function(){
+	$(".updateProfileR").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".updateProfileR").addClass("hide");
+		$(".selectMembership ").removeClass("hide");
+		$(".selectMembership ").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".updateProfileR").removeClass("animated fadeOut");
+		$(".selectMembership").removeClass("animated fadeIn");
+	},1500)
+	$("#validateRenMemshipId,#renewalMobileId,#renewalVoterId").val('');
+	$("#renewalMembershipId").html(' ');
+});
+
+
+$(document).on("click",".checkbox-custom",function(){
+	
+	/*populating data*/
+	var profileId = $(this).closest(".profileData").attr("attr_pid");
+	var candidateName = $("#candidateName"+profileId).html();
+	var voterId = $("#ownVID"+profileId).html();
+	var relativeId = $("#relativeVID"+profileId).html();
+	var addressLine1 = $("#profileAddress1"+profileId).html();
+	var gender = $("#profileGender"+profileId).text();
+	var age = $("#profileAge"+profileId).text();
+	var mobile = $("#mobileNo"+profileId).html();
+	var membershipNo = $("#membershipNo"+profileId).html();
+	var imageSrc = $(this).closest(".profileData").attr("attr_img");
+	/*relative or own voter id check*/
+	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
+	{
+		$(".selectMembership").addClass("animated fadeOut");
+		setTimeout(function(){
+			$(".selectMembership").addClass("hide");
+			$(".updateProfileR").removeClass("hide");
+			$(".updateProfileR").addClass("animated fadeIn");
+		},500)
+		setTimeout(function(){
+			$(".selectMembership").removeClass("animated fadeOut");
+			$(".profileDetailsBlockR").removeClass("animated fadeIn");
+		},1500)
+	}else{
+		
+		/*hide and show animation effects*/
+		$(".selectMembership").addClass("animated fadeOut");
+		setTimeout(function(){
+			$(".selectMembership").addClass("hide");
+			$(".profileDetailsBlockR").removeClass("hide");
+			$(".profileDetailsBlockR").addClass("animated fadeIn");
+		},500)
+		setTimeout(function(){
+			$(".selectMembership").removeClass("animated fadeOut");
+			$(".profileDetailsBlockR").removeClass("animated fadeIn");
+		},1500)
+		$("#profileNameR").val(candidateName);
+		$("#membershipNoR").val(membershipNo);
+		$("#profileGenderR").val(gender);
+		$("#profileAgeR").val(age);
+		$("#profileDobR").val();
+		$("#profileImageR").attr("src","https://mytdp.com/"+imageSrc);
+		$("#profileAdd1").val(addressLine1);
+		$("#profileMobileR").val(mobile);
+		$("#ownVIDR").val(voterId);
+	}
+});
+/* $(document).on("click",".validateNumber",function(){
+	$(".selectMembership").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".selectMembership").addClass("hide");
 		$(".existingMembershipR").removeClass("hide");
-		$(".existingMembershipR").addClass("animated fadeInDown");		
+		$(".existingMembershipR").addClass("animated fadeIn");		
 	},500);
-});
+}); */
 $(document).on("click",".validateNo",function(){
-	$(".existingMembershipR").addClass("animated fadeOutUp");
+	$(".existingMembershipR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".existingMembershipR").addClass("hide");
 		$(".updateProfileR").removeClass("hide");
-		$(".updateProfileR").addClass("animated fadeInDown");		
+		$(".updateProfileR").addClass("animated fadeIn");		
 	},500);
 });
 
 $(document).on("click",".updateId",function(){
-	$(".updateProfileR").addClass("animated fadeOutUp");
+	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".updateProfileR").addClass("hide");
 		$(".voterIdSearchR").removeClass("hide");
-		$(".voterIdSearchR").addClass("animated fadeInDown");		
+		$(".voterIdSearchR").addClass("animated fadeIn");		
 	},500);
 });
 $(document).on("click",".voterSearchR",function(){
-	$(".voterIdSearch").addClass("animated fadeOutUp");
+	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdSearchR").addClass("hide");
 		$(".searchResultsBlockR").removeClass("hide");
-		$(".searchResultsBlockR").addClass("animated fadeInDown");		
+		$(".searchResultsBlockR").addClass("animated fadeIn");		
 	},500);
 });
 $(document).on("click",".voterIdBtnR",function(){
-	$(".searchResultsBlockR").addClass("animated fadeOutUp");
+	$(".searchResultsBlockR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".searchResultsBlockR").addClass("hide");
 		$(".profileDetailsBlockR").removeClass("hide");
-		$(".profileDetailsBlockR").addClass("animated fadeInDown");		
+		$(".profileDetailsBlockR").addClass("animated fadeIn");		
 	},500);
 });
 </script>
