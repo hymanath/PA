@@ -158,7 +158,7 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 					+ result.cadreFamilyDetails[i].voterName + '</h5>';
 			str += '<p>S/o:' + result.cadreFamilyDetails[i].relativeName
 					+ '</p>';
-			str += '<p>V.ID' + result.cadreFamilyDetails[i].voterCadreNO
+			str += '<p>V.ID: ' + result.cadreFamilyDetails[i].voterCadreNO
 					+ ' </p>';
 			str += '<p>H.no:' + result.cadreFamilyDetails[i].houseNo
 					+ '&nbsp;&nbsp;|';
@@ -178,9 +178,10 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 		}
 	}
 	str += '</ul>';
-	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a  class="text-capital" id="addNewNomineeId"> add new nominee</a></p>';
+	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a class="text-capital" id="addNewNomineeId" style="cursor:pointer;"> add new nominee</a></p>';
 	$(".cadreFamilyDetailsCls").html(str);
-
+	$("#cadrePrvNomneDivId").show();
+	$("#familyDetailsDivId").show();
 }
   $(document).on("click","#addNewNomineeId",function(){
       $("#addNewNominatedId").show();  
