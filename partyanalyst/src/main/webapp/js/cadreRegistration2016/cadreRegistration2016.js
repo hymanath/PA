@@ -36,11 +36,7 @@ function onLoadCalls(){
                   var educationObj = { id : result[i].id,name: result[i].name }  
                   educationsArray.push(educationObj);   
                }
-             }
-             for(var i in educationsArray){
-				console.log(educationsArray[i].id + "-" + educationsArray[i].name);		 
-			 }
-             		 
+             }	 
 		});
   }
   
