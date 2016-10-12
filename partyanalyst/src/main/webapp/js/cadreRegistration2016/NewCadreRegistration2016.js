@@ -234,7 +234,7 @@ $("#boothsList").trigger("chosen:updated");
       str += '<li>';
       str += '<div class="media">';
       str += '<div class="media-left">';
-      str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
+      str += '<img src="https://mytdp.com/'+result[i].imagePath+'" class="media-object cadreImage" alt=""/>';
       str += '</div>';
       str += '<div class="media-body">';
       str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
@@ -376,18 +376,19 @@ $("#boothsList").trigger("chosen:updated");
   str += '<ul class="renewalSearchResults">';
   if (result!= null && result.length > 0) {
     for ( var i in result) {
-      str += '<li class="profileData" attr_pid="'+i+'" id="profileId'+i+'" attr_img="'+result[i].imageURL+'">';
+      str += '<li class="profileData" attr_pid="'+i+'" id="profileId'+i+'"  attr_img="'+result[i].imageURL+'">';
 		  str += '<div class="media">';
 			  str += '<div class="media-left">';
-				str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
+				//str += '<img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>';
+			 str +='<img src="https://mytdp.com/'+result[i].imageURL+'" class="media-object cadreImage" alt=""/>';
 			  str += '</div>';
 			  str += '<div class="media-body" id="profileDataId'+i+'">';
 				  str += '<h5 class="text-capitalize" id="candidateName'+i+'">'+result[i].name+ '</h5>';
-				  str += '<p>S/o:'+result[i].relativeName+'</p>';
+				  str += '<p id="relaNameId'+i+'" >S/o:'+result[i].relativeName+'</p>';
 				  if(result[i].voterId != null && result[i].voterId > 0)
 					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
 				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
-					  str += '<p id="relativeVID'+i+'" class="voterCls relativeVID">V.ID:'+result[i].voterCardNo+'&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
+					  str += '<p id="relativeVID'+i+'" class="voterCls relativeVID">V.ID:'+result[i].familyVoterCardNo+'&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
 				  str += '<b>MemShip.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
 				  str += '<p>H.no:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
 				  str += '<span>&nbsp;&nbsp;Gender : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
@@ -395,7 +396,7 @@ $("#boothsList").trigger("chosen:updated");
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
 					str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"  style="font-size:13px;font-weight:200;text-transform:uppercase" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'">&nbsp;</label>';
 				  str += '</div>';
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
@@ -436,3 +437,46 @@ function getAllConstitencyList()
 	
   })
   }
+  
+  
+  $(document).on("click",".searchChkboxClsR",function(){
+	   var image=$(this).attr("attr_img1");
+	renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image);
+  });
+  
+  
+  function renewalSearchRelativeMembershipDetails(num,image){
+	 var candidateName=$("#candidateName"+num+"").html();
+	  var relativeName=$("#relaNameId"+num).html();
+	  var voterId=$("#relativeVID"+num).html();
+	  var houseNo=$("#profileAddress1"+num).html();
+	  var gender=$("#profileGender"+num).html();
+	  var age=$("#profileAge"+num).html();
+	  
+	var str = '';
+      str += '<ul class="renewalSearchRelativeResults">';
+       str += '<li class="relativeProfileData" id="relativeProfileId" attr_img="'+image+'">';
+		   str += '<div class="media">';
+			  str += '<div class="media-left">';
+			   str +='<img src="https://mytdp.com/'+image+'" class="media-object cadreImage" alt=""/>';
+			     str += '</div>';
+			       str += '<div class="media-body" id="relativeProfileDataId">';
+				    str += '<h5 class="text-capitalize">'+candidateName+ '</h5>';
+				     str += '<p>S/o:'+relativeName+'</p>';
+			           str += '<p>V.ID:'+voterId+ '</p>';
+				        str += '<p>H.no:<span>'+houseNo+'</span>&nbsp;&nbsp;|';
+				      str += '<span>&nbsp;&nbsp;Gender : <span>'+gender+'</span>&nbsp;&nbsp;|</span>';
+				    str += '<span>&nbsp;&nbsp;Age :<span>'+age+'</span></span>';
+				  str += '</p>';
+			    str += '<div class="checkboxAlign">';
+			 str += '<input type="checkbox" id="checkbox'+num+'" class="checkbox-custom"/>';
+		 str += '<label for="checkbox'+num+'" class="checkbox-custom-label searchChkboxClsRelative" attr_voterId="'+voterId+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+	 str += '</div>';
+    str += '</div>';
+  str += '</div>';
+ str += '</li>';
+str += '</ul>';
+  $("#renwalMembRelativeId").html(str);
+ 
+  }
+  
