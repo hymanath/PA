@@ -1,3 +1,67 @@
+function onLoadCalls(){
+	 getStatewisesCastNames();
+	 getEducationalQualifications();
+	 getAllRelationDetails();
+  }
+
+  function getStatewisesCastNames(){
+	  var jsObj={
+		 stateId:1
+	 }
+	  $.ajax({          
+			type : 'GET',    
+			url : 'getStatewisesCastNamesAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			 if(result != null && result.length>0){
+               for(var i in result){
+                  var casteNamesObj = { id : result[i].id,name: result[i].name }  
+                  casteNamesArray.push(casteNamesObj);   
+               }
+             }	 
+		});
+  }
+  
+ 
+  function getEducationalQualifications(){
+	   $.ajax({          
+			type : 'GET',    
+			url : 'getEducationalQualificationsAction.action',  
+			dataType : 'json',
+			data : {} 
+		}).done(function(result){
+			if(result != null && result.length>0){
+               for(var i in result){
+                  var educationObj = { id : result[i].id,name: result[i].name }  
+                  educationsArray.push(educationObj);   
+               }
+             }
+             for(var i in educationsArray){
+				console.log(educationsArray[i].id + "-" + educationsArray[i].name);		 
+			 }
+             		 
+		});
+  }
+  
+  function getAllRelationDetails(){
+	   $.ajax({          
+			type : 'GET',    
+			url : 'getAllRelationDetailsAction.action',  
+			dataType : 'json',
+			data : {} 
+		}).done(function(result){
+			if(result != null && result.length>0){
+               for(var i in result){
+                  var relationObj = { id : result[i].id,name: result[i].name }  
+                  relationsArray.push(relationObj);   
+               }
+             } 
+		});
+  }
+
+
+
 function getSearchByMyVoterIdDetails(){
  var flag = 0;
   $(".searchChkboxCls").each(function(){
@@ -115,25 +179,25 @@ var str = "";
 		  
 }
 function buildCasteDetails(result) {
-$("#casteListId").append('<option value="0">Select Caste</option>');
-   if (result.casteList != null && result.casteList.length > 0) {
-     for ( var i in result.casteList) {
-	 if(result.casteId == result.casteList[i].id)
-       $("#casteListId").append('<option selected value="'+result.casteList[i].id+'">'+result.casteList[i].name+'</option>');
-	 else
-	   $("#casteListId").append('<option value="'+result.casteList[i].id+'">'+result.casteList[i].name+'</option>');
+  $("#casteListId").append('<option value="0">Select Caste</option>');
+   if (casteNamesArray != null && casteNamesArray.length > 0) {
+     for ( var i in casteNamesArray) {
+		 if(result.casteId == casteNamesArray[i].id)
+		   $("#casteListId").append('<option selected value="'+casteNamesArray[i].id+'">'+casteNamesArray[i].name+'</option>');
+		 else
+		   $("#casteListId").append('<option value="'+casteNamesArray[i].id+'">'+casteNamesArray[i].name+'</option>');
      }
 	 $("#casteListId").trigger("chosen:updated");
   }
   }
   function buildEductnQualifns(result) {
    $("#eductnQualId").append('<option  value="0">Select Caste</option>');
-   if (result.eduQualftnList != null && result.eduQualftnList.length > 0) {
-     for ( var i in result.eduQualftnList) {
-	 if(result.educationId == result.eduQualftnList[i].id)
-       $("#eductnQualId").append('<option selected value="'+result.eduQualftnList[i].id+'">'+result.eduQualftnList[i].name+'</option>');
+   if (educationsArray != null && educationsArray.length > 0) {
+     for ( var i in educationsArray) {
+	 if(result.educationId == educationsArray[i].id)
+       $("#eductnQualId").append('<option selected value="'+educationsArray[i].id+'">'+educationsArray[i].name+'</option>');
 	 else
-	   $("#eductnQualId").append('<option value="'+result.eduQualftnList[i].id+'">'+result.eduQualftnList[i].name+'</option>');
+	   $("#eductnQualId").append('<option value="'+educationsArray[i].id+'">'+educationsArray[i].name+'</option>');
      }
 	 $("#eductnQualId").trigger("chosen:updated");
   }
@@ -189,16 +253,14 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 
 function buildCadreRelativesDetails(result,id) {
 	$('#'+id+'').append('<option  value="0">Select Relationship</option>');
-	 if (result.relativesList != null
-			&& result.relativesList.length > 0) {
-				
-	   for ( var i in result.relativesList) {           
-		   if(result.relativeType == result.relativesList[i].name)
+	 if (relationsArray != null && relationsArray.length > 0) {
+	   for ( var i in relationsArray) {           
+		   if(result.relativeType == relationsArray[i].name)
 		   {
-			    $('#'+id+'').append('<option selected value="'+result.relativesList[i].id+'">'+result.relativesList[i].name+'</option>');
+			    $('#'+id+'').append('<option selected value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
 		   }else
 		   {
-		   $('#'+id+'').append('<option value="'+result.relativesList[i].id+'">'+result.relativesList[i].name+'</option>');
+		   $('#'+id+'').append('<option value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
 		   }
 	   }
 	   $('#'+id+'').trigger("chosen:updated");       
