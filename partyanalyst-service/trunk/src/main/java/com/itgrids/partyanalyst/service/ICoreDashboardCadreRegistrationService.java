@@ -17,4 +17,9 @@ public interface ICoreDashboardCadreRegistrationService {
 	public Object getNoRegistrationReceiveTabUserPersonCountByTimeWise(Long constituencyId,String date);
 	public Object getTabUserInfoDetails(String tabUserInfoIds);
 	public CadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
+	
+	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) ;
+	public List<IdAndNameVO> getEducationalQualifications( ) ;
+	public List<IdAndNameVO> getAllRelationDetails();
+	
 }
