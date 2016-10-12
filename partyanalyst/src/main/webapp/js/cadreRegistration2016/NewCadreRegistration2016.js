@@ -277,8 +277,10 @@ $("#boothsList").trigger("chosen:updated");
 		status = "renewal";
 	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
 		status = "update";
+	else 
+		tdpCadreId = 0;
 	
-	
+	alert(tdpCadreId)
 	 $("#voterId").val(voterId);
      $("#tdpCadreId").val(tdpCadreId);
 	 $("#statusId").val(status);
