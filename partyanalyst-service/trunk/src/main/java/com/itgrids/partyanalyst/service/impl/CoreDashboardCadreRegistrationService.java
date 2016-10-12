@@ -379,11 +379,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 
 			if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
-				TdpCadre tdpCadre = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId,status);
-				setCadreDetailsToVO(returnVO,tdpCadre);
+				List<Object[]> tdpCadreList = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId,status);
+				setCadreDetailsToVO(returnVO,tdpCadreList);
 			}else if(voterId != null && voterId.longValue() >0l){
-				Voter voter = voterDAO.getVoterDetailsByVoterId(voterId);
-				setVoterDetailsToVO(returnVO,voter);
+				List<Object[]> voterList = voterDAO.getVoterDetailsByVoterId(voterId);
+				setVoterDetailsToVO(returnVO,voterList);
 			} 
 			if(familyVoterId != null && familyVoterId.longValue() >0l){
 				getFamilyVoterDetails(familyVoterId,returnVO);
@@ -405,26 +405,27 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : 
 	*  @since 10-October-2016
 	*/
-	public void setCadreDetailsToVO(CadreRegistrationVO returnVO,TdpCadre tdpCadre){
+	public void setCadreDetailsToVO(CadreRegistrationVO returnVO,List<Object[]> tdpCadreList){
 		try{
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
-		if(tdpCadre != null){
-			
-			returnVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getTdpCadreId()));//cadreId
-			returnVO.setLastName(commonMethodsUtilService.getStringValueForObject(tdpCadre.getFirstname()));//firstName
-			returnVO.setNameType(commonMethodsUtilService.getStringValueForObject(tdpCadre.getLastname()));//lastName
-			returnVO.setMemberTypeId(commonMethodsUtilService.getStringValueForObject(tdpCadre.getMemberShipNo()));//memberShipNo
+		if(tdpCadreList != null && tdpCadreList.size()>0 ){
+			for (Object[] objects : tdpCadreList) {
+				
+			returnVO.setTdpCadreId(objects[0]!=null?(Long)objects[0]:0l);//cadreId
+			returnVO.setLastName(objects[1]!=null?objects[1].toString():"");//firstName
+			returnVO.setNameType(objects[2]!=null?objects[2].toString():"");//lastName
+			returnVO.setMemberTypeId(objects[3]!=null?objects[3].toString():"");//memberShipNo
 			String gender = null;
-			if(tdpCadre.getGender().equalsIgnoreCase("M")){
+			if(objects[4].toString().equalsIgnoreCase("M")){
 				gender = "Male";
-			}else if(tdpCadre.getGender().equalsIgnoreCase("F")){
+			}else if(objects[4].toString().equalsIgnoreCase("F")){
 				gender = "Female";
 			}
 			returnVO.setGender(gender);//gender
-			returnVO.setAge(commonMethodsUtilService.getLongValueForObject(tdpCadre.getAge()));//age 
-			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && tdpCadre.getDateOfBirth()  != null)
+			returnVO.setAge(objects[5]!=null?(Long)objects[5]:0l);//age 
+			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && objects[6]  != null)
 			{
-				String dateOfBirth = 	tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0,10):" "	;
+				String dateOfBirth = 	 objects[6] != null ? objects[6].toString().substring(0,10):" "	;
 				if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 				{
 					Calendar startDate = new GregorianCalendar();
@@ -439,25 +440,26 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
 				}
 			}
-			returnVO.setDobStr(commonMethodsUtilService.getStringValueForObject(tdpCadre.getDateOfBirth()));//DOB
-			returnVO.setImageBase64String(commonMethodsUtilService.getStringValueForObject(tdpCadre.getImage()));//ImagePath
-			returnVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(tdpCadre.getMobileNo()));//mobileNo
-			returnVO.setEmail(commonMethodsUtilService.getStringValueForObject(tdpCadre.getEmailId()));//emailId
-			returnVO.setCandidateAadherNo(commonMethodsUtilService.getStringValueForObject(tdpCadre.getCadreAadherNo()));//cadreAadharNo
-			returnVO.setCasteId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getCasteStateId()));//casteId
-			returnVO.setEducationId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getEducationId()));//educationId
-			returnVO.setOccupationId(commonMethodsUtilService.getLongValueForObject(tdpCadre.getOccupationId()));//occupationId
-			returnVO.setNomineeName(commonMethodsUtilService.getStringValueForObject(tdpCadre.getNomineeName()));//nomineeName
-			returnVO.setNomineeGender(commonMethodsUtilService.getStringValueForObject(tdpCadre.getNomineeGender()));//nomineeGender
-			returnVO.setNomineeAge(commonMethodsUtilService.getLongValueForObject(tdpCadre.getNomineeAge()));//nomineeAge
-			returnVO.setRelativeType(commonMethodsUtilService.getStringValueForObject(tdpCadre.getRelationType()));//relativeType
+			returnVO.setDobStr(objects[6]!=null?objects[6].toString():"");//DOB
+			returnVO.setImageBase64String(objects[7]!=null?objects[7].toString():"");//ImagePath
+			returnVO.setMobileNumber(objects[8]!=null?objects[8].toString():"");//mobileNo
+			returnVO.setEmail(objects[9]!=null?objects[9].toString():"");//emailId
+			returnVO.setCandidateAadherNo(objects[10]!=null?objects[10].toString():"");//cadreAadharNo
+			returnVO.setCasteId(objects[11]!=null?(Long)objects[11]:0l);//casteId
+			returnVO.setEducationId(objects[12]!=null?(Long)objects[12]:0l);//educationId
+			returnVO.setOccupationId(objects[13]!=null?(Long)objects[13]:0l);//occupationId
+			returnVO.setNomineeName(objects[14]!=null?objects[14].toString():"");//nomineeName
+			returnVO.setNomineeGender(objects[15]!=null?objects[15].toString():"");//nomineeGender
+			returnVO.setNomineeAge(objects[16]!=null?(Long)objects[16]:0l);//nomineeAge
+			returnVO.setRelativeType(objects[17]!=null?objects[17].toString():"");//relativeType
 			
-			if(tdpCadre.getVoter().getVoterId() != null && tdpCadre.getVoter().getVoterId().longValue() > 0l){
-				returnVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(tdpCadre.getVoter().getVoterIDCardNo()));//votercardNo
-			}else if(tdpCadre.getFamilyVoter().getVoterId() != null && tdpCadre.getFamilyVoter().getVoterId().longValue() > 0l){
-				returnVO.setVoterCardNumber(commonMethodsUtilService.getStringValueForObject(tdpCadre.getFamilyVoter().getVoterIDCardNo()));//familyVotercardNo
+			if(objects[18] != null && objects[18].toString().length()> 0l){
+				returnVO.setVoterCardNo(objects[18]!=null?objects[18].toString():"");//votercardNo
+			}else if(objects[19] != null && objects[19].toString().length() > 0l){
+				returnVO.setVoterCardNumber(objects[19]!=null?objects[19].toString():"");//familyVotercardNo
 			}
 			
+		}
 		}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -472,18 +474,19 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : 
 	*  @since 10-October-2016
 	*/
-	public void setVoterDetailsToVO(CadreRegistrationVO returnVO,Voter voter){
+	public void setVoterDetailsToVO(CadreRegistrationVO returnVO,List<Object[]> voterList){
 		try{
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
-		if(voter != null){
-			
-			returnVO.setVoterRelationId(commonMethodsUtilService.getLongValueForObject(voter.getVoterId()));//voterId
-			returnVO.setLastName(commonMethodsUtilService.getStringValueForObject(voter.getName()));//Name
-			returnVO.setGender(commonMethodsUtilService.getStringValueForObject(voter.getGender()));//gender
-			returnVO.setAge(commonMethodsUtilService.getLongValueForObject(voter.getAge()));//age 
-			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && voter.getDateOfBirth()  != null)
+		if(voterList != null && voterList.size()>0){
+			for (Object[] objects : voterList) {
+				
+			returnVO.setVoterRelationId(objects[0]!=null?(Long)objects[0]:0l);//voterId
+			returnVO.setLastName(objects[1]!=null?objects[1].toString():"");//Name
+			returnVO.setGender(objects[2]!=null?objects[2].toString():"");//gender
+			returnVO.setAge(objects[3]!=null?(Long)objects[3]:0l);//age 
+			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && objects[4]  != null)
 			{
-				String dateOfBirth = 	voter.getDateOfBirth() != null ? voter.getDateOfBirth().toString().substring(0,10):" "	;
+				String dateOfBirth = 	objects[4] != null ?objects[4].toString().substring(0,10):" "	;
 				if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 				{
 					Calendar startDate = new GregorianCalendar();
@@ -498,12 +501,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
 				}
 			}
-			returnVO.setDobStr(commonMethodsUtilService.getStringValueForObject(voter.getDateOfBirth()));//DOB
-			returnVO.setImageBase64String(commonMethodsUtilService.getStringValueForObject(voter.getImagePath()));//ImagePath
-			returnVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(voter.getMobileNo()));//mobileNo
-			returnVO.setRelativeType(commonMethodsUtilService.getStringValueForObject(voter.getRelationshipType()));//relativeType
-			returnVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(voter.getVoterIDCardNo()));//votercardNo
+			returnVO.setDobStr(objects[4]!=null?objects[4].toString():"");//DOB
+			returnVO.setImageBase64String(objects[5]!=null?objects[5].toString():"");//ImagePath
+			returnVO.setMobileNumber(objects[6]!=null?objects[6].toString():"");//mobileNo
+			returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
+			returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
 			
+		}
 		}
 		}catch(Exception e){
 			e.printStackTrace();
