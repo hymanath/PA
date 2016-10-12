@@ -139,11 +139,8 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
-import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
@@ -161,6 +158,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
@@ -174,7 +172,6 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CardReceiver;
 import com.itgrids.partyanalyst.model.CardSender;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -13415,8 +13412,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 }
 
 
-	public List<VoterVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String mobileNo,String hNo){
-		List<VoterVO> returnList = new ArrayList<VoterVO>();
+	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String mobileNo,String hNo){
+		List<VoterSearchVO> returnList = new ArrayList<VoterSearchVO>();
 		try {
 			Map<Long,IdAndNameVO> voterCadreMap = new LinkedHashMap<Long, IdAndNameVO>();
 			List<Long> voterIds = new ArrayList<Long>();
@@ -13451,7 +13448,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			List<Object[]> list1 = boothPublicationVoterDAO.getVotersBySearch(searchVal, searchType, name, mobileNo, hNo);
 			if(commonMethodsUtilService.isListOrSetValid(list1)){
 				for (Object[] obj : list1) {
-					VoterVO vo = new VoterVO();
+					VoterSearchVO vo = new VoterSearchVO();
 					Long voterId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					
 					vo.setVoterId(voterId.toString());
@@ -13490,7 +13487,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				}
 				
 				if(commonMethodsUtilService.isListOrSetValid(returnList)){
-					for (VoterVO voterVO : returnList) {
+					for (VoterSearchVO voterVO : returnList) {
 						Long voterId = Long.valueOf(voterVO.getVoterId().toString());
 						IdAndNameVO vo = voterCadreMap.get(voterId);
 						if(vo != null){
