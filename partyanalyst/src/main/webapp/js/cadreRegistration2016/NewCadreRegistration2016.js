@@ -280,7 +280,6 @@ $("#boothsList").trigger("chosen:updated");
 	else 
 		tdpCadreId = 0;
 	
-	alert(tdpCadreId)
 	 $("#voterId").val(voterId);
      $("#tdpCadreId").val(tdpCadreId);
 	 $("#statusId").val(status);
