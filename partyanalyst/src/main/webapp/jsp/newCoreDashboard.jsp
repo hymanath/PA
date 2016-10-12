@@ -2403,13 +2403,13 @@
 				</div>
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">     
 					<label class="radio-inline">
-						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" checked><h5>Booth Wise</h5>
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;" checked><h5>Mandal Wise</h5>
 					</label>
 					<label class="radio-inline">
 						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5>Panchayat Wise</h5>
 					</label>
 					<label class="radio-inline">
-						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5>Mandal Wise</h5>
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" ><h5>Booth Wise</h5>
 					</label>
 				</div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
@@ -2663,6 +2663,8 @@
 <input type="hidden" id="deptHidId" attr_dept_hid_id="" value=""></input>
 <input type="hidden" id="cadreHidId" attr_cadre_hid_id="" value=""></input>  
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
+<!--global element for state level training program-->
+<input type = "hidden" id="hideProgramId" attr_prorgam_id_arr="" value=""></input>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -2775,7 +2777,17 @@
 		committeeBasicCall();
 		
 		//training program call
-		getTrainingCampBasicDetailsCntOverview();
+		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
+		var programIdArr = [];
+		var arr = idStr.split(","); 
+		for(var i in arr){
+			programIdArr.push(arr[i]);
+		} 
+		console.log($("#hideProgramId").attr("attr_prorgam_id_arr"));      
+		stateLevelCampDetails();
+		stateLevelCampDetailsRepresentativeWise(programIdArr);
+		getStateLevelCampCount(programIdArr); */   
+		getTrainingCampBasicDetailsCntOverview();   
 		//Meeting
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
