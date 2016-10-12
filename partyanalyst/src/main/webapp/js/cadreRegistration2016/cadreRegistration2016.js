@@ -110,6 +110,7 @@ if(status == "new"){
 	$("#familyDetailsDivId").show();
 	$("#voterDvId").show();
 	$("#emailDivId").show();
+	$("#cadrePrvNomneDivId").hide();
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
 	$("#cadrePrvNomneDivId").show();
@@ -187,7 +188,7 @@ var str = "";
 		 if(result.memberTypeId != null){                    
 			$("#membershipId").val(result.memberTypeId);
 		 }
-		  
+		 //$("#cadrePrvNomneDivId").hide(); 
 }
 function buildCasteDetails(result) {
   $("#casteListId").append('<option value="0">Select Caste</option>');
@@ -255,7 +256,7 @@ function buildCasteDetails(result) {
 	str += '</ul>';
 	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a class="text-capital" id="addNewNomineeId" style="cursor:pointer;"> add new nominee</a></p>';
 	$(".cadreFamilyDetailsCls").html(str);
-	$("#cadrePrvNomneDivId").show();
+	//$("#cadrePrvNomneDivId").show();
 	$("#familyDetailsDivId").show();
 }
   $(document).on("click","#addNewNomineeId",function(){
@@ -265,22 +266,28 @@ function buildCasteDetails(result) {
 function buildCadreRelativesDetails(result,id) {
 	$('#'+id+'').append('<option  value="0">Select Relationship</option>');
 	 if (relationsArray != null && relationsArray.length > 0) {
-	   for ( var i in relationsArray) {           
-		   if(result.relativeType == relationsArray[i].name)
-		   {
-			    $('#'+id+'').append('<option selected value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
-		   }else
-		   {
-		   $('#'+id+'').append('<option value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
-		   }
+	   for ( var i in relationsArray) {
+			if(id == 'prevNomneReltvId'){
+				if(result.relativeType == relationsArray[i].name)
+				   {
+						$('#'+id+'').append('<option selected value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
+				   }else
+				   {
+				   $('#'+id+'').append('<option value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
+				   }
+				}           
+			else{
+				 $('#'+id+'').append('<option value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
+			}
 	   }
 	   $('#'+id+'').trigger("chosen:updated");       
 	}
 }	
 $(document).on("click",".checkboxCls",function(){
-     $(".checkboxCls").prop( "checked" ,false);
-	 $( this ).prop( 'checked', true );
-     }) 
+	alert(1);
+     $(".checkboxCls").prop( 'checked',false);
+	 $(this).prop( 'checked', true );
+}); 
 $(document).on("click", "#changeNomineeId", function(e) {
        if($(this).is(":checked")) {
            $("#familyDetailsDivId").show();
