@@ -107,5 +107,5 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	
 	public String getVoterImagePathByVoterId(Long voterId);
 	public List<Long> getVoterIdByIdCardNoNew(String voterCardId);
-	public Voter getVoterDetailsByVoterId(Long voterId);
+	public List<Object[]> getVoterDetailsByVoterId(Long voterId);
 }
