@@ -1255,6 +1255,15 @@
 <script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
 <script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
 <script type="text/javascript">
+   
+  //GLOBAL VARIABLES
+  var casteNamesArray = [];
+  var educationsArray = [];
+  var relationsArray = [];
+   
+  onLoadCalls();
+  
+  
 var a = $(window).height();
 var b = $(window).width();
 $(".page-load-svg").height(a);
