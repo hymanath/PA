@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AffiliatedCadreVO;
@@ -22,7 +21,6 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
-import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
@@ -34,7 +32,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 
 public interface ICadreRegistrationService {
@@ -200,7 +198,7 @@ public interface ICadreRegistrationService {
 	public String  checkPaymentStatus(String memberShipNo);
 	public String  updatePaymentStatus(Long tdpCadreId);
 	public List<PartyMeetingWSVO> getRegistrationCadreDetailsSourceWise(RtcUnionInputVO inputVO);
-	public List<VoterVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String mobileNo,String hNo);
+	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String mobileNo,String hNo);
 	public List<IdAndNameVO> getConstitencyWiseTehsil(Long constituencyId);
 	public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
 	public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
