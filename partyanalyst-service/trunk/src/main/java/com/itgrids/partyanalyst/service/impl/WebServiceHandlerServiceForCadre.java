@@ -4,8 +4,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.VoterSearchVO;
+import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerServiceForCadre;
 
 public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServiceForCadre {
@@ -14,10 +19,16 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 	
 	
 	private ICadreRegistrationService  cadreRegistrationService;
-	
+	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
 	public void setCadreRegistrationService(ICadreRegistrationService cadreRegistrationService) {
 		this.cadreRegistrationService = cadreRegistrationService;
+	}
+	
+
+	public void setCoreDashboardCadreRegistrationService(
+			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
+		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
 	}
 
 
@@ -99,4 +110,42 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		}
 		return returnList;
 	}
+	
+	public List<VoterSearchVO> getVotersBySearch(WebServiceCadreVO inputVO){
+		
+		List<VoterSearchVO> returnList = null;
+		try{
+			
+			returnList = cadreRegistrationService.getVotersBySearch(inputVO.getConstituencyId(),inputVO.getMandalId(),inputVO.getVillageId(),inputVO.getBoothId(),inputVO.getName(),inputVO.getMobileNo(),inputVO.getHouseNo());
+			
+		}catch(Exception e) {
+			log.error("Entered into the getVotersBySearch() in WebServiceHandlerServiceForCadre ");
+		}
+		return returnList;
+	}
+	
+	public CadreRegistrationVO getRegistrationPersonDetails(WebServiceCadreVO inputVO){
+		
+		CadreRegistrationVO cadreRegistrationVO = null;
+		try{
+			cadreRegistrationVO = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(inputVO.getVoterId(),inputVO.getFamilyVoterId(),inputVO.getTdpCadreId(),inputVO.getStatus());
+			
+		}catch(Exception e) {
+			log.error("Entered into the getRegistrationPersonDetails() in WebServiceHandlerServiceForCadre ");
+		}
+		return cadreRegistrationVO;
+	}
+	
+	public List<TdpCadreVO> getTdpCadresBySearch(WebServiceCadreVO inputVO){
+		
+		List<TdpCadreVO> cadreList = null;
+		try{
+			cadreList = cadreRegistrationService.getTdpCadresBySearch(inputVO.getMemberShipNo(),inputVO.getMobileNo(), inputVO.getVoterNo());
+			
+		}catch(Exception e) {
+			log.error("Entered into the getRegistrationPersonDetails() in WebServiceHandlerServiceForCadre ");
+		}
+		return cadreList;
+	}
+	
 }
