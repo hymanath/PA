@@ -180,10 +180,7 @@ $("#boothsList").trigger("chosen:updated");
 	  var hNo=$("#huseNOId").val();
       var state=$("#statesDivId").val();
 	  var district=$("#districtId").val();
-	  var constituency=$("#constituencyId").val();          
-	  var names=$("#nameId").val(); 
-	  var mobileNo=$("#mobileId").val();
-	  var houseNo=$("#huseNOId").val();
+	  
      if(state == 0)
 	  {
 		 $("#errorDivId").html("please select state");
@@ -199,7 +196,7 @@ $("#boothsList").trigger("chosen:updated");
 		 $("#errorDivId").html("please select constituency");
 		 return;
 	   }
-	  if(names.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
+	  if(name.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
 	   {
 		  $("#errorDivId").html("please select name or mobileNo or houseNo");
 		 return; 
@@ -431,9 +428,37 @@ $(document).on("click",".searchChkboxClsR",function(){
 			status = "renewal";
 		else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
 			status = "update";
-		//populatefunc();//hyma
+		getCadreDetailsForCadre(tdpCadreId,voterId,status);
 	  }
   });
+  
+function getCadreDetailsForCadre(tdpCadreId,voterId,status){
+	var jsObj={
+		 voterId:voterId,
+		 familyVoterId:0,
+		 cadreId:tdpCadreId,
+		 status:status
+	 }
+	$.ajax({          
+		type : 'GET',    
+		url : 'getRegistrationPersonDetailsAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){
+		hideShowDivs(status);
+		buildProfileDetails(result,status);
+		buildCasteDetails(result);
+		buildEductnQualifns(result);
+		buildCadreFamilyDetails(result);
+		
+		if(status == "new"){
+			buildCadreRelativesDetails(result,"relativeId");
+		}else if(status == "update" || status == "renewal"){
+			buildCadreRelativesDetails(result,"prevNomneReltvId");
+			buildCadreRelativesDetails(result,"relativeId");
+		}
+	});
+}
   
 getAllConstitencyList();
 function getAllConstitencyList()

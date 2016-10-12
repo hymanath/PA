@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -138,8 +139,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<VoterVO> voterList = new ArrayList<VoterVO>();
 	private List<TdpCadreVO> cadreList = new ArrayList<TdpCadreVO>();
 	private List<IdAndNameVO> idAndNameVO;
+	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
 	
 	
+	public List<VoterSearchVO> getVoterVoList() {
+		return voterVoList;
+	}
+	public void setVoterVoList(List<VoterSearchVO> voterVoList) {
+		this.voterVoList = voterVoList;
+	}
 	public List<TdpCadreVO> getCadreList() {
 		return cadreList;
 	}
@@ -2483,7 +2491,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String mobileNo = jobj.getString("mobileNo");
 			String hNo = jobj.getString("hNo");
 			
-			voterList = cadreRegistrationService.getVotersBySearch(constituencyId, mandalId, villageId, boothId, name, mobileNo, hNo);
+			voterVoList = cadreRegistrationService.getVotersBySearch(constituencyId, mandalId, villageId, boothId, name, mobileNo, hNo);
 		} catch (Exception e) {
 			LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
 		}
