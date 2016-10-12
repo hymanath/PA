@@ -774,10 +774,10 @@
                             <img src="dist/img/membership_icon.png" class="img-responsive m_top50" style="margin:auto" alt="membership Icon"/>
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-6">
-                        	<div class="pad_20">
+                        	<div class="pad_20" >
                             	<div class="row">
-                                	<div class="col-md-12 col-xs-12 col-sm-12">
-                                    	<div class="media">
+                                	<div class="col-md-12 col-xs-12 col-sm-12" id="renwalMembRelativeId">
+                                    	<!--<div class="media">
                                             <div class="media-left">
                                                 <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
                                             </div>
@@ -794,7 +794,7 @@
                                                     <label for="checkbox-22" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12">
                                     	<h4 class="text-capital">your profile showing</h4>
