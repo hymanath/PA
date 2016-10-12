@@ -2664,4 +2664,35 @@ public String cadreRegistrationOverviewAction(){
 	}
 	return Action.SUCCESS;
 }
+
+	public String getStatewisesCastNames(){
+		  try {
+			  jObj = new JSONObject(getTask());
+			
+			Long stateId = jObj.getLong("stateId");
+			
+			IdAndNameVOList = coreDashboardCadreRegistrationService.getStatewisesCastNames(stateId);
+		} catch (Exception e) {
+			LOG.error("Entered into getStatewisesCastNames method in CoreDashBoardAction");
+		}
+		  return Action.SUCCESS;
+	}
+	
+	public String getEducationalQualifications(){
+		  try {
+			IdAndNameVOList = coreDashboardCadreRegistrationService.getEducationalQualifications();
+		} catch (Exception e) {
+			LOG.error("Entered into getEducationalQualifications method in getEducationalQualifications");
+		}
+		  return Action.SUCCESS;
+	}
+	
+	public String getAllRelationDetails(){
+		  try {
+			IdAndNameVOList = coreDashboardCadreRegistrationService.getAllRelationDetails();
+		} catch (Exception e) {
+			LOG.error("Entered into getAllRelationDetails method in getEducationalQualifications");
+		}
+		  return Action.SUCCESS;
+	}
 }
