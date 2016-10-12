@@ -474,7 +474,6 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Relative Relationship</label>
                             <select class="select" id="prevNomneReltvId">
-                            	<option>Brother</option>
                             </select>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
