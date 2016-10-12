@@ -7210,10 +7210,32 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		}
 		return null;
 	}
-	public TdpCadre getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId,String status){
+	public List<Object[]> getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId,String status){
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select model ");
+		str.append(" select model.tdpCadreId," +//0
+				" model.firstname," +
+				" model.lastname," +
+				" model.memberShipNo," +
+				" model.gender," +
+				" model.age," +
+				" model.dateOfBirth," +//6
+				" model.image," +
+				" model.mobileNo," +
+				" model.emailId," +
+				" model.cadreAadherNo," +
+				" model.casteStateId," +//11
+				" model.educationId," +
+				" model.occupationId," +
+				" model.nomineeName," +
+				" model.nomineeGender," +
+				" model.nomineeAge," +//16
+				" model.relativeType " );
+		if(voterId != null && voterId.longValue() >0l)
+		str.append(" ,model.voter.voterIDCardNo" );
+		
+		if(familyVoterId != null && familyVoterId.longValue() >0l)
+			str.append(",model.familyVoter.voterIDCardNo ");//19
 		 
 		str.append(" from TdpCadre model  where model.tdpCadreId = :tdpCadreId and model.isDeleted='N'  ");
 		
@@ -7229,7 +7251,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 			query.setParameter("tdpCadreId", tdpCadreId);
 		}
 		
-		return (TdpCadre)query.uniqueResult();
+		return query.list();
 	}
 	
 	public List<Object[]> getTdpCadreDetailsBySearch(String searchType,String memberShipNo,String mobileNo,String voterId){
