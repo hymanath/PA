@@ -391,9 +391,6 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				getFamilyVoterDetails(voterId,returnVO);
 			}
 			
-			returnVO.setCasteList(getStatewisesCastNames(1l));
-			returnVO.setEduQualftnList(getEducationalQualifications());          
-			returnVO.setRelativesList(getAllRelationDetails());
 		}catch(Exception e){
 			e.printStackTrace();
 			 LOG.error("Exception raised at getRegistrationPersonDetails", e);
