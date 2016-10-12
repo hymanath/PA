@@ -344,7 +344,13 @@
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender</label>
-                                    <input type="text" class="form-control" id="genderId"/>
+									<select class="select" id="genderId">
+										<option value="0">Select Gender</option>
+										<option value="M">Male</option>
+										<option value="F">Female</option>
+										<option value="O">Others</option>
+									</select>
+                                    <!--<input type="text" class="form-control" id="genderId"/>-->
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Age</label>
@@ -453,7 +459,13 @@
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Gender</label>
-                            <input type="text" class="form-control" id="prvNomneGendrId"/>
+							<select class="select" id="prvNomneGendrId">
+								<option value="0">Select Gender</option>
+								<option value="M">Male</option>
+								<option value="F">Female</option>
+								<option value="O">Others</option>
+							</select>
+                            <!--<input type="text" class="form-control" id="prvNomneGendrId"/>-->
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Age</label>
@@ -698,7 +710,13 @@
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Gender</label>
-                            <input type="text" class="form-control" id="nomineeGenderId"/>
+                            <!--<input type="text" class="form-control" id="nomineeGenderId"/>-->
+							<select class="select" id="nomineeGenderId">
+								<option value="0">Select Gender</option>
+								<option value="M">Male</option>
+								<option value="F">Female</option>
+								<option value="O">Others</option>
+							</select>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Age</label>

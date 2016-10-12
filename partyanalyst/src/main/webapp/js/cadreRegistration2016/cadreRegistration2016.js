@@ -129,7 +129,14 @@ var str = "";
 			$("#nameId1").val(result.lastName);
 		 }
 		 if(result.gender != null){
-			$("#genderId").val(result.gender);
+			 if(result.gender == 'M' || result.gender == 'male' || result.gender == 'Male'){
+				 $("#genderId").val('M');
+				 $("#genderId").trigger("chosen:updated");
+			 }
+			else if(result.gender == 'F' || result.gender == 'female' || result.gender == 'FeMale' || result.gender == 'Female'){
+				 $("#genderId").val('F');
+				 $("#genderId").trigger("chosen:updated");
+			 }
 		 }
 		 if(result.age != null){
 			$("#ageId").val(result.age);
@@ -171,7 +178,15 @@ var str = "";
 			$("#prevNomneAgeId").val(result.nomineeAge);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeGender != null && result.nomineeGender != ""){
-			$("#prvNomneGendrId").val(result.nomineeGender);
+			 if(result.nomineeGender == 'M' || result.nomineeGender == 'male' || result.nomineeGender == 'Male'){
+				 $("#prvNomneGendrId").val('M');
+				 $("#prvNomneGendrId").trigger("chosen:updated");
+			 }
+			else if(result.nomineeGender == 'F' || result.nomineeGender == 'female' || result.nomineeGender == 'FeMale' || result.nomineeGender == 'Female'){
+				 $("#prvNomneGendrId").val('F');
+				 $("#prvNomneGendrId").trigger("chosen:updated");
+			 }
+			//$("#prvNomneGendrId").val(result.nomineeGender);
 		 }
 		 if(result.memberTypeId != null){                    
 			$("#membershipId").val(result.memberTypeId);
@@ -191,7 +206,7 @@ function buildCasteDetails(result) {
   }
   }
   function buildEductnQualifns(result) {
-   $("#eductnQualId").append('<option  value="0">Select Caste</option>');
+   $("#eductnQualId").append('<option  value="0">Select Education</option>');
    if (educationsArray != null && educationsArray.length > 0) {
      for ( var i in educationsArray) {
 	 if(result.educationId == educationsArray[i].id)
