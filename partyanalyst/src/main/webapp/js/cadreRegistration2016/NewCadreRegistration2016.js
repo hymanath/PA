@@ -316,6 +316,7 @@ $("#boothsList").trigger("chosen:updated");
          dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   buildCadreFamilyDetails(result);
 	 })
 	
   }
@@ -396,7 +397,7 @@ $("#boothsList").trigger("chosen:updated");
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
 					str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"  style="font-size:13px;font-weight:200;text-transform:uppercase" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'">&nbsp;</label>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 				  str += '</div>';
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
@@ -413,6 +414,26 @@ $("#boothsList").trigger("chosen:updated");
 	}); 
   }
   }
+  
+$(document).on("click",".searchChkboxClsR",function(){
+	  var voterId = $(this).attr("attr_voterId");
+	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
+	  var enrolYear = $(this).attr("attr_enrol_yId");
+	  var relativeVoter = $(this).attr("attr_relative_voter");
+	  var status = "renewal";
+	  
+	  if(relativeVoter != null && relativeVoter > 0){
+		  var image=$(this).attr("attr_img1");
+		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image);
+	  }
+	  else{
+		  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
+			status = "renewal";
+		else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
+			status = "update";
+		//populatefunc();//hyma
+	  }
+  });
   
 getAllConstitencyList();
 function getAllConstitencyList()
@@ -439,10 +460,10 @@ function getAllConstitencyList()
   }
   
   
-  $(document).on("click",".searchChkboxClsR",function(){
+  /*$(document).on("click",".searchChkboxClsR",function(){
 	   var image=$(this).attr("attr_img1");
 	renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image);
-  });
+  });*/
   
   
   function renewalSearchRelativeMembershipDetails(num,image){

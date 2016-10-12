@@ -1372,7 +1372,7 @@ $(document).on("click",".checkbox-custom",function(){
 	
 	/*populating data*/
 	var profileId = $(this).closest(".profileData").attr("attr_pid");
-	var candidateName = $("#candidateName"+profileId).html();
+	/*var candidateName = $("#candidateName"+profileId).html();
 	var voterId = $("#ownVID"+profileId).html();
 	var relativeId = $("#relativeVID"+profileId).html();
 	var addressLine1 = $("#profileAddress1"+profileId).html();
@@ -1380,7 +1380,8 @@ $(document).on("click",".checkbox-custom",function(){
 	var age = $("#profileAge"+profileId).text();
 	var mobile = $("#mobileNo"+profileId).html();
 	var membershipNo = $("#membershipNo"+profileId).html();
-	var imageSrc = $(this).closest(".profileData").attr("attr_img");
+	var imageSrc = $(this).closest(".profileData").attr("attr_img");*/
+	
 	/*relative or own voter id check*/
 	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
 	{
@@ -1407,7 +1408,7 @@ $(document).on("click",".checkbox-custom",function(){
 			$(".selectMembership").removeClass("animated fadeOut");
 			$(".profileDetailsBlockR").removeClass("animated fadeIn");
 		},1500)
-		$("#profileNameR").val(candidateName);
+		/*$("#profileNameR").val(candidateName);
 		$("#membershipNoR").val(membershipNo);
 		$("#profileGenderR").val(gender);
 		$("#profileAgeR").val(age);
@@ -1415,7 +1416,7 @@ $(document).on("click",".checkbox-custom",function(){
 		$("#profileImageR").attr("src","https://mytdp.com/"+imageSrc);
 		$("#profileAdd1").val(addressLine1);
 		$("#profileMobileR").val(mobile);
-		$("#ownVIDR").val(voterId);
+		$("#ownVIDR").val(voterId);*/
 	}
 });
 /* $(document).on("click",".validateNumber",function(){
@@ -1435,14 +1436,14 @@ $(document).on("click",".validateNo",function(){
 	},500);
 });
 
-$(document).on("click",".updateId",function(){
+/*$(document).on("click",".updateId",function(){
 	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".updateProfileR").addClass("hide");
 		$(".voterIdSearchR").removeClass("hide");
 		$(".voterIdSearchR").addClass("animated fadeIn");		
 	},500);
-});
+});*/
 $(document).on("click",".voterSearchR",function(){
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1451,10 +1452,10 @@ $(document).on("click",".voterSearchR",function(){
 		$(".searchResultsBlockR").addClass("animated fadeIn");		
 	},500);
 });
-$(document).on("click",".voterIdBtnR",function(){
-	$(".searchResultsBlockR").addClass("animated fadeOut");
+$(document).on("click",".updateId",function(){
+	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
-		$(".searchResultsBlockR").addClass("hide");
+		$(".updateProfileR").addClass("hide");
 		$(".profileDetailsBlockR").removeClass("hide");
 		$(".profileDetailsBlockR").addClass("animated fadeIn");		
 	},500);
