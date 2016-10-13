@@ -186,22 +186,22 @@ $("#boothsList").trigger("chosen:updated");
 	  
      if(state == 0)
 	  {
-		 $("#errorDivId").html("please select state");
+		 $("#errorDivId").html("Please select state");
 		 return;
 	   }
 	  if(district == 0)
 	  {
-		 $("#errorDivId").html("please select district");
+		 $("#errorDivId").html("Please select district");
 		 return;
 	   }
 	  if(constituency == 0)
 	  {
-		 $("#errorDivId").html("please select constituency");
+		 $("#errorDivId").html("Please select constituency");
 		 return;
 	   }
 	  if(name.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
 	   {
-		  $("#errorDivId").html("please select name or mobileNo or houseNo");
+		  $("#errorDivId").html("Please select name or mobileNo or houseNo");
 		 return; 
 	   }
 	   searchVoterDetails();
@@ -233,27 +233,27 @@ $("#boothsList").trigger("chosen:updated");
   if (result!= null && result.length > 0) {
     for ( var i in result) {
       str += '<li>';
-      str += '<div class="media">';
-      str += '<div class="media-left">';
-      str += '<img src="https://mytdp.com/'+result[i].imagePath+'" class="media-object cadreImage" alt=""/>';
-      str += '</div>';
-      str += '<div class="media-body">';
-      str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
-      str += '<p>S/o:'+result[i].relativeName+'</p>';
-      str += '<p>V.ID:'+result[i].voterIDCardNo+'&nbsp;&nbsp;';
-	  if(result[i].memberShipNo!=null){
-	   str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
-		  }
-      str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
-      str += '<span>&nbsp;&nbsp;Gender : '+result[i].gender+'&nbsp;&nbsp;|</span>';
-      str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
-      str += '</p>';
-      str += '<div class="checkboxAlign">';
-      str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"/>';
-      str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
-      str += '</div>';
-	  str += '</div>';
-      str += '</div>';
+		  str += '<div class="media">';
+			  str += '<div class="media-left">';
+				str += '<img src="https://mytdp.com/'+result[i].imagePath+'" class="media-object cadreImage" alt=""/>';
+			  str += '</div>';
+			  str += '<div class="media-body">';
+				  str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
+				  str += '<p>S/o:'+result[i].relativeName+'</p>';
+				  str += '<p>V.ID:'+result[i].voterIDCardNo+'&nbsp;&nbsp;';
+				  if(result[i].memberShipNo!=null){
+				   str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
+					  }
+				  str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
+				  str += '<span>&nbsp;&nbsp;Gender : '+result[i].gender+'&nbsp;&nbsp;|</span>';
+				  str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
+				  str += '</p>';
+				  str += '<div class="checkboxAlign">';
+				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"/>';
+				  str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+			  str += '</div>';
+			  str += '</div>';
+		  str += '</div>';
       str += '</li>';
     }
   }
@@ -269,6 +269,8 @@ $("#boothsList").trigger("chosen:updated");
   }
  
   $(document).on("click",".searchChkboxCls",function(){
+	  $("#searchResultsBackBtn").parent().removeClass("hide");
+	  $("#searchResultsBackBtnR").parent().addClass("hide");
 	  var voterId = $(this).attr("attr_voterId");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
 	  var enrolYear = $(this).attr("attr_enrol_yId");
@@ -402,8 +404,8 @@ $("#boothsList").trigger("chosen:updated");
 				  str += '<span>&nbsp;&nbsp;Age :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
-					str += '<input type="checkbox" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 				  str += '</div>';
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
@@ -422,6 +424,37 @@ $("#boothsList").trigger("chosen:updated");
   }
   
 $(document).on("click",".searchChkboxClsR",function(){
+	/*populating data*/
+	$("#searchResultsBackBtn").parent().addClass("hide");
+	$("#searchResultsBackBtnR").parent().removeClass("hide");
+	var profileId = $(this).closest(".profileData").attr("attr_pid");
+	
+	/*relative or own voter id check*/
+	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
+	{
+		$(".selectMembership").addClass("animated fadeOut");
+		setTimeout(function(){
+			$(".selectMembership").addClass("hide");
+			$(".updateProfileR").removeClass("hide");
+			$(".updateProfileR").addClass("animated fadeIn");
+		},500)
+		setTimeout(function(){
+			$(".selectMembership").removeClass("animated fadeOut");
+			$(".profileDetailsBlockR").removeClass("animated fadeIn");
+		},1500)
+	}else{
+		/*hide and show animation effects*/
+		$(".selectMembership").addClass("animated fadeOut");
+		setTimeout(function(){
+			$(".selectMembership,.renewal,.subBlockR,.newProfile").addClass("hide");
+			$(".profileDetailsBlock,.subBlock,.renewalN").removeClass("hide");
+			$(".profileDetailsBlock").addClass("animated fadeIn");
+		},500)
+		setTimeout(function(){
+			$(".selectMembership").removeClass("animated fadeOut");
+			$(".profileDetailsBlock").removeClass("animated fadeIn");
+		},1500)
+	}
 	  var voterId = $(this).attr("attr_voterId");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
 	  var enrolYear = $(this).attr("attr_enrol_yId");
