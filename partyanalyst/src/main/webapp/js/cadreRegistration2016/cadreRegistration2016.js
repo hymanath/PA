@@ -1,3 +1,63 @@
+function onLoadCalls(){
+	 getStatewisesCastNames();
+	 getEducationalQualifications();
+	 getAllRelationDetails();
+  }
+
+  function getStatewisesCastNames(){
+	  var jsObj={
+		 stateId:1
+	 }
+	  $.ajax({          
+			type : 'GET',    
+			url : 'getStatewisesCastNamesAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			 if(result != null && result.length>0){
+               for(var i in result){
+                  var casteNamesObj = { id : result[i].id,name: result[i].name }  
+                  casteNamesArray.push(casteNamesObj);   
+               }
+             }	 
+		});
+  }
+  
+ 
+  function getEducationalQualifications(){
+	   $.ajax({          
+			type : 'GET',    
+			url : 'getEducationalQualificationsAction.action',  
+			dataType : 'json',
+			data : {} 
+		}).done(function(result){
+			if(result != null && result.length>0){
+               for(var i in result){
+                  var educationObj = { id : result[i].id,name: result[i].name }  
+                  educationsArray.push(educationObj);   
+               }
+             }	 
+		});
+  }
+  
+  function getAllRelationDetails(){
+	   $.ajax({          
+			type : 'GET',    
+			url : 'getAllRelationDetailsAction.action',  
+			dataType : 'json',
+			data : {} 
+		}).done(function(result){
+			if(result != null && result.length>0){
+               for(var i in result){
+                  var relationObj = { id : result[i].id,name: result[i].name }  
+                  relationsArray.push(relationObj);   
+               }
+             } 
+		});
+  }
+
+
+
 function getSearchByMyVoterIdDetails(){
  var flag = 0;
   $(".searchChkboxCls").each(function(){
@@ -71,7 +131,14 @@ var str = "";
 			$("#nameId1").val(result.lastName);
 		 }
 		 if(result.gender != null){
-			$("#genderId").val(result.gender);
+			 if(result.gender == 'M' || result.gender == 'male' || result.gender == 'Male'){
+				 $("#genderId").val('M');
+				 $("#genderId").trigger("chosen:updated");
+			 }
+			else if(result.gender == 'F' || result.gender == 'female' || result.gender == 'FeMale' || result.gender == 'Female'){
+				 $("#genderId").val('F');
+				 $("#genderId").trigger("chosen:updated");
+			 }
 		 }
 		 if(result.age != null){
 			$("#ageId").val(result.age);
@@ -124,7 +191,15 @@ var str = "";
 			$("#prevNomneAgeId").val(result.nomineeAge);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeGender != null && result.nomineeGender != ""){
-			$("#prvNomneGendrId").val(result.nomineeGender);
+			 if(result.nomineeGender == 'M' || result.nomineeGender == 'male' || result.nomineeGender == 'Male'){
+				 $("#prvNomneGendrId").val('M');
+				 $("#prvNomneGendrId").trigger("chosen:updated");
+			 }
+			else if(result.nomineeGender == 'F' || result.nomineeGender == 'female' || result.nomineeGender == 'FeMale' || result.nomineeGender == 'Female'){
+				 $("#prvNomneGendrId").val('F');
+				 $("#prvNomneGendrId").trigger("chosen:updated");
+			 }
+			//$("#prvNomneGendrId").val(result.nomineeGender);
 		 }
 		 if(result.memberTypeId != null){                    
 			$("#membershipId").val(result.memberTypeId);
@@ -132,25 +207,25 @@ var str = "";
 		 //$("#cadrePrvNomneDivId").hide(); 
 }
 function buildCasteDetails(result) {
-$("#casteListId").append('<option value="0">Select Caste</option>');
-   if (result.casteList != null && result.casteList.length > 0) {
-     for ( var i in result.casteList) {
-	 if(result.casteId == result.casteList[i].id)
-       $("#casteListId").append('<option selected value="'+result.casteList[i].id+'">'+result.casteList[i].name+'</option>');
-	 else
-	   $("#casteListId").append('<option value="'+result.casteList[i].id+'">'+result.casteList[i].name+'</option>');
+  $("#casteListId").append('<option value="0">Select Caste</option>');
+   if (casteNamesArray != null && casteNamesArray.length > 0) {
+     for ( var i in casteNamesArray) {
+		 if(result.casteId == casteNamesArray[i].id)
+		   $("#casteListId").append('<option selected value="'+casteNamesArray[i].id+'">'+casteNamesArray[i].name+'</option>');
+		 else
+		   $("#casteListId").append('<option value="'+casteNamesArray[i].id+'">'+casteNamesArray[i].name+'</option>');
      }
 	 $("#casteListId").trigger("chosen:updated");
   }
   }
   function buildEductnQualifns(result) {
-   $("#eductnQualId").append('<option  value="0">Select Caste</option>');
-   if (result.eduQualftnList != null && result.eduQualftnList.length > 0) {
-     for ( var i in result.eduQualftnList) {
-	 if(result.educationId == result.eduQualftnList[i].id)
-       $("#eductnQualId").append('<option selected value="'+result.eduQualftnList[i].id+'">'+result.eduQualftnList[i].name+'</option>');
+   $("#eductnQualId").append('<option  value="0">Select Education</option>');
+   if (educationsArray != null && educationsArray.length > 0) {
+     for ( var i in educationsArray) {
+	 if(result.educationId == educationsArray[i].id)
+       $("#eductnQualId").append('<option selected value="'+educationsArray[i].id+'">'+educationsArray[i].name+'</option>');
 	 else
-	   $("#eductnQualId").append('<option value="'+result.eduQualftnList[i].id+'">'+result.eduQualftnList[i].name+'</option>');
+	   $("#eductnQualId").append('<option value="'+educationsArray[i].id+'">'+educationsArray[i].name+'</option>');
      }
 	 $("#eductnQualId").trigger("chosen:updated");
   }
@@ -175,7 +250,7 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 					+ result.cadreFamilyDetails[i].voterName + '</h5>';
 			str += '<p>S/o:' + result.cadreFamilyDetails[i].relativeName
 					+ '</p>';
-			str += '<p>V.ID' + result.cadreFamilyDetails[i].voterCadreNO
+			str += '<p>V.ID: ' + result.cadreFamilyDetails[i].voterCadreNO
 					+ ' </p>';
 			str += '<p>H.no:' + result.cadreFamilyDetails[i].houseNo
 					+ '&nbsp;&nbsp;|';
@@ -186,7 +261,7 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 					+ ' </span>';
 			str += '</p>';
 			str += '<div class="checkboxAlign">';
-			str += '<input id="checkbox'+i+'" class="checkbox-custom checkboxCls" type="checkbox">';
+			str += '<input id="checkbox'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox">';
 			str += '<label for="checkbox'+i+'" class="checkbox-custom-label"  attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relType="'+result.cadreFamilyDetails[i].relationshipType+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			str += '</div>';
 			str += '</div>';
@@ -195,10 +270,10 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 		}
 	}
 	str += '</ul>';
-	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a  class="text-capital" id="addNewNomineeId"> add new nominee</a></p>';
+	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a class="text-capital" id="addNewNomineeId" style="cursor:pointer;"> add new nominee</a></p>';
 	$(".cadreFamilyDetailsCls").html(str);
+	//$("#cadrePrvNomneDivId").show();
 	$("#familyDetailsDivId").show();
-
 }
   $(document).on("click","#addNewNomineeId",function(){
       $("#addNewNominatedId").show();  
@@ -206,7 +281,7 @@ $("#casteListId").append('<option value="0">Select Caste</option>');
 
 function buildCadreRelativesDetails(result,id) {
 	$('#'+id+'').append('<option  value="0">Select Relationship</option>');
-	  if (relationsArray != null && relationsArray.length > 0) {
+	 if (relationsArray != null && relationsArray.length > 0) {
 	   for ( var i in relationsArray) {
 			if(id == 'prevNomneReltvId'){
 				if(result.relativeType == relationsArray[i].name)
@@ -235,9 +310,9 @@ $(document).on("click", "#changeNomineeId", function(e) {
        } else {
            $("#familyDetailsDivId").hide();
        }
-    }); 
-    
-    function savingCadreDetails(){
+    });  
+	
+	function savingCadreDetails(){
 	
 	var uploadHandler = {
 				upload: function(o) {
@@ -251,18 +326,17 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	//console.log(submitCadreForm)
 		YAHOO.util.Connect.setForm('submitCadreForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
-	} 
+	}
 	
-	
-/*$(document).on("click",".checkboxCls",function(){
+	/*$(document).on("click",".checkboxCls",function(){
 	  var name = $(this).attr("attr_name");
 	  var gender = $(this).attr("attr_gender");
 	  var age = $(this).attr("attr_age");
 	  var relationType = $(this).attr("attr_relType");
 	  
 	 $("#checkNomineeNameId").val(name);
-     $("#checkNomineeGenderId").val(gender);
+   $("#checkNomineeGenderId").val(gender);
 	 $("#checkNomineeAgeId").val(age);
 	 $("#checkNomineeRelaTypeId").val(relationType);
 	
-  });*/
+});*/
