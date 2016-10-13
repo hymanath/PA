@@ -184,6 +184,10 @@
         <description/>
         <role-name>ITG@ANDROID@SMS</role-name>
     </security-role> 
+       <security-role>
+        <description/>
+        <role-name>ITG@GIS@REQUEST</role-name>
+    </security-role> 
     <security-role>
         <description/>
         <role-name>webserviceauth</role-name>
