@@ -397,7 +397,7 @@ $("#boothsList").trigger("chosen:updated");
 				  if(result[i].voterId != null && result[i].voterId > 0)
 					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
 				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
-					  str += '<p class="voterCls relativeVID"><span id="relativeVID'+i+'">V.ID:'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
+					  str += '<p class="voterCls relativeVID"><span>V.ID:</span><span id="relativeVID'+i+'">'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
 				  str += '<b>MemShip.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
 				  str += '<p>H.no:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
 				  str += '<span>&nbsp;&nbsp;Gender : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
@@ -461,16 +461,17 @@ $(document).on("click",".searchChkboxClsR",function(){
 	  var relativeVoter = $(this).attr("attr_relative_voter");
 	  var status = "renewal";
 	  
+	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
+		status = "renewal";
+	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
+		status = "update";
+	  
 	  if(relativeVoter != null && relativeVoter > 0){
 		  var image=$(this).attr("attr_img1");
-		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image);
+		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter);
 	  }
 	  else{
-		  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
-			status = "renewal";
-		else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
-			status = "update";
-		getCadreDetailsForCadre(tdpCadreId,voterId,status);
+		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
 	  }
   });
   
@@ -480,6 +481,35 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		 familyVoterId:0,
 		 cadreId:tdpCadreId,
 		 status:status
+	 }
+	$.ajax({          
+		type : 'GET',    
+		url : 'getRegistrationPersonDetailsAction.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){
+		hideShowDivs(status);
+		buildProfileDetails(result,status);
+		buildCasteDetails(result);
+		buildEductnQualifns(result);
+		buildCadreFamilyDetails(result);
+		
+		if(status == "new"){
+			buildCadreRelativesDetails(result,"relativeId");
+		}else if(status == "update" || status == "renewal"){
+			buildCadreRelativesDetails(result,"prevNomneReltvId");
+			buildCadreRelativesDetails(result,"relativeId");
+		}
+	});
+}
+
+function getCadreDetailsForRelativeCadre(type){
+	var status = $("#stusIdR").val();
+	var jsObj={
+		 voterId:0,
+		 familyVoterId:$("#votrIdR").val(),
+		 cadreId:$("#tdpCdrIdR").val(),
+		 status:$("#stusIdR").val()
 	 }
 	$.ajax({          
 		type : 'GET',    
@@ -533,13 +563,14 @@ function getAllConstitencyList()
   });*/
   
   
-  function renewalSearchRelativeMembershipDetails(num,image){
+  function renewalSearchRelativeMembershipDetails(num,image,tdpCadreId,status,relativeVoter){
 	 var candidateName=$("#candidateName"+num+"").html();
 	  var relativeName=$("#relaNameId"+num).html();
 	  var voterId=$("#relativeVID"+num).html();
 	  var houseNo=$("#profileAddress1"+num).html();
 	  var gender=$("#profileGender"+num).html();
 	  var age=$("#profileAge"+num).html();
+	  var memberShipNo = $("#membershipNo"+num).html();
 	  
 	var str = '';
       str += '<ul class="renewalSearchRelativeResults">';
@@ -551,7 +582,7 @@ function getAllConstitencyList()
 			       str += '<div class="media-body" id="relativeProfileDataId">';
 				    str += '<h5 class="text-capitalize">'+candidateName+ '</h5>';
 				     str += '<p>S/o:'+relativeName+'</p>';
-			           str += '<p>V.ID:'+voterId+ '</p>';
+			           str += '<p>V.ID: '+voterId+ '&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span></p>';
 				        str += '<p>H.no:<span>'+houseNo+'</span>&nbsp;&nbsp;|';
 				      str += '<span>&nbsp;&nbsp;Gender : <span>'+gender+'</span>&nbsp;&nbsp;|</span>';
 				    str += '<span>&nbsp;&nbsp;Age :<span>'+age+'</span></span>';
@@ -566,7 +597,10 @@ function getAllConstitencyList()
 str += '</ul>';
   $("#renwalMembRelativeId").html(str);
  
-  }
+ $("#tdpCdrIdR").val(tdpCadreId);
+ $("#stusIdR").val(status);
+ $("#votrIdR").val(relativeVoter);
+}
   
 $(document).on("click",".searchChkboxCls",function(){
 	$("#submitCadreForm").hide();
