@@ -7270,7 +7270,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 						" model1.voterIDCardNo," +			//11
 						" model2.voterId," +				//12
 						" model2.voterIDCardNo," +			//13
-						" model.tdpCadre.enrollmentYear" +	//14
+						" model.enrollmentYearId" +	//14
 						" from TdpCadreEnrollmentYear model" +	
 						" left join model.tdpCadre.voter model1" +
 						" left join model.tdpCadre.familyVoter model2" +
