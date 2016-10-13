@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.impl.CoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -141,6 +143,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<VoterVO> voterList = new ArrayList<VoterVO>();
 	private List<TdpCadreVO> cadreList = new ArrayList<TdpCadreVO>();
 	private List<IdAndNameVO> idAndNameVO;
+	private CadreRegistratedCountVO cadreRegistratedCountVO;	
 	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
 	private List<List<UserTypeVO>> userTypeVOList;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
@@ -732,6 +735,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public void setIdAndNameVO(List<IdAndNameVO> idAndNameVO) {
 		this.idAndNameVO = idAndNameVO;
+	}
+	
+	public CadreRegistratedCountVO getCadreRegistratedCountVO() {
+		return cadreRegistratedCountVO;
+	}
+	public void setCadreRegistratedCountVO(
+			CadreRegistratedCountVO cadreRegistratedCountVO) {
+		this.cadreRegistratedCountVO = cadreRegistratedCountVO;
 	}
 	public List<List<UserTypeVO>> getUserTypeVOList() {
 		return userTypeVOList;
@@ -2605,6 +2616,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  idAndNameVO=cadreRegistrationService.getStateWiseConstituency();
 	  }catch(Exception e){
 		  LOG.error("Entered into getAllConstitencyList method in CadreRegistrationAction.");
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getTotalNewRenewalCadreStateWise(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getTotalNewRenewalCadreStateWise(startDate, endDate);
+	  }catch(Exception e){
+		  e.printStackTrace();
 	  }
 	  return Action.SUCCESS;
   }
