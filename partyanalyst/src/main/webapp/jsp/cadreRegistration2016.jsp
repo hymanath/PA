@@ -223,10 +223,10 @@
             </div>
         </div>
     </div>
-    <div class="row hide subBlock m_top50">
+    <div class="row hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
-				<div class="panel-heading renewalN renewal">
+				<div class="panel-heading renewalN">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
                 </div>
@@ -241,9 +241,11 @@
                         	<h4 class="panel-title text-capital">search your voter id</h4>
                         </div>
                     </div>
-					<div id="errorDivId" style="color:red;"></div>
-                    <div class="row m_top30">
 					
+                    <div class="row m_top30">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="errorDivId" style="color:red;"></div>
+						</div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>State</label>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -301,6 +303,8 @@
                         	<label>House Number</label>
                             <input type="text" class="form-control" id="huseNOId"/>
                         </div>
+					</div>
+					<div class="row">
 						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
 							<span id="voterIdBack" class="backBtn"> ← Back</span>
 						</div>
@@ -365,7 +369,6 @@
 										<option value="F">Female</option>
 										<option value="O">Others</option>
 									</select>
-                                    <!--<input type="text" class="form-control" id="genderId"/>-->
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Age</label>
@@ -390,7 +393,7 @@
                             	<div class="imageDiv">
                                 	<img src="dist/img/default_image.png" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox"/>BROWSE
+                                    	<input type="checkbox"/><input type="file" style="width:80px"/>
                                     </label>
                                 </div>
                             </div>
@@ -515,33 +518,39 @@
 						</div>
                     </div>
                     <div class="row">
-					<div id="addNewNominatedId" style="display:none;">
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-                            <label>Nominee Name</label>
-                            <input type="text" class="form-control" id="nomineeNameId" name="cadreRegistrationVO.nomineeName"/>
-                        </div>
-                        <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-                            <label>Gender</label>
-                        <!--<input type="text" class="form-control" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender"/>-->
-							<select class="select" id="nomineeGenderId">
-								<option value="0">Select Gender</option>
-								<option value="M">Male</option>
-								<option value="F">Female</option>
-								<option value="O">Others</option>
-							</select>
-                        </div>
-                        <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-                            <label>Age</label>
-                            <input type="text" class="form-control" id="nomineeAgeId" name="cadreRegistrationVO.nomineeAge"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-                            <label>Relative Relationship</label>
-                            <select class="select" id="relativeId" name="cadreRegistrationVO.nomineeRelationId">
-                            	<!--<option></option>-->
-                            </select>
-                        </div>
-						 </div>
-                        <div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
+						<div id="addNewNominatedId" style="display:none;">
+							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+								<label>Nominee Name</label>
+								<input type="text" class="form-control" id="nomineeNameId" name="cadreRegistrationVO.nomineeName"/>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
+								<label>Gender</label>
+							<!--<input type="text" class="form-control" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender"/>-->
+								<select class="select" id="nomineeGenderId">
+									<option value="0">Select Gender</option>
+									<option value="M">Male</option>
+									<option value="F">Female</option>
+									<option value="O">Others</option>
+								</select>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
+								<label>Age</label>
+								<input type="text" class="form-control" id="nomineeAgeId" name="cadreRegistrationVO.nomineeAge"/>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+								<label>Relative Relationship</label>
+								<select class="select" id="relativeId" name="cadreRegistrationVO.nomineeRelationId">
+									<!--<option></option>-->
+								</select>
+							</div>
+						</div>
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
+							<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
+						</div>
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
+							<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
+						</div>
+                        <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
                         </div>
                     </div>
@@ -552,7 +561,7 @@
             </div>
         </div>
     </div>
-    <div class="row hide subBlockR m_top50">
+    <div class="row hide subBlockR">
 		<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
             	<div class="panel-heading renewal">
@@ -581,6 +590,9 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<p>Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
 								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top30">
+									<span id="renewalBackBtn" class="backBtn"> ← Back</span>
+								</div>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId"></div>
@@ -608,26 +620,7 @@
                         <div class="col-md-6 col-xs-12 col-sm-6">
                         	<div class="pad_20" >
                             	<div class="row">
-                                	<div class="col-md-12 col-xs-12 col-sm-12" id="renwalMembRelativeId">
-                                    	<!--<div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                            </div>
-                                            <div class="media-body" id="relativeUpdateId">
-                                                <h5 class="text-capitalize">Harish Kumar</h5>
-                                                <p>S/o: Balaraj</p>
-                                                <p>V.ID VD32564789</p>
-                                                <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                    <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                    <span>&nbsp;&nbsp;Age : 28</span>
-                                                </p>
-                                                <div class="checkboxAlign">
-                                                    <input id="checkbox-22" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                    <label for="checkbox-22" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                                </div>
-                                            </div>
-                                        </div>-->
-                                    </div>
+                                	<div class="col-md-12 col-xs-12 col-sm-12" id="renwalMembRelativeId"></div>
                                     <div class="col-md-12 col-xs-12 col-sm-12">
                                     	<h4 class="text-capital">your profile showing</h4>
                                         <h4 class="panel-title">registered with relative voter id</h4>
@@ -1128,6 +1121,19 @@ $(document).on("click",".registerNew",function(){
 		$(".mainBlocks").removeClass("animated fadeOut");
 	},1000);
 });
+$(document).on("click","#searchResultsBackBtn",function(){
+	$(".profileDetailsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".profileDetailsBlock").addClass("hide");
+		$(".searchResultsBlock").removeClass("hide");
+		$(".searchResultsBlock").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+		$(".profileDetailsBlock").removeClass("animated fadeOut");
+	},1000);
+});
+
 $(document).on("click","#voterIdBack",function(){
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1147,6 +1153,10 @@ function searchVoterDetails(){
 		$(".searchResultsBlock").removeClass("hide");
 		$(".searchResultsBlock").addClass("animated fadeIn");		
 	},500);
+	setTimeout(function(){
+		$(".voterIdSearch").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");		
+	},500);
 }
 function myVoterButtonDetails(){
 	$(".searchResultsBlock").addClass("animated fadeOut");
@@ -1155,6 +1165,10 @@ function myVoterButtonDetails(){
 		$(".profileDetailsBlock").removeClass("hide");
 		$(".profileDetailsBlock").addClass("animated fadeIn");	
    	},500);
+	setTimeout(function(){
+		$(".searchResultsBlock").removeClass("animated fadeOut");
+		$(".profileDetailsBlock").removeClass("animated fadeIn");	
+   	},1000);
 }
 
 
@@ -1209,66 +1223,35 @@ $(document).on("click","#profileBackBtnR",function(){
 	$("#renewalMembershipId").html(' ');
 });
 
-
-$(document).on("click",".checkbox-custom",function(){
-	
-	/*populating data*/
-	var profileId = $(this).closest(".profileData").attr("attr_pid");
-	/*var candidateName = $("#candidateName"+profileId).html();
-	var voterId = $("#ownVID"+profileId).html();
-	var relativeId = $("#relativeVID"+profileId).html();
-	var addressLine1 = $("#profileAddress1"+profileId).html();
-	var gender = $("#profileGender"+profileId).text();
-	var age = $("#profileAge"+profileId).text();
-	var mobile = $("#mobileNo"+profileId).html();
-	var membershipNo = $("#membershipNo"+profileId).html();
-	var imageSrc = $(this).closest(".profileData").attr("attr_img");*/
-	
-	/*relative or own voter id check*/
-	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
-	{
-		$(".selectMembership").addClass("animated fadeOut");
-		setTimeout(function(){
-			$(".selectMembership").addClass("hide");
-			$(".updateProfileR").removeClass("hide");
-			$(".updateProfileR").addClass("animated fadeIn");
-		},500)
-		setTimeout(function(){
-			$(".selectMembership").removeClass("animated fadeOut");
-			$(".profileDetailsBlockR").removeClass("animated fadeIn");
-		},1500)
-	}else{
-		
-		/*hide and show animation effects*/
-		$(".selectMembership").addClass("animated fadeOut");
-		setTimeout(function(){
-			$(".selectMembership,.renewal,.subBlockR,.newProfile").addClass("hide");
-			$(".profileDetailsBlock,.subBlock,.renewalN").removeClass("hide");
-			$(".profileDetailsBlock").addClass("animated fadeIn");
-		},500)
-		setTimeout(function(){
-			$(".selectMembership").removeClass("animated fadeOut");
-			$(".profileDetailsBlock").removeClass("animated fadeIn");
-		},1500)
-		/*$("#profileNameR").val(candidateName);
-		$("#membershipNoR").val(membershipNo);
-		$("#profileGenderR").val(gender);
-		$("#profileAgeR").val(age);
-		$("#profileDobR").val();
-		$("#profileImageR").attr("src","https://mytdp.com/"+imageSrc);
-		$("#profileAdd1").val(addressLine1);
-		$("#profileMobileR").val(mobile);
-		$("#ownVIDR").val(voterId);*/
-	}
-});
-/* $(document).on("click",".validateNumber",function(){
-	$(".selectMembership").addClass("animated fadeOut");
+$(document).on("click","#searchResultsBack",function(){
+	$(".searchResultsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
-		$(".selectMembership").addClass("hide");
-		$(".existingMembershipR").removeClass("hide");
-		$(".existingMembershipR").addClass("animated fadeIn");		
+		$(".searchResultsBlock").addClass("hide");
+		$(".voterIdSearch").removeClass("hide");
+		$(".voterIdSearch").addClass("animated fadeIn");
 	},500);
-}); */
+	setTimeout(function(){
+		$(".voterIdSearch").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+	},1000);
+	//$("#nameId").
+});
+$(document).on("click","#renewalBackBtn",function(){
+	$(".selectMembership,.subBlockR,.renewalN").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".selectMembership,.subBlockR,.renewalN").addClass("hide");
+		$(".mainBlocks,.renewal").removeClass("hide");
+		$(".mainBlocks,.renewal").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".selectMembership,.subBlockR,.renewalN").removeClass("animated fadeOut");
+		$(".mainBlocks,.renewal").removeClass("animated fadeIn");
+	},1000);
+	setTimeout(function(){
+	$(".selectMembership,.subBlockR,.renewalN").addClass("hide");
+	},1600);
+});
+
 $(document).on("click",".validateNo",function(){
 	$(".existingMembershipR").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1276,16 +1259,26 @@ $(document).on("click",".validateNo",function(){
 		$(".updateProfileR").removeClass("hide");
 		$(".updateProfileR").addClass("animated fadeIn");		
 	},500);
+	setTimeout(function(){
+		$(".existingMembershipR").removeClass("animated fadeOut");
+		$(".updateProfileR").removeClass("animated fadeIn");		
+	},1000);
+	
+});
+$(document).on("click","#searchResultsBackBtnR",function(){
+	$(".profileDetailsBlock,.subBlockR").addClass("animated fadeOut");
+	
+	setTimeout(function(){
+		$(".selectMembership,.subBlockR").removeClass("hide");
+		$(".profileDetailsBlock").addClass("hide");
+		$(".selectMembership").addClass("animated fadeIn");		
+	},500);
+	setTimeout(function(){
+		$(".profileDetailsBlock,.subBlockR").removeClass("animated fadeOut");
+		$(".selectMembership").removeClass("animated fadeIn");		
+	},1500);
 });
 
-/*$(document).on("click",".updateId",function(){
-	$(".updateProfileR").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".updateProfileR").addClass("hide");
-		$(".voterIdSearchR").removeClass("hide");
-		$(".voterIdSearchR").addClass("animated fadeIn");		
-	},500);
-});*/
 $(document).on("click",".voterSearchR",function(){
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
