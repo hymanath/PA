@@ -226,7 +226,11 @@
     <div class="row hide subBlock m_top50">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
-            	<div class="panel-heading new">
+				<div class="panel-heading renewalN renewal">
+                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
+                </div>
+            	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
                     <h3 class="text-left text-capital text-muted m_top10">New Membership</h3>
                 </div>
@@ -1231,13 +1235,13 @@ $(document).on("click",".checkbox-custom",function(){
 		/*hide and show animation effects*/
 		$(".selectMembership").addClass("animated fadeOut");
 		setTimeout(function(){
-			$(".selectMembership").addClass("hide");
-			$(".profileDetailsBlockR").removeClass("hide");
-			$(".profileDetailsBlockR").addClass("animated fadeIn");
+			$(".selectMembership,.renewal,.subBlockR,.newProfile").addClass("hide");
+			$(".profileDetailsBlock,.subBlock,.renewalN").removeClass("hide");
+			$(".profileDetailsBlock").addClass("animated fadeIn");
 		},500)
 		setTimeout(function(){
 			$(".selectMembership").removeClass("animated fadeOut");
-			$(".profileDetailsBlockR").removeClass("animated fadeIn");
+			$(".profileDetailsBlock").removeClass("animated fadeIn");
 		},1500)
 		/*$("#profileNameR").val(candidateName);
 		$("#membershipNoR").val(membershipNo);
