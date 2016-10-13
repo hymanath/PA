@@ -128,6 +128,7 @@ if(status == "new"){
 }
 }
 function buildProfileDetails(result,status){
+	$("#cadreUpdateVotrDivId").hide();
 var str = "";
 		 if(result.lastName != null){                    
 			$("#nameId1").val(result.lastName);
@@ -166,6 +167,7 @@ var str = "";
 		 if(result.email != null && result.email != ""){
 			$("#emailId").val(result.email);
 		 }
+		
 		 if(status == "new"){
 		 if(result.voterCardNo != null && result.voterCardNo != ""){
 			 $("#relVotCls").addClass("text-muted");
@@ -178,9 +180,9 @@ var str = "";
 		 }
 		 }else{
 		  if(result.voterCardNo != null && result.voterCardNo != ""){
-			$("#updatedVoetrId").val(result.voterCardNumber);
-		  }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
 			$("#selfVoetrId").val(result.voterCardNo);
+		  }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
+			$("#selfVoetrId").val(result.voterCardNumber);
 		  }
 		 }
 		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
@@ -334,7 +336,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
 	}
 	
-	$(document).on("click",".checkboxCls",function(){
+$(document).on("click",".checkboxCls",function(){
 	$(".checkboxCls").prop( 'checked',false);
 	 $(this).prop( 'checked', true );
 	  var name = $(this).attr("attr_name");
