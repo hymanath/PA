@@ -18,9 +18,8 @@ import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.model.TdpCadre;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -453,10 +452,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setNomineeAge(objects[16]!=null?(Long)objects[16]:0l);//nomineeAge
 			returnVO.setRelativeType(objects[17]!=null?objects[17].toString():"");//relativeType
 			
+			
 			if(objects[18] != null && objects[18].toString().length()> 0l){
+				returnVO.setVoterRelationId(objects[19]!=null?(Long)objects[19]:0l);//voterId
 				returnVO.setVoterCardNo(objects[18]!=null?objects[18].toString():"");//votercardNo
-			}else if(objects[19] != null && objects[19].toString().length() > 0l){
-				returnVO.setVoterCardNumber(objects[19]!=null?objects[19].toString():"");//familyVotercardNo
+			}else if(objects[18] != null && objects[18].toString().length() > 0l){
+				returnVO.setFamilyVoterId(objects[19]!=null?(Long)objects[19]:0l);//familyvoterId
+				returnVO.setVoterCardNumber(objects[18]!=null?objects[18].toString():"");//familyVotercardNo
 			}
 			
 		}
@@ -536,5 +538,31 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return returnList;
 	}
+	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO){  
+		CadreResponseVO responceVO = null;
+	    try {
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/saveFieldDataForCadre";
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         responceVO = webResource.accept("application/json").type("application/json").post(CadreResponseVO.class,cadreRegistrationVO);
+	        
+	         if(responceVO.getSaveStatus().equalsIgnoreCase("Success")){
+	        	 return "SUCCESS";
+	         }else{
+	        	 return "FAIL";
+	         }
+	         
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at savingCadreDetails", e);
+	    }
+	    return null;    
+	  }
 
 }

@@ -182,9 +182,93 @@ public class CadreRegistrationVO implements Serializable{
 	private List<IdAndNameVO> casteList = new ArrayList<IdAndNameVO>();
 	private List<IdAndNameVO> eduQualftnList = new ArrayList<IdAndNameVO>();
 	private List<IdAndNameVO> relativesList = new ArrayList<IdAndNameVO>();
+	private String cadreName;
+	private String aadharNo;
+	private String dateOfBirth;
+	private Long casteStateId;
+	private Long nomineeRelationId;
+	private String imageSaveStatus;
+	private String memberShipNo;
+	private Long webUserId;
+	private String 			prevNomineeName;
+	private Long			prevNomineeAge;
+	private String			preNomineeGender;
+	private Long prevNomineeRelationId;
 	
 	
 	
+	public String getPrevNomineeName() {
+		return prevNomineeName;
+	}
+	public void setPrevNomineeName(String prevNomineeName) {
+		this.prevNomineeName = prevNomineeName;
+	}
+	public Long getPrevNomineeAge() {
+		return prevNomineeAge;
+	}
+	public void setPrevNomineeAge(Long prevNomineeAge) {
+		this.prevNomineeAge = prevNomineeAge;
+	}
+	public String getPreNomineeGender() {
+		return preNomineeGender;
+	}
+	public void setPreNomineeGender(String preNomineeGender) {
+		this.preNomineeGender = preNomineeGender;
+	}
+	public Long getPrevNomineeRelationId() {
+		return prevNomineeRelationId;
+	}
+	public void setPrevNomineeRelationId(Long prevNomineeRelationId) {
+		this.prevNomineeRelationId = prevNomineeRelationId;
+	}
+	public Long getWebUserId() {
+		return webUserId;
+	}
+	public void setWebUserId(Long webUserId) {
+		this.webUserId = webUserId;
+	}
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+	public String getImageSaveStatus() {
+		return imageSaveStatus;
+	}
+	public void setImageSaveStatus(String imageSaveStatus) {
+		this.imageSaveStatus = imageSaveStatus;
+	}
+	public Long getNomineeRelationId() {
+		return nomineeRelationId;
+	}
+	public void setNomineeRelationId(Long nomineeRelationId) {
+		this.nomineeRelationId = nomineeRelationId;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public String getAadharNo() {
+		return aadharNo;
+	}
+	public void setAadharNo(String aadharNo) {
+		this.aadharNo = aadharNo;
+	}
+	public String getCadreName() {
+		return cadreName;
+	}
+	public void setCadreName(String cadreName) {
+		this.cadreName = cadreName;
+	}
 	public List<IdAndNameVO> getEduQualftnList() {
 		return eduQualftnList;
 	}

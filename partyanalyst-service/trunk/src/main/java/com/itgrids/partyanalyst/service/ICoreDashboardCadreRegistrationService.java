@@ -21,5 +21,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) ;
 	public List<IdAndNameVO> getEducationalQualifications( ) ;
 	public List<IdAndNameVO> getAllRelationDetails();
-	
+	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
 }
