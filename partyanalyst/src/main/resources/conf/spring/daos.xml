@@ -3209,7 +3209,11 @@
 	<bean id="holidayDAO" class="com.itgrids.partyanalyst.dao.hibernate.HolidayDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	 <bean id="delimitationConstituencyMandalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreTargetCountDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTargetCountDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>		
