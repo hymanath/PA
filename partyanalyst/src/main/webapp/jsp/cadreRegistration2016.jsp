@@ -496,12 +496,12 @@
                             </select>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
-                        	<label class="checkbox-inline">
-                            	<input type="checkbox" id="nomineeId"/>Use Ramesh As Nominee
+                        	<label class="checkbox-inline" >
+                            	<input type="checkbox" class="nomineeDetailsCls"/><span id="defaultNomineeId"></span>
                             </label>
                             <span ><i>/Or/</i></span>
                             <label class="checkbox-inline">
-                            	<input type="checkbox" id="changeNomineeId" />Change Nominee
+                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Change Nominee
                             </label>
                         </div>
                         <!--<div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
