@@ -18,12 +18,20 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	//VERY-GOOD, GOOD, OK, POOR, VERY_POOR / ISSSUES Status Details
 	private List<GISVisualizationBasicVO> statusList = new ArrayList<GISVisualizationBasicVO>(0);
 	private List<GISVisualizationDetailsVO> locationsList = new ArrayList<GISVisualizationDetailsVO>(0);
-	
+	private GISUserTrackingVO userTrackingVO;
 	
 	public GISVisualizationDetailsVO(){}
 	public GISVisualizationDetailsVO(Long locationId,String locationName){
 		this.locationId = locationId;
 		this.locationName = locationName;
+	}
+	
+	
+	public GISUserTrackingVO getUserTrackingVO() {
+		return userTrackingVO;
+	}
+	public void setUserTrackingVO(GISUserTrackingVO userTrackingVO) {
+		this.userTrackingVO = userTrackingVO;
 	}
 	public String getPerc() {
 		return perc;
