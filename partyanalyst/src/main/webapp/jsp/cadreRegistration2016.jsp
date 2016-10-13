@@ -246,7 +246,7 @@
 					
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>State</label>
-                           <span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
+                           <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
@@ -256,34 +256,35 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>District</label>
-							<span id="districtDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<span id="districtDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							<option value="0">Select District</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Constituency</label>
-							<span id="constituencyDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
 							<option value="0">Select Constituency</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Mandal</label>
-							<span id="mandalDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value)">
 							<option value="0">Select Mandal</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
                         	<label>Village/Panchayat</label>
-							<span id="panchayatDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
+							<span id="panchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                            <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
 						   <option value="0">Select Village/Panchayat</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Booth</label>
+							<span id="boothDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                              <select class="select" id="boothsList" class="form-control">
 							  <option value="0">Select Booth</option>
 							</select>
@@ -313,6 +314,7 @@
                 <div class="panel-body searchResultsBlock hide" >
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12" id="searchVoterDetailsId"></div>
+                    	<div id="searchVoterDetailsImgId" style="display:none;"><center><img src="images/search.gif"/></center></div>
 						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
 							<span id="searchResultsBack" class="backBtn"> ← Back</span>
 						</div>

@@ -1,5 +1,5 @@
  function getConstituenciesForDistricts(district){
-	 $("#districtDivIdImg").show();
+	 $("#constituencyDivIdImg").show();
 	 
 	$("#constituencyId  option").remove();
 	$("#constituencyId").append('<option value="0">Select Constituency</option>');
@@ -20,7 +20,7 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  $("#districtDivIdImg").hide();
+	 $("#constituencyDivIdImg").hide();
 	    for(var i in result){
 	   if(result[i].id == 0){
           $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
@@ -35,7 +35,7 @@
 
 
  function getMandalCorporationsByConstituency(consistency){
-	 $("#constituencyDivIdImg").show();
+	 $("#mandalDivIdImg").show();
 	 
 	$("#mandalList  option").remove();
 	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
@@ -55,7 +55,7 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#constituencyDivIdImg").hide();
+	   $("#mandalDivIdImg").hide();
 	    for(var i in result){
 		   if(result[i].id == 0){
 			  $("#mandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
@@ -69,7 +69,7 @@
   
   function getPanchayatWardByMandal(mandal)
 	{
-    $("#mandalDivIdImg").show();		
+   $("#boothDivIdImg").show();	
 	$("#panchayatList  option").remove();
 	$("#panchayatList").append('<option value="0">Select Panchayat</option>');
 	$("#boothsList  option").remove();
@@ -84,8 +84,9 @@
 					url : "getPanchayatsForMandalAction.action",
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
+					$("#boothDivIdImg").hide();
 				  for(var i in result){
-					  $("#mandalDivIdImg").hide();
+					 
 						if(mandalSubStrId==1){
 							$("#panchayatTwnId").show();
 						if(result[i].id == 0){
@@ -109,7 +110,7 @@
 	
 	function getAllCadreInPanchayat(panchayat)
 	{	
-	$("#panchayatDivIdImg").show();
+	$("#boothDivIdImg").show();
 	$("#boothsList  option").remove();
 	$("#boothsList").append('<option value="0">Select Booth</option>');
 			
@@ -121,7 +122,7 @@
 					url : "getBoothsForPanchayatAction.action",
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
-					$("#panchayatDivIdImg").hide();
+					$("#boothDivIdImg").hide();
 					for(var i in result)
 					{
 					if(result[i].id == 0){
@@ -135,7 +136,7 @@ $("#boothsList").trigger("chosen:updated");
 	}
 
  function getDistrictsForStates(state){
-	$("#statesDivIdImg").show();
+	$("#districtDivIdImg").show();
 	 $("#districtId  option").remove();
 	$("#districtId").append('<option value="0">Select District</option>');
 	$("#constituencyId  option").remove();
@@ -158,7 +159,7 @@ $("#boothsList").trigger("chosen:updated");
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#statesDivIdImg").hide();
+	   $("#districtDivIdImg").hide();
      for(var i in result){
 	   if(result[i].id == 0){
           $("#districtId").append('<option value='+result[i].id+'>Select District</option>');
@@ -171,6 +172,8 @@ $("#boothsList").trigger("chosen:updated");
   }
   
   function getNewCadreDetails(){
+	   $("#errorDivId").html("");
+	  $("#searchVoterDetailsImgId").show();
 	  var constituency=$("#constituencyId").val();
 	  var mandal=$("#mandalList").val();
 	  var village=$("#panchayatList").val();
@@ -217,6 +220,7 @@ $("#boothsList").trigger("chosen:updated");
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#searchVoterDetailsImgId").hide();
 	   if(result!=null && result.length>0){
 	  searchCadreVoterDetails(result);
 	   }
