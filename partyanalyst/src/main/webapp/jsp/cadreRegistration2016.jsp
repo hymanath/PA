@@ -342,6 +342,10 @@
 									<input type="hidden" class="form-control" id="hiddenTdpCadreId" name="cadreRegistrationVO.tdpCadreId"/>
 									<input type="hidden" class="form-control" id="hiddenVoterId" name="cadreRegistrationVO.voterId"/>
 									<input type="hidden" class="form-control" id="hiddenFamilyVoterId" name="cadreRegistrationVO.familyVoterId"/>
+									<!-- <input type="hidden" class="form-control" id="checkNomineeNameId" name="cadreRegistrationVO.newNomineeName"/>
+                                    <input type="hidden" class="form-control" id="checkNomineeGenderId" name="cadreRegistrationVO.newNomineeGender"/>
+                                    <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
+                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/> -->
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
@@ -1073,6 +1077,7 @@
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>
+
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
