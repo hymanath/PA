@@ -19,5 +19,13 @@ public class VoterRelationDAO extends GenericDaoHibernate<VoterRelation, Long> i
 		
 		return query.list();
 	}
+
+	public List<Object[]> getRelationDetails(List<String> description) {
+		Query query = getSession().createQuery(
+				"select model.voterRelationId,model.description from VoterRelation model"
+						+ " where model.description in (:description)");
+		query.setParameterList("description", description);
+		return query.list();
+	}
 	
 }

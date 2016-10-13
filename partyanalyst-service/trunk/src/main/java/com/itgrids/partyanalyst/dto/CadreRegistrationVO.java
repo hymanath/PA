@@ -198,7 +198,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String newNomineeName;
 	private String newNomineeGender;
 	private Long newNomineeAge;
-	private String newNomineeRelationType;
+	private Long newNomineeRelationTypeId;
 	
 	
 	public String getPrevNomineeName() {
@@ -1202,11 +1202,12 @@ public class CadreRegistrationVO implements Serializable{
 	public void setNewNomineeAge(Long newNomineeAge) {
 		this.newNomineeAge = newNomineeAge;
 	}
-	public String getNewNomineeRelationType() {
-		return newNomineeRelationType;
+	public Long getNewNomineeRelationTypeId() {
+		return newNomineeRelationTypeId;
 	}
-	public void setNewNomineeRelationType(String newNomineeRelationType) {
-		this.newNomineeRelationType = newNomineeRelationType;
+	public void setNewNomineeRelationTypeId(Long newNomineeRelationTypeId) {
+		this.newNomineeRelationTypeId = newNomineeRelationTypeId;
 	}
+	
 	
 }
