@@ -115,11 +115,13 @@ if(status == "new"){
 	$("#voterDvId").show();
 	$("#emailDivId").show();
 	$("#cadrePrvNomneDivId").hide();
+	$("#cadreVoterDivId").hide();
+	$("#cadreUpdateVotrDivId").hide();
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
 	$("#emailDivId").show();
 	//$("#teluguNameDivId").show();
-	//$("#familyDetailsDivId").show();
+	$("#familyDetailsDivId").hide();
 	$("#cadrePrvNomneDivId").show();
 	$("#cadreVoterDivId").show();
 	$("#cadreUpdateVotrDivId").show();
@@ -277,7 +279,7 @@ function buildCasteDetails(result) {
 	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a class="text-capital" id="addNewNomineeId" style="cursor:pointer;"> add new nominee</a></p>';
 	$(".cadreFamilyDetailsCls").html(str);
 	//$("#cadrePrvNomneDivId").show();
-	$("#familyDetailsDivId").show();
+	//$("#familyDetailsDivId").show();
 }
   $(document).on("click","#addNewNomineeId",function(){
       if ($("#addNewNominatedId").is(":visible")) {

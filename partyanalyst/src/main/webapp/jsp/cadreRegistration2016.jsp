@@ -526,7 +526,7 @@
 							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 								<label>Gender</label>
 							<!--<input type="text" class="form-control" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender"/>-->
-								<select class="select" id="nomineeGenderId">
+								<select class="select" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender">
 									<option value="0">Select Gender</option>
 									<option value="M">Male</option>
 									<option value="F">Female</option>
