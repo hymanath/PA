@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.VoterRelation;
 
 public interface IVoterRelationDAO extends GenericDao<VoterRelation, Long>{
 	public List<Object[]> getAllRelationDetails();
+	public List<Object[]> getRelationDetails(List<String> description );
 }

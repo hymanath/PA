@@ -19,6 +19,7 @@ public class CadreFamilyVO implements Serializable{
 	private String relationshipType;    
 	private String mobileNo;
 	private String imagePath;
+	private Long relationshipTypeId;
 	
 	public Long getVoterId() {
 		return voterId;
@@ -97,6 +98,12 @@ public class CadreFamilyVO implements Serializable{
 	}
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+	public Long getRelationshipTypeId() {
+		return relationshipTypeId;
+	}
+	public void setRelationshipTypeId(Long relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
 	}
 	
 	

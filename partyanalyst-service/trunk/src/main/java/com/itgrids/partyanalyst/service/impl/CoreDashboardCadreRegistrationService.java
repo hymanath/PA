@@ -306,6 +306,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  	try{
 	  		String houseNo=null;
 	  		Long boothId=null;
+	  		List<String> relationTypes= new ArrayList<String>();
 	  		List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetails(voterId);
 	  		if(voterDetails!=null && voterDetails.size()>0)
 	  		{
@@ -329,16 +330,35 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  				cadreRegistration.setVoterName(objects[3] != null ? objects[3].toString() : "");
 	  				cadreRegistration.setGender(objects[4] != null ? objects[4].toString() : "");
 	  				cadreRegistration.setAge(objects[5] != null ? (Long) objects[5] : 0l);
-	  				cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
+	  				//cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
+	  				if(objects[6].toString()!=null)
+	  					{
+	  					cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
+                        relationTypes.add(objects[6].toString());
+		  				}
 	  				cadreRegistration.setVoterCadreNO(objects[7] != null ? objects[7].toString() : "");
 	  				cadreRegistration.setMobileNo(objects[8] != null ? objects[8].toString() : "");
 	  				cadreRegistration.setImagePath(objects[9] != null ? objects[9].toString() : "");
 	  				returnList.add(cadreRegistration);
 	  			}
-	  				
-	  	}
+  				
+		  	}
+	  			List<Object[]> relationDetails = voterRelationDAO.getRelationDetails(relationTypes);
+	  			if(relationDetails != null && relationDetails.size() > 0)
+	  			{
+	  				for(Object[] obj : relationDetails)
+	  				{
+	  					
+						CadreFamilyVO familyVo =getMatchVO(returnList,obj[1].toString());
+	  					if(familyVo != null)
+	  					{
+	  						familyVo.setRelationshipTypeId(obj[0] != null ? (Long) obj[0] : 0l);
+	  					}
+	  				}
+	  			}
+	  			
 	  			vo.setCadreFamilyDetails(returnList);
-	  		}
+	  		}	
 	  	}
 	  	catch(Exception e)
 	  	{
@@ -349,6 +369,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  	
 		
 	}
+	
+	public CadreFamilyVO getMatchVO(List<CadreFamilyVO> returnList, String des) {
+		if (returnList == null || returnList.size() == 1)
+			return null;
+		for (CadreFamilyVO familyVO : returnList) {
+			if (familyVO.getRelationshipType().equalsIgnoreCase(des)) {
+				return familyVO;
+			}
+		}
+		return null;
+	}
+
 	/**
 	* @param  
 	* @return  List<IdAndNameVO>
