@@ -347,7 +347,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 									Double avgPerc1 = Math.floor(Double.valueOf(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(avg1)));
 									trackingVO.setAvgOutput(avgPerc1.longValue());
 								} catch (Exception e) {
-									LOG.error("101 : Exception Occured While updating percentage ranges in updateUserTrackingDetasil method of GISVisualizationService ",e);
+									//LOG.error("101 : Exception Occured While updating percentage ranges in updateUserTrackingDetasil method of GISVisualizationService ",e);
 								}
 							}
 							if(commonMethodsUtilService.isListOrSetValid(trackingVO.getLastOneHrusersList())){
@@ -356,7 +356,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 									Double avgPerc = Math.floor(Double.valueOf(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(avg)));
 									trackingVO.setLastOneHrAvgCount(avgPerc.longValue());
 								} catch (Exception e) {
-									LOG.error("102 :  Exception Occured While updating percentage ranges in updateUserTrackingDetasil method of GISVisualizationService ",e);
+									//LOG.error("102 :  Exception Occured While updating percentage ranges in updateUserTrackingDetasil method of GISVisualizationService ",e);
 								}
 							}
 						}
@@ -418,7 +418,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							}
 						}
 					} catch (Exception e) {
-						LOG.error("103 :  Exception Occured While updating percentage ranges in updateLocationPerformanceStatusDetails method of GISVisualizationService ",e);
+						//LOG.error("103 :  Exception Occured While updating percentage ranges in updateLocationPerformanceStatusDetails method of GISVisualizationService ",e);
 					}
 				}
 			}
