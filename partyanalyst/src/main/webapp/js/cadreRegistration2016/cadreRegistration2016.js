@@ -89,6 +89,8 @@ function getSearchByMyVoterIdDetails(){
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
 		//if(result != null){
+			$("#submitCadreForm").show();
+			$(".newProfile").show();
 			hideShowDivs(status);
 			buildProfileDetails(result,status);
 		 	buildCasteDetails(result);
@@ -261,8 +263,8 @@ function buildCasteDetails(result) {
 					+ ' </span>';
 			str += '</p>';
 			str += '<div class="checkboxAlign">';
-			str += '<input id="checkbox'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox">';
-			str += '<label for="checkbox'+i+'" class="checkbox-custom-label"  attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relType="'+result.cadreFamilyDetails[i].relationshipType+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+			str += '<input id="checkboxfamily'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox">';
+			str += '<label for="checkboxfamily'+i+'" class="checkbox-custom-label"  attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relType="'+result.cadreFamilyDetails[i].relationshipType+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			str += '</div>';
 			str += '</div>';
 			str += '</div>';
@@ -300,8 +302,7 @@ function buildCadreRelativesDetails(result,id) {
 	}
 }	
 $(document).on("click",".checkboxCls",function(){
-	alert(1);
-     $(".checkboxCls").prop( 'checked',false);
+	 $(".checkboxCls").prop( 'checked',false);
 	 $(this).prop( 'checked', true );
 }); 
 $(document).on("click", "#changeNomineeId", function(e) {
