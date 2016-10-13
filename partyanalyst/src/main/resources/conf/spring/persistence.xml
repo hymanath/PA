@@ -980,6 +980,8 @@
 				     <value>com.itgrids.partyanalyst.model.PartyMeetingMainType</value>
 				     <value>com.itgrids.partyanalyst.model.Holiday</value>
 				     <value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandalDetails</value>
+				     <value>com.itgrids.partyanalyst.model.TdpCadreEnrollmentInfo</value>
+				     <value>com.itgrids.partyanalyst.model.TabUserEnrollmentInfo</value>
 				     <value>com.itgrids.partyanalyst.model.TdpCadreTargetCount</value>
 				     
 				 </list>
