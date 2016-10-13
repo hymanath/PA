@@ -180,7 +180,7 @@ function buildPage(){
 		for(var i in result){
 			str+='<div class="col-md-4 col-sm-6 col-xs-12">';
 				str+='<div class="panel panel-default panelGO">';
-					str+='<div class="panel-heading">';
+					str+='<div class="panel-heading" style="min-height:130px;">';
 						str+='<div class="media">';
 							str+='<div class="media-left">';
 							if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
