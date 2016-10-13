@@ -13982,5 +13982,10 @@
 		</result>
 	</action>
 	
+	<action name="savingCadreDetailsAction" class="coreDashboardAction"  method="savingCadreDetails">
+			<result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+			</result>
+	</action>
 </package>
 </struts>
