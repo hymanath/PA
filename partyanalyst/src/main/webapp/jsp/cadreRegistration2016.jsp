@@ -342,10 +342,10 @@
 									<input type="hidden" class="form-control" id="hiddenTdpCadreId" name="cadreRegistrationVO.tdpCadreId"/>
 									<input type="hidden" class="form-control" id="hiddenVoterId" name="cadreRegistrationVO.voterId"/>
 									<input type="hidden" class="form-control" id="hiddenFamilyVoterId" name="cadreRegistrationVO.familyVoterId"/>
-									<!-- <input type="hidden" class="form-control" id="checkNomineeNameId" name="cadreRegistrationVO.newNomineeName"/>
+									<input type="hidden" class="form-control" id="checkNomineeNameId" name="cadreRegistrationVO.newNomineeName"/>
                                     <input type="hidden" class="form-control" id="checkNomineeGenderId" name="cadreRegistrationVO.newNomineeGender"/>
                                     <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
-                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/> -->
+                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
