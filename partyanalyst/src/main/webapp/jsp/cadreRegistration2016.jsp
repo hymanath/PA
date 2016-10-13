@@ -626,9 +626,9 @@
                                         <h4 class="panel-title">registered with relative voter id</h4>
                                     </div>
                                 	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                    	<button class="btn btn-success btn-block text-capital updateId">update your voter id</button>
+                                    	<button class="btn btn-success btn-block text-capital updateId" onclick="getCadreDetailsForRelativeCadre('update')">update your voter id</button>
                                         <div class="m_top20 text-center">/Or/</div>
-                                        <button class="btn btn-success btn-block text-capital m_top20 updateId">continue with relative voter id</button>
+                                        <button class="btn btn-success btn-block text-capital m_top20 updateId" onclick="getCadreDetailsForRelativeCadre('continue')">continue with relative voter id</button>
                                     </div>
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 										<span id="profileBackBtnR" class="backBtn pull-right"> ← Back To Search</span>
@@ -1072,6 +1072,9 @@
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>
+<input type="hidden" id="tdpCdrIdR"/>
+<input type="hidden" id="stusIdR"/>
+<input type="hidden" id="votrIdR"/>
 
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -1290,10 +1293,20 @@ $(document).on("click",".voterSearchR",function(){
 $(document).on("click",".updateId",function(){
 	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
+		$(".updateProfileR,.renewal,.subBlockR,.newProfile").addClass("hide");
+		$(".profileDetailsBlock,.subBlock,.renewalN").removeClass("hide");
+		$(".profileDetailsBlock").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".updateProfileR").removeClass("animated fadeOut");
+		$(".profileDetailsBlock").removeClass("animated fadeIn");
+	},1500)
+	/*$(".updateProfileR").addClass("animated fadeOut");
+	setTimeout(function(){
 		$(".updateProfileR").addClass("hide");
 		$(".profileDetailsBlockR").removeClass("hide");
 		$(".profileDetailsBlockR").addClass("animated fadeIn");		
-	},500);
+	},500);*/
 });
 </script>
 </body>
