@@ -88,6 +88,7 @@ function getSearchByMyVoterIdDetails(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
+		//if(result != null){
 			hideShowDivs(status);
 			buildProfileDetails(result,status);
 		 	buildCasteDetails(result);
@@ -100,6 +101,7 @@ function getSearchByMyVoterIdDetails(){
 				buildCadreRelativesDetails(result,"prevNomneReltvId");
 				buildCadreRelativesDetails(result,"relativeId");
 			}
+			//}
 			
 		});
 
@@ -113,12 +115,15 @@ if(status == "new"){
 	$("#cadrePrvNomneDivId").hide();
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
+	$("#emailDivId").show();
+	//$("#teluguNameDivId").show();
+	//$("#familyDetailsDivId").show();
 	$("#cadrePrvNomneDivId").show();
 	$("#cadreVoterDivId").show();
 	$("#cadreUpdateVotrDivId").show();
 }
 }
-function buildProfileDetails(result){
+function buildProfileDetails(result,status){
 	//$("#nomineeId").html("use"+result.nomineeName+" As Nominee");
 	
 var str = "";
@@ -142,6 +147,9 @@ var str = "";
 			 var dob = result.dobStr.substring(0, 11);
 			 $("#dobId").val(dob);
 		 }
+		 $("#hiddenFamilyVoterId").val(result.familyVoterId);
+		 $("#hiddenVoterId").val(result.voterRelationId);
+		 $("#hiddenTdpCadreId").val(result.tdpCadreId);
 		 if(result.tdpCadreId != null && result.imageBase64String != null){
 			$("#existImgId").attr('src','https://mytdp.com/images/cadre_images/'+result.imageBase64String+'');
 		}else if(result.voterRelationId != null && result.imageBase64String != null){
@@ -156,6 +164,7 @@ var str = "";
 		 if(result.email != null && result.email != ""){
 			$("#emailId").val(result.email);
 		 }
+		 if(status == "new"){
 		 if(result.voterCardNo != null && result.voterCardNo != ""){
 			 $("#relVotCls").addClass("text-muted");
 			 $("#selfVotCls").addClass("text-success");
@@ -164,6 +173,13 @@ var str = "";
 			 $("#relVotCls").addClass("text-success");
 			 $("#selfVotCls").addClass("text-muted");
 			 $("#voterId").val(result.voterCardNumber);
+		 }
+		 }else{
+		  if(result.voterCardNo != null && result.voterCardNo != ""){
+			$("#updatedVoetrId").val(result.voterCardNumber);
+		  }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
+			$("#selfVoetrId").val(result.voterCardNo);
+		  }
 		 }
 		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
 			$("#aadharId").val(result.candidateAadherNo);
@@ -295,3 +311,19 @@ $(document).on("click", "#changeNomineeId", function(e) {
            $("#familyDetailsDivId").hide();
        }
     });  
+	
+	function savingCadreDetails(){
+	
+	var uploadHandler = {
+				upload: function(o) {
+					//$("#savingAjaxImg").css("display","none");
+					uploadResult = o.responseText;
+					alert(uploadResult)
+					//showSbmitStatus(uploadResult);
+				}
+			};
+	
+	//console.log(submitCadreForm)
+		YAHOO.util.Connect.setForm('submitCadreForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
+	}

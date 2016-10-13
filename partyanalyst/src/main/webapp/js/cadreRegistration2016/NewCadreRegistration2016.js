@@ -313,7 +313,10 @@ $("#boothsList").trigger("chosen:updated");
          dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   buildCadreFamilyDetails(result);
+   hideShowDivs(status);
+   buildCasteDetails(result);
+   buildEductnQualifns(result);
+   buildCadreFamilyDetails(result);
 	 })
 	
   }

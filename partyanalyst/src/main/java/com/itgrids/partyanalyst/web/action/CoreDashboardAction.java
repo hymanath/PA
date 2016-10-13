@@ -1,6 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -115,12 +120,21 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private  Long constId;
 	private String constName;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+	private InputStream 						inputStream;
 	
 	//setters And Getters
 	
 	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
 	}
 
 	public CadreRegistrationVO getCadreRegistrationVO() {
@@ -2665,34 +2679,90 @@ public String cadreRegistrationOverviewAction(){
 	return Action.SUCCESS;
 }
 
-	public String getStatewisesCastNames(){
-		  try {
-			  jObj = new JSONObject(getTask());
-			
-			Long stateId = jObj.getLong("stateId");
-			
-			IdAndNameVOList = coreDashboardCadreRegistrationService.getStatewisesCastNames(stateId);
-		} catch (Exception e) {
-			LOG.error("Entered into getStatewisesCastNames method in CoreDashBoardAction");
+public String getStatewisesCastNames(){
+	  try {
+		  jObj = new JSONObject(getTask());
+		
+		Long stateId = jObj.getLong("stateId");
+		
+		IdAndNameVOList = coreDashboardCadreRegistrationService.getStatewisesCastNames(stateId);
+	} catch (Exception e) {
+		LOG.error("Entered into getStatewisesCastNames method in CoreDashBoardAction");
+	}
+	  return Action.SUCCESS;
+}
+
+public String getEducationalQualifications(){
+	  try {
+		IdAndNameVOList = coreDashboardCadreRegistrationService.getEducationalQualifications();
+	} catch (Exception e) {
+		LOG.error("Entered into getEducationalQualifications method in getEducationalQualifications");
+	}
+	  return Action.SUCCESS;
+}
+
+public String getAllRelationDetails(){
+	  try {
+		IdAndNameVOList = coreDashboardCadreRegistrationService.getAllRelationDetails();
+	} catch (Exception e) {
+		LOG.error("Entered into getAllRelationDetails method in getEducationalQualifications");
+	}
+	  return Action.SUCCESS;
+}
+public String savingCadreDetails(){
+	try {
+		/*final HttpSession session = request.getSession();
+		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null || user.getRegistrationID() == null){
+			return ERROR;
+		}*/
+		
+		//Map<File,String> mapfiles = new HashMap<File,String>();
+		MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+	       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+	       String fileUrl = "" ;
+	       List<String> filePaths = null;
+	   		while(fileParams.hasMoreElements())
+	   		{
+	   			String key = fileParams.nextElement();
+	   			
+			   			File[] files = multiPartRequestWrapper.getFiles(key);
+			   			filePaths = new ArrayList<String>();
+			   			if(files != null && files.length > 0)
+			   			for(File f : files)
+			   			{
+			   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+			   	            String ext = "";
+			   	            if(extension.length > 1){
+			   	            	ext = extension[extension.length-1];
+			   	            	cadreRegistrationVO.setUploadImage(f);
+			   	            	//mapfiles.put(f,ext);
+			   	            }
+			   	        
+			   			}
+	   		}
+	   
+		
+		//cadreRegistrationVO.setWebUserId(user.getRegistrationID());
+		cadreRegistrationVO.setDataSourceType("WEB");
+		if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().longValue() > 0l){
+			cadreRegistrationVO.setPhotoType("CADRE");
+		}else if(cadreRegistrationVO.getVoterId() != null){
+			cadreRegistrationVO.setPhotoType("VOTER");
+		}else{
+			cadreRegistrationVO.setPhotoType("NEW");
 		}
-		  return Action.SUCCESS;
+		status = coreDashboardCadreRegistrationService.savingCadreDetails(cadreRegistrationVO);
+         
+		if(status!=null){
+			inputStream = new StringBufferInputStream(status);
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception raised at savingCadreDetails", e);
 	}
 	
-	public String getEducationalQualifications(){
-		  try {
-			IdAndNameVOList = coreDashboardCadreRegistrationService.getEducationalQualifications();
-		} catch (Exception e) {
-			LOG.error("Entered into getEducationalQualifications method in getEducationalQualifications");
-		}
-		  return Action.SUCCESS;
-	}
-	
-	public String getAllRelationDetails(){
-		  try {
-			IdAndNameVOList = coreDashboardCadreRegistrationService.getAllRelationDetails();
-		} catch (Exception e) {
-			LOG.error("Entered into getAllRelationDetails method in getEducationalQualifications");
-		}
-		  return Action.SUCCESS;
-	}
+	return Action.SUCCESS;
+}
 }
