@@ -123,10 +123,6 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	}
-	public void setTdpCadreTargetCountDAO(
-			ITdpCadreTargetCountDAO tdpCadreTargetCountDAO) {
-		this.tdpCadreTargetCountDAO = tdpCadreTargetCountDAO;
-	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
 	    try {
