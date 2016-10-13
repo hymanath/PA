@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -234,5 +236,63 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		}
 		
 		
+	}
+	
+	public List<Object[]> getUserTrackingDetails(GISVisualizationParameterVO inputVO){
+
+		StringBuilder queryStr = new StringBuilder();
+		Query query = null;
+		try {
+			queryStr.append(" select distinct ");
+			
+			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+				queryStr.append("  district.districtId,district.districtName as name ,count(model.cadreSurveyUserAssignDetails) ");
+			}else{
+				queryStr.append(" constituency.constituencyId,constituency.name as name ,count(model.cadreSurveyUserAssignDetails) ");
+			}
+			
+			queryStr.append(" from ");
+			queryStr.append(" CadreSurveyUserAssignDetails model," +
+					" Constituency constituency ");
+			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+				queryStr.append(" left join constituency.district district  where model.levelValue = constituency.constituencyId ");
+			}
+			else {
+				queryStr.append(" where model.levelValue = constituency.constituencyId ");
+			}
+			queryStr.append(" and model.levelId = 4 ");
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+			{
+				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+					queryStr.append(" and district.districtId = :parentLocationTypeId ");
+					if(inputVO.getChildLocationTypeId().longValue()>0L){
+						queryStr.append("  and constituency.constituencyId = :childLocationTypeId ");
+					}
+				}else{
+						//queryStr.append("  and constituency.constituencyId = :parentLocationTypeId ");
+				}
+			}
+			
+			if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+				queryStr.append(" and (district.districtId between 11 and 23) ");
+			else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
+				queryStr.append(" and (district.districtId between 1 and 10) ");
+			
+			queryStr.append(" group by ");
+			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+				queryStr.append(" district.districtId ");
+			}else{
+				queryStr.append(" constituency.constituencyId ");
+			}
+			
+			query = getSession().createQuery(queryStr.toString());
+			if(!inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getChildLocationTypeId().longValue()>0L)
+				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
+			
+			return query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
