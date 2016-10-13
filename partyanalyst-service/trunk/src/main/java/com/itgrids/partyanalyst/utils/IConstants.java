@@ -1171,8 +1171,11 @@ public interface IConstants {
 	public static final String[] EXCLUDE_URL_LIST = {};
 	
 	public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
+	//public static final String CADRE_REGISTRATION_URL = "http://localhost:65535/CadreReg-1.4.0.RELEASE/";     
 	public static final String MEMBERSHIP_DRIVE_PERFORMANCE_PARAMETERS[] = {"VERY GOOD-90-#196F3D","GOOD-80-#27AE60","OK-60-#A9DFBF","POOR-30-F5B7B1","VERY POOR-10-#FF5733","OTHERS-0-#FBFCFC"};
 	public static final Long DAY_WISE_TARGET_REGISTRATIONS_COUNT = 7000L;
-	
+	public static final Long DAY_WISE_AP_TARGET_REGISTRATIONS_COUNT = 350000L;
+	public static final Long DAY_WISE_TS_TARGET_REGISTRATIONS_COUNT = 350000L; 
 	public static final Long CADRE_REGISTRATION_2016_PUBLICATION_ID = 22L;
+	public static final Long  PRESENT_CADRE_ENROLLMENT_YEAR = 4L;
 }
