@@ -263,8 +263,8 @@ function buildCasteDetails(result) {
 					+ ' </span>';
 			str += '</p>';
 			str += '<div class="checkboxAlign">';
-			str += '<input id="checkboxfamily'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox">';
-			str += '<label for="checkboxfamily'+i+'" class="checkbox-custom-label"  attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relType="'+result.cadreFamilyDetails[i].relationshipType+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+			str += '<input id="checkboxfamily'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox" attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relType="'+result.cadreFamilyDetails[i].relationshipType+'" >';
+			str += '<label for="checkboxfamily'+i+'" class="checkbox-custom-label"  style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			str += '</div>';
 			str += '</div>';
 			str += '</div>';
@@ -278,7 +278,11 @@ function buildCasteDetails(result) {
 	$("#familyDetailsDivId").show();
 }
   $(document).on("click","#addNewNomineeId",function(){
-      $("#addNewNominatedId").show();  
+      if ($("#addNewNominatedId").is(":visible")) {
+	  $("#addNewNominatedId").hide();   
+	}else{
+	 $("#addNewNominatedId").show(); 
+	}  
    });
 
 function buildCadreRelativesDetails(result,id) {
@@ -301,10 +305,7 @@ function buildCadreRelativesDetails(result,id) {
 	   $('#'+id+'').trigger("chosen:updated");       
 	}
 }	
-$(document).on("click",".checkboxCls",function(){
-	 $(".checkboxCls").prop( 'checked',false);
-	 $(this).prop( 'checked', true );
-}); 
+
 $(document).on("click", "#changeNomineeId", function(e) {
        if($(this).is(":checked")) {
            $("#familyDetailsDivId").show();
@@ -329,7 +330,9 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
 	}
 	
-	/*$(document).on("click",".checkboxCls",function(){
+	$(document).on("click",".checkboxCls",function(){
+	$(".checkboxCls").prop( 'checked',false);
+	 $(this).prop( 'checked', true );
 	  var name = $(this).attr("attr_name");
 	  var gender = $(this).attr("attr_gender");
 	  var age = $(this).attr("attr_age");
@@ -340,4 +343,4 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	 $("#checkNomineeAgeId").val(age);
 	 $("#checkNomineeRelaTypeId").val(relationType);
 	
-});*/
+});
