@@ -2039,7 +2039,16 @@ public class WebServiceHandler {
 		@Path("/Secure/getMembershipDriveVisualizationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
+		public List<GISVisualizationDetailsVO> getSecureMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
+		 return webServiceHandlerService.getMembershipDriveVisualizationDetails(inputVO);
+		}
+		
+		@POST
+		@Path("/getMembershipDriveVisualizationDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
 		public List<GISVisualizationDetailsVO> getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
 		 return webServiceHandlerService.getMembershipDriveVisualizationDetails(inputVO);
 		}
+		
 }
