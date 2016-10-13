@@ -3521,6 +3521,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="boothDAO" ref="boothDAO"/>
+		<property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO"/>
 	</bean>
 	
 	<bean name="webServiceHandlerServiceForCadre" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerServiceForCadre" >
