@@ -17,6 +17,7 @@
 <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
 
 </head>
 <body>
@@ -1083,8 +1084,12 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
 <script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-   
+   $("#dobId").datetimepicker({
+	   format:'YYYY-MM-DD'
+   });
   //GLOBAL VARIABLES
   var casteNamesArray = [];
   var educationsArray = [];
