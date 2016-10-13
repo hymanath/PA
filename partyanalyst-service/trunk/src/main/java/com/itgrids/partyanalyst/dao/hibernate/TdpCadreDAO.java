@@ -7213,36 +7213,36 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 	public List<Object[]> getRegisteredDetailsByCadreId(Long tdpCadreId,Long voterId,Long familyVoterId,String status){
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select model.tdpCadreId," +//0
-				" model.firstname," +
-				" model.lastname," +
-				" model.memberShipNo," +
-				" model.gender," +
-				" model.age," +
-				" model.dateOfBirth," +//6
-				" model.image," +
-				" model.mobileNo," +
-				" model.emailId," +
-				" model.cadreAadherNo," +
-				" model.casteStateId," +//11
-				" model.educationId," +
-				" model.occupationId," +
-				" model.nomineeName," +
-				" model.nomineeGender," +
-				" model.nomineeAge," +//16
-				" model.relativeType " );
+		str.append(" select model.tdpCadre.tdpCadreId," +//0
+				" model.tdpCadre.firstname," +
+				" model.tdpCadre.lastname," +
+				" model.tdpCadre.memberShipNo," +
+				" model.tdpCadre.gender," +
+				" model.tdpCadre.age," +
+				" model.tdpCadre.dateOfBirth," +//6
+				" model.tdpCadre.image," +
+				" model.tdpCadre.mobileNo," +
+				" model.tdpCadre.emailId," +
+				" model.tdpCadre.cadreAadherNo," +
+				" model.tdpCadre.casteStateId," +//11
+				" model.tdpCadre.educationId," +
+				" model.tdpCadre.occupationId," +
+				" model.tdpCadre.nomineeName," +
+				" model.tdpCadre.nomineeGender," +
+				" model.tdpCadre.nomineeAge," +//16
+				" model.tdpCadre.relativeType " );
 		if(voterId != null && voterId.longValue() >0l)
-		str.append(" ,model.voter.voterIDCardNo,model.voter.voterId " );
+		str.append(" ,model.tdpCadre.voter.voterIDCardNo,model.tdpCadre.voter.voterId " );
 		
 		if(familyVoterId != null && familyVoterId.longValue() >0l)
-			str.append(",model.familyVoter.voterIDCardNo,model.familyVoter.voterId ");//19
+			str.append(",model.tdpCadre.familyVoter.voterIDCardNo,model.tdpCadre.familyVoter.voterId ");//19
 		 
-		str.append(" from TdpCadre model  where model.tdpCadreId = :tdpCadreId and model.isDeleted='N'  ");
+		str.append(" from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted='N'  ");
 		
 		if(status.equalsIgnoreCase("update")){
-			str.append(" and model.enrollmentYear = 2016l ");	
+			str.append(" and model.enrollmentYearId = 4l ");	
 		}else if(status.equalsIgnoreCase("renewal")){
-			str.append(" and model.enrollmentYear = 2014l ");
+			str.append(" and model.enrollmentYearId = 3l ");
 		}
 		
 		Query query = getSession().createQuery(str.toString());
