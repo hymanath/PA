@@ -385,15 +385,15 @@
                             	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox" value="existImage" name="option"/>Existing Image
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
-                                	<img src="dist/img/default_image.png" class="cadreImage img-responsive" alt="existing image"/>
+                                	<img src="dist/img/default_image.png" id="uploadImgId" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox"/><input type="file" style="width:80px"/>
+                                    	<input type="checkbox" class="imageCheckBox" value="newImage" name="option"/><input type="file" style="width:80px"/>
                                     </label>
                                 </div>
                             </div>
@@ -1308,6 +1308,10 @@ $(document).on("click",".updateId",function(){
 		$(".profileDetailsBlockR").addClass("animated fadeIn");		
 	},500);*/
 });
+
+$('.imageDiv input:checkbox').click(function() {
+    $('.imageDiv input:checkbox').not(this).prop('checked', false);
+}); 
 </script>
 </body>
 </html>
