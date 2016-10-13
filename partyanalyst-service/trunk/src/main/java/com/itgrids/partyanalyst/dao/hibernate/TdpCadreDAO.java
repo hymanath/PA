@@ -7232,10 +7232,10 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 				" model.nomineeAge," +//16
 				" model.relativeType " );
 		if(voterId != null && voterId.longValue() >0l)
-		str.append(" ,model.voter.voterIDCardNo" );
+		str.append(" ,model.voter.voterIDCardNo,model.voter.voterId " );
 		
 		if(familyVoterId != null && familyVoterId.longValue() >0l)
-			str.append(",model.familyVoter.voterIDCardNo ");//19
+			str.append(",model.familyVoter.voterIDCardNo,model.familyVoter.voterId ");//19
 		 
 		str.append(" from TdpCadre model  where model.tdpCadreId = :tdpCadreId and model.isDeleted='N'  ");
 		
