@@ -126,8 +126,6 @@ if(status == "new"){
 }
 }
 function buildProfileDetails(result,status){
-	//$("#nomineeId").html("use"+result.nomineeName+" As Nominee");
-	
 var str = "";
 		 if(result.lastName != null){                    
 			$("#nameId1").val(result.lastName);
@@ -206,6 +204,10 @@ var str = "";
 		 if(result.memberTypeId != null){                    
 			$("#membershipId").val(result.memberTypeId);
 		 }
+		 if(result.nomineeName != null)
+		 {
+			 $("#defaultNomineeId").text("Use"+" "+result.nomineeName+" As Nominee");
+		 }
 		 //$("#cadrePrvNomneDivId").hide(); 
 }
 function buildCasteDetails(result) {
@@ -263,7 +265,7 @@ function buildCasteDetails(result) {
 					+ ' </span>';
 			str += '</p>';
 			str += '<div class="checkboxAlign">';
-			str += '<input id="checkboxfamily'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox" attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relType="'+result.cadreFamilyDetails[i].relationshipType+'" >';
+			str += '<input id="checkboxfamily'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox" attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relTypeId="'+result.cadreFamilyDetails[i].relationshipTypeId+'" >';
 			str += '<label for="checkboxfamily'+i+'" class="checkbox-custom-label"  style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			str += '</div>';
 			str += '</div>';
@@ -336,11 +338,16 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	  var name = $(this).attr("attr_name");
 	  var gender = $(this).attr("attr_gender");
 	  var age = $(this).attr("attr_age");
-	  var relationType = $(this).attr("attr_relType");
+	  var relationTypeId = $(this).attr("attr_relTypeId");
 	  
 	 $("#checkNomineeNameId").val(name);
    $("#checkNomineeGenderId").val(gender);
 	 $("#checkNomineeAgeId").val(age);
-	 $("#checkNomineeRelaTypeId").val(relationType);
+	 $("#checkNomineeRelaTypeId").val(relationTypeId);
 	
+});
+$(document).on("click",".nomineeDetailsCls",function(){
+	alert(1);
+	$(".nomineeDetailsCls").prop( 'checked',false);
+	 $(this).prop( 'checked', true );
 });
