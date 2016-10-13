@@ -1447,4 +1447,23 @@ function getTabUserInfoDetails(tabUserIdStr){
 	}else{
 	 $("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html('NO DATA AVAILABLE.');
 	}
-	}
+	} 
+	//getTotalNewRenewalCadreStateWise();
+	function getTotalNewRenewalCadreStateWise(){
+		var startDate = '';
+		var endDate = '';
+		var jsObj={  
+			startDate : startDate,      
+			endDate : endDate
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getTotalNewRenewalCadreStateWiseAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			
+			 if(result != null){
+				console.log(result);  
+			 }
+		});
