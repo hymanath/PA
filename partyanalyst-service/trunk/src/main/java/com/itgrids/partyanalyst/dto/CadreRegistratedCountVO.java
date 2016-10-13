@@ -3,9 +3,9 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 public class CadreRegistratedCountVO implements Serializable {
-	private Long totalCount;
-	private Long renewalCount;
-	private Long newCount;
+	private Long totalCount = 0l;
+	private Long renewalCount = 0l;
+	private Long newCount = 0l;
 	private Long todayTotalCount;
 	private Long todayRenewalCount;
 	private Long todayNewCount;
@@ -20,6 +20,26 @@ public class CadreRegistratedCountVO implements Serializable {
 	private String todyNewPercCnt;
 	private String todyRenewalPercCnt;
 	private Long   todayFieldMembersCount;
+	private Double totalPercentAP ;
+	private Double totalPercentTS ;
+	private Double totalPercentAPToday;
+	private Double totalPercentTSToday;
+	private Long APTotalCount = 0l;;
+	private Long TSTotalCount = 0l;
+	private Long APTotalCountToday = 0l;
+	private Long TSTotalCountToday = 0l;
+	private Long totalContStartedAp = 0l;
+	private Long totalConstStartedTs = 0l;
+	private Long inFieldAP = 0l;
+	private Long inFieldTs = 0l;
+	private Double inFieldApPercent;
+	private Double inFieldTsPercent;
+	private Long constStartedCountAp = 0l;
+	private Double constStartedCountPerAp;
+	private Long constStartedCountTs = 0l;
+	private Double constStartedCountPerTs;
+	private Long totalSubmittedTodayAp = 0l;
+	private Long totalSubmittedTodayTs = 0l;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -156,6 +176,167 @@ public class CadreRegistratedCountVO implements Serializable {
 	public void setTodayFieldMembersCount(Long todayFieldMembersCount) {
 		this.todayFieldMembersCount = todayFieldMembersCount;
 	}
+
+	public Double getTotalPercentAP() {
+		return totalPercentAP;
+	}
+
+	public void setTotalPercentAP(Double totalPercentAP) {
+		this.totalPercentAP = totalPercentAP;
+	}
+
+	public Double getTotalPercentTS() {
+		return totalPercentTS;
+	}
+
+	public void setTotalPercentTS(Double totalPercentTS) {
+		this.totalPercentTS = totalPercentTS;
+	}
+
+	public Double getTotalPercentAPToday() {
+		return totalPercentAPToday;
+	}
+
+	public void setTotalPercentAPToday(Double totalPercentAPToday) {
+		this.totalPercentAPToday = totalPercentAPToday;
+	}
+
+	public Double getTotalPercentTSToday() {
+		return totalPercentTSToday;
+	}
+
+	public void setTotalPercentTSToday(Double totalPercentTSToday) {
+		this.totalPercentTSToday = totalPercentTSToday;
+	}
+
+	public Long getAPTotalCount() {
+		return APTotalCount;
+	}
+
+	public void setAPTotalCount(Long aPTotalCount) {
+		APTotalCount = aPTotalCount;
+	}
+
+	public Long getTSTotalCount() {
+		return TSTotalCount;
+	}
+
+	public void setTSTotalCount(Long tSTotalCount) {
+		TSTotalCount = tSTotalCount;
+	}
+
+	public Long getAPTotalCountToday() {
+		return APTotalCountToday;
+	}
+
+	public void setAPTotalCountToday(Long aPTotalCountToday) {
+		APTotalCountToday = aPTotalCountToday;
+	}
+
+	public Long getTSTotalCountToday() {
+		return TSTotalCountToday;
+	}
+
+	public void setTSTotalCountToday(Long tSTotalCountToday) {
+		TSTotalCountToday = tSTotalCountToday;
+	}
+
+	public Long getTotalContStartedAp() {
+		return totalContStartedAp;
+	}
+
+	public void setTotalContStartedAp(Long totalContStartedAp) {
+		this.totalContStartedAp = totalContStartedAp;
+	}
+
+	public Long getTotalConstStartedTs() {
+		return totalConstStartedTs;
+	}
+
+	public void setTotalConstStartedTs(Long totalConstStartedTs) {
+		this.totalConstStartedTs = totalConstStartedTs;
+	}
+
+	public Long getInFieldAP() {
+		return inFieldAP;
+	}
+
+	public void setInFieldAP(Long inFieldAP) {
+		this.inFieldAP = inFieldAP;
+	}
+
+	public Long getInFieldTs() {
+		return inFieldTs;
+	}
+
+	public void setInFieldTs(Long inFieldTs) {
+		this.inFieldTs = inFieldTs;
+	}
+
+	public Long getTotalSubmittedTodayAp() {
+		return totalSubmittedTodayAp;
+	}
+
+	public void setTotalSubmittedTodayAp(Long totalSubmittedTodayAp) {
+		this.totalSubmittedTodayAp = totalSubmittedTodayAp;
+	}
+
+	public Long getTotalSubmittedTodayTs() {
+		return totalSubmittedTodayTs;
+	}
+
+	public void setTotalSubmittedTodayTs(Long totalSubmittedTodayTs) {
+		this.totalSubmittedTodayTs = totalSubmittedTodayTs;
+	}
+
+	public Double getInFieldApPercent() {
+		return inFieldApPercent;
+	}
+
+	public void setInFieldApPercent(Double inFieldApPercent) {
+		this.inFieldApPercent = inFieldApPercent;
+	}
+
+	public Double getInFieldTsPercent() {
+		return inFieldTsPercent;
+	}
+
+	public void setInFieldTsPercent(Double inFieldTsPercent) {
+		this.inFieldTsPercent = inFieldTsPercent;
+	}
+
+	public Long getConstStartedCountAp() {
+		return constStartedCountAp;
+	}
+
+	public void setConstStartedCountAp(Long constStartedCountAp) {
+		this.constStartedCountAp = constStartedCountAp;
+	}
+
+	public Double getConstStartedCountPerAp() {
+		return constStartedCountPerAp;
+	}
+
+	public void setConstStartedCountPerAp(Double constStartedCountPerAp) {
+		this.constStartedCountPerAp = constStartedCountPerAp;
+	}
+
+	public Long getConstStartedCountTs() {
+		return constStartedCountTs;
+	}
+
+	public void setConstStartedCountTs(Long constStartedCountTs) {
+		this.constStartedCountTs = constStartedCountTs;
+	}
+
+	public Double getConstStartedCountPerTs() {
+		return constStartedCountPerTs;
+	}
+
+	public void setConstStartedCountPerTs(Double constStartedCountPerTs) {
+		this.constStartedCountPerTs = constStartedCountPerTs;
+	}
+	
 	
 	
 
