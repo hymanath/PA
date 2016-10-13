@@ -318,7 +318,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
-					alert(uploadResult)
+					
 					//showSbmitStatus(uploadResult);
 				}
 			};
