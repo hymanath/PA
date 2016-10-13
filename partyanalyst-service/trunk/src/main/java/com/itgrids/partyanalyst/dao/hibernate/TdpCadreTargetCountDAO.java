@@ -6,7 +6,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
-import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreTargetCount;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -54,4 +53,27 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 	
 		   return query.list();
 	}
+	public Long getAPTargetCount(){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select sum(TCTC.targetCount) " +
+						" from TdpCadreTargetCount TCTC " +
+						" where TCTC.enrollmentYearId = :enrollmentYearId and " +
+						" TCTC.constituency.district.districtId between 11 and 23 ");
+						
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return (Long) query.uniqueResult();
+	}
+	public Long getTSTargetCount(){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select sum(TCTC.targetCount) " +
+						" from TdpCadreTargetCount TCTC " +
+						" where TCTC.enrollmentYearId = :enrollmentYearId and " +
+						" TCTC.constituency.district.districtId between 1 and 10 ");
+						
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return (Long) query.uniqueResult();
+	}
+
 }
