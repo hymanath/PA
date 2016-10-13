@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -45,6 +46,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -140,8 +142,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<TdpCadreVO> cadreList = new ArrayList<TdpCadreVO>();
 	private List<IdAndNameVO> idAndNameVO;
 	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
-	
-	
+	private List<List<UserTypeVO>> userTypeVOList;
+	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -730,6 +732,19 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public void setIdAndNameVO(List<IdAndNameVO> idAndNameVO) {
 		this.idAndNameVO = idAndNameVO;
+	}
+	public List<List<UserTypeVO>> getUserTypeVOList() {
+		return userTypeVOList;
+	}
+	public void setUserTypeVOList(List<List<UserTypeVO>> userTypeVOList) {
+		this.userTypeVOList = userTypeVOList;
+	}
+	public ICoreDashboardCadreRegistrationService getCoreDashboardCadreRegistrationService() {
+		return coreDashboardCadreRegistrationService;
+	}
+	public void setCoreDashboardCadreRegistrationService(
+			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
+		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
 	}
 	public String execute()
 	{
@@ -2590,6 +2605,30 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  idAndNameVO=cadreRegistrationService.getStateWiseConstituency();
 	  }catch(Exception e){
 		  LOG.error("Entered into getAllConstitencyList method in CadreRegistrationAction.");
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getUserTypeWiseTotalCadreRegistrationCount(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  final HttpSession session = request.getSession();
+			Long userId = null;
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				//return ERROR;
+				userId = 1L;
+			}
+			else
+				userId = user.getRegistrationID();
+			
+			Long activityMemberId = jobj.getLong("activityMemberId");
+			Long stateId = jobj.getLong("stateId");
+			Long userTypeId = jobj.getLong("userTypeId");
+			String fromDate = jobj.getString("fromDate");
+			String todate = jobj.getString("todate");
+			userTypeVOList = coreDashboardCadreRegistrationService.getUserTypeWiseTotalCadreRegistrationCount(activityMemberId,stateId,userTypeId,userId,fromDate,todate);
+	  }catch(Exception e){
+		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
 	  }
 	  return Action.SUCCESS;
   }

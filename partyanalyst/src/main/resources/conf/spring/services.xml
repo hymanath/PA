@@ -3500,6 +3500,8 @@
 		 <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
 		 <property name="casteStateDAO" ref="casteStateDAO"></property>
 		 <property name="voterRelationDAO" ref="voterRelationDAO"></property>
+		 <property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+		 <property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"></property>
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>

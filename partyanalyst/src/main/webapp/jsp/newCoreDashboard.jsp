@@ -2025,23 +2025,18 @@
 									</div>
                                 <div id="constituenctDetailedReport"></div>	     
                                 </div>
-                                
                             </div>
-								
-                        </div>
-						
-						
-							 
-                        <!--<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+					     </div>
+					    <div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
-                                    	<li class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+                                    	<li class="active cadrePositiveNegativeCls" attr_value="positive" ><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
+										<li class="cadrePositiveNegativeCls" attr_value="negative"><i class="fa fa-arrow-down"></i>&nbsp;top 5 Negative</li>
                                     </ul>
                                 </div>
-                                <!--<div class="col-md-12 col-xs-12 col-sm-12">
-                                	<div id="genSec"></div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                	<div id="userTypeWiseTop5PositiveAndNegitiveCadreDivId"></div>
                                 </div>
                             </div>
                         </div>
@@ -2804,6 +2799,7 @@
 		getPartyWiseTotalDebateDetails();
         //cadreRegistration
 		cadreRegistrationBasicCall();
+		
 	}
 	
 	
