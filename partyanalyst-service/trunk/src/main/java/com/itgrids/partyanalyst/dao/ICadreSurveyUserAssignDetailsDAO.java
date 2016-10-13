@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 
 public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurveyUserAssignDetails, Long>{
@@ -30,5 +31,5 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type,Date fromDate,Date toDate);
 	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type,Date fromDate,Date toDate,Long stateId );
 	
-	
+	public List<Object[]> getUserTrackingDetails(GISVisualizationParameterVO inputVO);
 }
