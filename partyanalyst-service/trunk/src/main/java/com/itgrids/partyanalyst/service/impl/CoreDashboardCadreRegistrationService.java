@@ -308,8 +308,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  		List<Object[]> familyVoterDetails = boothPublicationVoterDAO.getFamilyVoterDetails(boothId,houseNo);
 	  		if(familyVoterDetails != null && familyVoterDetails.size() > 0){
 	  			for (Object[] objects : familyVoterDetails) {
-	  				//if(voterId != (Long) objects[0])
-	  				//{
+	  				if(voterId.longValue() != (Long) objects[0])
+	  				{
 	  				CadreFamilyVO cadreRegistration = new CadreFamilyVO();
 	  				cadreRegistration.setVoterId(objects[0] != null ? (Long) objects[0] : 0l);
 	  				cadreRegistration.setHouseNo(objects[1] != null ? objects[1].toString() : "");
@@ -322,7 +322,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  				cadreRegistration.setMobileNo(objects[8] != null ? objects[8].toString() : "");
 	  				cadreRegistration.setImagePath(objects[9] != null ? objects[9].toString() : "");
 	  				returnList.add(cadreRegistration);
-	  			//}
+	  			}
 	  				
 	  	}
 	  			vo.setCadreFamilyDetails(returnList);
