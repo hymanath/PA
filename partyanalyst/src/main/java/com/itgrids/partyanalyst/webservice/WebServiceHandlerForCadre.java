@@ -32,7 +32,7 @@ public class WebServiceHandlerForCadre {
 	}
 
 
-    //NEW RELATED
+    //LOCATIONS RELATED
 	
 	@GET
 	@Path("/getStateWiseDistrict/{stateId}")
@@ -107,6 +107,7 @@ public class WebServiceHandlerForCadre {
 		return null;
 	}
 	
+	//NEW RELATED
 	@POST
 	@Path("/getVotersBySearch")
 	@Consumes(MediaType.APPLICATION_JSON)
