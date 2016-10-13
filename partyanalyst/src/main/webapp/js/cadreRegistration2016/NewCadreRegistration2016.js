@@ -322,6 +322,7 @@ $("#boothsList").trigger("chosen:updated");
 	   $("#submitCadreForm").show();
 	   $(".newProfile").show();
    hideShowDivs(status);
+   buildRelatVoterDetails(familyVoterId);
    buildCasteDetails(result);
    buildEductnQualifns(result);
    buildCadreFamilyDetails(result);
@@ -609,4 +610,9 @@ $(document).on("click",".searchChkboxCls",function(){
 $(document).on("click",".registerNew",function(){
 	$(".renewalN").hide();
 });
- 
+
+function buildRelatVoterDetails(familyVoterId){
+	 if(familyVoterId!=null && familyVoterId!=""){
+		 $("#selfVoetrId").val(familyVoterId);
+	 }
+ }
