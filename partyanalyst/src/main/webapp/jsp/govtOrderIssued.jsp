@@ -209,7 +209,7 @@ function buildPage(){
 							str+='<span class="pull-right">'+result[i].castCategoryName+' - '+result[i].casteName+'</span>';
 						str+='</p>';
 					str+='</div>';
-					str+='<div class="panel-body text-capitalize">';
+					str+='<div class="panel-body text-capitalize"  style="min-height:100px;">';
 						str+='<b>';
 							str+='<p>'+result[i].boardName+'</p>';
 							str+='<p> - '+result[i].positionName+'</p>';                    
