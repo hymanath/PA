@@ -1467,3 +1467,4 @@ function getTabUserInfoDetails(tabUserIdStr){
 				console.log(result);  
 			 }
 		});
+	}
