@@ -7300,4 +7300,50 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		
 		return query.list();
 	}
+	
+public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		    queryStr.append(" select");
+		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	         queryStr.append(" model.tdpCadre.userAddress.state.stateId,");  
+		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	             queryStr.append(" model.tdpCadre.userAddress.district.districtId,");  
+		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	          queryStr.append(" model.tdpCadre.userAddress.parliamentConstituency.constituencyId, ");  
+		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	          queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId, ");  
+		  }
+		   queryStr.append(" count(distinct model.tdpCadre.tdpCadreId) " +
+				" from " +
+				" TdpCadreEnrollmentYear model where model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
+				" and model.enrollmentYearId=4 and model.isDeleted='N'  ");
+		   if(stateId != null && stateId.longValue() > 0){
+				 if(stateId != null && stateId.longValue() > 0){
+					   if(stateId.longValue()==1l){
+							queryStr.append(" and model.tdpCadre.userAddress.district.districtId > 10 and  model.tdpCadre.userAddress.state.stateId = 1 ");
+						}else if(stateId.longValue()==36l){
+							queryStr.append(" and  model.tdpCadre.userAddress.district.districtId < 11 ");
+						}
+				 } 
+		   }
+		   if(fromDate!= null && toDate!=null){
+				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+			 }
+		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	         queryStr.append(" group by model.tdpCadre.userAddress.state.stateId ");  
+		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	             queryStr.append(" group by model.tdpCadre.userAddress.district.districtId ");  
+		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	          queryStr.append(" group by model.tdpCadre.userAddress.parliamentConstituency.constituencyId ");  
+		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	          queryStr.append(" group by model.tdpCadre.userAddress.constituency.constituencyId ");  
+		  }
+		   Query query = getSession().createQuery(queryStr.toString());
+		   if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+			 }
+		   return query.list();
+	}
 }
