@@ -313,6 +313,8 @@ $("#boothsList").trigger("chosen:updated");
          dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#submitCadreForm").show();
+	   $(".newProfile").show();
    hideShowDivs(status);
    buildCasteDetails(result);
    buildEductnQualifns(result);
@@ -389,7 +391,7 @@ $("#boothsList").trigger("chosen:updated");
 				  if(result[i].voterId != null && result[i].voterId > 0)
 					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
 				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
-					  str += '<p id="relativeVID'+i+'" class="voterCls relativeVID">V.ID:'+result[i].familyVoterCardNo+'&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
+					  str += '<p class="voterCls relativeVID"><span id="relativeVID'+i+'">V.ID:'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
 				  str += '<b>MemShip.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
 				  str += '<p>H.no:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
 				  str += '<span>&nbsp;&nbsp;Gender : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
@@ -529,3 +531,11 @@ str += '</ul>';
  
   }
   
+$(document).on("click",".searchChkboxCls",function(){
+	$("#submitCadreForm").hide();
+});
+
+$(document).on("click",".registerNew",function(){
+	$(".renewalN").hide();
+});
+ 
