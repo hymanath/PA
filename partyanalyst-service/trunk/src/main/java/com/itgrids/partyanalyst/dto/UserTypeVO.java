@@ -68,7 +68,10 @@ public class UserTypeVO implements Serializable{
 	private Double attendedCntPer=0.0d;
 	private Double inviteeAttendedCntPer=0.0d;
 	private Double nonInviteeAttendedCntPer=0.0d;
-	
+    // for cadre registration
+	private Long totalTargetCount=0l;
+	private Long totalCadreCount=0l;
+	private Double totalCadreCountPer=0.0d;
 	public Long getId() {
 		return id;
 	}
@@ -358,4 +361,23 @@ public class UserTypeVO implements Serializable{
 	public void setNonInviteeAttendedCntPer(Double nonInviteeAttendedCntPer) {
 		this.nonInviteeAttendedCntPer = nonInviteeAttendedCntPer;
 	}
+	public Long getTotalTargetCount() {
+		return totalTargetCount;
+	}
+	public void setTotalTargetCount(Long totalTargetCount) {
+		this.totalTargetCount = totalTargetCount;
+	}
+	public Long getTotalCadreCount() {
+		return totalCadreCount;
+	}
+	public void setTotalCadreCount(Long totalCadreCount) {
+		this.totalCadreCount = totalCadreCount;
+	}
+	public Double getTotalCadreCountPer() {
+		return totalCadreCountPer;
+	}
+	public void setTotalCadreCountPer(Double totalCadreCountPer) {
+		this.totalCadreCountPer = totalCadreCountPer;
+	}
+   	
 }

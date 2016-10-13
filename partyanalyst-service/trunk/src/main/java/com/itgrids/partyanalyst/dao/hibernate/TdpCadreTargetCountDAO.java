@@ -18,9 +18,7 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 	public List<Object[]> getTotalCadreTargetCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
-	         if(userAccessLevelId.longValue() == 4l)
-	        	 return null;
-		    queryStr.append(" select");
+	        queryStr.append(" select");
 		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" model.constituency.state.stateId,");  
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
