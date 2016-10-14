@@ -521,7 +521,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setNomineeGender(objects[15]!=null?objects[15].toString():"");//nomineeGender
 			returnVO.setNomineeAge(objects[16]!=null?(Long)objects[16]:0l);//nomineeAge
 			returnVO.setRelativeType(objects[17]!=null?objects[17].toString():"");//relativeType
-			
+			returnVO.setConstituencyId(objects[20]!=null?objects[20].toString():"");//constituencyId
 			
 			if(objects[18] != null && objects[18].toString().length()> 0l){
 				returnVO.setVoterRelationId(objects[19]!=null?(Long)objects[19]:0l);//voterId
@@ -578,6 +578,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setMobileNumber(objects[6]!=null?objects[6].toString():"");//mobileNo
 			returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
 			returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
+			returnVO.setConstituencyId(objects[9]!=null?objects[9].toString():"");//constituencyId
 			
 		}
 		}
@@ -697,6 +698,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return null;
 	}
 
+	/**
+	* @param  cadreRegistrationVO
+	* @return  String
+	* @author Hymavathi 
+	* @Description : Saving Cadre Details By Calling WebService
+	*  @since 13-October-2016
+	*/
 	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO){  
 		CadreResponseVO responceVO = null;
 	    try {

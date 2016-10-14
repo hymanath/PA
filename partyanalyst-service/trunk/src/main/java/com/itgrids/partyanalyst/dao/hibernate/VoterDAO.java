@@ -458,17 +458,17 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			public List<Object[]> getVoterDetailsByVoterId(Long voterId){
 				StringBuilder str = new StringBuilder(); 
 				
-				str.append(" select model.voterId," +
-						" model.name," +
-						" model.gender," +
-						" model.age," +//3
-						" model.dateOfBirth," +
-						" model.imagePath," +
-						" model.mobileNo," +//6
-						" model.relationshipType," +
-						" model.voterIDCardNo "  +
-						" from Voter model "+ //9
-						" where model.voterId = :voterId  ");
+				str.append(" select model.voter.voterId," +
+						" model.voter.name," +
+						" model.voter.gender," +
+						" model.voter.age," +//3
+						" model.voter.dateOfBirth," +
+						" model.voter.imagePath," +
+						" model.voter.mobileNo," +//6
+						" model.voter.relationshipType," +
+						" model.voter.voterIDCardNo,model.booth.constituency.constituencyId  "  +
+						" from BoothPublicationVoter model "+ //9
+						" where model.voter.voterId = :voterId  ");
 				
 				Query query = getSession().createQuery(str.toString());
 				
