@@ -13497,6 +13497,19 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						}
 					}
 				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					for (VoterSearchVO voterSearchVO : returnList) {
+						if(voterSearchVO.getTdpCadreId() != null && voterSearchVO.getTdpCadreId().longValue() > 0l){
+							if(voterSearchVO.getEnrollmentYearId() != null && voterSearchVO.getEnrollmentYearId().longValue() == 3l)
+								voterSearchVO.setStatus("renewal");
+							else if(voterSearchVO.getEnrollmentYearId() != null && voterSearchVO.getEnrollmentYearId().longValue() == 4l)
+								voterSearchVO.setStatus("update");
+						}
+						else
+							voterSearchVO.setStatus("new");
+					}
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception riased at getVotersBySearch in CadreRegistrationService Service class", e);
@@ -13550,6 +13563,15 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			
 			if(cadreMap != null)
 				returnList = new ArrayList<TdpCadreVO>(cadreMap.values());
+			
+			if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				for (TdpCadreVO tdpCadreVO : returnList) {
+					if(tdpCadreVO.getId() != null && tdpCadreVO.getId().longValue() > 0l && tdpCadreVO.getEnrollmentYearId() != null && tdpCadreVO.getEnrollmentYearId().longValue() == 3l)
+						tdpCadreVO.setStatus("renewal");
+					else if(tdpCadreVO.getId() != null && tdpCadreVO.getId().longValue() > 0l && tdpCadreVO.getEnrollmentYearId() != null && tdpCadreVO.getEnrollmentYearId().longValue() == 4l)
+						tdpCadreVO.setStatus("update");
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception riased at getTdpCadresBySearch in CadreRegistrationService Service class", e);

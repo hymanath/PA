@@ -64,8 +64,15 @@ public class TdpCadreVO implements java.io.Serializable
 	private Long familyVoterId;
 	private String familyVoterCardNo;
 	private Long enrollmentYearId;
+	private String status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getEnrollmentYearId() {
 		return enrollmentYearId;
 	}
