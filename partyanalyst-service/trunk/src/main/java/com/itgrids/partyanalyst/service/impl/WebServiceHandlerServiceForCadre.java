@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.Registration2016VO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
@@ -124,16 +124,16 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		return returnList;
 	}
 	
-	public CadreRegistrationVO getRegistrationPersonDetails(WebServiceCadreVO inputVO){
+	public Registration2016VO getRegistrationPersonDetails(WebServiceCadreVO inputVO){
 		
-		CadreRegistrationVO cadreRegistrationVO = null;
+		Registration2016VO registration2016vo = null;
 		try{
-			cadreRegistrationVO = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(inputVO.getVoterId(),inputVO.getFamilyVoterId(),inputVO.getTdpCadreId(),inputVO.getStatus());
+			registration2016vo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(inputVO.getVoterId(),inputVO.getFamilyVoterId(),inputVO.getTdpCadreId(),inputVO.getStatus());
 			
 		}catch(Exception e) {
 			log.error("Entered into the getRegistrationPersonDetails() in WebServiceHandlerServiceForCadre ");
 		}
-		return cadreRegistrationVO;
+		return registration2016vo;
 	}
 	
 	public List<TdpCadreVO> getTdpCadresBySearch(WebServiceCadreVO inputVO){
