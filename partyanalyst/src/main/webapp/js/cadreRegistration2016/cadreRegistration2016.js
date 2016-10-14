@@ -57,6 +57,7 @@ function onLoadCalls(){
   }
 
 function getSearchByMyVoterIdDetails(){
+	eachTimeClearFields();
  var flag = 0;
   $(".searchChkboxCls").each(function(){
 	  if($(this).is(":checked")){
@@ -114,7 +115,9 @@ if(status == "new"){
 	$("#emailDivId").show();
 	$("#cadrePrvNomneDivId").show();
 	$("#cadreVoterDivId").hide();
-	$("#cadreUpdateVotrDivId").hide();
+	$("#cadreUpdateVotrDivId").hide(); 
+	$("#prevNomineeId").hide();
+	$("#prevNomiConId").hide();
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
 	$("#emailDivId").show();
@@ -173,11 +176,11 @@ var str = "";
 		 if(result.voterCardNo != null && result.voterCardNo != ""){
 			 $("#relVotCls").addClass("text-muted");
 			 $("#selfVotCls").addClass("text-success");
-			 $("#voterId").val(result.voterCardNo);
+			 $("#voterIdText").val(result.voterCardNo);
 		 }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
 			 $("#relVotCls").addClass("text-success");
 			 $("#selfVotCls").addClass("text-muted");
-			 $("#voterId").val(result.voterCardNumber);
+			 $("#voterIdText").val(result.voterCardNumber);
 		 }
 		 }else{
 		  if(result.voterCardNo != null && result.voterCardNo != ""){
@@ -468,4 +471,21 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prvNomneNameId").val($("#PrvNomineeDetailsId").attr("attr_nomineName"));
 	$("#prevNomneAgeId").val($("#PrvNomineeDetailsId").attr("attr_nomineAge"));
    });
-
+ function eachTimeClearFields()
+ {
+	$("#nameId1").val('');  
+    $("#genderId").val('').trigger('chosen:updated');
+	$("#ageId").val(''); 
+	$("#dobId").val('');  
+	$("#selfVoetrId").val('');            
+	$("#updatedVoetrId").val('');       
+	$("#voterIdText").val('');
+	$("#aadharId").val('');
+	$("#casteListId").val('').trigger('chosen:updated'); 
+	$("#eductnQualId").val('').trigger('chosen:updated');   
+	$("#prvNomneNameId").val('');
+	$("#prvNomneGendrId").val('').trigger('chosen:updated');
+	$("#prevNomneAgeId").val('');
+	$("#prevNomneReltvId").val('').trigger('chosen:updated');
+	$('#changeNomineeId').attr('checked', false);
+ }
