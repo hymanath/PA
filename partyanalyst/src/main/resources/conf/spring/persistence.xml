@@ -984,6 +984,9 @@
 				     <value>com.itgrids.partyanalyst.model.TabUserEnrollmentInfo</value>
 				     <value>com.itgrids.partyanalyst.model.TdpCadreTargetCount</value>
 				     
+				     <value>com.itgrids.partyanalyst.model.FieldVendor</value>
+				     <value>com.itgrids.partyanalyst.model.FieldVendorLocation</value>
+				     <value>com.itgrids.partyanalyst.model.FieldVendorTabUser</value>
 				 </list>
 			
 		</property>
