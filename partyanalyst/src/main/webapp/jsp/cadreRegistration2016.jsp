@@ -360,6 +360,7 @@
                                     <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
                                     <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationTypeId"/>
 									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
+									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
@@ -371,7 +372,7 @@
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender</label>
-                                    <select class="select" id="genderId">
+                                    <select class="select" id="genderId" name="cadreRegistrationVO.gender">
 										<option value="0">Select Gender</option>
 										<option value="M">Male</option>
 										<option value="F">Female</option>
@@ -393,7 +394,7 @@
                             	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox" value="existImage" id="exstCheckImgId" name="option"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck" value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
                             </div>
@@ -401,7 +402,7 @@
                             	<div class="imageDiv">
                                 	<img src="dist/img/default_image.png" id="uploadImgId" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox" value="newImage"  id="newCheckImgId" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId" value="newImage" name="option"/><input type="file" style="width:80px" onchange="loadFile(event);" name="uploadImg"/>
                                     </label>
                                 </div>
                             </div>
@@ -481,12 +482,12 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
-                            <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.prevNomineeName"/>
+                            <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.nomineeName"/>
 							<div id="prvNomneNameDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Gender</label>
-                            <select class="select" id="prvNomneGendrId" name="cadreRegistrationVO.preNomineeGender">
+                            <select class="select" id="prvNomneGendrId" name="cadreRegistrationVO.nomineeGender">
 								<option value="0">Select Gender</option>
 								<option value="M">Male</option>
 								<option value="F">Female</option>
@@ -497,12 +498,12 @@
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Age</label>
-                            <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.prevNomineeAge"/>
+                            <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.nomineeAge"/>
 							<div id="prevNomneAgeDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Relative Relationship</label>
-                            <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.prevNomineeRelationId">
+                            <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.nomineeRelationId">
                             </select>
 							<div id="prevNomneReltvDivId" style="color:red;"></div>
                         </div>
@@ -525,7 +526,7 @@
                     </div>
 				<div id="imgErrDivId" style="color:red;"></div>
 					<div class="row">
-						<div id="addNewNominatedId" style="display:none;">
+						<!--<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
 								<label>Nominee Name</label>
 								<input type="text" class="form-control" id="nomineeNameId" name="cadreRegistrationVO.nomineeName"/>
@@ -533,7 +534,7 @@
 							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 								<label>Gender</label>
 							<!--<input type="text" class="form-control" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender"/>-->
-								<select class="select" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender">
+								<!--<select class="select" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender">
 									<option value="0">Select Gender</option>
 									<option value="M">Male</option>
 									<option value="F">Female</option>
@@ -548,9 +549,9 @@
 								<label>Relative Relationship</label>
 								<select class="select" id="relativeId" name="cadreRegistrationVO.nomineeRelationId">
 									<!--<option></option>-->
-								</select>
+								<!--</select>
 							</div>
-						</div>
+						</div>-->
 						<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
 							<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
 						</div>
@@ -1343,6 +1344,7 @@ $('.imageDiv input:checkbox').click(function() {
 }); 
 
  var loadFile = function(event) {
+	 alert(6)
     var imagePath = document.getElementById('uploadImgId');
     imagePath.src = URL.createObjectURL(event.target.files[0]);
   };
