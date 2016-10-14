@@ -3216,10 +3216,24 @@
 	<bean id="tdpCadreTargetCountDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTargetCountDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="tdpCadreEnrollmentInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreEnrollmentInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="tabUserEnrollmentInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserEnrollmentInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="fieldVendorDAO" class="com.itgrids.partyanalyst.dao.hibernate.FieldVendorDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fieldVendorLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.FieldVendorLocationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fieldVendorTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.FieldVendorTabUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
