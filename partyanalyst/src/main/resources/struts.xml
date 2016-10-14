@@ -13996,5 +13996,11 @@
 		</result>
 	</action>
 	
+	<action name="fieldMonitoringAction" class="fieldMonitoringAction" >
+		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringAction</result>
+		<result name="success">/jsp/fieldMonitoring.jsp</result>    
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	
 </package>
 </struts>
