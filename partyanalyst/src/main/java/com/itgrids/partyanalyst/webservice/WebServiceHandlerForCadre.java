@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.Registration2016VO;
+import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
@@ -128,12 +128,12 @@ public class WebServiceHandlerForCadre {
 	@Path("/getRegistrationPersonDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Registration2016VO getRegistrationPersonDetails(WebServiceCadreVO inputVO){ 
-		Registration2016VO registration2016vo = null;
+	public NewCadreRegistrationVO getRegistrationPersonDetails(WebServiceCadreVO inputVO){ 
+		NewCadreRegistrationVO newCadreRegistrationVO = null;
 		try {
 			 
-			registration2016vo = webServiceHandlerServiceForCadre.getRegistrationPersonDetails(inputVO);
-              return registration2016vo;
+			newCadreRegistrationVO = webServiceHandlerServiceForCadre.getRegistrationPersonDetails(inputVO);
+              return newCadreRegistrationVO;
 		} catch (Exception e) {
 			LOG.error("Exception raised in getRegistrationPersonDetails() in WebServiceHandlerForCadre class",e);
 		}
