@@ -508,7 +508,7 @@
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
                         	<label class="checkbox-inline" >
-                            	<input type="checkbox" class="nomineeDetailsCls"/><span id="defaultNomineeId"></span>
+                            	<input type="checkbox" class="nomineeDetailsCls" id="PrvNomineeDetailsId"/><span id="defaultNomineeId"></span>
                             </label>
                             <span style="margin-left:10px;margin-right:10px;"><i>/Or/</i></span>
                             <label class="checkbox-inline">
@@ -1080,7 +1080,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Voter Family Details</h4>
       </div>
       <div class="modal-body">
         <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
@@ -1089,7 +1089,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add Nominee</button>
+        <!--<button type="button" class="btn btn-primary">Add Nominee</button>-->
       </div>
     </div>
   </div>
