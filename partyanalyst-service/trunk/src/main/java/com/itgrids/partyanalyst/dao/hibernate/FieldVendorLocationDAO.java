@@ -9,7 +9,6 @@ public class FieldVendorLocationDAO extends GenericDaoHibernate<FieldVendorLocat
 
 	public FieldVendorLocationDAO() {
 		super(FieldVendorLocation.class);
-		
 	}
 
 }
