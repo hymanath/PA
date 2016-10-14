@@ -116,6 +116,8 @@ if(status == "new"){
 	$("#familyDetailsDivId").hide();
 	$("#cadreVoterDivId").show();
 	$("#cadreUpdateVotrDivId").show();
+	$("#prevNomineeId").show();
+	$("#prevNomiConId").show();
 }
 }
 function buildProfileDetails(result,status){
@@ -185,7 +187,7 @@ var str = "";
 		 if(result.tdpCadreId != null && result.nomineeName != null && result.nomineeName != ""){
 			$("#prvNomneNameId").val(result.nomineeName);
 		 }
-		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != ""){
+		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != "" && result.nomineeAge > 0){
 			$("#prevNomneAgeId").val(result.nomineeAge);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeGender != null && result.nomineeGender != ""){
@@ -202,13 +204,17 @@ var str = "";
 		 if(result.memberTypeId != null){                    
 			$("#membershipId").val(result.memberTypeId);
 		 }
-		 if(result.nomineeName != null)
+		 if(result.nomineeName != null && result.nomineeName != "")
 		 {
 			 $("#defaultNomineeId").text("Use"+" "+result.nomineeName+" As Nominee");
+		 }else{
+			$("#defaultNomineeId").text("Use Previous Nominee");
 		 }
 		 $("#PrvNomineeDetailsId").attr("attr_nomineName",result.nomineeName);
 		 $("#PrvNomineeDetailsId").attr("attr_nomineeGender",result.nomineeGender);
+		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != "" && result.nomineeAge > 0){
 		 $("#PrvNomineeDetailsId").attr("attr_nomineAge",result.nomineeAge);
+		 }
 		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
 		
 }
@@ -336,7 +342,7 @@ $(document).on("click",".checkboxCls",function(){
 	  var gender = $(this).attr("attr_gender");
 	  var age = $(this).attr("attr_age");
 	  var relationTypeId = $(this).attr("attr_relTypeId");
-	  
+
 	 $("#checkNomineeNameId").val(name);
      $("#checkNomineeGenderId").val(gender);
 	 $("#checkNomineeAgeId").val(age);
@@ -429,7 +435,10 @@ $(document).on("click",".isImageCheck",function(){
 	}
 	});    
  
- $(document).on("click","#PrvNomineeDetailsId",function(){  
+ $(document).on("click","#PrvNomineeDetailsId",function(){ 
+	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
+	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
+	
 	var prvNomineeGender = $("#PrvNomineeDetailsId").attr("attr_nomineeGender");
 	var prvNomineeRelative = $("#PrvNomineeDetailsId").attr("attr_nomineRelative");
 	 if(prvNomineeGender == 'Female')
