@@ -183,25 +183,26 @@ $("#boothsList").trigger("chosen:updated");
 	  var hNo=$("#huseNOId").val();
       var state=$("#statesDivId").val();
 	  var district=$("#districtId").val();
+	  var voterId = $("#searchVoterId").val();
 	  
      if(state == 0)
 	  {
-		 $("#errorDivId").html("Please select state");
+		 $("#errorDivId").html("Please Select State");
 		 return;
 	   }
 	  if(district == 0)
 	  {
-		 $("#errorDivId").html("Please select district");
+		 $("#errorDivId").html("Please Select district");
 		 return;
 	   }
 	  if(constituency == 0)
 	  {
-		 $("#errorDivId").html("Please select constituency");
+		 $("#errorDivId").html("Please Select constituency");
 		 return;
 	   }
-	  if(name.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
+	  if(voterId.trim().length == 0 && name.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
 	   {
-		  $("#errorDivId").html("Please select name or mobileNo or houseNo");
+		  $("#errorDivId").html("Enter Atleast One VoterId or Name or MobileNo or HouseNo");
 		 return; 
 	   }
 	   searchVoterDetails();
@@ -212,7 +213,8 @@ $("#boothsList").trigger("chosen:updated");
 		  boothId:booth,
 		  name:name,
 		  mobileNo:mobileNo,
-		  hNo:hNo
+		  hNo:hNo,
+		  voterCrdNo : voterId
 	  }
 	   $.ajax({
           type:'GET',
