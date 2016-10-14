@@ -476,6 +476,7 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
                             <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.prevNomineeName"/>
+							<div id="prvNomneNameDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Gender</label>
@@ -486,24 +487,30 @@
 								<option value="O">Others</option>
 							</select>
                             <!--<input type="text" class="form-control" id="prvNomneGendrId" name="cadreRegistrationVO.preNomineeGender"/>-->
+							<div id="prvNomneGendrDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Age</label>
                             <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.prevNomineeAge"/>
+							<div id="prevNomneAgeDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Relative Relationship</label>
                             <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.prevNomineeRelationId">
-                            	<!--<option>Brother</option>-->
                             </select>
+							<div id="prevNomneReltvDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
                         	<label class="checkbox-inline" >
                             	<input type="checkbox" class="nomineeDetailsCls"/><span id="defaultNomineeId"></span>
                             </label>
-                            <span ><i>/Or/</i></span>
+                            <span style="margin-left:10px;margin-right:10px;"><i>/Or/</i></span>
                             <label class="checkbox-inline">
                             	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Change Nominee
+                            </label>
+							<span style="margin-left:10px;margin-right:10px;"><i>/Or/</i></span>
+                            <label class="checkbox-inline">
+                            	<input type="checkbox" id="addNewNomineeId" class="nomineeDetailsCls"/>Add New Nominee
                             </label>
                         </div>
                         <!--<div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
@@ -511,16 +518,7 @@
                         </div>-->
                     </div>
 				<div id="imgErrDivId" style="color:red;"></div>
-                    <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
-                    	<!--<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">select nominee</h4>
-                        </div>-->
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls" >
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-						</div>
-                    </div>
-                    <div class="row">
+					<div class="row">
 						<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
 								<label>Nominee Name</label>
@@ -1071,7 +1069,25 @@
         </div>
 	</div>
 </div>
-
+<div class="modal fade" id="nomineeModalId">
+  <div class="modal-dialog" role="document" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls" ></div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add Nominee</button>
+      </div>
+    </div>
+  </div>
+</div>
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>

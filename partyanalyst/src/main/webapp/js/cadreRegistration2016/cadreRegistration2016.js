@@ -281,18 +281,18 @@ function buildCasteDetails(result) {
 		}
 	}
 	str += '</ul>';
-	str += '<p class="m_top30">Note: If no nominee is present in the above list. Please click <a class="text-capital" id="addNewNomineeId" style="cursor:pointer;"> add new nominee</a></p>';
+	
 	$(".cadreFamilyDetailsCls").html(str);
 	//$("#cadrePrvNomneDivId").show();
 	//$("#familyDetailsDivId").show();
 }
-  $(document).on("click","#addNewNomineeId",function(){
+  /*$(document).on("click","#addNewNomineeId",function(){
       if ($("#addNewNominatedId").is(":visible")) {
 	  $("#addNewNominatedId").hide();   
 	}else{
 	 $("#addNewNominatedId").show(); 
 	}  
-   });
+   });*/
 
 function buildCadreRelativesDetails(result,id) {
 	$('#'+id+'').append('<option  value="0">Select Relationship</option>');
@@ -318,6 +318,7 @@ function buildCadreRelativesDetails(result,id) {
 $(document).on("click", "#changeNomineeId", function(e) {
        if($(this).is(":checked")) {
            $("#familyDetailsDivId").show();
+		   $("#nomineeModalId").modal('show');
        } else {
            $("#familyDetailsDivId").hide();
        }
@@ -325,7 +326,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	
 	function savingCadreDetails(){
 		validations();
-	
+		validationDetails();
 	var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
@@ -334,8 +335,8 @@ $(document).on("click", "#changeNomineeId", function(e) {
 					//showSbmitStatus(uploadResult);
 				}
 			};
-	return;
-	//console.log(submitCadreForm)
+	
+	//csole.log(submitCadreForm)
 		YAHOO.util.Connect.setForm('submitCadreForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
 	}
@@ -356,7 +357,7 @@ $(document).on("click",".checkboxCls",function(){
 });
 $(document).on("click",".nomineeDetailsCls",function(){
 	$(".nomineeDetailsCls").prop( 'checked',false);
-	 $(this).prop( 'checked', true );
+	$(this).prop( 'checked', true );
 });
 
 function validations()
@@ -383,3 +384,46 @@ function validations()
 	return;
 	}
 }
+function validationDetails()
+{
+	var PrvNomneName=$("#prvNomneNameId").val();
+	var PrvNomneGendr=$("#prvNomneGendrId").val();
+	var PrvNomneAge=$("#prevNomneAgeId").val();
+	var PrvNomneReltv=$("#prevNomneReltvId").val();
+	 if(PrvNomneName == 0 && PrvNomneName.trim() == '')
+	 {
+		$("#prvNomneNameDivId").html("please check the Nominee Name");  
+        return;		
+	 }else
+	 {
+		 $("#prvNomneNameDivId").html("");
+	 }
+     if(PrvNomneGendr == 0)
+	 {
+		 $("#prvNomneGendrDivId").html("please check the Nominee Gender"); 
+          return;		 
+	 }else
+	 {
+		 $("#prvNomneGendrDivId").html(""); 
+	 }
+   	 if(PrvNomneAge == 0 && PrvNomneAge.trim() == '')
+	 {
+		$("#prevNomneAgeDivId").html("please check the Nominee Age"); 
+          return;		
+	 }else{
+		 $("#prevNomneAgeDivId").html("");
+	 }
+	 if(PrvNomneReltv == 0)
+	 {
+		 $("#prevNomneReltvDivId").html("please check the Nominee Relative");
+         return;		 
+	 }else{
+		  $("#prevNomneReltvDivId").html("");
+	 }
+}
+$(document).on("click","#addNewNomineeId",function(){
+	$("#prvNomneNameId").val('');
+	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
+	$("#prevNomneAgeId").val('');
+	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
+	});  
