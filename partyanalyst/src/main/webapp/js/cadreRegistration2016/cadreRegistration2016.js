@@ -308,12 +308,8 @@ function buildCadreRelativesDetails(result,id) {
 }	
 
 $(document).on("click", "#changeNomineeId", function(e) {
-       if($(this).is(":checked")) {
-           $("#familyDetailsDivId").show();
-		   $("#nomineeModalId").modal('show');
-       } else {
-           $("#familyDetailsDivId").hide();
-       }
+	$("#nomineeModalId").modal('show');
+    $("#familyDetailsDivId").show(); 
     });  
 	
 	function savingCadreDetails(){
@@ -340,7 +336,7 @@ $(document).on("click",".checkboxCls",function(){
 	  var gender = $(this).attr("attr_gender");
 	  var age = $(this).attr("attr_age");
 	  var relationTypeId = $(this).attr("attr_relTypeId");
-	  alert(relationTypeId)
+	  
 	 $("#checkNomineeNameId").val(name);
      $("#checkNomineeGenderId").val(gender);
 	 $("#checkNomineeAgeId").val(age);
