@@ -327,7 +327,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
     });  
 	
 	function savingCadreDetails(){
-		//validations();
+		validations();
 		validationDetails();
 	var uploadHandler = {
 				upload: function(o) {
@@ -369,27 +369,26 @@ $(document).on("click",".nomineeDetailsCls",function(){
 
 function validations()
 {
-	var existImg=$("#existImgId").val();
-	var newImag=$("#uploadImgId").val();
-	var checkexistImg=$("#exstCheckImgId").val();
-	var checknewImg=$("#newCheckImgId").val();
-	
-	if(existImg == "") {
+	$("#imgErrDivId").html("");
+	var exstImgPath=$("#existImgId").attr("src");
+	var newImagPath=$("#uploadImgId").attr("src");
+	var existImgCheck=$("#exstCheckImgId").is(':checked') ? 1 : 0;
+	var newImgCheck=$("#newCheckImgId").is(':checked') ? 1 : 0;
+
+ 
+if(existImgCheck=="0" && newImgCheck == "0")
+{
+  $("#imgErrDivId").html("Please choose any check box for image.");
+	 return;	
+}
+if(newImgCheck == "1")
+  {
+	if(newImagPath == "dist/img/default_image.png" )
+	{
 	$("#imgErrDivId").html("Please select Image.");
-	return;
+	      return;
 	}
-	if(newImag == ""){
-	$("#imgErrDivId").html("Please select Image.");
-	return;
-	} 
-	if(checkexistImg == "" ){
-		$("#imgErrDivId").html("Please select Image.");
-	return;
-	}
-	if( checknewImg == ""){
-		$("#imgErrDivId").html("Please select Image.");
-	return;
-	}
+}
 }
 function validationDetails()
 {
