@@ -3529,5 +3529,12 @@
 	   <property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService"/>
 	</bean>
 	
+	<bean name="fieldMonitoringService" class="com.itgrids.partyanalyst.service.impl.FieldMonitoringService" >
+	   <property name="fieldVendorLocationDAO" ref="fieldVendorLocationDAO"/>
+	   <property name="fieldVendorTabUserDAO" ref="fieldVendorTabUserDAO"/>
+	</bean>
+	
+	
+	
 </beans>		
 	
