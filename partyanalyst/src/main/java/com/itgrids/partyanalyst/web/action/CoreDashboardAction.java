@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+import com.itgrids.partyanalyst.dto.Registration2016VO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
@@ -121,12 +122,21 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String constName;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	private InputStream 						inputStream;
+	private Registration2016VO registration2016vo;
 	
 	//setters And Getters
 	
 	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public Registration2016VO getRegistration2016vo() {
+		return registration2016vo;
+	}
+
+	public void setRegistration2016vo(Registration2016VO registration2016vo) {
+		this.registration2016vo = registration2016vo;
 	}
 
 	public InputStream getInputStream() {
@@ -2624,7 +2634,7 @@ public String getRegistrationPersonDetails(){
 		Long familyVoterId = jObj.getLong("familyVoterId");
 		Long cadreId = jObj.getLong("cadreId");
 		
-		cadreRegistrationVO = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterId,familyVoterId,cadreId,status);
+		registration2016vo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterId,familyVoterId,cadreId,status);
 	}catch(Exception e){
 		LOG.error("Exception raised at getRegistrationPersonDetails() method of CoreDashBoardAction", e);
 	}
