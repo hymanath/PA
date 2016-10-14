@@ -199,8 +199,15 @@ public class CadreRegistrationVO implements Serializable{
 	private String newNomineeGender;
 	private Long newNomineeAge;
 	private Long newNomineeRelationTypeId;
+	private String isNewImageExist;
 	
 	
+	public String getIsNewImageExist() {
+		return isNewImageExist;
+	}
+	public void setIsNewImageExist(String isNewImageExist) {
+		this.isNewImageExist = isNewImageExist;
+	}
 	public String getPrevNomineeName() {
 		return prevNomineeName;
 	}

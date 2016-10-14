@@ -32,8 +32,15 @@ public class NewCadreRegistrationVO implements Serializable{
 	private String voterCardNumber;
 	private List<CadreFamilyVO> cadreFamilyDetails;
 	private String constituencyId;
+	private Long nomineeRelationId;
 	
 	
+	public Long getNomineeRelationId() {
+		return nomineeRelationId;
+	}
+	public void setNomineeRelationId(Long nomineeRelationId) {
+		this.nomineeRelationId = nomineeRelationId;
+	}
 	public String getConstituencyId() {
 		return constituencyId;
 	}
