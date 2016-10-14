@@ -251,7 +251,7 @@ $("#boothsList").trigger("chosen:updated");
 				  str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
-				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"/>';
+				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"/>';
 				  str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			  str += '</div>';
 			  str += '</div>';
@@ -276,6 +276,8 @@ $("#boothsList").trigger("chosen:updated");
 	  var voterId = $(this).attr("attr_voterId");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
 	  var enrolYear = $(this).attr("attr_enrol_yId");
+	  var familyVoterCardNumber=$(this).attr("attr_fam_voter_id");
+	  
 	  var status = "new";
 	  
 	 if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
@@ -285,10 +287,17 @@ $("#boothsList").trigger("chosen:updated");
 	else 
 		tdpCadreId = 0;
 	
+	if(tdpCadreId !=null && tdpCadreId>0){
+		$(".voterIdBtn").hide();
+	}
+	else{
+		$(".voterIdBtn").show();
+	}
+	
 	 $("#voterId").val(voterId);
      $("#tdpCadreId").val(tdpCadreId);
 	 $("#statusId").val(status);
-	
+	$("#hiddenFamilyVoterId").val(familyVoterCardNumber);
   });
   
    function getSearchByRelativeVoterIdDetails(){
@@ -308,7 +317,8 @@ $("#boothsList").trigger("chosen:updated");
 	 var familyVoterId=$("#voterId").val();
 	 var tdpCadreId=$("#tdpCadreId").val();
 	 var status=$("#statusId").val();
-	 
+	var familyVoterCardNo=$("#hiddenFamilyVoterId").val();
+	
 	 var jsObj={
 		 voterId:voterId1,
 		 familyVoterId:familyVoterId,
@@ -324,7 +334,7 @@ $("#boothsList").trigger("chosen:updated");
 	   $("#submitCadreForm").show();
 	   $(".newProfile").show();
    hideShowDivs(status);
-   buildRelatVoterDetails(familyVoterId);
+   buildRelatVoterDetails(familyVoterCardNo);
    buildCasteDetails(result);
    buildEductnQualifns(result);
    buildCadreFamilyDetails(result);
@@ -613,8 +623,12 @@ $(document).on("click",".registerNew",function(){
 	$(".renewalN").hide();
 });
 
-function buildRelatVoterDetails(familyVoterId){
-	 if(familyVoterId!=null && familyVoterId!=""){
-		 $("#selfVoetrId").val(familyVoterId);
+function buildRelatVoterDetails(familyVoterCardNo){
+	
+	 if(familyVoterCardNo!=null && familyVoterCardNo!=""){
+		 $("#selfVoetrId").val(familyVoterCardNo);
 	 }
- }
+}	
+
+	 
+ 
