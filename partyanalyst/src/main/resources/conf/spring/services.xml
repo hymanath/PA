@@ -3526,6 +3526,7 @@
 	
 	<bean name="webServiceHandlerServiceForCadre" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerServiceForCadre" >
 	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
+	   <property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService"/>
 	</bean>
 	
 </beans>		
