@@ -477,7 +477,7 @@
                             </select>
                         </div>
                     </div>
-					<div class="row" style="display:none;" id="cadrePrvNomneDivId">
+					<div class="row" id="cadrePrvNomneDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
                         </div>
