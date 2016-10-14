@@ -56,8 +56,6 @@ function onLoadCalls(){
 		});
   }
 
-
-
 function getSearchByMyVoterIdDetails(){
  var flag = 0;
   $(".searchChkboxCls").each(function(){
@@ -114,7 +112,7 @@ if(status == "new"){
 	$("#familyDetailsDivId").show();
 	$("#voterDvId").show();
 	$("#emailDivId").show();
-	$("#cadrePrvNomneDivId").hide();
+	$("#cadrePrvNomneDivId").show();
 	$("#cadreVoterDivId").hide();
 	$("#cadreUpdateVotrDivId").hide();
 }else if(status == "update" || status == "renewal"){
@@ -329,7 +327,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
     });  
 	
 	function savingCadreDetails(){
-		validations();
+		//validations();
 		validationDetails();
 	var uploadHandler = {
 				upload: function(o) {
@@ -366,7 +364,7 @@ $(document).on("click",".checkboxCls",function(){
 });
 $(document).on("click",".nomineeDetailsCls",function(){
 	$(".nomineeDetailsCls").prop( 'checked',false);
-	$(this).prop( 'checked', true );
+	 $(this).prop( 'checked', true );
 });
 
 function validations()
@@ -435,6 +433,15 @@ $(document).on("click","#addNewNomineeId",function(){
 	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
 	$("#prevNomneAgeId").val('');
 	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
+});  
+
+$(document).on("click",".isImageCheck",function(){
+	var value = $(this).val();
+	if(value == "existImage") {
+	$("#hiddenNewImgExist").val(value);
+	}else if("newImage"){
+	$("#hiddenNewImgExist").val(value);
+	}
 	});    
  
  $(document).on("click","#PrvNomineeDetailsId",function(){  
@@ -462,5 +469,4 @@ $(document).on("click","#addNewNomineeId",function(){
 	$("#prvNomneNameId").val($("#PrvNomineeDetailsId").attr("attr_nomineName"));
 	$("#prevNomneAgeId").val($("#PrvNomineeDetailsId").attr("attr_nomineAge"));
    });
-	
-	
+
