@@ -1,0 +1,158 @@
+body
+{
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+}
+h1,h2,h3,h4,h5,h6,p,ul,.pagination
+{
+	margin:0px !important;
+}
+label
+{
+	font-weight:400
+}
+.text-capital
+{
+	text-transform:uppercase;
+}
+.m_top10
+{
+	margin-top:10px !important;
+}
+.m_top20
+{
+	margin-top:20px !important;
+}
+.m_top25
+{
+	margin-top:25px !important;
+}
+.m_top30
+{
+	margin-top:30px !important;
+}
+.inputGCustom .input-group-addon
+{
+	background-color:#fff;
+	border-radius:0px;
+}
+.input-group .form-control
+{
+	border-left:0px;
+	border-radius:0px;
+}
+.panelWhite
+{
+	border-radius:0px;
+	margin-bottom:0px;
+}
+.panelWhite .panel-heading
+{
+	background-color:#fff;
+}
+.block
+{
+	border:1px solid #ddd;
+	padding:8px;
+}
+.b_right1
+{
+	border-right:1px solid #ddd;
+}
+.b_bottom1
+{
+	border-bottom:1px solid #ddd;
+}
+.b_1
+{
+	border:1px solid #ddd;
+}
+.dashedB
+{
+	padding:0px;
+	margin-top:15px;
+}
+.dashedB li
+{
+	padding:5px 8px;
+	border-bottom:2px dashed #ccc;
+	list-style:none;
+	text-transform:uppercase;
+}
+.dashedB li span
+{
+	float:right;
+	font-weight:bold;
+}
+.issueCmpltd , .issuePending
+{
+	position:relative;
+	padding-left:12px !important;
+}
+.issueCmpltd:before
+{
+	position:absolute;
+	background-color:#339933;
+	height:8px;
+	width:8px;
+	content:' ';
+	border-radius:50%;
+	top:15px;
+	left:3px;
+}
+.issuePending:before
+{
+	position:absolute;
+	background-color:#EA2A35;
+	height:8px;
+	width:8px;
+	content:' ';
+	border-radius:50%;
+	top:15px;
+	left:3px;
+}
+.bg_F4
+{
+	background-color:#F4F2F3
+}
+.issuesUl
+{
+	padding:0px;
+	margin-top:20px !important;
+}
+.issuesUl li
+{
+	border-top:1px solid #ddd;
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	list-style:none;
+	padding:8px;
+}
+.issuesUl li:last-child
+{
+	border-bottom:1px solid #ddd;
+}
+.issuesUl li .editBtn , .issuesUl li .editBtn:active 
+{
+	background-color:#fff;
+	border-radius:15px;
+	color:#333;
+	text-transform:uppercase;
+	border:1px solid #333;
+}
+.issuesUl li .editBtn:hover
+{
+	background-color:#f2f2f2;
+}
+.pad_20
+{
+	padding:20px;
+}
+.activeB
+{
+	background-color:#F2F2F2;
+	padding:5px 8px;
+	border-radius:13px;
+	text-transform:uppercase;
+}

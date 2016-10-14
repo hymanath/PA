@@ -1,0 +1,40 @@
+@media (min-width: 100px) and (max-width:500px) {
+	.m_XsTop10
+	{
+		margin-top:10px;
+	}
+	.m_XsTop20
+	{
+		margin-top:20px;
+	}
+}
+@media (min-width: 500px) and (max-width:767px) {
+	.m_SmTop10
+	{
+		margin-top:10px;
+	}
+	.m_SmTop20
+	{
+		margin-top:20px;
+	}
+}
+@media (min-width:769px) and  (max-width:991px){
+	
+}
+@media (min-width:992px) and  (max-width:1199px){
+	
+}
+@media (min-width:1200px){
+	
+}
+@media (min-width:767px) and  (max-width:768px){
+	
+}
+/* Ipad Only STYLES START*/
+@media only screen and (device-width: 768px) {
+	
+}
+@media only screen and (device-width: 1024px) {
+	
+}
+/* Ipad Only STYLES END */
