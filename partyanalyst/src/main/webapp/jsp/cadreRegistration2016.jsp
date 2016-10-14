@@ -292,15 +292,21 @@
 							  <option value="0">Select Booth</option>
 							</select>
                         </div>
-                       <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-6 m_top10">
+                        	<label>VoterId</label>
+                            <input type="text" class="form-control" id="searchVoterId"/>
+                        </div>
+                       <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
                         	<label>Name</label>
                             <input type="text" class="form-control" id="nameId"/>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
                         	<label>Mobile No</label>
                             <input type="text" class="form-control" id="mobileId"/>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
                         	<label>House Number</label>
                             <input type="text" class="form-control" id="huseNOId"/>
                         </div>
