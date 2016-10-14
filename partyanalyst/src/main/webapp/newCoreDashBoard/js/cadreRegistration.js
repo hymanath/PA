@@ -23,6 +23,8 @@ $(document).on("click",".cadreExpand",function(){
 		//getSpokesPersonWiseDebate("top");
 	},800);
 	getUserTypeWiseTotalCadreRegistrationCount();
+	//getCadreDetailsBasedOnUserType();
+	//getLocationWiseCadreDetails();
 	//getRegistrationCountDtls("booth","overall"); 
 	$("#constituencySeletBoxId").val(0);
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -1468,3 +1470,38 @@ function getTabUserInfoDetails(tabUserIdStr){
 			 }
 		});
 	}
+	 
+	 function getCadreDetailsBasedOnUserType(){
+		 
+		var jsObj ={ 
+				 activityMemberId : globalActivityMemberId,
+				 stateId : globalStateId,
+				 userTypeId : globalUserTypeId,
+				 fromDate : "2/10/2016",
+				 todate : "14/10/2016"
+			  }
+		$.ajax({
+			type : 'POST',
+			url : 'getCadreDetailsBasedOnUserTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+	      console.log(result);
+	});
+ }
+  function getLocationWiseCadreDetails(){
+		var jsObj ={ 
+				 locationType : "Constituency",
+				 stateId : 1,
+				 fromDate : "2/10/2016",
+				 todate : "14/10/2016"
+			  }
+		$.ajax({
+			type : 'POST',
+			url : 'getLocationWiseCadreDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+	      console.log(result);
+	     });
+ }

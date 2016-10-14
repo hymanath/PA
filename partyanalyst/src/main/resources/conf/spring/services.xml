@@ -3504,6 +3504,10 @@
 		 <property name="tabUserEnrollmentInfoDAO" ref="tabUserEnrollmentInfoDAO"></property>
 		 <property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
 		 <property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"></property>
+		 <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
+		  <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO"></property>
+		 
+		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>
