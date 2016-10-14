@@ -150,6 +150,9 @@ var str = "";
 			 var dob = result.dobStr.substring(0, 11);
 			 $("#dobId").val(dob);
 		 }
+		 if(result.constituencyId != null && result.constituencyId != ""){
+			$("#hiddenConstId").val(result.constituencyId);
+		 }
 		 $("#hiddenFamilyVoterId").val(result.familyVoterId);
 		 $("#hiddenVoterId").val(result.voterRelationId);
 		 $("#hiddenTdpCadreId").val(result.tdpCadreId);
@@ -351,7 +354,6 @@ $(document).on("click",".checkboxCls",function(){
 	
 });
 $(document).on("click",".nomineeDetailsCls",function(){
-	alert(1);
 	$(".nomineeDetailsCls").prop( 'checked',false);
 	 $(this).prop( 'checked', true );
 });
