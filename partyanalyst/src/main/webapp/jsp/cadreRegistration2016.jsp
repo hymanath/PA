@@ -412,27 +412,27 @@
                  	<div class="row">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Apartment Name</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" />
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Street Name</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" />
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Area Name</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="areaId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Land Mark</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="landMarkId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Hamlet</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="hamletId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Pincode</label>
-                            <input type="text" class="form-control"/>
+                            <input type="text" class="form-control" id="pinCodeId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Mobile Number</label>
@@ -458,7 +458,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="voterDvId" style="display:none;">
                         	<label>Voter Id -<i> <span class="" id="relVotCls">Relative V.ID</span> / <span class="" id="selfVotCls">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="voterId"/>
+                            <input type="text" class="form-control" id="voterIdText"/>
                         </div>
                      </div>
                      <div class="row">
@@ -509,10 +509,10 @@
 							<div id="prevNomneReltvDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
-                        	<label class="checkbox-inline" >
+                        	<label class="checkbox-inline" id="prevNomineeId">
                             	<input type="checkbox" class="nomineeDetailsCls" id="PrvNomineeDetailsId"/><span id="defaultNomineeId"></span>
                             </label>
-                            <span style="margin-left:10px;margin-right:10px;"><i>/Or/</i></span>
+                            <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
                             	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Change Nominee
                             </label>
@@ -1347,7 +1347,6 @@ $('.imageDiv input:checkbox').click(function() {
 }); 
 
  var loadFile = function(event) {
-	 alert(6)
     var imagePath = document.getElementById('uploadImgId');
     imagePath.src = URL.createObjectURL(event.target.files[0]);
   };
