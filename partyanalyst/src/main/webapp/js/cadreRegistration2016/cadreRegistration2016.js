@@ -384,7 +384,7 @@ function validationDetails()
 	var PrvNomneReltv=$("#prevNomneReltvId").val();
 	 if(PrvNomneName == 0 && PrvNomneName.trim() == '')
 	 {
-		$("#prvNomneNameDivId").html("please check the Nominee Name");  
+		$("#prvNomneNameDivId").html("please Enter the Nominee Name");  
         return;		
 	 }else
 	 {
@@ -392,7 +392,7 @@ function validationDetails()
 	 }
      if(PrvNomneGendr == 0)
 	 {
-		 $("#prvNomneGendrDivId").html("please check the Nominee Gender"); 
+		 $("#prvNomneGendrDivId").html("please select the Nominee Gender"); 
           return;		 
 	 }else
 	 {
@@ -400,14 +400,14 @@ function validationDetails()
 	 }
    	 if(PrvNomneAge == 0 && PrvNomneAge.trim() == '')
 	 {
-		$("#prevNomneAgeDivId").html("please check the Nominee Age"); 
+		$("#prevNomneAgeDivId").html("please Enter the Nominee Age"); 
           return;		
 	 }else{
 		 $("#prevNomneAgeDivId").html("");
 	 }
 	 if(PrvNomneReltv == 0)
 	 {
-		 $("#prevNomneReltvDivId").html("please check the Nominee Relative");
+		 $("#prevNomneReltvDivId").html("please select the Nominee Relative");
          return;		 
 	 }else{
 		  $("#prevNomneReltvDivId").html("");
