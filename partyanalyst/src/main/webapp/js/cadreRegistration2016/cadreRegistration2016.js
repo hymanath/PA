@@ -215,6 +215,10 @@ var str = "";
 		 {
 			 $("#defaultNomineeId").text("Use"+" "+result.nomineeName+" As Nominee");
 		 }
+		 $("#PrvNomineeDetailsId").attr("attr_nomineName",result.nomineeName);
+		 $("#PrvNomineeDetailsId").attr("attr_nomineeGender",result.nomineeGender);
+		 $("#PrvNomineeDetailsId").attr("attr_nomineAge",result.nomineeAge);
+		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.relativeType);
 		 //$("#cadrePrvNomneDivId").hide(); 
 }
 function buildCasteDetails(result) {
@@ -277,7 +281,7 @@ function buildCasteDetails(result) {
 			str += '</div>';
 			str += '</div>';
 			str += '</div>';
-			str += '</li>';
+			str += '</li>';	
 		}
 	}
 	str += '</ul>';
@@ -335,7 +339,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 					//showSbmitStatus(uploadResult);
 				}
 			};
-	
+			
 	//csole.log(submitCadreForm)
 		YAHOO.util.Connect.setForm('submitCadreForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
@@ -350,9 +354,14 @@ $(document).on("click",".checkboxCls",function(){
 	  var relationTypeId = $(this).attr("attr_relTypeId");
 	  
 	 $("#checkNomineeNameId").val(name);
-   $("#checkNomineeGenderId").val(gender);
+     $("#checkNomineeGenderId").val(gender);
 	 $("#checkNomineeAgeId").val(age);
 	 $("#checkNomineeRelaTypeId").val(relationTypeId);
+	 $("#prvNomneNameId").val(name);
+	 $('#prvNomneGendrId').val(gender).trigger('chosen:updated');
+	 $("#prevNomneAgeId").val(age);
+	 $('#prevNomneReltvId').val(relationTypeId).trigger('chosen:updated');
+	 
 	
 });
 $(document).on("click",".nomineeDetailsCls",function(){
@@ -426,4 +435,32 @@ $(document).on("click","#addNewNomineeId",function(){
 	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
 	$("#prevNomneAgeId").val('');
 	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
-	});  
+	});    
+ 
+ $(document).on("click","#PrvNomineeDetailsId",function(){  
+	var prvNomineeGender = $("#PrvNomineeDetailsId").attr("attr_nomineeGender");
+	var prvNomineeRelative = $("#PrvNomineeDetailsId").attr("attr_nomineRelative");
+	 if(prvNomineeGender == 'Female')
+	 {
+		       $("#prvNomneGendrId").val('F');
+			   $("#prvNomneGendrId").trigger("chosen:updated");
+	 }
+	 if(prvNomineeGender == 'Male')
+	 {
+		  $("#prvNomneGendrId").val('M');
+		  $("#prvNomneGendrId").trigger("chosen:updated");
+	 }
+		 for ( var i in relationsArray) {			
+				if(prvNomineeRelative == relationsArray[i].name)
+				   {
+						$("#prevNomneReltvId").append('<option selected value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
+				   }
+				
+	   }
+	  $("#prevNomneReltvId").trigger("chosen:updated"); 
+	 
+	$("#prvNomneNameId").val($("#PrvNomineeDetailsId").attr("attr_nomineName"));
+	$("#prevNomneAgeId").val($("#PrvNomineeDetailsId").attr("attr_nomineAge"));
+   });
+	
+	
