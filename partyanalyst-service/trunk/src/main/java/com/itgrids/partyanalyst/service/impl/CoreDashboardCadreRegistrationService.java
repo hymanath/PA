@@ -32,7 +32,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.Registration2016VO;
+import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -301,7 +301,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : 
 	*  @since 10-October-2016
 	*/
-	public Registration2016VO getFamilyVoterDetails(Long voterId,Registration2016VO vo)
+	public NewCadreRegistrationVO getFamilyVoterDetails(Long voterId,NewCadreRegistrationVO vo)
 	{
 		List<CadreFamilyVO> returnList = new ArrayList<CadreFamilyVO>();
 	  	try{
@@ -443,9 +443,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : Showing Cadre Data 
 	*  @Date 10-October-2016
 	*/
-	public Registration2016VO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status){
+	public NewCadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status){
 	
-		Registration2016VO returnVO = new Registration2016VO(); 
+		NewCadreRegistrationVO returnVO = new NewCadreRegistrationVO(); 
 		try{
 
 			if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
@@ -475,7 +475,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : 
 	*  @since 10-October-2016
 	*/
-	public void setCadreDetailsToVO(Registration2016VO returnVO,List<Object[]> tdpCadreList){
+	public void setCadreDetailsToVO(NewCadreRegistrationVO returnVO,List<Object[]> tdpCadreList){
 		try{
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		if(tdpCadreList != null && tdpCadreList.size()>0 ){
@@ -547,7 +547,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : 
 	*  @since 10-October-2016
 	*/
-	public void setVoterDetailsToVO(Registration2016VO returnVO,List<Object[]> voterList){
+	public void setVoterDetailsToVO(NewCadreRegistrationVO returnVO,List<Object[]> voterList){
 		try{
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		if(voterList != null && voterList.size()>0){
