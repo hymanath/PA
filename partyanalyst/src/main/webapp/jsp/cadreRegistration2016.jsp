@@ -458,7 +458,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="voterDvId" style="display:none;">
                         	<label>Voter Id -<i> <span class="" id="relVotCls">Relative V.ID</span> / <span class="" id="selfVotCls">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="voterIdText"/>
+                            <input type="text" class="form-control" id="voterIdText" disabled/>
                         </div>
                      </div>
                      <div class="row">
