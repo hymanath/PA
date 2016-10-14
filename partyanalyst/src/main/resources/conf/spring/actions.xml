@@ -1700,5 +1700,10 @@
 	<bean id="leadersBirthdayAction" class="com.itgrids.partyanalyst.web.action.LeadersBirthdayAction" singleton="false">
 			<property name="birthDayDetailsService" ref="birthDayDetailsService" />  
 	</bean>	
+	
+	<bean id="fieldMonitoringAction" class="com.itgrids.partyanalyst.web.action.FieldMonitoringAction" singleton="false">
+			<property name="fieldMonitoringService" ref="fieldMonitoringService" />  
+	</bean>	
+	
 </beans>	
 	
