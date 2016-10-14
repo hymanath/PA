@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class Registration2016VO implements Serializable{
+public class NewCadreRegistrationVO implements Serializable{
 
 	private Long id;
 	private String name;
