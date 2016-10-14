@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -146,7 +147,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private CadreRegistratedCountVO cadreRegistratedCountVO;	
 	private List<VoterSearchVO> voterVoList = new ArrayList<VoterSearchVO>();
 	private List<List<UserTypeVO>> userTypeVOList;
+	private List<CadreReportVO> cadreDtlsResultList;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+	
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -756,6 +759,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	public void setCoreDashboardCadreRegistrationService(
 			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
 		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
+	}
+	public List<CadreReportVO> getCadreDtlsResultList() {
+		return cadreDtlsResultList;
+	}
+	public void setCadreDtlsResultList(List<CadreReportVO> cadreDtlsResultList) {
+		this.cadreDtlsResultList = cadreDtlsResultList;
 	}
 	public String execute()
 	{
@@ -2650,6 +2659,33 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String fromDate = jobj.getString("fromDate");
 			String todate = jobj.getString("todate");
 			userTypeVOList = coreDashboardCadreRegistrationService.getUserTypeWiseTotalCadreRegistrationCount(activityMemberId,stateId,userTypeId,userId,fromDate,todate);
+	  }catch(Exception e){
+		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getCadreDetailsBasedOnUserType(){
+	  try{
+		  jobj = new JSONObject(getTask());
+			Long activityMemberId = jobj.getLong("activityMemberId");
+			Long stateId = jobj.getLong("stateId");
+			Long userTypeId = jobj.getLong("userTypeId");
+			String fromDate = jobj.getString("fromDate");
+			String todate = jobj.getString("todate");
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getCadreDetailsBasedOnUserType(activityMemberId,stateId,userTypeId,fromDate,todate);
+	  }catch(Exception e){
+		  LOG.error("Error occured at getCadreDetailsBasedOnUserType() in CadreRegistrationAction class",e);  
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getLocationWiseCadreDetails(){
+	  try{
+		  jobj = new JSONObject(getTask());
+			String locationType = jobj.getString("locationType");
+			Long stateId = jobj.getLong("stateId");
+			String fromDate = jobj.getString("fromDate");
+			String todate = jobj.getString("todate");
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
 	  }
