@@ -335,7 +335,7 @@
                 <!-- search Results Block End -->
                 <!-- profile details Block -->
 				
-                <div class="panel-body profileDetailsBlock hide">
+             <div class="panel-body profileDetailsBlock hide">
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
                 	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -387,7 +387,7 @@
                             	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox" value="existImage" name="option"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox" value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
                             </div>
@@ -395,7 +395,7 @@
                             	<div class="imageDiv">
                                 	<img src="dist/img/default_image.png" id="uploadImgId" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox" value="newImage" name="option"/><input type="file" style="width:80px"/>
+                                    	<input type="checkbox" class="imageCheckBox" value="newImage"  id="newCheckImgId" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
                                     </label>
                                 </div>
                             </div>
@@ -510,6 +510,7 @@
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
                         </div>-->
                     </div>
+				<div id="imgErrDivId" style="color:red;"></div>
                     <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
                     	<!--<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="panel-title text-capital">select nominee</h4>
@@ -1318,6 +1319,11 @@ $(document).on("click",".updateId",function(){
 $('.imageDiv input:checkbox').click(function() {
     $('.imageDiv input:checkbox').not(this).prop('checked', false);
 }); 
+
+ var loadFile = function(event) {
+    var imagePath = document.getElementById('uploadImgId');
+    imagePath.src = URL.createObjectURL(event.target.files[0]);
+  };
 </script>
 </body>
 </html>
