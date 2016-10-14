@@ -330,7 +330,7 @@
 							<span id="searchResultsBack" class="backBtn"> ← Back</span>
 						</div>
                         <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-4 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
@@ -1102,6 +1102,7 @@
 <input type="hidden" id="tdpCdrIdR"/>
 <input type="hidden" id="stusIdR"/>
 <input type="hidden" id="votrIdR"/>
+<input type="hidden" id="hiddenFamilyVoterId"/>
 
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
