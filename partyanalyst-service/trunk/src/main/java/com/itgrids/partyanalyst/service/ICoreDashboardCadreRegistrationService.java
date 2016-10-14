@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.Registration2016VO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardCadreRegistrationService {
@@ -17,7 +18,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public String getCadreLastUpdatedTime();
 	public Object getNoRegistrationReceiveTabUserPersonCountByTimeWise(Long constituencyId,String date);
 	public Object getTabUserInfoDetails(String tabUserInfoIds);
-	public CadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
+	public Registration2016VO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
 	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWise(String startDate, String endDate);
 	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) ;
 	public List<IdAndNameVO> getEducationalQualifications( ) ;
