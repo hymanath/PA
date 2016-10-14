@@ -18,7 +18,7 @@
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
-
+<!--<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />-->
 </head>
 <body>
 <svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -224,7 +224,7 @@
             </div>
         </div>
     </div>
-    <div class="row hide subBlock">
+    <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
 				<div class="panel-heading renewalN">
@@ -389,20 +389,21 @@
                                 </div>
                             </div>
                         </div>
+					<div id="imgErrDivId" style="color:red;"></div>
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox isImageCheck" value="existImage" id="exstCheckImgId" name="option"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="1" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12 col-sm-6">
+                     <div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
                                 	<img src="dist/img/default_image.png" id="uploadImgId" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId" value="newImage" name="option"/><input type="file" style="width:80px" onchange="loadFile(event);" name="uploadImg"/>
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId"  value="1" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
                                     </label>
                                 </div>
                             </div>
@@ -524,7 +525,7 @@
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
                         </div>-->
                     </div>
-				<div id="imgErrDivId" style="color:red;"></div>
+					
 					<div class="row">
 						<!--<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
@@ -1111,6 +1112,8 @@
 <script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<!--<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
+<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>-->		
 <script type="text/javascript">
    $("#dobId").datetimepicker({
 	   format:'YYYY-MM-DD'
