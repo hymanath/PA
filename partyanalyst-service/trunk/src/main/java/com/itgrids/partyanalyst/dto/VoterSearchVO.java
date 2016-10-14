@@ -18,8 +18,15 @@ public class VoterSearchVO implements Serializable{
 	private Long tdpCadreId;
 	private String memberShipNo;
 	private Long enrollmentYearId;
+	private String status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
