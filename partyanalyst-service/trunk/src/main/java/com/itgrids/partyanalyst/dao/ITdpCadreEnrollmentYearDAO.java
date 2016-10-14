@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -10,4 +12,7 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 
 	public List<Long> getPreviousElectionYearsOfCadre(Long tdpCadreId);
 	public Long getMaxRecordFromEnrollmentYear(Long tdpCadreId);
+	public List<Object[]> getTotalRenewlCadreBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userType,String levelType,Date fromDate,Date toDate);
+	public List<Object[]> getTotalRenewlCadreCntLocationWise(Long stateId,String locationType,Date fromDate,Date toDate);
+	
 }

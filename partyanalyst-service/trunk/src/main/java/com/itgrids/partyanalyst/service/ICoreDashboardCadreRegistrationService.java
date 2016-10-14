@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -25,4 +26,6 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<IdAndNameVO> getAllRelationDetails();
 	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDate,String toDate);
 	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
+	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr);
+	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr);
 }

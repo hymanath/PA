@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +18,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
@@ -30,6 +33,7 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -59,6 +63,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
 	private ICoreDashboardGenericService coreDashboardGenericService;
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+    private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -123,6 +129,14 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setCoreDashboardGenericService(
 			ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
+	}
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -776,7 +790,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			    	 
 					  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
 						  
-						List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
+						List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l);
 						  
 						if(returnObjList != null && returnObjList.size() > 0){
 							
@@ -917,5 +931,226 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
 			}
 			return d;
-	  } 
+	  }
+	/**
+	* @param Long activityMemberId
+	* @param Long stateId
+	* @param Long userTypeId
+	* @param userId
+	* @param fromDateStr
+	* @param toDateStr
+	* @return List<CadreReportVO>
+	* @author Santosh 
+	* @Description :This Service Method is used get cadre details based on user type. 
+	* @since 14-OCT-2016
+	*/
+ public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr){
+	 
+	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
+	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
+	 Map<Long,Long> cadreTarget2016Map = new HashMap<Long, Long>();
+	 Map<Long,CadreReportVO> locationWiseCadreDetaislMap = new HashMap<Long, CadreReportVO>();
+	 Map<Long,Set<Long>> userAccessLevelMap = new HashMap<Long, Set<Long>>();
+	 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 Date toDate=null;
+	 Date fromDate=null;
+	 try{
+		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+			 toDate = sdf.parse(toDateStr);
+			 fromDate = sdf.parse(fromDateStr);
+		 }
+		 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+			 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+				  Long accessLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				  Set<Long> accessLevelValuesSet= userAccessLevelMap.get(accessLevelId);
+				   if(accessLevelValuesSet == null){
+					   accessLevelValuesSet = new HashSet<Long>();
+					   userAccessLevelMap.put(accessLevelId, accessLevelValuesSet);
+				   }
+				   accessLevelValuesSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+			 }
+		 }
+	
+	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 3l);// 2014 target 
+				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 4l);// 2016 target 
+				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
+	  }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+	     	  || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l,null, stateId, 3l);// 2014 target 
+			setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
+			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l,null, stateId, 4l);// 2016 target 
+			setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
+	  }
+		if(userAccessLevelMap != null && userAccessLevelMap.size() > 0){
+			 for(Entry<Long,Set<Long>> entry:userAccessLevelMap.entrySet()){
+						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, null, null, 3l, userTypeId,null); //2014 total cadre
+						set2014CadreCountToMap(rtrn2014CadreDtlsObjLst, locationWiseCadreDetaislMap);
+						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, fromDate, toDate, 4l, userTypeId, null); //2016 total cadre
+						set2016CadreCountToMap(rtrnCadreDtlsObjLst,locationWiseCadreDetaislMap);
+						List<Object[]> rtrnRenewalObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreBasedOnUserType(entry.getKey(),entry.getValue(), stateId, userTypeId, null, fromDate, toDate);
+						setRenewalCountToMap(rtrnRenewalObjList,locationWiseCadreDetaislMap);
+			 }
+		 }
+		 //calculating new cadre and percentage
+		 calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
+		 //sorting list
+		 if(locationWiseCadreDetaislMap != null && locationWiseCadreDetaislMap.size() > 0){
+			  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
+			 Collections.sort(resultList, cadreRegistrationCountPercAsc);
+		 }
+	 }catch (Exception e) {
+		 LOG.error("Exception raised in getCadreDetailsBasedOnUserType() in CadreRegistrationService service", e);	
+	}
+	 return resultList;
+ }
+ public void set2014CadreCountToMap(List<Object[]> returnObjList,Map<Long,CadreReportVO> locationWiseCadreDetaislMap){
+	 try{
+	  	 if(returnObjList != null && !returnObjList.isEmpty()){
+	  		 for(Object[] param:returnObjList){
+	  			 CadreReportVO locationVO = locationWiseCadreDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+	  			 if(locationVO == null){
+	  				locationVO = new CadreReportVO();
+	  				locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+	  				locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+	  				locationVO.setTotal2014CadreCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+	  				locationWiseCadreDetaislMap.put(locationVO.getLocationId(), locationVO);
+	  			 }
+	  		 }
+	  	 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in setCadreCountToMap() in CadreRegistrationService service", e);	 
+	 }
+ }
+ public void set2016CadreCountToMap(List<Object[]> returnObjList,Map<Long,CadreReportVO> locationWiseCadreDetaislMap){
+	 try{
+		 if(returnObjList != null &&  !returnObjList.isEmpty()){
+			 for(Object[] param:returnObjList){
+				 CadreReportVO locationVO = locationWiseCadreDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  if(locationVO == null){
+					  locationVO = new CadreReportVO();  
+					  locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					  locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					  locationVO.setTotal2016CadreCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  }else{
+					  locationVO.setTotal2016CadreCnt(commonMethodsUtilService.getLongValueForObject(param[2]));  
+				  }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in set2016CadreCountToMap() in CadreRegistrationService service", e); 
+	 }
+ }
+ public void setRenewalCountToMap(List<Object[]> returnObjList,Map<Long,CadreReportVO> locationWiseCadreDetaislMap){
+	 try{
+	   if(returnObjList != null && returnObjList.size() > 0){
+		   for(Object[] param:returnObjList){
+			   CadreReportVO locationVO = locationWiseCadreDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+			    if(locationVO != null ){
+			    	locationVO.setTotal2016RenewalCadreCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+			    }
+		   }
+	   }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in setRenewalCountToMap() in CadreRegistrationService service", e);	 
+	 }
+ }
+ public void calculateNewCadreAnddPercentage(Map<Long,CadreReportVO> locationWiseCadreDetaislMap,Map<Long,Long> cadreTarget2014Map,Map<Long,Long> cadreTarget2016Map){
+	 try{
+		 if(locationWiseCadreDetaislMap != null && locationWiseCadreDetaislMap.size() > 0){
+			 for(Entry<Long,CadreReportVO> entry:locationWiseCadreDetaislMap.entrySet()){
+				 CadreReportVO locationVO = entry.getValue();
+				 locationVO.setTotal2016NewCadreCount(locationVO.getTotal2016CadreCnt()-locationVO.getTotal2016RenewalCadreCount());//calculating 2016 new cadre
+				 if(cadreTarget2014Map.get(entry.getKey()) != null){
+					 locationVO.setTotal2014CadreTargetCnt(cadreTarget2014Map.get(entry.getKey()));
+					 locationVO.setTotal2014CadrePer(calculatePercantage(locationVO.getTotal2014CadreCnt(),cadreTarget2014Map.get(entry.getKey())));	 
+				 }
+				 if(cadreTarget2016Map.get(entry.getKey()) != null){
+					 Long target2016Count = cadreTarget2016Map.get(entry.getKey());
+					 locationVO.setTotal2016CadreTargetCnt(target2016Count);
+					 locationVO.setTotal2016CadrePer(calculatePercantage(locationVO.getTotal2016CadreCnt(), target2016Count)); 
+					 locationVO.setTotal2016RenewalCadrePer(calculatePercantage(locationVO.getTotal2016RenewalCadreCount(),target2016Count));
+					 locationVO.setTotal2016NewCadrePer(calculatePercantage(locationVO.getTotal2016NewCadreCount(), target2016Count));
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in setRenewalCountToMap() in CadreRegistrationService service", e);	 
+	 }
+ }
+ public static Comparator<CadreReportVO> cadreRegistrationCountPercAsc = new Comparator<CadreReportVO>() {
+		public int compare(CadreReportVO location2, CadreReportVO location1) {
+		Double perc2 = location2.getTotal2016CadrePer();
+		Double perc1 = location1.getTotal2016CadrePer();
+		//dcending order of percantages.
+		 return perc1.compareTo(perc2);
+		}
+}; 
+ public void setCadreTargetCntToMap(List<Object[]> returnObjList,Map<Long,Long> targetMap){
+	 try{
+	   if(returnObjList != null && returnObjList.size() > 0){
+		   for(Object[] param:returnObjList){
+			   targetMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));//locationId & Target count
+		   }
+	   }
+	 }catch(Exception e){
+		LOG.error("Exception raised in setCadreTargetCntToMap() in CadreRegistrationService service", e); 
+	 }
+ }
+ /**
+	* @param Long stateId
+	* @param Long locationType
+	* @param fromDateStr
+	* @param toDateStr
+	* @return List<CadreReportVO>
+	* @author Santosh 
+	* @Description :This Service Method is used get cadre details Location wise. 
+	* @since 14-OCT-2016
+	*/
+ public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr){
+	
+	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
+	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
+	 Map<Long,Long> cadreTarget2016Map = new HashMap<Long, Long>();
+	 Map<Long,CadreReportVO> locationWiseCadreDetaislMap = new HashMap<Long, CadreReportVO>();
+	 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 Date toDate=null;
+	 Date fromDate=null;
+	 
+	 try{
+		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+			 toDate = sdf.parse(toDateStr);
+			 fromDate = sdf.parse(fromDateStr);
+		 }
+		 if(locationType != null && locationType.equalsIgnoreCase("District")){
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 3l);// 2014 target 
+				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 4l);// 2016 target 
+				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
+		 }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 3l);// 2014 target 
+				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 4l);// 2016 target 
+				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
+		 }
+		  List<Object[]> total2014CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, null, null, 3l);//2014 cadre
+		  set2014CadreCountToMap(total2014CadreObjList,locationWiseCadreDetaislMap);
+		  List<Object[]> total2016CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, fromDate, toDate, 4l);//2016 cadre
+		  set2016CadreCountToMap(total2016CadreObjList,locationWiseCadreDetaislMap);
+		  List<Object[]> total2016RenewalCadreObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreCntLocationWise(stateId, locationType, fromDate, toDate);
+		  setRenewalCountToMap(total2016RenewalCadreObjList,locationWiseCadreDetaislMap);
+		  //calculating new cadre and percentage
+		  calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
+		  //sortring 
+		  if(locationWiseCadreDetaislMap != null && locationWiseCadreDetaislMap.size() > 0){
+			  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
+			  Collections.sort(resultList, cadreRegistrationCountPercAsc);
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in getLocationWiseCadreDetails() in CadreRegistrationService service", e);	 
+	 }
+	 return resultList;
+ }
 }
