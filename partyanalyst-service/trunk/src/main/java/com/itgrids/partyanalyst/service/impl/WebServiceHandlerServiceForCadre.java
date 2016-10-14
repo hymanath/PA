@@ -116,7 +116,7 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		List<VoterSearchVO> returnList = null;
 		try{
 			
-			returnList = cadreRegistrationService.getVotersBySearch(inputVO.getConstituencyId(),inputVO.getMandalId(),inputVO.getVillageId(),inputVO.getBoothId(),inputVO.getName(),inputVO.getMobileNo(),inputVO.getHouseNo());
+			returnList = cadreRegistrationService.getVotersBySearch(inputVO.getConstituencyId(),inputVO.getMandalId(),inputVO.getVillageId(),inputVO.getBoothId(),inputVO.getName(),inputVO.getMobileNo(),inputVO.getHouseNo(),inputVO.getVoterNo());
 			
 		}catch(Exception e) {
 			log.error("Entered into the getVotersBySearch() in WebServiceHandlerServiceForCadre ");
