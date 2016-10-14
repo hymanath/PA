@@ -324,6 +324,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
     });  
 	
 	function savingCadreDetails(){
+		validations();
 	
 	var uploadHandler = {
 				upload: function(o) {
@@ -333,7 +334,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 					//showSbmitStatus(uploadResult);
 				}
 			};
-	
+	return;
 	//console.log(submitCadreForm)
 		YAHOO.util.Connect.setForm('submitCadreForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
@@ -357,3 +358,28 @@ $(document).on("click",".nomineeDetailsCls",function(){
 	$(".nomineeDetailsCls").prop( 'checked',false);
 	 $(this).prop( 'checked', true );
 });
+
+function validations()
+{
+	var existImg=$("#existImgId").val();
+	var newImag=$("#uploadImgId").val();
+	var checkexistImg=$("#exstCheckImgId").val();
+	var checknewImg=$("#newCheckImgId").val();
+	
+	if(existImg == "") {
+	$("#imgErrDivId").html("Please select Image.");
+	return;
+	}
+	if(newImag == ""){
+	$("#imgErrDivId").html("Please select Image.");
+	return;
+	} 
+	if(checkexistImg == "" ){
+		$("#imgErrDivId").html("Please select Image.");
+	return;
+	}
+	if( checknewImg == ""){
+		$("#imgErrDivId").html("Please select Image.");
+	return;
+	}
+}
