@@ -7367,7 +7367,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		if(familyVoterId != null && familyVoterId.longValue() >0l)
 			str.append(",model.tdpCadre.familyVoter.voterIDCardNo,model.tdpCadre.familyVoter.voterId ");//19
 		 
-		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted='N'  ");
+		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted='N'  ");
 		
 		if(status.equalsIgnoreCase("update")){
 			str.append(" and model.enrollmentYearId = 4l ");	

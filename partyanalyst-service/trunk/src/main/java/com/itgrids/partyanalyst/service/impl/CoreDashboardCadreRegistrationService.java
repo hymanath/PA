@@ -358,7 +358,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  			}
   				
 		  	}
-	  			List<Object[]> relationDetails = voterRelationDAO.getRelationDetails(relationTypes);
+	  			List<Object[]> relationDetails =  null;
+	  			if(relationTypes != null && relationTypes.size() >0){
+	  				 relationDetails = voterRelationDAO.getRelationDetails(relationTypes);
+	  			}
+	  			
 	  			if(relationDetails != null && relationDetails.size() > 0)
 	  			{
 	  				for(Object[] obj : relationDetails)
@@ -538,7 +542,6 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setNomineeGender(objects[15]!=null?objects[15].toString():"");//nomineeGender
 			returnVO.setNomineeAge(objects[16]!=null?(Long)objects[16]:0l);//nomineeAge
 			returnVO.setRelativeType(objects[17]!=null?objects[17].toString():"");//relativeType
-			returnVO.setConstituencyId(objects[20]!=null?objects[20].toString():"");//constituencyId
 			
 			if(objects[18] != null && objects[18].toString().length()> 0l){
 				returnVO.setVoterRelationId(objects[19]!=null?(Long)objects[19]:0l);//voterId
@@ -547,6 +550,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				returnVO.setFamilyVoterId(objects[19]!=null?(Long)objects[19]:0l);//familyvoterId
 				returnVO.setVoterCardNumber(objects[18]!=null?objects[18].toString():"");//familyVotercardNo
 			}
+			
+			returnVO.setConstituencyId(objects[20]!=null?objects[20].toString():"");//constituencyId
+			returnVO.setNomineeRelationId(objects[21]!=null?(Long)objects[21]:0l);//nomineeRelationId
 			
 		}
 		}
