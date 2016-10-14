@@ -349,12 +349,14 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  			{
 	  				for(Object[] obj : relationDetails)
 	  				{
-	  					
-						CadreFamilyVO familyVo =getMatchVO(returnList,obj[1].toString());
-	  					if(familyVo != null)
+	  					for(CadreFamilyVO cadreFamilyVO : returnList)
+		  				{
+						//CadreFamilyVO familyVo =getMatchVO(returnList,obj[1].toString());
+	  						if(cadreFamilyVO.getRelationshipType().equalsIgnoreCase(obj[1].toString()))
 	  					{
-	  						familyVo.setRelationshipTypeId(obj[0] != null ? (Long) obj[0] : 0l);
+	  							cadreFamilyVO.setRelationshipTypeId(obj[0] != null ? (Long) obj[0] : 0l);
 	  					}
+		  				}
 	  				}
 	  			}
 	  			
@@ -372,7 +374,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 	
 	public CadreFamilyVO getMatchVO(List<CadreFamilyVO> returnList, String des) {
-		if (returnList == null || returnList.size() == 1)
+		if (returnList == null || returnList.size() == 0)
 			return null;
 		for (CadreFamilyVO familyVO : returnList) {
 			if (familyVO.getRelationshipType().equalsIgnoreCase(des)) {
