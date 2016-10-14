@@ -352,7 +352,8 @@
 									<input type="hidden" class="form-control" id="checkNomineeNameId" name="cadreRegistrationVO.newNomineeName"/>
                                     <input type="hidden" class="form-control" id="checkNomineeGenderId" name="cadreRegistrationVO.newNomineeGender"/>
                                     <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
-                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/>
+                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationTypeId"/>
+									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
@@ -435,7 +436,7 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="emailDivId" style="display:none;">
                         	<label class="control-label" for="inputSuccess2">Email Id</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.emailId">
+                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.email">
                               <span class="form-control-feedback text-muted" aria-hidden="true">@</span>
                             </div>
                         </div>
