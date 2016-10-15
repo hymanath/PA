@@ -13998,6 +13998,10 @@
 			<param name="root">userTypeVOList</param>
 		</result>
 	</action>
-	
+	<action name="getOccupationListAction" class="cadreRegistrationAction"  method="getOccupationList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVO</param>
+		</result>
+	</action>
 </package>
 </struts>

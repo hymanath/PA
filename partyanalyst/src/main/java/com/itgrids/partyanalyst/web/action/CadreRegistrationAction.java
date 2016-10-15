@@ -2691,4 +2691,13 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
+  public String getOccupationList(){
+	  try{
+		  idAndNameVO=coreDashboardCadreRegistrationService.getOccupationList();
+	  }catch(Exception e){
+		  LOG.error("Entered into getOccupationList method in CadreRegistrationAction.");
+	  }
+	  return Action.SUCCESS;
+}
+ 
 }

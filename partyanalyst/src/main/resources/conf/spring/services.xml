@@ -3506,8 +3506,7 @@
 		 <property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"></property>
 		 <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
 		  <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO"></property>
-		 
-		 
+		  <property name="occupationDAO" ref="occupationDAO"></property>
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>
@@ -3541,4 +3540,5 @@
 	
 	
 </beans>		
+			
 	
