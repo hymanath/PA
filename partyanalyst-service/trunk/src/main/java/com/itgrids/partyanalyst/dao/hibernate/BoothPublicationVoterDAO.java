@@ -8490,7 +8490,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		Query query = getSession().createQuery("select model.tdpCadre.voter.voterId," +
 												" model.tdpCadre.tdpCadreId," +
 												" model.tdpCadre.memberShipNo," +
-												" model.enrollmentYearId" +
+												" model.enrollmentYearId," +
+												" model.tdpCadre.image" +
 												" from TdpCadreEnrollmentYear model" +
 												" where model.isDeleted = 'N'" +
 												" and model.tdpCadre.isDeleted = 'N'" +

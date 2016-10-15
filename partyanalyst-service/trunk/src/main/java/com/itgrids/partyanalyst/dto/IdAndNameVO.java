@@ -6,8 +6,15 @@ public class IdAndNameVO {
 	private Long inviteeCount = 0l;
 	private Long attenteeCount = 0l;
 	private Long inviteeAttendeeCnt = 0l;
+	private String imagePathStr;
 	
 	
+	public String getImagePathStr() {
+		return imagePathStr;
+	}
+	public void setImagePathStr(String imagePathStr) {
+		this.imagePathStr = imagePathStr;
+	}
 	public Long getInviteeCount() {
 		return inviteeCount;
 	}

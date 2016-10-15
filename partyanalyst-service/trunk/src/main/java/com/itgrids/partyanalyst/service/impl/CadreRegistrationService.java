@@ -13461,6 +13461,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					//vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
 					vo.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(obj[7] != null ? obj[7].toString():""));
 					vo.setHouseNo(obj[8] != null ? obj[8].toString():"");
+					vo.setTotalImagePathStr("http://mytdp.com/"+vo.getImagePath());
 					returnList.add(vo);
 					voterIds.add(voterId);
 				}
@@ -13476,6 +13477,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setAttenteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));  //tdpCadreId
 							vo.setName(obj[2] != null ? obj[2].toString():"");     //MemberShipNo
 							vo.setInviteeAttendeeCnt(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+							vo.setImagePathStr("http://mytdp.com/images/cadre_images/"+(obj[4] != null ? obj[4].toString():""));
 							voterCadreMap.put(vId, vo);
 						}
 						else{
@@ -13494,6 +13496,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							voterVO.setTdpCadreId(vo.getAttenteeCount());
 							voterVO.setMemberShipNo(vo.getName());
 							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
+							voterVO.setTotalImagePathStr(vo.getImagePathStr());
 						}
 					}
 				}
@@ -13553,6 +13556,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						vo.setFamilyVoterId(Long.valueOf(obj[12] != null ? obj[12].toString():"0"));
 						vo.setFamilyVoterCardNo(obj[13] != null ? obj[13].toString():"");
 						vo.setEnrollmentYearId(Long.valueOf(obj[14] != null ? obj[14].toString():"0"));
+						vo.setTotalImagePathStr("http://mytdp.com/"+vo.getImageURL());
 						
 						cadreMap.put(cadreId, vo);
 					}
