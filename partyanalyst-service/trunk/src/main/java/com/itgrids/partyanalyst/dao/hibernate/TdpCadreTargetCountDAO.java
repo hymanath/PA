@@ -57,24 +57,16 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 		 
 		   return query.list();
 	}
-	public Long getAPTargetCount(){
+	public Long getTargetCount(Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select sum(TCTC.targetCount) " +
 						" from TdpCadreTargetCount TCTC " +
-						" where TCTC.enrollmentYearId = :enrollmentYearId and " +
-						" TCTC.constituency.district.districtId between 11 and 23 ");
-						
-		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
-		return (Long) query.uniqueResult();
-	}
-	public Long getTSTargetCount(){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select sum(TCTC.targetCount) " +
-						" from TdpCadreTargetCount TCTC " +
-						" where TCTC.enrollmentYearId = :enrollmentYearId and " +
-						" TCTC.constituency.district.districtId between 1 and 10 ");
-						
+						" where TCTC.enrollmentYearId = :enrollmentYearId and ");
+		if(stateId == 1l){
+			queryStr.append(" TCTC.constituency.district.districtId between 11 and 23 ");
+		}else{
+			queryStr.append(" TCTC.constituency.district.districtId between 1 and 10 ");
+		}			
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 		return (Long) query.uniqueResult();
