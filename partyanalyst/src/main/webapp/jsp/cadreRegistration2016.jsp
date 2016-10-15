@@ -397,7 +397,7 @@
                                 </div>
 								<div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="cadreMembrSpId">
                                     <label>Existing Membership Number</label>
-                                    <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo"/>
+                                    <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo" disabled/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender<span style="color:red;">*</span>&nbsp;<span id="cadreGenderId" style="color:red;"></span></label>
@@ -430,7 +430,7 @@
                             </div>
 							<div class="col-md-6 col-xs-12 col-sm-6">
 								<div class="imageDiv" style="padding:10px 2px;">
-									<span id="uploadImg"><img id="actuploadImg" src="dist/img/default_image.png" class="cadreImage img-responsive" id="uploadImgId"></span>
+									<span id="uploadImg"><img id="actuploadImg" src="dist/img/default_image.png" class="cadreImage img-responsive"></span>
 									<div class="btn-group">
 										
 										<span class="pull-left"><input type="checkbox" style="margin-top:-1px;" id="newCheckImgId" name="option" class="imageCheckBox isImageCheck" value="newImage"></span>
@@ -1441,7 +1441,7 @@ function handleReaderLoadEnd(evt)
 } 
 function changeImg()
 	{
-	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="dist/img/default_image.png">');
 		$("#base64Image").val("");
 		newCamPhotoTaken = false;
 		var photoElmt = document.getElementById("uploadFileId");
@@ -1477,7 +1477,7 @@ function changeImg()
 	function clearExistingImg(id){
 		$('#imageErr').html('');
 		$("#"+id+"").html('');
-		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="dist/img/default_image.png">');
 		$("#newCheckImgId").removeAttr('checked');
 		$("#base64Image").val("");
 		newCamPhotoTaken = false;
