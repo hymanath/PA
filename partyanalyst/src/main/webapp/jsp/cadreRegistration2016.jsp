@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
                     	<h3 class="text-left text-capital text-muted">New Membership</h3>
-                        <h6 class="text-muted">Register as a new member using Voter ID</h6>
+                        <h6 class="text-muted">Register as a new member using Own/Family Voter ID</h6>
                     </div>
                 	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 m_top50">
                     	<button class="btn btn-success btn-block btn-lg text-capital registerNew">new registration</button>
