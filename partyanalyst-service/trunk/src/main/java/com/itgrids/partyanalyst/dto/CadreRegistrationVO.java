@@ -179,9 +179,9 @@ public class CadreRegistrationVO implements Serializable{
 	private String otherDesignationStr;
 	private String userIpAddress;
 	private Long parentTdpCadreId;
-	private List<IdAndNameVO> casteList = new ArrayList<IdAndNameVO>();
-	private List<IdAndNameVO> eduQualftnList = new ArrayList<IdAndNameVO>();
-	private List<IdAndNameVO> relativesList = new ArrayList<IdAndNameVO>();
+	private List<IdAndNameVO> casteList;
+	private List<IdAndNameVO> eduQualftnList;
+	private List<IdAndNameVO> relativesList;
 	private String cadreName;
 	private String aadharNo;
 	private String dateOfBirth;
@@ -200,6 +200,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long newNomineeAge;
 	private Long newNomineeRelationTypeId;
 	private String isNewImageExist;
+	private String 	prevNomineeAadharNo;
 	
 	
 	public String getIsNewImageExist() {
@@ -1214,6 +1215,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setNewNomineeRelationTypeId(Long newNomineeRelationTypeId) {
 		this.newNomineeRelationTypeId = newNomineeRelationTypeId;
+	}
+	public String getPrevNomineeAadharNo() {
+		return prevNomineeAadharNo;
+	}
+	public void setPrevNomineeAadharNo(String prevNomineeAadharNo) {
+		this.prevNomineeAadharNo = prevNomineeAadharNo;
 	}
 	
 	
