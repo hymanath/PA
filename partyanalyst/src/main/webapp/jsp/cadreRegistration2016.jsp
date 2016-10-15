@@ -18,7 +18,30 @@
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
-<!--<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />-->
+<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
+		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
+		
+<style type="text/css">
+ #example {
+            height: 400px;
+            width: 300px;
+        }
+		#wrapper{
+	width: 470px;
+	margin: 10px auto 30px;
+	position: relative;
+}
+.photobooth ul
+{
+	padding:0px
+}
+.photobooth ul li
+{
+	list-style:none;
+}
+</style>
 </head>
 <body>
 <svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -401,17 +424,31 @@
                             	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="1" id="exstCheckImgId" name="option"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
                             </div>
-                     <div class="col-md-6 col-xs-12 col-sm-6">
-                            	<div class="imageDiv">
+							<div class="col-md-6 col-xs-12 col-sm-6">
+								<div class="imageDiv" style="padding:10px 2px;">
+									<span id="uploadImg"><img id="actuploadImg" src="dist/img/default_image.png" class="cadreImage img-responsive" id="uploadImgId"></span>
+									<div class="btn-group">
+										
+										<span class="pull-left"><input type="checkbox" style="margin-top:-1px;" id="newCheckImgId" name="option" class="imageCheckBox isImageCheck" value="newImage"></span>
+										<input type="file" class="btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 80px; margin-left: 0px; padding: 0px;">
+										<span  onclick="showTakeImage();" >
+											<i class="glyphicon glyphicon-camera" id="takePicture"></i>
+											<!--<img style="width: 22px; height: 17px; padding: 7px 3px; margin-top: 8px;" class="btn btn-mini" title="Take Picture" src="images/candidatePage/camera.png"  id="takePicture">-->
+										</span>
+										<a onclick="clearExistingImg('uploadImg');" style="padding:3px; margin-top: 5px;" ><span class="glyphicon glyphicon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" ></span></a>
+										<br/><span id="imageErr" style="color:red;font-size:12px;"></span>
+									</div>
+								</div>
+                            	<!--<div class="imageDiv">
                                 	<img src="dist/img/default_image.png" id="uploadImgId" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
                                     	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId"  value="1" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
                                     </label>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                   	</div>
@@ -600,12 +637,12 @@
 									<label>Please Enter your existing membership number</label>
 									<input type="text" class="form-control" id="validateRenMemshipId"/>
 								</div>
-								<span style="margin-left:220px;"<i>/Or/</i></span>
+								<span style="margin-left:220px;"><i>/Or/</i></span>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Mobile Number</label>
 									<input type="text" class="form-control" id="renewalMobileId"/>
 								</div>
-								<span style="margin-left:220px;"<i>/Or/</i></span>
+								<span style="margin-left:220px;"><i>/Or/</i></span>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Voter ID</label>
 									<input type="text" class="form-control" id="renewalVoterId"/>
@@ -1113,6 +1150,10 @@
     </div>
   </div>
 </div>
+	<div id="wrapper">
+		<div id="example"></div>
+	</div>
+
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>
@@ -1123,6 +1164,8 @@
 
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script type="text/javascript" src="https://wolframhempel.github.io/photobooth-js/photobooth_min.js"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -1130,10 +1173,13 @@
 <script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<!--<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
-<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>-->		
+<script type="text/javascript" src="js/photobooth/website/js/cadreRegistration.js"></script>
+<script src="js/flipclock/flipclock.js"></script>
+	 	
+
 <script type="text/javascript">
-   $("#dobId").datetimepicker({
+
+$("#dobId").datetimepicker({
 	   format:'YYYY-MM-DD'
    });
   //GLOBAL VARIABLES
@@ -1143,8 +1189,7 @@
   var occupationArray =[];
    
   onLoadCalls();
-  
-  
+ 
 var a = $(window).height();
 var b = $(window).width();
 $(".page-load-svg").height(a);
@@ -1370,6 +1415,75 @@ $('.imageDiv input:checkbox').click(function() {
     imagePath.src = URL.createObjectURL(event.target.files[0]);
 	$("#imgErrDivId").html("");
   };
+  $(document).ready(function(){
+	$("#wrapper").hide();
+});
+function showTakeImage(){
+  $('#wrapper').dialog({
+		autoOpen: true,
+		width:600,
+		title:"Take Image",
+		modal: true,
+		resizable: false
+	});
+}
+function showNewTakenImg(){
+  //$("#cadreActualImgId").removeAttr('checked');
+  //$("#voterActualImgId").removeAttr('checked');
+  $("#newCheckImgId").attr("checked","checked");
+}
+function handleReaderLoadEnd(evt)
+{
+	var img = document.getElementById("actuploadImg");
+	img.src = evt.target.result;
+	evt=null;
+} 
+function changeImg()
+	{
+	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+		var photoElmt = document.getElementById("uploadFileId");
+		var FileUploadPath = photoElmt.value;
+		$('#imageErr').html('');
+		//To check if user upload any file
+        if (FileUploadPath == '') 
+		{
+			$('#imageErr').html('Please upload an image');
+		}
+		else 
+		{
+            var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+			//The file uploaded is an image
+			if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+								|| Extension == "jpeg" || Extension == "jpg") 
+			{
+                    var reader = new FileReader();
+					var file = photoElmt.files[0];
+					var reader = new FileReader();
+					reader.onloadend = handleReaderLoadEnd;
+					reader.readAsDataURL(file); 
+                    newPhotoUploaded = true;					
+            } 
+			//The file upload is NOT an image
+			else 
+			{       clearExistingImg('uploadImg');
+			        newPhotoUploaded = false;
+					$('#imageErr').html('Image Formate Must Be .GIF, .PNG, .JPG, .JPEG and .BMP Only');
+			}
+        }
+	}
+	function clearExistingImg(id){
+		$('#imageErr').html('');
+		$("#"+id+"").html('');
+		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		$("#newCheckImgId").removeAttr('checked');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+	    newPhotoUploaded = false;
+		document.getElementById("uploadFileId").value = "";
+		
+	}
 </script>
 </body>
 </html>
