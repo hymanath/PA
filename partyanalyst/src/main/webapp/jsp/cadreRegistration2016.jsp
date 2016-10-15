@@ -1102,7 +1102,7 @@
 <input type="hidden" id="tdpCdrIdR"/>
 <input type="hidden" id="stusIdR"/>
 <input type="hidden" id="votrIdR"/>
-<input type="hidden" id="hiddenFamilyVoterId"/>
+<input type="hidden" id="hidnFamlyVoterId"/>
 
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
