@@ -16,7 +16,7 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
-
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>  
 <header>
@@ -2035,7 +2035,7 @@
 							</span>
 							 <!--<span class="cadreExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span> -->
+							</span>-->
 							<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">
@@ -2046,7 +2046,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                	<div class="row">
+			    	<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
 						</div>
@@ -2093,7 +2093,8 @@
                                 </div>
                             </div>
                         </div>
-						<!--<div class="col-xs-12 col-sm-12 col-md-12">
+						
+						<div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksCadreIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
@@ -2112,10 +2113,10 @@
                             </ul>
                             
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre m_top10">
+                        <!--<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre m_top10">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
-                                	<h4 class="panel-title"><span class="headingColor">state wise overview</span></h4>
+                                	<h4 class="panel-title"><span class="headingColor">District Registration Target  wise overview</span></h4>
                                 </div>
                                 <div class="panel-body">
                                 	<div class="row">
@@ -2302,15 +2303,16 @@
                                     </div>
                                 </div>
                             </div> 
-                        </div>
+                        </div>-->
                         <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
                                     	<div class="col-md-6 col-xs-12 col-sm-12">
-                                        	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4>
+                                        	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
+                                        	<h2><span class="headingColor">Andhra Pradesh</span></h2>
                                         </div>
-                                        <div class="col-md-6 col-xs-12 col-sm-12">
+                                        <!--<div class="col-md-6 col-xs-12 col-sm-12">
                                         	<ul class="activeUlCls list-inline pull-right">
                                                 <li class="active">All</li>
                                                 <li>Very Good</li>
@@ -2318,14 +2320,20 @@
                                                 <li>Ok</li>
                                                 <li>Very Poor</li>
                                             </ul>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 	
                                 </div>
                                 <div class="panel-body">
                                 	<div class="row">
                                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                                        	<div id="apRegistration"></div>
+                                        	<div id="userTypeWiseHighChartDivId"></div>
+                                        </div>
+                                    </div>
+									<div class="row">
+								    	<div class="col-md-12 col-xs-12 col-sm-12">
+                                        	<h2><span class="headingColor">Telangana</span></h2>
+                                        	<div id="tsDistrictWiseRegistrationDivId"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2339,26 +2347,69 @@
                                         	<h4><span class="headingColor text-capitalize">contituency wise registrations</span></h4>
                                         </div>
                                         <div class="col-md-6 col-xs-12 col-sm-12">
-                                        	<ul class="activeUlCls list-inline pull-right">
+											<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
+												<li class="text-capital"><i class="fa fa-gears" id="settingsCadre"></i></li>
+											</ul>
+                                        	<!--<ul class="activeUlCls list-inline pull-right">
                                                 <li class="active">All - 294</li>
                                                 <li>Very Good - 24</li>
                                                 <li>Good - 170</li>
                                                 <li>Ok - 50</li>
                                                 <li>Very Poor - 20</li>
-                                            </ul>
+                                            </ul>-->
                                         </div>
                                     </div>
-                                	
+                                <div class="cadreRDD documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;display:none;" >
+										<i class="glyphicon glyphicon-remove newsSetClose pull-right closePopUpCls"></i>
+										<div class="row">
+										   <div><span style="color:red;margin-left:20px" id="cadreRegSearchErrorId"></span></div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="pad_15 bg_EE">
+													<label class="checkbox-inline">
+														<input attr_cadre_search_type="2016Renewal" checked id="2016RenewalCheckBoxId" type="checkbox"/>2016 Renewal
+													</label>
+													<label class="checkbox-inline">
+														<input attr_cadre_search_type="2016New" checked id="2016NewCheckBoxId" type="checkbox"/>2016 New
+													</label>
+													<label class="checkbox-inline">
+														<input attr_cadre_search_type="2014Cadre" checked id="2014CadreCheckBoxId" type="checkbox"/>2014 cadre
+													</label>
+												</div>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+											   <p>AP DISTRICTS</p>
+											   <ul class="list-inline">
+											    <li><label><input type="checkbox" class="selectAllApDistrict"/>&nbsp&nbspSelect All</label></li>
+										       </ul>
+											   <div id="apDistrictId"></div>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+											  <p>TS DISTRICTS</p>
+											  <ul class="list-inline">
+											    <li><label><input type="checkbox" class="selectAllTsDistrict"/>&nbsp&nbspSelect All</label></li>
+										       </ul>
+											  <div id="tsDistrictId"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<input type="button" class="btn btn-success" id="getDetailsBtnId" value="GetDetails"/>
+											</div>
+										</div>
+									</div>
                                 </div>
                                 <div class="panel-body">
                                 	<div class="row">
                                     	<div class="col-md-6 col-xs-12 col-sm-12">
-                                        	<div id="apRegistrationCons"></div>
+										    <h2><span class="headingColor">Andhra Pradesh</span></h2>
+                                        	<div id="apConstituencyRegistrationReportDivId"></div>
+                                        </div>
+									   <div class="col-md-6 col-xs-12 col-sm-12">
+										    <h2><span class="headingColor">Telangana</span></h2>
+                                        	<div id="tsConstituencyRegistrationReportDivId"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>   -->                     
+                        </div>                    
                     </div>
                 </div>
             </div>
@@ -2735,7 +2786,8 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
-
+<script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+<script src="dist/scroll/jquery.mousewheel.js"></script>
 <script type="text/javascript">
 	$(document).on("click","#demoBtn",function(){
 		$("#attendanceModal").modal('show');
