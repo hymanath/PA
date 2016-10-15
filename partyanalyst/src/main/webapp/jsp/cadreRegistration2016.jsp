@@ -248,7 +248,7 @@
 							<div id="errorDivId" style="color:red;"></div>
 						</div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>State</label>
+                        	<label>State </label><span class="text-danger">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
 							<option value="0">Select State</option>
@@ -258,14 +258,14 @@
 						 
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>District</label>
+                        	<label>District </label><span class="text-danger">*</span>
 							<span id="districtDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							<option value="0">Select District</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Constituency</label>
+                        	<label>Constituency </label><span class="text-danger">*</span>
 							<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
 							<option value="0">Select Constituency</option>
@@ -280,6 +280,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
                         	<label>Village/Panchayat</label>
+							<span id="pancyatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 							<span id="panchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                            <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
 						   <option value="0">Select Village/Panchayat</option>
@@ -325,16 +326,24 @@
                 <div class="panel-body searchResultsBlock hide" >
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12" id="searchVoterDetailsId"></div>
-                    	<div id="searchVoterDetailsImgId" style="display:none;"><center><img src="images/search.gif"/></center></div>
+                    	<div id="searchVoterDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
 							<span id="searchResultsBack" class="backBtn"> ← Back</span>
 						</div>
-                        <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-4 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
-                        </div>
+						<div id="voterBtnsDivId" style="display:none;">
+							<div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
+								<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-4 m_top30">
+								<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30" id="newRenwalBtnId" style="display:none;">
+							<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByMyVoterIdDetails()">renewal</button>
+						</div>
+						<div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30" id="newUpdateBtnId" style="display:none;">
+							<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByMyVoterIdDetails()">update</button>
+						</div>
                     </div>
 					<div id="checkVoterId" style="color:red;"></div>
                 </div>
@@ -342,6 +351,7 @@
                 <!-- profile details Block -->
 				
              <div class="panel-body profileDetailsBlock hide">
+				<div id="populatingDtsDivImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
                 	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -479,10 +489,10 @@
                         </div>
                     </div>
 					<div class="row" id="cadrePrvNomneDivId">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
+                    	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning" id="prievsNmneDivId"><i> - Your Previous nominee</i></span></h4>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                             <label>Nominee Name</label>
                             <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.nomineeName"/>
 							<div id="prvNomneNameDivId" style="color:red;"></div>
@@ -519,7 +529,7 @@
                             </label>
                             <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
-                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Change Nominee
+                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Select Nominee From Family
                             </label>
 							<span style="margin-left:10px;margin-right:10px;"><i>/Or/</i></span>
                             <label class="checkbox-inline">
@@ -565,7 +575,7 @@
 							<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
 						</div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital"  type="button" onclick="savingCadreDetails();">submit</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
                         </div>
 						<div id="savingStatusDivId"></div>
                     </div>
@@ -591,10 +601,12 @@
 									<label>Please Enter your existing membership number</label>
 									<input type="text" class="form-control" id="validateRenMemshipId"/>
 								</div>
+								<span style="margin-left:220px;"<i>/Or/</i></span>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Mobile Number</label>
 									<input type="text" class="form-control" id="renewalMobileId"/>
 								</div>
+								<span style="margin-left:220px;"<i>/Or/</i></span>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Voter ID</label>
 									<input type="text" class="form-control" id="renewalVoterId"/>
