@@ -600,6 +600,7 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prvNomneGendrDivId").html("");
 	$("#prevNomneAgeDivId").html("");
 	$("#prevNomneReltvDivId").html("");
+	$("#savingStatusDivId").html("");
 	
 }
 function getOccupationList(){
