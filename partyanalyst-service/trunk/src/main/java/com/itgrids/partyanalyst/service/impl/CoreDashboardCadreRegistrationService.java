@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
+import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -65,6 +67,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
     private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+    private IOccupationDAO occupationDAO;
 	
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -137,6 +140,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setTdpCadreEnrollmentYearDAO(
 			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
 		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
+	
+	public IOccupationDAO getOccupationDAO() {
+		return occupationDAO;
+	}
+	public void setOccupationDAO(IOccupationDAO occupationDAO) {
+		this.occupationDAO = occupationDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -1159,4 +1169,22 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	 }
 	 return resultList;
  }
+
+ public List<IdAndNameVO> getOccupationList(){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try{
+		List<Occupation> results = occupationDAO.getOccupationList();
+		for(Occupation objects:results){
+			IdAndNameVO vo = new IdAndNameVO();
+			vo.setId(objects.getOccupationId());
+			vo.setName(objects.getOccupation());
+			returnList.add(vo);
+			
+		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getOccupationList in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
+ 
 }

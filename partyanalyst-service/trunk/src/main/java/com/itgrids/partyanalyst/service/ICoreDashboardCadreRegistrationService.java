@@ -28,4 +28,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
 	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr);
 	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr);
+	public List<IdAndNameVO> getOccupationList();
 }
