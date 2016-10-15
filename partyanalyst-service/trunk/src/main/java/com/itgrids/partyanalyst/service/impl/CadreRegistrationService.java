@@ -13459,7 +13459,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					vo.setAge(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
 					vo.setVoterIDCardNo(obj[6] != null ? obj[6].toString():"");
 					//vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
-					vo.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(obj[7] != null ? obj[7].toString():""));
+					vo.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH+"/"+(obj[7] != null ? obj[7].toString():""));
 					vo.setHouseNo(obj[8] != null ? obj[8].toString():"");
 					vo.setTotalImagePathStr("http://mytdp.com/"+vo.getImagePath());
 					returnList.add(vo);
