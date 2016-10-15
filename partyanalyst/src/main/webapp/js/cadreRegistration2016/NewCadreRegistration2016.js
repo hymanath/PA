@@ -416,6 +416,50 @@ $(document).on("change","#boothsList",function(){
   }
  
   function validateRenewalMemshipDetails(){
+	  $("#errorId").html("");
+	  var membershipNo = $("#validateRenMemshipId").val();
+	  var mobileNo = $("#renewalMobileId").val();
+	  var voterId = $("#renewalVoterId").val();
+	  if(membershipNo.trim().length == 0 && mobileNo.trim().length == 0 && voterId.trim().length == 0)
+	  {
+		  $("#errorId").html("Enter Atleast One MembershipNo or MobileNo or VoterId");
+		 return;
+	  }else{
+		 $("#errorId").html(" "); 
+	  }
+	  if(membershipNo.trim().length>0 && membershipNo.trim().length < 8)
+	  { 
+		  $("#errorId").html("Enter valid membershipNo");
+            return;  
+	  }else{
+		 $("#errorId").html(" "); 
+	  }
+	  if(membershipNo.trim().length == 8){
+		   var numericExpression1 = /^[0-9]+$/;
+        if (!membershipNo.match(numericExpression1)) {
+            $("#errorId").html("Enter Number Digits Only");
+            return;
+        }else{
+		 $("#errorId").html(" "); 
+	  }
+	  }
+	  if(mobileNo.trim().length>0 && mobileNo.trim().length < 10 )
+	  {
+		  $("#errorId").html("Enter valid mobileNo");
+            return;  
+	  }else{
+		 $("#errorId").html(" "); 
+	  }
+	  if(mobileNo.trim().length == 10)
+	  {
+		  var numericExpression = /^[0-9]+$/;
+			if (!mobileNo.match(numericExpression)) {
+				$("#errorId").html("Enter Number Digits Only");
+				return;
+			}else{
+			 $("#errorId").html(" "); 
+		  }
+	  }  
 	  $("#renewalMembershipId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var membershipId=$("#validateRenMemshipId").val();
 	  var mobileNo=$("#renewalMobileId").val();
@@ -709,3 +753,10 @@ function buildRelatVoterDetails(familyVoterCardNo){
 		 $("#voterIdText").val(familyVoterCardNo);
 	 }
 }
+$(document).on("click",".renewalBtn",function(){
+	$("#renewalMembershipId").html('');
+	$("#validateRenMemshipId").val('');
+	$("#renewalMobileId").val('');
+	$("#renewalMobileId").val('');
+	});
+	
