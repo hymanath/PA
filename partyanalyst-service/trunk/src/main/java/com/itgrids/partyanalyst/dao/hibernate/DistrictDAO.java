@@ -399,5 +399,15 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		  query.setParameter("stateId", stateId);  
 		  return query.list();
 	  }
-	  
+	 public List<Object[]> getDistrictListBystateId(Long stateId){
+		    StringBuilder queryStr = new StringBuilder();
+		     queryStr.append("select model.districtId,model.districtName from District model ");
+		   if(stateId != null && stateId.longValue()==1l){
+			 queryStr.append(" where model.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");   
+		   }else{
+		     queryStr.append(" where model.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");    
+		   }
+		  Query query = getSession().createQuery(queryStr.toString());
+		  return query.list();
+	 }
 }

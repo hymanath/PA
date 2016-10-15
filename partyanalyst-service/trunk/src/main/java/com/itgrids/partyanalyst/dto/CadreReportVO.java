@@ -25,7 +25,8 @@ public class CadreReportVO implements Serializable {
 	private Double total2016CadrePer=0.0d;
 	private Double total2016RenewalCadrePer=0.0d;
 	private Double total2016NewCadrePer=0.0d;
-	
+	private List<CadreReportVO> subList1;
+	private List<CadreReportVO> subList2;
 	public Integer getSno() {
 		return sno;
 	}
@@ -129,5 +130,16 @@ public class CadreReportVO implements Serializable {
 	public void setTotal2016CadrePer(Double total2016CadrePer) {
 		this.total2016CadrePer = total2016CadrePer;
 	}
-  
+	public List<CadreReportVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<CadreReportVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public List<CadreReportVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<CadreReportVO> subList2) {
+		this.subList2 = subList2;
+	}
 }
