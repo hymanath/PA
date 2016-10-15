@@ -232,6 +232,8 @@ $(document).on("change","#boothsList",function(){
 });
   
   function getNewCadreDetails(){
+	  $("#newRenwalBtnId").hide();
+      $("#newUpdateBtnId").hide();
 	  $("#errorDivId").html("");
 	  $("#searchVoterDetailsId").html("");
 	  $("#searchVoterDetailsImgId").show();
@@ -606,6 +608,7 @@ $(document).on("click",".searchChkboxClsR",function(){
   });
   
 function getCadreDetailsForCadre(tdpCadreId,voterId,status){
+	eachTimeClearFields();
 	 $("#submitCadreForm").hide();
 	 $("#populatingDtsDivImgId").show();
 	var jsObj={
@@ -638,6 +641,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 }
 
 function getCadreDetailsForRelativeCadre(type){
+	eachTimeClearFields();
 	$("#populatingDtsDivImgId").show();
 	$("#submitCadreForm").hide();
 	var status = $("#stusIdR").val();
@@ -759,4 +763,3 @@ $(document).on("click",".renewalBtn",function(){
 	$("#renewalMobileId").val('');
 	$("#renewalMobileId").val('');
 	});
-	
