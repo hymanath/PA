@@ -6547,7 +6547,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
 						}
 					}
-						str+='<h5>'+result[i].coreDashBoardVOList[0].name+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+						str+='<h5>'+result[i].coreDashBoardVOList[0].name+'</h5>';
 						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
 						
 				str+='<div id="categoryLocationwisegraph'+i+'" class="chartLiD" style="height:300px" ></div>';
@@ -6675,7 +6675,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 							totalposprec = ((totalpositiveCount*100)/(totalCount)).toFixed(2);
 							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
 						}
-						str+='<h5>'+categoryName+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+						str+='<h5>'+categoryName+'</h5>';
 						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
 				
 						str+='<ul class="categoryPublicationWiseSlickApply">';
@@ -6814,7 +6814,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			var totalposprec =0;
 			var totalnegPerc =0;
 			for(var i in result){
-				str+='<h5>'+result[i].coreDashBoardVOList[0].name+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+				str+='<h5>'+result[i].coreDashBoardVOList[0].name+'</h5>';
 				if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
 					for(var j in result[i].coreDashBoardVOList){
 						categoryName = result[i].coreDashBoardVOList[0].name;
@@ -6953,7 +6953,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 							totalposprec = ((totalpositiveCount*100)/(totalCount)).toFixed(2);
 							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
 						}
-						str+='<h5>'+categoryName+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+						str+='<h5>'+categoryName+'</h5>';
 						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
 				
 						str+='<ul class="categoryPublicationWiseSlickApply">';
