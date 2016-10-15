@@ -535,6 +535,33 @@
 										</div>
 									</div>
 									
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-md-8 col-xs-7 col-sm-7">
+														<h4 class="panel-title"><span class="headingColor">Category Activities</span></h4>
+													</div>
+													<div class="col-md-4 col-xs-5 col-sm-5">
+														<div class="pull-right">
+															<ul class="list-inline  activeUlCls">
+																<li class="active categoryDistrictWiseDiv" attr_search_type="location">location wise</li>
+																<li class="categoryDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div id="categoryActiviesDetailsDiv"></div>
+													<!--<div id="publicationWiseDetailsDiv"></div>-->
+												</div>
+											</div>
+										</div>
+									</div>
+									
 									</div>
 									<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
 										<!--2nd block-->
@@ -595,6 +622,32 @@
 												
 											</div>
 										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-md-8 col-xs-7 col-sm-7">
+														<h4 class="panel-title"><span class="headingColor">Category Activities</span></h4>
+													</div>
+													<div class="col-md-4 col-xs-5 col-sm-5">
+														<div class="pull-right">
+															<ul class="list-inline  activeUlCls">
+																<li class="active govtcategoryDistrictWiseDiv" attr_search_type="location">location wise</li>
+																<li class="govtcategoryDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div id="govtCategoryActiviesDetailsDiv"></div>
+													<!--<div id="publicationWiseDetailsDiv"></div>-->
+												</div>
+											</div>
+										</div>
+									</div>
 									</div>
 									
 									 <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
