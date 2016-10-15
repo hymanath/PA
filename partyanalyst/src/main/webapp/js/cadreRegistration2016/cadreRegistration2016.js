@@ -317,6 +317,10 @@ function buildCadreRelativesDetails(result,id) {
 
 $(document).on("click", "#changeNomineeId", function(e) {
 	$('.checkboxCls').attr('checked', false);
+	$("#prvNomneNameDivId").html("");
+	$("#prvNomneGendrDivId").html("");
+	$("#prevNomneAgeDivId").html("");
+	$("#prevNomneReltvDivId").html("");
 	$("#nomineeModalId").modal('show');
     $("#familyDetailsDivId").show(); 
     });  
@@ -329,7 +333,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 					//$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
 					
-					//showSbmitStatus(uploadResult);
+					showSbmitStatus(uploadResult);
 				}
 			};
 			
@@ -469,7 +473,10 @@ $(document).on("click",".isImageCheck",function(){
  function eachTimeClearFields()
  {
 	$("#nameId1").val('');  
-    $("#genderId").val('').trigger('chosen:updated');
+	$("#uploadImgId").attr('src','dist/img/default_image.png');
+	$("#newCheckImgId").attr('checked', false);
+	$("#exstCheckImgId").attr('checked',false);
+	$("#genderId").val('').trigger('chosen:updated');
 	$("#ageId").val(''); 
 	$("#dobId").val('');  
 	$("#selfVoetrId").val('');            
@@ -483,6 +490,12 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prevNomneAgeId").val('');
 	$("#prevNomneReltvId").val('').trigger('chosen:updated');
 	$('#changeNomineeId').attr('checked', false);
+	$("#prvNomneNameDivId").html("");
+	$("#imgErrDivId").html("");
+	$("#prvNomneGendrDivId").html("");
+	$("#prevNomneAgeDivId").html("");
+	$("#prevNomneReltvDivId").html("");
+	
  }
 function getOccupationList(){
 	   $.ajax({          
@@ -517,3 +530,17 @@ function getOccupationList(){
 	   $('#'+id+'').trigger("chosen:updated");       
 	}
 }	
+ 
+ function showSbmitStatus(result)
+ {
+	 if(result.indexOf("SUCCESS") > -1){
+		 $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Saved Successfully...</span>");
+		 setTimeout(function(){
+			 eachTimeClearFields();
+			}, 2000);
+	 }else
+	 {
+		$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>"); 
+	 }
+		 
+ }
