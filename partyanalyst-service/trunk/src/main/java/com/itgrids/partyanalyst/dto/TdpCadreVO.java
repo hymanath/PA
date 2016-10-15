@@ -65,8 +65,15 @@ public class TdpCadreVO implements java.io.Serializable
 	private String familyVoterCardNo;
 	private Long enrollmentYearId;
 	private String status;
+	private String totalImagePathStr;
 	
 	
+	public String getTotalImagePathStr() {
+		return totalImagePathStr;
+	}
+	public void setTotalImagePathStr(String totalImagePathStr) {
+		this.totalImagePathStr = totalImagePathStr;
+	}
 	public String getStatus() {
 		return status;
 	}
