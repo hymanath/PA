@@ -23,8 +23,6 @@ $(document).on("click",".cadreExpand",function(){
 		//getSpokesPersonWiseDebate("top");
 	},800);
 	getUserTypeWiseTotalCadreRegistrationCount();
-	//getCadreDetailsBasedOnUserType();
-	//getLocationWiseCadreDetails();
 	//getRegistrationCountDtls("booth","overall"); 
 	$("#constituencySeletBoxId").val(0);
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -79,6 +77,12 @@ $(document).on("click",".cadreExpand",function(){
 
 $(document).on("click",".moreBlocksCadreIcon",function(){
 	$(".moreBlocksCadre").toggle();
+	getCadreDetailsBasedOnUserType();
+	var accessLevelId=0;
+	var accessLevelValues=[];
+	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues);
+	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,"Y","Y","Y");
+	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,"Y","Y","Y");
 })
 $('#apRegistration').highcharts({
 
@@ -1173,7 +1177,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 stateId : globalStateId,
 				 userTypeId : globalUserTypeId,
 				 fromDate : "2/10/2016",
-				 todate : "13/10/2016"
+				 todate : "15/10/2016"
 			  }
 		$.ajax({
 			type : 'POST',
@@ -1472,13 +1476,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 	}
 	 
 	 function getCadreDetailsBasedOnUserType(){
-		 
+		 $("#userTypeWiseHighChartDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
 				 stateId : globalStateId,
 				 userTypeId : globalUserTypeId,
-				 fromDate : "2/10/2016",
-				 todate : "14/10/2016"
+				 fromDate : "2/6/2016",
+				 todate : "15/10/2016"
 			  }
 		$.ajax({
 			type : 'POST',
@@ -1486,15 +1490,23 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-	      console.log(result);
+		 $("#userTypeWiseHighChartDivId").html(' ');
+	      if(result != null && result.length > 0){
+			  buildUserTypeWiseHighchartsRslt(result,"userTypeWiseHighChartDivId");
+		  }else{
+			 $("#userTypeWiseHighChartDivId").html('NO DATA AVAILABLE.');  
+		  }
 	});
  }
-  function getLocationWiseCadreDetails(){
+   function getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues){
+	   $("#tsDistrictWiseRegistrationDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
-				 locationType : "Constituency",
-				 stateId : 1,
+				 locationType : "District",
+				 stateId : 36,
 				 fromDate : "2/10/2016",
-				 todate : "14/10/2016"
+				 todate : "15/10/2016",
+				 accessLevelId:accessLevelId,
+				 accessLevelValues:accessLevelValues
 			  }
 		$.ajax({
 			type : 'POST',
@@ -1502,6 +1514,330 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-	      console.log(result);
+		 $("#tsDistrictWiseRegistrationDivId").html(' ');	
+		 if(result != null && result.length > 0){
+		   buildUserTypeWiseHighchartsRslt(result,"tsDistrictWiseRegistrationDivId")	 
+		 }else{
+		   $("#tsDistrictWiseRegistrationDivId").html('NO DATA AVAILABLE.');	 
+		 }
+	     });
+ }			
+  function buildUserTypeWiseHighchartsRslt(result,divId){
+	    var locationNameArr =[];
+		var newCadreArr = [];
+		var cadre2014ArrPer = [];
+		var renewalArr=[];
+		for(var i in result){
+			locationNameArr.push(result[i].locationName);
+			renewalArr.push(result[i].total2016RenewalCadrePer);
+			newCadreArr.push(result[i].total2016NewCadrePer);
+			cadre2014ArrPer.push(result[i].total2014CadrePer);
+		
+		}
+	  $("#"+divId).highcharts({
+         colors: ['#30AA74','#F36800','#FFCA00'],
+        chart: {
+            type: 'column'
+        },
+
+        title: {
+            text: ''
+        },
+
+        xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+		   categories: locationNameArr
+        },
+
+        yAxis: {
+            allowDecimals: false,
+           	min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+            title: {
+                text: ' '
+            }
+        },
+
+        tooltip: {
+        	valueSuffix:  '%' 
+	    },
+
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            }
+        },
+
+        series: [{
+            name: '2016 Renewal Cadre',
+            data: renewalArr,
+            stack: '2016'
+        }, {
+            name: '2016 New Cadre',
+            data: newCadreArr,
+            stack: '2016'
+        }, {
+            name: '2014 Cadre',
+            data: cadre2014ArrPer,
+            stack: '2014'
+        }]
+    });
+  }
+  function getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked){
+	  $("#apConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj ={ 
+				 locationType : "Constituency",
+				 stateId : 1,
+				 fromDate : "2/10/2016",
+				 todate : "15/10/2016",
+				 accessLevelId:accessLevelId, 
+				 accessLevelValues:accessLevelValues
+			  }
+		$.ajax({
+			type : 'POST',
+			url : 'getLocationWiseCadreDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#apConstituencyRegistrationReportDivId").html(' ');
+	      if(result != null && result.length > 0){
+			  buildConstituecnyWiseCadreResult(result,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
+			if(result!= null && result.length > 10){
+			 $("#apConstituencyRegistrationReportDivId").mCustomScrollbar({setHeight: '440px'})	
+		     }
+		  }else{
+		   $("#apConstituencyRegistrationReportDivId").html('NO DATA AVAILABLE');	  
+		  }
 	     });
  }
+   function getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked){
+	   $("#tsConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj ={ 
+				 locationType : "Constituency",
+				 stateId : 36,
+				 fromDate : "2/10/2016",
+				 todate : "15/10/2016",
+				 accessLevelId:accessLevelId,
+				 accessLevelValues:accessLevelValues
+			  }
+		$.ajax({
+			type : 'POST',
+			url : 'getLocationWiseCadreDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#tsConstituencyRegistrationReportDivId").html(' ');
+	      if(result != null && result.length > 0){
+			  buildConstituecnyWiseCadreResult(result,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
+			   if(result!= null && result.length > 10){
+				 $("#tsConstituencyRegistrationReportDivId").mCustomScrollbar({setHeight: '440px'})	
+				}
+		  }else{
+		   $("#tsConstituencyRegistrationReportDivId").html('NO DATA AVAILABLE');	  
+		  }
+	     });
+ }
+ function buildConstituecnyWiseCadreResult(result,divId,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked){
+	  
+    	var locationNameArr =[];
+		var newCadreArr = [];
+		var cadre2014ArrPer = [];
+		var renewalArr=[];
+		var jsonDataArr=[];
+		for(var i in result){
+			locationNameArr.push(result[i].locationName);
+			if((renewal2016CheckboxIsChecked=="Y" && new2016CheckboxIsChecked=="Y" && cadre2014CheckboxIsChecked=="Y")||(   	renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre")){
+				renewalArr.push(result[i].total2016RenewalCadrePer);
+				newCadreArr.push(result[i].total2016NewCadrePer);
+				cadre2014ArrPer.push(result[i].total2014CadrePer);
+			}else if(renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New"){
+				renewalArr.push(result[i].total2016RenewalCadrePer);
+	            newCadreArr.push(result[i].total2016NewCadrePer);
+			}else if(renewal2016CheckboxIsChecked=="2016Renewal" && cadre2014CheckboxIsChecked=="2014Cadre"){
+				renewalArr.push(result[i].total2016RenewalCadrePer);
+	    	    cadre2014ArrPer.push(result[i].total2014CadrePer);
+			}else if(new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre"){
+				newCadreArr.push(result[i].total2016NewCadrePer);
+			    cadre2014ArrPer.push(result[i].total2014CadrePer);
+			}else if(renewal2016CheckboxIsChecked=="2016Renewal"){
+				renewalArr.push(result[i].total2016RenewalCadrePer);
+	     	}else if(new2016CheckboxIsChecked=="2016New"){
+				 newCadreArr.push(result[i].total2016NewCadrePer);
+			}else if(cadre2014CheckboxIsChecked=="2014Cadre"){
+				 cadre2014ArrPer.push(result[i].total2014CadrePer);
+        	}
+		}
+	
+     	 var colorArr=[];
+		 if(renewalArr.length > 0){
+		  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+          colorArr.push('#30AA74');		  
+		  }
+		  if(newCadreArr.length > 0){
+		  jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+          colorArr.push('#F36800');		  
+		  }
+		  if(cadre2014ArrPer.length > 0){
+		  jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+          colorArr.push('#FFCA00');		  
+		  }
+		 /*Setting Dynamic height for highChart */
+		 if(result!= null && result.length > 10){
+		  var highChartDivHight = result.length*20;
+	      $("#"+divId).height(highChartDivHight);	
+	      }else{
+	      $("#"+divId).height(260);		
+	      }
+			$(function () {
+				$("#"+divId).highcharts({
+					colors: colorArr,
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: null
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: locationNameArr
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: null
+						}
+					},
+					legend: {
+						reversed: true
+					},
+					plotOptions: {
+						series: {
+							stacking: 'normal'
+						}
+					},
+					series:jsonDataArr 
+				});
+			});
+ }
+ 
+ 
+    getApTsDistrictList();
+  function getApTsDistrictList(){
+	 	$.ajax({
+			type : 'POST',
+			url : 'getApTsDistrictListAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify( )}
+		}).done(function(result){
+	       if(result != null ){
+			 buildDistrictRslt(result);  
+		   }
+		});
+ }
+ function buildDistrictRslt(result){
+	 var apDistrictList = result.subList1;
+	 var tsDistrictList = result.subList2;
+	 var str1='';
+	 var str2='';
+	 str1+='<ul class="cadreSelectD" id="apDistrictUlId">';
+    if(apDistrictList != null && apDistrictList.length > 0){
+		  for(var i in apDistrictList){
+				 str1+='<li><label class="checkbox-inline"><input id="'+apDistrictList[i].locationId+'" type="checkbox" checked/>'+apDistrictList[i].locationName+'</label></li>';
+		  }
+	  }
+	  str1+='</ul>';
+	  
+	  str2+='<ul class="cadreSelectD" id="tsDistrictULId">';
+     if(tsDistrictList != null && tsDistrictList.length > 0){
+		  for(var i in tsDistrictList){
+			 	str2+='<li><label class="checkbox-inline"><input id="'+tsDistrictList[i].locationId+'" type="checkbox" checked/>'+tsDistrictList[i].locationName+'</label></li>';
+		  }
+	  }
+	 str2+='<ul>';
+	 $("#apDistrictId").html(str1);
+	 $("#tsDistrictId").html(str2);
+ }
+ $(".closePopUpCls").click(function(){
+	$(".cadreRDD").hide(); 
+ });
+ $(document).on("click",".selectAllApDistrict",function(){
+   if($(this).is(":checked")){
+	$("#apDistrictUlId li").each(function() {
+	  $(this).find("input").prop("checked",true)
+	});
+   }else{
+	 $("#apDistrictUlId li").each(function() {
+	  $(this).find("input").prop("checked",false)
+	});
+   }	
+});
+$(document).on("click",".selectAllTsDistrict",function(){
+   if($(this).is(":checked")){
+	$("#tsDistrictULId li").each(function() {
+	  $(this).find("input").prop("checked",true)
+	});
+   }else{
+	 $("#tsDistrictULId li").each(function() {
+	  $(this).find("input").prop("checked",false)
+	});
+   }	
+});
+ $(document).on("click","#settingsCadre",function(e){
+	 $("#cadreRegSearchErrorId").html(' ');
+	$(this).closest(".moreBlocksCadre").find(".cadreRDD").toggle();
+	e.stopPropagation();
+});
+$(document).on("click","#settingsCadre",function(){
+	$(this).closest(".cadreRDD").hide();
+});
+
+$(document).on("click","#getDetailsBtnId",function(){
+	 
+	  var renewal2016CheckboxIsChecked="N";
+	  var new2016CheckboxIsChecked="N";
+	  var cadre2014CheckboxIsChecked="N";
+	  if($("#2016RenewalCheckBoxId").is(':checked')){
+		  renewal2016CheckboxIsChecked=$("#2016RenewalCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if($("#2016NewCheckBoxId").is(':checked')){
+		  new2016CheckboxIsChecked=$("#2016NewCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if($("#2014CadreCheckBoxId").is(':checked')){
+		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if(renewal2016CheckboxIsChecked=="N" && new2016CheckboxIsChecked=="N" && cadre2014CheckboxIsChecked=="N"){
+		  $("#cadreRegSearchErrorId").html("Please Select Search Type");
+		  return;
+	  }
+	 var apDistrictArr=[];
+	 var tsDistrictArr=[];
+	  $("#apDistrictUlId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  apDistrictArr.push($(this).find("input").attr("id"));
+		  }
+	   });
+	    $("#tsDistrictULId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  tsDistrictArr.push($(this).find("input").attr("id"));
+		  }
+	   });
+	   if(apDistrictArr.length == 0 && tsDistrictArr.length==0 ){
+		 $("#cadreRegSearchErrorId").html("Please Select District.");
+		   return;
+	   }
+	   $("#cadreRegSearchErrorId").html(' ');
+	   if(apDistrictArr.length > 0){
+		getApConstituencyCadreRegistrationDetails(3,apDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);  
+	   }
+	   if(tsDistrictArr.length > 0){
+		  getTsConstituencyCadreRegistrationDetails(3,tsDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
+	   }
+	   $(".cadreRDD").hide();
+});

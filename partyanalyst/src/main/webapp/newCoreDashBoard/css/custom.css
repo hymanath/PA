@@ -837,7 +837,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-width: 16px;
 	margin-left: -16px;
 }
-.basicCommitteesBlockDropDown , .newsBlockDropDown
+.basicCommitteesBlockDropDown , .newsBlockDropDown , .cadreRDD
 {
 	display:none;
 	position:absolute;
@@ -1962,4 +1962,13 @@ margin-top: 5px; margin-bottom: 2px;
 }
 .slimScrollBar{
  margin-right: 14px;
+}
+.cadreSelectD
+{
+	padding:0px;
+}
+.cadreSelectD li
+{
+	list-style:none;
+	padding:2px;
 }

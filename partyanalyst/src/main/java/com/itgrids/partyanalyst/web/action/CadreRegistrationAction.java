@@ -149,6 +149,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<List<UserTypeVO>> userTypeVOList;
 	private List<CadreReportVO> cadreDtlsResultList;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+	private CadreReportVO cadreReportVO;
 	private List<UserTypeVO> activityMembersList;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
@@ -772,6 +773,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public void setCadreDtlsResultList(List<CadreReportVO> cadreDtlsResultList) {
 		this.cadreDtlsResultList = cadreDtlsResultList;
+	}
+	public CadreReportVO getCadreReportVO() {
+		return cadreReportVO;
+	}
+	public void setCadreReportVO(CadreReportVO cadreReportVO) {
+		this.cadreReportVO = cadreReportVO;
 	}
 	public String execute()
 	{
@@ -2694,9 +2701,25 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long stateId = jobj.getLong("stateId");
 			String fromDate = jobj.getString("fromDate");
 			String todate = jobj.getString("todate");
-			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate);
+			Long accessLevelId = jobj.getLong("accessLevelId");
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jobj.getJSONArray("accessLevelValues");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getApTsDistrictList(){
+	  try{
+		  cadreReportVO = coreDashboardCadreRegistrationService.getApAndTsDistrictList();
+	  }catch(Exception e){
+		  LOG.error("Error occured at getApTsDistrictList() in CadreRegistrationAction class",e);  
 	  }
 	  return Action.SUCCESS;
   }
@@ -2730,5 +2753,4 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  }
 		  return Action.SUCCESS;
 	  }
- 
 }
