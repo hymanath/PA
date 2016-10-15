@@ -277,7 +277,6 @@ $("#boothsList").trigger("chosen:updated");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
 	  var enrolYear = $(this).attr("attr_enrol_yId");
 	  var familyVoterCardNumber=$(this).attr("attr_fam_voter_id");
-	  
 	  var status = "new";
 	  
 	 if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
@@ -297,7 +296,7 @@ $("#boothsList").trigger("chosen:updated");
 	 $("#voterId").val(voterId);
      $("#tdpCadreId").val(tdpCadreId);
 	 $("#statusId").val(status);
-	$("#hiddenFamilyVoterId").val(familyVoterCardNumber);
+	$("#hidnFamlyVoterId").val(familyVoterCardNumber);
   });
   
    function getSearchByRelativeVoterIdDetails(){
@@ -317,7 +316,7 @@ $("#boothsList").trigger("chosen:updated");
 	 var familyVoterId=$("#voterId").val();
 	 var tdpCadreId=$("#tdpCadreId").val();
 	 var status=$("#statusId").val();
-	var familyVoterCardNo=$("#hiddenFamilyVoterId").val();
+	var familyVoterCardNo=$("#hidnFamlyVoterId").val();
 	
 	 var jsObj={
 		 voterId:voterId1,
@@ -624,9 +623,8 @@ $(document).on("click",".registerNew",function(){
 });
 
 function buildRelatVoterDetails(familyVoterCardNo){
-	
 	 if(familyVoterCardNo!=null && familyVoterCardNo!=""){
-		 $("#selfVoetrId").val(familyVoterCardNo);
+		 $("#voterIdText").val(familyVoterCardNo);
 	 }
 }	
 
