@@ -20,12 +20,13 @@ public interface ICoreDashboardCadreRegistrationService {
 	public Object getNoRegistrationReceiveTabUserPersonCountByTimeWise(Long constituencyId,String date);
 	public Object getTabUserInfoDetails(String tabUserInfoIds);
 	public NewCadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
-	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWise(String startDate, String endDate);
+	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWise(Long activityMemberId, Long stateId,String startDate, String endDate);
 	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) ;
 	public List<IdAndNameVO> getEducationalQualifications( ) ;
 	public List<IdAndNameVO> getAllRelationDetails();
 	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDate,String toDate);
 	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
+	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr);
 	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr);
 	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getOccupationList();
