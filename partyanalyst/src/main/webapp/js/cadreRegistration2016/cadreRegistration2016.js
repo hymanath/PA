@@ -330,6 +330,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
     });  
 	
 	function savingCadreDetails(){
+		$("#nomineeDivId").html(""); 
 		validations();
 		validationDetails();
 	var uploadHandler = {
@@ -395,13 +396,97 @@ if(newImgCheck == "1")
 }
 function validationDetails()
 {
-	var PrvNomneName=$("#prvNomneNameId").val();
+	var name =$("#nameId1").val();  
+	var gender =$("#genderId").val();  
+	var age =$("#ageId").val();
+    var dob =$("#dobId").val();	
+    var mobileNo=$("#mobileId1").val();
+    var caste=$("#casteListId").val();
+    var eductnQual=$("#eductnQualId").val();
+	var occupation=$("#occupationId").val();
+    var PrvNomneName=$("#prvNomneNameId").val();
 	var PrvNomneGendr=$("#prvNomneGendrId").val();
 	var PrvNomneAge=$("#prevNomneAgeId").val();
-	var PrvNomneReltv=$("#prevNomneReltvId").val();
+	var PrvNomneReltv=$("#prevNomneReltvId").val();	
+	 if(name == 0 && name.trim() == '')
+	 {
+		$("#cadreNameId").html("Enter Name");  
+        return;		
+	 }else
+	 {
+		 $("#cadreNameId").html("");
+	 }
+	 if(gender == 0)
+	 {
+		$("#cadreGenderId").html("Enter Gender");  
+        return;		
+	 }else
+	 {
+		 $("#cadreGenderId").html("");
+	 }
+	 
+	 if(age == 0 && age.trim() == '')
+	 {
+		$("#cadreAgeId").html("Enter Age");  
+        return;		
+	 }else
+	 {
+		 $("#cadreAgeId").html("");
+	 }
+	 var numericExpression2 =  /^[0-9]+$/;
+	 if (!age.match(numericExpression2)) {
+            $("#cadreAgeId").html("Enter valid Age");
+            return;
+        }
+	 if(dob == 0 && dob.trim() == '')
+	 {
+		$("#cadredobId").html("Enter dob");  
+        return;		
+	 }else
+	 {
+		 $("#cadredobId").html("");
+	 }
+	 if(mobileNo.length < 10 )
+	 {
+		$("#cadreMobileNoId").html("Enter mobileNo");  
+        return;		
+	 }else
+	 {
+		 $("#cadreMobileNoId").html("");
+	 }
+	 var numericExpression = /^[0-9]+$/;
+        if (!mobileNo.match(numericExpression)) {
+            $("#cadreMobileNoId").html("Enter valid mobileNo");
+            return;
+        }
+	 if(caste == 0 )
+	 {
+		$("#cadreCasteId").html("Select caste");  
+        return;		
+	 }else
+	 {
+		 $("#cadreCasteId").html("");
+	 }
+	 if(eductnQual == 0 )
+	 {
+		$("#cadreEducationId").html("Select eductnQual");  
+        return;		
+	 }else
+	 {
+		 $("#cadreEducationId").html("");
+	 }
+	 if(occupation == 0 )
+	 {
+		$("#cadreOccupationId").html("Select occupation");  
+        return;		
+	 }else
+	 {
+		 $("#cadreOccupationId").html("");
+	 }
+	 
 	 if(PrvNomneName == 0 && PrvNomneName.trim() == '')
 	 {
-		$("#prvNomneNameDivId").html("please Enter the Nominee Name");  
+		$("#prvNomneNameDivId").html("Enter Name");  
         return;		
 	 }else
 	 {
@@ -409,7 +494,7 @@ function validationDetails()
 	 }
      if(PrvNomneGendr == 0)
 	 {
-		 $("#prvNomneGendrDivId").html("please select the Nominee Gender"); 
+		 $("#prvNomneGendrDivId").html("select Gender"); 
           return;		 
 	 }else
 	 {
@@ -417,18 +502,34 @@ function validationDetails()
 	 }
    	 if(PrvNomneAge == 0 && PrvNomneAge.trim() == '')
 	 {
-		$("#prevNomneAgeDivId").html("please Enter the Nominee Age"); 
+		$("#prevNomneAgeDivId").html("Enter Age"); 
           return;		
 	 }else{
 		 $("#prevNomneAgeDivId").html("");
 	 }
+	 var numericExpression1 = /^[0-9]+$/;
+	 if (!PrvNomneAge.match(numericExpression1)) {
+            $("#prevNomneAgeDivId").html("Enter valid Age");
+            return;
+        }
 	 if(PrvNomneReltv == 0)
 	 {
-		 $("#prevNomneReltvDivId").html("please select the Nominee Relative");
+		 $("#prevNomneReltvDivId").html("select Relative");
          return;		 
 	 }else{
 		  $("#prevNomneReltvDivId").html("");
 	 }
+ var flag = 0;
+  $(".nomineeDetailsCls").each(function(){
+	  if($(this).is(":checked")){
+		    flag=1;
+	  }
+  });
+      if(flag == 0)
+	  {
+		  $("#nomineeDivId").html("please check any nominee");
+		  return;
+	  }
 }
 $(document).on("click","#addNewNomineeId",function(){
 	$("#prvNomneNameId").val('');

@@ -360,7 +360,7 @@
                         <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
                         	<div class="row">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
-                                    <label>Name</label>
+                                    <label>Name<span style="color:red;">*</span>&nbsp;<span id="cadreNameId" style="color:red;"></span></label>
                                     <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName"/>
 									<input type="hidden" class="form-control" id="hiddenTdpCadreId" name="cadreRegistrationVO.tdpCadreId"/>
 									<input type="hidden" class="form-control" id="hiddenVoterId" name="cadreRegistrationVO.voterId"/>
@@ -377,7 +377,7 @@
                                     <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo"/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
-                                    <label>Gender</label>
+                                    <label>Gender<span style="color:red;">*</span>&nbsp;<span id="cadreGenderId" style="color:red;"></span></label>
                                     <select class="select" id="genderId" name="cadreRegistrationVO.gender">
 										<option value="0">Select Gender</option>
 										<option value="M">Male</option>
@@ -386,11 +386,11 @@
 									</select>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
-                                    <label>Age</label>
-                                    <input type="text" class="form-control" id="ageId" name="cadreRegistrationVO.age"/>
+                                    <label>Age<span style="color:red;">*</span>&nbsp;<span id="cadreAgeId" style="color:red;"></span></label>
+                                    <input type="text" class="form-control" id="ageId" name="cadreRegistrationVO.age" maxlength='2'/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6 m_top20">
-                                    <label>Date Of Birth</label>
+                                    <label>Date Of Birth<span style="color:red;">*</span>&nbsp;<span id="cadredobId" style="color:red;"></span></label>
                                     <input type="text" class="form-control" id="dobId" name="cadreRegistrationVO.dateOfBirth"/>
                                 </div>
                             </div>
@@ -441,9 +441,9 @@
                             <input type="text" class="form-control" id="pinCodeId"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label class="control-label" for="inputSuccess2">Mobile Number</label>
+                        	<label class="control-label" for="inputSuccess2">Mobile Number<span style="color:red;">*</span>&nbsp;<span id="cadreMobileNoId" style="color:red;"></span></label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="mobileId1" name="cadreRegistrationVO.mobileNumber">
+                              <input type="text" class="form-control" id="mobileId1" name="cadreRegistrationVO.mobileNumber" maxlength='10'>
                               <span class="form-control-feedback text-muted" aria-hidden="true">+91</span>
                             </div>
                         </div>
@@ -473,17 +473,17 @@
                             <input type="text" class="form-control" id="aadharId" name="cadreRegistrationVO.aadharNo"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Caste</label>
+                        	<label>Caste<span style="color:red;">*</span>&nbsp;<span id="cadreCasteId" style="color:red;"></span></label>
                             <select class="select" id="casteListId" name="cadreRegistrationVO.casteStateId">
                             </select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Education</label>
+                        	<label>Education<span style="color:red;">*</span>&nbsp;<span id="cadreEducationId" style="color:red;"></span></label>
                            <select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Occupation</label>
+                        	<label>Occupation<span style="color:red;">*</span>&nbsp;<span id="cadreOccupationId" style="color:red;"></span></label>
                            <select class="select" id="occupationId" name="cadreRegistrationVO.occupationId">
                             </select>
                         </div>
@@ -493,12 +493,12 @@
                         	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning" id="prievsNmneDivId"><i> - Your Previous nominee</i></span></h4>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                            <label>Nominee Name</label>
+                            <label>Nominee Name<span style="color:red;">*</span>&nbsp;<span id="prvNomneNameDivId" style="color:red;"></span></label>
                             <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.nomineeName"/>
-							<div id="prvNomneNameDivId" style="color:red;"></div>
+							<!--<div id="prvNomneNameDivId" style="color:red;"></div>-->
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-                            <label>Gender</label>
+                            <label>Gender<span style="color:red;">*</span>&nbsp;<span id="prvNomneGendrDivId" style="color:red;"></span></label>
                             <select class="select" id="prvNomneGendrId" name="cadreRegistrationVO.nomineeGender">
 								<option value="0">Select Gender</option>
 								<option value="M">Male</option>
@@ -506,18 +506,16 @@
 								<option value="O">Others</option>
 							</select>
                             <!--<input type="text" class="form-control" id="prvNomneGendrId" name="cadreRegistrationVO.preNomineeGender"/>-->
-							<div id="prvNomneGendrDivId" style="color:red;"></div>
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-                            <label>Age</label>
-                            <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.nomineeAge"/>
-							<div id="prevNomneAgeDivId" style="color:red;"></div>
+                            <label>Age<span style="color:red;">*</span>&nbsp;<span id="prevNomneAgeDivId" style="color:red;"></span></label>
+                            <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.nomineeAge" maxlength='2'/>
+							
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-                            <label>Relative Relationship</label>
+                            <label>Relative Relationship<span style="color:red;">*</span>&nbsp;<span id="prevNomneReltvDivId" style="color:red;"></span></label>
                             <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.nomineeRelationId">
                             </select>
-							<div id="prevNomneReltvDivId" style="color:red;"></div>
                         </div>
 						<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee AadharNo</label>
@@ -535,6 +533,7 @@
                             <label class="checkbox-inline">
                             	<input type="checkbox" id="addNewNomineeId" class="nomineeDetailsCls"/>Add New Nominee
                             </label>
+							<div id="nomineeDivId" style="color:red;"></div>
                         </div>
                         <!--<div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
