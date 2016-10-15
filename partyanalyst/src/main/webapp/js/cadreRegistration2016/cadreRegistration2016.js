@@ -59,6 +59,7 @@ function onLoadCalls(){
 
 function getSearchByMyVoterIdDetails(){
 	eachTimeClearFields();
+	$("#populatingDtsDivImgId").show();
  var flag = 0;
   $(".searchChkboxCls").each(function(){
 	  if($(this).is(":checked")){
@@ -91,6 +92,7 @@ function getSearchByMyVoterIdDetails(){
 		//if(result != null){
 			$("#submitCadreForm").show();
 			$(".newProfile").show();
+			$("#populatingDtsDivImgId").hide();
 			hideShowDivs(status);
 			buildProfileDetails(result,status);
 		 	buildCasteDetails(result);
@@ -111,6 +113,7 @@ if(status == "new"){
 	$("#cadreUpdateVotrDivId").hide(); 
 	$("#prevNomineeId").hide();
 	$("#prevNomiConId").hide();
+	$("#prievsNmneDivId").hide();
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
 	$("#emailDivId").show();
@@ -120,6 +123,7 @@ if(status == "new"){
 	$("#cadreUpdateVotrDivId").show();
 	$("#prevNomineeId").show();
 	$("#prevNomiConId").show();
+	$("#prievsNmneDivId").show();
 }
 }
 function buildProfileDetails(result,status){
@@ -496,7 +500,7 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prevNomneAgeDivId").html("");
 	$("#prevNomneReltvDivId").html("");
 	
- }
+}
 function getOccupationList(){
 	   $.ajax({          
 			type : 'GET',    
