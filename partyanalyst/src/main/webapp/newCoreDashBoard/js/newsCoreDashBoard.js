@@ -140,6 +140,7 @@
 		setcolorsForStatus();
 		getDetailedPartyNewsTypeAnalysis();
 		getDetailedPartyPartyVsPublications("party");
+		getDetailedPartyCategoryActivities("location","N");
 	});
 	
 	$(document).on("click",".viewsLiClass",function(){
@@ -158,6 +159,7 @@
 		getDetailedPartyDistrictEditionsOverview();
 		getDetailedPartyNewsTypeAnalysis();
 		getDetailedPartyPartyVsPublications("party");
+		getDetailedPartyCategoryActivities("location","N");
 	});
 	
 	$(document).on("click","#detailedGovernmentLiId",function(){
@@ -167,10 +169,17 @@
 		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0,'');
 		getDetailedGovernamentTrendingTrackedIssues();
 		getDetailedGovernmentDistrictWiseArticleRelatedToProblem();
+		getGovernmentPartyCategoryActivities("location","Y");
 	});
 	
 	$(document).on("click",".partyDistrictWiseDiv",function(){
 		getDetailedPartyPartyVsPublications($(this).attr("attr_search_type"));
+	});
+	$(document).on("click",".categoryDistrictWiseDiv",function(){
+		getDetailedPartyCategoryActivities($(this).attr("attr_search_type"),"N");
+	});
+	$(document).on("click",".govtcategoryDistrictWiseDiv",function(){
+		getGovernmentPartyCategoryActivities($(this).attr("attr_search_type"),"Y");
 	});
 	//Detailed Block Click Action Party And Govternment End
 	
@@ -6432,3 +6441,643 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		
 	});	
 		
+	
+	function getDetailedPartyCategoryActivities(searchType,isDepartmentValue){
+		$("#categoryActiviesDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		var startDate=currentFromDate,endDate=currentToDate;
+		//var searchType = "publication";
+		
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyCategoryActivities/"+startDate+"/"+endDate+"/"+globalState+"/"+globalUserAccessLevelId+"/"+temp+"/"+impactScopeIdsStr+"/"+searchType+"/"+newsPaperIdsStr+"/"+isDepartmentValue
+			
+			
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyCategoryActivities/"+startDate+"/"+endDate+"/"+globalState+"/"+globalUserAccessLevelId+"/"+temp+"/"+impactScopeIdsStr+"/"+searchType+"/"+newsPaperIdsStr+"/"+isDepartmentValue
+			
+		}).then(function(result){
+			
+			
+			if(result != null && result.length > 0 && searchType == "location"){
+				buildgetDetailedPartyCategoryLocationWiseDetailes(result);
+			}else{
+				buildgetDetailedPartyCategoryPublicationsWiseDetails(result);
+			}
+		});
+	}
+	
+	function getGovernmentPartyCategoryActivities(searchType,isDepartmentValue){
+		$("#govtCategoryActiviesDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		var startDate=currentFromDate,endDate=currentToDate;
+		//var searchType = "publication";
+		
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyCategoryActivities/"+startDate+"/"+endDate+"/"+globalState+"/"+globalUserAccessLevelId+"/"+temp+"/"+impactScopeIdsStr+"/"+searchType+"/"+newsPaperIdsStr+"/"+isDepartmentValue
+			
+			
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyCategoryActivities/"+startDate+"/"+endDate+"/"+globalState+"/"+globalUserAccessLevelId+"/"+temp+"/"+impactScopeIdsStr+"/"+searchType+"/"+newsPaperIdsStr+"/"+isDepartmentValue
+			
+		}).then(function(result){
+			
+			
+			if(result != null && result.length > 0 && searchType == "location"){
+				buildGovernmentPartyCategoryLocationWiseDetailes(result);
+			}else{
+				buildGovernmentPartyCategoryPublicationsWiseDetails(result);
+			}
+		});
+	}
+	
+	
+	function buildgetDetailedPartyCategoryLocationWiseDetailes(result){
+		$("#categoryActiviesDetailsDiv").html();
+		var str ='';
+		if(result !=null && result.length >0){
+			var totalCount =0;
+			var totalpositiveCount = 0;
+			var totalnegativeCount = 0;
+			var totalposprec =0;
+			var totalnegPerc =0;
+			for(var i in result){
+				if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+					for(var j in result[i].coreDashBoardVOList){
+						categoryName = result[i].coreDashBoardVOList[0].name;
+							totalCount = totalCount+result[i].coreDashBoardVOList[j].count;
+							totalpositiveCount = totalpositiveCount+result[i].coreDashBoardVOList[j].positiveCountDist;
+							totalnegativeCount = totalnegativeCount+result[i].coreDashBoardVOList[j].negativCountDist;
+							totalposprec = ((totalpositiveCount*100)/(totalCount)).toFixed(2);
+							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
+						}
+					}
+						str+='<h5>'+result[i].coreDashBoardVOList[0].name+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
+						
+				str+='<div id="categoryLocationwisegraph'+i+'" class="chartLiD" style="height:300px" ></div>';
+			
+			
+		}
+		
+		}
+		$("#categoryActiviesDetailsDiv").html(str);
+			if(result !=null && result.length >0){
+				for(var i in result){
+					
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						var catagoryDistrictName=[];
+						var categoryPostivePercArray = [];
+						var categoryNegativePercArray = [];
+							
+						for(var j in result[i].coreDashBoardVOList){
+							
+							catagoryDistrictName.push(result[i].coreDashBoardVOList[j].organization);
+							
+							
+							categoryPostivePercArray.push({"y":result[i].coreDashBoardVOList[j].positivePerc,"count":result[i].coreDashBoardVOList[j].positiveCountDist});
+							categoryNegativePercArray.push({"y":result[i].coreDashBoardVOList[j].negativePerc,"count":result[i].coreDashBoardVOList[j].negativCountDist});
+						}
+							if(catagoryDistrictName.length !=0 && categoryPostivePercArray.length !=0 &&  categoryNegativePercArray.length !=0){
+								$(function () {
+									$('#categoryLocationwisegraph'+i+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: ''
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: catagoryDistrictName,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}% - {point.count}</b> <br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												stacking: 'percent',
+												dataLabels:{
+													enabled: true,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: categoryPostivePercArray
+										}, {
+											name: 'Negative',
+											data: categoryNegativePercArray
+										}]
+									});
+								});
+							}else{
+								$('#categoryLocationwisegraph'+i+''+j+'').html("No Data Available");
+								$('#categoryLocationwisegraph'+i+''+j+'').css("height","20px");
+							}
+						}
+					
+				}
+			}
+				
+			else{
+				$("#categoryActiviesDetailsDiv").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+	}
+	
+	function buildgetDetailedPartyCategoryPublicationsWiseDetails(result){
+		$("#categoryActiviesDetailsDiv").html();
+		var str ='';
+		if(result !=null && result.length >0){
+			var totalCount =0;
+			var totalpositiveCount = 0;
+			var totalnegativeCount = 0;
+			var totalposprec =0;
+			var totalnegPerc =0;
+			for(var i in result){
+				var categoryName;
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						str+='<div class="col-md-12 col-xs-12 col-ms-12">';
+							
+						for(var j in result[i].coreDashBoardVOList){
+							categoryName = result[i].coreDashBoardVOList[0].name;
+							totalCount = totalCount+result[i].coreDashBoardVOList[j].count;
+							totalpositiveCount = totalpositiveCount+result[i].coreDashBoardVOList[j].positiveCountDist;
+							totalnegativeCount = totalnegativeCount+result[i].coreDashBoardVOList[j].negativCountDist;
+							totalposprec = ((totalpositiveCount*100)/(totalCount)).toFixed(2);
+							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
+						}
+						str+='<h5>'+categoryName+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
+				
+						str+='<ul class="categoryPublicationWiseSlickApply">';
+						for(var j in result[i].coreDashBoardVOList){
+							str+='<li><div id="categoryPublicationwisegraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
+						}
+						str+='</ul>';
+						str+='</div>';
+					}
+			}
+		}
+		$("#categoryActiviesDetailsDiv").html(str);
+		if(result !=null && result.length >0){
+				for(var i in result){
+					
+							
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						for(var j in result[i].coreDashBoardVOList){
+							var partyName = [];
+							var positivePercArray =[];
+							var negativePercArray =[];
+							
+							
+									partyName.push(result[i].coreDashBoardVOList[j].organization);
+									var papername = result[i].coreDashBoardVOList[j].organization;
+									positivePercArray.push({"y":result[i].coreDashBoardVOList[j].positivePerc,"count":result[i].coreDashBoardVOList[j].positiveCountDist})
+									negativePercArray.push({"y":result[i].coreDashBoardVOList[j].negativePerc,"count":result[i].coreDashBoardVOList[j].negativCountDist})
+						
+							if(partyName.length !=0 && positivePercArray.length !=0 && negativePercArray.length !=0){
+								$(function () {
+									$('#categoryPublicationwisegraph'+i+''+j+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
+										title: {
+											 useHTML: true,
+											text: '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+papername+'.png" style="width:52px;" alt="tdp icon"/>',
+											style: {
+													fontSize: '16px',
+													fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+													textTransform: "uppercase"
+													
+											}
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: partyName,
+											labels: {
+													//rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}% - {point.count}</b> <br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												//stacking: 'percent',
+												dataLabels:{
+													enabled: true,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: positivePercArray
+										}, {
+											name: 'Negative',
+											data: negativePercArray
+										}]
+									});
+								});
+							}else{
+								$('#categoryPublicationwisegraph'+i+''+j+'').html("No Data Available");
+								$('#categoryPublicationwisegraph'+i+''+j+'').css("height","20px");
+							}
+							
+							
+						}
+					}
+						
+				}
+			}
+				
+			else{
+				$("#categoryActiviesDetailsDiv").html("No Data Available");
+			}
+			$(".categoryPublicationWiseSlickApply").slick({
+					 slide: 'li',
+					 slidesToShow: 4,
+					 slidesToScroll: 3,
+					 infinite: false,
+					 swipeToSlide:false,
+					 swipe:false,
+					 touchMove:false
+				}); 
+		
+	}
+	
+	function buildGovernmentPartyCategoryLocationWiseDetailes(result){
+		$("#govtCategoryActiviesDetailsDiv").html();
+		var str ='';
+		if(result !=null && result.length >0){
+			var totalCount =0;
+			var totalpositiveCount = 0;
+			var totalnegativeCount = 0;
+			var totalposprec =0;
+			var totalnegPerc =0;
+			for(var i in result){
+				str+='<h5>'+result[i].coreDashBoardVOList[0].name+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+				if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+					for(var j in result[i].coreDashBoardVOList){
+						categoryName = result[i].coreDashBoardVOList[0].name;
+							totalCount = totalCount+result[i].coreDashBoardVOList[j].count;
+							totalpositiveCount = totalpositiveCount+result[i].coreDashBoardVOList[j].positiveCountDist;
+							totalnegativeCount = totalnegativeCount+result[i].coreDashBoardVOList[j].negativCountDist;
+							totalposprec = ((totalpositiveCount*100)/(totalCount)).toFixed(2);
+							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
+					}
+				}
+						
+						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
+						
+				str+='<div id="govtCategoryLocationwisegraph'+i+'" class="chartLiD" style="height:300px" ></div>';
+			
+			
+		}
+		
+		}
+		$("#govtCategoryActiviesDetailsDiv").html(str);
+			if(result !=null && result.length >0){
+				for(var i in result){
+					
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						var catagoryDistrictName=[];
+						var categoryPostivePercArray = [];
+						var categoryNegativePercArray = [];
+							
+						for(var j in result[i].coreDashBoardVOList){
+							
+							catagoryDistrictName.push(result[i].coreDashBoardVOList[j].organization);
+							
+							
+							categoryPostivePercArray.push({"y":result[i].coreDashBoardVOList[j].positivePerc,"count":result[i].coreDashBoardVOList[j].positiveCountDist});
+							categoryNegativePercArray.push({"y":result[i].coreDashBoardVOList[j].negativePerc,"count":result[i].coreDashBoardVOList[j].negativCountDist});
+						}
+							if(catagoryDistrictName.length !=0 && categoryPostivePercArray.length !=0 &&  categoryNegativePercArray.length !=0){
+								$(function () {
+									$('#govtCategoryLocationwisegraph'+i+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: ''
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: catagoryDistrictName,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}% - {point.count}</b> <br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												stacking: 'percent',
+												dataLabels:{
+													enabled: true,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: categoryPostivePercArray
+										}, {
+											name: 'Negative',
+											data: categoryNegativePercArray
+										}]
+									});
+								});
+							}else{
+								$('#govtCategoryLocationwisegraph'+i+''+j+'').html("No Data Available");
+								$('#govtCategoryLocationwisegraph'+i+''+j+'').css("height","20px");
+							}
+						}
+					
+				}
+			}
+				
+			else{
+				$("#govtCategoryActiviesDetailsDiv").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+	}
+	
+	function buildGovernmentPartyCategoryPublicationsWiseDetails(result){
+		$("#govtCategoryActiviesDetailsDiv").html();
+		var str ='';
+		if(result !=null && result.length >0){
+			var totalCount =0;
+			var totalpositiveCount = 0;
+			var totalnegativeCount = 0;
+			var totalposprec =0;
+			var totalnegPerc =0;
+			for(var i in result){
+				var categoryName;
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						str+='<div class="col-md-12 col-xs-12 col-ms-12">';
+							
+						for(var j in result[i].coreDashBoardVOList){
+							categoryName = result[i].coreDashBoardVOList[0].name;
+							totalCount = totalCount+result[i].coreDashBoardVOList[j].count;
+							totalpositiveCount = totalpositiveCount+result[i].coreDashBoardVOList[j].positiveCountDist;
+							totalnegativeCount = totalnegativeCount+result[i].coreDashBoardVOList[j].negativCountDist;
+							totalposprec = ((totalpositiveCount*100)/(totalCount)).toFixed(2);
+							totalnegPerc = ((totalnegativeCount*100)/(totalCount)).toFixed(2)
+						}
+						str+='<h5>'+categoryName+'&nbsp;&nbsp; - &nbsp;&nbsp;<small>News Articles</small></h5>';
+						str+='<p>Total - <i>'+totalCount+'</i>: Positive Perc - <span title="'+totalpositiveCount+'" style="color:#7DDF7D" data-toggle="tooltip" data-placement="top" ><i>'+totalposprec+' %</i></span> : Negative Prec - <span title="'+totalnegativeCount+'"  style="color:#EC5752" data-toggle="tooltip" data-placement="top"><i>'+totalnegPerc+' %</i></span></p>';
+				
+						str+='<ul class="categoryPublicationWiseSlickApply">';
+						for(var j in result[i].coreDashBoardVOList){
+							str+='<li><div id="govtCategoryPublicationwisegraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
+						}
+						str+='</ul>';
+						str+='</div>';
+					}
+			}
+		}
+		$("#govtCategoryActiviesDetailsDiv").html(str);
+		if(result !=null && result.length >0){
+				for(var i in result){
+					
+							
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						for(var j in result[i].coreDashBoardVOList){
+							var partyName = [];
+							var positivePercArray =[];
+							var negativePercArray =[];
+							
+							
+									partyName.push(result[i].coreDashBoardVOList[j].organization);
+									var papername = result[i].coreDashBoardVOList[j].organization;
+									positivePercArray.push({"y":result[i].coreDashBoardVOList[j].positivePerc,"count":result[i].coreDashBoardVOList[j].positiveCountDist})
+									negativePercArray.push({"y":result[i].coreDashBoardVOList[j].negativePerc,"count":result[i].coreDashBoardVOList[j].negativCountDist})
+						
+							if(partyName.length !=0 && positivePercArray.length !=0 && negativePercArray.length !=0){
+								$(function () {
+									$('#govtCategoryPublicationwisegraph'+i+''+j+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
+										title: {
+											 useHTML: true,
+											text: '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+papername+'.png" style="width:52px;" alt="tdp icon"/>',
+											style: {
+													fontSize: '16px',
+													fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+													textTransform: "uppercase"
+													
+											}
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: partyName,
+											labels: {
+													//rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}% - {point.count}</b> <br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												//stacking: 'percent',
+												dataLabels:{
+													enabled: true,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: positivePercArray
+										}, {
+											name: 'Negative',
+											data: negativePercArray
+										}]
+									});
+								});
+							}else{
+								$('#govtCategoryPublicationwisegraph'+i+''+j+'').html("No Data Available");
+								$('#govtCategoryPublicationwisegraph'+i+''+j+'').css("height","20px");
+							}
+							
+							
+						}
+					}
+						
+				}
+			}
+				
+			else{
+				$("#govtCategoryActiviesDetailsDiv").html("No Data Available");
+			}
+			$(".categoryPublicationWiseSlickApply").slick({
+					 slide: 'li',
+					 slidesToShow: 4,
+					 slidesToScroll: 3,
+					 infinite: false,
+					 swipeToSlide:false,
+					 swipe:false,
+					 touchMove:false
+				}); 
+		
+	}
