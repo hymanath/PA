@@ -33,8 +33,16 @@ public class NewCadreRegistrationVO implements Serializable{
 	private List<CadreFamilyVO> cadreFamilyDetails;
 	private String constituencyId;
 	private Long nomineeRelationId;
+	private String imagePath;
 	
 	
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 	public Long getNomineeRelationId() {
 		return nomineeRelationId;
 	}
