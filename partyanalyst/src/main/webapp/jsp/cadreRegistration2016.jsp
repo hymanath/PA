@@ -565,8 +565,9 @@
 							<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
 						</div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital"  type="button" onclick="savingCadreDetails();">submit</button>
                         </div>
+						<div id="savingStatusDivId"></div>
                     </div>
 					</form>
                 </div>
@@ -1356,6 +1357,7 @@ $('.imageDiv input:checkbox').click(function() {
  var loadFile = function(event) {
     var imagePath = document.getElementById('uploadImgId');
     imagePath.src = URL.createObjectURL(event.target.files[0]);
+	$("#imgErrDivId").html("");
   };
 </script>
 </body>
