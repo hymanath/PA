@@ -987,6 +987,15 @@
 				     <value>com.itgrids.partyanalyst.model.FieldVendor</value>
 				     <value>com.itgrids.partyanalyst.model.FieldVendorLocation</value>
 				     <value>com.itgrids.partyanalyst.model.FieldVendorTabUser</value>
+				     
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssueType</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssue</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssueStatus</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssueTrack</value>
+				      <value>com.itgrids.partyanalyst.model.CadreVerificationStatus</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegUser</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegUserAccess</value>
+				      <value>com.itgrids.partyanalyst.model.TabUserInfo</value>
 				 </list>
 			
 		</property>
