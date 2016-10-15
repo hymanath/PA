@@ -195,7 +195,7 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/fieldMonitoring/fieldMonitoring.js" type="text/javascript"></script>
+<script src="js/FieldMonitoring/fieldMonitoring.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		$(document).on("click",".issuesBtn",function(){
