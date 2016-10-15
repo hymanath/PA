@@ -553,7 +553,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setNomineeGender(objects[15]!=null?objects[15].toString():"");//nomineeGender
 			returnVO.setNomineeAge(objects[16]!=null?(Long)objects[16]:0l);//nomineeAge
 			returnVO.setRelativeType(objects[17]!=null?objects[17].toString():"");//relativeType
-			
+			returnVO.setImagePath("https://mytdp.com/images/cadre_images/"+(objects[7]!=null?objects[7].toString():""));
 			if(objects[18] != null && objects[18].toString().length()> 0l){
 				returnVO.setVoterRelationId(objects[19]!=null?(Long)objects[19]:0l);//voterId
 				returnVO.setVoterCardNo(objects[18]!=null?objects[18].toString():"");//votercardNo
@@ -613,6 +613,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
 			returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
 			returnVO.setConstituencyId(objects[9]!=null?objects[9].toString():"");//constituencyId
+			returnVO.setImagePath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(objects[5]!=null?objects[5].toString():""));
 			
 		}
 		}
