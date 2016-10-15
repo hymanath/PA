@@ -359,9 +359,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  				//cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
 	  				if(objects[6].toString()!=null)
 	  					{
-	  					cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
-                        relationTypes.add(objects[6].toString());
-		  				}
+	  						cadreRegistration.setRelationshipType(objects[6] != null ? objects[6].toString() : "");
+	  					}
+	  				if(cadreRegistration.getRelationshipType().equalsIgnoreCase("Other")){
+	  						relationTypes.add("Others");
+	  				}else{
+	  						relationTypes.add(cadreRegistration.getRelationshipType());
+	  				}
 	  				cadreRegistration.setVoterCadreNO(objects[7] != null ? objects[7].toString() : "");
 	  				cadreRegistration.setMobileNo(objects[8] != null ? objects[8].toString() : "");
 	  				cadreRegistration.setImagePath(objects[9] != null ? objects[9].toString() : "");
