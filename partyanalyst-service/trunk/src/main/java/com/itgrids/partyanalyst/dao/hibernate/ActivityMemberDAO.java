@@ -22,8 +22,8 @@ public class ActivityMemberDAO extends GenericDaoHibernate<ActivityMember,Long> 
 		"        model1.userLevel.userLevelId,model1.userLevel.level,model1.activityLocationValue, " +//5
 		"        model.activityMember.tdpCadreId,model.activityMember.memberName " +//7
 		" from  ActivityMemberAccessType model , ActivityMemberAccessLevel model1" +
-		" where model.activityMember.activityMemberId = model1.activityMember.activityMemberId " +
-		"       and model.activityMember.user.userId = :userId ");
+		" where model.activityMember.activityMemberId = model1.activityMember.activityMemberId and model1.isActive='Y' " +
+		"       and model.activityMember.user.userId = :userId  ");
 		query.setParameter("userId", userId);
 		return query.list();
 	}
@@ -38,7 +38,7 @@ public class ActivityMemberDAO extends GenericDaoHibernate<ActivityMember,Long> 
 		"        model.activityMember.tdpCadreId,model.activityMember.memberName," +//7
 		"        model.activityMember.imageUrl,model.userType.shortName " +//9
 		" from  ActivityMemberAccessType model , ActivityMemberAccessLevel model1" +
-		" where model.activityMember.activityMemberId = model1.activityMember.activityMemberId " +
+		" where model.activityMember.activityMemberId = model1.activityMember.activityMemberId and model1.isActive='Y' " +
 		"       and model.activityMember.activityMemberId = :activityMemberId ");
 		query.setParameter("activityMemberId", activityMemberId);
 		return query.list();

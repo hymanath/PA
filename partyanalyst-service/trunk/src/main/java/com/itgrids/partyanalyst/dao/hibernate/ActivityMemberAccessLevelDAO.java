@@ -16,7 +16,7 @@ public class ActivityMemberAccessLevelDAO extends GenericDaoHibernate<ActivityMe
 	
 	public List<Object[]> getActivityMemberUserAccessLevelAndValues(Long userId){
 		
-		Query query = getSession().createQuery(" select model.activityMemberLevelId,model.userLevel.level,model.activityLocationValue from ActivityMemberAccessLevel model where model.activityMember.userId = :userId");
+		Query query = getSession().createQuery(" select model.activityMemberLevelId,model.userLevel.level,model.activityLocationValue from ActivityMemberAccessLevel model where model.activityMember.userId = :userId and model.isActive = 'Y' ");
 		
 		query.setParameter("userId",userId);
 		return query.list();
@@ -24,7 +24,7 @@ public class ActivityMemberAccessLevelDAO extends GenericDaoHibernate<ActivityMe
 	
 	public List<Object[]> getLocationsByActivityMemberId(Long activityMemberId){
 		
-		Query query = getSession().createQuery(" select model.activityMemberLevelId,model.userLevel.level,model.activityLocationValue from ActivityMemberAccessLevel model where model.activityMember.activityMemberId = :activityMemberId");
+		Query query = getSession().createQuery(" select model.activityMemberLevelId,model.userLevel.level,model.activityLocationValue from ActivityMemberAccessLevel model where model.activityMember.activityMemberId = :activityMemberId and model.isActive = 'Y'");
 		
 		query.setParameter("activityMemberId",activityMemberId);
 		return query.list();
