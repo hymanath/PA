@@ -258,6 +258,8 @@ function buildCasteDetails(result) {
 	str += '<ul class="searchResults">';
 	if (result.cadreFamilyDetails != null
 			&& result.cadreFamilyDetails.length > 0) {
+			$("#familyNomineeChId").show();
+			$("#familyNomineeOrId").show();
 		for ( var i in result.cadreFamilyDetails) {
 			str += '<li>';
 			str += '<div class="media">';
@@ -287,6 +289,9 @@ function buildCasteDetails(result) {
 			str += '</div>';
 			str += '</li>';	
 		}
+	}else{
+	$("#familyNomineeChId").hide();
+	$("#familyNomineeOrId").hide();
 	}
 	str += '</ul>';
 	
@@ -573,7 +578,7 @@ $(document).on("click",".isImageCheck",function(){
 		  $("#prvNomneGendrId").trigger("chosen:updated");
 	 }
 		 for ( var i in relationsArray) {			
-				if(prvNomineeRelative == relationsArray[i].name)
+				if(prvNomineeRelative == relationsArray[i].id)
 				   {
 						$("#prevNomneReltvId").append('<option selected value="'+relationsArray[i].id+'">'+relationsArray[i].name+'</option>');
 				   }
