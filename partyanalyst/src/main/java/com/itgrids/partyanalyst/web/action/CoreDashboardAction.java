@@ -1437,22 +1437,15 @@ public String getRoleBasedPerformanceCohort(){
 			List<Long> programIdList = new ArrayList<Long>();
 			String dateStr = jObj.getString("dateStr");
 			Long stateId = jObj.getLong("stateId");
-			String option = jObj.getString("option");
-			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
 			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
 			if(programIdArr!=null &&  programIdArr.length()>0){
 				for( int i=0;i<programIdArr.length();i++){
 					programIdList.add(Long.valueOf(programIdArr.getString(i)));
 				}
 			}
-			List<Long> userAccessLevelValues=new ArrayList<Long>();
-			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
-			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
-				for( int i=0;i<userAccessLevelValuesArray.length();i++){
-					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
-				}
-			}
-			idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(userAccessLevelId,userAccessLevelValues,programIdList,stateId,dateStr,option);   
+			String option = jObj.getString("option");
+			
+			idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr,option);   
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e); 
@@ -1465,21 +1458,13 @@ public String getRoleBasedPerformanceCohort(){
 			List<Long> programIdList = new ArrayList<Long>();
 			String dateStr = jObj.getString("dateStr");
 			Long stateId = jObj.getLong("stateId");
-			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
 			JSONArray programIdArr=jObj.getJSONArray("programIdArr");
 			if(programIdArr!=null &&  programIdArr.length()>0){
 				for( int i=0;i<programIdArr.length();i++){
 					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
 				}
 			}
-			List<Long> userAccessLevelValues=new ArrayList<Long>();
-			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
-			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
-				for( int i=0;i<userAccessLevelValuesArray.length();i++){
-					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
-				}
-			}
-			idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative(userAccessLevelId,userAccessLevelValues,programIdList,stateId,dateStr);
+			idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative(programIdList,stateId,dateStr);
 		}catch(Exception e){
 			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
 		}
