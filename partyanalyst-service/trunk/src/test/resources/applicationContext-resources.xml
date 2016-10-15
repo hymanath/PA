@@ -835,6 +835,14 @@
 		            
 		           <value>com.itgrids.partyanalyst.model.NominatedPostAccessType</value> 
 				   <value>com.itgrids.partyanalyst.model.NominatedPostAccessUser</value> 
+				   
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssueType</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssue</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssueStatus</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegIssueTrack</value>
+				      <value>com.itgrids.partyanalyst.model.CadreVerificationStatus</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegUser</value>
+				      <value>com.itgrids.partyanalyst.model.CadreRegUserAccess</value>
 		            
 			</list>
 		</property>
@@ -3621,5 +3629,28 @@
 	   <property name="notificationDeviceDAO" ref="notificationDeviceDAO"></property> 
 	   <property name="transactionTemplate" ref="transactionTemplate" />
 	    <property name="notificationsDAO" ref="notificationsDAO"></property> 
+	</bean>
+	
+	<!--  field Monitoring -->
+	<bean id="cadreRegIssueTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegIssueTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreRegIssueDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegIssueDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreRegIssueStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegIssueStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreRegIssueTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegIssueTrackDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreRegUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegUserAccessDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreVerificationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreVerificationStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreRegUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
