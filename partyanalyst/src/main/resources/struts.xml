@@ -13998,11 +13998,7 @@
 			<param name="root">userTypeVOList</param>
 		</result>
 	</action>
-	<action name="fieldMonitoringAction" class="fieldMonitoringAction" >
-		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringAction</result>
-		<result name="success">/jsp/fieldMonitoring.jsp</result>    
-		<result name="error" type="redirect">login.action</result>
-	</action>
+	
 	<action name="getCadreDetailsBasedOnUserTypeAction" class="cadreRegistrationAction"  method="getCadreDetailsBasedOnUserType">
 			<result type="json" name="success">
 			<param name="root">cadreDtlsResultList</param>
@@ -14026,6 +14022,27 @@
 	<action name="getSelectedChildTypeMembersForCadreRegistration" class="cadreRegistrationAction"  method="getSelectedChildTypeMembersForCadreRegistration">
 			<result type="json" name="success">
 			<param name="root">activityMembersList</param>
+		</result>
+	</action>
+	<action name="fieldMonitoringAction" class="fieldMonitoringAction">
+		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringAction</result>
+		<result name="success">/jsp/fieldMonitoring.jsp</result>  
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	
+	<action name="getVendorsAction" class="fieldMonitoringAction"  method="getVendors">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getVendorDistrictsAction" class="fieldMonitoringAction"  method="getVendorDistricts">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getVendorConstituenciesAction" class="fieldMonitoringAction"  method="getVendorConstituencies">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
 </package>
