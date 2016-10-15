@@ -65,7 +65,7 @@ input.form-control
 	border:1px solid #ddd;
 	padding:30px 20px 50px;
 }
-.new:before
+.panel-heading.new:before , .mainBlock.new:before
 {
 	background-image: url("../img/NewRegistration.png");
     background-size: 130px 150px;

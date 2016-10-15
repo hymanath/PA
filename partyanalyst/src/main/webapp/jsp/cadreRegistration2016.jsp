@@ -563,10 +563,10 @@
                             	<input type="checkbox" class="nomineeDetailsCls" id="PrvNomineeDetailsId"/><span id="defaultNomineeId"></span>
                             </label>
                             <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
-                            <label class="checkbox-inline">
+                            <label class="checkbox-inline" id="familyNomineeChId">
                             	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Select Nominee From Family
                             </label>
-							<span style="margin-left:10px;margin-right:10px;"><i>/Or/</i></span>
+							<span style="margin-left:10px;margin-right:10px;" id="familyNomineeOrId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
                             	<input type="checkbox" id="addNewNomineeId" class="nomineeDetailsCls"/>Add New Nominee
                             </label>
