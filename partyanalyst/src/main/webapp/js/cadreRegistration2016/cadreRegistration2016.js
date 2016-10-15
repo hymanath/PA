@@ -2,6 +2,7 @@ function onLoadCalls(){
 	 getStatewisesCastNames();
 	 getEducationalQualifications();
 	 getAllRelationDetails();
+	 getOccupationList();
   }
 
   function getStatewisesCastNames(){
@@ -96,8 +97,9 @@ function getSearchByMyVoterIdDetails(){
 		 	buildEductnQualifns(result);
 		 	buildCadreFamilyDetails(result);
 			buildCadreRelativesDetails(result,"prevNomneReltvId");
+			buildOccupationList(result,"occupationId");
 		});
-
+		
 }
 function hideShowDivs(status){
 if(status == "new"){
@@ -482,3 +484,36 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prevNomneReltvId").val('').trigger('chosen:updated');
 	$('#changeNomineeId').attr('checked', false);
  }
+function getOccupationList(){
+	   $.ajax({          
+			type : 'GET',    
+			url : 'getOccupationListAction.action',  
+			dataType : 'json',
+			data : {} 
+		}).done(function(result){
+			if(result != null && result.length>0){
+               for(var i in result){
+                  var relationObj = { id : result[i].id,name: result[i].name }  
+                  occupationArray.push(relationObj);   
+               }
+             } 
+		});
+  }
+  function buildOccupationList(result,id) {
+	$('#'+id+'').append('<option  value="0">Select Occupation</option>');
+	 if (occupationArray != null && occupationArray.length > 0) {
+	   for ( var i in occupationArray) {
+			if(id == 'occupationId'){
+				if(result.occupationId == occupationArray[i].id)
+				   {
+						$('#'+id+'').append('<option selected value="'+occupationArray[i].id+'">'+occupationArray[i].name+'</option>');
+				   }else
+				   {
+				   $('#'+id+'').append('<option value="'+occupationArray[i].id+'">'+occupationArray[i].name+'</option>');
+				   }
+				}           
+			
+	   }
+	   $('#'+id+'').trigger("chosen:updated");       
+	}
+}	

@@ -472,6 +472,11 @@
                            <select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
                             </select>
                         </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Occupation</label>
+                           <select class="select" id="occupationId" name="cadreRegistrationVO.occupationId">
+                            </select>
+                        </div>
                     </div>
 					<div class="row" id="cadrePrvNomneDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -503,6 +508,10 @@
                             <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.nomineeRelationId">
                             </select>
 							<div id="prevNomneReltvDivId" style="color:red;"></div>
+                        </div>
+						<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
+                            <label>Nominee AadharNo</label>
+                            <input type="text" class="form-control" id="prevNomneAadharNoId" name="cadreRegistrationVO.prevNomineeAadharNo"/>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
                         	<label class="checkbox-inline" id="prevNomineeId">
@@ -1119,6 +1128,7 @@
   var casteNamesArray = [];
   var educationsArray = [];
   var relationsArray = [];
+  var occupationArray =[];
    
   onLoadCalls();
   
