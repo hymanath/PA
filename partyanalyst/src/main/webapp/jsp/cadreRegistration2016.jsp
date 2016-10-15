@@ -634,14 +634,15 @@
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
+							    <div id="errorId" style="color:red;"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Please Enter your existing membership number</label>
-									<input type="text" class="form-control" id="validateRenMemshipId"/>
+									<input type="text" class="form-control" id="validateRenMemshipId" maxlength='8'/>
 								</div>
 								<span style="margin-left:220px;"><i>/Or/</i></span>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>Mobile Number</label>
-									<input type="text" class="form-control" id="renewalMobileId"/>
+									<input type="text" class="form-control" id="renewalMobileId" maxlength='10'/>
 								</div>
 								<span style="margin-left:220px;"><i>/Or/</i></span>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
