@@ -341,7 +341,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 					showSbmitStatus(uploadResult);
 				}
 			};
-			
+			$("#savingCadreDivIdImg").show();
 	//csole.log(submitCadreForm)
 		YAHOO.util.Connect.setForm('submitCadreForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
@@ -638,12 +638,14 @@ function getOccupationList(){
 }	
  
  function showSbmitStatus(result)
- {
+ { 
+      $("#savingCadreDivIdImg").hide();
 	 if(result.indexOf("SUCCESS") > -1){
 		 $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Saved Successfully...</span>");
 		 setTimeout(function(){
 			 eachTimeClearFields();
-			}, 2000);
+			 window.location.reload();
+			}, 3000);
 	 }else
 	 {
 		$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>"); 
