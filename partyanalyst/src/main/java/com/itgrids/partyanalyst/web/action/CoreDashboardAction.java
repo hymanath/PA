@@ -2756,12 +2756,15 @@ public String savingCadreDetails(){
 		
 		//cadreRegistrationVO.setWebUserId(user.getRegistrationID());
 		cadreRegistrationVO.setDataSourceType("WEB");
-		if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().longValue() > 0l){
-			cadreRegistrationVO.setPhotoType("CADRE");
-		}else if(cadreRegistrationVO.getVoterId() != null){
-			cadreRegistrationVO.setPhotoType("VOTER");
-		}else{
+		
+		if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("newImage")){
 			cadreRegistrationVO.setPhotoType("NEW");
+		}else if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("existImage")){
+			if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().longValue() > 0l){
+				cadreRegistrationVO.setPhotoType("CADRE");
+			}else if(cadreRegistrationVO.getVoterId() != null){
+				cadreRegistrationVO.setPhotoType("VOTER");
+			}
 		}
 		status = coreDashboardCadreRegistrationService.savingCadreDetails(cadreRegistrationVO);
          
