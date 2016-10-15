@@ -213,7 +213,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return query.list();   
 	}
 	
-	public List<Object[]> getTotalRenewlCadreCntLocationWise(Long stateId,String locationType,Date fromDate,Date toDate){
+	public List<Object[]> getTotalRenewlCadreCntLocationWise(Long stateId,String locationType,Date fromDate,Date toDate,Long userAccessLevelId,List<Long> userAccessLevelValues){
 		
 		    StringBuilder queryStr = new StringBuilder(); 
 		   
@@ -245,6 +245,24 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and date(TC.surveyTime) between :fromDate and :toDate ");	 
 		 }
+		      if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		        queryStr.append(" and TC.userAddress.state.stateId in (:userAccessLevelValues)");  
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		            queryStr.append(" and TC.userAddress.district.districtId in (:userAccessLevelValues)");  
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		         queryStr.append(" and TC.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues)");  
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+		         queryStr.append(" and TC.userAddress.constituency.constituencyId in (:userAccessLevelValues)");  
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		            queryStr.append(" and TC.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			         queryStr.append(" and TC.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			         queryStr.append(" and TC.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			         queryStr.append(" and TC.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+			  }
+		  
 	      if(locationType != null && locationType.equalsIgnoreCase("District")){
 	           queryStr.append(" group by TC.userAddress.district.districtId ");
           }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
@@ -255,6 +273,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			   query.setDate("fromDate", fromDate);
 			   query.setDate("toDate", toDate);
 			 }
+		     if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			     query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		       }
 		return query.list();   
 	}
 

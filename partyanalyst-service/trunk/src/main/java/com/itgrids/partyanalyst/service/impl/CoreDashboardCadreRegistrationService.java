@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
@@ -68,8 +69,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
     private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+    private IDistrictDAO districtDAO;
     private IOccupationDAO occupationDAO;
-	
+    
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -142,7 +144,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
 		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
 	}
-	
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
 	public IOccupationDAO getOccupationDAO() {
 		return occupationDAO;
 	}
@@ -1043,7 +1047,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description :This Service Method is used get cadre details Location wise. 
 	* @since 14-OCT-2016
 	*/
- public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr){
+ public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues){
 	
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
@@ -1069,11 +1073,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 4l);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 		 }
-		  List<Object[]> total2014CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, null, null, 3l);//2014 cadre
+		  List<Object[]> total2014CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, null, null, 3l,accessLevelId,userAccessLevelValues);//2014 cadre
 		  set2014CadreCountToMap(total2014CadreObjList,locationWiseCadreDetaislMap);
-		  List<Object[]> total2016CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, fromDate, toDate, 4l);//2016 cadre
+		  List<Object[]> total2016CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, fromDate, toDate, 4l,accessLevelId,userAccessLevelValues);//2016 cadre
 		  set2016CadreCountToMap(total2016CadreObjList,locationWiseCadreDetaislMap);
-		  List<Object[]> total2016RenewalCadreObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreCntLocationWise(stateId, locationType, fromDate, toDate);
+		  List<Object[]> total2016RenewalCadreObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreCntLocationWise(stateId, locationType, fromDate, toDate,accessLevelId,userAccessLevelValues);
 		  setRenewalCountToMap(total2016RenewalCadreObjList,locationWiseCadreDetaislMap);
 		  //calculating new cadre and percentage
 		  calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
@@ -1087,7 +1091,37 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	 }
 	 return resultList;
  }
-
+ public CadreReportVO getApAndTsDistrictList(){
+	 CadreReportVO resultVO = new CadreReportVO();
+	 List<CadreReportVO> apDistrictList = new ArrayList<CadreReportVO>();
+	 List<CadreReportVO> tsDistrictList = new ArrayList<CadreReportVO>();
+	 try{
+		List<Object[]> rtrnapDistrictList = districtDAO.getDistrictListBystateId(1l);
+		setDistrictDataToList(rtrnapDistrictList,apDistrictList);
+		List<Object[]> rtrnTsDistrictList = districtDAO.getDistrictListBystateId(36l);
+		setDistrictDataToList(rtrnTsDistrictList,tsDistrictList);
+		resultVO.setSubList1(apDistrictList);
+		resultVO.setSubList2(tsDistrictList);
+	 }catch(Exception e){
+	  LOG.error("Exception raised in getApAndTsDistrictList() in CadreRegistrationService service", e);
+	  return null;
+	 }
+	 return resultVO;
+ }
+ public void setDistrictDataToList(List<Object[]> rtrnDistrictList,List<CadreReportVO> districtList){
+	 try{
+		if(rtrnDistrictList != null && rtrnDistrictList.size() > 0){
+			for(Object[] param:rtrnDistrictList){
+				 CadreReportVO districtVO = new CadreReportVO();
+				 districtVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 districtVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				 districtList.add(districtVO);
+			}
+		}
+	 }catch(Exception e){
+		 LOG.error("Exception raised in setDistrictDataToList() in CadreRegistrationService service", e);	 
+	 }
+ }
  public List<IdAndNameVO> getOccupationList(){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try{
@@ -1544,5 +1578,4 @@ public CadreRegistratedCountVO getTotalNewRenewalCadreStateWise(Long activityMem
 	}
 	return null;
 }
- 
 }
