@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Workspace</title>
+<title>Field Monitoring</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/WebMonitoring/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -195,14 +195,121 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(document).on("click",".issuesBtn",function(){
-	$("#issuesModal").modal('show');
-});
-$(".singleDate").daterangepicker({
-	singleDatePicker: true
-});
-$('.select').chosen({width:'100%'});
-</script>
+
+	<script type="text/javascript">
+		$(document).on("click",".issuesBtn",function(){
+			$("#issuesModal").modal('show');
+		});
+		$(".singleDate").daterangepicker({
+			singleDatePicker: true
+		});
+		$('.select').chosen({width:'100%'});
+		
+		$(document).on("change", "#stateId", function(e){
+			getVendors();
+        });  
+		$(document).on("change", "#vendorId", function(e){
+			getVendorDistricts();
+        });
+        $(document).on("change", "#districtId", function(e){
+			getVendorConstituencies();
+        });	
+		
+		function getVendors(){
+			
+			clearVendors();
+			clearDistricts();
+			clearConstituencies();
+			
+			var stateId = $("#stateId option:selected").val();
+			var jsObj = { stateId : stateId };
+			
+			if(stateId == 0){
+				return;
+			}
+			$.ajax({
+				type : 'GET',
+				url : 'getVendorsAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}  
+			}).done(function(result){
+				if(result!=null && result.length>0){
+                  for(var i in result){
+                     $('#vendorId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+                   }
+                }
+				refreshSelectBox('vendorId');
+			});     
+		}
+		function getVendorDistricts(){
+			clearDistricts();
+			clearConstituencies();
+			
+			var stateId  = $("#stateId option:selected").val();
+			var vendorId = $("#vendorId option:selected").val();
+			var jsObj = { 
+			              stateId : stateId,
+			              vendorId : vendorId 
+						};
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getVendorDistrictsAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}  
+			}).done(function(result){
+				if(result!=null && result.length>0){
+                  for(var i in result){
+                     $('#districtId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+                   }
+                }
+				refreshSelectBox('districtId');
+			});
+		}
+		function getVendorConstituencies(){
+			clearConstituencies();
+			
+			var vendorId = $("#vendorId option:selected").val();
+			var districtId  = $("#districtId option:selected").val();
+			
+			var jsObj = { 
+			              vendorId : vendorId ,
+						  districtId : districtId
+						};
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getVendorConstituenciesAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}  
+			}).done(function(result){
+				if(result!=null && result.length>0){
+                  for(var i in result){
+                     $('#constituencyId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+                   }
+                }
+				refreshSelectBox('constituencyId');
+			});
+		}
+		function clearVendors(){
+			$('#vendorId').find('option').remove();
+            $('#vendorId').append('<option value="0">Select Vendor</option>');
+			refreshSelectBox('vendorId');
+		}
+		function clearDistricts(){
+			$('#districtId').find('option').remove();
+            $('#districtId').append('<option value="0">Select District</option>');
+			refreshSelectBox('districtId');
+		}
+		function clearConstituencies(){
+			$('#constituencyId').find('option').remove();
+            $('#constituencyId').append('<option value="0">Select Constituency</option>');
+			refreshSelectBox('constituencyId');
+		}
+		function refreshSelectBox(selectBoxId){
+			$("#"+selectBoxId).trigger("chosen:updated");
+		}
+		
+	</script>
 </body>
 </html>
