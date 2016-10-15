@@ -314,6 +314,7 @@ function buildCadreRelativesDetails(result,id) {
 }	
 
 $(document).on("click", "#changeNomineeId", function(e) {
+	$('.checkboxCls').attr('checked', false);
 	$("#nomineeModalId").modal('show');
     $("#familyDetailsDivId").show(); 
     });  
@@ -343,10 +344,6 @@ $(document).on("click",".checkboxCls",function(){
 	  var age = $(this).attr("attr_age");
 	  var relationTypeId = $(this).attr("attr_relTypeId");
 
-	 $("#checkNomineeNameId").val(name);
-     $("#checkNomineeGenderId").val(gender);
-	 $("#checkNomineeAgeId").val(age);
-	 $("#checkNomineeRelaTypeId").val(relationTypeId);
 	 $("#prvNomneNameId").val(name);
 	 $('#prvNomneGendrId').val(gender).trigger('chosen:updated');
 	 $("#prevNomneAgeId").val(age);
@@ -372,13 +369,17 @@ if(existImgCheck=="0" && newImgCheck == "0")
 {
   $("#imgErrDivId").html("Please choose any check box for image.");
 	 return;	
+}else{
+	$("#imgErrDivId").html("");
 }
 if(newImgCheck == "1")
   {
 	if(newImagPath == "dist/img/default_image.png" )
 	{
-	$("#imgErrDivId").html("Please select Image.");
+		$("#imgErrDivId").html("Please select Image.");
 	      return;
+	}else{
+		$("#imgErrDivId").html("");
 	}
 }
 }
