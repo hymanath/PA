@@ -149,7 +149,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<List<UserTypeVO>> userTypeVOList;
 	private List<CadreReportVO> cadreDtlsResultList;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
-	
+	private List<UserTypeVO> activityMembersList;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -759,6 +759,13 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	public void setCoreDashboardCadreRegistrationService(
 			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
 		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
+	}
+	
+	public List<UserTypeVO> getActivityMembersList() {
+		return activityMembersList;
+	}
+	public void setActivityMembersList(List<UserTypeVO> activityMembersList) {
+		this.activityMembersList = activityMembersList;
 	}
 	public List<CadreReportVO> getCadreDtlsResultList() {
 		return cadreDtlsResultList;
@@ -2634,7 +2641,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  jobj = new JSONObject(getTask());
 		  String startDate = jobj.getString("startDate");
 		  String endDate = jobj.getString("endDate");
-		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getTotalNewRenewalCadreStateWise(startDate, endDate);
+		  Long activityMemberId = jobj.getLong("activityMemberId");
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getTotalNewRenewalCadreStateWise(activityMemberId,stateId,startDate, endDate);
 	  }catch(Exception e){
 		  e.printStackTrace();
 	  }
@@ -2657,7 +2666,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long stateId = jobj.getLong("stateId");
 			Long userTypeId = jobj.getLong("userTypeId");
 			String fromDate = jobj.getString("fromDate");
-			String todate = jobj.getString("todate");
+			String todate = jobj.getString("todate");  
 			userTypeVOList = coreDashboardCadreRegistrationService.getUserTypeWiseTotalCadreRegistrationCount(activityMemberId,stateId,userTypeId,userId,fromDate,todate);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
@@ -2699,5 +2708,27 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
 }
+  public String getSelectedChildTypeMembersForCadreRegistration(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  Long parentActivityMemberId = jobj.getLong("parentActivityMemberId");
+		  List<Long> childUserTypeIds=new ArrayList<Long>();
+		  JSONArray childUserTypeIdsArray=jobj.getJSONArray("childUserTypeIdsArray");
+		  if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			  for( int i=0;i<childUserTypeIdsArray.length();i++){
+				  childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+			  }
+		  }
+		  Long stateId = jobj.getLong("stateId");
+		  String fromDateStr = jobj.getString("fromDateStr");
+		  String toDateStr = jobj.getString("toDateStr");
+		  activityMembersList = coreDashboardCadreRegistrationService.getSelectedChildTypeMembersForCadreRegistration(parentActivityMemberId, childUserTypeIds, stateId, fromDateStr, toDateStr);
+
+		  }catch(Exception e){
+			  e.printStackTrace();
+		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);
+		  }
+		  return Action.SUCCESS;
+	  }
  
 }
