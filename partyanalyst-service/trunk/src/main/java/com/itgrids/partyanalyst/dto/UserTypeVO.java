@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,7 @@ public class UserTypeVO implements Serializable{
 	
 	private Map<Long,UserTypeVO> subMap;
 	private List<UserTypeVO> subList;
+	private List<IdNameVO> subLocationList = new ArrayList<IdNameVO>();
 	
 	private Long totalCount = 0l;
 	private Long completedCount = 0l;
@@ -72,6 +74,8 @@ public class UserTypeVO implements Serializable{
 	private Long totalTargetCount=0l;
 	private Long totalCadreCount=0l;
 	private Double totalCadreCountPer=0.0d;
+	private Long totalCadreCountToday = 0l;
+	private Long totalTargetCount2014 = 0l;
 	public Long getId() {
 		return id;
 	}
@@ -378,6 +382,24 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setTotalCadreCountPer(Double totalCadreCountPer) {
 		this.totalCadreCountPer = totalCadreCountPer;
+	}
+	public Long getTotalCadreCountToday() {
+		return totalCadreCountToday;
+	}
+	public void setTotalCadreCountToday(Long totalCadreCountToday) {
+		this.totalCadreCountToday = totalCadreCountToday;
+	}
+	public Long getTotalTargetCount2014() {
+		return totalTargetCount2014;
+	}
+	public void setTotalTargetCount2014(Long totalTargetCount2014) {
+		this.totalTargetCount2014 = totalTargetCount2014;
+	}
+	public List<IdNameVO> getSubLocationList() {
+		return subLocationList;
+	}
+	public void setSubLocationList(List<IdNameVO> subLocationList) {
+		this.subLocationList = subLocationList;
 	}
    	
 }
