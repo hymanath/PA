@@ -8438,7 +8438,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 
-	public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String mobileNo,String hNo,String voterCardNo){
+	public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.voter.voterId," +
 						" model.voter.name," +
@@ -8468,8 +8468,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			sb.append(" and model.voter.voterIDCardNo = :voterCardNo");
 		if(name != null && name.trim().length() > 0l)
 			sb.append(" and model.voter.name like '%"+name+"%'");
-		if(mobileNo != null && mobileNo.trim().length() > 0l)
-			sb.append(" and model.voter.mobileNo = :mobileNo");
+		/*if(mobileNo != null && mobileNo.trim().length() > 0l)
+			sb.append(" and model.voter.mobileNo = :mobileNo");*/
 		if(hNo != null && hNo.trim().length() > 0l)
 			sb.append(" and model.voter.houseNo = :hNo");
 		
@@ -8478,8 +8478,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			query.setParameter("searchVal", searchVal);
 		if(voterCardNo != null && voterCardNo.trim().length() > 0l)
 			query.setParameter("voterCardNo", voterCardNo);
-		if(mobileNo != null && mobileNo.trim().length() > 0l)
-			query.setParameter("mobileNo", mobileNo);
+		/*if(mobileNo != null && mobileNo.trim().length() > 0l)
+			query.setParameter("mobileNo", mobileNo);*/
 		if(hNo != null && hNo.trim().length() > 0l)
 			query.setParameter("hNo", hNo);
 		
