@@ -13412,7 +13412,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 }
 
 
-	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String mobileNo,String hNo,String voterCardNo){
+	public List<VoterSearchVO> getVotersBySearch(Long constituencyId,Long mandalId,Long villageId,Long boothId,String name,String hNo,String voterCardNo){
 		List<VoterSearchVO> returnList = new ArrayList<VoterSearchVO>();
 		try {
 			Map<Long,IdAndNameVO> voterCadreMap = new LinkedHashMap<Long, IdAndNameVO>();
@@ -13445,7 +13445,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				searchType = "const";
 			}
 			
-			List<Object[]> list1 = boothPublicationVoterDAO.getVotersBySearch(searchVal, searchType, name, mobileNo, hNo, voterCardNo);
+			List<Object[]> list1 = boothPublicationVoterDAO.getVotersBySearch(searchVal, searchType, name, hNo, voterCardNo);
 			if(commonMethodsUtilService.isListOrSetValid(list1)){
 				for (Object[] obj : list1) {
 					VoterSearchVO vo = new VoterSearchVO();
