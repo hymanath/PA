@@ -267,19 +267,27 @@ function buildCasteDetails(result) {
 			str += '<img src="https://mytdp.com/voter_images/'+result.cadreFamilyDetails[i].imagePath+'" class="media-object cadreImage" alt=""/>';
 			str += '</div>';
 			str += '<div class="media-body">';
-			str += '<h5 class="text-capitalize">'
-					+ result.cadreFamilyDetails[i].voterName + '</h5>';
-			str += '<p>S/o:' + result.cadreFamilyDetails[i].relativeName
-					+ '</p>';
-			str += '<p>V.ID: ' + result.cadreFamilyDetails[i].voterCadreNO
-					+ ' </p>';
-			str += '<p>H.no:' + result.cadreFamilyDetails[i].houseNo
-					+ '&nbsp;&nbsp;|';
-			str += '<span>&nbsp;&nbsp;Gender : '
-					+ result.cadreFamilyDetails[i].gender
-					+ '&nbsp;&nbsp;|</span>';
-			str += '<span>&nbsp;&nbsp;Age :' + result.cadreFamilyDetails[i].age
-					+ ' </span>';
+			str += '<h5 class="text-capitalize">'+ result.cadreFamilyDetails[i].voterName + '</h5>';
+			if(result.cadreFamilyDetails[i].relationshipType == 'Mother'){
+				if(result.cadreFamilyDetails[i].gender == 'F')
+					str += '<p>D/O: '+result.cadreFamilyDetails[i].relativeName+'</p>';
+				else
+					str += '<p>S/O: '+result.cadreFamilyDetails[i].relativeName+'</p>';
+			}
+			else if(result.cadreFamilyDetails[i].relationshipType == 'Husband'){
+				str += '<p>W/O: '+result.cadreFamilyDetails[i].relativeName+'</p>';
+			}
+			else{
+				if(result.cadreFamilyDetails[i].gender == 'F')
+					str += '<p>D/O: '+result.cadreFamilyDetails[i].relativeName+'</p>';
+				else
+					str += '<p>S/O: '+result.cadreFamilyDetails[i].relativeName+'</p>';
+			}
+			//str += '<p>S/O: ' + result.cadreFamilyDetails[i].relativeName+ '</p>';
+			str += '<p>V.ID: ' + result.cadreFamilyDetails[i].voterCadreNO+ ' </p>';
+			str += '<p>H.NO: ' + result.cadreFamilyDetails[i].houseNo+ '&nbsp;&nbsp;|';
+			str += '<span>&nbsp;&nbsp;GENDER : '+ result.cadreFamilyDetails[i].gender+ '&nbsp;&nbsp;|</span>';
+			str += '<span>&nbsp;&nbsp;AGE :' + result.cadreFamilyDetails[i].age	+ ' </span>';
 			str += '</p>';
 			str += '<div class="checkboxAlign">';
 			str += '<input id="checkboxfamily'+i+'" class="checkbox-custom checkboxCls" name="checkbox-1" type="checkbox" attr_name="'+result.cadreFamilyDetails[i].voterName+'"  attr_gender="'+result.cadreFamilyDetails[i].gender+'" attr_age="'+result.cadreFamilyDetails[i].age+'" attr_relTypeId="'+result.cadreFamilyDetails[i].relationshipTypeId+'" >';

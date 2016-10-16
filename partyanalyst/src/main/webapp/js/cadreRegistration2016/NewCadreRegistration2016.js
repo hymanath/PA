@@ -243,7 +243,7 @@ $(document).on("change","#boothsList",function(){
 	  var village=$("#panchayatList").val();
 	  var booth=$("#boothsList").val();
 	  var name=$("#nameId").val();
-	  var mobileNo=$("#mobileId").val();
+	  //var mobileNo=$("#mobileId").val();
 	  var hNo=$("#huseNOId").val();
       var state=$("#statesDivId").val();
 	  var district=$("#districtId").val();
@@ -264,9 +264,9 @@ $(document).on("change","#boothsList",function(){
 		 $("#errorDivId").html("Please Select constituency");
 		 return;
 	   }
-	  if(voterId.trim().length == 0 && name.trim().length == 0 && mobileNo.trim().length == 0 && houseNo.trim().length == 0 )
+	  if(voterId.trim().length == 0 && name.trim().length == 0 && houseNo.trim().length == 0 )
 	   {
-		  $("#errorDivId").html("Enter Atleast One VoterId or Name or MobileNo or HouseNo");
+		  $("#errorDivId").html("Enter Atleast One VoterId or Name or HouseNo");
 		 return; 
 	   }
 	   searchVoterDetails();
@@ -276,7 +276,6 @@ $(document).on("change","#boothsList",function(){
 		  villageId:village,
 		  boothId:booth,
 		  name:name,
-		  mobileNo:mobileNo,
 		  hNo:hNo,
 		  voterCrdNo : voterId
 	  }
@@ -305,14 +304,29 @@ $(document).on("change","#boothsList",function(){
 			  str += '</div>';
 			  str += '<div class="media-body">';
 				  str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
-				  str += '<p>S/o:'+result[i].relativeName+'</p>';
-				  str += '<p>V.ID:'+result[i].voterIDCardNo+'&nbsp;&nbsp;';
+				if(result[i].relationshipType == 'Mother'){
+					if(result[i].gender == 'F')
+						str += '<p>D/O: '+result[i].relativeName+'</p>';
+					else
+						str += '<p>S/O: '+result[i].relativeName+'</p>';
+				}
+				else if(result[i].relationshipType == 'Husband'){
+					str += '<p>W/O: '+result[i].relativeName+'</p>';
+				}
+				else{
+					if(result[i].gender == 'F')
+						str += '<p>D/O: '+result[i].relativeName+'</p>';
+					else
+						str += '<p>S/O: '+result[i].relativeName+'</p>';
+				}
+					
+				  str += '<p>V.ID: '+result[i].voterIDCardNo+'&nbsp;&nbsp;';
 				  if(result[i].memberShipNo!=null){
-				   str += '<b>MemShip.ID:</b>'+result[i].memberShipNo+'</p>';	  
+				   str += '<b>M.ID:</b> '+result[i].memberShipNo+'</p>';	  
 					  }
-				  str += '<p>H.no:'+result[i].houseNo+'&nbsp;&nbsp;|';
-				  str += '<span>&nbsp;&nbsp;Gender : '+result[i].gender+'&nbsp;&nbsp;|</span>';
-				  str += '<span>&nbsp;&nbsp;Age :'+result[i].age+'</span>';
+				  str += '<p>H.NO: '+result[i].houseNo+'&nbsp;&nbsp;|';
+				  str += '<span>&nbsp;&nbsp;GENDER: '+result[i].gender+'&nbsp;&nbsp;|</span>';
+				  str += '<span>&nbsp;&nbsp;AGE: '+result[i].age+'</span>';
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
 				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'"/>';
@@ -525,7 +539,24 @@ $(document).on("change","#boothsList",function(){
 			  str += '</div>';
 			  str += '<div class="media-body" id="profileDataId'+i+'">';
 				  str += '<h5 class="text-capitalize" id="candidateName'+i+'">'+result[i].name+ '</h5>';
-				  str += '<p id="relaNameId'+i+'" >S/o:'+result[i].relativeName+'</p>';
+				  
+				  if(result[i].relativeType == 'Mother'){
+					if(result[i].gender == 'F')
+						str += '<p id="relaNameId'+i+'">D/O: '+result[i].relativeName+'</p>';
+					else
+						str += '<p id="relaNameId'+i+'">S/O: '+result[i].relativeName+'</p>';
+					}
+					else if(result[i].relativeType == 'Husband'){
+						str += '<p id="relaNameId'+i+'">W/O: '+result[i].relativeName+'</p>';
+					}
+					else{
+						if(result[i].gender == 'F')
+							str += '<p id="relaNameId'+i+'">D/O: '+result[i].relativeName+'</p>';
+						else
+							str += '<p id="relaNameId'+i+'">S/O: '+result[i].relativeName+'</p>';
+					}
+					
+				  //str += '<p id="relaNameId'+i+'" >S/o:'+result[i].relativeName+'</p>';
 				  if(result[i].voterId != null && result[i].voterId > 0)
 					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
 				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
