@@ -2537,11 +2537,11 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long villageId = jobj.getLong("villageId");
 			Long boothId = jobj.getLong("boothId");
 			String name = jobj.getString("name");
-			String mobileNo = jobj.getString("mobileNo");
+			//String mobileNo = jobj.getString("mobileNo");
 			String hNo = jobj.getString("hNo");
 			String voterCrdNo = jobj.getString("voterCrdNo");
 			
-			voterVoList = cadreRegistrationService.getVotersBySearch(constituencyId, mandalId, villageId, boothId, name, mobileNo, hNo, voterCrdNo);
+			voterVoList = cadreRegistrationService.getVotersBySearch(constituencyId, mandalId, villageId, boothId, name, hNo, voterCrdNo);
 		} catch (Exception e) {
 			LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
 		}
