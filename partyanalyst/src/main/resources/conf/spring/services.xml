@@ -3542,6 +3542,8 @@
 	   <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	   <property name="userAddressDAO" ref="userAddressDAO" />
 	   <property name="cadreRegIssueTypeDAO" ref="cadreRegIssueTypeDAO"/>
+	   <property name="cadreRegIssueDAO" ref="cadreRegIssueDAO"/>
+	   <property name="cadreRegIssueTrackDAO" ref="cadreRegIssueTrackDAO"/>
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >
