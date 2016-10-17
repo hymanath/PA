@@ -3538,7 +3538,8 @@
 	   <property name="fieldVendorTabUserDAO" ref="fieldVendorTabUserDAO"/>
 	</bean>
 	
-	
+	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >
+	</bean>
 	
 </beans>		
 			
