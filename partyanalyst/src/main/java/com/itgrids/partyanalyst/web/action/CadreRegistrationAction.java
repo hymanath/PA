@@ -2753,4 +2753,27 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  }
 		  return Action.SUCCESS;
 	  }
+  public String getSelectedChildTypeMembersForCadreReg(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  Long parentActivityMemberId = jobj.getLong("parentActivityMemberId");
+		  List<Long> childUserTypeIds=new ArrayList<Long>();
+		  JSONArray childUserTypeIdsArray=jobj.getJSONArray("childUserTypeIdsArray");
+		  if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			  for( int i=0;i<childUserTypeIdsArray.length();i++){
+				  childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+			  }
+		  }  
+		  Long stateId = jobj.getLong("stateId");
+		  String fromDateStr = jobj.getString("fromDateStr");
+		  String toDateStr = jobj.getString("toDateStr");
+		  activityMembersList = coreDashboardCadreRegistrationService.getSelectedChildTypeMembersForCadreReg(parentActivityMemberId, childUserTypeIds, stateId, fromDateStr, toDateStr);
+
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  LOG.error("Error occured at getSelectedChildTypeMembersForCadreReg() in CadreRegistrationAction class",e);
+	  }
+	  return Action.SUCCESS;
+  }
 }
+
