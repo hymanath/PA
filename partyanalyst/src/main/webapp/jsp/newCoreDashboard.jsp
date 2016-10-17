@@ -2315,15 +2315,16 @@
                                         	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
                                         	<h2><span class="headingColor">Andhra Pradesh</span></h2>
                                         </div>
-                                        <!--<div class="col-md-6 col-xs-12 col-sm-12">
+                                        <div class="col-md-6 col-xs-12 col-sm-12">
                                         	<ul class="activeUlCls list-inline pull-right">
                                                 <li class="active">All</li>
-                                                <li>Very Good</li>
-                                                <li>Good</li>
-                                                <li>Ok</li>
-                                                <li>Very Poor</li>
+                                                <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
+                                                <li class="districtFilterCls" attr_filter_value="good">Good</li>
+                                                <li class="districtFilterCls" attr_filter_value="ok">Ok</li>
+												<li class="districtFilterCls" attr_filter_value="poor">Poor</li>
+                                                <li class="districtFilterCls" attr_filter_value="verypoor">Very Poor</li>
                                             </ul>
-                                        </div>-->
+                                        </div>
                                     </div>
                                 	
                                 </div>
@@ -2353,13 +2354,14 @@
 											<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
 												<li class="text-capital"><i class="fa fa-gears" id="settingsCadre"></i></li>
 											</ul>
-                                        	<!--<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active">All - 294</li>
-                                                <li>Very Good - 24</li>
-                                                <li>Good - 170</li>
-                                                <li>Ok - 50</li>
-                                                <li>Very Poor - 20</li>
-                                            </ul>-->
+                                        	<ul class="activeUlCls list-inline pull-right">
+                                                <li class="active" id="cnsttncyverlAllCntId">All - 294</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_filter_value="verygood">Very Good - 24</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId" attr_filter_value="good">Good - 170</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyOkCntId" attr_filter_value="ok">Ok - 50</li>
+												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId" attr_filter_value="poor">poor - 50</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyveryPoorCntId" attr_filter_value="verypoor">Very Poor - 20</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 <div class="cadreRDD documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;display:none;" >
@@ -2402,11 +2404,11 @@
                                 <div class="panel-body">
                                 	<div class="row">
                                     	<div class="col-md-6 col-xs-12 col-sm-12">
-										    <h2><span class="headingColor">Andhra Pradesh</span></h2>
+										    <h2><span class="headingColor">Andhra Pradesh</span></h2><br>
                                         	<div id="apConstituencyRegistrationReportDivId"></div>
                                         </div>
 									   <div class="col-md-6 col-xs-12 col-sm-12">
-										    <h2><span class="headingColor">Telangana</span></h2>
+										    <h2><span class="headingColor">Telangana</span></h2><br>
                                         	<div id="tsConstituencyRegistrationReportDivId"></div>
                                         </div>
                                     </div>
