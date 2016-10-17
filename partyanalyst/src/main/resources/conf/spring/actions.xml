@@ -1707,6 +1707,7 @@
 	
 	<bean id="dataMonitoringAction" class="com.itgrids.partyanalyst.web.action.DataMonitoringAction" singleton="false">
 			<property name="dataMonitoringService" ref="dataMonitoringService" />  
+			<property name="fieldMonitoringService" ref="fieldMonitoringService" /> 
 	</bean>	
 </beans>	
 	
