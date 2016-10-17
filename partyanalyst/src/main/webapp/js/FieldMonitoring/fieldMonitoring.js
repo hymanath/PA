@@ -102,6 +102,7 @@ $(document).on("change", "#stateId", function(e){
 		function refreshSelectBox(selectBoxId){
 			$("#"+selectBoxId).trigger("chosen:updated");
 		}
+getCadreRegIssueType();
  function getCadreRegIssueType(){
 	 var jsObj=
      {				
@@ -124,6 +125,29 @@ $(document).on("change", "#stateId", function(e){
 	 $("#issueTypeId").trigger("chosen:updated");
    });
   }
- $(document).on("click","#addNewIssueId",function(){
-	getCadreRegIssueType();
+  function saveFieldIssue(){
+	  var constituencyId =$("#constituencyId").val();  
+	  var issueTypeId =$("#issueTypeId").val();
+      var description =$("#descriptionId").val();
+      var cadreSurveyUserId=  12345;
+	 var jsObj=
+     {				
+		issueTypeId :issueTypeId,
+		cadreSurveyUserId : 12345,
+		//tabUserInfoId :tabUserInfoId,
+		description :description,
+		constituencyId : constituencyId
+	 }
+    $.ajax({
+          type:'GET',
+          url: 'saveFieldIssueAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  
+   });
+  }
+ $(document).on("click","#addNewIssueId",function(){ 
+	$("#issueTypeDivId").show();
 	});
+	
