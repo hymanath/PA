@@ -606,6 +606,7 @@ $(document).on("click",".isImageCheck",function(){
    });
  function eachTimeClearFields()
  {
+	$("#existImgId").attr('src','dist/img/default_image.png');
 	$("#nameId1").val('');  
 	$("#actuploadImg").removeAttr('src');
 	$("#actuploadImg").attr('src','dist/img/default_image.png');
