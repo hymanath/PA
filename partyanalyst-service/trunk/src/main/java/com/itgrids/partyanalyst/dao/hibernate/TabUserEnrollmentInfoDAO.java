@@ -12,16 +12,6 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 	public TabUserEnrollmentInfoDAO() {
 		super(TabUserEnrollmentInfo.class);
 	}
-	public Long getTotalTabUserWorkingInField(Date surveyTime, Long stateId){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count(distinct TUEI.tabUserInfoId) from TabUserEnrollmentInfo TUEI where " +
-						" date(TUEI.surveyTime) = (:surveyTime) and " +
-						" TUEI.stateId = :stateId ");
-		Query query = getSession().createQuery(queryStr.toString());
-		query.setDate("surveyTime", surveyTime);
-		query.setParameter("stateId", stateId);
-		return (Long) query.uniqueResult(); 
-	}//SELECT count(distinct TUEI.tab_user_info_id) from tab_user_enrollment_info TUEI where date(TUEI.survey_time) = '2016-10-13' and TUEI.state_id = 1;
 	public Long getTotalRecordSubmitedByTabUser(Date surveyTime, Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select sum(TUEI.totalRecords) from TabUserEnrollmentInfo TUEI where " +
