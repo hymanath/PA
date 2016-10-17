@@ -5,14 +5,14 @@ $(document).on("change", "#stateId", function(e){
 			getVendorDistricts();
         });
         $(document).on("change", "#districtId", function(e){
-			getVendorConstituencies();
+			getVendorConstituencies('constituencyId');
         });	
 		
 		function getVendors(){
 			
 			clearVendors();
 			clearDistricts();
-			clearConstituencies();
+			clearConstituencies('constituencyId');
 			
 			var stateId = $("#stateId option:selected").val();
 			var jsObj = { stateId : stateId };
@@ -36,7 +36,7 @@ $(document).on("change", "#stateId", function(e){
 		}
 		function getVendorDistricts(){
 			clearDistricts();
-			clearConstituencies();
+			clearConstituencies('constituencyId');
 			
 			var stateId  = $("#stateId option:selected").val();
 			var vendorId = $("#vendorId option:selected").val();
@@ -59,8 +59,8 @@ $(document).on("change", "#stateId", function(e){
 				refreshSelectBox('districtId');
 			});
 		}
-		function getVendorConstituencies(){
-			clearConstituencies();
+		function getVendorConstituencies(selectBoxId){
+			clearConstituencies(selectBoxId);
 			
 			var vendorId = $("#vendorId option:selected").val();
 			var districtId  = $("#districtId option:selected").val();
@@ -78,10 +78,10 @@ $(document).on("change", "#stateId", function(e){
 			}).done(function(result){
 				if(result!=null && result.length>0){
                   for(var i in result){
-                     $('#constituencyId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+                     $('#'+selectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
                    }
                 }
-				refreshSelectBox('constituencyId');
+				refreshSelectBox(selectBoxId);
 			});
 		}
 		function clearVendors(){
@@ -94,16 +94,15 @@ $(document).on("change", "#stateId", function(e){
             $('#districtId').append('<option value="0">Select District</option>');
 			refreshSelectBox('districtId');
 		}
-		function clearConstituencies(){
-			$('#constituencyId').find('option').remove();
-            $('#constituencyId').append('<option value="0">Select Constituency</option>');
-			refreshSelectBox('constituencyId');
+		function clearConstituencies(selectBoxId){
+			$('#'+selectBoxId).find('option').remove();
+            $('#'+selectBoxId).append('<option value="0">Select Constituency</option>');
+			refreshSelectBox(selectBoxId);
 		}
 		function refreshSelectBox(selectBoxId){
 			$("#"+selectBoxId).trigger("chosen:updated");
 		}
- 
- function getCadreRegIssueType(){
+function getCadreRegIssueType(){
 	 
     $.ajax({
           type:'GET',
@@ -125,7 +124,7 @@ $(document).on("click",".manageIssues",function(){
     var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
     $("#submitId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
     $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
-	
+	 getVendorConstituencies('issueConstituencyId');
     $("#issuesModal").modal('show');
   });
  
