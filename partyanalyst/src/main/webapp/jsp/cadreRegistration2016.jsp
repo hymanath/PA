@@ -390,6 +390,7 @@
 									<input type="hidden" class="form-control" id="hiddenFamilyVoterId" name="cadreRegistrationVO.familyVoterId"/>
 									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
 									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
+									<input type="hidden" class="form-control" id="hiddenIsNomneeChngd" name="cadreRegistrationVO.isNomineeChanged"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
@@ -564,11 +565,11 @@
                             </label>
                             <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
                             <label class="checkbox-inline" id="familyNomineeChId">
-                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Select Nominee From Family
+                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls isNomineeChangd"/>Select Nominee From Family
                             </label>
 							<span style="margin-left:10px;margin-right:10px;" id="familyNomineeOrId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
-                            	<input type="checkbox" id="addNewNomineeId" class="nomineeDetailsCls"/>Add New Nominee
+                            	<input type="checkbox" id="addNewNomineeId" class="nomineeDetailsCls isNomineeChangd"/>Add New Nominee
                             </label>
 							<div id="nomineeDivId" style="color:red;"></div>
                         </div>
