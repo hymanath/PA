@@ -201,8 +201,16 @@ public class CadreRegistrationVO implements Serializable{
 	private Long newNomineeRelationTypeId;
 	private String isNewImageExist;
 	private String 	prevNomineeAadharNo;
+	private String isNomineeChanged;
 	
 	
+	
+	public String getIsNomineeChanged() {
+		return isNomineeChanged;
+	}
+	public void setIsNomineeChanged(String isNomineeChanged) {
+		this.isNomineeChanged = isNomineeChanged;
+	}
 	public String getIsNewImageExist() {
 		return isNewImageExist;
 	}
