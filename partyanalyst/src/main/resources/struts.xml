@@ -13921,7 +13921,7 @@
 	<action name="cadreRegistrationAction" class="cadreRegistrationAction" method="newCadreRegistration">
 			<result name="success">/jsp/cadreRegistration2016.jsp</result>
 	</action>
-	<action name="cadreOnlineRegistrationAction" class="cadreRegistrationAction" method="newCadreRegistration">
+	<action name="cadreOnlineRegistrationAction" class="cadreRegistrationAction" method="cadreOnlineRegistration">
 			<result name="success">/jsp/cadreOnlineRegistration2016.jsp</result>
 	</action>
 	<action name="getRegistrationPersonDetailsAction" class="coreDashboardAction" method="getRegistrationPersonDetails">
