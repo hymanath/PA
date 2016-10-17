@@ -14065,5 +14065,10 @@
 		<result name="success">/jsp/fieldMonitoringDashboard.jsp</result>  
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="saveFieldIssueAction" class="fieldMonitoringAction"  method="saveFieldIssue">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
 </package>
 </struts>

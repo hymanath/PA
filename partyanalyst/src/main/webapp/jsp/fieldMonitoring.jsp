@@ -103,7 +103,7 @@
                                     <td>Naresh</td>
                                     <td>3</td>
                                     <td>1</td>
-                                    <td><button class="btn btn-success text-capitalize issuesBtn">manage issues</button></td>
+                                    <td><button class="btn btn-success text-capitalize issuesBtnCls" attr_cadreSurveyUserId="12345",attr_tabUserInfoId="123">manage issues</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -158,7 +158,7 @@
 				</div>
             </div>
         </div>
-        <div class="block m_top20"  id="issueTypeDivId" style="display:none;">
+        <div class="block m_top20" id="issueTypeDivId" style="display:none;">
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label>
@@ -170,6 +170,7 @@
                 	<label>Issue Description</label>
                     <input type="text" class="form-control" id="descriptionId"/>
                 </div>
+				<button type="button" class="btn btn-success pull-right" id="submitId">Submit</button>
             </div>
         </div>
         <ul class="issuesUl">
