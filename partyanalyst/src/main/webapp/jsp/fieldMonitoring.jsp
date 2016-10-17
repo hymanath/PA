@@ -43,6 +43,7 @@
                         	<option value="0">Select Constituency</option>
                         </select>
                     </div>
+					<button id="getDetails">submit</button>
                 </div>
             </div>
             <div class="block pad_20 m_top20">

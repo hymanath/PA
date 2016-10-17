@@ -3545,6 +3545,7 @@
 	   <property name="cadreRegIssueTypeDAO" ref="cadreRegIssueTypeDAO"/>
 	   <property name="cadreRegIssueDAO" ref="cadreRegIssueDAO"/>
 	   <property name="cadreRegIssueTrackDAO" ref="cadreRegIssueTrackDAO"/>
+	   <property name="dateUtilService" ref="dateUtilService"/>
 	   <property name="cadreRegIssueStatusDAO" ref="cadreRegIssueStatusDAO"/>
 	</bean>
 	

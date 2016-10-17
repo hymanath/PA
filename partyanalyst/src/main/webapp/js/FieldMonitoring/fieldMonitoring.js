@@ -159,4 +159,42 @@ $(document).on("click",".manageIssues",function(){
    });
   }
   
+$(document).on("click","#getDetails",function(){
+	var vendorId = $("#vendorId").val();
+	var stateId = $("#stateId").val();
+	var districtId = $("#districtId").val();
+	var constituencyId = $("#constituencyId").val();
+	var locationType;
+	var locationVal;
+	
+	if(constituencyId > 0){
+		locationType = "constituency";
+		locationVal = constituencyId;
+	}
+	else if(districtId > 0){
+		locationType = "district";
+		locationVal = districtId;
+	}
+	else{
+		locationType = "state";
+		locationVal = stateId;
+	}
+		
+	 var jsObj=
+     {				
+		vendorId : vendorId,
+		locationType : locationType,
+		locationVal : locationVal,
+		fromDate : "2016-10-01",
+		toDate : "2016-10-17"
+	 }
+    $.ajax({
+          type:'GET',
+          url: 'getTabUsersDetailsByVendorAndLocationAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  
+   });
+});
 	
