@@ -20,7 +20,15 @@ public class CadreFamilyVO implements Serializable{
 	private String mobileNo;
 	private String imagePath;
 	private Long relationshipTypeId;
+	private String totalImagePathStr;
 	
+	
+	public String getTotalImagePathStr() {
+		return totalImagePathStr;
+	}
+	public void setTotalImagePathStr(String totalImagePathStr) {
+		this.totalImagePathStr = totalImagePathStr;
+	}
 	public Long getVoterId() {
 		return voterId;
 	}

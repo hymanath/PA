@@ -24,20 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CadreRegIssue extends BaseModel implements Serializable {
 	
-	/*
-	 * cadre_reg_issue_id,
-	 * cadre_reg_issue_type_id(fk),
-	 * cadre_survey_user_id(fk),
-	 * tab_user_info_id(fk),
-	 * description,
-	 * location_scope_id,
-	 * location_value,
-	 * user_address_id(fk)
-	 * created_by(fk)
-	 * updated_by(fk),
-	 * inserted_time()
-	 * updated_time
-	 */
+	
 	private Long cadreRegIssueId;
 	private Long cadreRegIssueTypeId;
 	private Long cadreSurveyUserId;
