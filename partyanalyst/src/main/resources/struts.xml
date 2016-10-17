@@ -14070,5 +14070,15 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="getStateDtls" class="cadreRegistrationAction"  method="getStateDtls">
+			<result type="json" name="success">
+			<param name="root">cadreRegistratedCountVO</param>
+		</result>
+	</action>
+	<action name="getSourceOfRegistrationDtls" class="cadreRegistrationAction"  method="getSourceOfRegistrationDtls">
+			<result type="json" name="success">
+			<param name="root">cadreRegistratedCountVOs</param>
+		</result>
+	</action>    
 </package>
 </struts>
