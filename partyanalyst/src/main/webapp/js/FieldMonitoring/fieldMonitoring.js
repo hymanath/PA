@@ -102,4 +102,28 @@ $(document).on("change", "#stateId", function(e){
 		function refreshSelectBox(selectBoxId){
 			$("#"+selectBoxId).trigger("chosen:updated");
 		}
-		
+ function getCadreRegIssueType(){
+	 var jsObj=
+     {				
+				
+	 }
+    $.ajax({
+          type:'GET',
+          url: 'getCadreRegIssueTypeAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#issueTypeId").append('<option value='+result[i].id+'>Select Manpower issue</option>');
+	   }else{
+	      $("#issueTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+	 $("#issueTypeId").trigger("chosen:updated");
+   });
+  }
+ $(document).on("click","#addNewIssueId",function(){
+	getCadreRegIssueType();
+	});
