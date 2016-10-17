@@ -23,25 +23,21 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "cadre_reg_issue_track")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CadreRegIssueTrack extends BaseModel implements Serializable {
-	/*
-	 * cadre_reg_issue_track_id,
-	 * cadre_reg_issue_id,
-	 * cadre_reg_issue_type_id,
-	 * description,
-	 * inserted_by,
-	 * inserted_time
-	 */
+	
 
 	public Long cadreRegIssueTrackId;
 	public Long cadreRegIssueId;
-	public Long cadreRegissueTypeId;
+	public Long cadreRegIssueTypeId;
 	private String description;
+	private Long cadreRegIssueStatusId;
 	private Long insertedBy;
 	private Date insertedTime;
 	
 	private CadreRegIssue cadreRegIssue;
 	private CadreRegIssueType cadreRegIssueType;
 	private CadreRegUser insertedUser;
+	private CadreRegIssueStatus cadreRegIssueStatus;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "cadre_reg_issue_track_id", unique = true, nullable = false)
@@ -59,11 +55,11 @@ public class CadreRegIssueTrack extends BaseModel implements Serializable {
 		this.cadreRegIssueId = cadreRegIssueId;
 	}
 	@Column(name="cadre_reg_issue_type_id")
-	public Long getCadreRegissueTypeId() {
-		return cadreRegissueTypeId;
+	public Long getCadreRegIssueTypeId() {
+		return cadreRegIssueTypeId;
 	}
 	public void setCadreRegissueTypeId(Long cadreRegissueTypeId) {
-		this.cadreRegissueTypeId = cadreRegissueTypeId;
+		this.cadreRegIssueTypeId = cadreRegissueTypeId;
 	}
 	@Column(name="description")
 	public String getDescription() {
@@ -117,8 +113,23 @@ public class CadreRegIssueTrack extends BaseModel implements Serializable {
 		this.insertedUser = insertedUser;
 	}
 	
+	@Column(name="cadre_reg_issue_status_id")
+	public Long getCadreRegIssueStatusId() {
+		return cadreRegIssueStatusId;
+	}
+	public void setCadreRegIssueStatusId(Long cadreRegIssueStatusId) {
+		this.cadreRegIssueStatusId = cadreRegIssueStatusId;
+	}
 	
-	
-	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "cadre_reg_issue_status_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreRegIssueStatus getCadreRegIssueStatus() {
+		return cadreRegIssueStatus;
+	}
+	public void setCadreRegIssueStatus(CadreRegIssueStatus cadreRegIssueStatus) {
+		this.cadreRegIssueStatus = cadreRegIssueStatus;
+	}
 	
 }

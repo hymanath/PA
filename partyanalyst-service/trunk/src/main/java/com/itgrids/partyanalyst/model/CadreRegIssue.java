@@ -30,6 +30,7 @@ public class CadreRegIssue extends BaseModel implements Serializable {
 	private Long cadreSurveyUserId;
 	private Long tabUserInfoId;
 	private String description;
+	private Long cadreRegIssueStatusId;
 	private Long locationScopeId;
 	private Long locationValue;
 	private Long userAddressId;
@@ -45,6 +46,7 @@ public class CadreRegIssue extends BaseModel implements Serializable {
 	private CadreRegUser insertedUser;
 	private CadreRegUser updatedUser;
 	private RegionScopes regionScope;
+	private CadreRegIssueStatus cadreRegIssueStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -203,8 +205,23 @@ public class CadreRegIssue extends BaseModel implements Serializable {
 		this.regionScope = regionScope;
 	}
 	
+	@Column(name="cadre_reg_issue_status_id")
+	public Long getCadreRegIssueStatusId() {
+		return cadreRegIssueStatusId;
+	}
+	public void setCadreRegIssueStatusId(Long cadreRegIssueStatusId) {
+		this.cadreRegIssueStatusId = cadreRegIssueStatusId;
+	}
 	
-	
-
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "cadre_reg_issue_status_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreRegIssueStatus getCadreRegIssueStatus() {
+		return cadreRegIssueStatus;
+	}
+	public void setCadreRegIssueStatus(CadreRegIssueStatus cadreRegIssueStatus) {
+		this.cadreRegIssueStatus = cadreRegIssueStatus;
+	}
 	
 }
