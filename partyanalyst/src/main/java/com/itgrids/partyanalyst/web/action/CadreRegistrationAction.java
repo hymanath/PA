@@ -2629,6 +2629,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  return Action.SUCCESS;
   }
   
+  public String cadreOnlineRegistration(){
+	  return Action.SUCCESS;
+  }  
   public String getTdpCadresBySearch(){
 	  try {
 		jobj = new JSONObject(getTask());
