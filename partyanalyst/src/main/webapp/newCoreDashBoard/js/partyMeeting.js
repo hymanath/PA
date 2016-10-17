@@ -162,7 +162,7 @@ $(document).on("click",".selectAll",function(){
 		  str+'<div class="row">';
 		  if(overAllResult != null){
 			//  setLastUpdatedTime(overAllResult.updatedTime);
-			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="display:none;">';
 		      str+='<table class="table tableTraining">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
@@ -2754,6 +2754,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	    var meetingStatus = $(this).attr("attr_meeting_status");
 	    var meetingLevel = $(this).attr("attr_level_type");
 		var isComment = $(this).attr("attr_comment");
+		
 		var reportTypeId = $("#commentFilterSelectBoxId").val();
 		var dates=$("#dateRangeIdForMeetings").val();
 		//var resultType = $(this).attr("attr_result_type");
@@ -2850,13 +2851,13 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			fromDateStr = datesArr[0].trim(); 
 			toDateStr = datesArr[1].trim(); 
 		}
-		$("#getDetailsBtnId").attr("attr_comment","Yes");
+		$("#getDetailsBtnId").attr("attr_comment","No");
 	  // $("#getDetailsBtnId").attr("attr_result_type","individual");
-	   $("#districtSlctBxId").attr("attr_comment","Yes");		 
-       $("#constituencySlctBxId").attr("attr_comment","Yes");	
-	   getDistrictByState(meetingStatus,meetingLevel,"Yes");	
-      getConstituencyByDistrict(meetingStatus,meetingLevel,"Yes",0);
-      getMandalByConstituency(meetingStatus,meetingLevel,"Yes",0);	
+	   $("#districtSlctBxId").attr("attr_comment","No");		 
+       $("#constituencySlctBxId").attr("attr_comment","No");	
+	   getDistrictByState(meetingStatus,meetingLevel,"No");	
+      getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);
+      getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
 	 if($(this).is(':checked')){
 		 getMeetingComments(meetingStatus,meetingLevel,isComment,fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 
 	 } 
@@ -2937,7 +2938,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 		
 		$("#individualradioId").attr("attr_meeting_status",meetingStatus);
 		$("#individualradioId").attr("attr_level_type",meetingLevel);
-		$("#individualradioId").attr("attr_comment","Yes");
+		$("#individualradioId").attr("attr_comment","No");
 		
 		$("#constituencySlctBxId").attr("attr_meeting_status",meetingStatus);
 		$("#constituencySlctBxId").attr("attr_level_type",meetingLevel);
@@ -2976,29 +2977,32 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 				 $(".mandalSlctBxCls").show();
                  $(".constituencySlctBxCls").show();
 			   }
-			  $("#ConsolidatedradioId").prop('checked',true);
-			  $(".individualRadioBtnCls").hide();
+			  //$("#ConsolidatedradioId").prop('checked',true);
+			  $(".individualRadioBtnCls").show();
+			  $("#individualradioId").prop('checked',true);
+			  $(".consolidatedBtnCls").hide();
 			  $("#constituencySlctBxId").attr("attr_comment","No");				  
               $("#districtSlctBxId").attr("attr_comment","No");
 			  $("#getDetailsBtnId").attr("attr_comment","No");
 			  getDistrictByState(meetingStatus,meetingLevel,"No");	
               getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);//for all
               getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
-			  getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,"District",0," ");   
+			 // getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,"District",0," ");  
+               getMeetingComments(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 			 
 		 }else{
 			  $(".individualRadioBtnCls").show();
 			if((meetingLevel =="Village/Ward" || meetingLevel =="Mandal/Town/Division") && diffDays <=31){
 			// $(".consolidatedCls").hide();
-			   $(".mandalSlctBxCls").show();
-			   $(".constituencySlctBxCls").show();
-			 getDistrictByState(meetingStatus,meetingLevel,"Yes");	
-             getConstituencyByDistrict(meetingStatus,meetingLevel,"Yes",0);
-             getMandalByConstituency(meetingStatus,meetingLevel,"Yes",0);	
-			 getMeetingComments(meetingStatus,meetingLevel,"Yes",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 
-			 $("#getDetailsBtnId").attr("attr_comment","Yes");
+			 $(".mandalSlctBxCls").show();
+			 $(".constituencySlctBxCls").show();
+			 getDistrictByState(meetingStatus,meetingLevel,"No");	
+             getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);
+             getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
+			 getMeetingComments(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 
+			 $("#getDetailsBtnId").attr("attr_comment","No");
             // $("#getDetailsBtnId").attr("attr_result_type","Individual");
-             $("#districtSlctBxId").attr("attr_comment","Yes");		 
-             $("#constituencySlctBxId").attr("attr_comment","Yes");	
+             $("#districtSlctBxId").attr("attr_comment","No");		 
+             $("#constituencySlctBxId").attr("attr_comment","No");	
 			 $("#ConsolidatedradioId").prop('checked',false);
 			 $("#individualradioId").prop('checked', true);
 		}else if((meetingLevel =="Village/Ward" || meetingLevel =="Mandal/Town/Division") && diffDays>=31){
@@ -3019,23 +3023,23 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			  //$(".consolidatedCls").hide();
 			  $(".mandalSlctBxCls").hide();
 			  $(".constituencySlctBxCls").hide();
-			  $("#getDetailsBtnId").attr("attr_comment","Yes");
+			  $("#getDetailsBtnId").attr("attr_comment","No");
 			  $("#commentFilterSelectBoxId").children('option:not(:first)').remove();
-			  getDistrictByState(meetingStatus,meetingLevel,"Yes");	
-			  getConstituencyByDistrict(meetingStatus,meetingLevel,"Yes",0);//for all
-			  getMandalByConstituency(meetingStatus,meetingLevel,"Yes",0);	
-			  getMeetingComments(meetingStatus,meetingLevel,"Yes",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 	 
+			  getDistrictByState(meetingStatus,meetingLevel,"No");	
+			  getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);//for all
+			  getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
+			  getMeetingComments(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 	 
 			  // $("#getDetailsBtnId").attr("attr_result_type","Individual");
-			   $("#districtSlctBxId").attr("attr_comment","Yes");		 
-               $("#constituencySlctBxId").attr("attr_comment","Yes");
+			   $("#districtSlctBxId").attr("attr_comment","No");		 
+               $("#constituencySlctBxId").attr("attr_comment","No");
 			   $("#ConsolidatedradioId").prop('checked', false);
                $("#individualradioId").prop('checked', true);				   
 		 }else if(meetingLevel == "District" && diffDays >=31){
-			  getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,"District",0," "); 
 			  getDistrictByState(meetingStatus,meetingLevel,"No");	
               getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);//for all
               getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
-             $("#districtSlctBxId").attr("attr_comment","No");		 
+         	  getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,"District",0," "); 
+		     $("#districtSlctBxId").attr("attr_comment","No");		 
              $("#constituencySlctBxId").attr("attr_comment","No");				  
              $("#getDetailsBtnId").attr("attr_comment","No");
              $("#individualradioId").prop('checked', false);						 
@@ -3047,15 +3051,15 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 		 }else if(meetingLevel=="Constituency" && diffDays <= 31 ) {
 		  //$(".consolidatedCls").hide();
 		  $(".mandalSlctBxCls").hide();
-		   $(".constituencySlctBxCls").show();
-		  getDistrictByState(meetingStatus,meetingLevel,"Yes");	
-          getConstituencyByDistrict(meetingStatus,meetingLevel,"Yes",0);//for all
-          getMandalByConstituency(meetingStatus,meetingLevel,"Yes",0);	
-		  getMeetingComments(meetingStatus,meetingLevel,isComment,fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 
-          $("#getDetailsBtnId").attr("attr_comment","Yes");		
+		  $(".constituencySlctBxCls").show();
+		  getDistrictByState(meetingStatus,meetingLevel,"No");	
+          getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);//for all
+          getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
+		  getMeetingComments(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt"); 
+          $("#getDetailsBtnId").attr("attr_comment","No");		
          // $("#getDetailsBtnId").attr("attr_result_type","Individual");
-          $("#districtSlctBxId").attr("attr_comment","Yes");		 
-          $("#constituencySlctBxId").attr("attr_comment","Yes");
+          $("#districtSlctBxId").attr("attr_comment","No");		 
+          $("#constituencySlctBxId").attr("attr_comment","No");
            $("#ConsolidatedradioId").prop('checked', false);	  
           $("#individualradioId").prop('checked', true);				 
 		 }else if(meetingLevel=="Constituency" && diffDays >=31){
@@ -3064,8 +3068,8 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 		  $("#ConsolidatedradioId").prop('checked', true);
 		 // $("#getDetailsBtnId").attr("attr_result_type","consolidated");
 		  $(".mandalSlctBxCls").hide();
-		   $(".constituencySlctBxCls").show();
-		   $("#commentFilterSelectBoxId").val(0);
+		  $(".constituencySlctBxCls").show();
+		  $("#commentFilterSelectBoxId").val(0);
 		  getPartyMeetingComulativeCommentDetails(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,"District",0," ");
 		   getDistrictByState(meetingStatus,meetingLevel,"No");	
            getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);//for all
@@ -3073,13 +3077,13 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 		   $("#districtSlctBxId").attr("attr_comment","No");		 
           $("#constituencySlctBxId").attr("attr_comment","No");				  
         }else if(meetingLevel=="State" && diffDays <= 31){
-		  $("#getDetailsBtnId").attr("attr_comment","Yes");
-		  getDistrictByState(meetingStatus,meetingLevel,"Yes");	
-          getConstituencyByDistrict(meetingStatus,meetingLevel,"Yes",0);//for all
-          getMandalByConstituency(meetingStatus,meetingLevel,"Yes",0);	
-		  getMeetingComments(meetingStatus,meetingLevel,"Yes",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt");
-           $("#districtSlctBxId").attr("attr_comment","Yes");		 
-           $("#constituencySlctBxId").attr("attr_comment","Yes");		
+		  $("#getDetailsBtnId").attr("attr_comment","No");
+		  getDistrictByState(meetingStatus,meetingLevel,"No");	
+          getConstituencyByDistrict(meetingStatus,meetingLevel,"No",0);//for all
+          getMandalByConstituency(meetingStatus,meetingLevel,"No",0);	
+		  getMeetingComments(meetingStatus,meetingLevel,"No",fromDateStr,toDateStr,0," ","meetingCommentDtlsTblId","directRslt");
+           $("#districtSlctBxId").attr("attr_comment","No");		 
+           $("#constituencySlctBxId").attr("attr_comment","No");		
            $(".mandalSlctBxCls").hide();
            $(".constituencySlctBxCls").hide();	
 		   $("#commentFilterSelectBoxId").children('option:not(:first)').remove();
@@ -3232,7 +3236,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
 		  }
 	   });
-	 	var jsObj ={ 
+	  	var jsObj ={ 
 		             activityMemberId : globalActivityMemberId,
 					 stateId : globalStateId,
 					 fromDate : fromDateStr,
