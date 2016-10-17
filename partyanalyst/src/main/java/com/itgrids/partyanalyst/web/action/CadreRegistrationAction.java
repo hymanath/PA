@@ -151,6 +151,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	private CadreReportVO cadreReportVO;
 	private List<UserTypeVO> activityMembersList;
+	private List<CadreRegistratedCountVO> cadreRegistratedCountVOs;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -779,6 +780,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public void setCadreReportVO(CadreReportVO cadreReportVO) {
 		this.cadreReportVO = cadreReportVO;
+	}
+	
+	public List<CadreRegistratedCountVO> getCadreRegistratedCountVOs() {
+		return cadreRegistratedCountVOs;
+	}
+	public void setCadreRegistratedCountVOs(
+			List<CadreRegistratedCountVO> cadreRegistratedCountVOs) {
+		this.cadreRegistratedCountVOs = cadreRegistratedCountVOs;
 	}
 	public String execute()
 	{
@@ -2775,5 +2784,31 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
-}
+  public String getStateDtls(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getStateDtls(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){
+		  e.printStackTrace();  
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getSourceOfRegistrationDtls(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVOs = coreDashboardCadreRegistrationService.getSourceOfRegistrationDtls(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){  
+		  e.printStackTrace();    
+	  }
+	  return Action.SUCCESS;
+  }
+}  
 
