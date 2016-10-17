@@ -457,7 +457,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,Long enrlollmentYearId);
 	  public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 
-	  public List<Object[]> getTotalCadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,Long enrollmentYearId,Long userType,String levelType);
+	  public List<Object[]> getTotalCadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,Long enrollmentYearId,Long userType);
 	  public List<Object[]> getTotalCadreCountLocationWiseBasedOnYear(String locationType,Long stateId,Date fromDate,Date toDate,Long enrollmentYearId,Long userAccessLevelId,List<Long> userAccessLevelValues);
 	  
 } 
