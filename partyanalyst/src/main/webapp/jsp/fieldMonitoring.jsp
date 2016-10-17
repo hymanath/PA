@@ -90,7 +90,7 @@
                                     <td>Naresh</td>
                                     <td>3</td>
                                     <td>1</td>
-                                    <td><button class="btn btn-success text-capitalize issuesBtn">manage issues</button></td>
+                                    <td><button class="btn btn-success text-capitalize manageIssues">manage issues</button></td>
                                 </tr>
                                 <tr>
                                 	<td class="issuePending">12345</td>
@@ -103,7 +103,7 @@
                                     <td>Naresh</td>
                                     <td>3</td>
                                     <td>1</td>
-                                    <td><button class="btn btn-success text-capitalize issuesBtnCls" attr_cadreSurveyUserId="12345",attr_tabUserInfoId="123">manage issues</button></td>
+                                    <td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="3258" attr_tab_user_info_id="882">manage issues</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -154,7 +154,7 @@
                 	<h4 class="text-capital text-center">fixed issues - 4</h4>
                 </div>
 				<div class="col-md-3 col-xs-12 col-sm-3">
-				<button class="btn btn-success text-capitalize issuesBtn" id="addNewIssueId">Add New Issue</button>
+				<button class="btn btn-success text-capitalize " id="addNewIssueId">Add New Issue</button>
 				</div>
             </div>
         </div>
@@ -163,7 +163,6 @@
             	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label>
                     <select class="select" id="issueTypeId">
-                    	<option>Manpower issue</option>
                     </select>
                 </div>
                 <div class="col-md-8 col-xs-12 col-sm-8">
@@ -202,14 +201,13 @@
 <script src="js/FieldMonitoring/fieldMonitoring.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
-		$(document).on("click",".issuesBtn",function(){
-			$("#issuesModal").modal('show');
-		});
+		
 		$(".singleDate").daterangepicker({
 			singleDatePicker: true
 		});
 		$('.select').chosen({width:'100%'});
 		
+		getCadreRegIssueType();
 		
 	</script>
 </body>
