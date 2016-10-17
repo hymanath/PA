@@ -14045,5 +14045,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getSelectedChildTypeMembersForCadreReg" class="cadreRegistrationAction"  method="getSelectedChildTypeMembersForCadreReg">
+			<result type="json" name="success">
+			<param name="root">activityMembersList</param>
+		</result>
+	</action>
 </package>
 </struts>
