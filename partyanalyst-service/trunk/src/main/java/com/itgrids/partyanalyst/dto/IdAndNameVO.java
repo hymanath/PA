@@ -9,6 +9,7 @@ public class IdAndNameVO {
 	private Long attenteeCount = 0l;
 	private Long inviteeAttendeeCnt = 0l;
 	private String imagePathStr;
+	private String mobileNumber;
 	private List<IdAndNameVO> issueTypes ;
 	
 	
@@ -56,6 +57,12 @@ public class IdAndNameVO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 	
 	
