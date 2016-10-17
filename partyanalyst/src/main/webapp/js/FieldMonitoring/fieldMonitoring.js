@@ -129,12 +129,13 @@ getCadreRegIssueType();
 	  var constituencyId =$("#constituencyId").val();  
 	  var issueTypeId =$("#issueTypeId").val();
       var description =$("#descriptionId").val();
-      var cadreSurveyUserId=  12345;
+      var cadreSurveyUserId= $("#submitId").attr(attr_cadreSurveyUserId);
+	  var tabUserInfoId= $("#submitId").attr(attr_tabUserInfoId);
 	 var jsObj=
      {				
 		issueTypeId :issueTypeId,
-		cadreSurveyUserId : 12345,
-		//tabUserInfoId :tabUserInfoId,
+		cadreSurveyUserId : cadreSurveyUserId,
+		tabUserInfoId :tabUserInfoId,
 		description :description,
 		constituencyId : constituencyId
 	 }
@@ -150,4 +151,23 @@ getCadreRegIssueType();
  $(document).on("click","#addNewIssueId",function(){ 
 	$("#issueTypeDivId").show();
 	});
+	
+$(document).on("click",".issuesBtnCls",function(){ 
+    $("#issueTypeDivId").html("");
+   var cadreSurveyUserId = $(this).attr("attr_cadreSurveyUserId");
+   var tabUserInfoId = $(this).attr("attr_tabUserInfoId");
+   $("#submitId").attr("attr_cadreSurveyUserId",cadreSurveyUserId);
+   $("#submitId").attr("attr_tabUserInfoId",tabUserInfoId);
+   
+   getIssuesForTabUserInfo(cadreSurveyUserId,tabUserInfoId);
+  });
+ 
+  function getIssuesForTabUserInfo(cadreSurveyUserId,tabUserInfoId){
+    //open popup dynamically.
+  $("#issuesModal").modal('show');
+  }
+  $(document).on("click","#submitId",function(){ 
+   saveFieldIssue();
+  });
+  
 	
