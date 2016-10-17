@@ -238,7 +238,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   //tracking 
 		        	   CadreRegIssueTrack cadreRegIssueTrack = new CadreRegIssueTrack();
 		        	   cadreRegIssueTrack.setCadreRegIssueId(cadreRegIssue.getCadreRegIssueId());
-		        	   cadreRegIssueTrack.setCadreRegissueTypeId(inputVO.getIssueTypeId());
+		        	   cadreRegIssueTrack.setCadreRegIssueTypeId(inputVO.getIssueTypeId());
 		        	   cadreRegIssueTrack.setDescription(inputVO.getDescription());
 		        	   cadreRegIssueTrack.setCadreRegIssueStatusId(1L);//open
 		        	   cadreRegIssueTrack.setInsertedBy(inputVO.getLoginUserId());
