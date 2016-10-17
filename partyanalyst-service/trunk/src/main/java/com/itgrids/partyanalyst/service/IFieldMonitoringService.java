@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface IFieldMonitoringService {
 	
@@ -10,5 +12,6 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getVendorDistricts(Long stateId,Long vendorId);
 	public List<IdAndNameVO> getVendorConstituencies(Long vendorId,Long districtId);
 	public List<IdAndNameVO> getCadreRegIssueType();
+	public ResultStatus saveFieldIssue(final FieldMonitoringIssueVO inputVO);
 	
 }
