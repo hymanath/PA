@@ -2668,8 +2668,8 @@
 		<!--<input type="button" value="view not comment meeting"/>-->
 		<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12 consolidatedCls">
-			<div class="col-md-4 col-xs-12 col-sm-4"  style="text-align: center; margin-top: 25px;>
-			<label class="radio-inline consolidatedBtnCls">
+			<div class="col-md-4 col-xs-12 col-sm-4"  style="text-align: center; margin-top: 25px;">
+			<label class="radio-inline">
 			  <input type="radio" id="ConsolidatedradioId" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Consolidated 
 			</label>
 			<label  class="radio-inline individualRadioBtnCls">
