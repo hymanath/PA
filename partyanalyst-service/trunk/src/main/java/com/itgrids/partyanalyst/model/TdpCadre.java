@@ -155,6 +155,8 @@ public class TdpCadre {
 	
 	private String payMentStatus;
 	private Long parentTdpCadreId;
+	private Long tabUserInfoId;
+	private TabUserInfo tabUserInfo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -1091,5 +1093,24 @@ public class TdpCadre {
 	}
 	public void setMobileNumberDetails(MobileNumberDetails mobileNumberDetails) {
 		this.mobileNumberDetails = mobileNumberDetails;
+	}
+	
+	@Column(name="tab_user_info_id")
+	public Long getTabUserInfoId() {
+		return tabUserInfoId;
+	}
+	public void setTabUserInfoId(Long tabUserInfoId) {
+		this.tabUserInfoId = tabUserInfoId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tab_user_info_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TabUserInfo getTabUserInfo() {
+		return tabUserInfo;
+	}
+	public void setTabUserInfo(TabUserInfo tabUserInfo) {
+		this.tabUserInfo = tabUserInfo;
 	}
 }
