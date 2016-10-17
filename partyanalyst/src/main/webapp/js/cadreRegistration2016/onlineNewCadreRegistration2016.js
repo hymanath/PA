@@ -230,7 +230,7 @@ $(document).on("change","#boothsList",function(){
 	$("#mobileId").val('');
 	$("#huseNOId").val('');
 });
-  
+  /*
   function getNewCadreDetails(){
 	  $("#errorDivId").html("");
 	  $("#searchVoterDetailsId").html("");
@@ -289,7 +289,7 @@ $(document).on("change","#boothsList",function(){
 	  searchCadreVoterDetails(result);
 	   }
   });
-  }
+  }*/
 		
   function searchCadreVoterDetails(result){
 	   var str = '';
@@ -298,9 +298,6 @@ $(document).on("change","#boothsList",function(){
     for ( var i in result) {
       str += '<li>';
 		  str += '<div class="media">';
-			  str += '<div class="media-left">';
-				str += '<img src="https://mytdp.com/'+result[i].imagePath+'" class="media-object cadreImage" alt=""/>';
-			  str += '</div>';
 			  str += '<div class="media-body">';
 				  str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
 				  str += '<p>S/o:'+result[i].relativeName+'</p>';
@@ -734,7 +731,14 @@ function sendOtpToMble(){
 	
 }
 function getVoterDetails(){
-	var voterId=$("#").val();
+	
+	if(!fieldsValidation())
+	{
+		return;
+	}
+	submitVoterIdDetails();
+	var voterId=$("#inpVoterId").val();
+	
 	 var jsObj={
 		 VoterCardNumber:voterId
 	 }
@@ -744,18 +748,29 @@ function getVoterDetails(){
 		 dataType:'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	    $("#searchVoterDetailsImgId").hide();
+	   if(result!=null && result.length>0){
+	  searchCadreVoterDetails(result);
+	   }
    });
 }
 
 function getSearchVoterDetails()
 {
+	if(!fieldsValidationForSearch())
+	{
+		return;
+	}
+	submitVoterDetails();
+	
 	var constituency=$("#constituencyId").val();
 	var mandal=$("#mandalList").val();
 	var village=$("#panchayatList").val();
 	var booth=$("#boothsList").val();
 	var type=$("input[name=radioVal]:checked").val();
-	var typeVal=$("#").val();
-	 var jsobj={
+	var typeVal=$("#serchVoterNameId").val();
+	
+	 var jsObj={
 		 consistencyId:constituency,
 		 mandalId:mandal,
 		 villageId:village,
@@ -769,5 +784,60 @@ function getSearchVoterDetails()
 		 dataType:'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#searchVoterDetailsImgId").hide();
+	   if(result!=null && result.length>0){
+	  searchCadreVoterDetails(result);
+	   }
    });
+}
+
+function fieldsValusEmpty()
+{
+	$("#statesDivId").val(0).trigger('chosen:updated');
+	$("#districtId").val(0).trigger('chosen:updated');
+	$("#constituencyId").val(0).trigger('chosen:updated');
+	$("#mandalList").val(0).trigger('chosen:updated');
+	$("#panchayatList").val(0).trigger('chosen:updated');
+	$("#boothsList").val(0).trigger('chosen:updated');
+	$("#serchVoterNameId").val('');
+	$("#inpVoterId").val('');
+}
+
+function fieldsValidationForSearch()
+{
+	
+    var state=$("#statesDivId").val();
+	var district=$("#districtId").val();
+	var constituency=$("#constituencyId").val();
+	if(state == 0)
+	  {
+		 $("#errorDivId").html("Please Select State");
+		 return;
+	   }
+	 if(district == 0)
+	  {
+		 $("#errorDivId").html("Please Select district");
+		 return;
+	   }
+	if(constituency == 0)
+	  {
+		 $("#errorDivId").html("Please Select constituency");
+		 return;
+	   }
+	
+	return true;
+}
+function fieldsValidation()
+{
+	var voterId=$("#inpVoterId").val();
+	if(voterId == ""){
+		$("#enterVoterDivId").html("Please Enter Voter ID.");
+		return false;
+	}
+	return true;
+}
+function divsEmpty()
+{
+	$("#errorDivId").html("");
+	$("#enterVoterDivId").html("");
 }
