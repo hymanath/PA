@@ -3544,6 +3544,7 @@
 	   <property name="cadreRegIssueTypeDAO" ref="cadreRegIssueTypeDAO"/>
 	   <property name="cadreRegIssueDAO" ref="cadreRegIssueDAO"/>
 	   <property name="cadreRegIssueTrackDAO" ref="cadreRegIssueTrackDAO"/>
+	   <property name="cadreRegIssueStatusDAO" ref="cadreRegIssueStatusDAO"/>
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >

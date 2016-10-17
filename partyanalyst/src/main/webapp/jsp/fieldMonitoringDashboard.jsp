@@ -49,8 +49,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-xs-12 col-sm-6 b_right1">
-                                    	<h4 class="text-capital panel-title"><b>field monitoring system</b></h4>
+                                    <div class="col-md-6 col-xs-12 col-sm-6 b_right1" id="statusCountDivId">
+                                    	<!--<h4 class="text-capital panel-title"><b>field monitoring system</b></h4>
                                         <div class="row">
                                         	<div class="col-md-8 col-xs-12 col-sm-10">
                                             	<ul class="dashedB">
@@ -59,7 +59,7 @@
                                                     <li>fixed issues<span>100</span></li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>
