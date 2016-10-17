@@ -2053,10 +2053,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
 						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
 						
-						    <div>
-								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
-								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
-							</div>
+						    <div id="totalTodayCadreRegistrationBlockDivId"></div>
 							
                             <div class="row">
 							
@@ -2396,7 +2393,7 @@
 											  <div id="tsDistrictId"></div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<input type="button" class="btn btn-success" id="getDetailsBtnId" value="GetDetails"/>
+												<input type="button" class="btn btn-success" id="getCadreRegistrationDetailsBtnId" value="GetDetails"/>
 											</div>
 										</div>
 									</div>
@@ -2672,7 +2669,7 @@
 		<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12 consolidatedCls">
 			<div class="col-md-4 col-xs-12 col-sm-4"  style="text-align: center; margin-top: 25px;>
-			<label class="radio-inline">
+			<label class="radio-inline consolidatedBtnCls">
 			  <input type="radio" id="ConsolidatedradioId" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Consolidated 
 			</label>
 			<label  class="radio-inline individualRadioBtnCls">
@@ -2900,18 +2897,15 @@
 		//events
 		getEventBasicCntDtls();
 		//news please dont remove
-		$("#currentViewing").html(" LAST MONTH ( "+moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')+" TO "+moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY')+" )");
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		//getNewsBasicCounts();
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		//getPaperWiseNewsBasicCounts();
 		//Debates
-		getPartyWiseTotalDebateDetails();  
+		getPartyWiseTotalDebateDetails();
         //cadreRegistration
-		cadreRegistrationBasicCall(globalActivityMemberId);  
-		//getTotalNewRenewalCadreStateWise(globalActivityMemberId);   
-		getStateDtls(globalActivityMemberId); 
-		getSourceOfRegistrationDtls(globalActivityMemberId);    		
+		cadreRegistrationBasicCall();
 		
 	}
 	
