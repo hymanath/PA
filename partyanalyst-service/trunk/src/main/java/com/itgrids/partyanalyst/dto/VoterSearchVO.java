@@ -20,6 +20,7 @@ public class VoterSearchVO implements Serializable{
 	private Long enrollmentYearId;
 	private String status;
 	private String totalImagePathStr;
+	private String mobileNumber;
 	
 	
 	public String getTotalImagePathStr() {
@@ -112,4 +113,11 @@ public class VoterSearchVO implements Serializable{
 	public void setHouseNo(String houseNo) {
 		this.houseNo = houseNo;
 	}
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+	
 }
