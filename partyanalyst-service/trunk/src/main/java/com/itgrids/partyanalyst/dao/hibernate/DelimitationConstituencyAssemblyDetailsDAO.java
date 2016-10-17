@@ -589,4 +589,15 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				" from DelimitationConstituencyAssemblyDetails model " +
 				"where model.constituency.district.districtId = ?  order by model.delimitationConstituency.constituency.name "  ,params);
 	}
+	
+	public List<Constituency> getPCCompleteDetailsByAcId(Long constituencyId){
+		
+		Query query = getSession().createQuery("" +
+				" SELECT model.delimitationConstituency.constituency.constituency " +
+			    " FROM   DelimitationConstituencyAssemblyDetails model" +
+				" WHERE  model.constituency.constituencyId = :constituencyId and model.delimitationConstituency.year = 2009");
+	    query.setParameter("constituencyId",constituencyId);
+	    return query.list();
+	}
+	
 }
