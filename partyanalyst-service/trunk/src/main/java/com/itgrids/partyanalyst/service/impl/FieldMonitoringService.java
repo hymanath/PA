@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTrackDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
@@ -20,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
+import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
@@ -45,6 +48,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IUserAddressDAO userAddressDAO;
 	private ICadreRegIssueTypeDAO  cadreRegIssueTypeDAO;
+	
 	private DateUtilService dateUtilService;
 	private ICadreRegIssueDAO cadreRegIssueDAO;
 	private ICadreRegIssueTrackDAO cadreRegIssueTrackDAO;
@@ -86,7 +90,6 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	public void setCadreRegIssueTypeDAO(ICadreRegIssueTypeDAO cadreRegIssueTypeDAO) {
 		this.cadreRegIssueTypeDAO = cadreRegIssueTypeDAO;
 	}
-	
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
 	}
@@ -177,7 +180,128 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			LOG.error("Exception raised in getCadreRegIssueType() in FieldMonitoringService class", e);
 		}
 		return regIssueType;
-	}  
+	} 
+    
+    public FieldMonitoringVO getTabUsersDetailsByVendorAndLocation(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal){
+    	FieldMonitoringVO returnVO = new FieldMonitoringVO();
+    	try {
+    		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-DD");
+			Date startDate = null;
+			Date endDate = null;
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocation(vendorId, startDate, endDate, locationType, locationVal);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					FieldMonitoringVO vo = new FieldMonitoringVO();
+					
+					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
+					vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
+					vo.setTotalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					
+					returnList.add(vo);
+				}
+			}
+			
+			//LastHour Counts
+			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCounts(vendorId, currentTime, locationType, locationVal);
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					if(vo != null)
+						vo.setLastHourCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				}
+			}
+			
+			//Issues Counts
+			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCounts(vendorId, locationType, locationVal);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					if(vo != null){
+						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						if(statusId.longValue() == 1l)
+							vo.setOpenIssues(count);
+						else if(statusId.longValue() == 2l)
+							vo.setFixedIssues(count);
+						else if(statusId.longValue() == 3l)
+							vo.setClosedIssues(count);
+					}
+				}
+			}
+			
+			returnVO = getDataCollectorsCounts(vendorId, fromDateStr, toDateStr, locationType, locationVal);
+			returnVO.setSubList(returnList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getTabUsersDetailsByVendorAndLocation() of FieldMonitoringService", e);
+		}
+    	return returnVO;
+    }
+    
+    public FieldMonitoringVO getMatchedVOByList(Long userId,Long tabUserId,List<FieldMonitoringVO> list){
+    	FieldMonitoringVO returnvo = null;
+    	try {
+			if(list != null && !list.isEmpty()){
+				for (FieldMonitoringVO vo : list) {
+					if(vo.getCadreSurveyUserId().longValue() == userId.longValue()){
+						if(vo.getTabUserId().longValue() == tabUserId.longValue()){
+							return vo;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getMatchedVOByList() of FieldMonitoringService", e);
+		}
+    	return returnvo;
+    }
+    
+    public FieldMonitoringVO getDataCollectorsCounts(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal){
+    	FieldMonitoringVO returnvo = new FieldMonitoringVO();
+    	try {
+    		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-DD");
+			Date startDate = null;
+			Date endDate = null;
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			Long totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocation(vendorId, startDate, endDate, locationType, locationVal);
+			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocation(vendorId, currentTime, locationType, locationVal);
+			Long passiveCount = 0l;
+			if(totalCount == null)
+				totalCount = 0l;
+			if(activeCount == null)
+				activeCount = 0l;
+			passiveCount = totalCount - activeCount;
+			
+			returnvo.setTotalDataCollectors(totalCount);
+			returnvo.setActiveUsers(activeCount);
+			returnvo.setPassiveUsers(passiveCount);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getDataCollectorsCounts() of FieldMonitoringService", e);
+		}
+    	return returnvo;
+    }
     
     public ResultStatus saveFieldIssue(final FieldMonitoringIssueVO inputVO){
 		final ResultStatus rs = new ResultStatus();
@@ -257,9 +381,4 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		}
 		return rs;
 	}
-    
-    
-    
-    
-    
 }
