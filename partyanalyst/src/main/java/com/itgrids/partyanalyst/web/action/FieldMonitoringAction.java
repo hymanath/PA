@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -26,6 +27,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private String task;
 		private List<IdAndNameVO> idAndNameVOList;  
 		private ResultStatus resultStatus; 
+		private FieldMonitoringVO fieldMonitoringVO;
 		
 	//Attributes
 	   private IFieldMonitoringService fieldMonitoringService;
@@ -58,6 +60,12 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
 		this.idAndNameVOList = idAndNameVOList;
 	}
+	public FieldMonitoringVO getFieldMonitoringVO() {
+		return fieldMonitoringVO;
+	}
+	public void setFieldMonitoringVO(FieldMonitoringVO fieldMonitoringVO) {
+		this.fieldMonitoringVO = fieldMonitoringVO;
+	}
 	
 
 	public ResultStatus getResultStatus() {
@@ -68,6 +76,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		this.resultStatus = resultStatus;
 	}
 
+	
 	//Business methods
 	public String execute(){
 		return Action.SUCCESS;
@@ -154,4 +163,20 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
      }
 
 	
+    public String getTabUsersDetailsByVendorAndLocation(){
+    	try {
+    		jObj = new JSONObject(getTask());
+    		Long vendorId = jObj.getLong("vendorId");
+    		String fromDateStr = jObj.getString("fromDate");
+    		String toDateStr = jObj.getString("toDate");
+    		String locationType = jObj.getString("locationType");
+    		Long locationVal = jObj.getLong("locationVal");
+    		
+    		fieldMonitoringVO = fieldMonitoringService.getTabUsersDetailsByVendorAndLocation(vendorId, fromDateStr, toDateStr, locationType, locationVal);
+    		
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	return Action.SUCCESS;
+    }
 }
