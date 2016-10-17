@@ -126,7 +126,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
      public String getCadreRegIssueType(){
 		
 		try {
-			jObj = new JSONObject(getTask());
+			
 			idAndNameVOList =fieldMonitoringService.getCadreRegIssueType();
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCadreRegIssueType()  of FieldMonitoringAction", e);
@@ -144,7 +144,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
      		if(regVO != null)
      			userId = regVO.getRegistrationID();
      		else
-     			userId = 1L;
+     			userId = 1L;//CODE TO REMOVE
      		
      		jObj = new JSONObject(getTask());
      		FieldMonitoringIssueVO  inputVO = new FieldMonitoringIssueVO();  
