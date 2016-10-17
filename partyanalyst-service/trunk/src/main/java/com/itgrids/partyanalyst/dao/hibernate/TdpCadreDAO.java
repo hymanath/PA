@@ -7655,7 +7655,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
        
 	   Query query = getSession().createQuery(queryStr.toString()); 
 	   if(userAccessLevelId != null){
-    	   query.setParameter("userAccessLevelValues", userAccessLevelValues);
+    	   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
        }
 	   if(fromDate!= null && toDate!=null){
 		   query.setDate("fromDate", fromDate);
