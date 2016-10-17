@@ -31,4 +31,6 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues);
 	public CadreReportVO getApAndTsDistrictList();
 	public List<IdAndNameVO> getOccupationList();
+	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate);
+
 }
