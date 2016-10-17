@@ -158,7 +158,7 @@
 				</div>
             </div>
         </div>
-        <div class="block m_top20">
+        <div class="block m_top20"  id="issueTypeDivId" style="display:none;">
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="col-md-8 col-xs-12 col-sm-8">
                 	<label>Issue Description</label>
-                    <input type="text" class="form-control"/>
+                    <input type="text" class="form-control" id="descriptionId"/>
                 </div>
             </div>
         </div>

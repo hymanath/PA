@@ -8,7 +8,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,7 +24,8 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private HttpServletRequest request;
 		private JSONObject jObj;
 		private String task;
-		private List<IdAndNameVO> idAndNameVOList;
+		private List<IdAndNameVO> idAndNameVOList;  
+		private ResultStatus resultStatus; 
 		
 	//Attributes
 	   private IFieldMonitoringService fieldMonitoringService;
@@ -53,6 +57,15 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 
 	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
 		this.idAndNameVOList = idAndNameVOList;
+	}
+	
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 	//Business methods
@@ -112,5 +125,33 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	
 	    return Action.SUCCESS;
 	}
+    public String saveFieldIssue()
+     {
+     	try
+     	{
+     		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+     		
+     		Long userId = null;
+     		if(regVO != null)
+     			userId = regVO.getRegistrationID();
+     		else
+     			userId = 1L;
+     		
+     		jObj = new JSONObject(getTask());
+     		FieldMonitoringIssueVO  inputVO = new FieldMonitoringIssueVO();  
+     		inputVO.setIssueTypeId(jObj.getLong("issueTypeId"));
+     		inputVO.setCadreSurveyUserId(jObj.getLong("cadreSurveyUserId"));
+     		inputVO.setTabUserInfoId(jObj.getLong("tabUserInfoId"));
+     		inputVO.setDescription(jObj.getString("description"));
+     		inputVO.setLoginUserId(userId);       
+     		inputVO.setConstituencyId(jObj.getLong("constituencyId"));
+     	    resultStatus = fieldMonitoringService.saveFieldIssue(inputVO);
+     	}catch(Exception e)
+     	{
+     		LOG.error("Exception Occured in saveFieldIssue() in FieldMonitoringAction ",e);
+     	}
+     	return Action.SUCCESS;
+     }
+
 	
 }
