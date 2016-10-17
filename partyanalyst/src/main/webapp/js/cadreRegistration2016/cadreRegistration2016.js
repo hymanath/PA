@@ -352,7 +352,14 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		if(!validationDetails()){
 		return;
 		}
-		
+		var tdpCadreId = $("#hiddenTdpCadreId").val();
+		if(tdpCadreId != null && tdpCadreId != ""){
+		$(".isNomineeChangd").each(function(){
+				if($(this).is(":checked")){
+					$("#hiddenIsNomneeChngd").val("Y");
+				}
+			});
+		}
 	var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
