@@ -2053,7 +2053,10 @@
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
 						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
 						
-						    <div id="totalTodayCadreRegistrationBlockDivId"></div>
+						    <div>
+								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
+								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
+							</div>
 							
                             <div class="row">
 							
@@ -2901,9 +2904,12 @@
 		getAllNewsPapers();
 		//getPaperWiseNewsBasicCounts();
 		//Debates
-		getPartyWiseTotalDebateDetails();
+		getPartyWiseTotalDebateDetails();  
         //cadreRegistration
-		cadreRegistrationBasicCall();
+		cadreRegistrationBasicCall(globalActivityMemberId);  
+		//getTotalNewRenewalCadreStateWise(globalActivityMemberId);   
+		getStateDtls(globalActivityMemberId); 
+		getSourceOfRegistrationDtls(globalActivityMemberId);    		
 		
 	}
 	
