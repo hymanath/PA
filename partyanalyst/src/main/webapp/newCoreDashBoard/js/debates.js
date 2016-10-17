@@ -1,12 +1,12 @@
-var customStartDate = moment().format('DD/MM/YYYY')
-var customEndDate = moment().format('DD/MM/YYYY');
+var customStartDate =  moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
+var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 $(document).ready(function(){
 	
 	
 	$("#dateRangeIdForDebates").daterangepicker({
 		opens: 'left',
-		startDate: moment(),
-        endDate: moment(),
+	    startDate: moment().subtract(1, 'month').startOf('month'),
+        endDate: moment().subtract(1, 'month').endOf('month'),
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -21,7 +21,7 @@ $(document).ready(function(){
            'This Year': [moment().startOf('Year'), moment()]
         }
 	})
-	$(".debatesDate").html(" TODAY ( "+customStartDate+" )");
+	$(".debatesDate").html(" LAST MONTH ( "+customStartDate+" to "+customEndDate+" )");
 	$('#dateRangeIdForDebates').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDate = picker.startDate.format('DD/MM/YYYY');
 	  customEndDate = picker.endDate.format('DD/MM/YYYY');
