@@ -2070,7 +2070,7 @@ $(document).on("click","#settingsCadre",function(){
 	$(this).closest(".cadreRDD").hide();
 });
 
-$(document).on("click","#getDetailsBtnId",function(){
+$(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	 
 	  var renewal2016CheckboxIsChecked="N";
 	  var new2016CheckboxIsChecked="N";
