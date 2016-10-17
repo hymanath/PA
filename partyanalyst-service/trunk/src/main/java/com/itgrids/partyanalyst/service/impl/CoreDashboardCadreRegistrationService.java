@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -71,6 +72,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
     private IDistrictDAO districtDAO;
     private IOccupationDAO occupationDAO;
+    private SmsCountrySmsService smsCountrySmsService;
     
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -152,6 +154,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 	public void setOccupationDAO(IOccupationDAO occupationDAO) {
 		this.occupationDAO = occupationDAO;
+	}
+	
+	public SmsCountrySmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -1772,4 +1781,27 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return null;
 	}
+
+public String generatingAndSavingOTPDetails(String mobileNo){
+	try {
+		RandomNumberGeneraion rnd = new RandomNumberGeneraion();
+		int otpRand = 0;
+		int refRand = 0;
+		
+		while(otpRand <= 0 && refRand <= 0){
+			 otpRand = rnd.randomGenerator(6);
+			 refRand = rnd.randomGenerator(6);
+		}
+		String refeRenceNo = String.valueOf(refRand);
+		String otpNum = String.valueOf(otpRand);
+		String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
+		String[] phoneNumbers = {mobileNo.toString()};
+		smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+	} catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+		return "failure";
+	}
+	return "success";
+}
 }
