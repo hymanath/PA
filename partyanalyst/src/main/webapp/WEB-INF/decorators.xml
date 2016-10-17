@@ -689,6 +689,8 @@
 		 <pattern>/tabUserAccountDetailsAction*</pattern>
 		<pattern>/showArticlesAction*</pattern> 
 		<pattern>/cadreRegistrationAction*</pattern>
+		<pattern>/cadreOnlineRegistrationAction*</pattern>           
+		
 		<pattern>/cadreRegistrationOverviewAction*</pattern>           
 		<pattern>/fieldMonitoringAction*</pattern> 
 		<pattern>/dataMonitoringAction*</pattern>
