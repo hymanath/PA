@@ -2980,7 +2980,6 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 			  //$("#ConsolidatedradioId").prop('checked',true);
 			  $(".individualRadioBtnCls").show();
 			  $("#individualradioId").prop('checked',true);
-			  $(".consolidatedBtnCls").hide();
 			  $("#constituencySlctBxId").attr("attr_comment","No");				  
               $("#districtSlctBxId").attr("attr_comment","No");
 			  $("#getDetailsBtnId").attr("attr_comment","No");
