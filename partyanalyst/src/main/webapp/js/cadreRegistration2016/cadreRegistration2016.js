@@ -600,22 +600,23 @@ $(document).on("click",".isImageCheck",function(){
  function eachTimeClearFields()
  {
 	$("#nameId1").val('');  
+	$("#actuploadImg").removeAttr('src');
 	$("#actuploadImg").attr('src','dist/img/default_image.png');
 	$("#newCheckImgId").attr('checked', false);
 	$("#exstCheckImgId").attr('checked',false);
-	$("#genderId").val('').trigger('chosen:updated');
+	$("#genderId").val(0).trigger('chosen:updated');
 	$("#ageId").val(''); 
 	$("#dobId").val('');  
 	$("#selfVoetrId").val('');            
 	$("#updatedVoetrId").val('');       
 	$("#voterIdText").val('');
 	$("#aadharId").val('');
-	$("#casteListId").val('').trigger('chosen:updated'); 
-	$("#eductnQualId").val('').trigger('chosen:updated');   
+	$("#casteListId").val(0).trigger('chosen:updated'); 
+	$("#eductnQualId").val(0).trigger('chosen:updated');   
 	$("#prvNomneNameId").val('');
-	$("#prvNomneGendrId").val('').trigger('chosen:updated');
+	$("#prvNomneGendrId").val(0).trigger('chosen:updated');
 	$("#prevNomneAgeId").val('');
-	$("#prevNomneReltvId").val('').trigger('chosen:updated');
+	$("#prevNomneReltvId").val(0).trigger('chosen:updated');
 	$('#changeNomineeId').attr('checked', false);
 	$("#prvNomneNameDivId").html("");
 	$("#imgErrDivId").html("");
@@ -624,7 +625,11 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prevNomneReltvDivId").html("");
 	$("#savingStatusDivId").html("");
 	$("#membershipId").html("");
-	
+	$("#submitCadreForm").hide();
+	$("#mobileId1").val('');
+	$("#emailId").val('');
+	$("#occupationId").val(0).trigger('chosen:updated');
+	$("#prevNomneAadharNoId").val('');
 }
 function getOccupationList(){
 	   $.ajax({          

@@ -388,6 +388,7 @@ $(document).on("change","#boothsList",function(){
   });
   
    function getSearchByRelativeVoterIdDetails(){
+	   eachTimeClearFields();
 	   $("#populatingDtsDivImgId").show();
 	   var flag = 0;
    $(".searchChkboxCls").each(function(){
@@ -558,17 +559,17 @@ $(document).on("change","#boothsList",function(){
 					
 				  //str += '<p id="relaNameId'+i+'" >S/o:'+result[i].relativeName+'</p>';
 				  if(result[i].voterId != null && result[i].voterId > 0)
-					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
+					str += '<p  class="voterCls ownVID">V.ID: <span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger"> (Self V.ID)</span>&nbsp;&nbsp;';
 				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
-					  str += '<p class="voterCls relativeVID"><span>V.ID:</span><span id="relativeVID'+i+'">'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
-				  str += '<b>MemShip.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
-				  str += '<p>H.no:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
-				  str += '<span>&nbsp;&nbsp;Gender : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
-				  str += '<span>&nbsp;&nbsp;Age :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
+					  str += '<p class="voterCls relativeVID"><span>V.ID: </span><span id="relativeVID'+i+'">'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning"> (Relative V.ID)</span>&nbsp;&nbsp;';
+				  str += '<b>M.ID: </b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
+				  str += '<p>H.NO: <span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
+				  str += '<span>&nbsp;&nbsp;GENDER: <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
+				  str += '<span>&nbsp;&nbsp;AGE: <span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
 					str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'" attr_relativeType="'+result[i].relativeType+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 				  str += '</div>';
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
@@ -622,6 +623,7 @@ $(document).on("click",".searchChkboxClsR",function(){
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
 	  var enrolYear = $(this).attr("attr_enrol_yId");
 	  var relativeVoter = $(this).attr("attr_relative_voter");
+	  var relativeType = $(this).attr("attr_relativeType");
 	  var status = "renewal";
 	  
 	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
@@ -631,7 +633,7 @@ $(document).on("click",".searchChkboxClsR",function(){
 	  
 	  if(relativeVoter != null && relativeVoter > 0){
 		  var image=$(this).attr("attr_img1");
-		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter);
+		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter,relativeType);
 	  }
 	  else{
 		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
@@ -736,7 +738,7 @@ function getAllConstitencyList()
   });*/
   
   
-  function renewalSearchRelativeMembershipDetails(num,image,tdpCadreId,status,relativeVoter){
+  function renewalSearchRelativeMembershipDetails(num,image,tdpCadreId,status,relativeVoter,relativeType){
 	 var candidateName=$("#candidateName"+num+"").html();
 	  var relativeName=$("#relaNameId"+num).html();
 	  var voterId=$("#relativeVID"+num).html();
@@ -754,11 +756,28 @@ function getAllConstitencyList()
 			     str += '</div>';
 			       str += '<div class="media-body" id="relativeProfileDataId">';
 				    str += '<h5 class="text-capitalize">'+candidateName+ '</h5>';
-				     str += '<p>S/o:'+relativeName+'</p>';
-			           str += '<p>V.ID: '+voterId+ '&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span></p>';
-				        str += '<p>H.no:<span>'+houseNo+'</span>&nbsp;&nbsp;|';
-				      str += '<span>&nbsp;&nbsp;Gender : <span>'+gender+'</span>&nbsp;&nbsp;|</span>';
-				    str += '<span>&nbsp;&nbsp;Age :<span>'+age+'</span></span>';
+					
+					/*if(relativeType == 'Mother'){
+						if(gender == 'F')
+							str += '<p>D/O: '+relativeName+'</p>';
+						else
+							str += '<p>S/O: '+relativeName+'</p>';
+					}
+					else if(relativeType == 'Husband'){
+						str += '<p>W/O: '+relativeName+'</p>';
+					}
+					else{
+						if(gender == 'F')
+							str += '<p>D/O: '+relativeName+'</p>';
+						else
+							str += '<p>S/O: '+relativeName+'</p>';
+					}*/
+					str+='<p>'+relativeName+'</p>';
+				     //str += '<p>S/O: '+relativeName+'</p>';
+			           str += '<p>V.ID: '+voterId+ '&nbsp;&nbsp;<span class="text-warning"> (Relative V.ID)</span></p>';
+				        str += '<p>H.NO: <span>'+houseNo+'</span>&nbsp;&nbsp;|';
+				      str += '<span>&nbsp;&nbsp;GENDER: <span>'+gender+'</span>&nbsp;&nbsp;|</span>';
+				    str += '<span>&nbsp;&nbsp;AGE: <span>'+age+'</span></span>';
 				  str += '</p>';
 			    str += '<div class="checkboxAlign">';
 			 str += '<input type="checkbox" id="checkbox'+num+'" class="checkbox-custom"/>';

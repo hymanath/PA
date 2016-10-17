@@ -493,7 +493,7 @@
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreVoterDivId" style="display:none;">
                         	<label>Voter Id -<i> <span class="text-warning">Voter ID</span></i></label>
-                            <input type="text" class="form-control" id="selfVoetrId"/>
+                            <input type="text" class="form-control" id="selfVoetrId" disabled/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreUpdateVotrDivId" style="display:none;">
                         	<label>Updated Voter Id -<i> <span class="text-danger">Self V.ID</span></i></label>
