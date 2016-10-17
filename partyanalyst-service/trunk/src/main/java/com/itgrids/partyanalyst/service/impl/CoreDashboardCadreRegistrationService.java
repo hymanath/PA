@@ -1506,7 +1506,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			Long ttlContStarted = 0l;
 			if(stateId == 1l){
 				ttlContStarted = tdpCadreEnrollmentInfoDAO.getTotalConstituencyForCdrRegStarted(1l);
-				cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);
+				cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);   
 				cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,175l));
 			}else{
 				ttlContStarted = tdpCadreEnrollmentInfoDAO.getTotalConstituencyForCdrRegStarted(36l);
@@ -1515,24 +1515,20 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			}
 			
 			//total tab user in field AP
-			Long ttlTabUserInField = 0l;
-			if(stateId == 1l){
-				ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(today, 1l);
-				cadreRegistratedCountVO.setInField(ttlTabUserInField);
-			}else{
-				ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(today, 1l);
-				cadreRegistratedCountVO.setInField(ttlTabUserInField);
-			}
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
+			Long ttlTabUserInField = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,lastOneHourTime,today);
+			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);  
+			
 			
 			//total submitted data
-			Long ttlSubmittedDataToday = 0l;  
-			if(stateId == 1l){
-				ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
-				cadreRegistratedCountVO.setTotalSubmittedToday(ttlSubmittedDataToday);
-			}else{
-				ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 36l);
-				cadreRegistratedCountVO.setTotalSubmittedToday(ttlSubmittedDataToday);
-			}
+			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
+			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
+			
 			return cadreRegistratedCountVO;
 		}catch(Exception e){
 			e.printStackTrace();
