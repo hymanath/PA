@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorLocationDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -16,8 +17,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	
 	//Attributes
 	private IFieldVendorLocationDAO fieldVendorLocationDAO;
-	private IFieldVendorTabUserDAO  fieldVendorTabUserDAO;
-	
+	private IFieldVendorTabUserDAO  fieldVendorTabUserDAO;        
+	private ICadreRegIssueTypeDAO  cadreRegIssueTypeDAO;
 	//Setters
 	public void setFieldVendorLocationDAO(
 			IFieldVendorLocationDAO fieldVendorLocationDAO) {
@@ -28,7 +29,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		this.fieldVendorTabUserDAO = fieldVendorTabUserDAO;
 	}
 	
-    public List<IdAndNameVO> getVendors(Long stateId){
+    public ICadreRegIssueTypeDAO getCadreRegIssueTypeDAO() {
+		return cadreRegIssueTypeDAO;
+	}
+	public void setCadreRegIssueTypeDAO(ICadreRegIssueTypeDAO cadreRegIssueTypeDAO) {
+		this.cadreRegIssueTypeDAO = cadreRegIssueTypeDAO;
+	}
+	public List<IdAndNameVO> getVendors(Long stateId){
     	List<IdAndNameVO> returnList = null;
     	try{
     		
@@ -87,11 +94,24 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnList;
     }
     
-    
-    
-    
-    
-    
-    
+    public List<IdAndNameVO> getCadreRegIssueType() {
+		List<IdAndNameVO> regIssueType = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> issueType = cadreRegIssueTypeDAO.getCadreRegIssueType();
+			if (issueType != null && issueType.size() > 0) {
+				for (Object[] objects : issueType) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					regIssueType.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getCadreRegIssueType() in FieldMonitoringService class", e);
+		}
+		return regIssueType;
+	}  
     
 }

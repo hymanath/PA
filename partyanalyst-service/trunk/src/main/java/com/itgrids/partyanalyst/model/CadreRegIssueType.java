@@ -19,12 +19,13 @@ public class CadreRegIssueType extends BaseModel implements Serializable {
 	/**
 	 * @param args
 	 */
+	
+	private Long cadreRegIssueTypeId;
+	private String issueType;//issue_type
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "cadre_reg_issue_type_id", unique = true, nullable = false)
-	private Long cadreRegIssueTypeId;
-	private String issue_type;//issue_type
-	
 	public Long getCadreRegIssueTypeId() {
 		return cadreRegIssueTypeId;
 	}
@@ -32,11 +33,12 @@ public class CadreRegIssueType extends BaseModel implements Serializable {
 		this.cadreRegIssueTypeId = cadreRegIssueTypeId;
 	}
 	@Column(name="issue_type")
-	public String getIssue_type() {
-		return issue_type;
+	public String getIssueType() {
+		return issueType;
 	}
-	public void setIssue_type(String issue_type) {
-		this.issue_type = issue_type;
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
 	}
-
+	
+	
 }

@@ -9,5 +9,6 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getVendors(Long stateId);
 	public List<IdAndNameVO> getVendorDistricts(Long stateId,Long vendorId);
 	public List<IdAndNameVO> getVendorConstituencies(Long vendorId,Long districtId);
+	public List<IdAndNameVO> getCadreRegIssueType();
 	
 }
