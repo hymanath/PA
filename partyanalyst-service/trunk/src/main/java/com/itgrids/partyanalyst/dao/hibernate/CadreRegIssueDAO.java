@@ -95,7 +95,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		query.setParameter("vendorId", vendorId);
 		query.setParameter("locationVal", locationVal);
 		if(currentDate != null){
-			query.setDate("currentDate", currentDate);
+			query.setParameter("currentTime", currentDate);
 		}
 		
 		return query.list();
@@ -201,7 +201,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		query.setParameter("vendorId", vendorId);
 		query.setParameter("locationVal", locationVal);
 		if(currentDate != null){
-			query.setDate("currentDate", currentDate);
+			query.setParameter("currentTime", currentDate);
 		}
 		
 		return (Long) query.uniqueResult();

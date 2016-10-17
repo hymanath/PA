@@ -197,7 +197,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	FieldMonitoringVO returnVO = new FieldMonitoringVO();
     	try {
     		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
-			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-DD");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date startDate = null;
 			Date endDate = null;
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
@@ -286,7 +286,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     public FieldMonitoringVO getDataCollectorsCounts(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal){
     	FieldMonitoringVO returnvo = new FieldMonitoringVO();
     	try {
-    		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-DD");
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date startDate = null;
 			Date endDate = null;
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
