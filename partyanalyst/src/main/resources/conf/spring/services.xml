@@ -3536,6 +3536,11 @@
 	<bean name="fieldMonitoringService" class="com.itgrids.partyanalyst.service.impl.FieldMonitoringService" >
 	   <property name="fieldVendorLocationDAO" ref="fieldVendorLocationDAO"/>
 	   <property name="fieldVendorTabUserDAO" ref="fieldVendorTabUserDAO"/>
+	   <property name="transactionTemplate" ref="transactionTemplate" />
+	   <property name="constituencyDAO" ref="constituencyDAO" />
+	   <property name="districtDAO" ref="districtDAO" />
+	   <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	   <property name="userAddressDAO" ref="userAddressDAO" />
 	   <property name="cadreRegIssueTypeDAO" ref="cadreRegIssueTypeDAO"/>
 	</bean>
 	
