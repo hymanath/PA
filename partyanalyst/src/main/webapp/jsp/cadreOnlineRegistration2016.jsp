@@ -235,14 +235,67 @@
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
                     <h3 class="text-left text-capital text-muted m_top10">New Membership</h3>
                 </div>
-                <!-- Voter ID Search Block -->
+<!-- Confirmation Block -->
+     <div class="panel-body voterIdConfirm hide">
+		<div>
+		   <div class="col-md-1 col-xs-12 col-sm-1">
+				<span id="voterIdBack" class="backBtn"> ← Back</span>
+			</div>
+	 	</div>	
+	    <div class="row">
+          <div class="col-md-12 col-xs-12 col-sm-12">
+            <h4 class="panel-title text-capital">Do you have voter id ?</h4>
+           </div>
+        </div>
+	   <div class="col-md-2 col-xs-12 col-sm-2 m_top30">
+          <button class="btn btn-success btn-block btn-lg text-capital submitVoterSearch">YES</button>
+       </div>
+       <div class="col-md-2 col-xs-12 col-sm-2 m_top30">
+        <button class="btn btn-success btn-block btn-lg text-capital noVoterId">NO</button>
+      </div>
+    </div>
+<!-- Entering VoterId Block -->
+  <div class="panel-body enterVoterIdBlock hide">
+    <div>
+	 <div class="col-md-1 col-xs-12 col-sm-1">
+		<span id="enterVoterIdBack" class="backBtn"> ← Back</span>
+	</div>
+  </div>
+  <div class="row">
+    <div id="enterVoterDivId" style="color:red;"></div>
+        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+              <label>Enter Voter ID:</label>
+                <input type="text" class="form-control" id="inpVoterId" />
+         </div>
+	<div  class="col-md-4 col-xs-12 col-sm-6 m_top30">
+	   <button class="btn btn-success text-capital submitVoterId" onclick="getVoterDetails();">Submit</button> 
+	 </div>
+  </div>
+  <div  class="col-md-4 col-xs-12 col-sm-6 m_top10">
+	   <button class="btn btn-success text-capital forgetVoterId" style="margin-left:100px;" onclick="">Forget Voter Card NO</button> 
+	 </div>
+</div>
+	
+	<!-- Voter ID Search Block -->
                 <div class="panel-body voterIdSearch hide">
-                	<div class="row">
+				   <div>
+				       <div class="col-md-1 col-xs-12 col-sm-1 " id="searchOwnVoterIdBack">
+							<span id="searchVoterIdBack" class="backBtn"> ← Back</span>
+						 </div>
+						 <div class="col-md-1 col-xs-12 col-sm-1" id="searchFamiVoterIdBack">
+							<span id="searchFamVoterIdBack" class="backBtn"> ← Back</span>
+						 </div>
+					</div>	
+                	<div class="row" id="serchOwnVoterDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">search your voter id</h4>
+                        	<h4 class="panel-title text-capital">Search Your Own Voter Card No</h4>
                         </div>
                     </div>
-					
+					<div class="row" id="serchFamVoterDivId">
+                    	<div class="col-md-12 col-xs-12 col-sm-12">
+                        	<h4 class="panel-title text-capital">Search Your Family Voter Card No</h4>
+                        </div>
+                    </div>
                     <div class="row m_top30">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="errorDivId" style="color:red;"></div>
@@ -292,37 +345,44 @@
 							  <option value="0">Select Booth</option>
 							</select>
                         </div>
-                       <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Name</label>
-                            <input type="text" class="form-control" id="nameId"/>
+					 <div class="row">
+						<div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
+                            <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="UsrsId"/>H.NO
+						   </label>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Mobile No</label>
-                            <input type="text" class="form-control" id="mobileId"/>
+                       <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
+                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="marUsrsId"/>Name
+						   </label>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>House Number</label>
-                            <input type="text" class="form-control" id="huseNOId"/>
+                        <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
+                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="marUsrsId"/>Voter ID
+						   </label>
                         </div>
+					  </div>
+					 <div class="col-md-4 col-xs-12 col-sm-6">
+                            <input type="text" class="form-control" id="serchVoterNameId" />
+                      </div>
 					</div>
 					<div class="row">
-						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
-							<span id="voterIdBack" class="backBtn"> ← Back</span>
-						</div>
                         <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails();">Search voter id</button>
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search voter id</button>
                         </div>
                     </div>
                 </div>
+				
                 <!-- Voter ID Search Block End-->
                 <!-- search Results Block -->
                 <div class="panel-body searchResultsBlock hide" >
+				       <div class="col-md-1 col-xs-12 col-sm-1 m_top5" id="voterIdSearchBack">
+							<span id="searchResultsBack" class="backBtn"> ← Back</span>
+						</div>
+						 <div class="col-md-1 col-xs-12 col-sm-1 m_top5" id="enterVoterIdDetailsBack">
+							<span id="enterVoterIdResultsBack" class="backBtn"> ← Back</span>
+						</div>
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12" id="searchVoterDetailsId"></div>
                     	<div id="searchVoterDetailsImgId" style="display:none;"><center><img src="images/search.gif"/></center></div>
-						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
-							<span id="searchResultsBack" class="backBtn"> ← Back</span>
-						</div>
+						
                         <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
                         </div>
@@ -1070,6 +1130,27 @@
 	</div>
 </div>
 
+<div class="modal fade" id="memChckBoxModalId">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Cadre Mobile Number</h4>
+      </div>
+      <div class="modal-body">
+		<label>Existing Mobile No:</label>
+			<input type="text" id="checkMblNoId"/>
+		<button type="button" class="btn btn-success" onclick="sendOtpToMble();">ok</button
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-primary">Add Nominee</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>
@@ -1082,8 +1163,8 @@
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
-<script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
+<script src="js/cadreRegistration2016/onlineCadreRegistration2016.js" type="text/javascript"></script>
+<script src="js/cadreRegistration2016/onlineNewCadreRegistration2016.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -1117,7 +1198,7 @@ $(".renewalSearchResults").mCustomScrollbar({
 	setHeight:'300px'
 });
 $('.select').chosen({width:'100%'});
-$(document).on("click",".registerNew",function(){
+/*$(document).on("click",".registerNew",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
@@ -1128,7 +1209,7 @@ $(document).on("click",".registerNew",function(){
 		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
 		$(".mainBlocks").removeClass("animated fadeOut");
 	},1000);
-});
+});*/
 $(document).on("click","#searchResultsBackBtn",function(){
 	$(".profileDetailsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1231,19 +1312,6 @@ $(document).on("click","#profileBackBtnR",function(){
 	$("#renewalMembershipId").html(' ');
 });
 
-$(document).on("click","#searchResultsBack",function(){
-	$(".searchResultsBlock").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".searchResultsBlock").addClass("hide");
-		$(".voterIdSearch").removeClass("hide");
-		$(".voterIdSearch").addClass("animated fadeIn");
-	},500);
-	setTimeout(function(){
-		$(".voterIdSearch").removeClass("animated fadeOut");
-		$(".searchResultsBlock").removeClass("animated fadeIn");
-	},1000);
-	//$("#nameId").
-});
 $(document).on("click","#renewalBackBtn",function(){
 	$(".selectMembership,.subBlockR,.renewalN").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1306,17 +1374,177 @@ $(document).on("click",".updateId",function(){
 		$(".updateProfileR").removeClass("animated fadeOut");
 		$(".profileDetailsBlock").removeClass("animated fadeIn");
 	},1500)
-	/*$(".updateProfileR").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".updateProfileR").addClass("hide");
-		$(".profileDetailsBlockR").removeClass("hide");
-		$(".profileDetailsBlockR").addClass("animated fadeIn");		
-	},500);*/
+	
 });
 
 $('.imageDiv input:checkbox').click(function() {
     $('.imageDiv input:checkbox').not(this).prop('checked', false);
 }); 
+$(document).on("click",".registerNew",function(){
+	$(".mainBlocks").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".mainBlocks").addClass("hide");
+		$(".subBlock,.voterIdConfirm").removeClass("hide");
+		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.voterIdConfirm").removeClass("animated fadeIn");
+		$(".mainBlocks").removeClass("animated fadeOut");
+	},1000);
+});
+
+$(document).on("click",".submitVoterSearch",function(){
+	$(".voterIdConfirm").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".voterIdConfirm").addClass("hide");
+		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
+		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
+		fieldsValusEmpty();
+		divsEmpty();
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeIn");
+		$(".voterIdConfirm").removeClass("animated fadeOut");
+	},1000);
+});
+
+function submitVoterIdDetails(){
+	$(".enterVoterIdBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".enterVoterIdBlock").addClass("hide");
+		$("#enterVoterIdDetailsBack").show();
+		$("#voterIdSearchBack").hide();
+		$("#fullVoterIdDetailsBack").hide();
+		$(".subBlock,.searchResultsBlock").removeClass("hide");
+		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.searchResultsBlock").removeClass("animated fadeIn");
+		$(".enterVoterIdBlock").removeClass("animated fadeOut");
+	},1000);
+}
+$(document).on("click",".forgetVoterId",function(){
+	$(".enterVoterIdBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".enterVoterIdBlock").addClass("hide");
+		$("#serchFamVoterDivId").hide();
+	   $("#serchOwnVoterDivId").show();
+	   $("#searchOwnVoterIdBack").show();
+	   $("#searchFamiVoterIdBack").hide();
+		$(".subBlock,.voterIdSearch").removeClass("hide");
+		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
+		fieldsValusEmpty();
+		divsEmpty();
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
+		$(".enterVoterIdBlock").removeClass("animated fadeOut");
+	},1000);
+});
+
+$(document).on("click",".checkCls",function(){
+	$(".checkCls").attr("checked",false);
+	$(this).attr("checked",true);
+});
+$(document).on("click",".noVoterId",function(){
+	$(".voterIdConfirm").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".voterIdConfirm").addClass("hide");
+		$("#serchFamVoterDivId").show();
+	   $("#serchOwnVoterDivId").hide();
+	   $("#searchOwnVoterIdBack").hide();
+	   $("#searchFamiVoterIdBack").show();
+		$(".subBlock,.voterIdSearch").removeClass("hide");
+		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
+		fieldsValusEmpty();
+		divsEmpty();
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
+		$(".voterIdConfirm").removeClass("animated fadeOut");
+	},1000);
+});
+
+function submitVoterDetails(){
+	$(".voterIdSearch").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".voterIdSearch").addClass("hide");
+		$("#enterVoterIdDetailsBack").hide();
+		$("#voterIdSearchBack").show();
+		$(".subBlock,.searchResultsBlock").removeClass("hide");
+		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.searchResultsBlock").removeClass("animated fadeIn");
+		$(".voterIdSearch").removeClass("animated fadeOut");
+	},1000);
+}
+$(document).on("click","#enterVoterIdBack",function(){
+	$(".enterVoterIdBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".subBlock,.enterVoterIdBlock").addClass("hide");
+		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
+		$(".subBlock,.voterIdConfirm").removeClass("hide");
+	},500)
+	setTimeout(function(){
+		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeIn");
+		$(".subBlock,.voterIdConfirm").removeClass("animated fadeIn");
+	},1000)
+});
+$(document).on("click","#searchResultsBack",function(){
+	$(".searchResultsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".searchResultsBlock").addClass("hide");
+		$(".subBlock,.voterIdSearch").removeClass("hide");
+		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+		$(".subBlock,.voterIdSearch").removeClass("animated fadeOut");
+	},1000);
+	
+});
+$(document).on("click","#searchVoterIdBack",function(){
+	$(".voterIdSearch").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".voterIdSearch").addClass("hide");
+		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
+		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
+		$(".voterIdSearch").removeClass("animated fadeIn");
+	},1000);
+	
+});
+$(document).on("click","#searchFamVoterIdBack",function(){
+	$(".voterIdSearch").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".voterIdSearch").addClass("hide");
+		$(".subBlock,.voterIdConfirm").removeClass("hide");
+		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".subBlock,.voterIdConfirm").removeClass("animated fadeOut");
+		$(".voterIdSearch").removeClass("animated fadeIn");
+	},1000);
+	
+});
+
+$(document).on("click","#enterVoterIdResultsBack",function(){
+	$(".searchResultsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".searchResultsBlock").addClass("hide");
+		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
+		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+	},1000);
+	//$("#nameId").
+});
+
 </script>
 </body>
 </html>
