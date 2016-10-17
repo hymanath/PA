@@ -54,13 +54,7 @@ public class CadreRegIssueTrack extends BaseModel implements Serializable {
 	public void setCadreRegIssueId(Long cadreRegIssueId) {
 		this.cadreRegIssueId = cadreRegIssueId;
 	}
-	@Column(name="cadre_reg_issue_type_id")
-	public Long getCadreRegIssueTypeId() {
-		return cadreRegIssueTypeId;
-	}
-	public void setCadreRegIssueTypeId(Long cadreRegIssueTypeId) {
-		this.cadreRegIssueTypeId = cadreRegIssueTypeId;
-	}
+	
 	@Column(name="description")
 	public String getDescription() {
 		return description;
@@ -130,6 +124,14 @@ public class CadreRegIssueTrack extends BaseModel implements Serializable {
 	}
 	public void setCadreRegIssueStatus(CadreRegIssueStatus cadreRegIssueStatus) {
 		this.cadreRegIssueStatus = cadreRegIssueStatus;
+	}
+	
+	@Column(name="cadre_reg_issue_type_id")
+	public Long getCadreRegIssueTypeId() {
+		return cadreRegIssueTypeId;
+	}
+	public void setCadreRegIssueTypeId(Long cadreRegIssueTypeId) {
+		this.cadreRegIssueTypeId = cadreRegIssueTypeId;
 	}
 	
 }
