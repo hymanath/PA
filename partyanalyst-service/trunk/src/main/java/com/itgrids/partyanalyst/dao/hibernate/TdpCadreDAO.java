@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -7667,5 +7668,44 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		   query.setDate("toDate", toDate);
 		 }
 	   return query.list();    
+	}
+	public Long getTotalTabUserWorkingInField(Long accessLvlId,Set<Long> userAccessLevelValues, Long stateId, Date lastOneHourTime, Date today){
+		StringBuilder queryStr = new StringBuilder(); 
+		queryStr.append("select count(distinct TC.tabUserInfoId) from " +
+						" TdpCadre TC " +
+						" where " +
+						" TC.enrollmentYear='2014' and " +
+						" TC.isDeleted='N' and ");
+		if(stateId != null && stateId.longValue() > 0){
+			if(stateId != null && stateId.longValue() > 0){
+				if(stateId.longValue()==1l){
+					queryStr.append(" TC.userAddress.district.districtId > 10 and  TC.userAddress.state.stateId = 1 and ");
+				}else if(stateId.longValue()==36l){
+					queryStr.append(" TC.tdpCadre.userAddress.district.districtId < 11 and ");
+				}
+			} 
+		}
+		if(lastOneHourTime!= null && today!=null){
+			queryStr.append(" TC.insertedTime between :lastOneHourTime and :today and ");	 
+		}
+		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	         queryStr.append(" TC.userAddress.state.stateId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.tdpCadre.userAddress.district.districtId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.tdpCadre.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.tdpCadre.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
+		}
+		Query query = getSession().createQuery(queryStr.toString());   
+		
+		if(userAccessLevelValues != null){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(lastOneHourTime!= null && today!=null){
+			query.setDate("lastOneHourTime", lastOneHourTime);
+			query.setDate("today", today);
+		}  
+		return (Long) query.uniqueResult(); 
 	}
 }
