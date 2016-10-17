@@ -14060,5 +14060,10 @@
 		<result name="success">/jsp/dataMonitoring.jsp</result>  
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="fieldMonitoringDashboardAction" class="fieldMonitoringAction">
+		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringDashboardAction</result>
+		<result name="success">/jsp/fieldMonitoringDashboard.jsp</result>  
+		<result name="error" type="redirect">login.action</result>
+	</action>
 </package>
 </struts>
