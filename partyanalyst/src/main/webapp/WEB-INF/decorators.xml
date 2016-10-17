@@ -690,8 +690,9 @@
 		<pattern>/showArticlesAction*</pattern> 
 		<pattern>/cadreRegistrationAction*</pattern>
 		<pattern>/cadreRegistrationOverviewAction*</pattern>           
-		<pattern>/fieldMonitoringAction*</pattern>  
-		<pattern>/dataMonitoringAction*</pattern>  
-		
+		<pattern>/fieldMonitoringAction*</pattern> 
+		<pattern>/dataMonitoringAction*</pattern>
+		<pattern>/fieldMonitoringDashboardAction*</pattern> 
+		  
 	</decorator> 
 </decorators>
