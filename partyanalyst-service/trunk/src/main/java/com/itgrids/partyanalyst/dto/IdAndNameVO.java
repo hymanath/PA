@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class IdAndNameVO {
 	private Long id;
 	private String name;
@@ -7,6 +9,16 @@ public class IdAndNameVO {
 	private Long attenteeCount = 0l;
 	private Long inviteeAttendeeCnt = 0l;
 	private String imagePathStr;
+	private List<IdAndNameVO> issueTypes ;
+	
+	
+	
+	public List<IdAndNameVO> getIssueTypes() {
+		return issueTypes;
+	}
+	public void setIssueTypes(List<IdAndNameVO> issueTypes) {
+		this.issueTypes = issueTypes;
+	}
 	
 	
 	public String getImagePathStr() {

@@ -11,7 +11,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
-import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegIssueStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTrackDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
+import com.itgrids.partyanalyst.model.CadreRegIssueStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssueTrack;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
@@ -52,11 +53,21 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private DateUtilService dateUtilService;
 	private ICadreRegIssueDAO cadreRegIssueDAO;
 	private ICadreRegIssueTrackDAO cadreRegIssueTrackDAO;
-	
+	private ICadreRegIssueStatusDAO cadreRegIssueStatusDAO;
 	//Setters
+	
+	
+	
 	public void setFieldVendorLocationDAO(
 			IFieldVendorLocationDAO fieldVendorLocationDAO) {
 		this.fieldVendorLocationDAO = fieldVendorLocationDAO;
+	}
+	public ICadreRegIssueStatusDAO getCadreRegIssueStatusDAO() {
+		return cadreRegIssueStatusDAO;
+	}
+	public void setCadreRegIssueStatusDAO(
+			ICadreRegIssueStatusDAO cadreRegIssueStatusDAO) {
+		this.cadreRegIssueStatusDAO = cadreRegIssueStatusDAO;
 	}
 	public void setFieldVendorTabUserDAO(
 			IFieldVendorTabUserDAO fieldVendorTabUserDAO) {
@@ -381,4 +392,138 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		}
 		return rs;
 	}
+    
+    /**
+	* @param  
+	* @return  List<IdAndNameVO>
+	* @author Hymavathi 
+	* @Description : 
+	*  @since 17-October-2016
+	*/
+   public List<IdAndNameVO> getAllIssueStatus(){
+	   
+	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	   try{
+		   List<CadreRegIssueStatus> statusList = cadreRegIssueStatusDAO.getAll();
+		   
+		   if(statusList != null && statusList.size() >0){
+			 for(CadreRegIssueStatus model : statusList){
+				 IdAndNameVO vo = new IdAndNameVO(); 
+				 vo.setId(model.getCadreRegIssueStatusId() != null ? model.getCadreRegIssueStatusId().longValue() : 0l);
+				 vo.setName(model.getStatus() != null ? model.getStatus().toString() : "");
+				 vo.setInviteeCount(0l);
+				 returnList.add(vo);
+			 }
+			   
+		   }
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   LOG.error("Exception raised at getAllIssueStatus", e);
+	   }
+	   return returnList;
+	   
+   }
+   
+   /**
+	* @param  
+	* @return  List<IdAndNameVO>
+	* @author Hymavathi 
+	* @Description : 
+	*  @since 17-October-2016
+	*/
+   public List<IdAndNameVO> getAllIssueStatusCount(String fromDateStr,String toDateStr){
+	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	   try{
+		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+		   returnList.addAll(getAllIssueStatus());
+		   List<Object[]> list = cadreRegIssueDAO.getCadreIssueStatusCount(startDate,endDate);
+		   if(list != null && list.size() >0){
+				 for(Object[] obj : list){
+					 IdAndNameVO vo = getMatchVO(returnList, (Long)obj[1]);	
+					 if(vo != null){
+						vo.setInviteeCount(obj[0] != null ? (Long)obj[0] : 0l) ;
+					 }
+					 
+				   }
+				 }
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   LOG.error("Exception raised at getAllIssueStatusCount", e);
+	   }
+	   return returnList;
+   }
+    
+   /**
+	* @param  
+	* @return  List<IdAndNameVO>
+	* @author Hymavathi 
+	* @Description : 
+	*  @since 17-October-2016
+	*/
+   public IdAndNameVO getMatchVO(List<IdAndNameVO> returnList, Long id) {
+		if (returnList == null || returnList.size() == 0)
+			return null;
+		for (IdAndNameVO vo : returnList) {
+			if (vo.getId().longValue() == id) {
+				return vo;
+			}
+		}
+		return null;
+	}
+   
+   /**
+  	* @param  
+  	* @return  List<IdAndNameVO>
+  	* @author Hymavathi 
+  	* @Description : 
+  	*  @since 17-October-2016
+  	*/
+   public List<IdAndNameVO> getStatusWiseIssueTypeCount(String fromDateStr,String toDateStr) {
+	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	   try{
+		   
+		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+		   returnList.addAll(getAllIssueStatus());
+		 
+		   List<Object[]> list = cadreRegIssueDAO.getStatusWiseIssueTypeCount(startDate,endDate);
+		   
+		   if(list != null && list.size() >0){
+				 for(Object[] obj : list){
+					 IdAndNameVO statusVO = getMatchVO(returnList, (Long)obj[1]);	
+					 	if(statusVO != null){ 
+					 		statusVO.setIssueTypes(getCadreRegIssueType());
+						 	IdAndNameVO issueTypeVO = getMatchVO(statusVO.getIssueTypes(), (Long)obj[3]);
+							 	if(issueTypeVO != null){ 
+							 		issueTypeVO.setInviteeCount(obj[0] != null ? (Long)obj[0] : 0l);
+							 	}
+					 	}
+					}
+				 }
+		   
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   LOG.error("Exception raised at getStatusWiseIssueTypeCount", e);
+	   }
+	   return returnList;
+	   
+   }
+
+	
+    
 }
