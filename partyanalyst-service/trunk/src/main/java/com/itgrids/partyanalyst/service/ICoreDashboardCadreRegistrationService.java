@@ -32,5 +32,8 @@ public interface ICoreDashboardCadreRegistrationService {
 	public CadreReportVO getApAndTsDistrictList();
 	public List<IdAndNameVO> getOccupationList();
 	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate);
+	public CadreRegistratedCountVO getStateDtls(Long activityMemberId,Long stateId,String startDate, String endDate);
+	public List<CadreRegistratedCountVO> getSourceOfRegistrationDtls(Long activityMemberId,Long stateId,String startDate, String endDate);
+
 
 }
