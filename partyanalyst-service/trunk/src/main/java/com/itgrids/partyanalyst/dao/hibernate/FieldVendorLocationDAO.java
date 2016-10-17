@@ -68,6 +68,15 @@ public class FieldVendorLocationDAO extends GenericDaoHibernate<FieldVendorLocat
 		query.setParameter("districtId",districtId);
 		return query.list();
 	}
-	
+	public List<Object[]> getConstituencyByVendor(Long fieldVendorId)
+	{
+	   Query query = getSession().createQuery("select distinct model.constituency.constituencyId ,model.constituency.name from FieldVendorLocation model" +
+	   		" where model.isDeleted = 'N' and model.fieldVendor.isActive = 'Y'" +
+	   		"model.fieldVendorId.fieldVendorId = :fieldVendorId ");
+	   query.setParameter("fieldVendorId", fieldVendorId);
+	   
+	   return query.list();
+	}
+
 	
 }

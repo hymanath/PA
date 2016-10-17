@@ -524,6 +524,26 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	   
    }
 
-	
+   public List<IdAndNameVO> getConstituencyByVendor(Long fieldVendorId) {
+		List<IdAndNameVO> constituencyByVendor = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> issueType = fieldVendorLocationDAO.getConstituencyByVendor(fieldVendorId);
+			if (issueType != null && issueType.size() > 0) {
+				for (Object[] objects : issueType) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					constituencyByVendor.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getCadreRegIssueType() in FieldMonitoringService class", e);
+		}
+		return constituencyByVendor;
+	}  
+   
+
     
 }
