@@ -14055,6 +14055,11 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getTabUsersDetailsByVendorAndLocationAction" class="fieldMonitoringAction"  method="getTabUsersDetailsByVendorAndLocation">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringVO</param>
+		</result>
+	</action>
 	<action name="dataMonitoringAction" class="dataMonitoringAction">
 		<result name="input">/jsp/loginForm.jsp?src=dataMonitoringAction</result>
 		<result name="success">/jsp/dataMonitoring.jsp</result>  
