@@ -692,6 +692,8 @@
 		<pattern>/cadreOnlineRegistrationAction*</pattern>           
 		
 		<pattern>/cadreRegistrationOverviewAction*</pattern>           
+		<pattern>/fieldMonitoringAction*</pattern>  
+		<pattern>/cadreOnlineRegistrationAction*</pattern>	
 		<pattern>/fieldMonitoringAction*</pattern> 
 		<pattern>/dataMonitoringAction*</pattern>
 		<pattern>/fieldMonitoringDashboardAction*</pattern> 
