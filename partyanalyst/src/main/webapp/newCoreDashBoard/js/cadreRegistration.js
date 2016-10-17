@@ -249,7 +249,7 @@ $('#genSec').highcharts({
 	}]
 });
 
-	function cadreRegistrationBasicCall(globalActivityMemberId){
+	function cadreRegistrationBasicCall(globalActivityMemberId){  
 		showCadreRegistreredCount(globalActivityMemberId);
 		getEnumeratorsInfo(globalActivityMemberId);
 		getCadreRecentTime();  
@@ -290,7 +290,7 @@ $('#genSec').highcharts({
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15">';
+				str+='<div class="bg_ED pad_15" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">total</h5>';
@@ -307,8 +307,8 @@ $('#genSec').highcharts({
 			str+='</div>';
 			
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15">';
-					
+				str+='<div class="bg_ED pad_15" style="height:200px;">';  
+					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">today</h5>';
@@ -317,13 +317,15 @@ $('#genSec').highcharts({
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
-						str+='</div>';
+						str+='</div>';  
 
 					str+='</div>';
 					str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>';
+					}      
 				str+='</div>';
 				
 			str+='</div>';
+			
 		str+='</div>';
 		
 		$("#totalTodayCadreRegistrationBlockDivAPId").html(str);
