@@ -13476,12 +13476,14 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setId(vId);
 							vo.setAttenteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));  //tdpCadreId
 							vo.setName(obj[2] != null ? obj[2].toString():"");     //MemberShipNo
-							vo.setInviteeAttendeeCnt(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-							vo.setImagePathStr("http://mytdp.com/images/cadre_images/"+(obj[4] != null ? obj[4].toString():""));
+							
+							vo.setMobileNumber(obj[3] != null ? obj[3].toString().trim():"" );
+							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.setImagePathStr("http://mytdp.com/images/cadre_images/"+(obj[5] != null ? obj[5].toString():""));
 							voterCadreMap.put(vId, vo);
 						}
 						else{
-							Long enrid = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
 							if(enrid.longValue() > vo.getInviteeAttendeeCnt().longValue())
 								vo.setInviteeAttendeeCnt(enrid);
 						}
@@ -13497,6 +13499,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							voterVO.setMemberShipNo(vo.getName());
 							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
 							voterVO.setTotalImagePathStr(vo.getImagePathStr());
+							voterVO.setMobileNumber(vo.getMobileNumber());
 						}
 					}
 				}
@@ -13601,4 +13604,190 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		return consList;
 	}
 	
-	}
+	
+	public List<VoterSearchVO> getOnlineCadreRegistrationVoterDetails(String voterCardNo){
+		List<VoterSearchVO> returnList = new ArrayList<VoterSearchVO>();
+		try {
+			Map<Long,IdAndNameVO> voterCadreMap = new LinkedHashMap<Long, IdAndNameVO>();
+			List<Long> voterIds = new ArrayList<Long>();
+			
+			List<Object[]> list1 = voterDAO.getOnlineCadreRegistrationVoterDetails(voterCardNo);
+			if(commonMethodsUtilService.isListOrSetValid(list1)){
+				for (Object[] obj : list1) {
+					VoterSearchVO vo = new VoterSearchVO();
+					Long voterId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setVoterId(voterId.toString());
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setRelativeName(obj[2] != null ? obj[2].toString():"");
+					vo.setRelationshipType(obj[3] != null ? obj[3].toString():"");
+					vo.setGender(obj[4] != null ? obj[4].toString():"");
+					vo.setAge(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setVoterIDCardNo(obj[6] != null ? obj[6].toString():"");
+					vo.setHouseNo(obj[7] != null ? obj[7].toString():"");
+					returnList.add(vo);
+					voterIds.add(voterId);
+				}
+				
+				List<Object[]> list = voterDAO.getRegisteredCadresForVoterIds(voterIds);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] obj : list) {
+						Long vId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						IdAndNameVO vo = voterCadreMap.get(vId);
+						if(vo == null){
+							vo = new IdAndNameVO();
+							
+							String moblStr=obj[3]!=null?obj[3].toString().trim():"";
+							String finalMblStr = "";
+							if(moblStr != null && moblStr.trim().length() > 0){
+								Character[] array = new Character[moblStr.trim().length()];
+								for (int i = 0; i < moblStr.length() ; i++) {
+							      array[i] = new Character(moblStr.charAt(i));
+							      if(i==2 || i==3 || i==6 || i==7)
+							    	  finalMblStr = finalMblStr+"*";
+							      else
+							    	  finalMblStr = finalMblStr+array[i].toString();
+							   }
+							}
+							
+							vo.setId(vId);
+							vo.setAttenteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));  //tdpCadreId
+							vo.setName(obj[2] != null ? obj[2].toString():"");     //MemberShipNo
+							vo.setMobileNumber(finalMblStr);
+							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							voterCadreMap.put(vId, vo);
+						}
+						else{
+							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+							if(enrid.longValue() > vo.getInviteeAttendeeCnt().longValue())
+								vo.setInviteeAttendeeCnt(enrid);
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					for (VoterSearchVO voterVO : returnList) {
+						Long voterId = Long.valueOf(voterVO.getVoterId().toString());
+						IdAndNameVO vo = voterCadreMap.get(voterId);
+						if(vo != null){
+							voterVO.setTdpCadreId(vo.getAttenteeCount());
+							voterVO.setMemberShipNo(vo.getName());
+							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
+							voterVO.setMobileNumber(vo.getMobileNumber());
+						}
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception riased at getOnlineCadreRegistrationVoterDetails in CadreRegistrationService Service class", e);
+		}
+		return returnList;
+	}	
+	
+	public List<VoterSearchVO> getOnliCadRegistrSearchVoteDetails(Long constituencyId,Long mandalId,Long villageId,Long boothId, String type, String typeVal){
+		List<VoterSearchVO> returnList = new ArrayList<VoterSearchVO>();
+		try {
+			Map<Long,IdAndNameVO> voterCadreMap = new LinkedHashMap<Long, IdAndNameVO>();
+			List<Long> voterIds = new ArrayList<Long>();
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			String searchType = "";
+			Long searchVal = 0l;
+			
+			if(boothId != null && boothId.longValue() > 0l){
+				searchVal = boothId;
+				searchType = "booth";
+			}
+			else if(villageId != null && villageId.longValue() > 0l){
+				searchVal = villageId;
+				searchType = "village";
+			}
+			else if(mandalId != null && mandalId.longValue() > 0l){
+				Long id = Long.valueOf(mandalId.toString().substring(0, 1));
+				if(id != null && id.longValue() == 1l){
+					searchVal = Long.valueOf(mandalId.toString().substring(1));
+					searchType = "mandal";
+				}
+				else if(id != null && id.longValue() == 2l){
+					searchVal = Long.valueOf(mandalId.toString().substring(1));
+					searchType = "munci";
+				}
+			}
+			else{
+				searchVal = constituencyId;
+				searchType = "const";
+			}
+			
+			List<Object[]> list1 = boothPublicationVoterDAO.getOnliCadRegistrSearchVoteDetails(searchVal, searchType, type, typeVal);
+			if(commonMethodsUtilService.isListOrSetValid(list1)){
+				for (Object[] obj : list1) {
+					VoterSearchVO vo = new VoterSearchVO();
+					Long voterId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setVoterId(voterId.toString());
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setRelationshipType(obj[2] != null ? obj[2].toString():"");
+					vo.setRelativeName(obj[3] != null ? obj[3].toString():"");
+					vo.setGender(obj[4] != null ? obj[4].toString():"");
+					vo.setAge(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setVoterIDCardNo(obj[6] != null ? obj[6].toString():"");
+					vo.setHouseNo(obj[7] != null ? obj[7].toString():"");
+					returnList.add(vo);
+					voterIds.add(voterId);
+				}
+				
+				List<Object[]> list = boothPublicationVoterDAO.getRegisteredCadresForVoterIds(voterIds);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] obj : list) {
+						Long vId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						IdAndNameVO vo = voterCadreMap.get(vId);
+						if(vo == null){
+							vo = new IdAndNameVO();
+							
+							String moblStr=obj[3]!=null?obj[3].toString().trim():"";
+							String finalMblStr = "";
+							if(moblStr != null && moblStr.trim().length() > 0){
+								Character[] array = new Character[moblStr.trim().length()];
+								for (int i = 0; i < moblStr.length() ; i++) {
+							      array[i] = new Character(moblStr.charAt(i));
+							      if(i==2 || i==3 || i==6 || i==7)
+							    	  finalMblStr = finalMblStr+"*";
+							      else
+							    	  finalMblStr = finalMblStr+array[i].toString();
+							   }
+							}
+							
+							vo.setId(vId);
+							vo.setAttenteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));  //tdpCadreId
+							vo.setName(obj[2] != null ? obj[2].toString():"");     //MemberShipNo
+							vo.setMobileNumber(finalMblStr);
+							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							voterCadreMap.put(vId, vo);
+						}
+						else{
+							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+							if(enrid.longValue() > vo.getInviteeAttendeeCnt().longValue())
+								vo.setInviteeAttendeeCnt(enrid);
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					for (VoterSearchVO voterVO : returnList) {
+						Long voterId = Long.valueOf(voterVO.getVoterId().toString());
+						IdAndNameVO vo = voterCadreMap.get(voterId);
+						if(vo != null){
+							voterVO.setTdpCadreId(vo.getAttenteeCount());
+							voterVO.setMemberShipNo(vo.getName());
+							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
+							voterVO.setTotalImagePathStr(vo.getImagePathStr());
+							voterVO.setMobileNumber(vo.getMobileNumber());
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception riased at getOnliCadRegistrSearchVoteDetails in CadreRegistrationService Service class", e);
+		}
+		return returnList;
+	}	
+	
+}
