@@ -101,5 +101,16 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	
 	    return Action.SUCCESS;
 	}
+     public String getCadreRegIssueType(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			idAndNameVOList =fieldMonitoringService.getCadreRegIssueType();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadreRegIssueType()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
 	
 }

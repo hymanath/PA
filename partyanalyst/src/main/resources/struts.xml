@@ -14050,5 +14050,10 @@
 			<param name="root">activityMembersList</param>
 		</result>
 	</action>
+	<action name="getCadreRegIssueTypeAction" class="fieldMonitoringAction"  method="getCadreRegIssueType">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>

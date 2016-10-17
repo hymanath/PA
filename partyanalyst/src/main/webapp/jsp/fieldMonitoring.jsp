@@ -141,25 +141,28 @@
       <div class="modal-body">
         <div class="block bg_F4 pad_20">
         	<div class="row">
-            	<div class="col-md-3 col-xs-12 col-sm-3">
+            	<div class="col-md-2 col-xs-12 col-sm-3">
                 	<h4 class="text-capital text-center">total issues - 4</h4>
                 </div>
-                <div class="col-md-3 col-xs-12 col-sm-3">
+                <div class="col-md-2 col-xs-12 col-sm-3">
                 	<h4 class="text-capital text-center">open issues - 4</h4>
                 </div>
-                <div class="col-md-3 col-xs-12 col-sm-3">
+                <div class="col-md-2 col-xs-12 col-sm-3">
                 	<h4 class="text-capital text-center">closed issues - 4</h4>
                 </div>
-                <div class="col-md-3 col-xs-12 col-sm-3">
+                <div class="col-md-2 col-xs-12 col-sm-3">
                 	<h4 class="text-capital text-center">fixed issues - 4</h4>
                 </div>
+				<div class="col-md-3 col-xs-12 col-sm-3">
+				<button class="btn btn-success text-capitalize issuesBtn" id="addNewIssueId">Add New Issue</button>
+				</div>
             </div>
         </div>
         <div class="block m_top20">
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label>
-                    <select class="select">
+                    <select class="select" id="issueTypeId">
                     	<option>Manpower issue</option>
                     </select>
                 </div>
