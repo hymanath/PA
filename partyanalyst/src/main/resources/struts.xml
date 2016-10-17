@@ -14055,5 +14055,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="dataMonitoringAction" class="dataMonitoringAction">
+		<result name="input">/jsp/loginForm.jsp?src=dataMonitoringAction</result>
+		<result name="success">/jsp/dataMonitoring.jsp</result>  
+		<result name="error" type="redirect">login.action</result>
+	</action>
 </package>
 </struts>

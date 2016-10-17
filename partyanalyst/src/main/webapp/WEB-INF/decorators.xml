@@ -691,6 +691,7 @@
 		<pattern>/cadreRegistrationAction*</pattern>
 		<pattern>/cadreRegistrationOverviewAction*</pattern>           
 		<pattern>/fieldMonitoringAction*</pattern>  
+		<pattern>/dataMonitoringAction*</pattern>  
 		
 	</decorator> 
 </decorators>
