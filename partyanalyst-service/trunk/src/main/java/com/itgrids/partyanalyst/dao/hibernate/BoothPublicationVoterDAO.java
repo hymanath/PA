@@ -8490,6 +8490,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		Query query = getSession().createQuery("select model.tdpCadre.voter.voterId," +
 												" model.tdpCadre.tdpCadreId," +
 												" model.tdpCadre.memberShipNo," +
+												" model.tdpCadre.mobileNo," +
 												" model.enrollmentYearId," +
 												" model.tdpCadre.image" +
 												" from TdpCadreEnrollmentYear model" +
@@ -8523,6 +8524,46 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 								+ " where model.booth.boothId = :boothId and model.voter.houseNo = :houseNo");
 		query.setParameter("boothId", boothId);
 		query.setParameter("houseNo", houseNo);
+		return query.list();
+	}
+	
+public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String searchType,String type,String typeVal){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.voter.voterId," +
+						" model.voter.name," +
+						" model.voter.relationshipType," +
+						" model.voter.relativeName," +
+						" model.voter.gender," +
+						" model.voter.age," +
+						" model.voter.voterIDCardNo," +
+						" model.voter.houseNo" +
+						" from BoothPublicationVoter model" +
+						" where model.booth.publicationDate.publicationDateId = 22");
+		
+		if(searchType != null && searchType.equalsIgnoreCase("const") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.constituency.constituencyId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("mandal") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.tehsil.tehsilId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("munci") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.localBody.localElectionBodyId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("village") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.panchayat.panchayatId = :searchVal");
+		else if(searchType != null && searchType.equalsIgnoreCase("booth") && searchVal != null && searchVal.longValue() > 0l)
+			sb.append(" and model.booth.boothId = :searchVal");
+		
+		if(type != null && type.trim().equalsIgnoreCase("voterId"))
+			sb.append(" and model.voter.voterIDCardNo = :typeVal");
+		else if(type != null && type.trim().equalsIgnoreCase("name"))
+			sb.append(" and model.voter.name like '%"+typeVal+"%'");
+		else if(type != null && type.trim().equalsIgnoreCase("hNo"))
+			sb.append(" and model.voter.houseNo = :typeVal");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(searchVal != null && searchVal.longValue() > 0l)
+			query.setParameter("searchVal", searchVal);
+		if(type != null && !type.trim().equalsIgnoreCase("name"))
+			query.setParameter("typeVal", typeVal);
+		
 		return query.list();
 	}
 }
