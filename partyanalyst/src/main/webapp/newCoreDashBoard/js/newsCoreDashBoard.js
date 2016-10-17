@@ -3,15 +3,15 @@
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 	
-	var currentFromDate = moment().format("DD-MM-YYYY");
-	var currentToDate = moment().format("DD-MM-YYYY");
+	var currentFromDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
+	var currentToDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 	var newsPaperIdsGlob = [1,2,3];
 	var impactScopeIdsGlob = [1,2,3,4,5,6,8];
 	$(document).ready(function(){
 		$("#dateRangeIdForNews").daterangepicker({
 			opens: 'left',
-			startDate: moment(),
-			endDate: moment(),
+			startDate: moment().subtract(1, 'month').startOf('month'),
+			endDate: moment().subtract(1, 'month').endOf('month'),
 			locale: {
 			  format: 'DD-MM-YYYY'
 			},
