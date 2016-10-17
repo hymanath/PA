@@ -2762,6 +2762,46 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  }
 		  return Action.SUCCESS;
 	  }
+  public String getSendOtpDetails(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  status=coreDashboardCadreRegistrationService.generatingAndSavingOTPDetails(jobj.getString("mobileNumber"));
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  LOG.error("Error occured at getSendOtpDetails() in CadreRegistrationAction class",e);
+	  }
+	  return Action.SUCCESS;
+  }
+  
+  public String getOnlineCadreRegistrationVoterDetails(){
+	  try{
+		  jobj=new JSONObject(getTask());
+		  voterVoList=cadreRegistrationService.getOnlineCadreRegistrationVoterDetails(jobj.getString("VoterCardNumber"));
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  LOG.error("Error occured at getOnlineCadreRegistrationVoterDetails() in CadreRegistrationAction class",e);
+	  }
+	  return Action.SUCCESS;
+  }
+  
+  public String getOnliCadRegistrSearchVoteDetails(){
+	  try{
+		  jobj=new JSONObject(getTask());
+		  Long constencyId=jobj.getLong("consistencyId");
+		  Long mandalId=jobj.getLong("mandalId");
+		  Long villageId=jobj.getLong("villageId");
+		  Long boothId=jobj.getLong("boothId");
+		  String type=jobj.getString("type");
+		  String typeVal=jobj.getString("typeValue");
+		  
+		  voterVoList=cadreRegistrationService.getOnliCadRegistrSearchVoteDetails(constencyId,mandalId,villageId,boothId,type,typeVal);
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  LOG.error("Error occured at getOnliCadRegistrSearchVoteDetails() in CadreRegistrationAction class",e);
+	  }
+	  return Action.SUCCESS;
+  }
+  
   public String getSelectedChildTypeMembersForCadreReg(){
 	  try{
 		  jobj = new JSONObject(getTask());
