@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoterDAO{
 	
@@ -475,7 +476,37 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				query.setParameter("voterId", voterId);
 				return query.list();
 			}
+		public List<Object[]> getOnlineCadreRegistrationVoterDetails(String VoterCardNumber){
+			Query query = getSession().createQuery(" select model.voterId," +
+					              " model.name," +
+					              " model.relativeName," +//2
+							      " model.relationshipType," +
+								  " model.gender," +
+								  " model.age," +//5
+								  " model.voterIDCardNo," +
+								  " model.houseNo " +//7
+								  " from Voter model " +
+								  " where model.voterIDCardNo = :VoterCardNumber ");
+			query.setParameter("VoterCardNumber", VoterCardNumber);
+			return query.list();
+		}
+		public List<Object[]> getRegisteredCadresForVoterIds(List<Long> voterIds){
+			Query query = getSession().createQuery("select model.tdpCadre.voter.voterId," +
+													" model.tdpCadre.tdpCadreId," +//1
+													" model.tdpCadre.memberShipNo," +
+													" model.tdpCadre.mobileNo," +
+													" model.enrollmentYearId " +//4
+													" from TdpCadreEnrollmentYear model" +
+													" where model.isDeleted = 'N'" +
+													" and model.tdpCadre.isDeleted = 'N'" +
+													" and model.tdpCadre.enrollmentYear = :enrollmentYear" +
+													" and model.tdpCadre.voter.voterId in (:voterIds)" +
+													" order by model.enrollmentYear.enrollmentYearId");
+			query.setParameterList("voterIds", voterIds);
+			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 			
+			return query.list();
+		}	 
 			
 			
 }
