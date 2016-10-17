@@ -15,7 +15,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		super(CadreRegIssue.class);
 		
 	}
-
+	
 	public List<Object[]> getTabUsersDetailsByVendorAndLocation(Long vendorId,Date fromDate,Date toDate,String locationType,Long locationVal){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model1.cadreSurveyUser.cadreSurveyUserId," +
@@ -206,4 +206,36 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		
 		return (Long) query.uniqueResult();
 	}
+
+	public List<Object[]> getCadreIssueStatusCount(Date fromDate,Date toDate){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status from " +
+				" CadreRegIssue model where  ");
+		
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+		
+		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getStatusWiseIssueTypeCount(Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status," +
+				" model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType from " +
+				" CadreRegIssue model where  ");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+		
+		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueType.cadreRegIssueTypeId ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		return query.list();
+	}
+
 }

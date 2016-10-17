@@ -16,4 +16,7 @@ public interface IFieldMonitoringService {
 	public ResultStatus saveFieldIssue(final FieldMonitoringIssueVO inputVO);
 	public FieldMonitoringVO getDataCollectorsCounts(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal);
 	public FieldMonitoringVO getTabUsersDetailsByVendorAndLocation(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal);
+	public List<IdAndNameVO> getStatusWiseIssueTypeCount(String fromDateStr,String toDateStr);
+	public List<IdAndNameVO> getAllIssueStatusCount(String fromDateStr,String toDateStr);
+	
 }
