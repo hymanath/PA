@@ -136,7 +136,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return query.list();   
 	}
 	
-	public List<Object[]> getTotalRenewlCadreBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userType,String levelType,Date fromDate,Date toDate){
+	public List<Object[]> getTotalRenewlCadreBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userType,Date fromDate,Date toDate){
 	
 		   StringBuilder queryStr = new StringBuilder();  
 		   queryStr.append(" select ");

@@ -706,6 +706,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		  Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
 		  Map<String,Long> totalCadreTargetMap = new HashMap<String, Long>(0);
 		  Map<String,Long> totCadreMap = new HashMap<String, Long>(0);
+		  Map<String,Long> totalRenewalCadreMap = new HashMap<String, Long>(0);
 		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		  Date toDate=null;
 		  Date fromDate=null;
@@ -758,6 +759,23 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						}
 					 }  
 				}
+				if(locationLevelMap != null && locationLevelMap.size() > 0){
+					
+					for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
+						
+						List<Object[]> returnRenewalObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate,toDate);
+						
+						if(returnRenewalObjList != null && returnRenewalObjList.size() > 0){
+							
+							   for (Object[] param : returnRenewalObjList) {
+								   
+								 String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
+								 totalRenewalCadreMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
+								 
+							 }
+						}
+					}
+				}
 				//setting target Count
 				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 					
@@ -799,6 +817,26 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					      }
 				    }	  
 				}
+				//setting Renewal cadre  Count
+				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+					
+					  for(Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()){
+						  
+					      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+					      for(UserTypeVO vo:userTypeMap.values()){
+					    	  
+					    	   for(Long locationValueId:vo.getLocationValuesSet()){
+					    		   
+					    			 String key = vo.getLocationLevelId()+"-"+locationValueId; 
+					    			 
+					    			 if(totalRenewalCadreMap.get(key) != null){
+					    				 
+					    	    		 vo.setTotalRenewalCadreCount(vo.getTotalRenewalCadreCount()+totalRenewalCadreMap.get(key)); 
+					    	    	 }
+					    	   }
+					      }
+				    }	  
+				}
 				//Calculating percentage
 				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 					
@@ -808,6 +846,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					      
 					      for(UserTypeVO vo:userTypeMap.values()){
 					    	  
+					    	    vo.setTotalNewCadreCount(vo.getTotalCadreCount()-vo.getTotalRenewalCadreCount());
+					    	    vo.setTotalRenewalCadreCountPer(calculatePercantage(vo.getTotalRenewalCadreCount(), vo.getTotalTargetCount()));
+					    	    vo.setTotalNewCadreCountPer(calculatePercantage(vo.getTotalNewCadreCount(),vo.getTotalTargetCount()));
 					    	 	vo.setTotalCadreCountPer(calculatePercantage(vo.getTotalCadreCount(),vo.getTotalTargetCount()));
 					    	 	
 						}
@@ -924,11 +965,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  }
 		if(userAccessLevelMap != null && userAccessLevelMap.size() > 0){
 			 for(Entry<Long,Set<Long>> entry:userAccessLevelMap.entrySet()){
-						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, null, null, 3l, userTypeId,null); //2014 total cadre
+						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, null, null, 3l, userTypeId); //2014 total cadre
 						set2014CadreCountToMap(rtrn2014CadreDtlsObjLst, locationWiseCadreDetaislMap);
-						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, fromDate, toDate, 4l, userTypeId, null); //2016 total cadre
+						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, fromDate, toDate, 4l, userTypeId); //2016 total cadre
 						set2016CadreCountToMap(rtrnCadreDtlsObjLst,locationWiseCadreDetaislMap);
-						List<Object[]> rtrnRenewalObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreBasedOnUserType(entry.getKey(),entry.getValue(), stateId, userTypeId, null, fromDate, toDate);
+						List<Object[]> rtrnRenewalObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreBasedOnUserType(entry.getKey(),entry.getValue(), stateId, userTypeId, fromDate, toDate);
 						setRenewalCountToMap(rtrnRenewalObjList,locationWiseCadreDetaislMap);
 			 }
 		 }
@@ -1091,6 +1132,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	 }
 	 return resultList;
  }
+    /**
+	* @author Santosh 
+	* @Description :This Service Method is used get Ap and TS districts. 
+	* @since 15-OCT-2016
+	*/
  public CadreReportVO getApAndTsDistrictList(){
 	 CadreReportVO resultVO = new CadreReportVO();
 	 List<CadreReportVO> apDistrictList = new ArrayList<CadreReportVO>();

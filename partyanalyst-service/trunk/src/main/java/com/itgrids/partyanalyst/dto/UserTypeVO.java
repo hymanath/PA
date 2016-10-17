@@ -76,6 +76,11 @@ public class UserTypeVO implements Serializable{
 	private Double totalCadreCountPer=0.0d;
 	private Long totalCadreCountToday = 0l;
 	private Long totalTargetCount2014 = 0l;
+	private Long totalRenewalCadreCount=0l;
+	private Long totalNewCadreCount=0l;
+	private Double totalRenewalCadreCountPer=0.0d;
+	private Double totalNewCadreCountPer=0.0d;
+	
 	public Long getId() {
 		return id;
 	}
@@ -401,5 +406,28 @@ public class UserTypeVO implements Serializable{
 	public void setSubLocationList(List<IdNameVO> subLocationList) {
 		this.subLocationList = subLocationList;
 	}
-   	
+	public Long getTotalRenewalCadreCount() {
+		return totalRenewalCadreCount;
+	}
+	public void setTotalRenewalCadreCount(Long totalRenewalCadreCount) {
+		this.totalRenewalCadreCount = totalRenewalCadreCount;
+	}
+	public Long getTotalNewCadreCount() {
+		return totalNewCadreCount;
+	}
+	public void setTotalNewCadreCount(Long totalNewCadreCount) {
+		this.totalNewCadreCount = totalNewCadreCount;
+	}
+	public Double getTotalRenewalCadreCountPer() {
+		return totalRenewalCadreCountPer;
+	}
+	public void setTotalRenewalCadreCountPer(Double totalRenewalCadreCountPer) {
+		this.totalRenewalCadreCountPer = totalRenewalCadreCountPer;
+	}
+	public Double getTotalNewCadreCountPer() {
+		return totalNewCadreCountPer;
+	}
+	public void setTotalNewCadreCountPer(Double totalNewCadreCountPer) {
+		this.totalNewCadreCountPer = totalNewCadreCountPer;
+	}
 }
