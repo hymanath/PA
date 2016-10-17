@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,6 +9,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegIssueTrackDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -20,6 +23,7 @@ import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
+import com.itgrids.partyanalyst.model.CadreRegIssueTrack;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
@@ -41,6 +45,10 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IUserAddressDAO userAddressDAO;
 	private ICadreRegIssueTypeDAO  cadreRegIssueTypeDAO;
+	private DateUtilService dateUtilService;
+	private ICadreRegIssueDAO cadreRegIssueDAO;
+	private ICadreRegIssueTrackDAO cadreRegIssueTrackDAO;
+	
 	//Setters
 	public void setFieldVendorLocationDAO(
 			IFieldVendorLocationDAO fieldVendorLocationDAO) {
@@ -77,6 +85,19 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	
 	public void setCadreRegIssueTypeDAO(ICadreRegIssueTypeDAO cadreRegIssueTypeDAO) {
 		this.cadreRegIssueTypeDAO = cadreRegIssueTypeDAO;
+	}
+	
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	
+	public void setCadreRegIssueDAO(ICadreRegIssueDAO cadreRegIssueDAO) {
+		this.cadreRegIssueDAO = cadreRegIssueDAO;
+	}
+	
+	public void setCadreRegIssueTrackDAO(
+			ICadreRegIssueTrackDAO cadreRegIssueTrackDAO) {
+		this.cadreRegIssueTrackDAO = cadreRegIssueTrackDAO;
 	}
 	//business method.
 	public List<IdAndNameVO> getVendors(Long stateId){
@@ -203,12 +224,29 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   
 		        	   cadreRegIssue.setUserAddressId(userAddress.getUserAddressId());
 		        	   
-		        	   cadreRegIssue.setCadreRegIssueTypeId(1L);
+		        	   cadreRegIssue.setCadreRegIssueTypeId(inputVO.getIssueTypeId());
 		        	   cadreRegIssue.setDescription(inputVO.getDescription());
+		        	   cadreRegIssue.setCadreRegIssueStatusId(1L);//open
+		        	   Date currentDate = dateUtilService.getCurrentDateAndTime();
+		        	   cadreRegIssue.setInsertedTime(currentDate);
+		        	   cadreRegIssue.setUpdatedTime(currentDate);
+		        	   cadreRegIssue.setCreatedBy(inputVO.getLoginUserId());
+		        	   cadreRegIssue.setUpdatedBy(inputVO.getLoginUserId());
 		        	   
+		        	   cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
 		        	   
-			        	rs.setResultCode(1);
-			        	rs.setMessage("success");
+		        	   //tracking 
+		        	   CadreRegIssueTrack cadreRegIssueTrack = new CadreRegIssueTrack();
+		        	   cadreRegIssueTrack.setCadreRegIssueId(cadreRegIssue.getCadreRegIssueId());
+		        	   cadreRegIssueTrack.setCadreRegissueTypeId(inputVO.getIssueTypeId());
+		        	   cadreRegIssueTrack.setDescription(inputVO.getDescription());
+		        	   cadreRegIssueTrack.setCadreRegIssueStatusId(1L);//open
+		        	   cadreRegIssueTrack.setInsertedBy(inputVO.getLoginUserId());
+		        	   cadreRegIssueTrack.setInsertedTime(currentDate);
+		        	   cadreRegIssueTrackDAO.save(cadreRegIssueTrack);
+		        	   
+			           rs.setResultCode(1);
+			           rs.setMessage("success");
 		         }
 		    });
 			
