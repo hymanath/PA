@@ -14084,6 +14084,16 @@
 			<result type="json" name="success">
 			<param name="root">cadreRegistratedCountVOs</param>
 		</result>
+	</action>
+	<action name="getAllIssueStatusCountAction" class="fieldMonitoringAction"  method="getAllIssueStatusCount">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getStatusWiseIssueTypeCountAction" class="fieldMonitoringAction"  method="getStatusWiseIssueTypeCount">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
 	</action>    
 </package>
 </struts>

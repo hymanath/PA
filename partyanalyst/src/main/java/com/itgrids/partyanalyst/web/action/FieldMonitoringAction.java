@@ -162,8 +162,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
      	return Action.SUCCESS;
      }
 
-	
-    public String getTabUsersDetailsByVendorAndLocation(){
+public String getTabUsersDetailsByVendorAndLocation(){
     	try {
     		jObj = new JSONObject(getTask());
     		Long vendorId = jObj.getLong("vendorId");
@@ -179,4 +178,31 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		}
     	return Action.SUCCESS;
     }
+
+public String getAllIssueStatusCount(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+		String fromDateStr = jObj.getString("fromDate");
+		String toDateStr = jObj.getString("toDate");
+		idAndNameVOList =fieldMonitoringService.getAllIssueStatusCount(fromDateStr,toDateStr);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getAllIssueStatusCount()  of FieldMonitoringAction", e);
+	}
+
+    return Action.SUCCESS;
+}
+public String getStatusWiseIssueTypeCount(){
+
+try {
+	jObj = new JSONObject(getTask());
+	String fromDateStr = jObj.getString("fromDate");
+	String toDateStr = jObj.getString("toDate");
+	idAndNameVOList =fieldMonitoringService.getStatusWiseIssueTypeCount(fromDateStr,toDateStr);
+} catch (Exception e) {
+	LOG.error("Exception raised at getStatusWiseIssueTypeCount()  of FieldMonitoringAction", e);
+}
+
+return Action.SUCCESS;
+}
 }
