@@ -102,35 +102,46 @@ $(document).on("change", "#stateId", function(e){
 		function refreshSelectBox(selectBoxId){
 			$("#"+selectBoxId).trigger("chosen:updated");
 		}
-getCadreRegIssueType();
+ 
  function getCadreRegIssueType(){
-	 var jsObj=
-     {				
-				
-	 }
+	 
     $.ajax({
           type:'GET',
           url: 'getCadreRegIssueTypeAction.action',
           dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
+		  data: {}
    }).done(function(result){
-	   
+	   $("#issueTypeId").append('<option value="0"> Select IssueType</option>');
      for(var i in result){
-	   if(result[i].id == 0){
-          $("#issueTypeId").append('<option value='+result[i].id+'>Select Manpower issue</option>');
-	   }else{
 	      $("#issueTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	   }
 	 }
 	 $("#issueTypeId").trigger("chosen:updated");
    });
   }
+	
+$(document).on("click",".manageIssues",function(){ 
+    $("#issueTypeDivId").hide();
+    var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+    var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
+    $("#submitId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
+    $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
+	
+    $("#issuesModal").modal('show');
+  });
+ 
+   $(document).on("click","#addNewIssueId",function(){ 
+	 $("#issueTypeDivId").show();
+   });
+  
+  $(document).on("click","#submitId",function(){ 
+      saveFieldIssue();
+  });
   function saveFieldIssue(){
 	  var constituencyId =$("#constituencyId").val();  
-	  var issueTypeId =$("#issueTypeId").val();
+	  var issueTypeId =$("#issueTypeId option:selected").val();
       var description =$("#descriptionId").val();
-      var cadreSurveyUserId= $("#submitId").attr(attr_cadreSurveyUserId);
-	  var tabUserInfoId= $("#submitId").attr(attr_tabUserInfoId);
+      var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
+	  var tabUserInfoId= $("#submitId").attr("attr_tab_user_info_id");
 	 var jsObj=
      {				
 		issueTypeId :issueTypeId,
@@ -148,26 +159,5 @@ getCadreRegIssueType();
 	  
    });
   }
- $(document).on("click","#addNewIssueId",function(){ 
-	$("#issueTypeDivId").show();
-	});
-	
-$(document).on("click",".issuesBtnCls",function(){ 
-    $("#issueTypeDivId").html("");
-   var cadreSurveyUserId = $(this).attr("attr_cadreSurveyUserId");
-   var tabUserInfoId = $(this).attr("attr_tabUserInfoId");
-   $("#submitId").attr("attr_cadreSurveyUserId",cadreSurveyUserId);
-   $("#submitId").attr("attr_tabUserInfoId",tabUserInfoId);
-   
-   getIssuesForTabUserInfo(cadreSurveyUserId,tabUserInfoId);
-  });
- 
-  function getIssuesForTabUserInfo(cadreSurveyUserId,tabUserInfoId){
-    //open popup dynamically.
-  $("#issuesModal").modal('show');
-  }
-  $(document).on("click","#submitId",function(){ 
-   saveFieldIssue();
-  });
   
 	
