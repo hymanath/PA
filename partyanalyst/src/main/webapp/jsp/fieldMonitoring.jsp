@@ -10,6 +10,7 @@
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container m_top20">
@@ -17,7 +18,7 @@
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="block">
             	<div class="row">
-                	<div class="col-md-3 col-xs-12 col-sm-6">
+                	<div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select State</label>
                         <select class="select" id="stateId">
 						    <option value="0">Select State</option>
@@ -25,25 +26,37 @@
 							<option value="36">Telangana</option>
                         </select>
                     </div>
-                    <div class="col-md-3 col-xs-12 col-sm-6">
+                    <div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select Vendor</label>
                         <select class="select" id="vendorId">
                         	<option value="0">Select Vendor</option>
                         </select>
                     </div>
-                    <div class="col-md-3 col-xs-12 col-sm-6">
+                    <div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select District</label>
                         <select class="select" id="districtId">
                         	<option value="0">Select District</option>
                         </select>
                     </div>
-                    <div class="col-md-3 col-xs-12 col-sm-6">
+                    <div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select Constituency</label>
                         <select class="select" id="constituencyId">
                         	<option value="0">Select Constituency</option>
                         </select>
                     </div>
-					<button id="getDetails">submit</button>
+					<div class="col-md-4 col-xs-12 col-sm-6">
+                    	<label>Select Date</label>
+                        <div class="input-group inputGCustom">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+							<input type="text" class="form-control singleDate"/>
+						</div>
+                    </div>
+					<div class="col-md-4 col-xs-12 col-sm-6">
+                    	<button class="btn btn-success m_top25" id="getDetails">submit</button>
+                    </div>
+					
                 </div>
             </div>
             <div class="block pad_20 m_top20">
@@ -52,20 +65,21 @@
                     	<div class="block bg_F4 pad_20">
                         	<div class="row">
                             	<div class="col-md-5 col-xs-12 col-sm-5">
-                                	<h4 class="text-capital">today total data collectors - 10</h4>
+                                	<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId"></span></h4>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h4 class="text-success text-capital">active users - 08</h4>
+                                	<h4 class="text-success text-capital">active users - <span id="activeDataCollectorsId"></span></h4>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h4 class="text-danger text-capital">passive users - 08</h4>
+                                	<h4 class="text-danger text-capital">passive users - <span id="passiveDataCollectorsId"></span></h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                     	<h4 class="panel-title text-muted">Logged In FieldUsers</h4>
-                        <table class="table b_1 m_top10">
+						<div id="tabUserDetailsDivId"></div>
+                        <!--<table class="table b_1 m_top10">
                         	<thead class="text-capitalize">
                             	<th>User Id</th>
                                 <th>user name</th>
@@ -107,8 +121,8 @@
                                     <td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="3258" attr_tab_user_info_id="882">manage issues</button></td>
                                 </tr>
                             </tbody>
-                        </table>
-                        <ul class="pagination m_top20">
+                        </table>-->
+                        <!--<ul class="pagination m_top20">
                             <li>
                               <a href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
@@ -124,7 +138,7 @@
                                 <span aria-hidden="true">&raquo;</span>
                               </a>
                             </li>
-                        </ul>
+                        </ul>-->
                     </div>
                 </div>
             </div>
@@ -205,15 +219,13 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/FieldMonitoring/fieldMonitoring.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		
-		$(".singleDate").daterangepicker({
-			singleDatePicker: true
-		});
+		$(".singleDate").daterangepicker();
 		$('.select').chosen({width:'100%'});
-		
 		getCadreRegIssueType();
 		
 	</script>
