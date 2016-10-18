@@ -15,16 +15,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "cadre_reg_issue_status")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CadreRegIssueStatus extends BaseModel implements Serializable {
-	/*
-	 * cadre_reg_issue_status_id,
-	 * status
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "cadre_reg_issue_status_id", unique = true, nullable = false)
+
+	
 	private Long cadreRegIssueStatusId;
 	private String status;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "cadre_reg_issue_status_id", unique = true, nullable = false)
 	public Long getCadreRegIssueStatusId() {
 		return cadreRegIssueStatusId;
 	}
