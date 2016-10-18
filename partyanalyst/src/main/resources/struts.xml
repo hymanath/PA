@@ -14121,5 +14121,12 @@
 			<param name="root">fieldMonitoringVO</param>
 		</result>
 	</action> 
+	<action name="getIssuesForATabUserByStatusAction" class="fieldMonitoringAction"  method="getIssuesForATabUserByStatus">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringIssueVOList</param>
+		</result>
+	</action>
+	
+	 
 </package>
 </struts>
