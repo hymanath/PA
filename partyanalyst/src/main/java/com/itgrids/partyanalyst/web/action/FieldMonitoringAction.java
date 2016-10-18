@@ -179,26 +179,26 @@ public String getTabUsersDetailsByVendorAndLocation(){
     	return Action.SUCCESS;
     }
 
-public String getAllIssueStatusCount(){
+public String getIssueStatusWiseCounts(){
 	
 	try {
 		jObj = new JSONObject(getTask());
 		String fromDateStr = jObj.getString("fromDate");
 		String toDateStr = jObj.getString("toDate");
-		idAndNameVOList =fieldMonitoringService.getAllIssueStatusCount(fromDateStr,toDateStr);
+		idAndNameVOList =fieldMonitoringService.getIssueStatusWiseCounts(fromDateStr,toDateStr);
 	} catch (Exception e) {
-		LOG.error("Exception raised at getAllIssueStatusCount()  of FieldMonitoringAction", e);
+		LOG.error("Exception raised at getIssueStatusWiseCounts()  of FieldMonitoringAction", e);
 	}
 
     return Action.SUCCESS;
 }
-public String getStatusWiseIssueTypeCount(){
+public String getIssueTypeWiseCounts(){
 
 try {
 	jObj = new JSONObject(getTask());
 	String fromDateStr = jObj.getString("fromDate");
 	String toDateStr = jObj.getString("toDate");
-	idAndNameVOList =fieldMonitoringService.getStatusWiseIssueTypeCount(fromDateStr,toDateStr);
+	idAndNameVOList =fieldMonitoringService.getIssueTypeWiseCounts(fromDateStr,toDateStr);
 } catch (Exception e) {
 	LOG.error("Exception raised at getStatusWiseIssueTypeCount()  of FieldMonitoringAction", e);
 }
