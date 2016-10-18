@@ -14048,7 +14048,7 @@
 	
 	<action name="getSendOtpDetailsAction" class="cadreRegistrationAction"  method="getSendOtpDetails">
 			<result type="json" name="success">
-			<param name="root"></param>
+			<param name="root">status</param>
 		</result>
 	</action>
 	<action name="getOnlineCadreRegistrationVoterDetailsAction" class="cadreRegistrationAction"  method="getOnlineCadreRegistrationVoterDetails">
@@ -14114,6 +14114,11 @@
 	<action name="getConstituencyByVendorAction" class="fieldMonitoringAction"  method="getConstituencyByVendor">
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getOtpStatusAction" class="cadreRegistrationAction"  method="getOtpStatus">
+			<result type="json" name="success">
+			<param name="root">status</param>
 		</result>
 	</action>  
 	<action name="getOverAllDataCollectorsDetailsAction" class="fieldMonitoringAction"  method="getOverAllDataCollectorsDetails">
