@@ -14115,6 +14115,11 @@
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
-	</action>   
+	</action>  
+	<action name="getOverAllDataCollectorsDetailsAction" class="fieldMonitoringAction"  method="getOverAllDataCollectorsDetails">
+		<result type="json" name="success">
+			<param name="root">fieldMonitoringVO</param>
+		</result>
+	</action> 
 </package>
 </struts>

@@ -42,9 +42,9 @@
                                         <div class="row">
                                         	<div class="col-md-8 col-xs-12 col-sm-10">
                                             	<ul class="dashedB">
-                                                    <li>total data collectors<span>1000</span></li>
-                                                    <li>active<span>4000</span></li>
-                                                    <li>passive<span>100</span></li>
+                                                    <li>total data collectors<span id="totalDataCollectorsId">0</span></li>
+                                                    <li>active<span id="activeDataCollectorsId">0</span></li>
+                                                    <li>passive<span id="passiveDataCollectorsId">0</span></li>
                                                 </ul>
                                             </div>
                                         </div>
