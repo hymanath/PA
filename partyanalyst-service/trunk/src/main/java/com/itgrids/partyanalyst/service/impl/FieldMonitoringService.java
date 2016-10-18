@@ -405,6 +405,59 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		return rs;
 	}
     
+    public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId){
+    	
+    	List<FieldMonitoringIssueVO> returnList = null;
+    	
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+		
+		Date startDate = null;
+		Date endDate = null;
+    	try{
+    		
+    		if(fromDateStr != null && toDateStr != null){
+    			startDate = sdf.parse(fromDateStr);
+    			endDate = sdf.parse(toDateStr);
+    		}
+    		
+    		List<Object[]> issueDetails = cadreRegIssueDAO.getIssuesForATabUserByStatus(cadreSurveyUserId, tabUserInfoId, startDate, endDate, issueStatusId);
+    		
+    		if( issueDetails != null && issueDetails.size() > 0)
+    		{
+    			returnList = new ArrayList<FieldMonitoringIssueVO>();
+    			
+    			for(Object[] obj : issueDetails)
+    			{
+    				FieldMonitoringIssueVO issueVO = new FieldMonitoringIssueVO();
+    				
+    				issueVO.setCadreRegIssueId( obj[0]!= null ? (Long)obj[0] : 0l);
+    				issueVO.setDescription(obj[1]!=null ? obj[1].toString() :"");
+    				
+    				if(obj[2]!=null){
+    					Date date = (Date)obj[2];
+    					issueVO.setDateStr(returnTime.format(date));
+    				}
+    				
+    				issueVO.setIssueTypeId(obj[3]!= null ? (Long)obj[3] : 0l);
+    				issueVO.setIssueType(obj[4]!= null ? obj[4].toString() :"");
+    				
+    				issueVO.setIssueStatusId(obj[5]!=null ? (Long)obj[5]:0l);
+    				issueVO.setIssueStatus(obj[6]!= null ? obj[6].toString() :"");
+    				
+    				returnList.add(issueVO);
+    			}
+    		}
+    		
+		}catch(Exception e){
+			LOG.error("Exception raised at getIssuesForATabUser", e);
+		}
+    	return returnList;
+    }
+    
+    
+    
+    
     /**
 	* @param  
 	* @return  List<IdAndNameVO>
@@ -554,8 +607,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			LOG.error("Exception raised in getConstituencyByVendor() in FieldMonitoringService class", e);
 		}
 		return constituencyByVendor;
-	}  
-   
+	} 
+    
    public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr){
 	   FieldMonitoringVO returnVO = new FieldMonitoringVO();
 	   try {
