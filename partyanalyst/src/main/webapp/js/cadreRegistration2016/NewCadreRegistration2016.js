@@ -290,6 +290,9 @@ $(document).on("change","#boothsList",function(){
 	   if(result!=null && result.length>0){
 	  searchCadreVoterDetails(result);
 	   }
+	   else{
+		   $("#searchVoterDetailsId").html('<h4 class="text-center text-danger">NO DATA AVAILABLE</h4>');
+	   }
   });
   }
 		
