@@ -23,7 +23,7 @@ public class OccupationDAO extends GenericDaoHibernate<Occupation, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List<Occupation> getOccupationList()
 	{
-		return getHibernateTemplate().find(" from Occupation model ");
+		return getHibernateTemplate().find(" from Occupation model order by model.occupation ");
 	}
 
 	public String getOccupationNameByOccupationId(Long occupationId)
