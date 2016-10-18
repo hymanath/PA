@@ -16,7 +16,7 @@
 <div class="container m_top20">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="block">
+        	<div class="block bg_ff">
             	<div class="row">
                 	<div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select State</label>
@@ -54,7 +54,7 @@
 						</div>
                     </div>
 					<div class="col-md-4 col-xs-12 col-sm-6">
-                    	<button class="btn btn-success m_top25" id="getDetails">submit</button>
+                    	<button class="btn btn-success m_top25 text-capital" id="getDetails">submit</button>
                     </div>
 					
                 </div>
@@ -94,25 +94,32 @@
         <p><i>Rahul - 9984845464</i></p>
       </div>
       <div class="modal-body">
-        <div class="block bg_F4 pad_20">
-        	<div class="row">
-            	<div class="col-md-2 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">total issues - 4</h4>
-                </div>
-                <div class="col-md-2 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">open issues - 4</h4>
-                </div>
-                <div class="col-md-2 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">closed issues - 4</h4>
-                </div>
-                <div class="col-md-2 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">fixed issues - 4</h4>
-                </div>
-				<div class="col-md-3 col-xs-12 col-sm-3">
-				<button class="btn btn-success text-capitalize " id="addNewIssueId">Add New Issue</button>
+        
+		<div class="row">
+			<div class="col-md-10 col-xs-12 col-sm-10">
+				<div class="block bg_F4 pad_20">
+					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">total issues - 4</h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">open issues - 4</h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">closed issues - 4</h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">fixed issues - 4</h4>
+						</div>
+					</div>
 				</div>
-            </div>
-        </div>
+			</div>
+			<div class="col-md-2 col-xs-12 col-sm-2">
+				<button class="btn btn-success text-capitalize btn-lg btn-block m_top10" style="margin-top: 0px ! important; padding-top: 17px; padding-bottom: 17px;border-radius:3px" id="addNewIssueId">Add New Issue</button>
+			</div>
+			
+		</div>
+       
         <div class="block m_top20" id="issueTypeDivId" style="display:none;">
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
@@ -130,7 +137,12 @@
                     	<option value="0">Select Constituency</option>
                     </select>
                 </div>
-				<button type="button" class="btn btn-success pull-right" id="submitId">Submit</button>
+				<div class="col-md-4 col-xs-12 col-sm-4">
+					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
+					<span id="savingDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+					<div id="submitButId"></div>
+				</div>
+				
             </div>
         </div>
         <ul class="issuesUl">

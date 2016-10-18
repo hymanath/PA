@@ -145,12 +145,14 @@ $(document).on("click",".manageIssues",function(){
  
    $(document).on("click","#addNewIssueId",function(){ 
 	 $("#issueTypeDivId").show();
+	 clearErrorFields();
    });
   
   $(document).on("click","#submitId",function(){ 
       saveFieldIssue();
   });
   function saveFieldIssue(){
+	  $("#savingDivIdImg").show();
 	  var constituencyId =$("#constituencyId").val();  
 	  var issueTypeId =$("#issueTypeId option:selected").val();
       var description =$("#descriptionId").val();
@@ -170,7 +172,19 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  
+	    $("#savingDivIdImg").hide();
+	   if(result.message == 'success' && result.resultCode == 1)
+	   {
+		    $("#submitButId").html("<span style='color: green;font-size:12px;'> Saved Successfully...</span>");
+			setTimeout(function(){
+				$("#issueTypeDivId").hide();
+			}, 2000);
+	   }else{
+		   $("#submitButId").html("<span style='color: red;font-size:12px;'>Saved Failed.Please try Again.</span>");
+		   setTimeout(function(){
+				$("#issueTypeDivId").hide();
+			}, 2000);
+	   }
    });
   }
   function getConstituencyByVendor(){
@@ -322,4 +336,12 @@ function buildTabUserDetails(result){
 		$("#tabUserDetailsImgId").hide();
 		$("#tabUserDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
 	}
+}
+function clearErrorFields()
+{        
+	$("#issueTypeId").val(0).trigger('chosen:updated');
+    $("#descriptionId").val('');	
+	$("#issueConstituencyId").val(0).trigger('chosen:updated');
+	$("#submitButId").html('');
+	$("#savingDivIdImg").hide();
 }

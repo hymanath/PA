@@ -204,3 +204,15 @@ label
     -webkit-transform: scale(1.0);
   }
 }
+.bg_ff
+{
+	background-color:#fff !important;
+}
+.pad_left0
+{
+	padding-left:0px
+}
+.pad_right0
+{
+	padding-right:0px
+}
