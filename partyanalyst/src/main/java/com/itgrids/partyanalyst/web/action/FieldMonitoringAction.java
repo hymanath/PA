@@ -28,6 +28,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private List<IdAndNameVO> idAndNameVOList;  
 		private ResultStatus resultStatus; 
 		private FieldMonitoringVO fieldMonitoringVO;
+		private List<FieldMonitoringIssueVO> fieldMonitoringIssueVOList;
 		
 	//Attributes
 	   private IFieldMonitoringService fieldMonitoringService;
@@ -76,7 +77,15 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		this.resultStatus = resultStatus;
 	}
 
-	
+	public List<FieldMonitoringIssueVO> getFieldMonitoringIssueVOList() {
+		return fieldMonitoringIssueVOList;
+	}
+
+	public void setFieldMonitoringIssueVOList(
+			List<FieldMonitoringIssueVO> fieldMonitoringIssueVOList) {
+		this.fieldMonitoringIssueVOList = fieldMonitoringIssueVOList;
+	}
+
 	//Business methods
 	public String execute(){
 		return Action.SUCCESS;
@@ -217,7 +226,6 @@ public String getConstituencyByVendor(){
 
     return Action.SUCCESS;
 }
-
 	public String getOverAllDataCollectorsDetails(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -228,6 +236,23 @@ public String getConstituencyByVendor(){
 			fieldMonitoringVO = fieldMonitoringService.getOverAllDataCollectorsDetails(fromDateStr,toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllDataCollectorsDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getIssuesForATabUserByStatus(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long tabUserInfoId = jObj.getLong("tabUserInfoId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Long issueStatusId = jObj.getLong("issueStatusId");
+			
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,issueStatusId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}
