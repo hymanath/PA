@@ -59,7 +59,7 @@
 					
                 </div>
             </div>
-            <div class="block pad_20 m_top20">
+            <div class="block pad_20 m_top20" id="dataCollectorsDiv" style="display:none;">
             	<div class="row">
                 	<div class="col-md-12 col-xs-12 col-sm-12">
                     	<div class="block bg_F4 pad_20">
@@ -77,8 +77,8 @@
                         </div>
                     </div>
                     <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                    	<h4 class="panel-title text-muted">Logged In FieldUsers</h4>
-						<div id="tabUserDetailsDivId"></div>
+						<div id="tabUserDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+                    	<div id="tabUserDetailsDivId"></div>
                     </div>
                 </div>
             </div>
