@@ -1972,3 +1972,11 @@ margin-top: 5px; margin-bottom: 2px;
 	list-style:none;
 	padding:2px;
 }
+.ascendingSorting , .decendingSorting
+{
+	padding:3px 5px;
+	border:1px solid #ddd;
+	border-radius:1px;
+	margin-left:3px;
+	cursor:pointer;
+}

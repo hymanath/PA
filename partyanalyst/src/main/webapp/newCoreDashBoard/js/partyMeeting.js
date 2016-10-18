@@ -3,8 +3,8 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 
 	$("#dateRangeIdForMeetings").daterangepicker({
 		opens: 'left',
-		startDate: moment().subtract(1, 'month').startOf('month'),
-        endDate: moment().subtract(1, 'month').endOf('month'),
+	     startDate: moment().startOf('month'),
+         endDate: moment().endOf('month'),
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -19,9 +19,10 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	})
+	
 	var dates= $("#dateRangeIdForMeetings").val();
 	//$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
-	$("#dateMeetingHeadingId").html(" LAST MONTH ( "+dates+" )");
+	$("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
@@ -43,21 +44,7 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 	 // $("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
 	  $("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
 	});
-	//Changing date heading based on date selection
-	/* var dateTextRange;
-	$(document).on("click",".ranges li",function(){
-	    dateTextRange = $(this).text();
-		if(dateTextRange!="Custom Range"){
-	    $("#dateMeetingHeadingId").html(" - "+dateTextRange);	
-		}
-	});
-	var selectDates;
-	$(document).on("click",".applyBtn",function(){
-	  selectDates = $("#dateRangeIdForMeetings").val();
-	  if(dateTextRange=="Custom Range"){
-	    $("#dateMeetingHeadingId").html(" - "+selectDates);	
-		}
-    }); */
+	
     $(document).on("click",".meetingGetDtlsBtncls",function(){
 		var isChecked=false;
 		 $("#committeeTypeId li").each(function() {
@@ -118,6 +105,7 @@ $(document).on("click",".selectAll",function(){
 	});
    }	
 });
+     
       var globalStateId=1; 
 	function getPartyMeetingBasicCountDetails()
 	{ 
