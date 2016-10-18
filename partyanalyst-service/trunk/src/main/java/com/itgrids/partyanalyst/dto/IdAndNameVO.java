@@ -11,6 +11,7 @@ public class IdAndNameVO {
 	private String imagePathStr;
 	private String mobileNumber;
 	private List<IdAndNameVO> issueTypes ;
+	private String actualMobNumber;
 	
 	
 	
@@ -63,6 +64,12 @@ public class IdAndNameVO {
 	}
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
+	}
+	public String getActualMobNumber() {
+		return actualMobNumber;
+	}
+	public void setActualMobNumber(String actualMobNumber) {
+		this.actualMobNumber = actualMobNumber;
 	}
 	
 	
