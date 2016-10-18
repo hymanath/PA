@@ -13642,7 +13642,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 								Character[] array = new Character[moblStr.trim().length()];
 								for (int i = 0; i < moblStr.length() ; i++) {
 							      array[i] = new Character(moblStr.charAt(i));
-							      if(i==2 || i==3 || i==6 || i==7)
+							      if(i==2 || i==3 ||i == 5 || i==6 || i==7)
 							    	  finalMblStr = finalMblStr+"*";
 							      else
 							    	  finalMblStr = finalMblStr+array[i].toString();
@@ -13653,8 +13653,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setAttenteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));  //tdpCadreId
 							vo.setName(obj[2] != null ? obj[2].toString():"");     //MemberShipNo
 							vo.setMobileNumber(finalMblStr);
+							vo.setActualMobNumber(obj[3] != null ? obj[3].toString():"");
 							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
-							voterCadreMap.put(vId, vo);
+							voterCadreMap.put(vId,vo);
 						}
 						else{
 							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
@@ -13673,6 +13674,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							voterVO.setMemberShipNo(vo.getName());
 							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
 							voterVO.setMobileNumber(vo.getMobileNumber());
+							voterVO.setActualMobiNumber(vo.getActualMobNumber());
 						}
 					}
 				}
@@ -13748,7 +13750,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 								Character[] array = new Character[moblStr.trim().length()];
 								for (int i = 0; i < moblStr.length() ; i++) {
 							      array[i] = new Character(moblStr.charAt(i));
-							      if(i==2 || i==3 || i==6 || i==7)
+							      if(i==2 || i==3 || i == 5 || i==6 || i==7)
 							    	  finalMblStr = finalMblStr+"*";
 							      else
 							    	  finalMblStr = finalMblStr+array[i].toString();
@@ -13759,8 +13761,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setAttenteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));  //tdpCadreId
 							vo.setName(obj[2] != null ? obj[2].toString():"");     //MemberShipNo
 							vo.setMobileNumber(finalMblStr);
+							vo.setActualMobNumber(obj[3] != null ? obj[3].toString():"");
 							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
-							voterCadreMap.put(vId, vo);
+							voterCadreMap.put(vId,vo);
 						}
 						else{
 							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
@@ -13780,6 +13783,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
 							voterVO.setTotalImagePathStr(vo.getImagePathStr());
 							voterVO.setMobileNumber(vo.getMobileNumber());
+						    voterVO.setActualMobiNumber(vo.getActualMobNumber());
 						}
 					}
 				}
