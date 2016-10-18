@@ -315,5 +315,32 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		query.setDate("toDate", toDate);
 		return query.list();
 	}
-
+    
+	public List<Object[]> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.cadreRegIssueId,model.description,model.insertedTime," +
+				"          model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType," +
+				"          model.cadreRegIssueStatus.cadreRegIssueStatusId, model.cadreRegIssueStatus.status " +
+				"   from   CadreRegIssue model " +
+				"   where  model.cadreSurveyUserId = :cadreSurveyUserId and model.tabUserInfoId = :tabUserInfoId  ");
+		if(issueStatusId != null && issueStatusId > 0l){
+			sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId  = :issueStatusId");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
+		query.setParameter("tabUserInfoId",tabUserInfoId );
+		if(issueStatusId != null && issueStatusId > 0l){
+			query.setParameter("issueStatusId",issueStatusId );
+		}
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate",fromDate );
+			query.setDate("toDate",toDate );
+		}
+		return query.list();
+	}
 }
