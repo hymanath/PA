@@ -392,10 +392,11 @@ $(document).on("change","#boothsList",function(){
   });
   
    function getSearchByRelativeVoterIdDetails(){
+   	   $("#hiddenFamilyVoterId").val();
 	   eachTimeClearFields();
 	   $("#populatingDtsDivImgId").show();
 	   var flag = 0;
-   $(".searchChkboxCls").each(function(){
+       $(".searchChkboxCls").each(function(){
 	  if($(this).is(":checked")){  
 		  flag=1;
 	  }
@@ -427,11 +428,13 @@ $(document).on("change","#boothsList",function(){
 	   $("#submitCadreForm").show();
 	   $(".newProfile").show();
 	   $("#populatingDtsDivImgId").hide();
-   hideShowDivs(status);
-   buildRelatVoterDetails(familyVoterCardNo);
-   buildCasteDetails(result);
-   buildEductnQualifns(result);
-   buildCadreFamilyDetails(result);
+	   $("#hiddenFamilyVoterId").val(familyVoterId);
+   	   hideShowDivs(status);
+       buildProfileDetails(result,status,familyVoterId)
+       buildRelatVoterDetails(familyVoterCardNo);
+       buildCasteDetails(result);
+       buildEductnQualifns(result);
+       buildCadreFamilyDetails(result);
 	 })
 	
   }
@@ -663,7 +666,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		$("#submitCadreForm").show();
 		$("#populatingDtsDivImgId").hide();
 		hideShowDivs(status);
-		buildProfileDetails(result,status);
+		buildProfileDetails(result,status,"0");
 		buildCasteDetails(result);
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
@@ -681,6 +684,7 @@ function getCadreDetailsForRelativeCadre(type){
 	eachTimeClearFields();
 	$("#populatingDtsDivImgId").show();
 	$("#submitCadreForm").hide();
+	var familyVoterId = $("#votrIdR").val();
 	var status = $("#stusIdR").val();
 	var jsObj={
 		 voterId:0,
@@ -697,7 +701,7 @@ function getCadreDetailsForRelativeCadre(type){
 		$("#populatingDtsDivImgId").hide();
 		$("#submitCadreForm").show();
 		hideShowDivs(status);
-		buildProfileDetails(result,status);
+		buildProfileDetails(result,status,familyVoterId);
 		buildCasteDetails(result);
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
