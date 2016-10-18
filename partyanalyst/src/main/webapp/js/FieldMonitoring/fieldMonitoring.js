@@ -175,12 +175,12 @@ $(document).on("click",".manageIssues",function(){
 	    $("#savingDivIdImg").hide();
 	   if(result.message == 'success' && result.resultCode == 1)
 	   {
-		    $("#submitButId").html("<span style='color: green;font-size:12px;'> Saved Successfully...</span>");
+		    $("#submitButId").html("<span style='color: green;font-size:18px;'> Saved Successfully...</span>");
 			setTimeout(function(){
 				$("#issueTypeDivId").hide();
 			}, 2000);
 	   }else{
-		   $("#submitButId").html("<span style='color: red;font-size:12px;'>Saved Failed.Please try Again.</span>");
+		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");
 		   setTimeout(function(){
 				$("#issueTypeDivId").hide();
 			}, 2000);
