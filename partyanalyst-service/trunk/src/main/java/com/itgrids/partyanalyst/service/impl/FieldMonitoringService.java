@@ -444,7 +444,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	* @Description : 
 	*  @since 17-October-2016
 	*/
-   public List<IdAndNameVO> getAllIssueStatusCount(String fromDateStr,String toDateStr){
+   public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr){
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
 		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -456,7 +456,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				endDate = sdf.parse(toDateStr);
 			}
 		   returnList.addAll(getAllIssueStatus());
-		   List<Object[]> list = cadreRegIssueDAO.getCadreIssueStatusCount(startDate,endDate);
+		   List<Object[]> list = cadreRegIssueDAO.getIssueStatusWiseCounts(startDate,endDate);
 		   if(list != null && list.size() >0){
 				 for(Object[] obj : list){
 					 IdAndNameVO vo = getMatchVO(returnList, (Long)obj[1]);	
@@ -468,7 +468,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				 }
 	   }catch(Exception e){
 		   e.printStackTrace();
-		   LOG.error("Exception raised at getAllIssueStatusCount", e);
+		   LOG.error("Exception raised at getIssueStatusWiseCounts", e);
 	   }
 	   return returnList;
    }
@@ -498,7 +498,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
   	* @Description : 
   	*  @since 17-October-2016
   	*/
-   public List<IdAndNameVO> getStatusWiseIssueTypeCount(String fromDateStr,String toDateStr) {
+   public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr) {
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
 		   
@@ -512,7 +512,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			}
 		   returnList.addAll(getAllIssueStatus());
 		 
-		   List<Object[]> list = cadreRegIssueDAO.getStatusWiseIssueTypeCount(startDate,endDate);
+		   List<Object[]> list = cadreRegIssueDAO.getIssueTypeWiseCounts(startDate,endDate);
 		   
 		   if(list != null && list.size() >0){
 				 for(Object[] obj : list){
