@@ -205,4 +205,16 @@ try {
 
 return Action.SUCCESS;
 }
+public String getConstituencyByVendor(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+		Long fieldVendorId = jObj.getLong("fieldVendorId");
+		idAndNameVOList =fieldMonitoringService.getConstituencyByVendor(fieldVendorId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getConstituencyByVendor()  of FieldMonitoringAction", e);
+	}
+
+    return Action.SUCCESS;
+}
 }
