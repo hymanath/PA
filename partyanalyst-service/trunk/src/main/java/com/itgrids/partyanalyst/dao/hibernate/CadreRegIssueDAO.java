@@ -89,7 +89,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and TC.is_deleted = 'N'" +
 					" and FVTU.is_deleted = 'N'" +
 					" and FVL.is_deleted = 'N'" +
-					" group by TC.insertedBy,TC.tab_user_info_id");
+					" group by TC.created_by,TC.tab_user_info_id");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		query.setParameter("vendorId", vendorId);
@@ -156,7 +156,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model.tdpCadre.isDeleted = 'N'" +
 					" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
-					" group by model.tdpCadre.insertedBy");
+					" group by model1.fieldVendor.fieldVendorId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("vendorId", vendorId);
@@ -166,7 +166,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setDate("toDate", toDate);
 		}
 		
-		return (Long) query.uniqueResult();
+		return Long.valueOf(query.uniqueResult().toString());
 	}
 	
 	public Long getActiveDataCollectorsCountsVendorAndLocation(Long vendorId,Date currentDate,String locationType,Long locationVal){
@@ -195,7 +195,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and TC.is_deleted = 'N'" +
 					" and FVTU.is_deleted = 'N'" +
 					" and FVL.is_deleted = 'N'" +
-					" group by TC.insertedBy");
+					" group by FVL.field_vendor_id");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		query.setParameter("vendorId", vendorId);
@@ -204,7 +204,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setParameter("currentTime", currentDate);
 		}
 		
-		return (Long) query.uniqueResult();
+		return Long.valueOf(query.uniqueResult().toString());
 	}
 
 	public List<Object[]> getCadreIssueStatusCount(Date fromDate,Date toDate){
