@@ -264,8 +264,9 @@ $(document).on("change","#boothsList",function(){
 		 $("#errorDivId").html("Please Select constituency");
 		 return;
 	   }
-	  if(voterId.trim().length == 0 && name.trim().length == 0 && houseNo.trim().length == 0 )
-	   {
+	 
+	  if(voterId.trim().length == 0 && name.trim().length == 0 && hNo.trim().length == 0 )
+	   {   
 		  $("#errorDivId").html("Enter Atleast One VoterId or Name or HouseNo");
 		 return; 
 	   }
