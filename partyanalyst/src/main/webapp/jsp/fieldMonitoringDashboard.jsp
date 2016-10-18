@@ -18,10 +18,10 @@
         	<div class="panel panel-default panelWhite">
             	<div class="panel-heading">
                 	<div class="row">
-                    	<div class="col-md-10 col-xs-12 col-sm-9">
+                    	<div class="col-md-9 col-xs-12 col-sm-9">
                         	<h4 class="panel-title"></h4>
                         </div>
-                        <div class="col-md-2 col-xs-12 col-sm-3">
+                        <div class="col-md-3 col-xs-12 col-sm-3">
                         	<div class="input-group inputGCustom">
                             	<span class="input-group-addon">
                                 	<i class="glyphicon glyphicon-calendar"></i>
@@ -220,7 +220,7 @@ $(document).on("click",".issuesBtn",function(){
 	$("#issuesModal").modal('show');
 });
 $(".singleDate").daterangepicker({
-	singleDatePicker: true
+	opens:'left'
 });
 $('.select').chosen({width:'100%'});
 
