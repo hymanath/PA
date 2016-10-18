@@ -21,6 +21,7 @@ public class VoterSearchVO implements Serializable{
 	private String status;
 	private String totalImagePathStr;
 	private String mobileNumber;
+	private String actualMobiNumber; 
 	
 	
 	public String getTotalImagePathStr() {
@@ -118,6 +119,12 @@ public class VoterSearchVO implements Serializable{
 	}
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
+	}
+	public String getActualMobiNumber() {
+		return actualMobiNumber;
+	}
+	public void setActualMobiNumber(String actualMobiNumber) {
+		this.actualMobiNumber = actualMobiNumber;
 	}
 	
 }
