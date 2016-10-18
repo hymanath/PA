@@ -49,7 +49,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model.tdpCadre.isDeleted = 'N'" +
 					" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
-					" group by model.tdpCadre.insertedBy,model.tdpCadre.tabUserInfoId");
+					" group by model.tdpCadre.insertedBy.cadreSurveyUserId,model.tdpCadre.tabUserInfoId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("vendorId", vendorId);
@@ -90,14 +90,14 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model.tdpCadre.isDeleted = 'N'" +
 					" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
-					" group by model.tdpCadre.insertedBy,model.tdpCadre.tabUserInfoId");
+					" group by model.tdpCadre.insertedBy.cadreSurveyUserId,model.tdpCadre.tabUserInfoId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("vendorId", vendorId);
 		query.setParameter("locationVal", locationVal);
 		if(lastOneHourTime!= null && today!=null){
-			query.setDate("lastOneHourTime", lastOneHourTime);
-			query.setDate("today", today);
+			query.setParameter("lastOneHourTime", lastOneHourTime);
+			query.setParameter("today", today);
 		}
 		
 		return query.list();
@@ -172,7 +172,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 	
 	public Long getTotalDataCollectorsCountsVendorAndLocation(Long vendorId,Date fromDate,Date toDate,String locationType,Long locationVal){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select count(distinct model.tdpCadre.insertedBy)" +
+		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
 					" from TdpCadreEnrollmentYear model,FieldVendorTabUser model1,FieldVendorLocation model2,Constituency C" +
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.fieldVendor.fieldVendorId = model2.fieldVendor.fieldVendorId" +
@@ -210,7 +210,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 	
 	public Long getActiveDataCollectorsCountsVendorAndLocation(Long vendorId,Date lastOneHourTime,Date today,String locationType,Long locationVal){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select count(distinct model.tdpCadre.insertedBy)" +
+		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
 					" from TdpCadreEnrollmentYear model,FieldVendorTabUser model1,FieldVendorLocation model2,Constituency C" +
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.fieldVendor.fieldVendorId = model2.fieldVendor.fieldVendorId" +
@@ -240,8 +240,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		query.setParameter("vendorId", vendorId);
 		query.setParameter("locationVal", locationVal);
 		if(lastOneHourTime!= null && today!=null){
-			query.setDate("lastOneHourTime", lastOneHourTime);
-			query.setDate("today", today);
+			query.setParameter("lastOneHourTime", lastOneHourTime);
+			query.setParameter("today", today);
 		}
 		
 		return (Long) query.uniqueResult();

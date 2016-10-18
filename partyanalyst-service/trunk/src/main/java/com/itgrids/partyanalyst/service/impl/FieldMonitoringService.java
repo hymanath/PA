@@ -556,6 +556,40 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		return constituencyByVendor;
 	}  
    
-
-    
+   public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr){
+	   FieldMonitoringVO returnVO = new FieldMonitoringVO();
+	   try {
+		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			Date today = new Date();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
+			Long totalCount = fieldVendorTabUserDAO.getTotalDataCollectorsCount(startDate, endDate);
+			Long activeCount = fieldVendorTabUserDAO.getActiveDataCollectorsCount(lastOneHourTime, today);
+			Long passiveCount = 0l;
+			if(totalCount == null)
+				totalCount = 0l;
+			if(activeCount == null)
+				activeCount = 0l;
+			if(totalCount > 0l)
+				passiveCount = totalCount - activeCount;
+			
+			returnVO.setTotalDataCollectors(totalCount);
+			returnVO.setActiveUsers(activeCount);
+			returnVO.setPassiveUsers(passiveCount);
+			
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getOverAllDataCollectorsDetails() of FieldMonitoringService", e);
+	}
+	   return returnVO;
+   }
 }
