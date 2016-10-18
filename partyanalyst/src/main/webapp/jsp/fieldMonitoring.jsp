@@ -179,7 +179,6 @@
 				<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select Vendor</label>
                     <select class="select" id="issueVendorId">
-                    	<option value="0">Select Vendor</option>
                     </select>
                 </div>
 				<button type="button" class="btn btn-success pull-right" id="submitId">Submit</button>
