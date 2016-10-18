@@ -405,7 +405,7 @@ function validations()
  
 if(existImgCheck=="0" && newImgCheck == "0")
 {
-  $("#imgErrDivId").html("Please choose any check box for image.");
+  $("#imgErrDivId").html("Please select Image.");
 	 return false;	
 }else{
 	$("#imgErrDivId").html("");
