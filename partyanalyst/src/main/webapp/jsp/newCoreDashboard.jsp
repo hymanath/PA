@@ -73,12 +73,13 @@
                 </div>
 				<div class="col-md-4 col-xs-12 col-sm-3 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
-						<li>
+					<!--	<li>
 							<img src="today" id="todayRadio" class="datesClass" attr_type="today" title="today"/>
 						 </li>
 						<li>
 							<img src="lastMonth" id="lastMonthRadio" class="datesClass" checked="true" attr_type="lastMonth"/>
 						 </li>
+						 -->
                     	<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
