@@ -1214,6 +1214,7 @@ $(".renewalSearchResults").mCustomScrollbar({
 $('.select').chosen({width:'100%'});
 $(document).on("click",".registerNew",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
+	$("#statesDivId").val(0).trigger('chosen:updated'); 
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
