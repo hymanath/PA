@@ -25,6 +25,14 @@ public class CadreReportVO implements Serializable {
 	private Double total2016CadrePer=0.0d;
 	private Double total2016RenewalCadrePer=0.0d;
 	private Double total2016NewCadrePer=0.0d;
+	
+	private Long allConstituencyCnt=0l;
+	private Long veryGoodCnt=0l;
+	private Long goodCnt=0l;
+	private Long okCnt=0l;
+	private Long  poorCnt=0l;
+	private Long veryPoorCnt=0l;
+	
 	private List<CadreReportVO> subList1;
 	private List<CadreReportVO> subList2;
 	public Integer getSno() {
@@ -142,4 +150,41 @@ public class CadreReportVO implements Serializable {
 	public void setSubList2(List<CadreReportVO> subList2) {
 		this.subList2 = subList2;
 	}
+	public Long getAllConstituencyCnt() {
+		return allConstituencyCnt;
+	}
+	public void setAllConstituencyCnt(Long allConstituencyCnt) {
+		this.allConstituencyCnt = allConstituencyCnt;
+	}
+	public Long getVeryGoodCnt() {
+		return veryGoodCnt;
+	}
+	public void setVeryGoodCnt(Long veryGoodCnt) {
+		this.veryGoodCnt = veryGoodCnt;
+	}
+	public Long getGoodCnt() {
+		return goodCnt;
+	}
+	public void setGoodCnt(Long goodCnt) {
+		this.goodCnt = goodCnt;
+	}
+	public Long getOkCnt() {
+		return okCnt;
+	}
+	public void setOkCnt(Long okCnt) {
+		this.okCnt = okCnt;
+	}
+	public Long getPoorCnt() {
+		return poorCnt;
+	}
+	public void setPoorCnt(Long poorCnt) {
+		this.poorCnt = poorCnt;
+	}
+	public Long getVeryPoorCnt() {
+		return veryPoorCnt;
+	}
+	public void setVeryPoorCnt(Long veryPoorCnt) {
+		this.veryPoorCnt = veryPoorCnt;
+	}
+	
 }
