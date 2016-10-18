@@ -5,10 +5,19 @@
 	}
 	
 	function getIssueStatusWiseCounts(){
-			
+			$("#statusCountDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			var dates = $(".singleDate").val();
+	        var dateArr = dates.split("-");
+	        var fromDate;
+	        var toDate;
+	      if(dateArr != null){
+		    fromDate = dateArr[0];
+		    toDate = dateArr[1];
+	       }
+
 			var jsObj = { 
-			              fromDate : "12/07/2016",
-			              toDate : "12/07/2016"  
+			              fromDate : fromDate,    //"2016-10-01",
+		                  toDate : toDate			//"2016-10-18" 
 						}
 			$.ajax({
 				type : 'GET',
@@ -38,10 +47,17 @@
 		
 		}	
 	function getIssueTypeWiseCounts(){
-			
+			var dates = $(".singleDate").val();
+	        var dateArr = dates.split("-");
+	        var fromDate;
+	        var toDate;
+	   if(dateArr != null){
+		     fromDate = dateArr[0];
+		     toDate = dateArr[1];
+	       }
 			var jsObj = { 
-			              fromDate : "12/07/2016",
-			              toDate : "12/07/2016" 
+			              fromDate : fromDate,    //"2016-10-01",
+		                  toDate : toDate			//"2016-10-18" 
 						}
 			$.ajax({
 				type : 'GET',
@@ -49,7 +65,7 @@
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}  
 			}).done(function(result){
-				if(result != null && result.length >0){getIssueTypeWiseCounts
+				if(result != null && result.length >0){
 					
 				}
 			});
