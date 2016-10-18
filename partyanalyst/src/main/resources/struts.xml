@@ -14101,12 +14101,12 @@
 			<param name="root">cadreRegistratedCountVOs</param>
 		</result>
 	</action>
-	<action name="getAllIssueStatusCountAction" class="fieldMonitoringAction"  method="getAllIssueStatusCount">
+	<action name="getIssueStatusWiseCountsAction" class="fieldMonitoringAction"  method="getIssueStatusWiseCounts">
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
-	<action name="getStatusWiseIssueTypeCountAction" class="fieldMonitoringAction"  method="getStatusWiseIssueTypeCount">
+	<action name="getIssueTypeWiseCountsAction" class="fieldMonitoringAction"  method="getIssueTypeWiseCounts">
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
