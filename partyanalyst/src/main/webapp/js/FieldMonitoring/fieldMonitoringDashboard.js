@@ -6,9 +6,17 @@
 	}
 	
 	function getOverAllDataCollectorsCounts(){
+		var dates = $(".singleDate").val();
+		var dateArr = dates.split("-");
+		var fromDate;
+		var toDate;
+		if(dateArr != null){
+			fromDate = dateArr[0];
+			toDate = dateArr[1];
+		}
 		var jsObj = { 
-		  fromDate : "10/01/2016",
-		  toDate : "10/18/2016"  
+		  fromDate : fromDate,		//"10/01/2016",
+		  toDate : toDate		 	//"10/18/2016"  
 		}
 		$.ajax({
 			type : 'GET',
