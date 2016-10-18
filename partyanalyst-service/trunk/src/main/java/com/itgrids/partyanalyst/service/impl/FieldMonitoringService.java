@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -197,10 +198,10 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	FieldMonitoringVO returnVO = new FieldMonitoringVO();
     	try {
     		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Date startDate = null;
 			Date endDate = null;
-			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			Date today = new Date();
 			if(fromDateStr != null && toDateStr != null){
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
@@ -224,8 +225,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				}
 			}
 			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
 			//LastHour Counts
-			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCounts(vendorId, currentTime, locationType, locationVal);
+			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCounts(vendorId, lastOneHourTime, today, locationType, locationVal);
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -286,23 +292,29 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     public FieldMonitoringVO getDataCollectorsCounts(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal){
     	FieldMonitoringVO returnvo = new FieldMonitoringVO();
     	try {
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Date startDate = null;
 			Date endDate = null;
-			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			Date today = new Date();
 			if(fromDateStr != null && toDateStr != null){
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
 			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
 			Long totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocation(vendorId, startDate, endDate, locationType, locationVal);
-			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocation(vendorId, currentTime, locationType, locationVal);
+			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocation(vendorId, lastOneHourTime, today, locationType, locationVal);
 			Long passiveCount = 0l;
 			if(totalCount == null)
 				totalCount = 0l;
 			if(activeCount == null)
 				activeCount = 0l;
-			passiveCount = totalCount - activeCount;
+			if(totalCount > 0l)
+				passiveCount = totalCount - activeCount;
 			
 			returnvo.setTotalDataCollectors(totalCount);
 			returnvo.setActiveUsers(activeCount);
