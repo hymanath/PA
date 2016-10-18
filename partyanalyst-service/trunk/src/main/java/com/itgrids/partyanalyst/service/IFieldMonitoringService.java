@@ -19,5 +19,6 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getConstituencyByVendor(Long fieldVendorId);
+	public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId);
 	public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr);
 }
