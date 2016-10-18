@@ -217,4 +217,18 @@ public String getConstituencyByVendor(){
 
     return Action.SUCCESS;
 }
+
+	public String getOverAllDataCollectorsDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			
+			fieldMonitoringVO = fieldMonitoringService.getOverAllDataCollectorsDetails(fromDateStr,toDateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllDataCollectorsDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
