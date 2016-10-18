@@ -1919,7 +1919,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="notesDropDown notesArrow" >
+					<div class="notesDropDown notesArrow">
 							<h4 class="text-capital">notes
 								<span class="pull-right">
 									<i class="glyphicon glyphicon-list-alt"></i>
@@ -2307,6 +2307,37 @@
                                 </div>
                             </div> 
                         </div>-->
+						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<span class="headingColor">State Wise Overview</span>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													andhra pradesh
+												</div>
+												<div class="panel-body pad_0">
+													<div class="row">
+														<div class="col-md-4 col-xs-12 col-sm-4 pad_right0">
+															
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-4 pad_right0 pad_left0">
+															
+														</div>
+														<div class="col-md-4 col-xs-12 col-sm-4 pad_left0">
+															
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
@@ -2317,7 +2348,7 @@
                                         </div>
                                         <div class="col-md-6 col-xs-12 col-sm-12">
                                         	<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active">All</li>
+                                                <li class="active districtFilterCls" attr_filter_value="All">All</li>
                                                 <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
                                                 <li class="districtFilterCls" attr_filter_value="good">Good</li>
                                                 <li class="districtFilterCls" attr_filter_value="ok">Ok</li>
@@ -2343,24 +2374,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
+					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
                                     	<div class="col-md-6 col-xs-12 col-sm-12">
                                         	<h4><span class="headingColor text-capitalize">contituency wise registrations</span></h4>
                                         </div>
-                                        <div class="col-md-6 col-xs-12 col-sm-12">
+                                        <div class="col-md-6 col-xs-12 col-sm-12" style="position:relative;">
+											<!--<span class="pull-right" style="font-size:8px;position:absolute;top:-10px;right:10px;cursor:pointer;">Clear Filter</span>-->
 											<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-												<li class="text-capital"><i class="fa fa-gears" id="settingsCadre"></i></li>
+												<li class="text-capital"><i class="fa fa-gears" id="settingsCadre" title="filter result"></i></li>
 											</ul>
-                                        	<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active" id="cnsttncyverlAllCntId">All - 294</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_filter_value="verygood">Very Good - 24</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId" attr_filter_value="good">Good - 170</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyOkCntId" attr_filter_value="ok">Ok - 50</li>
-												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId" attr_filter_value="poor">poor - 50</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyveryPoorCntId" attr_filter_value="verypoor">Very Poor - 20</li>
+                                        	<ul class="activeUlCls list-inline pull-right constituencyUlCls"">
+                                            	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All" attr_all_contituency_cnt="0" >All - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood">Very Good - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId" attr_good_cnt="0" attr_filter_value="good">Good - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyOkCntId" attr_ok_cnt="0" attr_filter_value="ok">Ok - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId" attr_poor_cnt="0" attr_filter_value="poor">poor - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyveryPoorCntId" attr_very_poor_cnt="0" attr_filter_value="verypoor">Very Poor - 0</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -2403,7 +2435,9 @@
                                 </div>
                                 <div class="panel-body">
                                 	<div class="row">
-                                    	<div class="col-md-6 col-xs-12 col-sm-12">
+									<!--<i class="glyphicon glyphicon-sort-by-attributes decendingSorting pull-left" style="transform:rotate(180deg)"></i>
+                            		<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingSorting pull-left"></i><br><br>-->
+							        	<div class="col-md-6 col-xs-12 col-sm-12 mtop-20">
 										    <h2><span class="headingColor">Andhra Pradesh</span></h2><br>
                                         	<div id="apConstituencyRegistrationReportDivId"></div>
                                         </div>
