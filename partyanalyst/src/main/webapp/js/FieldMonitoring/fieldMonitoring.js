@@ -131,6 +131,8 @@ $(document).on("click",".manageIssues",function(){
     $("#submitId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
     $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
 	
+	getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
+	
 	var vendorId = $("#vendorId option:selected").val();
 	var districtId =  $("#districtId option:selected").val();
 	var constituencyId =  $("#constituencyId option:selected").val();
@@ -142,7 +144,36 @@ $(document).on("click",".manageIssues",function(){
 	}
     $("#issuesModal").modal('show');
   });
- 
+  function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId){
+	  
+	var dates = $(".singleDate").val();
+	var dateArr = dates.split("-");
+	var fromDate;
+	var toDate;
+	if(dateArr != null){
+		fromDate = dateArr[0];
+		toDate = dateArr[1];
+	}
+	
+	 var jsObj =
+     {				
+		cadreSurveyUserId : cadreSurveyUserId,
+		tabUserInfoId : tabUserInfoId,
+		fromDate : fromDate,   
+		toDate : toDate,
+        issueStatusId : issueStatusId		
+	 }
+    $.ajax({
+          type:'GET',
+          url: 'getIssuesForATabUserByStatusAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    alert("success");
+   });
+	
+  }
+  
    $(document).on("click","#addNewIssueId",function(){ 
 	 $("#issueTypeDivId").show();
 	 clearErrorFields();
