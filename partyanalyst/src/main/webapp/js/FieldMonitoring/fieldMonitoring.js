@@ -125,6 +125,7 @@ $(document).on("click",".manageIssues",function(){
     $("#submitId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
     $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
 	 getVendorConstituencies('issueConstituencyId');
+	 getConstituencyByVendor();
     $("#issuesModal").modal('show');
   });
  
@@ -158,6 +159,26 @@ $(document).on("click",".manageIssues",function(){
 	  
    });
   }
+  function getConstituencyByVendor(){
+			var fieldVendorId = $("#vendorId option:selected").val();
+	  var jsObj = { 
+			              fieldVendorId : fieldVendorId 
+						}
+	 
+    $.ajax({
+          type:'GET',
+          url: 'getConstituencyByVendorAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#issueVendorId").append('<option value="0"> Select Vendor</option>');
+     for(var i in result){
+	      $("#issueVendorId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	 }
+	 $("#issueVendorId").trigger("chosen:updated");
+   });
+  }
+
   
 $(document).on("click","#getDetails",function(){
 	var vendorId = $("#vendorId").val();
