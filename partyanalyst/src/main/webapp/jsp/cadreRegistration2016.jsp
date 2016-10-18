@@ -340,7 +340,7 @@
 							<span id="voterIdBack" class="backBtn"> ← Back</span>
 						</div>
                         <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails();">Search voter id</button>
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails();">Search</button>
                         </div>
                     </div>
                 </div>
