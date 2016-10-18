@@ -223,6 +223,10 @@ $(".singleDate").daterangepicker({
 	singleDatePicker: true
 });
 $('.select').chosen({width:'100%'});
+
+ onLoadCalls();
+
+
 $('#openIssues').highcharts({
 	chart: {
 		type: 'pie',
