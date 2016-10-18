@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class FieldMonitoringIssueVO implements Serializable{
 	
 	private Long issueTypeId;
+	private String issueType;
 	private Long cadreSurveyUserId;
 	private Long tabUserInfoId;
 	
@@ -12,6 +13,11 @@ public class FieldMonitoringIssueVO implements Serializable{
 	private String description;
 	private Long  loginUserId;
 	
+	private Long cadreRegIssueId;
+	private String dateStr;
+	
+	private Long issueStatusId;
+	private String issueStatus;
 	
 	public Long getIssueTypeId() {
 		return issueTypeId;
@@ -49,6 +55,36 @@ public class FieldMonitoringIssueVO implements Serializable{
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	public Long getCadreRegIssueId() {
+		return cadreRegIssueId;
+	}
+	public void setCadreRegIssueId(Long cadreRegIssueId) {
+		this.cadreRegIssueId = cadreRegIssueId;
+	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public String getIssueType() {
+		return issueType;
+	}
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
+	}
+	public Long getIssueStatusId() {
+		return issueStatusId;
+	}
+	public void setIssueStatusId(Long issueStatusId) {
+		this.issueStatusId = issueStatusId;
+	}
+	public String getIssueStatus() {
+		return issueStatus;
+	}
+	public void setIssueStatus(String issueStatus) {
+		this.issueStatus = issueStatus;
 	}
 	
 	
