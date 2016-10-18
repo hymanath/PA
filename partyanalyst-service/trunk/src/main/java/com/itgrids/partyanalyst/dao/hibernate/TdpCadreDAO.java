@@ -7669,7 +7669,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		 }
 	   return query.list();    
 	}
-	public Long getTotalTabUserWorkingInField(Long accessLvlId,Set<Long> userAccessLevelValues, Long stateId, Date lastOneHourTime, Date today){
+	public Long getTotalTabUserWorkingInField(Long accessLvlId,Set<Long> userAccessLevelValues, Long stateId, Date lastOneHourTime, Date today, String status){
 		StringBuilder queryStr = new StringBuilder(); 
 		queryStr.append("select count(distinct TC.tabUserInfoId) from " +
 						" TdpCadre TC " +
@@ -7681,21 +7681,24 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 				if(stateId.longValue()==1l){
 					queryStr.append(" TC.userAddress.district.districtId > 10 and  TC.userAddress.state.stateId = 1 and ");
 				}else if(stateId.longValue()==36l){
-					queryStr.append(" TC.tdpCadre.userAddress.district.districtId < 11 and ");
+					queryStr.append(" TC.userAddress.district.districtId < 11 and ");  
 				}
 			} 
+		}  
+		if(lastOneHourTime!= null && today!=null && status.equalsIgnoreCase("toDay")){    
+			queryStr.append(" date(TC.insertedTime) between :lastOneHourTime and :today and ");  	 
 		}
-		if(lastOneHourTime!= null && today!=null){
-			queryStr.append(" TC.insertedTime between :lastOneHourTime and :today and ");	 
+		if(lastOneHourTime!= null && today!=null && status.equalsIgnoreCase("oneHour")){    
+			queryStr.append(" TC.insertedTime between :lastOneHourTime and :today and ");        	 
 		}
 		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" TC.userAddress.state.stateId in (:userAccessLevelValues) ");  
 		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.tdpCadre.userAddress.district.districtId in (:userAccessLevelValues) ");  
+			queryStr.append(" TC.userAddress.district.districtId in (:userAccessLevelValues) ");  
 		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.tdpCadre.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
 		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.tdpCadre.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
+			queryStr.append(" TC.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
 		}
 		Query query = getSession().createQuery(queryStr.toString());   
 		
@@ -7706,6 +7709,58 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setDate("lastOneHourTime", lastOneHourTime);
 			query.setDate("today", today);
 		}  
-		return (Long) query.uniqueResult(); 
+		return (Long) query.uniqueResult();   
+	}
+	public List<Object[]> getLocationIdAndName(Long accessLvlId,List<Long> userAccessLevelValues,Long stateId){
+		StringBuilder queryStr = new StringBuilder(); 
+		queryStr.append("select distinct ");      
+		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	         queryStr.append(" TC.userAddress.state.stateId , TC.userAddress.state.stateName ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.district.districtId, TC.userAddress.district.districtName ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId, TC.userAddress.parliamentConstituency.name ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.constituency.constituencyId, TC.userAddress.constituency.name ");      
+		}
+		queryStr.append(" from  TdpCadre TC where ");
+		if(stateId != null && stateId.longValue() > 0){
+			if(stateId != null && stateId.longValue() > 0){
+				if(stateId.longValue()==1l){
+					queryStr.append(" TC.userAddress.district.districtId > 10 and  TC.userAddress.state.stateId = 1 and ");
+				}else if(stateId.longValue()==36l){
+					queryStr.append(" TC.userAddress.district.districtId < 11 and ");
+				}
+			} 
+		}
+		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	         queryStr.append(" TC.userAddress.state.stateId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.district.districtId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
+		}
+		Query query = getSession().createQuery(queryStr.toString());   
+		
+		if(userAccessLevelValues != null){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		return query.list();
+	}
+	public Long getTotalConstituencyForCdrRegStarted(Long stateId){
+		StringBuilder queryStr = new StringBuilder(); 
+		queryStr.append("select count(distinct TC.userAddress.constituency.constituencyId) from " +
+						" TdpCadre TC, TdpCadreEnrollmentYear TCEY where " +
+						" TC.userAddress.state.stateId = :stateId and " +
+						" TC.isDeleted = 'N' and " +
+						" TC.tdpCadreId = TCEY.tdpCadre.tdpCadreId and " +
+						" TCEY.isDeleted = 'N' and " +
+						" TC.enrollmentYear = 2014 and " +
+						" TCEY.enrollmentYearId = 4 ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("stateId", stateId);
+		return (Long) query.uniqueResult();
 	}
 }
