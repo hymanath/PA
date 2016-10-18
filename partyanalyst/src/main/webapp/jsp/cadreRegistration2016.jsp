@@ -1488,6 +1488,14 @@ function changeImg()
 		document.getElementById("uploadFileId").value = "";
 		
 	}
+	 $(document).on("blur","#dobId",function(){
+			var dob=$("#dobId").val();
+			if(dob!=null && dob!=undefined && dob.trim() !=""){		
+			 var dobArr=dob.split("-");	
+			 var year=(new Date().getFullYear())-(dobArr[0]);
+			 $("#ageId").val(year);
+			}
+		});  
 </script>
 </body>
 </html>
