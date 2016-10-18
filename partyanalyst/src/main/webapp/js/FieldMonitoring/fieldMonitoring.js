@@ -130,8 +130,16 @@ $(document).on("click",".manageIssues",function(){
     var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
     $("#submitId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
     $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
-	 getVendorConstituencies('issueConstituencyId');
-	 getConstituencyByVendor();
+	
+	var vendorId = $("#vendorId option:selected").val();
+	var districtId =  $("#districtId option:selected").val();
+	var constituencyId =  $("#constituencyId option:selected").val();
+	
+	if( districtId > 0 || constituencyId > 0){
+		getVendorConstituencies('issueConstituencyId');
+	}else{
+		 getConstituencyByVendor();
+	}
     $("#issuesModal").modal('show');
   });
  
@@ -166,10 +174,9 @@ $(document).on("click",".manageIssues",function(){
    });
   }
   function getConstituencyByVendor(){
-			var fieldVendorId = $("#vendorId option:selected").val();
-	  var jsObj = { 
-			              fieldVendorId : fieldVendorId 
-						}
+	  clearConstituencies('issueConstituencyId');
+	  var fieldVendorId = $("#vendorId option:selected").val();
+	  var jsObj = { fieldVendorId : fieldVendorId }
 	 
     $.ajax({
           type:'GET',
@@ -177,11 +184,10 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#issueVendorId").append('<option value="0"> Select Vendor</option>');
-     for(var i in result){
-	      $("#issueVendorId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	 }
-	 $("#issueVendorId").trigger("chosen:updated");
+       for(var i in result){
+	      $("#issueConstituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 $("#issueConstituencyId").trigger("chosen:updated");
    });
   }
 
