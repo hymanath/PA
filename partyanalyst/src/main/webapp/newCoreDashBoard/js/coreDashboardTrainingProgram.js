@@ -1,6 +1,8 @@
 //Training Program
 var globalStateId=1; //default Ap 
-$(".trainingDate").html(" UPTO DATE ( "+customStartDate+" )");
+var customStartDate1 = moment().format('DD/MM/YYYY');
+
+$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
 	$(".trainingDate").html("( "+customStartDate+" )");
