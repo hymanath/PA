@@ -38,6 +38,11 @@ public class CadreRegistratedCountVO implements Serializable {
 	private Long totalSubmittedToday = 0l;
 	
 	private Long target = 0l;
+	private Long id = 0l;
+	private Long target2014 = 0l;
+	private Long target2016 = 0l;
+	private Long totalCount2014 = 0l;
+	private Double cadreCountPer2014 ;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -294,10 +299,44 @@ public class CadreRegistratedCountVO implements Serializable {
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
 	}
-	
-	
-	
-	
-	
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getTarget2014() {
+		return target2014;
+	}
+
+	public void setTarget2014(Long target2014) {
+		this.target2014 = target2014;
+	}
+
+	public Long getTarget2016() {
+		return target2016;
+	}
+
+	public void setTarget2016(Long target2016) {
+		this.target2016 = target2016;
+	}
+
+	public Long getTotalCount2014() {
+		return totalCount2014;
+	}
+	public void setTotalCount2014(Long totalCount2014) {
+		this.totalCount2014 = totalCount2014;
+	}
+
+	public Double getCadreCountPer2014() {
+		return cadreCountPer2014;
+	}
+
+	public void setCadreCountPer2014(Double cadreCountPer2014) {
+		this.cadreCountPer2014 = cadreCountPer2014;
+	}
+	
 }
