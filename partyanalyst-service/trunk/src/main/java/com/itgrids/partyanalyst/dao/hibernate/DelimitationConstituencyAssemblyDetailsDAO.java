@@ -593,7 +593,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public List<Constituency> getPCCompleteDetailsByAcId(Long constituencyId){
 		
 		Query query = getSession().createQuery("" +
-				" SELECT model.delimitationConstituency.constituency.constituency " +
+				" SELECT model.delimitationConstituency.constituency " +
 			    " FROM   DelimitationConstituencyAssemblyDetails model" +
 				" WHERE  model.constituency.constituencyId = :constituencyId and model.delimitationConstituency.year = 2009");
 	    query.setParameter("constituencyId",constituencyId);
