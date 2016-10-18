@@ -300,7 +300,7 @@ function buildTabUserDetails(result){
 						str+='<td>'+result.subList[i].fixedIssues+'</td>';
 					else
 						str+='<td> - </td>';
-					str+='<td><button class="btn btn-success text-capitalize manageIssues">manage issues</button></td>';
+					str+='<td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" >manage issues</button></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
