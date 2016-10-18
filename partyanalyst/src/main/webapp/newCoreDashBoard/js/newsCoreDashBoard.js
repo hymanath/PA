@@ -3,15 +3,15 @@
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 	
-	var currentFromDate = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
-	var currentToDate = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
+	var currentFromDate = moment().format("DD-MM-YYYY");
+	var currentToDate = moment().format("DD-MM-YYYY");
 	var newsPaperIdsGlob = [1,2,3];
 	var impactScopeIdsGlob = [1,2,3,4,5,6,8];
 	$(document).ready(function(){
 		$("#dateRangeIdForNews").daterangepicker({
 			opens: 'left',
-			startDate: moment().subtract(1, 'month').startOf('month'),
-			endDate: moment().subtract(1, 'month').endOf('month'),
+			startDate: moment(),
+			endDate: moment(),
 			locale: {
 			  format: 'DD-MM-YYYY'
 			},
@@ -38,6 +38,7 @@
 		}else{
 			$("#currentViewing").html(picker.chosenLabel+" ( "+currentFromDate+" to "+currentToDate+" )");
 		}
+		
 		commonNewsBasicCalls();
 		/* getNewsBasicCounts();
 		 if($(".newsIconExpand i").attr("class").split(" ")[1]=="glyphicon-resize-small"){
@@ -7081,3 +7082,50 @@ $(document).on("click",".btnCustomCreateNews",function(){
 				}); 
 		
 	}
+	
+	$(document).on("click",".datesClass",function(){
+		var type = $(this).attr("attr_type");
+		if(type == "today"){
+			currentFromDate = moment().format('DD-MM-YYYY');
+			currentToDate = moment().format('DD-MM-YYYY');
+			$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
+			commonNewsBasicCalls();
+		}else if(type == "lastMonth"){
+			currentFromDate = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
+			currentToDate = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
+			$("#currentViewing").html("Last Month ( "+currentFromDate+" to "+currentToDate+" )");
+			commonNewsBasicCalls();
+		}
+		
+		$("#dateRangeIdForNews").daterangepicker({
+			opens: 'left',
+			startDate: currentFromDate,
+			endDate: currentToDate,
+			locale: {
+			  format: 'DD-MM-YYYY'
+			},
+			ranges: {
+				'Today' : [moment(), moment()],
+			   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+			   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			   'This Month': [moment().startOf('month'), moment()],
+			   'This Year': [moment().startOf('Year'), moment()]
+			}
+		});
+		$('#dateRangeIdForNews').on('apply.daterangepicker', function(ev, picker) {
+			currentFromDate = picker.startDate.format('DD-MM-YYYY');
+			currentToDate = picker.endDate.format('DD-MM-YYYY');
+			if(picker.chosenLabel == "Today"){
+				$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
+			}else{
+				$("#currentViewing").html(picker.chosenLabel+" ( "+currentFromDate+" to "+currentToDate+" )");
+			}
+			commonNewsBasicCalls();
+			
+		});
+	
+		
+	});
