@@ -71,11 +71,18 @@
                         </li>
                     </ul>
                 </div>
-				<div class="col-md-2 col-xs-12 col-sm-3 pull-right"  style="margin-top: -10px;">
-                	<ul class="list-inline profileSelection">
+				<div class="col-md-4 col-xs-12 col-sm-3 pull-right" style="margin-top: -10px;">
+					<ul class="list-inline profileSelection">
+						<li>
+							<img src="today" id="todayRadio" class="datesClass" attr_type="today" title="today"/>
+						 </li>
+						<li>
+							<img src="lastMonth" id="lastMonthRadio" class="datesClass" checked="true" attr_type="lastMonth"/>
+						 </li>
                     	<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
+						
                         <!--<li>
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
 							<a>TS</a>
@@ -118,6 +125,7 @@
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									news - <small class="text-muted" id="currentViewing"></small>
 								</h4>
+								
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-6 newsHead1">
 								<span class="settingsIcon settingsIconNews pull-right">
@@ -2961,7 +2969,7 @@
 		//events
 		getEventBasicCntDtls();
 		//news please dont remove
-		$("#currentViewing").html(" LAST MONTH ( "+moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY')+" TO "+moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY')+" )");
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		//getNewsBasicCounts();
 		commonNewsBasicCalls();
 		getAllNewsPapers();
