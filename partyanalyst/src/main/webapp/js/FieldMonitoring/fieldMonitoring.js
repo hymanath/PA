@@ -64,7 +64,7 @@ $(document).on("change", "#stateId", function(e){
 			
 			var vendorId = $("#vendorId option:selected").val();
 			var districtId  = $("#districtId option:selected").val();
-			
+			var constituencieId  = $("#constituencyId option:selected").val(); 
 			var jsObj = { 
 			              vendorId : vendorId ,
 						  districtId : districtId
@@ -78,7 +78,13 @@ $(document).on("change", "#stateId", function(e){
 			}).done(function(result){
 				if(result!=null && result.length>0){
                   for(var i in result){
-                     $('#'+selectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					  if(result[i].id ==constituencieId)
+					  {
+                      $('#'+selectBoxId).append('<option selected value="'+result[i].id+'">'+result[i].name+'</option>');
+					  }else{
+						  $('#'+selectBoxId).append('<option  value="'+result[i].id+'">'+result[i].name+'</option>');
+					  }
+					  
                    }
                 }
 				refreshSelectBox(selectBoxId);
