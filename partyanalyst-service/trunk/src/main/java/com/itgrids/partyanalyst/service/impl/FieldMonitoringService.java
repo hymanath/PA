@@ -539,7 +539,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("Exception raised in getCadreRegIssueType() in FieldMonitoringService class", e);
+			LOG.error("Exception raised in getConstituencyByVendor() in FieldMonitoringService class", e);
 		}
 		return constituencyByVendor;
 	}  
