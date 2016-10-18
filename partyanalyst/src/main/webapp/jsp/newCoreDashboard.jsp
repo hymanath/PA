@@ -2900,7 +2900,7 @@
 		//events
 		getEventBasicCntDtls();
 		//news please dont remove
-		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+		$("#currentViewing").html(" LAST MONTH ( "+moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY')+" TO "+moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY')+" )");
 		//getNewsBasicCounts();
 		commonNewsBasicCalls();
 		getAllNewsPapers();
