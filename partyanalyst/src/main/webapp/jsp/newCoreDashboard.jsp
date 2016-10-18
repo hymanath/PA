@@ -2414,7 +2414,34 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                    
+                        </div>                   
+						<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div id="designationListId"></div>
+								</div>
+								<div class="panel-body">  
+									<div class="row" id="childMembersId">
+
+									</div>
+									<div class="bg_ED pad_15">
+										<div class="row" id="directChildId"></div>   
+										<div class="row" id="enumeratorsId"></div>     
+										<div class="row m_top20">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<span class="headingColor">districts wise registrations</span>
+												<div id="individualDtlsId"></div>  
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<span class="headingColor">registered voter id</span>
+												<div id=""></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>-->  
+						
                     </div>
                 </div>
             </div>
@@ -2909,7 +2936,7 @@
 		getPartyWiseTotalDebateDetails();
         //cadreRegistration
 		cadreRegistrationBasicCall(globalActivityMemberId);        
-		
+		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);          
 	}
 	
 	
