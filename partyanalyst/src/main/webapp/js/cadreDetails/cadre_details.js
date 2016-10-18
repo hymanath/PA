@@ -878,7 +878,10 @@ var globalidentityMembershipNo = ""	;
 									str+='   - <b>Verification Status :</b> <span style="color:green;"> '+result.verifierVOList[i].isSampleVerified+'.</span> ';
 								}else if(result.verifierVOList[i].isSampleVerified == "null"){
 									str+='   - <b>Verification Status :</b>  <span style="color:red;"> Not Verified </span> ';
-								}else{
+								}else if(result.verifierVOList[i].isSampleVerified == "Invalid Mobile Number" || result.verifierVOList[i].isSampleVerified == "Not Reachable" || result.verifierVOList[i].isSampleVerified == "Valid" || result.verifierVOList[i].isSampleVerified == "Partially Valid" || result.verifierVOList[i].isSampleVerified == "InValid" || result.verifierVOList[i].isSampleVerified == "Invalid Respondent" || result.verifierVOList[i].isSampleVerified == "Switched Off" || result.verifierVOList[i].isSampleVerified == "Call Not Lifted" ){
+									str+='   - <b>Verification Status :</b>  <span style="color:Green;"> '+result.verifierVOList[i].isSampleVerified+'</span> ';
+								}
+								else{
 									str+='   - <b>Verification Status :</b>  <span style="color:red;"> Not Verified </span> ';
 								}
 								
@@ -1164,6 +1167,13 @@ var globalidentityMembershipNo = ""	;
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="tableshidesandShow(\'surveyTable'+i+'\','+i+');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
+								if(result.count != null && result.count >0)
+								{
+									if(result.verifierVOList[i].isSampleVerified != null && result.verifierVOList[i].isSampleVerified.length>0)
+										str+=' - <b>Verification Status :</b> <span style="color:Green;"> '+result.verifierVOList[i].isSampleVerified+'  </span>';
+									else
+										str+='  - <b>Verification Status :</b> <span style="color:red;"> Not Verified </span>';
+								}
 								//sris
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable topsurveyTable'+i+'" id="topsurveyTable'+i+'" style="display:none;"></i></span>';
 								str+='</h4> </a><div style="offset4"><img id="ajaxsurveyTable'+i+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
@@ -4282,6 +4292,7 @@ function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
 			url :'getCandidateAndConstituencySurveyResultAction.action',
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
+			alert(222);
 			if(result != null){
 				buildCandidateAndConstituencySurveyResult(result,surveyId,divId);
 				
