@@ -193,6 +193,9 @@ $(document).on("click",".manageIssues",function(){
 
   
 $(document).on("click","#getDetails",function(){
+	$("#tabUserDetailsDivId").html("");
+	$("#dataCollectorsDiv").show();
+	$("#tabUserDetailsImgId").show();
 	var vendorId = $("#vendorId").val();
 	var stateId = $("#stateId").val();
 	var districtId = $("#districtId").val();
@@ -238,6 +241,10 @@ $(document).on("click","#getDetails",function(){
 	  if(result != null){
 		  buildTabUserDetails(result);
 	  }
+	  else{
+		$("#tabUserDetailsImgId").hide();
+		$("#tabUserDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+	  }
    });
 });
 	
@@ -249,6 +256,7 @@ function buildTabUserDetails(result){
 	if(result.subList != null && result.subList.length > 0){
 		var str = '';
 		
+		str+='<h4 class="panel-title text-muted">Logged In FieldUsers</h4>';
 		str+='<table class="table b_1 m_top10" id="detailsTable">';
 			str+='<thead class="text-capitalize">';
 				str+='<th>User Id</th>';
@@ -306,10 +314,12 @@ function buildTabUserDetails(result){
 			str+='</tbody>';
 		str+='</table>';
 		
+		$("#tabUserDetailsImgId").hide();
 		$("#tabUserDetailsDivId").html(str);
-		
 		//$("#detailsTable").datatable();
 	}
-	else
-		$("#tabUserDetailsDivId").html('NO DATA AVAILABLE...');
+	else{
+		$("#tabUserDetailsImgId").hide();
+		$("#tabUserDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+	}
 }
