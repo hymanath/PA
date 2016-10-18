@@ -377,8 +377,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   Date currentDate = dateUtilService.getCurrentDateAndTime();
 		        	   cadreRegIssue.setInsertedTime(currentDate);
 		        	   cadreRegIssue.setUpdatedTime(currentDate);
-		        	   cadreRegIssue.setCreatedBy(inputVO.getLoginUserId());
-		        	   cadreRegIssue.setUpdatedBy(inputVO.getLoginUserId());
+		        	   cadreRegIssue.setCreatedBy(1L);//inputVO.getLoginUserId()
+		        	   cadreRegIssue.setUpdatedBy(1L);//inputVO.getLoginUserId()
 		        	   
 		        	   cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
 		        	   
