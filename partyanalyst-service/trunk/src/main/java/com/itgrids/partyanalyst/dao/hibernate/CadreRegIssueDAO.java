@@ -282,34 +282,37 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return (Long) query.uniqueResult();*/
 	}
 
-	public List<Object[]> getCadreIssueStatusCount(Date fromDate,Date toDate){
+	public List<Object[]> getIssueStatusWiseCounts(Date fromDate,Date toDate){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status from " +
-				" CadreRegIssue model where  ");
+		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status " +
+				"         from CadreRegIssue model  " );
 		
 		if(fromDate != null && toDate != null)
-			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+			sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
 		
 		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId ");
 		
-		Query query = getSession().createSQLQuery(sb.toString());
-		
+		Query query = getSession().createQuery(sb.toString());
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
 		return query.list();
 	}
 	
-	public List<Object[]> getStatusWiseIssueTypeCount(Date fromDate,Date toDate){
+	public List<Object[]> getIssueTypeWiseCounts(Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status," +
 				" model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType from " +
-				" CadreRegIssue model where  ");
+				" CadreRegIssue model   ");
 		if(fromDate != null && toDate != null)
-			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+			sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
 		
 		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueType.cadreRegIssueTypeId ");
 		
-		Query query = getSession().createSQLQuery(sb.toString());
+		Query query = getSession().createQuery(sb.toString());
 		
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
 		return query.list();
 	}
 
