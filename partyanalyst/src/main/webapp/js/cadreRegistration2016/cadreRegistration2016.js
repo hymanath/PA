@@ -391,7 +391,8 @@ $(document).on("click",".checkboxCls",function(){
 	 $("#prvNomneNameId").val(name);
 	 $('#prvNomneGendrId').val(gender).trigger('chosen:updated');
 	 $("#prevNomneAgeId").val(age);
-	 $('#prevNomneReltvId').val(relationTypeId).trigger('chosen:updated');
+	 //$('#prevNomneReltvId').val(relationTypeId).trigger('chosen:updated');
+	 $('#prevNomneReltvId').val(0).trigger('chosen:updated');
 	 
 	
 });
@@ -583,8 +584,10 @@ $(document).on("click",".isImageCheck",function(){
 	});    
  
  $(document).on("click","#PrvNomineeDetailsId",function(){ 
-	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
-	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
+	//$('#prvNomneGendrId').val(0).trigger('chosen:updated');
+	//$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
+	 $('#prvNomneGendrId').val();
+	 $('#prevNomneReltvId').val();
 	
 	var prvNomineeGender = $("#PrvNomineeDetailsId").attr("attr_nomineeGender");
 	var prvNomineeRelative = $("#PrvNomineeDetailsId").attr("attr_nomineRelative");
