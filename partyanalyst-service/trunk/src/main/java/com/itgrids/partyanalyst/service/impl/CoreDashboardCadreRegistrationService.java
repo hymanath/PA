@@ -127,7 +127,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
 	}
 	public void setTabUserEnrollmentInfoDAO(
-			ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO) {
+			ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO) {  
 		this.tabUserEnrollmentInfoDAO = tabUserEnrollmentInfoDAO;
 	}
 	public void setTdpCadreTargetCountDAO(
@@ -1505,11 +1505,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//total const started
 			Long ttlContStarted = 0l;
 			if(stateId == 1l){
-				ttlContStarted = tdpCadreEnrollmentInfoDAO.getTotalConstituencyForCdrRegStarted(1l);
+				
+				ttlContStarted = tdpCadreDAO.getTotalConstituencyForCdrRegStarted(1l);
 				cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);   
 				cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,175l));
 			}else{
-				ttlContStarted = tdpCadreEnrollmentInfoDAO.getTotalConstituencyForCdrRegStarted(36l);
+				ttlContStarted = tdpCadreDAO.getTotalConstituencyForCdrRegStarted(36l);
 				cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);
 				cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,119l));
 			}
@@ -1521,8 +1522,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
 			
-			Long ttlTabUserInField = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,lastOneHourTime,today);
-			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);  
+			Long ttlTabUserInField = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,lastOneHourTime,today,"oneHour");
+			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);    
 			
 			
 			//total submitted data
@@ -1778,30 +1779,237 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return null;
 	}
 
-public String generatingAndSavingOTPDetails(String mobileNo){
-	try {
-		RandomNumberGeneraion rnd = new RandomNumberGeneraion();
-		int otpRand = 0;
-		int refRand = 0;
-		
-		while(otpRand <= 0 && refRand <= 0){
-			 otpRand = rnd.randomGenerator(6);
-			 refRand = rnd.randomGenerator(6);
+	public String generatingAndSavingOTPDetails(String mobileNo){
+		try {
+			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
+			int otpRand = 0;
+			int refRand = 0;
+			
+			while(otpRand <= 0 && refRand <= 0){
+				 otpRand = rnd.randomGenerator(6);
+				 refRand = rnd.randomGenerator(6);
+			}
+			String refeRenceNo = String.valueOf(refRand);
+			String otpNum = String.valueOf(otpRand);
+			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
+			String[] phoneNumbers = {mobileNo.toString()};
+			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+			return "failure";
 		}
-		String refeRenceNo = String.valueOf(refRand);
-		String otpNum = String.valueOf(otpRand);
-		String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
-		String[] phoneNumbers = {mobileNo.toString()};
-		smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
-	} catch (Exception e) {
-		e.printStackTrace();
-		LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
-		return "failure";
+		return "success";
 	}
-	return "success";
-}
+	public CadreRegistratedCountVO getEnumerationDtlsForMem(Long activityMemberId,Long stateId,String startDate, String endDate){
+		try{
+			CadreRegistratedCountVO cadreRegistratedCountVO = new CadreRegistratedCountVO();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date frmDt = null;
+			Date toDt = null;
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				frmDt = sdf.parse(startDate);
+				toDt = sdf.parse(endDate);  
+			}
+			Long accessLvlId = null;
+			List<Long> accessLvlValue = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				accessLvlId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					accessLvlValue.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			//Long ttlTabUserInField = 0l;  
+			//total logged in today
+			Date today = new Date();
+			String dt = sdf1.format(today);
+			Date tDate = sdf1.parse(dt);    
+			Long ttlTabUserInField = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,tDate,tDate,"toDay");
+			cadreRegistratedCountVO.setTodayFieldMembersCount(ttlTabUserInField != null ? ttlTabUserInField : 0l);  
+			//now in the field
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
+			Date lastOneHourTime = cal.getTime();
+			
+			Long ttlTabUserInFieldNow = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,lastOneHourTime,today,"oneHour");
+			cadreRegistratedCountVO.setInField(ttlTabUserInFieldNow != null ? ttlTabUserInFieldNow : 0l); 
+			//today submitted data
+			Long totalCadreToday = 0l;
+			List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
+			if(totalRegCadreListForToday != null && totalRegCadreListForToday.size() > 0){
+				for(Object[] param : totalRegCadreListForToday){  
+					if(accessLvlValue.contains((Long)param[0]))
+					totalCadreToday += param[1] != null ? (Long)param[1] : 0l;
+				}
+			}
+			cadreRegistratedCountVO.setTodayTotalCount(totalCadreToday);
+			return cadreRegistratedCountVO;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;
+	}
+	public List<CadreRegistratedCountVO> getDtlsOfBellowLvlMember(Long activityMemberId,Long stateId,String startDate, String endDate){
+		try{  
+			List<CadreRegistratedCountVO> cadreRegistratedCountVOs = new ArrayList<CadreRegistratedCountVO>();
+			CadreRegistratedCountVO cadreRegistratedCountVO = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date frmDt = null;
+			Date toDt = null;
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				frmDt = sdf.parse(startDate);
+				toDt = sdf.parse(endDate);  
+			}
+			Long accessLvlId = null;
+			List<Long> accessLvlValue = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				accessLvlId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					accessLvlValue.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			//get location id and name
+			
+			List<Object[]> locationIdAndNameList = tdpCadreDAO.getLocationIdAndName(accessLvlId,accessLvlValue,stateId);
+			if(locationIdAndNameList != null && locationIdAndNameList.size() > 0){
+				for(Object[] param: locationIdAndNameList){
+					cadreRegistratedCountVO = new CadreRegistratedCountVO();
+					cadreRegistratedCountVO.setId(param[0] != null ? (Long)param[0] : 0l);
+					cadreRegistratedCountVO.setSourceName(param[1] != null ? param[1].toString() : "");
+					cadreRegistratedCountVOs.add(cadreRegistratedCountVO);
+				}
+			}
+			//get 2014 total target location wise
+			List<Object[]> totalTargetList2014 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 3l);
+			if(totalTargetList2014 != null && totalTargetList2014.size() > 0){
+				for(Object[] param : totalTargetList2014){
+					if(accessLvlValue.contains((Long)param[0])){
+						setTarget2014ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
+					}
+				}
+			}
+
+			//get 2014 totalcadre location wise
+			List<Object[]> totalRegCadreList2014 = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt,3l);
+			if(totalRegCadreList2014 != null && totalRegCadreList2014.size() > 0){
+				for(Object[] param : totalRegCadreList2014){
+					if(accessLvlValue.contains((Long)param[0])){
+						setCdrCount2014ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
+					}
+				}
+			}
+			//get 2016 total target location wise
+			List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l);
+			if(totalTargetList2016 != null && totalTargetList2016.size() > 0){
+				for(Object[] param : totalTargetList2016){
+					if(accessLvlValue.contains((Long)param[0])){
+						setTarget2016ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
+					}
+				}
+			}
+			//get 2016 total cadre location wise
+			List<Object[]> totalRegCadreList2016 = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt,4l);
+			if(totalRegCadreList2016 != null && totalRegCadreList2016.size() > 0){
+				for(Object[] param : totalRegCadreList2016){
+					if(accessLvlValue.contains((Long)param[0])){
+						setCdrCount2016ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
+					}
+				}
+			}
+			//get 2016 renewal cadre  
+			List<Object[]> totalRegCadreRenewalList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			if(totalRegCadreRenewalList != null && totalRegCadreRenewalList.size() > 0){
+				for(Object[] param : totalRegCadreRenewalList){
+					if(accessLvlValue.contains((Long)param[0])){
+						setRenewCdrCount2016ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]); 
+					}  
+				}
+			}
+			//get 2016 new cadre
+			if(cadreRegistratedCountVOs.size() > 0){
+				for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+					vo.setNewCount(vo.getTotalCount() - vo.getRenewalCount());
+				}
+			}
+			//calculate and push % for 2014
+			if(cadreRegistratedCountVOs.size() > 0){
+				for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+					vo.setCadreCountPer2014(calculatePercantage(vo.getTotalCount2014(),vo.getTarget2014()));
+				}
+			}
+			//calculate and push % for renewal count 2016
+			if(cadreRegistratedCountVOs.size() > 0){
+				for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+					vo.setRenewalPerCount(calculatePercantage(vo.getRenewalCount(),vo.getTarget()).toString());
+				}
+			}
+			//calculate and push % for new count 2016
+			if(cadreRegistratedCountVOs.size() > 0){
+				for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+					vo.setNewPercCnt(calculatePercantage(vo.getNewCount(),vo.getTarget()).toString());
+				}      
+			}
+			return cadreRegistratedCountVOs;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;
+	}
+	public void setTarget2014ValueToMatchedVO(Long locationValueId,List<CadreRegistratedCountVO> cadreRegistratedCountVOs,Long count){
+		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
+			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+				if(vo.getId().equals(locationValueId)){
+					vo.setTarget2014(count);
+				}
+			}
+		}
+	}
+	public void setCdrCount2014ValueToMatchedVO(Long locationValueId,List<CadreRegistratedCountVO> cadreRegistratedCountVOs,Long count){
+		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
+			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+				if(vo.getId().equals(locationValueId)){
+					vo.setTotalCount2014(count);
+				}
+			}
+		}  
+	}
+	public void setTarget2016ValueToMatchedVO(Long locationValueId,List<CadreRegistratedCountVO> cadreRegistratedCountVOs,Long count){
+		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
+			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+				if(vo.getId().equals(locationValueId)){
+					vo.setTarget(count);
+				}
+			}
+		}
+	}
+	public void setCdrCount2016ValueToMatchedVO(Long locationValueId,List<CadreRegistratedCountVO> cadreRegistratedCountVOs,Long count){
+		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
+			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+				if(vo.getId().equals(locationValueId)){
+					vo.setTotalCount(count);
+				}
+			}
+		}
+	}
+	public void setRenewCdrCount2016ValueToMatchedVO(Long locationValueId,List<CadreRegistratedCountVO> cadreRegistratedCountVOs,Long count){
+		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
+			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
+				if(vo.getId().equals(locationValueId)){
+					vo.setRenewalCount(count);
+				}
+			}
+		}
+	}
 
  public String getOtpStatus(String mobileNumber,String otp,Long tdpCadreId){
 	  return "success"; 
      }
+
+ 
 }
