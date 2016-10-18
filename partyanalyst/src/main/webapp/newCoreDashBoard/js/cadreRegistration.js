@@ -9,7 +9,7 @@ function initialiseDatePickerForCadreRegistration(){
 			startDate: moment(),
 			endDate: moment(),
 			locale: {
-			  format: 'DD-MM-YYYY'
+			  format: 'DD-MM-YYYY'  
 			},
 		})
 }
@@ -1889,50 +1889,8 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		  getTsConstituencyCadreRegistrationDetails(3,tsDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
 	   }
 	   $(".cadreRDD").hide();
-});
-	 
-	function getTotalNewRenewalCadreStateWise(globalActivityMemberId){
-		var startDate = '';
-		var endDate = '';  
-		var jsObj={  
-			activityMemberId : globalActivityMemberId,
-			stateId : globalStateId,         
-			startDate : '02/10/2016',      
-			endDate : '17/10/2016'
-		};
-		$.ajax({          
-			type : 'GET',    
-			url : 'getTotalNewRenewalCadreStateWiseAction.action',  
-			dataType : 'json',
-			data : {task :JSON.stringify(jsObj)} 
-		}).done(function(result){        
-			
-			 if(result != null){
-				console.log(result);  
-			 }
-		});
-	}
-	function getStateDtls(globalActivityMemberId){
-		var startDate = '';    
-		var endDate = '';  
-		var jsObj={  
-			activityMemberId : globalActivityMemberId,
-			stateId : globalStateId,         
-			startDate : '02/10/2016',      
-			endDate : '17/10/2016'
-		};
-		$.ajax({          
-			type : 'GET',       
-			url : 'getStateDtls.action',  
-			dataType : 'json',
-			data : {task :JSON.stringify(jsObj)} 
-		}).done(function(result){        
-			
-			 if(result != null){
-				console.log(result);  
-			 }
-		});
-	}
+});  
+	getSourceOfRegistrationDtls(44);   
 	function getSourceOfRegistrationDtls(globalActivityMemberId){
 		var startDate = '';    
 		var endDate = '';    
@@ -1943,7 +1901,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			endDate : '17/10/2016'
 		};
 		$.ajax({          
-			type : 'GET',       
+			type : 'GET',            
 			url : 'getSourceOfRegistrationDtls.action',    
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
@@ -1954,4 +1912,364 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			 }  
 		});
 	}
+//for dynamic calls  	
 	 
+	function getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId){  
+		
+		var jsObj = {parentUserTypeId : globalUserTypeId}
+		$.ajax({
+			type : 'POST',
+			url : 'getAllItsSubUserTypeIdsByParentUserTypeIdAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+			buildgetChildUserTypesByItsParentUserTypeForCadreRegistration(result);	
+			}else{
+			}
+		});		
+	}
+	function buildgetChildUserTypesByItsParentUserTypeForCadreRegistration(result){
+		
+		var firstChildUserTypeIdString = result[0].shortName;
+		var str = '';
+		if(result != null && result.length > 0){
+			str += '<ul class="comparisonSelect">';
+			for(var i in result){
+				str += '<li class="childMemCls" id="desigPosition'+i+'" attr_userTypeId="'+result[i].shortName+'" attr_userType="'+result[i].userType+'">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+			}
+			str += '</ul>';    
+		}
+		$("#designationListId").html(str); 
+		$("#desigPosition0").trigger("click");   
+		//getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
+	}
+	$(document).on('click','#desigPosition0',function(){  
+		var firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
+		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
+	});
+	function getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString){
+		
+		var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
+		var jsObj={  
+			parentActivityMemberId : globalActivityMemberId,        
+			childUserTypeIdsArray : childUserTypeIdsArray,
+			stateId : globalStateId,
+			fromDateStr : '02/10/2016',
+			toDateStr : '16/10/2016'
+		};
+		$.ajax({                   
+			type : 'GET',    
+			url : 'getSelectedChildTypeMembersForCadreRegistration.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			
+			 if(result != null){
+				buildChildMembers(result);       
+			 }
+		});
+	} 
+	/* <div class="col-md-12 col-xs-12 col-sm-12">
+		<div class="panel panel-default panelSlick">
+			<div class="panel-heading">
+				<h4 class="panel-title">SUBRAHMANYAM REDDY</h4>
+				<span class="count">1</span>
+			</div>
+			<div class="panel-body">
+				
+			</div>
+		</div>  
+	</div> */
+	function buildChildMembers(result){
+		var str = '';
+		str += '<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<ul class="list-inline slickPanelSliderCadre">';
+			
+			var k = 0;
+			for(var i in result){
+				k = parseInt(k) + 1;       
+			str+='<li style="cursor:pointer;" style="width:380px !important;">';
+			str += '<div class="panel panel-default panelSlick">';
+				str += '<div class="panel-heading">';
+					str += '<h4 class="panel-title">'+result[i].name+'</h4><span class="count">'+(k)+'</span>';     
+				str += '</div>';
+				str += '<div class="panel-body directChildCls" attr_name="'+result[i].name+'" attr_desig="'+result[i].userType+'" id="directChildId'+i+'" attr_activity_member_id="'+result[i].activityMemberId+'" attr_user_type_id="'+result[i].userTypeId+'">';
+					str += '<h4 class="text-capital">'+result[i].userType+'</h4>';
+					str += '<table class="table table-condensed">';
+						str += '<thead>';
+							str += '<tr>';   
+								str += '<th>2014-16</th>';  
+								str += '<th >2016-18</th>';
+								str += '<th >%</th>';
+							str += '</tr>';
+						str += '</thead>';
+						str += '<tbody>';
+							str += '<tr>';
+								str += '<td>'+result[i].totalTargetCount2014+'</td>';
+								str += '<td>'+result[i].totalCadreCount+'(Today-'+result[i].totalCadreCountToday+')</td>';
+								str += '<td>'+result[i].totalCadreCountPer+'%</td>';
+							str += '</tr>';
+						str += '</tbody>';
+					str += '</table>';
+					str += '<h4 class="text-capital">DISTRICT WISE REGISTRATIONS</h4>';  
+					str += '<table class="table table-condensed">';
+						str += '<tbody>';
+						for(var j in result[i].subLocationList){
+							str += '<tr>';
+								str += '<td>'+result[i].subLocationList[j].name+'</td>';
+								str += '<td>'+result[i].subLocationList[j].count+'(Today-'+result[i].subLocationList[j].wishCount+')</td>';
+							str += '</tr>';
+						}
+						str += '</tbody>';
+					str += '</table>';
+				str += '</div>';
+			str += '</div>';
+			str += '</li>';
+			}
+			
+		str += '</ul>';
+		str += '</div>';
+		$("#childMembersId").html(str);  
+		$("#directChildId0").trigger("click"); 
+		$("#childActivityMemberDivIdForMeeting").html(str);
+			$(".slickPanelSliderCadre").slick({
+				 slide: 'li',
+				 slidesToShow: 3,
+				 slidesToScroll: 3,
+				 infinite: false,
+				  responsive: [
+					{
+					  breakpoint: 1024,
+					  settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3,
+						infinite: false,
+						dots: false
+					  }
+					},
+					{
+					  breakpoint: 800,
+					  settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					  }
+					},
+					{
+					  breakpoint: 600,
+					  settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					  }
+					},
+					{
+					  breakpoint: 480,
+					  settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					  }
+					}
+					// You can unslick at a given breakpoint now by adding:
+					// settings: "unslick"
+					// instead of a settings object
+				  ]
+			});		
+	} 
+	$(document).on("click","#directChildId0",function(){  
+		var ActivityMemberId = $(this).attr("attr_activity_member_id");
+		var userTypeIdStr = $(this).attr("attr_user_type_id");
+		var userTypeIdArr = userTypeIdStr.split(",");  
+		
+		getDirectChildMembers(ActivityMemberId,userTypeIdArr);
+	});
+	function getDirectChildMembers(ActivityMemberId,userTypeIdArr){ 
+	
+		var jsObj ={ parentActivityMemberId : ActivityMemberId,      
+			         childUserTypeIdsArray : userTypeIdArr,    
+					 stateId : globalStateId,
+					 fromDateStr : '02/10/2016',
+					 toDateStr : '17/10/2016'          
+				  }
+	   	$.ajax({  
+			type : 'POST',   
+			url : 'getSelectedChildTypeMembersForCadreReg.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildDirectChildMembers(result);
+			}else{
+			}
+		});
+	}
+	function buildDirectChildMembers(result){
+		var str = '';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<table class="table table-condensed tableHoverLevels m_top20">';
+				str+='<thead>';
+					str+='<th>%RANK</th>';
+					str+='<th class="text-capital">'+result[0].userType+' NAME</th>';
+					str+='<th>TOTAL</th>';
+					str+='<th>TODAY</th>';
+					str+='<th>%</th>';
+				str+='</thead>';
+				str+='<tbody>';
+					   
+					var k = 0;
+					for(var i in result){
+						str+='<tr id="belowLvlMemId'+i+'" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
+							k = parseInt(k) + 1;      
+							str+='<td>';
+								str+='<span class="tableCount">'+k+'</span>';
+							str+='</td>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].totalCadreCount+'</td>';
+							str+='<td>'+result[i].totalCadreCountToday+'</td>';
+							str+='<td>'+result[i].totalCadreCountPer+'</td>';
+						str+='</tr>';
+					}  
+					
+				str+='</tbody>';
+			str+='</table>';  
+		str+='</div>';
+		$("#directChildId").html(str);
+		$("#belowLvlMemId0").trigger("click");  
+		$("#belowLvlMemId0").trigger("mouseover");        
+			//getEnumerationDtlsForMem(result[0].activityMemberId);
+			//getDtlsOfBellowLvlMember(result[0].activityMemberId);     
+	}  
+	$(document).on('click','#belowLvlMemId0',function(){
+		var activityMemberId = $(this).attr("attr_activity_member_id");
+		getEnumerationDtlsForMem(activityMemberId);    
+		getDtlsOfBellowLvlMember(activityMemberId);       
+	});
+	    
+	function getEnumerationDtlsForMem(globalActivityMemberId){
+		var startDate = '';      
+		var endDate = '';    
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,
+			stateId : globalStateId,         
+			startDate : '02/10/2016',         
+			endDate : '18/10/2016'
+		};
+		$.ajax({          
+			type : 'GET',       
+			url : 'getEnumerationDtlsForMem.action',      
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){                
+			
+			 if(result != null){
+				buildEnumerationDtlsForMem(result);        
+			 }  
+		});
+	}
+	function buildEnumerationDtlsForMem(result){
+		var str = '';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<span class="headingColor">enumerators info</span>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-3 text-capital">';
+			str+='<h3>'+result.todayFieldMembersCount+'</h3>';
+			str+='<p>LOGGED IN TODAY</p>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-3 text-capital">';
+			str+='<h3>'+result.inField+'</h3>';
+			str+='<p>IN FIELD NOW</p>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-3 text-capital">';
+			str+='<h3>'+result.todayTotalCount+'</h3>';
+			str+='<p>TODAY SUBMITTED DATA</p>';
+		str+='</div>'; 
+		$("#enumeratorsId").html(str);  
+	}
+	 
+	function getDtlsOfBellowLvlMember(globalActivityMemberId){
+		var startDate = '';    
+		var endDate = '';    
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,
+			stateId : globalStateId,         
+			startDate : '02/10/2016',         
+			endDate : '18/10/2016'
+		};
+		$.ajax({          
+			type : 'GET',       
+			url : 'getDtlsOfBellowLvlMember.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){        
+			
+			 if(result != null && result.length > 0){
+				 buildDtlsOfBellowLvlMember(result);
+			 }  
+		});
+	}
+	function buildDtlsOfBellowLvlMember(result){
+		var locationNameArr = [];
+		var renewalArr = [];
+		var newCadreArr = [];
+		var cadre2014ArrPer = [];
+		var colorArr=[];
+		var jsonDataArr=[];
+		for(var i in result){
+			locationNameArr.push(result[i].sourceName);         
+			renewalArr.push(parseFloat(result[i].renewalPerCount));
+			newCadreArr.push(parseFloat(result[i].newPercCnt));   
+			cadre2014ArrPer.push(result[i].cadreCountPer2014);
+		}
+		if(renewalArr.length > 0){
+        jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+        colorArr.push('#30AA74');      
+        }
+        if(newCadreArr.length > 0){
+        jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+        colorArr.push('#F36800');      
+        }
+        if(cadre2014ArrPer.length > 0){
+        jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+        colorArr.push('#FFCA00');      
+        }
+		if(result!= null && result.length > 10){
+        var highChartDivHight = result.length*20;
+        $("#individualDtlsId").height(highChartDivHight);  
+        }else{
+        $("#individualDtlsId").height(260);    
+        }
+        $(function () {
+          $("#individualDtlsId").highcharts({
+            colors: colorArr,
+            chart: {
+              type: 'bar'
+            },
+            title: {
+              text: null
+            },
+            xAxis: {
+              min: 0,
+              gridLineWidth: 0,
+              minorGridLineWidth: 0,
+              categories: locationNameArr
+            },
+            yAxis: {
+              min: 0,
+              gridLineWidth: 0,
+              minorGridLineWidth: 0,
+              title: {
+                text: null
+              }
+            },
+            legend: {
+              reversed: true
+            },
+            plotOptions: {
+              series: {
+                stacking: 'normal'
+              }
+            },
+            series:jsonDataArr 
+          });
+        });
+		  
+	}

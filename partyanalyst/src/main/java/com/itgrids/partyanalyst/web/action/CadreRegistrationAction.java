@@ -2865,5 +2865,31 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
-}  
+  public String getDtlsOfBellowLvlMember(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");  
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVOs = coreDashboardCadreRegistrationService.getDtlsOfBellowLvlMember(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){  
+		  e.printStackTrace();     
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getEnumerationDtlsForMem(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");  
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getEnumerationDtlsForMem(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){  
+		  e.printStackTrace();           
+	  }
+	  return Action.SUCCESS;
+  }
+}
 
