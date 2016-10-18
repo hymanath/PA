@@ -197,6 +197,14 @@ $(document).on("click","#getDetails",function(){
 	var stateId = $("#stateId").val();
 	var districtId = $("#districtId").val();
 	var constituencyId = $("#constituencyId").val();
+	var dates = $(".singleDate").val();
+	var dateArr = dates.split("-");
+	var fromDate;
+	var toDate;
+	if(dateArr != null){
+		fromDate = dateArr[0];
+		toDate = dateArr[1];
+	}
 	var locationType;
 	var locationVal;
 	
@@ -218,8 +226,8 @@ $(document).on("click","#getDetails",function(){
 		vendorId : vendorId,
 		locationType : locationType,
 		locationVal : locationVal,
-		fromDate : "2016-10-01",
-		toDate : "2016-10-17"
+		fromDate : fromDate,    //"2016-10-01",
+		toDate : toDate			//"2016-10-18"
 	 }
     $.ajax({
           type:'GET',
@@ -227,7 +235,81 @@ $(document).on("click","#getDetails",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  
+	  if(result != null){
+		  buildTabUserDetails(result);
+	  }
    });
 });
 	
+function buildTabUserDetails(result){
+	$("#totalDataCollectorsId").html(result.totalDataCollectors);
+	$("#activeDataCollectorsId").html(result.activeUsers);
+	$("#passiveDataCollectorsId").html(result.passiveUsers);
+	
+	if(result.subList != null && result.subList.length > 0){
+		var str = '';
+		
+		str+='<table class="table b_1 m_top10" id="detailsTable">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>User Id</th>';
+				str+='<th>user name</th>';
+				str+='<th>user contact number</th>';
+				str+='<th>today target</th>';
+				str+='<th>first record</th>';
+				str+='<th>recent record</th>';
+				str+='<th>lasthour</th>';
+				str+='<th>completed registrations</th>';
+				str+='<th>open issues</th>';
+				str+='<th>fixed issues</th>';
+				str+='<th></th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result.subList){
+				str+='<tr>';
+					if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0)
+						str+='<td class="issueCmpltd">'+result.subList[i].userName+'</td>';
+					else
+						str+='<td class="issuePending">'+result.subList[i].userName+'</td>';
+					str+='<td>'+result.subList[i].tabUserName+'</td>';
+					str+='<td>'+result.subList[i].mobileNo+'</td>';
+					if(result.subList[i].todayTarget != null)
+						str+='<td>'+result.subList[i].todayTarget+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].firstRecord != null)
+						str+='<td>'+result.subList[i].firstRecord+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].recentRecord != null)
+						str+='<td>'+result.subList[i].recentRecord+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].lastHourCount != null)
+						str+='<td>'+result.subList[i].lastHourCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].totalCount != null)
+						str+='<td>'+result.subList[i].totalCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].openIssues != null)
+						str+='<td>'+result.subList[i].openIssues+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].fixedIssues != null)
+						str+='<td>'+result.subList[i].fixedIssues+'</td>';
+					else
+						str+='<td> - </td>';
+					str+='<td><button class="btn btn-success text-capitalize manageIssues">manage issues</button></td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+		
+		$("#tabUserDetailsDivId").html(str);
+		
+		//$("#detailsTable").datatable();
+	}
+	else
+		$("#tabUserDetailsDivId").html('NO DATA AVAILABLE...');
+}
