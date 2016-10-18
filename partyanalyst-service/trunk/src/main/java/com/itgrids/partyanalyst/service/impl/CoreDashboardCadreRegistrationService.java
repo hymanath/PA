@@ -1800,4 +1800,8 @@ public String generatingAndSavingOTPDetails(String mobileNo){
 	}
 	return "success";
 }
+
+ public String getOtpStatus(String mobileNumber,String otp,Long tdpCadreId){
+	  return "success"; 
+     }
 }
