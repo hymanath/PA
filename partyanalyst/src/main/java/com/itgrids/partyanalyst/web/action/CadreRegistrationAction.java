@@ -2853,5 +2853,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
+  
+  
+  public String getOtpStatus(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  status=coreDashboardCadreRegistrationService.getOtpStatus(jobj.getString("mobileNumber"),jobj.getString("otpTxt"),jobj.getLong("tdpCadrId"));
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  LOG.error("Error occured at getOtpStatus() in CadreRegistrationAction class",e);
+	  }
+	  return Action.SUCCESS;
+  }
 }  
 
