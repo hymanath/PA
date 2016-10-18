@@ -18,5 +18,6 @@ public interface IFieldMonitoringService {
 	public FieldMonitoringVO getTabUsersDetailsByVendorAndLocation(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal);
 	public List<IdAndNameVO> getStatusWiseIssueTypeCount(String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getAllIssueStatusCount(String fromDateStr,String toDateStr);
+	public List<IdAndNameVO> getConstituencyByVendor(Long fieldVendorId);
 	
 }

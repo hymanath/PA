@@ -72,7 +72,7 @@ public class FieldVendorLocationDAO extends GenericDaoHibernate<FieldVendorLocat
 	{
 	   Query query = getSession().createQuery("select distinct model.constituency.constituencyId ,model.constituency.name from FieldVendorLocation model" +
 	   		" where model.isDeleted = 'N' and model.fieldVendor.isActive = 'Y'" +
-	   		"model.fieldVendorId.fieldVendorId = :fieldVendorId ");
+	   		"model.fieldVendor.fieldVendorId = :fieldVendorId ");
 	   query.setParameter("fieldVendorId", fieldVendorId);
 	   
 	   return query.list();
