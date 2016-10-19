@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.opensymphony.xwork2.Action;
@@ -25,6 +26,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private JSONObject jObj;
 		  private String task;
 		  private List<IdAndNameVO> idAndNameVOList;
+		  private IdNameVO idNameVO;
 		
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
@@ -67,6 +69,14 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		public void setFieldMonitoringService(IFieldMonitoringService fieldMonitoringService) {
 			this.fieldMonitoringService = fieldMonitoringService;
 		}
+		
+		public IdNameVO getIdNameVO() {
+			return idNameVO;
+		}
+
+		public void setIdNameVO(IdNameVO idNameVO) {
+			this.idNameVO = idNameVO;
+		}
 
 		//Business methods
 		public String execute(){
@@ -108,6 +118,23 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				Long districtId = jObj.getLong("districtId");
 				idAndNameVOList =fieldMonitoringService.getVendorConstituencies(vendorId,districtId);
 			} catch (Exception e) {
+				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}
+		public String getTotalRegCdrVendorWise(){
+			
+			try {
+				jObj = new JSONObject(getTask());
+				Long stateId = jObj.getLong("stateId");  
+				Long vendorId = jObj.getLong("vendorId");
+				Long districtId = jObj.getLong("districtId");
+				Long constituencyId = jObj.getLong("constituencyId");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				idNameVO = dataMonitoringService.getTotalRegCdrVendorWise(stateId, vendorId, districtId, constituencyId, startDate, endDate);
+			} catch (Exception e) {  
 				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
 			}
 		
