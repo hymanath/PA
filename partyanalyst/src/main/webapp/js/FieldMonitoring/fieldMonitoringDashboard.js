@@ -238,7 +238,7 @@ function getStatusWiseIssuesDetails(){
 	
 	var jsObj = { 
 	  fromDate : fromDate,    //"10/18/2016",
-	  toDate : toDate  		  //"10/20/2016",		
+	  toDate : toDate,  		  //"10/20/2016",		
 	  issueType : 2,
 	  issueStatus : 1
 	}
