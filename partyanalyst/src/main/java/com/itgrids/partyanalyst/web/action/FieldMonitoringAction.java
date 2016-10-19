@@ -68,13 +68,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	public void setFieldMonitoringVO(FieldMonitoringVO fieldMonitoringVO) {
 		this.fieldMonitoringVO = fieldMonitoringVO;
 	}
-	public List<FieldMonitoringVO> getFieldMonitoringList() {
-		return fieldMonitoringList;
-	}
-
-	public void setFieldMonitoringList(List<FieldMonitoringVO> fieldMonitoringList) {
-		this.fieldMonitoringList = fieldMonitoringList;
-	}
+	
 
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -155,12 +149,10 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
      	try
      	{
      		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-     		
      		Long userId = null;
-     		if(regVO != null)
+     		if(regVO != null){
      			userId = regVO.getRegistrationID();
-     		else
-     			userId = 1L;//CODE TO REMOVE
+     		}
      		
      		jObj = new JSONObject(getTask());
      		FieldMonitoringIssueVO  inputVO = new FieldMonitoringIssueVO();  
@@ -276,6 +268,45 @@ public String getConstituencyByVendor(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String updateStatusToACadreRegIssue(){
+		try {
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+     		Long loginUserId = null;
+     		if(regVO != null){
+     			loginUserId = regVO.getRegistrationID();
+     		}
+     		
+			jObj = new JSONObject(getTask());
+			
+			Long cadreRegIssueId = jObj.getLong("cadreRegIssueId");
+			String description = jObj.getString("description");
+			Long newStatusId = jObj.getLong("newStatusId");
+			
+			resultStatus = fieldMonitoringService.updateStatusToACadreRegIssue(cadreRegIssueId,description,newStatusId,loginUserId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String trackingRegIssueByRegIssueId(){
+		try {
+			
+			
+			jObj = new JSONObject(getTask());
+			
+			Long cadreRegIssueId = jObj.getLong("cadreRegIssueId");
+			
+			fieldMonitoringIssueVOList = fieldMonitoringService.trackingRegIssueByRegIssueId(cadreRegIssueId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at trackingRegIssueByRegIssueId()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}
