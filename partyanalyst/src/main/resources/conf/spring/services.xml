@@ -3509,6 +3509,7 @@
 		 <property name="occupationDAO" ref="occupationDAO"></property>
 		 <property name="districtDAO" ref="districtDAO"></property>
 		 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		 <property name="userAddressDAO" ref="userAddressDAO" />
 		 <property name="dateUtilService" ref="dateUtilService" />
 		 <property name="tabUserOtpDetailsDAO" ref="tabUserOtpDetailsDAO" />
 		 <property name="tabUserInfoDAO" ref="tabUserInfoDAO" />
