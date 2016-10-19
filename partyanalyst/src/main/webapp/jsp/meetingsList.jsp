@@ -1672,7 +1672,10 @@ function getLevelWiseMeetingDetails(){
 					totalConducted= totalConducted + result[i].invitedCount;
 					totalNotConducted= totalNotConducted + result[i].nonInviteeCount;
 					totalNotUpdated= totalNotUpdated + result[i].attendedCount;
-					if(noOfBlocks == 4)
+					if(noOfBlocks == 3)
+					{
+						str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+					}else if(noOfBlocks == 4)
 					{
 						str+='<div class="col-md-3 col-xs-12 col-sm-6">';
 					}else if(noOfBlocks == 5)
