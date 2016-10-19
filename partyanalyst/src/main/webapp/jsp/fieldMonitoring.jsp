@@ -90,8 +90,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p>User ID - 12345</p>
-        <p><i>Rahul - 9984845464</i></p>
+        <p>User ID - <span id="modalCadreUserName"></span></p>
+        <p><i><span id="tabUserMblDetailsId"></span></i></p>
       </div>
       <div class="modal-body">
         
@@ -100,16 +100,16 @@
 				<div class="block bg_F4 pad_20">
 					<div class="row">
 						<div class="col-md-3 col-xs-12 col-sm-3">
-							<h4 class="text-capital text-center">total issues - 4</h4>
+							<h4 class="text-capital text-center">total issues - <span class="issueTypeCls text-info" attr_val="0" id="totalIssuesId" style="cursor:pointer;"></span></h4>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">
-							<h4 class="text-capital text-center">open issues - 4</h4>
+							<h4 class="text-capital text-center">open issues - <span class="issueTypeCls text-info" attr_val="1" id="openIssuesId" style="cursor:pointer;"></span></h4>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">
-							<h4 class="text-capital text-center">closed issues - 4</h4>
+							<h4 class="text-capital text-center">fixed issues - <span class="issueTypeCls text-info" attr_val="2" id="fixedIssuesId" style="cursor:pointer;"></span></h4>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">
-							<h4 class="text-capital text-center">fixed issues - 4</h4>
+							<h4 class="text-capital text-center">closed issues - <span class="issueTypeCls text-info" attr_val="3" id="closedIssuesId" style="cursor:pointer;"></span></h4>
 						</div>
 					</div>
 				</div>
@@ -166,6 +166,10 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<input type="hidden" id="hiddenCadreSurveyUserId"></input>
+<input type="hidden" id="hiddenTabUserInfoId"></input>
+
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Workspace</title>
+<title>FIELD MONITORING DASHBOARD</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/WebMonitoring/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
