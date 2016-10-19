@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -6835,8 +6834,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	
 	public List<Object[]> checkMemberPaymentExistsByTypeId(String memberShipNo,Long tdpMemberTypeId,Long enrollmentYear)
 	{
+		/*Query query = getSession().createQuery("select distinct model.tdpCadreId,model.mobileNo, model.payMentStatus from TdpCadre model where model.memberShipNo = '"+memberShipNo.trim()+"' and " +
+				" model.isDeleted = 'N' and model.tdpMemberTypeId ="+tdpMemberTypeId+" and model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");*/
 		Query query = getSession().createQuery("select distinct model.tdpCadreId,model.mobileNo, model.payMentStatus from TdpCadre model where model.memberShipNo = '"+memberShipNo.trim()+"' and " +
-				" model.isDeleted = 'N' and model.tdpMemberTypeId ="+tdpMemberTypeId+" and model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");
+				" model.isDeleted = 'O' and model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");
 		return query.list();
 	}
 	public List<Object[]> getPRConstituenciesByCadreIds(List<Long> cadreIds)
@@ -7368,8 +7369,8 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		if(familyVoterId != null && familyVoterId.longValue() >0l)
 			str.append(",model.tdpCadre.familyVoter.voterIDCardNo,model.tdpCadre.familyVoter.voterId ");//19
 		 
-		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId,model.tdpCadre.photoType,model.tdpCadre.userAddress.userAddressId " +//23
-				"     from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted='N'  ");
+		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId, " +//20,21
+				" model.tdpCadre.payMentStatus,model.tdpCadre.isDeleted,model.tdpCadre.photoType,model.tdpCadre.userAddress.userAddressId  from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted in ('N','O')  ");
 		
 		if(status.equalsIgnoreCase("update")){
 			str.append(" and model.enrollmentYearId = 4l ");	
@@ -7815,5 +7816,17 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 		return query.list(); 
 	} 
+	
+
+	public  List<Object[]>  checkVoterCardNosListExists(Set<String> voterCardNosList)
+	{
+			Query query = getSession().createQuery("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.voter.voterIDCardNo," +//1
+					" model.tdpCadre.payMentStatus,model.tdpCadre.isDeleted,model.tdpCadre.memberShipNo,model.tdpCadre.gender,model.tdpCadre.age," +//2,3,4,5,6
+					" model.tdpCadre.mobileNo,model.tdpCadre.emailId,model.tdpCadre.casteStateId,model.tdpCadre.educationId,model.tdpCadre.occupationId,model.tdpCadre.dateOfBirth," +
+					"   model.tdpCadre.refNo from TdpCadreEnrollmentYear model where model.tdpCadre.voter.voterIDCardNo in (:voterCardNosList) " +
+					" and model.tdpCadre.isDeleted in ('N','O')  and model.enrollmentYearId = 4l  ");
+			query.setParameterList("voterCardNosList", voterCardNosList);
+			return query.list();
+	}
 	
 }
