@@ -2680,7 +2680,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
 			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
-			  //WebResource webResource = client.resource("https://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
+			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
     	 	  if (response.getStatus() != 200) {
     	 		 verifierVO =null;
