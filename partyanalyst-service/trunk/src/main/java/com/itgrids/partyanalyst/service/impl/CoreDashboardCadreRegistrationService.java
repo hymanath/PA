@@ -25,6 +25,8 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITabUserInfoDAO;
+import com.itgrids.partyanalyst.dao.ITabUserOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
@@ -42,9 +44,12 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.TabUserInfo;
+import com.itgrids.partyanalyst.model.TabUserOtpDetails;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.sun.jersey.api.client.Client;
@@ -73,6 +78,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IDistrictDAO districtDAO;
     private IOccupationDAO occupationDAO;
     private SmsCountrySmsService smsCountrySmsService;
+    private DateUtilService dateUtilService;
+    private ITabUserOtpDetailsDAO tabUserOtpDetailsDAO;
+    private ITabUserInfoDAO tabUserInfoDAO;
     
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
@@ -161,6 +169,24 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
 		this.smsCountrySmsService = smsCountrySmsService;
+	}
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	public ITabUserOtpDetailsDAO getTabUserOtpDetailsDAO() {
+		return tabUserOtpDetailsDAO;
+	}
+	public void setTabUserOtpDetailsDAO(ITabUserOtpDetailsDAO tabUserOtpDetailsDAO) {
+		this.tabUserOtpDetailsDAO = tabUserOtpDetailsDAO;
+	}
+	public ITabUserInfoDAO getTabUserInfoDAO() {
+		return tabUserInfoDAO;
+	}
+	public void setTabUserInfoDAO(ITabUserInfoDAO tabUserInfoDAO) {
+		this.tabUserInfoDAO = tabUserInfoDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -1838,6 +1864,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 
 	public String generatingAndSavingOTPDetails(String mobileNo){
+		TabUserOtpDetails tabUserOtpDetails = null;
 		try {
 			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
 			int otpRand = 0;
@@ -1852,6 +1879,19 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
 			String[] phoneNumbers = {mobileNo.toString()};
 			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+			
+			tabUserOtpDetails = new TabUserOtpDetails();
+			//tabUserOtpDetails.setTabUserInfoId(tabUserInfoId);
+			//tabUserOtpDetails.setCadreSurveyUserId(cadreSurveyUserId);
+			tabUserOtpDetails.setMobileNo(mobileNo);
+			tabUserOtpDetails.setOtpNo(otpNum);
+			tabUserOtpDetails.setReferenceId(refeRenceNo);
+			tabUserOtpDetails.setGeneratedTime(dateUtilService.getCurrentDateAndTime());
+			tabUserOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			tabUserOtpDetails.setIsValid("Y");
+			
+			tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
@@ -2065,8 +2105,28 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 	}
 
- public String getOtpStatus(String mobileNumber,String otp,Long tdpCadreId){
-	  return "success"; 
+ public String getOtpStatus(String mobileNumber,String otp){
+	 String status = null;
+		try {
+			  Date currentTime = dateUtilService.getCurrentDateAndTime();
+
+			Long tabDetsId = tabUserOtpDetailsDAO.checkOTPDetails(mobileNumber,otp,currentTime);
+			if(tabDetsId != null && tabDetsId.longValue() > 0l){
+				TabUserOtpDetails tabUserOtpDetails = tabUserOtpDetailsDAO.get(tabDetsId);
+				tabUserOtpDetails.setIsValid("N");
+				tabUserOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
+				
+				status = "success";
+			}
+			else
+				status = "failure";
+			
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception Occured in checkOTPDetails() in WebServiceHandlerService class.",e);
+		}
+		return status;
      }
 
  
