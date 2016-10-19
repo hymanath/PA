@@ -124,10 +124,35 @@ function getCadreRegIssueType(){
    });
   }
 	
+$(document).on("click",".issueTypeCls",function(){
+	var issueType = $(this).attr("attr_val");
+	var cadreUserId = $("#hiddenCadreSurveyUserId").val();
+	var tabUserId = $("#hiddenTabUserInfoId").val();
+	
+	getIssuesForATabUserByStatus(cadreUserId,tabUserId,issueType);
+});
+
 $(document).on("click",".manageIssues",function(){ 
     $("#issueTypeDivId").hide();
     var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
     var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
+	var openIssues = $(this).attr("attr_open_issues_count");
+	var fixedIssues = $(this).attr("attr_fixed_issues_count");
+	var closedIssues = $(this).attr("attr_closed_issues_count");
+	var cadreSurveyUserName = $(this).attr("attr_cadre_survey_userName");
+	var tabUserName = $(this).attr("attr_tab_userName");
+	var mobileNo = $(this).attr("attr_mobileNo");
+	var totalIssues = parseInt(openIssues)+parseInt(fixedIssues)+parseInt(closedIssues);
+	
+	$("#totalIssuesId").html(totalIssues);
+	$("#openIssuesId").html(openIssues);
+	$("#fixedIssuesId").html(fixedIssues);
+	$("#closedIssuesId").html(closedIssues);
+	$("#modalCadreUserName").html(cadreSurveyUserName);
+	$("#tabUserMblDetailsId").html(tabUserName+" - "+mobileNo);
+	$("#hiddenCadreSurveyUserId").val(cadreSurveyUserId);
+	$("#hiddenTabUserInfoId").val(tabUserInfoId);
+	
     $("#submitId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
     $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
 	
@@ -377,15 +402,15 @@ function buildTabUserDetails(result){
 						str+='<td>'+result.subList[i].totalCount+'</td>';
 					else
 						str+='<td> - </td>';
-					if(result.subList[i].openIssues != null)
+					if(result.subList[i].openIssues != null && result.subList[i].openIssues > 0)
 						str+='<td>'+result.subList[i].openIssues+'</td>';
 					else
 						str+='<td> - </td>';
-					if(result.subList[i].fixedIssues != null)
+					if(result.subList[i].fixedIssues != null && result.subList[i].fixedIssues > 0)
 						str+='<td>'+result.subList[i].fixedIssues+'</td>';
 					else
 						str+='<td> - </td>';
-					str+='<td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" >manage issues</button></td>';
+					str+='<td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_open_issues_count="'+result.subList[i].openIssues+'" attr_fixed_issues_count="'+result.subList[i].fixedIssues+'" attr_closed_issues_count="'+result.subList[i].closedIssues+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'">manage issues</button></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
