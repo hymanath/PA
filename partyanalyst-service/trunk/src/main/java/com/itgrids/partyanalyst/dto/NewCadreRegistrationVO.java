@@ -34,10 +34,67 @@ public class NewCadreRegistrationVO implements Serializable{
 	private String constituencyId;
 	private Long nomineeRelationId;
 	private String imagePath;
+	private String paymentStatus;
+	private String membershipNo;
 	private String photoType;
 	private Long userAddressId;
 	private Long  localElectionBodyId;
 	
+	private Long stateId;
+	private Long districtId;
+	private Long mandalId;
+	private Long villageId;
+	private Long pincode;
+	private PaymentGatewayVO paymentGatewayVO;
+	
+	public PaymentGatewayVO getPaymentGatewayVO() {
+		return paymentGatewayVO;
+	}
+	public void setPaymentGatewayVO(PaymentGatewayVO paymentGatewayVO) {
+		this.paymentGatewayVO = paymentGatewayVO;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	public Long getPincode() {
+		return pincode;
+	}
+	public void setPincode(Long pincode) {
+		this.pincode = pincode;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 	public String getImagePath() {
 		return imagePath;
 	}
