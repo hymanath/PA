@@ -140,7 +140,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();*/
 	}
 	
-	public List<Object[]> getcadreRegIssuesCounts(Long vendorId,String locationType,Long locationVal){
+	public List<Object[]> getcadreRegIssuesCounts(Long vendorId,String locationType,Long locationVal,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.cadreSurveyUserId," +
 					" model.tabUserInfoId," +
@@ -158,6 +158,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			sb.append(" and C.district.districtId = :locationVal");
 		else
 			sb.append(" and C.constituencyId = :locationVal");
+		if(startDate != null && endDate != null)
+			sb.append(" and date(model.insertedTime) between :startDate and :endDate");
 				
 		sb.append(" and model1.isDeleted = 'N'" +
 					" group by model.cadreSurveyUserId,model.tabUserInfoId,model.cadreRegIssueStatus.cadreRegIssueStatusId" +
@@ -166,6 +168,10 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("vendorId", vendorId);
 		query.setParameter("locationVal", locationVal);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
 		
 		return query.list();
 	}

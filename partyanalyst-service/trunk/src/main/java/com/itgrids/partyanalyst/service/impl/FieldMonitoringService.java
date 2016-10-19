@@ -243,7 +243,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			}
 			
 			//Issues Counts
-			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCounts(vendorId, locationType, locationVal);
+			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCounts(vendorId, locationType, locationVal, startDate, endDate);
 			if(list2 != null && !list2.isEmpty()){
 				for (Object[] obj : list2) {
 					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");

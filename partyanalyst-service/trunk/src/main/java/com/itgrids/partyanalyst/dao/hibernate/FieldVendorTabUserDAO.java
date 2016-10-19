@@ -100,11 +100,9 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.tabUserInfo.tabUserInfoId," +
 					" CRI.cadreRegIssueStatus.cadreRegIssueStatusId," +
 					" count(CRI.cadreRegIssueId)" +
-					" from CadreRegIssue CRI" +
-					" where CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
-					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
+					" from CadreRegIssue CRI");
 		if(fromDate != null && toDate != null)
-			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
+			sb.append(" where date(CRI.insertedTime) between :fromDate and :toDate");
 		
 		sb.append(" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId,CRI.cadreRegIssueStatus.cadreRegIssueStatusId" +
 					" order by CRI.cadreRegIssueStatus.cadreRegIssueStatusId");
@@ -114,6 +112,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		
 		return query.list();
 	}
 }
