@@ -3551,6 +3551,7 @@
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>  
 	</bean>
 	
 </beans>		
