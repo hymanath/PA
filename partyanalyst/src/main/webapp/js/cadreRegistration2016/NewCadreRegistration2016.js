@@ -760,7 +760,7 @@ function getAllConstitencyList()
        str += '<li class="relativeProfileData" id="relativeProfileId" attr_img="'+image+'">';
 		   str += '<div class="media">';
 			  str += '<div class="media-left">';
-			   str +='<img src="https://mytdp.com/'+image+'" class="media-object cadreImage" alt=""/>';
+			   str +='<img src="https://mytdp.com/'+image+'" class="media-object cadreImage" alt="" style="width:150px;height:100px"/>';
 			     str += '</div>';
 			       str += '<div class="media-body" id="relativeProfileDataId">';
 				    str += '<h5 class="text-capitalize">'+candidateName+ '</h5>';
