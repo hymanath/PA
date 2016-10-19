@@ -319,7 +319,7 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>STATE</label><span style="color:red;">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
+						  <select id="statesDivId" onchange="getDistrictsForStates(this.value,1);" class="select">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="36">Telangana</option>
@@ -329,28 +329,28 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>DISTRICT</label><span style="color:red;">*</span>
 							<span id="districtDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                            <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
+                            <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value,1)">
 							<option value="0">Select District</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>CONSTITUENCY</label><span style="color:red;">*</span>
 							<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                            <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
+                            <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value,1)">
 							<option value="0">Select Constituency</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>MANDAL</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                            <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value)">
+                            <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value,1)">
 							<option value="0">Select Mandal</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
                         	<label>VILLAGE/PANCHAYAT</label>
 							<span id="panchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                           <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
+                           <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value,1)">
 						   <option value="0">Select Village/Panchayat</option>
 							</select>
                         </div>
@@ -412,26 +412,36 @@
                 <!-- profile details Block -->
 				
                 <div class="panel-body profileDetailsBlock hide">
+				
+				 <div class="row ExistingPaymentCls">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="panel panel-default panelRegistration">
+							<div id="existingSavingStatusDivId"></div>
+						</div>
+					</div>
+				</div>
+				
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
 				<input type="hidden" class="form-control" id="dataSourceType" value="ONLINE" name="cadreRegistrationVO.dataSourceType"/>
 				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
+				
+					<div class="col-md-8 col-xs-12 col-sm-12 m_top30">
+						<div class="row">
+							<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
+								<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
+							</div>
+							<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
+								<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
+							</div>
+						</div>
+					</div>
+						
                 	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="text-capital">profile details</h4>
                         </div>
-						 <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
-                        	<div class="row">
-								<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
-									<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
-								</div>
-								<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
-									<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
-								</div>
-							</div>
-						</div>
-						
                         <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
-                        	<div class="row">
+                        	<div class="row" id="existingCadreInfo">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Name</label>
                                     <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName"/>
@@ -524,7 +534,7 @@
                      </div>
                      <div class="row">
                      	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Aadhar Number</label>
+                        	<label>Aadhar Number </label>
                             <input type="text" class="form-control" id="aadharId" name="cadreRegistrationVO.aadharNo"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -626,32 +636,35 @@
                         
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label> State </label>
-                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsStateId">
+                            <select class="select presntAddrCls" id="PrsntStateList" name="cadreRegistrationVO.prsntAddrsStateId" onchange="getDistrictsForStates(this.value,2);">
+								<option value="0">Select State</option>
+								<option value="1">AndhraPradesh</option>
+								<option value="36">Telangana</option>
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>District</label>
-                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsDistId">
+                            <select class="select presntAddrCls" id="PrsntDistrictList" name="cadreRegistrationVO.prsntAddrsDistId" onchange="getConstituenciesForDistricts(this.value,2);">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Constituency</label>
-                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsConstId">
+                            <select class="select presntAddrCls" id="PrsntConstutuencyList" name="cadreRegistrationVO.prsntAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,2);">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Mandal/Town/Division</label>
-                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsMandalId">
+                            <select class="select presntAddrCls" id="PrsntMandalList" name="cadreRegistrationVO.prsntAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,2);">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Village/Ward</label>
-                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsVillId">
+                            <select class="select presntAddrCls" id="PrsntVillageList" name="cadreRegistrationVO.prsntAddrsVillId">
                             </select>
                         </div>
 						 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Pincode</label>
-                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsPincode"/>
+                            <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
                         	<h6 class="text-capital"> Delivery Address  : 
@@ -666,54 +679,57 @@
 							<div >  
 								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>H.No./ Plot No. </label>
-									<input type="text" class="form-control delvryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
+									<input type="text" class="form-control " name="cadreRegistrationVO.workAddrsHNo"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Apartment Name </label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
+									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsApartment" />
 								</div>
 							   
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Area Name/Street/Road </label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
+									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsAreaName"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Street Name/Road No </label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsStreet"/>
+									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsStreet"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Land Mark</label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
+									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsLandmark"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Hamlet</label>
-									<input type="text" class="form-control delvryAddrCls"    name="cadreRegistrationVO.workAddrsHamlet"/>
+									<input type="text" class="form-control "    name="cadreRegistrationVO.workAddrsHamlet"/>
 								</div>
 								
 							
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label> State </label>
-									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsStateId">
+									<select class="select  delvryAdrCls"  id="workStateList" name="cadreRegistrationVO.workAddrsStateId" onchange="getDistrictsForStates(this.value,3);">
+									<option value="0">Select State</option>
+									<option value="1">AndhraPradesh</option>
+									<option value="36">Telangana</option>
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>District</label>
-									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsDistId">
+									<select class="select  delvryAdrCls"  id="workDistrictList" name="cadreRegistrationVO.workAddrsDistId" onchange="getConstituenciesForDistricts(this.value,3);">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Constituency</label>
-									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsConstId">
+									<select class="select  delvryAdrCls"  id="workConstuencyList" name="cadreRegistrationVO.workAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,3);">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Mandal/Town/Division</label>
-									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsMandalId">
+									<select class="select  delvryAdrCls"   id="workMandalList" name="cadreRegistrationVO.workAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,3);">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Village/Ward</label>
-									<select class="select  delvryAdrCls" name="cadreRegistrationVO.workAddrsVillId">
+									<select class="select  delvryAdrCls"  id="workVillageList" name="cadreRegistrationVO.workAddrsVillId" >
 									</select>
 								</div>
 								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -761,6 +777,8 @@
 				
                 <!-- profile details Block End-->
             </div>
+			
+			
         </div>
     </div>
     </div>
@@ -1012,7 +1030,7 @@
                      </div>
                      <div class="row">
                      	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Aadhar Number</label>
+                        	<label>Aadhar Number 111 </label>
                             <input type="text" class="form-control"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -1131,6 +1149,11 @@
   var educationsArray = [];
   var relationsArray = [];
   var occupationArray =[];
+  var presntStateId =0;
+  var presntDistrictId =0;
+  var presntConstituencyId =0;
+  var presntMandalId =0;
+  var presntVillageId =0;
   
   onLoadCalls();
   
@@ -1531,7 +1554,7 @@ $(document).on("click","#checkbox8",function(){
 		$('#deliveryAddrId').hide();
 		$('.delvryAdrCls').val(0);
 		$('.delvryAddrCls').val('');
-		 $("delvryAdrCls").trigger("chosen:updated");
+		 $(".delvryAdrCls").trigger("chosen:updated");
 		$(this).attr('checked', false);
 	}	
 });
