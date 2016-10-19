@@ -13543,6 +13543,18 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					TdpCadreVO vo = cadreMap.get(cadreId);
 					if(vo == null){
 						vo = new TdpCadreVO();
+						String moblStr=obj[7]!=null?obj[7].toString().trim():"";
+						String finalMblStr = "";
+						if(moblStr != null && moblStr.trim().length() > 0){
+							Character[] array = new Character[moblStr.trim().length()];
+							for (int i = 0; i < moblStr.length() ; i++) {
+						      array[i] = new Character(moblStr.charAt(i));
+						      if(i==2 || i==3 || i == 5 || i==6 || i==7)
+						    	  finalMblStr = finalMblStr+"*";
+						      else
+						    	  finalMblStr = finalMblStr+array[i].toString();
+						   }
+						}
 						
 						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 						vo.setMemberShipNo(obj[1] != null ? obj[1].toString():"");
@@ -13551,7 +13563,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						vo.setRelativeType(obj[4] != null ? obj[4].toString():"");
 						vo.setHouseNo(obj[5] != null ? obj[5].toString():"");
 						vo.setImageURL("images/"+ IConstants.CADRE_IMAGES + "/" +(obj[6] != null ? obj[6].toString():""));
-						vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
+						vo.setMobileNo(obj[7] != null ? obj[7].toString():"");//actual mobile number
+						vo.setOccupation(finalMblStr);//encrypted mobile number
 						vo.setGender(obj[8] != null ? obj[8].toString():"");
 						vo.setAge(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
 						vo.setVoterId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
