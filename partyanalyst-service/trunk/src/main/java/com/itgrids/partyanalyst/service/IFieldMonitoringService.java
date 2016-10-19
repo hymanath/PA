@@ -21,5 +21,7 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getConstituencyByVendor(Long fieldVendorId);
 	public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId);
 	public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr);
+	public ResultStatus updateStatusToACadreRegIssue(final Long cadreRegIssueId,final String description,final Long newStatusId,final Long loginUserId);
+	public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId);
 	public List<FieldMonitoringVO> getStatusWiseIssuesDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId);
 }
