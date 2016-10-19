@@ -152,4 +152,11 @@ public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String sear
 		  
 	  }
 	  
+   public Long getLocalElectionBodyByUserAddress(Long userAddressId){
+	   
+	   Query query = getSession().createQuery(" select model.localElectionBody.localElectionBodyId from UserAddress model where model.userAddressId = :userAddressId ");
+	   query.setParameter("userAddressId",userAddressId);
+	   return (Long) query.uniqueResult();
+	   
+   }
 }

@@ -7361,14 +7361,15 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 				" model.tdpCadre.nomineeName," +
 				" model.tdpCadre.nomineeGender," +
 				" model.tdpCadre.nomineeAge," +//16
-				" model.tdpCadre.relativeType " );
+				" model.tdpCadre.relativeType " );//17
 		if(voterId != null && voterId.longValue() >0l)
-		str.append(" ,model.tdpCadre.voter.voterIDCardNo,model.tdpCadre.voter.voterId " );
+		str.append(" ,model.tdpCadre.voter.voterIDCardNo,model.tdpCadre.voter.voterId " );//19
 		
 		if(familyVoterId != null && familyVoterId.longValue() >0l)
 			str.append(",model.tdpCadre.familyVoter.voterIDCardNo,model.tdpCadre.familyVoter.voterId ");//19
 		 
-		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted='N'  ");
+		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId,model.tdpCadre.photoType,model.tdpCadre.userAddress.userAddressId " +//23
+				"     from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted='N'  ");
 		
 		if(status.equalsIgnoreCase("update")){
 			str.append(" and model.enrollmentYearId = 4l ");	
