@@ -14156,7 +14156,15 @@
 			<param name="root">fieldMonitoringIssueVOList</param>
 		</result>
 	</action>
-	<action name="getCadreRegStatusTypeAction" class="dataMonitoringAction"  method="getTotalRegCdrVendorWise">
+	<action name="dataMonitoringDashboardAction" class="dataMonitoringAction" method="dataMonitoringDashboard">
+		<result name="success">/jsp/dataMonitoringDashboard.jsp</result>  
+	</action>
+	 <action name="getDataMonitoringOverViewDetailsAction" class="dataMonitoringAction"  method="getDataMonitoringOverViewDetails">
+      <result type="json" name="success">
+      <param name="root">resultVO</param>
+    </result>
+  </action>
+  <action name="getCadreRegStatusTypeAction" class="dataMonitoringAction"  method="getTotalRegCdrVendorWise">
 			<result type="json" name="success">
 			<param name="root">idNameVO</param>  
 		</result>
