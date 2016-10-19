@@ -34,8 +34,9 @@ public class NewCadreRegistrationVO implements Serializable{
 	private String constituencyId;
 	private Long nomineeRelationId;
 	private String imagePath;
-	
-	
+	private String photoType;
+	private Long userAddressId;
+	private Long  localElectionBodyId;
 	
 	public String getImagePath() {
 		return imagePath;
@@ -205,4 +206,24 @@ public class NewCadreRegistrationVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getPhotoType() {
+		return photoType;
+	}
+	public void setPhotoType(String photoType) {
+		this.photoType = photoType;
+	}
+	
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	
 }
