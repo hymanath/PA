@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
@@ -27,7 +28,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private String task;
 		  private List<IdAndNameVO> idAndNameVOList;
 		  private IdNameVO idNameVO;
-		
+		  private DataMonitoringOverviewVO resultVO;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
 		   private IFieldMonitoringService fieldMonitoringService;
@@ -53,23 +54,31 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   }
 			
 	
-		public List<IdAndNameVO> getIdAndNameVOList() {
-			return idAndNameVOList;
-		}
+			public List<IdAndNameVO> getIdAndNameVOList() {
+				return idAndNameVOList;
+			}
+	
+			public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
+				this.idAndNameVOList = idAndNameVOList;
+			}
+	
+	
+			public void setDataMonitoringService(IDataMonitoringService dataMonitoringService) {
+				this.dataMonitoringService = dataMonitoringService;
+			}
+	
+			public void setFieldMonitoringService(IFieldMonitoringService fieldMonitoringService) {
+				this.fieldMonitoringService = fieldMonitoringService;
+			}
+	            
+		   public DataMonitoringOverviewVO getResultVO() {
+				return resultVO;
+			}
 
-		public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
-			this.idAndNameVOList = idAndNameVOList;
-		}
+			public void setResultVO(DataMonitoringOverviewVO resultVO) {
+				this.resultVO = resultVO;
+			}
 
-
-		public void setDataMonitoringService(IDataMonitoringService dataMonitoringService) {
-			this.dataMonitoringService = dataMonitoringService;
-		}
-
-		public void setFieldMonitoringService(IFieldMonitoringService fieldMonitoringService) {
-			this.fieldMonitoringService = fieldMonitoringService;
-		}
-		
 		public IdNameVO getIdNameVO() {
 			return idNameVO;
 		}
@@ -123,7 +132,23 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		
 		    return Action.SUCCESS;
 		}
-		public String getTotalRegCdrVendorWise(){
+	    public String dataMonitoringDashboard(){
+	     return Action.SUCCESS;
+	    }
+	    
+	   public String getDataMonitoringOverViewDetails(){
+	        try{
+	        	jObj = new JSONObject(getTask());
+	          String fromDate = jObj.getString("fromDate");
+	          String toDate =jObj.getString("toDate");
+	          resultVO = dataMonitoringService.getDataMonitoringOverViewDetails(fromDate,toDate);
+	        }catch(Exception e){
+	          LOG.error("Exception Occured into  DataMonitoringAction of getDataMonitoringOverViewDetails",e);
+	        }
+	        return Action.SUCCESS;
+	      }
+	   
+	   public String getTotalRegCdrVendorWise(){
 			
 			try {
 				jObj = new JSONObject(getTask());

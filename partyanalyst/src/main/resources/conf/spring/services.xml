@@ -3556,7 +3556,10 @@
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >
-		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>  
+	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+	 <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
+	 <property name="tdpCadreDataVerificationDAO" ref="tdpCadreDataVerificationDAO" />
+	 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>  
 	</bean>
 	
 </beans>		

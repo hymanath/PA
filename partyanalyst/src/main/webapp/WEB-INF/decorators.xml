@@ -696,6 +696,6 @@
 		<pattern>/fieldMonitoringAction*</pattern> 
 		<pattern>/dataMonitoringAction*</pattern>
 		<pattern>/fieldMonitoringDashboardAction*</pattern> 
-		  
+		<pattern>/dataMonitoringDashboardAction*</pattern>
 	</decorator> 
 </decorators>
