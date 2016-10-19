@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
@@ -33,12 +34,14 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -47,6 +50,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
+import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -124,11 +128,84 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private InputStream 						inputStream;
 	private NewCadreRegistrationVO newCadreRegistrationVO;
 	
+	/**
+	 * starting Payment Gateway required parameters
+	 */
+	private ICadreRegistrationService cadreRegistrationService;
+	private IPaymentGatewayService paymentGatewayService;
+	private String membershipNo;
+	private String enrollMentNO;
+	private String mn;
+	private String en;
+	private String AuthDesc;
+	/**
+	 * Ending Payment Gateway required parameters
+	 * 
+	 */
+	
 	//setters And Getters
 	
 	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public ICadreRegistrationService getCadreRegistrationService() {
+		return cadreRegistrationService;
+	}
+
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
+
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+
+	public String getEnrollMentNO() {
+		return enrollMentNO;
+	}
+
+	public void setEnrollMentNO(String enrollMentNO) {
+		this.enrollMentNO = enrollMentNO;
+	}
+
+	public String getMn() {
+		return mn;
+	}
+
+	public void setMn(String mn) {
+		this.mn = mn;
+	}
+
+	public String getEn() {
+		return en;
+	}
+
+	public void setEn(String en) {
+		this.en = en;
+	}
+
+	public String getAuthDesc() {
+		return AuthDesc;
+	}
+
+	public void setAuthDesc(String authDesc) {
+		AuthDesc = authDesc;
+	}
+
+	public IPaymentGatewayService getPaymentGatewayService() {
+		return paymentGatewayService;
+	}
+
+	public void setPaymentGatewayService(
+			IPaymentGatewayService paymentGatewayService) {
+		this.paymentGatewayService = paymentGatewayService;
 	}
 
 	public NewCadreRegistrationVO getNewCadreRegistrationVO() {
@@ -2755,7 +2832,7 @@ public String savingCadreDetails(){
 	   
 		
 		//cadreRegistrationVO.setWebUserId(user.getRegistrationID());
-		cadreRegistrationVO.setDataSourceType("WEB");
+		//cadreRegistrationVO.setDataSourceType("WEB");
 		
 		if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("newImage")){
 			cadreRegistrationVO.setPhotoType("NEW");
@@ -2766,10 +2843,17 @@ public String savingCadreDetails(){
 				cadreRegistrationVO.setPhotoType("VOTER");
 			}
 		}
-		status = coreDashboardCadreRegistrationService.savingCadreDetails(cadreRegistrationVO);
-         
-		if(status!=null){
-			inputStream = new StringBufferInputStream(status);
+		CadreResponseVO responceVO =coreDashboardCadreRegistrationService.savingCadreDetails(cadreRegistrationVO);
+		if(responceVO!=null && responceVO.getSaveStatus().equalsIgnoreCase("Success")){
+			
+			PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,responceVO.getMemberShipNo().trim(),responceVO.getRefNo().trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION");			            
+			inputStream = new StringBufferInputStream("SUCCESS" +"," +responceVO.getRefNo()+"," +//1
+	                ""+responceVO.getMemberShipNo().trim()+"," +//2
+	                ""+pamentGateWayVO.getOrderNo().trim()+"," +//3
+	                ""+pamentGateWayVO.getCheckSum().trim()+"," +//4
+	                ""+pamentGateWayVO.getRedirectURL().trim()+"," +//5
+	                ""+pamentGateWayVO.getAmount().trim()+",");//6
+			//inputStream = new StringBufferInputStream(status);
 		}
 		
 	} catch (Exception e) {
@@ -2779,4 +2863,29 @@ public String savingCadreDetails(){
 	
 	return Action.SUCCESS;
 }
+
+
+public String registrationsSuccess(){
+	try {
+		//enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
+		enrollMentNO = en.toString().trim();
+		if(AuthDesc != null){
+			//membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
+			membershipNo = mn.toString().trim();
+			resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"2016 CADRE REGISTRATION","NORMAL REGISTRATION");
+			if(resultStatus != null && resultStatus.getResultCode()==0)
+				status="success";
+			else
+				status="failure";
+		}
+		else{
+			status="failure";
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
+	}
+	return Action.SUCCESS;
+}
+
 }
