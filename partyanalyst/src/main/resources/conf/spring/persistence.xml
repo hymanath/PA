@@ -996,6 +996,8 @@
 				      <value>com.itgrids.partyanalyst.model.CadreRegUser</value>
 				      <value>com.itgrids.partyanalyst.model.CadreRegUserAccess</value>
 				      <value>com.itgrids.partyanalyst.model.TabUserInfo</value>
+				 	  <value>com.itgrids.partyanalyst.model.DataRejectReason</value>
+				      <value>com.itgrids.partyanalyst.model.TdpCadreDataVerification</value>
 				 </list>
 			
 		</property>
