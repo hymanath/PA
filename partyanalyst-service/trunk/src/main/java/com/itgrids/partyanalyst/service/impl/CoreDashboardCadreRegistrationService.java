@@ -669,7 +669,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : Saving Cadre Details By Calling WebService
 	*  @since 13-October-2016
 	*/
-	public String savingCadreDetails(CadreRegistrationVO cadreRegistrationVO){  
+	public CadreResponseVO savingCadreDetails(CadreRegistrationVO cadreRegistrationVO){  
 		CadreResponseVO responceVO = null;
 	    try {
 	         ClientConfig clientConfig = new DefaultClientConfig();
@@ -683,17 +683,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	           
 	         responceVO = webResource.accept("application/json").type("application/json").post(CadreResponseVO.class,cadreRegistrationVO);
 	        
-	         if(responceVO.getSaveStatus().equalsIgnoreCase("Success")){
+	         /*if(responceVO.getSaveStatus().equalsIgnoreCase("Success")){
 	        	 return "SUCCESS";
 	         }else{
 	        	 return "FAIL";
-	         }
-	         
+	         }*/
 	        
 	    } catch (Exception e) {
 	      LOG.error("Exception raised at savingCadreDetails", e);
 	    }
-	    return null;    
+	    return responceVO;    
 	  }
 	
 	/**
