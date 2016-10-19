@@ -35,6 +35,14 @@ public class FieldMonitoringVO {
 	private Long activeUsers;
 	private Long passiveUsers;
 	private List<FieldMonitoringVO> subList;
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	private String stateName;
+	private String districtName;
+	private String constituencyName;
+	private Long vendorId;
+	private String vendorName;
 	
 	
 	public Long getId() {
@@ -150,5 +158,53 @@ public class FieldMonitoringVO {
 	}
 	public void setClosedIssues(Long closedIssues) {
 		this.closedIssues = closedIssues;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getVendorId() {
+		return vendorId;
+	}
+	public void setVendorId(Long vendorId) {
+		this.vendorId = vendorId;
+	}
+	public String getVendorName() {
+		return vendorName;
+	}
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
 	}
 }

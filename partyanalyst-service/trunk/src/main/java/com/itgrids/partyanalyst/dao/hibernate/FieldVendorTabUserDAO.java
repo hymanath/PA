@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
+import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -51,5 +52,68 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			query.setParameter("today", today);
 		}
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getStatusWiseIssuesDetails(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select CRI.cadreSurveyUser.cadreSurveyUserId," +
+					" CRI.cadreSurveyUser.userName," +
+					" CRI.tabUserInfo.tabUserInfoId," +
+					" CRI.tabUserInfo.name," +
+					" CRI.tabUserInfo.mobileNo," +
+					" CRI.userAddress.state.stateId," +
+					" CRI.userAddress.district.districtId," +
+					" CRI.userAddress.district.districtName," +
+					" CRI.userAddress.constituency.constituencyId," +
+					" CRI.userAddress.constituency.name," +
+					" FVTU.fieldVendor.fieldVendorId," +
+					" FVTU.fieldVendor.vendorName" +
+					" from TdpCadreEnrollmentYear TCEY,CadreRegIssue CRI,FieldVendorTabUser FVTU" +
+					" where TCEY.tdpCadre.insertedBy.cadreSurveyUserId = CRI.cadreSurveyUser.cadreSurveyUserId" +
+					" and CRI.cadreSurveyUser.cadreSurveyUserId = FVTU.cadreSurveyUser.cadreSurveyUserId" +
+					" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
+					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(TCEY.tdpCadre.surveyTime) between :fromDate and :toDate");
+		
+		sb.append(" and TCEY.tdpCadre.enrollmentYear = 2014" +
+					" and TCEY.tdpCadre.isDeleted = 'N'" +
+					" and TCEY.enrollmentYear.enrollmentYearId = 4" +
+					" and TCEY.isDeleted = 'N'" +
+					" and FVTU.isDeleted = 'N'" +
+					" and FVTU.fieldVendor.isActive = 'Y'" +
+					" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId");
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		query.setParameter("issueTypeId", issueTypeId);
+		query.setParameter("statusTypeId", statusTypeId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getUserWiseIssuesCounts(Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select CRI.cadreSurveyUser.cadreSurveyUserId," +
+					" CRI.tabUserInfo.tabUserInfoId," +
+					" CRI.cadreRegIssueStatus.cadreRegIssueStatusId," +
+					" count(CRI.cadreRegIssueId)" +
+					" from CadreRegIssue CRI" +
+					" where CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
+					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
+		
+		sb.append(" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId,CRI.cadreRegIssueStatus.cadreRegIssueStatusId" +
+					" order by CRI.cadreRegIssueStatus.cadreRegIssueStatusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
 	}
 }

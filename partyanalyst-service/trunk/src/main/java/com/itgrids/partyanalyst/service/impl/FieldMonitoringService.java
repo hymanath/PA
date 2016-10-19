@@ -645,4 +645,68 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	}
 	   return returnVO;
    }
+   
+   public List<FieldMonitoringVO> getStatusWiseIssuesDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId){
+	   List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
+	   try {
+		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			//Date today = new Date();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetails(issueTypeId, statusTypeId, startDate, endDate);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					FieldMonitoringVO vo = new FieldMonitoringVO();
+					
+					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setStateId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setDistrictId(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+					if(vo.getDistrictId() > 10l)
+						vo.setStateName("AP");
+					else if(vo.getDistrictId() < 11l)
+						vo.setStateName("TS");
+					vo.setDistrictName(obj[7] != null ? obj[7].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+					vo.setConstituencyName(obj[9] != null ? obj[9].toString():"");
+					vo.setVendorId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
+					vo.setVendorName(obj[11] != null ? obj[11].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+			//IssuesCounts
+			List<Object[]> list1 = fieldVendorTabUserDAO.getUserWiseIssuesCounts(startDate, endDate);
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					if(vo != null){
+						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						if(statusId.longValue() == 1l)
+							vo.setOpenIssues(count);
+						else if(statusId.longValue() == 2l)
+							vo.setFixedIssues(count);
+						else if(statusId.longValue() == 3l)
+							vo.setClosedIssues(count);
+					}
+				}
+			}
+			
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getStatusWiseIssuesDetails() of FieldMonitoringService", e);
+	}
+	   return returnList;
+   }
 }
