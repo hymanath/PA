@@ -14146,7 +14146,16 @@
 			<param name="root">fieldMonitoringIssueVOList</param>
 		</result>
 	</action>
-	
+	<action name="updateStatusToACadreRegIssueAction" class="fieldMonitoringAction"  method="updateStatusToACadreRegIssue">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	 <action name="trackingRegIssueByRegIssueIdAction" class="fieldMonitoringAction"  method="trackingRegIssueByRegIssueId">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringIssueVOList</param>
+		</result>
+	</action>
 	 
 </package>
 </struts>
