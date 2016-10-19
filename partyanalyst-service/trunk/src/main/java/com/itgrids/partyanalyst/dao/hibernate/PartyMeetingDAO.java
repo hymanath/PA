@@ -918,6 +918,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		    	}else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("CONSTITUENCY")){
 		    		str.append(" and model.meetingAddress.constituency.constituencyId in (:levelValues) ");
 		    	}
+		    	else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("Parliament")){
+		    		str.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:levelValues) ");
+		    	}
 	    	}
 	    	
 	    
