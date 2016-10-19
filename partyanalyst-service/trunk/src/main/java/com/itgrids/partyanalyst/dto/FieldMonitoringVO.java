@@ -43,6 +43,8 @@ public class FieldMonitoringVO {
 	private String constituencyName;
 	private Long vendorId;
 	private String vendorName;
+	private List<IdAndNameVO> idnameList;
+	private List<IdAndNameVO> idnameList1;
 	
 	
 	public Long getId() {
@@ -206,5 +208,17 @@ public class FieldMonitoringVO {
 	}
 	public void setVendorName(String vendorName) {
 		this.vendorName = vendorName;
+	}
+	public List<IdAndNameVO> getIdnameList() {
+		return idnameList;
+	}
+	public void setIdnameList(List<IdAndNameVO> idnameList) {
+		this.idnameList = idnameList;
+	}
+	public List<IdAndNameVO> getIdnameList1() {
+		return idnameList1;
+	}
+	public void setIdnameList1(List<IdAndNameVO> idnameList1) {
+		this.idnameList1 = idnameList1;
 	}
 }

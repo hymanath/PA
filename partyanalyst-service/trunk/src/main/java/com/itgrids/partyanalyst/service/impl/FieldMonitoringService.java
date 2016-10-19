@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
 import com.itgrids.partyanalyst.model.CadreRegIssueStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssueTrack;
+import com.itgrids.partyanalyst.model.CadreRegIssueType;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
@@ -590,6 +592,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				 IdAndNameVO vo = new IdAndNameVO(); 
 				 vo.setId(model.getCadreRegIssueStatusId() != null ? model.getCadreRegIssueStatusId().longValue() : 0l);
 				 vo.setName(model.getStatus() != null ? model.getStatus().toString() : "");
+				 vo.setIssueTypes(getAllIssueTypes());
 				 vo.setInviteeCount(0l);
 				 returnList.add(vo);
 			 }
@@ -668,36 +671,82 @@ public class FieldMonitoringService implements IFieldMonitoringService {
    public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr) {
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
-		   
 		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Date startDate = null;
-			Date endDate = null;
-			Date currentTime = dateUtilService.getCurrentDateAndTime();
-			if(fromDateStr != null && toDateStr != null){
-				startDate = sdf.parse(fromDateStr);
-				endDate = sdf.parse(toDateStr);
-			}
+		   Date startDate = null;
+		   Date endDate = null;
+		   if(fromDateStr != null && toDateStr != null){
+			   startDate = sdf.parse(fromDateStr);
+			   endDate = sdf.parse(toDateStr);
+		   }
 		   returnList.addAll(getAllIssueStatus());
-		 
+		   
 		   List<Object[]> list = cadreRegIssueDAO.getIssueTypeWiseCounts(startDate,endDate);
 		   
 		   if(list != null && list.size() >0){
-				 for(Object[] obj : list){
-					 IdAndNameVO statusVO = getMatchVO(returnList, (Long)obj[1]);	
-					 	if(statusVO != null){ 
-					 		statusVO.setIssueTypes(getCadreRegIssueType());
-						 	IdAndNameVO issueTypeVO = getMatchVO(statusVO.getIssueTypes(), (Long)obj[3]);
-							 	if(issueTypeVO != null){ 
-							 		issueTypeVO.setInviteeCount(obj[0] != null ? (Long)obj[0] : 0l);
-							 	}
-					 	}
-					}
+			 for(Object[] obj : list){
+				 Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				 Long typeId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+				 Long count = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				 IdAndNameVO statusVO = getMatchVO(returnList, typeId);
+				 if(statusVO != null){
+					 statusVO.setInviteeCount(statusVO.getInviteeCount()+count);
+					 IdAndNameVO typeVO = getMatchVO(statusVO.getIssueTypes(), statusId);
+					 if(typeVO != null){
+						 typeVO.setInviteeCount(count);
+					 }
 				 }
+				 
+				 /*IdAndNameVO statusVO = getMatchVO(returnList, (Long)obj[1]);	
+				 	if(statusVO != null){ 
+				 		statusVO.setIssueTypes(getCadreRegIssueType());
+					 	IdAndNameVO issueTypeVO = getMatchVO(statusVO.getIssueTypes(), (Long)obj[3]);
+						 	if(issueTypeVO != null){ 
+						 		issueTypeVO.setInviteeCount(obj[0] != null ? (Long)obj[0] : 0l);
+						 	}
+				 	}*/
+				}
+			 }
 		   
+		   if(returnList != null && !returnList.isEmpty()){
+			   for (IdAndNameVO statusVO : returnList) {
+				   Long totalCount = statusVO.getInviteeCount();
+				   for (IdAndNameVO typeVO : statusVO.getIssueTypes()) {
+					String percentage = "0.00";
+					if(typeVO.getInviteeCount() > 0)
+						percentage = (new BigDecimal((typeVO.getInviteeCount() * 100.0)/totalCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					typeVO.setMobileNumber(percentage);
+				}
+			}
+		   }
 		   
 	   }catch(Exception e){
 		   e.printStackTrace();
 		   LOG.error("Exception raised at getStatusWiseIssueTypeCount", e);
+	   }
+	   return returnList;
+	   
+   }
+   
+   public List<IdAndNameVO> getAllIssueTypes(){
+	   
+	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	   try{
+		   List<CadreRegIssueType> typesList = cadreRegIssueTypeDAO.getAll();
+		   
+		   if(typesList != null && typesList.size() >0){
+			 for(CadreRegIssueType model : typesList){
+				 IdAndNameVO vo = new IdAndNameVO(); 
+				 vo.setId(model.getCadreRegIssueTypeId());
+				 vo.setName(model.getIssueType());
+				 vo.setInviteeCount(0l);
+				 returnList.add(vo);
+			 }
+			   
+		   }
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   LOG.error("Exception raised at getAllIssueTypes", e);
 	   }
 	   return returnList;
 	   
