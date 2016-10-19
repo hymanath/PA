@@ -3257,4 +3257,12 @@
 	<bean id="cadreRegUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegUserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="dataRejectReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.DataRejectReasonDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreDataVerificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDataVerificationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
