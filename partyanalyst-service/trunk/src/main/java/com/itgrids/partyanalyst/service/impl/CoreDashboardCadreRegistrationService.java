@@ -560,6 +560,19 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			}
 			returnVO.setDobStr(objects[6]!=null?objects[6].toString():"");//DOB
+			
+			if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
+			  
+				Calendar startDate = new GregorianCalendar();
+				Calendar endDate = new GregorianCalendar(); 
+				
+				endDate.setTime(new Date());
+
+				int diffYear = endDate.get(Calendar.YEAR) - returnVO.getAge().intValue();
+				
+				returnVO.setDobStr(String.valueOf(diffYear)+"-01-01   ");
+				
+				}
 			returnVO.setImageBase64String(objects[7]!=null?objects[7].toString():"");//ImagePath
 			returnVO.setMobileNumber(objects[8]!=null?objects[8].toString():"");//mobileNo
 			returnVO.setEmail(objects[9]!=null?objects[9].toString():"");//emailId
@@ -626,6 +639,17 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			}
 			returnVO.setDobStr(objects[4]!=null?objects[4].toString():"");//DOB
+			if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
+				  
+				Calendar startDate = new GregorianCalendar();
+				Calendar endDate = new GregorianCalendar(); 
+				
+				endDate.setTime(new Date());
+
+				int diffYear = endDate.get(Calendar.YEAR) - returnVO.getAge().intValue();
+				returnVO.setDobStr(String.valueOf(diffYear)+"-01-01   ");
+				
+				}
 			returnVO.setImageBase64String(objects[5]!=null?objects[5].toString():"");//ImagePath
 			returnVO.setMobileNumber(objects[6]!=null?objects[6].toString():"");//mobileNo
 			returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
