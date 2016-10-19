@@ -13151,23 +13151,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					Long tdpCadreId = 0L;
-					List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,IConstants.TGNF_REGISTRATION_CADRE_TYPE_ID,IConstants.UNIONS_REGISTRATION_YEAR);
+					//List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,IConstants.TGNF_REGISTRATION_CADRE_TYPE_ID,IConstants.UNIONS_REGISTRATION_YEAR);
+					List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,0L,IConstants.CADRE_ENROLLMENT_YEAR);
 					if(tdpCadreList != null && tdpCadreList.size()>0){
 						Object[] tdpCadrEObj = tdpCadreList.get(0);
 						tdpCadreId = commonMethodsUtilService.getLongValueForObject(tdpCadrEObj[0]);
 						String paymentStatusStr = commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[2]);
 						if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.PAID_STATUS)){
-							sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+							;//sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
 						}
 						else if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)  && AuthDesc.equalsIgnoreCase("Y")){
 							TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
 							if(tdpCadre != null){
 								saveDataToHistoryTable(tdpCadre);
 								tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
+								tdpCadre.setIsDeleted("N");
 								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								tdpCadre.setUpdatedUserId(userId);
 								tdpCadreDAO.save(tdpCadre);
-								sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+								//sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
 								//System.out.println("TNGF Registration sms sent status :"+smsSentStatus);
 							}
 						}
@@ -13177,7 +13179,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
 					paymentTransactionVO.setPaymentGatewayId(1L);
 					paymentTransactionVO.setPaymentMethodId(1L);
-					paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
+					//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
+					paymentTransactionVO.setTransactionId("2016-2018"+memberShipNo);
 					paymentTransactionVO.setTransactionStatusId(2L);
 					paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
 					paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
@@ -13189,8 +13192,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						paymentTransactionVO.setStatusCode("FAILURE");
 				//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
 				//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-					paymentTransactionVO.setRedirectUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-					paymentTransactionVO.setReferenceUserId("TGNF2016"+tdpCadreId);
+					paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
+					paymentTransactionVO.setReferenceUserId("2016-2018"+tdpCadreId);
 					paymentTransactionVO.setPaymentModuleId(1L);
 					paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 				}				
