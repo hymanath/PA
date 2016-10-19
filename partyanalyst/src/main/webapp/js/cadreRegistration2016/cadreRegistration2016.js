@@ -590,13 +590,17 @@ $(document).on("click",".isImageCheck",function(){
 	 $('#prevNomneReltvId').val();
 	var prvNomineeGender = $("#PrvNomineeDetailsId").attr("attr_nomineeGender");
 	var prvNomineeRelative = $("#PrvNomineeDetailsId").attr("attr_nomineRelative");
-	 if(prvNomineeGender == 'Female' || prvNomineeGender == 'F' || prvNomineeGender == 'FeMale' || prvNomineeGender == 'female')
+	 if(prvNomineeGender == 'Female' || prvNomineeGender == 'F' || prvNomineeGender == 'f' || prvNomineeGender == 'female')
 	 {
-				$("#prvNomneGendrId").val(prvNomineeGender).trigger("chosen:updated");
+				$("#prvNomneGendrId").val("F").trigger("chosen:updated");
 	 }
-	 if(prvNomineeGender == 'Male' || prvNomineeGender == 'M' || prvNomineeGender == 'male')
+	 else if(prvNomineeGender == 'Male' || prvNomineeGender == 'M' || prvNomineeGender == 'male' || prvNomineeGender == 'm')
 	 {
-		  $("#prvNomneGendrId").val(prvNomineeGender).trigger("chosen:updated");
+		  $("#prvNomneGendrId").val("M").trigger("chosen:updated");
+	 }
+	 else if(prvNomineeGender == 'others' || prvNomineeGender == 'o' || prvNomineeGender == 'OTHERS' || prvNomineeGender ==O)
+	 {
+		  $("#prvNomneGendrId").val("O").trigger("chosen:updated");
 	 }
 		 for ( var i in relationsArray) {			
 				if(prvNomineeRelative == relationsArray[i].id)
