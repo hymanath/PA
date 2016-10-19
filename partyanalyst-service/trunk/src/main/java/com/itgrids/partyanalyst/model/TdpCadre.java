@@ -137,7 +137,7 @@ public class TdpCadre {
 	private String						designationName;
 	private Long 						mobileNumberDetailsId;
 	private MobileNumberDetails			mobileNumberDetails;
-	
+	private Long cadreVerificationStatusId;
 	
 	private String validStatus;
 	//private Long workLocationId;
@@ -157,6 +157,7 @@ public class TdpCadre {
 	private Long parentTdpCadreId;
 	private Long tabUserInfoId;
 	private TabUserInfo tabUserInfo;
+	private CadreVerificationStatus cadreVerificationStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -1113,4 +1114,23 @@ public class TdpCadre {
 	public void setTabUserInfo(TabUserInfo tabUserInfo) {
 		this.tabUserInfo = tabUserInfo;
 	}
+	 @Column(name="cadre_verification_status_id")
+	public Long getCadreVerificationStatusId() {
+		return cadreVerificationStatusId;
+	}
+	public void setCadreVerificationStatusId(Long cadreVerificationStatusId) {
+		this.cadreVerificationStatusId = cadreVerificationStatusId;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "cadre_verification_status_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreVerificationStatus getCadreVerificationStatus() {
+		return cadreVerificationStatus;
+	}
+	public void setCadreVerificationStatus(
+			CadreVerificationStatus cadreVerificationStatus) {
+		this.cadreVerificationStatus = cadreVerificationStatus;
+	}
+	
 }
