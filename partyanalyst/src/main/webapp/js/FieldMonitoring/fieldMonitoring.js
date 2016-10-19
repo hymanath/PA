@@ -218,6 +218,38 @@ $(document).on("click",".manageIssues",function(){
 	   }
    });
   }
+  
+  //updateStatusToACadreRegIssue();
+  function updateStatusToACadreRegIssue(){
+	   var jsObj =
+      {				
+		cadreRegIssueId :53,
+		description : "this is description...",
+		newStatusId : 2
+	  }
+	   $.ajax({
+          type:'POST',
+          url: 'updateStatusToACadreRegIssueAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		  alert("issue status has changed...");
+	   });
+  }
+  //trackingRegIssueByRegIssueId();
+  function trackingRegIssueByRegIssueId(){
+	   var jsObj = { cadreRegIssueId :53 }
+	  
+	   $.ajax({
+          type:'POST',
+          url: 'trackingRegIssueByRegIssueIdAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		  alert("tracking details retrieved successfully...");
+	   });
+  }
+  
   function getConstituencyByVendor(){
 	  clearConstituencies('issueConstituencyId');
 	  var fieldVendorId = $("#vendorId option:selected").val();
