@@ -363,20 +363,20 @@
                         </div>
 					 <div class="row">
 					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
-                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="marUsrsId"/>VOTER ID
+                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID
 						   </label>
                           </div>
 						<div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                            <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="UsrsId"/>H.NO
+                            <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO
 						   </label>
                         </div>
                        <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="marUsrsId"/>NAME
+                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId"/>NAME
 						   </label>
                         </div>
 					  </div>
 					 <div class="col-md-4 col-xs-12 col-sm-6">
-                            <input type="text" class="form-control" id="serchVoterNameId" />
+                            <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter voterId/hno/name"/>
                       </div>
 					</div>
 					<div class="row">
@@ -775,6 +775,7 @@
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
+							<div id="renErrDivId" style="color:red;"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>MEMBERSHIP ID</label>
 									<input type="text" class="form-control" id="validateRenMemshipId" />
@@ -1083,12 +1084,15 @@
 	  <div>
 		<label>OTP Send To:</label>
 		 <input type="text" id="checkMblNoId"/>
-		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;">Regenarate OTP</button>
+		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>
 		</div>
 		<div style="padding-top:6px;margin-left:18px;">
 		   <label>Enter OTP:</label>
+		   <div class="row">
 			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/>
-			   <button type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">OK</button>
+			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">OK</button>
+			   <button id="renwalOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="renwalOtpDetails();">OK</button>
+			</div>
 		</div>	
 		<div id="otpStusErrDivId"></div>
       </div>
@@ -1218,8 +1222,11 @@ $(document).on("click",".renewalBtn",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
+		$("#renwalOKDivId").show();
+		$("#newRegOKDivId").hide();
 		$(".subBlockR,.selectMembership").removeClass("hide");
 		$(".subBlockR,.selectMembership").addClass("animated fadeIn");
+		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".mainBlocks").removeClass("animated fadeOut");
@@ -1336,6 +1343,8 @@ $(document).on("click",".registerNew",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
+		$("#newRegOKDivId").show();
+		$("#renwalOKDivId").hide();
 		$(".subBlock,.voterIdConfirm").removeClass("hide");
 		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
 	},500)
