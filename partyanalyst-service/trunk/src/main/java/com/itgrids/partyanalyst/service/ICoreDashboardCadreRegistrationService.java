@@ -38,5 +38,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public String generatingAndSavingOTPDetails(String mobileNo);
 	public List<CadreRegistratedCountVO> getDtlsOfBellowLvlMember(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public CadreRegistratedCountVO getEnumerationDtlsForMem(Long activityMemberId,Long stateId,String startDate, String endDate);
-	public String getOtpStatus(String mobileNumber,String otp,Long tdpCadreId);
+	public String getOtpStatus(String mobileNumber,String otp);
 }
