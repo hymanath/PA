@@ -145,8 +145,9 @@
 				
             </div>
         </div>
-        <ul class="issuesUl">
-        	<li>
+		<!--<h4>TECHNICAL ISSUE</h4>-->
+        <ul class="issuesUl" id="issueDivId">
+        	<!--<li>
             	<h4 class="text-capital">
                 	technical issue
                     <button class="btn btn-success editBtn pull-right btn-sm">edit</button>
@@ -156,9 +157,10 @@
                 	<span class="text-danger"><i>Issue Status : open</i></span>
                     <span class="pull-right text-muted"><i>Informed Time: 3:49 PM</i></span>
                 </p>
-            </li>
+            </li>-->
         </ul>
       </div>
+	
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success">Submit</button>
@@ -183,6 +185,7 @@
 		$(".singleDate").daterangepicker();
 		$('.select').chosen({width:'100%'});
 		getCadreRegIssueType();
+		getCadreRegIssueStatusType();
 		
 	</script>
 </body>

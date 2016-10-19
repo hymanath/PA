@@ -310,4 +310,16 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+
+  public String getCadreRegIssueStatusType(){
+		
+		try {
+			
+			idAndNameVOList =fieldMonitoringService.getCadreRegIssueStatusType();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadreRegIssueStatusType()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
 }
