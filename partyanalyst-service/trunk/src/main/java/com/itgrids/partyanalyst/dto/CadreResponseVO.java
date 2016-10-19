@@ -30,6 +30,23 @@ public class CadreResponseVO implements Serializable{
 	private String imei;
 	private String deviceName;
 	private String appVersion;
+	
+	private String simSerialNo;
+	private String memberShipNo;
+	
+	
+	public String getSimSerialNo() {
+		return simSerialNo;
+	}
+	public void setSimSerialNo(String simSerialNo) {
+		this.simSerialNo = simSerialNo;
+	}
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
 	public Long getTabPrimaryKey() {
 		return tabPrimaryKey;
 	}
