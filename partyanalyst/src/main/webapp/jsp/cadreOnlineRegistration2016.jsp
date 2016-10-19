@@ -271,19 +271,26 @@
 	</div>
   </div>
   <div class="row">
-    <div id="enterVoterDivId" style="color:red;"></div>
-        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-              <label>Enter Voter ID:</label>
-                <input type="text" class="form-control" id="inpVoterId" />
-         </div>
-	<div  class="col-md-4 col-xs-12 col-sm-6 m_top30">
-	   <button class="btn btn-success text-capital submitVoterId" onclick="getVoterDetails();">Submit</button> 
+       <!--<div class="col-md-3 col-xs-3 col-sm-3 m_top10">
+            <label>CONSTITUENCY</label><span style="color:red;">*</span>
+				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                    <select class="select" id="voterConstId" class="form-control">
+					    <option value="0">Select Constituency</option>
+					</select>
+        </div>-->
+        <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
+              <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
+                <input type="text" class="form-control" id="inpVoterId"/>
+        </div>
+		<div  class="col-md-3 col-xs-3 col-sm-3 m_top30">
+	        <button class="btn btn-success text-capital submitVoterId" onclick="getVoterDetails();">SUBMIT</button> 
+	     </div>		 
+	   </div>
+      <div  class="col-md-4 col-xs-12 col-sm-6 m_top10">
+	   <!--<button class="btn btn-success text-capital forgetVoterId" style="margin-left:100px;">Forget Voter Card NO</button> -->
+	   <a href="" aria-controls="home" role="tab" data-toggle="tab" id="frgtVotCardNoId" class="forgetVoterId" style="margin-left:100px;">Forget Voter ID</a>
 	 </div>
-  </div>
-  <div  class="col-md-4 col-xs-12 col-sm-6 m_top10">
-	   <button class="btn btn-success text-capital forgetVoterId" style="margin-left:100px;" onclick="">Forget Voter Card NO</button> 
-	 </div>
-</div>
+   </div>
 	
 	<!-- Voter ID Search Block -->
                 <div class="panel-body voterIdSearch hide">
@@ -297,12 +304,12 @@
 					</div>	
                 	<div class="row" id="serchOwnVoterDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">Search Your Own Voter Card No</h4>
+                        	<h4 class="panel-title text-capital">Search Your Own Voter Id</h4>
                         </div>
                     </div>
 					<div class="row" id="serchFamVoterDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">Search Your Family Voter Card No</h4>
+                        	<h4 class="panel-title text-capital">Search Your Family Voter Id</h4>
                         </div>
                     </div>
                     <div class="row m_top30">
@@ -310,7 +317,7 @@
 							<div id="errorDivId" style="color:red;"></div>
 						</div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>State</label>
+                        	<label>STATE</label><span style="color:red;">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
 							<option value="0">Select State</option>
@@ -320,51 +327,51 @@
 						 
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>District</label>
+                        	<label>DISTRICT</label><span style="color:red;">*</span>
 							<span id="districtDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							<option value="0">Select District</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Constituency</label>
+                        	<label>CONSTITUENCY</label><span style="color:red;">*</span>
 							<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
 							<option value="0">Select Constituency</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Mandal</label>
+                        	<label>MANDAL</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value)">
 							<option value="0">Select Mandal</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
-                        	<label>Village/Panchayat</label>
+                        	<label>VILLAGE/PANCHAYAT</label>
 							<span id="panchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                            <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
 						   <option value="0">Select Village/Panchayat</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Booth</label>
+                        	<label>BOOTH</label>
 							<span id="boothDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                              <select class="select" id="boothsList" class="form-control">
 							  <option value="0">Select Booth</option>
 							</select>
                         </div>
 					 <div class="row">
-						<div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
+					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
+                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="marUsrsId"/>VOTER ID
+						   </label>
+                          </div>
+						<div class="col-md-1 col-xs-10 col-sm-3 m_top10">
                             <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="UsrsId"/>H.NO
 						   </label>
                         </div>
                        <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="marUsrsId"/>Name
-						   </label>
-                        </div>
-                        <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="marUsrsId"/>Voter ID
+                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="marUsrsId"/>NAME
 						   </label>
                         </div>
 					  </div>
@@ -374,7 +381,7 @@
 					</div>
 					<div class="row">
                         <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search voter id</button>
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search voter ID </button>
                         </div>
                     </div>
                 </div>
@@ -393,10 +400,10 @@
                     	<div id="searchVoterDetailsImgId" style="display:none;"><center><img src="images/search.gif"/></center></div>
 						
                         <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByRelativeVoterIdDetails()" id="rlatveVoterId">relative voter id</button>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-4 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()" id="myVoterId">my voter id</button>
                         </div>
                     </div>
 					<div id="checkVoterId" style="color:red;"></div>
@@ -1070,12 +1077,20 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Cadre Mobile Number</h4>
+        <h4 class="modal-title" id="myModalLabel">VALIDATING CADRE DETAILS WITH MOBILE NUMBER</h4>
       </div>
       <div class="modal-body">
-		<label>Existing Mobile No:</label>
-			<input type="text" id="checkMblNoId"/>
-		<button type="button" class="btn btn-success" onclick="sendOtpToMble();">ok</button>
+	  <div>
+		<label>OTP Send To:</label>
+		 <input type="text" id="checkMblNoId"/>
+		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;">Regenarate OTP</button>
+		</div>
+		<div style="padding-top:6px;margin-left:18px;">
+		   <label>Enter OTP:</label>
+			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/>
+			   <button type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">OK</button>
+		</div>	
+		<div id="otpStusErrDivId"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1092,6 +1107,7 @@
 <input type="hidden" id="tdpCdrIdR"/>
 <input type="hidden" id="stusIdR"/>
 <input type="hidden" id="votrIdR"/>
+<input type="hidden" id="hiddenMblNo"/>
 
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -1333,6 +1349,7 @@ $(document).on("click",".submitVoterSearch",function(){
 	$(".voterIdConfirm").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdConfirm").addClass("hide");
+		$("#rlatveVoterId").hide();
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
 		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
 		fieldsValusEmpty();
@@ -1350,7 +1367,7 @@ function submitVoterIdDetails(){
 		$(".enterVoterIdBlock").addClass("hide");
 		$("#enterVoterIdDetailsBack").show();
 		$("#voterIdSearchBack").hide();
-		$("#fullVoterIdDetailsBack").hide();
+		
 		$(".subBlock,.searchResultsBlock").removeClass("hide");
 		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
 	},500)
@@ -1387,9 +1404,10 @@ $(document).on("click",".noVoterId",function(){
 	setTimeout(function(){
 		$(".voterIdConfirm").addClass("hide");
 		$("#serchFamVoterDivId").show();
-	   $("#serchOwnVoterDivId").hide();
-	   $("#searchOwnVoterIdBack").hide();
-	   $("#searchFamiVoterIdBack").show();
+	    $("#serchOwnVoterDivId").hide();
+	    $("#searchOwnVoterIdBack").hide();
+	    $("#searchFamiVoterIdBack").show();
+		$("#myVoterId").hide();
 		$(".subBlock,.voterIdSearch").removeClass("hide");
 		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
 		fieldsValusEmpty();
@@ -1433,6 +1451,7 @@ $(document).on("click","#searchResultsBack",function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
 		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
+		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".searchResultsBlock").removeClass("animated fadeIn");
@@ -1446,6 +1465,7 @@ $(document).on("click","#searchVoterIdBack",function(){
 		$(".voterIdSearch").addClass("hide");
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
 		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
+		
 	},500);
 	setTimeout(function(){
 		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
@@ -1473,6 +1493,7 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
 		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
+		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
