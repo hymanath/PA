@@ -3256,9 +3256,9 @@
 	<bean id="cadreRegUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegUserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!--<bean id="tabUserInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserInfoDAO">
+	<bean id="tabUserInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>-->
+	</bean>
 	
 	<bean id="dataRejectReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.DataRejectReasonDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
