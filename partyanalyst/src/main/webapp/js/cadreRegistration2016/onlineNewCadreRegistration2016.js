@@ -426,6 +426,9 @@ $(document).on("change","#boothsList",function(){
   }
  
   function validateRenewalMemshipDetails(){
+	  if(!renFieldsValidation()){
+		  return;
+	  }
 	  $("#renewalMembershipId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var membershipId=$("#validateRenMemshipId").val();
 	  var mobileNo=$("#renewalMobileId").val();
@@ -477,6 +480,7 @@ $(document).on("change","#boothsList",function(){
   
   
  function renewalSearchMembershipDetails(result){
+	 divsEmpty();
 	   var str = '';
   str += '<ul class="renewalSearchResults">';
   if (result!= null && result.length > 0) {
@@ -501,7 +505,7 @@ $(document).on("change","#boothsList",function(){
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
 					str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 				  str += '</div>';
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
@@ -519,7 +523,7 @@ $(document).on("change","#boothsList",function(){
   }
   }
   
-$(document).on("click",".searchChkboxClsR",function(){
+function renMemberDetails(){
 	/*populating data*/
 	$("#searchResultsBackBtn").parent().addClass("hide");
 	$("#searchResultsBackBtnR").parent().removeClass("hide");
@@ -551,25 +555,16 @@ $(document).on("click",".searchChkboxClsR",function(){
 			$(".profileDetailsBlock").removeClass("animated fadeIn");
 		},1500)
 	}
-	  var voterId = $(this).attr("attr_voterId");
-	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
-	  var enrolYear = $(this).attr("attr_enrol_yId");
-	  var relativeVoter = $(this).attr("attr_relative_voter");
-	  var status = "renewal";
-	  
-	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
-		status = "renewal";
-	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
-		status = "update";
-	  
-	  if(relativeVoter != null && relativeVoter > 0){
+	if(relativeVoter != null && relativeVoter > 0){
 		  var image=$(this).attr("attr_img1");
 		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter);
 	  }
 	  else{
 		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
 	  }
-  });
+}
+	 
+  
   
 function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 	 $("#submitCadreForm").hide();
@@ -708,7 +703,15 @@ str += '</ul>';
   
 $(document).on("click",".searchChkboxCls",function(){
 	$("#submitCadreForm").hide();
-	sendOtpToMble();
+	var cadreId=$(this).attr("attr_tdpCadre_id");
+	if(cadreId != 'null')
+	{
+		sendOtpToMble();
+	}else
+	{
+		return;
+	}
+	
 });
 
 $(document).on("click",".registerNew",function(){
@@ -814,11 +817,17 @@ function fieldsValusEmpty()
 	$("#inpVoterId").val('');
 	$("#checkMblNoId").val('');
 	$("#otpInputId").val('');
+	$("#validateRenMemshipId").val('');
+	$("#renewalMobileId").val('');
+	$("#renewalVoterId").val('');
+	$("#renewalMembershipId").html("");
+	
+	
 }
 
 function fieldsValidationForSearch()
 {
-	
+
     var state=$("#statesDivId").val();
 	var district=$("#districtId").val();
 	var constituency=$("#constituencyId").val();
@@ -879,6 +888,7 @@ function divsEmpty()
 {
 	$("#errorDivId").html("");
 	$("#voterErrDivId").html("");
+	$("#renErrDivId").html("");
 }
 
 $(document).keypress(function(e) {
@@ -892,11 +902,10 @@ function confirmOtpDetails()
 {
 	var mobileNo=$("#hiddenMblNo").val();
 	var otp=$("#otpInputId").val();
-	var tdpCdrId=$("#tdpCadreId").val();
 	 var jsObj={
 		 mobileNumber:mobileNo,
-		 otpTxt:otp,
-		 tdpCadrId:tdpCdrId
+		 otpTxt:otp
+		
 	 }
 	 $.ajax({
 		  type:'GET',
@@ -908,8 +917,68 @@ function confirmOtpDetails()
 	   {
 		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
 		   setTimeout(function(){
-			  $("#memChckBoxModalId").hide();
-			 //getSearchByRelativeVoterIdDetails();
+			   $("#memChckBoxModalId").modal('hide');
+			 getSearchByMyVoterIdDetails();
+			   }, 1500);
+	   }
+});
+}
+function renFieldsValidation()
+{
+	var membId=$("#validateRenMemshipId").val();
+	var mobileNo=$("#renewalMobileId").val();
+	var renVoterId=$("#renewalVoterId").val();
+	
+	if(membId == "" && mobileNo == "" && renVoterId == "")
+	{
+		$("#renErrDivId").html("Must contain atleast one parameter value.");
+		return false;
+	}
+	return true;
+}
+$(document).on("click",".searchChkboxClsR",function(){
+	fieldsValusEmpty();
+	$("#memChckBoxModalId").modal('show');
+	sendOtpToMble();
+	 var voterId = $(this).attr("attr_voterId");
+	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
+	  var enrolYear = $(this).attr("attr_enrol_yId");
+	  var relativeVoter = $(this).attr("attr_relative_voter");
+	  var mobileNumber=$(this).attr("attr_mobile_no");
+	  var actualMobileNumber=$(this).attr("attr_act_mbl_no");
+	  var status = "renewal";
+	  
+	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
+		status = "renewal";
+	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
+		status = "update";
+	  //renMemberDetails();
+	  
+	  $("#checkMblNoId").val(actualMobileNumber);
+	  $("#hiddenMblNo").val(mobileNumber);
+});
+
+function renwalOtpDetails()
+{
+	var mobileNo=$("#hiddenMblNo").val();
+	var otp=$("#otpInputId").val();
+	 var jsObj={
+		 mobileNumber:"9640633434",
+		 otpTxt:otp
+		
+	 }
+	 $.ajax({
+		  type:'GET',
+		  url:'getOtpStatusAction.action',
+		 dataType:'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result == "success")
+	   {
+		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		   setTimeout(function(){
+			   $("#memChckBoxModalId").modal('hide');
+			    renMemberDetails();
 			   }, 1500);
 	   }
 });
