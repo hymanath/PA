@@ -43,12 +43,13 @@ import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
-import com.itgrids.partyanalyst.model.TabUserInfo;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
+import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -79,11 +80,19 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IDistrictDAO districtDAO;
     private IOccupationDAO occupationDAO;
     private SmsCountrySmsService smsCountrySmsService;
+    private IPaymentGatewayService paymentGatewayService;
     private IUserAddressDAO userAddressDAO;
     private DateUtilService dateUtilService;
     private ITabUserOtpDetailsDAO tabUserOtpDetailsDAO;
     private ITabUserInfoDAO tabUserInfoDAO;
     
+	public IPaymentGatewayService getPaymentGatewayService() {
+		return paymentGatewayService;
+	}
+	public void setPaymentGatewayService(
+			IPaymentGatewayService paymentGatewayService) {
+		this.paymentGatewayService = paymentGatewayService;
+	}
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -676,15 +685,38 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setConstituencyId(objects[20]!=null?objects[20].toString():"");//constituencyId
 			returnVO.setNomineeRelationId(objects[21]!=null?(Long)objects[21]:0l);//nomineeRelationId
 			//phototype
-			if(objects[22]!=null){
-				if(objects[22].toString().equalsIgnoreCase("NEW")){
+			if(objects[24]!=null){
+				if(objects[24].toString().equalsIgnoreCase("NEW")){
 					returnVO.setPhotoType("CADRE");
 				}else{
-					returnVO.setPhotoType(objects[22].toString());
+					returnVO.setPhotoType(objects[24].toString());
 				}
 			}
 			
-			returnVO.setUserAddressId(objects[23]!=null?(Long)objects[23]:0l);
+			returnVO.setUserAddressId(objects[25]!=null?(Long)objects[25]:0l);
+
+			String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[23]);// ONLINE - 'O'
+			if(isDeleted.trim().equalsIgnoreCase("O")){
+				returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
+			}
+			
+			
+			Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
+			List<Long> voterIdsList = new ArrayList<Long>(0);
+			voterIdsList.add(returnVO.getVoterRelationId());
+			
+			getAddressDetailsForVoter(addressMap,voterIdsList);
+			if(addressMap.get(returnVO.getVoterCardNo()) != null){
+				NewCadreRegistrationVO vo = addressMap.get(returnVO.getVoterCardNo()) ;
+				if(vo != null){
+					returnVO.setStateId(vo.getStateId());
+					returnVO.setDistrictId(vo.getDistrictId());
+					returnVO.setConstituencyId(vo.getConstituencyId());
+					returnVO.setMandalId(vo.getMandalId());
+					returnVO.setVillageId(vo.getVillageId());
+					returnVO.setPincode(vo.getPincode());
+				}
+			}
 		}
 		}
 		}catch(Exception e){
@@ -693,6 +725,43 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 	}
 	
+	public void getAddressDetailsForVoter(Map<String,NewCadreRegistrationVO> addressMap,List<Long> voterIdsList){
+		try { 
+			List<Object[]> addressDetails = boothPublicationVoterDAO.getVoterLocationDetailsByVotersIdsList(new ArrayList<Long>(voterIdsList));
+			
+			if(addressDetails != null && addressDetails.size() > 0){
+				NewCadreRegistrationVO address = new NewCadreRegistrationVO();
+				
+				 Object[] obj= addressDetails.get(0);
+				 address.setStateId(obj[1]!=null?(Long)obj[1]:0L);
+				 address.setDistrictId(obj[2]!=null?(Long)obj[2]:0L);
+				 address.setConstituencyId(obj[3]!=null?obj[3].toString():null);
+				/* 
+				 if(address.getConstituencyId() != null){
+					 List<Long> parliamentIds = delimitationConstituencyAssemblyDetailsDAO.getParliamentConstituencyIdByAssemblyConstituencyId(address.getConstituencyId());
+					 if(parliamentIds != null && parliamentIds.size() > 0){
+						 address.setParliamentConstituencyId(parliamentIds.get(0));
+					 }
+				 }*/
+				 
+				 if(obj[6]!=null)
+				 {
+					 address.setVillageId((Long)obj[6]);
+					 address.setMandalId(obj[4]!=null?(Long)obj[4]:null);
+				 }
+				 else
+				 {
+					 address.setMandalId(obj[5]!=null?(Long)obj[5]:null);
+					 address.setVillageId(obj[7]!=null?(Long)obj[7]:null);
+				 }
+				// address.setBoothId(obj[8] != null ? (Long)obj[8]:null);
+				
+				 addressMap.put(commonMethodsUtilService.getStringValueForObject(obj[10]) , address);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	/**
 	* @param  CadreRegistrationVO returnVO,TdpCadre tdpCadre
 	* @return  void
@@ -704,29 +773,78 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		if(voterList != null && voterList.size()>0){
-			for (Object[] objects : voterList) {
-				
-			returnVO.setVoterRelationId(objects[0]!=null?(Long)objects[0]:0l);//voterId
-			returnVO.setLastName(objects[1]!=null?objects[1].toString():"");//Name
-			returnVO.setGender(objects[2]!=null?objects[2].toString():"");//gender
-			returnVO.setAge(objects[3]!=null?(Long)objects[3]:0l);//age 
-			if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && objects[4]  != null)
-			{
-				String dateOfBirth = 	objects[4] != null ?objects[4].toString().substring(0,10):" "	;
-				if(dateOfBirth != null && dateOfBirth.trim().length()>0)
-				{
-					Calendar startDate = new GregorianCalendar();
-					Calendar endDate = new GregorianCalendar();
-					
-					startDate.setTime(format.parse(dateOfBirth.trim()));
-					
-					endDate.setTime(new Date());
-
-					int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-					
-					returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+				Set<String> voterCardNos = new HashSet<String>(0);
+				Set<Long> voterIdsList = new HashSet<Long>(0);
+				Map<String,NewCadreRegistrationVO> registrationStatusMap = new HashMap<String, NewCadreRegistrationVO>(0);
+				for (Object[] param : voterList) {
+					voterCardNos.add(commonMethodsUtilService.getStringValueForObject(param[8]));
+					voterIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				}
-			}
+				Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
+				voterIdsList.add(returnVO.getTdpCadreId());
+				
+				getAddressDetailsForVoter(addressMap,new ArrayList<Long>(voterIdsList));
+				
+				if(commonMethodsUtilService.isListOrSetValid(voterCardNos)){
+					List<Object[]> existingCAdreList = tdpCadreDAO.checkVoterCardNosListExists(voterCardNos);
+					if(commonMethodsUtilService.isListOrSetValid(existingCAdreList)){
+						for (Object[] param : existingCAdreList) {
+							String isDeleted = commonMethodsUtilService.getStringValueForObject(param[3]);
+							
+							NewCadreRegistrationVO vo = new NewCadreRegistrationVO();
+							
+							vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(param[4]));
+							vo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							vo.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[1]));
+							
+							if(isDeleted.trim().equalsIgnoreCase("O")){
+								vo.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+								PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,vo.getMembershipNo().trim(),commonMethodsUtilService.getStringValueForObject(param[13]).trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION");
+								returnVO.setPaymentGatewayVO(pamentGateWayVO);
+							}
+							else
+								vo.setPaymentStatus("");
+							
+							registrationStatusMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), vo);
+							
+							returnVO.setGender(commonMethodsUtilService.getStringValueForObject(param[5]));
+							returnVO.setAge(commonMethodsUtilService.getLongValueForObject(param[6]));
+							returnVO.setDobStr(commonMethodsUtilService.getStringValueForObject(param[12]));
+							returnVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[7]));
+							returnVO.setEmail(commonMethodsUtilService.getStringValueForObject(param[8]));
+							returnVO.setCasteId(commonMethodsUtilService.getLongValueForObject(param[9]));
+							returnVO.setEducationId(commonMethodsUtilService.getLongValueForObject(param[10]));
+							returnVO.setOccupationId(commonMethodsUtilService.getLongValueForObject(param[11]));
+						}
+					}
+				}
+				
+				
+				 
+				for (Object[] objects : voterList) {
+						
+					returnVO.setVoterRelationId(objects[0]!=null?(Long)objects[0]:0l);//voterId
+					returnVO.setLastName(objects[1]!=null?objects[1].toString():"");//Name
+					returnVO.setGender(objects[2]!=null?objects[2].toString():"");//gender
+					returnVO.setAge(objects[3]!=null?(Long)objects[3]:0l);//age 
+					if((returnVO.getAge() == null || returnVO.getAge().toString().trim().length()<=0) && objects[4]  != null)
+					{
+						String dateOfBirth = 	objects[4] != null ?objects[4].toString().substring(0,10):" "	;
+						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+						{
+							Calendar startDate = new GregorianCalendar();
+							Calendar endDate = new GregorianCalendar();
+							
+							startDate.setTime(format.parse(dateOfBirth.trim()));
+							
+							endDate.setTime(new Date());
+		
+							int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+							
+							returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+						}
+					}
+
 			returnVO.setDobStr(objects[4]!=null?objects[4].toString():"");//DOB
 			if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
 				  
@@ -746,6 +864,26 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
 			returnVO.setConstituencyId(objects[9]!=null?objects[9].toString():"");//constituencyId
 			returnVO.setImagePath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(objects[5]!=null?objects[5].toString():""));
+			
+			if(addressMap.get(returnVO.getVoterCardNo()) != null){
+				NewCadreRegistrationVO vo = addressMap.get(returnVO.getVoterCardNo()) ;
+				if(vo != null){
+					returnVO.setStateId(vo.getStateId());
+					returnVO.setDistrictId(vo.getDistrictId());
+					returnVO.setConstituencyId(vo.getConstituencyId());
+					returnVO.setMandalId(vo.getMandalId());
+					returnVO.setVillageId(vo.getVillageId());
+					returnVO.setPincode(vo.getPincode());
+				}
+			}
+			if(registrationStatusMap.get(returnVO.getVoterCardNo()) != null){
+				NewCadreRegistrationVO vo = registrationStatusMap.get(returnVO.getVoterCardNo());
+				if(vo != null){
+					returnVO.setPaymentStatus(vo.getPaymentStatus());
+					returnVO.setTdpCadreId(vo.getTdpCadreId());
+					returnVO.setMembershipNo(vo.getMembershipNo());
+				}
+			}
 			
 		}
 		}
