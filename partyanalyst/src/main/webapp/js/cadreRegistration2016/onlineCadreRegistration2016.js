@@ -346,6 +346,116 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
 	}
 	
+	
+ function showSbmitStatus(myResult)
+ {
+		
+		var result = (String)(myResult);
+		
+		var errorDivEle = document.getElementById('imgErrDivId');
+		var str = '';
+		
+		var resultArr = result.split(',');
+		//console.log(resultArr);
+		if(result.search('SUCCESS') != -1)
+		{			
+			$('.subBlock').html('');
+			//if(srchType == 'voter'){
+				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
+				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
+				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
+				str+='<input type="hidden" name="Order_Id" value="'+resultArr[3].trim()+'">';				
+				str+='<input type="hidden" name="Checksum" value="'+resultArr[4].trim()+'">';
+				str+='<input type="hidden" name="Redirect_Url" value="'+resultArr[5].trim()+'">';
+					str+='<input type="hidden" name="Amount" value="'+resultArr[6].trim()+'">';
+				str+='<input type="hidden" name="billing_cust_name" value="">';
+				str+='<input type="hidden" name="billing_cust_address" value="">';
+				str+='<input type="hidden" name="billing_cust_tel" value="">';
+				str+='<input type="hidden" name="billing_cust_email" value="">';
+				str+='<input type="hidden" name="Merchant_Param" value="">';
+				str+='<input type="hidden" name="billing_cust_notes" value="TDP E-Member Registration fee">';
+				str+='<input type="hidden" name="billing_zip_code" value="">';
+				str+='<input type="hidden" name="delivery_cust_name" maxlength="6" value="Telugau Desam Party">';
+				str+='<input type="hidden" name="delivery_cust_address" value="NTR Bhavan, Banjarahills, Road No:12">';
+				str+='<input type="hidden" name="delivery_cust_country" value="India">';
+				str+='<input type="hidden" name="delivery_cust_state" value="Andhrapradesh & Telangana">';
+				str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
+				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
+
+				str+='<div class="container m_top10" id="yourElement">';
+				str+='<div class="span12  show-grid" style="position: relative;">';
+				str+='<p class="text-align">	Thank You For Your Registration</p>';
+				str+='<h3 class="text-align"> Please make payment , to complete your Registration .   </h3>';
+				str+='</div>';
+				str+='</div>';
+				str+='<div class="container m_top10" id="yourElement">';
+				str+='<div class="span12  show-grid" style="position: relative;">';
+				str+='<input type="submit" name="submit button" value="PAY NOW" class="btn btn-warning offset5">'; 
+				str+='</div>';
+				str+='</div>';
+				str+='</form>';
+			//}
+			/*else{
+				str+= '<div class="container m_top10" id="yourElement">';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<p class="text-align">Thank You For Your Registration</p>';
+				str+= '<h3 class="text-align"> Successfully Registration Completed </h3>';
+				str+= '</div>';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<p class="text-align">Your Membership No : '+resultArr[2]+' </p>';
+				str+= '<p class="text-align">Your Enrollment No : '+resultArr[1]+' </p>';			
+				str+= '</div>';
+				str+= '</div>';
+				str+= '<div class="container m_top10" id="yourElement">';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+				str+= '</div>';
+				str+= '</div>';
+			}
+			*/
+		}
+		else if(result.search('FAILURE') != -1)
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align">Error occured while cadre registration.</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}
+		/*else
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Thank You For Your Registration</p>';
+			str+= '<h3 class="text-align">Data Not Found For your Voter Id</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+			
+		}*/
+		$('#savingStatusDivId').html(str);
+	 /*
+	 if(result.indexOf("SUCCESS") > -1){
+		 $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Saved Successfully...</span>");
+		 setTimeout(function(){
+			 eachTimeClearFields();
+			}, 2000);
+	 }else
+	 {
+		$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>"); 
+	 }
+		 */
+ }
+ 
 $(document).on("click",".checkboxCls",function(){
 	$(".checkboxCls").prop( 'checked',false);
 	 $(this).prop( 'checked', true );
@@ -533,18 +643,4 @@ function getOccupationList(){
 	   }
 	   $('#'+id+'').trigger("chosen:updated");       
 	}
-}	
- 
- function showSbmitStatus(result)
- {
-	 if(result.indexOf("SUCCESS") > -1){
-		 $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Saved Successfully...</span>");
-		 setTimeout(function(){
-			 eachTimeClearFields();
-			}, 2000);
-	 }else
-	 {
-		$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>"); 
-	 }
-		 
- }
+}
