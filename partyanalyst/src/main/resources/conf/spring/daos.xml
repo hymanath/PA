@@ -3223,7 +3223,6 @@
 	<bean id="tabUserEnrollmentInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserEnrollmentInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
 	<bean id="fieldVendorDAO" class="com.itgrids.partyanalyst.dao.hibernate.FieldVendorDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -3257,6 +3256,9 @@
 	<bean id="cadreRegUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegUserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!--<bean id="tabUserInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>-->
 	
 	<bean id="dataRejectReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.DataRejectReasonDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -3264,5 +3266,7 @@
 	<bean id="tdpCadreDataVerificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDataVerificationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="tabUserOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserOtpDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
