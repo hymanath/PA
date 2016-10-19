@@ -297,7 +297,8 @@ $(document).on("change","#boothsList",function(){
   if (result!= null && result.length > 0) {
     for ( var i in result) {
       str += '<li>';
-		  str += '<div class="media">';
+	  if(result[i].memberShipNo!=null && result[i].memberShipNo.length > 0)
+		  str += '<div class="media" style="background-color: #DBDEDE;padding:5px;">';
 			  str += '<div class="media-body">';
 				  str += '<h5 class="text-capitalize">'+result[i].name+ '</h5>';
 				  str += '<p>S/o:'+result[i].relativeName+'</p>';
@@ -310,7 +311,7 @@ $(document).on("change","#boothsList",function(){
 				  str += '<span>&nbsp;&nbsp;AGE :'+result[i].age+'</span>';
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
-				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'"/>';
+				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].actualMobiNumber+'"/>';
 				  str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 			  str += '</div>';
 			  str += '</div>';
@@ -338,6 +339,7 @@ $(document).on("change","#boothsList",function(){
 	  var enrolYear = $(this).attr("attr_enrol_yId");
 	  var familyVoterCardNumber=$(this).attr("attr_fam_voter_id");
 	  var mobileNumber=$(this).attr("attr_mobile_no");
+	  var actualMblNumber=$(this).attr("attr_act_mbl_no");
 	  var status = "new";
 	  
 	 if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
@@ -364,8 +366,9 @@ $(document).on("change","#boothsList",function(){
 	}
 	
 	if(mobileNumber != 'null'){
+		fieldsValusEmpty();
 		 $("#memChckBoxModalId").modal('show');
-		$("#checkMblNoId").val(mobileNumber);
+		 $("#checkMblNoId").val(mobileNumber);
 	}
 	else{
 		$("#memChckBoxModalId").modal('hide');
@@ -374,6 +377,7 @@ $(document).on("change","#boothsList",function(){
      $("#tdpCadreId").val(tdpCadreId);
 	 $("#statusId").val(status);
 	$("#hidnFamlyVoterId").val(familyVoterCardNumber);
+	$("#hiddenMblNo").val(actualMblNumber);
 	
   });
   
@@ -646,12 +650,12 @@ function getAllConstitencyList()
    }).done(function(result){
 	    for(var i in result){
 	   if(result[i].id == 0){
-          $("#renewalconstitId").append('<option value='+result[i].id+'>Select District</option>');
+          $("#voterConstId").append('<option value='+result[i].id+'>Select District</option>');
 	   }else{
-	      $("#renewalconstitId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	      $("#voterConstId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	   }
 	 }
-	  $("#renewalconstitId").trigger("chosen:updated");
+	  $("#voterConstId").trigger("chosen:updated");
 	
   })
   }
@@ -704,6 +708,7 @@ str += '</ul>';
   
 $(document).on("click",".searchChkboxCls",function(){
 	$("#submitCadreForm").hide();
+	sendOtpToMble();
 });
 
 $(document).on("click",".registerNew",function(){
@@ -731,15 +736,16 @@ function sendOtpToMble(){
 	
 }
 function getVoterDetails(){
-	
 	if(!fieldsValidation())
 	{
 		return;
 	}
 	submitVoterIdDetails();
+	//var constituencyId=$("#voterConstId").val();
 	var voterId=$("#inpVoterId").val();
 	
 	 var jsObj={
+		// constituencyId:constituencyId,
 		 VoterCardNumber:voterId
 	 }
 	 $.ajax({
@@ -748,15 +754,18 @@ function getVoterDetails(){
 		 dataType:'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	    $("#searchVoterDetailsImgId").hide();
 	   if(result!=null && result.length>0){
 	  searchCadreVoterDetails(result);
+	   }else
+	   {
+		   $("#searchVoterDetailsId").html("NO DATA AVAILABLE.....")
 	   }
    });
 }
 
 function getSearchVoterDetails()
 {
+	divsEmpty();
 	if(!fieldsValidationForSearch())
 	{
 		return;
@@ -784,9 +793,11 @@ function getSearchVoterDetails()
 		 dataType:'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#searchVoterDetailsImgId").hide();
 	   if(result!=null && result.length>0){
 	  searchCadreVoterDetails(result);
+	   }else
+	   {
+		   $("#searchVoterDetailsId").html("NO DATA AVAILABLE.....")
 	   }
    });
 }
@@ -801,6 +812,8 @@ function fieldsValusEmpty()
 	$("#boothsList").val(0).trigger('chosen:updated');
 	$("#serchVoterNameId").val('');
 	$("#inpVoterId").val('');
+	$("#checkMblNoId").val('');
+	$("#otpInputId").val('');
 }
 
 function fieldsValidationForSearch()
@@ -809,20 +822,46 @@ function fieldsValidationForSearch()
     var state=$("#statesDivId").val();
 	var district=$("#districtId").val();
 	var constituency=$("#constituencyId").val();
+	var type=$("input[name=radioVal]:checked").val();
+	var typeVal=$("#serchVoterNameId").val();
+	
 	if(state == 0)
 	  {
 		 $("#errorDivId").html("Please Select State");
-		 return;
+		 return false;
 	   }
 	 if(district == 0)
 	  {
 		 $("#errorDivId").html("Please Select district");
-		 return;
+		 return false;
 	   }
 	if(constituency == 0)
 	  {
 		 $("#errorDivId").html("Please Select constituency");
-		 return;
+		 return false;
+	   }
+	 if(typeof type == "undefined")
+	  {
+		 $("#errorDivId").html("Please select any category.");
+		 return false;
+	   } 
+	 if(typeVal == "")
+	  {
+		if(type == "name")
+		{
+		 $("#errorDivId").html("Please Enter Name");
+		 return false;
+		}
+		else if(type == "hNo")
+		{
+			 $("#errorDivId").html("Please Enter House Number");
+		 return false;
+		}
+		else if(type == "voterId")
+		{
+			$("#errorDivId").html("Please Enter Voter ID.");
+		 return false;
+		}
 	   }
 	
 	return true;
@@ -831,7 +870,7 @@ function fieldsValidation()
 {
 	var voterId=$("#inpVoterId").val();
 	if(voterId == ""){
-		$("#enterVoterDivId").html("Please Enter Voter ID.");
+		$("#voterErrDivId").html("Please Enter Voter ID.");
 		return false;
 	}
 	return true;
@@ -839,5 +878,39 @@ function fieldsValidation()
 function divsEmpty()
 {
 	$("#errorDivId").html("");
-	$("#enterVoterDivId").html("");
+	$("#voterErrDivId").html("");
+}
+
+$(document).keypress(function(e) {
+			if(e.keyCode==13){
+					getVoterDetails();
+					getSearchVoterDetails();
+				}
+});
+
+function confirmOtpDetails()
+{
+	var mobileNo=$("#hiddenMblNo").val();
+	var otp=$("#otpInputId").val();
+	var tdpCdrId=$("#tdpCadreId").val();
+	 var jsObj={
+		 mobileNumber:mobileNo,
+		 otpTxt:otp,
+		 tdpCadrId:tdpCdrId
+	 }
+	 $.ajax({
+		  type:'GET',
+		  url:'getOtpStatusAction.action',
+		 dataType:'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result == "success")
+	   {
+		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		   setTimeout(function(){
+			  $("#memChckBoxModalId").hide();
+			 //getSearchByRelativeVoterIdDetails();
+			   }, 1500);
+	   }
+});
 }
