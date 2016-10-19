@@ -155,7 +155,8 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 					randomNum = random.nextLong();
 				}while(randomNum<0 && randomNum.toString().length()<7);
 				randomNum = Long.valueOf(randomNum.toString().substring(1, 8));
-		        String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNum;
+		       // String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNum;
+				 String OrderId =IConstants.CADRE_2016_ONLINE_REGISTRATION+randomNum;
 		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
 		        Adler32  adl = new Adler32();
 		        adl.update(str.getBytes());
