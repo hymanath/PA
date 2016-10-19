@@ -18,6 +18,9 @@ public class FieldMonitoringIssueVO implements Serializable{
 	
 	private Long issueStatusId;
 	private String issueStatus;
+	private String firstname;
+	private String lastname;
+	
 	
 	public Long getIssueTypeId() {
 		return issueTypeId;
@@ -85,6 +88,18 @@ public class FieldMonitoringIssueVO implements Serializable{
 	}
 	public void setIssueStatus(String issueStatus) {
 		this.issueStatus = issueStatus;
+	}
+	public String getFirstname() {
+		return firstname;
+	}
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 	
 	
