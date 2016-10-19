@@ -8570,7 +8570,7 @@ public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String s
    public List<Long> getLocalElectionBodyByVoterId(Long voterId){
 	   
 	   Query query = getSession().createQuery("" +
-	   	" select model.booth.localBody.localElectionBodyId " +
+	    " select model.booth.localBody.localElectionBodyId " +
 	   	" from   BoothPublicationVoter model " +
 	   	" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
 	   
@@ -8580,5 +8580,23 @@ public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String s
    }
 
 
+@SuppressWarnings("unchecked")
+public List<Object[]> getVoterLocationDetailsByVotersIdsList(List<Long> voterIdsList)//218776952
+{
+	Query query = getSession().createQuery("" +
+			" SELECT model.booth.constituency.district.state.country.countryId, model.booth.constituency.district.state.stateId,"+//1
+			"        model.booth.constituency.district.districtId, model.booth.constituency.constituencyId, " +//3
+			"        tehsil.tehsilId, leb.localElectionBodyId ," +//5
+			"        panchayat.panchayatId,ward.constituencyId, " +//7
+			"        model.booth.boothId , model.voter.voterId, model.voter.voterIDCardNo "+//10
+			" FROM  BoothPublicationVoter model "
+			+ "     left join model.booth.tehsil tehsil " +
+			"       left join model.booth.localBody leb " +
+			"       left join model.booth.panchayat panchayat " +
+			"       left join model.booth.localBodyWard ward " +
+			" WHERE model.voter.voterId in (:voterIdsList) AND  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID);
+	query.setParameterList("voterIdsList",voterIdsList);
+	return query.list();
+}
 
 }
