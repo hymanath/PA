@@ -108,44 +108,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 </head>
 <body>
-<!--<header  class="eventsheader">
-<!-- <img src="css/Training/img/header.jpg" width="100%"> -->
-    <!--<div class="container">
-        <div class="row">
-            <div class="col-md-2 col-xs-4 col-sm-1">
-                <img src="dist/img/logo.png" class="img-responsive">
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-1">
-                <img src="dist/img/CBN1.png" class="img-responsive">
-            </div>
-            <div class="col-md-6 col-xs-7 col-sm-7 text-center">              
-                 <p class="header-text display-style" id="mainheading" style="font-size:38px;"></p>              
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-1"><img src="dist/img/NTR1.png" class="img-responsive" />  
-            </div>
-            <div class="col-md-2 col-xs-1 col-sm-1">
-                <div class="" style="color:white;margin-top: 5px;"><b> Welcome ${sessionScope.UserName} </b></div>
-                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top10" data-toggle="dropdown" aria-expanded="false" style="margin-top: 5px;">
-                    Menu <img src="images/menu_icon.png" />
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);">
-                       <!--<li><a href="mahanaduCadreVisitInfoAction.action"><span>ENTRY/EXIT DASHBOARD</span></a> </li>-->
-                       <!--<li><a href="dashBoardAction.action"><span>DASHBOARD</span></a> </li>
-					   <li><a href="meetingList.action"><span>PARTY MEETING - MOM & ATR </span></a> </li>
-                       <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
-                   
-                    </ul>  
-            </div>           
-        </div>      
-    </div>
-   
-   
-</header>-->
 <main>
     <div class="container">
         <div class="row">
             <section>
-                <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
                     <div class="panel panel-default">
                         <div class="panel-heading" style="background-color:#CCC">
                             <h4 class="panel-title text-uppercase" ><span id="meetingType"></span>&nbsp; <i><small id="location" ></small></i></h4>
@@ -153,7 +120,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-6 ">
+                                <div class="col-md-12 col-xs-12 col-sm-12 ">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="background-color:#DDD">
                                             <h4 class="panel-title text-bold">Meeting Minutes</h4>
@@ -251,7 +218,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                                         </div>
                                     </div>
                                 </div>
-                                 <div class="col-md-6 ">
+                               <!--  <div class="col-md-6 ">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="background-color:#DDD">
                                             <h4 class="panel-title text-bold">ATR</h4>
@@ -298,7 +265,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -335,6 +302,95 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     </div>
   </div>
 </div>
+<div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 80%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">MOM Points</h4>
+      </div>
+	  <div class="modal-body">
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<label>Press Alt+t to toggle between Telugu & English</label>
+				<textarea rows="5" id="meetRaised" class="form-control"></textarea>
+				<div id="momError" style="color:red;"></div>
+			</div>
+		</div>
+		<div class="row m_top20">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<h4 class="panel-title">Action Type</h4>
+				<label class="radio-inline" name="actionTypeName">
+					<input type="radio"/>General
+				</label>
+				<label class="radio-inline" name="actionTypeName">
+					<input type="radio"/>Actionable
+				</label>
+			</div>
+			<div class="col-md-4 col-xs-12 col-sm-3">
+				<label>Meeting Level</label>
+				<span id="meetingLocationErrorMessage" style="color: red;"></span>
+					<select class="form-control" id="meetingLocationLevel"></select>
+				<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
+			</div>	
+			
+			<!--<div class="col-md-4 col-xs-12 col-sm-3">
+			
+				<label>Select Meeting Name/Type Of Meeting</label>
+				<select class="form-control" id="typeOfMeeting">
+					<option> Select Meeting Type </option>
+				</select>
+				<span id="typeofMeetingErrorMessage" style="color: red;"></span>
+				<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
+				
+			</div>-->
+			<div class="col-md-4 col-xs-12 col-sm-4" id="stateShowId" style="display:none;">
+				<label>State</label>
+				<span id="stateErrorMSgShow" style="color: red;"></span>
+				<select class="form-control" id="statesDivId">
+				<!--<option>Select State</option>-->
+				</select>
+			</div>
+			<div class="col-md-4 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
+				<label>District</label>
+				<span id="districtErrorMSgShow" style="color: red;"></span>
+				<select class="form-control" id="districtId">
+				<!--<option>Select District</option>-->
+				</select>
+			</div>
+			<div class="col-md-4 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
+				<label>Constituency</label>
+				<span id="ConsErrorMSgShow" style="color: red;"></span>
+				<select class="form-control" id="constituencyId" name="constBox">
+				<!--<option>Select Constituency</option>-->
+				</select>
+			</div>
+			<div class="col-md-4 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
+				<label>Mandal/Town/Division</label>
+				<span id="ManErrorMSgShow" style="color: red;"></span>
+				<select class="form-control" id="manTowDivId">
+				<option>Select Mandal/Town/Division</option>
+				</select>
+			</div>
+			<div class="col-md-4 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;">
+				<label>Village/Ward</label>
+					<span id="VillErrorMSgShow" style="color: red;"></span>
+				<select class="form-control" id="villWardId">
+				<option>Select Village/Ward</option>
+				</select>
+			</div>
+			<div class="col-xs-12 col-md-3 col-sm-6" >
+				<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View</button>
+			</div>
+		</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+        <button type="button" attr_minuteid="0" class="btn btn-success saveMinute" id="saveBtnMeetMin">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="showmsshmin"></div>
 <!----------------------------->
 <!--------Minutes popup-------->
@@ -361,11 +417,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
  </div>
 
- <div id="dialogMOM" style="display:none;">
+ <!--<div id="dialogMOM" style="display:none;">
 	<p>Press Alt+t to toggle between Telugu & English</p>
     <textarea rows="5" id="meetRaised" class="form-control"></textarea>
 	<div class="col-md-12" id="momError" style="color:red;"></div>
- </div>
+ </div>-->
  
  <div id="dialogATR" style="display:none;">
 	<p>Press Alt+t to toggle between Telugu & English</p>
@@ -395,7 +451,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/TrainingProgram/component.js" type="text/javascript"></script>
 <script src="js/TrainingProgram/fileupload.js" type="text/javascript"></script>
-<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
@@ -492,8 +547,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    var maximumDivCount=1;
  	
 	$(document).on('click', '.addMeetMint', function(){
-			//$("#mintModal").modal("show");
-			openModalMOM();
+			$("#mintModal").modal("show");
+			//openModalMOM();
 			$("#meetRaised").val("");
 	 }); 	
 	 
@@ -510,7 +565,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 $("#deletedMinMsg").attr("attr_minuteId",attrId3);
 		 
 		 
-	 });deletedmsgAtr
+	 });//deletedmsgAtr
 	 
 	 
     $(document).on('click', '#deletedMinMsg', function(){
@@ -912,8 +967,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	   });
 	}
 	$(document).on('click', '.updatedMeetMin', function(){
-		//$("#mintModal").modal("show");
-		openModalMOM();
+		$("#mintModal").modal("show");
+		//openModalMOM();
 		
 		var meetmin=$(this).parent().parent().find(".updatedMeetMintValue").text();
 		$("#meetRaised").val(meetmin);
@@ -950,8 +1005,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			//$('#mintModal').modal('hide');
-			$( "#dialogMOM" ).dialog('close');
+			$('#mintModal').modal('hide');
+			//$( "#dialogMOM" ).dialog('close');
 			
 		   if(result=="success"){
 				rebuildMinutes(partyMeetingId,minuteId)
