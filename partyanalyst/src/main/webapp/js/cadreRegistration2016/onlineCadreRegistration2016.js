@@ -89,17 +89,63 @@ function getSearchByMyVoterIdDetails(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
+			
 		//if(result != null){
-			$("#submitCadreForm").show();
-			$(".newProfile").show();
-			$("#populatingDtsDivImgId").hide();
-			hideShowDivs(status);
-			buildProfileDetails(result,status);
-		 	buildCasteDetails(result);
-		 	buildEductnQualifns(result);
-		 	buildCadreFamilyDetails(result);
-			buildCadreRelativesDetails(result,"prevNomneReltvId");
-			buildOccupationList(result,"occupationId");
+			if(result != null && result.paymentStatus != null && result.paymentStatus =='NOT PAID'){
+				var str='';
+				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
+				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
+				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
+				str+='<input type="hidden" name="Order_Id" value="'+result.paymentGatewayVO.orderNo.trim()+'">';				
+				str+='<input type="hidden" name="Checksum" value="'+result.paymentGatewayVO.checkSum.trim()+'">';
+				str+='<input type="hidden" name="Redirect_Url" value="'+result.paymentGatewayVO.redirectURL.trim()+'">';
+					str+='<input type="hidden" name="Amount" value="'+result.paymentGatewayVO.amount.trim()+'">';
+				str+='<input type="hidden" name="billing_cust_name" value="">';
+				str+='<input type="hidden" name="billing_cust_address" value="">';
+				str+='<input type="hidden" name="billing_cust_tel" value="">';
+				str+='<input type="hidden" name="billing_cust_email" value="">';
+				str+='<input type="hidden" name="Merchant_Param" value="">';
+				str+='<input type="hidden" name="billing_cust_notes" value="TDP E-Member Registration fee">';
+				str+='<input type="hidden" name="billing_zip_code" value="">';
+				str+='<input type="hidden" name="delivery_cust_name" maxlength="6" value="Telugau Desam Party">';
+				str+='<input type="hidden" name="delivery_cust_address" value="NTR Bhavan, Banjarahills, Road No:12">';
+				str+='<input type="hidden" name="delivery_cust_country" value="India">';
+				str+='<input type="hidden" name="delivery_cust_state" value="Andhrapradesh & Telangana">';
+				str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
+				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
+
+				str+='<div class="container m_top10" id="yourElement;">';
+				str+='<div class="span12  show-grid" style="position: relative;margin-left:250px">';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<p class="text-align"> <b>Cadre Name :</b> '+result.lastName+' </p>';
+				str+= '<p class="text-align"> <b>Voter Card NO :</b> '+result.voterCardNo+' </p>';			
+				str+= '</div>';
+				str+='<p class="text-align" style="font-weight:bold;color:green;"> You are Already Registered for 2016-2018. <span style="color:orange">Payment is pending! </span> </p>';
+				str+='<h3 class="text-align"> Please make payment , to complete your Registration .   </h3>';
+				str+='</div>';
+				str+='</div>';
+				str+='<div class="container m_top10" id="yourElement">';
+				str+='<div class="span12  show-grid" style="position: relative;text-align: center;margin-bottom: 25px;">';
+				str+='<input type="submit" name="submit button" value="PAY NOW" class="btn btn-warning offset5">'; 
+				str+='</div>';
+				str+='</div>';
+				str+='</form>';
+				$('#existingSavingStatusDivId').html(str);
+				
+			}
+			else{
+				$("#submitCadreForm").show();
+				$(".newProfile").show();
+				$("#populatingDtsDivImgId").hide();
+				
+				hideShowDivs(status);
+				buildProfileDetails(result,status);
+				buildCasteDetails(result);
+				buildEductnQualifns(result);
+				buildCadreFamilyDetails(result);
+				buildCadreRelativesDetails(result,"prevNomneReltvId");
+				buildOccupationList(result,"occupationId");
+			}
 		});
 		
 }
@@ -223,6 +269,23 @@ var str = "";
 		 }
 		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
 		
+		  presntDistrictId =result.districtId;
+		  presntConstituencyId =result.constituencyId;
+		  presntMandalId =result.mandalId;
+		  presntVillageId =result.villageId;
+		  
+		if(result.districtId<11){
+			$("#PrsntStateList").val(36);
+			$("#PrsntStateList").trigger("chosen:updated");
+			getDistrictsForStates(36,2);
+		}else{
+			$("#PrsntStateList").val(1);
+			$("#PrsntStateList").trigger("chosen:updated");
+			getDistrictsForStates(1,2);
+		}
+
+ 
+ 		
 }
 function buildCasteDetails(result) {
   $("#casteListId").append('<option value="0">Select Caste</option>');
@@ -358,7 +421,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		var resultArr = result.split(',');
 		//console.log(resultArr);
 		if(result.search('SUCCESS') != -1)
-		{			
+		{				
 			$('.subBlock').html('');
 			//if(srchType == 'voter'){
 				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
@@ -383,13 +446,13 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
 
 				str+='<div class="container m_top10" id="yourElement">';
-				str+='<div class="span12  show-grid" style="position: relative;">';
+				str+='<div class="span12  show-grid" style="position: relative;;margin-left:250px;">';
 				str+='<p class="text-align">	Thank You For Your Registration</p>';
 				str+='<h3 class="text-align"> Please make payment , to complete your Registration .   </h3>';
 				str+='</div>';
 				str+='</div>';
 				str+='<div class="container m_top10" id="yourElement">';
-				str+='<div class="span12  show-grid" style="position: relative;">';
+				str+='<div class="span12  show-grid" style="position: relative;text-align: center;margin-bottom: 25px;">';
 				str+='<input type="submit" name="submit button" value="PAY NOW" class="btn btn-warning offset5">'; 
 				str+='</div>';
 				str+='</div>';
