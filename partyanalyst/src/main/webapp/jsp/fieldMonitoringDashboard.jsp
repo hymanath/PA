@@ -78,9 +78,11 @@
                 </div>
             </div>
             <div class="row m_top20">
-                <div class="col-md-12 col-xs-12 col-sm-12">
-                    <div class="block">
-                        <h4 class="panel-title text-capital">apk issue - 20</h4>
+				<div class="col-md-12 col-xs-12 col-sm-12">
+                    <div class="block" id="dtatusDivId" style="display:none;">
+						<div id="statusWiseDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+						<div id="statusWiseDetailsDivId"></div>
+                         <!-- <h4 class="panel-title text-capital">apk issue - 20</h4>
                         <table class="table b_1">
                         	<thead class="text-capitalize">
                             	<th>User Id</th>
@@ -140,7 +142,7 @@
                                 <span aria-hidden="true">&raquo;</span>
                               </a>
                             </li>
-                        </ul>
+                        </ul>-->
                     </div>
                 </div>
             </div>
