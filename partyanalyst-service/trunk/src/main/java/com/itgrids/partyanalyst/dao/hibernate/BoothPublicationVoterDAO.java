@@ -8566,4 +8566,19 @@ public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String s
 		
 		return query.list();
 	}
+
+   public List<Long> getLocalElectionBodyByVoterId(Long voterId){
+	   
+	   Query query = getSession().createQuery("" +
+	   	" select model.booth.localBody.localElectionBodyId " +
+	   	" from   BoothPublicationVoter model " +
+	   	" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
+	   
+	   query.setParameter("voterId",voterId );
+	   query.setParameter("publicationDateId",IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID );
+	   return query.list();
+   }
+
+
+
 }
