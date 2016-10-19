@@ -3508,7 +3508,11 @@
 		 <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO"></property>
 		 <property name="occupationDAO" ref="occupationDAO"></property>
 		 <property name="districtDAO" ref="districtDAO"></property>
-		  <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		 <property name="dateUtilService" ref="dateUtilService" />
+		 <property name="tabUserOtpDetailsDAO" ref="tabUserOtpDetailsDAO" />
+		 <property name="tabUserInfoDAO" ref="tabUserInfoDAO" />
+		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>
