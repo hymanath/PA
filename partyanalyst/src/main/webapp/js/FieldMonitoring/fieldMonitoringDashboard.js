@@ -3,6 +3,7 @@
 		getOverAllDataCollectorsCounts();
 		getIssueStatusWiseCounts();
 		getIssueTypeWiseCounts();
+		getStatusWiseIssuesDetails();
 	}
 	
 	function getOverAllDataCollectorsCounts(){
@@ -98,3 +99,102 @@
 			});
 			
 		}
+		
+function getStatusWiseIssuesDetails(){
+	$("#statusWiseDetailsDivId").html('');
+	$("#statusWiseDetailsImgId").show();
+	$("#dtatusDivId").show();
+	
+	var dates = $(".singleDate").val();
+	var dateArr = dates.split("-");
+	var fromDate;
+	var toDate;
+	if(dateArr != null){
+		fromDate = dateArr[0];
+		toDate = dateArr[1];
+	}
+	
+	var jsObj = { 
+	  fromDate : "10/01/2016",		//"",
+	  toDate : "10/18/2016",		 	//""  
+	  issueType : 1,
+	  issueStatus : 1
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getStatusWiseIssuesDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildStatusWiseDetails(result);
+		}
+		else{
+			$("#statusWiseDetailsImgId").hide();
+			$("#statusWiseDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+		}
+	});
+}
+
+function buildStatusWiseDetails(result){
+	var str = '';
+	
+	//str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		//str+='<div class="block">';
+			str+='<h3 class="panel-title text-capital">apk issue - 20</h3>';
+			str+='<table class="table b_1">';
+				str+='<thead class="text-capitalize">';
+					str+='<th>User Id</th>';
+					str+='<th>user name</th>';
+					str+='<th>user contact number</th>';
+					str+='<th>state</th>';
+					str+='<th>district</th>';
+					str+='<th>constituency</th>';
+					str+='<th>vendor name</th>';
+					str+='<th>leader name</th>';
+					str+='<th>open issues</th>';
+					str+='<th>fixed issues</th>';
+					str+='<th></th>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
+						str+='<td>'+result[i].tabUserName+'</td>';
+						str+='<td>'+result[i].mobileNo+'</td>';
+						if(result[i].stateName != null)
+							str+='<td>'+result[i].stateName+'</td>';
+						else
+							str+='<td> - </td>';
+						if(result[i].districtName != null)
+							str+='<td>'+result[i].districtName+'</td>';
+						else
+							str+='<td> - </td>';
+						if(result[i].constituencyName != null)
+							str+='<td>'+result[i].constituencyName+'</td>';
+						else
+							str+='<td> - </td>';
+						if(result[i].vendorName != null)
+							str+='<td>'+result[i].vendorName+'</td>';
+						else
+							str+='<td> - </td>';
+						str+='<td> - </td>';
+						if(result[i].openIssues != null)
+							str+='<td>'+result[i].openIssues+'</td>';
+						else
+							str+='<td> - </td>';
+						if(result[i].fixedIssues != null)
+							str+='<td>'+result[i].fixedIssues+'</td>';
+						else
+							str+='<td> - </td>';
+						str+='<td><button class="btn btn-success text-capitalize issuesBtn">manage issues</button></td>';
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		//str+='</div>';
+	//str+='</div>';
+	
+	$("#statusWiseDetailsImgId").hide();
+	$("#statusWiseDetailsDivId").html(str);
+}
