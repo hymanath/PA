@@ -531,7 +531,7 @@
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning" id="prievsNmneDivId"><i> - Your Previous nominee</i></span></h4>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name<span style="color:red;">*</span>&nbsp;<span id="prvNomneNameDivId" style="color:red;"></span></label>
                             <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.nomineeName"/>
 							<!--<div id="prvNomneNameDivId" style="color:red;"></div>-->
@@ -1154,6 +1154,31 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="trNumberModal">
+  <div class="modal-dialog" role="document" style="width:50%;">
+    <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.7);">
+      <div class="modal-body"  style="position: relative;">
+		
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 text-center" style="position:relative;">
+				<div  class="pad_20">
+					<!--<span style="position: absolute; background-color: rgb(255, 255, 255); border-radius: 50%; padding: 2px 5px; right: -6px; top: -26px; cursor: pointer;" data-dismiss="modal" aria-label="Close">X</span>-->
+					<div id="">
+						<p class="text-align" style="color:#fff">Thank You For Your Registration</p>
+						<h3 class="text-align" style="color:#fff"> Successfully Registration Completed </h3>
+						<h2 style="margin: 0px; text-align: center;color:#fff" >TR NUMBER : <span id="trNumberId"></span></h2>
+						<h2 style="margin: 0px; text-align: center;color:#fff" >MEMBERSHIP NO : <span id="membrShpNoId"></span></h2>
+					</div>
+				</div>
+				
+				
+				<button class="btn btn-success btn-xs" id="contineueBtn" type="button" style="position: absolute; margin: auto; left: 45%; bottom: -24px;">Continue</button>
+			</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
 	<div id="wrapper">
 		<div id="example"></div>
 	</div>
@@ -1184,7 +1209,13 @@
 <script type="text/javascript">
 
 $("#dobId").datetimepicker({
-	   format:'YYYY-MM-DD'
+	   format:'YYYY-MM-DD',
+	   //maxDate : '2004-01-01',
+	  // minDate : '1916-01-01'
+	 // maxDate: new Date(),
+		//changeMonth: true,
+		//changeYear: true,
+		//yearRange: "-100:+0"
    });
   //GLOBAL VARIABLES
   var casteNamesArray = [];

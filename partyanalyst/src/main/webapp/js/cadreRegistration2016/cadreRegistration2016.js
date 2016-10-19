@@ -117,7 +117,7 @@ if(status == "new"){
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
 	$("#emailDivId").show();
-	//$("#teluguNameDivId").show();
+	$("#teluguNameDivId").hide();
 	$("#familyDetailsDivId").hide();
 	$("#cadreUpdateVotrDivId").show();
 	$("#prevNomineeId").show();
@@ -197,6 +197,7 @@ var str = "";
 			$("#aadharId").val(result.candidateAadherNo);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeName != null && result.nomineeName != ""){
+			$("#PrvNomineeDetailsId").prop( 'checked',true);
 			$("#prvNomneNameId").val(result.nomineeName);
 		 }
 		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != "" && result.nomineeAge > 0){
@@ -381,19 +382,18 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	}
 	
 $(document).on("click",".checkboxCls",function(){
-	$(".checkboxCls").prop( 'checked',false);
-	 $(this).prop( 'checked', true );
+	  $(".checkboxCls").prop( 'checked',false);
+	  $(this).prop( 'checked', true );
 	  var name = $(this).attr("attr_name");
 	  var gender = $(this).attr("attr_gender");
 	  var age = $(this).attr("attr_age");
 	  var relationTypeId = $(this).attr("attr_relTypeId");
-
-	 $("#prvNomneNameId").val(name);
-	 $('#prvNomneGendrId').val(gender).trigger('chosen:updated');
-	 $("#prevNomneAgeId").val(age);
+	  $('#prevNomneReltvId').val('').trigger('chosen:updated');
+	  $("#prvNomneNameId").val(name);
+	  $('#prvNomneGendrId').val(gender).trigger('chosen:updated');
+	  $("#prevNomneAgeId").val(age);
 	 //$('#prevNomneReltvId').val(relationTypeId).trigger('chosen:updated');
 	 $('#prevNomneReltvId').val(0).trigger('chosen:updated');
-	 
 	
 });
 $(document).on("click",".nomineeDetailsCls",function(){
@@ -584,22 +584,19 @@ $(document).on("click",".isImageCheck",function(){
 	});    
  
  $(document).on("click","#PrvNomineeDetailsId",function(){ 
-	//$('#prvNomneGendrId').val(0).trigger('chosen:updated');
+	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
 	//$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
 	 $('#prvNomneGendrId').val();
 	 $('#prevNomneReltvId').val();
-	
 	var prvNomineeGender = $("#PrvNomineeDetailsId").attr("attr_nomineeGender");
 	var prvNomineeRelative = $("#PrvNomineeDetailsId").attr("attr_nomineRelative");
-	 if(prvNomineeGender == 'Female')
+	 if(prvNomineeGender == 'Female' || prvNomineeGender == 'F' || prvNomineeGender == 'FeMale' || prvNomineeGender == 'female')
 	 {
-		       $("#prvNomneGendrId").val('F');
-			   $("#prvNomneGendrId").trigger("chosen:updated");
+				$("#prvNomneGendrId").val(prvNomineeGender).trigger("chosen:updated");
 	 }
-	 if(prvNomineeGender == 'Male')
+	 if(prvNomineeGender == 'Male' || prvNomineeGender == 'M' || prvNomineeGender == 'male')
 	 {
-		  $("#prvNomneGendrId").val('M');
-		  $("#prvNomneGendrId").trigger("chosen:updated");
+		  $("#prvNomneGendrId").val(prvNomineeGender).trigger("chosen:updated");
 	 }
 		 for ( var i in relationsArray) {			
 				if(prvNomineeRelative == relationsArray[i].id)
@@ -647,6 +644,7 @@ $(document).on("click",".isImageCheck",function(){
 	$("#emailId").val('');
 	$("#occupationId").val(0).trigger('chosen:updated');
 	$("#prevNomneAadharNoId").val('');
+	$(".nomineeDetailsCls").prop( 'checked',false);
 }
 function getOccupationList(){
 	   $.ajax({          
@@ -682,18 +680,30 @@ function getOccupationList(){
 	}
 }	
  
- function showSbmitStatus(result)
+ function showSbmitStatus(myResult)
  { 
-      $("#savingCadreDivIdImg").hide();
-	 if(result.indexOf("SUCCESS") > -1){
-		 $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Saved Successfully...</span>");
-		 setTimeout(function(){
-			 eachTimeClearFields();
-			 window.location.reload();
-			}, 3000);
-	 }else
+	 $("#savingCadreDivIdImg").hide();
+	 var result = (String)(myResult);
+    
+    var errorDivEle = document.getElementById('imgErrDivId');
+    var str = '';
+    
+    var resultArr = result.split(',');
+    if(result.search('SUCCESS') != -1)
+    {
+		$("#trNumberId").text(resultArr[1]);
+		$("#membrShpNoId").text(resultArr[2]);
+		$("#trNumberModal").modal('show');
+	}
+	 else
 	 {
 		$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>"); 
 	 }
 		 
  }
+ $(document).on("click","#contineueBtn",function(){ 
+			 eachTimeClearFields();
+			 window.location.reload();
+ });
+ 
+ 
