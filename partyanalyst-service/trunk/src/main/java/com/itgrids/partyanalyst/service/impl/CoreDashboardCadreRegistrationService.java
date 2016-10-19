@@ -382,6 +382,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  				cadreRegistration.setVoterCadreNO(objects[7] != null ? objects[7].toString() : "");
 	  				cadreRegistration.setMobileNo(objects[8] != null ? objects[8].toString() : "");
 	  				cadreRegistration.setImagePath(objects[9] != null ? objects[9].toString() : "");
+	  				cadreRegistration.setTotalImagePathStr("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreRegistration.getImagePath());
 	  				returnList.add(cadreRegistration);
 	  			}
   				
