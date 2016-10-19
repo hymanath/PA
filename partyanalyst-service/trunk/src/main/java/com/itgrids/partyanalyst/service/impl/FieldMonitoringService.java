@@ -872,4 +872,24 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	}
 	   return returnList;
    }
+   public List<IdAndNameVO> getCadreRegIssueStatusType() {
+		List<IdAndNameVO> regIssueStatusType = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> issueStatusType = cadreRegIssueStatusDAO.getCadreRegIssueStatusType();
+			if (issueStatusType != null && issueStatusType.size() > 0) {
+				for (Object[] objects : issueStatusType) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
+					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					regIssueStatusType.add(vo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getCadreRegIssueStatusType() in FieldMonitoringService class", e);
+		}
+		return regIssueStatusType;
+	} 
+
 }
