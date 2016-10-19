@@ -435,6 +435,8 @@ $(document).on("change","#boothsList",function(){
        buildCasteDetails(result);
        buildEductnQualifns(result);
        buildCadreFamilyDetails(result);
+	   buildCadreRelativesDetails(result,"prevNomneReltvId");
+	   buildOccupationList(result,"occupationId");
 	 })
 	
   }
