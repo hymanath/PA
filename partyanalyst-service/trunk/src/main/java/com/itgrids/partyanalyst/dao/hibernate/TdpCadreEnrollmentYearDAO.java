@@ -269,5 +269,54 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return query.list();   
 	}
 
+	  public List<Object[]> getCadreRegistrationCountByDataSourceType(Date fromDate,Date toDate){
+		  
+		     StringBuilder queryStr = new StringBuilder();
+		     
+		     queryStr.append(" select model.tdpCadre.dataSourceType," +
+		     		         " count(distinct model.tdpCadre.tdpCadreId) " +
+		     		         " from TdpCadreEnrollmentYear model " +
+		     		         " where " +
+		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
+				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
+		     
+		     if(fromDate!= null && toDate!=null){
+				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+			 }
+		      
+		     queryStr.append(" group by model.tdpCadre.dataSourceType ");
+		      
+		     Query query = getSession().createQuery(queryStr.toString());
+		    
+		     if(fromDate!= null && toDate!=null){
+				   query.setDate("fromDate", fromDate);
+				   query.setDate("toDate", toDate);
+				 }
+		     return query.list();
+	  }
+	  public List<Object[]> getCadreRegistrationCountByCadreVerificationStatus(Date fromDate,Date toDate){
+		  
+		     StringBuilder queryStr = new StringBuilder();
+		     
+		     queryStr.append(" select model.tdpCadre.cadreVerificationStatusId,model.tdpCadre.dataSourceType," +
+		     		         " count(distinct model.tdpCadre.tdpCadreId) " +
+		     		         " from TdpCadreEnrollmentYear model " +
+		     		         " where " +
+		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N' " +
+				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
+		     
+		     if(fromDate!= null && toDate!=null){
+				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+			 }
+		      queryStr.append(" group by model.tdpCadre.cadreVerificationStatusId,model.tdpCadre.dataSourceType order by model.tdpCadre.cadreVerificationStatusId asc ");
+			   
+		     Query query = getSession().createQuery(queryStr.toString());
+		     
+		     if(fromDate!= null && toDate!=null){
+				   query.setDate("fromDate", fromDate);
+				   query.setDate("toDate", toDate);
+				 }
+		     return query.list();
+	  }
 	
 }
