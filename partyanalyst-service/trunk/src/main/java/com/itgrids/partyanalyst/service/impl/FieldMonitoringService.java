@@ -326,6 +326,11 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnvo;
     }
     
+    /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This service is used store an issue to a tab user.
+	  *  @since 18-OCTOBER-2016
+	  */
     public ResultStatus saveFieldIssue(final FieldMonitoringIssueVO inputVO){
 		final ResultStatus rs = new ResultStatus();
 		final DateUtilService dateUtilService = new DateUtilService();
@@ -377,8 +382,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   Date currentDate = dateUtilService.getCurrentDateAndTime();
 		        	   cadreRegIssue.setInsertedTime(currentDate);
 		        	   cadreRegIssue.setUpdatedTime(currentDate);
-		        	   cadreRegIssue.setCreatedBy(1L);//inputVO.getLoginUserId()
-		        	   cadreRegIssue.setUpdatedBy(1L);//inputVO.getLoginUserId()
+		        	   cadreRegIssue.setCreatedBy(inputVO.getLoginUserId());
+		        	   cadreRegIssue.setUpdatedBy(inputVO.getLoginUserId());
 		        	   
 		        	   cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
 		        	   
@@ -405,6 +410,11 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		return rs;
 	}
     
+    /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This service is used to get the issues for a particulat tab user of a cadre survey user by issue status.
+	  *  @since 18-OCTOBER-2016
+	  */
     public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId){
     	
     	List<FieldMonitoringIssueVO> returnList = null;
@@ -456,6 +466,110 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     }
     
     
+    /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This service is used to update description and status to a particular issue.
+	  *  @since 18-OCTOBER-2016
+	  */
+    public ResultStatus updateStatusToACadreRegIssue(final Long cadreRegIssueId,final String description,final Long newStatusId,final Long loginUserId){
+    	
+    	final ResultStatus rs = new ResultStatus();
+    	final DateUtilService dateUtilService = new DateUtilService();
+    	
+    	try{
+			
+    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+		        	
+		        	Date currentDate = dateUtilService.getCurrentDateAndTime();
+		        	
+		        	CadreRegIssue cadreRegIssue = cadreRegIssueDAO.get(cadreRegIssueId);
+		    		
+		    		if(cadreRegIssue != null){
+		    			
+		    			//updation
+		    			if(description != null && !description.trim().isEmpty()){
+		    				cadreRegIssue.setDescription(description.trim());
+		    			}
+		    			
+		    			if(newStatusId != null && newStatusId> 0l){
+		    				cadreRegIssue.setCadreRegIssueStatusId(newStatusId);
+		    			}
+		    			cadreRegIssue.setUpdatedBy(loginUserId);
+		    			cadreRegIssue.setUpdatedTime(currentDate);
+		    			
+		    			cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
+		    			
+		    			
+		    			//tracking
+		    			
+			        	CadreRegIssueTrack cadreRegIssueTrack = new CadreRegIssueTrack();
+			        	cadreRegIssueTrack.setCadreRegIssueId(cadreRegIssue.getCadreRegIssueId());
+			        	cadreRegIssueTrack.setCadreRegIssueTypeId(cadreRegIssue.getCadreRegIssueTypeId());
+			        	cadreRegIssueTrack.setDescription(cadreRegIssue.getDescription());
+			        	cadreRegIssueTrack.setCadreRegIssueStatusId(cadreRegIssue.getCadreRegIssueStatusId());
+			        	cadreRegIssueTrack.setInsertedBy(loginUserId);
+			        	cadreRegIssueTrack.setInsertedTime(currentDate);
+			        	cadreRegIssueTrackDAO.save(cadreRegIssueTrack);
+		    			
+		    		}
+		    		
+		    		 rs.setResultCode(1);
+			         rs.setMessage("success");
+		        }
+    		});
+    		
+		}catch(Exception e){
+			LOG.error("Exception raised at updateStatusToACadreRegIssue", e);
+			rs.setResultCode(0);
+			rs.setMessage("failure");
+		}
+    	return rs;
+    }
+    
+    /**
+	  * 
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  Getting Track for a Particular issue. 
+	  *  @since 18-OCTOBER-2016
+	  */
+    public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId){
+    	
+    	List<FieldMonitoringIssueVO> finalList = null;
+    	SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+    	try{
+    		
+    		List<Object[]> trackList = cadreRegIssueTrackDAO.trackingRegIssueByRegIssueId(cadreRegIssueId);
+    		if(trackList != null && trackList.size() > 0)
+    		{
+    			finalList = new ArrayList<FieldMonitoringIssueVO>();
+    			for(Object[] obj : trackList)
+    			{
+    				FieldMonitoringIssueVO VO = new FieldMonitoringIssueVO();
+    				
+    				VO.setIssueTypeId(obj[0] != null ? (Long)obj[0] : 0l);
+    				VO.setIssueType(obj[1] != null ? obj[1].toString() : "");
+    				VO.setDescription(obj[2] != null ? obj[2].toString() : "");
+    				VO.setIssueStatusId(obj[3] != null ? (Long)obj[3] : 0l);
+    				VO.setIssueStatus(obj[4] != null ? obj[4].toString() : "");
+    				VO.setLoginUserId(obj[5] != null ? (Long)obj[5] : 0l);
+    				VO.setFirstname(obj[6] != null ? obj[6].toString() : "");
+    				VO.setLastname(obj[7] != null ? obj[7].toString() : "");
+    				
+    				if(obj[8]!=null){
+    					Date date = (Date)obj[8];
+    					VO.setDateStr(returnTime.format(date));
+    				}
+    				
+    				finalList.add(VO);
+    			}
+    		}
+    		
+		}catch(Exception e){
+			LOG.error("Exception raised at trackingRegIssueByRegIssueId", e);
+		}
+    	return finalList;
+    }
     
     
     /**
