@@ -73,6 +73,7 @@ public class UserAddress implements java.io.Serializable,Cloneable {
 	private Panchayat panchayat;
 	private String addressLane1;
 	private String addressLane2;
+	private String landmark;
 	
 	public UserAddress() {
 		super();		
@@ -347,5 +348,12 @@ public class UserAddress implements java.io.Serializable,Cloneable {
 		this.addressLane2 = addressLane2;
 	}
 	
-	
+	@Column(name="land_mark")
+	public String getLandmark() {
+		return landmark;
+	}
+
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
+	}
 }
