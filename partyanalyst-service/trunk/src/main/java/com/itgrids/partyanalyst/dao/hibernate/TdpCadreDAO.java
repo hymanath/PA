@@ -7763,4 +7763,56 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		query.setParameter("stateId", stateId);
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> getTotalRegCdrVendorWise(Long stateId, Long vendorId, Long distId, Long constId, Date startDate, Date endDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select TC.cadreVerificationStatusId, count(distinct TC.tdpCadreId) " +
+						" from TdpCadre TC, TdpCadreEnrollmentYear TCEY, FieldVendorTabUser FVTU  " +
+						" where ");  
+		if(startDate != null && endDate != null){
+			queryStr.append(" (date(TC.surveyTime) between :startDate and :endDate) and ");
+		}
+		if(stateId != null && stateId.longValue() > 0){
+			if(stateId.longValue()==1l){
+				queryStr.append(" TC.userAddress.state.stateId = :stateId and ");
+			}else if(stateId.longValue()==36l){
+				queryStr.append(" TC.userAddress.state.stateId = :stateId and  ");
+			}
+		}
+		if(vendorId != null ){
+			queryStr.append(" TC.insertedUserId = FVTU.cadreSurveyUserId and " +
+							" FVTU.fieldVendor.fieldVendorId = :vendorId and ");
+		}
+		if(distId != null){
+			queryStr.append(" TC.userAddress.district.districtId = :distId and ");
+		}
+		if(constId != null){
+			queryStr.append(" TC.userAddress.constituency.constituencyId = :constId and ");
+		}
+		queryStr.append(" TC.isDeleted = 'N' and " +
+						" TC.enrollmentYear = 2014 and " +
+						" TC.tdpCadreId = TCEY.tdpCadre.tdpCadreId and " +
+						" TCEY.isDeleted = 'N' and " +
+						" TCEY.enrollmentYearId = :enrollmentYearId " +
+						" group by TC.cadreVerificationStatusId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate",startDate);
+			query.setDate("endDate",endDate);
+		}
+		if(stateId != null && stateId.longValue() > 0){
+			query.setParameter("stateId", stateId);
+		}
+		if(vendorId != null ){
+			query.setParameter("vendorId", vendorId); 
+		}
+		if(distId != null){
+			query.setParameter("distId", distId);
+		}
+		if(constId != null){
+			query.setParameter("constId", constId);
+		}
+		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return query.list(); 
+	} 
+	
 }
