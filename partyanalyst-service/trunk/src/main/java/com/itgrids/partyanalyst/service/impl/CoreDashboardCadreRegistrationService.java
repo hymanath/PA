@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
@@ -78,6 +79,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IDistrictDAO districtDAO;
     private IOccupationDAO occupationDAO;
     private SmsCountrySmsService smsCountrySmsService;
+    private IUserAddressDAO userAddressDAO;
     private DateUtilService dateUtilService;
     private ITabUserOtpDetailsDAO tabUserOtpDetailsDAO;
     private ITabUserInfoDAO tabUserInfoDAO;
@@ -170,6 +172,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
 		this.smsCountrySmsService = smsCountrySmsService;
 	}
+	
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+	
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
@@ -536,11 +543,58 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				getFamilyVoterDetails(voterId,returnVO);
 			}
 			
+			//Get LocaElectionBodyId
+			Long localElectionBodyId = null;
+			if(tdpCadreId != null && tdpCadreId.longValue() > 0l){//update scenario
+				
+				if(voterId != null && voterId.longValue() > 0l){
+					
+					localElectionBodyId = getLocalElectionBodyByVoterId(voterId);
+					
+				}else if(familyVoterId != null && familyVoterId.longValue() >0l){
+					
+					localElectionBodyId = getLocalElectionBodyByUserAddress(returnVO.getUserAddressId());
+				}
+			}else{//saving scenario.
+				
+					if(voterId != null && voterId.longValue() > 0l){
+					
+						localElectionBodyId = getLocalElectionBodyByVoterId(voterId);
+					
+					}else if(familyVoterId != null && familyVoterId.longValue() >0l){
+					
+						localElectionBodyId = getLocalElectionBodyByVoterId(familyVoterId);
+					}
+			}
+			
+			if(localElectionBodyId != null && localElectionBodyId > 0l){
+				returnVO.setLocalElectionBodyId(localElectionBodyId);
+			}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			 LOG.error("Exception raised at getRegistrationPersonDetails", e);
 		}
 		return returnVO;
+	}
+	
+	public Long getLocalElectionBodyByVoterId(Long voterId){
+		
+		Long localElectionBodyId = null;
+		List<Long> lebList = boothPublicationVoterDAO.getLocalElectionBodyByVoterId(voterId);
+		if( lebList != null && lebList.size() > 0 ){
+			
+			localElectionBodyId = lebList.get(0);
+		}
+		return localElectionBodyId;
+	}
+
+	public Long getLocalElectionBodyByUserAddress(Long userAddressId){
+	   Long localElectionBodyId = null;
+	   if(userAddressId != null && userAddressId > 0l){
+		   localElectionBodyId = userAddressDAO.getLocalElectionBodyByUserAddress(userAddressId);
+	   }
+		return localElectionBodyId;
 	}
 	
 	/**
@@ -621,7 +675,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			returnVO.setConstituencyId(objects[20]!=null?objects[20].toString():"");//constituencyId
 			returnVO.setNomineeRelationId(objects[21]!=null?(Long)objects[21]:0l);//nomineeRelationId
+			//phototype
+			if(objects[22]!=null){
+				if(objects[22].toString().equalsIgnoreCase("NEW")){
+					returnVO.setPhotoType("CADRE");
+				}else{
+					returnVO.setPhotoType(objects[22].toString());
+				}
+			}
 			
+			returnVO.setUserAddressId(objects[23]!=null?(Long)objects[23]:0l);
 		}
 		}
 		}catch(Exception e){
@@ -677,6 +740,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				
 				}
 			returnVO.setImageBase64String(objects[5]!=null?objects[5].toString():"");//ImagePath
+			returnVO.setPhotoType("VOTER");
 			returnVO.setMobileNumber(objects[6]!=null?objects[6].toString():"");//mobileNo
 			returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
 			returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
