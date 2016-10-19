@@ -2799,11 +2799,11 @@ public String getAllRelationDetails(){
 }
 public String savingCadreDetails(){
 	try {
-		/*final HttpSession session = request.getSession();
+		final HttpSession session = request.getSession();
 		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null || user.getRegistrationID() == null){
 			return ERROR;
-		}*/
+		}
 		
 		//Map<File,String> mapfiles = new HashMap<File,String>();
 		MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
@@ -2831,8 +2831,8 @@ public String savingCadreDetails(){
 	   		}
 	   
 		
-		//cadreRegistrationVO.setWebUserId(user.getRegistrationID());
-		//cadreRegistrationVO.setDataSourceType("WEB");
+		cadreRegistrationVO.setWebUserId(user.getRegistrationID());
+		cadreRegistrationVO.setDataSourceType("WEB");
 		
 		if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("newImage")){
 			cadreRegistrationVO.setPhotoType("NEW");
