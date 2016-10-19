@@ -1,24 +1,48 @@
- function getConstituenciesForDistricts(district){
-	 $("#constituencyDivIdImg").show();
-	 $("#panchayatTwnId").show();
-	$("#constituencyId  option").remove();
-	$("#constituencyId").append('<option value="0">Select Constituency</option>');
-	$("#mandalList  option").remove();
-	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
-	$("#panchayatList  option").remove();
-	$("#panchayatList").append('<option value="0">Select Panchayat</option>');
-	$("#boothsList  option").remove();
-	$("#boothsList").append('<option value="0">Select Booth</option>');
-	
-	$("#constituencyId").trigger("chosen:updated");
-	$("#mandalList").trigger("chosen:updated");
-	$("#panchayatList").trigger("chosen:updated");
-	$("#boothsList").trigger("chosen:updated");
-	$("#searchVoterId").val('');
-	$("#nameId").val('');
-	$("#mobileId").val('');
-	$("#huseNOId").val('');
-	
+ function getConstituenciesForDistricts(district,id){
+	  if(id == 1){
+		 $("#constituencyDivIdImg").show();
+		 $("#panchayatTwnId").show();
+		$("#constituencyId  option").remove();
+		$("#constituencyId").append('<option value="0">Select Constituency</option>');
+		$("#mandalList  option").remove();
+		$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#panchayatList  option").remove();
+		$("#panchayatList").append('<option value="0">Select Panchayat</option>');
+		$("#boothsList  option").remove();
+		$("#boothsList").append('<option value="0">Select Booth</option>');
+		
+		$("#constituencyId").trigger("chosen:updated");
+		$("#mandalList").trigger("chosen:updated");
+		$("#panchayatList").trigger("chosen:updated");
+		$("#boothsList").trigger("chosen:updated");
+		$("#searchVoterId").val('');
+		$("#nameId").val('');
+		$("#mobileId").val('');
+		$("#huseNOId").val('');
+	  }else  if(id == 2){		
+		$("#PrsntConstutuencyList  option").remove();
+		$("#PrsntConstutuencyList").append('<option value="0">Select Constituency</option>');
+		$("#PrsntMandalList  option").remove();
+		$("#PrsntMandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#PrsntVillageList  option").remove();
+		$("#PrsntVillageList").append('<option value="0">Select Panchayat</option>');
+		
+		$("#PrsntConstutuencyList").trigger("chosen:updated");
+		$("#PrsntMandalList").trigger("chosen:updated");
+		$("#PrsntVillageList").trigger("chosen:updated");
+	 }
+	 else  if(id == 3){		
+		$("#workConstuencyList  option").remove();
+		$("#workConstuencyList").append('<option value="0">Select Constituency</option>');
+		$("#workMandalList  option").remove();
+		$("#workMandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#workVillageList  option").remove();
+		$("#workVillageList").append('<option value="0">Select Panchayat</option>');
+				
+		$("#workConstuencyList").trigger("chosen:updated");
+		$("#workMandalList").trigger("chosen:updated");
+		$("#workVillageList").trigger("chosen:updated");
+	 }
    var jsObj=
    {				
 		districtId:district
@@ -29,39 +53,85 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	 $("#constituencyDivIdImg").hide();
-	    for(var i in result){
-	   if(result[i].id == 0){
-          $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
-	   }else{
-	      $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   if(id == 1){
+			$("#constituencyDivIdImg").hide();
+			for(var i in result){
+			   if(result[i].id == 0){
+				  $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
+			   }else{
+				  $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+			$("#constituencyId").trigger("chosen:updated");
 	   }
-		}
-		$("#constituencyId").trigger("chosen:updated");
-		
+	   else if(id == 2){
+			for(var i in result){
+			   if(result[i].id == 0){
+				  $("#PrsntConstutuencyList").append('<option value='+result[i].id+'>Select Constituency</option>');
+			   }else{
+				  $("#PrsntConstutuencyList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+			
+			
+			 $("#PrsntConstutuencyList").val(presntConstituencyId);
+			$("#PrsntConstutuencyList").trigger("chosen:updated");
+			 setTimeout(function(){
+				 getMandalCorporationsByConstituency(presntConstituencyId,2);
+			},500);
+			
+	   }
+	   else if(id == 3){
+			for(var i in result){
+			   if(result[i].id == 0){
+				  $("#workConstuencyList").append('<option value='+result[i].id+'>Select Constituency</option>');
+			   }else{
+				  $("#workConstuencyList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+			$("#workConstuencyList").trigger("chosen:updated");
+	   }
    });
   }
 
 
- function getMandalCorporationsByConstituency(consistency){
-	 $("#mandalDivIdImg").show();
-	 $("#panchayatTwnId").show();
-	$("#mandalList  option").remove();
-	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
-	$("#panchayatList  option").remove();
-	$("#panchayatList").append('<option value="0">Select Panchayat</option>');
-	$("#boothsList  option").remove();
-	$("#boothsList").append('<option value="0">Select Booth</option>');
-	
-	$("#mandalList").trigger("chosen:updated");
-	$("#panchayatList").trigger("chosen:updated");
-	$("#boothsList").trigger("chosen:updated");
+ function getMandalCorporationsByConstituency(consistency,id){
+	 if(id==1){
+		 $("#mandalDivIdImg").show();
+		 $("#panchayatTwnId").show();
+		$("#mandalList  option").remove();
+		$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#panchayatList  option").remove();
+		$("#panchayatList").append('<option value="0">Select Panchayat</option>');
+		$("#boothsList  option").remove();
+		$("#boothsList").append('<option value="0">Select Booth</option>');
+		
+		$("#mandalList").trigger("chosen:updated");
+		$("#panchayatList").trigger("chosen:updated");
+		$("#boothsList").trigger("chosen:updated");
 
-	$("#searchVoterId").val('');
-	$("#nameId").val('');
-	$("#mobileId").val('');
-	$("#huseNOId").val('');
-	
+		$("#searchVoterId").val('');
+		$("#nameId").val('');
+		$("#mobileId").val('');
+		$("#huseNOId").val('');
+	 }else if(id==2){
+		$("#PrsntMandalList  option").remove();
+		$("#PrsntMandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#PrsntVillageList  option").remove();
+		$("#PrsntVillageList").append('<option value="0">Select Panchayat</option>');
+		
+		$("#PrsntMandalList").trigger("chosen:updated");
+		$("#PrsntVillageList").trigger("chosen:updated");
+		 
+	 }else if(id==3){
+		$("#workMandalList  option").remove();
+		$("#workMandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#workVillageList  option").remove();
+		$("#workVillageList").append('<option value="0">Select Panchayat</option>');
+		
+		$("#workMandalList").trigger("chosen:updated");
+		$("#workVillageList").trigger("chosen:updated");
+	 }
 	var jsObj=
    {				
 		consistencyId:consistency
@@ -72,44 +142,81 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#mandalDivIdImg").hide();
-	    for(var i in result){
-		   if(result[i].id == 0){
-			  $("#mandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
-		   }else{
-			  $("#mandalList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-		   }
-		}
-		$("#mandalList").trigger("chosen:updated");
+	   
+	   if(id==1){
+		   $("#mandalDivIdImg").hide();
+			for(var i in result){
+			   if(result[i].id == 0){
+				  $("#mandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
+			   }else{
+				  $("#mandalList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+			$("#mandalList").trigger("chosen:updated");
+	   }else if(id==2){
+		   for(var i in result){
+			   if(result[i].id == 0){
+				  $("#PrsntMandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
+			   }else{
+				  $("#PrsntMandalList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+			 $("#PrsntMandalList").val(presntMandalId);
+			 $("#PrsntMandalList").trigger("chosen:updated");
+			 setTimeout(function(){
+				 getPanchayatWardByMandal(presntMandalId,2);
+			},500);
+					   
+	   }else if(id==3){		   
+		   for(var i in result){
+			   if(result[i].id == 0){
+				  $("#workMandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
+			   }else{
+				  $("#workMandalList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			}
+			$("#workMandalList").trigger("chosen:updated");
+	   }
    });
   }
   
-  function getPanchayatWardByMandal(mandal)
+  function getPanchayatWardByMandal(mandal,id)
 	{
-	//$("#boothDivIdImg").show();	
-	$("#panchayatList  option").remove();
-	$("#panchayatList").append('<option value="0">Select Panchayat</option>');
-	$("#boothsList  option").remove();
-	$("#boothsList").append('<option value="0">Select Booth</option>');
-	
-	$("#panchayatList").trigger("chosen:updated");
-	$("#boothsList").trigger("chosen:updated");
+		var mandalSubStrId=0;
+	if(id==1){
+		mandalSubStrId=mandal.substring(0,1);
+		//$("#boothDivIdImg").show();	
+		$("#panchayatList  option").remove();
+		$("#panchayatList").append('<option value="0">Select Panchayat</option>');
+		$("#boothsList  option").remove();
+		$("#boothsList").append('<option value="0">Select Booth</option>');
+		
+		$("#panchayatList").trigger("chosen:updated");
+		$("#boothsList").trigger("chosen:updated");
 
-	$("#searchVoterId").val('');
-	$("#nameId").val('');
-	$("#mobileId").val('');
-	$("#huseNOId").val('');
-
-	   var mandalSubStrId=mandal.substring(0,1);
+		$("#searchVoterId").val('');
+		$("#nameId").val('');
+		$("#mobileId").val('');
+		$("#huseNOId").val('');
+		
 	   if(mandalSubStrId==1){
 		   $("#panchayatTwnId").show();
 		   $("#pancyatDivIdImg").show();
 	   }
 	   else{
 		   $("#panchayatTwnId").hide();
-		    $("#boothDivIdImg").show();	
+		   $("#boothDivIdImg").show();	
 	   }
-	   
+	}
+	else if(id==2){
+		$("#PrsntVillageList  option").remove();
+		$("#PrsntVillageList").append('<option value="0">Select Panchayat</option>');
+		$("#PrsntVillageList").trigger("chosen:updated");
+	}else if(id==3){
+		$("#workVillageList  option").remove();
+		$("#workVillageList").append('<option value="0">Select Panchayat</option>');
+		$("#workVillageList").trigger("chosen:updated");
+	}
 				var jsObj ={					
 					mandalId:mandal
 				};
@@ -119,26 +226,53 @@
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
 					//$("#boothDivIdImg").hide();
-				  for(var i in result){
-					 
-						if(mandalSubStrId==1){
-							$("#pancyatDivIdImg").hide();
-						if(result[i].id == 0){
-							  $("#panchayatList").append('<option value='+result[i].id+'>Select Panchayat</option>');
-							}else{
-							$("#panchayatList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-							}
-							$("#panchayatList").trigger("chosen:updated");
+					
+					if(id==1){
+					  for(var i in result){					 
+							if(mandalSubStrId==1){
+								$("#pancyatDivIdImg").hide();
+								if(result[i].id == 0){
+								  $("#panchayatList").append('<option value='+result[i].id+'>Select Panchayat</option>');
+								}else{
+									$("#panchayatList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+								}
+								
 							}else{
 								$("#boothDivIdImg").hide();
-							if(result[i].id == 0){
-								$("#boothsList").append('<option value='+result[i].id+'>Selct Booth</option>');
-							}else{
-								$("#boothsList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+								if(result[i].id == 0){
+									$("#boothsList").append('<option value='+result[i].id+'>Selct Booth</option>');
+								}else{
+									$("#boothsList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+								}
+								
 							}
-						$("#boothsList").trigger("chosen:updated");	
-						}
-				  }					
+							
+							$("#panchayatList").trigger("chosen:updated");
+							$("#boothsList").trigger("chosen:updated");	
+					  }
+					}else if(id==2){
+						 for(var i in result){
+							if(result[i].id == 0){
+							  $("#PrsntVillageList").append('<option value='+result[i].id+'>Select Panchayat</option>');
+							}else{
+								$("#PrsntVillageList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+							}
+						 }
+						 
+						 $("#PrsntVillageList").val(presntVillageId);
+						 $("#PrsntVillageList").trigger("chosen:updated");
+						 
+					}
+					else if(id==3){
+						 for(var i in result){
+							if(result[i].id == 0){
+							  $("#workVillageList").append('<option value='+result[i].id+'>Select Panchayat</option>');
+							}else{
+								$("#workVillageList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+							}
+						 }
+						$("#workVillageList").trigger("chosen:updated");
+					}	
 				});
 	}
 	
@@ -176,31 +310,62 @@ $("#boothsList").trigger("chosen:updated");
 				});
 	}
 
- function getDistrictsForStates(state){
-	$("#districtDivIdImg").show();
-	$("#panchayatTwnId").show();
-	 $("#districtId  option").remove();
-	$("#districtId").append('<option value="0">Select District</option>');
-	$("#constituencyId  option").remove();
-	$("#constituencyId").append('<option value="0">Select Constituency</option>');
-	$("#mandalList  option").remove();
-	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
-	$("#panchayatList  option").remove();
-	$("#panchayatList").append('<option value="0">Select Panchayat</option>');
-	$("#boothsList  option").remove();
-	$("#boothsList").append('<option value="0">Select Booth</option>');
-	
-	$("#districtId").trigger("chosen:updated");
-	$("#constituencyId").trigger("chosen:updated");
-	$("#mandalList").trigger("chosen:updated");
-	$("#panchayatList").trigger("chosen:updated");
-	$("#boothsList").trigger("chosen:updated");
-	
-	$("#searchVoterId").val('');
-	$("#nameId").val('');
-	$("#mobileId").val('');
-	$("#huseNOId").val('');
-	
+ function getDistrictsForStates(state,id){
+	 
+	 if(id == 1){
+		$("#districtDivIdImg").show();
+		$("#panchayatTwnId").show();
+		$("#districtId  option").remove();
+		$("#districtId").append('<option value="0">Select District</option>');
+		$("#constituencyId  option").remove();
+		$("#constituencyId").append('<option value="0">Select Constituency</option>');
+		$("#mandalList  option").remove();
+		$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#panchayatList  option").remove();
+		$("#panchayatList").append('<option value="0">Select Panchayat</option>');
+		$("#boothsList  option").remove();
+		$("#boothsList").append('<option value="0">Select Booth</option>');
+		
+		$("#districtId").trigger("chosen:updated");
+		$("#constituencyId").trigger("chosen:updated");
+		$("#mandalList").trigger("chosen:updated");
+		$("#panchayatList").trigger("chosen:updated");
+		$("#boothsList").trigger("chosen:updated");
+		
+		$("#searchVoterId").val('');
+		$("#nameId").val('');
+		$("#mobileId").val('');
+		$("#huseNOId").val('');
+	 }else  if(id == 2){
+		$("#PrsntDistrictList  option").remove();
+		$("#PrsntDistrictList").append('<option value="0">Select District</option>');
+		$("#PrsntConstutuencyList  option").remove();
+		$("#PrsntConstutuencyList").append('<option value="0">Select Constituency</option>');
+		$("#PrsntMandalList  option").remove();
+		$("#PrsntMandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#PrsntVillageList  option").remove();
+		$("#PrsntVillageList").append('<option value="0">Select Panchayat</option>');
+		
+		$("#PrsntDistrictList").trigger("chosen:updated");
+		$("#PrsntConstutuencyList").trigger("chosen:updated");
+		$("#PrsntMandalList").trigger("chosen:updated");
+		$("#PrsntVillageList").trigger("chosen:updated");
+	 }
+	 else  if(id == 3){
+		$("#workDistrictList  option").remove();
+		$("#workDistrictList").append('<option value="0">Select District</option>');
+		$("#workConstuencyList  option").remove();
+		$("#workConstuencyList").append('<option value="0">Select Constituency</option>');
+		$("#workMandalList  option").remove();
+		$("#workMandalList").append('<option value="0">Select Mandal/Municipality</option>');
+		$("#workVillageList  option").remove();
+		$("#workVillageList").append('<option value="0">Select Panchayat</option>');
+		
+		$("#workDistrictList").trigger("chosen:updated");
+		$("#workConstuencyList").trigger("chosen:updated");
+		$("#workMandalList").trigger("chosen:updated");
+		$("#workVillageList").trigger("chosen:updated");
+	 }
    var jsObj=
    {				
 				stateId:state
@@ -213,14 +378,40 @@ $("#boothsList").trigger("chosen:updated");
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   $("#districtDivIdImg").hide();
-     for(var i in result){
-	   if(result[i].id == 0){
-          $("#districtId").append('<option value='+result[i].id+'>Select District</option>');
-	   }else{
-	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   if(id == 1){
+			 for(var i in result){
+			   if(result[i].id == 0){
+				  $("#districtId").append('<option value='+result[i].id+'>Select District</option>');
+			   }else{
+				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			 }
+			 $("#districtId").trigger("chosen:updated");
 	   }
-	 }
-	 $("#districtId").trigger("chosen:updated");
+		else if(id == 2){
+			 for(var i in result){
+			   if(result[i].id == 0){
+				  $("#PrsntDistrictList").append('<option value='+result[i].id+'>Select District</option>');
+			   }else{
+				  $("#PrsntDistrictList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			 }
+			 $("#PrsntDistrictList").val(presntDistrictId);
+			 $("#PrsntDistrictList").trigger("chosen:updated");
+			 setTimeout(function(){
+				 getConstituenciesForDistricts(presntDistrictId,2);
+			},500);			 
+	   }
+	   else if(id == 3){
+			 for(var i in result){
+			   if(result[i].id == 0){
+				  $("#workDistrictList").append('<option value='+result[i].id+'>Select District</option>');
+			   }else{
+				  $("#workDistrictList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			 }
+			 $("#workDistrictList").trigger("chosen:updated");
+	   }
    });
   }
   
