@@ -74,7 +74,11 @@
 			$("#statusCountDivId").html(str);
 		
 		}	
+		
+		
 	function getIssueTypeWiseCounts(){
+		var openIssuesArr = [];
+		var fixedIssuesArr = [];
 			var dates = $(".singleDate").val();
 	        var dateArr = dates.split("-");
 	        var fromDate;
@@ -84,9 +88,9 @@
 		     toDate = dateArr[1];
 	       }
 			var jsObj = { 
-			              fromDate : fromDate,    //"2016-10-01",
-		                  toDate : toDate			//"2016-10-18" 
-						}
+				fromDate : fromDate, //"10/01/2016",
+				toDate : toDate      //"10/20/2016",
+			}
 			$.ajax({
 				type : 'GET',
 				url : 'getIssueTypeWiseCountsAction.action',
@@ -94,10 +98,128 @@
 				data : {task:JSON.stringify(jsObj)}  
 			}).done(function(result){
 				if(result != null && result.length >0){
-					
+					for(var i in result){
+						if(result[i].issueTypes != null && result[i].issueTypes.length > 0){
+							if(result[i].id == 1){
+								for(var j in result[i].issueTypes){
+									var dataArr = [];
+									dataArr.push(result[i].issueTypes[j].name);
+									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
+									openIssuesArr.push(dataArr);
+								}
+							}
+							if(result[i].id == 2){
+								for(var j in result[i].issueTypes){
+									var dataArr = [];
+									dataArr.push(result[i].issueTypes[j].name);
+									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
+									fixedIssuesArr.push(dataArr);
+								}
+							}
+						}
+					}
+					 $('#openIssues').highcharts({
+						chart: {
+							type: 'pie',
+							options3d: {
+								enabled: true,
+								alpha: 45
+							}
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						legend: {
+						  layout: 'vertical',
+						  floating: false,
+						  align: 'right',
+						  verticalAlign: 'middle',
+						  symbolPadding: 20,
+						  symbolWidth: 10
+					  },
+						plotOptions: {
+						  pie: {
+							allowPointSelect: false,
+							innerSize: 100,
+							depth: 45,
+							cursor: 'pointer',
+							dataLabels: {
+							  enabled: false
+							},
+							showInLegend: true,
+
+						  },
+						  series: {
+							point: {
+							  events: {
+								legendItemClick: function () {
+								alert(this.index)
+									return false; // <== returning false will cancel the default action
+								}
+							  }
+							}
+						  }
+						},
+						series: [{
+							name: 'Count',
+							data: openIssuesArr
+						}]
+					});
+					$('#fixedIssues').highcharts({
+						chart: {
+							type: 'pie',
+							options3d: {
+								enabled: true,
+								alpha: 45
+							}
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						legend: {
+						  layout: 'vertical',
+						  floating: false,
+						  align: 'right',
+						  verticalAlign: 'middle',
+						  symbolPadding: 20,
+						  symbolWidth: 10
+					  },
+						plotOptions: {
+						  pie: {
+							allowPointSelect: false,
+							innerSize: 100,
+							depth: 45,
+							cursor: 'pointer',
+							dataLabels: {
+							  enabled: false
+							},
+							showInLegend: true,
+
+						  },
+						  series: {
+							point: {
+							  events: {
+								legendItemClick: function () {
+								alert(this.index)
+									return false; // <== returning false will cancel the default action
+								}
+							  }
+							}
+						  }
+						},
+						series: [{
+							name: 'Count',
+							data: fixedIssuesArr
+						}]
+					});
 				}
 			});
-			
 		}
 		
 function getStatusWiseIssuesDetails(){
@@ -115,9 +237,9 @@ function getStatusWiseIssuesDetails(){
 	}
 	
 	var jsObj = { 
-	  fromDate : fromDate,
-	  toDate : toDate,		
-	  issueType : 1,
+	  fromDate : fromDate,    //"10/18/2016",
+	  toDate : toDate  		  //"10/20/2016",		
+	  issueType : 2,
 	  issueStatus : 1
 	}
 	$.ajax({
