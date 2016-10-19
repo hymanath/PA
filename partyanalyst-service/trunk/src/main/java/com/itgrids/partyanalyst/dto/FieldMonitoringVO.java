@@ -28,9 +28,9 @@ public class FieldMonitoringVO {
 	private String recentRecord;
 	private Long lastHourCount;
 	private Long totalCount;
-	private Long openIssues;
-	private Long fixedIssues;
-	private Long closedIssues;
+	private Long openIssues = 0l;
+	private Long fixedIssues = 0l;
+	private Long closedIssues = 0l;
 	private Long TotalDataCollectors;
 	private Long activeUsers;
 	private Long passiveUsers;
