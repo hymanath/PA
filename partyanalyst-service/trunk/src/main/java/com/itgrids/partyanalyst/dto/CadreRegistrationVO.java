@@ -141,8 +141,11 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		prsntAddrsWardId;
 	private String      prsntAddrsHNo;
 	private String      prsntAddrsLandmark;
+	private String      prsntAddrsAreaName;
 	private String      prsntAddrsStreet;
 	private String      prsntAddrsPincode;
+	private String      prsntAddrsApartment;
+	private String      prsntAddrsHamlet;
 	
 	private Long		workAddrsStateId;
 	private Long		workAddrsDistId;
@@ -154,8 +157,12 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		workAddrsWardId;
 	private String     	workAddrsHNo;
 	private String     	workAddrsLandmark;
+	private String      workAddrsAreaName;
 	private String      workAddrsStreet;
 	private String      workAddrsPincode;
+	private String     	workAddrsApartment;
+	private String    	workAddrsHamlet;
+	
 	
 	private String      districtId;
 	private Long        desigId;
@@ -204,7 +211,42 @@ public class CadreRegistrationVO implements Serializable{
 	private String isNomineeChanged;
 	
 	
-	
+	public String getPrsntAddrsAreaName() {
+		return prsntAddrsAreaName;
+	}
+	public void setPrsntAddrsAreaName(String prsntAddrsAreaName) {
+		this.prsntAddrsAreaName = prsntAddrsAreaName;
+	}
+	public String getWorkAddrsAreaName() {
+		return workAddrsAreaName;
+	}
+	public void setWorkAddrsAreaName(String workAddrsAreaName) {
+		this.workAddrsAreaName = workAddrsAreaName;
+	}
+	public String getPrsntAddrsApartment() {
+		return prsntAddrsApartment;
+	}
+	public void setPrsntAddrsApartment(String prsntAddrsApartment) {
+		this.prsntAddrsApartment = prsntAddrsApartment;
+	}
+	public String getPrsntAddrsHamlet() {
+		return prsntAddrsHamlet;
+	}
+	public void setPrsntAddrsHamlet(String prsntAddrsHamlet) {
+		this.prsntAddrsHamlet = prsntAddrsHamlet;
+	}
+	public String getWorkAddrsApartment() {
+		return workAddrsApartment;
+	}
+	public void setWorkAddrsApartment(String workAddrsApartment) {
+		this.workAddrsApartment = workAddrsApartment;
+	}
+	public String getWorkAddrsHamlet() {
+		return workAddrsHamlet;
+	}
+	public void setWorkAddrsHamlet(String workAddrsHamlet) {
+		this.workAddrsHamlet = workAddrsHamlet;
+	}
 	public String getIsNomineeChanged() {
 		return isNomineeChanged;
 	}
