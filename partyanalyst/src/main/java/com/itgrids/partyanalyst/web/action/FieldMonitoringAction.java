@@ -28,6 +28,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private List<IdAndNameVO> idAndNameVOList;  
 		private ResultStatus resultStatus; 
 		private FieldMonitoringVO fieldMonitoringVO;
+		private List<FieldMonitoringVO> fieldMonitoringList;
 		private List<FieldMonitoringIssueVO> fieldMonitoringIssueVOList;
 		
 	//Attributes
@@ -67,7 +68,13 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	public void setFieldMonitoringVO(FieldMonitoringVO fieldMonitoringVO) {
 		this.fieldMonitoringVO = fieldMonitoringVO;
 	}
-	
+	public List<FieldMonitoringVO> getFieldMonitoringList() {
+		return fieldMonitoringList;
+	}
+
+	public void setFieldMonitoringList(List<FieldMonitoringVO> fieldMonitoringList) {
+		this.fieldMonitoringList = fieldMonitoringList;
+	}
 
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -236,6 +243,22 @@ public String getConstituencyByVendor(){
 			fieldMonitoringVO = fieldMonitoringService.getOverAllDataCollectorsDetails(fromDateStr,toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllDataCollectorsDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStatusWiseIssuesDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Long issueTypeId = jObj.getLong("issueType");
+			Long issueStatusId = jObj.getLong("issueStatus");
+			
+			fieldMonitoringList = fieldMonitoringService.getStatusWiseIssuesDetails(fromDateStr,toDateStr,issueTypeId,issueStatusId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getStatusWiseIssuesDetails()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}
