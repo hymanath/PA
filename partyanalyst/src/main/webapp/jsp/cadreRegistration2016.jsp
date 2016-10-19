@@ -376,6 +376,7 @@
              <div class="panel-body profileDetailsBlock hide">
 				<div id="populatingDtsDivImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
+				<input type="hidden" class="form-control" id="dataSourceType" value="WEB" name="cadreRegistrationVO.dataSourceType"/>
                 	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="text-capital">profile details</h4>

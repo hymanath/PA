@@ -224,6 +224,15 @@
             </div>
         </div>
     </div>
+	
+	 <div class="row PaymentCls">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+        	<div class="panel panel-default panelRegistration">
+				<div id="savingStatusDivId"></div>
+			</div>
+		</div>
+	</div>
+	
     <div class="row hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
@@ -397,10 +406,23 @@
 				
                 <div class="panel-body profileDetailsBlock hide">
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
+				<input type="hidden" class="form-control" id="dataSourceType" value="ONLINE" name="cadreRegistrationVO.dataSourceType"/>
+				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
                 	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="text-capital">profile details</h4>
                         </div>
+						 <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
+                        	<div class="row">
+								<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
+									<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
+								</div>
+								<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
+									<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
+								</div>
+							</div>
+						</div>
+						
                         <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
                         	<div class="row">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
@@ -412,19 +434,24 @@
 									<input type="hidden" class="form-control" id="checkNomineeNameId" name="cadreRegistrationVO.newNomineeName"/>
                                     <input type="hidden" class="form-control" id="checkNomineeGenderId" name="cadreRegistrationVO.newNomineeGender"/>
                                     <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
-                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/>
+                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/>									
+									
+									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
+									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
+									<input type="hidden" class="form-control" id="hiddenIsNomneeChngd" name="cadreRegistrationVO.isNomineeChanged"/>
                                 </div>
+								<!--
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
                                     <input type="text" class="form-control"/>
-                                </div>
+                                </div>-->
 								<div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="cadreMembrSpId">
                                     <label>Existing Membership Number</label>
                                     <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo"/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender</label>
-                                    <select class="select" id="genderId">
+                                    <select class="select" id="genderId"  name="cadreRegistrationVO.gender">
 										<option value="0">Select Gender</option>
 										<option value="M">Male</option>
 										<option value="F">Female</option>
@@ -460,31 +487,7 @@
                             </div>
                         </div>
                   	</div>
-                 	<div class="row">
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Apartment Name</label>
-                            <input type="text" class="form-control"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Street Name</label>
-                            <input type="text" class="form-control"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Area Name</label>
-                            <input type="text" class="form-control"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Land Mark</label>
-                            <input type="text" class="form-control"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Hamlet</label>
-                            <input type="text" class="form-control"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Pincode</label>
-                            <input type="text" class="form-control"/>
-                        </div>
+                 	<div class="row">                       
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Mobile Number</label>
                         	<div class="form-group has-feedback formExtra">
@@ -501,15 +504,15 @@
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreVoterDivId" style="display:none;">
                         	<label>Voter Id -<i> <span class="text-warning">Voter ID</span></i></label>
-                            <input type="text" class="form-control" id="selfVoetrId"/>
+                            <input type="text" class="form-control" id="selfVoetrId" readOnly="true"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreUpdateVotrDivId" style="display:none;">
                         	<label>Updated Voter Id -<i> <span class="text-danger">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="updatedVoetrId" />
+                            <input type="text" class="form-control" id="updatedVoetrId"  readOnly="true" />
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="voterDvId" style="display:none;">
                         	<label>Voter Id -<i> <span class="" id="relVotCls">Relative V.ID</span> / <span class="" id="selfVotCls">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="voterId"/>
+                            <input type="text" class="form-control" id="voterId" readOnly="true"/>
                         </div>
                      </div>
                      <div class="row">
@@ -578,6 +581,142 @@
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 						</div>
                     </div>
+					
+					 <div class=" m_top30" style="" id="">
+					 <!-- 999 -->
+						<div class="col-md-12 col-xs-12 col-sm-12">
+                        	<h4 class="text-capital">Address Details : </h4>
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
+                        	<h6 class="text-capital"> Primary Address  : </h6>
+                        </div>
+						
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>H.No </label>
+                            <input type="text" class="form-control" name="cadreRegistrationVO.prsntAddrsHNo"/>
+                        </div>
+                    	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Apartment Name </label>
+                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsApartment" />
+                        </div>
+                       
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Area Name</label>
+                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsAreaName"/>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+							<label>Street Name/Road No </label>
+							<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.prsntAddrsStreet"/>
+						</div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Land Mark</label>
+                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsLandmark"/>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Hamlet</label>
+                            <input type="text" class="form-control"    name="cadreRegistrationVO.prsntAddrsHamlet"/>
+                        </div>
+                        
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label> State </label>
+                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsStateId">
+                            </select>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>District</label>
+                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsDistId">
+                            </select>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Constituency</label>
+                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsConstId">
+                            </select>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Mandal/Town/Division</label>
+                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsMandalId">
+                            </select>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Village/Ward</label>
+                            <select class="select" id="casteListId" name="cadreRegistrationVO.prsntAddrsVillId">
+                            </select>
+                        </div>
+						 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Pincode</label>
+                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsPincode"/>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
+                        	<h6 class="text-capital"> Delivery Address  : 
+								<input id="checkbox7" class="checkbox-custom" name="checkbox-1" type="checkbox">
+								<label for="checkbox7" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Same as primary Addres.&nbsp;&nbsp;</label>
+								<input id="checkbox8" class="checkbox-custom" name="checkbox-2" type="checkbox">
+								<label for="checkbox8" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
+											</h6>
+                        </div>
+						
+						<div style="display:none" id="deliveryAddrId">  
+							<div >  
+								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>H.No./ Plot No. </label>
+									<input type="text" class="form-control delvryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Apartment Name </label>
+									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
+								</div>
+							   
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Area Name/Street/Road </label>
+									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Street Name/Road No </label>
+									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsStreet"/>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Land Mark</label>
+									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Hamlet</label>
+									<input type="text" class="form-control delvryAddrCls"    name="cadreRegistrationVO.workAddrsHamlet"/>
+								</div>
+								
+							
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label> State </label>
+									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsStateId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>District</label>
+									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsDistId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Constituency</label>
+									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsConstId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Mandal/Town/Division</label>
+									<select class="select  delvryAdrCls"  name="cadreRegistrationVO.workAddrsMandalId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Village/Ward</label>
+									<select class="select  delvryAdrCls" name="cadreRegistrationVO.workAddrsVillId">
+									</select>
+								</div>
+								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+									<label>Pincode</label>
+									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsPincode"/>
+								</div>
+							</div>
+                    </div>
+					
+					
                     <div class="row">
 						<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
@@ -605,12 +744,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
-							<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
-						</div>
-						<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
-							<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
-						</div>
+						
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
                         </div>
@@ -621,6 +755,7 @@
                 <!-- profile details Block End-->
             </div>
         </div>
+    </div>
     </div>
     <div class="row hide subBlockR">
 		<div class="col-md-12 col-xs-12 col-sm-12">
@@ -634,19 +769,19 @@
                     	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label>Please Enter your existing membership number</label>
-									<input type="text" class="form-control" id="validateRenMemshipId"/>
+									<label>MEMBERSHIP ID</label>
+									<input type="text" class="form-control" id="validateRenMemshipId" />
 								</div>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label>Mobile Number</label>
+									<label>MOBILE NO</label>
 									<input type="text" class="form-control" id="renewalMobileId"/>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label>Voter ID</label>
+									<label>VOTER ID</label>
 									<input type="text" class="form-control" id="renewalVoterId"/>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<button class="btn btn-success btn-block m_top10 text-capital validateNumber" onclick="validateRenewalMemshipDetails()">search cadre</button>
+									<button class="btn btn-success btn-block m_top10 text-capital validateNumber" onclick="validateRenewalMemshipDetails()">SEARCH CADRE</button>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<p>Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
@@ -663,7 +798,7 @@
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6 m_top30" style="border-right:1px solid #333;">
                         	<div class="pad_20">
-                            	<label>Please Enter your existing membership number</label>
+                            	<label>membership number</label>
                                 <input type="text" class="form-control"/>
                                 <button class="btn btn-success btn-block m_top30 text-capital validateNo">validate membership number</button>
                                 <p class="m_top50">Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
@@ -768,207 +903,7 @@
                         	<h4 class="panel-title text-capital">search results</h4>
                         </div>
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<ul class="searchResults">
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-7" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-7" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-8" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-8" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-9" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-9" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-10" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-10" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-11" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-11" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-12" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-12" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-13" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-13" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-14" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-14" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-15" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-15" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="text-capitalize">Harish Kumar</h5>
-                                            <p>S/o: Balaraj</p>
-                                            <p>V.ID VD32564789</p>
-                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
-                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
-                                                <span>&nbsp;&nbsp;Age : 28</span>
-                                            </p>
-                                            <div class="checkboxAlign">
-                                                <input id="checkbox-16" class="checkbox-custom" name="checkbox-1" type="checkbox">
-                                                <label for="checkbox-16" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                        	<ul class="searchResults">                               
                             </ul>
                         </div>
                         <div class="col-md-4 col-md-offset-8 col-sm-offset-8 col-xs-12 col-sm-4 m_top30">
@@ -1140,7 +1075,7 @@
       <div class="modal-body">
 		<label>Existing Mobile No:</label>
 			<input type="text" id="checkMblNoId"/>
-		<button type="button" class="btn btn-success" onclick="sendOtpToMble();">ok</button
+		<button type="button" class="btn btn-success" onclick="sendOtpToMble();">ok</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1175,7 +1110,8 @@
   var casteNamesArray = [];
   var educationsArray = [];
   var relationsArray = [];
-   
+  var occupationArray =[];
+  
   onLoadCalls();
   
   
@@ -1268,13 +1204,13 @@ $(document).on("click",".renewalBtn",function(){
 		$(".mainBlocks").addClass("hide");
 		$(".subBlockR,.selectMembership").removeClass("hide");
 		$(".subBlockR,.selectMembership").addClass("animated fadeIn");
-	},500)
+	},500);
 	setTimeout(function(){
 		$(".mainBlocks").removeClass("animated fadeOut");
 		$(".subBlockR,.selectMembership").removeClass("animated fadeIn");
-	},1500)
+	},1500);
 });
-
+//renewalBtn
 $(document).on("click","#profileBackR",function(){
 	$(".profileDetailsBlockR").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1544,6 +1480,60 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 	},1000);
 	//$("#nameId").
 });
+
+$(document).on("click","#checkbox7",function(){
+	
+	if($(this).is(":checked")){
+		$('#checkbox8').attr('checked', false);
+		$('#deliveryAddrId').hide();
+		$('.delvryAdrCls').val(0);
+		$('.delvryAddrCls').val('');
+		$("delvryAdrCls").trigger("chosen:updated");
+	}
+});
+
+$(document).on("click","#checkbox8",function(){
+	$('#checkbox7').attr('checked', false);
+	if($(this).is(":checked")){
+		$('#deliveryAddrId').show();
+	}
+	else{
+		$('#deliveryAddrId').hide();
+		$('.delvryAdrCls').val(0);
+		$('.delvryAddrCls').val('');
+		 $("delvryAdrCls").trigger("chosen:updated");
+		$(this).attr('checked', false);
+	}	
+});
+
+
+</script>
+<script>
+var userip = "";
+/*
+$('.onlyText').keydown(function (e) {
+	if (e.shiftKey || e.ctrlKey || e.altKey){         
+		e.preventDefault();
+	} else {
+		var key = e.keyCode; 
+		if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90) || (key >= 96 && key <= 105) || (key == 9))) {
+			e.preventDefault();
+		}
+	}
+});
+
+$(".onlyDigit").keydown(function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+});*/
+</script>
+<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script> 
 
 </script>
 </body>

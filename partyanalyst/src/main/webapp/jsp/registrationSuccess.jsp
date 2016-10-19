@@ -25,7 +25,8 @@ $(document).ready(function(){
 		
 function startSearchingPage(){
 
-	window.location.href="http://telugudesam.org/emembership/teluguNaduGraduatesRegistration.html";
+	//window.location.href="http://telugudesam.org/emembership/teluguNaduGraduatesRegistration.html";
+	window.location.href="http://www.telugudesam.org/cadre-registration-portal/registration";
 }
 function showUploadStatus()
 	{
