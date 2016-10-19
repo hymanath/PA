@@ -778,7 +778,7 @@ public interface IConstants {
     public static final Long DATA_COLLECTOR_TYPE_ID = 1L;
     public static final Long VERIFIER_TYPE_ID = 2L;
     
-    public static final Long VOTER_DATA_PUBLICATION_ID = 11L;
+    public static final Long VOTER_DATA_PUBLICATION_ID = 22L;
     
     public static final Long OTHER_STATE_PUBLICATION_ID = 13L;
     public static final Long DISTRICT_SCOPE_ID = 3L;
@@ -1068,8 +1068,10 @@ public interface IConstants {
 	public static final Long TGNF_REGISTRATION_CADRE_TYPE_ID=5L;
 	//public static final String TGNF_REGISTRATION_REDIRECTURL="http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";//"file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//
 	public static final String TGNF_REGISTRATION_REDIRECTURL="http://telugudesam.org/emembership/tngfRegistrationSuccess.html";
+	public static final String CADRE_ONLINE_REGISTRATION_REDIRECTURL="http://www.telugudesam.org/cadre-registration-portal/registration";
 	public static final String TGNF_ENROLLMENT_AMOUNT="1";
 	public static final String TGNF_ENROLLMENT_RANDOMNUMBERCODE="CADRE_2016";
+	public static final String CADRE_2016_ONLINE_REGISTRATION="CADRE_2016";
 	public static final String TGNF_ENROLLMENT_MERCHANT_ID="M_tdpcbn_2144";
 	public static final String TGNF_ENROLLMENT_WORKING_KEY="0kag9s53yyi788y3prdk8ydhf8glfj9e";
 	
@@ -1171,12 +1173,11 @@ public interface IConstants {
 	public static final String[] EXCLUDE_URL_LIST = {};
 	
 	public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
-	//public static final String CADRE_REGISTRATION_URL = "http://localhost:65535/CadreReg-1.4.0.RELEASE/";     
+	//public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";     
 	public static final String MEMBERSHIP_DRIVE_PERFORMANCE_PARAMETERS[] = {"VERY GOOD-90-#196F3D","GOOD-80-#27AE60","OK-60-#A9DFBF","POOR-30-F5B7B1","VERY POOR-10-#FF5733","OTHERS-0-#FBFCFC"};
 	public static final Long DAY_WISE_TARGET_REGISTRATIONS_COUNT = 7000L;
 	public static final Long DAY_WISE_AP_TARGET_REGISTRATIONS_COUNT = 350000L;
 	public static final Long DAY_WISE_TS_TARGET_REGISTRATIONS_COUNT = 350000L; 
 	public static final Long CADRE_REGISTRATION_2016_PUBLICATION_ID = 22L;
 	public static final Long  PRESENT_CADRE_ENROLLMENT_YEAR = 4L;
-	public static final String CADRE_2016_ONLINE_REGISTRATION="CADRE_2016";
 }
