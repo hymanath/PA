@@ -229,7 +229,7 @@ $('.select').chosen({width:'100%'});
  onLoadCalls();
 
 
-$('#openIssues').highcharts({
+/*$('#openIssues').highcharts({
 	chart: {
 		type: 'pie',
 		options3d: {
@@ -294,7 +294,7 @@ $('#fixedIssues').highcharts({
 			['apk issue', 4]
 		]
 	}]
-});
+});*/
 </script>
 </body>
 </html>
