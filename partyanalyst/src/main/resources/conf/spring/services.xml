@@ -3493,6 +3493,7 @@
 		<property name="holidayDAO" ref="holidayDAO" />
 	</bean>
 	<bean name="coreDashboardCadreRegistrationService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardCadreRegistrationService">
+		 <property name="paymentGatewayService"  ref="paymentGatewayService"></property>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 		 <property name="voterDAO" ref="voterDAO"></property>
