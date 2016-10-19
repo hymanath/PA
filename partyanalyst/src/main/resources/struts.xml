@@ -14161,5 +14161,10 @@
 			<param name="root">idNameVO</param>  
 		</result>
 	</action>	
+	<action name="getCadreRegIssueStatusTypeAction" class="fieldMonitoringAction"  method="getCadreRegIssueStatusType">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>

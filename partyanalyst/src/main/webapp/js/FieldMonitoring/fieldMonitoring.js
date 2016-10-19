@@ -170,7 +170,7 @@ $(document).on("click",".manageIssues",function(){
     $("#issuesModal").modal('show');
   });
   function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId){
-	  
+	  $("#issueDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	  
 	var dates = $(".singleDate").val();
 	var dateArr = dates.split("-");
 	var fromDate;
@@ -194,14 +194,54 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	    alert("success");
+	   buildIssuesForATabUserByStatus(result);
    });
+  }
+  function buildIssuesForATabUserByStatus(result) {
 	
+	var str = '';
+
+	for( var i in result) {
+		str += '<li>';
+			str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
+			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
+			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">tracking Issue</button>';
+			//str += '</h4>';
+			str +='<div class="descriptionCls">';			
+				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
+				str += '<p class="m_top10">';
+				str += '<span class="text-danger"><i>Issue Status :<span class="statusUpdate'+i+'">'
+						+ result[i].issueStatus + '</span></i></span>';
+				str += '<span class="pull-right text-muted"><i>Informed Time:<span class="updatedTime'+i+'">'
+						+ result[i].dateStr + '</span></i></span>';
+				str += '</p>';
+			str +='</div>';		
+			str += '<div class="row descriptionEditCls" style="display:none;">';
+				str += '<div class="col-md-12 col-xs-12 col-sm-12">';
+					str += '<textarea class="form-control issueDescEdit'+i+'"></textarea>';
+				str += '</div>';
+				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
+					str += '<label>Change Issue Status</label>';
+					str += '<select class="select" id="changeIssueStatusId'+i+'">';
+					str += '</select>';
+				str += '</div>';
+				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="row">'
+					str +='<button class="btn btn-success m_top20 updateCls"  attr_value="'+i+'" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'"  id="updateId" >UPDATE</button>';
+					str +='<button class="btn btn-default cancelUpdate m_top20 cancelCls" style="margin-left:100px;">CANCEL</button>';
+					str+='</div>'
+					str +='<span id="updateDivIdImg" style="display:none;"><img src="images/search.gif"/></span>';
+				    str +='<div id="updateStatusId"></div>';
+					
+				str += '</div>';
+			str += '</div>';
+		str += '</li>';
+	}
+	$("#issueDivId").html(str);
   }
   
    $(document).on("click","#addNewIssueId",function(){ 
 	 $("#issueTypeDivId").show();
-	 clearErrorFields();
    });
   
   $(document).on("click","#submitId",function(){ 
@@ -234,23 +274,51 @@ $(document).on("click",".manageIssues",function(){
 		    $("#submitButId").html("<span style='color: green;font-size:18px;'> Saved Successfully...</span>");
 			setTimeout(function(){
 				$("#issueTypeDivId").hide();
+				clearErrorFields();
 			}, 2000);
 	   }else{
 		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");
 		   setTimeout(function(){
 				$("#issueTypeDivId").hide();
+				clearErrorFields();
 			}, 2000);
 	   }
    });
   }
   
-  //updateStatusToACadreRegIssue();
-  function updateStatusToACadreRegIssue(){
+  $(document).on("click",".updateCls",function(){
+	var value = $(this).attr("attr_value");
+	var cadreRegIssueId = $(this).attr("attr_cadre_reg_issue_id");
+	  
+	var description = $(".issueDescEdit"+value).val();
+	var  newStatusId = $('#changeIssueStatusId'+value).val();
+	
+	updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId);
+	
+	//srujana
+	/*var desc = $(".issueDescEdit"+value).val();
+	alert(desc)
+	$(".issueDesc"+value).text(desc);
+	 //selectbox Value Start
+	var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
+	$(".statusUpdate"+value).text(subValue);
+	//selectbox Value End
+	$(this).closest("li").find(".descriptionCls").show();
+	$(this).closest("li").find(".descriptionEditCls").hide();*/
+});
+  
+  function updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId){
+	  $("#updateDivIdImg").show();
+	           var description = $(".issueDescEdit"+value).val();
+	            $(".issueDesc"+value).text(description);
+	            //selectbox Value Start
+	           var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
+	           $(".statusUpdate"+value).text(subValue);
 	   var jsObj =
       {				
-		cadreRegIssueId :53,
-		description : "this is description...",
-		newStatusId : 2
+		cadreRegIssueId :cadreRegIssueId,
+		description : description,
+		newStatusId : newStatusId
 	  }
 	   $.ajax({
           type:'POST',
@@ -258,12 +326,26 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		  alert("issue status has changed...");
+		    $("#updateDivIdImg").hide();
+		   if(result.message == 'success' && result.resultCode == 1)
+		   {
+			   $("#updateStatusId").html("<span style='color: green;font-size:18px;'> update Successfully...</span>");
+			   setTimeout(function(){
+			   $(".editBtn").closest("li").find(".descriptionCls").show();
+	           $(".editBtn").closest("li").find(".descriptionEditCls").hide();
+			    $(".editBtn").closest("li").find(".trackingIssueCls").show();	
+			}, 2000);
+		   }else{
+			    $("#updateStatusId").html("<span style='color: red;font-size:18px;'> update Failed.Please try Again..</span>");
+		   }
+		  var presentTime = moment().format("YYYY-MM-DD hh:mm A");
+		  $(".updatedTime"+value).html(presentTime)
+		  
 	   });
   }
   //trackingRegIssueByRegIssueId();
-  function trackingRegIssueByRegIssueId(){
-	   var jsObj = { cadreRegIssueId :53 }
+  function trackingRegIssueByRegIssueId(value,cadreRegIssueId){
+	   var jsObj = { cadreRegIssueId :cadreRegIssueId}
 	  
 	   $.ajax({
           type:'POST',
@@ -433,3 +515,49 @@ function clearErrorFields()
 	$("#submitButId").html('');
 	$("#savingDivIdImg").hide();
 }
+
+$(document).on("click",".editBtn",function(){
+	var value = $(this).attr("attr_value");
+	var issueStatus = $(this).attr("attr_issueStatus");
+	$(this).closest("li").find(".descriptionCls").hide();
+	$(this).closest("li").find(".descriptionEditCls").show();
+    $(this).closest("li").find(".trackingIssueCls").hide();	
+	getCadreRegIssueStatusType(value,issueStatus);
+	var desc = $(".issueDesc"+value).text();          
+	$(".issueDescEdit"+value).val(desc);
+	$("#updateStatusId").html('');
+
+});
+$(document).on("click",".cancelUpdate",function(){
+	$(this).closest("li").find(".descriptionCls").show();
+	$(this).closest("li").find(".descriptionEditCls").hide();
+});
+function getCadreRegIssueStatusType(value,issueStatus){
+	 $("#changeIssueStatusId"+value).empty('').trigger('chosen:updated');
+	$("#changeIssueStatusId"+value).chosen({width:'100%'});
+    $.ajax({
+          type:'GET',
+          url: 'getCadreRegIssueStatusTypeAction.action',
+          dataType: 'json',
+		  data: {}
+   }).done(function(result){
+	   $("#changeIssueStatusId"+value).append('<option value="0"> Select ChangeIssueStatus</option>');
+     for(var i in result){
+		  if(result[i].name == issueStatus)
+		  {
+	      $("#changeIssueStatusId"+value).append('<option selected value='+result[i].id+' attr_text="'+result[i].name+'">'+result[i].name+'</option>');
+		  }else{
+			  $("#changeIssueStatusId"+value).append('<option value='+result[i].id+' attr_text="'+result[i].name+'">'+result[i].name+'</option>');
+		  }
+	 }
+	 $("#changeIssueStatusId"+value).trigger("chosen:updated");
+   });
+  }
+$(document).on("click",".trackingIssueCls",function(){
+	var value = $(this).attr("attr_value");
+	var cadreRegIssueId = $(this).attr("attr_cadre_reg_issue_id");
+	trackingRegIssueByRegIssueId(value,cadreRegIssueId);
+});	
+$(document).on("click",".cancelCls",function(){
+	 $(this).closest("li").find(".trackingIssueCls").show();	
+});
