@@ -4,20 +4,27 @@ import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+@Entity
+@Table(name="party_meeting_minute_tracking")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PartyMeetingMinuteTracking extends BaseModel implements Serializable {
 	
-	private Long partyMeetingMiniuteTrackingId;
+	private Long partyMeetingMinuteTrackingId;
 	private Long partyMeetingMinuteId;
 	private Long partyMeetingMinuteStatusId;
 	
@@ -27,12 +34,12 @@ public class PartyMeetingMinuteTracking extends BaseModel implements Serializabl
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="party_meeting_miniute_tracking_id", unique=true, nullable=false)
-	public Long getPartyMeetingMiniuteTrackingId() {
-		return partyMeetingMiniuteTrackingId;
+	@Column(name="party_meeting_minute_tracking_id", unique=true, nullable=false)
+	public Long getPartyMeetingMinuteTrackingId() {
+		return partyMeetingMinuteTrackingId;
 	}
-	public void setPartyMeetingMiniuteTrackingId(Long partyMeetingMiniuteTrackingId) {
-		this.partyMeetingMiniuteTrackingId = partyMeetingMiniuteTrackingId;
+	public void setPartyMeetingMinuteTrackingId(Long partyMeetingMinuteTrackingId) {
+		this.partyMeetingMinuteTrackingId = partyMeetingMinuteTrackingId;
 	}
 	
 	@Column(name="party_meeting_minute_id")
