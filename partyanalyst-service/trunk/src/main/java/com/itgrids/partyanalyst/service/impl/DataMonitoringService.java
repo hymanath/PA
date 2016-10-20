@@ -300,6 +300,72 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 	}
 	
+	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate){
+		LOG.info("Entered into getVerifiedDtls() of DataMonitoringService");  
+		try{
+			DateUtilService dateUtilService = new DateUtilService();
+			IdNameVO idNameVO = null;
+			List<IdNameVO> ownVoterDtls = new ArrayList<IdNameVO>();
+			List<IdNameVO> familyVoterDtls = new ArrayList<IdNameVO>();
+			List<List<IdNameVO>> finalList = new ArrayList<List<IdNameVO>>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date stDate = null;
+			Date ndDate = null;
+			if(startDate != null && startDate.length() > 0 && endDate != null && endDate.length() > 0){
+				stDate = sdf.parse(startDate);
+				ndDate = sdf.parse(endDate);
+				startDate = sdf1.format(stDate);
+				endDate = sdf1.format(ndDate);
+			}  
+			//get verified dtls  
+			
+			List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own");
+			if(ownVoterVerifiedDtlsList != null && ownVoterVerifiedDtlsList.size() > 0){
+				for(Object[] param : ownVoterVerifiedDtlsList){
+					idNameVO = new IdNameVO();
+					idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
+					idNameVO.setName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+					idNameVO.setGender(param[3] != null ? param[3].toString() : "");
+					idNameVO.setImage(param[4] != null ? param[4].toString() : "noImage");
+					idNameVO.setVoterImage(param[6] != null ? param[6].toString() : "noImage");  
+					idNameVO.setStatusId(param[7] != null ? (Long)param[7] : 0l);
+					idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
+					idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
+					idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
+					ownVoterDtls.add(idNameVO);
+				}
+				ownVoterDtls.get(0).setPublicRepr("own");
+				finalList.add(ownVoterDtls);
+			}
+			List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family");
+			if(familyVoterVerifiedDtlsList != null && familyVoterVerifiedDtlsList.size() > 0){
+				for(Object[] param : familyVoterVerifiedDtlsList){
+					idNameVO = new IdNameVO();
+					idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
+					idNameVO.setName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+					idNameVO.setGender(param[3] != null ? param[3].toString() : "");
+					idNameVO.setImage(param[4] != null ? param[4].toString() : "noImage");
+					idNameVO.setVoterImage(param[6] != null ? param[6].toString() : "noImage");  
+					idNameVO.setStatusId(param[7] != null ? (Long)param[7] : 0l);
+					idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
+					idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
+					idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
+					familyVoterDtls.add(idNameVO);
+				}
+				familyVoterDtls.get(0).setPublicRepr("family");
+				finalList.add(familyVoterDtls);   
+			}
+			return finalList;
+		}catch(Exception e){  
+			e.printStackTrace();
+			LOG.error("Exception raised in getVerifiedDtls() of DataMonitoringService", e); 
+		}
+		return null;
+	}
+	
 	/**
 	* @param  Stirng fromDateStr
 	* @param  String toDateStr
