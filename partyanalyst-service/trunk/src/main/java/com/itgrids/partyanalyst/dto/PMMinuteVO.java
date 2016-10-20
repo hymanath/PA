@@ -1,8 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-
+@SuppressWarnings("serial")
 public class PMMinuteVO implements Serializable{
+
 
 	private Long id;
 	private String name;
@@ -14,8 +15,43 @@ public class PMMinuteVO implements Serializable{
 	private Long constituencyId;
 	private Long tehsilId;
 	private Long panchayatId;
+	private Long statusId;
+	private Long userAddressId;
+	private Long partyMeetingId;
+	private Long localElectionBodyId;
+	private Long wardId;
 	
 	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
+	public Long getPartyMeetingId() {
+		return partyMeetingId;
+	}
+	public void setPartyMeetingId(Long partyMeetingId) {
+		this.partyMeetingId = partyMeetingId;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 	public Long getId() {
 		return id;
 	}

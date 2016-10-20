@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -4060,4 +4061,44 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return requiredStatus;
 	}
 	
+	public List<PMMinuteVO> getPartyMeetingMinuteRetrieveDetails(Long minuteId){
+		List<PMMinuteVO> voList = new ArrayList<PMMinuteVO>();
+	    try{
+	      
+	      //0.minuteId,1.minutePoint,2.isActionable,3.statusId,4.userAddress,5.partyMeetingId
+	      List<Object[]> minuteObjList=partyMeetingMinuteDAO.getPartyMeetingMinuteRetrieveDetails(minuteId);
+	      
+	      if(minuteObjList !=null && minuteObjList.size()>0){
+	        for (Object[] objects : minuteObjList) {
+	        	PMMinuteVO vo = new PMMinuteVO();
+	          vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]!= null ? (Long)objects[0]:0l));
+	          vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1] != null ? objects[1].toString():""));
+	          vo.setActionType(commonMethodsUtilService.getStringValueForObject(objects[2]!=null?objects[2].toString():""));
+	          vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+	          if(vo.getActionType() !=null && vo.getActionType().equalsIgnoreCase("Y")){
+		          UserAddress ua = (UserAddress)objects[4];
+		          vo.setUserAddressId(commonMethodsUtilService.getLongValueForObject(ua.getUserAddressId() != null ? ua.getUserAddressId():""));
+		          vo.setStateId(commonMethodsUtilService.getLongValueForObject(ua.getState().getStateId()!= null ?ua.getState().getStateId():""));
+		         if(ua.getConstituency() != null && ua.getConstituency().getConstituencyId() != null && ua.getConstituency().getConstituencyId() > 0){
+		          	  vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(ua.getConstituency().getConstituencyId() != null?ua.getConstituency().getConstituencyId():""));
+	          	  } else if(ua.getTehsil() != null && ua.getTehsil().getTehsilId() != null && ua.getTehsil().getTehsilId() > 0l){
+		        	  vo.setTehsilId(commonMethodsUtilService.getLongValueForObject(ua.getTehsil().getTehsilId() != null?"4"+ua.getTehsil().getTehsilId().toString():"")); 
+		          }else if(ua.getPanchayat() != null && ua.getPanchayat().getPanchayatId() != null && ua.getPanchayat().getPanchayatId() >0l){
+		        	  vo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(ua.getPanchayat().getPanchayatId() != null?"7"+ua.getPanchayat().getPanchayatId().toString():""));
+		          }else if(ua.getLocalElectionBody() != null && ua.getLocalElectionBody().getLocalElectionBodyId() != null && ua.getLocalElectionBody().getLocalElectionBodyId() >0l){
+		        	  vo.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(ua.getLocalElectionBody().getLocalElectionBodyId() != null?"5"+ua.getLocalElectionBody().getLocalElectionBodyId().toString():""));
+		          }else if(ua.getWard() != null && ua.getWard().getConstituencyId() != null && ua.getWard().getConstituencyId() >0l){
+		        	  vo.setWardId(commonMethodsUtilService.getLongValueForObject(ua.getWard().getConstituencyId() != null?"8"+ua.getWard().getConstituencyId().toString():""));
+		          }
+		          vo.setPartyMeetingId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+	          }
+	          
+	          voList.add(vo);
+	        }
+	      }
+	    }catch(Exception e){
+	    	LOG.error("Exception Occured in getPartyMeetingMinuteRetrieveDetails() method, Exception - ",e);
+	    }
+	    return voList;
+	  }
 }
