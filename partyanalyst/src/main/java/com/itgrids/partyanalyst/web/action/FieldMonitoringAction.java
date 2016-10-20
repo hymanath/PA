@@ -97,7 +97,14 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 			List<FieldMonitoringIssueVO> fieldMonitoringIssueVOList) {
 		this.fieldMonitoringIssueVOList = fieldMonitoringIssueVOList;
 	}
-
+	public List<FieldMonitoringVO> getFieldMonitoringList() {
+		return fieldMonitoringList;
+	}
+	public void setFieldMonitoringList(List<FieldMonitoringVO> fieldMonitoringList) {
+		this.fieldMonitoringList = fieldMonitoringList;
+	}
+	
+	
 	//Business methods
 	public String execute(){
 		
