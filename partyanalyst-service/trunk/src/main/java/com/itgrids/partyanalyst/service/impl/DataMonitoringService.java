@@ -5,7 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +28,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 	private ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO;
     private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private CommonMethodsUtilService commonMethodsUtilService ;
+	private DateUtilService dateUtilService;
 	private ITdpCadreDAO tdpCadreDAO;
 	
 	public void setTdpCadreDataVerificationDAO(
@@ -42,11 +46,14 @@ public class DataMonitoringService implements IDataMonitoringService {
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}    
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
 	/**
 	* @param  Stirng fromDateStr
 	* @param  String toDateStr
 	* @author Santosh 
-	* @Description :This Service Method is used to Data Monitoring Verification Overview details. 
+	* @Description :This Service Method is used to get Data Monitoring Verification Overview details. 
 	* @since 19-OCT-2016
 	*/
    public DataMonitoringOverviewVO getDataMonitoringOverViewDetails(String fromDateStr,String toDateStr){
@@ -293,4 +300,166 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 	}
 	
-}  
+	/**
+	* @param  Stirng fromDateStr
+	* @param  String toDateStr
+	* @param String dataSourceType
+	* @param String verificationStatus
+	* @author Santosh 
+	* @Description :This Service Method is used to get Data Monitoring User Wise Registration Count details. 
+	* @since 20-OCT-2016
+	*/
+	public List<DataMonitoringOverviewVO> getRegistrationDetailsUserWise(String fromDateStr,String toDateStr,String dataSourceType,String verificationStatus){
+		
+		List<DataMonitoringOverviewVO> resultList = new ArrayList<DataMonitoringOverviewVO>();
+		Map<Long,DataMonitoringOverviewVO> webAndOnlineDetailsMap = new HashMap<Long, DataMonitoringOverviewVO>();
+		Map<Long,Map<Long,Long>> tabActiveMemberCntMap = new HashMap<Long, Map<Long,Long>>();
+		Map<Long,Map<Long,DataMonitoringOverviewVO>> cadreSurveyUserDtlsMap = new HashMap<Long, Map<Long,DataMonitoringOverviewVO>>();
+		Map<Long,String> surveryUserIdNameMap =new HashMap<Long, String>();
+		Map<Long,Long> webAndOnlineActiveUserMap = new HashMap<Long, Long>();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	    Date toDate=null;
+		Date fromDate=null;
+		
+		try{
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 toDate = sdf.parse(toDateStr);
+				 fromDate = sdf.parse(fromDateStr);
+			 }
+		   
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(currentTime);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
+			
+			if(dataSourceType != null && dataSourceType.equalsIgnoreCase("WEB") || dataSourceType.equalsIgnoreCase("WEB")){
+			  List<Object[]> rtrnActiveMemberObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus);
+			    setWebAndOnlineActiveMembersCntDetails(rtrnActiveMemberObjList,webAndOnlineActiveUserMap);
+			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus);
+			    setWebAndOnlineMemberDetails(rtrnObjList,webAndOnlineDetailsMap,webAndOnlineActiveUserMap);
+			   if(webAndOnlineDetailsMap != null && webAndOnlineDetailsMap.size() > 0){
+				 for(Entry<Long,DataMonitoringOverviewVO> entry:webAndOnlineDetailsMap.entrySet()){
+					 resultList.add(entry.getValue());  
+				 }
+			   }
+ 			}else if(dataSourceType != null && dataSourceType.equalsIgnoreCase("TAB")){
+ 			  List<Object[]> rtrnTabActiveMemberObjList = tdpCadreEnrollmentYearDAO.getTabCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus);
+ 			   setTabActiveMemberDetailsCnt(rtrnTabActiveMemberObjList,tabActiveMemberCntMap);
+ 			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getTabCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus);
+ 			   setTabMembersCntDetails(rtrnObjList,cadreSurveyUserDtlsMap,tabActiveMemberCntMap,surveryUserIdNameMap);
+ 			   if(cadreSurveyUserDtlsMap != null && cadreSurveyUserDtlsMap.size() > 0){
+ 				   for(Entry<Long,Map<Long,DataMonitoringOverviewVO>> entry:cadreSurveyUserDtlsMap.entrySet()){
+ 					   DataMonitoringOverviewVO VO = new DataMonitoringOverviewVO();
+ 					     VO.setSurveryUserId(entry.getKey());
+ 					     VO.setSurveryUserName(surveryUserIdNameMap.get(entry.getKey()));
+ 					     VO.setSubList(new ArrayList<DataMonitoringOverviewVO>(entry.getValue().values()));
+ 					     resultList.add(VO);
+ 				   }
+ 			   }
+ 	 		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getRegistrationDetailsUserWise() of DataMonitoringService", e);	
+			return null;
+		}
+	 return resultList;	
+	}
+  public void setWebAndOnlineActiveMembersCntDetails(List<Object[]> objList,Map<Long,Long> webAndOnlineActiveUserMap){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					webAndOnlineActiveUserMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1])); 	
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in setWebAndOnlineActiveMembersCntDetails() of DataMonitoringService", e);		
+		}
+	}
+  public void setWebAndOnlineMemberDetails(List<Object[]> objList,Map<Long,DataMonitoringOverviewVO> webAndOnlineDetailsMap,Map<Long,Long> webAndOnlineActiveUserMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  DataMonitoringOverviewVO webOnlineDtlsVO = webAndOnlineDetailsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  Long verificationStatusId = param[3] != null ? (Long)param[3]:null;
+				   if(webOnlineDtlsVO == null){
+					       webOnlineDtlsVO = new DataMonitoringOverviewVO();  
+						   webOnlineDtlsVO.setSurveryUserId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						   webOnlineDtlsVO.setSurveryUserName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						   webOnlineDtlsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+						   if(webAndOnlineActiveUserMap.get(webOnlineDtlsVO.getSurveryUserId()) != null && webAndOnlineActiveUserMap.get(webOnlineDtlsVO.getSurveryUserId()) >0){
+							   webOnlineDtlsVO.setIsActive("Active");   
+						   }
+						   webAndOnlineDetailsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), webOnlineDtlsVO);
+				   }
+				       webOnlineDtlsVO.setTotalRegCnt(webOnlineDtlsVO.getTotalRegCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				   if(verificationStatusId == null ){//pending
+					   webOnlineDtlsVO.setTotalPendingCnt(commonMethodsUtilService.getLongValueForObject(param[4]));
+				   }else if(verificationStatusId.longValue() == 1l){//approved
+					   webOnlineDtlsVO.setTotalVerifyRegCnt(commonMethodsUtilService.getLongValueForObject(param[4]));
+				   }else if(verificationStatusId.longValue() == 2l){//rejected
+					   webOnlineDtlsVO.setTotalVerifyRejectCnt(commonMethodsUtilService.getLongValueForObject(param[4]));
+				   }
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception raised in setWebAndOnlineMemberDetails() of DataMonitoringService", e);	  
+	  }
+  }
+  public void setTabActiveMemberDetailsCnt(List<Object[]> objList,Map<Long,Map<Long,Long>> tabActiveMemberCntMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				       Map<Long,Long> tabUserMap = tabActiveMemberCntMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				    if(tabUserMap == null){
+				    	tabUserMap = new HashMap<Long, Long>();	
+				    	tabActiveMemberCntMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), tabUserMap);
+				    }
+				     tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),commonMethodsUtilService.getLongValueForObject(param[2]));
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception raised in setTabActiveMemberDetailsCnt() of DataMonitoringService", e);  
+	  }
+  }
+  public void setTabMembersCntDetails(List<Object[]> objList,Map<Long,Map<Long,DataMonitoringOverviewVO>> cadreSurveyUserDtlsMap,Map<Long,Map<Long,Long>> tabActiveMemberCntMap,Map<Long,String> surveryUserIdNameMap){
+	  try{
+		  if(objList!= null && objList.size() > 0){
+			  for(Object[] param:objList){
+					  Long cadreSurveryUserId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					  Long tabUserInfoId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					  Long cadreVerificationStatusId = param[5] != null ? (Long)param[5]:null;
+					  Map<Long,DataMonitoringOverviewVO> tabUserDetailMap = cadreSurveyUserDtlsMap.get(cadreSurveryUserId);
+					   if(tabUserDetailMap == null ){
+						   tabUserDetailMap = new HashMap<Long, DataMonitoringOverviewVO>();  
+						   surveryUserIdNameMap.put(cadreSurveryUserId,commonMethodsUtilService.getStringValueForObject(param[1]));
+						   cadreSurveyUserDtlsMap.put(cadreSurveryUserId, tabUserDetailMap);
+					   }
+					   DataMonitoringOverviewVO tabDtlsVO = tabUserDetailMap.get(tabUserInfoId);
+					    if(tabDtlsVO == null ){
+					    	tabDtlsVO = new DataMonitoringOverviewVO();
+					    	tabDtlsVO.setTabUserId(tabUserInfoId);
+					    	tabDtlsVO.setTabUserName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					    	tabDtlsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[4]));
+					    	if(tabActiveMemberCntMap.get(cadreSurveryUserId) != null ){
+					        	if(tabActiveMemberCntMap.get(cadreSurveryUserId).get(tabUserInfoId) != null && tabActiveMemberCntMap.get(cadreSurveryUserId).get(tabUserInfoId) > 0){
+						    		tabDtlsVO.setIsActive("Active");	
+						    	}
+					    	}
+					    	tabUserDetailMap.put(tabDtlsVO.getTabUserId(), tabDtlsVO);	
+					    }
+				       tabDtlsVO.setTotalRegCnt(tabDtlsVO.getTotalRegCnt()+commonMethodsUtilService.getLongValueForObject(param[6]));
+					   if(cadreVerificationStatusId == null ){//pending
+						   tabDtlsVO.setTotalPendingCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
+					   }else if(cadreVerificationStatusId.longValue() == 1l){//approved
+						   tabDtlsVO.setTotalVerifyRegCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
+					   }else if(cadreVerificationStatusId.longValue() == 2l){//rejected
+						   tabDtlsVO.setTotalVerifyRejectCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
+					   }
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception raised in setTabMembersCntDetails() of DataMonitoringService", e); 
+	  }
+  }
+}

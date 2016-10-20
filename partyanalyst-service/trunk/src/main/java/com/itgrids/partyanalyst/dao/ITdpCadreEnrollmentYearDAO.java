@@ -17,6 +17,10 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getTotalRenewlCadreBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userType,Date fromDate,Date toDate);
 	public List<Object[]> getTotalRenewlCadreCntLocationWise(Long stateId,String locationType,Date fromDate,Date toDate,Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<Object[]> getCadreRegistrationCountByDataSourceType(Date fromDate,Date toDate);
-	 public List<Object[]> getCadreRegistrationCountByCadreVerificationStatus(Date fromDate,Date toDate);
+	public List<Object[]> getCadreRegistrationCountByCadreVerificationStatus(Date fromDate,Date toDate);
+	public List<Object[]> getTabCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus);
+	public List<Object[]> getTabCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus);
+	public List<Object[]> getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus);
+	public List<Object[]> getWebAndOnlineCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus);
 	
 }

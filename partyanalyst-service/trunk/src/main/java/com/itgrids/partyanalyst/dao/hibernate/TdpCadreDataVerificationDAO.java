@@ -17,7 +17,7 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 	public Long getActiveTeamMemberCnt(Date fromDate,Date toDate){
 		
 		  StringBuilder queryStr = new StringBuilder();
-		  queryStr.append("select  distinct model.cadreRegUser.cadreRegUserId  from TdpCadreDataVerification model where model.tdpCadre.isDeleted='N' ");
+		  queryStr.append("select  count(distinct model.cadreRegUser.cadreRegUserId)  from TdpCadreDataVerification model where model.tdpCadre.isDeleted='N' ");
 		  
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
