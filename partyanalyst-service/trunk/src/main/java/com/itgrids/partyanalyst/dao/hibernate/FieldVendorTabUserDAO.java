@@ -68,21 +68,16 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.userAddress.constituency.name," +
 					" FVTU.fieldVendor.fieldVendorId," +
 					" FVTU.fieldVendor.vendorName" +
-					" from TdpCadreEnrollmentYear TCEY,CadreRegIssue CRI,FieldVendorTabUser FVTU" +
-					" where TCEY.tdpCadre.insertedBy.cadreSurveyUserId = CRI.cadreSurveyUser.cadreSurveyUserId" +
-					" and CRI.cadreSurveyUser.cadreSurveyUserId = FVTU.cadreSurveyUser.cadreSurveyUserId" +
+					" from CadreRegIssue CRI,FieldVendorTabUser FVTU" +
+					" where CRI.cadreSurveyUser.cadreSurveyUserId = FVTU.cadreSurveyUser.cadreSurveyUserId" +
 					" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
 					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
 		if(fromDate != null && toDate != null)
-			sb.append(" and date(TCEY.tdpCadre.surveyTime) between :fromDate and :toDate");
+			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
 		
-		sb.append(" and TCEY.tdpCadre.enrollmentYear = 2014" +
-					" and TCEY.tdpCadre.isDeleted = 'N'" +
-					" and TCEY.enrollmentYear.enrollmentYearId = 4" +
-					" and TCEY.isDeleted = 'N'" +
-					" and FVTU.isDeleted = 'N'" +
-					" and FVTU.fieldVendor.isActive = 'Y'" +
-					" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId");
+		sb.append(" and FVTU.isDeleted = 'N'" +
+					" and FVTU.fieldVendor.isActive = 'Y'");
+		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
