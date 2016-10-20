@@ -21,7 +21,8 @@ public class CadreRegIssueTrackDAO extends GenericDaoHibernate<CadreRegIssueTrac
 		Query query = getSession().createQuery("" +
 		" select  model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType,model.description," +
 		"         model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status," +
-		"         model.insertedUser.user.userId,model.insertedUser.user.firstName,model.insertedUser.user.lastName,model.insertedTime " +
+		"         model.insertedUser.user.userId,model.insertedUser.user.firstName,model.insertedUser.user.lastName,model.insertedTime," +
+		"			model.insertedUser.user.userName " +
 		" from    CadreRegIssueTrack model " +
 		" where   model.cadreRegIssueId = :cadreRegIssueId ");
 		query.setParameter("cadreRegIssueId",cadreRegIssueId);

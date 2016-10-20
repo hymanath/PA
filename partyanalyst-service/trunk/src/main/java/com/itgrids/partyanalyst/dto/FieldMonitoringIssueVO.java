@@ -21,6 +21,7 @@ public class FieldMonitoringIssueVO implements Serializable{
 	private String firstname;
 	private String lastname;
 	private Long count;
+	private String userName;
 	
 	
 	public Long getIssueTypeId() {
@@ -107,6 +108,12 @@ public class FieldMonitoringIssueVO implements Serializable{
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	

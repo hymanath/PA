@@ -600,6 +600,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     				VO.setLoginUserId(obj[5] != null ? (Long)obj[5] : 0l);
     				VO.setFirstname(obj[6] != null ? obj[6].toString() : "");
     				VO.setLastname(obj[7] != null ? obj[7].toString() : "");
+    				VO.setUserName(obj[9] != null ? obj[9].toString():"");
     				
     				if(obj[8]!=null){
     					Date date = (Date)obj[8];
