@@ -10,6 +10,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -7955,9 +7956,73 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setParameterList("voterCardNosList", voterCardNosList);
 			return query.list();
 	}
+	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" tc.tdp_cadre_id as cadreId, " +  //0
+						" tc.first_name as name ," +	//1
+						" tc.mobile_no as mobile ," +	//2
+						" tc.gender as sex ," +//3
+						" tc.image as image ," +//4
+						" v.voter_id as voterId," +//5
+						" v.image_path as voterImage ," +//6
+						" cvs.cadre_verification_status_id as statusId," +//7
+						" cvs.status as status , "+//8
+						" drr.data_reject_reason_id as reasonId," +//9
+						" drr.reject_reason as reason "+//10  
+						" from   " +
+						" tdp_cadre tc "+
+						" left outer join tdp_cadre_data_verification tcdv on tc.tdp_cadre_id = tcdv.tdp_cadre_id "+
+						" left outer join data_reject_reason drr on tcdv.data_reject_reason_id = drr.data_reject_reason_id  "+
+						" left outer join cadre_verification_status cvs on tc.cadre_verification_status_id = cvs.cadre_verification_status_id , "+
+						" tdp_cadre_enrollment_year tcey, "+
+						" voter v "+
+						" where "+
+						" tc.is_deleted = 'N' and "+
+						" tc.enrollment_year = 2014 and "+
+						" tc.tdp_cadre_id = tcey.tdp_cadre_id and "+
+						" tcey.is_deleted = 'N' and "+
+						" tcey.enrollment_year_id = 4 and "+
+						" date(tc.survey_time) between :startDate and :endDate and ");
+		if(status.equalsIgnoreCase("own")){
+			queryStr.append(" tc.voter_id = v.voter_id and "+
+							" tc.voter_id is not null and ");
+		}else{
+			queryStr.append(" tc.family_voterId = v.voter_id and "+  
+							" tc.voter_id is null and ");
+		}
+						
+		if(webUserId != null && webUserId.equals(0l)){
+			queryStr.append(" tc.created_by = :surveyUserId and "+
+							" tc.tab_user_info_id = :tabUserId ");
+		}else{
+			queryStr.append(" tc.inserted_web_user_id = :webUserId ");
+					
+		}
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("cadreId", Hibernate.LONG)
+				.addScalar("name", Hibernate.STRING)
+				.addScalar("mobile", Hibernate.STRING)
+				.addScalar("sex", Hibernate.STRING)
+				.addScalar("image", Hibernate.STRING)
+				.addScalar("voterId", Hibernate.LONG)
+				.addScalar("voterImage", Hibernate.STRING)
+				.addScalar("statusId", Hibernate.LONG)
+				.addScalar("status", Hibernate.STRING)
+				.addScalar("reasonId", Hibernate.LONG)
+				.addScalar("reason", Hibernate.STRING);  
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);  
+			query.setParameter("endDate", endDate);
+		}
+		if(webUserId != null && webUserId.equals(0l)){
+			query.setParameter("surveyUserId", surveyUserId);
+			query.setParameter("tabUserId", tabUserId);
+		}else{
+			query.setParameter("webUserId", webUserId);
+		}
+		return query.list();
+	}
+	
 	
 }
-/*select TC.created_by, TC.tab_user_info_id,max(TC.inserted_time) from tdp_cadre TC where 
-inserted_time >= '2016-10-19 18:00:00' and TC.created_by is not null and TC.tab_user_info_id is not null
-group by TC.created_by,TC.tab_user_info_id;
-*/
