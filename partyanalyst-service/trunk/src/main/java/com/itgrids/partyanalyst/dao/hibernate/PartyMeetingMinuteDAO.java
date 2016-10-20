@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinute,Long> implements IPartyMeetingMinuteDAO{
 
@@ -41,16 +42,41 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		return query.list();
 	}
 	
-	public Integer updateMeetingPoint(Long minuteId,String minuteText,Long updatedBy,Date updateTime){
+	public Integer updateMeetingPoint(Long minuteId,String minuteText,Long updatedBy,Date updateTime,Long levelId,Long levelValue,String isActionable,Long statusId,
+			UserAddress userAddress){
 		
 		StringBuilder query = new StringBuilder();
-		query.append("update PartyMeetingMinute model set model.minutePoint = ?,model.updatedBy.userId=?,model.updatedTime=? where model.partyMeetingMinuteId = ?");
+		query.append("update PartyMeetingMinute model set model.minutePoint = ?,model.updatedBy.userId=?,model.updatedTime=?" +
+				",model.isActionable =:isActionable,model.locationLevel=:levelId,model.locationValue=:levelValue,model.statusId=:statusId," +
+				"model.userAddressId=:userAddressId " +
+				" where model.partyMeetingMinuteId = ?");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, minuteText);
 		queryObject.setParameter(1, updatedBy);
 		queryObject.setParameter(2, updateTime);
 		queryObject.setParameter(3, minuteId);
+		
+		queryObject.setParameter("isActionable", isActionable);
+		if(levelId !=null && levelId>0l){
+			queryObject.setParameter("levelId", levelId);
+		}else{
+			queryObject.setParameter("levelId", null);
+		}
+		
+		if(levelValue !=null && levelValue>0l){
+			queryObject.setParameter("levelValue", levelValue);
+		}else{
+			queryObject.setParameter("levelValue", null);
+		}
+		
+		queryObject.setParameter("statusId", statusId);
+		if(userAddress !=null){
+			queryObject.setParameter("userAddressId", userAddress.getUserAddressId());
+		}else{
+			queryObject.setParameter("userAddressId", null);
+		}
+		
 		
 		return queryObject.executeUpdate();	
 	}

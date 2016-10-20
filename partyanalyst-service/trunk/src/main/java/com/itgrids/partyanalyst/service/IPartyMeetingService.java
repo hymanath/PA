@@ -13,7 +13,8 @@ public interface IPartyMeetingService {
 	public PartyMeetingVO getMeetingTypeWiseDescription(Long partyMeetingTypeId,Long tdpCadreId);
 	public PartyMeetingVO getPartyMeetingDetailsBySearchType(Long tdpCadreId );
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId);
-	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,Long partyMeetingId);
+	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,final Long partyMeetingId,final Long levelId,final Long levelValue,final String isActionable,
+			final Long statusId,final Long stateId,final Long districtId,final Long constituencyId,final Long tehsilId,final Long panchayatId);
 	public String deleteMeetingMinutePoint(Long minuteId,Long updateBy);
 	public String updateMeetingAtrPoint(final Long atrId, final String request,final String actionTaken,final String raisedBy,final Long updatedBy,final Long locationId,Long meetingId,Long locationScope);
 	public String deleteMeetingAtrPoint(final Long atrId,final Long updatedBy);
