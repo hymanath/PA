@@ -286,8 +286,8 @@ $(document).on("click",".manageIssues",function(){
 	for( var i in result) {
 		str += '<li>';
 			str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
-			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
-			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">ISSUE TRACK</button>';
+			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'" style="margin-bottom: 10px;">edit</button>';
+			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px; margin-bottom: 10px;">ISSUE TRACK</button>';
 			//str += '</h4>';
 			str +='<div class="descriptionCls">';			
 				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
