@@ -1,19 +1,31 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class DataMonitoringOverviewVO {
 
+	private Long surveryUserId;
+	private Long tabUserId;
+	private String surveryUserName;
+	private String tabUserName;
+	private String mobileNo;
+	private String isActive;
+	
 	private Long totalRegCnt=0l;
 	private Long totalTabRegCnt=0l;
 	private Long totalWebRegCnt=0l;
 	private Long totalOnlineRegCnt=0l;
+	
 	private Long totalVerifyRegCnt=0l;
 	private Long totalTabVerifyCnt=0l;
 	private Long totalWebVerifyCnt=0l;
 	private Long totalOnlineVerifyCnt=0l;
+	
 	private Long totalVerifyRejectCnt=0l;
 	private Long totalWebVerifyRejectedCnt=0l;
 	private Long totalTabVerifyRejectedCnt=0l;
 	private Long totalOnlineVerifyRejectedCnt=0l;
+	
 	private Long totalPendingCnt=0l;
 	private Long totalWebPendingCnt=0l;
 	private Long totalTabPendingCnt=0l;
@@ -22,14 +34,19 @@ public class DataMonitoringOverviewVO {
 	private Double totalVerifyTabPer=0.0d;
 	private Double totalVerifyWebPer=0.0d;
 	private Double totalVerifyOnlinePer=0.0d;
+	
 	private Double totalRejectedTabPer=0.0d;
 	private Double totalRejectedWebPer=0.0d;
 	private Double totalRejectedOnlinePer=0.0d;
+	
 	private Double totalPendingTabPer=0.0d;
 	private Double totalPendingWebPer=0.0d;
 	private Double totalPendingOnlinePer=0.0d;
 	
 	private Long activyTeamMemberCnt=0l;
+	
+	
+	private List<DataMonitoringOverviewVO> subList;
 	
 	public Long getTotalRegCnt() {
 		return totalRegCnt;
@@ -187,4 +204,48 @@ public class DataMonitoringOverviewVO {
 	public void setActivyTeamMemberCnt(Long activyTeamMemberCnt) {
 		this.activyTeamMemberCnt = activyTeamMemberCnt;
 	}
+	public Long getSurveryUserId() {
+		return surveryUserId;
+	}
+	public void setSurveryUserId(Long surveryUserId) {
+		this.surveryUserId = surveryUserId;
+	}
+	public Long getTabUserId() {
+		return tabUserId;
+	}
+	public void setTabUserId(Long tabUserId) {
+		this.tabUserId = tabUserId;
+	}
+	public String getSurveryUserName() {
+		return surveryUserName;
+	}
+	public void setSurveryUserName(String surveryUserName) {
+		this.surveryUserName = surveryUserName;
+	}
+	public String getTabUserName() {
+		return tabUserName;
+	}
+	public void setTabUserName(String tabUserName) {
+		this.tabUserName = tabUserName;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public List<DataMonitoringOverviewVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<DataMonitoringOverviewVO> subList) {
+		this.subList = subList;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	
+	
 }

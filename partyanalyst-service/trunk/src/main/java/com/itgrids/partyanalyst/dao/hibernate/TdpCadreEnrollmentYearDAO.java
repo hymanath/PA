@@ -318,5 +318,163 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				 }
 		     return query.list();
 	  }
-	
+	  public List<Object[]> getTabCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus){
+		  
+		        StringBuilder queryStr = new StringBuilder();
+		     
+		         queryStr.append(" select " +
+		         		         " model.tdpCadre.insertedUserId," +//0
+		         		         " model.tdpCadre.tabUserInfoId," +//1
+			     		         " count(distinct model.tdpCadre.tdpCadreId) " +//2
+			     		         " from TdpCadreEnrollmentYear model " +
+			     		         " where " +
+			     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
+					             " and model.enrollmentYearId= 4 and model.isDeleted='N' "); 
+		     
+			     if(date!= null && date!=null){
+					  queryStr.append(" and model.tdpCadre.surveyTime >=:lastOneHour ");	 
+				 }
+		    
+		    	 if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
+		    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
+		    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
+		    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =2 "); 
+		    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
+		    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId is null "); 
+		    	 }
+		    	 if(dataSourceType != null && dataSourceType.equalsIgnoreCase("TAB")){
+                    queryStr.append(" and model.tdpCadre.dataSourceType='TAB' ") ;
+		    	 }
+		         queryStr.append(" group by model.tdpCadre.insertedBy,model.tdpCadre.tabUserInfoId" +
+		         		        "  order by model.tdpCadre.insertedBy,model.tdpCadre.tabUserInfoId ");
+		      
+		         Query query = getSession().createQuery(queryStr.toString());
+		    
+			     if(date!= null && date!=null){
+					 query.setParameter("lastOneHour", date);
+				 }
+		     return query.list();
+	  }
+	  public List<Object[]> getTabCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus){
+		  
+	       StringBuilder queryStr = new StringBuilder();
+	     
+	         queryStr.append(" select " +
+	         		         " model.tdpCadre.insertedBy.cadreSurveyUserId," +//0
+	         		         " model.tdpCadre.insertedBy.userName," +//1
+	         		         " model.tdpCadre.tabUserInfo.tabUserInfoId," +//2
+	         		         " model.tdpCadre.tabUserInfo.name," +//3
+	         		         " model.tdpCadre.tabUserInfo.mobileNo," +//4
+	         		         " model.tdpCadre.cadreVerificationStatusId, " +//5
+		     		         " count(distinct model.tdpCadre.tdpCadreId) " +//6
+		     		         " from TdpCadreEnrollmentYear model " +
+		     		         " where " +
+		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
+				             " and model.enrollmentYearId= 4 and model.isDeleted='N' "); 
+	     
+	         if(fromDate!= null && toDate!=null){
+				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+			 }
+		      
+	    	 if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
+	    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
+	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
+	    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =2 "); 
+	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
+	    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId is null "); 
+	    	 }
+	    	 if(dataSourceType != null && dataSourceType.equalsIgnoreCase("TAB")){
+               queryStr.append(" and model.tdpCadre.dataSourceType='TAB' ") ;
+	    	 }
+	         queryStr.append(" group by model.tdpCadre.insertedBy,model.tdpCadre.tabUserInfoId, model.tdpCadre.cadreVerificationStatusId " +
+	         		         " order by model.tdpCadre.insertedBy,model.tdpCadre.tabUserInfoId, model.tdpCadre.cadreVerificationStatusId ");
+	      
+	         Query query = getSession().createQuery(queryStr.toString());
+	    
+            if(fromDate!= null && toDate!=null){
+			   query.setDate("fromDate", fromDate);
+			   query.setDate("toDate", toDate);
+			 }
+	     return query.list();
+ }
+	  public List<Object[]> getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus){
+		  
+	       StringBuilder queryStr = new StringBuilder();
+	     
+	         queryStr.append(" select " +
+	         		         " model.tdpCadre.insertedWebUserId," +
+		     		         " count(distinct model.tdpCadre.tdpCadreId) " +
+		     		         " from TdpCadreEnrollmentYear model " +
+		     		         " where " +
+		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
+				             " and model.enrollmentYearId= 4 and model.isDeleted='N' "); 
+	     
+		     if(date!= null && date!=null){
+				  queryStr.append(" and model.tdpCadre.surveyTime >=:lastOneHour ");	 
+			 }
+	    
+	    	 if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
+	    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
+	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
+	    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =2 "); 
+	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
+	    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId is null "); 
+	    	 }
+	    	 if(dataSourceType != null && dataSourceType.trim().length() > 0){
+               queryStr.append(" and model.tdpCadre.dataSourceType=:dataSourceType ") ;
+	    	 }
+	         queryStr.append(" group by model.tdpCadre.insertedWebUserId order by model.tdpCadre.insertedWebUserId ");
+	      
+	         Query query = getSession().createQuery(queryStr.toString());
+	    
+		     if(date!= null && date!=null){
+				   query.setParameter("lastOneHour", date);
+			 }
+		     if(dataSourceType != null && dataSourceType.trim().length() > 0){
+		    	 query.setParameter("dataSourceType", dataSourceType); 
+		     }
+	     return query.list();
+ }
+	  public List<Object[]> getWebAndOnlineCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus){
+		  
+	       StringBuilder queryStr = new StringBuilder();
+	     
+	         queryStr.append(" select " +
+	         		         " model.tdpCadre.insertedWebUser.userId," +//0
+	         		         " model.tdpCadre.insertedWebUser.userName," +//1
+	         		         " model.tdpCadre.insertedWebUser.mobile," +//2
+	         		         " model.tdpCadre.cadreVerificationStatusId," +//3
+		     		         " count(distinct model.tdpCadre.tdpCadreId) " +//4
+		     		         " from TdpCadreEnrollmentYear model " +
+		     		         " where " +
+		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
+				             " and model.enrollmentYearId= 4 and model.isDeleted='N' "); 
+	     
+	         if(fromDate!= null && toDate!=null){
+				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+			 }
+		     if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
+	    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
+	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
+	    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =2 "); 
+	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
+	    		 queryStr.append(" and model.tdpCadre.cadreVerificationStatusId is null "); 
+	    	 }
+	    	 if(dataSourceType != null && dataSourceType.trim().length() > 0){
+              queryStr.append(" and model.tdpCadre.dataSourceType=:dataSourceType ") ;
+	    	 }
+	         queryStr.append(" group by model.tdpCadre.insertedWebUserId,model.tdpCadre.cadreVerificationStatusId " +
+	         		         " order by model.tdpCadre.insertedWebUserId,model.tdpCadre.cadreVerificationStatusId ");
+	      
+	         Query query = getSession().createQuery(queryStr.toString());
+	    
+	         if(fromDate!= null && toDate!=null){
+				   query.setDate("fromDate", fromDate);
+				   query.setDate("toDate", toDate);
+			 }
+		     if(dataSourceType != null && dataSourceType.trim().length() > 0){
+		    	 query.setParameter("dataSourceType", dataSourceType); 
+		     }
+	     return query.list();
+}	  
 }
