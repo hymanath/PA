@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,10 +8,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
+import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -217,7 +219,8 @@ public String getIssueStatusWiseCounts(){
 		jObj = new JSONObject(getTask());
 		String fromDateStr = jObj.getString("fromDate");
 		String toDateStr = jObj.getString("toDate");
-		idAndNameVOList =fieldMonitoringService.getIssueStatusWiseCounts(fromDateStr,toDateStr);
+		String  task = jObj.getString("task");
+		idAndNameVOList =fieldMonitoringService.getIssueStatusWiseCounts(fromDateStr,toDateStr,task);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getIssueStatusWiseCounts()  of FieldMonitoringAction", e);
 	}
@@ -367,5 +370,32 @@ public String getConstituencyByVendor(){
 		}
 	
 	    return Action.SUCCESS;
+	}
+  public String getDistrictWiseIssueTypesCount(){
+		try {
+			
+			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+   		Long loginUserId = null;
+   		if(regVO != null){
+   			loginUserId = regVO.getRegistrationID();
+   		}*/
+   		
+			jObj = new JSONObject(getTask());
+			JSONArray stateIds = jObj.getJSONArray("stateIds");  
+			List<Long> stateIdList = new ArrayList<Long>();
+			for( int i=0;i<stateIds.length();i++){
+				stateIdList.add(Long.valueOf(stateIds.getString(i)));
+			}
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Long issueStatusId = jObj.getLong("issueStatusId");
+			
+			
+			idAndNameVOList = fieldMonitoringService.getDistrictWiseIssueTypesCount(fromDateStr,toDateStr,issueStatusId,stateIdList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseIssueTypesCount()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
 	}
 }

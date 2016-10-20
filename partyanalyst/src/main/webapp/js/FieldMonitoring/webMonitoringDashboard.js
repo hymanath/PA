@@ -1,11 +1,11 @@
-	
+
 	function onLoadCalls(){
-		getOverAllDataCollectorsCounts();
+		getOverAllDataCollectorsCounts()
 		getIssueStatusWiseCounts();
 		getIssueTypeWiseCounts();
-		getStatusWiseIssuesDetails();
+		getDataMonitoringOverViewDetails();
+		getDistrictWiseIssueTypesCount();
 	}
-	
 	function getOverAllDataCollectorsCounts(){
 		var dates = $(".singleDate").val();
 		var dateArr = dates.split("-");
@@ -45,8 +45,8 @@
 
 			var jsObj = { 
 			              fromDate : fromDate,    //"2016-10-01",
-		                  toDate : toDate,			//"2016-10-18"
-						  task   : "fieldMonitoringDashboard"						  
+		                  toDate : toDate,			//"2016-10-18" 
+						  task   : "dataMonitoringDashboard"
 						}
 			$.ajax({
 				type : 'GET',
@@ -63,15 +63,14 @@
 			var str='';
 			
 			str +='<h4 class="text-capital panel-title"><b>field monitoring system</b></h4>';
-			str +='<div class="row">';
-			str +='<div class="col-md-8 col-xs-12 col-sm-10">';
-			str +='<ul class="dashedB">';
+			str +='<ul class="dashedB m_top10">';
 			for(var i in result){
+			if(result[i].name != "DataMoniDashBrd")
 			   str +='<li>'+result[i].name+' issues<span>'+result[i].inviteeCount+'</span></li>';
+			else
+			   str +='<li>ACTIVE TEAM MEMBERS<span>'+result[i].inviteeCount+'</span></li>';
 			}
 			str +='</ul>';
-			str +='</div>';
-			str +='</div>';
 			$("#statusCountDivId").html(str);
 		
 		}	
@@ -223,101 +222,110 @@
 			});
 		}
 		
-function getStatusWiseIssuesDetails(){
-	$("#statusWiseDetailsDivId").html('');
-	$("#statusWiseDetailsImgId").show();
-	$("#dtatusDivId").show();
-	
-	var dates = $(".singleDate").val();
-	var dateArr = dates.split("-");
-	var fromDate;
-	var toDate;
-	if(dateArr != null){
-		fromDate = dateArr[0];
-		toDate = dateArr[1];
-	}
-	
-	var jsObj = { 
-	  fromDate : fromDate,    //"10/18/2016",
-	  toDate : toDate,  		  //"10/20/2016",		
-	  issueType : 1,
-	  issueStatus : 1
-	}
-	$.ajax({
-		type : 'GET',
-		url : 'getStatusWiseIssuesDetailsAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}  
-	}).done(function(result){
-		if(result != null && result.length > 0){
-			buildStatusWiseDetails(result);
+function getDataMonitoringOverViewDetails(){
+ $("#dataMonitoringOverviewTblId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+       var fromDate;
+       var toDateDate;
+       var date=$(".singleDate").val();
+	  if(date != undefined && date.trim().length > 0){
+		  fromDate = date.split("-")[0]; 
+		  toDateDate = date.split("-")[1]; 
+	  }	 
+   var jsObj = {
+	   
+		  fromDate : fromDate,
+		  toDate : toDateDate
+   }
+   $.ajax({
+     type : 'GET',    
+      url : 'getDataMonitoringOverViewDetailsAction.action',  
+      dataType : 'json',
+      data : {task:JSON.stringify(jsObj)} 
+   }).done(function(result){
+	    $("#dataMonitoringOverviewTblId").html(' ');
+	    if(result != null ){
+		   buildDataMonitoringOverViewRslt(result);
+		}else{
+		  $("#dataMonitoringOverviewTblId").html("NO DATA AVAILABLE.");	
 		}
-		else{
-			$("#statusWiseDetailsImgId").hide();
-			$("#statusWiseDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
-		}
-	});
-}
-
-function buildStatusWiseDetails(result){
-	var str = '';
-	
-	//str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		//str+='<div class="block">';
-			str+='<h3 class="panel-title text-capital">apk issue - 20</h3>';
-			str+='<table class="table b_1">';
-				str+='<thead class="text-capitalize">';
-					str+='<th>User Id</th>';
-					str+='<th>user name</th>';
-					str+='<th>user contact number</th>';
-					str+='<th>state</th>';
-					str+='<th>district</th>';
-					str+='<th>constituency</th>';
-					str+='<th>vendor name</th>';
-					str+='<th>leader name</th>';
-					str+='<th>open issues</th>';
-					str+='<th>fixed issues</th>';
-					str+='<th></th>';
-				str+='</thead>';
-				str+='<tbody>';
-				for(var i in result){
-					str+='<tr>';
-						str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
-						str+='<td>'+result[i].tabUserName+'</td>';
-						str+='<td>'+result[i].mobileNo+'</td>';
-						if(result[i].stateName != null)
-							str+='<td>'+result[i].stateName+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].districtName != null)
-							str+='<td>'+result[i].districtName+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].constituencyName != null)
-							str+='<td>'+result[i].constituencyName+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].vendorName != null)
-							str+='<td>'+result[i].vendorName+'</td>';
-						else
-							str+='<td> - </td>';
-						str+='<td> - </td>';
-						if(result[i].openIssues != null)
-							str+='<td>'+result[i].openIssues+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].fixedIssues != null)
-							str+='<td>'+result[i].fixedIssues+'</td>';
-						else
-							str+='<td> - </td>';
-						str+='<td><button class="btn btn-success text-capitalize issuesBtn">manage issues</button></td>';
-					str+='</tr>';
+   });
+   }
+   function buildDataMonitoringOverViewRslt(result){
+	   var str='';
+        str+='<ul class="dashedB text-capital">';
+		 str+='<li>';
+			str+='active team members';
+			str+='<span class="pull-right"> - </span>';
+		 str+='</li>';
+		  str+='<li>';
+			str+='total registrations';
+			if(result.totalRegCnt > 0){
+			  str+='<span class="pull-right">'+result.totalRegCnt+'</span>';
+			}else{
+			  str+='<span class="pull-right"> - </span>';
+			}
+		 str+='</li>';
+		  str+='<li>';
+			str+='verified-passed';
+			if(result.totalVerifyRegCnt > 0){
+			   str+='<span class="pull-right">'+result.totalVerifyRegCnt+'</span>';
+			}else{
+				str+='<span class="pull-right"> - </span>';
+			}
+		str+='</li>';
+		  str+='<li>';
+			str+='verified- junk/rejected';
+				if(result.totalVerifyRejectCnt > 0){
+				   str+='<span class="pull-right">'+result.totalVerifyRejectCnt+'</span>';
+				}else{
+					str+='<span class="pull-right"> - </span>';
 				}
-				str+='</tbody>';
-			str+='</table>';
-		//str+='</div>';
-	//str+='</div>';
-	
-	$("#statusWiseDetailsImgId").hide();
-	$("#statusWiseDetailsDivId").html(str);
-}
+		   str+='</li>'; 
+		   str+='<li>';
+			str+='pending';
+			if(result.totalPendingCnt > 0){
+				   str+='<span class="pull-right">'+result.totalPendingCnt+'</span>';
+				}else{
+					str+='<span class="pull-right"> - </span>';
+				}
+		   str+='</li>';
+		str+='</ul>';
+	  $("#dataMonitoringOverviewTblId").html(str); 
+   }
+   $(document).on("click",".singleDate",function(){
+   
+		getOverAllDataCollectorsCounts();
+		getIssueStatusWiseCounts();
+		getIssueTypeWiseCounts();
+		getDataMonitoringOverViewDetails();
+   });
+   function getDistrictWiseIssueTypesCount(){
+		var dates = $(".singleDate").val();
+		var dateArr = dates.split("-");
+		var fromDate;
+		var toDate;
+		if(dateArr != null){
+			fromDate = dateArr[0];
+			toDate = dateArr[1];
+		}
+		var stateArr = [];
+		stateArr.push("1");
+		stateArr.push("36");
+		
+		var jsObj = { 
+		  fromDate : fromDate,		//"10/01/2016",
+		  toDate : toDate,		 	//"10/18/2016"  
+		  issueStatusId : 1,
+		  stateIds  : stateArr
+		  
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getDistrictWiseIssueTypesCountAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			console.log(result);
+		});
+	}
+		
