@@ -9,6 +9,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>     
 </head> 
 <body>
@@ -67,141 +68,17 @@
                     <div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="loggedInFieldUsersId"></div>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 <div class="modal fade" id="issuesModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p>User ID - 12345</p>
-        <p><i>Rahul - 9984845464</i></p>
+			<div id="tabUserId"></div>
       </div>
       <div class="modal-body">
-        <div>
-        
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active text-capital"><a href="#self" aria-controls="self" role="tab" data-toggle="tab">voter with self photo</a></li>
-            <li role="presentation" class="text-capital"><a href="#relative" aria-controls="relative" role="tab" data-toggle="tab">registered with relative voter id</a></li>
-         </ul>
-        
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="self">
-            	<table class="table">
-                	<thead class="text-capital">
-                    	<th>Voter photo</th>
-                        <th>captured photo</th>
-                        <th>name</th>
-                        <th>mobile number</th>
-                        <th>gender</th>
-                        <th><input type="checkbox"/></th>
-                    </thead>
-                    <tbody class="b_1">
-                    	<tr>
-                        	<td rowspan="2">
-                            	<img src="" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>
-                            </td>
-                            <td rowspan="2">
-                            	<img src="" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>
-                            </td>
-                            <td>
-                            	Rama Krishna
-                            </td>
-                            <td>
-                            	96325784656
-                            </td>
-                            <td>
-                            	Male
-                            </td>
-                            <td>
-                            	<input type="checkbox"/>
-                            </td>
-                        </tr> 
-                        <tr>
-                        	<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>
-                            <td colspan="3">
-                                <select>
-                                    <option></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                        	<td rowspan="2">
-                            	<img src="" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>
-                            </td>
-                            <td rowspan="2">
-                            	<img src="" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>
-                            </td>
-                            <td>
-                            	Rama Krishna
-                            </td>
-                            <td>
-                            	96325784656
-                            </td>
-                            <td>
-                            	Male
-                            </td>
-                            <td>
-                            	<input type="checkbox"/>
-                            </td>
-                        </tr> 
-                        <tr>
-                        	<td>
-                            	<button class="btn btn-success">Approve</button>
-                                <button class="btn btn-danger">Reject</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="relative">
-            	<table class="table">
-                	<thead class="text-capital">
-                    	<th>Voter photo</th>
-                        <th>captured photo</th>
-                        <th>name</th>
-                        <th>mobile number</th>
-                        <th>gender</th>
-                        <th><input type="checkbox"/></th>
-                    </thead>
-                    <tbody class="b_1">
-                    	<tr>
-                        	<td rowspan="2">
-                            	<img src="" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>
-                            </td>
-                            <td rowspan="2">
-                            	<img src="" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>
-                            </td>
-                            <td>
-                            	Rama Krishna
-                            </td>
-                            <td>
-                            	96325784656
-                            </td>
-                            <td>
-                            	Male
-                            </td>
-                            <td>
-                            	<input type="checkbox"/>
-                            </td>
-                        </tr> 
-                        <tr>
-                        	<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>
-                            <td colspan="3">
-                                <select>
-                                    <option></option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-          </div>
-        
-        </div>
+			<div id="cadreValidateId"></div>      
       </div>
       <div class="modal-footer">
       	<p><small>For Bulk Update</small></p>
@@ -217,11 +94,9 @@
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/dataMonitoring/dataMonitoring.js" type="text/javascript"></script>
-
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>  
 <script type="text/javascript">
-	$(document).on("click",".issuesBtn",function(){
-		$("#issuesModal").modal('show');
-	});
+	
 	$(".datePicker").daterangepicker();
 	$('.select').chosen({width:'100%'});
 </script>
