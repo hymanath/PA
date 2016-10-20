@@ -348,6 +348,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
 		}
+		    sb.append(" order by model.insertedTime desc ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
 		query.setParameter("tabUserInfoId",tabUserInfoId );
