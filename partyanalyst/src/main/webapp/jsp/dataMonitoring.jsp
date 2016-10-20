@@ -10,10 +10,10 @@
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>     
-</head>
+</head> 
 <body>
 <div class="container">  
-	<div class="row">
+	<div class="row">     
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="block">
             	<div class="row">
@@ -61,80 +61,10 @@
             	<div class="row">
                 	<div class="col-md-12 col-xs-12 col-sm-12">
                     	<div class="block bg_F4 pad_20">
-                        	<div class="row">
-                            	<div class="col-md-3 col-xs-12 col-sm-6">
-                                	<h4 class="text-capitalize">total registered</h4>
-                                    <h2>1000</h2>
-                                </div>
-                                <div class="col-md-3 col-xs-12 col-sm-6">
-                                	<h4 class="text-capitalize">Verification Pending</h4>
-                                    <h2>1000</h2>   
-                                </div>
-                                <div class="col-md-3 col-xs-12 col-sm-6">
-                                	<h4 class="text-capitalize">Verified passed</h4>
-                                    <h2>1000</h2>
-                                </div>
-                                <div class="col-md-3 col-xs-12 col-sm-6">
-                                	<h4 class="text-capitalize">Verified - Junk/Rejected</h4>
-                                    <h2>1000</h2>
-                                </div>
-                            </div>
+                        	<div class="row" id="totalCountId"></div>  
                         </div>
-                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                    	<h4 class="panel-title text-muted">Logged In FieldUsers</h4>
-                         <div class="table-responsive">
-                            <table class="table b_1 m_top10">
-                                <thead>
-                                    <th>User Id</th>
-                                    <th>Name</th>
-                                    <th>Contact Numb</th>
-                                    <th>Completed Registrations</th>
-                                    <th>Verified - Passed</th>
-                                    <th>Verified- Junk/Rejected</th>
-                                    <th>Pending</th>
-                                    <th></th>
-                                </thead>
-                                <tr>
-                                    <td class="issueCmpltd">13124</td>
-                                    <td>Ramesj</td>
-                                    <td>98757585895</td>
-                                    <td>10</td>
-                                    <td>4</td>
-                                    <td>12</td>
-                                    <td>12</td>
-                                    <td><button class="btn btn-success issuesBtn">Verify Pending Records</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="issuePending">13124</td>
-                                    <td>Ramesj</td>
-                                    <td>98757585895</td>
-                                    <td>10</td>
-                                    <td>4</td>
-                                    <td>12</td>
-                                    <td>12</td>
-                                    <td><button class="btn btn-success issuesBtn">Verify Pending Records</button></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <ul class="pagination m_top20">
-                            <li>
-                              <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                              </a>
-                            </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                              <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                              </a>
-                            </li>
-                        </ul>
-                    </div>
+                    </div>       
+                    <div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="loggedInFieldUsersId"></div>
                 </div>
             </div>
         </div>

@@ -102,6 +102,8 @@
 		$("#"+selectBoxId).trigger("chosen:updated");
 	}
 	$(document).on("click","#getRegStatusId",function(){
+		$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#loggedInFieldUsersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		getCadreRegStatusType();  
 	});
 	function getCadreRegStatusType(){
@@ -120,7 +122,7 @@
 			districtId : districtId,
 			constituencyId : constituencyId,
 			startDate : modifyDate(startDate),
-			endDate : modifyDate(endDate)    
+			endDate : modifyDate(endDate)          
 		}
 		$.ajax({
 			type:'GET',
@@ -128,15 +130,84 @@
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#totalCountId").html('');
 			if(result != null){  
-				console.log(result);  
+				buildTotalCount(result);  
 			}else{
-				
+				$("#totalCountId").html('No Data Available...');
+			}
+		});
+		$.ajax({
+			type:'GET',
+			url: 'getTotalRegCdrVendorAndTabUserWiseAction.action',    
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#loggedInFieldUsersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			if(result != null && result.length > 0){  
+				buildTotalRegCdrVendorAndTabUserWise(result);
+			}else{
+				$("#loggedInFieldUsersId").html('No Data Available...');
 			}
 		});  
-	}
+	}  
 	function modifyDate(date){  
 		var dateArr = date.split("/");     
 		return dateArr[1]+"/"+dateArr[0]+"/"+dateArr[2];
+	}
+	function buildTotalCount(result){
+		var str = '';
+		str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+			str+='<h4 class="text-capitalize">total registered</h4>';
+			str+='<h2>'+result.count+'</h2>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+			str+='<h4 class="text-capitalize">Verification Pending</h4>';
+			str+='<h2>'+result.availableCount+'</h2>';   
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+			str+='<h4 class="text-capitalize">Verified passed</h4>';
+			str+='<h2>'+result.actualCount+'</h2>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+			str+='<h4 class="text-capitalize">Verified - Junk/Rejected</h4>';
+			str+='<h2>'+result.orderId+'</h2>';
+		str+='</div>';
+		$("#totalCountId").html(str);
+	}
+	function buildTotalRegCdrVendorAndTabUserWise(result){
+		var str = '';
+		str+='<h4 class="panel-title text-muted">Logged In FieldUsers</h4>';
+			str+='<div class="table-responsive">';
+				str+='<table class="table b_1 m_top10">';
+					str+='<thead>';
+						str+='<th>SURVEY USER ID</th>';
+						str+='<th>FIELD STAFF NAME</th>';
+						str+='<th>CONTACT NO</th>';
+						str+='<th>COMPLETED REGISTRATIONS</th>';
+						str+='<th>VERIFIED - PASSED</th>';
+						str+='<th>VERIFIED - JUNK/REJECTED</th>';
+						str+='<th>PENDING</th>';
+						str+='<th></th>';
+					str+='</thead>';
+					for(var i in result){
+						str+='<tr>';
+						if(result[i].status == "active"){ 
+							str+='<td class="issueCmpltd">'+result[i].name+'</td>';
+						}else{
+							str+='<td class="issuePending">'+result[i].name+'</td>';
+						}
+							str+='<td>'+result[i].tabUserName+'</td>';
+							str+='<td>'+result[i].mobileNo+'</td>';
+							str+='<td>'+result[i].totalCount+'</td>';
+							str+='<td>'+result[i].approvedCount+'</td>';
+							str+='<td>'+result[i].rejectedCount+'</td>';
+							str+='<td>'+result[i].pendingCount+'</td>';  
+							str+='<td><button class="btn btn-success issuesBtn">Verify Pending Records</button></td>';
+						str+='</tr>';
+					}
+				str+='</table>';
+			str+='</div>';
+			$("#loggedInFieldUsersId").html(str);
 	}
 	
