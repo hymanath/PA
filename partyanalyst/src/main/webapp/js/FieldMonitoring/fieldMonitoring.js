@@ -283,7 +283,53 @@ $(document).on("click",".manageIssues",function(){
 	
 	var str = '';
 
-	for( var i in result) {
+		str+='<table id="datatableId" class="table table-condensed">';
+		str+='<thead>';
+		str+='<th></th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for( var i in result) {
+		str+='<tr>';
+		str+='<td>';
+		str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
+			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
+			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px;">ISSUE TRACK</button>';
+			//str += '</h4>';
+			str +='<div class="descriptionCls">';			
+				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
+				str += '<p class="m_top10">';
+				str += '<span class="text-danger"><i>Issue Status :<span class="statusUpdate'+i+'">'
+						+ result[i].issueStatus + '</span></i></span>';
+				str += '<span class="pull-right text-muted"><i>Informed Time:<span class="updatedTime'+i+'">'
+						+ result[i].dateStr + '</span></i></span>';
+				str += '</p>';
+			str +='</div>';		
+			str += '<div class="row descriptionEditCls" style="display:none;">';
+				str += '<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str += '<textarea class="form-control issueDescEdit'+i+'" cols="120"></textarea>';
+				str += '</div>';
+				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
+					str += '<label>Change Issue Status</label>';
+					str += '<select class="select" id="changeIssueStatusId'+i+'">';
+					str += '</select>';
+				str += '</div>';
+				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div class="row">'
+					str +='<button class="btn btn-success m_top20 updateCls"  attr_value="'+i+'" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">UPDATE</button>';
+					str +='<button class="btn btn-default cancelUpdate m_top20 cancelCls" style="margin-left:10px;">CANCEL</button>';
+					str+='</div>'
+					str +='<span id="updateDivIdImg'+i+'" style="display:none;"><img src="images/search.gif"/></span>';
+				    str +='<div id="updateStatusId'+i+'"></div>';
+					
+				str += '</div>';
+			str += '</div>';
+		str+='</td>';
+		str+='</tr>';
+		
+		}
+		str+='</tbody>';
+		str+='</table>';
+	/* for( var i in result) {
 		str += '<li>';
 			str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
 			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'" style="margin-bottom: 10px;">edit</button>';
@@ -318,9 +364,11 @@ $(document).on("click",".manageIssues",function(){
 				str += '</div>';
 			str += '</div>';
 		str += '</li>';
-	}
+	} */
 	$("#issueDivId").html(str);
-	//$("#issueDivId").dataTable(); 
+	
+	 $('#datatableId').DataTable(); 
+	
   }
   
    $(document).on("click","#addNewIssueId",function(){ 
@@ -372,13 +420,10 @@ $(document).on("click",".manageIssues",function(){
   $(document).on("click",".updateCls",function(){
 	var value = $(this).attr("attr_value");
 	var cadreRegIssueId = $(this).attr("attr_cadre_reg_issue_id");
-	  
 	var description = $(".issueDescEdit"+value).val();
 	var  newStatusId = $('#changeIssueStatusId'+value).val();
 	
 	updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId);
-	
-	//srujana
 	/*var desc = $(".issueDescEdit"+value).val();
 	alert(desc)
 	$(".issueDesc"+value).text(desc);
@@ -391,7 +436,8 @@ $(document).on("click",".manageIssues",function(){
 });
   
   function updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId){
-	           var description = $(".issueDescEdit"+value).val();
+	           var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
+	           //var description = $(".issueDescEdit"+value).val();
 	           $(".issueDesc"+value).text(description);
 	           var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
 	           $(".statusUpdate"+value).text(subValue);
@@ -425,16 +471,16 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		    $("#updateDivIdImg").hide();
+		    $("#updateDivIdImg"+value).hide();
 		   if(result.message == 'success' && result.resultCode == 1)
 		   {
-			   $("#updateStatusId").html("<span style='color: green;font-size:18px;'> update Successfully...</span>");
+			   $("#updateStatusId"+value).html("<span style='color: green;font-size:18px;'> update Successfully...</span>");
 			   setTimeout(function(){
-			   $(".editBtn").closest("li").find(".descriptionCls").show();
-	           $(".editBtn").closest("li").find(".descriptionEditCls").hide();
-			    $(".editBtn").closest("li").find(".trackingIssueCls").show();	
-				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId);
-				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
+			   $(".editBtn").closest("td").find(".descriptionCls").show();
+	           $(".editBtn").closest("td").find(".descriptionEditCls").hide();
+			    $(".editBtn").closest("td").find(".trackingIssueCls").show();	
+				//getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId);
+				//getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 			}, 2000);
 		   }else{
 			    $("#updateStatusId").html("<span style='color: red;font-size:18px;'> update Failed.Please try Again..</span>");
@@ -668,9 +714,9 @@ function clearErrorFields()
 $(document).on("click",".editBtn",function(){
 	var value = $(this).attr("attr_value");
 	var issueStatus = $(this).attr("attr_issueStatus");
-	$(this).closest("li").find(".descriptionCls").hide();
-	$(this).closest("li").find(".descriptionEditCls").show();
-    $(this).closest("li").find(".trackingIssueCls").show();	
+	$(this).closest("td").find(".descriptionCls").hide();
+	$(this).closest("td").find(".descriptionEditCls").show();
+    $(this).closest("td").find(".trackingIssueCls").show();	
 	getCadreRegIssueStatusType(value,issueStatus);
 	var desc = $(".issueDesc"+value).text();          
 	$(".issueDescEdit"+value).val(desc);
@@ -678,8 +724,8 @@ $(document).on("click",".editBtn",function(){
 
 });
 $(document).on("click",".cancelUpdate",function(){
-	$(this).closest("li").find(".descriptionCls").show();
-	$(this).closest("li").find(".descriptionEditCls").hide();
+	$(this).closest("td").find(".descriptionCls").show();
+	$(this).closest("td").find(".descriptionEditCls").hide();
 });
 function getCadreRegIssueStatusType(value,issueStatus){
 	 $("#changeIssueStatusId"+value).empty('').trigger('chosen:updated');
@@ -708,5 +754,5 @@ $(document).on("click",".trackingIssueCls",function(){
 	trackingRegIssueByRegIssueId(value,cadreRegIssueId);
 });	
 $(document).on("click",".cancelCls",function(){
-	 $(this).closest("li").find(".trackingIssueCls").show();	
+	 $(this).closest("td").find(".trackingIssueCls").show();	
 });

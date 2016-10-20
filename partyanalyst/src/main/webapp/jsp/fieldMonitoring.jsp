@@ -10,14 +10,14 @@
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+
 </head>
 <body>
 <div class="container m_top20">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="block bg_ff">
+				<div id="errorDivId"></div>
             	<div class="row">
                 	<div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select State</label>
@@ -56,8 +56,7 @@
                     </div>
 					<div class="col-md-4 col-xs-12 col-sm-6">
                     	<button class="btn btn-success m_top25 text-capital" id="getDetails">submit</button>
-						<div id="errorDivId"></div>
-                    </div>
+					</div>
 					
                 </div>
             </div>
@@ -148,7 +147,7 @@
             </div>
         </div>
 		<!--<h4>TECHNICAL ISSUE</h4>-->
-        <ul class="issuesUl" id="issueDivId">
+        <div id="issueDivId">
         	<!--<li>
             	<h4 class="text-capital">
                 	technical issue
@@ -160,7 +159,7 @@
                     <span class="pull-right text-muted"><i>Informed Time: 3:49 PM</i></span>
                 </p>
             </li>-->
-        </ul>
+        </div>
       </div>
 	
       <div class="modal-footer">
@@ -200,9 +199,8 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>
 <script src="js/FieldMonitoring/fieldMonitoring.js" type="text/javascript"></script>
-<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 		

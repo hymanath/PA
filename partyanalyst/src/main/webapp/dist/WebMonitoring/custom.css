@@ -133,7 +133,7 @@ label
 {
 	border-bottom:1px solid #ddd;
 }
-.issuesUl li .editBtn , .issuesUl li .editBtn:active 
+.editBtn , .editBtn:active 
 {
 	background-color:#fff;
 	border-radius:15px;
@@ -141,9 +141,10 @@ label
 	text-transform:uppercase;
 	border:1px solid #333;
 }
-.issuesUl li .editBtn:hover
+.editBtn:hover
 {
-	background-color:#f2f2f2;
+	background-color:#f2f2f2 !important;
+	color:#000;
 }
 .pad_20
 {
@@ -216,3 +217,5 @@ label
 {
 	padding-right:0px
 }
+.dataTables_length{margin-top:10px !important}
+.dataTables_filter{margin-top:10px !important}
