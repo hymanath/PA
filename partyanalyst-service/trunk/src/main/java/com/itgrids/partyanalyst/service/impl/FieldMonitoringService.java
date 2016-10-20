@@ -417,7 +417,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	  *  This service is used to get the issues for a particulat tab user of a cadre survey user by issue status.
 	  *  @since 18-OCTOBER-2016
 	  */
-    public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId){
+    public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId,Long vendorId,String locationType,Long locationVal){
     	
     	List<FieldMonitoringIssueVO> returnList = null;
     	
@@ -433,7 +433,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			endDate = sdf.parse(toDateStr);
     		}
     		
-    		List<Object[]> issueDetails = cadreRegIssueDAO.getIssuesForATabUserByStatus(cadreSurveyUserId, tabUserInfoId, startDate, endDate, issueStatusId);
+    		List<Object[]> issueDetails = cadreRegIssueDAO.getIssuesForATabUserByStatus(cadreSurveyUserId, tabUserInfoId, startDate, endDate, issueStatusId, vendorId, locationType, locationVal);
     		
     		if( issueDetails != null && issueDetails.size() > 0)
     		{
@@ -467,6 +467,49 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnList;
     }
     
+    public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long vendorId,String locationType,Long locationVal){
+    	List<FieldMonitoringIssueVO> returnList = new ArrayList<FieldMonitoringIssueVO>();
+    	try {
+    		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    		Long totalCount = 0l;
+    		
+    		Date startDate = null;
+    		Date endDate = null;
+        	if(fromDateStr != null && toDateStr != null){
+    			startDate = sdf.parse(fromDateStr);
+    			endDate = sdf.parse(toDateStr);
+        	}
+        	
+        	//Adding TotalCountVO
+        	FieldMonitoringIssueVO totalvo = new FieldMonitoringIssueVO();
+        	totalvo.setIssueStatus("Total");
+        	totalvo.setCount(0l);
+        	returnList.add(totalvo);
+        	
+        	List<Object[]> list = cadreRegIssueDAO.getIssuesCountsForATabUserByStatus(cadreSurveyUserId, tabUserInfoId, startDate, endDate, vendorId, locationType, locationVal);
+        	if(list != null && !list.isEmpty()){
+        		for (Object[] obj : list) {
+					FieldMonitoringIssueVO vo = new FieldMonitoringIssueVO();
+					vo.setIssueStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setIssueStatus(obj[1] != null ? obj[1].toString():"");
+					vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					totalCount = totalCount + Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					returnList.add(vo);
+				}
+        	}
+        	
+        	if(returnList != null && returnList.size() > 0){
+        		for (FieldMonitoringIssueVO vo : returnList) {
+					if(vo.getIssueStatus().equalsIgnoreCase("Total"))
+						vo.setCount(totalCount);
+				}
+        	}
+        	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	return returnList;
+    }
     
     /**
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
