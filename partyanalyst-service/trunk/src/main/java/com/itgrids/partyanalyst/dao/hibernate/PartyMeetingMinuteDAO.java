@@ -122,4 +122,20 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getPartyMeetingMinuteRetrieveDetails(Long minuteId){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" SELECT model.partyMeetingMinuteId,model.minutePoint,model.isActionable,model.statusId," +
+				" model.userAddress,model.partyMeetingId " +
+				" FROM PartyMeetingMinute model " +
+				" WHERE model.isDeleted = 'N'" +
+				" and model.partyMeetingMinuteId =:minuteId ");
+		
+		Query query = getSession().createQuery(str.toString());		
+		query.setParameter("minuteId", minuteId);
+		
+		return query.list();
+		
+	} 
 }
