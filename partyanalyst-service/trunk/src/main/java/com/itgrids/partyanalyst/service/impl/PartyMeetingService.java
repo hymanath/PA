@@ -826,19 +826,20 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			UserAddress UA = new UserAddress(); 
 			
-			if(districtId !=null && districtId>0l)
-				UA.getDistrict().setDistrictId(districtId ==0l ?null:districtId);
-			if(stateId !=null && stateId>0l)
-				UA.getState().setStateId(stateId ==0l?null:stateId);
-			if(constituencyId !=null && constituencyId>0l)
-				UA.getConstituency().setConstituencyId(constituencyId ==0l?null:constituencyId);
-			
+			if(districtId !=null && districtId >0L){
+				UA.getDistrict().setDistrictId(districtId!=null && districtId>0? districtId:null);
+			}
+			if(stateId !=null && stateId >0L){
+				UA.getState().setStateId(stateId!=null && stateId>0? stateId:null);
+			}
+			if(constituencyId !=null && constituencyId>0l){
+				UA.getConstituency().setConstituencyId(constituencyId!=null && constituencyId>0? constituencyId:null);
+			}
 			if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==1l){
 				UA.getTehsil().setTehsilId(tehsilId);
 			}else if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==2l){
 				UA.getLocalElectionBody().setLocalElectionBodyId(tehsilId);
 			}
-			
 			if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==1l){
 				UA.getPanchayat().setPanchayatId(panchayatId);
 			}else if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==2l){
