@@ -1110,7 +1110,6 @@ function getConstituenciesForDistricts(district){
 				  // $('.fancybox').fancybox();
 			   }
 			   
-			   
 			   if(result.minutesDetails!=null && result.minutesDetails.length>0){
 				   $("#minitePointsCount").html(result.minutesDetails.length);
 				   minutesFiles = result.minutesDetails.length;
@@ -1123,7 +1122,7 @@ function getConstituenciesForDistricts(district){
 						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
 						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
 				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
+					   <!--str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';-->
 					   str+=' </div>';
 						str+=' </li>';
 						
@@ -1205,27 +1204,38 @@ function getConstituenciesForDistricts(district){
 		$("#momError").text("");
 		var reslt;
 		var minuteText = $("#meetRaised").val();
-		var stateId = $("#statesDivId").val();
-		var districtId = $("#districtId").val();
-		var constituencyId = $("#constituencyId").val();
-		var mandalId = $("#manTowDivId").val();
-		var panchayatId = $("#villWardId").val();
-		var isActionable = $("#actionableBtnId").val();
-		var levelId = $("#meetingLocationLevel").val();
+		//var isActionable = $("#actionableBtnId").val();
+		
+		var isActionable=$('input[name=checkRdoBtnname]:checked').val();
+		var levelId =0;
 		var levelValue = 0;
-		if(panchayatId != null && panchayatId > 0){
+		var stateId=0;
+		var districtId=0;
+		var constituencyId=0;
+		var mandalId=0;
+		var panchayatId=0;
+		
+		if(isActionable =="Y"){			
+			stateId = $("#statesDivId").val();
+			districtId = $("#districtId").val();
+			constituencyId = $("#constituencyId").val();
+			mandalId = $("#manTowDivId").val();
+			panchayatId = $("#villWardId").val();		
+		
+			levelId = $("#meetingLocationLevel").val();
+			if(panchayatId != null && panchayatId > 0){
 			levelValue = panchayatId;
-		}else if(mandalId != null && mandalId > 0){
-			levelValue = mandalId;
-		}else if(constituencyId != null && constituencyId > 0){
-			levelValue = constituencyId;
-		}else if(districtId != null && districtId > 0){
-			levelValue = districtId;
-		}else if(stateId != null && stateId > 0){
-			levelValue = stateId;
+			}else if(mandalId != null && mandalId > 0){
+				levelValue = mandalId;
+			}else if(constituencyId != null && constituencyId > 0){
+				levelValue = constituencyId;
+			}else if(districtId != null && districtId > 0){
+				levelValue = districtId;
+			}else if(stateId != null && stateId > 0){
+				levelValue = stateId;
+			}
 		}
-		alert(levelValue);
-		return;
+		
 		if(minuteText.trim().length==0){
 			$("#momError").text(" Please Enter Minute Text");
 			return;
@@ -1316,7 +1326,7 @@ function getConstituenciesForDistricts(district){
 					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
 					 str+=' <button class="btn btn-default ToolTipDiv conformDel" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
+					 <!--str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';-->
 					 str+=' </div>';
 					 str+=' </li>';
 				}
@@ -1811,7 +1821,7 @@ function getConstituenciesForDistricts(district){
 					str+=' <div class="panel-body">';
 					str+='<ul class="list-group row">';
 			   if(result!=null && result.length>0){
-				   
+				   $("#miniteDocsCount").text(result.length);
 				    for(var i in result){
 					    str+='<li class="list-group-item col-md-12" id="minuteDocFileId'+result[i].id+'" style="padding:6px;">';
 					    str+='<a class="col-md-10" href="'+result[i].url+'">'+result[i].name+'</a>';
