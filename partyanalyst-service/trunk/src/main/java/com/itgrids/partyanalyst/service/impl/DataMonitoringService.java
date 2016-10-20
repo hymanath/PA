@@ -52,7 +52,7 @@ public class DataMonitoringService implements IDataMonitoringService {
    public DataMonitoringOverviewVO getDataMonitoringOverViewDetails(String fromDateStr,String toDateStr){
 	  
 	   DataMonitoringOverviewVO resultVO = new DataMonitoringOverviewVO();
-	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	   Date toDate=null;
 	   Date fromDate=null;
 	   try{
