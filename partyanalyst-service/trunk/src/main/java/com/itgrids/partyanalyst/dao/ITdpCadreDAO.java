@@ -463,5 +463,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getLocationIdAndName(Long accessLvlId,List<Long> userAccessLevelValues,Long stateId);
 	  public Long getTotalConstituencyForCdrRegStarted(Long stateId);
 	  public List<Object[]> getTotalRegCdrVendorWise(Long stateId, Long vendorId, Long distId, Long constId, Date startDate, Date endDate);
+	  public List<Object[]> getTotalRegCdrVendorAndTabUserWise(Long stateId, Long vendorId, Long distId, Long constId, Date startDate, Date endDate, String status);
+	  public List<Object[]> getActiveUserList(Long stateId,Long vendorId,Long distId,Long constId,Date startDate,Date endDate, Date lastOneHourTime);
 	  public List<Object[]> checkVoterCardNosListExists(Set<String> voterCardNosList);
 } 

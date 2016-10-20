@@ -35,6 +35,12 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long between1130To13=0l;
 	private Long greaterThan13=0l;
 	private Long cadreId;
+	private Long totalCount = 0l;
+	private Long approvedCount = 0l;
+	private Long rejectedCount = 0l;
+	private Long pendingCount = 0l;
+	private Long tabUserId;
+	private String tabUserName;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -280,7 +286,55 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setCadreId(Long cadreId) {
 		this.cadreId = cadreId;
 	}
+
+	public Long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public Long getApprovedCount() {
+		return approvedCount;
+	}
+
+	public void setApprovedCount(Long approvedCount) {
+		this.approvedCount = approvedCount;
+	}
+
+	public Long getRejectedCount() {
+		return rejectedCount;
+	}
+
+	public void setRejectedCount(Long rejectedCount) {
+		this.rejectedCount = rejectedCount;
+	}
+
+	public Long getPendingCount() {
+		return pendingCount;
+	}
+
+	public void setPendingCount(Long pendingCount) {
+		this.pendingCount = pendingCount;
+	}
+
+	public Long getTabUserId() {
+		return tabUserId;
+	}
+
+	public void setTabUserId(Long tabUserId) {
+		this.tabUserId = tabUserId;
+	}
+
+	public String getTabUserName() {
+		return tabUserName;
+	}
+
+	public void setTabUserName(String tabUserName) {
+		this.tabUserName = tabUserName;
+	}
 	
-	
+
 	
 }
