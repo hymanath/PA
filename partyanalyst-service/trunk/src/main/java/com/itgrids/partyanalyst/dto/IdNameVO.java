@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * @author Swadhin
+ *
+ */
 public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long id;
 	private String name;
@@ -41,6 +45,10 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long pendingCount = 0l;
 	private Long tabUserId;
 	private String tabUserName;
+	private String gender;
+	private String image;
+	private String voterImage;
+	private Long statusId = 0l;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -334,7 +342,40 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setTabUserName(String tabUserName) {
 		this.tabUserName = tabUserName;
 	}
-	
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getVoterImage() {
+		return voterImage;
+	}
+
+	public void setVoterImage(String voterImage) {
+		this.voterImage = voterImage;
+	}
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	
+	
+	
 	
 }
