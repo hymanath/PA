@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -40,5 +41,5 @@ public interface IPartyMeetingService {
 	public String updateConductedReason(Long meetingId,String remarks,Long userId);
 	public List<PartyMeetingsVO>  getLocationWisePartyMeetings(String locationType,Long locationValue,String startDateString,String endDateString);
 	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,List<Long> partyMeetingLevelId,int month,int year);
-	
+	public List<PMMinuteVO> getPartyMeetingMinuteRetrieveDetails(Long minuteId);
 }
