@@ -114,23 +114,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             <section>
                 <div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
                     <div class="panel panel-default">
-				<div class="panel-heading">
-                	<h4 class="panel-title">PARTY MEETINGS</h4>
-					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-					<span class="pull-right" style="margin-top:-21px">
-						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
-							<input type="radio" checked="true" class="stateCls" style="cursor:pointer;" name="stateName" value="0" onclick="handleFunctions();"> <b>ALL</b>
-						  </span>
-						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
-							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="1" onclick="handleFunctions();"> <b>AP</b>
-						  </span> 
-						  <span class="btn btn-xs btn-success" style="border-radius:15px;">
-							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="36" onclick="handleFunctions();"> <b>TS</b>
-						  </span>
-					</span>
-					</c:if>
-					
-                </div>
                         <div class="panel-heading" style="background-color:#CCC">
                             <h4 class="panel-title text-uppercase" ><span id="meetingType"></span>&nbsp; <i><small id="location" ></small></i></h4>
 							
@@ -338,7 +321,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<h4 class="panel-title">Action Type</h4>
 				<label class="radio-inline" name="actionTypeName">
-					<input type="radio" class="checkCls" id="generalBtnId" name="checkRdoBtnname" value="N"/>General
+					<input type="radio" class="checkCls" id="generalBtnId" name="checkRdoBtnname" value="N" checked/>General
 				</label>
 				<label class="radio-inline" name="actionTypeName">
 					<input type="radio" class="checkCls" id="actionableBtnId" name="checkRdoBtnname"  value="Y"/>Actionable
@@ -667,10 +650,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    var maximumDivCount=1;
  	
 	$(document).on('click', '.addMeetMint', function(){
+
 			$("#mintModal").modal("show");
 			//openModalMOM();
 			$("#meetRaised").val("");
-			getUserAccessLocationDetails();
+			$("#meetingLvlId").hide();
+			$("#stateShowId").hide();
+			//getUserAccessLocationDetails();
+			
 	 }); 	
 	 
  $(document).on('click', '.conformDel', function(){
@@ -1204,7 +1191,9 @@ function getConstituenciesForDistricts(district){
 		
 		var attrId1 = $(this).attr("attr_minuteId");
 		 $("#saveBtnMeetMin").attr("attr_minuteId",attrId1);
-		
+		$("#meetingLvlId").hide();
+		$("#stateShowId").hide();
+		getPartyMeetingMinuteRetrieveDetails();
 	});
 	
 	/* function enableSaveOption(txtBoxCnt){
@@ -1223,7 +1212,20 @@ function getConstituenciesForDistricts(district){
 		var panchayatId = $("#villWardId").val();
 		var isActionable = $("#actionableBtnId").val();
 		var levelId = $("#meetingLocationLevel").val();
-		var levelValue = $("#manTowDivId").val();
+		var levelValue = 0;
+		if(panchayatId != null && panchayatId > 0){
+			levelValue = panchayatId;
+		}else if(mandalId != null && mandalId > 0){
+			levelValue = mandalId;
+		}else if(constituencyId != null && constituencyId > 0){
+			levelValue = constituencyId;
+		}else if(districtId != null && districtId > 0){
+			levelValue = districtId;
+		}else if(stateId != null && stateId > 0){
+			levelValue = stateId;
+		}
+		alert(levelValue);
+		return;
 		if(minuteText.trim().length==0){
 			$("#momError").text(" Please Enter Minute Text");
 			return;
@@ -2111,34 +2113,7 @@ function getMandalsForDistrictId(){
 		   }
    });	
   }
-  function handleFunctions(){
-	getLevelWiseMeetingDetails(); 
-		$("#loadingImgForLevelId").show();
-		$(".stateCls").each(function(){
-			if($(this).prop('checked')==true){
-				 if($(this).val()==1){
-					$("#statesDivId").html("");
-					//$("#statesDivId").append('<option value=1> All </option>');
-					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
-					getDistrictsForStates($( "#statesDivId" ).val());
-					meetingLevelWiseHideShow();
-				}else if($(this).val()==36){
-					$("#statesDivId").html("");
-					//$("#statesDivId").append('<option value=36> All </option>');
-					$("#statesDivId").append('<option value=36> Telangana </option>');
-					getDistrictsForStates($( "#statesDivId" ).val());
-					meetingLevelWiseHideShow();
-				}else if($(this).val()==0){
-					$("#statesDivId").html("");
-					$("#statesDivId").append('<option value=0> All </option>');
-					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
-					$("#statesDivId").append('<option value=36> Telangana </option>');
-					getDistrictsForStates($( "#statesDivId" ).val());
-					meetingLevelWiseHideShow();
-				}
-			}
-		});
- }
+
  function meetingLevelWiseHideShow(){
 	 if($("#meetingLocationLevel").val()== 2 ){
 				$("#stateShowId").show();
@@ -2230,13 +2205,42 @@ $( "#districtId" ).change(function() {
 		getConstituenciesForDistricts(this.value);
 	});
 $(document).on("click","#actionableBtnId",function(){
+	getUserAccessLocationDetails();
 		$("#meetingLvlId").show();
 		$("#stateShowId").show();
+		
 });
 $(document).on("click","#generalBtnId",function(){
 		$("#meetingLvlId").hide();
 		$("#stateShowId").hide();
 });
+
+function getPartyMeetingMinuteRetrieveDetails(){
+	 	var jsObj={
+		minuteId:3796	
+		}
+		$.ajax({
+			type:"POST",
+			url :"getPartyMeetingMinuteRetrieveDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				if(result.actionType == 'Y'){
+					$("#actionableBtnId").attr('checked', true);
+				}
+		   }
+   });	
+ }
+ function prePopulatePartyMeetingMinuteDetails(result){
+	 $("#meetRaised").val(result.name);
+	 $("#meetingLocationLevel").val(result.partyMeetingId);
+	 $("#statesDivId").val(result.stateId);
+	 $("#districtId").val(result.districtId);
+	 $("#constituencyId").val(result.constituencyId);
+	 $("#manTowDivId").val(result.tehsilId);
+	 $("#villWardId").val(result.panchayatId);
+ }
 </script>
 </body>
 </html>

@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -39,7 +40,17 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private List<PartyMeetingsVO> partyMeetingVOsList;
 	private List<PartyMeetingVO> partyMeetingVOList;
 	private List<PartyMeetingStatusVO> meetingStatusVOs;
+	private List<PMMinuteVO> pmMinutelist;
 	
+	
+	public List<PMMinuteVO> getPmMinutelist() {
+		return pmMinutelist;
+	}
+
+	public void setPmMinutelist(List<PMMinuteVO> pmMinutelist) {
+		this.pmMinutelist = pmMinutelist;
+	}
+
 	public List<PartyMeetingVO> getPartyMeetingVOList() {
 		return partyMeetingVOList;
 	}
@@ -579,6 +590,19 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			int   month = jObj.getInt("month");
 			int   year = jObj.getInt("year");
 			meetingStatusVOs = partyMeetingService.getMeetingDetailsForALevelByLocationId(locationType, locationValue, partyMeetingLevelIds, month, year);  
+		}catch (Exception e) {  
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getPartyMeetingMinuteRetrieveDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long minuteId = jObj.getLong("minuteId");
+		
+			pmMinutelist = partyMeetingService.getPartyMeetingMinuteRetrieveDetails(minuteId);  
 		}catch (Exception e) {  
 			LOG.error("Entered into updateConductedDetails Action",e);
 		}
