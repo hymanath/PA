@@ -715,7 +715,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
    public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr) {
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
-		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		   Date startDate = null;
 		   Date endDate = null;
 		   if(fromDateStr != null && toDateStr != null){
