@@ -92,8 +92,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p>User ID - <span id="modalCadreUserName"></span></p>
-        <p><i><span id="tabUserMblDetailsId"></span></i></p>
+        <p>User ID - <span class="modalCadreUserName"></span></p>
+        <p><i><span class="tabUserMblDetailsId"></span></i></p>
       </div>
       <div class="modal-body">
         
@@ -171,6 +171,26 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="issueTrackingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width:80%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>User ID - <span class="modalCadreUserName"></span></p>
+        <p><i><span class="tabUserMblDetailsId"></span></i></p>
+      </div>
+      <div class="modal-body">
+		<div id="issueTrackingImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+        <div id="issueTrackingBodyId"></div>
+      </div>
+	
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <input type="hidden" id="hiddenCadreSurveyUserId"></input>
 <input type="hidden" id="hiddenTabUserInfoId"></input>
 <input type="hidden" id="hiddenIssueStatusId"></input>
@@ -190,6 +210,12 @@
 		$('.select').chosen({width:'100%'});
 		getCadreRegIssueType();
 		getCadreRegIssueStatusType();
+		
+		$(document).on("click",".modalCloseCls",function(){
+			setTimeout(function(){
+				$('body').addClass("modal-open");
+			}, 1000);
+		});
 		
 	</script>
 </body>

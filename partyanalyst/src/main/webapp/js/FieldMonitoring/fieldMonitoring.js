@@ -140,8 +140,8 @@ $(document).on("click",".manageIssues",function(){
 	var tabUserName = $(this).attr("attr_tab_userName");
 	var mobileNo = $(this).attr("attr_mobileNo");
 	
-	$("#modalCadreUserName").html(cadreSurveyUserName);
-	$("#tabUserMblDetailsId").html(tabUserName+" - "+mobileNo);
+	$(".modalCadreUserName").html(cadreSurveyUserName);
+	$(".tabUserMblDetailsId").html(tabUserName+" - "+mobileNo);
 	$("#hiddenCadreSurveyUserId").val(cadreSurveyUserId);
 	$("#hiddenTabUserInfoId").val(tabUserInfoId);
 	
@@ -446,6 +446,9 @@ $(document).on("click",".manageIssues",function(){
   }
   //trackingRegIssueByRegIssueId();
   function trackingRegIssueByRegIssueId(value,cadreRegIssueId){
+	  $("#issueTrackingBodyId").html("");
+	  $("#issueTrackingModal").modal("show");
+	  $("#issueTrackingImgId").show();
 	   var jsObj = { cadreRegIssueId :cadreRegIssueId}
 	  
 	   $.ajax({
@@ -454,8 +457,40 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		  alert("tracking details retrieved successfully...");
+		   if(result != null && result.length > 0)
+			   buildIssueTrackingDetails(result);
+			else{
+				 $("#issueTrackingImgId").hide();
+				 $("#issueTrackingBodyId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+			}
 	   });
+  }
+  
+  function buildIssueTrackingDetails(result){
+	  var str = '';
+	  
+	  str+='<table class="table b_1 m_top10" id="detailsTable">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>Issue Type</th>';
+				str+='<th>Description</th>';
+				str+='<th>Status</th>';
+				str+='<th>UserName</th>';
+				str+='<th>Updated Time</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].issueType+'</td>';
+					str+='<td>'+result[i].description+'</td>';
+					str+='<td>'+result[i].issueStatus+'</td>';
+					str+='<td>'+result[i].userName+'</td>';
+					str+='<td>'+result[i].dateStr+'</td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+		$("#issueTrackingImgId").hide();
+		$("#issueTrackingBodyId").html(str);
   }
   
   function getConstituencyByVendor(){
