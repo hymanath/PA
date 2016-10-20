@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -23,6 +24,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	
 	//instance variables
 		private HttpServletRequest request;
+		private HttpSession	session;
 		private JSONObject jObj;
 		private String task;
 		private List<IdAndNameVO> idAndNameVOList;  
@@ -38,7 +40,16 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	   public void setServletRequest(HttpServletRequest request) {
 			this.request = request;
 		}
-	   
+	   public HttpSession getSession() {
+			return session;
+		}
+	
+	
+		public void setSession(HttpSession session) {
+			this.session = session;
+		}
+
+
 	//setters and getters.
 	   public void setFieldMonitoringService(IFieldMonitoringService fieldMonitoringService) {
 			this.fieldMonitoringService = fieldMonitoringService;
@@ -89,6 +100,12 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 
 	//Business methods
 	public String execute(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO == null)
+			return Action.INPUT;
+		
 		return Action.SUCCESS;
 	}
 	
@@ -263,11 +280,33 @@ public String getConstituencyByVendor(){
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			Long issueStatusId = jObj.getLong("issueStatusId");
+			Long vendorId = jObj.getLong("vendor");
+			String locationType = jObj.getString("locationType");
+			Long locationVal = jObj.getLong("locationVal"); 
 			
-			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,issueStatusId);
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,issueStatusId,vendorId,locationType,locationVal);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getIssuesCountsForATabUser(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long tabUserInfoId = jObj.getLong("tabUserInfoId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Long vendorId = jObj.getLong("vendor");
+			String locationType = jObj.getString("locationType");
+			Long locationVal = jObj.getLong("locationVal"); 
+			
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesCountsForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,vendorId,locationType,locationVal);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIssuesCountsForATabUser()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}

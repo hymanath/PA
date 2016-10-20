@@ -136,18 +136,10 @@ $(document).on("click",".manageIssues",function(){
     $("#issueTypeDivId").hide();
     var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
     var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
-	var openIssues = $(this).attr("attr_open_issues_count");
-	var fixedIssues = $(this).attr("attr_fixed_issues_count");
-	var closedIssues = $(this).attr("attr_closed_issues_count");
 	var cadreSurveyUserName = $(this).attr("attr_cadre_survey_userName");
 	var tabUserName = $(this).attr("attr_tab_userName");
 	var mobileNo = $(this).attr("attr_mobileNo");
-	var totalIssues = parseInt(openIssues)+parseInt(fixedIssues)+parseInt(closedIssues);
 	
-	$("#totalIssuesId").html(totalIssues);
-	$("#openIssuesId").html(openIssues);
-	$("#fixedIssuesId").html(fixedIssues);
-	$("#closedIssuesId").html(closedIssues);
 	$("#modalCadreUserName").html(cadreSurveyUserName);
 	$("#tabUserMblDetailsId").html(tabUserName+" - "+mobileNo);
 	$("#hiddenCadreSurveyUserId").val(cadreSurveyUserId);
@@ -157,6 +149,7 @@ $(document).on("click",".manageIssues",function(){
     $("#submitId").attr("attr_tab_user_info_id",tabUserInfoId);
 	
 	getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
+	getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 	
 	var vendorId = $("#vendorId option:selected").val();
 	var districtId =  $("#districtId option:selected").val();
@@ -169,8 +162,17 @@ $(document).on("click",".manageIssues",function(){
 	}
     $("#issuesModal").modal('show');
   });
-  function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId){
-	  $("#issueDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	  
+  
+  function getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId){
+	   $("#openIssuesId").html(0);
+	   $("#fixedIssuesId").html(0);
+	   $("#closedIssuesId").html(0);
+	   $("#totalIssuesId").html(0);
+	   
+	var vendorId = $("#vendorId").val();
+	var stateId = $("#stateId").val();
+	var districtId = $("#districtId").val();
+	var constituencyId = $("#constituencyId").val();
 	var dates = $(".singleDate").val();
 	var dateArr = dates.split("-");
 	var fromDate;
@@ -179,6 +181,21 @@ $(document).on("click",".manageIssues",function(){
 		fromDate = dateArr[0];
 		toDate = dateArr[1];
 	}
+	var locationType;
+	var locationVal;
+
+	if(constituencyId > 0){
+		locationType = "constituency";
+		locationVal = constituencyId;
+	}
+	else if(districtId > 0){
+		locationType = "district";
+		locationVal = districtId;
+	}
+	else{
+		locationType = "state";
+		locationVal = stateId;
+	}
 	
 	 var jsObj =
      {				
@@ -186,7 +203,72 @@ $(document).on("click",".manageIssues",function(){
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
 		toDate : toDate,
-        issueStatusId : issueStatusId		
+		vendor : vendorId,
+		locationType : locationType,
+		locationVal : locationVal
+     }
+    $.ajax({
+          type:'GET',
+          url: 'getIssuesCountsForATabUserAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result.length > 0){
+		   for(var i in result){
+			   if(result[i].issueStatusId != null && result[i].issueStatusId == 1)
+				   $("#openIssuesId").html(result[i].count);
+			   else if(result[i].issueStatusId != null && result[i].issueStatusId == 2)
+				   $("#fixedIssuesId").html(result[i].count);
+			   else if(result[i].issueStatusId != null && result[i].issueStatusId == 3)
+				   $("#closedIssuesId").html(result[i].count);
+			   else
+				  $("#totalIssuesId").html(result[i].count);
+			}
+		}
+   });
+  }
+  
+  function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId){
+		$("#issueDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	 
+		$("#hiddenIssueStatusId").val(issueStatusId);
+		var vendorId = $("#vendorId").val();
+		var stateId = $("#stateId").val();
+		var districtId = $("#districtId").val();
+		var constituencyId = $("#constituencyId").val();
+		var dates = $(".singleDate").val();
+		var dateArr = dates.split("-");
+		var fromDate;
+		var toDate;
+		if(dateArr != null){
+			fromDate = dateArr[0];
+			toDate = dateArr[1];
+		}
+		var locationType;
+		var locationVal;
+
+		if(constituencyId > 0){
+			locationType = "constituency";
+			locationVal = constituencyId;
+		}
+		else if(districtId > 0){
+			locationType = "district";
+			locationVal = districtId;
+		}
+		else{
+			locationType = "state";
+			locationVal = stateId;
+		}
+	
+	 var jsObj =
+     {				
+		cadreSurveyUserId : cadreSurveyUserId,
+		tabUserInfoId : tabUserInfoId,
+		fromDate : fromDate,   
+		toDate : toDate,
+        issueStatusId : issueStatusId,
+		vendor : vendorId,
+		locationType : locationType,
+		locationVal : locationVal
 	 }
     $.ajax({
           type:'GET',
@@ -314,6 +396,10 @@ $(document).on("click",".manageIssues",function(){
 	            //selectbox Value Start
 	           var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
 	           $(".statusUpdate"+value).text(subValue);
+			   
+			   var cadreSurveyUserId = $("#hiddenCadreSurveyUserId").val();
+			   var tabUserInfoId = $("#hiddenTabUserInfoId").val();
+			   var issueStatusId = $("#hiddenIssueStatusId").val();
 	   var jsObj =
       {				
 		cadreRegIssueId :cadreRegIssueId,
@@ -334,6 +420,8 @@ $(document).on("click",".manageIssues",function(){
 			   $(".editBtn").closest("li").find(".descriptionCls").show();
 	           $(".editBtn").closest("li").find(".descriptionEditCls").hide();
 			    $(".editBtn").closest("li").find(".trackingIssueCls").show();	
+				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId);
+				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 			}, 2000);
 		   }else{
 			    $("#updateStatusId").html("<span style='color: red;font-size:18px;'> update Failed.Please try Again..</span>");
@@ -492,7 +580,7 @@ function buildTabUserDetails(result){
 						str+='<td>'+result.subList[i].fixedIssues+'</td>';
 					else
 						str+='<td> - </td>';
-					str+='<td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_open_issues_count="'+result.subList[i].openIssues+'" attr_fixed_issues_count="'+result.subList[i].fixedIssues+'" attr_closed_issues_count="'+result.subList[i].closedIssues+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'">manage issues</button></td>';
+					str+='<td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'">manage issues</button></td>';
 				str+='</tr>';
 			}
 			str+='</tbody>';
