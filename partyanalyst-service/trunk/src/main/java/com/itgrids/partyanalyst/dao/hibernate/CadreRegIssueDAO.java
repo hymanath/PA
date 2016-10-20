@@ -397,4 +397,46 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		}
 		return query.list();
 	}
+	
+public Long getActiveUsersCount(Date fromDate,Date toDate){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select  count(distinct model.createdBy) " +
+				"  from CadreRegIssue model  " );
+		
+		if(fromDate != null && toDate != null)
+			sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return (Long)query.uniqueResult();
+	}
+
+public List<Object[]> getDistrictWiseIssueTypesCount(Date fromDate,Date toDate,Long statusTypeId,List<Long> stateIds){
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status," +
+			" model.cadreRegIssueType.cadreRegIssueTypeId,model.userAddress.district.districtId" +
+			" ,model.userAddress.district.state.stateId,model.userAddress.district.state.stateName  from " +
+			" CadreRegIssue model   ");
+	if(fromDate != null && toDate != null)
+		sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
+	
+		sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId ");
+		if(stateIds != null  && stateIds.size()>0)
+		sb.append(" and model.userAddress.district.state.stateId in (:stateIds) ");
+				
+	sb.append(" group by model.userAddress.district.districtId,model.cadreRegIssueType.cadreRegIssueTypeId ");
+	
+	Query query = getSession().createQuery(sb.toString());
+		
+	if(stateIds != null  && stateIds.size()>0){
+		query.setParameterList("stateIds", stateIds);
+	}
+	
+	query.setParameter("statusTypeId",statusTypeId );
+	query.setDate("fromDate", fromDate);
+	query.setDate("toDate", toDate);
+	return query.list();
+}
 }
