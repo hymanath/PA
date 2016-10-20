@@ -90,6 +90,14 @@ label
 	position:relative;
 	padding-left:12px !important;
 }
+.tableInfo
+{
+	margin-left:5px;
+}
+.tableInfo.issueCmpltd:before , .tableInfo.issuePending:before
+{
+	top:6px;
+}
 .issueCmpltd:before
 {
 	position:absolute;

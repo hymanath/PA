@@ -30,6 +30,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private IdNameVO idNameVO;
 		  private List<IdNameVO> idNameVOs;
 		  private DataMonitoringOverviewVO resultVO;
+		  private List<DataMonitoringOverviewVO> resultList;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
 		   private IFieldMonitoringService fieldMonitoringService;
@@ -80,13 +81,20 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				this.resultVO = resultVO;
 			}
 
-		public IdNameVO getIdNameVO() {
-			return idNameVO;
-		}
+			public IdNameVO getIdNameVO() {
+				return idNameVO;
+			}
+	
+			public void setIdNameVO(IdNameVO idNameVO) {
+				this.idNameVO = idNameVO;
+			}
+		   public List<DataMonitoringOverviewVO> getResultList() {
+				return resultList;
+			}
 
-		public void setIdNameVO(IdNameVO idNameVO) {
-			this.idNameVO = idNameVO;
-		}
+			public void setResultList(List<DataMonitoringOverviewVO> resultList) {
+				this.resultList = resultList;
+			}
 		public List<IdNameVO> getIdNameVOs() {
 			return idNameVOs;
 		}
@@ -173,7 +181,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		
 		    return Action.SUCCESS;
 		}
-		public String getTotalRegCdrVendorAndTabUserWise(){
+	   public String getTotalRegCdrVendorAndTabUserWise(){
 			
 			try {
 				jObj = new JSONObject(getTask());
@@ -190,4 +198,17 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		
 		    return Action.SUCCESS;
 		}
+	   public String getRegistrationDetailsUserWise(){
+		      try {
+		        jObj = new JSONObject(getTask());
+		        String dataSourceType = jObj.getString("dataSourceType");  
+		        String verificationStatus = jObj.getString("verificationStatus");
+		        String  fromDate = jObj.getString("fromDate");
+		        String toDate = jObj.getString("toDate");
+		        resultList = dataMonitoringService.getRegistrationDetailsUserWise(fromDate, toDate,dataSourceType,verificationStatus);
+		      } catch (Exception e) {  
+		        LOG.error("Exception raised at getRegistrationDetailsUserWise()  of DataMonitoringAction", e);
+		      }
+		        return Action.SUCCESS;
+		    }
 }

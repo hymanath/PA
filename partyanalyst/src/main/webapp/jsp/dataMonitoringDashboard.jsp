@@ -10,6 +10,7 @@
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">
@@ -54,40 +55,10 @@
                 </div>
             </div>
             <div class="block pad_20 m_top20">
-            	<h4 class="panel-title">pending - 4000<span class="pull-right"><i class="glyphicon glyphicon-remove"></i></span></h4>
-                <div class="table-responsive">
-                	<table class="table b_1 m_top10">
-                    	<thead>
-                        	<th>User Id</th>
-                            <th>Name</th>
-                            <th>Contact Numb</th>
-                            <th>Completed Registrations</th>
-                            <th>Verified - Passed</th>
-                            <th>Verified- Junk/Rejected</th>
-                            <th>Pending</th>
-                            <th></th>
-                        </thead>
-                        <tr>
-                        	<td class="issueCmpltd">13124</td>
-                            <td>Ramesj</td>
-                            <td>98757585895</td>
-                            <td>10</td>
-                            <td>4</td>
-                            <td>12</td>
-                            <td>12</td>
-                            <td><button class="btn btn-success">Verify Pending Records</button></td>
-                        </tr>
-                        <tr>
-                        	<td class="issuePending">13124</td>
-                            <td>Ramesj</td>
-                            <td>98757585895</td>
-                            <td>10</td>
-                            <td>4</td>
-                            <td>12</td>
-                            <td>12</td>
-                            <td><button class="btn btn-success">Verify Pending Records</button></td>
-                        </tr>
-                    </table>
+            	<h3 id="totalHeadingId"><span class="pull-right"><i class="glyphicon glyphicon-remove"></i></span></h3>
+				<p class="m_top10 headingCls" style="display:none;">Logged In FieldUsers <span class="issuePending tableInfo pull-right">Passive User</span><span class="issueCmpltd tableInfo pull-right">Active User</span></p>
+                <div class="table-responsive m_top10">
+				 <div id="userWiseRegDivId"></div>
                 </div>
             </div>
         </div>
@@ -160,6 +131,7 @@
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/dataMonitoring/dataMonitoringDashboard.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).on("click",".issuesBtn",function(){
 	$("#issuesModal").modal('show');
@@ -167,76 +139,10 @@ $(document).on("click",".issuesBtn",function(){
 $(".multiDateRangePicker").daterangepicker({
 		opens: 'left',
 	 	locale: {
-		  format: 'DD/MM/YYYY'
+		  format: 'MM/DD/YYYY'
 		}		
 });
- getDataMonitoringOverViewDetails();
-$('#openIssues').highcharts({
-	chart: {
-		type: 'pie',
-		options3d: {
-			enabled: true,
-			alpha: 45
-		}
-	},
-	title: {
-		text: null
-	},
-	subtitle: {
-		text: null
-	},
-	plotOptions: {
-		pie: {
-			innerSize: 100,
-			depth: 45
-		}
-	},
-	series: [{
-		name: 'Open Issues',
-		data: [
-			['leader issue', 8],
-			['man power issue', 3],
-			['technical issue', 1],
-			['smart device issue', 6],
-			['registration center', 8],
-			['internet issue', 4],
-			['apk issue', 4]
-		]
-	}]
-});
-$('#fixedIssues').highcharts({
-	chart: {
-		type: 'pie',
-		options3d: {
-			enabled: true,
-			alpha: 45
-		}
-	},
-	title: {
-		text: null
-	},
-	subtitle: {
-		text: null
-	},
-	plotOptions: {
-		pie: {
-			innerSize: 100,
-			depth: 45
-		}
-	},
-	series: [{
-		name: 'Open Issues',
-		data: [
-			['leader issue', 8],
-			['man power issue', 3],
-			['technical issue', 1],
-			['smart device issue', 6],
-			['registration center', 8],
-			['internet issue', 4],
-			['apk issue', 4]
-		]
-	}]
-});
+getDataMonitoringOverViewDetails();
 </script>
 </body>
 </html>

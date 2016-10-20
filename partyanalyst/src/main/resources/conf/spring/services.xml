@@ -3563,6 +3563,7 @@
 	 <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 	 <property name="tdpCadreDataVerificationDAO" ref="tdpCadreDataVerificationDAO" />
 	 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>  
+	 <property name="dateUtilService" ref="dateUtilService" />	
 	</bean>
 	
 </beans>		

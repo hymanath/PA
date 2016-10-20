@@ -14184,5 +14184,11 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getRegistrationDetailsUserWiseAction" class="dataMonitoringAction"  method="getRegistrationDetailsUserWise">
+      <result type="json" name="success">
+      <param name="root">resultList</param>
+    </result>
+  </action>
+	
 </package>
 </struts>
