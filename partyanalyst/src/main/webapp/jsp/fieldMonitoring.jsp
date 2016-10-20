@@ -171,6 +171,7 @@
 
 <input type="hidden" id="hiddenCadreSurveyUserId"></input>
 <input type="hidden" id="hiddenTabUserInfoId"></input>
+<input type="hidden" id="hiddenIssueStatusId"></input>
 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>

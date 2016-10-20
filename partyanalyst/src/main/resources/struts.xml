@@ -14146,6 +14146,11 @@
 			<param name="root">fieldMonitoringIssueVOList</param>
 		</result>
 	</action>
+	<action name="getIssuesCountsForATabUserAction" class="fieldMonitoringAction"  method="getIssuesCountsForATabUser">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringIssueVOList</param>
+		</result>
+	</action>
 	<action name="updateStatusToACadreRegIssueAction" class="fieldMonitoringAction"  method="updateStatusToACadreRegIssue">
 			<result type="json" name="success">
 			<param name="root">resultStatus</param>

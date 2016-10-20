@@ -228,7 +228,9 @@ $('.select').chosen({width:'100%'});
 
  onLoadCalls();
 
-
+$(document).on("click",".applyBtn",function(){
+	onLoadCalls();
+});
 /*$('#openIssues').highcharts({
 	chart: {
 		type: 'pie',
