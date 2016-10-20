@@ -114,6 +114,23 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             <section>
                 <div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-10 col-sm-offset-1">
                     <div class="panel panel-default">
+				<div class="panel-heading">
+                	<h4 class="panel-title">PARTY MEETINGS</h4>
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+					<span class="pull-right" style="margin-top:-21px">
+						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
+							<input type="radio" checked="true" class="stateCls" style="cursor:pointer;" name="stateName" value="0" onclick="handleFunctions();"> <b>ALL</b>
+						  </span>
+						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
+							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="1" onclick="handleFunctions();"> <b>AP</b>
+						  </span> 
+						  <span class="btn btn-xs btn-success" style="border-radius:15px;">
+							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="36" onclick="handleFunctions();"> <b>TS</b>
+						  </span>
+					</span>
+					</c:if>
+					
+                </div>
                         <div class="panel-heading" style="background-color:#CCC">
                             <h4 class="panel-title text-uppercase" ><span id="meetingType"></span>&nbsp; <i><small id="location" ></small></i></h4>
 							
@@ -321,13 +338,116 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<h4 class="panel-title">Action Type</h4>
 				<label class="radio-inline" name="actionTypeName">
-					<input type="radio"/>General
+					<input type="radio" class="checkCls" id="generalBtnId" name="checkRdoBtnname" value="N"/>General
 				</label>
 				<label class="radio-inline" name="actionTypeName">
-					<input type="radio"/>Actionable
+					<input type="radio" class="checkCls" id="actionableBtnId" name="checkRdoBtnname"  value="Y"/>Actionable
 				</label>
 			</div>
-			<div class="col-md-4 col-xs-12 col-sm-3">
+			 <div class="panel-body">
+                        	<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-3" id="meetingLvlId">
+									<label>Meeting Level</label>
+									<span id="meetingLocationErrorMessage" style="color: red;"></span>
+										<select class="form-control" id="meetingLocationLevel"></select>
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
+								</div>	
+								
+                            	<!--<div class="col-md-4 col-xs-12 col-sm-3">
+								
+									<label>Select Meeting Name/Type Of Meeting</label>
+									<select class="form-control" id="typeOfMeeting">
+										<option> Select Meeting Type </option>
+									</select>
+									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
+									
+                                </div>-->
+								
+								
+                            	<!--<div class="col-md-3">
+                                	<label>Meeting Location</label>
+                                    <select class="form-control" id="meetingLocation"></select>
+                                </div>-->
+                            	<!--<div class="col-md-3">
+                                	<label>Meeting Called By</label>
+                                    <select class="form-control" disabled>
+                                    	<option>District level</option>
+                                    </select>
+                                </div>-->
+                              <!-- 	<div class="col-md-3">
+							  balu
+                                	<label >Select Date</label>
+									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;width:350px !important;">
+									  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
+									  <span style="margin-left: 25px;"></span> 
+									</div>
+									<div class="input-group">
+                                    	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <input type="text" class="form-control" id="reportrange">
+										<span class="caret"></span>
+										<span></span>
+                                    </div> 
+								</div>-->
+								<!--<div class="col-md-3">
+                                	<label>Meeting End Date</label> 
+									<div class="input-group">
+                                    	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <input type="text" class="form-control" id="endDate">
+                                    </div>
+								</div>-->	
+								<div class="col-md-4 col-xs-12 col-sm-4" id="stateShowId" style="display:none;">
+										<label>State</label>
+										<span id="stateErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="statesDivId">
+										<!--<option>Select State</option>-->
+										</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
+										<label>District</label>
+										<span id="districtErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="districtId">
+										<!--<option>Select District</option>-->
+										</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
+										<label>Constituency</label>
+										<span id="ConsErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="constituencyId" name="constBox">
+										<!--<option>Select Constituency</option>-->
+										</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
+										<label>Mandal/Town/Division</label>
+										<span id="ManErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="manTowDivId">
+										<option>Select Mandal/Town/Division</option>
+										</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;">
+									<label>Village/Ward</label>
+										<span id="VillErrorMSgShow" style="color: red;"></span>
+									<select class="form-control" id="villWardId">
+									<option>Select Village/Ward</option>
+									</select>
+								</div>
+								<div class="col-md-1" style="height: 44px; width: 10px;">
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								</div>
+								<div class="col-md-1" style="height: 44px; width: 10px;">
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								</div>
+								
+								<div class="col-md-1" style="height: 44px; width: 10px;">
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								</div>
+                            </div>
+					 </div>
+			<!--<div class="col-md-4 col-xs-12 col-sm-3">
 				<label>Meeting Level</label>
 				<span id="meetingLocationErrorMessage" style="color: red;"></span>
 					<select class="form-control" id="meetingLocationLevel"></select>
@@ -344,26 +464,26 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
 				
 			</div>-->
-			<div class="col-md-4 col-xs-12 col-sm-4" id="stateShowId" style="display:none;">
+			<!--<div class="col-md-4 col-xs-12 col-sm-4" id="stateShowId" style="display:none;">
 				<label>State</label>
 				<span id="stateErrorMSgShow" style="color: red;"></span>
 				<select class="form-control" id="statesDivId">
 				<!--<option>Select State</option>-->
-				</select>
+				<!--</select>
 			</div>
 			<div class="col-md-4 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
 				<label>District</label>
 				<span id="districtErrorMSgShow" style="color: red;"></span>
 				<select class="form-control" id="districtId">
 				<!--<option>Select District</option>-->
-				</select>
+				<!--</select>
 			</div>
 			<div class="col-md-4 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
 				<label>Constituency</label>
 				<span id="ConsErrorMSgShow" style="color: red;"></span>
 				<select class="form-control" id="constituencyId" name="constBox">
 				<!--<option>Select Constituency</option>-->
-				</select>
+				<!--</select>
 			</div>
 			<div class="col-md-4 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
 				<label>Mandal/Town/Division</label>
@@ -381,13 +501,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			</div>
 			<div class="col-xs-12 col-md-3 col-sm-6" >
 				<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View</button>
-			</div>
+			</div>-->
 		</div>
 	  </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-        <button type="button" attr_minuteid="0" class="btn btn-success saveMinute" id="saveBtnMeetMin">Save</button>
-      </div>
+	   <button type="button" attr_minuteid="0" class="btn btn-success saveMinute" id="saveBtnMeetMin">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+       </div>
     </div>
   </div>
 </div>
@@ -538,7 +658,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    
     $(document).ready(function() {
      getPartyMeetingMinutesAtrDetails(partyMeetingId);
-     getTheMeetingLevelDetails()
+    // getTheMeetingLevelDetails()
    });
 
     $("#mainheading").html("PARTY MEETINGS - MOM & ATR ");
@@ -550,6 +670,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#mintModal").modal("show");
 			//openModalMOM();
 			$("#meetRaised").val("");
+			getUserAccessLocationDetails();
 	 }); 	
 	 
  $(document).on('click', '.conformDel', function(){
@@ -629,7 +750,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
         });
     }
    
-    function getDistrictsForStates(state,atrId,locationLevelValue){
+  /*   function getDistrictsForStates(state,atrId,locationLevelValue){
        
     $("#searchDataImgForDist"+atrId).show();
    
@@ -671,8 +792,65 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 $("#locationInPop").attr("locationScope",1);
 		 
    });
-  }
- function getConstituenciesForDistricts(district,atrId,locationLevelValue){
+  } */
+  function getDistrictsForStates(state){
+		$("#searchDataImgForDist").show();
+		
+		$("#districtId  option").remove();
+		//$("#districtId").append('<option value="">Select District</option>');
+		$("#constituencyId  option").remove();
+		<!--$("#constituencyId").append('<option value="">Select Constituency</option>');-->
+		$("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="0">Select Mandal/Town/Divison</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="0">Select Village/Ward</option>');
+	   var jsObj=
+	   {				
+					stateId:state,
+					elmtId:"districtList_d",
+					type:"default",
+					task:"getDistrictsForState"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getNewDistrictsOfStateSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#searchDataImgForDist").hide();
+		    $("#districtId").append('<option value="0">Select District</option>');
+			
+			for(var i in result){
+				if(distArr.length>0){
+					if($.inArray(result[i].id, distArr) > -1){
+					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   }
+				}else{
+					 $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			}
+			//meetingLevelWiseHideShow();
+			//getConstituenciesForDistricts('');
+			/* setTimeout(
+			function(){		
+				getMandalVillageDetails(4);
+				setTimeout(
+			function(){						
+				getMandalVillageDetails(5);
+			}, 1000);
+			
+			}, 2000); */
+			
+		 $("#locationInPop").html("");//locationCls
+		 
+		 var locationDiv = $("#DistrictShowId0");
+		 locationDiv.find(".locationCls").attr("id","locationDivId");
+		 
+		 $("#locationInPop").html($("#DistrictShowId0").html());
+		 $("#locationInPop").attr("locationScope",1);
+	   });
+	}
+ /*function getConstituenciesForDistricts(district,atrId,locationLevelValue){
         $("#searchDataImgForman"+atrId).show();
         var distArrTemp = [district];
        var jsObj={				
@@ -708,11 +886,63 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#locationInPop").html($("#ConstShowId0").html());
 			$("#locationInPop").attr("locationScope",2);
         });
-    }
-
+    }*/
+function getConstituenciesForDistricts(district){
+	   $("#constituencyId  option").remove();
+	   $("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="0">ALL</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="0">ALL</option>');
+	   
+		//$("#constituencyId").append('<option value="">Select Constituency</option>');
+		var stateId = $("#statesDivId").val();
+		
+		var distArrTemp = [];
+		if(district==0){
+			distArrTemp = distArr; //8888
+		}else{
+			distArrTemp.push(district);
+		}
+		 $("#searchDataImgForcons").show();
+		var jsObj={				
+			districtId:distArrTemp,
+			stateId:stateId,
+			task:"getConstituenciesForDistricts"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesOfDistrictWithSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#searchDataImgForcons").hide();
+		   $("#constituencyId").append('<option value="0">Select Constituencies</option>');
+			for(var i in result){
+			   if(assmblyArr.length>0){
+				   if($.inArray(result[i].locationId, assmblyArr) > -1){
+					  $("#constituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+					}
+			   }
+				else{
+					$("#constituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+				
+			}
+			$("#locationInPop").html("");
+			
+			var locationDiv = $("#ConstShowId0");
+			locationDiv.find(".locationCls").attr("id","locationDivId");
+			
+			$("#locationInPop").html($("#ConstShowId0").html());
+			$("#locationInPop").attr("locationScope",2);
+			
+		});
+	}
 
    
     function getMandalVillageDetails(locationId, locationLevel,atrId,locationLavelValue){
+		$("#manTowDivId  option").remove();
+		$("#villWardId  option").remove();
           $("#searchDataImgForcons"+atrId).show();
         var constituencyId = [];
         var mandalId = [];
@@ -788,7 +1018,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
             $("#ConstShowIdSpan"+atrId).show();
             $("#ManTwnDivShowIdSpan"+atrId).hide();
             $("#VillWardShowIdSpan"+atrId).hide();
-			
             getConstituenciesForDistricts(locationId,atrId,locationLevelValue);
         }
         else if(locationLevel == 3){
@@ -987,17 +1216,60 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		$("#momError").text("");
 		var reslt;
 		var minuteText = $("#meetRaised").val();
+		var stateId = $("#statesDivId").val();
+		var districtId = $("#districtId").val();
+		var constituencyId = $("#constituencyId").val();
+		var mandalId = $("#manTowDivId").val();
+		var panchayatId = $("#villWardId").val();
+		var isActionable = $("#actionableBtnId").val();
+		var levelId = $("#meetingLocationLevel").val();
+		var levelValue = $("#manTowDivId").val();
 		if(minuteText.trim().length==0){
 			$("#momError").text(" Please Enter Minute Text");
 			return;
 		}
-		
+		if($("#meetingLocationLevel").val()== 2 ){
+			if(districtId == 0){
+				$("#momError").text(" Please Select District ");
+				return;
+			}
+		}else if($("#meetingLocationLevel").val()== 3){
+			if(constituencyId == 0){
+				$("#momError").text(" Please Select constituency");
+				return;
+			}
+		}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+			if(mandalId == 0){
+				$("#momError").text(" Please Select Mandal");
+				return;
+			}
+		}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
+			if( panchayatId == 0){
+				$("#momError").text(" Please Select Panchayat");
+				return;
+			}
+				
+		}else if($("#meetingLocationLevel").val()== 1){
+			if(stateId == 0){
+				$("#momError").text(" Please Select State");
+				return;
+			}
+		}
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
 			minuteId : minuteId,
 			minuteText : minuteText,
-			partyMeetingId : partyMeetingId//global var
+			partyMeetingId : partyMeetingId,//global var
+			statusId : 1,
+			stateId:stateId,
+			districtId:districtId,
+			constituencyId:districtId,
+			tehsilId:mandalId,
+			panchayatId:panchayatId,
+			isActionable:isActionable,
+			levelId:levelId,
+			levelValue:levelValue
 		}
 		$.ajax({
 			  type:'POST',
@@ -1622,6 +1894,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	});
 	
 	function openModalMOM(){
+		alert(7);
 		$("#momError").html("");
 		$( "#dialogMOM" ).dialog({
 		  height: 420,
@@ -1672,9 +1945,298 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		  }
 		});
 	}
-	
-	
-	
+$(document).on(".checkCls",function(){
+  $(".checkCls").attr("checked", false); //uncheck all checkboxes
+  $(this).attr("checked", true);  //check the clicked one
+});	
+
+	var stateArr = [];
+	var distArr = [];
+	var parlArr = [];
+	var assmblyArr = [];
+	var firstMeetingId;
+	function getUserAccessLocationDetails(){
+	    var jsObj={				
+			task:"getUserAccessLocationDetails"				
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getUserAccessLocationDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   $("#meetingLocationLevel").append('<option value="0">Select Location Type</option>');
+		   var rslt = result.userAccessLevelList;
+			if(rslt!=null && rslt.length>0){
+				var isAddedMandal = false;
+				var isAddedVillage = false;
+				for(var i in rslt){
+					if(rslt[i].levelId ==4 || rslt[i].levelId ==5 || rslt[i].levelId ==6){
+						var locationLevel = " Mandal/ Town/ Division";
+						if(!isAddedMandal){
+							$("#meetingLocationLevel").append('<option value="'+rslt[i].levelId+'">'+locationLevel+'</option>');
+						}
+						isAddedMandal = true;
+					}else if(rslt[i].levelId ==7 || rslt[i].levelId ==8){
+						locationLevel = " Village/ Ward";
+						if(!isAddedVillage){
+							$("#meetingLocationLevel").append('<option value="'+rslt[i].levelId+'">'+locationLevel+'</option>');
+						}
+						isAddedVillage = true;
+					}else{
+						$("#meetingLocationLevel").append('<option value="'+rslt[i].levelId+'">'+rslt[i].name+'</option>');
+					}
+					
+				}
+			}
+			$("#searchDataImgForMeetingsList").hide();
+			
+			var rsltValues = result.userAccessLevelValuesList;
+			if(rsltValues!=null && rsltValues.length>0){
+				for(var i in rsltValues){
+					if(rsltValues[i].levelId==1){
+						stateArr = rsltValues[i].levelValues;
+					}else if(rsltValues[i].levelId ==2){
+						distArr = rsltValues[i].levelValues;
+					}else if(rsltValues[i].levelId ==3){
+						parlArr = rsltValues[i].levelValues;
+					}else if(rsltValues[i].levelId ==4){
+						assmblyArr = rsltValues[i].levelValues;
+					}
+				}
+			}
+			
+			if(distArr.length==0 && parlArr.length==0){
+				$('#meetingLocationLevel').val('1').trigger('change');
+				$("#statesDivId").val(stateArr[0]).trigger('change');
+			} else if(stateArr.length>0 && distArr.length>0 && parlArr.length==0){
+				console.log(2);
+				$('#meetingLocationLevel').val('2').trigger('change');
+				$('#statesDivId').val(stateArr[0]).trigger('change');
+				setTimeout(function(){
+					$('#districtId').val(distArr[0]).trigger('change');
+					
+				},1000); 
+				
+			}else if(parlArr.length>0){
+				$('#meetingLocationLevel').val('3').trigger('change');
+				$('#statesDivId').val(stateArr[0]).trigger('change');
+				setTimeout(function(){
+					$('#districtId').val(distArr[0]).trigger('change');
+					
+				},1000); 
+				
+				setTimeout(function(){	
+					$('select[name="constBox"] option:eq(2)').attr('selected', 'selected');
+					//$("#viewMeetings").trigger( "click" );
+				},2000);
+			} 
+		});
+	}
+		//Location Showing and Hiding
+$("#meetingLocationLevel").change(function(){
+			
+			$("#districtId").val($("#districtId option:first").val());
+			$("#constituencyId").val($("#constituencyId option:first").val());
+			$("#manTowDivId").val($("#manTowDivId option:first").val());
+			$("#villWardId").val($("#villWardId option:first").val());
+
+				 $("#statesDivId").html("");
+				
+				//$("#statesDivId").append('<option value=""> Select State </option>');
+				$("#statesDivId").append('<option value=0> ALL </option>');
+				
+				if($.inArray(1, stateArr) > -1){
+					$("#statesDivId").append('<option value=1> AndhraPradesh </option>');
+				}
+				if($.inArray(36, stateArr) > -1){
+					$("#statesDivId").append('<option value=36> Telangana </option>');
+				} 
+				<!--<c:if test="${sessionScope.USER.isAdmin == 'true'}">-->
+					$(".stateCls").each(function(){
+						if($(this).prop('checked')==true){
+					
+						 if($(this).val()==1){
+							$("#statesDivId").html("");
+							$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+							getDistrictsForStates($( "#statesDivId" ).val());
+						}else if($(this).val()==36){
+							$("#statesDivId").html("");
+							$("#statesDivId").append('<option value=36> Telangana </option>');
+							getDistrictsForStates($( "#statesDivId" ).val());
+						}else if($(this).val()==0){
+							$("#statesDivId").html("");
+							$("#statesDivId").append('<option value=0> All </option>');
+							$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+							$("#statesDivId").append('<option value=36> Telangana </option>');
+							//getDistrictsForStates(this.value);
+							}
+						}
+					});
+				<!--</c:if>	-->
+
+meetingLevelWiseHideShow();	
+});	
+function getMandalsForDistrictId(){
+	 $("#manTowDivId  option").remove();
+	var districtId = $("#districtId").val();
+			var districtId = [];
+			if(districtId==0){
+				if(distArr.length>0){
+					districtId = distArr;
+				}
+			}else{
+				districtId.push(districtId);
+			}
+			districtId = districtId;
+			var constituencyId=[];
+	 var jsObj={
+			stateId:0,			
+			districtId :districtId,
+			mandalId:0,
+			locationLevel:4,
+			constituencyId:constituencyId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getSubLevelLctnsForConstituencyAndMandalAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				$("#manTowDivId").append("<option value='0'>Select Mandal</option>");
+			   for(var i in result){
+				   $("#manTowDivId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+			   }
+		   }
+   });	
+  }
+  function handleFunctions(){
+	getLevelWiseMeetingDetails(); 
+		$("#loadingImgForLevelId").show();
+		$(".stateCls").each(function(){
+			if($(this).prop('checked')==true){
+				 if($(this).val()==1){
+					$("#statesDivId").html("");
+					//$("#statesDivId").append('<option value=1> All </option>');
+					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+					getDistrictsForStates($( "#statesDivId" ).val());
+					meetingLevelWiseHideShow();
+				}else if($(this).val()==36){
+					$("#statesDivId").html("");
+					//$("#statesDivId").append('<option value=36> All </option>');
+					$("#statesDivId").append('<option value=36> Telangana </option>');
+					getDistrictsForStates($( "#statesDivId" ).val());
+					meetingLevelWiseHideShow();
+				}else if($(this).val()==0){
+					$("#statesDivId").html("");
+					$("#statesDivId").append('<option value=0> All </option>');
+					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+					$("#statesDivId").append('<option value=36> Telangana </option>');
+					getDistrictsForStates($( "#statesDivId" ).val());
+					meetingLevelWiseHideShow();
+				}
+			}
+		});
+ }
+ function meetingLevelWiseHideShow(){
+	 if($("#meetingLocationLevel").val()== 2 ){
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").hide();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 3){
+				getConstituenciesForDistricts("");
+				
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+				getConstituenciesForDistricts("");	
+				getMandalsForDistrictId();
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").show();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
+				getConstituenciesForDistricts("");
+
+				getMandalVillageDetails(4);
+				getMandalsForDistrictId();
+				getVillagesForDistrictId();
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").show();
+				$("#VillWardShowId").show();
+				
+			}else if($("#meetingLocationLevel").val()== 1){
+				
+				$("#stateShowId").show();
+				$("#DistrictShowId").hide();
+				$("#ConstShowId").hide();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+			}
+		
+}
+ function getVillagesForDistrictId(){
+	$("#villWardId  option").remove();
+	 var districtId = $("#districtId").val();
+			var districtId = [];
+			if(districtId==0){
+				if(distArr.length>0){
+					districtId = distArr;
+				}
+			}else{
+				districtId.push(districtId);
+			}
+			districtId = districtId;
+			var constituencyId=[];
+	 	var jsObj={
+			stateId:0,			
+			districtId :districtId,
+			mandalId:0,
+			locationLevel:5,
+			constituencyId:constituencyId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getSubLevelLctnsForConstituencyAndMandalAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				$("#villWardId").append("<option value='0'>Select Village</option>");
+				for(var i in result){
+				   $("#villWardId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+			   }
+		   }
+   });	
+ }
+ $( "#statesDivId" ).change(function() {
+		$("#stateErrorMSgShow").html("");
+		getDistrictsForStates(this.value);
+	});
+$( "#districtId" ).change(function() {
+		$("#districtErrorMSgShow").html("");
+		getConstituenciesForDistricts(this.value);
+	});
+$(document).on("click","#actionableBtnId",function(){
+		$("#meetingLvlId").show();
+		$("#stateShowId").show();
+});
+$(document).on("click","#generalBtnId",function(){
+		$("#meetingLvlId").hide();
+		$("#stateShowId").hide();
+});
 </script>
 </body>
 </html>
