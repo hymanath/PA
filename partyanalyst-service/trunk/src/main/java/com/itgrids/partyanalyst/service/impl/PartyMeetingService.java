@@ -789,8 +789,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmm.setIsDeleted("N");
 					
 					if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
-						pmm.setLocationLevel(levelId);
-						pmm.setLocationValue(levelValue);
+						if(levelId !=null && levelId>0l)
+								pmm.setLocationLevel(levelId);
+						if(levelValue !=null && levelValue >0l)
+								pmm.setLocationValue(levelValue);
 						
 						UserAddress returnUA = setUserAddress(stateId,districtId,constituencyId,tehsilId,panchayatId);					
 						pmm.setUserAddressId(returnUA.getUserAddressId());
@@ -827,23 +829,23 @@ public class PartyMeetingService implements IPartyMeetingService{
 			UserAddress UA = new UserAddress(); 
 			
 			if(districtId !=null && districtId >0L){
-				UA.getDistrict().setDistrictId(districtId!=null && districtId>0? districtId:null);
+				UA.setDistrict(districtDAO.get(districtId));
 			}
 			if(stateId !=null && stateId >0L){
-				UA.getState().setStateId(stateId!=null && stateId>0? stateId:null);
+				UA.setState(stateDAO.get(stateId));
 			}
 			if(constituencyId !=null && constituencyId>0l){
-				UA.getConstituency().setConstituencyId(constituencyId!=null && constituencyId>0? constituencyId:null);
+				UA.setConstituency(constituencyDAO.get(constituencyId));
 			}
-			if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==1l){
-				UA.getTehsil().setTehsilId(tehsilId);
-			}else if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==2l){
-				UA.getLocalElectionBody().setLocalElectionBodyId(tehsilId);
+			if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==4l){
+				UA.setTehsil(tehsilDAO.get((Long.valueOf(tehsilId.toString().substring(1,tehsilId.toString().length()-1)))));
+			}else if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==5l){
+				UA.setLocalElectionBody(localElectionBodyDAO.get((Long.valueOf(tehsilId.toString().substring(1,tehsilId.toString().length()-1)))));
 			}
-			if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==1l){
-				UA.getPanchayat().setPanchayatId(panchayatId);
-			}else if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==2l){
-				UA.getConstituency().setConstituencyId(panchayatId);
+			if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==7l){
+				UA.setPanchayat(panchayatDAO.get(Long.valueOf(panchayatId.toString().substring(1,panchayatId.toString().length()-1))));
+			}else if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==8l){
+				UA.setConstituency(constituencyDAO.get(Long.valueOf(panchayatId.toString().substring(1,panchayatId.toString().length()-1))));
 			}
 			
 			UserAddress returnUA = userAddressDAO.save(UA);
