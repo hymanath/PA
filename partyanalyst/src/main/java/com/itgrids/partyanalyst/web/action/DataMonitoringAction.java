@@ -28,6 +28,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private String task;
 		  private List<IdAndNameVO> idAndNameVOList;
 		  private IdNameVO idNameVO;
+		  private List<IdNameVO> idNameVOs;
 		  private DataMonitoringOverviewVO resultVO;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
@@ -85,6 +86,13 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 
 		public void setIdNameVO(IdNameVO idNameVO) {
 			this.idNameVO = idNameVO;
+		}
+		public List<IdNameVO> getIdNameVOs() {
+			return idNameVOs;
+		}
+
+		public void setIdNameVOs(List<IdNameVO> idNameVOs) {
+			this.idNameVOs = idNameVOs;
 		}
 
 		//Business methods
@@ -159,6 +167,23 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
 				idNameVO = dataMonitoringService.getTotalRegCdrVendorWise(stateId, vendorId, districtId, constituencyId, startDate, endDate);
+			} catch (Exception e) {  
+				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}
+		public String getTotalRegCdrVendorAndTabUserWise(){
+			
+			try {
+				jObj = new JSONObject(getTask());
+				Long stateId = jObj.getLong("stateId");  
+				Long vendorId = jObj.getLong("vendorId"); 
+				Long districtId = jObj.getLong("districtId");
+				Long constituencyId = jObj.getLong("constituencyId");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				idNameVOs = dataMonitoringService.getTotalRegCdrVendorAndTabUserWise(stateId, vendorId, districtId, constituencyId, startDate, endDate);
 			} catch (Exception e) {  
 				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
 			}
