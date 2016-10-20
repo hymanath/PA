@@ -14185,6 +14185,11 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getVerifiedDtlsAction" class="dataMonitoringAction"  method="getVerifiedDtls">
+			<result type="json" name="success">
+			<param name="root">listofIdNameVOs</param>      
+		</result>
+	</action>	
 	<action name="getRegistrationDetailsUserWiseAction" class="dataMonitoringAction"  method="getRegistrationDetailsUserWise">
       <result type="json" name="success">
       <param name="root">resultList</param>

@@ -29,6 +29,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private List<IdAndNameVO> idAndNameVOList;
 		  private IdNameVO idNameVO;
 		  private List<IdNameVO> idNameVOs;
+		  private List<List<IdNameVO>> listofIdNameVOs;  
 		  private DataMonitoringOverviewVO resultVO;
 		  private List<DataMonitoringOverviewVO> resultList;
 		//Attributes
@@ -101,6 +102,14 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 
 		public void setIdNameVOs(List<IdNameVO> idNameVOs) {
 			this.idNameVOs = idNameVOs;
+		}
+		
+		public List<List<IdNameVO>> getListofIdNameVOs() {
+			return listofIdNameVOs;
+		}
+
+		public void setListofIdNameVOs(List<List<IdNameVO>> listofIdNameVOs) {
+			this.listofIdNameVOs = listofIdNameVOs;
 		}
 
 		//Business methods
@@ -192,6 +201,22 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
 				idNameVOs = dataMonitoringService.getTotalRegCdrVendorAndTabUserWise(stateId, vendorId, districtId, constituencyId, startDate, endDate);
+			} catch (Exception e) {  
+				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}  
+		public String getVerifiedDtls(){
+			
+			try {
+				jObj = new JSONObject(getTask());
+				Long surveyUserId = jObj.getLong("surveyUserId");  
+				Long tabUserId = jObj.getLong("tabUserId"); 
+				Long webUserId = jObj.getLong("webUserId");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				listofIdNameVOs = dataMonitoringService.getVerifiedDtls(surveyUserId, tabUserId, webUserId, startDate, endDate);  
 			} catch (Exception e) {  
 				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
 			}
