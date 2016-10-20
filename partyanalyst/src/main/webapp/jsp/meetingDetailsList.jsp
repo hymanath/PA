@@ -1264,7 +1264,7 @@ function getConstituenciesForDistricts(district){
 			statusId : 1,
 			stateId:stateId,
 			districtId:districtId,
-			constituencyId:districtId,
+			constituencyId:constituencyId,
 			tehsilId:mandalId,
 			panchayatId:panchayatId,
 			isActionable:isActionable,
