@@ -287,7 +287,7 @@ $(document).on("click",".manageIssues",function(){
 		str += '<li>';
 			str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
 			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
-			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">tracking Issue</button>';
+			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">ISSUE TRACK</button>';
 			//str += '</h4>';
 			str +='<div class="descriptionCls">';			
 				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
@@ -309,17 +309,18 @@ $(document).on("click",".manageIssues",function(){
 				str += '</div>';
 				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
 				str+='<div class="row">'
-					str +='<button class="btn btn-success m_top20 updateCls"  attr_value="'+i+'" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'"  id="updateId" >UPDATE</button>';
+					str +='<button class="btn btn-success m_top20 updateCls"  attr_value="'+i+'" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">UPDATE</button>';
 					str +='<button class="btn btn-default cancelUpdate m_top20 cancelCls" style="margin-left:100px;">CANCEL</button>';
 					str+='</div>'
-					str +='<span id="updateDivIdImg" style="display:none;"><img src="images/search.gif"/></span>';
-				    str +='<div id="updateStatusId"></div>';
+					str +='<span id="updateDivIdImg'+i+'" style="display:none;"><img src="images/search.gif"/></span>';
+				    str +='<div id="updateStatusId'+i+'"></div>';
 					
 				str += '</div>';
 			str += '</div>';
 		str += '</li>';
 	}
 	$("#issueDivId").html(str);
+	//$("#issueDivId").dataTable(); 
   }
   
    $(document).on("click","#addNewIssueId",function(){ 
@@ -390,16 +391,28 @@ $(document).on("click",".manageIssues",function(){
 });
   
   function updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId){
-	  $("#updateDivIdImg").show();
 	           var description = $(".issueDescEdit"+value).val();
-	            $(".issueDesc"+value).text(description);
-	            //selectbox Value Start
+	           $(".issueDesc"+value).text(description);
 	           var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
 	           $(".statusUpdate"+value).text(subValue);
-			   
-			   var cadreSurveyUserId = $("#hiddenCadreSurveyUserId").val();
-			   var tabUserInfoId = $("#hiddenTabUserInfoId").val();
-			   var issueStatusId = $("#hiddenIssueStatusId").val();
+		if(description.trim() == '' && description.length == 0)
+		{
+			 $("#updateStatusId"+value).html("<span style='color: red;font-size:12px;'> Enter description</span>");
+			 return;
+		}else
+		{
+			$("#updateStatusId"+value).html('');
+		}
+		if(newStatusId == 0)
+		{
+			$("#updateStatusId"+value).html("<span style='color: red;font-size:12px;'> Select IssueStatus</span>");
+			return;
+		}else
+		{
+			$("#updateStatusId"+value).html('');
+		}
+		$("#updateDivIdImg"+value).show();
+		
 	   var jsObj =
       {				
 		cadreRegIssueId :cadreRegIssueId,
@@ -467,7 +480,6 @@ $(document).on("click",".manageIssues",function(){
 $(document).on("click","#getDetails",function(){
 	$("#tabUserDetailsDivId").html("");
 	$("#dataCollectorsDiv").show();
-	$("#tabUserDetailsImgId").show();
 	var vendorId = $("#vendorId").val();
 	var stateId = $("#stateId").val();
 	var districtId = $("#districtId").val();
@@ -495,7 +507,21 @@ $(document).on("click","#getDetails",function(){
 		locationType = "state";
 		locationVal = stateId;
 	}
-		
+	if(stateId == 0)
+	{
+		$("#errorDivId").html("<span style='color: red;font-size:14px;'>Select State</span>");
+		return;
+	}else{
+		$("#errorDivId").html("");
+	}
+	if(vendorId == 0)
+	{
+		$("#errorDivId").html("<span style='color: red;font-size:14px;'>Select Vendor</span>");
+		return;
+	}else{
+		$("#errorDivId").html("");
+	}
+    $("#tabUserDetailsImgId").show();	
 	 var jsObj=
      {				
 		vendorId : vendorId,
@@ -609,11 +635,11 @@ $(document).on("click",".editBtn",function(){
 	var issueStatus = $(this).attr("attr_issueStatus");
 	$(this).closest("li").find(".descriptionCls").hide();
 	$(this).closest("li").find(".descriptionEditCls").show();
-    $(this).closest("li").find(".trackingIssueCls").hide();	
+    $(this).closest("li").find(".trackingIssueCls").show();	
 	getCadreRegIssueStatusType(value,issueStatus);
 	var desc = $(".issueDesc"+value).text();          
 	$(".issueDescEdit"+value).val(desc);
-	$("#updateStatusId").html('');
+	$("#updateStatusId"+value).html('');
 
 });
 $(document).on("click",".cancelUpdate",function(){
