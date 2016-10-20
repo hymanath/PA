@@ -658,7 +658,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	* @Description : 
 	*  @since 17-October-2016
 	*/
-   public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr){
+   public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr,String task){
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
 		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -680,6 +680,16 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 					 
 				   }
 				 }
+		   if(task.equalsIgnoreCase("dataMonitoringDashboard")){
+			   Long activeUrsCount = cadreRegIssueDAO.getActiveUsersCount(startDate,endDate);
+			   if(activeUrsCount != null && activeUrsCount.longValue() > 0l){
+				   IdAndNameVO vo1 = new IdAndNameVO(); 
+				   vo1.setName("DataMoniDashBrd");
+				   vo1.setInviteeCount(activeUrsCount);
+				   returnList.add(vo1);
+			   }
+			   
+		   }
 	   }catch(Exception e){
 		   e.printStackTrace();
 		   LOG.error("Exception raised at getIssueStatusWiseCounts", e);
@@ -935,5 +945,114 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		}
 		return regIssueStatusType;
 	} 
-
+   
+   /**
+  	* @param  
+  	* @return  List<IdAndNameVO>
+  	* @author Hymavathi 
+  	* @Description : 
+  	*  @since 20-October-2016
+  	*/
+   public List<IdAndNameVO> getDistrictWiseIssueTypesCount(String fromDateStr,String toDateStr,Long statusTypeId,List<Long> stateIds){
+	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	   
+	   try {
+		   
+		    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			//Date today = new Date();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> distWiseIssTyps = cadreRegIssueDAO.getDistrictWiseIssueTypesCount(startDate,endDate,statusTypeId,stateIds);
+				if (distWiseIssTyps != null && distWiseIssTyps.size() > 0) {
+					setDistrictWiseIssueTypesCount(distWiseIssTyps,returnList);
+				}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getDistrictWiseIssueTypesCount() in FieldMonitoringService class", e);
+		}
+		return returnList;
+	} 
+   
+   /**
+  	* @param  
+  	* @return  List<IdAndNameVO>
+  	* @author Hymavathi 
+  	* @Description : 
+  	*  @since 20-October-2016
+  	*/
+   public void setDistrictWiseIssueTypesCount(List<Object[]> distWiseIssTyps,List<IdAndNameVO> returnList){
+	   
+	   try {
+			
+		   if (distWiseIssTyps != null && distWiseIssTyps.size() > 0) {
+				for (Object[] objects : distWiseIssTyps) {
+					
+						IdAndNameVO stateVO = getMatchVO(returnList,(Long)objects[5]);
+						if(stateVO != null){
+							IdAndNameVO districtVO = getMatchVO(stateVO.getDistList(),(Long)objects[4]);
+							if(districtVO != null){
+								//districtVO.setIssueTypes(getAllIssueTypes());
+								IdAndNameVO issueTypeVO = getMatchVO(districtVO.getIssueTypes(),(Long)objects[3]);
+								if(issueTypeVO != null){
+									issueTypeVO.setInviteeCount(objects[0] != null ?issueTypeVO.getInviteeCount() + (Long)objects[0] : 0l);
+								}
+							}
+						}else{
+							stateVO = new IdAndNameVO();
+							stateVO.setId(objects[5] != null ?(Long)objects[5] : 0l);
+							stateVO.setName(objects[6] != null ?objects[6].toString() : "");
+							stateVO.setDistList(setDistricts((Long)objects[5]));
+							IdAndNameVO districtVO = getMatchVO(stateVO.getDistList(),(Long)objects[4]);
+							if(districtVO != null){
+								//districtVO.setIssueTypes(getAllIssueTypes());
+								IdAndNameVO issueTypeVO = getMatchVO(districtVO.getIssueTypes(),(Long)objects[3]);
+								if(issueTypeVO != null){
+									issueTypeVO.setInviteeCount(objects[0] != null ?issueTypeVO.getInviteeCount() + (Long)objects[0] : 0l);
+								}
+							}
+							returnList.add(stateVO);	
+						}
+						
+				}
+			}
+		   
+	   }catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in setDistrictWiseIssueTypesCount() in FieldMonitoringService class", e);
+		}
+   }
+   
+   /**
+	* @param  
+	* @return  List<IdAndNameVO>
+	* @author Hymavathi 
+	* @Description : 
+	*  @since 20-October-2016
+	*/
+public List<IdAndNameVO> setDistricts(Long stateId){
+	List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	try{
+		List<Object[]> districts = districtDAO.getDistrictsWithNewSplitted(stateId); 
+		
+		if (districts != null && districts.size() > 0) {
+			for (Object[] objects : districts) {
+				IdAndNameVO vo = new IdAndNameVO();
+				vo.setId(objects[0] != null ?(Long)objects[0] : 0l);
+				vo.setName(objects[1] != null ?objects[1].toString() : "");
+				vo.setIssueTypes(getAllIssueTypes());
+				returnList.add(vo);	
+			    }
+			}
+	}catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception raised in getCadreRegIssueStatusType() in FieldMonitoringService class", e);
+	}
+	return returnList;
+}
 }

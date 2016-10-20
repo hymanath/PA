@@ -12,9 +12,16 @@ public class IdAndNameVO {
 	private String mobileNumber;
 	private List<IdAndNameVO> issueTypes ;
 	private String actualMobNumber;
+	private List<IdAndNameVO> distList ;
 	
 	
 	
+	public List<IdAndNameVO> getDistList() {
+		return distList;
+	}
+	public void setDistList(List<IdAndNameVO> distList) {
+		this.distList = distList;
+	}
 	public List<IdAndNameVO> getIssueTypes() {
 		return issueTypes;
 	}

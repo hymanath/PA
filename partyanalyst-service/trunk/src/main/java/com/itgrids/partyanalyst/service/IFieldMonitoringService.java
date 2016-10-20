@@ -17,7 +17,7 @@ public interface IFieldMonitoringService {
 	public FieldMonitoringVO getDataCollectorsCounts(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal);
 	public FieldMonitoringVO getTabUsersDetailsByVendorAndLocation(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal);
 	public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr);
-	public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr);
+	public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr,String task);
 	public List<IdAndNameVO> getConstituencyByVendor(Long fieldVendorId);
 	public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId,Long vendorId,String locationType,Long locationVal);
 	public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr);
@@ -25,5 +25,6 @@ public interface IFieldMonitoringService {
 	public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId);
 	public List<FieldMonitoringVO> getStatusWiseIssuesDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId);
 	public List<IdAndNameVO> getCadreRegIssueStatusType();
-    public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long vendorId,String locationType,Long locationVal);
+	public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long vendorId,String locationType,Long locationVal);
+	public List<IdAndNameVO> getDistrictWiseIssueTypesCount(String fromDateStr,String toDateStr,Long statusTypeId,List<Long> stateIds);
 }
