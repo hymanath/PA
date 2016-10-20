@@ -14205,5 +14205,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getPartyMeetingMinuteRetrieveDetailsAction" class="partyMeetingAction"  method="getPartyMeetingMinuteRetrieveDetails">
+			<result type="json" name="success">
+			<param name="root">pmMinutelist</param>
+		</result>
+	</action>
 </package>
 </struts>
