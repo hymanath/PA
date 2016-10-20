@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingIvrStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteTrackingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
@@ -49,6 +50,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
@@ -64,7 +66,9 @@ import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
+import com.itgrids.partyanalyst.model.PartyMeetingMinuteTracking;
 import com.itgrids.partyanalyst.model.TabDetails;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -111,8 +115,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IPartyMeetingUserAccessLevelDAO partyMeetingUserAccessLevelDAO;
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IPartyMeetingMinuteTrackingDAO partyMeetingMinuteTrackingDAO;
+	private IUserAddressDAO	userAddressDAO;
 	
-	
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+	public IPartyMeetingMinuteTrackingDAO getPartyMeetingMinuteTrackingDAO() {
+		return partyMeetingMinuteTrackingDAO;
+	}
+	public void setPartyMeetingMinuteTrackingDAO(
+			IPartyMeetingMinuteTrackingDAO partyMeetingMinuteTrackingDAO) {
+		this.partyMeetingMinuteTrackingDAO = partyMeetingMinuteTrackingDAO;
+	}
 	public void setPartyMeetingUserAccessLevelDAO(
 			IPartyMeetingUserAccessLevelDAO partyMeetingUserAccessLevelDAO) {
 		this.partyMeetingUserAccessLevelDAO = partyMeetingUserAccessLevelDAO;
@@ -710,16 +725,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return returnVO;
 	}
 	
-	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,Long partyMeetingId){
+	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,final Long partyMeetingId,
+			final Long levelId,final Long levelValue,final String isActionable,final Long statusId,
+			final Long stateId,final Long districtId,final Long constituencyId,final Long tehsilId,final Long panchayatId){
 			String updateStatusString="failed";
 		try {
 			LOG.info("Entered into updateMeetingPoint");
 			
-			if(minuteId.longValue()>0l){
-				updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
-		    	{
-				  public Object doInTransaction(TransactionStatus status) 
-				  {
+			updateStatusString = (String) transactionTemplate.execute(new TransactionCallback() 
+	    	{
+			  public Object doInTransaction(TransactionStatus status) 
+			  {
+				  if(minuteId.longValue()>0l){
+				
 					  String updated = "success";
 					  PartyMeetingMinute pmm = partyMeetingMinuteDAO.get(minuteId);
 						
@@ -732,38 +750,109 @@ public class PartyMeetingService implements IPartyMeetingService{
 						pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
 						pmmh.setInsertedTime(pmm.getInsertedTime());
 						pmmh.setUpdatedTime(pmm.getUpdatedTime());
-						
+												
 						partyMeetingMinuteHistoryDAO.save(pmmh);
 						
-						Integer updateStatus = partyMeetingMinuteDAO.updateMeetingPoint(minuteId,minuteText,updatedBy,new DateUtilService().getCurrentDateAndTime());
-						if(updateStatus.intValue()==0){
+						UserAddress returnUA =null;
+						if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
+							 returnUA = setUserAddress(stateId,districtId,constituencyId,tehsilId,panchayatId);
+						}
+						
+						Integer updateStatus =null;
+							updateStatus = partyMeetingMinuteDAO.updateMeetingPoint(minuteId,minuteText,updatedBy,new DateUtilService().getCurrentDateAndTime(),
+									levelId,levelValue,isActionable,statusId,returnUA);
+						
+						
+						
+						if(updateStatus !=null && updateStatus.intValue()==0){
 							updated  = "failed";
+						}else{
+							
+							PartyMeetingMinuteTracking pMMT = new  PartyMeetingMinuteTracking();							
+							pMMT.setPartyMeetingMinuteId(minuteId);
+							pMMT.setPartyMeetingMinuteStatusId(statusId);							
+							
+							partyMeetingMinuteTrackingDAO.save(pMMT);
+							
 						}
 						
 						return updated;
+				  }else{
+					PartyMeetingMinute pmm = new PartyMeetingMinute();
+					
+					pmm.setPartyMeetingId(partyMeetingId);
+					pmm.setMinutePoint(minuteText);
+					pmm.setInsertedById(updatedBy);
+					pmm.setUpdatedById(updatedBy);
+					pmm.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					pmm.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					pmm.setIsDeleted("N");
+					
+					if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
+						pmm.setLocationLevel(levelId);
+						pmm.setLocationValue(levelValue);
+						
+						UserAddress returnUA = setUserAddress(stateId,districtId,constituencyId,tehsilId,panchayatId);					
+						pmm.setUserAddressId(returnUA.getUserAddressId());
+						
+					}
+					
+					pmm.setStatusId(statusId);
+					pmm.setIsActionable(isActionable);
+					
+										
+					PartyMeetingMinute returnPm = partyMeetingMinuteDAO.save(pmm);
+					
+					PartyMeetingMinuteTracking pmmt = new PartyMeetingMinuteTracking();					
+					pmmt.setPartyMeetingMinuteId(returnPm.getPartyMeetingMinuteId());
+					pmmt.setPartyMeetingMinuteStatusId(statusId);
+										
+					partyMeetingMinuteTrackingDAO.save(pmmt);
+					
+					return "success";
 				  }
-	           });
-			}else{
-				PartyMeetingMinute pmm = new PartyMeetingMinute();
-				
-				pmm.setPartyMeetingId(partyMeetingId);
-				pmm.setMinutePoint(minuteText);
-				pmm.setInsertedById(updatedBy);
-				pmm.setUpdatedById(updatedBy);
-				pmm.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-				pmm.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-				pmm.setIsDeleted("N");
-				
-				partyMeetingMinuteDAO.save(pmm);
-				
-				return "success";
-			}
 			
+			  }
+		});
 			
-		} catch (Exception e) {
+		}catch (Exception e) {
 			LOG.error("Exception raised at updateMeetingPoint", e);
 		}
 		return updateStatusString;
+	}
+	
+	public UserAddress setUserAddress(Long stateId,Long districtId,Long constituencyId,Long tehsilId,Long panchayatId){
+		try{
+			
+			UserAddress UA = new UserAddress(); 
+			
+			if(districtId !=null && districtId>0l)
+				UA.getDistrict().setDistrictId(districtId ==0l ?null:districtId);
+			if(stateId !=null && stateId>0l)
+				UA.getState().setStateId(stateId ==0l?null:stateId);
+			if(constituencyId !=null && constituencyId>0l)
+				UA.getConstituency().setConstituencyId(constituencyId ==0l?null:constituencyId);
+			
+			if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==1l){
+				UA.getTehsil().setTehsilId(tehsilId);
+			}else if(tehsilId !=null && tehsilId>0l && tehsilId.toString().charAt(0)==2l){
+				UA.getLocalElectionBody().setLocalElectionBodyId(tehsilId);
+			}
+			
+			if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==1l){
+				UA.getPanchayat().setPanchayatId(panchayatId);
+			}else if(panchayatId !=null && panchayatId>0l && panchayatId.toString().charAt(0) ==2l){
+				UA.getConstituency().setConstituencyId(panchayatId);
+			}
+			
+			UserAddress returnUA = userAddressDAO.save(UA);
+			
+			return returnUA;
+		}catch(Exception e){
+			LOG.error("Exception raised at setUserAddress in PartyMeetingService Class", e);
+			e.printStackTrace();
+		}
+		return null;
 	}
 		
 	public String deleteMeetingMinutePoint(final Long minuteId,final Long updatedBy){

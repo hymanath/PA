@@ -37,7 +37,18 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	private Long partyMeetingId;
 	private Long insertedById;
 	private Long updatedById;
-	public String isDeleted;
+	private String isDeleted;
+	
+	private String isActionable;
+	private Long locationLevel;
+	private Long locationValue;
+	private Long statusId;
+	
+	private UserAddress userAddress;
+	private Long userAddressId;
+	
+	private PartyMeetingMinuteStatus partyMeetingMinuteStatus;
+	
 	
 	public PartyMeetingMinute(){}
 
@@ -150,6 +161,78 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	@Column(name="is_actionable")
+	public String getIsActionable() {
+		return isActionable;
+	}
+
+	public void setIsActionable(String isActionable) {
+		this.isActionable = isActionable;
+	}
+
+	@Column(name="location_level")
+	public Long getLocationLevel() {
+		return locationLevel;
+	}
+
+	public void setLocationLevel(Long locationLevel) {
+		this.locationLevel = locationLevel;
+	}
+
+	@Column(name="location_value")
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+	@Column(name="status_id")
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="status_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeetingMinuteStatus getPartyMeetingMinuteStatus() {
+		return partyMeetingMinuteStatus;
+	}
+
+	public void setPartyMeetingMinuteStatus(
+			PartyMeetingMinuteStatus partyMeetingMinuteStatus) {
+		this.partyMeetingMinuteStatus = partyMeetingMinuteStatus;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_address_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
+	}
+
+	@Column(name="user_address_id")
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
+	
+	
 	
 	
 	
