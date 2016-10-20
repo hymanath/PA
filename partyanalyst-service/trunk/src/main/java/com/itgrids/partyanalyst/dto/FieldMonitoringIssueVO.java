@@ -20,6 +20,7 @@ public class FieldMonitoringIssueVO implements Serializable{
 	private String issueStatus;
 	private String firstname;
 	private String lastname;
+	private Long count;
 	
 	
 	public Long getIssueTypeId() {
@@ -100,6 +101,12 @@ public class FieldMonitoringIssueVO implements Serializable{
 	}
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 	

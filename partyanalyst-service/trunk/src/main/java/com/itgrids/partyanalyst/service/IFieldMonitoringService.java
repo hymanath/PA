@@ -19,10 +19,11 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getConstituencyByVendor(Long fieldVendorId);
-	public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId);
+	public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId,Long vendorId,String locationType,Long locationVal);
 	public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr);
 	public ResultStatus updateStatusToACadreRegIssue(final Long cadreRegIssueId,final String description,final Long newStatusId,final Long loginUserId);
 	public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId);
 	public List<FieldMonitoringVO> getStatusWiseIssuesDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId);
 	public List<IdAndNameVO> getCadreRegIssueStatusType();
+    public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long vendorId,String locationType,Long locationVal);
 }

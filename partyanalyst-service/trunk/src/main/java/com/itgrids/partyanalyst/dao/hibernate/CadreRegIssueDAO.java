@@ -322,14 +322,26 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
     
-	public List<Object[]> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId){
+	public List<Object[]> getIssuesForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId,Long vendorId,String locationType,Long locationVal){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.cadreRegIssueId,model.description,model.insertedTime," +
 				"          model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType," +
 				"          model.cadreRegIssueStatus.cadreRegIssueStatusId, model.cadreRegIssueStatus.status " +
-				"   from   CadreRegIssue model " +
-				"   where  model.cadreSurveyUserId = :cadreSurveyUserId and model.tabUserInfoId = :tabUserInfoId  ");
+				"   from   CadreRegIssue model,FieldVendorTabUser model1,Constituency C " +
+				"   where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+				"   and  model.cadreSurveyUserId = :cadreSurveyUserId and model.tabUserInfoId = :tabUserInfoId" +
+				"  and model1.fieldVendor.fieldVendorId = :vendorId" +
+					" and model.locationScopeId = 4" +
+					" and model.locationValue = C.constituencyId");
+		
+		if(locationType != null && locationType.trim().equalsIgnoreCase("state"))
+			sb.append(" and C.state.stateId = :locationVal");
+		else if(locationType != null && locationType.trim().equalsIgnoreCase("district"))
+			sb.append(" and C.district.districtId = :locationVal");
+		else
+			sb.append(" and C.constituencyId = :locationVal");
+		
 		if(issueStatusId != null && issueStatusId > 0l){
 			sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId  = :issueStatusId");
 		}
@@ -339,10 +351,45 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
 		query.setParameter("tabUserInfoId",tabUserInfoId );
+		query.setParameter("vendorId", vendorId);
 		if(issueStatusId != null && issueStatusId > 0l){
 			query.setParameter("issueStatusId",issueStatusId );
 		}
+		query.setParameter("locationVal", locationVal);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate",fromDate );
+			query.setDate("toDate",toDate );
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getIssuesCountsForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long vendorId,String locationType,Long locationVal){
 		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.cadreRegIssueStatus.cadreRegIssueStatusId, model.cadreRegIssueStatus.status,count(model.cadreRegIssueId) " +
+				"   from   CadreRegIssue model,FieldVendorTabUser model1,Constituency C " +
+				"   where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+				"   and  model.cadreSurveyUserId = :cadreSurveyUserId and model.tabUserInfoId = :tabUserInfoId " +
+				"  and model1.fieldVendor.fieldVendorId = :vendorId" +
+					" and model.locationScopeId = 4" +
+					" and model.locationValue = C.constituencyId ");
+		if(locationType != null && locationType.trim().equalsIgnoreCase("state"))
+			sb.append(" and C.state.stateId = :locationVal");
+		else if(locationType != null && locationType.trim().equalsIgnoreCase("district"))
+			sb.append(" and C.district.districtId = :locationVal");
+		else
+			sb.append(" and C.constituencyId = :locationVal");
+		
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+		}
+		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
+		query.setParameter("tabUserInfoId",tabUserInfoId );
+		query.setParameter("vendorId", vendorId);
+		query.setParameter("locationVal", locationVal);
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate",fromDate );
 			query.setDate("toDate",toDate );
