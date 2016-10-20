@@ -7815,7 +7815,134 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		}
 		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 		return query.list(); 
+	}
+	public List<Object[]> getTotalRegCdrVendorAndTabUserWise(Long stateId, Long vendorId, Long distId, Long constId, Date startDate, Date endDate, String status){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select TC.insertedUserId," +//0
+						" TC.insertedBy.userName," +//1
+						" TC.tabUserInfoId," +//2
+						" TC.tabUserInfo.name," +//3
+						" TC.tabUserInfo.mobileNo," +//4  
+						" count(distinct TC.tdpCadreId) " +//5
+						" from TdpCadre TC, TdpCadreEnrollmentYear TCEY, FieldVendorTabUser FVTU  " +  
+						" where ");  
+		if(startDate != null && endDate != null){
+			queryStr.append(" (date(TC.surveyTime) between :startDate and :endDate) and ");  
+		}
+		if(stateId != null && stateId.longValue() > 0){
+			if(stateId.longValue()==1l){
+				queryStr.append(" TC.userAddress.state.stateId = :stateId and ");
+			}else if(stateId.longValue()==36l){
+				queryStr.append(" TC.userAddress.state.stateId = :stateId and  ");
+			}
+		}
+		if(vendorId != null ){
+			queryStr.append(" TC.insertedUserId = FVTU.cadreSurveyUserId and " +
+							" FVTU.fieldVendor.fieldVendorId = :vendorId and ");
+		}
+		if(distId != null){
+			queryStr.append(" TC.userAddress.district.districtId = :distId and ");
+		}
+		if(constId != null){
+			queryStr.append(" TC.userAddress.constituency.constituencyId = :constId and ");
+		}
+		if(status.equalsIgnoreCase("approved")){
+			queryStr.append(" TC.cadreVerificationStatusId = 1 and ");
+		}
+		if(status.equalsIgnoreCase("rejected")){
+			queryStr.append(" TC.cadreVerificationStatusId = 2 and ");
+		}
+		if(status.equalsIgnoreCase("pending")){
+			queryStr.append(" TC.cadreVerificationStatusId is null and ");    
+		}
+		queryStr.append(" TC.isDeleted = 'N' and " +
+						" TC.enrollmentYear = 2014 and " +
+						" TC.tdpCadreId = TCEY.tdpCadre.tdpCadreId and " +
+						" TCEY.isDeleted = 'N' and " +
+						" TCEY.enrollmentYearId = :enrollmentYearId " +
+						" group by TC.insertedUserId, TC.tabUserInfoId ");  
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate",startDate);
+			query.setDate("endDate",endDate);
+		}
+		if(stateId != null && stateId.longValue() > 0){
+			query.setParameter("stateId", stateId);
+		}
+		if(vendorId != null ){
+			query.setParameter("vendorId", vendorId); 
+		}
+		if(distId != null){
+			query.setParameter("distId", distId);
+		}
+		if(constId != null){
+			query.setParameter("constId", constId);
+		}
+		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return query.list(); 
 	} 
+	public List<Object[]> getActiveUserList(Long stateId,Long vendorId,Long distId,Long constId,Date startDate,Date endDate, Date lastOneHourTime){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select TC.insertedUserId," +//0
+						" TC.tabUserInfoId," +//1
+						" max(TC.insertedTime) " +//2     
+						" from TdpCadre TC, TdpCadreEnrollmentYear TCEY, FieldVendorTabUser FVTU  " +  
+						" where ");  
+		if(startDate != null && endDate != null){
+			queryStr.append(" (date(TC.surveyTime) between :startDate and :endDate) and ");
+		}
+		if(lastOneHourTime != null ){
+			queryStr.append(" TC.insertedTime >= :lastOneHourTime and ");    
+		}
+		if(stateId != null && stateId.longValue() > 0){
+			if(stateId.longValue()==1l){
+				queryStr.append(" TC.userAddress.state.stateId = :stateId and ");
+			}else if(stateId.longValue()==36l){
+				queryStr.append(" TC.userAddress.state.stateId = :stateId and  ");
+			}
+		}
+		if(vendorId != null ){
+			queryStr.append(" TC.insertedUserId = FVTU.cadreSurveyUserId and " +
+							" FVTU.fieldVendor.fieldVendorId = :vendorId and ");
+		}
+		if(distId != null){
+			queryStr.append(" TC.userAddress.district.districtId = :distId and ");
+		}
+		if(constId != null){
+			queryStr.append(" TC.userAddress.constituency.constituencyId = :constId and ");
+		}
+		
+		queryStr.append(" TC.isDeleted = 'N' and " +
+						" TC.enrollmentYear = 2014 and " +
+						" TC.tdpCadreId = TCEY.tdpCadre.tdpCadreId and " +
+						" TCEY.isDeleted = 'N' and " +
+						" TCEY.enrollmentYearId = :enrollmentYearId and " +
+						" TC.insertedUserId is not null and " +
+						" TC.tabUserInfoId is not null " +
+						" group by TC.insertedUserId, TC.tabUserInfoId ");  
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate",startDate);
+			query.setDate("endDate",endDate);
+		}
+		if(lastOneHourTime != null){
+			query.setDate("lastOneHourTime", lastOneHourTime); 
+		}
+		if(stateId != null && stateId.longValue() > 0){
+			query.setParameter("stateId", stateId);
+		}
+		if(vendorId != null ){
+			query.setParameter("vendorId", vendorId); 
+		}
+		if(distId != null){
+			query.setParameter("distId", distId);
+		}
+		if(constId != null){
+			query.setParameter("constId", constId);
+		}
+		query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return query.list(); 
+	}
 	
 
 	public  List<Object[]>  checkVoterCardNosListExists(Set<String> voterCardNosList)
@@ -7830,3 +7957,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 	}
 	
 }
+/*select TC.created_by, TC.tab_user_info_id,max(TC.inserted_time) from tdp_cadre TC where 
+inserted_time >= '2016-10-19 18:00:00' and TC.created_by is not null and TC.tab_user_info_id is not null
+group by TC.created_by,TC.tab_user_info_id;
+*/
