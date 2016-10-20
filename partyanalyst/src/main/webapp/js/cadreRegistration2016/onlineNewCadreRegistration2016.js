@@ -696,7 +696,7 @@ $(document).on("change","#boothsList",function(){
 				  str += '</p>';
 				  str += '<div class="checkboxAlign">';
 					str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNo+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 				  str += '</div>';
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
@@ -724,11 +724,11 @@ function renMemberDetails(){
 	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
 	{
 		$(".selectMembership").addClass("animated fadeOut");
-		setTimeout(function(){
+		//setTimeout(function(){
 			$(".selectMembership").addClass("hide");
 			$(".updateProfileR").removeClass("hide");
 			$(".updateProfileR").addClass("animated fadeIn");
-		},500)
+		//},500)
 		setTimeout(function(){
 			$(".selectMembership").removeClass("animated fadeOut");
 			$(".profileDetailsBlockR").removeClass("animated fadeIn");
@@ -746,13 +746,17 @@ function renMemberDetails(){
 			$(".profileDetailsBlock").removeClass("animated fadeIn");
 		},1500)
 	}
-	if(relativeVoter != null && relativeVoter > 0){
+	
+	//presently we are giving family voter id scenario registrations
+	/*if(relativeVoter != null && relativeVoter > 0){
 		  var image=$(this).attr("attr_img1");
 		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter);
 	  }
 	  else{
-		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
+		  getCadreDetailsForCadre(RtdpCadreId,RvoterId,RStatus);
 	  }
+	  */
+	   getCadreDetailsForCadre(RtdpCadreId,RvoterId,RStatus);
 }
 	 
   
@@ -897,7 +901,9 @@ $(document).on("click",".searchChkboxCls",function(){
 	var cadreId=$(this).attr("attr_tdpCadre_id");
 	if(cadreId != 'null')
 	{
-		sendOtpToMble();
+		setTimeout(function(){
+			     sendOtpToMble();
+		}, 1500);
 	}else
 	{
 		return;
@@ -915,11 +921,12 @@ function buildRelatVoterDetails(familyVoterCardNo){
 	 }
 }
 function sendOtpToMble(){
-	var mobileNo=$("#checkMblNoId").val();
-	
+	//var mobileNo=$("#checkMblNoId").val();
+	var mobileNo=$("#hiddenMblNo").val();
 	var jsObj={
 		mobileNumber:mobileNo
 	}
+	/*
 	$.ajax({
 		  type:'GET',
 		  url:'getSendOtpDetailsAction.action',
@@ -927,7 +934,7 @@ function sendOtpToMble(){
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    });
-	
+	*/
 }
 function getVoterDetails(){
 	if(!fieldsValidation())
@@ -1127,10 +1134,17 @@ function renFieldsValidation()
 	}
 	return true;
 }
+
+var RtdpCadreId=0;
+var RvoterId=0;
+var RStatus='update';
 $(document).on("click",".searchChkboxClsR",function(){
-	fieldsValusEmpty();
+	//fieldsValusEmpty();
 	$("#memChckBoxModalId").modal('show');
-	sendOtpToMble();
+	
+	RvoterId=$(this).attr("attr_voterId");
+	RtdpCadreId=$(this).attr("attr_tdpCadre_id");
+
 	 var voterId = $(this).attr("attr_voterId");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
 	  var enrolYear = $(this).attr("attr_enrol_yId");
@@ -1141,20 +1155,33 @@ $(document).on("click",".searchChkboxClsR",function(){
 	  
 	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
 		status = "renewal";
-	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
+	  else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
 		status = "update";
 	  //renMemberDetails();
+	  RStatus = status;
 	  
 	  $("#checkMblNoId").val(actualMobileNumber);
-	  $("#hiddenMblNo").val(mobileNumber);
+	  $("#hiddenMblNo").val(mobileNumber);	  
+	
+		setTimeout(function(){
+			     sendOtpToMble();
+		}, 1500);
 });
 
 function renwalOtpDetails()
 {
+	
+	  $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		setTimeout(function(){
+			$("#memChckBoxModalId").modal('hide');
+			renMemberDetails();
+		}, 1500);
+			
+	/*
 	var mobileNo=$("#hiddenMblNo").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
-		 mobileNumber:"9640633434",
+		 mobileNumber:mobileNo,//"9640633434",
 		 otpTxt:otp
 		
 	 }
@@ -1173,4 +1200,5 @@ function renwalOtpDetails()
 			   }, 1500);
 	   }
 });
+*/
 }
