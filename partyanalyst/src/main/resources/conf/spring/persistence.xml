@@ -1001,9 +1001,13 @@
 				      <value>com.itgrids.partyanalyst.model.CadreRegUser</value>
 				      <value>com.itgrids.partyanalyst.model.CadreRegUserAccess</value>
 				      <value>com.itgrids.partyanalyst.model.TabUserInfo</value>
-				 	  <value>com.itgrids.partyanalyst.model.DataRejectReason</value>
+				      <value>com.itgrids.partyanalyst.model.DataRejectReason</value>
 				      <value>com.itgrids.partyanalyst.model.TdpCadreDataVerification</value>
 				      <value>com.itgrids.partyanalyst.model.TabUserOtpDetails</value>
+				      
+				      <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteTracking</value>
+				      <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteStatus</value>
+				      
 				 </list>
 			
 		</property>

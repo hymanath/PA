@@ -3269,4 +3269,11 @@
 	<bean id="tabUserOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserOtpDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="partyMeetingMinuteStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyMeetingMinuteTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMinuteTrackingDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
