@@ -20,7 +20,7 @@
 				<div id="errorDivId"></div>
             	<div class="row">
                 	<div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select State</label>
+                    	<label>Select State</label><span style="color:red"> *</span>
                         <select class="select" id="stateId">
 						    <option value="0">Select State</option>
                         	<option value="1">Andhra Pradesh</option>
@@ -28,7 +28,7 @@
                         </select>
                     </div>
                     <div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select Vendor</label>
+                    	<label>Select Vendor</label><span style="color:red"> *</span>
                         <select class="select" id="vendorId">
                         	<option value="0">Select Vendor</option>
                         </select>
@@ -46,7 +46,7 @@
                         </select>
                     </div>
 					<div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select Date</label>
+                    	<label>Select Date</label><span style="color:red"> *</span>
                         <div class="input-group inputGCustom">
 							<span class="input-group-addon">
 								<i class="glyphicon glyphicon-calendar"></i>

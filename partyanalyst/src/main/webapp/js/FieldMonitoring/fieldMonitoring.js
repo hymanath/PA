@@ -367,7 +367,9 @@ $(document).on("click",".manageIssues",function(){
 	} */
 	$("#issueDivId").html(str);
 	
-	 $('#datatableId').DataTable(); 
+	 $('#datatableId').dataTable({
+        "aaSorting": []
+    }); 
 	
   }
   
@@ -436,11 +438,16 @@ $(document).on("click",".manageIssues",function(){
 });
   
   function updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId){
-	           var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
-	           //var description = $(".issueDescEdit"+value).val();
-	           $(".issueDesc"+value).text(description);
-	           var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
-	           $(".statusUpdate"+value).text(subValue);
+	   var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
+	   //var description = $(".issueDescEdit"+value).val();
+	   $(".issueDesc"+value).text(description);
+	   var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
+	   $(".statusUpdate"+value).text(subValue);
+	   
+	   var CadreSrvId = $("#hiddenCadreSurveyUserId").val();
+	   var tabUserId = $("#hiddenTabUserInfoId").val();
+	   var issueStsId = $("#hiddenIssueStatusId").val();
+	   
 		if(description.trim() == '' && description.length == 0)
 		{
 			 $("#updateStatusId"+value).html("<span style='color: red;font-size:12px;'> Enter description</span>");
@@ -479,8 +486,8 @@ $(document).on("click",".manageIssues",function(){
 			   $(".editBtn").closest("td").find(".descriptionCls").show();
 	           $(".editBtn").closest("td").find(".descriptionEditCls").hide();
 			    $(".editBtn").closest("td").find(".trackingIssueCls").show();	
-				//getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId);
-				//getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
+				getIssuesForATabUserByStatus(CadreSrvId,tabUserId,issueStsId);
+				getIssuesCountsForATabUser(CadreSrvId,tabUserId);
 			}, 2000);
 		   }else{
 			    $("#updateStatusId").html("<span style='color: red;font-size:18px;'> update Failed.Please try Again..</span>");
@@ -560,7 +567,7 @@ $(document).on("click",".manageIssues",function(){
   
 $(document).on("click","#getDetails",function(){
 	$("#tabUserDetailsDivId").html("");
-	$("#dataCollectorsDiv").show();
+	
 	var vendorId = $("#vendorId").val();
 	var stateId = $("#stateId").val();
 	var districtId = $("#districtId").val();
@@ -603,6 +610,7 @@ $(document).on("click","#getDetails",function(){
 		$("#errorDivId").html("");
 	}
     $("#tabUserDetailsImgId").show();	
+	$("#dataCollectorsDiv").show();
 	 var jsObj=
      {				
 		vendorId : vendorId,
