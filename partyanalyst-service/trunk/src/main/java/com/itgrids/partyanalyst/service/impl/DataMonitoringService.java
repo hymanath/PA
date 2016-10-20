@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class DataMonitoringService implements IDataMonitoringService {
 	
@@ -138,6 +141,8 @@ public class DataMonitoringService implements IDataMonitoringService {
 	public IdNameVO getTotalRegCdrVendorWise(Long stateId, Long vendorId, Long distId, Long constId, String startDate, String endDate){
 		LOG.info("Entered into getTotalRegCdrVendorWise() of DataMonitoringService");
 		try{
+			
+			
 			IdNameVO idNameVO = new IdNameVO();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date stDate = null;
@@ -154,16 +159,19 @@ public class DataMonitoringService implements IDataMonitoringService {
 			List<Object[]> totalCnt = tdpCadreDAO.getTotalRegCdrVendorWise(stateId,vendorId,distId,constId,stDate,ndDate);
 			if(totalCnt != null && totalCnt.size() > 0){
 				for(Object[] param : totalCnt){
-					if((Long)param[0] == 1){
-						approved = (Long)param[1];
-					}else if((Long)param[0] == 2){
-						rejected = (Long)param[1];
+					if(param[0] != null){
+						if((Long)param[0] == 1){
+							approved = (Long)param[1];
+						}else{
+							rejected = (Long)param[1];
+						}
 					}else{
-						pending = (Long)param[1];
+						pending = (Long)param[1];    
 					}
+					
 				}
 			}
-			total = approved + rejected + rejected;
+			total = approved + rejected + pending;  
 			idNameVO.setCount(total);//total
 			idNameVO.setActualCount(approved);//approved
 			idNameVO.setAvailableCount(pending);//pending
@@ -176,6 +184,113 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 		return null;  
 	}
+	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWise(Long stateId, Long vendorId, Long distId, Long constId, String startDate, String endDate){
+		LOG.info("Entered into getTotalRegCdrVendorAndTabUserWise() of DataMonitoringService");  
+		try{
+			DateUtilService dateUtilService = new DateUtilService();
+			IdNameVO idNameVO = null;
+			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date stDate = null;
+			Date ndDate = null;
+			if(startDate != null && startDate.length() > 0 && endDate != null && endDate.length() > 0){
+				stDate = sdf.parse(startDate);
+				ndDate = sdf.parse(endDate);
+			}
+			//for total count
+			List<Object[]> totalCountList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWise(stateId,vendorId,distId,constId,stDate,ndDate,"");
+			if(totalCountList != null && totalCountList.size() > 0){
+				for(Object[] param : totalCountList){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(param[0] != null ? (Long)param[0] : 0l);
+					idNameVO.setName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setTabUserId(param[2] != null ? (Long)param[2] : 0l);
+					idNameVO.setTabUserName(param[3] != null ? param[3].toString() : "");
+					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
+					idNameVO.setTotalCount(param[5] != null ? (Long)param[5] : 0l);
+					idNameVOs.add(idNameVO);
+				}
+			}
+			//for approved count
+			
+			List<Object[]> totalApprovedList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWise(stateId,vendorId,distId,constId,stDate,ndDate,"approved");
+			if(totalApprovedList != null && totalApprovedList.size() > 0){
+				for(Object[] param : totalApprovedList){
+					pushApprovedCount(idNameVOs,(Long)param[0],(Long)param[2],(Long)param[5]);
+				}
+			} 
+			//for rejected count
+			List<Object[]> totalRejectedList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWise(stateId,vendorId,distId,constId,stDate,ndDate,"rejected");
+			if(totalRejectedList != null && totalRejectedList.size() > 0){
+				for(Object[] param : totalRejectedList){
+					pushRejectedCount(idNameVOs,(Long)param[0],(Long)param[2],(Long)param[5]);
+				}
+			} 
+			//for pending count
+			List<Object[]> totalPendingList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWise(stateId,vendorId,distId,constId,stDate,ndDate,"pending");
+			if(totalPendingList != null && totalPendingList.size() > 0){
+				for(Object[] param : totalPendingList){
+					pushPendingCount(idNameVOs,(Long)param[0],(Long)param[2],(Long)param[5]);
+				}
+			} 
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			//push active status
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String dt = "2016-10-19 18:00:00";
+			lastOneHourTime = sdf1.parse(dt);         
+			List<Object[]> activeUserList = tdpCadreDAO.getActiveUserList(stateId,vendorId,distId,constId,stDate,ndDate,lastOneHourTime);
+			if(activeUserList != null && activeUserList.size() > 0){
+				for(Object[] param : activeUserList){
+					pushActiveStatus(idNameVOs,(Long)param[0],(Long)param[1]); 
+				}
+			} 
+			
+			return idNameVOs;  
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getTotalRegCdrVendorAndTabUserWise() of DataMonitoringService", e); 
+		}
+		return null;
+	}
+	public void pushApprovedCount(List<IdNameVO> idNameVOs,Long surveyUserId,Long tabUserId,Long count){
+		if(idNameVOs.size() > 0){
+			for(IdNameVO idNameVO : idNameVOs){
+				if(idNameVO.getId().equals(surveyUserId) && idNameVO.getTabUserId().equals(tabUserId)){
+					idNameVO.setApprovedCount(count);
+				}
+			}
+		}
+	}
+	public void pushRejectedCount(List<IdNameVO> idNameVOs,Long surveyUserId,Long tabUserId,Long count){
+		if(idNameVOs.size() > 0){
+			for(IdNameVO idNameVO : idNameVOs){
+				if(idNameVO.getId().equals(surveyUserId) && idNameVO.getTabUserId().equals(tabUserId)){
+					idNameVO.setRejectedCount(count);
+				}
+			}
+		}
+	}
+	public void pushPendingCount(List<IdNameVO> idNameVOs,Long surveyUserId,Long tabUserId,Long count){  
+		if(idNameVOs.size() > 0){
+			for(IdNameVO idNameVO : idNameVOs){
+				if(idNameVO.getId().equals(surveyUserId) && idNameVO.getTabUserId().equals(tabUserId)){
+					idNameVO.setPendingCount(count);  
+				}
+			}
+		}
+	}
+	public void pushActiveStatus(List<IdNameVO> idNameVOs,Long surveyUserId,Long tabUserId){
+		if(idNameVOs.size() > 0){
+			for(IdNameVO idNameVO : idNameVOs){
+				if(idNameVO.getId().equals(surveyUserId) && idNameVO.getTabUserId().equals(tabUserId)){
+					idNameVO.setStatus("active");    
+				}
+			}
+		}
+	}
 	
-	
-}
+}  
