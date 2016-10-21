@@ -131,6 +131,7 @@ function getSearchByMyVoterIdDetails(){
 				str+='</div>';
 				str+='</form>';
 				$('#existingSavingStatusDivId').html(str);
+				$('.ExistingPaymentCls').removeClass('hide');
 				
 			}
 			else{
@@ -355,13 +356,14 @@ function buildCasteDetails(result) {
 	$(".cadreFamilyDetailsCls").html(str);
 	//$("#familyDetailsDivId").show();
 }
-  /*$(document).on("click","#addNewNomineeId",function(){
-      if ($("#addNewNominatedId").is(":visible")) {
+  $(document).on("click","#addNewNomineeId",function(){
+	  $("#familyDetailsDivId").hide(); 
+     /* if ($("#addNewNominatedId").is(":visible")) {
 	  $("#addNewNominatedId").hide();   
 	}else{
 	 $("#addNewNominatedId").show(); 
-	}  
-   });*/
+	}  */
+   });
 
 function buildCadreRelativesDetails(result,id) {
 	$('#'+id+'').append('<option  value="0">Select Relationship</option>');
@@ -446,9 +448,9 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
 
 				str+='<div class="container m_top10" id="yourElement">';
-				str+='<div class="span12  show-grid" style="position: relative;;margin-left:250px;">';
-				str+='<p class="text-align">	Thank You For Your Registration</p>';
-				str+='<h3 class="text-align"> Please make payment , to complete your Registration .   </h3>';
+				str+='<div class="span12  show-grid" style="position: relative;;margin-left:350px;">';
+				str+='<p class="text-align" style="color:green;font-weight:bold;">	Thank You For Your Registration</p>';
+				str+='<h3 class="text-align" style=";font-weight:bold;"> Please make payment , to complete your Registration .   </h3>';
 				str+='</div>';
 				str+='</div>';
 				str+='<div class="container m_top10" id="yourElement">';
@@ -527,6 +529,9 @@ $(document).on("click",".checkboxCls",function(){
 	  var age = $(this).attr("attr_age");
 	  var relationTypeId = $(this).attr("attr_relTypeId");
 
+	 $("#cadrePrvNomneDivId").show();
+	 $("#newNomineeID").show();
+	 
 	 $("#prvNomneNameId").val(name);
 	 $('#prvNomneGendrId').val(gender).trigger('chosen:updated');
 	 $("#prevNomneAgeId").val(age);
