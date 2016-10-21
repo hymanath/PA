@@ -216,7 +216,9 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				Long webUserId = jObj.getLong("webUserId");
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
-				listofIdNameVOs = dataMonitoringService.getVerifiedDtls(surveyUserId, tabUserId, webUserId, startDate, endDate);  
+				Integer minValue = jObj.getInt("minValue");
+				Integer maxValue = jObj.getInt("maxValue");
+				listofIdNameVOs = dataMonitoringService.getVerifiedDtls(surveyUserId, tabUserId, webUserId, startDate, endDate,minValue,maxValue);  
 			} catch (Exception e) {  
 				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
 			}
