@@ -1916,6 +1916,33 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return query.list();
 	}
 	
+	public List<Object[]> getStateWiseAssemblyConstituency(Long stateId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("SELECT distinct  model.constituencyId,model.name FROM Constituency model " +
+				" WHERE " +
+				" model.deformDate is null and model.electionScope.electionScopeId = :electionScopeId  " );
+		
+		if(stateId !=null && stateId.longValue()>0l){
+			
+			if(stateId ==1l){
+				str.append(" and model.district.districtId between 11 and 23 ");
+			}else if(stateId == 36l){
+				str.append(" and model.district.districtId between 1 and 10 ");
+			}			
+		}
+		
+		str.append(" order by model.name  ");
+		
+		Query query = getSession().createQuery(str.toString());
+			
+		query.setParameter("electionScopeId", 2l);
+		
+		return query.list();
+		
+	}
+	
 	
 }
 
