@@ -1,4 +1,5 @@
-
+	var customStartDate = moment().format("MM/DD/YYYY");
+	var customEndDate = moment().format("MM/DD/YYYY");
 	function onLoadCalls(){
 		getOverAllDataCollectorsCounts()
 		getIssueStatusWiseCounts();
@@ -34,18 +35,10 @@
 	}
 	function getIssueStatusWiseCounts(){
 			$("#statusCountDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-			var dates = $(".singleDate").val();
-	        var dateArr = dates.split("-");
-	        var fromDate;
-	        var toDate;
-	      if(dateArr != null){
-		    fromDate = dateArr[0];
-		    toDate = dateArr[1];
-	       }
-
+			
 			var jsObj = { 
-			              fromDate : fromDate,    //"2016-10-01",
-		                  toDate : toDate,			//"2016-10-18" 
+			              fromDate : customStartDate,    //"2016-10-01",
+		                  toDate : customEndDate,			//"2016-10-18" 
 						  task   : "dataMonitoringDashboard"
 						}
 			$.ajax({
@@ -79,17 +72,9 @@
 	function getIssueTypeWiseCounts(){
 		var openIssuesArr = [];
 		var fixedIssuesArr = [];
-			var dates = $(".singleDate").val();
-	        var dateArr = dates.split("-");
-	        var fromDate;
-	        var toDate;
-	   if(dateArr != null){
-		     fromDate = dateArr[0];
-		     toDate = dateArr[1];
-	       }
 			var jsObj = { 
-				fromDate : fromDate, //"10/01/2016",
-				toDate : toDate      //"10/20/2016",
+				fromDate : customStartDate, //"10/01/2016",
+				toDate : customEndDate      //"10/20/2016",
 			}
 			$.ajax({
 				type : 'GET',
@@ -118,7 +103,7 @@
 							}
 						}
 					}
-					 $('#openIssues').highcharts({
+					  $('#openIssues').highcharts({
 						chart: {
 							type: 'pie',
 							options3d: {
@@ -138,26 +123,28 @@
 						  align: 'right',
 						  verticalAlign: 'middle',
 						  symbolPadding: 20,
-						  symbolWidth: 10
+						  symbolWidth: 10,
+							labelFormatter: function() {
+							  return '<span class=\"' + this.name + '-arrow\"><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span></span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
+												Highcharts.numberFormat(this.percentage,2)+'%';
+						}
 					  },
 						plotOptions: {
 						  pie: {
 							allowPointSelect: false,
-							innerSize: 100,
-							depth: 45,
+							innerSize: 120,
+							depth: 10,
 							cursor: 'pointer',
-							dataLabels: {
-							  enabled: false
-							},
-							showInLegend: true,
+							
+							showInLegend: true
 
 						  },
 						  series: {
 							point: {
 							  events: {
 								legendItemClick: function () {
-								alert(this.index)
-									return false; // <== returning false will cancel the default action
+									//getStatusWiseIssuesDetails(this.name,1,this.y);
+									return false;
 								}
 							  }
 							}
@@ -165,7 +152,18 @@
 						},
 						series: [{
 							name: 'Count',
-							data: openIssuesArr
+							data: openIssuesArr,
+							dataLabels:{
+								enabled: true,
+								 distance: -20,
+								  formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.percentage,2)+ '%';
+										}
+									} 
+							},
 						}]
 					});
 					$('#fixedIssues').highcharts({
@@ -188,26 +186,28 @@
 						  align: 'right',
 						  verticalAlign: 'middle',
 						  symbolPadding: 20,
-						  symbolWidth: 10
+						  symbolWidth: 10,
+							labelFormatter: function() {
+							  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
+												Highcharts.numberFormat(this.percentage,2)+'%';
+						}
 					  },
 						plotOptions: {
 						  pie: {
 							allowPointSelect: false,
-							innerSize: 100,
-							depth: 45,
+							innerSize: 120,
+							depth: 10,
 							cursor: 'pointer',
-							dataLabels: {
-							  enabled: false
-							},
-							showInLegend: true,
+							
+							showInLegend: true
 
 						  },
 						  series: {
 							point: {
 							  events: {
 								legendItemClick: function () {
-								alert(this.index)
-									return false; // <== returning false will cancel the default action
+									//getStatusWiseIssuesDetails(this.name,2,this.y);
+									return false;
 								}
 							  }
 							}
@@ -215,7 +215,18 @@
 						},
 						series: [{
 							name: 'Count',
-							data: fixedIssuesArr
+							data: fixedIssuesArr,
+							dataLabels:{
+								enabled: true,
+								 distance: -20,
+								  formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.percentage,2)+ '%';
+										}
+									} 
+							},
 						}]
 					});
 				}
@@ -224,17 +235,10 @@
 		
 function getDataMonitoringOverViewDetails(){
  $("#dataMonitoringOverviewTblId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-       var fromDate;
-       var toDateDate;
-       var date=$(".singleDate").val();
-	  if(date != undefined && date.trim().length > 0){
-		  fromDate = date.split("-")[0]; 
-		  toDateDate = date.split("-")[1]; 
-	  }	 
-   var jsObj = {
+     var jsObj = {
 	   
-		  fromDate : fromDate,
-		  toDate : toDateDate
+		  fromDate : customStartDate,
+		  toDate : customEndDate
    }
    $.ajax({
      type : 'GET',    
@@ -292,29 +296,24 @@ function getDataMonitoringOverViewDetails(){
 		str+='</ul>';
 	  $("#dataMonitoringOverviewTblId").html(str); 
    }
-   $(document).on("click",".singleDate",function(){
-   
+   $('.singleDate').on("apply.daterangepicker",function(ev,picker){
+		customStartDate = picker.startDate.format("MM/DD/YYYY");
+		customEndDate = picker.endDate.format("MM/DD/YYYY");
 		getOverAllDataCollectorsCounts();
 		getIssueStatusWiseCounts();
 		getIssueTypeWiseCounts();
 		getDataMonitoringOverViewDetails();
+		getDistrictWiseIssueTypesCount();
    });
    function getDistrictWiseIssueTypesCount(){
-		var dates = $(".singleDate").val();
-		var dateArr = dates.split("-");
-		var fromDate;
-		var toDate;
-		if(dateArr != null){
-			fromDate = dateArr[0];
-			toDate = dateArr[1];
-		}
+		$("#districtWiseNewsIssuesReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var stateArr = [];
 		stateArr.push("1");
 		stateArr.push("36");
 		
 		var jsObj = { 
-		  fromDate : fromDate,		//"10/01/2016",
-		  toDate : toDate,		 	//"10/18/2016"  
+		  fromDate : customStartDate,		//"10/01/2016",
+		  toDate : customEndDate,		 	//"10/18/2016"  
 		  issueStatusId : 1,
 		  stateIds  : stateArr
 		  
@@ -334,61 +333,77 @@ function getDataMonitoringOverViewDetails(){
 		var str='';
 		
 		if(result != null && result.length > 0){
+			var chartColors = ['#4C7BA7','#93B18B','#9F536F','#EF6072','#E65425','#D5AB59','#D8AB58','#495762'];
 			for(var i in result){
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 			str+='<h4>'+result[i].name+' - DISTRICT WISE - <b>OPEN ISSUES</b> OVERVIEW</h4>';
 			str+='</div>';
 				if(result[i].distList !=null && result[i].distList.length >0){
 				str+='<div class="col-xs-12 col-sm-12 col-md-12">';
-				str+='<ul class="ComparisionPartyWiseSlickApply">';
-					for(var j in result[i].distList){
-					
-					str+='<li><div id="districtWiseissues'+i+''+j+'" class="chartLiD" style="height:300px" ></div></li>';
-				
-						
+					str+='<ul class="ComparisionPartyWiseSlickApply">';
+						for(var j in result[i].distList){
+							str+='<li><h4 class="panel-title">'+result[i].distList[j].name+'</h4><div id="districtWiseissues'+i+''+j+'" class="chartLiD" style="height:300px" ></div></li>';
+						}
+					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+					str+='<ul class="list-inline text-center">';
+					for(var k in result[0].distList[0].issueTypes){
+					  str+='<li><span style="height:10px;width:10px;display:inline-block;border-radius:50%;margin-right:5px;background-color:'+chartColors[k]+'"></span>'+result[0].distList[0].issueTypes[k].name+'</h4></li>';
 					}
 					str+='</ul>';
-					str+='</div>';
-					
+				str+='</div>';
 				}
 			}
-		
-				
-			}
+		}
 			$("#districtWiseNewsIssuesReport").html(str);						
-		
-		
-		
+
 		if(result != null && result.length > 0){
 			for(var i in result){
-			
-			var districtNamesArray;
+			//	var districtNamesArray;
 			
 				if(result[i].distList !=null && result[i].distList.length >0){
 				
 					for(var j in result[i].distList){
 					var mainArr=[];
-					districtNamesArray = result[i].distList[j].name;
+					
+					//districtNamesArray = result[i].distList[j].name;
+					var isDataAvail = false;
 					if(result[i].distList[j].issueTypes !=null && result[i].distList[j].issueTypes.length >0){
 						for(var k in result[i].distList[j].issueTypes){
-						if(result[i].distList[j].issueTypes[k].inviteeCount !=0){
-							var subArr=[];
-							subArr.push(result[i].distList[j].issueTypes[k].name);
-							subArr.push(parseInt(result[i].distList[j].issueTypes[k].inviteeCount));
-							mainArr.push(subArr);
+							if(result[i].distList[j].issueTypes[k].inviteeCount !=0){
+							isDataAvail = true;
+								var subArr=[];
+								subArr.push(result[i].distList[j].issueTypes[k].name);
+								subArr.push(parseInt(result[i].distList[j].issueTypes[k].inviteeCount));
+								mainArr.push(subArr);
 							}
 						}
 					}
-					 
-					 
+					if(isDataAvail == true){
 						$('#districtWiseissues'+i+''+j+'').highcharts({
+							colors:['#4C7BA7','#93B18B','#9F536F','#EF6072','#E65425','#D5AB59','#D8AB58','#495762'],
 							chart: {
 								type: 'column'
 							},
 							title: {
-								text: districtNamesArray
+								text: null
 							},
 							
+							xAxis: {
+							 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+								type: 'category',
+								labels: {
+									enabled:false,
+									rotation: -45,
+									style: {
+										fontSize: '13px',
+										fontFamily: 'Verdana, sans-serif'
+									}
+								}
+							},
 							xAxis: {
 							 min: 0,
 							 gridLineWidth: 0,
@@ -415,16 +430,16 @@ function getDataMonitoringOverViewDetails(){
 								enabled: false
 							},
 							tooltip: {
-								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								//headerFormat: '<span style="font-size:11px"></span><br>',
 								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
 							},
 							series: [{
-								name: '',
+								//name: 'Count',
 								colorByPoint: true,
 								data: mainArr,
 								dataLabels: {
 									enabled: true,
-									rotation: -90,
+									rotation: 1,
 									color: '#FFFFFF',
 									align: 'right',
 									format: '{point.y}', // one decimal
@@ -436,12 +451,10 @@ function getDataMonitoringOverViewDetails(){
 								}
 							}]
 						});
-					
-					  
-					 
+						}else{
+							$('#districtWiseissues'+i+''+j+'').html("<h4 style='margin-top:70px;'>NO DATA AVAILABLE</h4>")
+						}
 					}
-					
-					
 				}
 			}
 			
@@ -456,6 +469,4 @@ function getDataMonitoringOverViewDetails(){
 		}); 
 		
 		}
-		
 	}
-	
