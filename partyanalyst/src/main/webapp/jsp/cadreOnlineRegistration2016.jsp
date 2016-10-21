@@ -508,14 +508,14 @@
     <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
-				<!--<div class="panel-heading renewalN">
+				<div class="panel-heading renewalN">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
                 </div>
             	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
                     <h3 class="text-left text-capital text-muted m_top10">New Membership</h3>
-                </div>-->
+                </div>
 <!-- Confirmation Block -->
      <div class="panel-body voterIdConfirm hide">
 		<div>
@@ -637,10 +637,10 @@
 					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
                         	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID
 						   </label>
-                          </div>
+                        </div>
 						<div class="col-md-1 col-xs-10 col-sm-3 m_top10">
                             <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO
-						   </label>
+						</label>
                         </div>
                        <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
                         <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId"/>NAME
@@ -648,7 +648,7 @@
                         </div>
 					  </div>
 					 <div class="col-md-4 col-xs-12 col-sm-6">
-                            <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter voterId/hno/name"/>
+                           <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter voterId/hno/name"/>
                       </div>
 					</div>
 					<div class="row">
@@ -871,7 +871,7 @@
                         </div>
 						<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee AadharNo</label>
-                            <input type="text" class="form-control" id="prevNomneAadharNoId" name="cadreRegistrationVO.prevNomineeAadharNo"/>
+                            <input type="text" class="form-control" id="prevNomneAadharNoId" name="cadreRegistrationVO.nomineeAadharNo"/>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
                         	<label class="checkbox-inline" id="prevNomineeId">
@@ -879,7 +879,7 @@
                             </label>
                             <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
                             <label class="checkbox-inline" id="familyNomineeChId">
-                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls isNomineeChangd"/>Select Nominee From Family
+                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls isNomineeChangd" checked="true"/>Select Nominee From Family
                             </label>
 							<span style="margin-left:10px;margin-right:10px;" id="familyNomineeOrId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
@@ -1097,6 +1097,9 @@
                     	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
 							<span id="renErrDivId" style="color:red;"></span>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top30">
+									<span id="renewalBackBtn" class="backBtn"> ← Back</span>
+								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>MEMBERSHIP ID</label>
 									<input type="text" class="form-control" id="validateRenMemshipId" maxlength="8"/>
@@ -1115,9 +1118,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<p>Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top30">
-									<span id="renewalBackBtn" class="backBtn"> ← Back</span>
-								</div>
+								
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId"></div>
@@ -1511,6 +1512,8 @@ $(document).on("click","#mainPageBackId",function(){
 	
 });
 
+}
+
 $("#dobId").datetimepicker({
 	   format:'YYYY-MM-DD',
 	   //maxDate : '2004-01-01',
@@ -1530,7 +1533,8 @@ $("#dobId").datetimepicker({
   var presntConstituencyId =0;
   var presntMandalId =0;
   var presntVillageId =0;
-   
+  var registrationVoterType='ownVoterId';
+  
   onLoadCalls();
  
 
@@ -1572,6 +1576,7 @@ $(document).on("click","#voterIdBack",function(){
 		$(".subBlock,.voterIdSearch").addClass("hide");
 		$(".mainBlocks").addClass("animated fadeIn");
 		$(".mainBlocks").removeClass("hide");
+		$(".voterIdConfirm").removeClass("hide");
 	},500)
 	setTimeout(function(){
 		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
@@ -1614,6 +1619,7 @@ $(document).on("click",".renewalBtn",function(){
 		$("#newRegOKDivId").hide();
 		$(".subBlock,.subBlockR,.selectMembership").removeClass("hide");
 		$(".subBlock,.subBlockR,.selectMembership").addClass("animated fadeIn");
+		$(".voterIdConfirm").addClass("hide");
 		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
@@ -1820,8 +1826,8 @@ $(document).on("click",".registerNew",function(){
 		$(".mainBlocks").addClass("hide");
 		$("#newRegOKDivId").show();
 		$("#renwalOKDivId").hide();
-		$(".subBlock,.voterIdConfirm").removeClass("hide");
-		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
+		$(".subBlock,.voterIdConfirm,.newProfile").removeClass("hide");
+		$(".subBlock,.voterIdConfirm,.newProfile").addClass("animated fadeIn");
 	},500)
 	setTimeout(function(){
 		$(".subBlock,.voterIdConfirm").removeClass("animated fadeIn");
@@ -1884,6 +1890,7 @@ $(document).on("click",".checkCls",function(){
 	$(this).attr("checked",true);
 });
 $(document).on("click",".noVoterId",function(){
+	registrationVoterType='familyVoterId';
 	$(".voterIdConfirm").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdConfirm").addClass("hide");
