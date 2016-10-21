@@ -332,42 +332,7 @@ $(document).on("click",".manageIssues",function(){
 		}
 		str+='</tbody>';
 		str+='</table>';
-	/* for( var i in result) {
-		str += '<li>';
-			str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
-			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'" style="margin-bottom: 10px;">edit</button>';
-			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px; margin-bottom: 10px;">ISSUE TRACK</button>';
-			//str += '</h4>';
-			str +='<div class="descriptionCls">';			
-				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
-				str += '<p class="m_top10">';
-				str += '<span class="text-danger"><i>Issue Status :<span class="statusUpdate'+i+'">'
-						+ result[i].issueStatus + '</span></i></span>';
-				str += '<span class="pull-right text-muted"><i>Informed Time:<span class="updatedTime'+i+'">'
-						+ result[i].dateStr + '</span></i></span>';
-				str += '</p>';
-			str +='</div>';		
-			str += '<div class="row descriptionEditCls" style="display:none;">';
-				str += '<div class="col-md-12 col-xs-12 col-sm-12">';
-					str += '<textarea class="form-control issueDescEdit'+i+'"></textarea>';
-				str += '</div>';
-				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
-					str += '<label>Change Issue Status</label>';
-					str += '<select class="select" id="changeIssueStatusId'+i+'">';
-					str += '</select>';
-				str += '</div>';
-				str += '<div class="col-md-4 col-xs-12 col-sm-4">';
-				str+='<div class="row">'
-					str +='<button class="btn btn-success m_top20 updateCls"  attr_value="'+i+'" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'">UPDATE</button>';
-					str +='<button class="btn btn-default cancelUpdate m_top20 cancelCls" style="margin-left:100px;">CANCEL</button>';
-					str+='</div>'
-					str +='<span id="updateDivIdImg'+i+'" style="display:none;"><img src="images/search.gif"/></span>';
-				    str +='<div id="updateStatusId'+i+'"></div>';
-					
-				str += '</div>';
-			str += '</div>';
-		str += '</li>';
-	} */
+	
 	$("#issueDivId").html(str);
 	
 	 $('#datatableId').dataTable({
@@ -451,20 +416,10 @@ $(document).on("click",".manageIssues",function(){
 	var  newStatusId = $('#changeIssueStatusId'+value).val();
 	
 	updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId);
-	/*var desc = $(".issueDescEdit"+value).val();
-	alert(desc)
-	$(".issueDesc"+value).text(desc);
-	 //selectbox Value Start
-	var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
-	$(".statusUpdate"+value).text(subValue);
-	//selectbox Value End
-	$(this).closest("li").find(".descriptionCls").show();
-	$(this).closest("li").find(".descriptionEditCls").hide();*/
 });
   
   function updateStatusToACadreRegIssue(value,cadreRegIssueId,description,newStatusId){
 	   var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
-	   //var description = $(".issueDescEdit"+value).val();
 	   $(".issueDesc"+value).text(description);
 	   var subValue = $("#changeIssueStatusId"+value+" option:selected").text();
 	   $(".statusUpdate"+value).text(subValue);
@@ -522,7 +477,7 @@ $(document).on("click",".manageIssues",function(){
 		  
 	   });
   }
-  //trackingRegIssueByRegIssueId();
+  
   function trackingRegIssueByRegIssueId(value,cadreRegIssueId){
 	  $("#issueTrackingBodyId").html("");
 	  $("#issueTrackingModal").modal("show");
@@ -728,7 +683,6 @@ function buildTabUserDetails(result){
 		
 		$("#tabUserDetailsImgId").hide();
 		$("#tabUserDetailsDivId").html(str);
-		//$("#detailsTable").datatable();
 	}
 	else{
 		$("#tabUserDetailsImgId").hide();

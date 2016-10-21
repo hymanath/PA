@@ -151,24 +151,11 @@
             </div>
         </div>
 		<!--<h4>TECHNICAL ISSUE</h4>-->
-        <div id="issueDivId">
-        	<!--<li>
-            	<h4 class="text-capital">
-                	technical issue
-                    <button class="btn btn-success editBtn pull-right btn-sm">edit</button>
-                </h4>
-                <p>Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc </p>
-                <p class="m_top10">
-                	<span class="text-danger"><i>Issue Status : open</i></span>
-                    <span class="pull-right text-muted"><i>Informed Time: 3:49 PM</i></span>
-                </p>
-            </li>-->
-        </div>
+        <div id="issueDivId"></div>
       </div>
 	
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <!--<button type="button" class="btn btn-success">Submit</button>-->
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

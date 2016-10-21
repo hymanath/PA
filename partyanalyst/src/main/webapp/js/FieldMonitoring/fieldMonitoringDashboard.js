@@ -3,7 +3,6 @@
 		getOverAllDataCollectorsCounts();
 		getIssueStatusWiseCounts();
 		getIssueTypeWiseCounts();
-		//getStatusWiseIssuesDetails();
 	}
 	
 	function getOverAllDataCollectorsCounts(){
@@ -119,7 +118,6 @@
 							}
 						}
 					}
-					//console.log(openIssuesArr);
 					 $('#openIssues').highcharts({
 						chart: {
 							type: 'pie',
@@ -291,64 +289,60 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count){
 function buildStatusWiseDetails(result){
 	var str = '';
 	
-	//str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		//str+='<div class="block">';
-			//str+='<h3 class="panel-title text-capital">apk issue - 20</h3>';
-			str+='<table class="table b_1" id="issueStatusTableId">';
-				str+='<thead class="text-capitalize">';
-					str+='<th>User Id</th>';
-					str+='<th>user name</th>';
-					str+='<th>user contact number</th>';
-					str+='<th>state</th>';
-					str+='<th>district</th>';
-					str+='<th>constituency</th>';
-					str+='<th>vendor name</th>';
-					str+='<th>leader name</th>';
-					str+='<th>open issues</th>';
-					str+='<th>fixed issues</th>';
-					str+='<th></th>';
-				str+='</thead>';
-				str+='<tbody>';
-				for(var i in result){
-					str+='<tr>';
-						str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
-						str+='<td>'+result[i].tabUserName+'</td>';
-						str+='<td>'+result[i].mobileNo+'</td>';
-						if(result[i].stateName != null)
-							str+='<td>'+result[i].stateName+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].districtName != null)
-							str+='<td>'+result[i].districtName+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].constituencyName != null)
-							str+='<td>'+result[i].constituencyName+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].vendorName != null)
-							str+='<td>'+result[i].vendorName+'</td>';
-						else
-							str+='<td> - </td>';
-						str+='<td> - </td>';
-						if(result[i].openIssues != null)
-							str+='<td>'+result[i].openIssues+'</td>';
-						else
-							str+='<td> - </td>';
-						if(result[i].fixedIssues != null)
-							str+='<td>'+result[i].fixedIssues+'</td>';
-						else
-							str+='<td> - </td>';
-						str+='<td><button class="btn btn-success text-capitalize issuesBtn" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result[i].tabUserId+'" attr_cadre_survey_userName="'+result[i].userName+'" attr_tab_userName="'+result[i].tabUserName+'" attr_vendor_Id ="'+result[i].vendorId+'" attr_constistuency_Id = "'+result[i].constituencyId+'" attr_mobileNo="'+result[i].mobileNo+'">manage issues</button></td>';
-					str+='</tr>';
-				}
-				str+='</tbody>';
-			str+='</table>';
-		//str+='</div>';
-	//str+='</div>';
+	str+='<table class="table b_1" id="issueStatusTableId">';
+		str+='<thead class="text-capitalize">';
+			str+='<th>User Id</th>';
+			str+='<th>user name</th>';
+			str+='<th>user contact number</th>';
+			str+='<th>state</th>';
+			str+='<th>district</th>';
+			str+='<th>constituency</th>';
+			str+='<th>vendor name</th>';
+			str+='<th>leader name</th>';
+			str+='<th>open issues</th>';
+			str+='<th>fixed issues</th>';
+			str+='<th></th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
+				str+='<td>'+result[i].tabUserName+'</td>';
+				str+='<td>'+result[i].mobileNo+'</td>';
+				if(result[i].stateName != null)
+					str+='<td>'+result[i].stateName+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].districtName != null)
+					str+='<td>'+result[i].districtName+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].constituencyName != null)
+					str+='<td>'+result[i].constituencyName+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].vendorName != null)
+					str+='<td>'+result[i].vendorName+'</td>';
+				else
+					str+='<td> - </td>';
+				str+='<td> - </td>';
+				if(result[i].openIssues != null)
+					str+='<td>'+result[i].openIssues+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].fixedIssues != null)
+					str+='<td>'+result[i].fixedIssues+'</td>';
+				else
+					str+='<td> - </td>';
+				str+='<td><button class="btn btn-success text-capitalize issuesBtn" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result[i].tabUserId+'" attr_cadre_survey_userName="'+result[i].userName+'" attr_tab_userName="'+result[i].tabUserName+'" attr_vendor_Id ="'+result[i].vendorId+'" attr_constistuency_Id = "'+result[i].constituencyId+'" attr_mobileNo="'+result[i].mobileNo+'">manage issues</button></td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
 	
 	$("#statusWiseDetailsImgId").hide();
 	$("#statusWiseDetailsDivId").html(str);
+	$("#issueStatusTableId").dataTable();
 }
 $(document).on("click",".issuesBtn",function(){ 
     $("#issueTypeDivId").hide();
@@ -569,6 +563,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
       var description =$("#descriptionId").val();
       var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
 	  var tabUserInfoId= $("#submitId").attr("attr_tab_user_info_id");
+	  var issueStsId = $("#hiddenIssueStatusId").val();
 	  if(issueTypeId == 0)
 	   {
 		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Issue Type</span>");
@@ -613,6 +608,8 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 			setTimeout(function(){
 				$("#issueTypeDivId").hide();
 				clearErrorFields();
+				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStsId);
+				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 			}, 2000);
 	   }else{
 		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");
