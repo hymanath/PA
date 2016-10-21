@@ -494,7 +494,10 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   buildIssuesForATabUserByStatus(result);
+	    if(result != null && result.length > 0)
+		buildIssuesForATabUserByStatus(result);
+		else
+			$("#issueDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
    });
   }
   function buildIssuesForATabUserByStatus(result) {
@@ -563,7 +566,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
       var description =$("#descriptionId").val();
       var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
 	  var tabUserInfoId= $("#submitId").attr("attr_tab_user_info_id");
-	  var issueStsId = $("#hiddenIssueStatusId").val();
+	  //var issueStsId = $("#hiddenIssueStatusId").val();
 	  if(issueTypeId == 0)
 	   {
 		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Issue Type</span>");
@@ -608,7 +611,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 			setTimeout(function(){
 				$("#issueTypeDivId").hide();
 				clearErrorFields();
-				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStsId);
+				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
 				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 			}, 2000);
 	   }else{
