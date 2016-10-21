@@ -2067,6 +2067,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 
 	public String generatingAndSavingOTPDetails(String mobileNo){
 		TabUserOtpDetails tabUserOtpDetails = null;
+		String status = null;
 		try {
 			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
 			int otpRand = 0;
@@ -2078,7 +2079,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			}
 			String refeRenceNo = String.valueOf(refRand);
 			String otpNum = String.valueOf(otpRand);
-			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
+			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" This OTP Validate for Next 15 mins.";
 			String[] phoneNumbers = {mobileNo.toString()};
 			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
 			
@@ -2093,14 +2094,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			tabUserOtpDetails.setIsValid("Y");
 			
 			tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
+			status=refeRenceNo;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
 			return "failure";
 		}
-		return "success";
+		return status;
 	}
+	
 	public CadreRegistratedCountVO getEnumerationDtlsForMem(Long activityMemberId,Long stateId,String startDate, String endDate){
 		try{
 			CadreRegistratedCountVO cadreRegistratedCountVO = new CadreRegistratedCountVO();
