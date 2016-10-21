@@ -741,10 +741,10 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				 Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 				 Long typeId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 				 Long count = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-				 IdAndNameVO statusVO = getMatchVO(returnList, typeId);
+				 IdAndNameVO statusVO = getMatchVO(returnList, statusId);
 				 if(statusVO != null){
 					 statusVO.setInviteeCount(statusVO.getInviteeCount()+count);
-					 IdAndNameVO typeVO = getMatchVO(statusVO.getIssueTypes(), statusId);
+					 IdAndNameVO typeVO = getMatchVO(statusVO.getIssueTypes(), typeId);
 					 if(typeVO != null){
 						 typeVO.setInviteeCount(count);
 					 }
