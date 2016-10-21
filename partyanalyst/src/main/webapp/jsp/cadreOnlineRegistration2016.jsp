@@ -1177,15 +1177,14 @@
 		 <input type="text" id="checkMblNoId"/>
 		  <!--<button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>-->
 		</div>
+		<div id="otpMsgDivId"></div>
 		<div style="padding-top:6px;margin-left:18px;">
 		   <label>Enter OTP:</label>
-		   <div class="row">
-			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/>
-			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">OK</button>
-			   <button id="renwalOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="renwalOtpDetails();">OK</button>
-			</div>
-		</div>
-		<div id="otpStusErrDivId"></div>
+			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/><span id="otpErrDivId" style="color:red;"></span>
+			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
+			   <button id="renwalOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
+		</div>	
+		<div><span id="otpStusErrDivId"></span><span id="otpStusErrImgId" style="display:none;"><img src="images/search.gif"/></span></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
