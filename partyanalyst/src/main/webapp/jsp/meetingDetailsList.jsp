@@ -321,10 +321,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<h4 class="panel-title">Action Type</h4>
 				<label class="radio-inline" name="actionTypeName">
-					<input type="radio" class="checkCls" id="generalBtnId" name="checkRdoBtnname" value="N" checked/>General
+					<input type="radio" class="checkCls radioBtnGenCls" id="generalBtnId" name="checkRdoBtnname" value="N" checked/>General
 				</label>
 				<label class="radio-inline" name="actionTypeName">
-					<input type="radio" class="checkCls" id="actionableBtnId" name="checkRdoBtnname"  value="Y"/>Actionable
+					<input type="radio" class="checkCls radioBtnActCls" id="actionableBtnId" name="checkRdoBtnname"  value="Y"/>Actionable
 				</label>
 			</div>
 			 <div class="panel-body">
@@ -1226,14 +1226,32 @@ function getConstituenciesForDistricts(district){
 		var mandalId=0;
 		var panchayatId=0;
 		
-		if(isActionable =="Y"){			
+		if(isActionable =="Y"){	
+			levelId = $("#meetingLocationLevel").val();
+			
+			
 			stateId = $("#statesDivId").val();
 			districtId = $("#districtId").val();
-			constituencyId = $("#constituencyId").val();
+			constituencyId = $("#constituencyId").val();			
 			mandalId = $("#manTowDivId").val();
-			panchayatId = $("#villWardId").val();		
-		
-			levelId = $("#meetingLocationLevel").val();
+			panchayatId = $("#villWardId").val();				
+			
+			if(stateId == null){
+				stateId =0;
+			}
+			if(districtId == null){
+				districtId =0;
+			}
+			if(constituencyId == null){
+				constituencyId =0;
+			}
+			if(mandalId == null){
+				mandalId =0;
+			}
+			if(panchayatId == null){
+				panchayatId =0;
+			}
+			
 			if(panchayatId != null && panchayatId > 0){
 			levelValue = panchayatId;
 			}else if(mandalId != null && mandalId > 0){
@@ -1245,8 +1263,7 @@ function getConstituenciesForDistricts(district){
 			}else if(stateId != null && stateId > 0){
 				levelValue = stateId;
 			}
-		}
-		
+		}	
 		if(minuteText.trim().length==0){
 			$("#momError").text(" Please Enter Minute Text");
 			return;
@@ -2233,6 +2250,12 @@ $(document).on("click","#actionableBtnId",function(){
 		
 });
 $(document).on("click","#generalBtnId",function(){
+		$("#meetingLocationLevel").val("");
+		$("#statesDivId").val("");
+		$("#districtId").val("");
+		$("#constituencyId").val("");
+		$("#manTowDivId").val("");
+		$("#villWardId").val("");
 		$("#meetingLvlId").hide();
 		$("#stateShowId").hide();
 		$("#DistrictShowId").hide();
@@ -2242,8 +2265,7 @@ $(document).on("click","#generalBtnId",function(){
 });
 
 function getPartyMeetingMinuteRetrieveDetails(minuteId){
-	getUserAccessLocationDetails();
-	 	var jsObj={
+	var jsObj={
 		minuteId:minuteId	
 		}
 		$.ajax({
@@ -2252,13 +2274,18 @@ function getPartyMeetingMinuteRetrieveDetails(minuteId){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result !=null && result.length>0){
-				if(result[0].actionType == 'Y'){
+				if(result !=null && result.length>0){
+				if(result[0].actionType == "Y"){
+					
 					$("#actionableBtnId").attr('checked', true);
-					setTimeout(function(){ 
-						prePopulatePartyMeetingMinuteDetails(result);
-					}, 3000);
-				}else if(result[0].actionType == 'N'){
+					if ($("#actionableBtnId").is(":checked")) {
+						getUserAccessLocationDetails();
+						setTimeout(function(){ 
+							prePopulatePartyMeetingMinuteDetails(result);
+						}, 5000);
+					}	
+				}else if(result[0].actionType == "N"){
+					$("#generalBtnId").attr('checked', true);
 					if ($("#generalBtnId").is(":checked")) {
 						$("#meetingLvlId").hide();
 						$("#stateShowId").hide();
@@ -2267,7 +2294,8 @@ function getPartyMeetingMinuteRetrieveDetails(minuteId){
 						$("#ManTwnDivShowId").hide();
 						$("#VillWardShowId").hide();
 					}
-				}
+				} 
+				
 		   }
    });	
  }
