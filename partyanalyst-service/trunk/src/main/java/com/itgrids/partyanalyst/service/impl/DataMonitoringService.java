@@ -12,11 +12,15 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IDataRejectReasonDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.DataRejectReason;
+import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -30,6 +34,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 	private CommonMethodsUtilService commonMethodsUtilService ;
 	private DateUtilService dateUtilService;
 	private ITdpCadreDAO tdpCadreDAO;
+	private IDataRejectReasonDAO dataRejectReasonDAO;
 	
 	public void setTdpCadreDataVerificationDAO(
 			ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO) {
@@ -48,6 +53,9 @@ public class DataMonitoringService implements IDataMonitoringService {
 	}    
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
+	}
+	public void setDataRejectReasonDAO(IDataRejectReasonDAO dataRejectReasonDAO) {
+		this.dataRejectReasonDAO = dataRejectReasonDAO;
 	}
 	/**
 	* @param  Stirng fromDateStr
@@ -540,4 +548,80 @@ public class DataMonitoringService implements IDataMonitoringService {
 		  LOG.error("Exception raised in setTabMembersCntDetails() of DataMonitoringService", e); 
 	  }
   }
+  	public List<IdNameVO> getDataRejectReason(){
+  		LOG.info("Entered into getDataRejectReason() of DataMonitoringService");
+  		try{
+  			IdNameVO idNameVO = null;
+  			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+  			List<DataRejectReason> dataRejectReasons = dataRejectReasonDAO.getAll();
+  			if(dataRejectReasons != null && dataRejectReasons.size() > 0){
+  				for(DataRejectReason dataRejectReason : dataRejectReasons){
+  					idNameVO = new IdNameVO();
+  					idNameVO.setId(dataRejectReason.getDataRejectReasonId());
+  					idNameVO.setName(dataRejectReason.getRejectReason());
+  					idNameVOs.add(idNameVO);
+  				}
+  			}
+  			return idNameVOs;
+  		}catch(Exception e){  
+  			e.printStackTrace();
+  			LOG.error("Exception raised in getDataRejectReason() of DataMonitoringService", e); 
+  		}
+  		return null;  
+  	}
+  	public ResultStatus updateRejectDtls(List<IdNameVO> idNameVOs){   
+  		ResultStatus resultStatus = new ResultStatus();
+  		try{
+  			
+  			DateUtilService dateUtilService = new DateUtilService();
+  			TdpCadreDataVerification tdpCadreDataVerification = new TdpCadreDataVerification();
+  			if(idNameVOs.size() > 0){  
+  				for(IdNameVO idNameVO : idNameVOs){
+  					tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
+  					tdpCadreDataVerification.setVerifiedBy(idNameVO.getId());
+  					tdpCadreDataVerification.setDataRejectReasonId(idNameVO.getRejectedCount());
+  					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
+  					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),2l);   
+  					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);     
+  				}
+  			}
+  			resultStatus.setResultCode(1);
+  			resultStatus.setMessage("Updated Successfully");
+  			return resultStatus;
+  		}catch(Exception e){
+  			e.printStackTrace();
+  			LOG.error("Exception raised in updateRejectDtls() of DataMonitoringService", e); 
+  			resultStatus.setResultCode(0);
+  			resultStatus.setMessage("Updation Failed");
+  			return resultStatus;  
+  		}
+  		
+  	}
+  	public ResultStatus updateApproveDtls(List<IdNameVO> idNameVOs){   
+  		ResultStatus resultStatus = new ResultStatus();
+  		try{
+  			
+  			DateUtilService dateUtilService = new DateUtilService();
+  			TdpCadreDataVerification tdpCadreDataVerification = new TdpCadreDataVerification();
+  			if(idNameVOs.size() > 0){
+  				for(IdNameVO idNameVO : idNameVOs){
+  					tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
+  					tdpCadreDataVerification.setVerifiedBy(idNameVO.getId());
+  					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
+  					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);   
+  					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);      
+  				}
+  			}
+  			resultStatus.setResultCode(1);
+  			resultStatus.setMessage("Updated Successfully");  
+  			return resultStatus;
+  		}catch(Exception e){
+  			e.printStackTrace();
+  			LOG.error("Exception raised in updateRejectDtls() of DataMonitoringService", e); 
+  			resultStatus.setResultCode(0);
+  			resultStatus.setMessage("Updation Failed");
+  			return resultStatus;  
+  		}  
+  		
+  	}
 }
