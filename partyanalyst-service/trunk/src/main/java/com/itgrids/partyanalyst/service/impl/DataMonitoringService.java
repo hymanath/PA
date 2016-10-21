@@ -593,10 +593,11 @@ public class DataMonitoringService implements IDataMonitoringService {
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),2l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);     
   				}
+  				resultStatus.setResultCode(1);
+  	  			resultStatus.setMessage("Updated Successfully");
   			}
-  			resultStatus.setResultCode(1);
-  			resultStatus.setMessage("Updated Successfully");
-  			return resultStatus;
+  			
+  			return resultStatus;  
   		}catch(Exception e){
   			e.printStackTrace();
   			LOG.error("Exception raised in updateRejectDtls() of DataMonitoringService", e); 
@@ -620,9 +621,10 @@ public class DataMonitoringService implements IDataMonitoringService {
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);      
   				}
+  				resultStatus.setResultCode(1);
+  	  			resultStatus.setMessage("Updated Successfully");    
   			}
-  			resultStatus.setResultCode(1);
-  			resultStatus.setMessage("Updated Successfully");  
+  			
   			return resultStatus;
   		}catch(Exception e){
   			e.printStackTrace();
