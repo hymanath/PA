@@ -312,7 +312,6 @@
        dataType:'json',
        data:{task:JSON.stringify(jsObj)}
      }).done(function(result){
-		 console.log(result);
 		  $("#userWiseRegDivId").html(' ');
          if(result != null && result.length > 0){
 			 buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourceType); 
@@ -389,7 +388,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 										  }else{
 											str+='<td> - </td>';  
 										  }
-										  str+='<td><button attr_survery_user_id='+result[i].surveryUserId+' attr_user_id='+tabUserList[j].tabUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
+										 str+='<td><button attr_survery_user_id='+result[i].surveryUserId+'  attr_web_user_id="'+0+'"  attr_user_name="'+tabUserList[j].tabUserName+'" attr_user_mobile="'+tabUserList[j].mobileNo+'" attr_tab_user_id='+tabUserList[j].tabUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
 										  str+='</tr>';	
 										}
 								}
@@ -427,7 +426,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 								  }else{
 									str+='<td> - </td>';  
 								  }
-								  str+='<td><button  attr_user_id='+result[j].surveryUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
+								  str+='<td><button attr_survery_user_id="'+0+'" attr_tab_user_id="'+0+'"  attr_web_user_id='+result[j].surveryUserId+' attr_user_name="'+result[j].surveryUserName+'" attr_user_mobile="'+result[j].mobileNo+'" class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
 								  str+='</tr>';	
 								 }
 						}
@@ -436,13 +435,285 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		$("#userWiseRegDivId").html(str);
 		$("#userWiseDataTableId").dataTable();
  }
+    function modifyDate(date){  
+		var dateArr = date.split("/");     
+		return dateArr[1]+"/"+dateArr[0]+"/"+dateArr[2];
+	}
   $(document).on("click",".getMemberDtlsCls",function(){
-	 
-	   var surveryUserId = $(this).attr("attr_survery_user_id");
-	   var userId = $(this).attr("attr_user_id");
-	    if (typeof(surveryUserId) == "undefined"){
-		  surveryUserId	 = 0;
-		}
+	   var surveyUserId = $(this).attr("attr_survery_user_id");
+	   var tabUserId = $(this).attr("attr_tab_user_id");
+	   var webUserId = $(this).attr("attr_web_user_id");
+	   var userName = $(this).attr("attr_user_name");
+	   var mobileNo = $(this).attr("attr_user_mobile");
+	   var resultType="All"
+	    getMembersDetails(surveyUserId,tabUserId,webUserId,userName,mobileNo,0,resultType);
    });
-   
-  
+   function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+	   if(resultType=="All"){
+		 $("#selfTblDivId").html(' ');
+	     $("#relativeDivId").html(' ');
+		 $("#selfTblDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	     $("#relativeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   }else if(resultType=="Self"){
+		  $("#selfTblDivId").html(' ');  
+		   $("#selfTblDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   }else if(resultType=="Relative"){
+		  $("#relativeDivId").html(' ');   
+		   $("#relativeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   }
+	   $("#issuesDataMonitroingDashboardModal").modal('show');
+	   var fromDate;
+       var toDateDate;
+       var date=$(".multiDateRangePicker").val();
+	  if(date != undefined && date.trim().length > 0){
+		  fromDate = date.split("-")[0]; 
+		  toDateDate = date.split("-")[1]; 
+	  }	 
+	var jsObj=
+		{				
+			surveyUserId : surveyUserId,
+			tabUserId : tabUserId,
+			webUserId : webUserId,
+			startDate : modifyDate(fromDate),
+			endDate : modifyDate(toDateDate),
+            minValue :minValue,
+            maxValue :10
+      }
+		$.ajax({
+			type:'GET',
+			url: 'getVerifiedDtlsAction.action',           
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){  
+				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);  
+			}else{
+			if(resultType=="All"){
+			    $("#selfTblDivId").html('No Data Available...');
+				$("#relativeDivId").html('NO DATA Available.');
+	        }else if(resultType=="Self"){
+			    $("#selfTblDivId").html('No Data Available...');
+		   }else if(resultType=="Relative"){
+			   $("#relativeDivId").html('No Data Available...');
+		    }
+			}
+		});  
+	   
+   }
+   function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+		
+		    if(resultType=="All" || resultType=="Self"){
+			  var str = '';
+		        var selfTotalCount=0;
+				 str+='<table class="table">';
+					str+='<thead class="text-capital">';
+						str+='<th>captured photo</th>';
+						str+='<th>Voter photo</th>';
+						str+='<th>name</th>';
+						str+='<th>mobile number</th>';
+						str+='<th>gender</th>';
+						str+='<th><input id="glblSelectOwnId" type="checkbox"/></th>';
+					str+='</thead>';
+					str+='<tbody class="b_1">';
+					selfTotalCount=result[0][0].totalCount;
+						for(var i in result[0]){
+							if(result[0][i].status == "Approved"){
+								str+='<tr>';
+									str+='<td rowspan="2">';
+										str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='</td>';
+									str+='<td rowspan="2">';
+										str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='</td>';
+									str+='<td>'+result[0][i].name+'</td>';
+									str+='<td>'+result[0][i].mobileNo+'</td>';  
+									str+='<td>'+result[0][i].gender+'</td>';
+									str+='<td>';
+										//str+='<input type="checkbox"/>';
+									str+='</td>';
+								str+='</tr>';  
+
+						
+								str+='<tr>';
+									str+='<td><img src="images/right.jpg" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+									str+='<td colspan="3">';
+										//str+='<select>';
+											//str+='<option></option>';
+										//str+='</select>';
+									str+='</td>';
+								str+='</tr>';
+							}
+							if(result[0][i].status == "Rejected"){
+								str+='<tr>';
+									str+='<td rowspan="2">';
+										str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='</td>';
+									str+='<td rowspan="2">';
+										str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='</td>';
+									str+='<td>'+result[0][i].name+'</td>';
+									str+='<td>'+result[0][i].mobileNo+'</td>';
+									str+='<td>'+result[0][i].gender+'</td>';
+									str+='<td>';
+										//str+='<input type="checkbox"/>';
+									str+='</td>';
+								str+='</tr>';  
+
+							 
+								str+='<tr>';
+									str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+									str+='<td colspan="3">';
+										str+='<input type="text" value="'+result[0][i].wish+'" class="form-control"></input>';    
+											//str+='<option></option>';  
+										//str+='</select>';
+									str+='</td>';
+								str+='</tr>';
+							}
+							if(result[0][i].status == "noStatus"){
+								str+='<tr>';
+									str+='<td rowspan="2">';
+										str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='</td>';
+									str+='<td rowspan="2">';
+										str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='</td>';
+									str+='<td>'+result[0][i].name+'</td>';
+									str+='<td>'+result[0][i].mobileNo+'</td>';
+									str+='<td>'+result[0][i].gender+'</td>';
+									str+='<td><input class="localSelectOwnCls" type="checkbox"/></td>';  
+								str+='</tr>'; 
+						
+						
+								str+='<tr>';
+									str+='<td>';
+										str+='<button class="btn btn-success">Approve</button>';
+										str+='<button class="btn btn-danger">Reject</button>';
+									str+='</td>';
+								str+='</tr>';
+							}
+						}
+					str+='</tbody>';
+				str+='</table>';
+				 $("#selfTblDivId").html(str);	
+				 if(minValue == 0 && selfTotalCount > 10){
+					$("#selfPaginationId").pagination({
+						items: selfTotalCount,
+						itemsOnPage: 10,
+						cssStyle: 'light-theme',
+						onPageClick: function(pageNumber) { 
+							var num=(pageNumber-1)*10;
+							getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self");
+						}
+					});
+				}	
+			}
+		if(resultType=="All" || resultType=="Relative"){
+				 var relativeTotalCount=0;
+				  var str2 = '';
+					str2+='<table class="table">';
+						str2+='<thead class="text-capital">';
+							str2+='<th>captured photo</th>';
+							str2+='<th>Voter photo</th>';
+							str2+='<th>name</th>';
+							str2+='<th>mobile number</th>';
+							str2+='<th>gender</th>';
+							str2+='<th><input id="globalSelectfamilyId" type="checkbox"/></th>';  
+						str2+='</thead>';
+						str2+='<tbody class="b_1">';
+							for(var i in result[1]){
+							  relativeTotalCount=result[1][0].totalCount;
+							if(result[1][i].status == "Approved"){
+								str2+='<tr>';
+									str2+='<td rowspan="2">';
+										str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='</td>';
+									str2+='<td rowspan="2">';
+										str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='</td>';
+									str2+='<td>'+result[1][i].name+'</td>';
+									str2+='<td>'+result[1][i].mobileNo+'</td>';
+									str2+='<td>'+result[1][i].gender+'</td>';
+									str2+='<td>';
+										//str+='<input type="checkbox"/>';
+									str2+='</td>';
+								str2+='</tr>';  
+
+						
+								str2+='<tr>';
+									str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+									str2+='<td colspan="3">';
+										//str+='<select>';
+											//str+='<option></option>';
+										//str+='</select>';
+									str2+='</td>';
+								str2+='</tr>';
+							}
+							if(result[1][i].status == "Rejected"){
+								str2+='<tr>';
+									str2+='<td rowspan="2">';
+										str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='</td>';
+									str2+='<td rowspan="2">';
+										str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='</td>';
+									str2+='<td>'+result[1][i].name+'</td>';
+									str2+='<td>'+result[1][i].mobileNo+'</td>';
+									str2+='<td>'+result[1][i].gender+'</td>';
+									str2+='<td>';
+										//str+='<input type="checkbox"/>';
+									str2+='</td>';
+								str2+='</tr>';  
+
+						
+								str2+='<tr>';
+									str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+									str2+='<td colspan="3">';
+										str2+='<input type="text" value="'+result[1][i].wish+'"></input>';
+											//str+='<option></option>';
+										//str+='</select>';
+									str2+='</td>';
+								str2+='</tr>';
+							}
+							if(result[1][i].status == "noStatus"){
+								str2+='<tr>';
+									str2+='<td rowspan="2">';
+										str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='</td>';
+									str2+='<td rowspan="2">';
+										str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='</td>';  
+									str2+='<td>'+result[1][i].name+'</td>';
+									str2+='<td>'+result[1][i].mobileNo+'</td>';
+									str2+='<td>'+result[1][i].gender+'</td>';
+									str2+='<td><input class="localSelectFamilyCls" type="checkbox"/></td>';
+								str2+='</tr>'; 
+								str2+='<tr>';
+									str2+='<td>';
+										str2+='<button class="btn btn-success">Approve</button>';
+										str2+='<button class="btn btn-danger">Reject</button>';
+									str2+='</td>';
+								str2+='</tr>';
+							}
+						}  
+						str2+='</tbody>';
+					str2+='</table>';
+			$("#relativeDivId").html(str2); 
+	       	 if(minValue == 0 && relativeTotalCount > 10){
+					$("#relativePaginationId").pagination({
+						items: relativeTotalCount,
+						itemsOnPage: 10,
+						cssStyle: 'light-theme',
+						onPageClick: function(pageNumber) { 
+							var num=(pageNumber-1)*10;
+						   getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative");
+						}
+					});
+				}					
+		}  
+   }
+   $(document).on('click','#glblSelectOwnId',function(){
+		if($(this).is(':checked'))
+			$(".localSelectOwnCls").prop( "checked", true);      
+		else
+			$(".localSelectOwnCls").prop( "checked", false);
+	});  
