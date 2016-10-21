@@ -754,7 +754,6 @@ function renMemberDetails(){
 			$(".profileDetailsBlock").removeClass("animated fadeIn");
 		},1500)
 	}
-	
 	//presently we are giving family voter id scenario registrations
 	/*if(relativeVoter != null && relativeVoter > 0){
 		  var image=$(this).attr("attr_img1");
@@ -907,6 +906,7 @@ str += '</ul>';
   
 $(document).on("click",".searchChkboxCls",function(){
 	$("#submitCadreForm").hide();
+	divsEmpty();
 	var cadreId=$(this).attr("attr_tdpCadre_id");
 	if(cadreId != 'null')
 	{
@@ -930,8 +930,10 @@ function buildRelatVoterDetails(familyVoterCardNo){
 	 }
 }
 function sendOtpToMble(){
+	
 	//var mobileNo=$("#checkMblNoId").val();
 	var mobileNo=$("#hiddenMblNo").val();
+	
 	var jsObj={
 		mobileNumber:mobileNo
 	}
@@ -941,7 +943,15 @@ function sendOtpToMble(){
 		 dataType:'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   if(result == "failure" && result == "null")
+	   {
+		$("#otpMsgDivId").html("<span style='color:red;'>Please check once OTP.</span>");  
+	   }else
+	   {
+		 $("#otpMsgDivId").html("<span style='color:green;'>Please Enter OTP of Reference #" +result+ "</span>")
+	   }
    });
+	
 }
 function getVoterDetails(){
 	if(!fieldsValidation())
@@ -1094,12 +1104,18 @@ function divsEmpty()
 	$("#errorDivId").html("");
 	$("#voterErrDivId").html("");
 	$("#renErrDivId").html("");
+	$("#otpStusErrDivId").html("");
+	$("#otpMsgDivId").html("");
+	
 }
 
 $(document).keypress(function(e) {
 			if(e.keyCode==13){
 					getVoterDetails();
 					getSearchVoterDetails();
+					validateRenewalMemshipDetails();
+					getSearchByMyVoterIdDetails();
+					getSearchByRelativeVoterIdDetails();
 				}
 });
 
@@ -1128,13 +1144,16 @@ function confirmOtpDetails()
    }).done(function(result){
 	   if(result == "success")
 	   {
-		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
+		    $("#otpStusErrImgId").show();
 		   setTimeout(function(){
 			   $("#memChckBoxModalId").modal('hide');
 			 getSearchByMyVoterIdDetails();
+			  $("#otpStusErrImgId").hide();
 			   }, 1500);
 	   }
 });
+
 }
 function renFieldsValidation()
 {
@@ -1185,6 +1204,7 @@ $(document).on("click",".searchChkboxClsR",function(){
 
 function renwalOtpDetails()
 {
+
 	/*
 	  $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
 		   setTimeout(function(){
@@ -1208,11 +1228,14 @@ function renwalOtpDetails()
    }).done(function(result){
 	   if(result == "success")
 	   {
-		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
+		   $("#otpStusErrImgId").show();
 		   setTimeout(function(){
 			   $("#memChckBoxModalId").modal('hide');
 			    renMemberDetails();
+				$("#otpStusErrImgId").hide();
 			   }, 1500);
 	   }
 });
 }
+
