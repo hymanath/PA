@@ -218,7 +218,7 @@ label
 }
 .dataTables_length{margin-top:10px !important}
 .dataTables_filter{margin-top:10px !important}
-.pagination li a.prev , .pagination li a.next
+.pagination li .prev , .pagination li .next
 {
 	height: 34px;
     min-width: 52px !important;
