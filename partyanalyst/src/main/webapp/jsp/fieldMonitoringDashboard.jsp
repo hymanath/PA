@@ -49,18 +49,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-xs-12 col-sm-6 b_right1" id="statusCountDivId">
-                                    	<!--<h4 class="text-capital panel-title"><b>field monitoring system</b></h4>
-                                        <div class="row">
-                                        	<div class="col-md-8 col-xs-12 col-sm-10">
-                                            	<ul class="dashedB">
-                                                    <li>open issues<span>1000</span></li>
-                                                    <li>closed issues<span>4000</span></li>
-                                                    <li>fixed issues<span>100</span></li>
-                                                </ul>
-                                            </div>
-                                        </div>-->
-                                    </div>
+                                    <div class="col-md-6 col-xs-12 col-sm-6 b_right1" id="statusCountDivId"></div>
                                 </div>
                             </div>
                         </div>
@@ -80,70 +69,9 @@
             <div class="row m_top20">
 				<div class="col-md-12 col-xs-12 col-sm-12">
                     <div class="block" id="dtatusDivId" style="display:none;">
-						<div id="statusWiseDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 						<h3 class="panel-title text-capital" id="issueTypeHeadingId"></h3>
+						<div id="statusWiseDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 						<div id="statusWiseDetailsDivId"></div>
-                         <!-- <h4 class="panel-title text-capital">apk issue - 20</h4>
-                        <table class="table b_1">
-                        	<thead class="text-capitalize">
-                            	<th>User Id</th>
-                                <th>user name</th>
-                                <th>user contact number</th>
-                                <th>state</th>
-                                <th>district</th>
-                                <th>constituency</th>
-                                <th>vendor name</th>
-                                <th>leader name</th>
-                                <th>open issues</th>
-                                <th>fixed issues</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                            	<tr>
-                                	<td class="issueCmpltd">12345</td>
-                                    <td>Ramesh</td>
-                                    <td>998564856</td>
-                                    <td>AP</td>
-                                    <td>Ananthapur</td>
-                                    <td>Rayadurg</td>
-                                    <td>Ramesh</td>
-                                    <td>Naresh</td>
-                                    <td>3</td>
-                                    <td>1</td>
-                                    <td><button class="btn btn-success text-capitalize issuesBtn">manage issues</button></td>
-                                </tr>
-                                <tr>
-                                	<td class="issuePending">12345</td>
-                                    <td>Ramesh</td>
-                                    <td>998564856</td>
-                                    <td>AP</td>
-                                    <td>Ananthapur</td>
-                                    <td>Rayadurg</td>
-                                    <td>Ramesh</td>
-                                    <td>Naresh</td>
-                                    <td>3</td>
-                                    <td>1</td>
-                                    <td><button class="btn btn-success text-capitalize issuesBtn">manage issues</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <ul class="pagination m_top20">
-                            <li>
-                              <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                              </a>
-                            </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                              <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                              </a>
-                            </li>
-                        </ul>-->
                     </div>
                 </div>
             </div>
@@ -190,16 +118,16 @@
 		<div id="submitButId"></div>
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
-                	<label>Select IssueType</label>
+                	<label>Select IssueType</label><span style="color:red"> *</span>
                     <select class="select" id="issueTypeId">
                     </select>
                 </div>
                 <div class="col-md-8 col-xs-12 col-sm-8">
-                	<label>Issue Description</label>
+                	<label>Issue Description</label><span style="color:red"> *</span>
                     <input type="text" class="form-control" id="descriptionId"/>
                 </div>
 				<div class="col-md-4 col-xs-12 col-sm-4">
-                	<label>Select Constituency</label>
+                	<label>Select Constituency</label><span style="color:red"> *</span>
                     <select class="select" id="issueConstituencyId">
                     	<option value="0">Select Constituency</option>
                     </select>
@@ -269,72 +197,7 @@ $('.select').chosen({width:'100%'});
 $(document).on("click",".applyBtn",function(){
 	onLoadCalls();
 });
-/*$('#openIssues').highcharts({
-	chart: {
-		type: 'pie',
-		options3d: {
-			enabled: true,
-			alpha: 45
-		}
-	},
-	title: {
-		text: null
-	},
-	subtitle: {
-		text: null
-	},
-	plotOptions: {
-		pie: {
-			innerSize: 100,
-			depth: 45
-		}
-	},
-	series: [{
-		name: 'Open Issues',
-		data: [
-			['leader issue', 8],
-			['man power issue', 3],
-			['technical issue', 1],
-			['smart device issue', 6],
-			['registration center', 8],
-			['internet issue', 4],
-			['apk issue', 4]
-		]
-	}]
-});
-$('#fixedIssues').highcharts({
-	chart: {
-		type: 'pie',
-		options3d: {
-			enabled: true,
-			alpha: 45
-		}
-	},
-	title: {
-		text: null
-	},
-	subtitle: {
-		text: null
-	},
-	plotOptions: {
-		pie: {
-			innerSize: 100,
-			depth: 45
-		}
-	},
-	series: [{
-		name: 'Open Issues',
-		data: [
-			['leader issue', 8],
-			['man power issue', 3],
-			['technical issue', 1],
-			['smart device issue', 6],
-			['registration center', 8],
-			['internet issue', 4],
-			['apk issue', 4]
-		]
-	}]
-});*/
+
 getCadreRegIssueType();
 </script>
 </body>
