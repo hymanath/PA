@@ -74,11 +74,13 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
@@ -4244,6 +4246,25 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }
 		  return returnList;
 	  }
+	  
+	  public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId){
+		  try {			  
+			  return cadreRegistrationService.getStateWiseAssemblyConstituency(stateId);			
+		} catch (Exception e) {
+			log.error("Error occured at getStateWiseAssemblyConstituency() in WebServiceHandlerService {}",e);
+		}
+		  return null;
+	  }
+	  
+	  public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO VO){
+		  try {			  
+			  return cadreRegistrationService.getLatestLattitudeLangitudeOfTabUser(VO);			
+		} catch (Exception e) {
+			log.error("Error occured at getLatestLattitudeLangitudeOfTabUser() in WebServiceHandlerService {}",e);
+		}
+		  return null;
+	  }
+	  
 	 
 	 
 }

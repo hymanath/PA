@@ -16,6 +16,13 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private Long registeredCount=0L;
 	private String perc;
 	
+	private String mobileNo;
+	private String lattitude;
+	private String longitude;
+	private String surveyTime;
+	private String startDate;
+	private String endDate;
+	
 	private List<GISUserTrackingVO> usersList = new ArrayList<GISUserTrackingVO>(0);
 	private List<GISUserTrackingVO> lastOneHrusersList = new ArrayList<GISUserTrackingVO>(0);
 	
@@ -91,6 +98,42 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	}
 	public void setPerc(String perc) {
 		this.perc = perc;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getLattitude() {
+		return lattitude;
+	}
+	public void setLattitude(String lattitude) {
+		this.lattitude = lattitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	public String getSurveyTime() {
+		return surveyTime;
+	}
+	public void setSurveyTime(String surveyTime) {
+		this.surveyTime = surveyTime;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 	
 }

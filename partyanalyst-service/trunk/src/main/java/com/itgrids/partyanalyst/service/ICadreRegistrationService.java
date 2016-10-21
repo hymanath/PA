@@ -16,8 +16,10 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -208,5 +210,7 @@ public interface ICadreRegistrationService {
 	 public List<IdAndNameVO> getStateWiseConstituency();
 	 public List<VoterSearchVO> getOnlineCadreRegistrationVoterDetails(String voterCardNo);
 	 public List<VoterSearchVO> getOnliCadRegistrSearchVoteDetails(Long constituencyId,Long mandalId,Long villageId,Long boothId, String type, String typeVal);
+	 public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId);
+	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO VO);
 }
 

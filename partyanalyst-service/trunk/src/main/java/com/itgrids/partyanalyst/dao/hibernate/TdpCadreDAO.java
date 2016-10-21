@@ -8037,6 +8037,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		}
 		return query.list();
 	}
+	
 	public Integer updateApprovedCadre(Long cadreId, Long statusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" update TdpCadre TC set TC.cadreVerificationStatusId = :statusId where TC.tdpCadreId = :cadreId ");
@@ -8046,4 +8047,66 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		Integer c = query.executeUpdate();
 		return c;
 	}
+	
+	public List<Object[]> getLatestLattitudeLangitudeOfTabUser(Long constituencyId,Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
+				",tc.latitude as latitude,tc.longititude as longititude,tc.survey_time as surveyTime " +
+				" FROM " +
+				" tdp_cadre_enrollment_year tcey,tdp_cadre tc,user_address ua,tab_user_info tui " +
+					"  join ( select tui.tab_user_info_id as tab_user_info_id,max(tc.survey_time) as survey_time " +
+					" from " +
+					" tdp_cadre_enrollment_year tcey,tdp_cadre tc,user_address ua,tab_user_info tui " +
+					" where " +
+					" tcey.tdp_cadre_id = tc.tdp_cadre_id " +
+					" and tc.address_id = ua.user_address_id " +
+					" and tui.tab_user_info_id = tc.tab_user_info_id " +
+					" and ua.constituency_id =:constituencyId " +
+					" and tc.is_deleted ='N' " +
+					" and tcey.enrollment_year_id = :enrollmentYearId " );
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(tc.survey_time) between :startDate and :endDate ");
+		}
+		
+		str.append(" group by tui.tab_user_info_id) as result " +
+				" WHERE " +
+				" tcey.tdp_cadre_id = tc.tdp_cadre_id " +
+				" and tc.address_id = ua.user_address_id " +
+				" and tui.tab_user_info_id = tc.tab_user_info_id " +
+				" and result.tab_user_info_id = tui.tab_user_info_id " +
+				" and result.survey_time = tc.survey_time" +
+				" and ua.constituency_id =:constituencyId " +
+				" and tc.is_deleted ='N' " +
+				" and tcey.enrollment_year_id =:enrollmentYearId " );
+				
+			if(startDate !=null && endDate !=null){
+				str.append(" and date(tc.survey_time) between :startDate and :endDate ");
+			}
+			str.append(" group by tui.tab_user_info_id;");
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("tabUserInfoId", Hibernate.LONG)
+				.addScalar("name", Hibernate.STRING)
+				.addScalar("mobileNo", Hibernate.STRING)
+				.addScalar("latitude", Hibernate.STRING)
+				.addScalar("longititude", Hibernate.STRING)
+				.addScalar("surveyTime", Hibernate.STRING);
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("enrollmentYearId", 4l);
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		
+		return query.list();
+		
+	}
+	
+	
 }

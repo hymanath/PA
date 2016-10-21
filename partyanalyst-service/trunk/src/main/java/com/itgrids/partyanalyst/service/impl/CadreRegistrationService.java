@@ -140,8 +140,11 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
+import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -159,7 +162,6 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CadreCardNumberUpdation;
@@ -13808,6 +13810,65 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			LOG.error("Exception riased at getOnliCadRegistrSearchVoteDetails in CadreRegistrationService Service class", e);
 		}
 		return returnList;
-	}	
+	}
+	
+	public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{			
+			List<Object[]> constObj = constituencyDAO.getStateWiseAssemblyConstituency(stateId);
+			if(constObj !=null && constObj.size()>0l){				
+				for (Object[] obj : constObj) {
+					KeyValueVO VO = new KeyValueVO();
+					
+					VO.setId(obj[0] !=null ? (Long)obj[0]:0l);
+					VO.setName(obj[1] !=null ? obj[1].toString():"");
+					
+					finalList.add(VO);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception riased at getStateWiseAssemblyConstituency in CadreRegistrationService Service class", e);
+		}
+		return finalList;
+	}
+	
+	public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO inputVO){
+		List<GISUserTrackingVO> finalList = new ArrayList<GISUserTrackingVO>();
+		try{			
+			
+			SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy");
+			
+			Date startDate=null;
+			Date endDate =null;
+			
+			if(inputVO.getStartDate() !=null && !inputVO.getStartDate().trim().isEmpty() && inputVO.getEndDate() !=null && !inputVO.getEndDate().trim().isEmpty()){
+				
+				startDate = date.parse(inputVO.getStartDate());
+				endDate   = date.parse(inputVO.getEndDate());
+			}
+			
+			//0.tabUserId,1.name,2.mobileNo,3.lattitude,4.longitude,5.surveyTime
+			List<Object[]> latestObj = tdpCadreDAO.getLatestLattitudeLangitudeOfTabUser(inputVO.getId(),startDate,endDate);
+			if(latestObj !=null && latestObj.size()>0){
+				for(Object[] obj : latestObj) {					
+					GISUserTrackingVO Vo= new GISUserTrackingVO();
+					
+					Vo.setId(obj[0] !=null ? (Long)obj[0]:0l);
+					Vo.setName(obj[1] !=null ? obj[1].toString():"");
+					Vo.setMobileNo(obj[2] !=null ? obj[2].toString():"");
+					Vo.setLattitude(obj[3] !=null ? obj[3].toString():"");
+					Vo.setLongitude(obj[4] !=null ? obj[4].toString():"");
+					Vo.setSurveyTime(obj[5] !=null ? obj[5].toString():"");
+					
+					finalList.add(Vo);
+				}
+			}			
+			
+		}catch(Exception e){
+			LOG.error("Exception riased at getLatestLattitudeLangitudeOfTabUser in CadreRegistrationService Service class", e);
+		}
+		return finalList;
+	}
 	
 }
