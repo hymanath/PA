@@ -2052,14 +2052,14 @@ public class WebServiceHandler {
 		}
 		
 		@GET
-		@Path("/getStateWiseAssemblyConstituency/{stateId}")
+		@Path("/Secure/getStateWiseAssemblyConstituency/{stateId}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public List<KeyValueVO> getStateWiseAssemblyConstituency(@PathParam("stateId") Long stateId){
 		 return webServiceHandlerService.getStateWiseAssemblyConstituency(stateId);
 		}
 		
 		@POST
-		@Path("/getLatestLattitudeLangitudeOfTabUser")
+		@Path("/Secure/getLatestLattitudeLangitudeOfTabUser")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO input){
