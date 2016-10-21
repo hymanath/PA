@@ -118,7 +118,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		public void setResultStatus(ResultStatus resultStatus) {
 			this.resultStatus = resultStatus;
 		}
-       public ResultStatus getResultStatus() {
+		public ResultStatus getResultStatus() {
 			return resultStatus;
 		}
 
