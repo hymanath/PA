@@ -90,14 +90,6 @@ label
 	position:relative;
 	padding-left:12px !important;
 }
-.tableInfo
-{
-	margin-left:5px;
-}
-.tableInfo.issueCmpltd:before , .tableInfo.issuePending:before
-{
-	top:6px;
-}
 .issueCmpltd:before
 {
 	position:absolute;
@@ -141,7 +133,7 @@ label
 {
 	border-bottom:1px solid #ddd;
 }
-.editBtn , .editBtn:active 
+.issuesUl li .editBtn , .issuesUl li .editBtn:active 
 {
 	background-color:#fff;
 	border-radius:15px;
@@ -149,10 +141,9 @@ label
 	text-transform:uppercase;
 	border:1px solid #333;
 }
-.editBtn:hover
+.issuesUl li .editBtn:hover
 {
-	background-color:#f2f2f2 !important;
-	color:#000;
+	background-color:#f2f2f2;
 }
 .pad_20
 {
@@ -231,4 +222,10 @@ label
 {
 	height: 34px;
     min-width: 52px !important;
+}
+.chartLiD
+{
+	height:210px;
+	width:200px;
+	margin:auto;
 }
