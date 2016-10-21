@@ -18,7 +18,30 @@
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
-
+<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
+		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
+		
+<style type="text/css">
+ #example {
+            height: 400px;
+            width: 300px;
+        }
+		#wrapper{
+	width: 470px;
+	margin: 10px auto 30px;
+	position: relative;
+}
+.photobooth ul
+{
+	padding:0px
+}
+.photobooth ul li
+{
+	list-style:none;
+}
+</style>
 </head>
 <body>
 <svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -199,7 +222,7 @@
                     </div>
                     <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
                     	<h3 class="text-left text-capital text-muted">New Membership</h3>
-                        <h6 class="text-muted">Register as a new member using Voter ID</h6>
+                        <h6 class="text-muted">Register as a new member using Own/Family Voter ID</h6>
                     </div>
                 	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 m_top50">
                     	<button class="btn btn-success btn-block btn-lg text-capital registerNew">new registration</button>
@@ -233,17 +256,17 @@
 		</div>
 	</div>
 	
-    <div class="row hide subBlock">
+    <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
-				<div class="panel-heading renewalN">
+				<!--<div class="panel-heading renewalN">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
                 </div>
             	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
                     <h3 class="text-left text-capital text-muted m_top10">New Membership</h3>
-                </div>
+                </div>-->
 <!-- Confirmation Block -->
      <div class="panel-body voterIdConfirm hide">
 		<div>
@@ -292,9 +315,9 @@
 	 </div>
    </div>
 	
-	<!-- Voter ID Search Block -->
+                <!-- Voter ID Search Block -->
                 <div class="panel-body voterIdSearch hide">
-				   <div>
+                	<div class="row">
 				       <div class="col-md-1 col-xs-12 col-sm-1 " id="searchOwnVoterIdBack">
 							<span id="searchVoterIdBack" class="backBtn"> ← Back</span>
 						 </div>
@@ -411,16 +434,17 @@
                 <!-- search Results Block End -->
                 <!-- profile details Block -->
 				
-                <div class="panel-body profileDetailsBlock hide">
+             <div class="panel-body profileDetailsBlock hide">
 				
-				 <div class="row ExistingPaymentCls">
+				 <div class="row ExistingPaymentCls hide">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="panel panel-default panelRegistration">
 							<div id="existingSavingStatusDivId"></div>
 						</div>
 					</div>
 				</div>
-				
+            
+				<div id="populatingDtsDivImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
 				<input type="hidden" class="form-control" id="dataSourceType" value="ONLINE" name="cadreRegistrationVO.dataSourceType"/>
 				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
@@ -452,23 +476,21 @@
                                     <input type="hidden" class="form-control" id="checkNomineeGenderId" name="cadreRegistrationVO.newNomineeGender"/>
                                     <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
                                     <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/>									
-									
 									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
 									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
 									<input type="hidden" class="form-control" id="hiddenIsNomneeChngd" name="cadreRegistrationVO.isNomineeChanged"/>
                                 </div>
-								<!--
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
                                     <input type="text" class="form-control"/>
-                                </div>-->
+                                </div>
 								<div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="cadreMembrSpId">
                                     <label>Existing Membership Number</label>
-                                    <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo"/>
+                                    <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo" disabled/>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
-                                    <label>Gender</label>
-                                    <select class="select" id="genderId"  name="cadreRegistrationVO.gender">
+                                    <label>Gender<span style="color:red;">*</span>&nbsp;<span id="cadreGenderId" style="color:red;"></span></label>
+                                    <select class="select" id="genderId" name="cadreRegistrationVO.gender">
 										<option value="0">Select Gender</option>
 										<option value="M">Male</option>
 										<option value="F">Female</option>
@@ -476,89 +498,111 @@
 									</select>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
-                                    <label>Age</label>
-                                    <input type="text" class="form-control" id="ageId" name="cadreRegistrationVO.age"/>
+                                    <label>Age<span style="color:red;">*</span>&nbsp;<span id="cadreAgeId" style="color:red;"></span></label>
+                                    <input type="text" class="form-control" id="ageId" name="cadreRegistrationVO.age" maxlength='2'/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6 m_top20">
-                                    <label>Date Of Birth</label>
+                                    <label>Date Of Birth<span style="color:red;">*</span>&nbsp;<span id="cadredobId" style="color:red;"></span></label>
                                     <input type="text" class="form-control" id="dobId" name="cadreRegistrationVO.dateOfBirth"/>
                                 </div>
                             </div>
                         </div>
+					<div id="imgErrDivId" style="color:red;"></div>
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox" value="existImage" name="option"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xs-12 col-sm-6">
-                            	<div class="imageDiv">
+							<div class="col-md-6 col-xs-12 col-sm-6">
+								<div class="imageDiv" style="padding:10px 2px;">
+									<span id="uploadImg"><img id="actuploadImg" src="dist/img/default_image.png" class="cadreImage img-responsive"></span>
+									<div class="btn-group">
+										
+										<span class="pull-left"><input type="checkbox" style="margin-top:-1px;" id="newCheckImgId" name="option" class="imageCheckBox isImageCheck" value="newImage"></span>
+										<input type="file" class="btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 80px; margin-left: 0px; padding: 0px;">
+										<span  onclick="showTakeImage();" >
+											<i class="glyphicon glyphicon-camera" id="takePicture"></i>
+											<!--<img style="width: 22px; height: 17px; padding: 7px 3px; margin-top: 8px;" class="btn btn-mini" title="Take Picture" src="images/candidatePage/camera.png"  id="takePicture">-->
+										</span>
+										<a onclick="clearExistingImg('uploadImg');" style="padding:3px; margin-top: 5px;" ><span class="glyphicon glyphicon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" ></span></a>
+										<br/><span id="imageErr" style="color:red;font-size:12px;"></span>
+									</div>
+								</div>
+                            	<!--<div class="imageDiv">
                                 	<img src="dist/img/default_image.png" id="uploadImgId" class="cadreImage img-responsive" alt="existing image"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox" value="newImage" name="option"/><input type="file" style="width:80px"/>
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId"  value="1" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
                                     </label>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                   	</div>
-                 	<div class="row">                       
+                 	<div class="row">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label class="control-label" for="inputSuccess2">Mobile Number</label>
+                        	<label class="control-label" for="inputSuccess2">Mobile Number<span style="color:red;">*</span>&nbsp;<span id="cadreMobileNoId" style="color:red;"></span></label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="mobileId1" name="cadreRegistrationVO.mobileNumber">
+                              <input type="text" class="form-control" id="mobileId1" name="cadreRegistrationVO.mobileNumber" maxlength='10'>
                               <span class="form-control-feedback text-muted" aria-hidden="true">+91</span>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="emailDivId" style="display:none;">
                         	<label class="control-label" for="inputSuccess2">Email Id</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.emailId">
+                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.email">
                               <span class="form-control-feedback text-muted" aria-hidden="true">@</span>
                             </div>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreVoterDivId" style="display:none;">
                         	<label>Voter Id -<i> <span class="text-warning">Voter ID</span></i></label>
-                            <input type="text" class="form-control" id="selfVoetrId" readOnly="true"/>
+                            <input type="text" class="form-control" id="selfVoetrId" disabled/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreUpdateVotrDivId" style="display:none;">
                         	<label>Updated Voter Id -<i> <span class="text-danger">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="updatedVoetrId"  readOnly="true" />
+                            <input type="text" class="form-control" id="updatedVoetrId" disabled/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="voterDvId" style="display:none;">
                         	<label>Voter Id -<i> <span class="" id="relVotCls">Relative V.ID</span> / <span class="" id="selfVotCls">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="voterId" readOnly="true"/>
+                            <input type="text" class="form-control" id="voterIdText" disabled/>
                         </div>
                      </div>
                      <div class="row">
                      	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Aadhar Number </label>
-                            <input type="text" class="form-control" id="aadharId" name="cadreRegistrationVO.aadharNo"/>
+                        	<label>Aadhar Number</label>
+                            <input type="text" class="form-control" id="aadharId" name="cadreRegistrationVO.aadharNo" />
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Caste</label>
+                        	<label>Caste<span style="color:red;">*</span>&nbsp;<span id="cadreCasteId" style="color:red;"></span></label>
                             <select class="select" id="casteListId" name="cadreRegistrationVO.casteStateId">
                             </select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Education</label>
+                        	<label>Education<span style="color:red;">*</span>&nbsp;<span id="cadreEducationId" style="color:red;"></span></label>
                            <select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
                             </select>
                         </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Occupation<span style="color:red;">*</span>&nbsp;<span id="cadreOccupationId" style="color:red;"></span></label>
+                           <select class="select" id="occupationId" name="cadreRegistrationVO.occupationId">
+                            </select>
+                        </div>
                     </div>
-					<div class="row" style="display:none;" id="cadrePrvNomneDivId">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
+					<div class="row" id="cadrePrvNomneDivId">
+                    	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                        	<h4 class="text-capital" id="newNomineeID" style="display:none;">nominee details<span class="text-capitalize text-warning"></span></h4>
+                        	<h4 class="text-capital" id="existingNomineeID" style="display:none;">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-                            <label>Nominee Name</label>
-                            <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.prevNomineeName"/>
+                            <label>Nominee Name<span style="color:red;">*</span>&nbsp;<span id="prvNomneNameDivId" style="color:red;"></span></label>
+                            <input type="text" class="form-control" id="prvNomneNameId" name="cadreRegistrationVO.nomineeName"/>
+							<!--<div id="prvNomneNameDivId" style="color:red;"></div>-->
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-                            <label>Gender</label>
-                            <select class="select" id="prvNomneGendrId" name="cadreRegistrationVO.preNomineeGender">
+                            <label>Gender<span style="color:red;">*</span>&nbsp;<span id="prvNomneGendrDivId" style="color:red;"></span></label>
+                            <select class="select" id="prvNomneGendrId" name="cadreRegistrationVO.nomineeGender">
 								<option value="0">Select Gender</option>
 								<option value="M">Male</option>
 								<option value="F">Female</option>
@@ -567,29 +611,39 @@
                             <!--<input type="text" class="form-control" id="prvNomneGendrId" name="cadreRegistrationVO.preNomineeGender"/>-->
                         </div>
                         <div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-                            <label>Age</label>
-                            <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.prevNomineeAge"/>
+                            <label>Age<span style="color:red;">*</span>&nbsp;<span id="prevNomneAgeDivId" style="color:red;"></span></label>
+                            <input type="text" class="form-control" id="prevNomneAgeId" name="cadreRegistrationVO.nomineeAge" maxlength='2'/>
+							
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-                            <label>Relative Relationship</label>
-                            <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.prevNomineeRelationId">
-                            	<!--<option>Brother</option>-->
+                            <label>Relative Relationship<span style="color:red;">*</span>&nbsp;<span id="prevNomneReltvDivId" style="color:red;"></span></label>
+                            <select class="select" id="prevNomneReltvId" name="cadreRegistrationVO.nomineeRelationId">
                             </select>
                         </div>
+						<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
+                            <label>Nominee AadharNo</label>
+                            <input type="text" class="form-control" id="prevNomneAadharNoId" name="cadreRegistrationVO.prevNomineeAadharNo"/>
+                        </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
-                        	<label class="checkbox-inline" >
-                            	<input type="checkbox" class="nomineeDetailsCls"/><span id="defaultNomineeId"></span>
+                        	<label class="checkbox-inline" id="prevNomineeId">
+                            	<input type="checkbox" class="nomineeDetailsCls" id="PrvNomineeDetailsId"/><span id="defaultNomineeId"></span>
                             </label>
-                            <span ><i>/Or/</i></span>
+                            <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
+                            <label class="checkbox-inline" id="familyNomineeChId">
+                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls isNomineeChangd"/>Select Nominee From Family
+                            </label>
+							<span style="margin-left:10px;margin-right:10px;" id="familyNomineeOrId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
-                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls"/>Change Nominee
+                            	<input type="checkbox" id="addNewNomineeId" class="nomineeDetailsCls isNomineeChangd"/>Add New Nominee
                             </label>
+							<div id="nomineeDivId" style="color:red;"></div>
                         </div>
                         <!--<div class="col-md-2 col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-8 col-md-offset-8 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
                         </div>-->
                     </div>
-                    <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
+					
+					<div class="row m_top30" style="display:none;" id="familyDetailsDivId">
                     	<!--<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="panel-title text-capital">select nominee</h4>
                         </div>-->
@@ -741,7 +795,7 @@
 					
 					
                     <div class="row">
-						<div id="addNewNominatedId" style="display:none;">
+						<!--<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
 								<label>Nominee Name</label>
 								<input type="text" class="form-control" id="nomineeNameId" name="cadreRegistrationVO.nomineeName"/>
@@ -749,7 +803,7 @@
 							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 								<label>Gender</label>
 							<!--<input type="text" class="form-control" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender"/>-->
-								<select class="select" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender">
+								<!--<select class="select" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender">
 									<option value="0">Select Gender</option>
 									<option value="M">Male</option>
 									<option value="F">Female</option>
@@ -764,21 +818,21 @@
 								<label>Relative Relationship</label>
 								<select class="select" id="relativeId" name="cadreRegistrationVO.nomineeRelationId">
 									<!--<option></option>-->
-								</select>
+								<!--</select>
 							</div>
 						</div>
-						
+						   </div>-->
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
                         </div>
+						 <span id="savingCadreDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+						<div id="savingStatusDivId" style="padding:15px;"></div>
                     </div>
 					</form>
                 </div>
 				
                 <!-- profile details Block End-->
             </div>
-			
-			
         </div>
     </div>
     </div>
@@ -799,11 +853,11 @@
 									<input type="text" class="form-control" id="validateRenMemshipId" />
 								</div>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label>MOBILE NO</label>
+									<label> (OR) MOBILE NO</label>
 									<input type="text" class="form-control" id="renewalMobileId"/>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label>VOTER ID</label>
+									<label> (OR) VOTER ID</label>
 									<input type="text" class="form-control" id="renewalVoterId"/>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -824,7 +878,7 @@
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6 m_top30" style="border-right:1px solid #333;">
                         	<div class="pad_20">
-                            	<label>membership number</label>
+                            	<label>MEMBERSHIP NO</label>
                                 <input type="text" class="form-control"/>
                                 <button class="btn btn-success btn-block m_top30 text-capital validateNo">validate membership number</button>
                                 <p class="m_top50">Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
@@ -1030,7 +1084,7 @@
                      </div>
                      <div class="row">
                      	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Aadhar Number 111 </label>
+                        	<label>Aadhar Number</label>
                             <input type="text" class="form-control"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -1090,7 +1144,26 @@
         </div>
 	</div>
 </div>
-
+<!--
+<div class="modal fade" id="nomineeModalId">
+  <div class="modal-dialog" role="document" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Voter Family Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row m_top30" style="display:none;" id="familyDetailsDivId">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls" ></div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>-->
 <div class="modal fade" id="memChckBoxModalId">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -1102,7 +1175,7 @@
 	  <div>
 		<label>OTP Send To:</label>
 		 <input type="text" id="checkMblNoId"/>
-		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>
+		  <!--<button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>-->
 		</div>
 		<div style="padding-top:6px;margin-left:18px;">
 		   <label>Enter OTP:</label>
@@ -1111,7 +1184,7 @@
 			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">OK</button>
 			   <button id="renwalOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="renwalOtpDetails();">OK</button>
 			</div>
-		</div>	
+		</div>
 		<div id="otpStusErrDivId"></div>
       </div>
       <div class="modal-footer">
@@ -1121,7 +1194,10 @@
     </div>
   </div>
 </div>
-
+</div>
+	<div id="wrapper">
+		<div id="example"></div>
+	</div>
 
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
@@ -1129,10 +1205,13 @@
 <input type="hidden" id="tdpCdrIdR"/>
 <input type="hidden" id="stusIdR"/>
 <input type="hidden" id="votrIdR"/>
+<input type="hidden" id="hidnFamlyVoterId"/>
 <input type="hidden" id="hiddenMblNo"/>
 
 
 <script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script type="text/javascript" src="https://wolframhempel.github.io/photobooth-js/photobooth_min.js"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -1140,9 +1219,20 @@
 <script src="js/cadreRegistration2016/onlineNewCadreRegistration2016.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/photobooth/website/js/cadreRegistration.js"></script>
+<script src="js/flipclock/flipclock.js"></script>
+	 	
+
 <script type="text/javascript">
-   $("#dobId").datetimepicker({
-	   format:'YYYY-MM-DD'
+
+$("#dobId").datetimepicker({
+	   format:'YYYY-MM-DD',
+	   //maxDate : '2004-01-01',
+	  // minDate : '1916-01-01'
+	 // maxDate: new Date(),
+		//changeMonth: true,
+		//changeYear: true,
+		//yearRange: "-100:+0"
    });
   //GLOBAL VARIABLES
   var casteNamesArray = [];
@@ -1154,10 +1244,9 @@
   var presntConstituencyId =0;
   var presntMandalId =0;
   var presntVillageId =0;
-  
+   
   onLoadCalls();
-  
-  
+ 
 var a = $(window).height();
 var b = $(window).width();
 $(".page-load-svg").height(a);
@@ -1243,12 +1332,13 @@ function myVoterButtonDetails(){
 /* Renewal Click Actions*/
 $(document).on("click",".renewalBtn",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
+
 	setTimeout(function(){
-		$(".mainBlocks").addClass("hide");
+		$(".mainBlocks,.newProfile.renewal,.newProfile").addClass("hide");
 		$("#renwalOKDivId").show();
 		$("#newRegOKDivId").hide();
-		$(".subBlockR,.selectMembership").removeClass("hide");
-		$(".subBlockR,.selectMembership").addClass("animated fadeIn");
+		$(".subBlock,.subBlockR,.selectMembership").removeClass("hide");
+		$(".subBlock,.subBlockR,.selectMembership").addClass("animated fadeIn");
 		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
@@ -1290,7 +1380,7 @@ $(document).on("click","#profileBackBtnR",function(){
 		$(".updateProfileR").removeClass("animated fadeOut");
 		$(".selectMembership").removeClass("animated fadeIn");
 	},1500)
-	$("#validateRenMemshipId,#renewalMobileId,#renewalVoterId").val('');
+	//$("#validateRenMemshipId,#renewalMobileId,#renewalVoterId").val('');
 	$("#renewalMembershipId").html(' ');
 });
 
@@ -1356,12 +1446,101 @@ $(document).on("click",".updateId",function(){
 		$(".updateProfileR").removeClass("animated fadeOut");
 		$(".profileDetailsBlock").removeClass("animated fadeIn");
 	},1500)
-	
+	/*$(".updateProfileR").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".updateProfileR").addClass("hide");
+		$(".profileDetailsBlockR").removeClass("hide");
+		$(".profileDetailsBlockR").addClass("animated fadeIn");		
+	},500);*/
 });
 
 $('.imageDiv input:checkbox').click(function() {
     $('.imageDiv input:checkbox').not(this).prop('checked', false);
 }); 
+
+ var loadFile = function(event) {
+    var imagePath = document.getElementById('uploadImgId');
+    imagePath.src = URL.createObjectURL(event.target.files[0]);
+	$("#imgErrDivId").html("");
+  };
+  $(document).ready(function(){
+	$("#wrapper").hide();
+});
+function showTakeImage(){
+  $('#wrapper').dialog({
+		autoOpen: true,
+		width:600,
+		title:"Take Image",
+		modal: true,
+		resizable: false
+	});
+}
+function showNewTakenImg(){
+  //$("#cadreActualImgId").removeAttr('checked');
+  //$("#voterActualImgId").removeAttr('checked');
+  $("#newCheckImgId").attr("checked","checked");
+}
+function handleReaderLoadEnd(evt)
+{
+	var img = document.getElementById("actuploadImg");
+	img.src = evt.target.result;
+	evt=null;
+} 
+function changeImg()
+	{
+	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="dist/img/default_image.png">');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+		var photoElmt = document.getElementById("uploadFileId");
+		var FileUploadPath = photoElmt.value;
+		$('#imageErr').html('');
+		//To check if user upload any file
+        if (FileUploadPath == '') 
+		{
+			$('#imageErr').html('Please upload an image');
+		}
+		else 
+		{
+            var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+			//The file uploaded is an image
+			if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+								|| Extension == "jpeg" || Extension == "jpg") 
+			{
+                    var reader = new FileReader();
+					var file = photoElmt.files[0];
+					var reader = new FileReader();
+					reader.onloadend = handleReaderLoadEnd;
+					reader.readAsDataURL(file); 
+                    newPhotoUploaded = true;					
+            } 
+			//The file upload is NOT an image
+			else 
+			{       clearExistingImg('uploadImg');
+			        newPhotoUploaded = false;
+					$('#imageErr').html('Image Formate Must Be .GIF, .PNG, .JPG, .JPEG and .BMP Only');
+			}
+        }
+	}
+	function clearExistingImg(id){
+		$('#imageErr').html('');
+		$("#"+id+"").html('');
+		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="dist/img/default_image.png">');
+		$("#newCheckImgId").removeAttr('checked');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+	    newPhotoUploaded = false;
+		document.getElementById("uploadFileId").value = "";
+		
+	}
+	 $(document).on("blur","#dobId",function(){
+			var dob=$("#dobId").val();
+			if(dob!=null && dob!=undefined && dob.trim() !=""){		
+			 var dobArr=dob.split("-");	
+			 var year=(new Date().getFullYear())-(dobArr[0]);
+			 $("#ageId").val(year);
+			}
+		});  
+		
 $(document).on("click",".registerNew",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
 	setTimeout(function(){
