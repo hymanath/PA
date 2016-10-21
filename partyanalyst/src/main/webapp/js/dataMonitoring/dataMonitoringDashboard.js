@@ -477,6 +477,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 	   
 	   	$("#relativePaginationId").html(' ');
 		$("#selfPaginationId").html(' ');
+		$("#globalErrId").html(' ');
+		$(".bulkUpdatedCls").html(' ');
 	    $("#issuesDataMonitroingDashboardModal").modal('show');
 		$("#issuesDataMonitroing li").removeClass("active");
 		$("#issuesDataMonitroing li:first-child").addClass("active");
@@ -522,8 +524,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null){  
-				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);  
+			if(result != null && result.length > 0){  
+				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus);  
 			}else{
 			if(resultType=="All"){
 			    $("#selfTblDivId").html('No Data Available...');
@@ -537,7 +539,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		});  
 	   
    }  
-   function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+   function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
 		if(resultType=="All" || resultType=="Self"){  
 		var str = '';
 		var selfTotalCount=0;
@@ -616,19 +618,20 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
 								str+='<td>'+result[0][i].gender+'</td>';
-								str+='<td><input attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" class="localSelectOwnCls" type="checkbox"/></td>';  
+								str+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" class="localSelectOwnCls" type="checkbox"/></td>';  
 							str+='</tr>'; 
 					
 					
 							str+='<tr>';
 								str+='<td>';  
-									str+='<button class="btn btn-success singleApproveCls"  attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
+									str+='<button class="btn btn-success singleApproveCls"  attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>&nbsp';
 									str+='<button class="btn btn-danger singleRejectCls"  attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'">Reject</button>';
 								str+='</td>';
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
 										str+='<option value="0">Andhra Pradesh</option>';                
-									str+='</select>';  
+									str+='</select>'; 
+                                    str+='<span id="ownErrorId'+i+'" style="color:red;"></span>';									
 								str+='</td>';    
 							str+='</tr>';  
 							
@@ -649,7 +652,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 					cssStyle: 'light-theme',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self");
+						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self",verificationStatus);
 					}
 				});
 			}	
@@ -732,17 +735,18 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
-								str2+='<td><input attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
+								str2+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
 							str2+='</tr>'; 
 							str2+='<tr>';
 								str2+='<td>';
-									str2+='<button class="btn btn-success singleApproveCls" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-success singleApproveCls" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>&nbsp';//familyHideSelectBoxId0
 									str2+='<button class="btn btn-danger singleRejectCls" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'">Reject</button>';
 								str2+='</td>';
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
 										str2+='<option value="0">Andhra Pradesh</option>';                  
-									str2+='</select>';  
+									str2+='</select>'; 
+                                    str+='<span id="familyErrorId'+i+'" style="color:red;"></span>';									
 								str2+='</td>';  
 							str2+='</tr>';    
 						}
@@ -763,12 +767,14 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						cssStyle: 'light-theme',
 						onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative");
+						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative",verificationStatus);
 					}
 				});
 			}	
 		}
-	}      		
+	}    
+
+	
 	$(document).on('click','#globalSelectOwnId',function(){
 		if($(this).is(':checked')){
 			$(".localSelectOwnCls").prop( "checked", true);
@@ -812,13 +818,17 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 	
 	//by selecting single check box show and hide the chexk box. for own tab
 	$(document).on('click','.localSelectOwnCls',function(){
+		var positionId = $(this).attr("attr_position_id");
 		if($(this).is(':checked')){
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).show();
+			 $("#ownErrorId"+positionId).html(' ');
 		}else{
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).hide(); 
+			 $("#ownErrorId"+positionId).html(' ');
 		}
+		
 		var count = $("input.localSelectOwnCls:checked").length;
 		if(count >= 1){
 			$('.singleApproveCls').prop('disabled', true);
@@ -830,13 +840,15 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 	});
 	//by selecting single check box show and hide the chexk box. for family tab
 	$(document).on('click','.localSelectFamilyCls',function(){
-		
+		var positionId = $(this).attr("attr_position_id");
 		if($(this).is(':checked')){   
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).show();
+			 $("#familyErrorId"+positionId).html(' ');
 		}else{
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).hide(); 
+			 $("#familyErrorId"+positionId).html(' ');
 		}
 		var count = $("input.localSelectFamilyCls:checked").length;
 		if(count >= 1){
@@ -847,12 +859,118 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			$('.singleRejectCls').prop('disabled', false);   
 		}
 	});
-	//single rejected 
-	$(document).on('click','.singleRejectCls',function(){
-		var cadreId = $(this).attr("attr_cadre_id");
-		var selectReasonId = $(this).attr("attr_reason_id");
-		var reasonId = $("#"+selectReasonId).val();
+   //*******************************************
+   /* Single Approved */
+   $(document).on("click",".singleApproveCls",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	  $("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
+	  $("#confirmModalId").modal("show");  
+    });	 
+   
+   $(document).on("click","#groupingApprovedYes",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	   approveSingleMember(cadreId);
+  });
+  $(document).on("click","#groupingApprovedNo",function(){
+	   var cadreId = $(this).attr("attr_cadre_id");
+	    $("#confirmModalId").modal("hide");  
+  }); 
+  function approveSingleMember(cadreId){
 		var rejectList = [];
+		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
+		var singleReject = {"data" : rejectList};
+		$.ajax({
+			type:'GET',      
+			url: 'updateApproveListAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(singleReject)}  
+		}).done(function(result){
+			if(result != null && result.resultCode==1){
+			  $("#approvedStatusId").html("<p style='color:green'>"+result.message+"</p>");	
+			  // $(".getMemberDtlsCls").attr("attr_vefification_type","Approved");
+			}else{
+			  $("#approvedStatusId").html("<p style='color:red'>"+result.message+"</p>");	
+			}
+			setTimeout(function(){ $("#confirmModalId").modal("hide"); }, 3000);
+		});    
+  }
+  /* bulk approved */
+  $(document).on('click','#bulkApproveId',function(){    
+          var isMemberSelected="NO";
+         if($("#self").hasClass('active')){
+			$('.localSelectOwnCls').each(function(){  
+				if($(this).is(':checked')){
+				 isMemberSelected="Yes";
+				}
+			});
+		 }
+		 $('.localSelectFamilyCls').each(function(){  
+				if($(this).is(':checked')){
+				 isMemberSelected="Yes";
+				}
+		 });
+		 if(isMemberSelected == "NO"){
+		   $("#globalErrId").html("Please Select Atleast One Member.");
+           return;		   
+		 }
+		 $("#globalErrId").html(' ');
+		 
+		var cadreId = '';
+		var rejectList = [];
+		if($("#self").hasClass('active')){
+			$('.localSelectOwnCls').each(function(){  
+				if($(this).is(':checked')){
+					cadreId = $(this).attr("attr_cadre_id");
+					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+				}
+			});
+		}else{
+			$('.localSelectFamilyCls').each(function(){  
+				if($(this).is(':checked')){
+					cadreId = $(this).attr("attr_cadre_id");
+					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+				}
+			});
+		}  
+		
+		var singleReject = {"data" : rejectList};        
+		$.ajax({
+			type:'GET',      
+			url: 'updateApproveListAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(singleReject)}  
+		}).done(function(result){
+		    if(result != null && result.resultCode==1){
+			 $(".bulkUpdatedCls").html("<p style='color:green'>"+result.message+"</p>");
+              //$(".getMemberDtlsCls").attr("attr_vefification_type","Approved");			 
+			}else{
+			  $(".bulkUpdatedCls").html("<p style='color:red'>"+result.message+"</p>");	
+			}
+			 setTimeout(function(){ $("#issuesDataMonitroingDashboardModal").modal("hide"); }, 3000);
+		});
+	});
+	
+   //Single reject 
+   $(document).on("click",".singleRejectCls",function(){
+	    var cadreId = $(this).attr("attr_cadre_id");
+	    $("#submitBtnReasonId").attr("attr_cadre_id",cadreId);
+		$(".reasonErrorCls").html(' ');
+		$("#rsnSlctBxId").html(globalSrt);
+	    $("#rejectedModalId").modal("show");
+  });	
+   $(document).on("click","#submitBtnReasonId",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	  var reasonId = $("#rsnSlctBxId").val();
+	   if(reasonId == 0){
+		   $(".reasonErrorCls").html("Please Select Reason.");
+		   return;
+	   }
+	   singleReject(cadreId,reasonId);
+	   $(".reasonErrorCls").html(' ');
+	 
+  });
+  function singleReject(cadreId,reasonId){
+	  	var rejectList = [];
 		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 }); 
 		var singleReject = {"data" : rejectList};
 		$.ajax({
@@ -861,18 +979,65 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			dataType: 'json',
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
-			if(result != null){  
-				console.log(true);
+			if(result != null && result.resultCode==1){
+			 //$(".getMemberDtlsCls").attr("attr_vefification_type","Rejected");
+			 $("#rejectedStatusId").html("<p style='color:green'>"+result.message+"</p>");	
 			}else{
+			  $("#rejectedStatusId").html("<p style='color:red'>"+result.message+"</p>");	
 			}
-		});		
-	});
-	//bulk reject
+			setTimeout(function(){ $("#rejectedModalId").modal("hide"); }, 3000);
+		});		  
+  }
+  //bulk reject
 	$(document).on('click','#bulkRejectId',function(){  
-		var cadreId = '';
+      var count = 0;
+      var checkCount = 0;
+    if($("#self").hasClass('active')){
+      $('.localSelectOwnCls').each(function(){  
+        if($(this).is(':checked')){
+          checkCount = checkCount + 1;
+          var selectReasonId = $(this).attr("attr_reason_id");
+          reasonId = $("#"+selectReasonId).val();
+          if(reasonId == 0){
+            var position = $(this).attr("attr_position_id");
+            $("#ownErrorId"+position).html("please Select Reason");
+            count = count + 1;
+            return false;         
+          }else{
+            var position = $(this).attr("attr_position_id");
+            $("#ownErrorId"+position).html("");  
+          }  
+        }
+      });
+    }else{
+      $('.localSelectFamilyCls').each(function(){  
+        if($(this).is(':checked')){
+          checkCount = checkCount + 1;
+          var selectReasonId = $(this).attr("attr_reason_id");
+          reasonId = $("#"+selectReasonId).val();
+          if(reasonId == 0){
+            var position = $(this).attr("attr_position_id");
+            $("#familyErrorId"+position).html("please Select Reason");
+            count = count + 1;
+            return false;         
+          }else{
+            var position = $(this).attr("attr_position_id");  
+            $("#familyErrorId"+position).html("");  
+          }  
+        }
+      });
+    }
+    if(count > 0){  
+      return;    
+    }   
+    if(checkCount == 0){
+       $("#globalErrId").html("Please Select Atleast One Member.");  
+      return;    
+    }      
+     $("#globalErrId").html(' ');
+        var cadreId = '';
 		var selectReasonId = '';
 		var reasonId = '';
-		
 		var rejectList = [];
 		if($("#self").hasClass('active')){
 			$('.localSelectOwnCls').each(function(){
@@ -901,96 +1066,16 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			dataType: 'json',
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
-			if(result != null){  
-				console.log(true);
+			if(result != null && result.resultCode==1){
+			  //$(".getMemberDtlsCls").attr("attr_vefification_type","Rejected");
+			  $(".bulkUpdatedCls").html("<p style='color:green'>"+result.message+"</p>");	
 			}else{
+			  $(".bulkUpdatedCls").html("<p style='color:red'>"+result.message+"</p>");	
 			}
+			 setTimeout(function(){ $("#issuesDataMonitroingDashboardModal").modal("hide"); }, 3000);
 		});
 	});
-	//single approve
-	$(document).on('click','.singleApproveCls',function(){
-		 
-		var cadreId = $(this).attr("attr_cadre_id");
-		$("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
-		$("#confirmModalId").modal("show");
-		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
-		var singleReject = {"data" : rejectList};
-		$.ajax({
-			type:'GET',      
-			url: 'updateApproveListAction.action',      
-			dataType: 'json',
-			data: {task:JSON.stringify(singleReject)}  
-		}).done(function(result){
-			if(result != null){  
-				console.log(true);         
-			}else{
-			}
-		});  
-	});
-	//bulk approve
-	$(document).on('click','#bulkApproveId',function(){    
-		var cadreId = '';
-		var rejectList = [];
-		if($("#self").hasClass('active')){
-			$('.localSelectOwnCls').each(function(){  
-				if($(this).is(':checked')){
-					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
-				}
-			});
-		}else{
-			$('.localSelectFamilyCls').each(function(){  
-				if($(this).is(':checked')){
-					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
-				}
-			});
-		}  
-		
-		var singleReject = {"data" : rejectList};        
-		$.ajax({
-			type:'GET',      
-			url: 'updateApproveListAction.action',      
-			dataType: 'json',
-			data: {task:JSON.stringify(singleReject)}  
-		}).done(function(result){
-			if(result != null){  
-				console.log(true);         
-			}else{
-			}
-		});
-	});
-   //*******************************************
- /*  $(document).on("click",".approveCls",function(){
-	  var cadreId = $(this).attr("attr_cadre_id");
-	  $("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
-	  $("#confirmModalId").modal("show");  
-  });	 */
-  /* $(document).on("click",".rejectedCls",function(){
-	    var cadreId = $(this).attr("attr_cadre_id");
-	    $("#submitBtnReasonId").attr("attr_cadre_id",cadreId);
-		$(".reasonErrorCls").html(' ');
-	    $("#rejectedModalId").modal("show");
-		
-  });	
-  $(document).on("click","#submitBtnReasonId",function(){
-	  var cadreId = $(this).attr("attr_cadre_id");
-	  var reasonId = $("#rsnSlctBxId").val();
-	   if(reasonId == 0){
-		   $(".reasonErrorCls").html("Please Select Reason.");
-		   return;
-	   }
-	   $(".reasonErrorCls").html(' ');
-	 
+
+  $(document).on("click",".closeIssueModalCls",function(){
+     $("#confirmModalId").modal("hide");	
   });
-  $(document).on("click","#groupingApprovedYes",function(){
-	  var cadreId = $(this).attr("attr_cadre_id");
-	 
-  });
-  $(document).on("click","#groupingApprovedNo",function(){
-	  var cadreId = $(this).attr("attr_cadre_id");
-	    $("#confirmModalId").modal("hide");  
-  }); */
-  //***************************************************
-  

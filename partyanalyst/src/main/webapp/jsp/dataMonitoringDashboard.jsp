@@ -69,7 +69,7 @@
   <div class="modal-dialog" style="width:80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close closeIssueModalCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p id="userId"></p>
         <p id="userDescriptionId"></p>
       </div>
@@ -79,6 +79,7 @@
           <ul class="nav nav-tabs" id="issuesDataMonitroing" role="tablist">
             <li role="presentation" class="active text-capital"><a href="#self" aria-controls="self" role="tab" data-toggle="tab">voter with self photo</a></li>
             <li role="presentation" class="text-capital"><a href="#relative" aria-controls="relative" role="tab" data-toggle="tab">registered with relative voter id</a></li>
+			<!--<span class="pull-right"  id="bulkApproveErrorId" style="margin-top:10px;color:red;">Please Select Memeber</span>-->
          </ul>
           <!-- Tab panes -->
           <div class="tab-content">
@@ -94,9 +95,12 @@
         </div>
       </div>
       <div class="modal-footer">
+	    <span class="bulkUpdatedCls"></span>
       	<p><small>For Bulk Update</small></p>
         <button class="btn btn-success" id="bulkApproveId">Approve</button>
-        <button class="btn btn-danger" id="bulkRejectId">Reject</button>
+        <button class="btn btn-danger" id="bulkRejectId">Reject</button><br>
+		<!--<span class="pull-right"  id="bulkApproveErrorId" style="margin-top:10px;color:red;"></span>-->
+		<span class="pull-right"  id="globalErrId" style="margin-top:10px;color:red;"></span>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -111,22 +115,16 @@
         <div class="modal-body" style="padding-bottom: 98px; padding-right: 0px; padding-top: 7px;">
 		 <div class="row">
 		    <div class="col-md-4">
-			    <span style="color:red;" class="reasonErrorCls"></span>
 			   <select class="form-control" id="rsnSlctBxId">
-			   <option value="0">Select Reason</option>
-			   <option value="1">Image Not Matched</option>
-			   <option value="2">Improper Image</option>
-			   <option value="3">No Image</option>
 		       </select>
+			   <span style="color:red;" class="reasonErrorCls"></span>
 		   </div>
 		   <div class="col-md-2">
 		      <button class="btn btn-success" id="submitBtnReasonId">Submit</button>
+			   <span id="rejectedStatusId"></span>
            </div>
 		 </div>
-	    <!--<div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>-->
-      </div>
+	  </div>
      </div>
   </div>
  </div>
@@ -134,8 +132,8 @@
       <div class="modal-dialog modal-sm" role="document" style="width: 30%;">
       <div class="modal-content">
         <div class="modal-body" style="border: 3px solid #000;">
-          <!--<div  style="text-align: center;"><img src="images/groupIcon.png" style="width: 100px;"/></div>-->
-          <h4 style="text-align: center;">Are you sure want to approved.</h4> 
+          <div  style="text-align: center;" id="approvedStatusId"></div>
+		  <h4 style="text-align: center;">Are you sure want to approved.</h4> 
           <div style="text-align: center;">
             <button type="button" id="groupingApprovedYes" class="groupingConfirmCls btn btn-success " style="width: 27%; border-radius: 5px; height: 40px;">Yes</button>
             <button type="button" id="groupingApprovedNo"  class="groupingConfirmCls btn btn-danger " data-dismiss="modal"style="width: 27%; border-radius: 5px; height: 40px;" >No</button>
