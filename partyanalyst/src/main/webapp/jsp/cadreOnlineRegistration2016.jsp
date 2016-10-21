@@ -9,7 +9,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cadre Online Registration</title>
-<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/onlineCSS/Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/onlineCSS/Assests/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/onlineCSS/Assests/css/responsive.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+<!--<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">-->
 <link href="dist/cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/cadreRegistration/dist/css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="dist/cadreRegistration/dist/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -18,10 +22,11 @@
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
-<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
-		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
+<link rel="stylesheet" href="js/flipclock/flipclock.css">
+<!-- online First Page-->
+	
 		
 <style type="text/css">
  #example {
@@ -44,7 +49,7 @@
 </style>
 </head>
 <body>
-<svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg class="page-load-svg m_top20" style="display:none;" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="100%" height="100%" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve">
 	 <g>
 	<path class="path" stroke="red" stroke-width="2" d="M940.68,291.557l-1.934,9.289h-8.186l9.41-40.654h10.119l8.443,40.654h-8.186l-1.869-9.289H940.68z M947.705,285.404
@@ -206,17 +211,261 @@
 	</g>
 </g>
 </svg>
-
-
+<div class="landingPage">
+<header>
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-3 col-xs-8 col-xs-offset-2 col-sm-4 col-lg-3 col-sm-offset-0 col-lg-offset-0 col-md-offset-0">
+            	<img src="dist/cadreRegistration/onlineCSS/Assests/img/Logo.png" class="img-responsive" alt="Logo"/>
+            </div>
+        </div>
+    </div>
+</header>
+<section>
+	<div class="headerBlock">
+    	<div class="container">
+            <div class="row">
+	        	<img src="dist/cadreRegistration/onlineCSS/Assests/img/headerVideoBlock.png" class="videoBlock" alt="Video"/>
+                <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
+                    <img src="dist/cadreRegistration/onlineCSS/Assests/img/CBN.png" class="img-responsive" alt="Chandra Babu Naidu"/>
+                </div>
+                <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 col-md-offse-4 col-sm-offset-4 col-lg-offset-4 col-xs-offset-4">
+                    <img src="dist/cadreRegistration/onlineCSS/Assests/img/NTR.png" class="img-responsive" alt="Chandra Babu Naidu"/>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<section>
+	<div class="cadreRegistrationBlock">
+    	<div class="cadreRegistrationBlockImage">
+        	 <div class="container">
+             	<div class="row">
+                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                    	<h1 class="text-capital text-center">cadre registration 2016-2018</h1>
+                    </div>
+                    <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-3 m_top10">
+                        <p class="text-center" style="font-weight:400">Few lines about telugu desam party cadre registration drive Few lines about telugu desam party cadre registration drive Few lines about telugu desam party cadre registration drive Few lines about telugu desam party cadre registration drive </p>
+                    </div>
+                </div>
+                <div class="row m_top20">
+                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+                        <div class="registrationblock registerBlockImageB">
+                        	<div class="pad_20">
+	                            <img src="dist/cadreRegistration/onlineCSS/Assests/img/renewal.png" alt="renewal Membership"/>
+                            </div>
+                            <div class="bg_EF pad_10 registerSubBlock">
+                            	<div class="row">
+                                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    	<h4 class="m_top20 text-capital text-center">required</h4>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/voterImage.png" class="media-object" alt="Voter Image"/>
+                                            </div>
+                                            <div class="media-body text-capital">
+                                                <h4 class="m_top10 c_333" style="font-weight:300">Voter ID</h4>
+                                            </div>
+                                        </div>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/mobileNo.png" class="media-object" alt="Voter Image"/>
+                                            </div>
+                                            <div class="media-body text-capital">
+                                                <h4 class="m_top10 c_333" style="font-weight:300">Mobile Number</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+                        <div class="registrationblock registerBlockImageR">
+                        	<div class="pad_20">
+	                            <img src="dist/cadreRegistration/onlineCSS/Assests/img/newMembership.png" alt="renewal Membership"/>
+                            </div>
+                            <div class="bg_EF pad_10 registerSubBlock">
+                            	<div class="row">
+                                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    	<h4 class="m_top20 text-capital text-center">required</h4>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/voterImage.png" class="media-object" alt="Voter Image"/>
+                                            </div>
+                                            <div class="media-body text-capital">
+                                                <h4 class="m_top10 c_333" style="font-weight:300">Voter ID</h4>
+                                            </div>
+                                        </div>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/mobileNo.png" class="media-object" alt="Voter Image"/>
+                                            </div>
+                                            <div class="media-body text-capital">
+                                                <h4 class="m_top10 c_333" style="font-weight:300">Mobile Number</h4>
+                                            </div>
+                                        </div>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/voterImage.png" class="media-object" alt="Voter Image"/>
+                                            </div>
+                                            <div class="media-body text-capital">
+                                                <h4 class="c_333" style="font-weight:300">If you dont have voter id can register with family voter id</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+	<div class="registerOptionsBlock m_top40">
+    	<div class="container">
+            <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                    <h1 class="text-capital text-center">registration @</h1>
+                </div>
+            </div>
+            <div class="row m_top20">
+                <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
+                    <div class="registrationBlocks" onClick="onlineRegistration();">
+                        <h2 class="text-capital text-center">online</h2>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/onlineRegister.png" class="img-responsive" alt="OnlineRegister"/>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
+                    <div class="registrationBlocks">
+                        <h2 class="text-capital text-center">party office</h2>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/partyOffice.png" class="img-responsive" alt="PartyOffice"/>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
+                    <div class="registrationBlocks">
+                        <h2 class="text-capital text-center">tdp agent</h2>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/tdpAgent.png" class="img-responsive" alt="TdpAgent"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+</section>
+<section>
+	<div class="benefitsBlock">
+    	<div class="container">
+        	<div class="row">
+            	<div class="col-md-12 col-xs-12 col-sm-12">
+                	<h3 class="text-capital">benefits</h3>
+                    <ul class="benfitsList">
+                    	<li>
+                        	<h4 class="text-capital">accidental insurance</h4>
+                            <p class="text-capitalize">Those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
+                        </li>
+                        <li>
+                        	<h4 class="text-capital">accidental insurance</h4>
+                            <p class="text-capitalize">Those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
+                        </li>
+                        <li>
+                        	<h4 class="text-capital">accidental insurance</h4>
+                            <p class="text-capitalize">Those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
+                        </li>
+                        <li>
+                        	<h4 class="text-capital">accidental insurance</h4>
+                            <p class="text-capitalize">those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+	<div class="registrationCloseBlock">
+        <div class="container">
+            <div class="row">
+            	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                	<h4 class="text-capital text-success text-center">registration close in</h4>
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                <h1 id="clockdiv" class="timeFont"></h1>
+                	<ul class="list-inline registrationTime">
+                    	<li class="timeFont">
+                        	<h1><span class="days">30</span><small>days</small></h1>
+                        </li>
+                        <li class="timeFont">
+                        	<h1><span class="hours">30</span><small>hours</small></h1>
+                        </li>
+                        <li class="timeFont">
+                        	<h1><span class="minutes">30</span><small>minutes</small></h1>
+                        </li>
+                        <li class="timeFont">
+                        	<h1><span class="seconds">30</span><small>seconds</small></h1>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+	<div class="trackAgent">
+    	<div class="container">
+        	<div class="row">
+            	<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">
+                	<img src="dist/cadreRegistration/onlineCSS/Assests/img/indiaMap.png" class="img-responsive" alt="indiaMap"/>
+                </div>
+                <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40">
+                	<h4 class="text-capital">Track Our TDP Agent In your area</h4>
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
+                    <select class="m_top40 select">
+                    	<option>Select District</option>
+                    </select>
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
+                    <select class="m_top40 select">
+                    	<option>Select Constituency</option>
+                    </select>
+                    <button class="btn btn-success btnCustom btn-block btn-lg text-capital">find now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer>
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+            	<img src="dist/cadreRegistration/onlineCSS/Assests/img/footerLogo.png" class="img-responsive" alt="logo"/>
+            	<p class="text-center text-capital">copyright telugu desam party &copy; 2016</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+<!-- Cadre Online Registration -->
 <div class="container cadreRegistration hide">
-	<div class="row mainBlocks">
+	<div class="row mainBlocks hide">
     	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top30">
         	<hr class="rulerLine"/>
         	<h2><span class="mainHeading">Welcome to cadre registration</span></h2>
+			  <div>
+		          <div class="col-md-1 col-xs-12 col-sm-1">
+				      <span id="mainPageBackId" class="backBtn"> ← Back</span>
+			      </div>
+	 	       </div>	
         </div>
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock new">
-            	<div class="row">
+             <div class="row">
                 	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
                     	<h2 class="text-left text-muted">కొత్త సభ్యత్వం</h2>
                     </div>
@@ -294,13 +543,13 @@
 	</div>
   </div>
   <div class="row">
-       <!--<div class="col-md-3 col-xs-3 col-sm-3 m_top10">
+       <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
             <label>CONSTITUENCY</label><span style="color:red;">*</span>
 				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                     <select class="select" id="voterConstId" class="form-control">
 					    <option value="0">Select Constituency</option>
 					</select>
-        </div>-->
+        </div>
         <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
               <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
                 <input type="text" class="form-control" id="inpVoterId"/>
@@ -1208,7 +1457,11 @@
 <input type="hidden" id="hiddenMblNo"/>
 
 
-<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
+<!-- online First Page Script -->
+<script src="dist/cadreRegistration/onlineCSS/Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
+<!--<script src="dist/cadreRegistration/onlineCSS/Assests/js/bootstrap.js" type="text/javascript"></script>-->
+
 <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript" src="https://wolframhempel.github.io/photobooth-js/photobooth_min.js"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
@@ -1220,9 +1473,43 @@
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/photobooth/website/js/cadreRegistration.js"></script>
 <script src="js/flipclock/flipclock.js"></script>
-	 	
+
 
 <script type="text/javascript">
+$("#wrapper").hide();
+var a = $(window).height();
+var b = $(window).width();
+$(".page-load-svg").height(a);
+$(".page-load-svg").width(b);
+
+function onlineRegistration()
+{
+	
+	$(".landingPage").hide();
+	$(".page-load-svg").show();
+	setTimeout(function(){
+		$(".page-load-svg").remove();
+		$(".cadreRegistration,.mainBlocks").removeClass("hide");
+		$(".mainBlocks").addClass("animated fadeIn");
+	},1000)
+	setTimeout(function(){
+		$(".mainBlocks").removeClass("animated fadeIn");
+	},1500);
+
+}
+$(document).on("click","#mainPageBackId",function(){
+	$(".landingPage").addClass("animated fadeIn");
+	setTimeout(function(){
+		$(".landingPage").show();
+		$(".mainBlocks").addClass("animated fadeOut");
+	},1000)
+	setTimeout(function(){
+		$(".landingPage").removeClass("animated fadeIn");
+		$(".cadreRegistration").addClass("hide");
+		$(".mainBlocks").removeClass("animated fadeOut");
+	},1500);
+	
+});
 
 $("#dobId").datetimepicker({
 	   format:'YYYY-MM-DD',
@@ -1246,18 +1533,7 @@ $("#dobId").datetimepicker({
    
   onLoadCalls();
  
-var a = $(window).height();
-var b = $(window).width();
-$(".page-load-svg").height(a);
-$(".page-load-svg").width(b);
-setTimeout(function(){
-	$(".page-load-svg").remove();
-	$(".cadreRegistration").removeClass("hide");
-	$(".mainBlocks").addClass("animated fadeIn");
-},1000)
-setTimeout(function(){
-	$(".mainBlocks").removeClass("animated fadeIn");
-},1500);
+
 $(".searchResults").mCustomScrollbar({
 	setHeight:'300px'
 });
@@ -1462,9 +1738,7 @@ $('.imageDiv input:checkbox').click(function() {
     imagePath.src = URL.createObjectURL(event.target.files[0]);
 	$("#imgErrDivId").html("");
   };
-  $(document).ready(function(){
-	$("#wrapper").hide();
-});
+  
 function showTakeImage(){
   $('#wrapper').dialog({
 		autoOpen: true,
@@ -1763,6 +2037,47 @@ $(".onlyDigit").keydown(function (e) {
             e.preventDefault();
         }
 });*/
+<!-- online Script -->
+var deadline = 'November 2 2016 10:00:00';
+
+getTimeRemaining(deadline)
+initializeClock('clockdiv', deadline);
+function getTimeRemaining(endtime){
+
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor( (t/1000) % 60 );
+  var minutes = Math.floor( (t/1000/60) % 60 );
+  var hours = Math.floor( (t/(1000*60*60)) % 24 );
+  var days = Math.floor( t/(1000*60*60*24) );
+  return {
+    'total': t,
+    'days': days,
+    'hours': hours,
+    'minutes': minutes,
+    'seconds': seconds
+  };
+}
+function initializeClock(id, endtime){
+  var clock = document.getElementById(id);
+  var timeinterval = setInterval(function(){
+    var t = getTimeRemaining(endtime);
+   $(".days").html(t.days);
+	$(".hours").html(t.hours);
+	$(".minutes").html(t.minutes);
+	$(".seconds").html(t.seconds);
+	
+    if(t.total<=0){
+      clearInterval(timeinterval);
+    }
+  },1000);
+}
+var maxHeight = 0;
+
+$(".registerSubBlock").each(function(){
+   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+});
+$(".registerSubBlock").height(maxHeight);
+
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script> 
 
