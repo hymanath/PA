@@ -123,11 +123,12 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartyMeetingMinuteRetrieveDetails(Long minuteId){
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" SELECT model.partyMeetingMinuteId,model.minutePoint,model.isActionable,model.statusId," +
-				" model.userAddress,model.partyMeetingId " +
+				" model.userAddressId,model.partyMeetingId,model.locationLevel " +
 				" FROM PartyMeetingMinute model " +
 				" WHERE model.isDeleted = 'N'" +
 				" and model.partyMeetingMinuteId =:minuteId ");

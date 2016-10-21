@@ -159,4 +159,15 @@ public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String sear
 	   return (Long) query.uniqueResult();
 	   
    }
+@SuppressWarnings("unchecked")
+public List<Object[]> getUserAddressDetailsByMinuteId(Long userAddressId){
+	   
+	   Query query = getSession().createSQLQuery(" select model.state_id,model.district_id,model.constituency_id,model.tehsil_id," +
+	   		" model.local_election_body,model.ward,model.panchayat_id from user_address model " +
+	   		" where model.user_address_id = :userAddressId ");
+	   
+	   query.setParameter("userAddressId",userAddressId);
+	   return query.list();
+	   
+   }
 }

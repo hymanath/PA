@@ -20,7 +20,7 @@ public class PMMinuteVO implements Serializable{
 	private Long partyMeetingId;
 	private Long localElectionBodyId;
 	private Long wardId;
-	
+	private Long locationLevel;
 	
 	public Long getWardId() {
 		return wardId;
@@ -100,7 +100,10 @@ public class PMMinuteVO implements Serializable{
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
 	}
-	
-	
-	
+	public Long getLocationLevel() {
+		return locationLevel;
+	}
+	public void setLocationLevel(Long locationLevel) {
+		this.locationLevel = locationLevel;
+	}
 }
