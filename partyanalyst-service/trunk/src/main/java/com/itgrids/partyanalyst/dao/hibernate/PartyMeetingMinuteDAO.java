@@ -46,16 +46,16 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 			UserAddress userAddress){
 		
 		StringBuilder query = new StringBuilder();
-		query.append("update PartyMeetingMinute model set model.minutePoint = ?,model.updatedBy.userId=?,model.updatedTime=?" +
+		query.append("update PartyMeetingMinute model set model.minutePoint = :minuteText,model.updatedBy.userId=:updatedBy,model.updatedTime=:updateTime" +
 				",model.isActionable =:isActionable,model.locationLevel=:levelId,model.locationValue=:levelValue,model.statusId=:statusId," +
 				"model.userAddressId=:userAddressId " +
-				" where model.partyMeetingMinuteId = ?");
+				" where model.partyMeetingMinuteId = :minuteId");
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setParameter(0, minuteText);
-		queryObject.setParameter(1, updatedBy);
-		queryObject.setParameter(2, updateTime);
-		queryObject.setParameter(3, minuteId);
+		queryObject.setParameter("minuteText", minuteText);
+		queryObject.setParameter("updatedBy", updatedBy);
+		queryObject.setParameter("updateTime", updateTime);
+		queryObject.setParameter("minuteId", minuteId);
 		
 		queryObject.setParameter("isActionable", isActionable);
 		if(levelId !=null && levelId>0l){
