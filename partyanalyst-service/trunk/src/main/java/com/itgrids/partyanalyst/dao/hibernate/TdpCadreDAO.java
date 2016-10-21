@@ -7138,21 +7138,21 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 			queryStr.append(" TdpCadre tdpCadre ");
 			queryStr.append(" left join tdpCadre.userAddress userAddress ");
 			queryStr.append(" left join userAddress.state state ");
-			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+			//if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append(" left join userAddress.district district ");
-			}
-			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){			
+			//}
+			//else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){			
 				queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency ");
 				queryStr.append(" left join userAddress.constituency constituency ");
-			}
-			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){			
+			//}
+			//else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){			
 				queryStr.append(" left join userAddress.localElectionBody localElectionBody ");
 				queryStr.append(" left join userAddress.tehsil tehsil ");
-			}else{
+			//}else{
 				queryStr.append(" left join userAddress.ward ward ");
 				queryStr.append(" left join userAddress.panchayat panchayat ");
 				queryStr.append(" left join userAddress.booth booth  ");
-			}
+			//}
 			queryStr.append(" where tdpCadre.isDeleted='N' and tdpCadre.enrollmentYear=2014 ");
 			if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
 				queryStr.append(" and (date(tdpCadre.surveyTime) between :startDate and :endDate) ");
@@ -7249,21 +7249,21 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 			queryStr.append(" TdpCadre tdpCadre ");
 			queryStr.append(" left join tdpCadre.userAddress userAddress ");
 			queryStr.append(" left join userAddress.state state ");
-			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+			//if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append(" left join userAddress.district district ");
-			}
-			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){			
+			//}
+			//else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){			
 				queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency ");
 				queryStr.append(" left join userAddress.constituency constituency ");
-			}
-			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){			
+			//}
+			//else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){			
 				queryStr.append(" left join userAddress.localElectionBody localElectionBody ");
 				queryStr.append(" left join userAddress.tehsil tehsil ");
-			}else{
+			//}else{
 				queryStr.append(" left join userAddress.ward ward ");
 				queryStr.append(" left join userAddress.panchayat panchayat ");
 				queryStr.append(" left join userAddress.booth booth  ");
-			}
+			//}
 			queryStr.append(" where tdpCadre.isDeleted='N' and tdpCadre.enrollmentYear=2014   ");
 			
 			if(countTimeTypeStr.trim().equalsIgnoreCase("LastOneHr")){
@@ -7404,7 +7404,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 						" model1.voterIDCardNo," +			//11
 						" model2.voterId," +				//12
 						" model2.voterIDCardNo," +			//13
-						" model.enrollmentYearId" +	//14
+						" model.enrollmentYearId " +		//14
 						" from TdpCadreEnrollmentYear model" +	
 						" left join model.tdpCadre.voter model1" +
 						" left join model.tdpCadre.familyVoter model2" +
@@ -7417,7 +7417,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		else if(searchType != null && searchType.trim().equalsIgnoreCase("mobile") && mobileNo != null)
 			sb.append(" and model.tdpCadre.mobileNo = :mobileNo");
 		else if(searchType != null && searchType.trim().equalsIgnoreCase("voter") && voterId != null)
-			sb.append(" and model1.voterIDCardNo = :voterId");
+			sb.append(" and (model1.voterIDCardNo = :voterId or model2.voterIDCardNo = :voterId) ");
 		
 		sb.append(" order by model.enrollmentYear.enrollmentYearId");
 		
