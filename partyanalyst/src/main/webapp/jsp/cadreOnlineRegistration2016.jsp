@@ -364,17 +364,17 @@
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>MANDAL</label>
+                        	<label>MANDAL/MUNCIPALITY</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                             <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value,1)">
-							<option value="0">Select Mandal</option>
+							<option value="0">Select Mandal/Muncipality</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
-                        	<label>VILLAGE/PANCHAYAT</label>
+                        	<label>VILLAGE/WARD</label>
 							<span id="panchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                            <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value,1)">
-						   <option value="0">Select Village/Panchayat</option>
+						   <option value="0">Select Village/Ward</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -847,14 +847,14 @@
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
-							<div id="renErrDivId" style="color:red;"></div>
+							<span id="renErrDivId" style="color:red;"></span>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>MEMBERSHIP ID</label>
-									<input type="text" class="form-control" id="validateRenMemshipId" />
+									<input type="text" class="form-control" id="validateRenMemshipId" maxlength="8"/>
 								</div>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label> (OR) MOBILE NO</label>
-									<input type="text" class="form-control" id="renewalMobileId"/>
+									<input type="text" class="form-control" id="renewalMobileId" maxlength="10"/>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label> (OR) VOTER ID</label>
@@ -1174,8 +1174,8 @@
       <div class="modal-body">
 	  <div>
 		<label>OTP Send To:</label>
-		 <input type="text" id="checkMblNoId"/>
-		  <!--<button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>-->
+		 <input type="text" id="checkMblNoId" disabled/>
+		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>
 		</div>
 		<div id="otpMsgDivId"></div>
 		<div style="padding-top:6px;margin-left:18px;">
