@@ -424,15 +424,12 @@ public List<Object[]> getDistrictWiseIssueTypesCount(Date fromDate,Date toDate,L
 	
 		sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId ");
 		if(stateIds != null  && stateIds.size()>0)
-		sb.append(" and model.userAddress.district.state.stateId in (:stateIds) ");
+		sb.append(" and model.userAddress.district.state.stateId in (1) ");
 				
 	sb.append(" group by model.userAddress.district.districtId,model.cadreRegIssueType.cadreRegIssueTypeId ");
 	
 	Query query = getSession().createQuery(sb.toString());
 		
-	if(stateIds != null  && stateIds.size()>0){
-		query.setParameterList("stateIds", stateIds);
-	}
 	
 	query.setParameter("statusTypeId",statusTypeId );
 	query.setDate("fromDate", fromDate);
