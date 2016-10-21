@@ -2801,7 +2801,7 @@ public String savingCadreDetails(){
 	try {
 		final HttpSession session = request.getSession();
 		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user == null || user.getRegistrationID() == null){
+		if(!cadreRegistrationVO.getDataSourceType().equalsIgnoreCase("ONLINE") && (user == null || user.getRegistrationID() == null)){
 			return ERROR;
 		}
 		
@@ -2830,9 +2830,9 @@ public String savingCadreDetails(){
 			   			}
 	   		}
 	   
-		
-		cadreRegistrationVO.setWebUserId(user.getRegistrationID());
-		cadreRegistrationVO.setDataSourceType("WEB");
+		if(user != null)
+			cadreRegistrationVO.setWebUserId(user.getRegistrationID());
+		//cadreRegistrationVO.setDataSourceType("WEB");// srishailam : dont remove comment it , i already mentioned in web registration page as web for this property
 		
 		if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("newImage")){
 			cadreRegistrationVO.setPhotoType("NEW");
