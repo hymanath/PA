@@ -1122,7 +1122,7 @@ function getConstituenciesForDistricts(district){
 						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
 						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
 				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   <!--str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';-->
+					   str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 						str+=' </li>';
 						
@@ -1192,7 +1192,7 @@ function getConstituenciesForDistricts(district){
 		 $("#saveBtnMeetMin").attr("attr_minuteId",attrId1);
 		$("#meetingLvlId").hide();
 		$("#stateShowId").hide();
-		getPartyMeetingMinuteRetrieveDetails();
+		getPartyMeetingMinuteRetrieveDetails(attrId1);
 	});
 	
 	/* function enableSaveOption(txtBoxCnt){
@@ -1326,7 +1326,7 @@ function getConstituenciesForDistricts(district){
 					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
 					 str+=' <button class="btn btn-default ToolTipDiv conformDel" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					 <!--str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';-->
+					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
 					 str+=' </div>';
 					 str+=' </li>';
 				}
@@ -2225,9 +2225,9 @@ $(document).on("click","#generalBtnId",function(){
 		$("#stateShowId").hide();
 });
 
-function getPartyMeetingMinuteRetrieveDetails(){
+function getPartyMeetingMinuteRetrieveDetails(minuteId){
 	 	var jsObj={
-		minuteId:3796	
+		minuteId:minuteId	
 		}
 		$.ajax({
 			type:"POST",
