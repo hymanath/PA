@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -987,39 +989,46 @@ public class FieldMonitoringService implements IFieldMonitoringService {
   	*  @since 20-October-2016
   	*/
    public void setDistrictWiseIssueTypesCount(List<Object[]> distWiseIssTyps,List<IdAndNameVO> returnList){
-	   
+	   Map<List<Long>,IdAndNameVO> stateMap = new HashMap<List<Long>,IdAndNameVO>();
 	   try {
+			List<Long> apDist = districtDAO.getDistrictsInAState(1l);
+			List<Long> tsDist = districtDAO.getDistrictsInAState(36l);
+			IdAndNameVO apVO = new IdAndNameVO();
+			apVO.setName("Andhra Pradesh");
+			apVO.setDistList(setDistricts(1l));
+			IdAndNameVO tsVO = new IdAndNameVO();
+			tsVO.setName("Telangana");
+			tsVO.setDistList(setDistricts(36l));
+			stateMap.put(apDist, apVO);
+			stateMap.put(tsDist, tsVO);
 			
+			for (List<Long> distList : stateMap.keySet()) {
 		   if (distWiseIssTyps != null && distWiseIssTyps.size() > 0) {
 				for (Object[] objects : distWiseIssTyps) {
 					
-						IdAndNameVO stateVO = getMatchVO(returnList,(Long)objects[5]);
-						if(stateVO != null){
-							IdAndNameVO districtVO = getMatchVO(stateVO.getDistList(),(Long)objects[4]);
-							if(districtVO != null){
-								//districtVO.setIssueTypes(getAllIssueTypes());
-								IdAndNameVO issueTypeVO = getMatchVO(districtVO.getIssueTypes(),(Long)objects[3]);
-								if(issueTypeVO != null){
-									issueTypeVO.setInviteeCount(objects[0] != null ?issueTypeVO.getInviteeCount() + (Long)objects[0] : 0l);
+						if(distList.contains((Long)objects[4])){
+							IdAndNameVO stateVO = stateMap.get(distList);
+							
+							if(stateVO != null){
+								
+								IdAndNameVO districtVO = getMatchVO(stateVO.getDistList(),(Long)objects[4]);
+								if(districtVO != null){
+									//districtVO.setIssueTypes(getAllIssueTypes());
+									IdAndNameVO issueTypeVO = getMatchVO(districtVO.getIssueTypes(),(Long)objects[3]);
+									if(issueTypeVO != null){
+										issueTypeVO.setInviteeCount(objects[0] != null ?issueTypeVO.getInviteeCount() + (Long)objects[0] : 0l);
+									}
 								}
+								
 							}
-						}else{
-							stateVO = new IdAndNameVO();
-							stateVO.setId(objects[5] != null ?(Long)objects[5] : 0l);
-							stateVO.setName(objects[6] != null ?objects[6].toString() : "");
-							stateVO.setDistList(setDistricts((Long)objects[5]));
-							IdAndNameVO districtVO = getMatchVO(stateVO.getDistList(),(Long)objects[4]);
-							if(districtVO != null){
-								//districtVO.setIssueTypes(getAllIssueTypes());
-								IdAndNameVO issueTypeVO = getMatchVO(districtVO.getIssueTypes(),(Long)objects[3]);
-								if(issueTypeVO != null){
-									issueTypeVO.setInviteeCount(objects[0] != null ?issueTypeVO.getInviteeCount() + (Long)objects[0] : 0l);
-								}
-							}
-							returnList.add(stateVO);	
 						}
-						
 				}
+		   }
+			}
+			for (List<Long> distList : stateMap.keySet()) {
+				
+				IdAndNameVO stateVO = stateMap.get(distList);
+				returnList.add(stateVO);
 			}
 		   
 	   }catch (Exception e) {
