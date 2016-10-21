@@ -73,7 +73,7 @@
 </div>
 <div class="modal fade" id="issuesModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:80%;" role="document">
-    <div class="modal-content">
+    <div class="modal-content">  
       <div class="modal-header">
 			<div id="tabUserId"></div>
       </div>
@@ -82,11 +82,11 @@
       </div>
       <div class="modal-footer">
       	<p><small>For Bulk Update</small></p>
-        <button class="btn btn-success">Approve</button>
-        <button class="btn btn-danger">Reject</button>
-      </div>
+        <button class="btn btn-success" id="bulkApproveId">Approve</button>
+        <button class="btn btn-danger" id="bulkRejectId">Reject</button>
+      </div>      
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+  </div><!-- /.modal-dialog -->  
 </div><!-- /.modal -->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -96,9 +96,8 @@
 <script src="js/dataMonitoring/dataMonitoring.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>  
 <script type="text/javascript">
-	
 	$(".datePicker").daterangepicker();
-	$('.select').chosen({width:'100%'});
+	$('.select').chosen({width:'100%'});    
 </script>
 </body>
 </html>

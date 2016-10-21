@@ -3564,6 +3564,7 @@
 	 <property name="tdpCadreDataVerificationDAO" ref="tdpCadreDataVerificationDAO" />
 	 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>  
 	 <property name="dateUtilService" ref="dateUtilService" />	
+	 <property name="dataRejectReasonDAO" ref="dataRejectReasonDAO"/>
 	</bean>
 	
 </beans>		

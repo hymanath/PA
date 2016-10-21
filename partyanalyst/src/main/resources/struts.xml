@@ -14205,6 +14205,21 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getReasonAction" class="dataMonitoringAction"  method="getDataRejectReason">
+			<result type="json" name="success">
+			<param name="root">idNameVOs</param>  
+		</result>
+	</action>
+	<action name="updateRejectListAction" class="dataMonitoringAction"  method="updateRejectList">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>    
+		</result>
+	</action>
+	<action name="updateApproveListAction" class="dataMonitoringAction"  method="updateApproveList">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>      
+		</result>
+	</action>
 	<action name="getPartyMeetingMinuteRetrieveDetailsAction" class="partyMeetingAction"  method="getPartyMeetingMinuteRetrieveDetails">
 			<result type="json" name="success">
 			<param name="root">pmMinutelist</param>
