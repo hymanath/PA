@@ -241,7 +241,22 @@
 		var userName = $(this).attr("attr_user_name");
 		var userMobile = $(this).attr("attr_user_mobile");
 		var resultType="All"
-		var minValue = 0;  
+		var minValue = 0; 
+		if(webUserId==0){
+			$("#userId").html("Tab UserID - "+tabUserId+"");	
+			$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");	
+		}else{
+			$("#userId").html("User ID - "+webUserId+"");	
+			$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");		
+		}
+	   
+	   	$("#relativePaginationId").html(' ');
+		$("#selfPaginationId").html(' ');
+	    $("#issuesDataMonitroingDashboardModal").modal('show');
+		$("#issuesDataMonitroing li").removeClass("active");
+		$("#issuesDataMonitroing li:first-child").addClass("active");  
+		$(".activeCls").addClass("active");
+		$(".relativeCls").removeClass("active");
 		getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);
 	});
 	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
@@ -273,7 +288,7 @@
 			minValue :minValue,
             maxValue :10,
 			resultType:resultType,
-			verificationStatus:"Total"      
+			verificationStatus:"Total"        
 		}    
 		$.ajax({
 			type:'GET',
@@ -282,10 +297,10 @@
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#cadreValidateId").html('');
-			if(result != null){  
+			if(result != null && result.length > 0){  
 				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);  
 			}else{
-				if(resultType=="All"){
+				if(resultType=="All"){    
 					$("#selfTblDivId").html('No Data Available...');
 					$("#relativeDivId").html('NO DATA Available.');
 				}else if(resultType=="Self"){
@@ -298,6 +313,8 @@
 	}
 		
 	function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+		$("#globalErrId").html('');  
+		$("#globalSuccId").html('');
 		if(resultType=="All" || resultType=="Self"){  
 		var str = '';
 		var selfTotalCount=0;
@@ -376,7 +393,7 @@
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
 								str+='<td>'+result[0][i].gender+'</td>';
-								str+='<td><input attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" class="localSelectOwnCls" type="checkbox"/></td>';  
+								str+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" class="localSelectOwnCls" type="checkbox"/></td>';  
 							str+='</tr>'; 
 					
 					
@@ -388,7 +405,8 @@
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
 										str+='<option value="0">Andhra Pradesh</option>';                
-									str+='</select>';  
+									str+='</select>'; 
+									str+='<span id="ownErrorId'+i+'" style="color:red;"></span>';
 								str+='</td>';    
 							str+='</tr>';  
 							
@@ -447,7 +465,7 @@
 
 					
 							str2+='<tr>';
-								str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+								str2+='<td><img src="images/right.jpg" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
 								str2+='<td colspan="3">';
 									//str+='<select>';
 										//str+='<option></option>';
@@ -473,7 +491,7 @@
 
 					
 							str2+='<tr>';
-								str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+								str2+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
 								str2+='<td colspan="3">';
 									str2+='<input type="text" value="'+result[1][i].wish+'"></input>';
 										//str+='<option></option>';
@@ -492,7 +510,7 @@
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
-								str2+='<td><input attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
+								str2+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
 							str2+='</tr>'; 
 							str2+='<tr>';
 								str2+='<td>';
@@ -502,8 +520,9 @@
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
 										str2+='<option value="0">Andhra Pradesh</option>';                  
-									str2+='</select>';  
-								str2+='</td>';  
+									str2+='</select>';
+									str2+='<span id="familyErrorId'+i+'" style="color:red;"></span>';
+								str2+='</td>';    
 							str2+='</tr>';    
 						}
 					}
@@ -516,6 +535,7 @@
 							$("#familyHideSelectBoxId"+i).html(globalSrt);        
 						}
 					}
+					//$(".select").chosen({width:'100%'});        
 					if(minValue == 0 && relativeTotalCount > 10){
 						$("#relativePaginationId").pagination({
 						items: relativeTotalCount,
@@ -544,9 +564,17 @@
 			if($(this).is(':checked')){
 				var selectReasonId = $(this).attr("attr_reason_id");
 				$("#"+selectReasonId).show();
+				//to clear error message  
+				var position = $(this).attr("attr_position_id");
+				$("#ownErrorId"+position).html("");
+				$("#globalErrId").html("");				
 			}else{
 				var selectReasonId = $(this).attr("attr_reason_id");
-				$("#"+selectReasonId).hide(); 
+				$("#"+selectReasonId).hide();
+				//to clear error message
+				var position = $(this).attr("attr_position_id");
+				$("#ownErrorId"+position).html("");
+				$("#globalErrId").html("");				
 			}  
 		});
 	}); 
@@ -564,21 +592,34 @@
 			if($(this).is(':checked')){
 				var selectReasonId = $(this).attr("attr_reason_id");
 				$("#"+selectReasonId).show();
+				//to clear error message
+				var position = $(this).attr("attr_position_id");
+				$("#familyErrorId"+position).html(""); 
+				$("#globalErrId").html("");
 			}else{    
 				var selectReasonId = $(this).attr("attr_reason_id");
 				$("#"+selectReasonId).hide(); 
+				//to clear error message
+				var position = $(this).attr("attr_position_id");
+				$("#familyErrorId"+position).html("");  
+				$("#globalErrId").html("");
 			}  
 		});
 	});
-	
+	  
 	//by selecting single check box show and hide the chexk box. for own tab
 	$(document).on('click','.localSelectOwnCls',function(){
 		if($(this).is(':checked')){
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).show();
+			$("#globalErrId").html("");
 		}else{
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).hide(); 
+			//to clear error message.
+			var position = $(this).attr("attr_position_id");
+			$("#ownErrorId"+position).html("");	
+			$("#globalErrId").html("");
 		}
 		var count = $("input.localSelectOwnCls:checked").length;
 		if(count >= 1){
@@ -598,6 +639,9 @@
 		}else{
 			var selectReasonId = $(this).attr("attr_reason_id");
 			$("#"+selectReasonId).hide(); 
+			//to clear error message
+			var position = $(this).attr("attr_position_id");  
+			$("#familyErrorId"+position).html(""); 
 		}
 		var count = $("input.localSelectFamilyCls:checked").length;
 		if(count >= 1){
@@ -609,27 +653,90 @@
 		}
 	});
 	//single rejected 
-	$(document).on('click','.singleRejectCls',function(){
+	$(document).on("click",".singleRejectCls",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
-		var selectReasonId = $(this).attr("attr_reason_id");
-		var reasonId = $("#"+selectReasonId).val();
+		$("#submitBtnReasonId").attr("attr_cadre_id",cadreId);
+		$(".reasonErrorCls").html('');
+		$(".reasonSuccessCls").html('');
+		$("#rsnSlctBxId").html(globalSrt);  
+		$("#rejectedModalId").modal("show");  
+	});	
+	$(document).on('click','#submitBtnReasonId',function(){ 
+		$(".reasonErrorCls").html('');  
+		var cadreId = $(this).attr("attr_cadre_id");
+		var reasonId = $("#rsnSlctBxId").val();
+		if(reasonId == 0){
+			$(".reasonErrorCls").html('Please Select Reason...');  
+			return;  
+		} 
 		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 }); 
+		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
 			url: 'updateRejectListAction.action',      
 			dataType: 'json',
 			data: {task:JSON.stringify(singleReject)}  
-		}).done(function(result){
-			if(result != null){  
-				console.log(true);
-			}else{
+		}).done(function(result){  
+			if(result != null){ 
+				if(result.resultCode == 1){      
+					$(".reasonSuccessCls").html('Updated Successfully...'); 
+				}else{
+					$(".reasonSuccessCls").html('Updation Failed...'); 
+				}
+				setTimeout(function(){ $("#rejectedModalId").modal("hide"); }, 3000); 
 			}
-		});		
+		});
 	});
+	
 	//bulk reject
-	$(document).on('click','#bulkRejectId',function(){  
+	$(document).on('click','#bulkRejectId',function(){
+		$("#globalSuccId").html(''); 
+		$("#globalErrId").html('');     
+		var count = 0;
+		var checkCount = 0;
+		if($("#self").hasClass('active')){
+			$('.localSelectOwnCls').each(function(){  
+				if($(this).is(':checked')){
+					checkCount = checkCount + 1;
+					var selectReasonId = $(this).attr("attr_reason_id");
+					reasonId = $("#"+selectReasonId).val();
+					if(reasonId == 0){
+						var position = $(this).attr("attr_position_id");
+						$("#ownErrorId"+position).html("please Select Reason");
+						count = count + 1;
+						return false;         
+					}else{
+						var position = $(this).attr("attr_position_id");
+						$("#ownErrorId"+position).html("");  
+					}  
+				}
+			});
+		}else{
+			$('.localSelectFamilyCls').each(function(){  
+				if($(this).is(':checked')){
+					checkCount = checkCount + 1;
+					var selectReasonId = $(this).attr("attr_reason_id");
+					reasonId = $("#"+selectReasonId).val();
+					if(reasonId == 0){
+						var position = $(this).attr("attr_position_id");
+						$("#familyErrorId"+position).html("please Select Reason");
+						count = count + 1;
+						return false;         
+					}else{
+						var position = $(this).attr("attr_position_id");  
+						$("#familyErrorId"+position).html("");  
+					}  
+				}
+			});
+		}
+		if(count > 0){  
+			return;    
+		}   
+		if(checkCount == 0){
+			$("#globalErrId").html("Please Select Atleast One member");  
+			return;    
+		}  		
 		var cadreId = '';
 		var selectReasonId = '';
 		var reasonId = '';
@@ -663,13 +770,22 @@
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
 			if(result != null){  
-				console.log(true);
+				if(result.resultCode == 1){ 
+					$("#globalSuccId").html('Updated Successfully...'); 
+				}else{
+					$("#globalErrId").html('Updation Failed...');     
+				}
 			}else{
 			}
 		});
 	});
 	//single approve
-	$(document).on('click','.singleApproveCls',function(){
+	$(document).on("click",".singleApproveCls",function(){  
+		var cadreId = $(this).attr("attr_cadre_id");
+		$("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
+		$("#confirmModalId").modal("show");      
+	});
+	$(document).on("click","#groupingApprovedYes",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
 		var rejectList = [];
 		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
@@ -681,15 +797,39 @@
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
 			if(result != null){  
-				console.log(true);         
-			}else{
+				if(result.resultCode == 1){ 
+					$("#successApprovedId").html('Updated Successfully...'); 
+				}else{
+					$("#errorApprovedId").html('Updation Failed...');       
+				} 
+				setTimeout(function(){ $("#confirmModalId").modal("hide"); }, 3000);
+			}else{    
 			}
 		});  
 	});
+	
 	//bulk approve
-	$(document).on('click','#bulkApproveId',function(){    
-		var cadreId = '';
-		var rejectList = [];
+	$(document).on('click','#bulkApproveId',function(){  
+		var isMemberSelected="NO";
+		if($("#self").hasClass('active')){
+			$('.localSelectOwnCls').each(function(){  
+				if($(this).is(':checked')){
+					isMemberSelected="Yes";
+				}
+			});
+		}
+		$('.localSelectFamilyCls').each(function(){  
+			if($(this).is(':checked')){
+				isMemberSelected="Yes";
+			}
+		});
+		if(isMemberSelected == "NO"){
+			$("#globalErrId").html("Please Select Atleast One Member.");
+			return;       
+		}    
+		$("#globalErrId").html(' ');  
+		var cadreId = ''; 
+		var rejectList = []; 
 		if($("#self").hasClass('active')){
 			$('.localSelectOwnCls').each(function(){  
 				if($(this).is(':checked')){
@@ -702,7 +842,7 @@
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
 					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
-				}
+				}  
 			});
 		}
 		
@@ -714,9 +854,26 @@
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
 			if(result != null){  
-				console.log(true);         
-			}else{
+				if(result.resultCode == 1){ 
+					$("#globalSuccId").html('Updated Successfully...'); 
+				}else{
+					$("#globalErrId").html('Updation Failed...');     
+				}
+			}else{      
 			}
 		});
 	});
+	$(document).on("click","#submitBtnReasonId",function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+		var reasonId = $("#rsnSlctBxId").val();
+		if(reasonId == 0){  
+			$(".reasonErrorCls").html("Please Select Reason.");
+			return;
+		}
+		$(".reasonErrorCls").html(' ');
+	});
+	$(document).on("click","#groupingApprovedNo",function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+	    $("#confirmModalId").modal("hide");  
+	});    
 	
