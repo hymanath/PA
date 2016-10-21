@@ -95,8 +95,8 @@
       </div>
       <div class="modal-footer">
       	<p><small>For Bulk Update</small></p>
-        <button class="btn btn-success">Approve</button>
-        <button class="btn btn-danger">Reject</button>
+        <button class="btn btn-success" id="bulkApproveId">Approve</button>
+        <button class="btn btn-danger" id="bulkRejectId">Reject</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -107,7 +107,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title"></h4>
-        </div>
+        </div>  
         <div class="modal-body" style="padding-bottom: 98px; padding-right: 0px; padding-top: 7px;">
 		 <div class="row">
 		    <div class="col-md-4">
