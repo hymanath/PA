@@ -429,7 +429,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 			Date lastOneHourTime = cal.getTime();
 			
 			
-			if(dataSourceType != null && dataSourceType.equalsIgnoreCase("WEB") || dataSourceType.equalsIgnoreCase("WEB")){
+			if(dataSourceType != null && dataSourceType.equalsIgnoreCase("WEB") || dataSourceType.equalsIgnoreCase("ONLINE")){
 			  List<Object[]> rtrnActiveMemberObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus);
 			    setWebAndOnlineActiveMembersCntDetails(rtrnActiveMemberObjList,webAndOnlineActiveUserMap);
 			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus);
