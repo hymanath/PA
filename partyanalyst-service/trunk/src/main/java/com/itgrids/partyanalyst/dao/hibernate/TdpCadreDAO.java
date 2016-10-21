@@ -7956,9 +7956,9 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setParameterList("voterCardNosList", voterCardNosList);
 			return query.list();
 	}
-	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status){
+	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select " +
+		queryStr.append(" select distinct " +
 						" tc.tdp_cadre_id as cadreId, " +  //0
 						" tc.first_name as name ," +	//1
 						" tc.mobile_no as mobile ," +	//2
@@ -8020,6 +8020,12 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setParameter("tabUserId", tabUserId);
 		}else{
 			query.setParameter("webUserId", webUserId);
+		}
+		if(minValue != null && minValue > 0){
+			query.setFirstResult(minValue);
+		}
+		if(maxValue != null && maxValue > 0){
+			query.setMaxResults(maxValue);
 		}
 		return query.list();
 	}
