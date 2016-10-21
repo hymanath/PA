@@ -325,7 +325,137 @@ function getDataMonitoringOverViewDetails(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			console.log(result);
+			buildDistrictWIseIssueTypes(result);
 		});
 	}
+	
+	function buildDistrictWIseIssueTypes(result){
+		$("#districtWiseNewsIssuesReport").html(' ');
+		var str='';
 		
+		if(result != null && result.length > 0){
+			for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<h4>'+result[i].name+' - DISTRICT WISE - <b>OPEN ISSUES</b> OVERVIEW</h4>';
+			str+='</div>';
+				if(result[i].distList !=null && result[i].distList.length >0){
+				str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+				str+='<ul class="ComparisionPartyWiseSlickApply">';
+					for(var j in result[i].distList){
+					
+					str+='<li><div id="districtWiseissues'+i+''+j+'" class="chartLiD" style="height:300px" ></div></li>';
+				
+						
+					}
+					str+='</ul>';
+					str+='</div>';
+					
+				}
+			}
+		
+				
+			}
+			$("#districtWiseNewsIssuesReport").html(str);						
+		
+		
+		
+		if(result != null && result.length > 0){
+			for(var i in result){
+			
+			var districtNamesArray;
+			
+				if(result[i].distList !=null && result[i].distList.length >0){
+				
+					for(var j in result[i].distList){
+					var mainArr=[];
+					districtNamesArray = result[i].distList[j].name;
+					if(result[i].distList[j].issueTypes !=null && result[i].distList[j].issueTypes.length >0){
+						for(var k in result[i].distList[j].issueTypes){
+						if(result[i].distList[j].issueTypes[k].inviteeCount !=0){
+							var subArr=[];
+							subArr.push(result[i].distList[j].issueTypes[k].name);
+							subArr.push(parseInt(result[i].distList[j].issueTypes[k].inviteeCount));
+							mainArr.push(subArr);
+							}
+						}
+					}
+					 
+					 
+						$('#districtWiseissues'+i+''+j+'').highcharts({
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: districtNamesArray
+							},
+							
+							xAxis: {
+							 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+								type: 'category',
+								labels: {
+									enabled:false,
+									rotation: -45,
+									style: {
+										fontSize: '13px',
+										fontFamily: 'Verdana, sans-serif'
+									}
+								}
+							},
+							yAxis: {
+								min: 0,
+							   gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								title: {
+									text: ''
+								}
+							},
+							legend: {
+								enabled: false
+							},
+							tooltip: {
+								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
+							},
+							series: [{
+								name: '',
+								colorByPoint: true,
+								data: mainArr,
+								dataLabels: {
+									enabled: true,
+									rotation: -90,
+									color: '#FFFFFF',
+									align: 'right',
+									format: '{point.y}', // one decimal
+									y: 10, // 10 pixels down from the top
+									style: {
+										fontSize: '13px',
+										fontFamily: 'Verdana, sans-serif'
+									}
+								}
+							}]
+						});
+					
+					  
+					 
+					}
+					
+					
+				}
+			}
+			
+			$(".ComparisionPartyWiseSlickApply").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false
+		}); 
+		
+		}
+		
+	}
+	
