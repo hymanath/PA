@@ -333,10 +333,10 @@
             </div>
             <div class="row m_top20">
                 <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
-                    <div class="registrationBlocks" onClick="onlineRegistration();">
+                    <div class="registrationBlocks onlineRegistration" >
                         <h2 class="text-capital text-center">online</h2>
                         <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/onlineRegister.png" class="img-responsive" alt="OnlineRegister"/>
+                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/onlineRegister.png" class="img-responsive " alt="OnlineRegister"/>
                     </div>
                 </div>
                 <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
@@ -440,7 +440,7 @@
         </div>
     </div>
 </section>
-<footer>
+<footer >
 	<div class="container">
     	<div class="row">
         	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -508,13 +508,13 @@
     <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
-				<div class="panel-heading renewalN">
+				<div class="panel-heading renewalN1" style="display:none;">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
+                    <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" > Home </button></h3>
                 </div>
             	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">New Membership</h3>
+                    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
                 </div>
 <!-- Confirmation Block -->
      <div class="panel-body voterIdConfirm hide">
@@ -653,7 +653,7 @@
 					</div>
 					<div class="row">
                         <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search voter ID </button>
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search Details</button>
                         </div>
                     </div>
                 </div>
@@ -801,7 +801,7 @@
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="emailDivId" style="display:none;">
                         	<label class="control-label" for="inputSuccess2">Email Id</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.email">
+                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.emailId">
                               <span class="form-control-feedback text-muted" aria-hidden="true">@</span>
                             </div>
                         </div>
@@ -1072,7 +1072,7 @@
 						</div>
 						   </div>-->
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital" type="button" id="saveBtnId" onclick="savingCadreDetails();">submit</button>
                         </div>
 						 <span id="savingCadreDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 						<div id="savingStatusDivId" style="padding:15px;"></div>
@@ -1087,7 +1087,7 @@
     </div>
     <div class="row hide subBlockR">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default panelRegistration">
+        	<div class="panel panel-default panelRegistration" style="margin-bottom: 100px;">
             	<div class="panel-heading renewal">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
@@ -1425,7 +1425,7 @@
 	  <div>
 		<label>OTP Send To:</label>
 		 <input type="text" id="checkMblNoId" disabled/>
-		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Regenarate OTP</button>
+		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Genarate OTP</button>
 		</div>
 		<div id="otpMsgDivId"></div>
 		<div style="padding-top:6px;margin-left:18px;">
@@ -1445,9 +1445,9 @@
 </div>
 </div>
 	<div id="wrapper">
-		<div id="example"></div>
+		<div id="example" ></div>
 	</div>
-
+<div id=""  style="margin-top:150px;"></div>
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>
@@ -1483,21 +1483,19 @@ var b = $(window).width();
 $(".page-load-svg").height(a);
 $(".page-load-svg").width(b);
 
-function onlineRegistration()
-{
-	
+$(document).on("click",".onlineRegistration",function(){
+
 	$(".landingPage").hide();
 	$(".page-load-svg").show();
 	setTimeout(function(){
 		$(".page-load-svg").remove();
 		$(".cadreRegistration,.mainBlocks").removeClass("hide");
 		$(".mainBlocks").addClass("animated fadeIn");
-	},1000)
+	},1000);
 	setTimeout(function(){
 		$(".mainBlocks").removeClass("animated fadeIn");
 	},1500);
-
-}
+});
 $(document).on("click","#mainPageBackId",function(){
 	$(".landingPage").addClass("animated fadeIn");
 	setTimeout(function(){
@@ -1511,8 +1509,6 @@ $(document).on("click","#mainPageBackId",function(){
 	},1500);
 	
 });
-
-}
 
 $("#dobId").datetimepicker({
 	   format:'YYYY-MM-DD',
@@ -2018,7 +2014,9 @@ $(document).on("click","#checkbox8",function(){
 	}	
 });
 
-
+$(document).on("click",".homeCls",function(){
+	window.location.reload();
+});
 </script>
 <script>
 var userip = "";
