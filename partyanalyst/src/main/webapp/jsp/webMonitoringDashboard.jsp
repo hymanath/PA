@@ -10,6 +10,8 @@
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">
@@ -76,9 +78,14 @@
                             <div id="fixedIssues" class="m_top20"></div>
                         </div>
                     </div>
-					<div class="" >
-								<div  id="cadreSearchDtls" ></div>
-                    </div>
+					<div class="row m_top20">
+						
+					
+						<div id="districtWiseNewsIssuesReport" >
+						
+						</div>
+					</div>
+					
                 </div>
             </div>
         </div>
@@ -137,157 +144,10 @@
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/FieldMonitoring/webMonitoringDashboard.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".singleDate").daterangepicker({
 	opens:'left'
-});
-$(function () {
-    $('#cadreSearchDtls').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: null
-        },
-        subtitle: {
-            text: null
-        },
-        xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ],
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: null
-            }
-        },
-		legend:{
-			enabled:false
-		},
-        tooltip: {
-			enabled:false,
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [49.9],
-            color:'#ddd'
-
-        }, {
-            name: 'New York',
-            data: [83.6],
-
-        }, {
-            name: 'London',
-            data: [48.9]
-
-        }, {
-            name: 'Berlin',
-            data: [42.4]
-
-        }]
-    });
-	$('#cadreSearchDtls').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: null
-        },
-        subtitle: {
-            text: null
-        },
-        xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ],
-			labels:{
-				enabled:false
-			},
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: null
-            },
-			labels:{
-				enabled:false
-			}
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0,
-				legend:{
-					enabled:false
-				}
-            },
-			
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [49.9],
-            color:'#ddd'
-
-        }, {
-            name: 'New York',
-            data: [83.6],
-
-        }, {
-            name: 'London',
-            data: [48.9]
-
-        }, {
-            name: 'Berlin',
-            data: [42.4]
-
-        }]
-    });
 });
  onLoadCalls();
 </script>
