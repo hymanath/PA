@@ -279,7 +279,10 @@ $(document).on("click",".manageIssues",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   buildIssuesForATabUserByStatus(result);
+	   if(result != null && result.length > 0)
+		buildIssuesForATabUserByStatus(result);
+		else
+			$("#issueDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
    });
   }
   function buildIssuesForATabUserByStatus(result) {
@@ -349,7 +352,7 @@ $(document).on("click",".manageIssues",function(){
       saveFieldIssue();
   });
   function saveFieldIssue(){
-	  var constituencyId =$("#constituencyId").val();  
+	  var constituencyId =$("#issueConstituencyId").val();  
 	  var issueTypeId =$("#issueTypeId option:selected").val();
       var description =$("#descriptionId").val();
       var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
@@ -398,6 +401,8 @@ $(document).on("click",".manageIssues",function(){
 			setTimeout(function(){
 				$("#issueTypeDivId").hide();
 				clearErrorFields();
+				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
+				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 			}, 2000);
 	   }else{
 		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");
