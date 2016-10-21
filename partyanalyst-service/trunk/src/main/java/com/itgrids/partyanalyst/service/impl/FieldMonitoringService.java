@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -989,7 +991,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
   	*  @since 20-October-2016
   	*/
    public void setDistrictWiseIssueTypesCount(List<Object[]> distWiseIssTyps,List<IdAndNameVO> returnList){
-	   Map<List<Long>,IdAndNameVO> stateMap = new HashMap<List<Long>,IdAndNameVO>();
+	   Map<List<Long>,IdAndNameVO> stateMap = new LinkedHashMap<List<Long>,IdAndNameVO>();
 	   try {
 			List<Long> apDist = districtDAO.getDistrictsInAState(1l);
 			List<Long> tsDist = districtDAO.getDistrictsInAState(36l);
@@ -1002,11 +1004,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			stateMap.put(apDist, apVO);
 			stateMap.put(tsDist, tsVO);
 			
+			Set<List<Long>> avaiableDistricts = new HashSet<List<Long>>(0);
 			for (List<Long> distList : stateMap.keySet()) {
 		   if (distWiseIssTyps != null && distWiseIssTyps.size() > 0) {
 				for (Object[] objects : distWiseIssTyps) {
 					
 						if(distList.contains((Long)objects[4])){
+							avaiableDistricts.add(distList);
 							IdAndNameVO stateVO = stateMap.get(distList);
 							
 							if(stateVO != null){
@@ -1023,10 +1027,9 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 							}
 						}
 				}
-		   }
+		   	  }
 			}
-			for (List<Long> distList : stateMap.keySet()) {
-				
+			for (List<Long> distList : avaiableDistricts) {
 				IdAndNameVO stateVO = stateMap.get(distList);
 				returnList.add(stateVO);
 			}
