@@ -7956,7 +7956,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setParameterList("voterCardNosList", voterCardNosList);
 			return query.list();
 	}
-	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue){
+	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue,String verificationStatus){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 						" tc.tdp_cadre_id as cadreId, " +  //0
@@ -7983,23 +7983,31 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 						" tc.tdp_cadre_id = tcey.tdp_cadre_id and "+
 						" tcey.is_deleted = 'N' and "+
 						" tcey.enrollment_year_id = 4 and "+
-						" date(tc.survey_time) between :startDate and :endDate and ");
+						" date(tc.survey_time) between :startDate and :endDate ");
 		if(status.equalsIgnoreCase("own")){
-			queryStr.append(" tc.voter_id = v.voter_id and "+
-							" tc.voter_id is not null and ");
+			queryStr.append(" and tc.voter_id = v.voter_id  "+
+							" and tc.voter_id is not null  ");
 		}else{
-			queryStr.append(" tc.family_voterId = v.voter_id and "+  
-							" tc.voter_id is null and ");
+			queryStr.append(" and tc.family_voterId = v.voter_id "+  
+							" and tc.voter_id is null ");
 		}
 						
 		if(webUserId != null && webUserId.equals(0l)){
-			queryStr.append(" tc.created_by = :surveyUserId and "+
-							" tc.tab_user_info_id = :tabUserId ");
+			queryStr.append(" and tc.created_by = :surveyUserId "+
+							" and tc.tab_user_info_id = :tabUserId ");
 		}else{
-			queryStr.append(" tc.inserted_web_user_id = :webUserId ");
+			queryStr.append(" and tc.inserted_web_user_id = :webUserId ");
 					
 		}
-		Query query = getSession().createSQLQuery(queryStr.toString())
+	    if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
+		     queryStr.append(" and tc.cadre_verification_status_id=1 ");	 
+		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
+			 queryStr.append(" and tc.cadre_verification_status_id=2 "); 
+		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
+			 queryStr.append(" and tc.cadre_verification_status_id is null "); 
+		 }
+
+	    Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("cadreId", Hibernate.LONG)
 				.addScalar("name", Hibernate.STRING)
 				.addScalar("mobile", Hibernate.STRING)

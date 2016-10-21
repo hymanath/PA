@@ -308,7 +308,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 	}
 	
-	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue){
+	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue,String resultType,String verificationStatus){
 		LOG.info("Entered into getVerifiedDtls() of DataMonitoringService");  
 		try{
 			DateUtilService dateUtilService = new DateUtilService();
@@ -327,56 +327,65 @@ public class DataMonitoringService implements IDataMonitoringService {
 				endDate = sdf1.format(ndDate);
 			}  
 			//get verified dtls  
-			
-			List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",minValue,maxValue);
-			if(ownVoterVerifiedDtlsList != null && ownVoterVerifiedDtlsList.size() > 0){
-				for(Object[] param : ownVoterVerifiedDtlsList){
-					idNameVO = new IdNameVO();
-					idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
-					idNameVO.setName(param[1] != null ? param[1].toString() : "");
-					idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
-					idNameVO.setGender(param[3] != null ? param[3].toString() : "");
-					idNameVO.setImage(param[4] != null ? param[4].toString() : "noImage");
-					idNameVO.setVoterImage(param[6] != null ? param[6].toString() : "noImage");  
-					idNameVO.setStatusId(param[7] != null ? (Long)param[7] : 0l);
-					idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
-					idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
-					idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
-					ownVoterDtls.add(idNameVO);
-				}
-			  if(minValue == 0){
-				  List<Object[]> allOwnVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",0,0);
-				    if(ownVoterDtls != null && ownVoterDtls.size() > 0){
-				    	ownVoterDtls.get(0).setTotalCount(Long.valueOf(allOwnVoterVerifiedDtlsList.size()));	
-				    }
-			  }
-				ownVoterDtls.get(0).setPublicRepr("own");
-				finalList.add(ownVoterDtls);
-			}
-			List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",minValue,maxValue);
-			if(familyVoterVerifiedDtlsList != null && familyVoterVerifiedDtlsList.size() > 0){
-				for(Object[] param : familyVoterVerifiedDtlsList){
-					idNameVO = new IdNameVO();
-					idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
-					idNameVO.setName(param[1] != null ? param[1].toString() : "");
-					idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
-					idNameVO.setGender(param[3] != null ? param[3].toString() : "");
-					idNameVO.setImage(param[4] != null ? param[4].toString() : "noImage");
-					idNameVO.setVoterImage(param[6] != null ? param[6].toString() : "noImage");  
-					idNameVO.setStatusId(param[7] != null ? (Long)param[7] : 0l);
-					idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
-					idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
-					idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
-					familyVoterDtls.add(idNameVO);
-				}
-				 if(minValue == 0){
-					   List<Object[]> allFamilyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",0,0);
-					    if(familyVoterDtls != null && familyVoterDtls.size() > 0){
-					    	familyVoterDtls.get(0).setTotalCount(Long.valueOf(allFamilyVoterVerifiedDtlsList.size()));	
+			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Self")){
+				List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",minValue,maxValue,verificationStatus);
+				if(ownVoterVerifiedDtlsList != null && ownVoterVerifiedDtlsList.size() > 0){
+					for(Object[] param : ownVoterVerifiedDtlsList){
+						idNameVO = new IdNameVO();
+						idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
+						idNameVO.setName(param[1] != null ? param[1].toString() : "");
+						idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+						idNameVO.setGender(param[3] != null ? param[3].toString() : "");
+						idNameVO.setImage(param[4] != null ? param[4].toString() : "noImage");
+						idNameVO.setVoterImage(param[6] != null ? param[6].toString() : "noImage");  
+						idNameVO.setStatusId(param[7] != null ? (Long)param[7] : 0l);
+						idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
+						idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
+						idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
+						ownVoterDtls.add(idNameVO);
+					}
+				  if(minValue == 0){
+					  List<Object[]> allOwnVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",0,0,verificationStatus);
+					    if(ownVoterDtls != null && ownVoterDtls.size() > 0){
+					    	ownVoterDtls.get(0).setTotalCount(Long.valueOf(allOwnVoterVerifiedDtlsList.size()));	
 					    }
 				  }
-				familyVoterDtls.get(0).setPublicRepr("family");
-				finalList.add(familyVoterDtls);   
+					ownVoterDtls.get(0).setPublicRepr("own");
+					finalList.add(ownVoterDtls);
+				}
+			}
+			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Relative")){
+				List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",minValue,maxValue,verificationStatus);
+				if(familyVoterVerifiedDtlsList != null && familyVoterVerifiedDtlsList.size() > 0){
+					for(Object[] param : familyVoterVerifiedDtlsList){
+						idNameVO = new IdNameVO();
+						idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
+						idNameVO.setName(param[1] != null ? param[1].toString() : "");
+						idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+						idNameVO.setGender(param[3] != null ? param[3].toString() : "");
+						idNameVO.setImage(param[4] != null ? param[4].toString() : "noImage");
+						idNameVO.setVoterImage(param[6] != null ? param[6].toString() : "noImage");  
+						idNameVO.setStatusId(param[7] != null ? (Long)param[7] : 0l);
+						idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
+						idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
+						idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
+						familyVoterDtls.add(idNameVO);
+					}
+					 if(minValue == 0){
+						   List<Object[]> allFamilyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",0,0,verificationStatus);
+						    if(familyVoterDtls != null && familyVoterDtls.size() > 0){
+						    	familyVoterDtls.get(0).setTotalCount(Long.valueOf(allFamilyVoterVerifiedDtlsList.size()));	
+						    }
+					  }
+					familyVoterDtls.get(0).setPublicRepr("family");
+					if(resultType != null && resultType.equalsIgnoreCase("Relative")){
+						List<IdNameVO> ownVterDtls = new ArrayList<IdNameVO>();
+						finalList.add(0, ownVterDtls);
+						finalList.add(1, familyVoterDtls);
+					}else{
+						finalList.add(familyVoterDtls);	
+					}
+				}
 			}
 			return finalList;
 		}catch(Exception e){  
