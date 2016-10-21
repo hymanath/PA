@@ -692,12 +692,20 @@ $(document).on("change","#boothsList",function(){
 				  str += '<b>M.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
 				  str += '<p>H.NO:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
 				  str += '<span>&nbsp;&nbsp;GENDER : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
-				  str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
-				  str += '</p>';
-				  str += '<div class="checkboxAlign">';
-					str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
-					str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNo+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
-				  str += '</div>';
+				 
+				  if(result[i].enrollmentYearId !=4){
+					   str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
+						str += '</p>';
+					  str += '<div class="checkboxAlign">';
+						str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
+						str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNo+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					  str += '</div>';
+				  }else{
+					 str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
+						str += '</p>';
+					  str += '<div class="checkboxAlign">';
+						str += ' <span style="color:green;font-weight:bold" title="Already Registered for 2016-2018. " alt="Already Registered for 2016-2018. ">&nbsp;&nbsp; Already Registered </span></div>';
+				  }
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
 		  str += '</div>';
@@ -776,6 +784,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
+		$("#familyDetailsDivId").show();
 		$("#submitCadreForm").show();
 		$("#populatingDtsDivImgId").hide();
 		hideShowDivs(status);
@@ -926,7 +935,6 @@ function sendOtpToMble(){
 	var jsObj={
 		mobileNumber:mobileNo
 	}
-	/*
 	$.ajax({
 		  type:'GET',
 		  url:'getSendOtpDetailsAction.action',
@@ -934,7 +942,6 @@ function sendOtpToMble(){
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    });
-	*/
 }
 function getVoterDetails(){
 	if(!fieldsValidation())
@@ -1098,6 +1105,14 @@ $(document).keypress(function(e) {
 
 function confirmOtpDetails()
 {
+	/*
+	 $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		   setTimeout(function(){
+			   $("#memChckBoxModalId").modal('hide');
+			 getSearchByMyVoterIdDetails();
+			   }, 1500);
+		*/	   
+	
 	var mobileNo=$("#hiddenMblNo").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
@@ -1170,18 +1185,18 @@ $(document).on("click",".searchChkboxClsR",function(){
 
 function renwalOtpDetails()
 {
-	
-	  $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
-		setTimeout(function(){
-			$("#memChckBoxModalId").modal('hide');
-			renMemberDetails();
-		}, 1500);
-			
 	/*
+	  $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
+		   setTimeout(function(){
+			   $("#memChckBoxModalId").modal('hide');
+			    renMemberDetails();
+			   }, 1500);
+			  
+	*/
 	var mobileNo=$("#hiddenMblNo").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
-		 mobileNumber:mobileNo,//"9640633434",
+		 mobileNumber:mobileNo,
 		 otpTxt:otp
 		
 	 }
@@ -1200,5 +1215,4 @@ function renwalOtpDetails()
 			   }, 1500);
 	   }
 });
-*/
 }
