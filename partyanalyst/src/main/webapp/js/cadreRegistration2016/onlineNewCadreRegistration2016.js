@@ -617,7 +617,11 @@ $(document).on("change","#boothsList",function(){
   }
  
   function validateRenewalMemshipDetails(){
+	  
 	  if(!renFieldsValidation()){
+		  return;
+	  }
+	  if(!validFieldValues()){
 		  return;
 	  }
 	  $("#renewalMembershipId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1130,9 +1134,11 @@ function confirmOtpDetails()
 		*/	   
 	
 	var mobileNo=$("#hiddenMblNo").val();
+	//var tdpCadreId=$("#tdpCadreId").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
-		 mobileNumber:mobileNo,
+		mobileNumber:mobileNo,
+		//tdpCadreId:tdpCadreId,
 		 otpTxt:otp
 		
 	 }
@@ -1238,4 +1244,22 @@ function renwalOtpDetails()
 	   }
 });
 }
-
+ function validFieldValues()
+ {
+	 var memberShipNumber=$("#validateRenMemshipId").val();
+	 var mobileNumber=$("#renewalMobileId").val();
+	  
+	  var numeric=/^[0-9]+$/;
+	  if(!memberShipNumber.match(numeric) && memberShipNumber != "")
+	  {
+		    $("#renErrDivId").html("Enter valid membership number.");
+            return false;
+	  }
+	 
+	 var numericExpression = /^[0-9]+$/;
+        if (!mobileNumber.match(numericExpression) && mobileNumber!= "") {
+            $("#renErrDivId").html("Enter valid mobileNo");
+            return false;
+        }
+		return true;
+ }
