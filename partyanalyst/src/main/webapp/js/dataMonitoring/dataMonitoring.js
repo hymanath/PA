@@ -104,8 +104,29 @@
 	$(document).on("click","#getRegStatusId",function(){
 		$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#loggedInFieldUsersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		getCadreRegStatusType();  
+		getCadreRegStatusType();
+		getReasons();
 	});
+	var globalSrt = '';
+	function getReasons(){
+		$.ajax({
+			type:'GET',
+			url: 'getReasonAction.action',           
+			dataType: 'json',
+			data: {}
+		}).done(function(result){     
+			
+			if(result != null && result.length > 0){
+				globalSrt = '';  
+				globalSrt+='<option value="'+0+'">Select Reason</option>';
+				for(var i in result){
+					globalSrt+='<option value="'+result[i].id+'">'+result[i].name+'</option>';  
+				}
+			}else{
+				
+			}
+		});
+	}
 	function getCadreRegStatusType(){
 		var stateId = $("#stateId").val();
 		var vendorId = $("#vendorId").val();
@@ -242,6 +263,7 @@
 				$("#cadreValidateId").html('No Data Available...');
 			}
 		});
+		
 	});
 	function buildVerifiedDtlsCount(result,tabUserId,userName,userMobile){
 		var str = '';
@@ -333,16 +355,22 @@
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
 								str+='<td>'+result[0][i].gender+'</td>';
-								str+='<td><input class="localSelectOwnCls" type="checkbox"/></td>';  
+								str+='<td><input attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" class="localSelectOwnCls" type="checkbox"/></td>';  
 							str+='</tr>'; 
 					
 					
 							str+='<tr>';
-								str+='<td>';
-									str+='<button class="btn btn-success">Approve</button>';
-									str+='<button class="btn btn-danger">Reject</button>';
+								str+='<td>';  
+									str+='<button class="btn btn-success singleApproveCls"  attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
+									str+='<button class="btn btn-danger singleRejectCls"  attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'">Reject</button>';
 								str+='</td>';
-							str+='</tr>';
+								str+='<td colspan="3">';
+									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
+										str+='<option value="0">Andhra Pradesh</option>';                
+									str+='</select>';  
+								str+='</td>';    
+							str+='</tr>';  
+							
 						}
 					}
 				str+='</tbody>';
@@ -360,17 +388,17 @@
 					str+='</thead>';
 					str+='<tbody class="b_1">';
 						for(var i in result[1]){
-						if(result[0][i].status == "Approved"){
+						if(result[1][i].status == "Approved"){
 							str+='<tr>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
-								str+='<td>'+result[0][i].name+'</td>';
-								str+='<td>'+result[0][i].mobileNo+'</td>';
-								str+='<td>'+result[0][i].gender+'</td>';
+								str+='<td>'+result[1][i].name+'</td>';
+								str+='<td>'+result[1][i].mobileNo+'</td>';
+								str+='<td>'+result[1][i].gender+'</td>';
 								str+='<td>';
 									//str+='<input type="checkbox"/>';
 								str+='</td>';
@@ -386,17 +414,17 @@
 								str+='</td>';
 							str+='</tr>';
 						}
-						if(result[0][i].status == "Rejected"){
+						if(result[1][i].status == "Rejected"){
 							str+='<tr>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
-								str+='<td>'+result[0][i].name+'</td>';
-								str+='<td>'+result[0][i].mobileNo+'</td>';
-								str+='<td>'+result[0][i].gender+'</td>';
+								str+='<td>'+result[1][i].name+'</td>';
+								str+='<td>'+result[1][i].mobileNo+'</td>';
+								str+='<td>'+result[1][i].gender+'</td>';
 								str+='<td>';
 									//str+='<input type="checkbox"/>';
 								str+='</td>';
@@ -406,23 +434,23 @@
 							str+='<tr>';
 								str+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
 								str+='<td colspan="3">';
-									str+='<input type="text" value="'+result[0][i].wish+'"></input>';
+									str+='<input type="text" value="'+result[1][i].wish+'"></input>';
 										//str+='<option></option>';
 									//str+='</select>';
 								str+='</td>';
 							str+='</tr>';
 						}
-						if(result[0][i].status == "noStatus"){
+						if(result[1][i].status == "noStatus"){
 							str+='<tr>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';  
-								str+='<td>'+result[0][i].name+'</td>';
-								str+='<td>'+result[0][i].mobileNo+'</td>';
-								str+='<td>'+result[0][i].gender+'</td>';
+								str+='<td>'+result[1][i].name+'</td>';
+								str+='<td>'+result[1][i].mobileNo+'</td>';
+								str+='<td>'+result[1][i].gender+'</td>';
 								str+='<td><input class="localSelectFamilyCls" type="checkbox"/></td>';
 							str+='</tr>'; 
 							str+='<tr>';
@@ -437,13 +465,124 @@
 				str+='</table>';
 			str+='</div>';
 		str+='</div>';
-		$("#cadreValidateId").html(str);    
+		$("#cadreValidateId").html(str);
+		
+		//$("#ownHideSelectBoxId8").trigger("chosen:updated");  
+		for(var i in result[0]){
+			if(result[0][i].status == "noStatus"){
+				 $("#ownHideSelectBoxId"+i).html(globalSrt);  
+			}
+		}
+		for(var i in result[0]){
+			if(result[0][i].status == "noStatus"){
+				refreshSelectBox("ownHideSelectBoxId"+i);  
+			}
+		}
 	}  
 	$(document).on('click','#globalSelectOwnId',function(){
-		if($(this).is(':checked'))
-			$(".localSelectOwnCls").prop( "checked", true);      
-		else
+		if($(this).is(':checked')){
+			$(".localSelectOwnCls").prop( "checked", true); 
+			$('.singleApproveCls').prop('disabled', true);
+			$('.singleRejectCls').prop('disabled', true);
+		}else{
 			$(".localSelectOwnCls").prop( "checked", false);
-	});  
+			$('.singleApproveCls').prop('disabled', false);
+			$('.singleRejectCls').prop('disabled', false);    
+		}
+		$('.localSelectOwnCls').each(function(){
+			if($(this).is(':checked')){
+				var selectReasonId = $(this).attr("attr_reason_id");
+				$("#"+selectReasonId).show();
+			}else{
+				var selectReasonId = $(this).attr("attr_reason_id");
+				$("#"+selectReasonId).hide(); 
+			}  
+		});
+	}); 
+	//single approve
+	$(document).on('click','.singleApproveCls',function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+		console.log(cadreId);
+	});
+	//single rejectedCount
+	$(document).on('click','.singleRejectCls',function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+		var selectReasonId = $(this).attr("attr_reason_id");
+		var reasonId = $("#"+selectReasonId).val();
+		console.log(cadreId);
+		console.log(reasonId);      
+	});
+	//by selecting single check box show and hide the chexk box. for own tab
+	$(document).on('click','.localSelectOwnCls',function(){
+		if($(this).is(':checked')){
+			var selectReasonId = $(this).attr("attr_reason_id");
+			$("#"+selectReasonId).show();
+		}else{
+			var selectReasonId = $(this).attr("attr_reason_id");
+			$("#"+selectReasonId).hide(); 
+		}
+		var count = $("input.localSelectOwnCls:checked").length;
+		if(count >= 1){
+			$('.singleApproveCls').prop('disabled', true);
+			$('.singleRejectCls').prop('disabled', true);
+		}else if( count == 0){
+			$('.singleApproveCls').prop('disabled', false);
+			$('.singleRejectCls').prop('disabled', false);   
+		}
+	});
 	
+	//bulk reject
+	$(document).on('click','#bulkRejectId',function(){  
+		var cadreId = '';
+		var selectReasonId = '';
+		var reasonId = '';
+		
+		var rejectList = [];
+		$('.localSelectOwnCls').each(function(){
+			if($(this).is(':checked')){
+				cadreId = $(this).attr("attr_cadre_id");
+				selectReasonId = $(this).attr("attr_reason_id");
+				reasonId = $("#"+selectReasonId).val();
+				rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+			}
+		});
+		var singleReject = {"data" : rejectList};        
+		$.ajax({
+			type:'GET',      
+			url: 'updateRejectListAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(singleReject)}  
+		}).done(function(result){
+			$("#totalCountId").html('');
+			if(result != null){  
+				console.log(true);
+			}else{
+			}
+		});
+	});
+	//bulk approve
+	$(document).on('click','#bulkApproveId',function(){  
+		var cadreId = '';
+		var rejectList = [];
+		$('.localSelectOwnCls').each(function(){
+			if($(this).is(':checked')){
+				cadreId = $(this).attr("attr_cadre_id");
+				
+				rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+			}
+		});
+		var singleReject = {"data" : rejectList};        
+		$.ajax({
+			type:'GET',      
+			url: 'updateApproveListAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(singleReject)}  
+		}).done(function(result){
+			$("#totalCountId").html('');
+			if(result != null){  
+				console.log(true);         
+			}else{
+			}
+		});
+	});
 	
