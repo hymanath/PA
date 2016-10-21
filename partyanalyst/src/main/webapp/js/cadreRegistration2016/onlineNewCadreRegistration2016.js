@@ -495,24 +495,62 @@ $(document).on("change","#boothsList",function(){
 				  str += '<p>S/o:'+result[i].relativeName+'</p>';
 				  str += '<p>V.ID:'+result[i].voterIDCardNo+'&nbsp;&nbsp;';
 				  if(result[i].memberShipNo!=null){
-				   str += '<b>M.ID:</b>'+result[i].memberShipNo+'</p>';	  
+				   str += '<span style="background-color:#B0C4DE;padding:2px;"><b>M.ID:</b>'+result[i].memberShipNo+'</span></p>';	  
 					  }
 				  str += '<p>H.NO:'+result[i].houseNo+'&nbsp;&nbsp;|';
 				  str += '<span>&nbsp;&nbsp;GENDER : '+result[i].gender+'&nbsp;&nbsp;|</span>';
 				  str += '<span>&nbsp;&nbsp;AGE :'+result[i].age+'</span>';
 				  str += '</p>';
-				  str += '<div class="checkboxAlign">';
-				  str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].actualMobiNumber+'"/>';
-				  str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					if(registrationVoterType=='familyVoterId'){
+						str += '<div class="checkboxAlign">';
+						str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].actualMobiNumber+'"/>';
+						str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					}				  
+					else if(result[i].enrollmentYearId != 4){
+					    str += '<div class="checkboxAlign">';
+					str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].actualMobiNumber+'"/>';
+					str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+					}else {
+					    str += '<div class="checkboxAlign" style="margin-right: 25px;">';
+						str += ' <span style="color:green;font-weight:bold" title="Already Registered for 2016-2018. " alt="Already Registered for 2016-2018. ">&nbsp;&nbsp; Already Registered </span></div>';
+				  }
 			  str += '</div>';
 			  str += '</div>';
 		  str += '</div>';
       str += '</li>';
     }
+	
+	if (result!= null && result.length == 1) {		
+		if(result[i].enrollmentYearId == 4){
+			if(registrationVoterType=='ownVoterId'){ 
+				$('#myVoterId').hide();
+			}
+			else{
+				$('#rlatveVoterId').show();
+			}				
+		}
+	}else{
+		if(registrationVoterType=='ownVoterId'){
+			$('#myVoterId').show();
+			$('#rlatveVoterId').hide();
+		}else{
+			$('#myVoterId').hide();
+			$('#rlatveVoterId').show();
+		}
+	}
+	
   }
   str += '</ul>';
   $("#searchVoterDetailsId").html(str);
-   $("#voterBtnsDivId").show();
+  
+  if(registrationVoterType == 'ownVoterId'){
+	$("#voterBtnsDivId").show();
+	  $("#rlatveVoterId").hide();
+  }else{
+	  $("#rlatveVoterId").show();
+	  $("#voterBtnsDivId").hide();
+  }
+  
   if(result.length > 6)
   {
 	$(".searchResults").mCustomScrollbar({
@@ -532,7 +570,7 @@ $(document).on("change","#boothsList",function(){
 	  var mobileNumber=$(this).attr("attr_mobile_no");
 	  var actualMblNumber=$(this).attr("attr_act_mbl_no");
 	  var status = "new";
-	  
+	   $('#checkVoterId').hide();
 	 if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
 		status = "renewal";
 	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
@@ -573,16 +611,18 @@ $(document).on("change","#boothsList",function(){
   });
   
    function getSearchByRelativeVoterIdDetails(){
+   	   $("#hiddenFamilyVoterId").val();
+	   eachTimeClearFields();
 	   $("#populatingDtsDivImgId").show();
 	   var flag = 0;
-   $(".searchChkboxCls").each(function(){
+       $(".searchChkboxCls").each(function(){
 	  if($(this).is(":checked")){  
 		  flag=1;
 	  }
    });
    if(flag ==  0)
 	  {
-		  $("#checkVoterId").html("please check the voterDetails");
+		  $("#checkVoterId").html("Please check atleast one voter.");
 		  return;
 	  }
 	  myVoterButtonDetails();
@@ -598,6 +638,7 @@ $(document).on("change","#boothsList",function(){
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
+	 //alert(333);
 	 $.ajax({
 		 type:'GET',
 		 url: 'getRegistrationPersonDetailsAction.action',
@@ -607,23 +648,64 @@ $(document).on("change","#boothsList",function(){
 	   $("#submitCadreForm").show();
 	   $(".newProfile").show();
 	   $("#populatingDtsDivImgId").hide();
-   hideShowDivs(status);
-   buildRelatVoterDetails(familyVoterCardNo);
-   buildCasteDetails(result);
-   buildEductnQualifns(result);
-   buildCadreFamilyDetails(result);
+	   $("#hiddenFamilyVoterId").val(familyVoterId);
+   	   hideShowDivs(status);
+       buildProfileDetails(result,status,familyVoterId)
+       buildRelatVoterDetails(familyVoterCardNo);
+       buildCasteDetails(result);
+       buildEductnQualifns(result);
+       buildCadreFamilyDetails(result);
+	   buildCadreRelativesDetails(result,"prevNomneReltvId");
+	   buildOccupationList(result,"occupationId");
 	 })
 	
   }
  
   function validateRenewalMemshipDetails(){
-	  
-	  if(!renFieldsValidation()){
-		  return;
+	  $("#errorId").html("");
+	  var membershipNo = $("#validateRenMemshipId").val();
+	  var mobileNo = $("#renewalMobileId").val();
+	  var voterId = $("#renewalVoterId").val();
+	  if(membershipNo.trim().length == 0 && mobileNo.trim().length == 0 && voterId.trim().length == 0)
+	  {
+		  $("#errorId").html("Enter Atleast One MembershipNo or MobileNo or VoterId");
+		 return;
+	  }else{
+		 $("#errorId").html(" "); 
 	  }
-	  if(!validFieldValues()){
-		  return;
+	  if(membershipNo.trim().length>0 && membershipNo.trim().length < 8)
+	  { 
+		  $("#errorId").html("Enter valid membershipNo");
+            return;  
+	  }else{
+		 $("#errorId").html(" "); 
 	  }
+	  if(membershipNo.trim().length == 8){
+		   var numericExpression1 = /^[0-9]+$/;
+        if (!membershipNo.match(numericExpression1)) {
+            $("#errorId").html("Enter Number Digits Only");
+            return;
+        }else{
+		 $("#errorId").html(" "); 
+	  }
+	  }
+	  if(mobileNo.trim().length>0 && mobileNo.trim().length < 10 && mobileNo.trim().length > 10 )
+	  {
+		  $("#errorId").html("Enter valid mobileNo");
+            return;  
+	  }else{
+		 $("#errorId").html(" "); 
+	  }
+	  if(mobileNo.trim().length == 10)
+	  {
+		  var numericExpression = /^[0-9]+$/;
+			if (!mobileNo.match(numericExpression)) {
+				$("#errorId").html("Enter Number Digits Only");
+				return;
+			}else{
+			 $("#errorId").html(" "); 
+		  }
+	  }  
 	  $("#renewalMembershipId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var membershipId=$("#validateRenMemshipId").val();
 	  var mobileNo=$("#renewalMobileId").val();
@@ -688,15 +770,31 @@ $(document).on("change","#boothsList",function(){
 			  str += '</div>';
 			  str += '<div class="media-body" id="profileDataId'+i+'">';
 				  str += '<h5 class="text-capitalize" id="candidateName'+i+'">'+result[i].name+ '</h5>';
-				  str += '<p id="relaNameId'+i+'" >S/o:'+result[i].relativeName+'</p>';
+				  
+				  if(result[i].relativeType == 'Mother'){
+					if(result[i].gender == 'F')
+						str += '<p id="relaNameId'+i+'">D/O: '+result[i].relativeName+'</p>';
+					else
+						str += '<p id="relaNameId'+i+'">S/O: '+result[i].relativeName+'</p>';
+					}
+					else if(result[i].relativeType == 'Husband'){
+						str += '<p id="relaNameId'+i+'">W/O: '+result[i].relativeName+'</p>';
+					}
+					else{
+						if(result[i].gender == 'F')
+							str += '<p id="relaNameId'+i+'">D/O: '+result[i].relativeName+'</p>';
+						else
+							str += '<p id="relaNameId'+i+'">S/O: '+result[i].relativeName+'</p>';
+					}
+					
+				  //str += '<p id="relaNameId'+i+'" >S/o:'+result[i].relativeName+'</p>';
 				  if(result[i].voterId != null && result[i].voterId > 0)
-					str += '<p  class="voterCls ownVID">V.ID:<span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger">(Self V.ID)</span>&nbsp;&nbsp;';
+					str += '<p  class="voterCls ownVID">V.ID: <span id="ownVID'+i+'">'+result[i].voterCardNo+'</span>&nbsp;&nbsp;<span class="text-danger"> (Self V.ID)</span>&nbsp;&nbsp;';
 				  else if(result[i].familyVoterId != null && result[i].familyVoterId > 0)
-					  str += '<p class="voterCls relativeVID"><span>V.ID:</span><span id="relativeVID'+i+'">'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning">(Relative V.ID)</span>&nbsp;&nbsp;';
-				  str += '<b>M.ID:</b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
-				  str += '<p>H.NO:<span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
-				  str += '<span>&nbsp;&nbsp;GENDER : <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
-				 
+					  str += '<p class="voterCls relativeVID"><span>V.ID: </span><span id="relativeVID'+i+'">'+result[i].familyVoterCardNo+'&nbsp;&nbsp;</span><span class="text-warning"> (Relative V.ID)</span>&nbsp;&nbsp;';
+				  str += '<b>M.ID: </b><span id="membershipNo'+i+'">'+result[i].memberShipNo+'</span></p>';	  
+				  str += '<p>H.NO: <span  id="profileAddress1'+i+'">'+result[i].houseNo+'</span>&nbsp;&nbsp;|';
+				  str += '<span>&nbsp;&nbsp;GENDER: <span  id="profileGender'+i+'">'+result[i].gender+'</span>&nbsp;&nbsp;|</span>';
 				  if(result[i].enrollmentYearId !=4){
 					   str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
 						str += '</p>';
@@ -736,11 +834,11 @@ function renMemberDetails(){
 	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
 	{
 		$(".selectMembership").addClass("animated fadeOut");
-		//setTimeout(function(){
+		setTimeout(function(){
 			$(".selectMembership").addClass("hide");
 			$(".updateProfileR").removeClass("hide");
 			$(".updateProfileR").addClass("animated fadeIn");
-		//},500)
+		},500)
 		setTimeout(function(){
 			$(".selectMembership").removeClass("animated fadeOut");
 			$(".profileDetailsBlockR").removeClass("animated fadeIn");
@@ -758,21 +856,29 @@ function renMemberDetails(){
 			$(".profileDetailsBlock").removeClass("animated fadeIn");
 		},1500)
 	}
-	//presently we are giving family voter id scenario registrations
-	/*if(relativeVoter != null && relativeVoter > 0){
+	  var voterId = $(this).attr("attr_voterId");
+	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
+	  var enrolYear = $(this).attr("attr_enrol_yId");
+	  var relativeVoter = $(this).attr("attr_relative_voter");
+	  var relativeType = $(this).attr("attr_relativeType");
+	  var status = "renewal";
+	  
+	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
+		status = "renewal";
+	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
+		status = "update";
+	  
+	  if(relativeVoter != null && relativeVoter > 0){
 		  var image=$(this).attr("attr_img1");
-		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter);
+		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter,relativeType);
 	  }
 	  else{
-		  getCadreDetailsForCadre(RtdpCadreId,RvoterId,RStatus);
+		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
 	  }
-	  */
-	   getCadreDetailsForCadre(RtdpCadreId,RvoterId,RStatus);
 }
-	 
-  
   
 function getCadreDetailsForCadre(tdpCadreId,voterId,status){
+	eachTimeClearFields();
 	 $("#submitCadreForm").hide();
 	 $("#populatingDtsDivImgId").show();
 	var jsObj={
@@ -781,6 +887,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
+	 //alert(111);
 	$.ajax({          
 		type : 'GET',    
 		url : 'getRegistrationPersonDetailsAction.action',  
@@ -791,7 +898,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		$("#submitCadreForm").show();
 		$("#populatingDtsDivImgId").hide();
 		hideShowDivs(status);
-		buildProfileDetails(result,status);
+		buildProfileDetails(result,status,"0");
 		buildCasteDetails(result);
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
@@ -806,8 +913,10 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 }
 
 function getCadreDetailsForRelativeCadre(type){
+	eachTimeClearFields();
 	$("#populatingDtsDivImgId").show();
 	$("#submitCadreForm").hide();
+	var familyVoterId = $("#votrIdR").val();
 	var status = $("#stusIdR").val();
 	var jsObj={
 		 voterId:0,
@@ -815,6 +924,7 @@ function getCadreDetailsForRelativeCadre(type){
 		 cadreId:$("#tdpCdrIdR").val(),
 		 status:$("#stusIdR").val()
 	 }
+	// alert(222);
 	$.ajax({          
 		type : 'GET',    
 		url : 'getRegistrationPersonDetailsAction.action',  
@@ -824,7 +934,7 @@ function getCadreDetailsForRelativeCadre(type){
 		$("#populatingDtsDivImgId").hide();
 		$("#submitCadreForm").show();
 		hideShowDivs(status);
-		buildProfileDetails(result,status);
+		buildProfileDetails(result,status,familyVoterId);
 		buildCasteDetails(result);
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
@@ -869,7 +979,7 @@ function getAllConstitencyList()
   });*/
   
   
-  function renewalSearchRelativeMembershipDetails(num,image,tdpCadreId,status,relativeVoter){
+  function renewalSearchRelativeMembershipDetails(num,image,tdpCadreId,status,relativeVoter,relativeType){
 	 var candidateName=$("#candidateName"+num+"").html();
 	  var relativeName=$("#relaNameId"+num).html();
 	  var voterId=$("#relativeVID"+num).html();
@@ -883,15 +993,32 @@ function getAllConstitencyList()
        str += '<li class="relativeProfileData" id="relativeProfileId" attr_img="'+image+'">';
 		   str += '<div class="media">';
 			  str += '<div class="media-left">';
-			   str +='<img src="https://mytdp.com/'+image+'" class="media-object cadreImage" alt=""/>';
+			   str +='<img src="https://mytdp.com/'+image+'" class="media-object cadreImage" alt="" style="width:150px;height:100px"/>';
 			     str += '</div>';
 			       str += '<div class="media-body" id="relativeProfileDataId">';
 				    str += '<h5 class="text-capitalize">'+candidateName+ '</h5>';
-				     str += '<p>S/o:'+relativeName+'</p>';
-			           str += '<p>V.ID: '+voterId+ '&nbsp;&nbsp;<span class="text-warning">(Relative V.ID)</span></p>';
-				        str += '<p>H.NO:<span>'+houseNo+'</span>&nbsp;&nbsp;|';
+					
+					/*if(relativeType == 'Mother'){
+						if(gender == 'F')
+							str += '<p>D/O: '+relativeName+'</p>';
+						else
+							str += '<p>S/O: '+relativeName+'</p>';
+					}
+					else if(relativeType == 'Husband'){
+						str += '<p>W/O: '+relativeName+'</p>';
+					}
+					else{
+						if(gender == 'F')
+							str += '<p>D/O: '+relativeName+'</p>';
+						else
+							str += '<p>S/O: '+relativeName+'</p>';
+					}*/
+					str+='<p>'+relativeName+'</p>';
+				     //str += '<p>S/O: '+relativeName+'</p>';
+			           str += '<p>V.ID: '+voterId+ '&nbsp;&nbsp;<span class="text-warning"> (Relative V.ID)</span></p>';
+				        str += '<p>H.NO: <span>'+houseNo+'</span>&nbsp;&nbsp;|';
 				      str += '<span>&nbsp;&nbsp;GENDER: <span>'+gender+'</span>&nbsp;&nbsp;|</span>';
-				    str += '<span>&nbsp;&nbsp;AGE:<span>'+age+'</span></span>';
+				    str += '<span>&nbsp;&nbsp;AGE: <span>'+age+'</span></span>';
 				  str += '</p>';
 			    str += '<div class="checkboxAlign">';
 			 str += '<input type="checkbox" id="checkbox'+num+'" class="checkbox-custom"/>';
@@ -962,6 +1089,7 @@ function getVoterDetails(){
 	{
 		return;
 	}
+	$("#searchVoterDetailsId").html('<span style="margin-left:150px;"><img src="images/search.gif"/></span>');
 	submitVoterIdDetails();
 	//var constituencyId=$("#voterConstId").val();
 	var voterId=$("#inpVoterId").val();
@@ -1016,7 +1144,7 @@ function getSearchVoterDetails()
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result!=null && result.length>0){
-	  searchCadreVoterDetails(result);
+			searchCadreVoterDetails(result);
 	   }else
 	   {
 		   $("#searchVoterDetailsId").html("NO DATA AVAILABLE.....")
@@ -1243,6 +1371,7 @@ function renwalOtpDetails()
 			   }, 1500);
 	   }
 });
+
 }
  function validFieldValues()
  {
