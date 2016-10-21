@@ -124,7 +124,7 @@
 				}
 			}else{
 				
-			}
+			}     
 		});
 	}
 	function getCadreRegStatusType(){
@@ -233,8 +233,6 @@
 			$("#tabWiseDtlsId").dataTable();    
 	}
 	$(document).on('click','.issuesBtn',function(){
-		$("#cadreValidateId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
-		$("#issuesModal").modal('show');
 		var surveyUserId = $(this).attr("attr_survey_user_id");
 		var tabUserId = $(this).attr("attr_tab_user_id");
 		var webUserId = $(this).attr("attr_web_user_id");
@@ -242,14 +240,41 @@
 		var endDate = $(this).attr("attr_end_date");
 		var userName = $(this).attr("attr_user_name");
 		var userMobile = $(this).attr("attr_user_mobile");
+		var resultType="All"
+		var minValue = 0;  
+		getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);
+	});
+	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+		var dateStr = $(".datePicker").val();
+		var dateArr = dateStr.split("-");
+		var startDate = dateArr[0].trim();
+		var endDate = dateArr[1].trim();
+		if(resultType=="All"){
+			$("#selfTblDivId").html(' ');
+			$("#relativeDivId").html(' ');
+			$("#selfTblDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			$("#relativeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   }else if(resultType=="Self"){
+			$("#selfTblDivId").html(' ');  
+			$("#selfTblDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   }else if(resultType=="Relative"){
+			$("#relativeDivId").html(' ');   
+			$("#relativeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   } 
+	   $("#issuesDataMonitroingDashboardModal").modal('show');
+		
 		var jsObj=
 		{				
 			surveyUserId : surveyUserId,
 			tabUserId : tabUserId,
 			webUserId : webUserId,
-			startDate : startDate,
-			endDate : endDate          
-		}
+			startDate : modifyDate(startDate),
+			endDate : modifyDate(endDate) ,  
+			minValue :minValue,
+            maxValue :10,
+			resultType:resultType,
+			verificationStatus:"Total"      
+		}    
 		$.ajax({
 			type:'GET',
 			url: 'getVerifiedDtlsAction.action',           
@@ -258,29 +283,24 @@
 		}).done(function(result){
 			$("#cadreValidateId").html('');
 			if(result != null){  
-				buildVerifiedDtlsCount(result,tabUserId,userName,userMobile);  
+				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);  
 			}else{
-				$("#cadreValidateId").html('No Data Available...');
+				if(resultType=="All"){
+					$("#selfTblDivId").html('No Data Available...');
+					$("#relativeDivId").html('NO DATA Available.');
+				}else if(resultType=="Self"){
+					$("#selfTblDivId").html('No Data Available...');
+				}else if(resultType=="Relative"){
+					$("#relativeDivId").html('No Data Available...');
+				}
 			}
 		});
+	}
 		
-	});
-	function buildVerifiedDtlsCount(result,tabUserId,userName,userMobile){
+	function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+		if(resultType=="All" || resultType=="Self"){  
 		var str = '';
-		var str2 = '';
-		str2+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-        str2+='<p>User ID - '+tabUserId+'</p>';
-        str2+='<p><i>'+userName+' - '+userMobile+'</i></p>';
-		$("#tabUserId").html(str2);
-		str+='<!-- Nav tabs -->';
-		str+='<ul class="nav nav-tabs" role="tablist">';
-			str+='<li role="presentation" class="active text-capital"><a href="#self" aria-controls="self" role="tab" data-toggle="tab">voter with self photo</a></li>';
-            str+='<li role="presentation" class="text-capital"><a href="#relative" aria-controls="relative" role="tab" data-toggle="tab">registered with relative voter id</a></li>';
-         str+='</ul>';
-		 
-		str+='<!-- Tab panes -->';
-		str+='<div class="tab-content">';
-		str+='<div role="tabpanel" class="tab-pane active" id="self">';  
+		var selfTotalCount=0;
 			str+='<table class="table">';
 				str+='<thead class="text-capital">';
 					str+='<th>captured photo</th>';
@@ -291,6 +311,7 @@
 					str+='<th><input id="globalSelectOwnId" type="checkbox"/></th>';
 				str+='</thead>';
 				str+='<tbody class="b_1">';
+				selfTotalCount=result[0][0].totalCount;
 					for(var i in result[0]){
 						if(result[0][i].status == "Approved"){
 							str+='<tr>';
@@ -375,113 +396,143 @@
 					}
 				str+='</tbody>';
 			str+='</table>';
-		str+='</div>';
-			str+='<div role="tabpanel" class="tab-pane" id="relative">';
-				str+='<table class="table">';
-					str+='<thead class="text-capital">';
-						str+='<th>captured photo</th>';
-						str+='<th>Voter photo</th>';
-						str+='<th>name</th>';
-						str+='<th>mobile number</th>';
-						str+='<th>gender</th>';
-						str+='<th><input id="globalSelectfamilyId" type="checkbox"/></th>';  
-					str+='</thead>';
-					str+='<tbody class="b_1">';
-						for(var i in result[1]){
+			$("#selfTblDivId").html(str);
+			for(var i in result[0]){
+				if(result[0][i].status == "noStatus"){
+					$("#ownHideSelectBoxId"+i).html(globalSrt);  
+				}
+			}
+			if(minValue == 0 && selfTotalCount > 10){
+				$("#selfPaginationId").pagination({
+					items: selfTotalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self");
+					}
+				});
+			}	
+		}
+		if(resultType=="All" || resultType=="Relative"){
+			var relativeTotalCount=0;
+			var str2 = '';
+			str2+='<table class="table">';
+				str2+='<thead class="text-capital">';
+					str2+='<th>captured photo</th>';
+					str2+='<th>Voter photo</th>';
+					str2+='<th>name</th>';
+					str2+='<th>mobile number</th>';
+					str2+='<th>gender</th>';
+					str2+='<th><input id="globalSelectFamilyId" type="checkbox"/></th>';  
+				str2+='</thead>';
+				str2+='<tbody class="b_1">';
+					for(var i in result[1]){ 
+						relativeTotalCount=result[1][0].totalCount;
 						if(result[1][i].status == "Approved"){
-							str+='<tr>';
-								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str+='</td>';
-								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str+='</td>';
-								str+='<td>'+result[1][i].name+'</td>';
-								str+='<td>'+result[1][i].mobileNo+'</td>';
-								str+='<td>'+result[1][i].gender+'</td>';
-								str+='<td>';
+							str2+='<tr>';
+								str2+='<td rowspan="2">';
+									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+								str2+='</td>';
+								str2+='<td rowspan="2">';
+									str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+								str2+='</td>';
+								str2+='<td>'+result[1][i].name+'</td>';
+								str2+='<td>'+result[1][i].mobileNo+'</td>';
+								str2+='<td>'+result[1][i].gender+'</td>';
+								str2+='<td>';
 									//str+='<input type="checkbox"/>';
-								str+='</td>';
-							str+='</tr>';  
+								str2+='</td>';
+							str2+='</tr>';  
 
 					
-							str+='<tr>';
-								str+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
-								str+='<td colspan="3">';
+							str2+='<tr>';
+								str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+								str2+='<td colspan="3">';
 									//str+='<select>';
 										//str+='<option></option>';
 									//str+='</select>';
-								str+='</td>';
-							str+='</tr>';
+								str2+='</td>';
+							str2+='</tr>';
 						}
 						if(result[1][i].status == "Rejected"){
-							str+='<tr>';
-								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str+='</td>';
-								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str+='</td>';
-								str+='<td>'+result[1][i].name+'</td>';
-								str+='<td>'+result[1][i].mobileNo+'</td>';
-								str+='<td>'+result[1][i].gender+'</td>';
-								str+='<td>';
+							str2+='<tr>';
+								str2+='<td rowspan="2">';
+									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+								str2+='</td>';
+								str2+='<td rowspan="2">';
+									str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+								str2+='</td>';
+								str2+='<td>'+result[1][i].name+'</td>';
+								str2+='<td>'+result[1][i].mobileNo+'</td>';
+								str2+='<td>'+result[1][i].gender+'</td>';
+								str2+='<td>';
 									//str+='<input type="checkbox"/>';
-								str+='</td>';
-							str+='</tr>';  
+								str2+='</td>';
+							str2+='</tr>';  
 
 					
-							str+='<tr>';
-								str+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
-								str+='<td colspan="3">';
-									str+='<input type="text" value="'+result[1][i].wish+'"></input>';
+							str2+='<tr>';
+								str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
+								str2+='<td colspan="3">';
+									str2+='<input type="text" value="'+result[1][i].wish+'"></input>';
 										//str+='<option></option>';
 									//str+='</select>';
-								str+='</td>';
-							str+='</tr>';
+								str2+='</td>';
+							str2+='</tr>';
 						}
 						if(result[1][i].status == "noStatus"){
-							str+='<tr>';
-								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str+='</td>';
-								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str+='</td>';  
-								str+='<td>'+result[1][i].name+'</td>';
-								str+='<td>'+result[1][i].mobileNo+'</td>';
-								str+='<td>'+result[1][i].gender+'</td>';
-								str+='<td><input class="localSelectFamilyCls" type="checkbox"/></td>';
-							str+='</tr>'; 
-							str+='<tr>';
-								str+='<td>';
-									str+='<button class="btn btn-success">Approve</button>';
-									str+='<button class="btn btn-danger">Reject</button>';
-								str+='</td>';
-							str+='</tr>';
+							str2+='<tr>';
+								str2+='<td rowspan="2">';
+									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+								str2+='</td>';
+								str2+='<td rowspan="2">';
+									str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+								str2+='</td>';  
+								str2+='<td>'+result[1][i].name+'</td>';
+								str2+='<td>'+result[1][i].mobileNo+'</td>';
+								str2+='<td>'+result[1][i].gender+'</td>';
+								str2+='<td><input attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
+							str2+='</tr>'; 
+							str2+='<tr>';
+								str2+='<td>';
+									str2+='<button class="btn btn-success singleApproveCls" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-danger singleRejectCls" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'">Reject</button>';
+								str2+='</td>';
+								str2+='<td colspan="3">';
+									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
+										str2+='<option value="0">Andhra Pradesh</option>';                  
+									str2+='</select>';  
+								str2+='</td>';  
+							str2+='</tr>';    
 						}
-					}  
-					str+='</tbody>';
-				str+='</table>';
-			str+='</div>';
-		str+='</div>';
-		$("#cadreValidateId").html(str);
-		
-		//$("#ownHideSelectBoxId8").trigger("chosen:updated");  
-		for(var i in result[0]){
-			if(result[0][i].status == "noStatus"){
-				 $("#ownHideSelectBoxId"+i).html(globalSrt);  
-			}
+					}
+					
+					str2+='</tbody>';
+					str2+='</table>';
+					$("#relativeDivId").html(str2);
+					for(var i in result[1]){
+						if(result[1][i].status == "noStatus"){    
+							$("#familyHideSelectBoxId"+i).html(globalSrt);        
+						}
+					}
+					if(minValue == 0 && relativeTotalCount > 10){
+						$("#relativePaginationId").pagination({
+						items: relativeTotalCount,
+						itemsOnPage: 10,
+						cssStyle: 'light-theme',
+						onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative");
+					}
+				});
+			}	
 		}
-		for(var i in result[0]){
-			if(result[0][i].status == "noStatus"){
-				refreshSelectBox("ownHideSelectBoxId"+i);  
-			}
-		}
-	}  
+	}      		
+	
 	$(document).on('click','#globalSelectOwnId',function(){
 		if($(this).is(':checked')){
-			$(".localSelectOwnCls").prop( "checked", true); 
+			$(".localSelectOwnCls").prop( "checked", true);
 			$('.singleApproveCls').prop('disabled', true);
 			$('.singleRejectCls').prop('disabled', true);
 		}else{
@@ -499,19 +550,27 @@
 			}  
 		});
 	}); 
-	//single approve
-	$(document).on('click','.singleApproveCls',function(){
-		var cadreId = $(this).attr("attr_cadre_id");
-		console.log(cadreId);
+	$(document).on('click','#globalSelectFamilyId',function(){
+		if($(this).is(':checked')){
+			$(".localSelectFamilyCls").prop( "checked", true);  
+			$('.singleApproveCls').prop('disabled', true);
+			$('.singleRejectCls').prop('disabled', true);
+		}else{
+			$(".localSelectFamilyCls").prop( "checked", false);
+			$('.singleApproveCls').prop('disabled', false);
+			$('.singleRejectCls').prop('disabled', false);    
+		}
+		$('.localSelectFamilyCls').each(function(){
+			if($(this).is(':checked')){
+				var selectReasonId = $(this).attr("attr_reason_id");
+				$("#"+selectReasonId).show();
+			}else{    
+				var selectReasonId = $(this).attr("attr_reason_id");
+				$("#"+selectReasonId).hide(); 
+			}  
+		});
 	});
-	//single rejectedCount
-	$(document).on('click','.singleRejectCls',function(){
-		var cadreId = $(this).attr("attr_cadre_id");
-		var selectReasonId = $(this).attr("attr_reason_id");
-		var reasonId = $("#"+selectReasonId).val();
-		console.log(cadreId);
-		console.log(reasonId);      
-	});
+	
 	//by selecting single check box show and hide the chexk box. for own tab
 	$(document).on('click','.localSelectOwnCls',function(){
 		if($(this).is(':checked')){
@@ -530,7 +589,45 @@
 			$('.singleRejectCls').prop('disabled', false);   
 		}
 	});
-	
+	//by selecting single check box show and hide the chexk box. for family tab
+	$(document).on('click','.localSelectFamilyCls',function(){
+		
+		if($(this).is(':checked')){   
+			var selectReasonId = $(this).attr("attr_reason_id");
+			$("#"+selectReasonId).show();
+		}else{
+			var selectReasonId = $(this).attr("attr_reason_id");
+			$("#"+selectReasonId).hide(); 
+		}
+		var count = $("input.localSelectFamilyCls:checked").length;
+		if(count >= 1){
+			$('.singleApproveCls').prop('disabled', true);
+			$('.singleRejectCls').prop('disabled', true);
+		}else if( count == 0){
+			$('.singleApproveCls').prop('disabled', false);
+			$('.singleRejectCls').prop('disabled', false);   
+		}
+	});
+	//single rejected 
+	$(document).on('click','.singleRejectCls',function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+		var selectReasonId = $(this).attr("attr_reason_id");
+		var reasonId = $("#"+selectReasonId).val();
+		var rejectList = [];
+		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 }); 
+		var singleReject = {"data" : rejectList};
+		$.ajax({
+			type:'GET',      
+			url: 'updateRejectListAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(singleReject)}  
+		}).done(function(result){
+			if(result != null){  
+				console.log(true);
+			}else{
+			}
+		});		
+	});
 	//bulk reject
 	$(document).on('click','#bulkRejectId',function(){  
 		var cadreId = '';
@@ -538,14 +635,26 @@
 		var reasonId = '';
 		
 		var rejectList = [];
-		$('.localSelectOwnCls').each(function(){
-			if($(this).is(':checked')){
-				cadreId = $(this).attr("attr_cadre_id");
-				selectReasonId = $(this).attr("attr_reason_id");
-				reasonId = $("#"+selectReasonId).val();
-				rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
-			}
-		});
+		if($("#self").hasClass('active')){
+			$('.localSelectOwnCls').each(function(){
+				if($(this).is(':checked')){
+					cadreId = $(this).attr("attr_cadre_id");
+					selectReasonId = $(this).attr("attr_reason_id");
+					reasonId = $("#"+selectReasonId).val();
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+				}
+			});
+		}else{
+			$('.localSelectFamilyCls').each(function(){
+				if($(this).is(':checked')){
+					cadreId = $(this).attr("attr_cadre_id");
+					selectReasonId = $(this).attr("attr_reason_id");
+					reasonId = $("#"+selectReasonId).val();
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+				}
+			});
+		}
+		
 		var singleReject = {"data" : rejectList};        
 		$.ajax({
 			type:'GET',      
@@ -553,24 +662,50 @@
 			dataType: 'json',
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
-			$("#totalCountId").html('');
 			if(result != null){  
 				console.log(true);
 			}else{
 			}
 		});
 	});
+	//single approve
+	$(document).on('click','.singleApproveCls',function(){
+		var cadreId = $(this).attr("attr_cadre_id");
+		var rejectList = [];
+		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
+		var singleReject = {"data" : rejectList};
+		$.ajax({
+			type:'GET',      
+			url: 'updateApproveListAction.action',      
+			dataType: 'json',
+			data: {task:JSON.stringify(singleReject)}  
+		}).done(function(result){
+			if(result != null){  
+				console.log(true);         
+			}else{
+			}
+		});  
+	});
 	//bulk approve
-	$(document).on('click','#bulkApproveId',function(){  
+	$(document).on('click','#bulkApproveId',function(){    
 		var cadreId = '';
 		var rejectList = [];
-		$('.localSelectOwnCls').each(function(){
-			if($(this).is(':checked')){
-				cadreId = $(this).attr("attr_cadre_id");
-				
-				rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
-			}
-		});
+		if($("#self").hasClass('active')){
+			$('.localSelectOwnCls').each(function(){  
+				if($(this).is(':checked')){
+					cadreId = $(this).attr("attr_cadre_id");
+					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+				}
+			});
+		}else{
+			$('.localSelectFamilyCls').each(function(){  
+				if($(this).is(':checked')){
+					cadreId = $(this).attr("attr_cadre_id");
+					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+				}
+			});
+		}
+		
 		var singleReject = {"data" : rejectList};        
 		$.ajax({
 			type:'GET',      
@@ -578,7 +713,6 @@
 			dataType: 'json',
 			data: {task:JSON.stringify(singleReject)}  
 		}).done(function(result){
-			$("#totalCountId").html('');
 			if(result != null){  
 				console.log(true);         
 			}else{

@@ -10,9 +10,10 @@
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>     
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/> 
+<link rel="stylesheet" type="text/css" href="newCoreDashBoard/css/simplePagination.css"/>             
 </head> 
-<body>
+<body>  
 <div class="container">  
 	<div class="row">     
     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -71,22 +72,42 @@
         </div> 
     </div>
 </div>
-<div class="modal fade" id="issuesModal" tabindex="-1" role="dialog">
+
+<div class="modal fade" id="issuesDataMonitroingDashboardModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:80%;" role="document">
-    <div class="modal-content">  
+    <div class="modal-content">
       <div class="modal-header">
-			<div id="tabUserId"></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p id="userId">User ID - 12345</p>
+        <p id="userDescriptionId"><i>Rahul - 9984845464</i></p>
       </div>
-      <div class="modal-body">
-			<div id="cadreValidateId"></div>      
-      </div>
-      <div class="modal-footer">
+      <div class="modal-body">  
+        <div>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active text-capital"><a href="#self" aria-controls="self" role="tab" data-toggle="tab">voter with self photo</a></li>
+            <li role="presentation" class="text-capital"><a href="#relative" aria-controls="relative" role="tab" data-toggle="tab">registered with relative voter id</a></li>
+         </ul>
+          <!-- Tab panes -->
+          <div class="tab-content">      
+            <div role="tabpanel" class="tab-pane active" id="self">
+			  <div id="selfTblDivId"></div>
+			  <div id="selfPaginationId"></div>    
+            </div>
+	        <div role="tabpanel" class="tab-pane" id="relative">
+			  <div id="relativeDivId"></div>
+			  <div id="relativePaginationId"></div>
+            </div>
+          </div>
+        </div>
+      </div>    
+      <div class="modal-footer">  
       	<p><small>For Bulk Update</small></p>
         <button class="btn btn-success" id="bulkApproveId">Approve</button>
         <button class="btn btn-danger" id="bulkRejectId">Reject</button>
-      </div>      
+      </div>
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->  
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -95,6 +116,7 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/dataMonitoring/dataMonitoring.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>  
+<script type="text/javascript" src="newCoreDashBoard/js/simplePagination3.js" ></script>
 <script type="text/javascript">
 	$(".datePicker").daterangepicker();
 	$('.select').chosen({width:'100%'});    
