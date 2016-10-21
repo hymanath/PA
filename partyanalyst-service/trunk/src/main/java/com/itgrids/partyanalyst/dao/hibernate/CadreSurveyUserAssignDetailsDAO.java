@@ -254,17 +254,17 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			queryStr.append(" from ");
 			queryStr.append(" CadreSurveyUserAssignDetails model," +
 					" Constituency constituency ");
-			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" left join constituency.district district  where model.levelValue = constituency.constituencyId ");
-			}
-			else {
+			//if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+				queryStr.append(" left join constituency.district district ");// where model.levelValue = constituency.constituencyId ");
+			//}
+			//else {
 				queryStr.append(" where model.levelValue = constituency.constituencyId ");
-			}
+			//}
 			queryStr.append(" and model.levelId = 4 ");
 			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
 			{
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append(" and district.districtId = :parentLocationTypeId ");
+					queryStr.append(" and constituency.district.districtId = :parentLocationTypeId ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append("  and constituency.constituencyId = :childLocationTypeId ");
 					}
@@ -286,6 +286,8 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			}
 			
 			query = getSession().createQuery(queryStr.toString());
+			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT) && inputVO.getParentLocationTypeId().longValue()>0L)
+				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
 			if(!inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
 			
