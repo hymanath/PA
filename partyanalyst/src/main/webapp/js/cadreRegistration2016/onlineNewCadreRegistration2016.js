@@ -561,6 +561,20 @@ $(document).on("change","#boothsList",function(){
   }
  
   $(document).on("click",".searchChkboxCls",function(){
+	  
+	$("#submitCadreForm").hide();
+	divsEmpty();
+	/*var cadreId=$(this).attr("attr_tdpCadre_id");
+	if(cadreId != 'null')
+	{
+		setTimeout(function(){
+			     sendOtpToMble();
+		}, 1500);
+	}else
+	{
+		return;
+	}*/
+	
 	  $("#searchResultsBackBtn").parent().removeClass("hide");
 	  $("#searchResultsBackBtnR").parent().addClass("hide");
 	  var voterId = $(this).attr("attr_voterId");
@@ -595,9 +609,11 @@ $(document).on("change","#boothsList",function(){
 	}
 	
 	if(mobileNumber != 'null'){
-		fieldsValusEmpty();
-		 $("#memChckBoxModalId").modal('show');
+		 fieldsValusEmpty();
+		 if(registrationVoterType == 'ownVoterId')
+			$("#memChckBoxModalId").modal('show');
 		 $("#checkMblNoId").val(mobileNumber);
+		 
 	}
 	else{
 		$("#memChckBoxModalId").modal('hide');
@@ -649,8 +665,9 @@ $(document).on("change","#boothsList",function(){
 	   $(".newProfile").show();
 	   $("#populatingDtsDivImgId").hide();
 	   $("#hiddenFamilyVoterId").val(familyVoterId);
+	   $(".populatingDtsDivImgId").removeClass('hide');
    	   hideShowDivs(status);
-       buildProfileDetails(result,status,familyVoterId)
+       buildProfileDetails(result,status,familyVoterId);
        buildRelatVoterDetails(familyVoterCardNo);
        buildCasteDetails(result);
        buildEductnQualifns(result);
@@ -824,7 +841,8 @@ $(document).on("change","#boothsList",function(){
   }
   }
   
-function renMemberDetails(){
+//function renMemberDetails(){
+	$(document).on("click",".searchChkboxClsR",function(){
 	/*populating data*/
 	$("#searchResultsBackBtn").parent().addClass("hide");
 	$("#searchResultsBackBtnR").parent().removeClass("hide");
@@ -834,7 +852,7 @@ function renMemberDetails(){
 	if($("#profileId"+profileId).find(".voterCls").hasClass("relativeVID"))
 	{
 		$(".selectMembership").addClass("animated fadeOut");
-		setTimeout(function(){
+		setTimeout(function(){			
 			$(".selectMembership").addClass("hide");
 			$(".updateProfileR").removeClass("hide");
 			$(".updateProfileR").addClass("animated fadeIn");
@@ -848,7 +866,7 @@ function renMemberDetails(){
 		$(".selectMembership").addClass("animated fadeOut");
 		setTimeout(function(){
 			$(".selectMembership,.renewal,.subBlockR,.newProfile").addClass("hide");
-			$(".profileDetailsBlock,.subBlock,.renewalN").removeClass("hide");
+			$(".profileDetailsBlock,.subBlock,").removeClass("hide");
 			$(".profileDetailsBlock").addClass("animated fadeIn");
 		},500)
 		setTimeout(function(){
@@ -862,7 +880,7 @@ function renMemberDetails(){
 	  var relativeVoter = $(this).attr("attr_relative_voter");
 	  var relativeType = $(this).attr("attr_relativeType");
 	  var status = "renewal";
-	  
+	  $(".renewalN").addClass("hide");
 	  if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 3)
 		status = "renewal";
 	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
@@ -873,13 +891,15 @@ function renMemberDetails(){
 		renewalSearchRelativeMembershipDetails($(this).attr("attr_number"),image,tdpCadreId,status,relativeVoter,relativeType);
 	  }
 	  else{
+		  
 		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
 	  }
-}
+});
   
 function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 	eachTimeClearFields();
 	 $("#submitCadreForm").hide();
+	
 	 $("#populatingDtsDivImgId").show();
 	var jsObj={
 		 voterId:voterId,
@@ -909,6 +929,8 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 			buildCadreRelativesDetails(result,"prevNomneReltvId");
 			buildCadreRelativesDetails(result,"relativeId");
 		}
+		
+		 $(".renewal").removeClass('hide');
 	});
 }
 
@@ -924,7 +946,7 @@ function getCadreDetailsForRelativeCadre(type){
 		 cadreId:$("#tdpCdrIdR").val(),
 		 status:$("#stusIdR").val()
 	 }
-	// alert(222);
+	 //alert(222);
 	$.ajax({          
 		type : 'GET',    
 		url : 'getRegistrationPersonDetailsAction.action',  
@@ -1034,7 +1056,7 @@ str += '</ul>';
  $("#stusIdR").val(status);
  $("#votrIdR").val(relativeVoter);
 }
-  
+  /*
 $(document).on("click",".searchChkboxCls",function(){
 	$("#submitCadreForm").hide();
 	divsEmpty();
@@ -1050,7 +1072,7 @@ $(document).on("click",".searchChkboxCls",function(){
 	}
 	
 });
-
+*/
 $(document).on("click",".registerNew",function(){
 	$(".renewalN").hide();
 });
@@ -1306,6 +1328,7 @@ function renFieldsValidation()
 var RtdpCadreId=0;
 var RvoterId=0;
 var RStatus='update';
+/*
 $(document).on("click",".searchChkboxClsR",function(){
 	//fieldsValusEmpty();
 	$("#memChckBoxModalId").modal('show');
@@ -1331,10 +1354,10 @@ $(document).on("click",".searchChkboxClsR",function(){
 	  $("#checkMblNoId").val(actualMobileNumber);
 	  $("#hiddenMblNo").val(mobileNumber);	  
 	
-		setTimeout(function(){
+		/*setTimeout(function(){
 			     sendOtpToMble();
-		}, 1500);
-});
+		}, 1500);*/
+//});
 
 function renwalOtpDetails()
 {
@@ -1345,8 +1368,9 @@ function renwalOtpDetails()
 			   $("#memChckBoxModalId").modal('hide');
 			    renMemberDetails();
 			   }, 1500);
-			  
-	*/
+		*/	  
+	
+	
 	var mobileNo=$("#hiddenMblNo").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
