@@ -13,19 +13,20 @@ $(document).on("change", "#stateId", function(e){
 			clearVendors();
 			clearDistricts();
 			clearConstituencies('constituencyId');
-			
 			var stateId = $("#stateId option:selected").val();
 			var jsObj = { stateId : stateId };
 			
 			if(stateId == 0){
 				return;
 			}
+			 $("#vendorDivIdImg").show();
 			$.ajax({
 				type : 'GET',
 				url : 'getVendorsAction.action',
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}  
 			}).done(function(result){
+				$("#vendorDivIdImg").hide();
 				if(result!=null && result.length>0){
                   for(var i in result){
                      $('#vendorId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
@@ -43,14 +44,15 @@ $(document).on("change", "#stateId", function(e){
 			var jsObj = { 
 			              stateId : stateId,
 			              vendorId : vendorId 
-						};
-			
+						};        
+			$("#districtDivIdImg").show();
 			$.ajax({
 				type : 'GET',
 				url : 'getVendorDistrictsAction.action',
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}  
 			}).done(function(result){
+			   	$("#districtDivIdImg").hide();
 				if(result!=null && result.length>0){
                   for(var i in result){
                      $('#districtId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
@@ -60,7 +62,7 @@ $(document).on("change", "#stateId", function(e){
 			});
 		}
 		function getVendorConstituencies(selectBoxId){
-			clearConstituencies(selectBoxId);
+			clearConstituencies(selectBoxId); 
 			
 			var vendorId = $("#vendorId option:selected").val();
 			var districtId  = $("#districtId option:selected").val();
@@ -68,14 +70,15 @@ $(document).on("change", "#stateId", function(e){
 			var jsObj = { 
 			              vendorId : vendorId ,
 						  districtId : districtId
-						};
-			
+						}; 
+           $("#constituencyDivIdImg").show();						
 			$.ajax({
 				type : 'GET',
 				url : 'getVendorConstituenciesAction.action',
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}  
 			}).done(function(result){
+				 $("#constituencyDivIdImg").hide();
 				if(result!=null && result.length>0){
                   for(var i in result){
 					  if(result[i].id ==constituencieId)
@@ -381,12 +384,34 @@ $(document).on("click",".manageIssues",function(){
       saveFieldIssue();
   });
   function saveFieldIssue(){
-	  $("#savingDivIdImg").show();
 	  var constituencyId =$("#constituencyId").val();  
 	  var issueTypeId =$("#issueTypeId option:selected").val();
       var description =$("#descriptionId").val();
       var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
 	  var tabUserInfoId= $("#submitId").attr("attr_tab_user_info_id");
+	   if(issueTypeId == 0)
+	   {
+		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Issue Type</span>");
+		   return;
+	   }else{
+		    $("#submitButId").html("");
+	   }
+	   if(description.trim() == '' && description.length == 0)
+	   {
+		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Enter description</span>");
+		   return;
+	   }else{
+		    $("#submitButId").html("");
+	   }
+	   var constituency = $("#issueConstituencyId").val();
+	   if(constituency == 0)       
+	   {
+		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Constituency</span>");
+		   return;
+	   }else{
+		    $("#submitButId").html("");
+	   }
+	  $("#savingDivIdImg").show();
 	 var jsObj=
      {				
 		issueTypeId :issueTypeId,
@@ -450,7 +475,7 @@ $(document).on("click",".manageIssues",function(){
 	   
 		if(description.trim() == '' && description.length == 0)
 		{
-			 $("#updateStatusId"+value).html("<span style='color: red;font-size:12px;'> Enter description</span>");
+			 $("#updateStatusId"+value).html("<span style='color: red;font-size:13px;'> Enter description</span>");
 			 return;
 		}else
 		{
@@ -458,7 +483,7 @@ $(document).on("click",".manageIssues",function(){
 		}
 		if(newStatusId == 0)
 		{
-			$("#updateStatusId"+value).html("<span style='color: red;font-size:12px;'> Select IssueStatus</span>");
+			$("#updateStatusId"+value).html("<span style='color: red;font-size:13px;'> Select IssueStatus</span>");
 			return;
 		}else
 		{

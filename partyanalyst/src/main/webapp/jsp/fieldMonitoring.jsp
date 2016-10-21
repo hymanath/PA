@@ -21,6 +21,7 @@
             	<div class="row">
                 	<div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select State</label><span style="color:red"> *</span>
+						<span id="stateDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                         <select class="select" id="stateId">
 						    <option value="0">Select State</option>
                         	<option value="1">Andhra Pradesh</option>
@@ -29,18 +30,21 @@
                     </div>
                     <div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select Vendor</label><span style="color:red"> *</span>
+						<span id="vendorDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                         <select class="select" id="vendorId">
                         	<option value="0">Select Vendor</option>
                         </select>
                     </div>
                     <div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select District</label>
+						<span id="districtDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                         <select class="select" id="districtId">
                         	<option value="0">Select District</option>
                         </select>
                     </div>
                     <div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select Constituency</label>
+						<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                         <select class="select" id="constituencyId">
                         	<option value="0">Select Constituency</option>
                         </select>
@@ -122,6 +126,7 @@
 		</div>
        
         <div class="block m_top20" id="issueTypeDivId" style="display:none;">
+		  <div id="submitButId"></div>
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label>
@@ -141,7 +146,6 @@
 				<div class="col-md-4 col-xs-12 col-sm-4">
 					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
 					<span id="savingDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-					<div id="submitButId"></div>
 				</div>
 				
             </div>

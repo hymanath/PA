@@ -155,61 +155,97 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p>User ID - 12345</p>
-        <p><i>Rahul - 9984845464</i></p>
+        <p>User ID - <span class="modalCadreUserName"></span></p>
+        <p><i><span class="tabUserMblDetailsId"></span></i></p>
       </div>
       <div class="modal-body">
-        <div class="block bg_F4 pad_20">
-        	<div class="row">
-            	<div class="col-md-3 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">total issues - 4</h4>
-                </div>
-                <div class="col-md-3 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">open issues - 4</h4>
-                </div>
-                <div class="col-md-3 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">closed issues - 4</h4>
-                </div>
-                <div class="col-md-3 col-xs-12 col-sm-3">
-                	<h4 class="text-capital text-center">fixed issues - 4</h4>
-                </div>
-            </div>
-        </div>
-        <div class="block m_top20">
+        
+		<div class="row">
+			<div class="col-md-10 col-xs-12 col-sm-10">
+				<div class="block bg_F4 pad_20">
+					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">total issues - <span class="issueTypeCls text-info" attr_val="0" id="totalIssuesId" style="cursor:pointer;"></span></h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">open issues - <span class="issueTypeCls text-info" attr_val="1" id="openIssuesId" style="cursor:pointer;"></span></h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">fixed issues - <span class="issueTypeCls text-info" attr_val="2" id="fixedIssuesId" style="cursor:pointer;"></span></h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<h4 class="text-capital text-center">closed issues - <span class="issueTypeCls text-info" attr_val="3" id="closedIssuesId" style="cursor:pointer;"></span></h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 col-xs-12 col-sm-2">
+				<button class="btn btn-success text-capitalize btn-lg btn-block m_top10" style="margin-top: 0px ! important; padding-top: 17px; padding-bottom: 17px;border-radius:3px" id="addNewIssueId">Add New Issue</button>
+			</div>
+			
+		</div>
+       
+        <div class="block m_top20" id="issueTypeDivId" style="display:none;">
+		<div id="submitButId"></div>
         	<div class="row">
             	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label>
-                    <select class="select">
-                    	<option>Manpower issue</option>
+                    <select class="select" id="issueTypeId">
                     </select>
                 </div>
                 <div class="col-md-8 col-xs-12 col-sm-8">
                 	<label>Issue Description</label>
-                    <input type="text" class="form-control"/>
+                    <input type="text" class="form-control" id="descriptionId"/>
                 </div>
+				<div class="col-md-4 col-xs-12 col-sm-4">
+                	<label>Select Constituency</label>
+                    <select class="select" id="issueConstituencyId">
+                    	<option value="0">Select Constituency</option>
+                    </select>
+                </div>
+				<div class="col-md-4 col-xs-12 col-sm-4">
+					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
+					<span id="savingDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+				</div>
+				
             </div>
         </div>
-        <ul class="issuesUl">
-        	<li>
-            	<h4 class="text-capital">
-                	technical issue
-                    <button class="btn btn-success editBtn pull-right btn-sm">edit</button>
-                </h4>
-                <p>Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc Issue Desc </p>
-                <p class="m_top10">
-                	<span class="text-danger"><i>Issue Status : open</i></span>
-                    <span class="pull-right text-muted"><i>Informed Time: 3:49 PM</i></span>
-                </p>
-            </li>
-        </ul>
+        <div id="issueDivId">
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success">Submit</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+   <div class="modal fade" id="issueTrackingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width:80%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>User ID - <span class="modalCadreUserName"></span></p>
+        <p><i><span class="tabUserMblDetailsId"></span></i></p>
+      </div>
+      <div class="modal-body">
+		<div id="issueTrackingImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+        <div id="issueTrackingBodyId"></div>
+      </div>
+	
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<input type="hidden" id="hiddenCadreSurveyUserId"></input>
+<input type="hidden" id="hiddenTabUserInfoId"></input>
+<input type="hidden" id="hiddenVendorId"></input>
+<input type="hidden" id="hiddenConstituencyId"></input>
+<input type="hidden" id="hiddenIssueStatusId"></input>
+
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -217,6 +253,7 @@
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/FieldMonitoring/fieldMonitoringDashboard.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).on("click",".issuesBtn",function(){
 	$("#issuesModal").modal('show');
@@ -297,6 +334,7 @@ $('#fixedIssues').highcharts({
 		]
 	}]
 });*/
+getCadreRegIssueType();
 </script>
 </body>
 </html>
