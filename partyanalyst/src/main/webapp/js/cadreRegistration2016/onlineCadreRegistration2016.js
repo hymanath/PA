@@ -84,6 +84,7 @@ function getSearchByMyVoterIdDetails(){
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
+	 //alert(444);
 		$.ajax({          
 			type : 'GET',    
 			url : 'getRegistrationPersonDetailsAction.action',  
@@ -133,7 +134,7 @@ function getSearchByMyVoterIdDetails(){
 				str+='</form>';
 				$('#existingSavingStatusDivId').html(str);
 				$('.ExistingPaymentCls').removeClass('hide');
-				
+				$("#populatingDtsDivImgId").addClass('hide');
 			}
 			else{
 				$("#submitCadreForm").show();
@@ -155,7 +156,7 @@ function getSearchByMyVoterIdDetails(){
 function hideShowDivs(status){
 if(status == "new"){
 	$("#cadreMembrSpId").hide();
-	$("#teluguNameDivId").show();
+	//$("#teluguNameDivId").show();
 	$("#familyDetailsDivId").show();
 	$("#voterDvId").show();
 	$("#emailDivId").show();
@@ -167,7 +168,7 @@ if(status == "new"){
 }else if(status == "update" || status == "renewal"){
 	$("#cadreMembrSpId").show();
 	$("#emailDivId").show();
-	$("#teluguNameDivId").hide();
+	//$("#teluguNameDivId").hide();
 	$("#familyDetailsDivId").hide();
 	$("#cadreUpdateVotrDivId").show();
 	$("#prevNomineeId").show();
@@ -176,8 +177,11 @@ if(status == "new"){
 }
 }
 function buildProfileDetails(result,status,familyVoterId){
+
 	$("#cadreUpdateVotrDivId").hide();
+	$(".populatingDtsDivImgId").addClass('hide');
 var str = "";
+
 		 if(result.lastName != null){                    
 			$("#nameId1").val(result.lastName);
 		 }
@@ -219,30 +223,33 @@ var str = "";
 			$("#emailId").val(result.email);
 		 }
 		
+		
 		 if(status == "new" ){
 		 if(familyVoterId != null && familyVoterId != 0){
 			 $("#selfVotCls").removeClass("text-success");
 		     $("#relVotCls").addClass("text-success");
 			 $("#selfVotCls").addClass("text-muted");
 			 $("#voterIdText").val(result.voterCardNumber);
+			
 		}else {
-		     $("#relVotCls").removeClass("text-success");
+		     $("#relVotCls").removeClass("text-success");		    
 			 $("#relVotCls").addClass("text-muted");
 			 $("#selfVotCls").addClass("text-success");
 			 $("#voterIdText").val(result.voterCardNo);
 		 }
 		 }else{
-		  if(result.voterCardNo != null && result.voterCardNo != ""){
-		  	 $("#relVotCls").removeClass("text-success");
-			 $("#relVotCls").addClass("text-muted");
-			 $("#selfVotCls").addClass("text-success");
-			$("#voterIdText").val(result.voterCardNo);
-		  }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
-		  	 $("#selfVotCls").removeClass("text-success");
-		     $("#relVotCls").addClass("text-success");
-			 $("#selfVotCls").addClass("text-muted");
-			 $("#voterIdText").val(result.voterCardNumber);
-		  }
+			 $(".profileDetailsBlock").removeClass('hide');
+			  if(result.voterCardNo != null && result.voterCardNo != ""){
+				 $("#relVotCls").removeClass("text-success");
+				 $("#relVotCls").addClass("text-muted");
+				 $("#selfVotCls").addClass("text-success");
+				$("#voterIdText").val(result.voterCardNo);
+			  }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
+				 $("#selfVotCls").removeClass("text-success");
+				 $("#relVotCls").addClass("text-success");
+				 $("#selfVotCls").addClass("text-muted");
+				 $("#voterIdText").val(result.voterCardNumber);
+			  }
 		 }
 		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
 			$("#aadharId").val(result.candidateAadherNo);
@@ -296,7 +303,10 @@ var str = "";
 			getDistrictsForStates(1,2);
 		}
 
- 
+		if(registrationVoterType=='familyVoterId'){
+			$("#voterDvId").show();
+			$("#familyDetailsDivId").show();
+}
  		
 }
 function buildCasteDetails(result) {
@@ -436,6 +446,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				}
 			});
 		}
+		$('#saveBtnId').hide();
 	var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
@@ -520,6 +531,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		}
 		else if(result.search('FAILURE') != -1)
 		{
+			$('#saveBtnId').show();
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<h3 class="text-align">Error occured while cadre registration.</h3>';
