@@ -746,13 +746,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				 
 				 if(obj[6]!=null)
 				 {
-					 address.setVillageId((Long)obj[6]);
-					 address.setMandalId(obj[4]!=null?(Long)obj[4]:null);
+					 address.setVillageId(Long.valueOf("1"+commonMethodsUtilService.getStringValueForObject(obj[6])));
+					 address.setMandalId(obj[4]!=null?Long.valueOf("1"+commonMethodsUtilService.getStringValueForObject(obj[4])):null);
 				 }
 				 else
 				 {
-					 address.setMandalId(obj[5]!=null?(Long)obj[5]:null);
-					 address.setVillageId(obj[7]!=null?(Long)obj[7]:null);
+					 address.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getStringValueForObject(obj[4])));
+					 address.setVillageId(obj[7]!=null?Long.valueOf("2"+commonMethodsUtilService.getStringValueForObject(obj[7])):null);
 				 }
 				// address.setBoothId(obj[8] != null ? (Long)obj[8]:null);
 				
