@@ -135,7 +135,7 @@
    function buildDataMonitoringHighChart(result){
 	   
 		$('#dataMonitoringOverviewHighChartDivId').highcharts({
-			colors: ['#4C7BA7','#9F526F','#DB4C21','#495763'],
+			colors: ['#4C7BA7','#9F526F','#DB4C21','#808000'],
 			chart: {
 				type: 'column'
 			},
@@ -222,7 +222,7 @@
    
    function buildWebTabAndOnlineRslt(result){
 	    $('#webTabOnlineHighchartDivId').highcharts({
-		colors: ['#5E3243','#DB4C21','#495763'],
+		colors: ['#5E3243','#DB4C21','#808000'],
         chart: {
             type: 'column'
         },
@@ -388,7 +388,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 										  }else{
 											str+='<td> - </td>';  
 										  }
-										 str+='<td><button attr_survery_user_id='+result[i].surveryUserId+'  attr_web_user_id="'+0+'"  attr_user_name="'+tabUserList[j].tabUserName+'" attr_user_mobile="'+tabUserList[j].mobileNo+'" attr_tab_user_id='+tabUserList[j].tabUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
+										 str+='<td><button attr_vefification_type="'+dataVerificationStatus+'" attr_survery_user_id='+result[i].surveryUserId+'  attr_web_user_id="'+0+'"  attr_user_name="'+tabUserList[j].tabUserName+'" attr_user_mobile="'+tabUserList[j].mobileNo+'" attr_tab_user_id='+tabUserList[j].tabUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
 										  str+='</tr>';	
 										}
 								}
@@ -426,7 +426,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 								  }else{
 									str+='<td> - </td>';  
 								  }
-								  str+='<td><button attr_survery_user_id="'+0+'" attr_tab_user_id="'+0+'"  attr_web_user_id='+result[j].surveryUserId+' attr_user_name="'+result[j].surveryUserName+'" attr_user_mobile="'+result[j].mobileNo+'" class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
+								  str+='<td><button attr_vefification_type="'+dataVerificationStatus+'" attr_survery_user_id="'+0+'" attr_tab_user_id="'+0+'"  attr_web_user_id='+result[j].surveryUserId+' attr_user_name="'+result[j].surveryUserName+'" attr_user_mobile="'+result[j].mobileNo+'" class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
 								  str+='</tr>';	
 								 }
 						}
@@ -445,10 +445,26 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 	   var webUserId = $(this).attr("attr_web_user_id");
 	   var userName = $(this).attr("attr_user_name");
 	   var mobileNo = $(this).attr("attr_user_mobile");
-	   var resultType="All"
-	    getMembersDetails(surveyUserId,tabUserId,webUserId,userName,mobileNo,0,resultType);
+	   var verificationStatus = $(this).attr("attr_vefification_type");
+	   var resultType="All";
+	    if(webUserId==0){
+		 $("#userId").html("Tab UserID - "+tabUserId+"");	
+		 $("#userDescriptionId").html("<i>"+userName+" - "+mobileNo+"</i>");	
+		}else{
+		  $("#userId").html("User ID - "+webUserId+"");	
+		  $("#userDescriptionId").html("<i>"+userName+" - "+mobileNo+"</i>");		
+		}
+	   
+	   	$("#relativePaginationId").html(' ');
+		$("#selfPaginationId").html(' ');
+	    $("#issuesDataMonitroingDashboardModal").modal('show');
+		$("#issuesDataMonitroing li").removeClass("active");
+		$("#issuesDataMonitroing li:first-child").addClass("active");
+		$(".activeCls").addClass("active");
+		$(".relativeCls").removeClass("active");
+	    getMembersDetails(surveyUserId,tabUserId,webUserId,userName,mobileNo,0,resultType,verificationStatus);
    });
-   function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
+   function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
 	   if(resultType=="All"){
 		 $("#selfTblDivId").html(' ');
 	     $("#relativeDivId").html(' ');
@@ -461,7 +477,6 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		  $("#relativeDivId").html(' ');   
 		   $("#relativeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   }
-	   $("#issuesDataMonitroingDashboardModal").modal('show');
 	   var fromDate;
        var toDateDate;
        var date=$(".multiDateRangePicker").val();
@@ -477,7 +492,9 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			startDate : modifyDate(fromDate),
 			endDate : modifyDate(toDateDate),
             minValue :minValue,
-            maxValue :10
+            maxValue :10,
+			resultType:resultType,
+			verificationStatus:verificationStatus
       }
 		$.ajax({
 			type:'GET',
@@ -586,8 +603,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						
 								str+='<tr>';
 									str+='<td>';
-										str+='<button class="btn btn-success">Approve</button>';
-										str+='<button class="btn btn-danger">Reject</button>';
+										str+='<button class="btn btn-success approveCls" attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
+										str+='<button class="btn btn-danger rejectedCls" attr_cadre_id="'+result[0][i].cadreId+'">Reject</button>';
 									str+='</td>';
 								str+='</tr>';
 							}
@@ -689,8 +706,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 								str2+='</tr>'; 
 								str2+='<tr>';
 									str2+='<td>';
-										str2+='<button class="btn btn-success">Approve</button>';
-										str2+='<button class="btn btn-danger">Reject</button>';
+										str2+='<button class="btn btn-success approveCls" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';
+										str2+='<button class="btn btn-danger rejectedCls" attr_cadre_id="'+result[1][i].cadreId+'">Reject</button>';
 									str2+='</td>';
 								str2+='</tr>';
 							}
@@ -717,3 +734,33 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		else
 			$(".localSelectOwnCls").prop( "checked", false);
 	});  
+  $(document).on("click",".approveCls",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	  $("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
+	  $("#confirmModalId").modal("show");  
+  });	
+  $(document).on("click",".rejectedCls",function(){
+	    var cadreId = $(this).attr("attr_cadre_id");
+	    $("#submitBtnReasonId").attr("attr_cadre_id",cadreId);
+		  $(".reasonErrorCls").html(' ');
+	    $("#rejectedModalId").modal("show");
+		
+  });	
+  $(document).on("click","#submitBtnReasonId",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	  var reasonId = $("#rsnSlctBxId").val();
+	   if(reasonId == 0){
+		   $(".reasonErrorCls").html("Please Select Reason.");
+		   return;
+	   }
+	   $(".reasonErrorCls").html(' ');
+	 
+  });
+  $(document).on("click","#groupingApprovedYes",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	 
+  });
+  $(document).on("click","#groupingApprovedNo",function(){
+	  var cadreId = $(this).attr("attr_cadre_id");
+	    $("#confirmModalId").modal("hide");  
+  });
