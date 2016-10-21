@@ -652,6 +652,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	$(document).on('click', '.addMeetMint', function(){
 
 			$("#mintModal").modal("show");
+			$("#momError").val("");
 			//openModalMOM();
 			$("#meetRaised").val("");
 			$("#generalBtnId").prop('checked', true);        
@@ -914,7 +915,7 @@ function getConstituenciesForDistricts(district){
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   $("#searchDataImgForcons").hide();
-		   $("#constituencyId").append('<option value="0">Select Constituencies</option>');
+		   $("#constituencyId").append('<option value="0">Select Constituency</option>');
 			for(var i in result){
 			   if(assmblyArr.length>0){
 				   if($.inArray(result[i].locationId, assmblyArr) > -1){
@@ -2280,9 +2281,30 @@ function getPartyMeetingMinuteRetrieveDetails(minuteId){
 					$("#actionableBtnId").attr('checked', true);
 					if ($("#actionableBtnId").is(":checked")) {
 						getUserAccessLocationDetails();
-						setTimeout(function(){ 
+					if(result[0].locationLevel != null && result[0].locationLevel > 0){
+						$("#meetingLvlId").show();
+					}	
+					if(result[0].stateId != null && result[0].stateId > 0){
+						alert(result[0].stateId);
+						$("#stateShowId").show();
+					}
+					if(result[0].districtId != null && result[0].districtId > 0){
+						alert(result[0].districtId);
+						$("#DistrictShowId").show();
+					}
+					if(result[0].constituencyId != null && result[0].constituencyId > 0){
+						alert(result[0].constituencyId);
+						$("#ConstShowId").show();
+					}
+					if(result[0].tehsilId != null && result[0].tehsilId > 0){
+						$("#ManTwnDivShowId").show();
+					}
+					if(result[0].panchayatId != null && result[0].panchayatId > 0){
+						$("#VillWardShowId").show();
+					}
+					setTimeout(function(){ 
 							prePopulatePartyMeetingMinuteDetails(result);
-						}, 5000);
+						}, 8000);
 					}	
 				}else if(result[0].actionType == "N"){
 					$("#generalBtnId").attr('checked', true);
