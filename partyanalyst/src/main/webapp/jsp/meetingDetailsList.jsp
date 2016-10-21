@@ -398,7 +398,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 								<div class="col-md-4 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
 										<label>Constituency</label>
 										<span id="ConsErrorMSgShow" style="color: red;"></span>
-										<select class="form-control" id="constituencyId" name="constBox">
+										<select class="form-control" id="constituencyId" name="constBox" value="constitunecyValue">
 										<!--<option>Select Constituency</option>-->
 										</select>
 								</div>
@@ -654,8 +654,19 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#mintModal").modal("show");
 			//openModalMOM();
 			$("#meetRaised").val("");
+			$("#generalBtnId").prop('checked', true);        
+			$("#meetingLocationLevel").val("");
+			$("#statesDivId").val("");
+			$("#districtId").val("");
+			$("#constituencyId").val("");
+			$("#manTowDivId").val("");
+			$("#villWardId").val("");
 			$("#meetingLvlId").hide();
 			$("#stateShowId").hide();
+			$("#DistrictShowId").hide();
+			$("#ConstShowId").hide();
+			$("#ManTwnDivShowId").hide();
+			$("#VillWardShowId").hide();
 			//getUserAccessLocationDetails();
 			
 	 }); 	
@@ -671,12 +682,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 
 		 var attrId3 = $(this).attr("attr_minuteId");
 		 $("#deletedMinMsg").attr("attr_minuteId",attrId3);
-		 
-		 
+		  
 	 });//deletedmsgAtr
+
 	 
-	 
-    $(document).on('click', '#deletedMinMsg', function(){
+   $(document).on('click', '#deletedMinMsg', function(){
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Deleted Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var divId = $(this).attr("attr_txt");
 		var divCount = $(this).attr("attr_div_count");
@@ -704,9 +714,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$('#alertmintsave').modal('show');
 			updateMinCount("delete");
 		   }
+		   location.reload();
 		});
 		
-    });
+    }); 
    
    function updateMinCount(type){
 		if(type=="delete"){
@@ -1121,7 +1132,7 @@ function getConstituenciesForDistricts(district){
 						str+='<li class="list-group-item " id="list'+mainDivCount+'">';
 						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
 						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+				       str+=' <button class="btn btn-default conformDel" id="delMinuteId'+i+'" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					   str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
 					   str+=' </div>';
 						str+=' </li>';
@@ -2215,7 +2226,8 @@ $( "#districtId" ).change(function() {
 		getConstituenciesForDistricts(this.value);
 	});
 $(document).on("click","#actionableBtnId",function(){
-	getUserAccessLocationDetails();
+		getUserAccessLocationDetails();
+		$("#meetingLocationLevel").html("");
 		$("#meetingLvlId").show();
 		$("#stateShowId").show();
 		
@@ -2223,9 +2235,14 @@ $(document).on("click","#actionableBtnId",function(){
 $(document).on("click","#generalBtnId",function(){
 		$("#meetingLvlId").hide();
 		$("#stateShowId").hide();
+		$("#DistrictShowId").hide();
+		$("#ConstShowId").hide();
+		$("#VillWardShowId").hide();
+		$("#ManTwnDivShowId").hide();
 });
 
 function getPartyMeetingMinuteRetrieveDetails(minuteId){
+	getUserAccessLocationDetails();
 	 	var jsObj={
 		minuteId:minuteId	
 		}
@@ -2236,21 +2253,116 @@ function getPartyMeetingMinuteRetrieveDetails(minuteId){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				if(result.actionType == 'Y'){
+				if(result[0].actionType == 'Y'){
 					$("#actionableBtnId").attr('checked', true);
+					setTimeout(function(){ 
+						prePopulatePartyMeetingMinuteDetails(result);
+					}, 3000);
+				}else if(result[0].actionType == 'N'){
+					if ($("#generalBtnId").is(":checked")) {
+						$("#meetingLvlId").hide();
+						$("#stateShowId").hide();
+						$("#DistrictShowId").hide();
+						$("#ConstShowId").hide();
+						$("#ManTwnDivShowId").hide();
+						$("#VillWardShowId").hide();
+					}
 				}
 		   }
    });	
  }
  function prePopulatePartyMeetingMinuteDetails(result){
-	 $("#meetRaised").val(result.name);
-	 $("#meetingLocationLevel").val(result.partyMeetingId);
-	 $("#statesDivId").val(result.stateId);
-	 $("#districtId").val(result.districtId);
-	 $("#constituencyId").val(result.constituencyId);
-	 $("#manTowDivId").val(result.tehsilId);
-	 $("#villWardId").val(result.panchayatId);
+	 $("#meetRaised").val(result[0].name);
+	 if ($("#actionableBtnId").is(":checked")) {
+		  $("#meetingLvlId").show();
+		$("#meetingLocationLevel").val(result[0].locationLevel);
+		$("#statesDivId").val(result[0].stateId);
+		$("#districtId").val(result[0].districtId);
+		$("#constituencyId").val(result[0].constituencyId);
+		$("#manTowDivId").val(result[0].tehsilId);
+		$("#villWardId").val(result[0].panchayatId);
+     }
+	 
  }
+ function getMandalVillageDetailsForConstituency(locationLevel){
+	//$("#manTowDivId  option").remove();
+		//$("#villWardId option").remove();
+		var stateId = $("#statesDivId").val();
+		var districtId = $("#districtId").val();
+		var constituencyId = $("#constituencyId").val();
+		var distArrTemp = [];
+		if(districtId==0){
+			distArrTemp = distArr;
+		}else{
+			distArrTemp.push(districtId);
+		}
+		
+		var mandalId = "0";
+		if(locationLevel==4){
+			$("#manTowDivId").html("");
+		}
+		if(locationLevel==5){
+			mandalId = $("#manTowDivId").val();
+			//$("#manTowDivId").html("")
+			//if(mandalId >0)
+				$("#villWardId").html("");
+		}
+		var assmblyArrTemp = [];
+		if(constituencyId==0){
+			//assmblyArrTemp = assmblyArr;	
+			var divId = "#manTowDivId";
+			//divId = "#villWardId";//teja
+			//$(divId).html("");
+			if(locationLevel ==5){
+				  divId = "#villWardId";
+			}
+		}/* else if($("#manTowDivId").val()==null || $("#manTowDivId").val() == 0){
+			$("#villWardId  option").remove();
+			$("#villWardId").append('<option value="">ALL</option>');
+			assmblyArrTemp.push(constituencyId);
+		} */
+		else{
+			assmblyArrTemp.push(constituencyId);
+		}
+		$("#searchDataImgForman").show();
+	   var jsObj={				
+			stateId : stateId,
+			districtId : distArrTemp,
+			constituencyId : assmblyArrTemp,//228
+			mandalId : mandalId,
+			locationLevel : locationLevel,
+			task:""
+		}
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandalAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#searchDataImgForman").hide();
+			  var divId = "#manTowDivId";
+				  if(locationLevel ==5){					  
+				  divId = "#villWardId";
+				 }
+			$(divId).append("<option value='0'>All</option>");
+			for(var i in result){
+				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}
+			if(locationLevel ==4)
+					 getMandalVillageDetailsForConstituency(5);
+		});
+	}
+$(document).on("change","#constituencyId",function(){
+			$("#ConsErrorMSgShow").html("");
+			getMandalVillageDetailsForConstituency(4);
+});
+$(document).on("change","#manTowDivId",function(){
+	$("#ManErrorMSgShow").html("");
+		if($("#manTowDivId").val() !=null && $("#manTowDivId").val().length>0 && $("#manTowDivId").val()>0){
+			getMandalVillageDetailsForConstituency(5);
+		}		
+});
 </script>
 </body>
 </html>

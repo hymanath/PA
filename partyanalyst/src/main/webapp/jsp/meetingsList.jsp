@@ -1326,7 +1326,7 @@ getUserAccessLocationDetails();
 					 $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
 			}
-			meetingLevelWiseHideShow();
+			//meetingLevelWiseHideShow();
 			//getConstituenciesForDistricts('');
 			/* setTimeout(
 			function(){		
