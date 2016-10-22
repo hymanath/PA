@@ -8042,15 +8042,23 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		return query.list();
 	}
 	
-	public Integer updateApprovedCadre(Long cadreId, Long statusId){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" update TdpCadre TC set TC.cadreVerificationStatusId = :statusId where TC.tdpCadreId = :cadreId ");
-		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("cadreId", cadreId);
-		query.setParameter("statusId", statusId);
-		Integer c = query.executeUpdate();
-		return c;
-	}
+public TdpCadre getTdpCadreDetailsByOtp(Long tdpCadreId)
+	 {
+		 Query query = getSession().createQuery("select model" +
+		 		" from TdpCadre model " +
+		 		"where model.tdpCadreId = :tdpCadreId ");
+		 query.setParameter("tdpCadreId", tdpCadreId);
+		 return (TdpCadre) query.list();
+	 }
+public Integer updateApprovedCadre(Long cadreId, Long statusId){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" update TdpCadre TC set TC.cadreVerificationStatusId = :statusId where TC.tdpCadreId = :cadreId ");
+	Query query = getSession().createQuery(queryStr.toString());
+	query.setParameter("cadreId", cadreId);
+	query.setParameter("statusId", statusId);
+	Integer c = query.executeUpdate();
+	return c;
+}
 	
 	public List<Object[]> getLatestLattitudeLangitudeOfTabUser(Long constituencyId,Date startDate,Date endDate){
 		
