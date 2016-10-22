@@ -35,7 +35,7 @@ public class TdpCadreDateWiseInfo extends BaseModel implements Serializable {
 	private String newCadrePercent;
 	private Long renewalCadre;
 	private String renewalCadrePercent;
-	
+	private Date insertedTime;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -113,6 +113,14 @@ public class TdpCadreDateWiseInfo extends BaseModel implements Serializable {
 	}
 	public void setRenewalCadrePercent(String renewalCadrePercent) {
 		this.renewalCadrePercent = renewalCadrePercent;
+	}
+	
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 
