@@ -100,7 +100,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		if(fromDate != null && toDate != null)
 			sb.append(" where date(CRI.insertedTime) between :fromDate and :toDate");
 		
-		sb.append(" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId,CRI.cadreRegIssueStatus.cadreRegIssueStatusId" +
+		sb.append(" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId,CRI.cadreRegIssueStatus.cadreRegIssueStatusId,CRI.userAddress.constituency.constituencyId" +
 					" order by CRI.cadreRegIssueStatus.cadreRegIssueStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());
