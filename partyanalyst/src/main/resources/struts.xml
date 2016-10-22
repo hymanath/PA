@@ -14225,5 +14225,10 @@
 			<param name="root">pmMinutelist</param>
 		</result>
 	</action>
+	<action name="getLocationWiseDetailedOverViewDetailsAction" class="fieldMonitoringAction"  method="getLocationWiseDetailedOverViewDetails">
+			<result type="json" name="success">
+			<param name="root">dataMonitoringVerificationVOList</param>
+		</result>
+	</action>
 </package>
 </struts>

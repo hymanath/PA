@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -34,6 +35,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private FieldMonitoringVO fieldMonitoringVO;
 		private List<FieldMonitoringVO> fieldMonitoringList;
 		private List<FieldMonitoringIssueVO> fieldMonitoringIssueVOList;
+		private List<DataMonitoringVerificationVO> dataMonitoringVerificationVOList;
 		
 	//Attributes
 	   private IFieldMonitoringService fieldMonitoringService;
@@ -104,6 +106,13 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	}
 	public void setFieldMonitoringList(List<FieldMonitoringVO> fieldMonitoringList) {
 		this.fieldMonitoringList = fieldMonitoringList;
+	}
+	public List<DataMonitoringVerificationVO> getDataMonitoringVerificationVOList() {
+		return dataMonitoringVerificationVOList;
+	}
+	public void setDataMonitoringVerificationVOList(
+			List<DataMonitoringVerificationVO> dataMonitoringVerificationVOList) {
+		this.dataMonitoringVerificationVOList = dataMonitoringVerificationVOList;
 	}
 	
 	
@@ -395,6 +404,23 @@ public String getConstituencyByVendor(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseIssueTypesCount()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+  
+  public String getLocationWiseDetailedOverViewDetails(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			String locationType = jObj.getString("locationType");
+			Long locationVal = jObj.getLong("locationVal");
+			
+			dataMonitoringVerificationVOList = fieldMonitoringService.getLocationWiseDetailedOverViewDetails(fromDateStr,toDateStr,locationType,locationVal);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseDetailedOverViewDetails()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}
