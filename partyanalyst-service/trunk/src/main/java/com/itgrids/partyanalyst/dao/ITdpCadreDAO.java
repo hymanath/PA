@@ -469,4 +469,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue,String verificationStatus);
 	  public Integer updateApprovedCadre(Long cadreId, Long statusId);
 	  public List<Object[]> getLatestLattitudeLangitudeOfTabUser(Long constituencyId,Date startDate,Date endDate);
-} 
+	  
+	  public List<Object[]> getTdpCadreRecordsCountLocWise(Date date);
+	  public List<Object[]> getRenewalTdpCadreRecordsCountLocWise(Date date);
+}  
