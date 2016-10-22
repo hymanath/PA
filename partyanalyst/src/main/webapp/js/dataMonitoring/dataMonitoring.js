@@ -383,7 +383,7 @@
 							str+='</tr>';
 						}
 						if(result[0][i].status == "noStatus"){
-							str+='<tr>';
+							str+='<tr class="ownDeleteRow'+i+'">';
 								str+='<td rowspan="2">';
 									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
@@ -397,19 +397,18 @@
 							str+='</tr>'; 
 					
 					
-							str+='<tr>';
+							str+='<tr class="ownDeleteRow'+i+'">';    
 								str+='<td>';  
-									str+='<button class="btn btn-success singleApproveCls"  attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
-									str+='<button class="btn btn-danger singleRejectCls"  attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'">Reject</button>';
-								str+='</td>';
+									str+='<button class="btn btn-success singleApproveCls" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
+									str+='<button class="btn btn-danger singleRejectCls"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'">Reject</button>';
+								str+='</td>';    
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
 										str+='<option value="0">Andhra Pradesh</option>';                
 									str+='</select>'; 
 									str+='<span id="ownErrorId'+i+'" style="color:red;"></span>';
 								str+='</td>';    
-							str+='</tr>';  
-							
+							str+='</tr>'; 
 						}
 					}
 				str+='</tbody>';
@@ -500,7 +499,7 @@
 							str2+='</tr>';
 						}
 						if(result[1][i].status == "noStatus"){
-							str2+='<tr>';
+							str2+='<tr class="familyDeleteRow'+i+'">';
 								str2+='<td rowspan="2">';
 									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
@@ -510,12 +509,12 @@
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
-								str2+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
+								str2+='<td><input attr_position_id="'+i+'"  attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
 							str2+='</tr>'; 
-							str2+='<tr>';
+							str2+='<tr class="familyDeleteRow'+i+'">';
 								str2+='<td>';
-									str2+='<button class="btn btn-success singleApproveCls" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
-									str2+='<button class="btn btn-danger singleRejectCls" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'">Reject</button>';
+									str2+='<button class="btn btn-success singleApproveCls" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-danger singleRejectCls" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'">Reject</button>';
 								str2+='</td>';
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
@@ -656,6 +655,8 @@
 	$(document).on("click",".singleRejectCls",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
 		$("#submitBtnReasonId").attr("attr_cadre_id",cadreId);
+		var position = $(this).attr("attr_position_id");
+		$("#submitBtnReasonId").attr("attr_position_id",position);
 		$(".reasonErrorCls").html('');
 		$(".reasonSuccessCls").html('');
 		$("#rsnSlctBxId").html(globalSrt);  
@@ -665,7 +666,8 @@
 		$(".reasonErrorCls").html('');  
 		var cadreId = $(this).attr("attr_cadre_id");
 		var reasonId = $("#rsnSlctBxId").val();
-		if(reasonId == 0){
+		var position = $(this).attr("attr_position_id");   
+		if(reasonId == 0){  
 			$(".reasonErrorCls").html('Please Select Reason...');  
 			return;  
 		} 
@@ -684,7 +686,17 @@
 				}else{
 					$(".reasonSuccessCls").html('Updation Failed...'); 
 				}
-				setTimeout(function(){ $("#rejectedModalId").modal("hide"); }, 3000); 
+				setTimeout(function(){ $("#rejectedModalId").modal("hide"); }, 3000);
+				$(".closeButtonCls").trigger("click");
+				//for hide deleted row(s)
+				if($("#self").hasClass('active')){
+					$(".ownDeleteRow"+position).remove();   
+					$(".ownDeleteRow"+position).remove();
+				}else{
+					$(".familyDeleteRow"+position).remove();   
+					$(".familyDeleteRow"+position).remove();          
+				}
+				         
 			}
 		});
 	});
@@ -740,7 +752,8 @@
 		var cadreId = '';
 		var selectReasonId = '';
 		var reasonId = '';
-		
+		var positionIdArr = [];
+		var position = 0;
 		var rejectList = [];
 		if($("#self").hasClass('active')){
 			$('.localSelectOwnCls').each(function(){
@@ -748,7 +761,10 @@
 					cadreId = $(this).attr("attr_cadre_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 }); 
+					//collect row position for delete row.
+					position = $(this).attr("attr_position_id");
+					positionIdArr.push(position);
 				}
 			});
 		}else{
@@ -757,7 +773,10 @@
 					cadreId = $(this).attr("attr_cadre_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });
+					//collect row position for delete row.
+					position = $(this).attr("attr_position_id");
+					positionIdArr.push(position);      
 				}
 			});
 		}
@@ -772,21 +791,40 @@
 			if(result != null){  
 				if(result.resultCode == 1){ 
 					$("#globalSuccId").html('Updated Successfully...'); 
+					//for hide deleted row(s)
+					if($("#self").hasClass('active')){
+						$(".localSelectOwnCls").prop( "checked",false);
+						for(var i in positionIdArr){
+							$(".ownDeleteRow"+positionIdArr[i]).remove();   
+							$(".ownDeleteRow"+positionIdArr[i]).remove();
+						}
+					}else{
+						$(".localSelectFamilyCls").prop( "checked",false);    
+						for(var i in positionIdArr){
+							$(".familyDeleteRow"+positionIdArr[i]).remove();   
+							$(".familyDeleteRow"+positionIdArr[i]).remove();       
+						}     
+					}
+					$('.singleApproveCls').prop('disabled', false);
+					$('.singleRejectCls').prop('disabled', false);      
 				}else{
 					$("#globalErrId").html('Updation Failed...');     
 				}
-			}else{
+			}else{    
 			}
 		});
 	});
 	//single approve
 	$(document).on("click",".singleApproveCls",function(){  
 		var cadreId = $(this).attr("attr_cadre_id");
+		var position = $(this).attr("attr_position_id");
+		$("#groupingApprovedYes").attr("attr_position_id",position);
 		$("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
 		$("#confirmModalId").modal("show");      
 	});
 	$(document).on("click","#groupingApprovedYes",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
+		var position = $(this).attr("attr_position_id");   
 		var rejectList = [];
 		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
 		var singleReject = {"data" : rejectList};
@@ -802,13 +840,22 @@
 				}else{
 					$("#errorApprovedId").html('Updation Failed...');       
 				} 
-				setTimeout(function(){ $("#confirmModalId").modal("hide"); }, 3000);
+				setTimeout(function(){ $("#confirmModalId").modal("hide"); }, 2000);
+				$(".closeButtonCls").trigger("click");      
+				//for hide deleted row(s)
+				if($("#self").hasClass('active')){
+					$(".ownDeleteRow"+position).remove();   
+					$(".ownDeleteRow"+position).remove();
+				}else{
+					$(".familyDeleteRow"+position).remove();   
+					$(".familyDeleteRow"+position).remove();              
+				}
 			}else{    
 			}
 		});  
 	});
 	
-	//bulk approve
+	//bulk approve      
 	$(document).on('click','#bulkApproveId',function(){  
 		var isMemberSelected="NO";
 		if($("#self").hasClass('active')){
@@ -830,22 +877,29 @@
 		$("#globalErrId").html(' ');  
 		var cadreId = ''; 
 		var rejectList = []; 
+		var positionIdArr = [];
+		var position = 0;
 		if($("#self").hasClass('active')){
 			$('.localSelectOwnCls').each(function(){  
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });
+					//collect row position for delete row.
+					position = $(this).attr("attr_position_id");
+					positionIdArr.push(position);
 				}
 			});
 		}else{
-			$('.localSelectFamilyCls').each(function(){  
+			$('.localSelectFamilyCls').each(function(){    
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });
+					//collect row position for delete row.
+					position = $(this).attr("attr_position_id");
+					positionIdArr.push(position);
 				}  
 			});
 		}
-		
 		var singleReject = {"data" : rejectList};        
 		$.ajax({
 			type:'GET',      
@@ -855,11 +909,27 @@
 		}).done(function(result){
 			if(result != null){  
 				if(result.resultCode == 1){ 
-					$("#globalSuccId").html('Updated Successfully...'); 
+					$("#globalSuccId").html('Updated Successfully...');
+					//for hide deleted row(s)
+					if($("#self").hasClass('active')){
+						 
+						for(var i in positionIdArr){
+							$(".ownDeleteRow"+positionIdArr[i]).remove();   
+							$(".ownDeleteRow"+positionIdArr[i]).remove();
+						}  
+					}else{
+						
+						for(var i in positionIdArr){
+							$(".familyDeleteRow"+positionIdArr[i]).remove();     
+							$(".familyDeleteRow"+positionIdArr[i]).remove();      
+						}	
+					}
+					$('.singleApproveCls').prop('disabled', false);    
+					$('.singleRejectCls').prop('disabled', false);
 				}else{
-					$("#globalErrId").html('Updation Failed...');     
+					$("#globalErrId").html('Updation Failed...');   
 				}
-			}else{      
+			}else{        
 			}
 		});
 	});
@@ -875,5 +945,10 @@
 	$(document).on("click","#groupingApprovedNo",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
 	    $("#confirmModalId").modal("hide");  
-	});    
+	});   
+	$(document).on('click','.closeButtonCls',function(){  
+		setTimeout(function(){
+			$('body').addClass("modal-open");
+		}, 500);    
+	});
 	
