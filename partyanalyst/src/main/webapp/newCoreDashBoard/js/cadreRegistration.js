@@ -97,17 +97,16 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	}
 
 	//swadhin
-	function showCadreRegistreredCount(globalActivityMemberId){ 
-		
+	function showCadreRegistreredCount(globalActivityMemberId){
 		$("#totalTodayCadreRegistrationBlockDivAPId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		
 		var startDate = '';
-		var endDate = '';  
+		var endDate = '';
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
 			startDate : '02/10/2016',        
-			endDate : '17/10/2016'
+			endDate : getTodayDate()    
 		};
 		$.ajax({
 			type : 'GET',
@@ -125,8 +124,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
            
 	}
 	
-	function buildTotalTodayRegistrationsAP(result){  
-		
+	function buildTotalTodayRegistrationsAP(result){
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
@@ -367,12 +365,12 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	function getEnumeratorsInfo(globalActivityMemberId){
 		$("#enumeratorsInfoDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var startDate = '';    
-		var endDate = '';  
+		var endDate = ''; 
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,
 			stateId : globalStateId,         
 			startDate : '02/10/2016',      
-			endDate : '17/10/2016'
+			endDate : getTodayDate()           
 		};
 		$.ajax({          
 			type : 'GET',       
@@ -386,7 +384,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					$("#enumeratorsInfoDivId").html('NO DATA AVAILABLE');
 				}	
 		});
-	}
+	}  
 	
 	function buildEnumeratorsInfo(result){
 		//Enumerators block
@@ -1018,7 +1016,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 stateId : globalStateId,
 				 userTypeId : globalUserTypeId,
 				 fromDate : "2/10/2016",
-				 todate : "17/10/2016"
+				 todate : getTodayDate()
 			  }
 		$.ajax({
 			type : 'POST',
@@ -1303,7 +1301,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 stateId : globalStateId,
 				 userTypeId : globalUserTypeId,
 				 fromDate : "2/6/2016",
-				 todate : "17/10/2016"
+				 todate : getTodayDate()
 			  }
 		$.ajax({
 			type : 'POST',
@@ -1327,7 +1325,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 locationType : "District",
 				 stateId : 36,
 				 fromDate : "2/10/2016",
-				 todate : "17/10/2016",
+				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId,
 				 accessLevelValues:accessLevelValues
 			  }
@@ -1485,7 +1483,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 locationType : "Constituency",
 				 stateId : 1,
 				 fromDate : "2/10/2016",
-				 todate : "17/10/2016",
+				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId, 
 				 accessLevelValues:accessLevelValues
 			  }
@@ -1536,7 +1534,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 locationType : "Constituency",
 				 stateId : 36,
 				 fromDate : "2/10/2016",
-				 todate : "17/10/2016",
+				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId,
 				 accessLevelValues:accessLevelValues
 			  }
@@ -2108,7 +2106,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			activityMemberId : globalActivityMemberId,
 			stateId : globalStateId,         
 			startDate : '02/10/2016',      
-			endDate : '17/10/2016'
+			endDate : getTodayDate()
 		};
 		$.ajax({          
 			type : 'GET',            
@@ -2166,7 +2164,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			childUserTypeIdsArray : childUserTypeIdsArray,
 			stateId : globalStateId,
 			fromDateStr : '02/10/2016',
-			toDateStr : '16/10/2016'
+			toDateStr : getTodayDate()
 		};
 		$.ajax({                   
 			type : 'GET',    
@@ -2298,7 +2296,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			         childUserTypeIdsArray : userTypeIdArr,    
 					 stateId : globalStateId,
 					 fromDateStr : '02/10/2016',
-					 toDateStr : '17/10/2016'          
+					 toDateStr : getTodayDate()          
 				  }
 	   	$.ajax({  
 			type : 'POST',   
@@ -2361,7 +2359,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			activityMemberId : globalActivityMemberId,
 			stateId : globalStateId,         
 			startDate : '02/10/2016',         
-			endDate : '18/10/2016'
+			endDate : getTodayDate()
 		};
 		$.ajax({          
 			type : 'GET',       
@@ -2402,7 +2400,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			activityMemberId : globalActivityMemberId,
 			stateId : globalStateId,         
 			startDate : '02/10/2016',         
-			endDate : '18/10/2016'
+			endDate : getTodayDate()
 		};
 		$.ajax({          
 			type : 'GET',       
@@ -2482,4 +2480,18 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
           });
         });
 		  
-	}
+	}  
+	function getTodayDate(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+
+		var yyyy = today.getFullYear();  
+		if(dd<10){
+			dd='0'+dd
+		} 
+		if(mm<10){
+			mm='0'+mm
+		} 
+		var today = dd+'/'+mm+'/'+yyyy;
+		return today;

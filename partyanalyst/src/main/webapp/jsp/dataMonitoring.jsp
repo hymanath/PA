@@ -115,8 +115,8 @@
 <div class="modal fade" id="rejectedModalId" role="dialog">
     <div class="modal-dialog" style="height:60px;">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-header">    
+          <button type="button" class="close closeButtonCls" data-dismiss="modal">&times;</button>  
           <h4 class="modal-title"></h4>
         </div>  
         <div class="modal-body" style="padding-bottom: 98px; padding-right: 0px; padding-top: 7px;">
@@ -137,11 +137,15 @@
       </div>
      </div>
   </div>
- </div>
+ </div>      
 <div id="confirmModalId" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="top:70px">
       <div class="modal-dialog modal-sm" role="document" style="width: 30%;">
-      <div class="modal-content">
-        <div class="modal-body" style="border: 3px solid #000;">
+      <div class="modal-content" style="border: 3px solid #000;">  
+		<div class="modal-header">    
+          <button type="button" class="close closeButtonCls" data-dismiss="modal">&times;</button>  
+          <h4 class="modal-title">Conform Message</h4>            
+        </div> 
+        <div class="modal-body" >
           <!--<div  style="text-align: center;"><img src="images/groupIcon.png" style="width: 100px;"/></div>-->
           <h4 style="text-align: center;">Are you sure want to approved.</h4> 
           <div style="text-align: center;">
