@@ -1008,6 +1008,9 @@
 				      <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteTracking</value>
 				      <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteStatus</value>
 				      
+				      <value>com.itgrids.partyanalyst.model.TdpCadreLocationInfoCount</value>
+                      <value>com.itgrids.partyanalyst.model.TdpCadreLocationInfo</value>
+                      <value>com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo</value>
 				 </list>
 			
 		</property>
