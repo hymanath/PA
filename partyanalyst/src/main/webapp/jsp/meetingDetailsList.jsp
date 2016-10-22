@@ -374,6 +374,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		</div>
 	  </div>
       <div class="modal-footer">
+	  <img src='images/icons/search.gif'  id="loadingImgMinitSaveId" style="width:20px;height:20px;display:none;"/>
 		<button type="button" attr_minuteid="0" class="btn btn-success saveMinute" id="saveBtnMeetMin">Save</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
       </div>
@@ -1054,6 +1055,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			levelId:levelId,
 			levelValue:levelValue
 		}
+		$("#loadingImgMinitSaveId").show();
 		$.ajax({
 			  type:'POST',
 			  url: 'updateMeetingMinutePointAction.action',
@@ -1061,6 +1063,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$('#mintModal').modal('hide');
+			$("#loadingImgMinitSaveId").hide();
 			//$( "#dialogMOM" ).dialog('close');
 			
 		   if(result=="success"){
