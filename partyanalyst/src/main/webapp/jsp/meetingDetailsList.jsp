@@ -552,6 +552,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#constituencyId").val("");
 			$("#manTowDivId").val("");
 			$("#villWardDivId").val("");
+			
+			$("#saveBtnMeetMin").html("Save");
+			
 	 }); 	
 	 
  $(document).on('click', '.conformDel', function(){
@@ -955,6 +958,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		$("#saveBtnMeetMin").attr("attr_minuteId",minuteId);
 		
 		$("#allSelectBoxesDivId").hide();
+		
+		$("#saveBtnMeetMin").html("Update");
 		
 		getPartyMeetingMinuteRetrieveDetails(minuteId);
 	});
