@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
@@ -2310,11 +2311,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 	}
 
- public String getOtpStatus(String mobileNumber,String otp){
+ public String getOtpStatus(Long cadreId,String otp){
 	 String status = null;
 		try {
 			  Date currentTime = dateUtilService.getCurrentDateAndTime();
-
+              TdpCadre tdpCadre=tdpCadreDAO.getTdpCadreDetailsByOtp(cadreId);
+              String mobileNumber=tdpCadre.getMobileNo();
 			Long tabDetsId = tabUserOtpDetailsDAO.checkOTPDetails(mobileNumber,otp,currentTime);
 			if(tabDetsId != null && tabDetsId.longValue() > 0l){
 				TabUserOtpDetails tabUserOtpDetails = tabUserOtpDetailsDAO.get(tabDetsId);
@@ -2329,7 +2331,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 		} catch (Exception e) {
 			status = "failure";
-			LOG.error("Exception Occured in checkOTPDetails() in WebServiceHandlerService class.",e);
+			LOG.error("Exception Occured in checkOTPDetails() in CodeDashboardCadreRegistrationService class.",e);
 		}
 		return status;
      }
