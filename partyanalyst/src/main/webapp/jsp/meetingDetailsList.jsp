@@ -951,8 +951,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	$(document).on('click', '.updatedMeetMin', function(){
 		$("#mintModal").modal("show");
 		$("#momError").text("");
-		/* var meetmin=$(this).parent().parent().find(".updatedMeetMintValue").text();
-		$("#meetRaised").val(meetmin); */
 		var minuteId = $(this).attr("attr_minuteId");
 		$("#saveBtnMeetMin").attr("attr_minuteId",minuteId);
 		
@@ -1991,13 +1989,17 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					if(res.name != null && res.name.trim()!="")
 						$("#meetRaised").val(res.name);
 					
+					if(res.actionType =='N'){
+						$('#meetingTypeGeneralRadioId').prop('checked', true);
+					}
+					
 					if(res.actionType == "Y"){
 						$("#meetingTypeActionableRadioId").trigger( "click" );
 						setTimeout(function(){
 							$("#meetingLocationLevel").val(res.locationLevel);
 						
 							$(".locationDivCls").hide();
-							if(res.locationLevel == 1 || res.locationLevel == 2 || res.locationLevel == 3 || res.locationLevel == 4 || res.locationLevel == 7){console.log(stateArrGlob);
+							if(res.locationLevel == 1 || res.locationLevel == 2 || res.locationLevel == 3 || res.locationLevel == 4 || res.locationLevel == 7){
 								$("#stateDivId").show();
 								
 								$("#statesDivId").html("<option value='0'>Select State</option>");
