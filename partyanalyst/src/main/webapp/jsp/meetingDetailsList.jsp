@@ -1013,35 +1013,74 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#momError").text(" Please Enter Minute Text");
 			return;
 		}
-		
-		if($("#meetingLocationLevel").val()== 2 ){
-			if(districtId == 0){
-				$("#momError").text(" Please Select District ");
-				return;
-			}
-		}else if($("#meetingLocationLevel").val()== 3){
-			if(constituencyId == 0){
-				$("#momError").text(" Please Select constituency");
-				return;
-			}
-		}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
-			if(mandalId == 0){
-				$("#momError").text(" Please Select Mandal/Town/Division");
-				return;
-			}
-		}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
-			if( panchayatId == 0){
-				$("#momError").text(" Please Select Village/Ward");
-				return;
-			}
-				
-		}else if($("#meetingLocationLevel").val()== 1){
+		 if($("#meetingLocationLevel").val()== 1){
 			if(stateId == 0){
 				$("#momError").text(" Please Select State");
 				return;
 			}
 		}
-		
+		else if($("#meetingLocationLevel").val()== 2 ){
+			if(stateId == 0){
+				$("#momError").text(" Please Select State");
+				return;
+			}
+			else if(districtId == 0){
+				$("#momError").text(" Please Select District ");
+				return;
+			}
+		}else if($("#meetingLocationLevel").val()== 3){
+			if(stateId == 0){
+				$("#momError").text(" Please Select State");
+				return;
+			}
+			else if(districtId == 0){
+				$("#momError").text(" Please Select District ");
+				return;
+			}
+			else if(constituencyId == 0){
+				$("#momError").text(" Please Select constituency");
+				return;
+			}
+		}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+			if(stateId == 0){
+				$("#momError").text(" Please Select State");
+				return;
+			}
+			else if(districtId == 0){
+				$("#momError").text(" Please Select District ");
+				return;
+			}
+			else if(constituencyId == 0){
+				$("#momError").text(" Please Select constituency");
+				return;
+			}
+			else if(mandalId == 0){
+				$("#momError").text(" Please Select Mandal/Town/Division");
+				return;
+			}
+		}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
+			if(stateId == 0){
+				$("#momError").text(" Please Select State");
+				return;
+			}
+			else if(districtId == 0){
+				$("#momError").text(" Please Select District ");
+				return;
+			}
+			else if(constituencyId == 0){
+				$("#momError").text(" Please Select constituency");
+				return;
+			}
+			else if(mandalId == 0){
+				$("#momError").text(" Please Select Mandal/Town/Division");
+				return;
+			}
+			else if( panchayatId == 0){
+				$("#momError").text(" Please Select Village/Ward");
+				return;
+			}
+				
+		}
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
