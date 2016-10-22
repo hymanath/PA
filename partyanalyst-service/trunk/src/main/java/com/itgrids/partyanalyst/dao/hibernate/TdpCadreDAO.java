@@ -7688,11 +7688,11 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 				}
 			} 
 		}  
-		if(lastOneHourTime!= null && today!=null && status.equalsIgnoreCase("toDay")){    
+		if(lastOneHourTime != null && today!=null && status.equalsIgnoreCase("toDay")){    
 			queryStr.append(" date(TC.insertedTime) between :lastOneHourTime and :today and ");  	 
 		}
-		if(lastOneHourTime!= null && today!=null && status.equalsIgnoreCase("oneHour")){    
-			queryStr.append(" TC.insertedTime between :lastOneHourTime and :today and ");        	 
+		if(lastOneHourTime!= null && status.equalsIgnoreCase("oneHour")){    
+			queryStr.append(" TC.insertedTime >= :lastOneHourTime and ");          	 
 		}
 		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" TC.userAddress.state.stateId in (:userAccessLevelValues) ");  
@@ -7708,10 +7708,14 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		if(userAccessLevelValues != null){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
-		if(lastOneHourTime!= null && today!=null){
+		if(lastOneHourTime!= null && today!=null && status.equalsIgnoreCase("toDay")){    
 			query.setDate("lastOneHourTime", lastOneHourTime);
-			query.setDate("today", today);
-		}  
+			query.setDate("today", today); 	 
+		}
+		if(lastOneHourTime!= null  && status.equalsIgnoreCase("oneHour")){    
+			query.setDate("lastOneHourTime", lastOneHourTime);          	 
+		}   
+		
 		return (Long) query.uniqueResult();   
 	}
 	public List<Object[]> getLocationIdAndName(Long accessLvlId,List<Long> userAccessLevelValues,Long stateId){
