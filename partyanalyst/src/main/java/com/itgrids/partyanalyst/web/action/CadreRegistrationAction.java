@@ -2858,7 +2858,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   public String getOtpStatus(){
 	  try{
 		  jobj = new JSONObject(getTask());
-		  status=coreDashboardCadreRegistrationService.getOtpStatus(jobj.getString("mobileNumber"),jobj.getString("otpTxt"));
+		  status=coreDashboardCadreRegistrationService.getOtpStatus(jobj.getLong("tdpCadreId"),jobj.getString("otpTxt"));
 	  }catch(Exception e){
 		  e.printStackTrace();
 		  LOG.error("Error occured at getOtpStatus() in CadreRegistrationAction class",e);
@@ -2891,5 +2891,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
+  
+ /* public String getAllDistrictsList(){
+	  try{
+		  idAndNameVO=cadreRegistrationService.getAllDistricts();
+	  }catch(Exception e){
+		  LOG.error("Entered into getAllDistrictsList method in CadreRegistrationAction.");
+	  }
+	  return Action.SUCCESS;
+  }*/
 }
 
