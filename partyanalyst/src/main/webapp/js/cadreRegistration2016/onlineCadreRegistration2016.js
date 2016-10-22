@@ -72,6 +72,7 @@ function getSearchByMyVoterIdDetails(){
 		  $("#checkVoterId").html("Please check atleast one voter.");
 		  return;
 	  }
+	  
 	myVoterButtonDetails();
 	
 	 var voterId1=$("#voterId").val();
@@ -438,6 +439,14 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		if(!validationDetails()){
 		return;
 		}
+		if(!mailValidation())
+		{
+		   return;
+		}
+		if(!addressFieldsValidation())
+		{
+			return;
+		}
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		if(tdpCadreId != null && tdpCadreId != ""){
 		$(".isNomineeChangd").each(function(){
@@ -455,6 +464,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 					showSbmitStatus(uploadResult);
 				}
 			};
+			
 	$("#savingCadreDivIdImg").show();
 	//csole.log(submitCadreForm)
 		YAHOO.util.Connect.setForm('submitCadreForm',true);
@@ -634,6 +644,7 @@ function validationDetails()
 	var PrvNomneGendr=$("#prvNomneGendrId").val();
 	var PrvNomneAge=$("#prevNomneAgeId").val();
 	var PrvNomneReltv=$("#prevNomneReltvId").val();	
+	
 	 if(name == 0 && name.trim() == '')
 	 {
 		$("#cadreNameId").html("Enter Name");  
