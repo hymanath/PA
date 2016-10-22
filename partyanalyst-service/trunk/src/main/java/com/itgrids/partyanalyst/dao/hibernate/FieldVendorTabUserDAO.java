@@ -94,7 +94,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		sb.append("select CRI.cadreSurveyUser.cadreSurveyUserId," +
 					" CRI.tabUserInfo.tabUserInfoId," +
 					" CRI.cadreRegIssueStatus.cadreRegIssueStatusId," +
-					" count(CRI.cadreRegIssueId)" +
+					" count(CRI.cadreRegIssueId)," +
+					" CRI.userAddress.constituency.constituencyId" +
 					" from CadreRegIssue CRI");
 		if(fromDate != null && toDate != null)
 			sb.append(" where date(CRI.insertedTime) between :fromDate and :toDate");

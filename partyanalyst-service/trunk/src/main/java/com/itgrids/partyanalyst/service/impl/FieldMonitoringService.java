@@ -295,6 +295,25 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnvo;
     }
     
+    public FieldMonitoringVO getMatchdVOByList(Long userId,Long tabUserId,Long constituencyId,List<FieldMonitoringVO> list){
+    	FieldMonitoringVO returnvo = null;
+    	try {
+			if(list != null && !list.isEmpty()){
+				for (FieldMonitoringVO vo : list) {
+					if(vo.getCadreSurveyUserId().longValue() == userId.longValue()){
+						if(vo.getTabUserId().longValue() == tabUserId.longValue()){
+							if(vo.getConstituencyId().longValue() == constituencyId.longValue())
+								return vo;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getMatchdVOByList() of FieldMonitoringService", e);
+		}
+    	return returnvo;
+    }
+    
     public FieldMonitoringVO getDataCollectorsCounts(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal){
     	FieldMonitoringVO returnvo = new FieldMonitoringVO();
     	try {
@@ -911,7 +930,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				for (Object[] obj : list1) {
 					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					Long constitId = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+					FieldMonitoringVO vo = getMatchdVOByList(userId, tabUserId, constitId, returnList);
 					if(vo != null){
 						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
