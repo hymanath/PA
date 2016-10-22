@@ -436,4 +436,210 @@ public List<Object[]> getDistrictWiseIssueTypesCount(Date fromDate,Date toDate,L
 	query.setDate("toDate", toDate);
 	return query.list();
 }
+
+public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date toDate,String locationType,Long locationVal){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select");
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.tdpCadre.userAddress.district.districtId," +
+					" model.tdpCadre.userAddress.district.districtName,'','',");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.tdpCadre.userAddress.constituency.constituencyId," +
+					" model.tdpCadre.userAddress.constituency.name,'','',");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		sb.append(" tehsil.tehsilId,tehsil.tehsilName," +
+					" leb.localElectionBodyId,leb.name,");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		sb.append(" panc.panchayatId,panc.panchayatName,'','',");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+		sb.append(" ward.constituencyId,ward.name,'','',");
+	
+	sb.append(" count(model.tdpCadre.tdpCadreId)");
+	
+	sb.append(" from TdpCadreEnrollmentYear model" +
+				" left join model.tdpCadre.userAddress.tehsil tehsil" +
+				" left join model.tdpCadre.userAddress.localElectionBody leb" +
+				" left join model.tdpCadre.userAddress.panchayat panc" +
+				" left join model.tdpCadre.userAddress.ward ward " +
+				" where model.tdpCadre.enrollmentYear = 2014" +
+				" and model.enrollmentYear.enrollmentYearId = 4" +
+				" and model.isDeleted = 'N'" +
+				" and model.tdpCadre.isDeleted = 'N'");
+	if(fromDate != null && toDate != null)
+		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.state.stateId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal") && locationVal.longValue() > 0l)
+		sb.append(" and tehsil.tehsilId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality") && locationVal.longValue() > 0l)
+		sb.append(" and leb.localElectionBodyId = :locationVal");
+	
+	sb.append(" group by");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.tdpCadre.userAddress.district.districtId" +
+					" order by model.tdpCadre.userAddress.district.districtName");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.tdpCadre.userAddress.constituency.constituencyId" +
+					" order by model.tdpCadre.userAddress.constituency.name");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		sb.append(" tehsil.tehsilId,leb.localElectionBodyId" +
+					" order by tehsil.tehsilName,leb.name");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		sb.append(" panc.panchayatId order by panc.panchayatName");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+		sb.append(" ward.constituencyId order by ward.name");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}
+	if(locationVal != null && locationVal.longValue() > 0l)
+		query.setParameter("locationVal", locationVal);
+	
+	return query.list();
+}
+
+public List<Object[]> getLocationWiseDataVerifiedCounts(Date fromDate,Date toDate,String locationType,Long locationVal){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select");
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.tdpCadre.userAddress.district.districtId,'',");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.tdpCadre.userAddress.constituency.constituencyId,'',");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		sb.append(" tehsil.tehsilId,leb.localElectionBodyId,");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		sb.append(" panc.panchayatId,'',");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+		sb.append(" ward.constituencyId,'',");
+	
+	sb.append(" count(model.tdpCadre.tdpCadreId)");
+	
+	sb.append(" from TdpCadreEnrollmentYear model" +
+				" left join model.tdpCadre.userAddress.tehsil tehsil" +
+				" left join model.tdpCadre.userAddress.localElectionBody leb" +
+				" left join model.tdpCadre.userAddress.panchayat panc" +
+				" left join model.tdpCadre.userAddress.ward ward " +
+				" where model.tdpCadre.enrollmentYear = 2014" +
+				" and model.enrollmentYear.enrollmentYearId = 4" +
+				" and model.isDeleted = 'N'" +
+				" and model.tdpCadre.isDeleted = 'N'" +
+				" and model.tdpCadre.cadreVerificationStatusId is not null");
+	if(fromDate != null && toDate != null)
+		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.state.stateId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal") && locationVal.longValue() > 0l)
+		sb.append(" and tehsil.tehsilId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality") && locationVal.longValue() > 0l)
+		sb.append(" and leb.localElectionBodyId = :locationVal");
+	
+	sb.append(" group by");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.tdpCadre.userAddress.district.districtId" +
+					" order by model.tdpCadre.userAddress.district.districtName");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.tdpCadre.userAddress.constituency.constituencyId" +
+					" order by model.tdpCadre.userAddress.constituency.name");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		sb.append(" tehsil.tehsilId,leb.localElectionBodyId" +
+					" order by tehsil.tehsilName,leb.name");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		sb.append(" panc.panchayatId order by panc.panchayatName");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+		sb.append(" ward.constituencyId order by ward.name");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}
+	if(locationVal != null && locationVal.longValue() > 0l)
+		query.setParameter("locationVal", locationVal);
+	
+	return query.list();
+}
+
+public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select");
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.tdpCadre.userAddress.district.districtId,'',");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.tdpCadre.userAddress.constituency.constituencyId,'',");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		sb.append(" tehsil.tehsilId,leb.localElectionBodyId,");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		sb.append(" panc.panchayatId,'',");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+		sb.append(" ward.constituencyId,'',");
+	
+	sb.append(" model1.cadreRegIssueStatus.cadreRegIssueStatusId," +
+				" count(model.tdpCadre.tdpCadreId)");
+	
+	sb.append(" from TdpCadreEnrollmentYear model,CadreRegIssue model1" +
+				" left join model.tdpCadre.userAddress.tehsil tehsil" +
+				" left join model.tdpCadre.userAddress.localElectionBody leb" +
+				" left join model.tdpCadre.userAddress.panchayat panc" +
+				" left join model.tdpCadre.userAddress.ward ward " +
+				" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+				" and model.tdpCadre.tabUserInfo.tabUserInfoId = model1.tabUserInfo.tabUserInfoId" +
+				" and model.tdpCadre.enrollmentYear = 2014" +
+				" and model.enrollmentYear.enrollmentYearId = 4" +
+				" and model.isDeleted = 'N'" +
+				" and model.tdpCadre.isDeleted = 'N'" +
+				" and model.tdpCadre.cadreVerificationStatusId is not null");
+	if(fromDate != null && toDate != null)
+		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.state.stateId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal.longValue() > 0l)
+		sb.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal") && locationVal.longValue() > 0l)
+		sb.append(" and tehsil.tehsilId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality") && locationVal.longValue() > 0l)
+		sb.append(" and leb.localElectionBodyId = :locationVal");
+	
+	sb.append(" group by");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.tdpCadre.userAddress.district.districtId,model1.cadreRegIssueStatus.cadreRegIssueStatusId" +
+					" order by model.tdpCadre.userAddress.district.districtName");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.tdpCadre.userAddress.constituency.constituencyId,model1.cadreRegIssueStatus.cadreRegIssueStatusId" +
+					" order by model.tdpCadre.userAddress.constituency.name");
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+		sb.append(" tehsil.tehsilId,leb.localElectionBodyId,model1.cadreRegIssueStatus.cadreRegIssueStatusId" +
+					" order by tehsil.tehsilName,leb.name");
+	else if(locationType != null && locationType.equalsIgnoreCase("mandal"))
+		sb.append(" panc.panchayatId,model1.cadreRegIssueStatus.cadreRegIssueStatusId order by panc.panchayatName");
+	else if(locationType != null && locationType.equalsIgnoreCase("muncipality"))
+		sb.append(" ward.constituencyId,model1.cadreRegIssueStatus.cadreRegIssueStatusId order by ward.name");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}
+	if(locationVal != null && locationVal.longValue() > 0l)
+		query.setParameter("locationVal", locationVal);
+	
+	return query.list();
+}
 }
