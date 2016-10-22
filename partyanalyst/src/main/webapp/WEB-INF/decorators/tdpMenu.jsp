@@ -426,11 +426,13 @@
 						 <li>								
 							<a href="#"><i class="fa fa-user-secret ico-white"></i><span>&nbsp;&nbsp;Party Meetings</span></a>
 							<h2><i class="fa fa-user-secret ico-white line_heightDiv"></i> Party Meetings</h2>
-							<ul>										
+							<ul>		
+							<c:if test="${sessionScope.USER.accessType != 'MP'}">
 								<li>
 									<a href="partyMeetingsDashBoard.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Meeting Dashboard</span></a>
 									</li>
-									<li>
+							</c:if>
+								<li>
 									<a href="meetingList.action"><i class="fa fa-street-view ico-white"></i><span>&nbsp;&nbsp;Meeting MOM & ATR</span></a>
 								</li>
 							</ul>
