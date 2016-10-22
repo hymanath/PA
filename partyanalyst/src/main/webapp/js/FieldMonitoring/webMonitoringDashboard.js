@@ -6,6 +6,7 @@
 		getIssueTypeWiseCounts();
 		getDataMonitoringOverViewDetails();
 		getDistrictWiseIssueTypesCount();
+		getLocationWiseOverAllDetails("state",0);
 	}
 	function getOverAllDataCollectorsCounts(){
 		var dates = $(".singleDate").val();
@@ -472,3 +473,30 @@ function getDataMonitoringOverViewDetails(){
 		
 		}
 	}
+	
+function getLocationWiseOverAllDetails(locationType,locationVal){
+	var dates = $(".singleDate").val();
+	var dateArr = dates.split("-");
+	var fromDate;
+	var toDate;
+	if(dateArr != null){
+		fromDate = dateArr[0];
+		toDate = dateArr[1];
+	}
+	
+	var jsObj = { 
+	  fromDate : fromDate,		//"10/01/2016",
+	  toDate : toDate,		 	//"10/18/2016"  
+	  locationType : locationType,
+	  locationVal  : locationVal
+	  
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getLocationWiseDetailedOverViewDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		
+	});
+}
