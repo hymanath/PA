@@ -10,7 +10,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -8180,5 +8179,41 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		return (Voter)query.uniqueResult();
 		
 	}
+	public List<Object[]> getTdpCadreDataByDateAndConstituency(){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select  date(model.tdpCadre.surveyTime),model.tdpCadre.userAddress.constituency.constituencyId,count(model.tdpCadre.tdpCadreId )  " +
+				  " from    TdpCadreEnrollmentYear model " +
+				  " where   model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and "+
+				  "         model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId  " );
+		
+		sb.append(" group by date(model.tdpCadre.surveyTime),model.tdpCadre.userAddress.constituency.constituencyId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		
+		return query.list();
+	}
 	
+	public List<Object[]> getRenewalTdpCadreDataByDateAndConstituency(){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select  date(tc.surveyTime), tc.userAddress.constituency.constituencyId,count(tc.tdpCadreId )  " +
+				  " from    TdpCadre tc , TdpCadreEnrollmentYear year1, TdpCadreEnrollmentYear year2 " +
+				  " where   tc.tdpCadreId = year1.tdpCadre.tdpCadreId and  tc.tdpCadreId = year2.tdpCadre.tdpCadreId and " +
+				  "         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
+				  "         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
+				  "         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear  ");
+				  
+		
+		sb.append(" group by date(tc.surveyTime),tc.userAddress.constituency.constituencyId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
+		query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		
+		return query.list();
+	}
 }
