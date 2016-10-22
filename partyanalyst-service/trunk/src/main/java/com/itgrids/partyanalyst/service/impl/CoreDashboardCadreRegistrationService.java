@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -542,7 +543,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 
 			if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
 				List<Object[]> tdpCadreList = tdpCadreDAO.getRegisteredDetailsByCadreId(tdpCadreId,voterId,familyVoterId,status);
-				setCadreDetailsToVO(returnVO,tdpCadreList);
+				setCadreDetailsToVO(returnVO,tdpCadreList,familyVoterId,voterId);
 			}else if(voterId != null && voterId.longValue() >0l){
 				List<Object[]> voterList = voterDAO.getVoterDetailsByVoterId(voterId);
 				setVoterDetailsToVO(returnVO,voterList);
@@ -614,7 +615,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description : 
 	*  @since 10-October-2016
 	*/
-	public void setCadreDetailsToVO(NewCadreRegistrationVO returnVO,List<Object[]> tdpCadreList){
+	public void setCadreDetailsToVO(NewCadreRegistrationVO returnVO,List<Object[]> tdpCadreList,Long familyVoterId,Long voterId){
 		try{
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		if(tdpCadreList != null && tdpCadreList.size()>0 ){
@@ -675,10 +676,10 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			returnVO.setNomineeAge(objects[16]!=null?(Long)objects[16]:0l);//nomineeAge
 			returnVO.setRelativeType(objects[17]!=null?objects[17].toString():"");//relativeType
 			returnVO.setImagePath("https://mytdp.com/images/cadre_images/"+(objects[7]!=null?objects[7].toString():""));
-			if(objects[18] != null && objects[18].toString().length()> 0l){
+			if(voterId != null && voterId.longValue() >0l){
 				returnVO.setVoterRelationId(objects[19]!=null?(Long)objects[19]:0l);//voterId
 				returnVO.setVoterCardNo(objects[18]!=null?objects[18].toString():"");//votercardNo
-			}else if(objects[18] != null && objects[18].toString().length() > 0l){
+			}else if(familyVoterId != null && familyVoterId.longValue() >0l){
 				returnVO.setFamilyVoterId(objects[19]!=null?(Long)objects[19]:0l);//familyvoterId
 				returnVO.setVoterCardNumber(objects[18]!=null?objects[18].toString():"");//familyVotercardNo
 			}
@@ -2335,6 +2336,38 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return status;
      }
-
+ public NewCadreRegistrationVO validateUpdateVoterDetails(String voterCardNo){
+	 NewCadreRegistrationVO newCadreRegistrationVO = new NewCadreRegistrationVO();
+	 
+	 try {
+	 
+		 Voter tdpVoter = null;
+		 Voter voter = boothPublicationVoterDAO.getVoterByVoterIDCardNo(voterCardNo);
+		 if(voter != null){ 
+			 newCadreRegistrationVO.setNomineeName("Voter Exist");
+			 tdpVoter =  tdpCadreDAO.getTdpCadreVoterByvoterId(voter.getVoterId());
+			 if(tdpVoter != null){
+				 newCadreRegistrationVO.setNameType("Cadre");
+			}else{
+				 newCadreRegistrationVO.setNameType("No Cadre");
+				 newCadreRegistrationVO.setVoterRelationId(voter.getVoterId() !=null?voter.getVoterId():0l);//voterId
+				 newCadreRegistrationVO.setLastName(voter.getName() !=null?voter.getName():"");//Name
+				 newCadreRegistrationVO.setGender(voter.getGender()!=null?voter.getGender():"");//gender
+				 newCadreRegistrationVO.setAge(voter.getAge()!=null?voter.getAge():0l);//age 
+				 newCadreRegistrationVO.setRelativeType(voter.getRelationshipType()!=null?voter.getRelationshipType():"");//relativeType
+				 newCadreRegistrationVO.setVoterCardNo(voter.getVoterIDCardNo()!=null?voter.getVoterIDCardNo():"");//votercardNo
+			}
+		 }else{
+			 newCadreRegistrationVO.setNomineeName("Voter Not Exist");
+		 }
+		 
+		 
+		 
+		 
+	 } catch (Exception e) {
+			LOG.error("Exception Occured in validateUpdateVoterDetails() in CoreDashboardCadreRegistrationService class.",e);
+	 }
+		return newCadreRegistrationVO;
+ }
  
 }

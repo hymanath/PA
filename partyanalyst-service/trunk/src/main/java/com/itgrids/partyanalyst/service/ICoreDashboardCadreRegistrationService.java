@@ -39,4 +39,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<CadreRegistratedCountVO> getDtlsOfBellowLvlMember(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public CadreRegistratedCountVO getEnumerationDtlsForMem(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public String getOtpStatus(Long cadreId,String otp);
+	public NewCadreRegistrationVO validateUpdateVoterDetails(String voterCardNo);
 }

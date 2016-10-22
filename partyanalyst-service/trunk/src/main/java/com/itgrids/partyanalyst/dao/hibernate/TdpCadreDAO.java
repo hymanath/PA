@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -8119,8 +8120,7 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 		return query.list();
 		
 	}
-	
-	public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
+public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select  model.tdpCadre.userAddress.constituency.constituencyId,count(model.tdpCadre.tdpCadreId )  " +
@@ -8167,4 +8167,18 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 		
 		return query.list();
 	}
+	public Voter getTdpCadreVoterByvoterId(Long voterId){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.voter from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
+				" and model.voter.voterId = :voterId "); 
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("voterId", voterId);
+		
+		return (Voter)query.uniqueResult();
+		
+	}
+	
 }
