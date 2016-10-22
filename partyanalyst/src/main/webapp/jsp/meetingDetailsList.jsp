@@ -541,8 +541,16 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
  	
 	$(document).on('click', '.addMeetMint', function(){
 			$("#mintModal").modal("show");
+			$("#meetingTypeGeneralRadioId").prop("checked", true);
 			//openModalMOM();
 			$("#meetRaised").val("");
+			$("#allSelectBoxesDivId").hide();
+			$("#meetingLocationLevel").val("");
+			$("#statesDivId").val("");
+			$("#districtId").val("");
+			$("#constituencyId").val("");
+			$("#manTowDivId").val("");
+			$("#villWardDivId").val("");
 	 }); 	
 	 
  $(document).on('click', '.conformDel', function(){
@@ -941,7 +949,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	}
 	$(document).on('click', '.updatedMeetMin', function(){
 		$("#mintModal").modal("show");
-		
+		$("#momError").text("");
 		/* var meetmin=$(this).parent().parent().find(".updatedMeetMintValue").text();
 		$("#meetRaised").val(meetmin); */
 		var minuteId = $(this).attr("attr_minuteId");
@@ -1720,7 +1728,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 	$(".meetingTypeSelectRadioCls").click(function(){
 		if($(this).attr("id")=="meetingTypeGeneralRadioId"){
+			$("#momError").text("");
 			$("#allSelectBoxesDivId").hide();
+			$("#meetingLocationLevel").val("");
+			$("#statesDivId").val("");
+			$("#districtId").val("");
+			$("#constituencyId").val("");
+			$("#manTowDivId").val("");
+			$("#villWardDivId").val("");
 		}else if($(this).attr("id")=="meetingTypeActionableRadioId"){
 			getUserAccessLocationDetails();
 			$("#allSelectBoxesDivId").show();
