@@ -746,4 +746,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String searchType,String type,String typeVal);
 	  public List<Object[]> getVoterLocationDetailsByVotersIdsList(List<Long> voterIdsList);
 	  public List<Long> getLocalElectionBodyByVoterId(Long voterId);
+	  public Voter getVoterByVoterIDCardNo(String voterCardNo);
 }

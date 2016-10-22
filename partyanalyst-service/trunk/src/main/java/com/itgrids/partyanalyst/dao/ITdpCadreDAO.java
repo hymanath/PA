@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.Voter;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 
@@ -473,4 +474,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	  public List<Object[]> getTdpCadreRecordsCountLocWise(Date date);
 	  public List<Object[]> getRenewalTdpCadreRecordsCountLocWise(Date date);
-}  
+	  public Voter getTdpCadreVoterByvoterId(Long voterId);
+} 

@@ -8599,4 +8599,18 @@ public List<Object[]> getVoterLocationDetailsByVotersIdsList(List<Long> voterIds
 	return query.list();
 }
 
+public Voter getVoterByVoterIDCardNo(String voterCardNo){
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.voter " +
+					" from BoothPublicationVoter model " +
+					" where model.voter.voterIDCardNo = :voterCardNo  and model.booth.publicationDate.publicationDateId = "+IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID );
+
+	Query query = getSession().createQuery(sb.toString());
+	
+	query.setParameter("voterCardNo", voterCardNo);
+	
+	return (Voter)query.uniqueResult();
+}
+
 }
