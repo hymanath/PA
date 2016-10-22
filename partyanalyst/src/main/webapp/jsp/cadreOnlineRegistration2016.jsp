@@ -510,7 +510,7 @@
         	<div class="panel panel-default panelRegistration">
 				<div class="panel-heading renewalN1" style="display:none;">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" > Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
                 </div>
             	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
@@ -698,6 +698,13 @@
 				<input type="hidden" class="form-control" id="dataSourceType" value="ONLINE" name="cadreRegistrationVO.dataSourceType"/>
 				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
 				
+				
+				<div class="panel-heading renewal">
+                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ  </h3>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
+                </div>
+				<hr>
+
 					<div class="col-md-8 col-xs-12 col-sm-12 m_top30">
 						<div class="row">
 							<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
@@ -1089,8 +1096,8 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration" style="margin-bottom: 100px;">
             	<div class="panel-heading renewal">
-                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
+                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ  </h3>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;" > Home </button></h3>
                 </div>
                 <div class="panel-body selectMembership hide">
                 	<div class="row">
@@ -1432,7 +1439,7 @@
 		   <label>Enter OTP:</label>
 			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/><span id="otpErrDivId" style="color:red;"></span>
 			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
-			   <button id="renwalOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
+			   <button id="renwalOKDivId" type="button" class="btn btn-success validateROTPCls" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
 		</div>	
 		<div><span id="otpStusErrDivId"></span><span id="otpStusErrImgId" style="display:none;"><img src="images/search.gif"/></span></div>
       </div>
