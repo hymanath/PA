@@ -135,7 +135,8 @@ $(document).on("click",".issueTypeCls",function(){
 	getIssuesForATabUserByStatus(cadreUserId,tabUserId,issueType);
 });
 
-$(document).on("click",".manageIssues",function(){ 
+$(document).on("click",".manageIssues",function(){
+	clearErrorFields();
     $("#issueTypeDivId").hide();
     var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
     var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
