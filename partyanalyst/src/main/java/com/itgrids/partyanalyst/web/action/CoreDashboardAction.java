@@ -2887,5 +2887,15 @@ public String registrationsSuccess(){
 	}
 	return Action.SUCCESS;
 }
-
+public String validateUpdateVoterDetails(){
+	try {
+		jObj = new JSONObject(getTask());
+		String voterCardNo = jObj.getString("voterCardNo");
+		
+		newCadreRegistrationVO = coreDashboardCadreRegistrationService.validateUpdateVoterDetails(voterCardNo);
+	} catch (Exception e) {
+		LOG.error("Exception raised in validateUpdateVoterDetails method in CadreRegistrationAction Action",e);
+	}
+	return Action.SUCCESS;
+}
 }
