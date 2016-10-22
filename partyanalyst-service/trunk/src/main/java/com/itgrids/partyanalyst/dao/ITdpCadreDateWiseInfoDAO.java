@@ -5,5 +5,8 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo;
 
 public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInfo,Long>{
-
+	
+	public int deleteAllRecords();
+	public int setPrimaryKeyAutoIncrementToOne();
+	
 }
