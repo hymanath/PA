@@ -14230,5 +14230,10 @@
 			<param name="root">dataMonitoringVerificationVOList</param>
 		</result>
 	</action>
+	<action name="validateUpdateVoterAction" class="coreDashboardAction"  method="validateUpdateVoterDetails">
+			<result type="json" name="success">
+			<param name="root">newCadreRegistrationVO</param>
+		</result>
+	</action>
 </package>
 </struts>
