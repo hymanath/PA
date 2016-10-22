@@ -31,6 +31,11 @@ public class TdpCadreTargetCount {
 	private EnrollmentYear enrollmentYear;
 	private Constituency constituency;
 	private Constituency parliamentConstituency;
+	
+	
+	private Long locationScopeId;
+	private Long locationValue;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_target_count_id", unique = true, nullable = false)
@@ -106,5 +111,23 @@ public class TdpCadreTargetCount {
 	public void setParliamentConstituency(Constituency parliamentConstituency) {
 		this.parliamentConstituency = parliamentConstituency;
 	}
+	
+	@Column(name = "location_scope_id")
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	
+	@Column(name = "location_value")
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
+
    	
 }
