@@ -1,16 +1,22 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class TdpCadreLocationInfoVO implements Serializable{
 	
+	
+	private static final long serialVersionUID = 1652069565905488620L;
 	private Long id;
 	private String name;
 	
 	private Long locationScopeId;
 	private Long locationValue;
 	
+	private String surveyDateStr;
+	private Date   surveyDate;
 	private Long cadre2016Records = 0l;
 	private Long cadre2016RenewalRecords = 0l;
 	private Long cadre2016NewRecords = 0l ;
@@ -28,6 +34,8 @@ public class TdpCadreLocationInfoVO implements Serializable{
 	private List<TdpCadreLocationInfoVO> parliamentList;
 	private List<TdpCadreLocationInfoVO> districtList;
 	private List<TdpCadreLocationInfoVO> stateList;
+	
+	private Map<Long,TdpCadreLocationInfoVO> subMap;
 	
 	public Long getId() {
 		return id;
@@ -130,6 +138,25 @@ public class TdpCadreLocationInfoVO implements Serializable{
 	}
 	public void setCadrePercent(String cadrePercent) {
 		this.cadrePercent = cadrePercent;
+	}
+	
+	public Map<Long, TdpCadreLocationInfoVO> getSubMap() {
+		return subMap;
+	}
+	public void setSubMap(Map<Long, TdpCadreLocationInfoVO> subMap) {
+		this.subMap = subMap;
+	}
+	public String getSurveyDateStr() {
+		return surveyDateStr;
+	}
+	public void setSurveyDateStr(String surveyDateStr) {
+		this.surveyDateStr = surveyDateStr;
+	}
+	public Date getSurveyDate() {
+		return surveyDate;
+	}
+	public void setSurveyDate(Date surveyDate) {
+		this.surveyDate = surveyDate;
 	}
 	
 	
