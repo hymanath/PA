@@ -954,6 +954,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		$("#meetRaised").val(meetmin); */
 		var minuteId = $(this).attr("attr_minuteId");
 		$("#saveBtnMeetMin").attr("attr_minuteId",minuteId);
+		
+		$("#allSelectBoxesDivId").hide();
+		
 		getPartyMeetingMinuteRetrieveDetails(minuteId);
 	});
 	
@@ -2087,7 +2090,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 								}
 								$("#villWardId").html(str);
 							}
-						}, 4000);
+						}, 2000);
 					}
 					
 				}
