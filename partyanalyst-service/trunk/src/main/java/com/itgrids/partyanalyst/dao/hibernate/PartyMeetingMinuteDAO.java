@@ -28,7 +28,7 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		return query.list();
 	}
 	
-	public List<Object[]> getMinuteDetailsForAMeeting(Long partyMeetingId)
+	public List<Object[]> getMinuteDetailsForAMeeting(Long partyMeetingId,String accessType,List<Long> accessValues)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,model.insertedBy.userId,model.insertedBy.firstName," +
@@ -36,8 +36,19 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 				"model.updatedTime,model.partyMeeting.meetingName " +
 				" from PartyMeetingMinute model where " +
 				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
+		
+		if(accessType !=null && accessType.equalsIgnoreCase("MP") && accessValues.size()>0){
+			queryStr.append(" and  model.partyMeeting.meetingAddress.constituency.constituencyId in (:accessValues) ");
+		}else if(accessType !=null && accessType.equalsIgnoreCase("DISTRICT") && accessValues.size()>0){
+			queryStr.append(" and  model.partyMeeting.meetingAddress.district.districtId in (:accessValues) ");
+		}
+		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("partyMeetingId", partyMeetingId);
+		
+		if(accessType !=null && ( accessType.equalsIgnoreCase("MP") || accessType.equalsIgnoreCase("DISTRICT") ) &&  accessValues.size()>0){
+			query.setParameterList("accessValues", accessValues);
+		}
 		
 		return query.list();
 	}

@@ -1139,12 +1139,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return partyMeetingVO;
 	}
 	
-	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId){
+	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId,String accessType,String accessValue){
 		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 		try {
 			LOG.info("Entered into getDocumentDetailsForAMeeting");
 			
-			List<Object[]> documentDetails = partyMeetingDocumentDAO.getDocumentDetailsForMinutesAtr(partyMeetingId);
+			List<Long> valuesList = new ArrayList<Long>();
+			if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
+				valuesList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(Long.valueOf(accessValue));
+			}else{
+				valuesList.add(Long.valueOf(accessValue));
+			}
+			
+			List<Object[]> documentDetails = partyMeetingDocumentDAO.getDocumentDetailsForMinutesAtr(partyMeetingId,accessType,valuesList);
 			
 			if(documentDetails!=null && documentDetails.size()>0){
 				
@@ -1176,15 +1183,22 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return partyMeetingVO;
 	}
 	
-	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId){
+	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId,String accessType,String accessValue){
 		
 		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 		
 		try{
 			LOG.info("Entered into getPartyMeetingMinutesAtrDetails");
 			
+			List<Long> valuesList = new ArrayList<Long>();
+			if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
+				valuesList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(Long.valueOf(accessValue));
+			}else{
+				valuesList.add(Long.valueOf(accessValue));
+			}
+			
 			PartyMeeting partyMeetingDetails = partyMeetingDAO.get(meetingId);
-			List<Object[]> minutesDetails = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId);
+			List<Object[]> minutesDetails = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId,accessType,valuesList);
 			
 			if(partyMeetingDetails != null){
 				partyMeetingVO.setId(partyMeetingDetails.getPartyMeetingId()!=null?partyMeetingDetails.getPartyMeetingId():0l);
@@ -2333,15 +2347,23 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return finalVO;
 	}
 	
-	public PartyMeetingVO getSummaryForAMeeting(Long meetingId,String type){
+	public PartyMeetingVO getSummaryForAMeeting(Long meetingId,String type,String accessType,String accessValue){
 		PartyMeetingVO vo = new PartyMeetingVO();
 		try {
 			LOG.info("Entered into getSummaryForAMeeting service");
 			List<String> temp = new ArrayList<String>();
 			
+			List<Long> valuesList = new ArrayList<Long>();
+			if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
+				valuesList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(Long.valueOf(accessValue));
+			}else{
+				valuesList.add(Long.valueOf(accessValue));
+			}
+			
+			
 			List<Object[]> qryrslt=null;
 			if(type.equalsIgnoreCase("momText")){
-				qryrslt = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId);
+				qryrslt = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId,accessType,valuesList);
 				
 				if(qryrslt != null && qryrslt.size()>0){
 					for (Object[] objects : qryrslt) {
@@ -2366,7 +2388,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 				vo.setAtrPoints(temp);
 			}else{
-				qryrslt = partyMeetingDocumentDAO.getMinuteAtrDocumentSummaryForAMeeting(meetingId,type);
+				qryrslt = partyMeetingDocumentDAO.getMinuteAtrDocumentSummaryForAMeeting(meetingId,type,accessType,valuesList);
 				List<PartyMeetingVO> voList = new ArrayList<PartyMeetingVO>();
 				if(qryrslt != null && qryrslt.size()>0){
 					for (Object[] objects : qryrslt) {

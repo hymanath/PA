@@ -4645,16 +4645,23 @@ class TrainingCampService implements ITrainingCampService{
 		return returnList;
 	}
 	
-	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId){
+	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId,String accessType,String accessValue){
 		PartyMeetingVO partyMeetingVO = new PartyMeetingVO();
 		
 		try{
 			LOG.info("Entered into getPartyMeetingMinutesAtrDetails");
 			
+			List<Long> valuesList = new ArrayList<Long>();
+			if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
+				valuesList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(Long.valueOf(accessValue));
+			}else{
+				valuesList.add(Long.valueOf(accessValue));
+			}
+			
 			PartyMeeting partyMeetingDetails = partyMeetingDAO.get(partyMeeingId);
-			List<Object[]> minutesDetails = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(partyMeeingId);
+			List<Object[]> minutesDetails = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(partyMeeingId,accessType,valuesList);
 			List<Object[]> atrDetails = partyMeetingAtrPointDAO.getAtrDetailsForAMeeting(partyMeeingId);
-			List<Object[]> documentDetails = partyMeetingDocumentDAO.getDocumentDetailsForMinutesAtr(partyMeeingId);
+			List<Object[]> documentDetails = partyMeetingDocumentDAO.getDocumentDetailsForMinutesAtr(partyMeeingId,accessType,valuesList);
 			
 			if(partyMeetingDetails != null){
 				partyMeetingVO.setId(partyMeetingDetails.getPartyMeetingId()!=null?partyMeetingDetails.getPartyMeetingId():0l);
@@ -5496,11 +5503,19 @@ class TrainingCampService implements ITrainingCampService{
 		}
 	}
 	
-	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType){
+	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType,String accessType,String accessValue){
 		LOG.debug("Entered into getDocsOfPartyMeetingId");
 		List<CallTrackingVO> finalDocs = new ArrayList<CallTrackingVO>();
 		try{
-			List<Object[]> documentDetails = partyMeetingDocumentDAO.getPartyMeetingDocsOf(partyMeetingId, docSourceType);
+			
+			List<Long> valuesList = new ArrayList<Long>();
+			if(accessType !=null && accessType.trim().equalsIgnoreCase("MP")){
+				valuesList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(Long.valueOf(accessValue));
+			}else{
+				valuesList.add(Long.valueOf(accessValue));
+			}
+			
+			List<Object[]> documentDetails = partyMeetingDocumentDAO.getPartyMeetingDocsOf(partyMeetingId, docSourceType,accessType,valuesList);
 			if(documentDetails!=null && documentDetails.size()>0){
 				
 				for (Object[] objects : documentDetails) {
