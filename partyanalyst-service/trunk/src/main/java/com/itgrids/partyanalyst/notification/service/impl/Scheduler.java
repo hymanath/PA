@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
-import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMobileService;
@@ -32,6 +31,7 @@ public class Scheduler {
 	private IMailService mailService;
 	private ResultStatus rs;
     private IMahaNaduService mahaNaduService;
+    private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
     
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
@@ -104,6 +104,12 @@ public class Scheduler {
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+	
+	public void setCadreRegistrationServiceNew(
+			ICadreRegistrationServiceNew cadreRegistrationServiceNew) {
+		this.cadreRegistrationServiceNew = cadreRegistrationServiceNew;
+	}
+
 	public void runTheBatchJobForEveryDay()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -391,5 +397,45 @@ public class Scheduler {
 		return rs;
 	}
 	
+	public ResultStatus pushTotalTodayTdpCadreDataToIntermediate()
+	{	
+		
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{
+			//System.out.println("pushTotalTodayTdpCadreDataToIntermediate started..");
+			 //long startTime = System.currentTimeMillis();
+			rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediate();
+			//System.out.println("time for saving total tody wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTotalTodayTdpCadreDataToIntermediate "); 
+		}
+		return rs;
+	}
 	
+	public ResultStatus pushTdpCadreDataToIntermediateDateWise()
+	{	
+		
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{
+			 //System.out.println("pushTdpCadreDataToIntermediateDateWise started..");
+			//long startTime = System.currentTimeMillis();
+			rs = cadreRegistrationServiceNew.pushTdpCadreDataToIntermediateDateWise();
+			//System.out.println("time taking for date wise method  is : " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds");
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTdpCadreDataToIntermediateDateWise "); 
+		}
+		return rs;
+	}
 }
