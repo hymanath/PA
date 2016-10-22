@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 @SuppressWarnings("serial")
 public class PMMinuteVO implements Serializable{
 
@@ -21,6 +23,12 @@ public class PMMinuteVO implements Serializable{
 	private Long localElectionBodyId;
 	private Long wardId;
 	private Long locationLevel;
+	private Long divisionId;
+	
+	private List<KeyValueVO> distList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> constList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> manTowDivList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> panWardList = new ArrayList<KeyValueVO>(0);
 	
 	public Long getWardId() {
 		return wardId;
@@ -106,4 +114,36 @@ public class PMMinuteVO implements Serializable{
 	public void setLocationLevel(Long locationLevel) {
 		this.locationLevel = locationLevel;
 	}
+	public List<KeyValueVO> getDistList() {
+		return distList;
+	}
+	public void setDistList(List<KeyValueVO> distList) {
+		this.distList = distList;
+	}
+	public List<KeyValueVO> getConstList() {
+		return constList;
+	}
+	public void setConstList(List<KeyValueVO> constList) {
+		this.constList = constList;
+	}
+	public List<KeyValueVO> getManTowDivList() {
+		return manTowDivList;
+	}
+	public void setManTowDivList(List<KeyValueVO> manTowDivList) {
+		this.manTowDivList = manTowDivList;
+	}
+	public Long getDivisionId() {
+		return divisionId;
+	}
+	public void setDivisionId(Long divisionId) {
+		this.divisionId = divisionId;
+	}
+	public List<KeyValueVO> getPanWardList() {
+		return panWardList;
+	}
+	public void setPanWardList(List<KeyValueVO> panWardList) {
+		this.panWardList = panWardList;
+	}
+	
+	
 }

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -162,9 +163,17 @@ public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String sear
 @SuppressWarnings("unchecked")
 public List<Object[]> getUserAddressDetailsByMinuteId(Long userAddressId){
 	   
-	   Query query = getSession().createSQLQuery(" select model.state_id,model.district_id,model.constituency_id,model.tehsil_id," +
-	   		" model.local_election_body,model.ward,model.panchayat_id from user_address model " +
-	   		" where model.user_address_id = :userAddressId ");
+	   Query query = getSession().createSQLQuery(" select model.state_id as stateId,model.district_id as districtId,model.constituency_id as constituencyId" +
+	   		",model.tehsil_id as tehsilId," +
+	   		" model.local_election_body as localElectionBodyId,model.ward as ward,model.panchayat_id as panchayatId from user_address model " +
+	   		" where model.user_address_id = :userAddressId ")
+	   		.addScalar("stateId",Hibernate.LONG)
+	   		.addScalar("districtId",Hibernate.LONG)
+	   		.addScalar("constituencyId",Hibernate.LONG)
+	   		.addScalar("tehsilId",Hibernate.LONG)
+	   		.addScalar("localElectionBodyId",Hibernate.LONG)
+	   		.addScalar("ward",Hibernate.LONG)
+	   		.addScalar("panchayatId",Hibernate.LONG);
 	   
 	   query.setParameter("userAddressId",userAddressId);
 	   return query.list();
