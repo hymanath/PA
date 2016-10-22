@@ -3015,6 +3015,7 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="partyMeetingMinuteTrackingDAO" ref="partyMeetingMinuteTrackingDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
