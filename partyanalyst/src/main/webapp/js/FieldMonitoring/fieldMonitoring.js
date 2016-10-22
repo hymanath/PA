@@ -371,8 +371,7 @@ $(document).on("click",".manageIssues",function(){
 	   }else{
 		    $("#submitButId").html("");
 	   }
-	   var constituency = $("#issueConstituencyId").val();
-	   if(constituency == 0)       
+	   if(constituencyId == 0)       
 	   {
 		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Constituency</span>");
 		   return;

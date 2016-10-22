@@ -196,6 +196,7 @@ $('.select').chosen({width:'100%'});
 
 $(document).on("click",".applyBtn",function(){
 	onLoadCalls();
+    $("#dtatusDivId").hide();
 });
 
 getCadreRegIssueType();
