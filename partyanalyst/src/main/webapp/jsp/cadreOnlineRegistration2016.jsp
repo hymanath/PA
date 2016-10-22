@@ -236,7 +236,7 @@
                     	<h1 class="text-capital text-center">cadre registration 2016-2018</h1>
                     </div>
                     <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-3 m_top10">
-                        <p class="text-center" style="font-weight:400">Few lines about telugu desam party cadre registration drive Few lines about telugu desam party cadre registration drive Few lines about telugu desam party cadre registration drive Few lines about telugu desam party cadre registration drive </p>
+                       
                     </div>
                 </div>
                 <div class="row m_top20">
@@ -534,13 +534,13 @@
 	</div>
   </div>
   <div class="row">
-       <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
+      <!-- <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
             <label>CONSTITUENCY</label><span style="color:red;">*</span>
 				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                     <select class="select" id="voterConstId" class="form-control">
 					    <option value="0">ALL</option>
 					</select>
-        </div>
+        </div>-->
         <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
               <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
                 <input type="text" class="form-control" id="inpVoterId"/>
@@ -754,7 +754,7 @@
                                 </div>
                             </div>
                         </div>
-					<div id="imgErrDivId" style="color:red;"></div>
+					
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
                             	<div class="imageDiv">
@@ -763,6 +763,7 @@
                                     	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
+								<span id="imgErrDivId" style="color:red;"></span>
                             </div>
 							<div class="col-md-6 col-xs-12 col-sm-6">
 								<div class="imageDiv" style="padding:10px 2px;">
@@ -797,10 +798,11 @@
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="emailDivId" style="display:none;">
-                        	<label class="control-label" for="inputSuccess2">Email Id</label>
+                        	<label class="control-label" for="inputSuccess2">Email Id&nbsp;<span id="emailErrId"></span></label>
                         	<div class="form-group has-feedback formExtra">
                               <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.emailId">
                               <span class="form-control-feedback text-muted" aria-hidden="true">@</span>
+							  
                             </div>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreVoterDivId" style="display:none;">
@@ -932,11 +934,11 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Hamlet</label>
-                            <input type="text" class="form-control"    name="cadreRegistrationVO.prsntAddrsHamlet"/>
+                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsHamlet"/>
                         </div>
                         
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label> State </label>
+                        	<label> State <span style="color:red;">*</span>&nbsp;<span id="stateErrId"></span></label>
                             <select class="select presntAddrCls" id="PrsntStateList" name="cadreRegistrationVO.prsntAddrsStateId" onchange="getDistrictsForStates(this.value,2);">
 								<option value="0">Select State</option>
 								<option value="1">AndhraPradesh</option>
@@ -944,22 +946,22 @@
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>District</label>
+                        	<label>District<span style="color:red;">*</span>&nbsp;<span id="distriErrId"></span></label>
                             <select class="select presntAddrCls" id="PrsntDistrictList" name="cadreRegistrationVO.prsntAddrsDistId" onchange="getConstituenciesForDistricts(this.value,2);">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Constituency</label>
+                        	<label>Constituency<span style="color:red;">*</span>&nbsp;<span id="constErrId"></span></label>
                             <select class="select presntAddrCls" id="PrsntConstutuencyList" name="cadreRegistrationVO.prsntAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,2);">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Mandal/Town/Division</label>
+                        	<label>Mandal/Town/Division<span style="color:red;">*</span>&nbsp;<span id="mandalErrId"></span></label>
                             <select class="select presntAddrCls" id="PrsntMandalList" name="cadreRegistrationVO.prsntAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,2);">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Village/Ward</label>
+                        	<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wardErrId"></span></label>
                             <select class="select presntAddrCls" id="PrsntVillageList" name="cadreRegistrationVO.prsntAddrsVillId">
                             </select>
                         </div>
@@ -968,7 +970,7 @@
                             <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"> Delivery Address  : 
+                        	<h6 class="text-capital"> Membership Card Delivery Address  : 
 								<input id="checkbox7" class="checkbox-custom" name="checkbox-1" type="checkbox">
 								<label for="checkbox7" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Same as primary Addres.&nbsp;&nbsp;</label>
 								<input id="checkbox8" class="checkbox-custom" name="checkbox-2" type="checkbox">
@@ -1001,12 +1003,12 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Hamlet</label>
-									<input type="text" class="form-control "    name="cadreRegistrationVO.workAddrsHamlet"/>
+									<input type="text" class="form-control " name="cadreRegistrationVO.workAddrsHamlet"/>
 								</div>
 								
 							
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label> State </label>
+									<label> State <span style="color:red;">*</span>&nbsp;<span id="wrkSateErrId"></span></label>
 									<select class="select  delvryAdrCls"  id="workStateList" name="cadreRegistrationVO.workAddrsStateId" onchange="getDistrictsForStates(this.value,3);">
 									<option value="0">Select State</option>
 									<option value="1">AndhraPradesh</option>
@@ -1014,22 +1016,22 @@
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>District</label>
+									<label>District<span style="color:red;">*</span>&nbsp;<span id="wrkDistErrId"></span></label>
 									<select class="select  delvryAdrCls"  id="workDistrictList" name="cadreRegistrationVO.workAddrsDistId" onchange="getConstituenciesForDistricts(this.value,3);">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Constituency</label>
+									<label>Constituency<span style="color:red;">*</span>&nbsp;<span id="wrkConstitErrId"></span></label>
 									<select class="select  delvryAdrCls"  id="workConstuencyList" name="cadreRegistrationVO.workAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,3);">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Mandal/Town/Division</label>
+									<label>Mandal/Town/Division<span style="color:red;">*</span>&nbsp;<span id="wrkMadalErrId"></span></label>
 									<select class="select  delvryAdrCls"   id="workMandalList" name="cadreRegistrationVO.workAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,3);">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Village/Ward</label>
+									<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wrkVillageErrId"></span></label>
 									<select class="select  delvryAdrCls"  id="workVillageList" name="cadreRegistrationVO.workAddrsVillId" >
 									</select>
 								</div>
