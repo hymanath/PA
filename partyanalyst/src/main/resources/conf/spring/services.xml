@@ -3568,6 +3568,16 @@
 	 <property name="dataRejectReasonDAO" ref="dataRejectReasonDAO"/>
 	</bean>
 	
+	<bean name="cadreRegistrationServiceNew" class="com.itgrids.partyanalyst.service.impl.CadreRegistrationServiceNew" >
+	   <property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+	   <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO"/>
+	   <property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"/>
+	   <property name="tdpCadreLocationInfoCountDAO" ref="tdpCadreLocationInfoCountDAO"/>
+	   <property name="transactionTemplate" ref="transactionTemplate" />
+	   <property name="constituencyDAO" ref="constituencyDAO" />
+	   <property name="districtDAO" ref="districtDAO" />
+	   <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	</bean>
 </beans>		
 			
 	
