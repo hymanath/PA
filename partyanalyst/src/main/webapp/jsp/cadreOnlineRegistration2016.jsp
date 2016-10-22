@@ -9,11 +9,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cadre Online Registration</title>
-<link href="dist/cadreRegistration/onlineCSS/Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/cadreRegistration/onlineCSS/Assests/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/cadreRegistration/onlineCSS/Assests/css/responsive.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/landingPage/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/landingPage/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
-<!--<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">-->
 <link href="dist/cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/cadreRegistration/dist/css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="dist/cadreRegistration/dist/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -212,25 +211,16 @@
 </g>
 </svg>
 <div class="landingPage">
-<header>
-	<div class="container">
-    	<div class="row">
-        	<div class="col-md-3 col-xs-8 col-xs-offset-2 col-sm-4 col-lg-3 col-sm-offset-0 col-lg-offset-0 col-md-offset-0">
-            	<img src="dist/cadreRegistration/onlineCSS/Assests/img/Logo.png" class="img-responsive" alt="Logo"/>
-            </div>
-        </div>
-    </div>
-</header>
-<section>
+<section style="margin-top:85px;">
 	<div class="headerBlock">
     	<div class="container">
             <div class="row">
-	        	<img src="dist/cadreRegistration/onlineCSS/Assests/img/headerVideoBlock.png" class="videoBlock" alt="Video"/>
+	        	<img src="dist/cadreRegistration/landingPage/img/headerVideoBlock.png" class="videoBlock" alt="Video"/>
                 <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
-                    <img src="dist/cadreRegistration/onlineCSS/Assests/img/CBN.png" class="img-responsive" alt="Chandra Babu Naidu"/>
+                    <img src="dist/cadreRegistration/landingPage/img/CBN.png" class="img-responsive" alt="Chandra Babu Naidu"/>
                 </div>
                 <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 col-md-offse-4 col-sm-offset-4 col-lg-offset-4 col-xs-offset-4">
-                    <img src="dist/cadreRegistration/onlineCSS/Assests/img/NTR.png" class="img-responsive" alt="Chandra Babu Naidu"/>
+                    <img src="dist/cadreRegistration/landingPage/img/NTR.png" class="img-responsive" alt="Chandra Babu Naidu"/>
                 </div>
             </div>
             
@@ -253,7 +243,7 @@
                     <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
                         <div class="registrationblock registerBlockImageB">
                         	<div class="pad_20">
-	                            <img src="dist/cadreRegistration/onlineCSS/Assests/img/renewal.png" alt="renewal Membership"/>
+	                            <img src="dist/cadreRegistration/landingPage/img/renewal.png" alt="renewal Membership"/>
                             </div>
                             <div class="bg_EF pad_10 registerSubBlock">
                             	<div class="row">
@@ -261,7 +251,7 @@
                                     	<h4 class="m_top20 text-capital text-center">required</h4>
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/voterImage.png" class="media-object" alt="Voter Image"/>
+                                                <img src="dist/cadreRegistration/landingPage/img/voterImage.png" class="media-object" alt="Voter Image"/>
                                             </div>
                                             <div class="media-body text-capital">
                                                 <h4 class="m_top10 c_333" style="font-weight:300">Voter ID</h4>
@@ -269,7 +259,7 @@
                                         </div>
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/mobileNo.png" class="media-object" alt="Voter Image"/>
+                                                <img src="dist/cadreRegistration/landingPage/img/mobileNo.png" class="media-object" alt="Voter Image"/>
                                             </div>
                                             <div class="media-body text-capital">
                                                 <h4 class="m_top10 c_333" style="font-weight:300">Mobile Number</h4>
@@ -283,7 +273,7 @@
                     <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
                         <div class="registrationblock registerBlockImageR">
                         	<div class="pad_20">
-	                            <img src="dist/cadreRegistration/onlineCSS/Assests/img/newMembership.png" alt="renewal Membership"/>
+	                            <img src="dist/cadreRegistration/landingPage/img/newMembership.png" alt="renewal Membership"/>
                             </div>
                             <div class="bg_EF pad_10 registerSubBlock">
                             	<div class="row">
@@ -291,7 +281,7 @@
                                     	<h4 class="m_top20 text-capital text-center">required</h4>
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/voterImage.png" class="media-object" alt="Voter Image"/>
+                                                <img src="dist/cadreRegistration/landingPage/img/voterImage.png" class="media-object" alt="Voter Image"/>
                                             </div>
                                             <div class="media-body text-capital">
                                                 <h4 class="m_top10 c_333" style="font-weight:300">Voter ID</h4>
@@ -299,7 +289,7 @@
                                         </div>
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/mobileNo.png" class="media-object" alt="Voter Image"/>
+                                                <img src="dist/cadreRegistration/landingPage/img/mobileNo.png" class="media-object" alt="Voter Image"/>
                                             </div>
                                             <div class="media-body text-capital">
                                                 <h4 class="m_top10 c_333" style="font-weight:300">Mobile Number</h4>
@@ -307,7 +297,7 @@
                                         </div>
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="dist/cadreRegistration/onlineCSS/Assests/img/voterImage.png" class="media-object" alt="Voter Image"/>
+                                                <img src="dist/cadreRegistration/landingPage/img/voterImage.png" class="media-object" alt="Voter Image"/>
                                             </div>
                                             <div class="media-body text-capital">
                                                 <h4 class="c_333" style="font-weight:300">If you dont have voter id can register with family voter id</h4>
@@ -335,22 +325,22 @@
                 <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
                     <div class="registrationBlocks onlineRegistration" >
                         <h2 class="text-capital text-center">online</h2>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/onlineRegister.png" class="img-responsive " alt="OnlineRegister"/>
+                        <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
+                        <img src="dist/cadreRegistration/landingPage/img/onlineRegister.png" class="img-responsive " alt="OnlineRegister" title="Click here to go Online Registration"/>
                     </div>
                 </div>
                 <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
                     <div class="registrationBlocks">
                         <h2 class="text-capital text-center">party office</h2>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/partyOffice.png" class="img-responsive" alt="PartyOffice"/>
+                        <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
+                        <img src="dist/cadreRegistration/landingPage/img/partyOffice.png" class="img-responsive" alt="PartyOffice"/>
                     </div>
                 </div>
                 <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
                     <div class="registrationBlocks">
                         <h2 class="text-capital text-center">tdp agent</h2>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/onlineCSS/Assests/img/tdpAgent.png" class="img-responsive" alt="TdpAgent"/>
+                        <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
+                        <img src="dist/cadreRegistration/landingPage/img/tdpAgent.png" class="img-responsive" alt="TdpAgent"/>
                     </div>
                 </div>
             </div>
@@ -420,19 +410,20 @@
     	<div class="container">
         	<div class="row">
             	<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">
-                	<img src="dist/cadreRegistration/onlineCSS/Assests/img/indiaMap.png" class="img-responsive" alt="indiaMap"/>
+                	<img src="dist/cadreRegistration/landingPage/img/indiaMap.png" class="img-responsive" alt="indiaMap"/>
                 </div>
                 <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40">
                 	<h4 class="text-capital">Track Our TDP Agent In your area</h4>
 				</div>
 				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-                    <select class="m_top40 select">
-                    	<option>Select District</option>
+                    <select class="m_top40 select" id="onlineDistId" onchange="getConstituenciesForDistricts(this.value)">
+                    	<option>Track District</option>
                     </select>
 				</div>
 				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-                    <select class="m_top40 select">
-                    	<option>Select Constituency</option>
+				<span id="onlineConstituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                    <select class="m_top40 select" id="onlineConstId">
+                    	<option>Track Constituency</option>
                     </select>
                     <button class="btn btn-success btnCustom btn-block btn-lg text-capital">find now</button>
                 </div>
@@ -444,7 +435,7 @@
 	<div class="container">
     	<div class="row">
         	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-            	<img src="dist/cadreRegistration/onlineCSS/Assests/img/footerLogo.png" class="img-responsive" alt="logo"/>
+            	<img src="dist/cadreRegistration/landingPage/img/footerLogo.png" class="img-responsive" alt="logo"/>
             	<p class="text-center text-capital">copyright telugu desam party &copy; 2016</p>
             </div>
         </div>
@@ -547,7 +538,7 @@
             <label>CONSTITUENCY</label><span style="color:red;">*</span>
 				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                     <select class="select" id="voterConstId" class="form-control">
-					    <option value="0">Select Constituency</option>
+					    <option value="0">ALL</option>
 					</select>
         </div>
         <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
@@ -1467,8 +1458,7 @@
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
 <!-- online First Page Script -->
-<script src="dist/cadreRegistration/onlineCSS/Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
-<!--<script src="dist/cadreRegistration/onlineCSS/Assests/js/bootstrap.js" type="text/javascript"></script>-->
+<script src="dist/cadreRegistration/landingPage/js/jquery-1.11.3.js" type="text/javascript"></script>
 
 <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript" src="https://wolframhempel.github.io/photobooth-js/photobooth_min.js"></script>
