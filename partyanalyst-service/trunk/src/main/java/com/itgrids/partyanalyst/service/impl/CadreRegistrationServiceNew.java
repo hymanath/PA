@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,11 +18,13 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
+import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfo;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -39,6 +42,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IDistrictDAO districtDAO;
+	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -69,16 +73,139 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
-	
+	public void setTdpCadreDateWiseInfoDAO(
+			ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO) {
+		this.tdpCadreDateWiseInfoDAO = tdpCadreDateWiseInfoDAO;
+	}
 	
 	//Business methods
+	
+	/**
+	  *  Service To get All Assembly Constituencies for AP and Ts and the constituency corresponding parliament Constituency.
+	  */
+	public Map<Long,Long> getAllAssemblyConstsAndItsParliamentConsts(){
+		   Map<Long,Long> acpcMap = new HashMap<Long, Long>(0);
+		   try{
+			    List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstsAndItsParliamentConsts();
+			    if( list != null && list.size() > 0){
+			    	for(Object[] obj : list){
+			    		acpcMap.put(obj[0]!=null?(Long)obj[0]:0l,obj[2]!=null?(Long)obj[2]:0l);
+			    	}
+			    }
+			    
+		  }catch(Exception e){
+			  LOG.error("Exception raised in getAllAssemblyConstsAndItsParliamentConsts() in CadreRegistrationServiceNew class", e);
+		  }
+		  return acpcMap;
+	   }
+	   
+	   
+	 /**
+	  *  Service To get All Assembly Constituencies for AP and Ts and the constituency corresponding District.
+	  */
+	   public Map<Long,Long> getAllASsemblyContsAndItsDistricts(){
+		   Map<Long,Long> constDistrictMap = new HashMap<Long, Long>(0);
+		   try{
+			    List<Object[]> list = constituencyDAO.getAllASsemblyContsAndItsDistricts();
+			    if( list != null && list.size() > 0){
+			    	for(Object[] obj : list){
+			    		constDistrictMap.put(obj[0]!=null?(Long)obj[0]:0l,obj[2]!=null?(Long)obj[2]:0l);
+			    	}
+			    }
+			    
+		  }catch(Exception e){
+			  LOG.error("Exception raised in getAllASsemblyContsAndItsDistricts() in CadreRegistrationServiceNew class", e);
+		  }
+		  return constDistrictMap;
+	   }
+	   
+	   /**
+		*  Service To get All Districts for AP and Ts and the district corresponding State.
+		*/
+	   public Map<Long,Long> getAllDistrictsAndItsStates(){
+		   Map<Long,Long> districtStateMap = new HashMap<Long, Long>(0);
+		   try{
+			    List<Object[]> list = districtDAO.getStateWiseDistrict(1L);
+			    if( list != null && list.size() > 0){
+			    	for(Object[] obj : list){
+			    		Long districtId = obj[0] != null ? (Long)obj[0]:0l;
+			    		if( districtId >= 1l && districtId <= 10l){
+			    			districtStateMap.put(districtId, 36l);
+			    		}else if(districtId >= 11l && districtId <= 23l){
+			    			districtStateMap.put(districtId, 1l);
+			    		}
+			    	}
+			    }
+			    
+		  }catch(Exception e){
+			  LOG.error("Exception raised in getAllDistrictsAndItsStates() in CadreRegistrationServiceNew class", e);
+		  }
+		  return districtStateMap;
+	   }
+	   
+	   /**
+		*  Service To get all locations wise TdpCadre target counts.
+		*/
+	   public Map<String,Long> getTdpCadreTargetCountLocationWise(){
+		   
+		   Map<String,Long> locationTargetMap = new HashMap<String, Long>(0);
+		   try{
+			    List<Object[]> list = tdpCadreTargetCountDAO.getTdpCadreTargetCountLocationWise(4l);
+			    if( list != null && list.size() > 0){
+			    	for(Object[] obj : list){
+			    		Long locationScopeId = obj[0] != null ? (Long)obj[0] : 0l;
+			    		Long locationValue = obj[1] != null ? (Long)obj[1] : 0l;
+			    		String key = locationScopeId + "_" + locationValue;
+			    		locationTargetMap.put(key,obj[2]!=null?(Long)obj[2]:0l);
+			    	}
+			    }
+		  }catch(Exception e){
+			  LOG.error("Exception raised in getTdpCadreTargetCountLocationWise() in CadreRegistrationServiceNew class", e);
+		  }
+		  return locationTargetMap;
+	   }
+	   
+	   /**
+		*  Service To get all locations wise Previous Cadre Count.
+		*/
+	   public Map<String,TdpCadreLocationInfoVO> locationWisePreviousCadreCount(){
+	       
+		   Map<String,TdpCadreLocationInfoVO> finalMap = null;
+		   try{
+			   
+			   List<Object[]> previousCadreList = tdpCadreLocationInfoCountDAO.getAllLocationsTdpCadreCount(3L);
+			   if( previousCadreList != null && previousCadreList.size() > 0){
+				   
+				   finalMap = new HashMap<String, TdpCadreLocationInfoVO>(0);
+				   
+				   for(Object[] obj : previousCadreList){
+					   
+					   Long locationScopeId = obj[0]!=null?(Long)obj[0]:0l;
+					   Long locationValue = obj[1]!=null?(Long)obj[1]:0l;
+					   String key = locationScopeId + "_" + locationValue;
+					   
+					   TdpCadreLocationInfoVO locationVO = new TdpCadreLocationInfoVO();
+					   locationVO.setCadreCount(obj[2] != null ? (Long)obj[2] : 0l);
+					   locationVO.setCadrePercent(obj[3]!= null ? obj[3].toString() : null);
+					   
+					   finalMap.put(key, locationVO);
+				   }
+			   }
+			   
+		   }catch(Exception e) {
+			   LOG.error("Exception raised in locationWisePreviousCadreCount() in CadreRegistrationServiceNew class", e);
+		   }
+		   return finalMap;
+	   }
+	   
+	   
 	/**
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	  *  Pushing tdpcadre data to intermediate tables
 	  *  @since 18-OCTOBER-2016
 	  */
 	public ResultStatus pushTotalTodayTdpCadreDataToIntermediate(){
-		   
+		
 		   ResultStatus rs = null;
 		   try{
 			   
@@ -100,14 +227,14 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   getLocationWiseData("Today",todayDataVO,acpcMap,constDistrictMap,distStateMap,locationTargetMap,previousCadreMap);
 			   finalList.add(todayDataVO);
 			   
-			   long startTime = System.currentTimeMillis();
+			   
+			   //long startTime = System.currentTimeMillis();
 			   rs =  saveTotalTodayTdpCadreDataToIntermediate(finalList);
-			   long stopTime = System.currentTimeMillis();
-			   System.out.println("time for saving is : " + (stopTime - startTime)/1000.0 + " seconds");
+			   //System.out.println("time for saving is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
 			   
 			   
 		  }catch(Exception e){
-			  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in FieldMonitoringService class", e);
+			  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
 		  }
 		   return rs;
 	   }
@@ -124,7 +251,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			     setCorrespondingLevelData("state"      , finalVO , distStateMap , dateType,locationTargetMap,previousCadreMap);
 			   
 		   }catch(Exception e){
-			   LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in FieldMonitoringService class", e);
+			   LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
 		   }
 	   }
 	   
@@ -224,7 +351,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			      
 		   }catch(Exception e){
 			   e.printStackTrace();
-			   LOG.error("Exception raised in getTdpCadredetailsConstituencyWise() in FieldMonitoringService class", e);
+			   LOG.error("Exception raised in getTdpCadredetailsConstituencyWise() in CadreRegistrationServiceNew class", e);
 		   }
 		   return finalList;
 	   }
@@ -319,7 +446,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			     }
 			   
 		   }catch(Exception e){
-			   LOG.error("Exception raised in setCorrespondingLevelData() in FieldMonitoringService class", e);
+			   LOG.error("Exception raised in setCorrespondingLevelData() in CadreRegistrationServiceNew class", e);
 		   }
 	   }
 	   
@@ -343,16 +470,16 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
 				        		
 				        		List<TdpCadreLocationInfoVO> assemblyList = dateTypeVO.getAssemblyList();
-				        		savingService(assemblyList);
+				        		savingService(assemblyList,currentTime);
 				        		
 				        		List<TdpCadreLocationInfoVO> parliamentList = dateTypeVO.getParliamentList();
-				        		savingService(parliamentList);
+				        		savingService(parliamentList,currentTime);
 				        		
 				        		List<TdpCadreLocationInfoVO> districtList = dateTypeVO.getDistrictList();
-				        		savingService(districtList);
+				        		savingService(districtList,currentTime);
 				        		
 				        		List<TdpCadreLocationInfoVO> stateList = dateTypeVO.getStateList();
-				        		savingService(stateList);
+				        		savingService(stateList,currentTime);
 				        		
 				        	}
 			        	}
@@ -363,13 +490,13 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			    });
 				
 			} catch (Exception e) {
-				LOG.error("Exception raised at saveTotalTodayTdpCadreDataToIntermediate", e);
+				LOG.error("Exception raised at CadreRegistrationServiceNew", e);
 				rs.setResultCode(0);
 				rs.setMessage("failure");
 			}
 			return rs;
 		}
-	   public void savingService(List<TdpCadreLocationInfoVO> list){
+	   public void savingService(List<TdpCadreLocationInfoVO> list , Date currentTime){
 	   	
 	   	try{
 				if( list != null && list.size() > 0)
@@ -411,6 +538,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		    			  }
 		    			  
 		    			  info.setType(locationVO.getDateType());
+		    			  info.setInsertedTime(currentTime);
 		    			  
 		    			  tdpCadreLocationInfoDAO.save(info);
 			    	 }
@@ -422,111 +550,368 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			}
 	   }
 	   
-	   //
-	   public Map<Long,Long> getAllAssemblyConstsAndItsParliamentConsts(){
-		   Map<Long,Long> acpcMap = new HashMap<Long, Long>(0);
-		   try{
-			    List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstsAndItsParliamentConsts();
-			    if( list != null && list.size() > 0){
-			    	for(Object[] obj : list){
-			    		acpcMap.put(obj[0]!=null?(Long)obj[0]:0l,obj[2]!=null?(Long)obj[2]:0l);
-			    	}
-			    }
-			    
-		  }catch(Exception e){
-			  LOG.error("Exception raised in getAllAssemblyConstsAndItsParliamentConsts() in FieldMonitoringService class", e);
-		  }
-		  return acpcMap;
-	   }
 	   
 	   
-	   public Map<Long,Long> getAllASsemblyContsAndItsDistricts(){
-		   Map<Long,Long> constDistrictMap = new HashMap<Long, Long>(0);
-		   try{
-			    List<Object[]> list = constituencyDAO.getAllASsemblyContsAndItsDistricts();
-			    if( list != null && list.size() > 0){
-			    	for(Object[] obj : list){
-			    		constDistrictMap.put(obj[0]!=null?(Long)obj[0]:0l,obj[2]!=null?(Long)obj[2]:0l);
-			    	}
-			    }
-			    
-		  }catch(Exception e){
-			  LOG.error("Exception raised in getAllASsemblyContsAndItsDistricts() in FieldMonitoringService class", e);
-		  }
-		  return constDistrictMap;
-	   }
+	   /**
+		  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+		  *  Pushing tdpcadre data to intermediate tables date wise.
+		  *  @since 18-OCTOBER-2016
+		  */
 	   
-	   
-	   public Map<Long,Long> getAllDistrictsAndItsStates(){
-		   Map<Long,Long> districtStateMap = new HashMap<Long, Long>(0);
-		   try{
-			    List<Object[]> list = districtDAO.getStateWiseDistrict(1L);
-			    if( list != null && list.size() > 0){
-			    	for(Object[] obj : list){
-			    		Long districtId = obj[0] != null ? (Long)obj[0]:0l;
-			    		if( districtId >= 1l && districtId <= 10l){
-			    			districtStateMap.put(districtId, 36l);
-			    		}else if(districtId >= 11l && districtId <= 23l){
-			    			districtStateMap.put(districtId, 1l);
-			    		}
-			    	}
-			    }
-			    
-		  }catch(Exception e){
-			  LOG.error("Exception raised in getAllDistrictsAndItsStates() in FieldMonitoringService class", e);
-		  }
-		  return districtStateMap;
-	   }
-	   public Map<String,Long> getTdpCadreTargetCountLocationWise(){
-		   
-		   Map<String,Long> locationTargetMap = new HashMap<String, Long>(0);
-		   try{
-			    List<Object[]> list = tdpCadreTargetCountDAO.getTdpCadreTargetCountLocationWise(4l);
-			    if( list != null && list.size() > 0){
-			    	for(Object[] obj : list){
-			    		Long locationScopeId = obj[0] != null ? (Long)obj[0] : 0l;
-			    		Long locationValue = obj[1] != null ? (Long)obj[1] : 0l;
-			    		String key = locationScopeId + "_" + locationValue;
-			    		locationTargetMap.put(key,obj[2]!=null?(Long)obj[2]:0l);
-			    	}
-			    }
-		  }catch(Exception e){
-			  LOG.error("Exception raised in getAllASsemblyContsAndItsDistricts() in FieldMonitoringService class", e);
-		  }
-		  return locationTargetMap;
-	   }
-	   public Map<String,TdpCadreLocationInfoVO> locationWisePreviousCadreCount(){
-	       
-		   Map<String,TdpCadreLocationInfoVO> finalMap = null;
-		   try{
-			   
-			   List<Object[]> previousCadreList = tdpCadreLocationInfoCountDAO.getAllLocationsTdpCadreCount(3L);
-			   if( previousCadreList != null && previousCadreList.size() > 0){
+		public ResultStatus pushTdpCadreDataToIntermediateDateWise(){
+			
+			   ResultStatus rs = null;
+			   try{
 				   
-				   finalMap = new HashMap<String, TdpCadreLocationInfoVO>(0);
+				   Map<Long,Long> acpcMap = getAllAssemblyConstsAndItsParliamentConsts();
+				   Map<Long,Long> constDistrictMap = getAllASsemblyContsAndItsDistricts();
+				   Map<Long,Long> distStateMap = getAllDistrictsAndItsStates();
+				   Map<String,Long> locationTargetMap = getTdpCadreTargetCountLocationWise();
 				   
-				   for(Object[] obj : previousCadreList){
-					   
-					   Long locationScopeId = obj[0]!=null?(Long)obj[0]:0l;
-					   Long locationValue = obj[1]!=null?(Long)obj[1]:0l;
-					   String key = locationScopeId + "_" + locationValue;
-					   
-					   TdpCadreLocationInfoVO locationVO = new TdpCadreLocationInfoVO();
-					   locationVO.setCadreCount(obj[2] != null ? (Long)obj[2] : 0l);
-					   locationVO.setCadrePercent(obj[3]!= null ? obj[3].toString() : null);
-					   
-					   finalMap.put(key, locationVO);
-				   }
-			   }
-			   
-		   }catch(Exception e) {
-			   LOG.error("Exception raised in locationWisePreviousCadreCount() in FieldMonitoringService class", e);
+				   TdpCadreLocationInfoVO finalVO = new TdpCadreLocationInfoVO();
+				  
+				   geTdpCadreDataByDateAndLocation(finalVO,acpcMap,constDistrictMap,distStateMap,locationTargetMap);
+				   			   
+				   
+				   //long startTime = System.currentTimeMillis();
+				   rs =  saveTdpCadreDataToIntermediateDateWise(finalVO);
+				   //System.out.println("time for saving date wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+				   
+			  }catch(Exception e){
+				  LOG.error("Exception raised in pushTdpCadreDataToIntermediateDateWise() in CadreRegistrationServiceNew class", e);
+			  }
+			   return rs;
 		   }
-		   return finalMap;
-	   }
-	   public Double calcPercantage(Long subCount,Long totalCount){
-			Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			return d;
-	  }
+		   
+		   
+		   public void geTdpCadreDataByDateAndLocation(TdpCadreLocationInfoVO finalVO,Map<Long,Long> acpcMap,Map<Long,Long> constDistrictMap,Map<Long,Long> distStateMap,Map<String,Long> locationTargetMap){
+			  
+			   try{ 
+				     Map<String,Map<Long,TdpCadreLocationInfoVO>> constituencyMap =  geTdpCadreDataByDateAndConstituency(locationTargetMap);
+				     Map<String,Map<Long,TdpCadreLocationInfoVO>> parliamentMap = setDataDateWise("parliament", constituencyMap , acpcMap  , locationTargetMap );
+				     Map<String,Map<Long,TdpCadreLocationInfoVO>> districtMap = setDataDateWise("district"  , constituencyMap , constDistrictMap , locationTargetMap );
+				     Map<String,Map<Long,TdpCadreLocationInfoVO>> stateMap = setDataDateWise("state" , districtMap , distStateMap , locationTargetMap );
+				     
+				     finalVO.setAssemblyList( getList(constituencyMap) );
+				     finalVO.setParliamentList( getList(parliamentMap) );
+				     finalVO.setDistrictList( getList(districtMap) );
+				     finalVO.setStateList( getList(stateMap) );
+				     
+			   }catch(Exception e){
+				   LOG.error("Exception raised in geTdpCadreDataByDateAndLocation() in CadreRegistrationServiceNew class", e);
+			   }
+		   }
+		   
+		   public Map<String,Map<Long,TdpCadreLocationInfoVO>> geTdpCadreDataByDateAndConstituency(Map<String,Long> locationTargetMap){
+			   
+			   Map<String,Map<Long,TdpCadreLocationInfoVO>> finalMap = new LinkedHashMap<String, Map<Long,TdpCadreLocationInfoVO>>(0);
+			   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			   try{  
+				   
+				     //all Records
+				      List<Object[]> constTotalList = tdpCadreDAO.getTdpCadreDataByDateAndConstituency();
+				      
+				      if(constTotalList != null && constTotalList.size() > 0)
+				      {  
+				    	  for(Object[] obj : constTotalList )
+				    	  {   
+				    		  if(obj[0]!=null)//surveydate
+				    		  {
+				    			  String surveydate = obj[0].toString();
+				    			  Map<Long,TdpCadreLocationInfoVO> dateMap = finalMap.get(surveydate);
+				    			  if(dateMap == null)
+				    			  {
+					    			  dateMap = new LinkedHashMap<Long, TdpCadreLocationInfoVO>(0);
+					    			  finalMap.put(surveydate, dateMap);
+					    		  }
+				    			  dateMap = finalMap.get(surveydate);
+				    			  
+				    			  if(obj[1]!=null)//constituencyId
+				    			  {  
+				    				  TdpCadreLocationInfoVO constVO = dateMap.get((Long)obj[1]);
+				    				  if(constVO == null)
+				    				  {  
+				    					  constVO = new TdpCadreLocationInfoVO();
+				    					  
+				    					  constVO.setSurveyDateStr(surveydate);
+				    					  constVO.setSurveyDate(sdf.parse(surveydate));
+				    					  constVO.setId((Long)obj[1]);
+				    					  constVO.setLocationScopeId(4L);
+				    					  
+				    					  constVO.setCadre2016Records(obj[2]!=null ? (Long)obj[2]:0l);
+							    		  constVO.setCadre2016NewRecords(constVO.getCadre2016Records());
+							    		  
+							    		  dateMap.put((Long)obj[1], constVO);
+				    				  }
+				    			  }
+				    		 
+				    		  }
+				    	  }
+				      }
+				      
+				      //Renewal Records
+				      List<Object[]> constRenewalList = tdpCadreDAO.getRenewalTdpCadreDataByDateAndConstituency();
+				      if(constRenewalList != null && constRenewalList.size() > 0)
+				      {
+				    	  for( Object[] obj : constRenewalList)
+				    	  {  
+				    		  if( obj[0] != null && obj[1] != null)
+				    		  { 
+				    			  Map<Long,TdpCadreLocationInfoVO> dateMap = finalMap.get(obj[0].toString());
+				    			  if(dateMap != null)
+				    			  {
+				    				  TdpCadreLocationInfoVO constVO = dateMap.get((Long)obj[1]);
+				    				  if(constVO != null)
+				    				  {
+				    					 constVO.setCadre2016RenewalRecords(obj[2]!= null ? (Long)obj[2] : 0l );
+				    					 constVO.setCadre2016NewRecords( constVO.getCadre2016Records() - constVO.getCadre2016RenewalRecords() );
+				    				  }
+					    		  }
+				    		  }
+				    	  }
+				      }
+				      
+				      //Calculating percantages.
+				      calculateCadrePercantage(finalMap,locationTargetMap);
+				      
+			   }catch(Exception e){
+				   e.printStackTrace();
+				   LOG.error("Exception raised in geTdpCadreDataByDateAndConstituency() in CadreRegistrationServiceNew class", e);
+			   }
+			   return finalMap;
+		   }
+	   
+		   public Map<String,Map<Long,TdpCadreLocationInfoVO>> setDataDateWise(String scope,Map<String,Map<Long,TdpCadreLocationInfoVO>> dataDateMap ,Map<Long,Long> constParliamentMap,Map<String,Long> locationTargetMap){
+			   
+			     Map<String,Map<Long,TdpCadreLocationInfoVO>> returnDateMap = null; 
+			     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			     
+			   try{
+				   
+				   if(dataDateMap != null && dataDateMap.size() > 0)
+				    { 
+					     returnDateMap = new LinkedHashMap<String, Map<Long,TdpCadreLocationInfoVO>>(0);
+					     
+				    	 for(String surveydate : dataDateMap.keySet())
+				    	 {  
+				    		 if(surveydate!=null)
+				    		 { 
+				    			 Map<Long,TdpCadreLocationInfoVO> constMap = dataDateMap.get(surveydate);
+				    			 
+				    			 //check date exits
+				    			  Map<Long,TdpCadreLocationInfoVO> parliamentMap = returnDateMap.get(surveydate);
+				    			  if(parliamentMap == null)
+				    			  {
+				    				  parliamentMap = new LinkedHashMap<Long, TdpCadreLocationInfoVO>(0);
+				    				  returnDateMap.put(surveydate, parliamentMap);
+					    		  }
+				    			  parliamentMap = returnDateMap.get(surveydate);
+				    			  
+				    			 //check parliamentId exists.
+					    		  if(constMap != null && constMap.size() > 0)
+					    		  {
+					    			  for(Long constituencyId : constMap.keySet())
+					    			  {  
+					    				  if(constituencyId != null && constituencyId > 0l)
+					    				  {
+					    					  TdpCadreLocationInfoVO constVO = constMap.get(constituencyId);
+					    					  
+					    					  Long parliamentId = constParliamentMap.get(constituencyId);
+					    					  if(parliamentId != null && parliamentId > 0l)
+					    					  {
+					    						  TdpCadreLocationInfoVO parliamentVO = parliamentMap.get(parliamentId);
+					    						  if(parliamentVO == null){
+					    							  
+					    							  parliamentVO = new TdpCadreLocationInfoVO();
+					    							  parliamentVO.setSurveyDateStr(surveydate);
+					    							  parliamentVO.setSurveyDate(sdf.parse(surveydate));
+					    							  parliamentVO.setId(parliamentId);
+					    							  if(scope.equalsIgnoreCase("parliament")){
+					    								  parliamentVO.setLocationScopeId(10L);
+							    					  }else if(scope.equalsIgnoreCase("district")){
+							    						  parliamentVO.setLocationScopeId(3L);
+							    					  }else if(scope.equalsIgnoreCase("state")){
+							    						  parliamentVO.setLocationScopeId(2L);
+							    					  }
+					    							  parliamentMap.put(parliamentId,parliamentVO);
+					    						  }
+					    						  parliamentVO = parliamentMap.get(parliamentId);
+					    						  
+					    						  parliamentVO.setCadre2016Records(parliamentVO.getCadre2016Records() + constVO.getCadre2016Records() );
+					    						  parliamentVO.setCadre2016RenewalRecords( parliamentVO.getCadre2016RenewalRecords() + constVO.getCadre2016RenewalRecords());
+					    						  parliamentVO.setCadre2016NewRecords(parliamentVO.getCadre2016NewRecords() + constVO.getCadre2016NewRecords() );
+					    					  }
+					    				  }
+					    			  }
+					    		  }
+				    		  }
+				    	 }
+				    	 
+				    	//Calculating percantages.
+					      calculateCadrePercantage(returnDateMap,locationTargetMap);
+				     }
+				   
+			   }catch(Exception e){
+				   LOG.error("Exception raised in setCorrespondingLevelData() in CadreRegistrationServiceNew class", e);
+			   }
+			   return returnDateMap;
+		   }
+		   
+		   public void calculateCadrePercantage(Map<String,Map<Long,TdpCadreLocationInfoVO>> finalMap,Map<String,Long> locationTargetMap){
+			   
+			   try{	
+				      if( finalMap != null && finalMap.size() > 0)
+				      {
+				    	  for( String surveydate : finalMap.keySet())
+				    	  {
+				    		  Map<Long,TdpCadreLocationInfoVO> constMap = finalMap.get(surveydate);
+				    		  if(constMap != null && constMap.size() > 0)
+				    		  {
+				    			  for(Long constituencyId : constMap.keySet())
+				    			  {
+				    				  TdpCadreLocationInfoVO constVO = constMap.get(constituencyId);
+				    				  if(constVO != null)
+				    				  {  
+				    					  Long targetCount = locationTargetMap.get(constVO.getLocationScopeId() + "_" + constVO.getId());
+				    					  if (targetCount != null && targetCount > 0l);
+				    					  {
+				    						  constVO.setCadre2016RecordsPerc( calcPercantage( constVO.getCadre2016Records() , targetCount ) );  
+				    					  }
+				    					  
+				    					  if(constVO.getCadre2016Records() != null && constVO.getCadre2016Records() > 0l)
+				    					  {
+				    						  constVO.setCadre2016RenewalRecordsPerc( calcPercantage( constVO.getCadre2016RenewalRecords() , constVO.getCadre2016Records()) );
+				    						  constVO.setCadre2016NewRecordsPerc( calcPercantage( constVO.getCadre2016NewRecords() , constVO.getCadre2016Records()) );
+						    			  }
+				    				  }
+				    			  }
+				    		  }
+				    	  }
+				      }
+				   
+			  }catch(Exception e){
+				  LOG.error("Exception raised in calculateCadrePercantage() in CadreRegistrationServiceNew class", e);
+			  }
+		   }
+		   
+		   List<TdpCadreLocationInfoVO> getList(Map<String,Map<Long,TdpCadreLocationInfoVO>> constituencyMap){
+			   List<TdpCadreLocationInfoVO> finalList = null;
+			  try{
+				  
+				  if(constituencyMap != null && constituencyMap.size() > 0){
+			    	 finalList = new ArrayList<TdpCadreLocationInfoVO>(0);
+			    	 for(Map.Entry<String,Map<Long,TdpCadreLocationInfoVO>> entry : constituencyMap.entrySet()){  
+			    	    if(entry.getValue() != null && entry.getValue().size() > 0){
+			    	    	finalList.addAll(entry.getValue().values());
+			    	    }
+			    	 }
+			     }
+			  }catch(Exception e){
+				  LOG.error("Exception raised in getList() in CadreRegistrationServiceNew class", e);
+			  }
+			  return finalList;
+		   }
+		   
+		   public ResultStatus saveTdpCadreDataToIntermediateDateWise(final TdpCadreLocationInfoVO finalVO ){
+			   
+				final ResultStatus rs = new ResultStatus();
+				final DateUtilService dateUtilService = new DateUtilService();
+				
+				try {
+					
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				        	
+				        	if(finalVO != null)
+				        	{
+				        		
+				        		int deletedRecords = tdpCadreDateWiseInfoDAO.deleteAllRecords();
+							    int count = tdpCadreDateWiseInfoDAO.setPrimaryKeyAutoIncrementToOne();
+							    
+							    Date currentTime = dateUtilService.getCurrentDateAndTime();
+							   
+					        		
+				        		List<TdpCadreLocationInfoVO> assemblyList = finalVO.getAssemblyList();
+				        		savingServiceDateWise(assemblyList,currentTime);
+				        		
+				        		List<TdpCadreLocationInfoVO> parliamentList = finalVO.getParliamentList();
+				        		savingServiceDateWise(parliamentList,currentTime);
+				        		
+				        		List<TdpCadreLocationInfoVO> districtList = finalVO.getDistrictList();
+				        		savingServiceDateWise(districtList,currentTime);
+				        		
+				        		List<TdpCadreLocationInfoVO> stateList = finalVO.getStateList();
+				        		savingServiceDateWise(stateList,currentTime);
+				        	}
+				        	   
+					          rs.setResultCode(1);
+					          rs.setMessage("success");
+				         }
+				    });
+					
+				} catch (Exception e) {
+					LOG.error("Exception raised at saveTdpCadreDataToIntermediateDateWise() in CadreRegistrationServiceNew service", e);
+					rs.setResultCode(0);
+					rs.setMessage("failure");
+				}
+				return rs;
+			}
+		   public void savingServiceDateWise(List<TdpCadreLocationInfoVO> list , Date currentTime){
+		   	
+		   	try{
+					if( list != null && list.size() > 0)
+					{
+						for(TdpCadreLocationInfoVO locationVO : list  )
+						{
+				    		  if(locationVO != null)
+				    		  {
+				    			  
+				    			  TdpCadreDateWiseInfo info = new TdpCadreDateWiseInfo();
+				    			  
+				    			  info.setSurveyDate(locationVO.getSurveyDate());
+				    			  
+				    			  info.setLocationScopeId(locationVO.getLocationScopeId());
+				    			  info.setLocationValue(locationVO.getId());
+				    			  
+				    			  if( locationVO.getCadre2016Records() != null && locationVO.getCadre2016Records() > 0l){
+				    				  info.setCadre2016(locationVO.getCadre2016Records()); 
+				    			  }
+				    			  if(locationVO.getCadre2016RecordsPerc() != null && locationVO.getCadre2016RecordsPerc() > 0l){
+				    				  info.setCadre2016Percent(locationVO.getCadre2016RecordsPerc().toString());
+				    			  }
+				    			  
+				    			  if( locationVO.getCadre2016RenewalRecords() != null && locationVO.getCadre2016RenewalRecords() > 0l){
+				    				  info.setRenewalCadre(locationVO.getCadre2016RenewalRecords()); 
+				    			  }
+				    			  if(locationVO.getCadre2016RenewalRecordsPerc() != null && locationVO.getCadre2016RenewalRecordsPerc() > 0l){
+				    				  info.setRenewalCadrePercent(locationVO.getCadre2016RenewalRecordsPerc().toString());
+				    			  }
+				    			  
+				    			  if( locationVO.getCadre2016NewRecords() != null && locationVO.getCadre2016NewRecords() > 0l){
+				    				  info.setNewCadre(locationVO.getCadre2016NewRecords()); 
+				    			  }
+				    			  if(locationVO.getCadre2016NewRecordsPerc() != null && locationVO.getCadre2016NewRecordsPerc() > 0l){
+				    				  info.setNewCadrePercent(locationVO.getCadre2016NewRecordsPerc().toString());
+				    			  }
+				    			  
+				    			  info.setInsertedTime(currentTime);
+				    			  
+				    			  tdpCadreDateWiseInfoDAO.save(info);
+				    		  }
+				    	 }
+					}
+		   		
+				}catch(Exception e){
+					LOG.error("Exception raised at savingServiceDateWise", e);
+					throw new RuntimeException("Exception At savingServiceDateWise..");
+				}
+		   }
+		   
+		   
+		   //Calculating percantage.
+		   public Double calcPercantage(Long subCount,Long totalCount){
+				Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				return d;
+		  }
 	
 }
