@@ -21,15 +21,15 @@ public interface IPartyMeetingService {
 	public String deleteMeetingAtrPoint(final Long atrId,final Long updatedBy);
 	public String deletePartyMeetingDocument(Long docId);
 	public PartyMeetingVO getAtrPointsForAMeeting(Long partyMeeingId);
-	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId);
-	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId);
+	public PartyMeetingVO getDocumentDetailsForAMeeting(Long partyMeetingId,String accessType,String accessValue);
+	public PartyMeetingVO getTheMinutePointsForAMeeting(Long meetingId,String accessType,String accessValue);
 	//public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long locationLevel, List<Long> locationIds, String startDateStr, String endDateStr);
 	public PartyMeetingSummaryVO getMeetingSummaryForLocation(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr,Long meetingLevel);
 	public List<PartyMeetingSummaryVO> getAttendentsInformation(List<Long> partyMeetingIds);
 	public List<PartyMeetingSummaryVO> getAtrAndMOMOfMeetings(List<Long> partyMeetingIds);
 	public PartyMeetingSummaryVO getMeetingSummaryForLocationCumulative(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr,Long meetingLevel);
 	public PartyMeetingSummaryVO getMeetingSummaryForGrouping(Long typeOfMeeting,Long locationLevel,Long stateId,Long distId,Long constId,Long manTowDivId,Long wardPanId,String startDateStr,String endDateStr,String groupingLocationType,Long meetingLevel);
-	public PartyMeetingVO getSummaryForAMeeting(Long meetingId,String type);
+	public PartyMeetingVO getSummaryForAMeeting(Long meetingId,String type,String accessType,String accessValue);
 	public MeetingTrackingVO getPartyMeetingsDetailsForCadreByCommitteeLevel(Long tdpCadreId,String searchTypeStr , 
 			 Long committeeLevelId,Long committeeLevelValue,String formDateStr,String toDateStr,String isFirst,int firstRecord,int maxResult);
 	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);

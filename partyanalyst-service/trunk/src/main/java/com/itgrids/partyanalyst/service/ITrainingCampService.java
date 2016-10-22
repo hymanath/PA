@@ -78,12 +78,12 @@ public interface ITrainingCampService {
 	public TrainingCampScheduleVO getUpComingBatchDetails(String startdateStr,String endDateStr);
 	public MeetingVO getUserAccessLevelAndLocations(Long userId);
 	public List<TraingCampCallerVO> getScheduleAvailableCallsCountLocationWiseInfo(Long campId,Long programId,Long scheduleId,String type);
-	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId);
+	public PartyMeetingVO getPartyMeetingMinutesAtrDetails(Long partyMeeingId,String accesstype,String accessValue);
 	public String saveFilePaths(Long partyMeetingId,String fileType, String documentType, String filePath, Long userId, String fileName);
 	public List<CadreDetailsVO> getTdpCadreDetailsforASchedule(List<Long> schedulesList,Long batchId);
 	public TrainingCampVO getAdminCallersWiseOverView(Long userId,Long campId,Long programId,Long scheduleId,Long batchId,boolean isAdmin);
 	public TrainingCampVO getCallerWiseOverView(List<Long> callerIdsList);
-	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType);
+	public List<CallTrackingVO> getDocsOfPartyMeetingId(Long partyMeetingId, String docSourceType,String accessType,String accessValue);
 	public CadreDetailsVO getDetailsForACadre(Long tdpCadreId,Long batchId);
 	public CadreDetailsVO getAllStatusForCadre();
 	public CadreDetailsVO saveDetailsOfCadre(final Long tdpCadreId,final Long batchId,final List<String> achieveList,final List<SimpleVO> goalsList,final Long leaderShipLevelId,final Long communicationSkillsId,final Long leaderShipSkillsId,final Long healthId,final String comments,final Long userId,final String smartPhoneId,final String whatsappId,final String whatsappShareId,final String facebookId,final List<String> healthAttachments,final List<String> docs,final List<SimpleVO> feedBackCategories);
