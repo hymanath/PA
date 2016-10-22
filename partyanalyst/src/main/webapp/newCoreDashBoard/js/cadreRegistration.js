@@ -2495,3 +2495,4 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		} 
 		var today = dd+'/'+mm+'/'+yyyy;
 		return today;
+	}  
