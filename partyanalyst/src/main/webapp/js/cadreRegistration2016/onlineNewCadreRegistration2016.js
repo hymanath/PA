@@ -898,6 +898,7 @@ function renMemberDetails(){
 	  }
 }
 //});
+
   
 function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 	//eachTimeClearFields();
@@ -1120,7 +1121,7 @@ function getVoterDetails(){
 	var voterId=$("#inpVoterId").val();
 	
 	 var jsObj={
-		// constituencyId:constituencyId,
+		//constituencyId:constituencyId,
 		 VoterCardNumber:voterId
 	 }
 	 $.ajax({
@@ -1286,12 +1287,12 @@ function confirmOtpDetails()
 			   }, 1500);
 		*/	   
 	
-	var mobileNo=$("#hiddenMblNo").val();
-	//var tdpCadreId=$("#tdpCadreId").val();
+	//var mobileNo=$("#hiddenMblNo").val();
+	var tdpCadreId=$("#tdpCadreId").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
-		mobileNumber:mobileNo,
-		//tdpCadreId:tdpCadreId,
+		//mobileNumber:mobileNo,
+		tdpCadreId:tdpCadreId,
 		 otpTxt:otp
 		
 	 }
@@ -1383,10 +1384,12 @@ function renwalOtpDetails()
 	  
 	*/
 	
-	var mobileNo=$("#hiddenMblNo").val();
+	//var mobileNo=$("#hiddenMblNo").val();
+	var tdpCadreId=$("#tdpCadreId").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
-		 mobileNumber:mobileNo,
+		 //mobileNumber:mobileNo,
+		 tdpCadreId:tdpCadreId,
 		 otpTxt:otp
 		
 	 }
@@ -1423,8 +1426,109 @@ function renwalOtpDetails()
 	 
 	 var numericExpression = /^[0-9]+$/;
         if (!mobileNumber.match(numericExpression) && mobileNumber!= "") {
-            $("#renErrDivId").html("Enter valid mobileNo");
+            $("#renErrDivId").html("Enter valid mobileNo.");
             return false;
         }
 		return true;
  }
+
+  function mailValidation()
+  {
+	 var  emailTxt=$("#emailId").val();
+	 
+	 var mailExpression = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+    if (!emailTxt.match(mailExpression)) {
+		$("#emailErrId").html("<span style='color:red;'>Please Enter Valid email address</span>");
+		return false;
+	}else{
+	  $("#emailErrId").html("");
+	}
+  return true;
+  }
+
+function addressFieldsValidation()
+{
+	var state=$("#PrsntStateList").val();
+	var district=$("#PrsntDistrictList").val();
+	var constituency=$("#PrsntConstutuencyList").val();
+	var mandal=$("#PrsntMandalList").val();
+	var village=$("#PrsntVillageList").val();
+	var workState=$("#workStateList").val();
+	var workDistrict=$("#workDistrictList").val();
+	var workConstituency=$("#workConstuencyList").val();
+	var workMandal=$("#workMandalList").val();
+	var workVillage=$("#workVillageList").val();
+	
+	if(state == 0)
+	{
+		$("#stateErrId").html("<span style='color:red;'>Please select state</span>");
+		return false;
+	}else{
+		$("#stateErrId").html("");
+	}
+	if(district == 0)
+	{
+		$("#distriErrId").html("<span style='color:red;'>Please select District</span>");
+		return false;
+	}else{
+		$("#distriErrId").html("");
+	}
+	if(constituency == 0)
+	{
+		$("#constErrId").html("<span style='color:red;'>Please select Constituency</span>");
+		return false;
+	}else{
+		$("#constErrId").html("");
+	}
+	if(mandal == 0)
+	{
+		$("#mandalErrId").html("<span style='color:red;'>Please select Mandal/Town/Division</span>");
+		return false;
+	}else{
+		$("#mandalErrId").html("");
+	}
+	if(village == 0)
+	{
+		$("#wardErrId").html("<span style='color:red;'>Please select Village/Ward</span>");
+		return false;
+	}else{
+		$("#wardErrId").html("");
+	}
+	if(workState == 0)
+	{
+		$("#wrkSateErrId").html("<span style='color:red;'>Please select State</span>");
+		return false;
+	}else{
+		$("#wrkSateErrId").html("");
+	}
+	if(workDistrict == 0)
+	{
+		$("#wrkDistErrId").html("<span style='color:red;'>Please select State</span>");
+		return false;
+	}else{
+		$("#wrkDistErrId").html("");
+	}
+	if(workConstituency == 0)
+	{
+		$("#wrkConstitErrId").html("<span style='color:red;'>Please select State</span>");
+		return false;
+	}else{
+		$("#wrkConstitErrId").html("");
+	}
+	if(workMandal == 0)
+	{
+		$("#wrkMadalErrId").html("<span style='color:red;'>Please select State</span>");
+		return false;
+	}else{
+		$("#wrkMadalErrId").html("");
+	}
+	if(workVillage == 0)
+	{
+		$("#wrkVillageErrId").html("<span style='color:red;'>Please select State</span>");
+		return false;
+	}else{
+		$("#wrkVillageErrId").html("");
+	}
+	return true;
+}  
+  
