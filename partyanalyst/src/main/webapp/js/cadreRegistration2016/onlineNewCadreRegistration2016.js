@@ -654,7 +654,7 @@ $(document).on("change","#boothsList",function(){
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
-	 //alert(333);
+	// alert(333);
 	 $.ajax({
 		 type:'GET',
 		 url: 'getRegistrationPersonDetailsAction.action',
@@ -949,7 +949,7 @@ function getCadreDetailsForRelativeCadre(type){
 		 cadreId:$("#tdpCdrIdR").val(),
 		 status:$("#stusIdR").val()
 	 }
-	 //alert(222);
+	// alert(222);
 	$.ajax({          
 		type : 'GET',    
 		url : 'getRegistrationPersonDetailsAction.action',  
@@ -1374,14 +1374,15 @@ $(document).on("click",".searchChkboxClsR",function(){
 
 function renwalOtpDetails()
 {	
+	/*
 	  $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..</span>");
 	   setTimeout(function(){
 		   $("#memChckBoxModalId").modal('hide');
 			renMemberDetails();
 		   }, 1500);
 	  
+	*/
 	
-	/*
 	var mobileNo=$("#hiddenMblNo").val();
 	var otp=$("#otpInputId").val();
 	 var jsObj={
@@ -1406,7 +1407,7 @@ function renwalOtpDetails()
 			   }, 1500);
 	   }
 });
-*/
+
 }
  function validFieldValues()
  {
