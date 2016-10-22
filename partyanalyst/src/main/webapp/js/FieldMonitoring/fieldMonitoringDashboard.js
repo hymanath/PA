@@ -253,6 +253,7 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count){
 	$("#statusWiseDetailsImgId").show();
 	$("#dtatusDivId").show();
 	$("#issueTypeHeadingId").html(issueTypeStr.split("-")[0]+" - "+count);
+	$("#hiddenIssueStatusId").val(issueStatus);
 	var issueType = issueTypeStr.split("-")[1];
 	
 	var dates = $(".singleDate").val();
@@ -363,8 +364,9 @@ $(document).on("click",".issuesBtn",function(){
 	$("#hiddenTabUserInfoId").val(tabUserInfoId);
 	$("#hiddenVendorId").val(vendorId);
 	$("#hiddenConstituencyId").val(constituencyId);
+	var issueStatus = $("#hiddenIssueStatusId").val();
 	
-	getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
+	getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatus);
 	getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
 	getConstituencyByVendor();
     $("#issuesModal").modal('show');
@@ -581,8 +583,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 	   }else{
 		    $("#submitButId").html("");
 	   }
-	   var constituency = $("#issueConstituencyId").val();
-	   if(constituency == 0)       
+	   if(constituencyId == 0)       
 	   {
 		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Constituency</span>");
 		   return;
