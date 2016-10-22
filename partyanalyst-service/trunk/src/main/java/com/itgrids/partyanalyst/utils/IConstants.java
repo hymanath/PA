@@ -1180,4 +1180,5 @@ public interface IConstants {
 	public static final Long DAY_WISE_TS_TARGET_REGISTRATIONS_COUNT = 350000L; 
 	public static final Long CADRE_REGISTRATION_2016_PUBLICATION_ID = 22L;
 	public static final Long  PRESENT_CADRE_ENROLLMENT_YEAR = 4L;
+	public static final Long  PREVIOUS_CADRE_ENROLLMENT_YEAR = 3L;
 }
