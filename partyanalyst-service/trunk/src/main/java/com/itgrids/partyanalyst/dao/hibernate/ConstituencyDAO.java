@@ -1944,6 +1944,23 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	}
 	
 	
+	public List<Object[]> getAllASsemblyContsAndItsDistricts(){
+		
+	   Query query = getSession().createQuery("" +
+	   " select model.constituencyId,model.name,model.district.districtId,model.district.districtName " +
+	   " from   Constituency model " +
+	   " where  model.district.state.stateId = 1 and model.deformDate is null and model.electionScope.electionScopeId = 2 ");
+	   return query.list();
+	}
+	
+    public List<Long> getStateConstituencyIds(Long stateId){
+		
+		Query query = getSession().createQuery("select model.constituencyId  from Constituency model where " +
+				" model.state.stateId = :stateId  and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 ");
+		
+		query.setParameter("stateId", stateId);
+		return query.list();
+	}
 }
 
 
