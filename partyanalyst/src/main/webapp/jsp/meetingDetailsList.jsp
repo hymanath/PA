@@ -305,9 +305,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 <div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="width: 80%">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color:#DDD">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">MOM Points</h4>
+        <h4 class="modal-title" >MOM Points</h4>
       </div>
 	  <div class="modal-body">
 		<div class="row">
