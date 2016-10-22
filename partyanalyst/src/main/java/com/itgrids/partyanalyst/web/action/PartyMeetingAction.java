@@ -304,9 +304,17 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	public String getDocumentDetailsForAMeeting(){
 		try {
 			LOG.info("Entered into getDocumentDetailsForAMeeting");
-			jObj = new JSONObject(getTask());
+			jObj = new JSONObject(getTask());			
 			
-			partyMeetingVO = partyMeetingService.getDocumentDetailsForAMeeting(jObj.getLong("partyMeetingId"));
+			String accessType=null;
+			String accessValue=null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				accessType = regVO.getAccessType();
+				accessValue = regVO.getAccessValue();
+			}
+			
+			partyMeetingVO = partyMeetingService.getDocumentDetailsForAMeeting(jObj.getLong("partyMeetingId"),accessType,accessValue);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDocumentDetailsForAMeeting",e);
 		}
@@ -318,7 +326,15 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			LOG.info("Entered into getTheMinutePointsForAMeeting");
 			jObj = new JSONObject(getTask());
 			
-			partyMeetingVO = partyMeetingService.getTheMinutePointsForAMeeting(jObj.getLong("partyMeetingId"));
+			String accessType=null;
+			String accessValue=null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				accessType = regVO.getAccessType();
+				accessValue = regVO.getAccessValue();
+			}
+			
+			partyMeetingVO = partyMeetingService.getTheMinutePointsForAMeeting(jObj.getLong("partyMeetingId"),accessType,accessValue);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getTheMinutePointsForAMeeting",e);
 		}
@@ -412,7 +428,15 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			LOG.info("Entered into getSummaryForAMeeting Action");
 			jObj = new JSONObject(getTask());
 			
-			partyMeetingVO = partyMeetingService.getSummaryForAMeeting(jObj.getLong("meetingId"),jObj.getString("type"));
+			String accessType=null;
+			String accessValue=null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				accessType = regVO.getAccessType();
+				accessValue = regVO.getAccessValue();
+			}
+			
+			partyMeetingVO = partyMeetingService.getSummaryForAMeeting(jObj.getLong("meetingId"),jObj.getString("type"),accessType,accessValue);
 		} catch (Exception e) {
 			LOG.error("Entered into getSummaryForAMeeting Action",e);
 		}
