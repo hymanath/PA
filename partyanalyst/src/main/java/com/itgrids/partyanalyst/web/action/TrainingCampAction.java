@@ -1539,7 +1539,16 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			jObj = new JSONObject(getTask());
 			Long partyMeetingId = jObj.getLong("partyMeetingID");
 			
-			meetingDetails = trainingCampService.getPartyMeetingMinutesAtrDetails(partyMeetingId);
+			
+			String accessType=null;
+			String accessValue=null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				accessType = regVO.getAccessType();
+				accessValue = regVO.getAccessValue();
+			}
+			
+			meetingDetails = trainingCampService.getPartyMeetingMinutesAtrDetails(partyMeetingId,accessType,accessValue);
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getPartyMeetingMinutesAtrDetails",e);
@@ -1881,7 +1890,15 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			Long partyMeetingId = jObj.getLong("partyMeetingId");
 			String docSourceType = jObj.getString("docSourceType");
 			
-			docsResultList = trainingCampService.getDocsOfPartyMeetingId(partyMeetingId,docSourceType);
+			String accessType=null;
+			String accessValue=null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO !=null){
+				accessType = regVO.getAccessType();
+				accessValue = regVO.getAccessValue();
+			}
+			
+			docsResultList = trainingCampService.getDocsOfPartyMeetingId(partyMeetingId,docSourceType,accessType,accessValue);
 			
 		}catch(Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsforASchedule() method, Exception - ",e);
