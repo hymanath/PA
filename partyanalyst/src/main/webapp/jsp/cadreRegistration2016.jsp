@@ -1182,15 +1182,17 @@
 </div>
 <div class="modal fade" id="updateVoterModelDiv">
   <div class="modal-dialog" role="document" style="width:50%;">
-    <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.7);">
-      <div class="modal-body"  style="position: relative;">
+    <div class="modal-content" >
+      <div class="modal-body"  style="position: relative;"><h4>Enter New VoterIdCardNo</h4>
 		<span style="position: absolute; background-color: rgb(255, 255, 255); border-radius: 50%; padding: 0px 5px; right: -6px; top: -4px; cursor: pointer;" data-dismiss="modal" aria-label="Close">X</span>
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 text-center" style="position:relative;">
 				<div  class="pad_20">
-					<div id="">
+					<div>
 						<input type="text" class="form-control" id="voterCardNoId"/>
+						<div id="updateVoterErr" style="color:red;"></div>
 					</div>
+					
 				</div>
 				<button class="btn btn-success btn-xs" id="updateVoterButton" type="button" style="position: absolute; margin: auto; left: 45%; bottom: -24px;" onclick="validateUpdateVoterId();">UPDATE</button>
 			</div>
