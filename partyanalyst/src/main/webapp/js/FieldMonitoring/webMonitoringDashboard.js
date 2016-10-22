@@ -335,7 +335,7 @@ function getDataMonitoringOverViewDetails(){
 		if(result != null && result.length > 0){
 			var chartColors = ['#4C7BA7','#93B18B','#9F536F','#EF6072','#E65425','#D5AB59','#D8AB58','#495762'];
 			for(var i in result){
-			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="margin-bottom: 30px;">';
 			str+='<h4>'+result[i].name+' - DISTRICT WISE - <b>OPEN ISSUES</b> OVERVIEW</h4>';
 			str+='</div>';
 				if(result[i].distList !=null && result[i].distList.length >0){
@@ -452,7 +452,9 @@ function getDataMonitoringOverViewDetails(){
 							}]
 						});
 						}else{
-							$('#districtWiseissues'+i+''+j+'').html("<h4 style='margin-top:70px;'>NO DATA AVAILABLE</h4>")
+							$('#districtWiseissues'+i+''+j+'').html("<h4 style='transform:rotate(-50deg);'>NO DATA AVAILABLE</h4>")
+							$('#districtWiseissues'+i+''+j+'').css("height","80px;");
+							$('#districtWiseissues'+i+''+j+'').css("margin-top","70px")
 						}
 					}
 				}
