@@ -84,7 +84,7 @@ function getSearchByMyVoterIdDetails(){
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
-	 //alert(444);
+	// alert(444);
 		$.ajax({          
 			type : 'GET',    
 			url : 'getRegistrationPersonDetailsAction.action',  
@@ -223,7 +223,7 @@ var str = "";
 			$("#emailId").val(result.email);
 		 }
 		
-		
+		 $(".subBlockR").addClass('hide');
 		 if(status == "new" ){
 		 if(familyVoterId != null && familyVoterId != 0){
 			 $("#selfVotCls").removeClass("text-success");
@@ -238,7 +238,7 @@ var str = "";
 			 $("#voterIdText").val(result.voterCardNo);
 		 }
 		 }else{
-			 $(".profileDetailsBlock").removeClass('hide');
+			 $(".profileDetailsBlock").removeClass('hide');			
 			  if(result.voterCardNo != null && result.voterCardNo != ""){
 				 $("#relVotCls").removeClass("text-success");
 				 $("#relVotCls").addClass("text-muted");
