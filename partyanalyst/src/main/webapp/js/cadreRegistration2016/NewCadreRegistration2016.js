@@ -430,7 +430,7 @@ $(document).on("change","#boothsList",function(){
 	   $("#populatingDtsDivImgId").hide();
 	   $("#hiddenFamilyVoterId").val(familyVoterId);
    	   hideShowDivs(status);
-       buildProfileDetails(result,status,familyVoterId)
+       buildProfileDetails(result,status,familyVoterId,"")
        buildRelatVoterDetails(familyVoterCardNo);
        buildCasteDetails(result);
        buildEductnQualifns(result);
@@ -668,7 +668,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		$("#submitCadreForm").show();
 		$("#populatingDtsDivImgId").hide();
 		hideShowDivs(status);
-		buildProfileDetails(result,status,"0");
+		buildProfileDetails(result,status,"0","");
 		buildCasteDetails(result);
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
@@ -703,17 +703,13 @@ function getCadreDetailsForRelativeCadre(type){
 		$("#populatingDtsDivImgId").hide();
 		$("#submitCadreForm").show();
 		hideShowDivs(status);
-		buildProfileDetails(result,status,familyVoterId);
+		buildProfileDetails(result,status,familyVoterId,type);
 		buildCasteDetails(result);
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
-		
-		if(status == "new"){
-			buildCadreRelativesDetails(result,"relativeId");
-		}else if(status == "update" || status == "renewal"){
-			buildCadreRelativesDetails(result,"prevNomneReltvId");
-			buildCadreRelativesDetails(result,"relativeId");
-		}
+		buildOccupationList(result,"occupationId");
+		buildCadreRelativesDetails(result,"prevNomneReltvId");
+			
 	});
 }
   
