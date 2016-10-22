@@ -89,12 +89,12 @@ function getSearchByMyVoterIdDetails(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-		//if(result != null){
+		
 			$("#submitCadreForm").show();
 			$(".newProfile").show();
 			$("#populatingDtsDivImgId").hide();
 			hideShowDivs(status);
-			buildProfileDetails(result,status,familyVoterId);
+			buildProfileDetails(result,status,familyVoterId,"");
 		 	buildCasteDetails(result);
 		 	buildEductnQualifns(result);
 		 	buildCadreFamilyDetails(result);
@@ -115,6 +115,7 @@ if(status == "new"){
 	$("#prevNomiConId").hide();
 	$("#prievsNmneDivId").hide();
 }else if(status == "update" || status == "renewal"){
+    $("#voterDvId").show();
 	$("#cadreMembrSpId").show();
 	$("#emailDivId").show();
 	$("#teluguNameDivId").hide();
@@ -125,7 +126,7 @@ if(status == "new"){
 	$("#prievsNmneDivId").show();
 }
 }
-function buildProfileDetails(result,status,familyVoterId){
+function buildProfileDetails(result,status,familyVoterId,type){
 	$("#cadreUpdateVotrDivId").hide();
 var str = "";
 		 if(result.lastName != null){                    
@@ -185,9 +186,9 @@ var str = "";
 		  	 $("#relVotCls").removeClass("text-success");
 			 $("#relVotCls").addClass("text-muted");
 			 $("#selfVotCls").addClass("text-success");
-			$("#voterIdText").val(result.voterCardNo);
+			 $("#voterIdText").val(result.voterCardNo);
 		  }else if(result.voterCardNumber != null && result.voterCardNumber != ""){
-		  	 $("#selfVotCls").removeClass("text-success");
+			 $("#selfVotCls").removeClass("text-success");
 		     $("#relVotCls").addClass("text-success");
 			 $("#selfVotCls").addClass("text-muted");
 			 $("#voterIdText").val(result.voterCardNumber);
@@ -229,6 +230,12 @@ var str = "";
 		 $("#PrvNomineeDetailsId").attr("attr_nomineAge",result.nomineeAge);
 		 }
 		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
+		 
+		 if(type == 'updateVoter'){
+			$("#updateVoterModelDiv").modal('show');
+		 }else{
+			$("#updateVoterModelDiv").modal('hide');
+		 }
 		
 }
 function buildCasteDetails(result) {
@@ -709,5 +716,67 @@ function getOccupationList(){
 			 eachTimeClearFields();
 			 window.location.reload();
  });
+ 
+ function validateUpdateVoterId(){
+ 
+ $("#updateVoterErr").html("");
+ var voterCardNo = $("#voterCardNoId").val();
+ if(voterCardNo == ""){
+ $("#updateVoterErr").html("Enter Voter Card No");
+ return;
+ }else{
+ $("#updateVoterErr").html("");
+ }
+  var jsObj={
+		 voterCardNo:$("#voterCardNoId").val()
+	 }
+	  $.ajax({          
+			type : 'GET',    
+			url : 'validateUpdateVoterAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			 if(result != null){
+				if(result.nomineeName == 'Voter Exist'){
+				   if(result.nameType == 'Cadre'){
+						$("#updateVoterErr").html("With This Voter Cadre Already Exist");
+				   }else{
+				   $("#updateVoterModelDiv").modal('hide');
+				     updatingVoterDetails(result);
+				   }
+				}else{
+					$("#updateVoterErr").html("Voter Not Exist, Go Through Previous VoterId");
+				}
+               
+             }	 
+		});
+ }
+ 
+ function updatingVoterDetails(result){
+		 if(result.lastName != null){                    
+			$("#nameId1").val(result.lastName);
+		 }
+		 if(result.gender != null){
+			 if(result.gender == 'M' || result.gender == 'male' || result.gender == 'Male'){
+				 $("#genderId").val('M');
+				 $("#genderId").trigger("chosen:updated");
+			 }
+			else if(result.gender == 'F' || result.gender == 'female' || result.gender == 'FeMale' || result.gender == 'Female'){
+				 $("#genderId").val('F');
+				 $("#genderId").trigger("chosen:updated");
+			 }
+		 }
+		 if(result.age != null){
+			$("#ageId").val(result.age);
+		 }
+		 
+			 $("#relVotCls").removeClass("text-success");
+			 $("#relVotCls").addClass("text-muted");
+			 $("#selfVotCls").addClass("text-success");
+			 $("#voterIdText").val(result.voterCardNo);
+			 
+			 $("#hiddenNewVoterId").val(result.voterRelationId);
+			 
+ }
  
  
