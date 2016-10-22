@@ -600,4 +600,28 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	    return query.list();
 	}
 	
+	//get all ac and pc list
+	public List<Object[]> getAllAssemblyConstsAndItsParliamentConsts(){
+		
+		   /*select ac.constituency_id AC_ID,ac.name ASSEMBLY,pc.constituency_id PC_ID,pc.name PARLIAMENT 
+		   from   constituency pc,delimitation_constituency dc,delimitation_constituency_assembly_details dcad,constituency ac
+		   where  pc.constituency_id = dc.constituency_id and
+						  pc.election_scope_id = 1 and
+						  pc.deform_date is null and
+						  dc.delimitation_constituency_id = dcad.delimitation_constituency_id and
+						  dcad.constituency_id = ac.constituency_id and
+						  dc.year=2009  and pc.state_id=1;*/
+		
+	   Query query = getSession().createQuery("" +
+	   " select ac.constituencyId,ac.name,pc.constituencyId,pc.name " +
+	   " from   Constituency pc,DelimitationConstituency dc,DelimitationConstituencyAssemblyDetails dcad,Constituency ac " +
+	   " where  dc.delimitationConstituencyID = dcad.delimitationConstituency.delimitationConstituencyID and " +
+	   "        pc.constituencyId = dc.constituency.constituencyId and " +
+	   "        dcad.constituency.constituencyId = ac.constituencyId and " +
+	   "        pc.electionScope.electionScopeId = 1 and pc.deformDate is null and dc.year = 2009 and pc.state.stateId = 1 ");
+	   return query.list();
+	}
+	
+	
+	
 }

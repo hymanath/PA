@@ -104,4 +104,16 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
       query.setParameter("entollmentTearId", entollmentTearId);
 	   return query.list();
 }
+    
+    public List<Object[]> getTdpCadreTargetCountLocationWise(Long enrollmentYearId){
+    	
+    	Query query = getSession().createQuery("" +
+    	" select model.locationScopeId,model.locationValue,model.targetCount " +
+    	" from   TdpCadreTargetCount model  " +
+    	" where  model.isDeleted = 'N' and model.enrollmentYearId = :enrollmentYearId ");
+    	query.setParameter("enrollmentYearId", enrollmentYearId);
+    	return query.list();
+    }
+    
+    
 }
