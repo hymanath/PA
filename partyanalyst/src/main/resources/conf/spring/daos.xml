@@ -3276,4 +3276,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreLocationInfoCountDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationInfoCountDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreLocationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreDateWiseInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDateWiseInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
