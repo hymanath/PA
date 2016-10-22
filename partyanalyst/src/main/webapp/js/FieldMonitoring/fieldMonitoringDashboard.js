@@ -345,7 +345,8 @@ function buildStatusWiseDetails(result){
 	$("#statusWiseDetailsDivId").html(str);
 	$("#issueStatusTableId").dataTable();
 }
-$(document).on("click",".issuesBtn",function(){ 
+$(document).on("click",".issuesBtn",function(){
+    clearErrorFields();	
     $("#issueTypeDivId").hide();
     var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
     var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
