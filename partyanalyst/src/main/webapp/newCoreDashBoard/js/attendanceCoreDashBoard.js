@@ -1,352 +1,353 @@
-$(document).on("click",".attendaceIconExpand",function(){
-	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	$(".attendanceBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	$(".attendanceBlockMore,.moreAttBlocksIcon").toggle();
-	$(".dateRangePickerClsForAttendance").toggleClass("hide")
-	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		//getUserTypeWiseNewsCounts(1);
-	}else{
-		$(".newsHiddenMoreBlock,.moreAttBlocks").hide();
-	}
-	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".dateRangePickerClsForTraining").addClass("hide");
-		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
-		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
-		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
-		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
-		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
-		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerCls").toggleClass("hide");
-		$(".moreBlocksIcon").removeClass("unExpandBlock");
-	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
-		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerClsForMeetings").toggleClass("hide");
-		$(".moreMeetingsBlocks1").hide();
-		$(".moreMeetingsBlocksDetailed").hide();
-		$(".moreMeetingsBlocksComparision").hide();
-	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
-		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerClsForEvents").toggleClass("hide");
-	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
-		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerClsForNews").toggleClass("hide");
-	}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
-		$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}
-});
-$(window).resize(function(){
-	if($(document).width() < 500)
-	{
-		$("#officeAttendanceTdlsId").parent().addClass("table-responsive");
-	}else{
-		$("#officeAttendanceTdlsId").parent().removeClass("table-responsive");	
-	}
-});
+	
+	$(document).on("click",".attendaceIconExpand",function(){
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".attendanceBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".attendanceBlockMore,.moreAttBlocksIcon").toggle();
+		$(".dateRangePickerClsForAttendance").toggleClass("hide")
+		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			//getUserTypeWiseNewsCounts(1);
+		}else{
+			$(".newsHiddenMoreBlock,.moreAttBlocks").hide();
+		}
+		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".dateRangePickerClsForTraining").addClass("hide");
+			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerCls").toggleClass("hide");
+			$(".moreBlocksIcon").removeClass("unExpandBlock");
+		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForMeetings").toggleClass("hide");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
+		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForEvents").toggleClass("hide");
+		}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForNews").toggleClass("hide");
+		}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
+			$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}
+	});
+	$(window).resize(function(){
+		if($(document).width() < 500)
+		{
+			$("#officeAttendanceTdlsId").parent().addClass("table-responsive");
+		}else{
+			$("#officeAttendanceTdlsId").parent().removeClass("table-responsive");	
+		}
+	});
 
 
-$(document).on('change','#attenDatePickerModal', function() {
-	var strDate = $(this).val();
-	var dates = [];
-	dates = strDate.split('-');
-	var fromDate = dates[0];
-	var toDate = dates[1]; 
-	var deptName = '';
-	var officeName = '';
-	if(officeId==1){
-		$("#officeNameId").html('Hyderabad Party Office');
-		officeName='Hyderabad Party Office';
-	}
-	if(officeId==2){
-		$("#officeNameId").html('Guntur Party Office');
-		officeName='Guntur Party Office';
-	} 
-	deptName = $("#diptNameId").html();
-	//fromDate = picker.startDate.format('MM/DD/YYYY');
-	//toDate = picker.endDate.format('MM/DD/YYYY');
-	var officeId = $("#officeHidId").attr("attr_office_hid_id");
-	var deptId = $("#deptHidId").attr("attr_dept_hid_id");      
-	getTotalDtls(deptId,officeId,fromDate,toDate);
-	getTimeWiseDtls(deptId,officeId,fromDate,toDate);
-	getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate,deptName,officeName);
-	getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
-	
-	
-	$("#totalCountId").html('');  
-	$('#attedanceModalId').html('');
-	$("#employeeOverViewId").html('');
-	$("#dayWiseOvervwModal").html('');
-	$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	$("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	$("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-	$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	$("#attendanceModal").modal('show');
-});
-$(document).on('change','#attenDatePickerModalForEmpId', function() {    
-	var strDate = $(this).val();
-	var dates = [];
-	dates = strDate.split('-');
-	var fromDate = dates[0];
-	var toDate = dates[1];    
-	//fromDate = picker.startDate.format('MM/DD/YYYY');
-	//toDate = picker.endDate.format('MM/DD/YYYY');    
-	
-	var officeId = $("#officeHidId").attr("attr_office_hid_id");
-	var deptId = $("#deptHidId").attr("attr_dept_hid_id");
-	var cadreId = $("#cadreHidId").attr("attr_cadre_hid_id");
-	
-	getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
-	getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
-	getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
-	
-	$("#singleEmployeeOverViewId").html('');
-	$("#tableAttendanceId").html('');
-	$("#attedanceModalForEmpId").html('');
-	
-	$("#singleEmployeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	$("#tableAttendanceId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	$("#attedanceModalForEmpId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   
-});
-$("#dateRangeIdForAttendance1").daterangepicker({
-  opens: 'left',
-  startDate: moment(),
-  endDate: moment(),
-  locale: {
-    format: 'MM/DD/YYYY'       
-  },  
-  ranges: {
-	 'Today': [moment(), moment()],
-	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	 'This Month': [moment().startOf('month'), moment()],
-     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-     'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-     'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-     'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-     'This Year': [moment().startOf('Year'), moment()]    
-  }   
-})
-$('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
-  customFromDate1 = picker.startDate.format('MM/DD/YYYY');
-  customToDate1 = picker.endDate.format('MM/DD/YYYY');
-  if(customFromDate1==customToDate1){
-	
-	var tableId = "hydDtlsId";
-	var officeId = 1;//for Hyd 
-	if(officeId==1){
-		$("#hydTopId").html('');
-	}
-	if(officeId==2){
-		$("#gunTopId").html('');
-	} 
-	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	getLocationDtls(tableId,officeId,customFromDate1,customToDate1);  
-  }else{
-	var tableId = "hydDtlsId";
-	var officeId = 1;//for Hyd
-	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	getLocationDtlsForMultiDates(tableId,officeId,customFromDate1,customToDate1);  
-  }
-});
-$("#dateRangeIdForAttendance2").daterangepicker({
-  opens: 'left',
-  startDate: moment(),
-  endDate: moment(),
-  locale: {
-    format: 'MM/DD/YYYY'
-  },  
-  ranges: {  
-	 'Today': [moment(), moment()],
-	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	 'This Month': [moment().startOf('month'), moment()],
-     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-     'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-     'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-     'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-     'This Year': [moment().startOf('Year'), moment()]  
-  }
-})
-$('#dateRangeIdForAttendance2').on('apply.daterangepicker', function(ev, picker) {
-  customFromDate2 = picker.startDate.format('MM/DD/YYYY');
-  customToDate2 = picker.endDate.format('MM/DD/YYYY');       
-  if(customFromDate2==customToDate2){  
-	var tableId = "gunDtlsId";      
-	var officeId = 2;//for Gun
-	if(officeId==1){
-		$("#hydTopId").html('');
-	}
-	if(officeId==2){
-		$("#gunTopId").html('');  
-	}   
-	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	getLocationDtls(tableId,officeId,customFromDate2,customToDate2);  
-  }else{
-	var tableId = "gunDtlsId";
-	var officeId = 2;//for Gun
-	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	getLocationDtlsForMultiDates(tableId,officeId,customFromDate2,customToDate2);      
-  }  
-});
+	$(document).on('change','#attenDatePickerModal', function() {
+		var strDate = $(this).val();
+		var dates = [];
+		dates = strDate.split('-');
+		var fromDate = dates[0];
+		var toDate = dates[1]; 
+		var deptName = '';
+		var officeName = '';
+		if(officeId==1){
+			$("#officeNameId").html('Hyderabad Party Office');
+			officeName='Hyderabad Party Office';
+		}
+		if(officeId==2){
+			$("#officeNameId").html('Guntur Party Office');
+			officeName='Guntur Party Office';
+		} 
+		deptName = $("#diptNameId").html();
+		//fromDate = picker.startDate.format('MM/DD/YYYY');
+		//toDate = picker.endDate.format('MM/DD/YYYY');
+		var officeId = $("#officeHidId").attr("attr_office_hid_id");
+		var deptId = $("#deptHidId").attr("attr_dept_hid_id");      
+		getTotalDtls(deptId,officeId,fromDate,toDate);
+		getTimeWiseDtls(deptId,officeId,fromDate,toDate);
+		getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate,deptName,officeName);
+		getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
+		
+		
+		$("#totalCountId").html('');  
+		$('#attedanceModalId').html('');
+		$("#employeeOverViewId").html('');
+		$("#dayWiseOvervwModal").html('');
+		$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#attendanceModal").modal('show');
+	});
+	$(document).on('change','#attenDatePickerModalForEmpId', function() {    
+		var strDate = $(this).val();
+		var dates = [];
+		dates = strDate.split('-');
+		var fromDate = dates[0];
+		var toDate = dates[1];    
+		//fromDate = picker.startDate.format('MM/DD/YYYY');
+		//toDate = picker.endDate.format('MM/DD/YYYY');    
+		
+		var officeId = $("#officeHidId").attr("attr_office_hid_id");
+		var deptId = $("#deptHidId").attr("attr_dept_hid_id");
+		var cadreId = $("#cadreHidId").attr("attr_cadre_hid_id");
+		
+		getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+		getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+		getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
+		
+		$("#singleEmployeeOverViewId").html('');
+		$("#tableAttendanceId").html('');
+		$("#attedanceModalForEmpId").html('');
+		
+		$("#singleEmployeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#tableAttendanceId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#attedanceModalForEmpId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		   
+	});
+	$("#dateRangeIdForAttendance1").daterangepicker({
+		opens: 'left',
+		startDate: moment(),
+		endDate: moment(),
+		locale: {
+			format: 'MM/DD/YYYY'       
+		},  
+		ranges: {
+			'Today': [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'This Month': [moment().startOf('month'), moment()],
+			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+			'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			'This Year': [moment().startOf('Year'), moment()]    
+		}   
+	})
+	$('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
+		customFromDate1 = picker.startDate.format('MM/DD/YYYY');
+		customToDate1 = picker.endDate.format('MM/DD/YYYY');
+		if(customFromDate1==customToDate1){
+		
+			var tableId = "hydDtlsId";
+			var officeId = 1;//for Hyd 
+			if(officeId==1){
+				$("#hydTopId").html('');
+			}
+			if(officeId==2){
+				$("#gunTopId").html('');
+			} 
+			$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			getLocationDtls(tableId,officeId,customFromDate1,customToDate1);  
+		}else{
+			var tableId = "hydDtlsId";
+			var officeId = 1;//for Hyd
+			$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			getLocationDtlsForMultiDates(tableId,officeId,customFromDate1,customToDate1);  
+		}
+	});
+	$("#dateRangeIdForAttendance2").daterangepicker({
+		opens: 'left',
+		startDate: moment(),
+		endDate: moment(),
+		locale: {
+			format: 'MM/DD/YYYY'
+		},  
+		ranges: {  
+			'Today': [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			'This Month': [moment().startOf('month'), moment()],
+			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+			'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			'This Year': [moment().startOf('Year'), moment()]  
+		}
+	})
+	$('#dateRangeIdForAttendance2').on('apply.daterangepicker', function(ev, picker) {
+		customFromDate2 = picker.startDate.format('MM/DD/YYYY');
+		customToDate2 = picker.endDate.format('MM/DD/YYYY');       
+		if(customFromDate2==customToDate2){  
+			var tableId = "gunDtlsId";      
+			var officeId = 2;//for Gun
+			if(officeId==1){
+				$("#hydTopId").html('');
+			}
+			if(officeId==2){
+				$("#gunTopId").html('');  
+			}   
+			$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			getLocationDtls(tableId,officeId,customFromDate2,customToDate2);  
+		}else{
+			var tableId = "gunDtlsId";
+			var officeId = 2;//for Gun
+			$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			getLocationDtlsForMultiDates(tableId,officeId,customFromDate2,customToDate2);      
+		}  
+	});
   
-$("#dateRangeIdForAttendance").daterangepicker({
-	singleDatePicker: true,
-	startDate:moment(),
-	minDate:'01/01/2014',
-	maxDate:moment(),
-	format: 'MM/DD/YYYY',
-	opens:'left'
-})
+	$("#dateRangeIdForAttendance").daterangepicker({
+		singleDatePicker: true,
+		startDate:moment(),
+		minDate:'01/01/2014',
+		maxDate:moment(),
+		format: 'MM/DD/YYYY',
+		opens:'left'
+	})
 
-/* $("#dateRangeIdForAttendance1").daterangepicker({    
-	opens: 'left',
-	startDate: moment().subtract(1, 'month').startOf('month'),
-	endDate: moment().subtract(1, 'month').endOf('month'),
-	locale: {
-	  format: 'DD/MM/YYYY'
-	},
-	ranges: {
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-	   'This Month': [moment().startOf('month'), moment()],
-	   'This Year': [moment().startOf('Year'), moment()]
-	}
-}); */
-var today = $("#dateRangeIdForAttendance").val();  
-$('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
-	//customStartDate = picker.startDate.format('DD/MM/YYYY');
-	//customEndDate = picker.endDate.format('DD/MM/YYYY');
-	
-});
-$('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
-	customStartDate = picker.startDate.format('MM/DD/YYYY');
-	customEndDate = picker.endDate.format('MM/DD/YYYY');
-	var changedDate = $("#dateRangeIdForAttendance").val();
-	
-	var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+	/* $("#dateRangeIdForAttendance1").daterangepicker({    
+		opens: 'left',
+		startDate: moment().subtract(1, 'month').startOf('month'),
+		endDate: moment().subtract(1, 'month').endOf('month'),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+	}); */
+	var today = $("#dateRangeIdForAttendance").val();  
+	$('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
+		//customStartDate = picker.startDate.format('DD/MM/YYYY');
+		//customEndDate = picker.endDate.format('DD/MM/YYYY');
+		
+	});
+	$('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
+		customStartDate = picker.startDate.format('MM/DD/YYYY');
+		customEndDate = picker.endDate.format('MM/DD/YYYY');
+		var changedDate = $("#dateRangeIdForAttendance").val();
+		
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 
-	if(today == $("#dateRangeIdForAttendance").val()){
-		$("#attendanceId").html('TODAY ('+datStr+')');
-	}else{
-		$("#attendanceId").html('('+datStr+')');     
-	}  
-	  
-	getAttendanceOverViewForPartyOffice();  
-	getAttendanceOverViewForPartyOfficeWise();
-	getAttendanceOverViewForPartyOfficeDeptWise(); 
-	
-	/* var tableId = "hydDtlsId";
-	var officeId = 1;//for Hyd  
-	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	getLocationDtls(tableId,officeId,changedDate,changedDate);
-	tableId = "gunDtlsId";
-	officeId = 2;//for Gun
-	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	getLocationDtls(tableId,officeId,changedDate,changedDate);  */   
- 
-});
+		if(today == $("#dateRangeIdForAttendance").val()){
+			$("#attendanceId").html('TODAY ('+datStr+')');
+		}else{
+			$("#attendanceId").html('('+datStr+')');     
+		}  
+		  
+		getAttendanceOverViewForPartyOffice();  
+		getAttendanceOverViewForPartyOfficeWise();
+		getAttendanceOverViewForPartyOfficeDeptWise(); 
+		
+		/* var tableId = "hydDtlsId";
+		var officeId = 1;//for Hyd  
+		$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		getLocationDtls(tableId,officeId,changedDate,changedDate);
+		tableId = "gunDtlsId";
+		officeId = 2;//for Gun
+		$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		getLocationDtls(tableId,officeId,changedDate,changedDate);  */   
+	 
+	});
 
-$(document).on("click",".moreAttBlocksIcon",function(){
-	$(".moreAttBlocks").toggle();
-});
+	$(document).on("click",".moreAttBlocksIcon",function(){
+		$(".moreAttBlocks").toggle();
+	});
 
-$('#attendance').highcharts({
-	colors: ['#FFC21F'],
-	chart: {
-		type: 'column'
-	},
-	title: {
-		text: null
-	},
-	subtitle: {
-		text: null
-	},
-	xAxis: {
-		min: 0,
-		gridLineWidth: 0,
-		minorGridLineWidth: 0,
-		categories: ['JAN', 'FEB', 'MAR'],
+	$('#attendance').highcharts({
+		colors: ['#FFC21F'],
+		chart: {
+			type: 'column'
+		},
 		title: {
 			text: null
 		},
-		labels: {
-				formatter: function() {
-					return this.value.toString().substring(0, 10)+'...';
-				},
-				
-			}
-	},
-	yAxis: {
-		min: 0,
-		gridLineWidth: 0,
-		minorGridLineWidth: 0,
-		title: {
-			text: null,
-			align: 'high'
+		subtitle: {
+			text: null
 		},
-		labels: {
-			overflow: 'justify',
-			enabled: false,
-		}
-	},
-	tooltip: {
-		pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
-		shared: true,
-		valueSuffix: '%'
-	},
-	plotOptions: {
-		column: {
-			stacking: 'normal',      
-			dataLabels: {
-			enabled: true,
-			 formatter: function() {
-				if (this.y === 0) {
-					return null;
-				} else {
-					return Highcharts.numberFormat(this.y,2) +"%";
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: ['JAN', 'FEB', 'MAR'],
+			title: {
+				text: null
+			},
+			labels: {
+					formatter: function() {
+						return this.value.toString().substring(0, 10)+'...';
+					},
+					
 				}
-			  }
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null,
+				align: 'high'
+			},
+			labels: {
+				overflow: 'justify',
+				enabled: false,
 			}
-		}
-	},
-	legend: {
-		layout: 'vertical',
-		align: 'right',
-		verticalAlign: 'top',
-		x: -40,
-		y: 80,
-		floating: true,
-		borderWidth: 1,
-		backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-		shadow: true
-	},
-	credits: {
-		enabled: false
-	},
-	series: [{
-		name: 'Attendance',
-		data: [107, 31, 635, 203, 2]
-	}]
-});
+		},
+		tooltip: {
+			pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+			shared: true,
+			valueSuffix: '%'
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal',      
+				dataLabels: {
+				enabled: true,
+				 formatter: function() {
+					if (this.y === 0) {
+						return null;
+					} else {
+						return Highcharts.numberFormat(this.y,2) +"%";
+					}
+				  }
+				}
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'top',
+			x: -40,
+			y: 80,
+			floating: true,
+			borderWidth: 1,
+			backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+			shadow: true
+		},
+		credits: {
+			enabled: false
+		},
+		series: [{
+			name: 'Attendance',
+			data: [107, 31, 635, 203, 2]
+		}]
+	});
 	$(function () {
 		getAttendanceOverViewForPartyOffice();
 		getAttendanceOverViewForPartyOfficeWise();
@@ -439,22 +440,204 @@ $('#attendance').highcharts({
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-muted text-capital">total members</p>';
-						str+='<h4>'+result[i].actualCount+'</h4>';
+						str+='<h4 class="mainBlockCls" style="cursor:pointer;" attr_office_id="'+result[i].id+'" attr_status="total">'+result[i].actualCount+'</h4>';
 					str+='</td>';
 					str+='<td>';
 					var presentPrecent = (result[i].availableCount*(100/result[i].actualCount)).toFixed(2);
 						str+='<p class="text-muted text-capital">present</p>';  
-						str+='<h4>'+result[i].availableCount+'<span class="font-10 text-success"> '+presentPrecent+'</span></h4>';
+						str+='<h4 class="mainBlockCls" style="cursor:pointer;" attr_office_id="'+result[i].id+'" attr_status="present">'+result[i].availableCount+'<span class="font-10 text-success"> '+presentPrecent+'</span></h4>';
 					str+='</td>';
 					str+='<td>';
 					var absentPrecent = (result[i].count*(100/result[i].actualCount)).toFixed(2);
 						str+='<p class="text-muted text-capital">absent</p>';
-						str+='<h4>'+result[i].count+'<span class="font-10 text-danger"> '+absentPrecent+'</span></h4>';
-					str+='</td>';
+						str+='<h4 class="mainBlockCls" style="cursor:pointer;" attr_office_id="'+result[i].id+'" attr_status="absent">'+result[i].count+'<span class="font-10 text-danger"> '+absentPrecent+'</span></h4>';
+					str+='</td>';      
 				str+='</tr>';
 			str+='</table>'; 
 			$("#officeAttendanceTdlsDeptWiseId").html(str);     
 		}  
+	}
+	$(document).on('click','.mainBlockCls',function(){
+		
+		var officeId = $(this).attr("attr_office_id");
+		var status = $(this).attr("attr_status");
+		var fromDate = $("#dateRangeIdForAttendance").val();
+		var toDate = $("#dateRangeIdForAttendance").val(); 
+		var officeIdArr = [];
+		officeIdArr.push(officeId);
+		$("#memberId").html(''); 
+		$("#positionId").html('');       
+		$("#myModalLabel").html('');
+		if(officeId==1){
+			$("#myModalLabel").html('HYDERABAD PARTY OFFICE EMPLOYEE DETAILS');
+		}
+		if(officeId==2){
+			$("#myModalLabel").html('GUNTUR PARTY OFFICE EMPLOYEE DETAILS');
+		}
+		
+		$("#processingImgAttendId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#myModelId").modal("show");
+		var jsObj={ 
+			fromDate : fromDate,
+			toDate : toDate,
+			deptIdArr : globalDeptIdsArr,
+			officeIdArr : officeIdArr,
+			status : "",
+			type : "office"  
+		};    
+		$.ajax({          
+			type : 'GET',    
+			url : 'getAttendeeDtlsOfficeWiseForDayAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#processingImgAttendId").html('');
+			
+			if(result != null && result.length > 0){
+				if(status == "present"){
+					buildPresentEmployeeDtls(result,status);
+				}else if(status == "absent"){
+					buildAbsentEmployeeDtls(result,status);
+				}else{
+					buildEmployeeDtls(result);
+				}
+				
+			}else{
+				$("#memberId").html('Data Not Available');  
+			}           
+		});  
+	});
+	function buildAbsentEmployeeDtls(result,status){
+		var str = '';
+		str+='<table class="table table-condensed" id="employeeDtlsId">';
+		str+='<thead>';
+		str+='<th>DEPT NAME</th>';
+		str+='<th>EMPLOYEE NAME</th>';    
+		str+='<th>MOBILE NO</th>'; 
+		str+='<th>STATUS</th>';
+		str+='<th>ATTENDED TIME</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			if(result[i].status=="present"){      
+				continue;  
+			}   
+			str+='<tr>'; 
+			str+='<td>'+result[i].districtName.toUpperCase()+'</td>';
+			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			str+='<td>'+result[i].mobileNo+'</td>'; 
+			if(result[i].status=="absent"){
+				str+='<td class="text-danger">'+result[i].status.toUpperCase()+'</td>';    
+			}else{
+				str+='<td class="text-success">'+result[i].status.toUpperCase()+'</td>';   
+			} 
+			if(result[i].wish != null){
+				str+='<td>'+result[i].wish.toUpperCase()+'</td>';
+			}else{  
+				str+='<td>-</td>';  
+			}	
+			str+='</tr>';   
+		} 
+		$("#processingImgId").html('');   
+		$("#memberId").html(str);    
+		$("#employeeDtlsId").dataTable();    
+	}
+	function buildPresentEmployeeDtls(result,status){
+		var totalLate = 0;
+		var str = '';
+		var str2 = '';
+		str+='<table class="table table-condensed" id="employeeDtlsId">';
+		str+='<thead>';
+		str+='<th>DEPT NAME</th>';
+		str+='<th>EMPLOYEE NAME</th>';    
+		str+='<th>MOBILE NO</th>'; 
+		str+='<th>STATUS</th>';
+		str+='<th>ATTENDED TIME</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){  
+			if(result[i].status=="absent"){
+				continue;
+			}   
+			str+='<tr>'; 
+			str+='<td>'+result[i].districtName.toUpperCase()+'</td>';
+			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			str+='<td>'+result[i].mobileNo+'</td>'; 
+			if(result[i].status=="absent"){
+				str+='<td class="text-danger">'+result[i].status.toUpperCase()+'</td>';    
+			}else{
+				str+='<td class="text-success">'+result[i].status.toUpperCase()+'</td>';   
+			} 
+			if((parseInt(result[i].wish.substring(0,2)) == 10 && parseInt(result[i].wish.substring(3,5)) >= 31) || (parseInt(result[i].wish.substring(0,2)) >= 11 )){
+				str+='<td class="text-danger">'+result[i].wish.toUpperCase()+'</td>';    
+				totalLate = totalLate + 1;    
+			}else{  
+				str+='<td class="text-success">'+result[i].wish.toUpperCase()+'</td>';  
+			}	
+			str+='</tr>';       
+		} 
+		str2+='<span class="label label-warning" style="margin-right: 5px;">Late Commings-'+totalLate+'</span>';
+		$("#positionId").html(str2); 
+		$("#processingImgId").html('');   
+		$("#memberId").html(str);    
+		$("#employeeDtlsId").dataTable();    
+	}
+	function buildEmployeeDtls(result){
+		var total = 0; 
+		var present = 0;
+		var absent = 0;
+		var totalLate = 0;
+		var str = '';
+		var str2 = '';
+		str+='<table class="table table-condensed" id="employeeDtlsId">';
+		str+='<thead>';
+		str+='<th>DEPT NAME</th>';
+		str+='<th>EMPLOYEE NAME</th>';    
+		str+='<th>MOBILE NO</th>'; 
+		str+='<th>STATUS</th>';
+		str+='<th>ATTENDED TIME</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		total = result.length;
+		for(var i in result){
+			if(result[i].wish != null){
+				if((parseInt(result[i].wish.substring(0,2)) == 10 && parseInt(result[i].wish.substring(3,5)) >= 31) || (parseInt(result[i].wish.substring(0,2)) >= 11 )){
+					totalLate = totalLate + 1;      
+				}
+			}
+			
+			
+			str+='<tr>'; 
+			str+='<td>'+result[i].districtName.toUpperCase()+'</td>';
+			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			str+='<td>'+result[i].mobileNo+'</td>'; 
+			if(result[i].status=="absent"){
+				str+='<td class="text-danger">'+result[i].status.toUpperCase()+'</td>';
+				absent = absent + 1;
+			}else{
+				str+='<td class="text-success">'+result[i].status.toUpperCase()+'</td>';
+				present = present + 1;
+			} 
+			if(result[i].wish != null){
+				if((parseInt(result[i].wish.substring(0,2)) == 10 && parseInt(result[i].wish.substring(3,5)) >= 31) || (parseInt(result[i].wish.substring(0,2)) >= 11 )){
+					str+='<td class="text-danger">'+result[i].wish.toUpperCase()+'</td>';    
+					
+				}else{  
+					str+='<td class="text-success">'+result[i].wish.toUpperCase()+'</td>';  
+				}
+			}else{    
+				str+='<td>-</td>';  
+			}	
+			str+='</tr>';   
+		} 
+		str2+='<span class="label label-primary" style="margin-right: 5px;">All-'+total+'</span>'; 
+		str2+='<span class="label label-success" style="margin-right: 5px;">Attended-'+present+'</span>';    
+		str2+='<span class="label label-warning" style="margin-right: 5px;">Late Commings-'+totalLate+'</span>';     
+		str2+='<span class="label label-danger" style="margin-right: 5px;">Absent-'+absent+'</span>';    
+		$("#positionId").html(str2); 
+		$("#processingImgId").html('');   
+		$("#memberId").html(str);    
+		$("#employeeDtlsId").dataTable();    
 	}
 	$(document).on('click','.mainExpandCls',function(){
 		getAttendanceOverViewForPartyOfficeDeptWise();
@@ -1520,117 +1703,117 @@ $('#attendance').highcharts({
 		}, 500);    
 	});
 	/*Notes Functionality*/
-function displayDashboardCommentsForAttendance(dashBoardComponentId){
-	var jsObj={
-		dashBoardComponentId:dashBoardComponentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "displayDashboardCommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length >0){
-		 var str=''; 
-			 
-		 str+='<ul class="notesUlAttendance m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
-			for(var i in result){ 
-				str+='<li style="margin-top:3px;">'; 
-				str+='<span class="notesTextAttendance" id="editTextAttendanceId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
-				str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesAttendance" attr_cmt_id="editTextAttendanceId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
-				str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesAttendance" attr_cmt_id="editTextAttendanceId'+i+'" attr_comment="'+result[i].comment+'"></i>';
-				str+='</li>';
-			}
-		str+='</ul>';
-			
-			$("#notesAttendanceId").html(str);	 
-		}
-	});
-}
-function deleteDashBoardcomments(dashboardCommentId)
-{
-	var jsObj={
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "deleteDashBoardcommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
+	function displayDashboardCommentsForAttendance(dashBoardComponentId){
+		var jsObj={
+			dashBoardComponentId:dashBoardComponentId
+		}	
+		$.ajax({
+		 type: "POST",
+		 url: "displayDashboardCommentsAction.action",
+		 data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length >0){
+			 var str=''; 
+				 
+			 str+='<ul class="notesUlAttendance m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+				for(var i in result){ 
+					str+='<li style="margin-top:3px;">'; 
+					str+='<span class="notesTextAttendance" id="editTextAttendanceId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesAttendance" attr_cmt_id="editTextAttendanceId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+					str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesAttendance" attr_cmt_id="editTextAttendanceId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+					str+='</li>';
+				}
+			str+='</ul>';
 				
+				$("#notesAttendanceId").html(str);	 
 			}
-		}
-	});
-}
-
-function savingDashboardCommentForAttendance(dashboardComponentId){  
-	var comment=$(".notesAreaAttendance").val();
-	if(comment.trim() ==""){
-		  $("#attendanceId").html("Notes Required.");
-		  return;
-	  }
-	var editId = $("#cmtAttendanceId").val();
-	//$("#"+editId).parent().html(' ');
-	$("#"+editId).html(comment);
-	 var dashboardCommentId=0;
-	 if($(".notesAreaAttendance").attr("attr_commentid")>0)
-	 {
-		dashboardCommentId=$(".notesAreaAttendance").attr("attr_commentid");		
-	 }
-
-	var jsObj={
-		comment:comment,
-		dashboardComponentId: dashboardComponentId,
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "savingDashboardCommentAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
-				displayDashboardCommentsForAttendance(7);
+		});
+	}
+	function deleteDashBoardcomments(dashboardCommentId)
+	{
+		var jsObj={
+			dashboardCommentId : dashboardCommentId
+		}	
+		$.ajax({
+		 type: "POST",
+		 url: "deleteDashBoardcommentsAction.action",
+		 data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){	
+				if(result.message == "success"){
+					
+				}
 			}
-		}			
+		});
+	}
+
+	function savingDashboardCommentForAttendance(dashboardComponentId){  
+		var comment=$(".notesAreaAttendance").val();
+		if(comment.trim() ==""){
+			  $("#attendanceId").html("Notes Required.");
+			  return;
+		  }
+		var editId = $("#cmtAttendanceId").val();
+		//$("#"+editId).parent().html(' ');
+		$("#"+editId).html(comment);
+		 var dashboardCommentId=0;
+		 if($(".notesAreaAttendance").attr("attr_commentid")>0)
+		 {
+			dashboardCommentId=$(".notesAreaAttendance").attr("attr_commentid");		
+		 }
+
+		var jsObj={
+			comment:comment,
+			dashboardComponentId: dashboardComponentId,
+			dashboardCommentId : dashboardCommentId
+		}	
+		$.ajax({
+		 type: "POST",
+		 url: "savingDashboardCommentAction.action",
+		 data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){	
+				if(result.message == "success"){
+					displayDashboardCommentsForAttendance(7);
+				}
+			}			
+		});    
+	}
+	$(document).on("click",".notesIconattendance",function(){
+		$(this).closest(".panel-heading").find(".notesDropDown").toggle();
 	});
-}
-$(document).on("click",".notesIconattendance",function(){
-	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
-});
-$(document).on("click",".deleteNotesAttendance",function(){
-	$(this).closest("li").remove();
-});
-$(document).on("click",".editNotesAttendance",function(){ 
-	var commentId = $(this).attr("attr_cmt_id");
-	var commentId1 = $(this).parent().find(".notesTextAttendance").attr("attr_commentid");
-	var notesHtml = $("#"+commentId).html();
-	$(".notesAreaAttendance").val(notesHtml);  
-	$(".notesAreaAttendance").attr("attr_commentid",commentId1);  
-	$("#cmtId").val(commentId); 
-	//$("#cmtId").val();
-	$("#attendanceId").html('');		
-});
+	$(document).on("click",".deleteNotesAttendance",function(){
+		$(this).closest("li").remove();
+	});
+	$(document).on("click",".editNotesAttendance",function(){ 
+		var commentId = $(this).attr("attr_cmt_id");
+		var commentId1 = $(this).parent().find(".notesTextAttendance").attr("attr_commentid");
+		var notesHtml = $("#"+commentId).html();
+		$(".notesAreaAttendance").val(notesHtml);  
+		$(".notesAreaAttendance").attr("attr_commentid",commentId1);  
+		$("#cmtId").val(commentId); 
+		//$("#cmtId").val();
+		$("#attendanceId").html('');		
+	});
 
-$(document).on("click",".btnCustomCreateAttendance",function(){
-	var getNewNotes = $(".notesAreaAttendance").val();
-	var todayDate = moment().format("DD MMMM YYYY");
-	var cmtId = $("#cmtId").val();
-	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesAttendance"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
-	if(cmtId>0)
-	$(".notesUlAttendance").append("<li>"+commentText+"</li>");
-	$(".notesAreaAttendance").val('');	
-});
+	$(document).on("click",".btnCustomCreateAttendance",function(){
+		var getNewNotes = $(".notesAreaAttendance").val();
+		var todayDate = moment().format("DD MMMM YYYY");
+		var cmtId = $("#cmtId").val();
+		var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesAttendance"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+		if(cmtId>0)
+		$(".notesUlAttendance").append("<li>"+commentText+"</li>");
+		$(".notesAreaAttendance").val('');	
+	});
 
-/*Notes Functionality End*/	
+	/*Notes Functionality End*/	
 
-function changeDateFormat(dateStr)
-{
-	var todayArr = dateStr.split("/");
-	return todayArr[1]+'-'+todayArr[0]+'-'+todayArr[2];
-}
-function changeFormat(dateStr){
-	var date = dateStr.split('-');
-	return date[2]+'-'+date[1]+'-'+date[0];    
-}
+	function changeDateFormat(dateStr)
+	{
+		var todayArr = dateStr.split("/");
+		return todayArr[1]+'-'+todayArr[0]+'-'+todayArr[2];
+	}
+	function changeFormat(dateStr){
+		var date = dateStr.split('-');
+		return date[2]+'-'+date[1]+'-'+date[0];    
+	}  
