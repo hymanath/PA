@@ -793,7 +793,7 @@
 </section>
  <!-- /pusher -->	
 
-<footer>
+<footer class="footerCls">
     <div class="text-center" style="text-align:center">
 		    All &copy; Telugu Desam Party
     </div>
