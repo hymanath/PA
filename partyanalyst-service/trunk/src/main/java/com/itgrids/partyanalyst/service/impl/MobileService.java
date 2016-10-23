@@ -4906,6 +4906,422 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 			return resultStatus;
 		 }
+		 
+		 public ResultStatus create2016CadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo)
+		 {
+			 LOG.info("Entered into createCadreDataDumpFileForAParliamnetConstituency() Method ");
+			 ResultStatus resultStatus = new ResultStatus();
+			try{
+				Class.forName("org.sqlite.JDBC");
+				Connection connection = null;
+				Statement statement = null;
+				
+				Long pconstituencyId = reVo.getConstituencyId();
+				Long publicationId = reVo.getPublicationDateId();
+				String constituencyName = constituencyDAO.get(pconstituencyId).getName();
+				String path = reVo.getPath();
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(new Date());
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				
+				File destDir = new File(path+pathSeperator+constituencyName+"_"+date+"_Cadre2016");
+				destDir.mkdir();
+				File baseFile = new File(path+pathSeperator+"Base"+pathSeperator+"base.sqlite");
+				
+				FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+"_Cadre2016.zip");
+				ZipOutputStream zos = new ZipOutputStream(fos);
+				
+				List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
+				
+				for(Constituency ac : acList)
+				{
+					try{
+						try{
+						File acFile = new File(path+pathSeperator+constituencyName+"_"+date+"_Cadre2016"+pathSeperator+ac.getName()+".sqlite");
+						FileUtils.copyFile(baseFile, acFile);
+						}catch(Exception e)
+						{
+							LOG.error("Exception is -",e);
+						}
+					
+						List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+					
+						if(votersList != null && votersList.size() > 0)
+						{
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre2016"+pathSeperator+ac.getName()+".sqlite");
+							connection.setAutoCommit(false);
+							statement = connection.createStatement();
+							int records = 0;
+							for(Object[] params : votersList)
+							{
+								records++;
+								try{
+								statement.executeUpdate("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no)" +
+										" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+replaceSpecialChars(params[2].toString().trim())+"','"+params[3].toString().trim()+"','"+replaceSpecialChars(params[4].toString().trim())+"'," +
+												"'"+params[5].toString().trim()+"',"+params[6].toString().trim()+",'"+params[7].toString().trim()+"')");
+								}catch(Exception e)
+								{
+									LOG.error(e);
+								}
+							}
+							LOG.error(ac.getName()+" Constituency "+records+" Voter Records Inserted");
+							connection.commit();
+							statement.close();
+							connection.close();
+						}
+					
+						List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
+						
+						if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
+						{
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre2016"+pathSeperator+ac.getName()+".sqlite");
+							connection.setAutoCommit(false);
+							statement = connection.createStatement();
+							int records = 0;
+							for(Object[] params : votersAndSerialNosList)
+							{
+								records++;
+								try{
+								String serialNo = params[3]!= null ? params[3].toString() : "0";
+								statement.executeUpdate("INSERT INTO booth_publication_voter(booth_publication_voter_id, booth_id, voter_id, serial_no) VALUES (" +
+										"'"+params[0].toString()+"','"+params[1].toString()+"','"+params[2].toString()+"','"+serialNo+"')");
+								}catch(Exception e)
+								{
+									LOG.error(e);
+								}
+							}
+							LOG.error(ac.getName()+" Constituency "+records+" Booth Publication Voter Records Inserted");
+							connection.commit();
+							statement.close();
+							connection.close();
+						}
+						
+						List<Object[]> cadreList = tdpCadreDAO.getCadreDataForSqlite(ac.getConstituencyId());
+						
+						if(cadreList != null && cadreList.size() > 0)
+						{
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre2016"+pathSeperator+ac.getName()+".sqlite");
+							connection.setAutoCommit(false);
+							statement = connection.createStatement();
+							int records = 0;
+							for(Object[] params : cadreList)
+							{
+								records++;
+								try{
+								 StringBuilder str = new StringBuilder();
+								 str.append("INSERT INTO cadre_data(tdp_cadre_id,voter_id,membership_id,cadre_name,relative_name,relation,house_no," +
+								 		"image,mobile_no,land_phone_no,blood_group_id,gender,education_id,occupation_id,date_of_birth,age,caste_state_id," +
+								 		"inserted_time,update_time,card_number,nominee_name,nominee_aadhar,nominee_relation_id,nominee_age,nominee_gender,photo_type," +
+								 		"cadre_aadher_no,family_voterId,card_no,email_id,state_id,district_id,constituency_id,tehsil_id,address_lane1,address_lane2," +
+								 		"street,pincode,local_area,local_election_body_id,ward_id,parliament_constituency_id,booth_id,panchayat_id,is_deleted_voter) VALUES (");
+								 
+								 if(params[0] != null)
+									 str.append(params[0].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[1] != null)
+									 str.append(params[1].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[2] != null)
+									 str.append("'"+params[2].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[3] != null)
+									 str.append("'"+params[3].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[4] != null)
+									 str.append("'"+params[4].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[5] != null)
+									 str.append("'"+params[5].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[6] != null)
+									 str.append("'"+params[6].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[7] != null)
+									 str.append("'"+params[7].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[8] != null)
+									 str.append("'"+params[8].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[9] != null)
+									 str.append("'"+params[9].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[10] != null)
+									 str.append(params[10].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[11] != null)
+									 str.append("'"+params[11].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[12] != null)
+									 str.append(params[12].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[13] != null)
+									 str.append(params[13].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[14] != null)
+									 str.append("'"+params[14].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[15] != null)
+									 str.append(params[15].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[16] != null)
+									 str.append(params[16].toString()+",");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[17] != null)
+									 str.append("'"+params[11].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[18] != null)
+									 str.append("'"+params[18].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[19] != null)
+									 str.append("'"+params[19].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[20] != null)
+									 str.append("'"+params[20].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[21] != null)
+									 str.append("'"+params[21].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[22] != null)
+									 str.append("'"+params[22].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[23] != null)
+									 str.append("'"+params[23].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[24] != null)
+									 str.append("'"+params[24].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[25] != null)
+									 str.append("'"+params[25].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[26] != null)
+									 str.append("'"+params[26].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[27] != null)
+									 str.append("'"+params[27].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[28] != null)
+									 str.append("'"+params[28].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[29] != null)
+									 str.append("'"+params[29].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[30] != null)
+									 str.append("'"+params[30].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[31] != null)
+									 str.append("'"+params[31].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[32] != null)
+									 str.append("'"+params[32].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[33] != null)
+									 str.append("'"+params[33].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[34] != null)
+									 str.append("'"+params[34].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[35] != null)
+									 str.append("'"+params[35].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[36] != null)
+									 str.append("'"+params[36].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[37] != null)
+									 str.append("'"+params[37].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[38] != null)
+									 str.append("'"+params[38].toString()+"',");
+								 else
+									 str.append("'',");
+								 
+								 if(params[39] != null)
+									 str.append("'"+params[39].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[40] != null)
+									 str.append("'"+params[40].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[41] != null)
+									 str.append("'"+params[41].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[42] != null)
+									 str.append("'"+params[42].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[43] != null)
+									 str.append("'"+params[43].toString()+"',");
+								 else
+									 str.append("NULL,");
+								 
+								 if(params[44] != null)
+									 str.append("'"+params[44].toString()+"'");
+								 else
+									 str.append("''");
+								 
+								 str.append(")");
+								 
+								 statement.executeUpdate(str.toString());
+								 
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+								 
+							}//For
+							
+							LOG.error(ac.getName()+" Constituency "+records+" Cadre Records Inserted");
+							connection.commit();
+							statement.close();
+							connection.close();
+							
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre2016"+pathSeperator+ac.getName()+".sqlite");
+							statement = connection.createStatement();
+							
+							try{
+								statement.executeUpdate("CREATE INDEX idx_voter_voter_id_card_no ON voter(voter_id_card_no)");
+								statement.executeUpdate("CREATE INDEX idx_voter_age ON voter(age)");
+								statement.executeUpdate("CREATE INDEX idx_voter_gender ON voter(gender)");
+								statement.executeUpdate("CREATE INDEX idx_voter_voter_id ON voter(voter_id)");
+								statement.executeUpdate("CREATE INDEX idx_voter_name ON voter(name)");
+								
+								statement.executeUpdate("CREATE INDEX idx_voter_booth_id ON booth_publication_voter(booth_id)");
+								statement.executeUpdate("CREATE INDEX idx_voter_voter_id ON booth_publication_voter(voter_id)");
+								statement.executeUpdate("CREATE INDEX idx_voter_serial_no ON booth_publication_voter(serial_no)");
+								
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_tdp_cadre_id ON cadre_data(tdp_cadre_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_voter_id ON cadre_data(voter_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_membership_id ON cadre_data(membership_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_cadre_name ON cadre_data(cadre_name");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_mobile_no ON cadre_data(mobile_no)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_gender ON cadre_data(gender)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_age ON cadre_data(age)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_caste_state_id ON cadre_data(caste_state_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_district_id ON cadre_data(district_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_constituency_id ON cadre_data(constituency_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_tehsil_id ON cadre_data(tehsil_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_local_election_body ON cadre_data(local_election_body)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_ward ON cadre_data(ward)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_booth_id ON cadre_data(booth_id)");
+								statement.executeUpdate("CREATE INDEX idx_cadre_data_panchayat_id ON cadre_data(panchayat_id)");
+								statement.executeUpdate("VACUUM");
+								
+								connection.commit();
+								statement.close();
+								connection.close();
+								
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+					
+				}
+				
+				try{
+					for(File rf : destDir.listFiles())
+						addToZipFile(rf.getAbsolutePath(), zos);
+					zos.close();
+					fos.close();
+				}catch(Exception e)
+				{
+					LOG.error("Exception Occured in Zipping Files");
+				}
+				resultStatus.setMessage("/SQLITE_DB_CADRE/"+constituencyName+"_"+date+"_Cadre.zip");
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+			}catch(Exception e)
+			{
+				LOG.error("Exception Occured in create2016CadreDataDumpFileForAParliamnetConstituency(), Exception is - ",e);
+			}
+			return resultStatus;
+		}
 	 
 			public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo)
 		  	{
