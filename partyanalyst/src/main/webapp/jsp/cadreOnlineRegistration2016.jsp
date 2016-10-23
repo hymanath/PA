@@ -13,6 +13,7 @@
 <link href="dist/cadreRegistration/landingPage/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/cadreRegistration/landingPage/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+<!--<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">-->
 <link href="dist/cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/cadreRegistration/dist/css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="dist/cadreRegistration/dist/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -45,6 +46,7 @@
 {
 	list-style:none;
 }
+ 
 </style>
 </head>
 <body>
@@ -211,7 +213,16 @@
 </g>
 </svg>
 <div class="landingPage">
-<section style="margin-top:85px;">
+<header>
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-3 col-xs-8 col-xs-offset-2 col-sm-4 col-lg-3 col-sm-offset-0 col-lg-offset-0 col-md-offset-0">
+            	<img src="dist/cadreRegistration/landingPage/img/Logo.png" class="img-responsive" alt="Logo"/>
+            </div>
+        </div>
+    </div>
+</header>
+<section>
 	<div class="headerBlock">
     	<div class="container">
             <div class="row">
@@ -326,7 +337,7 @@
                     <div class="registrationBlocks onlineRegistration" >
                         <h2 class="text-capital text-center">online</h2>
                         <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/landingPage/img/onlineRegister.png" class="img-responsive " alt="OnlineRegister" title="Click here to go Online Registration"/>
+                        <img src="dist/cadreRegistration/landingPage/img/onlineRegister.png" class="img-responsive " alt="OnlineRegister"/>
                     </div>
                 </div>
                 <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
@@ -416,13 +427,12 @@
                 	<h4 class="text-capital">Track Our TDP Agent In your area</h4>
 				</div>
 				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-                    <select class="m_top40 select" id="onlineDistId" onchange="getConstituenciesForDistricts(this.value)">
+                    <select class="m_top40 select">
                     	<option>Track District</option>
                     </select>
 				</div>
 				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-				<span id="onlineConstituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                    <select class="m_top40 select" id="onlineConstId">
+                    <select class="m_top40 select">
                     	<option>Track Constituency</option>
                     </select>
                     <button class="btn btn-success btnCustom btn-block btn-lg text-capital">find now</button>
@@ -499,7 +509,7 @@
     <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration">
-				<div class="panel-heading renewalN1" style="display:none;">
+				<div class="panel-heading renewalN hide" >
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
                 </div>
@@ -534,13 +544,13 @@
 	</div>
   </div>
   <div class="row">
-      <!-- <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
+       <div class="col-md-3 col-xs-3 col-sm-3 m_top10 hide">
             <label>CONSTITUENCY</label><span style="color:red;">*</span>
 				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                     <select class="select" id="voterConstId" class="form-control">
-					    <option value="0">ALL</option>
+					    <option value="0">Select Constituency</option>
 					</select>
-        </div>-->
+        </div>
         <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
               <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
                 <input type="text" class="form-control" id="inpVoterId"/>
@@ -579,6 +589,8 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="errorDivId" style="color:red;"></div>
 						</div>
+					</div>
+					<div class="row m_top30">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>STATE</label><span style="color:red;">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -603,6 +615,8 @@
 							<option value="0">Select Constituency</option>
 							</select>
                         </div>
+					</div>
+					<div class="row m_top30">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>MANDAL/MUNCIPALITY</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -624,7 +638,8 @@
 							  <option value="0">Select Booth</option>
 							</select>
                         </div>
-					 <div class="row">
+					</div>
+					 <div class="row m_top30">
 					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
                         	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID
 						   </label>
@@ -638,8 +653,9 @@
 						   </label>
                         </div>
 					  </div>
+					<div class="row m_top30">
 					 <div class="col-md-4 col-xs-12 col-sm-6">
-                           <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter voterId/hno/name"/>
+                           <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter Voter ID/H.No/Name"/>
                       </div>
 					</div>
 					<div class="row">
@@ -690,11 +706,12 @@
 				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
 				
 				
-				<div class="panel-heading renewal">
-                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ  </h3>
+				<div class="panel-heading rRenewal">
+                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ </h3>
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
+					<hr>
                 </div>
-				<hr>
+				
 
 					<div class="col-md-8 col-xs-12 col-sm-12 m_top30">
 						<div class="row">
@@ -715,7 +732,7 @@
                         	<div class="row" id="existingCadreInfo">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Name</label>
-                                    <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName"/>
+                                    <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName" disabled="true"/>
 									<input type="hidden" class="form-control" id="hiddenTdpCadreId" name="cadreRegistrationVO.tdpCadreId"/>
 									<input type="hidden" class="form-control" id="hiddenVoterId" name="cadreRegistrationVO.voterId"/>
 									<input type="hidden" class="form-control" id="hiddenFamilyVoterId" name="cadreRegistrationVO.familyVoterId"/>
@@ -735,6 +752,8 @@
                                     <label>Existing Membership Number</label>
                                     <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo" disabled/>
                                 </div>
+                             </div>
+							<div class="row">
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender<span style="color:red;">*</span>&nbsp;<span id="cadreGenderId" style="color:red;"></span></label>
                                     <select class="select" id="genderId" name="cadreRegistrationVO.gender">
@@ -745,7 +764,7 @@
 									</select>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
-                                    <label>Age<span style="color:red;">*</span>&nbsp;<span id="cadreAgeId" style="color:red;"></span></label>
+                                    <label>Age<span style="color:red;">*</span>&nbsp;<span id="cadreAgeId" style="color:red;" alt="Age must be Minimum of 15 year." title="Age must be Minimum of 15 year."></span></label>
                                     <input type="text" class="form-control" id="ageId" name="cadreRegistrationVO.age" maxlength='2'/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6 m_top20">
@@ -757,13 +776,13 @@
 					
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
-                            	<div class="imageDiv">
+                            	<div class="imageDiv" id="imagDivId">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
                                     	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
-								<span id="imgErrDivId" style="color:red;"></span>
+								
                             </div>
 							<div class="col-md-6 col-xs-12 col-sm-6">
 								<div class="imageDiv" style="padding:10px 2px;">
@@ -786,6 +805,7 @@
                                     	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId"  value="1" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
                                     </label>
                                 </div>-->
+								<span id="imgErrDivId" style="color:red;"></span>
                             </div>
                         </div>
                   	</div>
@@ -912,29 +932,29 @@
                         </div>
 						
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>H.No </label>
-                            <input type="text" class="form-control" name="cadreRegistrationVO.prsntAddrsHNo"/>
+                        	<label>H.No <span style="color:red;">*</span>&nbsp;<span id="stateErrPhId"></span></label>
+                            <input type="text"  id="phnoId"  class="form-control" name="cadreRegistrationVO.prsntAddrsHNo"/>
                         </div>
                     	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Apartment Name </label>
-                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsApartment" />
+                        	<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrPaId"></span></label>
+                            <input type="text"  id="paptId" class="form-control"  name="cadreRegistrationVO.prsntAddrsApartment" />
                         </div>
                        
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Area Name</label>
-                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsAreaName"/>
+                        	<label>Area Name<span style="color:red;">*</span>&nbsp;<span id="stateErrPa1Id"></span></label>
+                            <input type="text"  id="pareaId" class="form-control"  name="cadreRegistrationVO.prsntAddrsAreaName"/>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-							<label>Street Name/Road No </label>
-							<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.prsntAddrsStreet"/>
+							<label>Street Name/Road No <span style="color:red;">*</span>&nbsp;<span id="stateErrPsId"></span></label>
+							<input type="text"   id="pStreetId" class="form-control "  name="cadreRegistrationVO.prsntAddrsStreet"/>
 						</div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Land Mark</label>
-                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsLandmark"/>
+                        	<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrPlId"></span></label>
+                            <input type="text"  id="pLandmarkId" class="form-control"  name="cadreRegistrationVO.prsntAddrsLandmark"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Hamlet</label>
-                            <input type="text" class="form-control"  name="cadreRegistrationVO.prsntAddrsHamlet"/>
+                        	<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrPh1Id"></span></label>
+                            <input type="text"  id="phamletId"class="form-control"  name="cadreRegistrationVO.prsntAddrsHamlet"/>
                         </div>
                         
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -970,9 +990,9 @@
                             <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"> Membership Card Delivery Address  : 
-								<input id="checkbox7" class="checkbox-custom" name="checkbox-1" type="checkbox">
-								<label for="checkbox7" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Same as primary Addres.&nbsp;&nbsp;</label>
+                        	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>: </br> </br> 
+								<input id="checkbox7" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
+								<label for="checkbox7" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
 								<input id="checkbox8" class="checkbox-custom" name="checkbox-2" type="checkbox">
 								<label for="checkbox8" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
 											</h6>
@@ -981,29 +1001,29 @@
 						<div style="display:none" id="deliveryAddrId">  
 							<div >  
 								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>H.No./ Plot No. </label>
-									<input type="text" class="form-control " name="cadreRegistrationVO.workAddrsHNo"/>
+									<label>H.No./ Plot No. <span style="color:red;">*</span>&nbsp;<span id="stateErrDhId"></span> </label>
+									<input type="text" id="dhnoId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Apartment Name </label>
-									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsApartment" />
+									<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrDaId"></span></label>
+									<input type="text"  id="dAptId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
 								</div>
 							   
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Area Name/Street/Road </label>
-									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsAreaName"/>
+									<label>Area Name/Street/Road <span style="color:red;">*</span>&nbsp;<span id="stateErrDa1Id"></span></label>
+									<input type="text"  id="dareaId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Street Name/Road No </label>
-									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsStreet"/>
+									<label>Street Name/Road No <span style="color:red;">*</span>&nbsp;<span id="stateErrDsId"></span></label>
+									<input type="text"  id="dStreetId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsStreet"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Land Mark</label>
-									<input type="text" class="form-control "  name="cadreRegistrationVO.workAddrsLandmark"/>
+									<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrDlId"></span></label>
+									<input type="text"  id="dLandmarkId" class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Hamlet</label>
-									<input type="text" class="form-control " name="cadreRegistrationVO.workAddrsHamlet"/>
+									<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrDh1Id"></span></label>
+									<input type="text"  id="dhamletId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHamlet"/>
 								</div>
 								
 							
@@ -1089,7 +1109,7 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panelRegistration" style="margin-bottom: 100px;">
             	<div class="panel-heading renewal">
-                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ  </h3>
+                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;" > Home </button></h3>
                 </div>
                 <div class="panel-body selectMembership hide">
@@ -1461,6 +1481,7 @@
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
 <!-- online First Page Script -->
 <script src="dist/cadreRegistration/landingPage/js/jquery-1.11.3.js" type="text/javascript"></script>
+<!--<script src="dist/cadreRegistration/landingPage/js/bootstrap.js" type="text/javascript"></script>-->
 
 <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript" src="https://wolframhempel.github.io/photobooth-js/photobooth_min.js"></script>
@@ -1526,6 +1547,7 @@ $("#dobId").datetimepicker({
   var presntStateId =0;
   var presntDistrictId =0;
   var presntConstituencyId =0;
+  var presntLebId =0;
   var presntMandalId =0;
   var presntVillageId =0;
   var registrationVoterType='ownVoterId';
@@ -1883,6 +1905,7 @@ $(document).on("click",".forgetVoterId",function(){
 $(document).on("click",".checkCls",function(){
 	$(".checkCls").attr("checked",false);
 	$(this).attr("checked",true);
+	$('#serchVoterNameId').val('');
 });
 $(document).on("click",".noVoterId",function(){
 	registrationVoterType='familyVoterId';
@@ -1937,7 +1960,7 @@ $(document).on("click","#searchResultsBack",function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
 		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
-		fieldsValusEmpty();
+		//fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".searchResultsBlock").removeClass("animated fadeIn");
@@ -1979,7 +2002,7 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
 		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
-		fieldsValusEmpty();
+		//fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
@@ -1996,6 +2019,8 @@ $(document).on("click","#checkbox7",function(){
 		$('.delvryAdrCls').val(0);
 		$('.delvryAddrCls').val('');
 		$("delvryAdrCls").trigger("chosen:updated");
+	}else{
+		$(this).trigger('click');
 	}
 });
 
@@ -2010,6 +2035,7 @@ $(document).on("click","#checkbox8",function(){
 		$('.delvryAddrCls').val('');
 		 $(".delvryAdrCls").trigger("chosen:updated");
 		$(this).attr('checked', false);
+		$('#checkbox7').trigger('click');
 	}	
 });
 
