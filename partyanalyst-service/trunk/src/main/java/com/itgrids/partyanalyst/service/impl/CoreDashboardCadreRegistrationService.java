@@ -391,6 +391,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  		Long boothId=null;
 	  		List<String> relationTypes= new ArrayList<String>();
 	  		List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetails(voterId);
+	  		String voterCardNo ="";
 	  		if(voterDetails!=null && voterDetails.size()>0)
 	  		{
 	  			for(Object[] objects :voterDetails)
@@ -398,9 +399,28 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  				
 	  				boothId=objects[0] != null ? (Long) objects[0] : 0l;
 	  				houseNo=objects[1] != null ? objects[1].toString() : "";
-	  				
+	  				voterCardNo = objects[2] != null ? objects[2].toString() : "";
 	  			}
 	  		}
+	  		List<Long> voterIdsList = new ArrayList<Long>(0);
+	  		voterIdsList.add(voterId);
+	  		vo.setVoterCardNo(voterCardNo.trim());
+	  		Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
+	  		getAddressDetailsForVoter(addressMap,voterIdsList);
+	  		
+	  		if(addressMap.get(vo.getVoterCardNo()) != null){
+				NewCadreRegistrationVO vo1 = addressMap.get(voterCardNo.trim()) ;
+				if(vo1 != null){
+					vo.setHouseNo(vo1.getHouseNo());
+					vo.setStateId(vo1.getStateId());
+					vo.setDistrictId(vo1.getDistrictId());
+					vo.setConstituencyId(vo1.getConstituencyId());
+					vo.setMandalId(vo1.getMandalId());
+					vo.setVillageId(vo1.getVillageId());
+					vo.setPincode(vo1.getPincode());
+				}
+			}
+	  		
 	  		List<Object[]> familyVoterDetails = boothPublicationVoterDAO.getFamilyVoterDetails(boothId,houseNo);
 	  		if(familyVoterDetails != null && familyVoterDetails.size() > 0){
 	  			for (Object[] objects : familyVoterDetails) {
@@ -711,6 +731,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			if(addressMap.get(returnVO.getVoterCardNo()) != null){
 				NewCadreRegistrationVO vo = addressMap.get(returnVO.getVoterCardNo()) ;
 				if(vo != null){
+					returnVO.setHouseNo(vo.getHouseNo());
 					returnVO.setStateId(vo.getStateId());
 					returnVO.setDistrictId(vo.getDistrictId());
 					returnVO.setConstituencyId(vo.getConstituencyId());
@@ -735,6 +756,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				NewCadreRegistrationVO address = new NewCadreRegistrationVO();
 				
 				 Object[] obj= addressDetails.get(0);
+				 address.setHouseNo(commonMethodsUtilService.getStringValueForObject(obj[11]));
 				 address.setStateId(obj[1]!=null?(Long)obj[1]:0L);
 				 address.setDistrictId(obj[2]!=null?(Long)obj[2]:0L);
 				 address.setConstituencyId(obj[3]!=null?obj[3].toString():null);
@@ -870,6 +892,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			if(addressMap.get(returnVO.getVoterCardNo()) != null){
 				NewCadreRegistrationVO vo = addressMap.get(returnVO.getVoterCardNo()) ;
 				if(vo != null){
+					returnVO.setHouseNo(vo.getHouseNo());
 					returnVO.setStateId(vo.getStateId());
 					returnVO.setDistrictId(vo.getDistrictId());
 					returnVO.setConstituencyId(vo.getConstituencyId());
@@ -2068,35 +2091,42 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 
 	public String generatingAndSavingOTPDetails(String mobileNo){
-		TabUserOtpDetails tabUserOtpDetails = null;
+		
 		String status = null;
 		try {
-			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
-			int otpRand = 0;
-			int refRand = 0;
 			
-			while(otpRand <= 0 && refRand <= 0){
-				 otpRand = rnd.randomGenerator(6);
-				 refRand = rnd.randomGenerator(6);
+			List<Object[]> existingOTPDtls = tabUserOtpDetailsDAO.isExistOTPDetails(mobileNo,new DateUtilService().getCurrentDateAndTime());
+			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
+				Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
+				
+				String otp = commonMethodsUtilService.getStringValueForObject(obj[0]);
+				String referenceNo = String.valueOf(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				String dateStr = commonMethodsUtilService.getStringValueForObject(obj[2]);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date date = sdf.parse(dateStr);
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				// next 15 min date time
+				
+				 long duration = (Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis());
+		    	 if(duration < 15 * 60 * 1000)// if duration less than 15 min 
+		    	 {
+		    		    calendar.add(Calendar.MINUTE, 15);
+						String finalDateStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(calendar.getTime());
+						String message = "your OTP is "+otp+" for Reference Id # " +referenceNo+" This OTP Validate upto Next "+finalDateStr+" .";
+						String[] phoneNumbers = {mobileNo.toString()};
+						smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+						status=referenceNo;
+		    	 }
+				else{
+					status=getNewOTPDetails(mobileNo);
+				}
+				
+			}else{
+				status=getNewOTPDetails(mobileNo);
 			}
-			String refeRenceNo = String.valueOf(refRand);
-			String otpNum = String.valueOf(otpRand);
-			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" This OTP Validate for Next 15 mins.";
-			String[] phoneNumbers = {mobileNo.toString()};
-			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
 			
-			tabUserOtpDetails = new TabUserOtpDetails();
-			//tabUserOtpDetails.setTabUserInfoId(tabUserInfoId);
-			//tabUserOtpDetails.setCadreSurveyUserId(cadreSurveyUserId);
-			tabUserOtpDetails.setMobileNo(mobileNo);
-			tabUserOtpDetails.setOtpNo(otpNum);
-			tabUserOtpDetails.setReferenceId(refeRenceNo);
-			tabUserOtpDetails.setGeneratedTime(dateUtilService.getCurrentDateAndTime());
-			tabUserOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			tabUserOtpDetails.setIsValid("Y");
-			
-			tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
-			status=refeRenceNo;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2106,6 +2136,40 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return status;
 	}
 	
+	public String getNewOTPDetails(String mobileNo){
+		TabUserOtpDetails tabUserOtpDetails = null;
+		try {
+			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
+			int otpRand = 0;
+			int refRand = 0;
+			
+			while(otpRand <= 0 && refRand <= 0){
+				 otpRand = rnd.randomGenerator(6);
+				 refRand = rnd.randomGenerator(6);
+			}
+				String refeRenceNo = String.valueOf(refRand);
+				String otpNum = String.valueOf(otpRand);
+				String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" This OTP Validate for Next 15 mins.";
+				String[] phoneNumbers = {mobileNo.toString()};
+				smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+				
+				tabUserOtpDetails = new TabUserOtpDetails();
+				//tabUserOtpDetails.setTabUserInfoId(tabUserInfoId);
+				//tabUserOtpDetails.setCadreSurveyUserId(cadreSurveyUserId);
+				tabUserOtpDetails.setMobileNo(mobileNo);
+				tabUserOtpDetails.setOtpNo(otpNum);
+				tabUserOtpDetails.setReferenceId(refeRenceNo);
+				tabUserOtpDetails.setGeneratedTime(dateUtilService.getCurrentDateAndTime());
+				tabUserOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				tabUserOtpDetails.setIsValid("Y");
+				
+				tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
+				return refeRenceNo;
+		} catch (Exception e) {
+			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+			return "failure";
+		}
+	}
 	public CadreRegistratedCountVO getEnumerationDtlsForMem(Long activityMemberId,Long stateId,String startDate, String endDate){
 		try{
 			CadreRegistratedCountVO cadreRegistratedCountVO = new CadreRegistratedCountVO();
@@ -2318,18 +2382,27 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			  Date currentTime = dateUtilService.getCurrentDateAndTime();
               TdpCadre tdpCadre=tdpCadreDAO.getTdpCadreDetailsByOtp(cadreId);
               String mobileNumber=tdpCadre.getMobileNo();
-			Long tabDetsId = tabUserOtpDetailsDAO.checkOTPDetails(mobileNumber,otp,currentTime);
-			if(tabDetsId != null && tabDetsId.longValue() > 0l){
-				TabUserOtpDetails tabUserOtpDetails = tabUserOtpDetailsDAO.get(tabDetsId);
-				tabUserOtpDetails.setIsValid("N");
-				tabUserOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
-				
-				status = "success";
-			}
-			else
-				status = "failure";
-			
+			//Long tabDetsId = tabUserOtpDetailsDAO.checkOTPDetails(mobileNumber,otp,currentTime);
+              List<Object[]> existingOTPDtls = tabUserOtpDetailsDAO.isExistOTPDetails(mobileNumber,currentTime);
+  			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
+  				Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
+  				Long tabDetsId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+  				String originalotp = commonMethodsUtilService.getStringValueForObject(obj[0]);
+  				
+				if(originalotp.toString().trim().equalsIgnoreCase(otp.toString().trim()) && tabDetsId != null && tabDetsId.longValue() > 0l){
+					TabUserOtpDetails tabUserOtpDetails = tabUserOtpDetailsDAO.get(tabDetsId);
+					tabUserOtpDetails.setIsValid("N");
+					tabUserOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					tabUserOtpDetails = tabUserOtpDetailsDAO.save(tabUserOtpDetails);
+					
+					status = "success";
+				}
+				else
+					status = "failure";
+  			}
+  			else
+  				status = "failure";
+  			
 		} catch (Exception e) {
 			status = "failure";
 			LOG.error("Exception Occured in checkOTPDetails() in CodeDashboardCadreRegistrationService class.",e);

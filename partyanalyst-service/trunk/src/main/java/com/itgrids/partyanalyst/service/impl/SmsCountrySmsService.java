@@ -187,6 +187,9 @@ public class SmsCountrySmsService implements ISmsService {
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+				return resultStatus;
+			
 			HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
 			client.getHttpConnectionManager().getParams().setConnectionTimeout(
 					Integer.parseInt("30000"));
