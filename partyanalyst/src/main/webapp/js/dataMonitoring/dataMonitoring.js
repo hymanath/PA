@@ -951,4 +951,9 @@
 			$('body').addClass("modal-open");
 		}, 500);    
 	});
-	
+	$(document).on('click','#bulkApproveId',function(){
+		$("#getRegStatusId").trigger("click");
+	}); 
+	$(document).on('click','#bulkRejectId',function(){
+		$("#getRegStatusId").trigger("click");    
+	});
