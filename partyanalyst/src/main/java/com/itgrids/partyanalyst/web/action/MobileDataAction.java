@@ -438,6 +438,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_CADRE");
 			 resultStatus = mobileService.createCadreDataSqliteFileForAParliamnetConstituency(regVo);
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("createDataDumpForCadre2016"))
+		 {
+			 RegistrationVO regVo = new RegistrationVO();
+			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
+			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
+			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB_CADRE_2016");
+			 resultStatus = mobileService.create2016CadreDataSqliteFileForAParliamnetConstituency(regVo);
+		 }
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
