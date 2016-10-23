@@ -87,48 +87,8 @@
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h4 class="panel-title text-capital">district wise detailed overview</h4>
-            <div class="table-responsive m_top20">
-            	<table class="table table-condensed b_1">
-                	<thead>
-                    	<th>District Name</th>
-                        <th>Registered</th>
-                        <th>Data Verified</th>
-                        <th>Data Verification Pending</th>
-                        <th>Open Issues</th>
-                        <th>Closed Issues</th>
-                        <th>Fixed Issues</th>
-                    </thead>
-                    <tbody>
-                    	<tr>
-                        	<td>Srikakulam</td>
-                            <td>5000</td>
-                            <td>2000</td>
-                            <td>1000</td>
-                            <td>5000</td>
-                            <td>2000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                        	<td>Srikakulam</td>
-                            <td>5000</td>
-                            <td>2000</td>
-                            <td>1000</td>
-                            <td>5000</td>
-                            <td>2000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                        	<td colspan="7">
-                            	Ananthapur Dist - Constituency Wise Detailed Overview
-                            	<table class="table table-condensed b_1">
-                                	<thead>
-                                    	<th></th>
-                                    </thead>
-                                </table>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="table-responsive m_top10">
+				<div id="districtWiseOverviewDetailsId"></div>
             </div>
         </div>
     </div>
@@ -146,6 +106,10 @@ $(".singleDate").daterangepicker({
 	opens:'left'
 });
  onLoadCalls();
+ 
+$(document).on("click",".applyBtn",function(){
+	getLocationWiseOverAllDetails("state",0,"districtWiseOverviewDetailsId");
+});
 </script>
 </body>
 </html>
