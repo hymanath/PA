@@ -7417,7 +7417,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		else if(searchType != null && searchType.trim().equalsIgnoreCase("mobile") && mobileNo != null)
 			sb.append(" and model.tdpCadre.mobileNo = :mobileNo");
 		else if(searchType != null && searchType.trim().equalsIgnoreCase("voter") && voterId != null)
-			sb.append(" and (model1.voterIDCardNo = :voterId or model2.voterIDCardNo = :voterId) ");
+			sb.append(" and (model1.voterIDCardNo = :voterId ) ");
 		
 		sb.append(" order by model.enrollmentYear.enrollmentYearId");
 		
@@ -8046,9 +8046,9 @@ public TdpCadre getTdpCadreDetailsByOtp(Long tdpCadreId)
 	 {
 		 Query query = getSession().createQuery("select model" +
 		 		" from TdpCadre model " +
-		 		"where model.tdpCadreId = :tdpCadreId ");
+		 		"where model.tdpCadreId = :tdpCadreId and model.isDeleted='N' and model.enrollmentYear = 2014 ");
 		 query.setParameter("tdpCadreId", tdpCadreId);
-		 return (TdpCadre) query.list();
+		 return (TdpCadre) query.uniqueResult();
 	 }
 public Integer updateApprovedCadre(Long cadreId, Long statusId){
 	StringBuilder queryStr = new StringBuilder();
