@@ -8216,4 +8216,19 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getCadreDataForSqlite(Long constituencyId)
+	{
+		Query query = getSession().createSQLQuery("SELECT TC.tdp_cadre_id,TC.voter_id,TC.membership_id,TC.first_name,TC.relative_name,TC.relative_type,TC.house_no,TC.image,TC.mobile_no, " +
+				" TC.land_phone_no,TC.blood_group_id,TC.gender,TC.education_id,TC.occupation_id,TC.date_of_birth,TC.age,TC.caste_state_id,TC.inserted_time, TC.update_time,TC.card_number,TC.nominee_name, " +
+				" TC.aadhar_no,TC.voter_relation_id,TC.nominee_age,TC.nominee_gender,TC.photo_type,TC.cadre_aadher_no,TC.family_voterId,TC.card_no,TC.email_id, " +
+				" UA.state_id,UA.district_id,UA.constituency_id,UA.tehsil_id,UA.address_lane1,UA.address_lane2,UA.street,UA.pincode,UA.local_area,UA.local_election_body,UA.ward," +
+				" UA.parliament_constituency_id,UA.booth_id,UA.panchayat_id,TC.is_deleted_voter " +
+				" FROM tdp_cadre TC,user_address UA WHERE TC.address_id = UA.user_address_id AND " +
+				" TC.enrollment_year = 2014 AND TC.is_deleted = 'N' AND UA.constituency_id = :constituencyId " +
+				" GROUP BY TC.tdp_cadre_id ");
+		
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
 }
