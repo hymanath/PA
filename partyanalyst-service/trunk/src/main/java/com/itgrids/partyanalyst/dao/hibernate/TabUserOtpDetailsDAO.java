@@ -30,6 +30,23 @@ public class TabUserOtpDetailsDAO extends GenericDaoHibernate<TabUserOtpDetails,
 		query.setDate("currentTime", currentTime);
 		return (Long) query.uniqueResult();
 	}
+	
+	public List<Object[]> isExistOTPDetails(String mobileNo,Date currentTime){
+		Query query = getSession().createSQLQuery("select  otp_no as otp,reference_id as ref,updated_time as dateStr,tab_user_otp_details_id as tuso"
+									+ " from tab_user_otp_details"
+									+ " where  mobile_no = :mobileNo"
+									+ " and is_valid = 'Y'"
+									+ " and (TIME_TO_SEC(TIME(:currentTime))-TIME_TO_SEC(TIME(updated_time)))/60 < 15")
+									.addScalar("otp", Hibernate.LONG)
+									.addScalar("ref", Hibernate.LONG)
+									.addScalar("dateStr", Hibernate.STRING)
+									.addScalar("tuso", Hibernate.LONG);
+		query.setParameter("mobileNo", mobileNo);
+		query.setDate("currentTime", currentTime);
+		return  query.list();
+	}
+	
+	
 	/*public Long checkOTPDetails(String otpNo,String mobileNo,Date today,Date lastOneHourTime){
 		Query query = getSession().createQuery("select model.tabUserOtpDetailsId"
 									+ " from TabUserOtpDetails model " 

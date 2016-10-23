@@ -8506,7 +8506,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	}
 	public List<Object[]> getVoterDetails(Long voterId) {
 		Query query = getSession().createQuery(
-				"select distinct model.booth.boothId,model.voter.houseNo "
+				"select distinct model.booth.boothId,model.voter.houseNo,model.voter.voterIDCardNo "
 						+ " from BoothPublicationVoter model  "
 						+ " where model.voter.voterId = :voterId");
 		query.setParameter("voterId", voterId);
@@ -8588,7 +8588,8 @@ public List<Object[]> getVoterLocationDetailsByVotersIdsList(List<Long> voterIds
 			"        model.booth.constituency.district.districtId, model.booth.constituency.constituencyId, " +//3
 			"        tehsil.tehsilId, leb.localElectionBodyId ," +//5
 			"        panchayat.panchayatId,ward.constituencyId, " +//7
-			"        model.booth.boothId , model.voter.voterId, model.voter.voterIDCardNo "+//10
+			"        model.booth.boothId , model.voter.voterId, model.voter.voterIDCardNo," +//10
+			" 		 model.voter.houseNo "+//11
 			" FROM  BoothPublicationVoter model "
 			+ "     left join model.booth.tehsil tehsil " +
 			"       left join model.booth.localBody leb " +
