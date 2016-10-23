@@ -2515,6 +2515,7 @@
 				  
 				</div>
 				<div id="processingImgId" style="display:none;"></div>    
+				<div id="processingImgAttendId"></div>    
 			</div>
 		</div>
       </div>
