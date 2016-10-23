@@ -40,6 +40,7 @@ public class NewCadreRegistrationVO implements Serializable{
 	private Long userAddressId;
 	private Long  localElectionBodyId;
 	
+	private String houseNo;
 	private Long stateId;
 	private Long districtId;
 	private Long mandalId;
@@ -47,6 +48,13 @@ public class NewCadreRegistrationVO implements Serializable{
 	private Long pincode;
 	private PaymentGatewayVO paymentGatewayVO;
 	
+	
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
 	public PaymentGatewayVO getPaymentGatewayVO() {
 		return paymentGatewayVO;
 	}
