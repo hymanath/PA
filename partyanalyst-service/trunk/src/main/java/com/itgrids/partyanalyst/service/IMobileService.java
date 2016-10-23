@@ -84,5 +84,6 @@ public interface IMobileService {
 	public List<PollManagementSummaryVO> boothWiseVotingActivity(Long wardId);
 	public PollManagementVO getDivisonOverView(MobileAppUserVoterVO inputVO);
 	public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
-	;
+	
+	public ResultStatus create2016CadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 }
