@@ -588,7 +588,7 @@ public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date t
 		sb.append(" ward.constituencyId,'',");
 	
 	sb.append(" model1.cadreRegIssueStatus.cadreRegIssueStatusId," +
-				" count(model.tdpCadre.tdpCadreId)");
+				" count(distinct model1.cadreRegIssueId)");
 	
 	sb.append(" from TdpCadreEnrollmentYear model,CadreRegIssue model1" +
 				" left join model.tdpCadre.userAddress.tehsil tehsil" +
@@ -600,8 +600,7 @@ public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date t
 				" and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.enrollmentYear.enrollmentYearId = 4" +
 				" and model.isDeleted = 'N'" +
-				" and model.tdpCadre.isDeleted = 'N'" +
-				" and model.tdpCadre.cadreVerificationStatusId is not null");
+				" and model.tdpCadre.isDeleted = 'N'");
 	if(fromDate != null && toDate != null)
 		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
 	
