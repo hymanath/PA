@@ -1113,7 +1113,10 @@ public List<DataMonitoringVerificationVO> getLocationWiseDetailedOverViewDetails
 					if(vo.getId() == 0){
 						vo.setId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 						vo.setName(obj[3] != null ? obj[3].toString():"");
+						vo.setName(vo.getName()+" Muncipality");
 					}
+					else
+						vo.setName(vo.getName()+" Mandal");
 				}
 				vo.setCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
 				
@@ -1140,6 +1143,7 @@ public List<DataMonitoringVerificationVO> getLocationWiseDetailedOverViewDetails
 			}
 		}
 		
+		//IssuesCounts.
 		List<Object[]> list2 = cadreRegIssueDAO.getLocationWiseStatusWiseIssuesCounts(startDate, endDate, locationType, locationVal);
 		if(list2 != null && !list2.isEmpty()){
 			for (Object[] obj : list2) {
