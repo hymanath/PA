@@ -22,7 +22,7 @@
                 	<div class="col-md-4 col-xs-12 col-sm-6">
                     	<label>Select State</label>
                         <select class="select" id="stateId">
-							<option value="0">Select State</option>
+							<option value="0">Select State</option> 
                         	<option value="1">Andhra Pradesh</option>
 							<option value="36">Telangana</option>   
                         </select>
@@ -77,11 +77,11 @@
   <div class="modal-dialog" style="width:80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" id="mainModelCloseId" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p id="userId">User ID - 12345</p>
         <p id="userDescriptionId"><i>Rahul - 9984845464</i></p>
       </div>
-      <div class="modal-body">  
+      <div class="modal-body">   
         <div>
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" id="issuesDataMonitroing" role="tablist">
