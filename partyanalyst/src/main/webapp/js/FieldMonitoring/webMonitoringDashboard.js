@@ -6,7 +6,7 @@
 		getIssueTypeWiseCounts();
 		getDataMonitoringOverViewDetails();
 		getDistrictWiseIssueTypesCount();
-		getLocationWiseOverAllDetails("state",0);
+		getLocationWiseOverAllDetails("state",0,"districtWiseOverviewDetailsId");
 	}
 	function getOverAllDataCollectorsCounts(){
 		var dates = $(".singleDate").val();
@@ -474,7 +474,9 @@ function getDataMonitoringOverViewDetails(){
 		}
 	}
 	
-function getLocationWiseOverAllDetails(locationType,locationVal){
+function getLocationWiseOverAllDetails(locationType,locationVal,divId){
+	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
 	var dates = $(".singleDate").val();
 	var dateArr = dates.split("-");
 	var fromDate;
@@ -497,6 +499,109 @@ function getLocationWiseOverAllDetails(locationType,locationVal){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){
-		
+		if(result != null && result.length > 0){
+			buildLocationWiseDetails(result,locationType,divId);
+		}
+		else{
+			$("#"+divId).html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+		}
 	});
 }
+
+function buildLocationWiseDetails(result,locationType,divId){
+	var str='';
+	
+	str+='<table class="table table-condensed b_1">';
+		str+='<thead>';
+			if(locationType == 'state')
+				str+='<th>District</th>';
+			else if(locationType == 'district')
+				str+='<th>Constituency</th>';
+			else if(locationType == 'constituency')
+				str+='<th>Mandal/Muncipality</th>';
+			else if(locationType == 'mandal')
+				str+='<th>Village</th>';
+			else if(locationType == 'muncipality')
+				str+='<th>Ward</th>';
+			str+='<th>Registered</th>';
+			str+='<th>Data Verified</th>';
+			str+='<th>Data Verification Pending</th>';
+			str+='<th>Open Issues</th>';
+			str+='<th>Fixed Issues</th>';
+			str+='<th>Closed Issues</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				if(locationType == 'state'){
+					str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="district" attr_divId="districtWiseOverAllDetailsId'+i+'" attr_td_id="districtWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="districtNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+				}
+				else if(locationType == 'district'){
+					str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="constituency" attr_divId="constituencyWiseOverAllDetailsId'+i+'" attr_td_id="constituencyWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="constNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+				}
+				else if(locationType == 'constituency'){
+					if(result[i].name.split(" ")[1] == 'Muncipality')
+						str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="muncipality" attr_divId="mandalWiseOverAllDetailsId'+i+'" attr_td_id="mandalWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="mandalNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+					else
+						str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="mandal" attr_divId="mandalWiseOverAllDetailsId'+i+'" attr_td_id="mandalWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="mandalNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+				}
+				else if(locationType == 'mandal')
+					str+='<td>'+result[i].name+'</td>';
+				else if(locationType == 'muncipality')
+					str+='<td>'+result[i].name+'</td>';
+				
+				str+='<td>'+result[i].count+'</td>';
+				str+='<td>'+result[i].verifiedCount+'</td>';
+				str+='<td>'+result[i].notVerifiedCount+'</td>';
+				str+='<td>'+result[i].openIssues+'</td>';
+				str+='<td>'+result[i].fixedIssues+'</td>';
+				str+='<td>'+result[i].closedIssues+'</td>';
+			str+='</tr>';
+			if(locationType == 'state'){
+				str+='<tr>';
+					str+='<td class="locationtdCls" colspan="7" id="districtWiseOverAlltdId'+i+'" style="display:none;">';
+						str+='<h4 class="panel-title text-capital"><span id="districtNameid'+i+'"></span>&nbsp;&nbsp;district - constituency wise detailed overview</h4>';
+						str+='<i class="glyphicon glyphicon-remove pull-right removecls" style="cursor:pointer;"></i>';
+						str+='<div class="table-responsive m_top20" id="districtWiseOverAllDetailsId'+i+'"></div>';
+					str+='</td>';
+				str+='</tr>';
+			}
+			else if(locationType == 'district'){
+				str+='<tr>';
+					str+='<td class="locationtdCls" colspan="7" id="constituencyWiseOverAlltdId'+i+'" style="display:none;">';
+						str+='<h4 class="panel-title text-capital"><span id="constNameid'+i+'"></span>&nbsp;&nbsp;constituency - mandal/muncipality wise detailed overview</h4>';
+						str+='<i class="glyphicon glyphicon-remove pull-right removecls" style="cursor:pointer;"></i>';
+						str+='<div class="table-responsive m_top20" id="constituencyWiseOverAllDetailsId'+i+'">';
+						str+='</div>';
+					str+='</td>';
+				str+='</tr>';
+			}
+			else if(locationType == 'constituency'){
+				str+='<tr>';
+					str+='<td class="locationtdCls" colspan="7" id="mandalWiseOverAlltdId'+i+'" style="display:none;">';
+						str+='<h4 class="panel-title text-capital"><span id="mandalNameid'+i+'"></span>&nbsp;&nbsp; - village/ward wise detailed overview</h4>';
+						str+='<i class="glyphicon glyphicon-remove pull-right removecls" style="cursor:pointer;"></i>';
+						str+='<div class="table-responsive m_top20" id="mandalWiseOverAllDetailsId'+i+'">';
+						str+='</div>';
+					str+='</td>';
+				str+='</tr>';
+			}
+		}
+		str+='</tbody>';
+	str+='</table>';
+	
+	$("#"+divId).html(str);
+}
+
+$(document).on("click",".locationWiseCls",function(){
+	var locationType = $(this).attr("attr_locationType");
+	var locationVal = $(this).attr("attr_locationVal");
+	var tdId = $(this).attr("attr_td_id");
+	var divId = $(this).attr("attr_divId");
+	var locationName = $(this).attr("attr_location_name");
+	var headingId = $(this).attr("attr_heading");
+	
+	$("#"+headingId).html(locationName);
+	$("#"+tdId).show();
+	getLocationWiseOverAllDetails(locationType,locationVal,divId);
+});
