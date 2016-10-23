@@ -30,6 +30,7 @@
 		$("#PrsntConstutuencyList").trigger("chosen:updated");
 		$("#PrsntMandalList").trigger("chosen:updated");
 		$("#PrsntVillageList").trigger("chosen:updated");
+		$('#constErrId').html('<img src="images/search.gif">');
 	 }
 	 else  if(id == 3){		
 		$("#workConstuencyList  option").remove();
@@ -42,6 +43,7 @@
 		$("#workConstuencyList").trigger("chosen:updated");
 		$("#workMandalList").trigger("chosen:updated");
 		$("#workVillageList").trigger("chosen:updated");
+		$('#wrkConstitErrId').html('<img src="images/search.gif">');
 	 }
    var jsObj=
    {				
@@ -76,6 +78,7 @@
 			
 			 $("#PrsntConstutuencyList").val(presntConstituencyId);
 			$("#PrsntConstutuencyList").trigger("chosen:updated");
+			$('#constErrId').html('');
 			 setTimeout(function(){
 				 getMandalCorporationsByConstituency(presntConstituencyId,2);
 			},500);
@@ -90,6 +93,8 @@
 			   }
 			}
 			$("#workConstuencyList").trigger("chosen:updated");
+			
+			$('#wrkConstitErrId').html('');
 	   }
    });
   }
@@ -123,6 +128,7 @@
 		$("#PrsntMandalList").trigger("chosen:updated");
 		$("#PrsntVillageList").trigger("chosen:updated");
 		 
+			$('#mandalErrId').html('<img src="images/search.gif">');
 	 }else if(id==3){
 		$("#workMandalList  option").remove();
 		$("#workMandalList").append('<option value="0">Select Mandal/Municipality</option>');
@@ -131,6 +137,7 @@
 		
 		$("#workMandalList").trigger("chosen:updated");
 		$("#workVillageList").trigger("chosen:updated");
+			$('#wrkMadalErrId').html('<img src="images/search.gif">');
 	 }
 	var jsObj=
    {				
@@ -176,6 +183,8 @@
 			
 			 $("#PrsntMandalList").val(presntMandalsId);
 			 $("#PrsntMandalList").trigger("chosen:updated");
+			
+			$('#mandalErrId').html('');
 			 setTimeout(function(){
 				 getPanchayatWardByMandal(presntMandalsId,2);
 			},500);
@@ -189,6 +198,7 @@
 			   }
 			}
 			$("#workMandalList").trigger("chosen:updated");
+			 $('#wrkMadalErrId').html('');
 	   }
    });
   }
@@ -225,10 +235,12 @@
 		$("#PrsntVillageList  option").remove();
 		$("#PrsntVillageList").append('<option value="0">Select Panchayat</option>');
 		$("#PrsntVillageList").trigger("chosen:updated");
+		 $('#wardErrId').html('<img src="images/search.gif">');
 	}else if(id==3){
 		$("#workVillageList  option").remove();
 		$("#workVillageList").append('<option value="0">Select Panchayat</option>');
 		$("#workVillageList").trigger("chosen:updated");
+		 $('#wrkVillageErrId').html('<img src="images/search.gif">');
 	}
 				var jsObj ={					
 					mandalId:mandal
@@ -286,7 +298,7 @@
 						
 						 $("#PrsntVillageList").val(presntVillagId);
 						 $("#PrsntVillageList").trigger("chosen:updated");
-						 
+						 $('#wardErrId').html('');
 					}
 					else if(id==3){
 						 for(var i in result){
@@ -298,6 +310,7 @@
 						 }
 						 
 						$("#workVillageList").trigger("chosen:updated");
+						$('#wrkVillageErrId').html('');
 					}	
 				});
 	}
@@ -376,6 +389,8 @@ $("#boothsList").trigger("chosen:updated");
 		$("#PrsntConstutuencyList").trigger("chosen:updated");
 		$("#PrsntMandalList").trigger("chosen:updated");
 		$("#PrsntVillageList").trigger("chosen:updated");
+		
+		$('#distriErrId').html('<img src="images/search.gif">');
 	 }
 	 else  if(id == 3){
 		$("#workDistrictList  option").remove();
@@ -391,6 +406,7 @@ $("#boothsList").trigger("chosen:updated");
 		$("#workConstuencyList").trigger("chosen:updated");
 		$("#workMandalList").trigger("chosen:updated");
 		$("#workVillageList").trigger("chosen:updated");
+		$('#wrkDistErrId').html('<img src="images/search.gif">');
 	 }
    var jsObj=
    {				
@@ -424,9 +440,11 @@ $("#boothsList").trigger("chosen:updated");
 			 }
 			 $("#PrsntDistrictList").val(presntDistrictId);
 			 $("#PrsntDistrictList").trigger("chosen:updated");
+			 $('#distriErrId').html('');	
 			 setTimeout(function(){
 				 getConstituenciesForDistricts(presntDistrictId,2);
-			},500);			 
+			},500);		
+					
 	   }
 	   else if(id == 3){
 			 for(var i in result){
@@ -437,6 +455,7 @@ $("#boothsList").trigger("chosen:updated");
 			   }
 			 }
 			 $("#workDistrictList").trigger("chosen:updated");
+			 $('#wrkDistErrId').html('');
 	   }
    });
   }
