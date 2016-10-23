@@ -1,4 +1,8 @@
 function onLoadCalls(){
+	setTimeout(function(){
+		$('.eventsheader,.footerCls,.line_heightDiv').addClass('hide');
+	},1000);
+	
 	 getStatewisesCastNames();
 	 getEducationalQualifications();
 	 getAllRelationDetails();
@@ -60,6 +64,10 @@ function onLoadCalls(){
 
 function getSearchByMyVoterIdDetails(){
 	eachTimeClearFields();
+	$('#checkbox8').attr('checked', false);
+	$('.deliveryAddrCls').html('');
+	$('.delvryAdrCls').val(0);
+	$("delvryAdrCls").trigger("chosen:updated");
 	$("#populatingDtsDivImgId").show();
  var flag = 0;
   $(".searchChkboxCls").each(function(){
@@ -140,6 +148,7 @@ function getSearchByMyVoterIdDetails(){
 			else{
 				$("#submitCadreForm").show();
 				$(".newProfile").show();
+				$(".rRenewal").hide();
 				$("#populatingDtsDivImgId").hide();
 				$("#voterIdText").val(voterId1);
 				
@@ -209,6 +218,7 @@ var str = "";
 		 $("#hiddenFamilyVoterId").val(familyVoterId);
 		 $("#hiddenVoterId").val(result.voterRelationId);
 		 $("#hiddenTdpCadreId").val(result.tdpCadreId);
+		 $("#tdpCadreId").val(result.tdpCadreId);
 		 if(result.tdpCadreId != null && result.imageBase64String != null){
 			$("#existImgId").attr('src','https://mytdp.com/images/cadre_images/'+result.imageBase64String+'');
 		}else if(result.voterRelationId != null && result.imageBase64String != null){
@@ -255,9 +265,28 @@ var str = "";
 		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
 			$("#aadharId").val(result.candidateAadherNo);
 		 }
+		 if(result.houseNo != null && result.houseNo != ""){
+			$("#phnoId").val(result.houseNo);
+		 }
 		 if(result.tdpCadreId != null && result.nomineeName != null && result.nomineeName != ""){
 			$("#PrvNomineeDetailsId").prop( 'checked',true);
+			$("#changeNomineeId").prop( 'checked',false);
+			$("#newNomineeID").hide();
+			$("#existingNomineeID").show();
+			$("#familyDetailsDivId").hide();
 			$("#prvNomneNameId").val(result.nomineeName);
+		 }else{
+				$("#PrvNomineeDetailsId").prop( 'checked',false);
+				$("#changeNomineeId").prop( 'checked',false);
+				$("#prvNomneNameId").prop( 'disabled',true);
+				//$("#prvNomneGendrId").prop( 'disabled',true);
+				//$("#prevNomneAgeId").prop( 'disabled',true);
+				//$("#prevNomneReltvId").prop( 'disabled',true);
+				//$("#prevNomneAadharNoId").prop( 'disabled',true);
+				
+				$("#newNomineeID").show();
+				$("#existingNomineeID").hide();
+				$("#familyDetailsDivId").hide();
 		 }
 		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != "" && result.nomineeAge > 0){
 			$("#prevNomneAgeId").val(result.nomineeAge);
@@ -291,7 +320,10 @@ var str = "";
 		
 		  presntDistrictId =result.districtId;
 		  presntConstituencyId =result.constituencyId;
-		  presntMandalId =result.mandalId;
+		  if(result.localElectionBodyId != null && result.localElectionBodyId>0)
+			presntLebId =result.localElectionBodyId; 
+		  else
+			presntMandalId =result.mandalId; 
 		  presntVillageId =result.villageId;
 		  
 		if(result.districtId<11){
@@ -306,7 +338,7 @@ var str = "";
 
 		if(registrationVoterType=='familyVoterId'){
 			$("#voterDvId").show();
-			$("#familyDetailsDivId").show();
+			//$("#familyDetailsDivId").show();
 }
  		
 }
@@ -393,6 +425,18 @@ function buildCasteDetails(result) {
 }
   $(document).on("click","#addNewNomineeId",function(){
 	  $("#familyDetailsDivId").hide(); 
+
+	$("#prvNomneNameId").val('');
+	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
+	$("#prevNomneAgeId").val('');
+	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
+	
+	 $("#prvNomneNameId").prop( 'disabled',false);
+	// $("#prvNomneGendrId").removeClass( 'chosen-disabled');
+	// $("#prevNomneReltvId").removeClass( 'chosen-disabled');
+	// $("#prevNomneAgeId").prop( 'disabled',false);
+	// $("#prevNomneAadharNoId").prop( 'disabled',false);
+				
       if ($("#addNewNominatedId").is(":visible")) {
 			$("#addNewNominatedId").hide();   
 		}else{
@@ -432,21 +476,20 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	function savingCadreDetails(){
 	
 		$("#nomineeDivId").html(""); 
-		if(!validations())
+		if(!imageValidations())
 		{
-		return;
-		}
-		if(!validationDetails()){
-		return;
-		}
-		if(!mailValidation())
+			//alert("fail 1");
+			$("#imagDivId").scroll();
+			//return;
+		}	
+		if(addressFieldsValidation())
 		{
-		   return;
-		}
-		if(!addressFieldsValidation())
-		{
+			//alert("fail 2");
+			$("#cadrePrvNomneDivId").scroll();
 			return;
 		}
+		
+		//alert("333");
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		if(tdpCadreId != null && tdpCadreId != ""){
 		$(".isNomineeChangd").each(function(){
@@ -456,6 +499,9 @@ $(document).on("click", "#changeNomineeId", function(e) {
 			});
 		}
 		$('#saveBtnId').hide();
+		
+		//alert("success");
+		
 	var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
@@ -538,6 +584,8 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				str+= '</div>';
 			}
 			*/
+			
+			$('#savingStatusDivId').html(str);
 		}
 		else if(result.search('FAILURE') != -1)
 		{
@@ -552,7 +600,14 @@ $(document).on("click", "#changeNomineeId", function(e) {
 			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
+			
+			$('#savingStatusDivId').html(str);
 		}
+		else
+		 {
+			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>"+resultArr[0]+" ,Application Submission Failed.Please try Again./span>"); 
+			$('#saveBtnId').show();
+		 }
 		/*else
 		{
 			str+= '<div class="container m_top10" id="yourElement">';
@@ -568,22 +623,20 @@ $(document).on("click", "#changeNomineeId", function(e) {
 			str+= '</div>';
 			
 		}*/
-		$('#savingStatusDivId').html(str);
+		
 	 /*
 	 if(result.indexOf("SUCCESS") > -1){
 		 $("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Saved Successfully...</span>");
 		 setTimeout(function(){
 			 eachTimeClearFields();
 			}, 2000);
-	 }else
-	 {
-		$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>"); 
 	 }
 		 */
  }
  
 $(document).on("click",".checkboxCls",function(){
-	  $(".checkboxCls").prop( 'checked',false);
+	$("#prvNomneNameId").prop( 'disabled',true);
+	  $(".checkboxCls").prop( 'checked',false);  
 	  $(this).prop( 'checked', true );
 	  var name = $(this).attr("attr_name");
 	  var gender = $(this).attr("attr_gender");
@@ -602,7 +655,7 @@ $(document).on("click",".nomineeDetailsCls",function(){
 	 $(this).prop( 'checked', true );
 });
 
-function validations()
+function imageValidations()
 {
 	$("#imgErrDivId").html("");
 	var exstImgPath=$("#existImgId").attr("src");
@@ -611,170 +664,34 @@ function validations()
 	var newImgCheck=$("#newCheckImgId").is(':checked') ? 1 : 0;
 
  
-if(existImgCheck=="0" && newImgCheck == "0")
-{
-  $("#imgErrDivId").html("Please select Image.");
-	 return false;	
-}else{
-	$("#imgErrDivId").html("");
-}
-if(newImgCheck == "1" || existImgCheck == "1")
-  {
-	if(newImagPath == "dist/img/default_image.png" && exstImgPath == "dist/img/default_image.png")
+	if(existImgCheck=="0" && newImgCheck == "0")
 	{
-		$("#imgErrDivId").html("Please select Image.");
-	      return false;
+	  $("#imgErrDivId").html("Please select Image.");
+		 return false;	
 	}else{
 		$("#imgErrDivId").html("");
 	}
-}
+	if(newImgCheck == "1" || existImgCheck == "1")
+	  {
+		if(newImagPath == "dist/img/default_image.png" && exstImgPath == "dist/img/default_image.png")
+		{
+			$("#imgErrDivId").html("Please select Image.");
+			  return false;
+		}else{
+			$("#imgErrDivId").html("");
+		}
+	}
 return true;
 }
-function validationDetails()
-{
-	var name =$("#nameId1").val();  
-	var gender =$("#genderId").val();  
-	var age =$("#ageId").val();
-    var dob =$("#dobId").val();	
-    var mobileNo=$("#mobileId1").val();
-    var caste=$("#casteListId").val();
-    var eductnQual=$("#eductnQualId").val();
-	var occupation=$("#occupationId").val();
-    var PrvNomneName=$("#prvNomneNameId").val();
-	var PrvNomneGendr=$("#prvNomneGendrId").val();
-	var PrvNomneAge=$("#prevNomneAgeId").val();
-	var PrvNomneReltv=$("#prevNomneReltvId").val();	
-	
-	 if(name == 0 && name.trim() == '')
-	 {
-		$("#cadreNameId").html("Enter Name");  
-        return false;		
-	 }else
-	 {
-		 $("#cadreNameId").html("");
-	 }
-	 if(gender == 0)
-	 {
-		$("#cadreGenderId").html("Enter Gender");  
-        return false;	
-	 }else
-	 {
-		 $("#cadreGenderId").html("");
-	 }
-	 
-	 if(age == 0 && age.trim() == '')
-	 {
-		$("#cadreAgeId").html("Enter Age");  
-        return false;	
-	 }else
-	 {
-		 $("#cadreAgeId").html("");
-	 }
-	 var numericExpression2 =  /^[0-9]+$/;
-	 if (!age.match(numericExpression2)) {
-            $("#cadreAgeId").html("Enter valid Age");
-            return false;
-        }
-	 if(dob == 0 && dob.trim() == '')
-	 {
-		$("#cadredobId").html("Enter dob");  
-        return false;	
-	 }else
-	 {
-		 $("#cadredobId").html("");
-	 }
-	 if(mobileNo.length < 10 )
-	 {
-		$("#cadreMobileNoId").html("Enter mobileNo");  
-       return false;	
-	 }else
-	 {
-		 $("#cadreMobileNoId").html("");
-	 }
-	 var numericExpression = /^[0-9]+$/;
-        if (!mobileNo.match(numericExpression)) {
-            $("#cadreMobileNoId").html("Enter valid mobileNo");
-            return false;
-        }
-	 if(caste == 0 )
-	 {
-		$("#cadreCasteId").html("Select caste");  
-        return;		
-	 }else
-	 {
-		 $("#cadreCasteId").html("");
-	 }
-	 if(eductnQual == 0 )
-	 {
-		$("#cadreEducationId").html("Select eductnQual");  
-        return false;	
-	 }else
-	 {
-		 $("#cadreEducationId").html("");
-	 }
-	 if(occupation == 0 )
-	 {
-		$("#cadreOccupationId").html("Select occupation");  
-        return false;	
-	 }else
-	 {
-		 $("#cadreOccupationId").html("");
-	 }
-	 
-	 if(PrvNomneName == 0 && PrvNomneName.trim() == '')
-	 {
-		$("#prvNomneNameDivId").html("Enter Name");  
-        return false;
-	 }else
-	 {
-		 $("#prvNomneNameDivId").html("");
-	 }
-     if(PrvNomneGendr == 0)
-	 {
-		 $("#prvNomneGendrDivId").html("select Gender"); 
-          return false;		 
-	 }else
-	 {
-		 $("#prvNomneGendrDivId").html(""); 
-	 }
-   	 if(PrvNomneAge == 0 && PrvNomneAge.trim() == '')
-	 {
-		$("#prevNomneAgeDivId").html("Enter Age"); 
-          return false;		
-	 }else{
-		 $("#prevNomneAgeDivId").html("");
-	 }
-	 var numericExpression1 = /^[0-9]+$/;
-	 if (!PrvNomneAge.match(numericExpression1)) {
-            $("#prevNomneAgeDivId").html("Enter valid Age");
-            return false;
-        }
-	 if(PrvNomneReltv == 0)
-	 {
-		 $("#prevNomneReltvDivId").html("select Relative");
-         return false;		 
-	 }else{
-		  $("#prevNomneReltvDivId").html("");
-	 }
- var flag = 0;
-  $(".nomineeDetailsCls").each(function(){
-	  if($(this).is(":checked")){
-		    flag=1;
-	  }
-  });
-      if(flag == 0)
-	  {
-		  $("#nomineeDivId").html("please check any nominee");
-		  return false;
-	  }
-	  return true;
-}
+
+/*
 $(document).on("click","#addNewNomineeId",function(){
 	$("#prvNomneNameId").val('');
 	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
 	$("#prevNomneAgeId").val('');
 	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
 });  
+*/
 
 $(document).on("click",".isImageCheck",function(){
 	var value = $(this).val();
@@ -815,6 +732,8 @@ $(document).on("click",".isImageCheck",function(){
    });
  function eachTimeClearFields()
  {
+	 $("#checkVoterId,#imgErrDivId,#cadreMobileNoId,#emailErrId,#cadreCasteId,#cadreEducationId,#cadreOccupationId,#prvNomneNameDivId,#prvNomneGendrDivId,#prvNomneGendrDivId,#prevNomneAgeDivId,#prevNomneReltvDivId,#nomineeDivId,#stateErrPhId,#stateErrPaId,#stateErrPa1Id,#stateErrPsId,#stateErrPlId,#stateErrPh1Id,#stateErrId,#distriErrId,#constErrId,#mandalErrId,#wardErrId,#stateErrDhId,#stateErrDaId,#stateErrDa1Id,#stateErrDsId,#stateErrDlId,#stateErrDh1Id,#wrkSateErrId,#wrkDistErrId,#wrkDistErrId,#wrkConstitErrId,#wrkConstitErrId,#wrkMadalErrId,#wrkVillageErrId").html(''); 
+	 $('#deliveryAddrId').hide();
 	$("#existImgId").attr('src','dist/img/default_image.png');
 	$("#nameId1").val('');  
 	$("#actuploadImg").removeAttr('src');
@@ -834,7 +753,7 @@ $(document).on("click",".isImageCheck",function(){
 	$("#prvNomneGendrId").val(0).trigger('chosen:updated');
 	$("#prevNomneAgeId").val('');
 	$("#prevNomneReltvId").val(0).trigger('chosen:updated');
-	//$('#changeNomineeId').attr('checked', false);
+	$('#changeNomineeId').attr('checked', false);
 	$("#prvNomneNameDivId").html("");
 	$("#imgErrDivId").html("");
 	$("#prvNomneGendrDivId").html("");
@@ -867,18 +786,18 @@ function getOccupationList(){
   function buildOccupationList(result,id) {
 	$('#'+id+'').append('<option  value="0">Select Occupation</option>');
 	 if (occupationArray != null && occupationArray.length > 0) {
-	   for ( var i in occupationArray) {
-			if(id == 'occupationId'){
+
+		if(id == 'occupationId'){
+		   for ( var i in occupationArray) {				
 				if(result.occupationId == occupationArray[i].id)
-				   {
-						$('#'+id+'').append('<option selected value="'+occupationArray[i].id+'">'+occupationArray[i].name+'</option>');
-				   }else
-				   {
-				   $('#'+id+'').append('<option value="'+occupationArray[i].id+'">'+occupationArray[i].name+'</option>');
-				   }
-				}           
-			
-	   }
+				{
+					$('#'+id+'').append('<option selected value="'+occupationArray[i].id+'">'+occupationArray[i].name+'</option>');
+				}else
+				{
+					$('#'+id+'').append('<option value="'+occupationArray[i].id+'">'+occupationArray[i].name+'</option>');
+				}
+		   }
+	   }   
 	   $('#'+id+'').trigger("chosen:updated");       
 	}
 }	
