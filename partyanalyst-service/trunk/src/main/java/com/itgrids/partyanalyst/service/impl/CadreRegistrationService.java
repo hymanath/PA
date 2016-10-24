@@ -13879,7 +13879,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return finalList;
 	}
-	
+		
 	public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList){
 		
 		ResultStatus result = new ResultStatus();
@@ -13924,5 +13924,39 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return result;
 	}
-	
+	public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUserAgentDetails(Long constituencyId,String startDate,String endDate){
+		List<GISUserTrackingVO> finalList = new ArrayList<GISUserTrackingVO>();
+		try{			
+			
+			Date fromDate=null;
+			Date toDate=null;
+			
+			if(startDate !=null && endDate !=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				fromDate = sdf.parse(startDate);
+				 toDate  =sdf.parse(endDate);
+			}
+			
+			//0.tabUserId,1.name,2.mobileNo,3.lattitude,4.longitude,5.surveyTime
+			List<Object[]> latestObj = tdpCadreDAO.getLatestLattitudeLangitudeOfTabUser(constituencyId,fromDate,toDate);
+			if(latestObj !=null && latestObj.size()>0){
+				for(Object[] obj : latestObj) {					
+					GISUserTrackingVO Vo= new GISUserTrackingVO();
+					
+					Vo.setId(obj[0] !=null ? (Long)obj[0]:0l);
+					Vo.setName(obj[1] !=null ? obj[1].toString():"");
+					Vo.setMobileNo(obj[2] !=null ? obj[2].toString():"");
+					Vo.setLattitude(obj[3] !=null ? obj[3].toString():"");
+					Vo.setLongitude(obj[4] !=null ? obj[4].toString():"");
+					Vo.setSurveyTime(obj[5] !=null ? obj[5].toString():"");
+					
+					finalList.add(Vo);
+				}
+			}			
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getLatestLattitudeLangitudeOfTabUserAgentDetails in CadreRegistrationService Service class", e);
+		}
+		return finalList;
+	}
 }
