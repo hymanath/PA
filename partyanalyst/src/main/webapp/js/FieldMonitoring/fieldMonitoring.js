@@ -299,7 +299,7 @@ $(document).on("click",".manageIssues",function(){
 		str+='<tr>';
 		str+='<td>';
 		str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
-			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
+			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">EDIT</button>';
 			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px;">ISSUE TRACK</button>';
 			//str += '</h4>';
 			str +='<div class="descriptionCls">';
@@ -410,8 +410,8 @@ $(document).on("click",".manageIssues",function(){
 				clearErrorFields();
 				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
 				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
-				$("#issuesModal").modal('hide');
-				getTabUsersDetailsByVendorAndLocation();
+				//$("#issuesModal").modal('hide');
+				//getTabUsersDetailsByVendorAndLocation();
 			}, 2000);
 	   }else{
 		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");
@@ -642,7 +642,7 @@ function buildTabUserDetails(result){
 	if(result.subList != null && result.subList.length > 0){
 		var str = '';
 		
-		str+='<h4 class="panel-title text-muted">Logged In FieldUsers</h4>';
+		str+='<h4 class="panel-title text-muted">Logged In Field Users</h4>';
 		str+='<table class="table b_1 m_top10" id="detailsTable">';
 			str+='<thead class="text-capitalize">';
 				str+='<th>User Id</th>';
@@ -651,7 +651,7 @@ function buildTabUserDetails(result){
 				str+='<th>today target</th>';
 				str+='<th>first record</th>';
 				str+='<th>recent record</th>';
-				str+='<th>lasthour</th>';
+				str+='<th>last hour</th>';
 				str+='<th>completed registrations</th>';
 				str+='<th>open issues</th>';
 				str+='<th>fixed issues</th>';
@@ -767,6 +767,12 @@ $(document).on("click",".trackingIssueCls",function(){
 	var cadreRegIssueId = $(this).attr("attr_cadre_reg_issue_id");
 	trackingRegIssueByRegIssueId(value,cadreRegIssueId);
 });	
-$(document).on("click",".cancelCls",function(){
+$(document).on("click",".cancelCls",function(){    
 	 $(this).closest("td").find(".trackingIssueCls").show();	
+});
+$(document).on("click",".closeIconCls",function(){    
+	 getTabUsersDetailsByVendorAndLocation();	
+});
+$( document ).ready(function() {
+    $("#stateId").val(0).trigger("chosen:updated");
 });
