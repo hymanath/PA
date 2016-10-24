@@ -222,10 +222,11 @@
 			<result type="redirect" name="activitiesUpdatedPage">updateActivityAction.action</result>
 			<result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
 			<result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>
+			<result type="redirect" name="cadreWebMonitoring">webMonitoringDashboardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
-			 <result name="statePageRedirect" type="chain">statePageAction</result>
+			 <result name="statePageRedirect" type="chain">statePageAction</result>  
 			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
 			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
 			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
@@ -5658,7 +5659,8 @@
 		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
 		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	
 		    <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>   
-		    <result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>   
+		    <result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>  
+		    <result type="redirect" name="cadreWebMonitoring">webMonitoringDashboardAction.action</result>  
 		    <result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
 		    <result type="redirect" name="appointmentsManagmentPage">appointmentsAction.action</result>
 			<result type="redirect" name="eventDashboard">eventDashboardAction.action?eventId=30</result>
