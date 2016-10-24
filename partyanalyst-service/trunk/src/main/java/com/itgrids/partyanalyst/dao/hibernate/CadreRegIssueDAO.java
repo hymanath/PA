@@ -327,7 +327,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.cadreRegIssueId,model.description,model.insertedTime," +
 				"          model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType," +
-				"          model.cadreRegIssueStatus.cadreRegIssueStatusId, model.cadreRegIssueStatus.status " +
+				"          model.cadreRegIssueStatus.cadreRegIssueStatusId, model.cadreRegIssueStatus.status, model.updatedTime " +
 				"   from   CadreRegIssue model,FieldVendorTabUser model1,Constituency C " +
 				"   where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 				"   and  model.cadreSurveyUserId = :cadreSurveyUserId and model.tabUserInfoId = :tabUserInfoId" +
