@@ -203,9 +203,11 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     
     public FieldMonitoringVO getTabUsersDetailsByVendorAndLocation(Long vendorId,String fromDateStr,String toDateStr,String locationType,Long locationVal){
     	FieldMonitoringVO returnVO = new FieldMonitoringVO();
+		
     	try {
     		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
 			Date startDate = null;
 			Date endDate = null;
 			Date today = new Date();
@@ -224,8 +226,16 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
 					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-					vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
-					vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
+					 if(obj[5]!=null){
+	    					Date date = (Date)obj[5];
+	    					vo.setFirstRecord(returnTime.format(date));
+	    				}
+					 if(obj[6]!=null){
+	    					Date date = (Date)obj[6];
+	    					vo.setRecentRecord(returnTime.format(date));
+	    				}
+					//vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
+					//vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
 					vo.setTotalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 					
 					returnList.add(vo);
