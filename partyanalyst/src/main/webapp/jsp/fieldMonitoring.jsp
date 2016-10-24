@@ -9,11 +9,18 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 
 </head>
 <body>
+<style>
+#detailsTable_filter{
+	float:right !important;
+}
+</style>
 <div class="container m_top20">
+  <h4> FIELD MONITORING </h4>
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="block bg_ff">
