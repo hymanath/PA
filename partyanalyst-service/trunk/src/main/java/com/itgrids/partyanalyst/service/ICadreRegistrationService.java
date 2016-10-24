@@ -214,5 +214,6 @@ public interface ICadreRegistrationService {
 	 public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId);
 	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO VO);
 	 public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList);
+	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUserAgentDetails(Long constituencyId,String startDate,String endDate);
 }
 
