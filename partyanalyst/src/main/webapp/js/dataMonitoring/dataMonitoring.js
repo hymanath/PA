@@ -288,7 +288,8 @@
 			minValue :minValue,
             maxValue :10,
 			resultType:resultType,
-			verificationStatus:"Total"        
+			verificationStatus:"Total",
+            dataSourceType:""			
 		}    
 		$.ajax({
 			type:'GET',

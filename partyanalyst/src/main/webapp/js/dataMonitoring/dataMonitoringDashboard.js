@@ -408,7 +408,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 										  }else{
 											str+='<td> - </td>';  
 										  }
-										 str+='<td><button attr_vefification_type="'+dataVerificationStatus+'" attr_survery_user_id='+result[i].surveryUserId+'  attr_web_user_id="'+0+'"  attr_user_name="'+tabUserList[j].tabUserName+'" attr_user_mobile="'+tabUserList[j].mobileNo+'" attr_tab_user_id='+tabUserList[j].tabUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
+										 str+='<td><button attr_vefification_type="'+dataVerificationStatus+'" attr_survery_user_id='+result[i].surveryUserId+'  attr_web_user_id="'+0+'" attr_data_source_type="'+dataSourceType+'"  attr_user_name="'+tabUserList[j].tabUserName+'" attr_user_mobile="'+tabUserList[j].mobileNo+'" attr_tab_user_id='+tabUserList[j].tabUserId+' class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
 										  str+='</tr>';	
 										}
 								}
@@ -446,7 +446,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 								  }else{
 									str+='<td> - </td>';  
 								  }
-								  str+='<td><button attr_vefification_type="'+dataVerificationStatus+'" attr_survery_user_id="'+0+'" attr_tab_user_id="'+0+'"  attr_web_user_id='+result[j].surveryUserId+' attr_user_name="'+result[j].surveryUserName+'" attr_user_mobile="'+result[j].mobileNo+'" class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
+								  str+='<td><button attr_vefification_type="'+dataVerificationStatus+'" attr_survery_user_id="'+0+'" attr_tab_user_id="'+0+'"  attr_web_user_id='+result[j].surveryUserId+' attr_data_source_type="'+dataSourceType+'" attr_user_name="'+result[j].surveryUserName+'" attr_user_mobile="'+result[j].mobileNo+'" class="btn btn-success getMemberDtlsCls">Verify Records</button></td>';
 								  str+='</tr>';	
 								 }
 						}
@@ -466,6 +466,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 	   var userName = $(this).attr("attr_user_name");
 	   var mobileNo = $(this).attr("attr_user_mobile");
 	   var verificationStatus = $(this).attr("attr_vefification_type");
+	   var dataSourceType = $(this).attr("attr_data_source_type");
 	   var resultType="All";
 	    if(webUserId==0){
 		 $("#userId").html("Tab UserID - "+tabUserId+"");	
@@ -484,9 +485,9 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		$("#issuesDataMonitroing li:first-child").addClass("active");
 		$(".activeCls").addClass("active");
 		$(".relativeCls").removeClass("active");
-	    getMembersDetails(surveyUserId,tabUserId,webUserId,userName,mobileNo,0,resultType,verificationStatus);
+	    getMembersDetails(surveyUserId,tabUserId,webUserId,userName,mobileNo,0,resultType,verificationStatus,dataSourceType);
    });
-   function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
+   function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus,dataSourceType){
 	   if(resultType=="All"){
 		 $("#selfTblDivId").html(' ');
 	     $("#relativeDivId").html(' ');
@@ -516,7 +517,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
             minValue :minValue,
             maxValue :10,
 			resultType:resultType,
-			verificationStatus:verificationStatus
+			verificationStatus:verificationStatus,
+			dataSourceType:dataSourceType
       }
 		$.ajax({
 			type:'GET',
@@ -525,7 +527,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){  
-				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus);  
+				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus,dataSourceType);  
 			}else{
 			if(resultType=="All"){
 			    $("#selfTblDivId").html('No Data Available...');
@@ -539,7 +541,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		});  
 	   
    }  
-   function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus){
+   function buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType,verificationStatus,dataSourceType){
 		if(resultType=="All" || resultType=="Self"){  
 		var str = '';
 		var selfTotalCount=0;
@@ -652,7 +654,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 					cssStyle: 'light-theme',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self",verificationStatus);
+						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self",verificationStatus,dataSourceType);
 					}
 				});
 			}	
@@ -767,10 +769,17 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						cssStyle: 'light-theme',
 						onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative",verificationStatus);
+						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative",verificationStatus,dataSourceType);
 					}
 				});
 			}	
+		}
+		if(verificationStatus == "Approved" || verificationStatus=="Rejected"){
+			 $("#bulkApproveId").prop('disabled', true);
+			 $('#bulkRejectId').prop('disabled', true);
+		}else{
+			 $("#bulkApproveId").prop('disabled', false);
+			 $('#bulkRejectId').prop('disabled', false);
 		}
 	}    
 
