@@ -121,10 +121,18 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		boolean noaccess = false;
 		if(regVO == null)
 			return Action.INPUT;
+		if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			 if(!(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ADMIN_ENTITLEMENT".trim()))){
+			        noaccess = true ;  
+			 }
+		}
 		
-		return Action.SUCCESS;
+		return Action.SUCCESS;    
 	}
 	
 	
