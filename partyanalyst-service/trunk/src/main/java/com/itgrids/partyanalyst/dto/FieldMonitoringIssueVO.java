@@ -22,7 +22,7 @@ public class FieldMonitoringIssueVO implements Serializable{
 	private String lastname;
 	private Long count;
 	private String userName;
-	
+	private String updatedTime;
 	
 	public Long getIssueTypeId() {
 		return issueTypeId;
@@ -114,6 +114,12 @@ public class FieldMonitoringIssueVO implements Serializable{
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(String updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 	
 	

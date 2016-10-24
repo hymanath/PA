@@ -482,6 +482,10 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     				
     				issueVO.setIssueStatusId(obj[5]!=null ? (Long)obj[5]:0l);
     				issueVO.setIssueStatus(obj[6]!= null ? obj[6].toString() :"");
+    			   if(obj[7]!=null){
+    					Date date = (Date)obj[7];
+    					issueVO.setUpdatedTime(returnTime.format(date));
+    				}
     				
     				returnList.add(issueVO);
     			}
