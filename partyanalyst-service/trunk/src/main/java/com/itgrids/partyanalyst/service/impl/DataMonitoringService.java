@@ -253,10 +253,10 @@ public class DataMonitoringService implements IDataMonitoringService {
 			cal.setTime(today);
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
-			//push active status
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			String dt = "2016-10-19 18:00:00";
-			lastOneHourTime = sdf1.parse(dt);         
+			//push active status 
+			//SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			//String dt = "2016-10-19 18:00:00";
+			//lastOneHourTime = sdf1.parse(dt);              
 			List<Object[]> activeUserList = tdpCadreDAO.getActiveUserList(stateId,vendorId,distId,constId,stDate,ndDate,lastOneHourTime);
 			if(activeUserList != null && activeUserList.size() > 0){
 				for(Object[] param : activeUserList){
