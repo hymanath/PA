@@ -344,6 +344,7 @@ function buildStatusWiseDetails(result){
 	$("#statusWiseDetailsImgId").hide();
 	$("#statusWiseDetailsDivId").html(str);
 	$("#issueStatusTableId").dataTable();
+	$('html,body').animate({scrollTop: $("#statusWiseDetailsDivId").offset().top}, 'slow');
 }
 $(document).on("click",".issuesBtn",function(){
     clearErrorFields();	
@@ -512,8 +513,8 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 			$("#issueDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
    });
   }
-  function buildIssuesForATabUserByStatus(result) {
-	
+  function buildIssuesForATabUserByStatus(result) {	
+  
 	var str = '';
 
 		str+='<table id="datatableId" class="table table-condensed">';
@@ -527,11 +528,18 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
 			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
 			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px;">ISSUE TRACK</button>';
-			str +='<div class="descriptionCls">';			
+			str +='<div class="descriptionCls">';
+                str+='<h4> Description </h4>';			
 				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
 				str += '<p class="m_top10">';
+				if(result[i].issueStatus == 'open')
+				{
 				str += '<span class="text-danger"><i>Issue Status :<span class="statusUpdate'+i+'">'
 						+ result[i].issueStatus + '</span></i></span>';
+				}else{
+				str += '<span class="text-success"><i>Issue Status :<span class="statusUpdate'+i+'">'
+						+ result[i].issueStatus + '-'+ result[i].updatedTime +'</span></i></span>';
+				}
 				str += '<span class="pull-right text-muted"><i>Informed Time:<span class="updatedTime'+i+'">'
 						+ result[i].dateStr + '</span></i></span>';
 				str += '</p>';
@@ -624,6 +632,8 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 				clearErrorFields();
 				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
 				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
+				$("#issuesModal").modal('hide');
+                //getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count);
 			}, 2000);
 	   }else{
 		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");

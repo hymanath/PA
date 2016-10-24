@@ -302,11 +302,18 @@ $(document).on("click",".manageIssues",function(){
 			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
 			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px;">ISSUE TRACK</button>';
 			//str += '</h4>';
-			str +='<div class="descriptionCls">';			
+			str +='<div class="descriptionCls">';
+                str+='<h4> Description </h4>';			
 				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
 				str += '<p class="m_top10">';
+				if(result[i].issueStatus == 'open')
+				{
 				str += '<span class="text-danger"><i>Issue Status :<span class="statusUpdate'+i+'">'
 						+ result[i].issueStatus + '</span></i></span>';
+				}else{
+				str += '<span class="text-success"><i>Issue Status :<span class="statusUpdate'+i+'">'
+						+ result[i].issueStatus + '-'+ result[i].updatedTime +'</span></i></span>';
+				}
 				str += '<span class="pull-right text-muted"><i>Informed Time:<span class="updatedTime'+i+'">'
 						+ result[i].dateStr + '</span></i></span>';
 				str += '</p>';
@@ -403,6 +410,8 @@ $(document).on("click",".manageIssues",function(){
 				clearErrorFields();
 				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
 				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
+				$("#issuesModal").modal('hide');
+				getTabUsersDetailsByVendorAndLocation();
 			}, 2000);
 	   }else{
 		   $("#submitButId").html("<span style='color: red;font-size:18px;'>Saved Failed.Please try Again.</span>");
@@ -473,6 +482,7 @@ $(document).on("click",".manageIssues",function(){
 			    $(".editBtn").closest("td").find(".trackingIssueCls").show();	
 				getIssuesForATabUserByStatus(CadreSrvId,tabUserId,issueStsId);
 				getIssuesCountsForATabUser(CadreSrvId,tabUserId);
+				getTabUsersDetailsByVendorAndLocation();
 			}, 2000);
 		   }else{
 			    $("#updateStatusId").html("<span style='color: red;font-size:18px;'> update Failed.Please try Again..</span>");
@@ -551,6 +561,10 @@ $(document).on("click",".manageIssues",function(){
 
   
 $(document).on("click","#getDetails",function(){
+	getTabUsersDetailsByVendorAndLocation();
+});
+
+function getTabUsersDetailsByVendorAndLocation(){
 	$("#tabUserDetailsDivId").html("");
 	
 	var vendorId = $("#vendorId").val();
@@ -618,7 +632,7 @@ $(document).on("click","#getDetails",function(){
 		$("#tabUserDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
 	  }
    });
-});
+}
 	
 function buildTabUserDetails(result){
 	$("#totalDataCollectorsId").html(result.totalDataCollectors);
@@ -641,6 +655,7 @@ function buildTabUserDetails(result){
 				str+='<th>completed registrations</th>';
 				str+='<th>open issues</th>';
 				str+='<th>fixed issues</th>';
+				str+='<th>closed issues</th>';
 				str+='<th></th>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -680,6 +695,10 @@ function buildTabUserDetails(result){
 						str+='<td>'+result.subList[i].fixedIssues+'</td>';
 					else
 						str+='<td> - </td>';
+					if(result.subList[i].closedIssues != null && result.subList[i].closedIssues > 0)
+						str+='<td>'+result.subList[i].closedIssues+'</td>';
+					else
+						str+='<td> - </td>';
 					str+='<td><button class="btn btn-success text-capitalize manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'">manage issues</button></td>';
 				str+='</tr>';
 			}
@@ -688,6 +707,9 @@ function buildTabUserDetails(result){
 		
 		$("#tabUserDetailsImgId").hide();
 		$("#tabUserDetailsDivId").html(str);
+	 $('#detailsTable').dataTable({
+        "aaSorting": []
+    }); 
 	}
 	else{
 		$("#tabUserDetailsImgId").hide();

@@ -9,9 +9,15 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<style>
+#issueStatusTableId_filter{
+	float:right !important;
+}
+</style>
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -19,7 +25,7 @@
             	<div class="panel-heading">
                 	<div class="row">
                     	<div class="col-md-9 col-xs-12 col-sm-9">
-                        	<h4 class="panel-title"></h4>
+                        	<h4 class="panel-title">FIELD MONITORING DASHBOARD</h4>
                         </div>
                         <div class="col-md-3 col-xs-12 col-sm-3">
                         	<div class="input-group inputGCustom">
@@ -188,7 +194,15 @@ $(document).on("click",".issuesBtn",function(){
 	$("#issuesModal").modal('show');
 });
 $(".singleDate").daterangepicker({
-	opens:'left'
+	opens:'left',
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	}
 });
 $('.select').chosen({width:'100%'});
 
