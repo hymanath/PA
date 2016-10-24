@@ -14,6 +14,15 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	private Long notStartedCount =0L;
 	private Long registeredCount =0L;
 	private String perc="0.0";
+	private Long regCount2016;
+	private String regCount2016Perc;
+	private Long regCount2014;
+	private String regCount2014Perc;
+	private Long newRegCount;
+	private String newRegCountPerc;
+	private Long renewalCount;
+	private String renewalCountPerc;
+	
 	
 	//VERY-GOOD, GOOD, OK, POOR, VERY_POOR / ISSSUES Status Details
 	private List<GISVisualizationBasicVO> statusList = new ArrayList<GISVisualizationBasicVO>(0);
@@ -27,6 +36,54 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	}
 	
 	
+	public Long getRegCount2016() {
+		return regCount2016;
+	}
+	public void setRegCount2016(Long regCount2016) {
+		this.regCount2016 = regCount2016;
+	}
+	public String getRegCount2016Perc() {
+		return regCount2016Perc;
+	}
+	public void setRegCount2016Perc(String regCount2016Perc) {
+		this.regCount2016Perc = regCount2016Perc;
+	}
+	public Long getRegCount2014() {
+		return regCount2014;
+	}
+	public void setRegCount2014(Long regCount2014) {
+		this.regCount2014 = regCount2014;
+	}
+	public String getRegCount2014Perc() {
+		return regCount2014Perc;
+	}
+	public void setRegCount2014Perc(String regCount2014Perc) {
+		this.regCount2014Perc = regCount2014Perc;
+	}
+	public Long getNewRegCount() {
+		return newRegCount;
+	}
+	public void setNewRegCount(Long newRegCount) {
+		this.newRegCount = newRegCount;
+	}
+	public String getNewRegCountPerc() {
+		return newRegCountPerc;
+	}
+	public void setNewRegCountPerc(String newRegCountPerc) {
+		this.newRegCountPerc = newRegCountPerc;
+	}
+	public Long getRenewalCount() {
+		return renewalCount;
+	}
+	public void setRenewalCount(Long renewalCount) {
+		this.renewalCount = renewalCount;
+	}
+	public String getRenewalCountPerc() {
+		return renewalCountPerc;
+	}
+	public void setRenewalCountPerc(String renewalCountPerc) {
+		this.renewalCountPerc = renewalCountPerc;
+	}
 	public GISUserTrackingVO getUserTrackingVO() {
 		return userTrackingVO;
 	}
