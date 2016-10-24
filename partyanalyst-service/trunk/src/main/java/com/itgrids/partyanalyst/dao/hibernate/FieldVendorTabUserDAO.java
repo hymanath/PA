@@ -56,7 +56,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 	
 	public List<Object[]> getStatusWiseIssuesDetails(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select CRI.cadreSurveyUser.cadreSurveyUserId," +
+		sb.append("select distinct CRI.cadreSurveyUser.cadreSurveyUserId," +
 					" CRI.cadreSurveyUser.userName," +
 					" CRI.tabUserInfo.tabUserInfoId," +
 					" CRI.tabUserInfo.name," +
