@@ -308,7 +308,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 	}
 	
-	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue,String resultType,String verificationStatus){
+	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue,String resultType,String verificationStatus,String dataSourceType){
 		LOG.info("Entered into getVerifiedDtls() of DataMonitoringService");  
 		try{
 			DateUtilService dateUtilService = new DateUtilService();
@@ -328,7 +328,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 			}  
 			//get verified dtls  
 			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Self")){
-				List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",minValue,maxValue,verificationStatus);
+				List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",minValue,maxValue,verificationStatus,dataSourceType);
 				if(ownVoterVerifiedDtlsList != null && ownVoterVerifiedDtlsList.size() > 0){
 					for(Object[] param : ownVoterVerifiedDtlsList){
 						idNameVO = new IdNameVO();
@@ -345,7 +345,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 						ownVoterDtls.add(idNameVO);
 					}
 				  if(minValue == 0){
-					  List<Object[]> allOwnVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",0,0,verificationStatus);
+					  List<Object[]> allOwnVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",0,0,verificationStatus,dataSourceType);
 					    if(ownVoterDtls != null && ownVoterDtls.size() > 0){
 					    	ownVoterDtls.get(0).setTotalCount(Long.valueOf(allOwnVoterVerifiedDtlsList.size()));	
 					    }
@@ -355,7 +355,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 				}
 			}
 			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Relative")){
-				List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",minValue,maxValue,verificationStatus);
+				List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",minValue,maxValue,verificationStatus,dataSourceType);
 				if(familyVoterVerifiedDtlsList != null && familyVoterVerifiedDtlsList.size() > 0){
 					for(Object[] param : familyVoterVerifiedDtlsList){
 						idNameVO = new IdNameVO();
@@ -372,7 +372,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 						familyVoterDtls.add(idNameVO);
 					}
 					 if(minValue == 0){
-						   List<Object[]> allFamilyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",0,0,verificationStatus);
+						   List<Object[]> allFamilyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",0,0,verificationStatus,dataSourceType);
 						    if(familyVoterDtls != null && familyVoterDtls.size() > 0){
 						    	familyVoterDtls.get(0).setTotalCount(Long.valueOf(allFamilyVoterVerifiedDtlsList.size()));	
 						    }

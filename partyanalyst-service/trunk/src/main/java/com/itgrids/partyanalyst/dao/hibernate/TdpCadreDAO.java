@@ -7960,7 +7960,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setParameterList("voterCardNosList", voterCardNosList);
 			return query.list();
 	}
-	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue,String verificationStatus){
+	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue,String verificationStatus,String dataSourceType){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 						" tc.tdp_cadre_id as cadreId, " +  //0
@@ -8010,7 +8010,10 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Pending")){
 			 queryStr.append(" and tc.cadre_verification_status_id is null "); 
 		 }
-
+         
+	    if(dataSourceType != null && dataSourceType.trim().length() > 0){
+			 queryStr.append(" and tc.data_source_type=:dataSourceType "); 
+	    }
 	    Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("cadreId", Hibernate.LONG)
 				.addScalar("name", Hibernate.STRING)
@@ -8038,6 +8041,9 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		}
 		if(maxValue != null && maxValue > 0){
 			query.setMaxResults(maxValue);
+		}
+		if(dataSourceType != null && dataSourceType.trim().length() > 0){
+			query.setParameter("dataSourceType", dataSourceType);	  
 		}
 		return query.list();
 	}
