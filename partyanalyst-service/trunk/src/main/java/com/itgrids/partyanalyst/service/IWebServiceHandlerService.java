@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
@@ -171,4 +172,5 @@ public interface IWebServiceHandlerService {
     public List<IdAndNameVO> getBoothsList(Long panchayatId);
     public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId);
     public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO vo);
+    public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList);
 }

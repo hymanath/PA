@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
@@ -212,5 +213,6 @@ public interface ICadreRegistrationService {
 	 public List<VoterSearchVO> getOnliCadRegistrSearchVoteDetails(Long constituencyId,Long mandalId,Long villageId,Long boothId, String type, String typeVal);
 	 public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId);
 	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO VO);
+	 public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList);
 }
 

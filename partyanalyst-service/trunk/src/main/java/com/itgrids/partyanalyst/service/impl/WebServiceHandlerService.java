@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
@@ -108,6 +109,7 @@ import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.CadreTabRecordsStatus;
 import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
@@ -4261,6 +4263,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  return cadreRegistrationService.getLatestLattitudeLangitudeOfTabUser(VO);			
 		} catch (Exception e) {
 			log.error("Error occured at getLatestLattitudeLangitudeOfTabUser() in WebServiceHandlerService {}",e);
+		}
+		  return null;
+	  }
+	  
+	  public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList){
+		  try {
+			  return cadreRegistrationService.syncCadreTabRecordsStatus(cadreTabRecordsStatusList);	
+		} catch (Exception e) {
+			log.error("Error occured at syncCadreTabRecordsStatus() in WebServiceHandlerService {}",e);
 		}
 		  return null;
 	  }

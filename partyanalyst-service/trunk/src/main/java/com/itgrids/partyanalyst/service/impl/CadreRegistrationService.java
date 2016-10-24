@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.dao.ICadreRegSyncAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ICadreRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.ICadreTabRecordsStatusDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintUserDAO;
 import com.itgrids.partyanalyst.dao.ICardReceiverDAO;
 import com.itgrids.partyanalyst.dao.ICardSenderDAO;
@@ -134,6 +135,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
@@ -170,6 +172,7 @@ import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.model.CadreTabRecordsStatus;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CardReceiver;
 import com.itgrids.partyanalyst.model.CardSender;
@@ -327,6 +330,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreDetailsService cadreDetailsService;
 	private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -338,9 +342,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
 	
+	public void setCadreTabRecordsStatusDAO(
+			ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO) {
+		this.cadreTabRecordsStatusDAO = cadreTabRecordsStatusDAO;
+	}
+	
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
-	}
+	}	
 
 	public ISmsSenderService getSmsSenderService() {
 		return smsSenderService;
@@ -13869,6 +13878,51 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			LOG.error("Exception riased at getLatestLattitudeLangitudeOfTabUser in CadreRegistrationService Service class", e);
 		}
 		return finalList;
+	}
+	
+	public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList){
+		
+		ResultStatus result = new ResultStatus();
+		
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			
+			if(cadreTabRecordsStatusList !=null && cadreTabRecordsStatusList.size()>0){
+				for (CadreTabRecordsStatusVO tabVO : cadreTabRecordsStatusList) {	
+					
+					CadreTabRecordsStatus model = new CadreTabRecordsStatus();	
+					
+					model.setCadreSurveyUserId(tabVO.getCadreSurveyUserId());
+					model.setTabUserInfoId(tabVO.getTabUserInfoId());
+					if(tabVO.getImeiNo() !=null && !tabVO.getImeiNo().trim().isEmpty())
+						model.setImeiNo(tabVO.getImeiNo());
+					if(tabVO.getLattitude() !=null && !tabVO.getLattitude().trim().isEmpty())
+						model.setLattitude(tabVO.getLattitude());
+					if(tabVO.getLongittude() !=null && !tabVO.getLongittude().trim().isEmpty())
+						model.setLongitude(tabVO.getLongittude());
+					model.setTotalRecords(tabVO.getTotalRecords() !=null ? tabVO.getTotalRecords() :0l);
+					model.setSync(tabVO.getSync() !=null ? tabVO.getSync():0l);
+					model.setPending(tabVO.getPending() !=null ? tabVO.getPending() :0l);
+					model.setIsDeleted("N");
+					
+					model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					if(tabVO.getSurveyDate() !=null && !tabVO.getSurveyDate().trim().isEmpty())
+						model.setSurveyDate(tabVO.getSurveyDate() !=null ? sdf.parse(tabVO.getSurveyDate()):null);
+					
+					cadreTabRecordsStatusDAO.save(model);
+					
+					result.setExceptionMsg("success");
+					result.setResultCode(0);
+				}
+			}
+			
+		}catch(Exception e){			
+			LOG.error("Exception riased at syncCadreTabRecordsStatus in CadreRegistrationService Service class", e);
+			result.setExceptionMsg("failre");
+			result.setResultCode(1);
+		}
+		return result;
 	}
 	
 }
