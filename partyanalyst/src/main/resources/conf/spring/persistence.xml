@@ -1011,6 +1011,8 @@
 				      <value>com.itgrids.partyanalyst.model.TdpCadreLocationInfoCount</value>
                       <value>com.itgrids.partyanalyst.model.TdpCadreLocationInfo</value>
                       <value>com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo</value>
+                      
+                      <value>com.itgrids.partyanalyst.model.CadreTabRecordsStatus</value>                      
 				 </list>
 			
 		</property>
