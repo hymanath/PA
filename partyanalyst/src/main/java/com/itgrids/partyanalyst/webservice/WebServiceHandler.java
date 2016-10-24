@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
@@ -2065,5 +2066,14 @@ public class WebServiceHandler {
 		public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO input){
 		 return webServiceHandlerService.getLatestLattitudeLangitudeOfTabUser(input);
 		}
+		
+		@POST
+		@Path("/syncCadreTabRecordsStatus")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> inputList){
+			return webServiceHandlerService.syncCadreTabRecordsStatus(inputList);
+		}
+		
 		
 }

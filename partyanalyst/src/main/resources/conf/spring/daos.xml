@@ -3286,4 +3286,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="cadreTabRecordsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreTabRecordsStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	
 </beans>		
