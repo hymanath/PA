@@ -563,7 +563,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.in/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';  
@@ -589,7 +589,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.in/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
@@ -603,8 +603,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 							str+='<tr>';
 								str+='<td><img src="images/close.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
 								str+='<td colspan="3">';
-									str+='<input type="text" value="'+result[0][i].wish+'" class="form-control"></input>';    
-										//str+='<option></option>';  
+									str+='<input type="text" value="'+result[0][i].wish+'" class="form-control" disabled></input>';    
+										//str+='<option></option>';    
 									//str+='</select>';
 								str+='</td>';
 							str+='</tr>';
@@ -615,7 +615,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="http://mytdp.in/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
@@ -680,7 +680,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="http://mytdp.in/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
@@ -706,7 +706,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="http://mytdp.in/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
@@ -720,7 +720,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 							str2+='<tr>';
 								str2+='<td><img src="Assests/img/verified.png" class="img-responsive" style="width:40px;height:40px;" alt="verified"/></td>';
 								str2+='<td colspan="3">';
-									str2+='<input type="text" value="'+result[1][i].wish+'"></input>';
+									str2+='<input type="text" value="'+result[1][i].wish+'" disabled></input>';
 										//str+='<option></option>';
 									//str+='</select>';
 								str2+='</td>';
@@ -732,7 +732,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="http://mytdp.in/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';  
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
