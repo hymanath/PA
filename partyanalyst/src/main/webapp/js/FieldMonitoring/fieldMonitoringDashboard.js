@@ -421,6 +421,15 @@ $(document).on("click",".issuesBtn",function(){
 		}
    });
   }
+  
+$(document).on("click",".issueTypeCls",function(){
+	var issueType = $(this).attr("attr_val");
+	var cadreUserId = $("#hiddenCadreSurveyUserId").val();
+	var tabUserId = $("#hiddenTabUserInfoId").val();
+	
+	getIssuesForATabUserByStatus(cadreUserId,tabUserId,issueType);
+});
+
    $(document).on("click","#addNewIssueId",function(){ 
 	 $("#issueTypeDivId").show();
    });

@@ -534,16 +534,16 @@ function buildLocationWiseDetails(result,locationType,divId){
 		for(var i in result){
 			str+='<tr>';
 				if(locationType == 'state'){
-					str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="district" attr_divId="districtWiseOverAllDetailsId'+i+'" attr_td_id="districtWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="districtNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+					str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="district" attr_divId="districtWiseOverAllDetailsId'+result[i].id+''+i+'" attr_td_id="districtWiseOverAlltdId'+result[i].id+''+i+'" attr_location_name="'+result[i].name+'" attr_heading="districtNameid'+result[i].id+''+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
 				}
 				else if(locationType == 'district'){
-					str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="constituency" attr_divId="constituencyWiseOverAllDetailsId'+i+'" attr_td_id="constituencyWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="constNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+					str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="constituency" attr_divId="constituencyWiseOverAllDetailsId'+result[i].id+''+i+'" attr_td_id="constituencyWiseOverAlltdId'+result[i].id+''+i+'" attr_location_name="'+result[i].name+'" attr_heading="constNameid'+result[i].id+''+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
 				}
 				else if(locationType == 'constituency'){
 					if(result[i].name.split(" ")[1] == 'Muncipality')
-						str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="muncipality" attr_divId="mandalWiseOverAllDetailsId'+i+'" attr_td_id="mandalWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="mandalNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+						str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="muncipality" attr_divId="mandalWiseOverAllDetailsId'+result[i].id+''+i+'" attr_td_id="mandalWiseOverAlltdId'+result[i].id+''+i+'" attr_location_name="'+result[i].name+'" attr_heading="mandalNameid'+result[i].id+''+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
 					else
-						str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="mandal" attr_divId="mandalWiseOverAllDetailsId'+i+'" attr_td_id="mandalWiseOverAlltdId'+i+'" attr_location_name="'+result[i].name+'" attr_heading="mandalNameid'+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
+						str+='<td class="locationWiseCls" attr_locationVal="'+result[i].id+'" attr_locationType="mandal" attr_divId="mandalWiseOverAllDetailsId'+result[i].id+''+i+'" attr_td_id="mandalWiseOverAlltdId'+result[i].id+''+i+'" attr_location_name="'+result[i].name+'" attr_heading="mandalNameid'+result[i].id+''+i+'"><a style="cursor:pointer;">'+result[i].name+'<a/></td>';
 				}
 				else if(locationType == 'mandal')
 					str+='<td>'+result[i].name+'</td>';
@@ -559,29 +559,29 @@ function buildLocationWiseDetails(result,locationType,divId){
 			str+='</tr>';
 			if(locationType == 'state'){
 				str+='<tr>';
-					str+='<td class="locationtdCls" colspan="7" id="districtWiseOverAlltdId'+i+'" style="display:none;">';
-						str+='<h4 class="panel-title text-capital"><span id="districtNameid'+i+'"></span>&nbsp;&nbsp;district - constituency wise detailed overview</h4>';
+					str+='<td class="locationtdCls" colspan="7" id="districtWiseOverAlltdId'+result[i].id+''+i+'" style="display:none;">';
+						str+='<h4 class="panel-title text-capital"><span id="districtNameid'+result[i].id+''+i+'"></span>&nbsp;&nbsp;district - constituency wise detailed overview</h4>';
 						str+='<i class="glyphicon glyphicon-remove pull-right removecls" style="cursor:pointer;"></i>';
-						str+='<div class="table-responsive m_top20" id="districtWiseOverAllDetailsId'+i+'"></div>';
+						str+='<div class="table-responsive m_top20" id="districtWiseOverAllDetailsId'+result[i].id+''+i+'"></div>';
 					str+='</td>';
 				str+='</tr>';
 			}
 			else if(locationType == 'district'){
 				str+='<tr>';
-					str+='<td class="locationtdCls" colspan="7" id="constituencyWiseOverAlltdId'+i+'" style="display:none;">';
-						str+='<h4 class="panel-title text-capital"><span id="constNameid'+i+'"></span>&nbsp;&nbsp;constituency - mandal/muncipality wise detailed overview</h4>';
+					str+='<td class="locationtdCls" colspan="7" id="constituencyWiseOverAlltdId'+result[i].id+''+i+'" style="display:none;">';
+						str+='<h4 class="panel-title text-capital"><span id="constNameid'+result[i].id+''+i+'"></span>&nbsp;&nbsp;constituency - mandal/muncipality wise detailed overview</h4>';
 						str+='<i class="glyphicon glyphicon-remove pull-right removecls" style="cursor:pointer;"></i>';
-						str+='<div class="table-responsive m_top20" id="constituencyWiseOverAllDetailsId'+i+'">';
+						str+='<div class="table-responsive m_top20" id="constituencyWiseOverAllDetailsId'+result[i].id+''+i+'">';
 						str+='</div>';
 					str+='</td>';
 				str+='</tr>';
 			}
 			else if(locationType == 'constituency'){
 				str+='<tr>';
-					str+='<td class="locationtdCls" colspan="7" id="mandalWiseOverAlltdId'+i+'" style="display:none;">';
-						str+='<h4 class="panel-title text-capital"><span id="mandalNameid'+i+'"></span>&nbsp;&nbsp; - village/ward wise detailed overview</h4>';
+					str+='<td class="locationtdCls" colspan="7" id="mandalWiseOverAlltdId'+result[i].id+''+i+'" style="display:none;">';
+						str+='<h4 class="panel-title text-capital"><span id="mandalNameid'+result[i].id+''+i+'"></span>&nbsp;&nbsp; - village/ward wise detailed overview</h4>';
 						str+='<i class="glyphicon glyphicon-remove pull-right removecls" style="cursor:pointer;"></i>';
-						str+='<div class="table-responsive m_top20" id="mandalWiseOverAllDetailsId'+i+'">';
+						str+='<div class="table-responsive m_top20" id="mandalWiseOverAllDetailsId'+result[i].id+''+i+'">';
 						str+='</div>';
 					str+='</td>';
 				str+='</tr>';
@@ -604,4 +604,9 @@ $(document).on("click",".locationWiseCls",function(){
 	$("#"+headingId).html(locationName);
 	$("#"+tdId).show();
 	getLocationWiseOverAllDetails(locationType,locationVal,divId);
+});
+
+$(document).on("click",".removecls",function(){
+	var divId = $(this).parent().attr("id");
+	$("#"+divId).hide();
 });
