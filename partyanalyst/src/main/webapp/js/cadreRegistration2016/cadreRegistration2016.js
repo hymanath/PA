@@ -745,7 +745,7 @@ function getOccupationList(){
 				     updatingVoterDetails(result);
 				   }
 				}else{
-					$("#updateVoterErr").html("Voter Not Exist, Go Through Previous VoterId");
+					$("#updateVoterErr").html("Voter Not Exist, Contineue with Family VoterId");
 				}
                
              }	 
