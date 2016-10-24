@@ -698,5 +698,6 @@
 		<pattern>/fieldMonitoringDashboardAction*</pattern> 
 		<pattern>/dataMonitoringDashboardAction*</pattern>
 		<pattern>/webMonitoringDashboardAction*</pattern>
+		<pattern>/tdpAgentAreaMapAction*</pattern>
 	</decorator> 
 </decorators>

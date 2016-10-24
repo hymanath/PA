@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventCreationVO;
+import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -102,8 +103,44 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private Long locationId;
 	private ActivityVO activityVO;
 	private List<IdNameVO>  castes;
+	private List<GISUserTrackingVO> gisTrackVolst;
+	private Long constitunecyId;
+	private String startDate;
+	private String endDate;
 	
 	
+	public Long getConstitunecyId() {
+		return constitunecyId;
+	}
+
+	public void setConstitunecyId(Long constitunecyId) {
+		this.constitunecyId = constitunecyId;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public List<GISUserTrackingVO> getGisTrackVolst() {
+		return gisTrackVolst;
+	}
+
+	public void setGisTrackVolst(List<GISUserTrackingVO> gisTrackVolst) {
+		this.gisTrackVolst = gisTrackVolst;
+	}
+
 	public ActivityVO getActivityVO() {
 		return activityVO;
 	}
@@ -2236,4 +2273,23 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getLatestLattitudeLangitudeOfTabUserAgentDetails() {
+		try{ 
+          jObj = new JSONObject(getTask());
+			
+			Long constitunecyId = jObj.getLong("constitunecyId");
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate"); 
+			gisTrackVolst =  cadreRegistrationService.getLatestLattitudeLangitudeOfTabUserAgentDetails(constitunecyId,startDate,endDate);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception occured in getLatestLattitudeLangitudeOfTabUserAgentDetails() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String tdpAgentAreaMap(){
+		return Action.SUCCESS;
+	}
+	
 }

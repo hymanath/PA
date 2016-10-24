@@ -14237,5 +14237,15 @@
 			<param name="root">newCadreRegistrationVO</param>
 		</result>
 	</action>
+	<action name="getLatestLattitudeLangitudeOfTabUserAgentDetailsAction" class="cadreCommitteeAction"  method="getLatestLattitudeLangitudeOfTabUserAgentDetails">
+			<result type="json" name="success">
+			<param name="root">gisTrackVolst</param>
+		</result>
+	</action>
+	
+	<action name="tdpAgentAreaMapAction" class="cadreCommitteeAction" method="tdpAgentAreaMap">
+ 			 <result name="success">jsp/tdpAgentAreaMap.jsp</result>
+ 	</action>
+ 	
 </package>
 </struts>
