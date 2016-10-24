@@ -101,7 +101,7 @@
   <div class="modal-dialog" style="width:80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close closeIconCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>User ID - <span class="modalCadreUserName"></span></p>
         <p><i><span class="tabUserMblDetailsId"></span></i></p>
       </div>
@@ -162,7 +162,7 @@
       </div>
 	
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default closeIconCls" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -212,7 +212,6 @@
 				$('body').addClass("modal-open");
 			}, 1000);
 		});
-		
 	</script>
 </body>
 </html>

@@ -213,6 +213,13 @@ $(document).on("click",".applyBtn",function(){
     $("#dtatusDivId").hide();
 });
 
+$(document).on("click",".ranges li",function(){
+		getOverAllDataCollectorsCounts();
+		getIssueStatusWiseCounts();
+		getIssueTypeWiseCounts();
+		getCadreRegIssueType();
+	});
+
 getCadreRegIssueType();
 </script>
 </body>
