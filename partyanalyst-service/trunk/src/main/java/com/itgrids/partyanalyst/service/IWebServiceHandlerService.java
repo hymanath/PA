@@ -173,4 +173,6 @@ public interface IWebServiceHandlerService {
     public List<KeyValueVO> getStateWiseAssemblyConstituency(Long stateId);
     public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO vo);
     public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList);
+    public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
+    public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
 }
