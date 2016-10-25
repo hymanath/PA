@@ -3610,6 +3610,9 @@
 	   <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	   <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO" />
 	</bean>
+	
+	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
+	</bean>
 </beans>		
 			
 	
