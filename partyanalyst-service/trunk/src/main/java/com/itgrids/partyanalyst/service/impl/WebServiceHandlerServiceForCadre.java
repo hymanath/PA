@@ -86,7 +86,7 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		List<IdAndNameVO> returnList = null;
 		try 
 		{
-			returnList = cadreRegistrationService.getPanchayatOrConsList(mandalOrLocalElectionBodyId);
+			returnList = cadreRegistrationService.getPanchayatOrConsList(mandalOrLocalElectionBodyId,"1");
 			
 		}catch (Exception e) 
 		{
