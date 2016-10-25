@@ -629,6 +629,7 @@ function getTabUsersDetailsByVendorAndLocation(){
 	  }
 	  else{
 		$("#tabUserDetailsImgId").hide();
+		$("#dataCollectorsDiv").hide();
 		$("#tabUserDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
 	  }
    });
@@ -776,5 +777,6 @@ $(document).on("click",".closeIconCls",function(){
 });
 $( document ).ready(function() {
     $("#stateId").val(0).trigger("chosen:updated");
+	$(".singleDate").val('');
 
 });
