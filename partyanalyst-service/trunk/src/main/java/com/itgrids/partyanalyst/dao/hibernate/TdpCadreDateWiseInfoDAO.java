@@ -173,25 +173,35 @@ return query.list();
 
 	public Long getTotalCadreCountLocationWise(Long accessLvlId, List<Long> accessLvlValue, Long stateId, Date frmDt, Date toDt){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select sum(TCDWI.cadre2016) from TdpCadreDateWiseInfo TCDWI where " +
-						" TCDWI.locationScopeId = :accessLvlId and " +
+		queryStr.append(" select sum(TCDWI.cadre2016) from TdpCadreDateWiseInfo TCDWI where ");
+		if(accessLvlId.longValue() == 5l){
+			accessLvlId = 4l;
+		}else if(accessLvlId.longValue() == 4l){
+			accessLvlId = 10l;
+		}
+		queryStr.append(" TCDWI.locationScopeId = :accessLvlId and " +    
 						" TCDWI.locationValue in (:accessLvlValue)  ");
 		if(frmDt != null && toDt != null){
 			queryStr.append(" and (date(TCDWI.surveyDate) between :frmDt and :toDt) ");
 		}
-		Query query = getSession().createQuery(queryStr.toString());
+		Query query = getSession().createQuery(queryStr.toString());  
 		query.setParameter("accessLvlId", accessLvlId);
 		query.setParameterList("accessLvlValue", accessLvlValue);
 		if(frmDt != null && toDt != null){
-			query.setDate("frmDt", frmDt);
+			query.setDate("frmDt", frmDt);  
 			query.setDate("toDt", toDt);
 		}
 		return (Long) query.uniqueResult();  
 	}
 	public Long getTotalRenewlCadreLocationWise(Long accessLvlId, List<Long> accessLvlValue,Long stateId, Date frmDt, Date toDt){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select sum(TCDWI.renewalCadre) from TdpCadreDateWiseInfo TCDWI where " +
-						" TCDWI.locationScopeId = :accessLvlId and " +
+		queryStr.append(" select sum(TCDWI.renewalCadre) from TdpCadreDateWiseInfo TCDWI where ");
+		if(accessLvlId.longValue() == 5l){
+			accessLvlId = 4l;
+		}else if(accessLvlId.longValue() == 4l){
+			accessLvlId = 10l;
+		}
+		queryStr.append(" TCDWI.locationScopeId = :accessLvlId and " +
 						" TCDWI.locationValue in (:accessLvlValue)  ");
 		if(frmDt != null && toDt != null){
 			queryStr.append(" and (date(TCDWI.surveyDate) between :frmDt and :toDt) ");
