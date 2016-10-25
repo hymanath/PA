@@ -74,7 +74,7 @@
             <div class="block pad_20 m_top20" id="dataCollectorsDiv" style="display:none;">
             	<div class="row">
                 	<div class="col-md-12 col-xs-12 col-sm-12">
-                    	<div class="block bg_F4 pad_20">
+                    	<div class="block bg_F4 pad_20" id="dataCollectionsId">
                         	<div class="row">
                             	<div class="col-md-5 col-xs-12 col-sm-5">
                                 	<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId"></span></h4>
@@ -201,7 +201,6 @@
 <script src="js/FieldMonitoring/fieldMonitoring.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
-		
 		$(".singleDate").daterangepicker();
 		$('.select').chosen({width:'100%'});
 		getCadreRegIssueType();
