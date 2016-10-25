@@ -1,18 +1,20 @@
 
 $(document).on("click",".compareBlockSwitchCls",function(){
-	$(".moreBlocksCadre").hide();      
-	$(".compareBlockCls").show();  
-	$(".headingColor").hide();   	
+	$(".detailsCls").hide();           
+	$(".compareCls").show();  
 	getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);    
 });
-$(document).on("click",".newsComparisonHeading",function(){
-	$(".moreBlocksCadre").show();     
-	$(".compareBlockCls").hide();           
-});
+$(document).on("click",".cadreComparison",function(){
+	$(".detailsCls").show();     
+	$(".compareCls").hide();           
+}); 
+   
 $(document).ready(function() {
     initialiseDatePickerForCadreRegistration();
 });
 
+//compareCls
+//detailsCls
 function initialiseDatePickerForCadreRegistration(){
 		$("#dateRangeIdForCadre").daterangepicker({
 			opens: 'right',
@@ -25,7 +27,9 @@ function initialiseDatePickerForCadreRegistration(){
 }
 $(document).on("click",".cadreExpand",function(){
 	if( $(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".compareBlockCls").hide();     
+		$(".detailsCls").hide();         
+		$(".compareCls").hide();     
+		$(".moreBlocksCadre").hide();      
 	}    
 });
 $(document).on("click",".cadreExpand",function(){
@@ -34,7 +38,7 @@ $(document).on("click",".cadreExpand",function(){
 	$(".cadreBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	
 	setTimeout(function(){
-		$(".moreCadreBlock,.moreBlocksCadreIcon").toggle();
+		$(".moreCadreBlock,.moreBlocksCadreIcon").toggle();      
 		//getSpokesPersonWiseDebate("top");
 	},800);
 	getUserTypeWiseTotalCadreRegistrationCount();
@@ -92,15 +96,16 @@ $(document).on("click",".cadreExpand",function(){
 
 $(document).on("click",".moreBlocksCadreIcon",function(){
 	//aaa
-	$(".compareBlockCls").hide();   
 	$(".moreBlocksCadre").toggle();
+	$(".compareCls").hide();         
+	$(".cadreComparison").addClass("active");
 	var filterApplyType="No";
 	var accessLevelId=0;
 	var accessLevelValues=[];
     var renewal2016CheckboxIsChecked="Y";
 	var new2016CheckboxIsChecked="Y";
-	var cadre2014CheckboxIsChecked="Y";
-	//$(".sourceCls").show();       
+	var cadre2014CheckboxIsChecked="Y";  
+	getCadreDetailsBasedOnUserType(filterApplyType);  
 	getSourceOfRegistrationDtls(globalActivityMemberId);       
 	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
 	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
@@ -2314,7 +2319,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){        
-			
+			 $("#sourceTypeId").html('');  
 			 if(result != null && result.length > 0){
 				buildSourceOfRegistrationDtls(result);  
 			 }  
@@ -2322,7 +2327,72 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	}
 //for dynamic calls  	
 	 function buildSourceOfRegistrationDtls(result){
-		 
+		 $("#sourceTypeId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
+		 var str = '';
+		 var totalCount = 0;
+		 var newCount = 0;
+		 var renewalCount = 0;
+		 for(var i in result){
+			 totalCount = totalCount + result[i].totalCount;
+			 newCount = newCount + result[i].newCount;
+			 renewalCount = renewalCount + result[i].renewalCount;
+		 }
+		 var colorArr = ["color:#1770C4","color:#55E1DA","color:#CDA737","color:#540B88"];
+		 str+='<div class="col-md-12 col-xs-12 col-sm-6">';
+			str+='<h4 class="bg_ED pad_15 text-capitalize text-center">Andhra Pradesh</h4>';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_right0" >';
+				str+='<div class="pad_5">';
+					str+='<h5 class="text-capital">total</h5>';	
+					str+='<h3>'+totalCount+'</h3>';
+					str+='<hr style="border-color:#CCC;"></hr>';
+					str+='<table class="table">';
+					for(var i in result){
+						str+='<tr style="'+colorArr[i]+'">';
+							str+='<td>'+result[i].sourceName+'</td>';
+							str+='<td>'+result[i].totalCount+'</td>';
+							var percent = (result[i].totalCount * (100/totalCount)).toFixed(2);   
+							str+='<td><small class="text-muted">'+percent+'%</small></td>';
+						str+='</tr>';
+					}
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_right0 pad_left0" >';
+				str+='<div class="pad_5">';
+					str+='<h5 class="text-capital">renewal</h5>';	
+					str+='<h3>'+renewalCount+'</h3>';
+					str+='<hr style="border-color:#CCC;"></hr>';
+					str+='<table class="table">';
+					for(var i in result){
+						str+='<tr style="'+colorArr[i]+'">';
+							str+='<td>'+result[i].sourceName+'</td>';
+							str+='<td>'+result[i].renewalCount+'</td>';
+							var percent = (result[i].renewalCount * (100/renewalCount)).toFixed(2);
+							str+='<td><small class="text-muted">'+percent+'%</small></td>';
+						str+='</tr>';
+					}	
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';      
+			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_left0" >';  
+				str+='<div class="pad_5">';
+					str+='<h5 class="text-capital">new</h5>';
+					str+='<h3>'+newCount+'</h3>';
+					str+='<hr style="border-color:#CCC;"></hr>';
+					str+='<table class="table">';
+					for(var i in result){
+						str+='<tr style="'+colorArr[i]+'">';
+							str+='<td>'+result[i].sourceName+'</td>';
+							str+='<td>'+result[i].newCount+'</td>'; 
+							var percent = (result[i].renewalCount * (100/newCount)).toFixed(2);    
+							str+='<td><small class="text-muted">'+percent+'%</small></td>';          
+						str+='</tr>';
+					}	
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#sourceTypeId").html(str);      
 	 }
 	function getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId){  
 		$("#designationListId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -2646,7 +2716,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			startDate : '02/10/2016',         
 			endDate : getTodayDate()
 		};
-		$.ajax({          
+		$.ajax({           
 			type : 'GET',       
 			url : 'getDtlsOfBellowLvlMember.action',    
 			dataType : 'json',
