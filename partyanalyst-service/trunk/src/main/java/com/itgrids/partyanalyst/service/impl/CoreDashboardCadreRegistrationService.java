@@ -33,7 +33,6 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -225,6 +224,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO) {
 		this.tdpCadreLocationInfoCountDAO = tdpCadreLocationInfoCountDAO;
 	}
+
 	
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
