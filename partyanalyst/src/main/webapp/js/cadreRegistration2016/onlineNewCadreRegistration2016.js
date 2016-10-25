@@ -243,7 +243,8 @@
 		 $('#wrkVillageErrId').html('<img src="images/search.gif">');
 	}
 				var jsObj ={					
-					mandalId:mandal
+					mandalId:mandal,
+					typeId:id
 				};
 				 $.ajax({
 					type : "GET",
@@ -654,9 +655,12 @@ $(document).on("change","#boothsList",function(){
 	
 	if(mobileNumber != 'null'){
 		 fieldsValusEmpty();
+		 
 		 if(registrationVoterType == 'ownVoterId')
 			$("#memChckBoxModalId").modal('show');
 		 $("#checkMblNoId").val(mobileNumber);
+		 $("#otpInputId").val('');
+		 $("#otpMsgDivId").html('');
 		 
 	}
 	else{
@@ -674,6 +678,7 @@ $(document).on("change","#boothsList",function(){
 	   
 	   $('#nameId1').removeAttr('disabled');
 	   $('#familyDetailsDivId').hide();
+
 	   if(registrationVoterType=='ownVoterId')
 			$('#imagDivId').show();
 		else
@@ -707,7 +712,7 @@ $(document).on("change","#boothsList",function(){
 		 cadreId:0,
 		 status:status
 	 }
-	// alert(333);
+	 //alert(333);
 	 $.ajax({
 		 type:'GET',
 		 url: 'getRegistrationPersonDetailsAction.action',
@@ -986,6 +991,7 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		buildEductnQualifns(result);
 		buildCadreFamilyDetails(result);
 		buildOccupationList(result,"occupationId");
+		
 		if(status == "new"){
 			buildCadreRelativesDetails(result,"relativeId");
 		}else if(status == "update" || status == "renewal"){
@@ -1008,7 +1014,7 @@ function getCadreDetailsForRelativeCadre(type){
 		 cadreId:$("#tdpCdrIdR").val(),
 		 status:$("#stusIdR").val()
 	 }
-	// alert(222);
+	//alert(222);
 	$.ajax({          
 		type : 'GET',    
 		url : 'getRegistrationPersonDetailsAction.action',  
@@ -1202,13 +1208,15 @@ function getVoterDetails(){
 
 function getSearchVoterDetails()
 {
+	//console.log("registrationVoterType  :"+registrationVoterType);
+	
 	divsEmpty();
 	if(!fieldsValidationForSearch())
 	{
 		return;
 	}
 	submitVoterDetails();
-	
+	$("#searchVoterDetailsId").html('<span style="margin-left:150px;"><img src="images/search.gif"/></span>');
 	var constituency=$("#constituencyId").val();
 	var mandal=$("#mandalList").val();
 	var village=$("#panchayatList").val();
@@ -1234,7 +1242,7 @@ function getSearchVoterDetails()
 			searchCadreVoterDetails(result);
 	   }else
 	   {
-		   $("#searchVoterDetailsId").html("NO DATA AVAILABLE.....")
+		   $("#searchVoterDetailsId").html("NO DATA AVAILABLE....."); 
 	   }
    });
 }
@@ -1328,17 +1336,17 @@ function divsEmpty()
 	$("#otpMsgDivId").html("");
 	
 }
-
+/*
 $(document).keypress(function(e) {
-			if(e.keyCode==13){
-					getVoterDetails();
-					getSearchVoterDetails();
-					validateRenewalMemshipDetails();
-					getSearchByMyVoterIdDetails();
-					getSearchByRelativeVoterIdDetails();
-				}
+	if(e.keyCode==13){
+			getVoterDetails();
+			getSearchVoterDetails();
+			validateRenewalMemshipDetails();
+			getSearchByMyVoterIdDetails();
+			getSearchByRelativeVoterIdDetails();
+		}
 });
-
+*/
 function confirmOtpDetails()
 {
 	/*
@@ -1370,6 +1378,8 @@ function confirmOtpDetails()
 	   {
 		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
 		    $("#otpStusErrImgId").show();
+			 $("#otpInputId").val('');
+			$("#otpMsgDivId").html('');
 		   setTimeout(function(){
 			   $("#memChckBoxModalId").modal('hide');
 			 getSearchByMyVoterIdDetails();
@@ -1401,7 +1411,8 @@ $(document).on("click",".searchChkboxClsR",function(){
 
 	//fieldsValusEmpty();
 	$("#memChckBoxModalId").modal('show');
-	
+	 $("#otpInputId").val('');
+		 $("#otpMsgDivId").html('');
 	RvoterId=$(this).attr("attr_voterId");
 	RtdpCadreId=$(this).attr("attr_tdpCadre_id");//renewalVoterId
 
@@ -1461,6 +1472,8 @@ function renwalOtpDetails()
 	   {
 		   $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
 		   $("#otpStusErrImgId").show();
+		    $("#otpInputId").val('');
+		 $("#otpMsgDivId").html('');
 		   setTimeout(function(){
 			   $("#memChckBoxModalId").modal('hide');
 			    renMemberDetails();
@@ -1508,9 +1521,17 @@ function addressFieldsValidation()
 	var PrvNomneAge=$("#prevNomneAgeId").val();
 	var PrvNomneReltv=$("#prevNomneReltvId").val();	
 	
+	var wardId=$("#wardsList").val();	
+	
+	if(presntLebId > 0 && wardId ==0){
+		$("#wardErr").html("Please Select Ward .");  
+        isError=true;
+	}else{
+		 $("#wardErr").html("");
+	}
 	 if(name == 0 && name.trim() == '')
 	 {
-		$("#cadreNameId").html("Enter Name");  
+		$("#wardErr").html("Enter Name");  
         isError=true;		
 	 }else
 	 {
@@ -1758,7 +1779,7 @@ function addressFieldsValidation()
 			$("#wardErrId").html("");
 		}
 	
-	if($('#checkbox8').is(":checked"))
+	if($('#deliveryCheckBox').is(":checked"))
 	{
 	
 		if(workHno == null || workHno.length ==0 )
@@ -1954,7 +1975,7 @@ function addressFieldsValidation()
 			 $('#wrkDistErrId').html('');
 	   }
    });
-  }
+  }/*
   function getConstituenciesForDistricts(district,id){
 	  if(id == 1){
 		 $("#constituencyDivIdImg").show();
@@ -2055,6 +2076,7 @@ function addressFieldsValidation()
 	   }
    });
   }
+  */
   $(document).on("click","#findTrackId",function(){
 	   $("#errorDivTrackId"). html("");
 	  var stateId = $("#stateId").val();
