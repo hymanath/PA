@@ -1462,7 +1462,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  }
 		
 		  $("#"+divId).highcharts({
-			 colors: ['#30AA74','#F36800','#FFCA00'],
+			 colors: colorArr,
 			chart: {
 				type: 'column'
 			},
@@ -1487,7 +1487,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 					text: ' '
 				}
 			},
-
 			tooltip: {
 				valueSuffix:  '%' 
 			},
@@ -1497,7 +1496,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 					stacking: 'normal'
 				}
 			},
-
 			series: jsonDataArr
 		}); 
    }else{
@@ -2245,7 +2243,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		  return;
 	  }
 	  var apDistrictArr=[];
-	 var tsDistrictArr=[];
+	   var tsDistrictArr=[];
 	  $("#apDistrictUlId li").each(function() {
 		  if($(this).find("input").is(":checked")){
 			  apDistrictArr.push($(this).find("input").attr("id"));
@@ -2301,7 +2299,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){        
 			
 			 if(result != null){
-				console.log(result);  
+			//console.log(result);  
 			 }  
 		});
 	}
