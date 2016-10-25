@@ -1050,7 +1050,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					     }else{
 					    	 accessLevelValue = entry.getKey();	 
 					     }
-						List<Object[]> returnObjList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);
+						List<Object[]> returnObjList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), fromDate, toDate);
 						  
 						if(returnObjList != null && returnObjList.size() > 0){
 							
@@ -1074,7 +1074,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						     }else{
 						    	 accessLevelValue = entry.getKey();	 
 						     }
-						List<Object[]> returnRenewalObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);
+						List<Object[]> returnRenewalObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()), fromDate, toDate);
 						
 						if(returnRenewalObjList != null && returnRenewalObjList.size() > 0){
 							
@@ -1290,7 +1290,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					     }
 					     List<Long> locationValue=null;
 					     if(accessLevelId.longValue() == 2l){//state access
-					    	 locationValue = new ArrayList<Long>(locationIdAndNameMap.keySet());
+					    	 locationValue = new ArrayList<Long>(locationIdAndNameMap.keySet());// getting all district details
 					     }else{
 					    	 locationValue = new ArrayList<Long>(entry.getValue());	 
 					     }
@@ -1468,15 +1468,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
 		    	 locationScopeId = 4l; 
 		     }
-		      userAccessLevelValues = new ArrayList<Long>(locationIdAndNameMap.keySet()); 
+		     userAccessLevelValues = new ArrayList<Long>(locationIdAndNameMap.keySet()); 
 		  
-		   List<Object[]> total2014CadreObjList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues, stateId);//2014 cadre
+		   List<Object[]> total2014CadreObjList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues);//2014 cadre
 		  set2014CadreCountToMap(total2014CadreObjList,locationWiseCadreDetaislMap,locationIdAndNameMap);
 		 // List<Object[]> total2016CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, fromDate, toDate, 4l,accessLevelId,userAccessLevelValues);//2016 cadre
-		  List<Object[]> total2016CadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues, stateId, fromDate, toDate);
+		  List<Object[]> total2016CadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues, fromDate, toDate);
 		  set2016CadreCountToMap(total2016CadreObjList,locationWiseCadreDetaislMap);
 		 // List<Object[]> total2016RenewalCadreObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreCntLocationWise(stateId, locationType, fromDate, toDate,accessLevelId,userAccessLevelValues);
-		  List<Object[]> total2016RenewalCadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWise(locationScopeId, userAccessLevelValues, stateId, fromDate, toDate);
+		  List<Object[]> total2016RenewalCadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWise(locationScopeId, userAccessLevelValues, fromDate, toDate);
 		  setRenewalCountToMap(total2016RenewalCadreObjList,locationWiseCadreDetaislMap);
 		  //calculating new cadre and percentage
 		  calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
