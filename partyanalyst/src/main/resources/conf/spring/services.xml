@@ -3542,6 +3542,9 @@
 		 <property name="dateUtilService" ref="dateUtilService" />
 		 <property name="tabUserOtpDetailsDAO" ref="tabUserOtpDetailsDAO" />
 		 <property name="tabUserInfoDAO" ref="tabUserInfoDAO" />
+		 <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO" />
+		 <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
+		 
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
