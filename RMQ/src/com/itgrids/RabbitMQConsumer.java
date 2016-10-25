@@ -60,7 +60,8 @@ public class RabbitMQConsumer {
 	    		 	} catch (InterruptedException ie){
 	    		 		continue;
 	    		 	}
-         
+	    		 
+	    		 //Thread.sleep(100);
 	    		 String msg = new String(delivery.getBody());
 	    		 
 	    		// boolean result = doWork(msg);
@@ -111,7 +112,7 @@ public class RabbitMQConsumer {
     
     public static boolean saveData(String msg)
     {
-    	boolean result = false;
+    	/*boolean result = false;
     	try{
     		String sql = "INSERT INTO data(data_str) VALUES ('"+msg+"')";
     		int inserted = stmt.executeUpdate(sql);
@@ -120,7 +121,7 @@ public class RabbitMQConsumer {
     	}catch(Exception e)
     	{
     		e.printStackTrace();
-    	}
-    	return result;
+    	}*/
+    	return true;
     }
 }
