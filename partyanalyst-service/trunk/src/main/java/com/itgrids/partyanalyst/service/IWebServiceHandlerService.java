@@ -175,4 +175,5 @@ public interface IWebServiceHandlerService {
     public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList);
     public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
     public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
+    public List<GISVisualizationDetailsVO> getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO);
 }
