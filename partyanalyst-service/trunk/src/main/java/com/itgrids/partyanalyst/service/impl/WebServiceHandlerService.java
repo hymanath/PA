@@ -4230,7 +4230,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  List<IdAndNameVO> returnList=null;
 		  try{
-			  returnList=cadreRegistrationService.getPanchayatOrConsList(mandalOrMunpaId);
+			  returnList=cadreRegistrationService.getPanchayatOrConsList(mandalOrMunpaId,"1");
 		  }catch(Exception e){
 			  log.error("Error occured at getPanchayatOrConsList() in WebServiceHandlerService {}",e);
 			  
