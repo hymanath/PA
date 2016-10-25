@@ -16,9 +16,21 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 	}
 
 	public List findByLocalElectionBody(Long localElectionBodyId, String year) {
-		Object[] params = {localElectionBodyId,year};
+		/*Object[] params = {localElectionBodyId,year};
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.localElectionBodyWard.wardName from AssemblyLocalElectionBodyWard model " +
 				"where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?)", params);
+		*/
+		
+		String query = "select model.constituency.constituencyId, model.constituency.name, localElectionBodyWard.wardName " +
+				" from AssemblyLocalElectionBodyWard model " +
+				"left join model.constituency.localElectionBodyWard  localElectionBodyWard " +
+				"where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = :localElectionBodyId and" +
+				"  model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= :year) order by model.constituency.name ";
+		Query query1 = getSession().createQuery(query.toString());
+		query1.setParameter("localElectionBodyId", localElectionBodyId);
+		query1.setParameter("year", year);
+		return query1.list();
+		
 	}
 	
 	public List findByConstituencyIdAndYear(Long constituencyId, String wardType){
