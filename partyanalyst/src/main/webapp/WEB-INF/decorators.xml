@@ -699,5 +699,7 @@
 		<pattern>/dataMonitoringDashboardAction*</pattern>
 		<pattern>/webMonitoringDashboardAction*</pattern>
 		<pattern>/tdpAgentAreaMapAction*</pattern>
+		<pattern>/tdpAgentAreaMapAction*</pattern>
+		<pattern>/dataReconsolidationOverViewAction*</pattern>
 	</decorator> 
 </decorators>

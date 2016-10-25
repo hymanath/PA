@@ -14252,5 +14252,10 @@
  			 <result name="success">jsp/tdpAgentAreaMap.jsp</result>
  	</action>
  	
+ 	<action name="dataReconsolidationOverViewAction" class="dataReconsolidationOverViewAction">
+		<result name="input">/jsp/loginForm.jsp?src=dataReConsolidationOverViewAction</result>
+		<result name="success">/jsp/dataReConsolidationOverview.jsp</result>  
+		<result name="error" type="redirect">login.action</result>
+	</action>
 </package>
 </struts>
