@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -8,6 +10,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> implements IUserAddressDAO {
 
@@ -179,4 +182,66 @@ public List<Object[]> getUserAddressDetailsByMinuteId(Long userAddressId){
 	   return query.list();
 	   
    }
+
+public List<Object[]> getUserTypeWiseLocationName(Long stateId,Long userType){
+	
+	StringBuilder queryStr = new StringBuilder();
+	   
+	   queryStr.append(" select distinct ");
+	  if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+   	      queryStr.append(" model.district.districtId,");
+   	      queryStr.append(" model.district.districtName "); 
+       }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+     	  || userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+   	 	  queryStr.append(" model.constituencyId,");
+	       queryStr.append(" model.name "); 
+	   }
+		queryStr.append(" from Constituency model where model.electionScope.electionScopeId=2 and model.deformDate is null ");
+		
+		
+	   if(stateId != null && stateId.longValue() > 0){
+			 if(stateId != null && stateId.longValue() > 0){
+				   if(stateId.longValue()==1l){
+						queryStr.append(" and model.district.districtId > 10 and  model.state.stateId = 1 ");
+					}else if(stateId.longValue()==36l){
+						queryStr.append(" and  model.district.districtId < 11 ");
+					}
+			 } 
+	   }
+	   Query query = getSession().createQuery(queryStr.toString());
+	   
+	   return query.list();
+}
+public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String LocationType,Long accessLevelId,List<Long> accessLevelValue){
+	
+	StringBuilder queryStr = new StringBuilder();
+	   
+	   queryStr.append(" select distinct ");
+	  if(LocationType != null && LocationType.equalsIgnoreCase("District")){
+   	      queryStr.append(" model.district.districtId,");
+   	      queryStr.append(" model.district.districtName "); 
+       }else if(LocationType != null && LocationType.equalsIgnoreCase("Constituency")){
+   	 	  queryStr.append(" model.constituencyId,");
+	      queryStr.append(" model.name"); 
+	   }
+		queryStr.append(" from Constituency model where model.electionScope.electionScopeId=2 and model.deformDate is null ");
+	   if(stateId != null && stateId.longValue() > 0){
+			 if(stateId != null && stateId.longValue() > 0){
+				   if(stateId.longValue()==1l){
+						queryStr.append(" and model.district.districtId > 10 and  model.state.stateId = 1 ");
+					}else if(stateId.longValue()==36l){
+						queryStr.append(" and  model.district.districtId < 11 ");
+					}
+			 } 
+	   }
+	   if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		    queryStr.append(" and  model.district.districtId in (:accessLevelValue) ");
+	   }
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	      query.setParameterList("accessLevelValue", accessLevelValue);
+	    }
+	    return query.list();
+}
+
 }

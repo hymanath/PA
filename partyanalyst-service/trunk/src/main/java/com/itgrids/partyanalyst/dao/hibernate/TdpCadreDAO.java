@@ -7439,7 +7439,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate, Long enrollmentYearId){
 		
 		StringBuilder queryStr = new StringBuilder();   
-		  queryStr.append(" select");
+		    queryStr.append(" select");
 		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" model.tdpCadre.userAddress.state.stateId,");  
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -7465,10 +7465,10 @@ public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List
 		   if(fromDate!= null && toDate!=null && enrollmentYearId == 4l){
 				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
 			 }
-		/*   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID 
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID 
 			  || userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID ){
 			    queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId not in(282) ");
-		   }*/
+		   }
 		   
 		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" group by model.tdpCadre.userAddress.state.stateId ");  
@@ -7487,6 +7487,7 @@ public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List
 		   query.setParameter("enrollmentYearId", enrollmentYearId);
 		   return query.list();
 	}
+
 
 public List<Object[]> getTotalCadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,Long enrollmentYearId,Long userType){
 	

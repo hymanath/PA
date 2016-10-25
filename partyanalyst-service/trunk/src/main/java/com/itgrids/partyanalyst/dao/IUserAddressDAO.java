@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -20,4 +21,6 @@ public interface IUserAddressDAO extends GenericDao<UserAddress, Long>  {
 	public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String searchType);
 	public Long getLocalElectionBodyByUserAddress(Long userAddressId);
 	public List<Object[]> getUserAddressDetailsByMinuteId(Long userAddressId);
+	public List<Object[]> getUserTypeWiseLocationName(Long stateId,Long userType);
+	public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String LocationType,Long accessLevelId,List<Long> accessLevelValue);
 }

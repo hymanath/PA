@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -27,6 +31,49 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
     	return query.executeUpdate();
     }
     
+    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Long stateId){
+		
+	      StringBuilder queryStr = new StringBuilder();  
+	       
+	      queryStr.append(" select model.locationValue,sum(model.cadre2014) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId ");
+	     
+	      if(locationValue != null && locationValue.size() > 0){
+	    	queryStr.append(" and model.locationValue in (:locationValue)");  
+	      }
+		  queryStr.append(" group by model.locationValue ");
+		  
+		  Query query = getSession().createQuery(queryStr.toString());
+		    query.setParameter("locationScopeId", locationScopeId);
+		    
+		  if(locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);  
+		  }
+		  
+	     return query.list();
+	}
+    public List<Object[]> get2014TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Long userType){
+    	
+           StringBuilder queryStr = new StringBuilder();  
+	       queryStr.append(" select model.locationValue,sum(model.cadre2014) from TdpCadreLocationInfo model ");
+	    
+	      if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+       	      queryStr.append(" where model.locationScopeId =3 ");
+       	  }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+         	  || userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+       	      queryStr.append(" where model.locationScopeId =4 ");
+           }
+	      if(locationValue != null && locationValue.size() > 0){
+	    	queryStr.append(" and model.locationValue in (:locationValue)");  
+	      }
+	    
+		  queryStr.append(" group by model.locationValue ");
+		  
+		  Query query = getSession().createQuery(queryStr.toString());
+			  if(locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);  
+		  }
+    	   return query.list();
+    }
 public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO){
 		
 		try {
