@@ -2393,7 +2393,7 @@
                                         <div class="col-md-6 col-xs-12 col-sm-12" style="position:relative;">
 											<!--<span class="pull-right" style="font-size:8px;position:absolute;top:-10px;right:10px;cursor:pointer;">Clear Filter</span>-->
 											<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-												<li class="text-capital"><i class="fa fa-gears" id="settingsCadre" title="filter result"></i></li>
+												<li  id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
 											</ul>
                                         	<ul class="activeUlCls list-inline pull-right constituencyUlCls"">
                                             	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All" attr_all_contituency_cnt="0" >All - 0</li>
@@ -2444,16 +2444,36 @@
                                 </div>
                                 <div class="panel-body">
                                 	<div class="row">
-									<!--<i class="glyphicon glyphicon-sort-by-attributes decendingSorting pull-left" style="transform:rotate(180deg)"></i>
-                            		<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingSorting pull-left"></i><br><br>-->
-							        	<div class="col-md-6 col-xs-12 col-sm-12 mtop-20">
-										    <h2><span class="headingColor">Andhra Pradesh</span></h2><br>
-                                        	<div id="apConstituencyRegistrationReportDivId"></div>
-                                        </div>
-									   <div class="col-md-6 col-xs-12 col-sm-12">
-										    <h2><span class="headingColor">Telangana</span></h2><br>
-                                        	<div id="tsConstituencyRegistrationReportDivId"></div>
-                                        </div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4>Andhra Pradesh</h4>
+											<div class="row m_top20">
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<i class="glyphicon glyphicon-sort-by-attributes decendingApSorting pull-left" attr_filter_value="No" style="transform:rotate(180deg)"></i>
+													<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingApSorting pull-left" attr_filter_value="No"></i>
+												</div>
+												<div class="col-md-4 col-xs-12 col-sm-4">
+													<select attr_filter_value="All" class="form-control" id="apConstituencySelectBoxId"></select>
+												</div>
+											</div>
+											<div Id="apscrollBarDivId">
+											<div id="apConstituencyRegistrationReportDivId" class="m_top20"></div>
+											</div>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4>Telangana</h4>
+											<div class="row m_top20">
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<i class="glyphicon glyphicon-sort-by-attributes decendingTsSorting pull-left" attr_filter_value="No" style="transform:rotate(180deg)"></i>
+													<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingTsSorting pull-left" attr_filter_value="No"></i>
+												</div>
+												<div class="col-md-4 col-xs-12 col-sm-4">
+													<select attr_filter_value="All" class="form-control" id="tsConstituencySelectBoxId"></select>
+												</div>
+											</div>
+											<div Id="tsscrollBarDivId">
+											<div id="tsConstituencyRegistrationReportDivId" class="m_top20"></div>
+											</div>
+										</div>
                                     </div>
                                 </div>
                             </div>
