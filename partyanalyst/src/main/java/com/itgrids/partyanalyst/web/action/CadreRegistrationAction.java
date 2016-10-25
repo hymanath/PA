@@ -2615,7 +2615,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	public String getAllPanchayatsForMandal(){
 		try{
 			jobj=new JSONObject(getTask());
-			idAndNameVO=cadreRegistrationService.getPanchayatOrConsList(jobj.getLong("mandalId"));
+			idAndNameVO=cadreRegistrationService.getPanchayatOrConsList(jobj.getLong("mandalId"),jobj.getString("typeId"));
 		}catch(Exception e){
 			LOG.error("Entered into getAllPanchayatsForMandal method in CadreRegistrationAction....");
 		}
