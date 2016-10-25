@@ -14032,7 +14032,21 @@
 		<result name="success">/jsp/fieldMonitoring.jsp</result>  
 		<result name="error" type="redirect">login.action</result>
 	</action>
-	
+	<action name="fieldMonitoringNewAction" class="fieldMonitoringAction" method="fieldMonitoringNew">
+		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringNewAction</result>
+		<result name="success">/jsp/fieldMonitoringnew.jsp</result>  
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	<action name="getUserAssignedConstituenciesAction" class="fieldMonitoringAction"  method="getUserAssignedConstituencies">
+			<result type="json" name="success">
+			<param name="root">constituencyList</param>
+		</result>
+	</action>
+	<action name="getUserAssignedUsersAction" class="fieldMonitoringAction"  method="getUserAssignedUsers">
+			<result type="json" name="success">
+			<param name="root">constituencyList</param>
+		</result>
+	</action>
 	<action name="getVendorsAction" class="fieldMonitoringAction"  method="getVendors">
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
@@ -14075,6 +14089,11 @@
 		</result>
 	</action>
 	<action name="getTabUsersDetailsByVendorAndLocationAction" class="fieldMonitoringAction"  method="getTabUsersDetailsByVendorAndLocation">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringVO</param>
+		</result>
+	</action>
+	<action name="getTabUsersDetailsByVendorAndLocationNewAction" class="fieldMonitoringAction"  method="getTabUsersDetailsByVendorAndLocationNew">
 			<result type="json" name="success">
 			<param name="root">fieldMonitoringVO</param>
 		</result>
@@ -14150,6 +14169,16 @@
 		</result>
 	</action>
 	<action name="getIssuesCountsForATabUserAction" class="fieldMonitoringAction"  method="getIssuesCountsForATabUser">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringIssueVOList</param>
+		</result>
+	</action>
+	<action name="getIssuesForATabUserByStatusNewAction" class="fieldMonitoringAction"  method="getIssuesForATabUserByStatusNew">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringIssueVOList</param>
+		</result>
+	</action>
+	<action name="getIssuesCountsForATabUserNewAction" class="fieldMonitoringAction"  method="getIssuesCountsForATabUserNew">
 			<result type="json" name="success">
 			<param name="root">fieldMonitoringIssueVOList</param>
 		</result>

@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
@@ -36,6 +37,8 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private List<FieldMonitoringVO> fieldMonitoringList;
 		private List<FieldMonitoringIssueVO> fieldMonitoringIssueVOList;
 		private List<DataMonitoringVerificationVO> dataMonitoringVerificationVOList;
+		private List<CadreRegUserVO> constituencyList;
+		private List<CadreRegUserVO> usersList;
 		
 	//Attributes
 	   private IFieldMonitoringService fieldMonitoringService;
@@ -114,6 +117,18 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 			List<DataMonitoringVerificationVO> dataMonitoringVerificationVOList) {
 		this.dataMonitoringVerificationVOList = dataMonitoringVerificationVOList;
 	}
+	public List<CadreRegUserVO> getConstituencyList() {
+		return constituencyList;
+	}
+	public void setConstituencyList(List<CadreRegUserVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+	public List<CadreRegUserVO> getUsersList() {
+		return usersList;
+	}
+	public void setUsersList(List<CadreRegUserVO> usersList) {
+		this.usersList = usersList;
+	}
 	
 	
 	//Business methods
@@ -135,7 +150,70 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		return Action.SUCCESS;    
 	}
 	
+	public String fieldMonitoringNew(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		List<String> entitlements = null;
+		boolean noaccess = false;
+		if(regVO == null)
+			return Action.INPUT;
+		
+		Long userId = regVO.getRegistrationID();
+		
+		//constituencyList = fieldMonitoringService.getCadreRegUserAssignedConstituencies(userId);
+		//usersList = fieldMonitoringService.getCadreRegUserAssignedUsers(userId);
+		/*if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			 if(!(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ADMIN_ENTITLEMENT".trim()))){
+			        noaccess = true ;  
+			 }
+		}*/
+		
+		return Action.SUCCESS;    
+	}
 	
+	public String getUserAssignedConstituencies(){
+		
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			constituencyList = fieldMonitoringService.getCadreRegUserAssignedConstituencies(userId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
+	
+	public String getUserAssignedUsers(){
+		
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			/*JSONArray constArr = jObj.getJSONArray("constituencyId");  
+			List<Long> constIds = new ArrayList<Long>();
+			for( int i=0;i<constArr.length();i++){
+				constIds.add(Long.valueOf(constArr.getString(i)));
+			}*/
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			constituencyList = fieldMonitoringService.getCadreRegUserAssignedUsers(userId,constituencyId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
+
 	public String getVendors(){
 		
 		try {
@@ -230,6 +308,37 @@ public String getTabUsersDetailsByVendorAndLocation(){
     	return Action.SUCCESS;
     }
 
+public String getTabUsersDetailsByVendorAndLocationNew(){
+	try {
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		Long loginUserId = regVO.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDate");
+		String toDateStr = jObj.getString("toDate");
+		/*JSONArray constArr = jObj.getJSONArray("constituencyId");  
+		List<Long> constIds = new ArrayList<Long>();
+		for( int i=0;i<constArr.length();i++){
+			constIds.add(Long.valueOf(constArr.getString(i)));
+		}
+		JSONArray usersArr = jObj.getJSONArray("userId");  
+		List<Long> userIds = new ArrayList<Long>();
+		for( int i=0;i<usersArr.length();i++){
+			userIds.add(Long.valueOf(usersArr.getString(i)));
+		}*/
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long userId = jObj.getLong("userId");
+		
+		fieldMonitoringVO = fieldMonitoringService.getTabUsersDetailsByVendorAndLocationNew(loginUserId, constituencyId, userId, fromDateStr, toDateStr);
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	return Action.SUCCESS;
+}
+
 public String getIssueStatusWiseCounts(){
 	
 	try {
@@ -315,6 +424,47 @@ public String getConstituencyByVendor(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getIssuesForATabUserByStatusNew(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long tabUserInfoId = jObj.getLong("tabUserInfoId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Long issueStatusId = jObj.getLong("issueStatusId");
+			
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesForATabUserByStatusNew(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,issueStatusId,userId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getIssuesCountsForATabUserNew(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long tabUserInfoId = jObj.getLong("tabUserInfoId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesCountsForATabUserByStatusNew(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,userId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getIssuesCountsForATabUser()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}
