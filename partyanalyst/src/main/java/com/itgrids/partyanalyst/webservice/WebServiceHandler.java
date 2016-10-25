@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -100,8 +101,6 @@ public class WebServiceHandler {
 	private IAttendanceService attendanceService;
 	@Autowired
 	private INotificationService notificationService;
-	
-	
 	
 	
 	
@@ -2034,8 +2033,7 @@ public class WebServiceHandler {
 		public List<IdAndNameVO> getBoothsListForPancyat(@PathParam("panchayatId") Long panchayatId){
 			return webServiceHandlerService.getBoothsList(panchayatId);
 		}
-		
-		
+				
 		@POST
 		@Path("/Secure/getMembershipDriveVisualizationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -2074,6 +2072,18 @@ public class WebServiceHandler {
 		public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> inputList){
 			return webServiceHandlerService.syncCadreTabRecordsStatus(inputList);
 		}
-		
-		
+		@GET
+		@Path("/getStateWiseDistrict/{state}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IdAndNameVO> getStateWiseDistrict(@PathParam("state") Long state){
+			return webServiceHandlerService.getStateWiseDistrict(state);
+			 //cadreRegistrationService.getStateWiseDistrict(state);
+		}
+		@GET
+		@Path("/getDistrictWiseConstituency/{district}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IdAndNameVO> getDistrictWiseConstituency(@PathParam("district") Long district){
+			return webServiceHandlerService.getDistrictWiseConstituency(district);
+			//return cadreRegistrationService.getDistrictWiseConstituency(district);
+		}
 }
