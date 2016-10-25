@@ -1972,7 +1972,7 @@ margin-top: 5px; margin-bottom: 2px;
 	list-style:none;
 	padding:2px;
 }
-.ascendingSorting , .decendingSorting
+.decendingApSorting , .ascendingApSorting , .decendingTsSorting , .ascendingTsSorting
 {
 	padding:3px 5px;
 	border:1px solid #ddd;
