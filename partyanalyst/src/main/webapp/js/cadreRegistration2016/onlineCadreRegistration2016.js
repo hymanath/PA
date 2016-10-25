@@ -87,13 +87,16 @@ function getSearchByMyVoterIdDetails(){
 	 var familyVoterId=0;
 	 var tdpCadreId=$("#tdpCadreId").val();
 	 var status=$("#statusId").val();
+	
+		if(tdpCadreId == null || tdpCadreId=='' || typeof tdpCadreId == "undefined" || tdpCadreId.lenght == 0  ) 
+			tdpCadreId = 0;
 	 var jsObj={
 		 voterId:voterId1,
 		 familyVoterId:familyVoterId,
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
-	// alert(444);
+	
 		$.ajax({          
 			type : 'GET',    
 			url : 'getRegistrationPersonDetailsAction.action',  
@@ -110,7 +113,7 @@ function getSearchByMyVoterIdDetails(){
 				str+='<input type="hidden" name="Order_Id" value="'+result.paymentGatewayVO.orderNo.trim()+'">';				
 				str+='<input type="hidden" name="Checksum" value="'+result.paymentGatewayVO.checkSum.trim()+'">';
 				str+='<input type="hidden" name="Redirect_Url" value="'+result.paymentGatewayVO.redirectURL.trim()+'">';
-					str+='<input type="hidden" name="Amount" value="'+result.paymentGatewayVO.amount.trim()+'">';
+				str+='<input type="hidden" name="Amount" value="'+result.paymentGatewayVO.amount.trim()+'">';
 				str+='<input type="hidden" name="billing_cust_name" value="">';
 				str+='<input type="hidden" name="billing_cust_address" value="">';
 				str+='<input type="hidden" name="billing_cust_tel" value="">';
@@ -125,6 +128,19 @@ function getSearchByMyVoterIdDetails(){
 				str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
 				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
 
+				if(registrationType=="new"){
+					str+='<div class="panel-heading new animated fadeIn">';
+					str+='	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>';
+					str+='    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
+					str+='</div>';
+				}
+				if(registrationType=="renewal"){
+					str+='<div class="panel-heading renewal">';
+					str+='	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>';
+					str+='    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
+					str+='</div>';
+				}
+				str+='</hr>';
 				str+='<div class="container m_top10" id="yourElement;">';
 				str+='<div class="span12  show-grid" style="position: relative;margin-left:250px">';
 				str+= '<div class="span12  show-grid" style="position: relative;">';
@@ -146,6 +162,7 @@ function getSearchByMyVoterIdDetails(){
 				$("#populatingDtsDivImgId").addClass('hide');
 			}
 			else{
+				
 				$("#submitCadreForm").show();
 				$(".newProfile").show();
 				$(".rRenewal").hide();
@@ -278,12 +295,8 @@ var str = "";
 		 }else{
 				$("#PrvNomineeDetailsId").prop( 'checked',false);
 				$("#changeNomineeId").prop( 'checked',false);
-				$("#prvNomneNameId").prop( 'disabled',true);
-				//$("#prvNomneGendrId").prop( 'disabled',true);
-				//$("#prevNomneAgeId").prop( 'disabled',true);
-				//$("#prevNomneReltvId").prop( 'disabled',true);
-				//$("#prevNomneAadharNoId").prop( 'disabled',true);
-				
+				//$("#prvNomneNameId").prop( 'disabled',true);
+
 				$("#newNomineeID").show();
 				$("#existingNomineeID").hide();
 				$("#familyDetailsDivId").hide();
@@ -318,11 +331,25 @@ var str = "";
 		 }
 		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
 		
+		if(result.paymentGatewayVO != null){
+			$('#wardsDivId').removeClass('hide');
+			if(result.paymentGatewayVO.subList != null){
+				$("#wardsList").append('<option value="0"> Select Ward </option>');
+				for(var k in result.paymentGatewayVO.subList){
+					$("#wardsList").append('<option value="'+result.paymentGatewayVO.subList[k].id+'">'+result.paymentGatewayVO.subList[k].name+'</option>');
+				 }
+				 $("#wardsList").trigger("chosen:updated");
+			}
+		}
+		else{
+			$('#wardsDivId').addClass('hide');
+		}
 		  presntDistrictId =result.districtId;
 		  presntConstituencyId =result.constituencyId;
-		  if(result.localElectionBodyId != null && result.localElectionBodyId>0)
+		  if(result.localElectionBodyId != null && result.localElectionBodyId>0){
 			presntLebId =result.localElectionBodyId; 
-		  else
+			
+		  }else
 			presntMandalId =result.mandalId; 
 		  presntVillageId =result.villageId;
 		  
@@ -431,12 +458,8 @@ function buildCasteDetails(result) {
 	$("#prevNomneAgeId").val('');
 	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
 	
-	 $("#prvNomneNameId").prop( 'disabled',false);
-	// $("#prvNomneGendrId").removeClass( 'chosen-disabled');
-	// $("#prevNomneReltvId").removeClass( 'chosen-disabled');
-	// $("#prevNomneAgeId").prop( 'disabled',false);
-	// $("#prevNomneAadharNoId").prop( 'disabled',false);
-				
+	// $("#prvNomneNameId").prop( 'disabled',false);
+		
       if ($("#addNewNominatedId").is(":visible")) {
 			$("#addNewNominatedId").hide();   
 		}else{
@@ -553,6 +576,20 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
 				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
 
+				
+				if(registrationType=="new"){
+					str+='<div class="panel-heading new animated fadeIn">';
+					str+='	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>';
+					str+='    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
+					str+='</div>';
+				}
+				if(registrationType=="renewal"){
+					str+='<div class="panel-heading renewal">';
+					str+='	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>';
+					str+='    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
+					str+='</div>';
+				}
+				str+='</hr>';
 				str+='<div class="container m_top10" id="yourElement">';
 				str+='<div class="span12  show-grid" style="position: relative;;margin-left:350px;">';
 				str+='<p class="text-align" style="color:green;font-weight:bold;">	Thank You For Your Registration</p>';
