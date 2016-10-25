@@ -94,8 +94,6 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
     private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
     private ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO;
-    private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
-    private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
     
 	public IPaymentGatewayService getPaymentGatewayService() {
 		return paymentGatewayService;
@@ -227,12 +225,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO) {
 		this.tdpCadreLocationInfoCountDAO = tdpCadreLocationInfoCountDAO;
 	}
-	public void setTdpCadreDateWiseInfoDAO(ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO) {
-		this.tdpCadreDateWiseInfoDAO = tdpCadreDateWiseInfoDAO;
-	}
-	public void setTdpCadreLocationInfoDAO(ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO) {
-		this.tdpCadreLocationInfoDAO = tdpCadreLocationInfoDAO;
-	}
+	
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
 	    try {
