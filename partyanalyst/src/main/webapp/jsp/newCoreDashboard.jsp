@@ -2114,11 +2114,8 @@
                                 <li class="text-capital"><i class="fa fa-gears"></i></li>
                             </ul>    
                             <ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-                                <li class="text-capital compareBlockSwitchCls">Comparison</li>  
-                            </ul>
-                            
-                            <ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
-                                <li class="text-capital newsComparisonHeading">Detailed</li>
+                                <li class="text-capital cadreComparison">Detailed</li>
+								<li class="text-capital compareBlockSwitchCls">Comparison</li>  
                             </ul>
                             
                         </div>
@@ -2313,117 +2310,19 @@
                                 </div>
                             </div> 
                         </div>-->
-						<div class="col-md-12 col-xs-12 col-sm-12 sourceCls" style="display:none;">  
-							<div class="panel panel-default">
+						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">        
+							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
 									<span class="headingColor">State Wise Overview</span>
 								</div>
 								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													andhra pradesh
-												</div>
-												<div class="panel-body pad_0">
-													<div class="col-md-6 col-xs-12 col-sm-12">
-                                        	<h4 class="bg_ED pad_15 text-capitalize text-center">Andhra Pradesh</h4>
-                                            <div class="col-md-4 col-xs-12 col-sm-4 pad_right0" style="background-color:#E1F5F4">
-                                            	<div class="pad_5">
-                                                	<h5 class="text-capital">total</h5>	
-                                                    <h3>40000</h3>
-                                                    <hr style="border-color:#CCC;"/>
-                                                    <table class="table">
-                                                    	<tr style="color:#1770C4">
-                                                        	<td>Web</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#55E1DA">
-                                                        	<td>Tab</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#CDA737">
-                                                        	<td>Office</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#540B88">
-                                                        	<td>Online</td>  
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-xs-12 col-sm-4 pad_right0 pad_left0" style="background-color:#E2EBE6">
-                                            	<div class="pad_5">
-                                                	<h5 class="text-capital">renewal</h5>	
-                                                    <h3>40000</h3>
-                                                    <hr style="border-color:#CCC;"/>
-                                                    <table class="table">
-                                                    	<tr style="color:#1770C4">
-                                                        	<td>Web</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#55E1DA">
-                                                        	<td>Tab</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#CDA737">
-                                                        	<td>Office</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#540B88">
-                                                        	<td>Online</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>      
-                                            <div class="col-md-4 col-xs-12 col-sm-4 pad_left0" style="background-color:#FBF4E4">
-                                            	<div class="pad_5">
-                                                	<h5 class="text-capital">new</h5>	
-                                                    <h3>40000</h3>
-                                                    <hr style="border-color:#CCC;"/>
-                                                    <table class="table">
-                                                    	<tr style="color:#1770C4">
-                                                        	<td>Web</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#55E1DA">
-                                                        	<td>Tab</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#CDA737">
-                                                        	<td>Office</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                        <tr style="color:#540B88">
-                                                        	<td>Online</td>
-                                                            <td>10000</td>
-                                                            <td><small class="text-muted">25%</small></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-												</div>
-											</div>
-										</div>
+									<div class="row" id="sourceTypeId">
+										
 									</div>
 								</div>
 							</div>
 						</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
@@ -2459,7 +2358,7 @@
                                 </div>
                             </div>
                         </div>
-					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
+					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">         
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
@@ -2554,7 +2453,7 @@
                                 </div>
                             </div>
                         </div>                   
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 compareBlockCls" style="display:none;">    
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocksCadre compareCls">                
 							<div class="panel panel-default panelNew">   
 								<div class="panel-heading">
 									<div id="designationListId"></div>
