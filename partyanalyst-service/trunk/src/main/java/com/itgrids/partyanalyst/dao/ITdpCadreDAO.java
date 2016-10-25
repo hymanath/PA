@@ -479,4 +479,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTdpCadreDataByDateAndConstituency();
 	  public List<Object[]> getRenewalTdpCadreDataByDateAndConstituency();
 	  public Voter getTdpCadreVoterByvoterId(Long voterId);
+	  public Long getCadreWithOwnVoter(Long accessLvlId, List<Long> accessLvlValue);
+	  public Long getCadreWithFamilyVoter(Long accessLvlId, List<Long> accessLvlValue);
 } 
