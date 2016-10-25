@@ -22,4 +22,15 @@ public class TdpCadreLocationInfoCountDAO extends GenericDaoHibernate<TdpCadreLo
 		query.setParameter("enrollmentYearId", enrollmentYearId);
 		return query.list();
 	}
+	public List<Object[]> getTotalCadreCountLocationWise2014(Long accessLvlId,List<Long> accessLvlValue){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select TCLIC.locationValue, TCLIC.cadreCount from TdpCadreLocationInfoCount TCLIC where " +
+						" TCLIC.locationScopeId = :accessLvlId and " +
+						" TCLIC.locationValue in (:accessLvlValue) and " +
+						" TCLIC.enrollmentYearId = 3 ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("accessLvlId", accessLvlId);
+		query.setParameterList("accessLvlValue", accessLvlValue);
+		return query.list();
+	}
 }

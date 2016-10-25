@@ -7449,7 +7449,7 @@ public List<Object[]> getTotalCadreCountLocationWise(Long userAccessLevelId,List
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 	          queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId, ");  
 		  }
-		   queryStr.append(" count(distinct model.tdpCadre.tdpCadreId) " +
+		   queryStr.append(" count(distinct model.tdpCadre.tdpCadreId) " +  
 				" from " +
 				" TdpCadreEnrollmentYear model where model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
 				" and model.enrollmentYearId= (:enrollmentYearId) and model.isDeleted='N'  ");
@@ -7693,7 +7693,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			queryStr.append(" date(TC.insertedTime) between :lastOneHourTime and :today and ");  	 
 		}
 		if(lastOneHourTime!= null && status.equalsIgnoreCase("oneHour")){    
-			queryStr.append(" TC.insertedTime >= :lastOneHourTime and ");          	 
+			queryStr.append(" TC.insertedTime >= :lastOneHourTime and ");             	 
 		}
 		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" TC.userAddress.state.stateId in (:userAccessLevelValues) ");  
@@ -8237,5 +8237,51 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		
 		query.setParameter("constituencyId",constituencyId);
 		return query.list();
+	}
+	public Long getCadreWithOwnVoter(Long accessLvlId, List<Long> accessLvlValue){
+		StringBuilder queryStr = new StringBuilder();  
+		queryStr.append(" select count(distinct TC.tdpCadreId) from TdpCadre TC, TdpCadreEnrollmentYear TCEY where ");
+		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.state.stateId in (:accessLvlValue) and ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.district.districtId in (:accessLvlValue) and ");   
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId in (:accessLvlValue) and ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.constituency.constituencyId in (:accessLvlValue) and "); 
+		}
+		queryStr.append(" TC.isDeleted = 'N' and " +
+						" TC.enrollmentYear = 2014 and " +
+						" TC.tdpCadreId = TCEY.tdpCadre.tdpCadreId and " +
+						" TCEY.enrollmentYearId = 4 and " +
+						" TCEY.isDeleted = 'N' and " +
+						" TC.voterId is not null and " +
+						" TC.familyVoterId is null");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("accessLvlValue", accessLvlValue);
+		return (Long) query.uniqueResult();
+	}
+	public Long getCadreWithFamilyVoter(Long accessLvlId, List<Long> accessLvlValue){  
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct TC.tdpCadreId) from TdpCadre TC, TdpCadreEnrollmentYear TCEY where ");
+		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.state.stateId in (:accessLvlValue) and ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.district.districtId in (:accessLvlValue) and ");   
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId in (:accessLvlValue) and ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" TC.userAddress.constituency.constituencyId in (:accessLvlValue) and "); 
+		}
+		queryStr.append(" TC.isDeleted = 'N' and " +
+						" TC.enrollmentYear = 2014 and " +
+						" TC.tdpCadreId = TCEY.tdpCadre.tdpCadreId and " +
+						" TCEY.enrollmentYearId = 4 and " +
+						" TCEY.isDeleted = 'N' and " +
+						" TC.voterId is null and " +
+						" TC.familyVoterId is not null ");  
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("accessLvlValue", accessLvlValue);
+		return (Long) query.uniqueResult();
 	}
 }
