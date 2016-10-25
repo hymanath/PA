@@ -1355,64 +1355,85 @@ function getTabUserInfoDetails(tabUserIdStr){
 		var renewalArr=[];
 	if(result != null && result.length > 0){
 			for(var i in result){
-				
 			    if(filterApplyType != null && filterApplyType=="All" || filterApplyType =="No"){
-					
-					locationNameArr.push(result[i].locationName);
-					cadre2014ArrPer.push(result[i].total2014CadrePer);
-					renewalArr.push(result[i].total2016RenewalCadrePer);
-					newCadreArr.push(result[i].total2016NewCadrePer);
-				
-				}else if(filterApplyType=="verygood"){
-				
+						locationNameArr.push(result[i].locationName);
+						if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+				 }else if(filterApplyType=="verygood"){
 				 if(result[i].total2016CadrePer > 100){
-				  locationNameArr.push(result[i].locationName);
-				  cadre2014ArrPer.push(result[i].total2014CadrePer);
-				  renewalArr.push(result[i].total2016RenewalCadrePer);
-				  newCadreArr.push(result[i].total2016NewCadrePer);
-				  
+					  locationNameArr.push(result[i].locationName);
+					   if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
 				 }	
-				 
 				}else if(filterApplyType=="good"){
-				  
 				  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
-				  
-				   locationNameArr.push(result[i].locationName);
-				   cadre2014ArrPer.push(result[i].total2014CadrePer);
-			       renewalArr.push(result[i].total2016RenewalCadrePer);
-				   newCadreArr.push(result[i].total2016NewCadrePer);
-				   
+					   locationNameArr.push(result[i].locationName);
+					   if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
 				  }
 				}else if(filterApplyType=="ok"){
-					
 					  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
-						  
 					   locationNameArr.push(result[i].locationName);
-				       cadre2014ArrPer.push(result[i].total2014CadrePer);
-			     	   renewalArr.push(result[i].total2016RenewalCadrePer);
-				       newCadreArr.push(result[i].total2016NewCadrePer);
-				
+				       if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
 				      }
 				}else if(filterApplyType=="poor"){
-					
 				  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
 					 locationNameArr.push(result[i].locationName);
-					 cadre2014ArrPer.push(result[i].total2014CadrePer);
-					 renewalArr.push(result[i].total2016RenewalCadrePer);
-					 newCadreArr.push(result[i].total2016NewCadrePer);
+					   if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
 				  }
 				}else if(filterApplyType == "verypoor"){
-					
 					if(result[i].total2016CadrePer <= 60){
-						
-					   locationNameArr.push(result[i].locationName);
-					   cadre2014ArrPer.push(result[i].total2014CadrePer);
-					   renewalArr.push(result[i].total2016RenewalCadrePer);
-					   newCadreArr.push(result[i].total2016NewCadrePer);
+				      locationNameArr.push(result[i].locationName);
+				      if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
 					}
 				}
 			}
-		var jsonDataArr=[];	
+		 var jsonDataArr=[];	
 		 var colorArr=[];
 		 if(renewalArr.length > 0){
 		  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
@@ -1426,7 +1447,20 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
           colorArr.push('#FFCA00');		  
 		  }
-		  
+		  if(divId=="tsDistrictWiseRegistrationDivId"){
+			  if(cadre2014ArrPer.length == 0 && newCadreArr.length == 0 && renewalArr.length==0){
+				  return;
+			  }else{
+				  $("#tsDistrictHeadingId").show();
+			  }  
+		  }else if(divId=="userTypeWiseHighChartDivId"){
+			 if(cadre2014ArrPer.length == 0 && newCadreArr.length == 0 && renewalArr.length==0){
+			    return;
+		  }else{
+			  $("#apDistrictHeadingId").show();
+		  }
+		  }
+		
 		  $("#"+divId).highcharts({
 			 colors: ['#30AA74','#F36800','#FFCA00'],
 			chart: {
@@ -1672,7 +1706,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 	  if($("#2014CadreCheckBoxId").is(':checked')){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  console.log(searchFilterArr);
 	   buildConstituecnyWiseCadreResult(searchFilterArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType);
   });
   
@@ -1736,11 +1769,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 	  if($("#2014CadreCheckBoxId").is(':checked')){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	/*    if(globalTsConstituencyRslt != null && globalTsConstituencyRslt.length > 0){
-		for(var counter=globalTsConstituencyRslt.length - 1; counter >= 0;counter--){
-		   tsConsascendingOrderArr.push(globalTsConstituencyRslt[counter]);
-		} 
-	 }  */
      buildConstituecnyWiseCadreResult(globalTsConstituencyWithAscendingArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType);
 	 globalTsConstituencyRslt = globalTsConstituencyWithAscendingArr;
  });
@@ -1795,7 +1823,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 		var renewalArr=[];
 		var jsonDataArr=[];
 		if(result != null && result.length > 0){
-	
 			for(var i in result){
 			   if((renewal2016CheckboxIsChecked=="Y" && new2016CheckboxIsChecked=="Y" && cadre2014CheckboxIsChecked=="Y")||(renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre")){
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
@@ -1855,13 +1882,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
-						   locationNameArr.push(result[i].locationName);
-						 	renewalArr.push(result[i].total2016RenewalCadrePer);
-					        newCadreArr.push(result[i].total2016NewCadrePer);
+						         locationNameArr.push(result[i].locationName);
+						 	     renewalArr.push(result[i].total2016RenewalCadrePer);
+					             newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
-							   locationNameArr.push(result[i].locationName);
+							    locationNameArr.push(result[i].locationName);
 								renewalArr.push(result[i].total2016RenewalCadrePer);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
 							  }
@@ -1873,7 +1900,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer <= 60){
-							   locationNameArr.push(result[i].locationName);
+							    locationNameArr.push(result[i].locationName);
 							 	renewalArr.push(result[i].total2016RenewalCadrePer);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
 							}
@@ -1881,15 +1908,15 @@ function getTabUserInfoDetails(tabUserIdStr){
 					}
 				}else if(renewal2016CheckboxIsChecked=="2016Renewal" && cadre2014CheckboxIsChecked=="2014Cadre"){
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All" ){
-					 locationNameArr.push(result[i].locationName);
-					 renewalArr.push(result[i].total2016RenewalCadrePer);
-					 cadre2014ArrPer.push(result[i].total2014CadrePer);
+					          locationNameArr.push(result[i].locationName);
+					          renewalArr.push(result[i].total2016RenewalCadrePer);
+					          cadre2014ArrPer.push(result[i].total2014CadrePer);
 					}else{
 				        if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
-								  locationNameArr.push(result[i].locationName);
-								  renewalArr.push(result[i].total2016RenewalCadrePer);
-								  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 locationNameArr.push(result[i].locationName);
+								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								 cadre2014ArrPer.push(result[i].total2014CadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
@@ -1920,9 +1947,9 @@ function getTabUserInfoDetails(tabUserIdStr){
 				}else if(new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre"){
 				
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All" ){
-					 locationNameArr.push(result[i].locationName);
-						newCadreArr.push(result[i].total2016NewCadrePer);
-					cadre2014ArrPer.push(result[i].total2014CadrePer);
+					      locationNameArr.push(result[i].locationName);
+						  newCadreArr.push(result[i].total2016NewCadrePer);
+					      cadre2014ArrPer.push(result[i].total2014CadrePer);
 					}else{
 						if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
@@ -1957,7 +1984,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}	
 					}
 				}else if(renewal2016CheckboxIsChecked=="2016Renewal"){
-				
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
 					    locationNameArr.push(result[i].locationName);
 						renewalArr.push(result[i].total2016RenewalCadrePer);
@@ -1990,7 +2016,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}	
 					}
 				}else if(new2016CheckboxIsChecked=="2016New"){
-					
 					 if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
 					 locationNameArr.push(result[i].locationName);
 					 newCadreArr.push(result[i].total2016NewCadrePer);
@@ -2113,24 +2138,22 @@ function getTabUserInfoDetails(tabUserIdStr){
 				});
 				if(divId=="apConstituencyRegistrationReportDivId"){ /* applying scroll bar */
 					if(locationNameArr.length > 10){
-				     $("#apscrollBarDivId").mCustomScrollbar({setHeight:'560px'});	
+				       $("#apscrollBarDivId").mCustomScrollbar({setHeight:'560px'});	
 			        }else{
-				    $("#apscrollBarDivId").css({setHeight:'200px'});
+				        $("#apscrollBarDivId").css({setHeight:'200px'});
 			         }	 	
 				}else if(divId=="tsConstituencyRegistrationReportDivId"){
 					if(locationNameArr.length > 10){
-				    $("#tsscrollBarDivId").mCustomScrollbar({setHeight:'560px'});	
+				      $("#tsscrollBarDivId").mCustomScrollbar({setHeight:'560px'});	
 			       }else{
-				    $("#tsscrollBarDivId").css({setHeight:'200px'});
+				      $("#tsscrollBarDivId").css({setHeight:'200px'});
 			       }	 	
 			   }
 		}else{
-		 $("#"+divId).html("NO DATA AVAILABLE.");	
+		  $("#"+divId).html("NO DATA AVAILABLE.");	
 		}
  }
- 
- 
-    getApTsDistrictList();
+  getApTsDistrictList();
   function getApTsDistrictList(){
 	 	$.ajax({
 			type : 'POST',
