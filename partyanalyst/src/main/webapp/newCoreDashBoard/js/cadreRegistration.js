@@ -2042,7 +2042,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer <= 60){
-							   locationNameArr.push(result[i].locationName);
+							    locationNameArr.push(result[i].locationName);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
 							}
 						}	
@@ -2075,7 +2075,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer <= 60){
 							   locationNameArr.push(result[i].locationName);
-					          cadre2014ArrPer.push(result[i].total2014CadrePer);
+					           cadre2014ArrPer.push(result[i].total2014CadrePer);
 							}
 						}	
 					}
@@ -2100,7 +2100,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  var highChartDivHight = locationNameArr.length*20;
 			  $("#"+divId).height(highChartDivHight); 
              }else{
-			  $("#"+divId).height(200);		
+			  $("#"+divId).height(260);		
 			  }
 				$(function () {
 					$("#"+divId).highcharts({
@@ -2125,6 +2125,9 @@ function getTabUserInfoDetails(tabUserIdStr){
 								text: null
 							}
 						},
+						tooltip: {
+				          valueSuffix:  '%' 
+			            },
 						legend: {
 							reversed: true
 						},
@@ -2152,7 +2155,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 		}else{
 		  $("#"+divId).html("NO DATA AVAILABLE.");	
 		}
- }
+ }  
   getApTsDistrictList();
   function getApTsDistrictList(){
 	 	$.ajax({
@@ -2241,7 +2244,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		  $("#cadreRegSearchErrorId").html("Please Select Search Type");
 		  return;
 	  }
-	 var apDistrictArr=[];
+	  var apDistrictArr=[];
 	 var tsDistrictArr=[];
 	  $("#apDistrictUlId li").each(function() {
 		  if($(this).find("input").is(":checked")){
