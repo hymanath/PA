@@ -17,7 +17,7 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 	}
 	public List<Object[]> getTotalCadreTargetCountLocationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long enrollmentYearId){
 		
-		StringBuilder queryStr = new StringBuilder();
+		StringBuilder queryStr = new StringBuilder();  
 	        queryStr.append(" select");
 		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" model.constituency.state.stateId,");  
@@ -26,7 +26,7 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
 	          queryStr.append(" model.parliamentConstituency.constituencyId, ");  
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-	          queryStr.append(" model.constituency.constituencyId, ");  
+	          queryStr.append(" model.constituency.constituencyId, ");   
 		  }
 		   queryStr.append(" sum(model.targetCount) " +
 				" from " +
