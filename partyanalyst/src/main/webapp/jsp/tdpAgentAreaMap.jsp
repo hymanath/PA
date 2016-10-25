@@ -98,15 +98,22 @@ var pathArr = [];
 				for(var i in result){
 					//var obj={lat:parseFloat(result[i].latitude), lng:parseFloat(result[i].longitude)};
 					//pathArr.push(obj);
-					var temparr=[];
+						if((result.length-1)==i){//alert((result.length-1)+" - - "+i);
+							displayLocation(result[i],"last");
+						}else{
+							displayLocation(result[i],"");
+						}
+					
+					/* var temparr=[];
 					temparr.push(result[i].name+"<br/>"+result[i].mobileNo);
 					temparr.push(result[i].lattitude);
 					temparr.push(result[i].longitude);
-					markersArr.push(temparr);
+					markersArr.push(temparr); */
+					//displayLocation(result[i].lattitude,result[i].longitude);
 				}
 			}
 			//buildUserTrackingMap(markersArr,pathArr);
-			initMap(markersArr);
+			//initMap(markersArr);
 		});
 		
 	}
@@ -154,6 +161,47 @@ var pathArr = [];
 	
 	flightPath.setMap(map1);
 }
+
+function displayLocation(result,status){
+	
+	var temparr=[];
+					
+					
+					
+					
+        var request = new XMLHttpRequest();
+
+        var method = 'GET';
+        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+result.lattitude+','+result.longitude+'&sensor=true';
+        var async = true;
+		
+        request.open(method, url, async);
+        request.onreadystatechange = function(){
+          if(request.readyState == 4 && request.status == 200){
+            var data = JSON.parse(request.responseText);
+            var address = data.results[0];
+			
+			
+			if(address != "undefined" && address !== undefined){
+				temparr.push("Name : "+result.name+"<br/>Mobile No : "+result.mobileNo+"<br/> Location : "+address.formatted_address+"");
+			}else{
+				temparr.push("Name :"+result.name+"<br/>Mobile No : "+result.mobileNo+"<br/> ");
+			}
+			temparr.push(result.lattitude);
+			temparr.push(result.longitude);
+				
+          }
+        };
+        request.send();
+		setTimeout(function(){ 
+			markersArr.push(temparr);//alert("t");
+			if(status == "last"){//alert("s");
+				initMap(markersArr);
+			}
+			
+		}, 1000);
+		
+      };
 
 </script>
 </body>
