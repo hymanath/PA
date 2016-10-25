@@ -108,67 +108,127 @@ if(locationValue != null && locationValue.size() > 0){
 
 return query.list();
 }
-public List<Object[]> get2016TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userType){
+  public List<Object[]> get2016TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userTypeId,Long activityMemberId){
+	
+    StringBuilder queryStr = new StringBuilder();  
+   queryStr.append("select distinct ");
+   if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+ 	 if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+  		 queryStr.append(" model1.district.districtId, ");; 
+  	  }else{
+  		 queryStr.append(" model2.districtId, ");
+  	  }  
+   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+ 	  queryStr.append(" model1.constituencyId,");  
+   }
+    queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
+    
+    if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+   	 if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+      		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
+      	  }else{
+      		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
+      	  }  
+     }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+   	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model1.deformDate is null "); 
+      if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+   	      queryStr.append("  and model.locationScopeId=3 ");	
+   	    }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
+   	    	queryStr.append("  and model.locationScopeId=10 ");	
+   	    }else{
+   	      queryStr.append("  and model.locationScopeId=4 ");	
+   	    }
+     }
+   
+   	if(locationValue != null && locationValue.size() > 0){
+   	 	  queryStr.append(" and model.locationValue in (:locationValue) ");  
+   	}
+   	if(fromDate!= null && toDate!=null){
+	          queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+   	}
 
-StringBuilder queryStr = new StringBuilder();  
+     if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+       		 queryStr.append(" group by model1.district.districtId ");; 
+       	  }else{
+       		 queryStr.append(" group by model2.districtId ");
+       	  }   
+	 }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+   	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+		 queryStr.append("  group by model1.constituencyId ");
+	 }
 
-queryStr.append(" select model.locationValue,sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
-
-if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-	queryStr.append(" where model.locationScopeId =3 ");
-}else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-|| userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-	queryStr.append(" where model.locationScopeId =4 ");
-}
-if(fromDate!= null && toDate!=null){
-	queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-}
-if(locationValue != null && locationValue.size() > 0){
-	queryStr.append(" and model.locationValue in (:locationValue)");  
-}
-
-queryStr.append(" group by model.locationValue order by model.locationValue asc ");
-
-Query query = getSession().createQuery(queryStr.toString());
-if(fromDate!= null && toDate!=null){
-	 query.setDate("fromDate", fromDate);
-	 query.setDate("toDate", toDate);
-}
-if(locationValue != null && locationValue.size() > 0){
-	query.setParameterList("locationValue", locationValue);  
-}
-return query.list();
-}
-public List<Object[]> get2016TotalRenewalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userType){
-
-StringBuilder queryStr = new StringBuilder();  
-
-queryStr.append(" select model.locationValue,sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
-
-if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-	queryStr.append(" where model.locationScopeId =3 ");
-}else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-|| userType.longValue()==IConstants.MP_USER_TYPE_ID || userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-	queryStr.append(" where model.locationScopeId =4 ");
-}
-if(fromDate!= null && toDate!=null){
-	queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-}
-if(locationValue != null && locationValue.size() > 0){
-	queryStr.append(" and model.locationValue in (:locationValue)");  
-}
-
-queryStr.append(" group by model.locationValue order by model.locationValue asc ");
-
-Query query = getSession().createQuery(queryStr.toString());
-if(fromDate!= null && toDate!=null){
-	 query.setDate("fromDate", fromDate);
-	 query.setDate("toDate", toDate);
-}
-if(locationValue != null && locationValue.size() > 0){
-	query.setParameterList("locationValue", locationValue);  
-}
-return query.list();
+	  Query query = getSession().createQuery(queryStr.toString());
+	  if(fromDate!= null && toDate!=null){
+		 query.setDate("fromDate", fromDate);
+	     query.setDate("toDate", toDate);
+	  }
+	  if(locationValue != null && locationValue.size() > 0){
+		query.setParameterList("locationValue", locationValue);  
+	  }
+  return query.list();
+  }
+  public List<Object[]> get2016TotalRenewalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userTypeId,Long activityMemberId){
+		
+      StringBuilder queryStr = new StringBuilder();  
+ 
+         queryStr.append("select distinct ");
+         if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+      	   if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+           		 queryStr.append(" model1.district.districtId, ");; 
+           	  }else{
+           		 queryStr.append(" model2.districtId, ");
+           	  }   
+         }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+   	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+       	   queryStr.append(" model1.constituencyId,");  
+         }
+         queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
+     
+         if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+       	 if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+         		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
+         	  }else{
+         		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
+         	  }
+         }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+   	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+       	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");
+          if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+       	      queryStr.append("  and model.locationScopeId=3 ");	
+       	    }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
+       	    	queryStr.append("  and model.locationScopeId=10 ");	
+       	    }else{
+       	      queryStr.append("  and model.locationScopeId=4 ");	
+       	    }
+         }
+          if(locationValue != null && locationValue.size() > 0){
+  	 	  queryStr.append(" and model.locationValue in (:locationValue)");  
+  	    }
+        if(fromDate!= null && toDate!=null){
+		    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+		  }
+	      if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+  	     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+      		 queryStr.append(" group by model1.district.districtId ");; 
+      	  }else{
+      		 queryStr.append(" group by model2.districtId ");
+      	  }   
+		 }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+	    	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+			 queryStr.append("  group by model1.constituencyId ");
+		 }
+	  Query query = getSession().createQuery(queryStr.toString());
+	  if(fromDate!= null && toDate!=null){
+		 query.setDate("fromDate", fromDate);
+	     query.setDate("toDate", toDate);
+	  }
+	  if(locationValue != null && locationValue.size() > 0){
+		query.setParameterList("locationValue", locationValue);  
+	  }
+	   return query.list();
 }
 
 	public Long getTotalCadreCountLocationWise(Long accessLvlId, List<Long> accessLvlValue, Long stateId, Date frmDt, Date toDt){

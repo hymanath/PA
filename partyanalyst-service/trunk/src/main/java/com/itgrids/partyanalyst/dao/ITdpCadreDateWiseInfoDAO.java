@@ -15,8 +15,8 @@ public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInf
 	public List<Object[]> get2016TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Date fromDate,Date toDate);
 	public List<Object[]> get2016TotalRenewalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Date fromDate,Date toDate);
 	public List<Object[]> get2016TotalNewCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
-	public List<Object[]> get2016TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userType);
-	public List<Object[]> get2016TotalRenewalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userType);
+	public List<Object[]> get2016TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userType,Long activityMemberId);
+	public List<Object[]> get2016TotalRenewalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate,Long userType,Long activityMemberId);
 	public Long getTotalCadreCountLocationWise(Long accessLvlId, List<Long>accessLvlValue, Long stateId, Date frmDt, Date toDt);
 	public Long getTotalRenewlCadreLocationWise(Long accessLvlId, List<Long> accessLvlValue,Long stateId, Date frmDt, Date toDt);
 	public Long getTotalConstituencyForCdrRegStarted(Long StateId);
