@@ -4275,8 +4275,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return null;
 	  }
-	  
-	 
+	  public List<IdAndNameVO> getStateWiseDistrict(Long stateId) {
+			List<IdAndNameVO> returnList = null;
+			try {
+				returnList = cadreRegistrationService
+						.getStateWiseDistrict(stateId);
+			} catch (Exception e) {
+				log.debug("Entered into the getStateWiseDistrict  method in WebServiceHandlerService");
+			}
+			return returnList;
+		}
+	  public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId) {
+			List<IdAndNameVO> returnList = null;
+			try {
+				returnList = cadreRegistrationService
+						.getDistrictWiseConstituency(districtId);
+			} catch (Exception e) {
+				log.debug("Entered into the getStateWiseDistrict  method in WebServiceHandlerService");
+			}
+			return returnList;
+		}
 	 
 }
 
