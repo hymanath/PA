@@ -104,8 +104,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 			
 			queryStr.append(" from ");
 			queryStr.append(" TdpCadreLocationInfo model ");
-			//queryStr.append(" left join tdpCadre.userAddress userAddress ");
-			//queryStr.append(" left join userAddress.state state ");
+			
 			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append(" ,State state ,District district ");
 			}
@@ -200,11 +199,6 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
 			if( inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
-			if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
-				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-				query.setDate("startDate", format.parse(inputVO.getStartDate()));
-				query.setDate("endDate", format.parse(inputVO.getEndDate()));
-			}
 			
 			return query.list();
 		} catch (Exception e) {

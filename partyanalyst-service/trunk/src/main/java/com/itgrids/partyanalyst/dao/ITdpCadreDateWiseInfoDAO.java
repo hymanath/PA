@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo;
 
 public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInfo,Long>{
@@ -21,4 +22,5 @@ public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInf
 	public Long getTotalConstituencyForCdrRegStarted(Long StateId);
 	public List<Object[]> get2016TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> get2016TotalRenewalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
+	public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
 }

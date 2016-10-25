@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.TdpCadreTargetCount;
 
 public interface ITdpCadreTargetCountDAO extends GenericDao<TdpCadreTargetCount, Long> {
@@ -12,4 +13,5 @@ public interface ITdpCadreTargetCountDAO extends GenericDao<TdpCadreTargetCount,
 	public List<Object[]> getTotalCadreTargetCountLocationType(String locationType,Long stateId,Long entollmentTearId);
 	public Long getTargetCount(Long stateId);
 	public List<Object[]> getTdpCadreTargetCountLocationWise(Long enrollmentYearId);
+	public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO inputVO);
 }

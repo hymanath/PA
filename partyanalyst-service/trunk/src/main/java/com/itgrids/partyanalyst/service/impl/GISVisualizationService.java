@@ -23,7 +23,9 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationBasicVO;
@@ -61,9 +63,26 @@ public class GISVisualizationService implements IGISVisualizationService{
 	private ITdpCadreDAO tdpCadreDAO;
 	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
+	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
+	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
 	
 	
 	
+	
+	public ITdpCadreTargetCountDAO getTdpCadreTargetCountDAO() {
+		return tdpCadreTargetCountDAO;
+	}
+	public void setTdpCadreTargetCountDAO(
+			ITdpCadreTargetCountDAO tdpCadreTargetCountDAO) {
+		this.tdpCadreTargetCountDAO = tdpCadreTargetCountDAO;
+	}
+	public ITdpCadreDateWiseInfoDAO getTdpCadreDateWiseInfoDAO() {
+		return tdpCadreDateWiseInfoDAO;
+	}
+	public void setTdpCadreDateWiseInfoDAO(
+			ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO) {
+		this.tdpCadreDateWiseInfoDAO = tdpCadreDateWiseInfoDAO;
+	}
 	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
 		return tdpCadreLocationInfoDAO;
 	}
@@ -243,20 +262,27 @@ public class GISVisualizationService implements IGISVisualizationService{
 	  try {
 		  Map<Long,GISVisualizationDetailsVO> locationsMap = null;
 		   locationsMap =  getLocationDetailsBasedOnParameters(inputVO);
+		   Map<Long,Long> loctnsTargetCntMap = new HashMap<Long,Long>();
 		   updateUserTrackingDetasil(locationsMap,inputVO);
+		   List<Object[]> targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
 		   
+		   if(targetList != null && targetList.size() > 0){
+			   for(Object[] obj :targetList){
+				   loctnsTargetCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),commonMethodsUtilService.getLongValueForObject(obj[2]));
+			   }
+		   }
 		   //tdpCadreDAO.getLocationsRegistrationsDetails(inputVO);
 		   
 		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
 			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
 			   List<Object[]> locationDetails = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
-			   setMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap);
+			   setMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			   inputVO.setChildLocationType(IConstants.RURAL) ;
 			   List<Object[]> locationDetails1 = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
-			   setMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap);
+			   setMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}else{
 				 List<Object[]> locationDetails2 = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
-				  setMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap);
+				  setMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
 		   
 	} catch (Exception e) {
@@ -266,7 +292,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 	}
 	
 	public void setMembershipDriveVisualizationDetails(List<Object[]> locationDetails,GISVisualizationDetailsVO parentLocationVO,
-			Map<Long,GISVisualizationDetailsVO> locationsMap){
+			Map<Long,GISVisualizationDetailsVO> locationsMap,Map<Long,Long> loctnsTargetCntMap){
 		try{
 			Long dailyTargetCount = IConstants.DAY_WISE_TARGET_REGISTRATIONS_COUNT;
 			   Long totalTerget  = 1000000l;
@@ -284,6 +310,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 					if(areaType == null || areaType.length()==0)
 						areaType = commonMethodsUtilService.getStringValueForObject(param[2]);
 					
+					Long targetCount = 0l;
+					targetCount = loctnsTargetCntMap.get(locationId);
 					
 					GISVisualizationDetailsVO locationVO = locationsMap.get(locationId);
 					if(locationVO != null){
@@ -296,21 +324,16 @@ public class GISVisualizationService implements IGISVisualizationService{
 						locationVO.setNewRegCountPerc(commonMethodsUtilService.getStringValueForObject(param[11]));
 						locationVO.setRenewalCount(renewalRegCount);
 						locationVO.setRenewalCountPerc(commonMethodsUtilService.getStringValueForObject(param[13]));
+						locationVO.setTargetCount(targetCount != null ? targetCount.longValue() : 0l);
 						
 						parentLocationVO.setRegCount2014(parentLocationVO.getRegCount2014()+regCount2014);
 						parentLocationVO.setRegCount2016(parentLocationVO.getRegCount2016()+regCount2016);
 						parentLocationVO.setNewRegCount(parentLocationVO.getNewRegCount()+newRegCount);
 						parentLocationVO.setRenewalCount(parentLocationVO.getRenewalCount()+renewalRegCount);
 						
-						Float reg2014Perc = (float) (parentLocationVO.getRegCount2014()*100.0/totalTerget);
-						Float reg2016Perc = (float) (parentLocationVO.getRegCount2016()*100.0/totalTerget);
-						Float newCadrePerc = (float) (parentLocationVO.getNewRegCount()*100.0/totalTerget);
-						Float renewalCadrePerc = (float) (parentLocationVO.getRenewalCount()*100.0/totalTerget);
+						if(targetCount != null)
+						parentLocationVO.setTargetCount(parentLocationVO.getTargetCount()+targetCount);
 						
-						parentLocationVO.setRegCount2014Perc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(reg2014Perc));
-						parentLocationVO.setRegCount2016Perc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(reg2016Perc));
-						parentLocationVO.setNewRegCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(newCadrePerc));
-						parentLocationVO.setRenewalCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(renewalCadrePerc));
 					}
 			   }
 			   parentLocationVO.setStartedCount(Long.valueOf(String.valueOf(locationDetails.size())));
@@ -319,6 +342,18 @@ public class GISVisualizationService implements IGISVisualizationService{
 		   parentLocationVO.setTotalCount(Long.valueOf(String.valueOf(locationsMap.size())));
 		   parentLocationVO.setNotStartedCount(parentLocationVO.getTotalCount()-parentLocationVO.getStartedCount());
 		   parentLocationVO.getLocationsList().addAll(locationsMap.values());
+		   
+		   if(parentLocationVO.getTargetCount() != null && parentLocationVO.getTargetCount().longValue() >0l){
+		   Float reg2014Perc = (float) (parentLocationVO.getRegCount2014()*100.0/parentLocationVO.getTargetCount());
+		   Float reg2016Perc = (float) (parentLocationVO.getRegCount2016()*100.0/parentLocationVO.getTargetCount());
+		   Float newCadrePerc = (float) (parentLocationVO.getNewRegCount()*100.0/parentLocationVO.getTargetCount());
+		   Float renewalCadrePerc = (float) (parentLocationVO.getRenewalCount()*100.0/parentLocationVO.getTargetCount());
+			
+			parentLocationVO.setRegCount2014Perc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(reg2014Perc));
+			parentLocationVO.setRegCount2016Perc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(reg2016Perc));
+			parentLocationVO.setNewRegCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(newCadrePerc));
+			parentLocationVO.setRenewalCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(renewalCadrePerc));
+		   }
 		   List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
 
 		   if(commonMethodsUtilService.isListOrSetValid(statusList))
@@ -488,5 +523,101 @@ public class GISVisualizationService implements IGISVisualizationService{
 		}
 		return statusList;
 	}
+	public GISVisualizationDetailsVO getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO){
+		GISVisualizationDetailsVO parentLocationVO = new GISVisualizationDetailsVO();
+	  try {
+		  Map<Long,GISVisualizationDetailsVO> locationsMap = null;
+		  Map<Long,Long> loctnsTargetCntMap = new HashMap<Long,Long>();
+		   locationsMap =  getLocationDetailsBasedOnParameters(inputVO);
+		   updateUserTrackingDetasil(locationsMap,inputVO);
+		   List<Object[]> targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
+		   
+		   if(targetList != null && targetList.size() > 0){
+			   for(Object[] obj :targetList){
+				   loctnsTargetCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),commonMethodsUtilService.getLongValueForObject(obj[2]));
+			   }
+		   }
+		   //tdpCadreDAO.getLocationsRegistrationsDetails(inputVO);
+		   
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
+			   List<Object[]> locationDetails = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+			   setDateWiseMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			   inputVO.setChildLocationType(IConstants.RURAL) ;
+			   List<Object[]> locationDetails1 = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+			   setDateWiseMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}else{
+				 List<Object[]> locationDetails2 = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}
+		   
+	} catch (Exception e) {
+		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
+	}
+	  return parentLocationVO;
+	}
 	
+	public void setDateWiseMembershipDriveVisualizationDetails(List<Object[]> locationDetails,GISVisualizationDetailsVO parentLocationVO,
+			Map<Long,GISVisualizationDetailsVO> locationsMap,Map<Long,Long> loctnsTargetCntMap){
+		try{
+			
+		 if(commonMethodsUtilService.isListOrSetValid(locationDetails)){
+			   for (Object[] param : locationDetails) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String areaType = commonMethodsUtilService.getStringValueForObject(param[4]);
+				
+					Long todayRegCount2016 = commonMethodsUtilService.getLongValueForObject(param[6]);
+					Long todayNewRegCount = commonMethodsUtilService.getLongValueForObject(param[8]);
+					Long todayreNewalRegCount = commonMethodsUtilService.getLongValueForObject(param[10]);
+					
+					if(areaType == null || areaType.length()==0)
+						areaType = commonMethodsUtilService.getStringValueForObject(param[2]);
+					Long targetCount = null;
+					 targetCount = loctnsTargetCntMap.get(locationId);
+					
+					GISVisualizationDetailsVO locationVO = locationsMap.get(locationId);
+					if(locationVO != null){
+						
+						locationVO.setAreaType(areaType);
+						locationVO.setTodayRegCount(todayRegCount2016);
+						locationVO.setTodayRegPerc(commonMethodsUtilService.getStringValueForObject(param[7]));
+						locationVO.setTodayNewRegCount(todayNewRegCount);
+						locationVO.setTodayNewRegPerc(commonMethodsUtilService.getStringValueForObject(param[9]));
+						locationVO.setTodayRenewalCount(todayreNewalRegCount);
+						locationVO.setTodayRenewalPerc(commonMethodsUtilService.getStringValueForObject(param[11]));
+						locationVO.setTargetCount(targetCount != null ? targetCount.longValue() : 0l);
+						
+						parentLocationVO.setTodayRegCount(parentLocationVO.getTodayRegCount()+todayRegCount2016);
+						parentLocationVO.setTodayNewRegCount(parentLocationVO.getTodayNewRegCount()+todayNewRegCount);
+						parentLocationVO.setTodayRenewalCount(parentLocationVO.getTodayRenewalCount()+todayreNewalRegCount);
+						
+						if(targetCount != null)
+						parentLocationVO.setTargetCount(parentLocationVO.getTargetCount()+targetCount);
+						
+					}
+			   }
+			   parentLocationVO.setStartedCount(Long.valueOf(String.valueOf(locationDetails.size())));
+		   }
+		   
+		   parentLocationVO.setTotalCount(Long.valueOf(String.valueOf(locationsMap.size())));
+		   parentLocationVO.setNotStartedCount(parentLocationVO.getTotalCount()-parentLocationVO.getStartedCount());
+		   parentLocationVO.getLocationsList().addAll(locationsMap.values());
+		   
+		  
+		   Float todayReg2016Perc = (float) (parentLocationVO.getTodayRegCount()*100.0/parentLocationVO.getTargetCount());
+		   Float todayNewCadrePerc = (float) (parentLocationVO.getTodayNewRegCount()*100.0/parentLocationVO.getTargetCount());
+		   Float todayRenewalCadrePerc = (float) (parentLocationVO.getTodayRenewalCount()*100.0/parentLocationVO.getTargetCount());
+			
+			parentLocationVO.setRegCount2016Perc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(todayReg2016Perc));
+			parentLocationVO.setNewRegCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(todayNewCadrePerc));
+			parentLocationVO.setRenewalCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(todayRenewalCadrePerc));
+		   List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
+
+		   if(commonMethodsUtilService.isListOrSetValid(statusList))
+			   parentLocationVO.getStatusList().addAll(statusList);
+		   
+	}catch (Exception e) {
+				LOG.error("Exception Occured in setDateWiseMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
+			}
+	}
 }

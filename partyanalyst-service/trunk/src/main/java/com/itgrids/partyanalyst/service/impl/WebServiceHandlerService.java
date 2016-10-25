@@ -4295,6 +4295,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 			return returnList;
 		}
+	  
+	  public List<GISVisualizationDetailsVO> getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO){
+		  List<GISVisualizationDetailsVO> returnList = new ArrayList<GISVisualizationDetailsVO>(0);
+		  try {
+			  GISVisualizationDetailsVO  vo =  gisVisualizationService.getMembershipDriveDayWiseVisualizationDetails(inputVO);
+			  if(vo != null)
+				  returnList.add(vo);
+		} catch (Exception e) {
+			log.debug("Entered into the getMembershipDriveDayWiseVisualizationDetails  method in WebServiceHandlerService");
+		}
+		  return returnList;
+	  }
 	 
 }
 

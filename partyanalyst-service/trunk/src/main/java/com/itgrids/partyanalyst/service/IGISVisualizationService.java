@@ -5,4 +5,5 @@ import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 
 public interface IGISVisualizationService {
 	  public GISVisualizationDetailsVO getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO);
+	  public GISVisualizationDetailsVO getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO);
 }

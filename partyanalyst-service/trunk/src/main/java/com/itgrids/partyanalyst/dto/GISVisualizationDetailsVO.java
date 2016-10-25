@@ -14,14 +14,24 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	private Long notStartedCount =0L;
 	private Long registeredCount =0L;
 	private String perc="0.0";
-	private Long regCount2016;
+	private Long regCount2016=0L;
 	private String regCount2016Perc;
-	private Long regCount2014;
+	private Long regCount2014=0L;
 	private String regCount2014Perc;
-	private Long newRegCount;
+	private Long newRegCount=0L;
 	private String newRegCountPerc;
-	private Long renewalCount;
+	private Long renewalCount=0L;
 	private String renewalCountPerc;
+	private Long todayRegCount=0L;
+	private String todayRegPerc;
+	private Long todayNewRegCount=0L;
+	private String todayNewRegPerc;
+	private Long todayRenewalCount=0L;
+	private String todayRenewalPerc;
+	private Long targetCount=0L;
+	private String achievedPerc;
+	
+	
 	
 	
 	//VERY-GOOD, GOOD, OK, POOR, VERY_POOR / ISSSUES Status Details
@@ -36,6 +46,55 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	}
 	
 	
+	
+	public Long getTargetCount() {
+		return targetCount;
+	}
+	public void setTargetCount(Long targetCount) {
+		this.targetCount = targetCount;
+	}
+	public String getAchievedPerc() {
+		return achievedPerc;
+	}
+	public void setAchievedPerc(String achievedPerc) {
+		this.achievedPerc = achievedPerc;
+	}
+	public Long getTodayRegCount() {
+		return todayRegCount;
+	}
+	public void setTodayRegCount(Long todayRegCount) {
+		this.todayRegCount = todayRegCount;
+	}
+	public String getTodayRegPerc() {
+		return todayRegPerc;
+	}
+	public void setTodayRegPerc(String todayRegPerc) {
+		this.todayRegPerc = todayRegPerc;
+	}
+	public Long getTodayNewRegCount() {
+		return todayNewRegCount;
+	}
+	public void setTodayNewRegCount(Long todayNewRegCount) {
+		this.todayNewRegCount = todayNewRegCount;
+	}
+	public String getTodayNewRegPerc() {
+		return todayNewRegPerc;
+	}
+	public void setTodayNewRegPerc(String todayNewRegPerc) {
+		this.todayNewRegPerc = todayNewRegPerc;
+	}
+	public Long getTodayRenewalCount() {
+		return todayRenewalCount;
+	}
+	public void setTodayRenewalCount(Long todayRenewalCount) {
+		this.todayRenewalCount = todayRenewalCount;
+	}
+	public String getTodayRenewalPerc() {
+		return todayRenewalPerc;
+	}
+	public void setTodayRenewalPerc(String todayRenewalPerc) {
+		this.todayRenewalPerc = todayRenewalPerc;
+	}
 	public Long getRegCount2016() {
 		return regCount2016;
 	}
