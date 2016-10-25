@@ -3544,7 +3544,7 @@
 		 <property name="tabUserInfoDAO" ref="tabUserInfoDAO" />
 		 <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO" />
 		 <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
-		 
+		 <property name="tdpCadreLocationInfoCountDAO" ref="tdpCadreLocationInfoCountDAO" />
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">

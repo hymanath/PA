@@ -152,6 +152,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private CadreReportVO cadreReportVO;
 	private List<UserTypeVO> activityMembersList;
 	private List<CadreRegistratedCountVO> cadreRegistratedCountVOs;
+	private IdAndNameVO nameVO;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -788,6 +789,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	public void setCadreRegistratedCountVOs(
 			List<CadreRegistratedCountVO> cadreRegistratedCountVOs) {
 		this.cadreRegistratedCountVOs = cadreRegistratedCountVOs;
+	}
+	public IdAndNameVO getNameVO() {
+		return nameVO;
+	}
+	public void setNameVO(IdAndNameVO nameVO) {
+		this.nameVO = nameVO;
 	}
 	public String execute()
 	{
@@ -2890,6 +2897,19 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  e.printStackTrace();           
 	  }
 	  return Action.SUCCESS;
+  }
+  public String getVoterInfo(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");  
+		  Long stateId = jobj.getLong("stateId"); 
+		  nameVO = coreDashboardCadreRegistrationService.getVoterInfo( activityMemberId, stateId, startDate,  endDate);
+	  }catch(Exception e){    
+		  e.printStackTrace();                 
+	  }
+	  return Action.SUCCESS;  
   }
   
  /* public String getAllDistrictsList(){

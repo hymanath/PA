@@ -1,4 +1,14 @@
 
+$(document).on("click",".compareBlockSwitchCls",function(){
+	$(".moreBlocksCadre").hide();      
+	$(".compareBlockCls").show();  
+	$(".headingColor").hide();   	
+	getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);    
+});
+$(document).on("click",".newsComparisonHeading",function(){
+	$(".moreBlocksCadre").show();     
+	$(".compareBlockCls").hide();           
+});
 $(document).ready(function() {
     initialiseDatePickerForCadreRegistration();
 });
@@ -13,11 +23,16 @@ function initialiseDatePickerForCadreRegistration(){
 			},
 		})
 }
-
+$(document).on("click",".cadreExpand",function(){
+	if( $(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".compareBlockCls").hide();     
+	}    
+});
 $(document).on("click",".cadreExpand",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".cadreBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	
 	setTimeout(function(){
 		$(".moreCadreBlock,.moreBlocksCadreIcon").toggle();
 		//getSpokesPersonWiseDebate("top");
@@ -76,6 +91,8 @@ $(document).on("click",".cadreExpand",function(){
 });
 
 $(document).on("click",".moreBlocksCadreIcon",function(){
+	//aaa
+	$(".compareBlockCls").hide();   
 	$(".moreBlocksCadre").toggle();
 	var filterApplyType="No";
 	var accessLevelId=0;
@@ -83,8 +100,8 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
     var renewal2016CheckboxIsChecked="Y";
 	var new2016CheckboxIsChecked="Y";
 	var cadre2014CheckboxIsChecked="Y";
-	
-	getCadreDetailsBasedOnUserType(filterApplyType);
+	//$(".sourceCls").show();       
+	getSourceOfRegistrationDtls(globalActivityMemberId);       
 	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
 	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
@@ -2281,7 +2298,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	   }
 	   $(".cadreRDD").hide();
 });  
-	getSourceOfRegistrationDtls(44);   
+
 	function getSourceOfRegistrationDtls(globalActivityMemberId){
 		var startDate = '';    
 		var endDate = '';    
@@ -2298,15 +2315,22 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){        
 			
-			 if(result != null){
-			//console.log(result);  
+			 if(result != null && result.length > 0){
+				buildSourceOfRegistrationDtls(result);  
 			 }  
 		});
 	}
 //for dynamic calls  	
-	 
+	 function buildSourceOfRegistrationDtls(result){
+		 
+	 }
 	function getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId){  
-		
+		$("#designationListId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
 			type : 'POST',
@@ -2314,12 +2338,14 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#designationListId").html('');    
 			if(result != null && result.length > 0){
 			buildgetChildUserTypesByItsParentUserTypeForCadreRegistration(result);	
 			}else{
 			}
 		});		
 	}
+	//swadhin
 	function buildgetChildUserTypesByItsParentUserTypeForCadreRegistration(result){
 		
 		var firstChildUserTypeIdString = result[0].shortName;
@@ -2332,16 +2358,26 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			str += '</ul>';    
 		}
 		$("#designationListId").html(str); 
-		$("#desigPosition0").trigger("click");   
-		//getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
-	}
-	$(document).on('click','#desigPosition0',function(){  
-		var firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
+		//$("#desigPosition0").trigger("click");   
 		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
-	});
-	function getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString){
 		
-		var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
+	}
+	
+	$(document).on('click','.childMemCls',function(){      
+		var firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
+		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$(".headingColor").hide();          
+		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);      
+	});
+	function getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString){  
+		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var childUserTypeIdsArray = [];
+		childUserTypeIdsArray = firstChildUserTypeIdString.split(",");        
+		  
 		var jsObj={  
 			parentActivityMemberId : globalActivityMemberId,        
 			childUserTypeIdsArray : childUserTypeIdsArray,
@@ -2355,24 +2391,18 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-			
+			$("#childMembersId").html('');      
 			 if(result != null){
-				buildChildMembers(result);       
+				buildChildMembers(result);         
 			 }
 		});
 	} 
-	/* <div class="col-md-12 col-xs-12 col-sm-12">
-		<div class="panel panel-default panelSlick">
-			<div class="panel-heading">
-				<h4 class="panel-title">SUBRAHMANYAM REDDY</h4>
-				<span class="count">1</span>
-			</div>
-			<div class="panel-body">
-				
-			</div>
-		</div>  
-	</div> */
+	
 	function buildChildMembers(result){
+		var attrActivityMemberId=result[0].activityMemberId;
+		var attrUserTypeId=result[0].userTypeId;
+		//var userTypeIdArr = [];
+		//userTypeIdArr = attrUserTypeId.split(",");         
 		var str = '';
 		str += '<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<ul class="list-inline slickPanelSliderCadre">';
@@ -2402,18 +2432,21 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 								str += '<td>'+result[i].totalCadreCountPer+'%</td>';
 							str += '</tr>';
 						str += '</tbody>';
+					
 					str += '</table>';
-					str += '<h4 class="text-capital">DISTRICT WISE REGISTRATIONS</h4>';  
-					str += '<table class="table table-condensed">';
-						str += '<tbody>';
-						for(var j in result[i].subLocationList){
-							str += '<tr>';
-								str += '<td>'+result[i].subLocationList[j].name+'</td>';
-								str += '<td>'+result[i].subLocationList[j].count+'(Today-'+result[i].subLocationList[j].wishCount+')</td>';
-							str += '</tr>';
-						}
-						str += '</tbody>';
-					str += '</table>';
+					/* if(result[i].subLocationList.length > 0){
+						str += '<h4 class="text-capital">'+result[i].locationLevelName+' Wise Registrations</h4>';    
+						str += '<table class="table table-condensed">';  
+							str += '<tbody>';
+							for(var j in result[i].subLocationList){
+								str += '<tr>';
+									str += '<td>'+result[i].subLocationList[j].name+'</td>';
+									str += '<td>'+result[i].subLocationList[j].count+'(Today-'+result[i].subLocationList[j].wishCount+')</td>';
+								str += '</tr>';
+							}
+							str += '</tbody>';  
+						str += '</table>';    
+					}     */
 				str += '</div>';
 			str += '</div>';
 			str += '</li>';
@@ -2422,7 +2455,10 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		str += '</ul>';
 		str += '</div>';
 		$("#childMembersId").html(str);  
-		$("#directChildId0").trigger("click"); 
+		//$("#directChildId0").trigger("click"); 
+		
+		
+		getDirectChildMembers(attrActivityMemberId,attrUserTypeId);
 		$("#childActivityMemberDivIdForMeeting").html(str);
 			$(".slickPanelSliderCadre").slick({
 				 slide: 'li',
@@ -2464,23 +2500,28 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 					// settings: "unslick"
 					// instead of a settings object
 				  ]
-			});		
+			});      		
 	} 
-	$(document).on("click","#directChildId0",function(){  
+	$(document).on('click','.directChildCls',function(){
 		var ActivityMemberId = $(this).attr("attr_activity_member_id");
-		var userTypeIdStr = $(this).attr("attr_user_type_id");
-		var userTypeIdArr = userTypeIdStr.split(",");  
+		var userTypeId = $(this).attr("attr_user_type_id");
+		getDirectChildMembers(ActivityMemberId,userTypeId);
 		
-		getDirectChildMembers(ActivityMemberId,userTypeIdArr);
 	});
-	function getDirectChildMembers(ActivityMemberId,userTypeIdArr){ 
-	
+	function getDirectChildMembers(ActivityMemberId,userTypeId){
+		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$(".headingColor").hide();
+		var userTypeIdArr = [];
+		userTypeIdArr.push(userTypeId);     
 		var jsObj ={ parentActivityMemberId : ActivityMemberId,      
 			         childUserTypeIdsArray : userTypeIdArr,    
 					 stateId : globalStateId,
 					 fromDateStr : '02/10/2016',
 					 toDateStr : getTodayDate()          
-				  }
+				  }       
 	   	$.ajax({  
 			type : 'POST',   
 			url : 'getSelectedChildTypeMembersForCadreReg.action',
@@ -2490,10 +2531,15 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			if(result != null && result.length > 0){
 				buildDirectChildMembers(result);
 			}else{
+				$("#directChildId").html('');
+				$("#enumeratorsId").html('');        
+				$("#individualDtlsId").html(''); 
+				$("#voterDtlsId").html('');       
 			}
 		});
 	}
-	function buildDirectChildMembers(result){
+	function buildDirectChildMembers(result){  
+		var activityMemberId = result[0].activityMemberId;  
 		var str = '';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<table class="table table-condensed tableHoverLevels m_top20">';
@@ -2508,34 +2554,46 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 					   
 					var k = 0;
 					for(var i in result){
-						str+='<tr id="belowLvlMemId'+i+'" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
-							k = parseInt(k) + 1;      
-							str+='<td>';
-								str+='<span class="tableCount">'+k+'</span>';
-							str+='</td>';
-							str+='<td>'+result[i].name+'</td>';
-							str+='<td>'+result[i].totalCadreCount+'</td>';
-							str+='<td>'+result[i].totalCadreCountToday+'</td>';
-							str+='<td>'+result[i].totalCadreCountPer+'</td>';
-						str+='</tr>';
+						if(result[i].totalCadreCount > 0){     
+							str+='<tr id="belowLvlMemId'+i+'" class="bellowLvlCls" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
+								k = parseInt(k) + 1;      
+								str+='<td>';
+									str+='<span class="tableCount">'+k+'</span>';
+								str+='</td>';
+								str+='<td>'+result[i].name+'</td>';
+								str+='<td>'+result[i].totalCadreCount+'</td>';
+								str+='<td>'+result[i].totalCadreCountToday+'</td>';
+								str+='<td>'+result[i].totalCadreCountPer+'</td>';
+							str+='</tr>';   
+						}
 					}  
 					
 				str+='</tbody>';
 			str+='</table>';  
 		str+='</div>';
 		$("#directChildId").html(str);
-		$("#belowLvlMemId0").trigger("click");  
-		$("#belowLvlMemId0").trigger("mouseover");        
-			//getEnumerationDtlsForMem(result[0].activityMemberId);
-			//getDtlsOfBellowLvlMember(result[0].activityMemberId);     
+		//$("#belowLvlMemId0").trigger("click");
+		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$(".headingColor").hide();
+		getEnumerationDtlsForMem(activityMemberId);    
+		getDtlsOfBellowLvlMember(activityMemberId);
+		getVoterInfo(activityMemberId);          
+			   
 	}  
-	$(document).on('click','#belowLvlMemId0',function(){
+	$(document).on('click','.bellowLvlCls',function(){
+		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$(".headingColor").hide();
 		var activityMemberId = $(this).attr("attr_activity_member_id");
 		getEnumerationDtlsForMem(activityMemberId);    
-		getDtlsOfBellowLvlMember(activityMemberId);       
+		getDtlsOfBellowLvlMember(activityMemberId);
+		getVoterInfo(activityMemberId);
 	});
-	    
 	function getEnumerationDtlsForMem(globalActivityMemberId){
+		
 		var startDate = '';      
 		var endDate = '';    
 		var jsObj={  
@@ -2552,8 +2610,11 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){                
 			
 			 if(result != null){
-				buildEnumerationDtlsForMem(result);        
-			 }  
+				buildEnumerationDtlsForMem(result);
+				
+			 }else{  
+				 $("#enumeratorsId").html("No Data Available");   
+			 }
 		});
 	}
 	function buildEnumerationDtlsForMem(result){
@@ -2573,7 +2634,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			str+='<h3>'+result.todayTotalCount+'</h3>';
 			str+='<p>TODAY SUBMITTED DATA</p>';
 		str+='</div>'; 
-		$("#enumeratorsId").html(str);  
+		$("#enumeratorsId").html(str);    
 	}
 	 
 	function getDtlsOfBellowLvlMember(globalActivityMemberId){
@@ -2594,7 +2655,10 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			
 			 if(result != null && result.length > 0){
 				 buildDtlsOfBellowLvlMember(result);
-			 }  
+				 $(".headingColor").show();     
+			 }else{  
+				 $("#individualDtlsId").html("No Data Available.")
+			 }
 		});
 	}
 	function buildDtlsOfBellowLvlMember(result){
@@ -2663,7 +2727,125 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
           });
         });
 		  
-	}  
+	}
+	function getVoterInfo(activityMemberId){          
+		var startDate = '';    
+		var endDate = '';    
+		var jsObj={  
+			activityMemberId : activityMemberId,    
+			stateId : globalStateId,         
+			startDate : '02/10/2016',         
+			endDate : getTodayDate()
+		};
+		$.ajax({          
+			type : 'GET',       
+			url : 'getVoterInfo.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){        
+			
+			 if(result != null){
+				 buildVoterInfo(result);
+			 }else{
+				 $("#voterDtlsId").html("No Data Available")
+			 } 
+		});
+	}
+	function buildVoterInfo(result){   
+		var ownVoter = result.id;
+		var familyVoter = result.attenteeCount;
+		var total = ownVoter + familyVoter; 
+		var ownPercent = ownVoter * (100/total);
+		var familyPercent = familyVoter * (100/total);
+		var meetingLevelArr =[];
+		var ownVoterArr = [];
+		var familyVoterArr = [];
+		var mayBeMeetingArr = [];
+			
+		meetingLevelArr.push(" ");
+		ownVoterArr.push(ownPercent);
+		familyVoterArr.push(familyPercent);  
+		$(function () {
+			$("#voterDtlsId").height(260);      
+			$("#voterDtlsId").highcharts({
+				colors: ['#53BF8B','#F56800','#66728C'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					 min: 0,
+						 gridLineWidth: 0,
+						 minorGridLineWidth: 0,
+						categories: meetingLevelArr,
+					labels: {
+							rotation: -45,
+							style: {
+								fontSize: '13px',
+								fontFamily: 'Verdana, sans-serif'
+							}
+						}
+				},
+				yAxis: {
+					min: 0,
+						   gridLineWidth: 0,
+							minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: true,
+					/* //align: 'right',
+					x: -40,
+					y: 30,
+					verticalAlign: 'top',
+					//y: -32,
+					floating: true, */
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+				headerFormat: '<b>{point.x}</b>',
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+				shared: true
+			},
+				plotOptions: {
+					column: {
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1) +"%";
+								}
+							}
+						  
+						}
+					}
+				},
+				series: [{
+					name: 'Own Voter',
+					data: ownVoterArr
+				}, {
+					name: 'Family Voter',    
+					data: familyVoterArr
+				}]
+			});        
+		});
+	}
 	function getTodayDate(){
 		var today = new Date();
 		var dd = today.getDate();
