@@ -31,7 +31,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
     	return query.executeUpdate();
     }
     
-    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Long stateId){
+    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue){
 		
 	      StringBuilder queryStr = new StringBuilder();  
 	       

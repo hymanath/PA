@@ -14,7 +14,7 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	
 	public int deleteAllRecords();
 	public int setPrimaryKeyAutoIncrementToOne();
-	public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Long stateId);
+	public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue);
 	public List<Object[]> get2014TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Long userType);
 	public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
 }
