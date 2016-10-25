@@ -21,7 +21,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 								" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1" +
 								" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 								" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
-								" and model.isDeleted = 'N' and model1.isDeleted = 'N'");
+								" and model.isDeleted = 'N' and model1.isDeleted = 'N'" +
+								" and model.cadreSurveyUser.isDeleted = 'N'");
 		query.setParameter("cadreRegUserId", cadreRegUserId);
 		return query.list();
 	}
@@ -34,10 +35,10 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(",CadreSurveyUserAssignDetails model1");
 		sb.append(" where model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
-								" and model.isDeleted = 'N'");
+								" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-								" and model1.constituency.constituencyId=:constituencyId and model1.isDeleted = 'N'");
+								" and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
