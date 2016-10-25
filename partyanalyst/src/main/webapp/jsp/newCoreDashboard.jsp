@@ -2353,7 +2353,7 @@
                                 	<div class="row">
                                     	<div class="col-md-6 col-xs-12 col-sm-12">
                                         	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
-                                        	<h2><span class="headingColor">Andhra Pradesh</span></h2>
+                                        	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
                                         </div>
                                         <div class="col-md-6 col-xs-12 col-sm-12">
                                         	<ul class="activeUlCls list-inline pull-right">
@@ -2376,7 +2376,7 @@
                                     </div>
 									<div class="row">
 								    	<div class="col-md-12 col-xs-12 col-sm-12">
-                                        	<h2><span class="headingColor">Telangana</span></h2>
+                                        	<h2><span class="headingColor" id="tsDistrictHeadingId" style="display:none;" >Telangana</span></h2>
                                         	<div id="tsDistrictWiseRegistrationDivId"></div>
                                         </div>
                                     </div>
