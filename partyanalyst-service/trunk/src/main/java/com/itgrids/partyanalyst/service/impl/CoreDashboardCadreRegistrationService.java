@@ -20,6 +20,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -40,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -95,7 +98,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
     private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
     private ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO;
+    private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
     
+    
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}
 	public IPaymentGatewayService getPaymentGatewayService() {
 		return paymentGatewayService;
 	}
@@ -440,6 +452,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					vo.setMandalId(vo1.getMandalId());
 					vo.setVillageId(vo1.getVillageId());
 					vo.setPincode(vo1.getPincode());
+					
+					vo.setPaymentGatewayVO(vo1.getPaymentGatewayVO());
 				}
 			}
 	  		
@@ -760,6 +774,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setMandalId(vo.getMandalId());
 					returnVO.setVillageId(vo.getVillageId());
 					returnVO.setPincode(vo.getPincode());
+					
+					returnVO.setPaymentGatewayVO(vo.getPaymentGatewayVO());
 				}
 			}
 		}
@@ -797,8 +813,44 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				 }
 				 else
 				 {
-					 address.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getStringValueForObject(obj[4])));
+					 address.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getStringValueForObject(obj[5])));
 					 address.setVillageId(obj[7]!=null?Long.valueOf("2"+commonMethodsUtilService.getStringValueForObject(obj[7])):null);
+					 
+					 List<Object[]> wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(commonMethodsUtilService.getLongValueForObject(obj[5]),IConstants.DELIMITATION_YEAR.toString());
+					 if(commonMethodsUtilService.isListOrSetValid(wardsList)){
+						 List<PaymentGatewayVO> wardsListDtls = new ArrayList<PaymentGatewayVO>(0);
+						 PaymentGatewayVO vo1 = new PaymentGatewayVO();
+						 for (Object[] param : wardsList) {
+							 PaymentGatewayVO vo = new PaymentGatewayVO();
+							 vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							 vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							 
+							 String[] strArr = vo.getName().split("-");
+							 String wardName = "WARD-";
+							 if(strArr != null && strArr.length>0){
+								 int length = strArr[1].toString().length();
+								 if(length ==1)
+									 wardName = wardName+"00"+strArr[1].toString();
+								 else if(length ==2)
+									 wardName = wardName+"0"+strArr[1].toString();
+								 vo.setOrderNo(wardName);
+							 }
+							 if(!commonMethodsUtilService.getStringValueForObject(param[2]).isEmpty())
+								 vo.setName(vo.getName()+"- ("+commonMethodsUtilService.getStringValueForObject(param[2])+")");
+							 wardsListDtls.add(vo);
+						}
+						 
+						 if(commonMethodsUtilService.isListOrSetValid(wardsListDtls)){
+							 
+							 Collections.sort(wardsListDtls, new Comparator<PaymentGatewayVO>() {
+								public int compare(PaymentGatewayVO o1,PaymentGatewayVO o2) {
+									return o1.getOrderNo().compareTo(o2.getOrderNo());
+								}
+							});
+							 address.setPaymentGatewayVO(vo1);
+							 address.getPaymentGatewayVO().getSubList().addAll(wardsListDtls);
+						 }
+					 }
 				 }
 				// address.setBoothId(obj[8] != null ? (Long)obj[8]:null);
 				
@@ -891,49 +943,51 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						}
 					}
 
-			returnVO.setDobStr(objects[4]!=null?objects[4].toString():"");//DOB
-			if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
-				  
-				Calendar startDate = new GregorianCalendar();
-				Calendar endDate = new GregorianCalendar(); 
-				
-				endDate.setTime(new Date());
-
-				int diffYear = endDate.get(Calendar.YEAR) - returnVO.getAge().intValue();
-				returnVO.setDobStr(String.valueOf(diffYear)+"-01-01   ");
-				
-				}
-			returnVO.setImageBase64String(objects[5]!=null?objects[5].toString():"");//ImagePath
-			returnVO.setPhotoType("VOTER");
-			returnVO.setMobileNumber(objects[6]!=null?objects[6].toString():"");//mobileNo
-			returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
-			returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
-			returnVO.setConstituencyId(objects[9]!=null?objects[9].toString():"");//constituencyId
-			returnVO.setImagePath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(objects[5]!=null?objects[5].toString():""));
-			
-			if(addressMap.get(returnVO.getVoterCardNo()) != null){
-				NewCadreRegistrationVO vo = addressMap.get(returnVO.getVoterCardNo()) ;
-				if(vo != null){
-					returnVO.setHouseNo(vo.getHouseNo());
-					returnVO.setStateId(vo.getStateId());
-					returnVO.setDistrictId(vo.getDistrictId());
-					returnVO.setConstituencyId(vo.getConstituencyId());
-					returnVO.setMandalId(vo.getMandalId());
-					returnVO.setVillageId(vo.getVillageId());
-					returnVO.setPincode(vo.getPincode());
+					returnVO.setDobStr(objects[4]!=null?objects[4].toString():"");//DOB
+					if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
+						  
+						Calendar startDate = new GregorianCalendar();
+						Calendar endDate = new GregorianCalendar(); 
+						
+						endDate.setTime(new Date());
+		
+						int diffYear = endDate.get(Calendar.YEAR) - returnVO.getAge().intValue();
+						returnVO.setDobStr(String.valueOf(diffYear)+"-01-01   ");
+						
+						}
+					returnVO.setImageBase64String(objects[5]!=null?objects[5].toString():"");//ImagePath
+					returnVO.setPhotoType("VOTER");
+					returnVO.setMobileNumber(objects[6]!=null?objects[6].toString():"");//mobileNo
+					returnVO.setRelativeType(objects[7]!=null?objects[7].toString():"");//relativeType
+					returnVO.setVoterCardNo(objects[8]!=null?objects[8].toString():"");//votercardNo
+					returnVO.setConstituencyId(objects[9]!=null?objects[9].toString():"");//constituencyId
+					returnVO.setImagePath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(objects[5]!=null?objects[5].toString():""));
+					
+					if(addressMap.get(returnVO.getVoterCardNo()) != null){
+						NewCadreRegistrationVO vo = addressMap.get(returnVO.getVoterCardNo()) ;
+						if(vo != null){
+							returnVO.setHouseNo(vo.getHouseNo());
+							returnVO.setStateId(vo.getStateId());
+							returnVO.setDistrictId(vo.getDistrictId());
+							returnVO.setConstituencyId(vo.getConstituencyId());
+							returnVO.setMandalId(vo.getMandalId());
+							returnVO.setVillageId(vo.getVillageId());
+							returnVO.setPincode(vo.getPincode());
+							
+							returnVO.setPaymentGatewayVO(vo.getPaymentGatewayVO());
+						}
+					}
+					if(registrationStatusMap.get(returnVO.getVoterCardNo()) != null){
+						NewCadreRegistrationVO vo = registrationStatusMap.get(returnVO.getVoterCardNo());
+						if(vo != null){
+							returnVO.setPaymentStatus(vo.getPaymentStatus());
+							returnVO.setTdpCadreId(vo.getTdpCadreId());
+							returnVO.setMembershipNo(vo.getMembershipNo());
+						}
+					}
+					
 				}
 			}
-			if(registrationStatusMap.get(returnVO.getVoterCardNo()) != null){
-				NewCadreRegistrationVO vo = registrationStatusMap.get(returnVO.getVoterCardNo());
-				if(vo != null){
-					returnVO.setPaymentStatus(vo.getPaymentStatus());
-					returnVO.setTdpCadreId(vo.getTdpCadreId());
-					returnVO.setMembershipNo(vo.getMembershipNo());
-				}
-			}
-			
-		}
-		}
 		}catch(Exception e){
 			e.printStackTrace();
 			 LOG.error("Exception raised at setCadreDetailsToVO", e);
