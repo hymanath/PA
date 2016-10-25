@@ -2547,6 +2547,7 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO" />  
 		<property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -3545,7 +3546,7 @@
 		 <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO" />
 		 <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
 		 <property name="tdpCadreLocationInfoCountDAO" ref="tdpCadreLocationInfoCountDAO" />
-		 
+		 <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>
