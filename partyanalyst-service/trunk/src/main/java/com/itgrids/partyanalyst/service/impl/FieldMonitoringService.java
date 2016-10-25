@@ -20,6 +20,8 @@ import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTrackDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -27,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IFieldVendorLocationDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
@@ -62,6 +65,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ICadreRegIssueDAO cadreRegIssueDAO;
 	private ICadreRegIssueTrackDAO cadreRegIssueTrackDAO;
 	private ICadreRegIssueStatusDAO cadreRegIssueStatusDAO;
+	private ICadreRegUserDAO cadreRegUserDAO;
+	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	//Setters
 	
 	
@@ -69,6 +74,19 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	public void setFieldVendorLocationDAO(
 			IFieldVendorLocationDAO fieldVendorLocationDAO) {
 		this.fieldVendorLocationDAO = fieldVendorLocationDAO;
+	}
+	public ICadreRegUserTabUserDAO getCadreRegUserTabUserDAO() {
+		return cadreRegUserTabUserDAO;
+	}
+	public void setCadreRegUserTabUserDAO(
+			ICadreRegUserTabUserDAO cadreRegUserTabUserDAO) {
+		this.cadreRegUserTabUserDAO = cadreRegUserTabUserDAO;
+	}
+	public ICadreRegUserDAO getCadreRegUserDAO() {
+		return cadreRegUserDAO;
+	}
+	public void setCadreRegUserDAO(ICadreRegUserDAO cadreRegUserDAO) {
+		this.cadreRegUserDAO = cadreRegUserDAO;
 	}
 	public ICadreRegIssueStatusDAO getCadreRegIssueStatusDAO() {
 		return cadreRegIssueStatusDAO;
@@ -288,6 +306,99 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnVO;
     }
     
+    public FieldMonitoringVO getTabUsersDetailsByVendorAndLocationNew(Long loginUserId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr){
+    	FieldMonitoringVO returnVO = new FieldMonitoringVO();
+		
+    	try {
+    		
+    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+    		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+    			List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
+    			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    			SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+    			Date startDate = null;
+    			Date endDate = null;
+    			Date today = new Date();
+    			if(fromDateStr != null && toDateStr != null){
+    				startDate = sdf.parse(fromDateStr);
+    				endDate = sdf.parse(toDateStr);
+    			}
+    			
+    			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId);
+    			if(list != null && !list.isEmpty()){
+    				for (Object[] obj : list) {
+    					FieldMonitoringVO vo = new FieldMonitoringVO();
+    					
+    					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+    					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+    					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+    					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+    					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+    					 if(obj[5]!=null){
+    	    					Date date = (Date)obj[5];
+    	    					vo.setFirstRecord(returnTime.format(date));
+    	    				}
+    					 if(obj[6]!=null){
+    	    					Date date = (Date)obj[6];
+    	    					vo.setRecentRecord(returnTime.format(date));
+    	    				}
+    					//vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
+    					//vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
+    					vo.setTotalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+    					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+    					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+    					
+    					returnList.add(vo);
+    				}
+    			}
+    			
+    			Calendar cal = Calendar.getInstance();
+    			cal.setTime(today);
+    			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+    			Date lastOneHourTime = cal.getTime();
+    			
+    			//LastHour Counts
+    			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCountsNew(cadreRegUserId, lastOneHourTime, today, constituencyId, cadreSurveyUserId);
+    			if(list1 != null && !list1.isEmpty()){
+    				for (Object[] obj : list1) {
+    					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+    					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+    					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+    					if(vo != null)
+    						vo.setLastHourCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+    				}
+    			}
+    			
+    			//Issues Counts
+    			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, startDate, endDate);
+    			if(list2 != null && !list2.isEmpty()){
+    				for (Object[] obj : list2) {
+    					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+    					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+    					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+    					if(vo != null){
+    						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+    						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+    						if(statusId.longValue() == 1l)
+    							vo.setOpenIssues(count);
+    						else if(statusId.longValue() == 2l)
+    							vo.setFixedIssues(count);
+    						else if(statusId.longValue() == 3l)
+    							vo.setClosedIssues(count);
+    					}
+    				}
+    			}
+    			
+    			returnVO = getDataCollectorsCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, fromDateStr, toDateStr);
+    			returnVO.setSubList(returnList);
+    		}
+    		
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getTabUsersDetailsByVendorAndLocation() of FieldMonitoringService", e);
+		}
+    	return returnVO;
+    }
+    
     public FieldMonitoringVO getMatchedVOByList(Long userId,Long tabUserId,List<FieldMonitoringVO> list){
     	FieldMonitoringVO returnvo = null;
     	try {
@@ -323,6 +434,43 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			return null;
 		} catch (Exception e) {
 			LOG.error("Exception occurred at getMatchdVOByList() of FieldMonitoringService", e);
+		}
+    	return returnvo;
+    }
+    
+    public FieldMonitoringVO getDataCollectorsCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,String fromDateStr,String toDateStr){
+    	FieldMonitoringVO returnvo = new FieldMonitoringVO();
+    	try {
+    		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			Date today = new Date();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
+			Long totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, startDate, endDate);
+			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, lastOneHourTime, today);
+			Long passiveCount = 0l;
+			if(totalCount == null)
+				totalCount = 0l;
+			if(activeCount == null)
+				activeCount = 0l;
+			if(totalCount > 0l)
+				passiveCount = totalCount - activeCount;
+			
+			returnvo.setTotalDataCollectors(totalCount);
+			returnvo.setActiveUsers(activeCount);
+			returnvo.setPassiveUsers(passiveCount);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getDataCollectorsCounts() of FieldMonitoringService", e);
 		}
     	return returnvo;
     }
@@ -378,7 +526,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 		        	
-			        	
+		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(inputVO.getLoginUserId());
 		        	   CadreRegIssue cadreRegIssue = new CadreRegIssue();
 		        	
 		        	   cadreRegIssue.setCadreSurveyUserId(inputVO.getCadreSurveyUserId());
@@ -420,8 +568,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   Date currentDate = dateUtilService.getCurrentDateAndTime();
 		        	   cadreRegIssue.setInsertedTime(currentDate);
 		        	   cadreRegIssue.setUpdatedTime(currentDate);
-		        	   cadreRegIssue.setCreatedBy(inputVO.getLoginUserId());
-		        	   cadreRegIssue.setUpdatedBy(inputVO.getLoginUserId());
+		        	   cadreRegIssue.setCreatedBy(cadreRegUserId);
+		        	   cadreRegIssue.setUpdatedBy(cadreRegUserId);
 		        	   
 		        	   cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
 		        	   
@@ -431,7 +579,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   cadreRegIssueTrack.setCadreRegIssueTypeId(inputVO.getIssueTypeId());
 		        	   cadreRegIssueTrack.setDescription(inputVO.getDescription());
 		        	   cadreRegIssueTrack.setCadreRegIssueStatusId(1L);//open
-		        	   cadreRegIssueTrack.setInsertedBy(inputVO.getLoginUserId());
+		        	   cadreRegIssueTrack.setInsertedBy(cadreRegUserId);
 		        	   cadreRegIssueTrack.setInsertedTime(currentDate);
 		        	   cadreRegIssueTrackDAO.save(cadreRegIssueTrack);
 		        	   
@@ -507,6 +655,109 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnList;
     }
     
+public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId,Long loginUserId){
+    	
+    	List<FieldMonitoringIssueVO> returnList = null;
+    	
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+		
+		Date startDate = null;
+		Date endDate = null;
+    	try{
+    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+    		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+    			if(fromDateStr != null && toDateStr != null){
+        			startDate = sdf.parse(fromDateStr);
+        			endDate = sdf.parse(toDateStr);
+        		}
+        		
+        		List<Object[]> issueDetails = cadreRegIssueDAO.getIssuesForATabUserByStatusNew(cadreSurveyUserId, tabUserInfoId, startDate, endDate, issueStatusId, cadreRegUserId);
+        		
+        		if( issueDetails != null && issueDetails.size() > 0)
+        		{
+        			returnList = new ArrayList<FieldMonitoringIssueVO>();
+        			
+        			for(Object[] obj : issueDetails)
+        			{
+        				FieldMonitoringIssueVO issueVO = new FieldMonitoringIssueVO();
+        				
+        				issueVO.setCadreRegIssueId( obj[0]!= null ? (Long)obj[0] : 0l);
+        				issueVO.setDescription(obj[1]!=null ? obj[1].toString() :"");
+        				
+        				if(obj[2]!=null){
+        					Date date = (Date)obj[2];
+        					issueVO.setDateStr(returnTime.format(date));
+        				}
+        				
+        				issueVO.setIssueTypeId(obj[3]!= null ? (Long)obj[3] : 0l);
+        				issueVO.setIssueType(obj[4]!= null ? obj[4].toString() :"");
+        				
+        				issueVO.setIssueStatusId(obj[5]!=null ? (Long)obj[5]:0l);
+        				issueVO.setIssueStatus(obj[6]!= null ? obj[6].toString() :"");
+        			   if(obj[7]!=null){
+        					Date date = (Date)obj[7];
+        					issueVO.setUpdatedTime(returnTime.format(date));
+        				}
+        				
+        				returnList.add(issueVO);
+        			}
+        		}
+    		}
+    		
+		}catch(Exception e){
+			LOG.error("Exception raised at getIssuesForATabUser", e);
+		}
+    	return returnList;
+    }
+    
+public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long loginUserId){
+	List<FieldMonitoringIssueVO> returnList = new ArrayList<FieldMonitoringIssueVO>();
+	try {
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Long totalCount = 0l;
+			
+			Date startDate = null;
+			Date endDate = null;
+	    	if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+	    	}
+	    	
+	    	//Adding TotalCountVO
+	    	FieldMonitoringIssueVO totalvo = new FieldMonitoringIssueVO();
+	    	totalvo.setIssueStatus("Total");
+	    	totalvo.setCount(0l);
+	    	returnList.add(totalvo);
+	    	
+	    	List<Object[]> list = cadreRegIssueDAO.getIssuesCountsForATabUserByStatusNew(cadreSurveyUserId, tabUserInfoId, startDate, endDate, cadreRegUserId);
+	    	if(list != null && !list.isEmpty()){
+	    		for (Object[] obj : list) {
+					FieldMonitoringIssueVO vo = new FieldMonitoringIssueVO();
+					vo.setIssueStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setIssueStatus(obj[1] != null ? obj[1].toString():"");
+					vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					totalCount = totalCount + Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					returnList.add(vo);
+				}
+	    	}
+	    	
+	    	if(returnList != null && returnList.size() > 0){
+	    		for (FieldMonitoringIssueVO vo : returnList) {
+					if(vo.getIssueStatus().equalsIgnoreCase("Total"))
+						vo.setCount(totalCount);
+				}
+	    	}
+		}
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	return returnList;
+}
+
     public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatus(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long vendorId,String locationType,Long locationVal){
     	List<FieldMonitoringIssueVO> returnList = new ArrayList<FieldMonitoringIssueVO>();
     	try {
@@ -709,6 +960,16 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
+			if(task.equalsIgnoreCase("dataMonitoringDashboard")){
+				   Long activeUrsCount = cadreRegIssueDAO.getActiveUsersCount(startDate,endDate);
+				   if(activeUrsCount != null && activeUrsCount.longValue() > 0l){
+					   IdAndNameVO vo1 = new IdAndNameVO(); 
+					   vo1.setName("DataMoniDashBrd");
+					   vo1.setInviteeCount(activeUrsCount);
+					   returnList.add(vo1);
+				   }
+				   
+			   }
 		   returnList.addAll(getAllIssueStatus());
 		   List<Object[]> list = cadreRegIssueDAO.getIssueStatusWiseCounts(startDate,endDate);
 		   if(list != null && list.size() >0){
@@ -720,16 +981,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 					 
 				   }
 				 }
-		   if(task.equalsIgnoreCase("dataMonitoringDashboard")){
-			   Long activeUrsCount = cadreRegIssueDAO.getActiveUsersCount(startDate,endDate);
-			   if(activeUrsCount != null && activeUrsCount.longValue() > 0l){
-				   IdAndNameVO vo1 = new IdAndNameVO(); 
-				   vo1.setName("DataMoniDashBrd");
-				   vo1.setInviteeCount(activeUrsCount);
-				   returnList.add(vo1);
-			   }
-			   
-		   }
+		   
 	   }catch(Exception e){
 		   e.printStackTrace();
 		   LOG.error("Exception raised at getIssueStatusWiseCounts", e);
@@ -1193,5 +1445,49 @@ public DataMonitoringVerificationVO getMatchDataVerificationVO(List<DataMonitori
 		}
 	}
 	return null;
+}
+
+public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
+	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
+	try {
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					CadreRegUserVO vo = new CadreRegUserVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+	}
+	return returnList;
+}
+
+public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId){
+	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
+	try {
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedUsers(cadreRegUserId,constituencyId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					CadreRegUserVO vo = new CadreRegUserVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+	}
+	return returnList;
 }
 }

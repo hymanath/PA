@@ -45,8 +45,15 @@ public class FieldMonitoringVO {
 	private String vendorName;
 	private List<IdAndNameVO> idnameList;
 	private List<IdAndNameVO> idnameList1;
+	private String imagePath;
 	
 	
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 	public Long getId() {
 		return id;
 	}

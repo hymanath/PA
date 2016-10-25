@@ -22,4 +22,13 @@ public interface ICadreRegIssueDAO extends GenericDao<CadreRegIssue, Long> {
 	public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date toDate,String locationType,Long locationVal);
 	public List<Object[]> getLocationWiseDataVerifiedCounts(Date fromDate,Date toDate,String locationType,Long locationVal);
 	public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal);
+	
+	
+	public List<Object[]> getTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId);
+	public List<Object[]> getLastHourCountsNew(Long cadreRegUserId,Date lastOneHourTime,Date today,Long constituencyId,Long userId);
+	public List<Object[]> getcadreRegIssuesCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,Date startDate,Date endDate);
+	public Long getTotalDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date fromDate,Date toDate);
+	public Long getActiveDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date lastOneHourTime,Date today);
+	public List<Object[]> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId,Long cadreRegUserId);
+	public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long cadreRegUserId);
 }

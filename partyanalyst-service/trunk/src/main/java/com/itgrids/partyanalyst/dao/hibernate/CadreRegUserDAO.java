@@ -1,8 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
 import com.itgrids.partyanalyst.model.CadreRegUser;
@@ -14,4 +13,12 @@ public class CadreRegUserDAO extends GenericDaoHibernate<CadreRegUser, Long> imp
 		
 	}
 
+	public Long getCadreRegUserByUser(Long userId){
+		Query query = getSession().createQuery("select model.cadreRegUserId" +
+				" from CadreRegUser model" +
+				" where model.user.userId = :userId" +
+				" and model.userType = 'FM'");
+		query.setParameter("userId", userId);
+		return (Long) query.uniqueResult();
+	}
 }
