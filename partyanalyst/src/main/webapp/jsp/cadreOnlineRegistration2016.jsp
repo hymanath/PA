@@ -516,7 +516,7 @@
 	
     <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default panelRegistration">
+        	<div class="panel panel-default panelRegistration m_top20">
 				<div class="panel-heading renewalN hide" >
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
@@ -858,12 +858,17 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Education<span style="color:red;">*</span>&nbsp;<span id="cadreEducationId" style="color:red;"></span></label>
-                           <select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
+							<select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Occupation<span style="color:red;">*</span>&nbsp;<span id="cadreOccupationId" style="color:red;"></span></label>
                            <select class="select" id="occupationId" name="cadreRegistrationVO.occupationId">
+                            </select>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10 hide" id="wardsDivId">
+                        	<label>Ward <span style="color:red;">*</span>&nbsp;<span id="wardErr" style="color:red;"></span></label>
+                           <select class="select" id="wardsList" name="cadreRegistrationVO.wardId">
                             </select>
                         </div>
                     </div>
@@ -999,10 +1004,10 @@
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
                         	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>: </br> </br> 
-								<input id="checkbox7" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
-								<label for="checkbox7" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
-								<input id="checkbox8" class="checkbox-custom" name="checkbox-2" type="checkbox">
-								<label for="checkbox8" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
+								<input id="prmaryAddrsId" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
+								<label for="prmaryAddrsId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
+								<input id="deliveryCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
+								<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
 											</h6>
                         </div>
 						
@@ -1559,7 +1564,7 @@ $("#dobId").datetimepicker({
   var presntMandalId =0;
   var presntVillageId =0;
   var registrationVoterType='ownVoterId';
-  
+  var registrationType="new";
   onLoadCalls();
  
 
@@ -1637,7 +1642,7 @@ function myVoterButtonDetails(){
 /* Renewal Click Actions*/
 $(document).on("click",".renewalBtn",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
-
+	registrationType="renewal";
 	setTimeout(function(){
 		$(".mainBlocks,.newProfile.renewal,.newProfile").addClass("hide");
 		$("#renwalOKDivId").show();
@@ -1845,8 +1850,9 @@ function changeImg()
 			}
 		});  
 		
-$(document).on("click",".registerNew",function(){
+$(document).on("click",".registerNew",function(){ 
 	$(".mainBlocks").addClass("animated fadeOut");
+	registrationType="new";
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
 		$("#newRegOKDivId").show();
@@ -2019,10 +2025,10 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 	//$("#nameId").
 });
 
-$(document).on("click","#checkbox7",function(){
+$(document).on("click","#prmaryAddrsId",function(){
 	
 	if($(this).is(":checked")){
-		$('#checkbox8').attr('checked', false);
+		$('#deliveryCheckBox').attr('checked', false);
 		$('#deliveryAddrId').hide();
 		$('.delvryAdrCls').val(0);
 		$('.delvryAddrCls').val('');
@@ -2032,8 +2038,8 @@ $(document).on("click","#checkbox7",function(){
 	}
 });
 
-$(document).on("click","#checkbox8",function(){
-	$('#checkbox7').attr('checked', false);
+$(document).on("click","#deliveryCheckBox",function(){
+	$('#prmaryAddrsId').attr('checked', false);
 	if($(this).is(":checked")){
 		$('#deliveryAddrId').show();
 	}
@@ -2043,7 +2049,7 @@ $(document).on("click","#checkbox8",function(){
 		$('.delvryAddrCls').val('');
 		 $(".delvryAdrCls").trigger("chosen:updated");
 		$(this).attr('checked', false);
-		$('#checkbox7').trigger('click');
+		$('#prmaryAddrsId').trigger('click');
 	}	
 });
 
