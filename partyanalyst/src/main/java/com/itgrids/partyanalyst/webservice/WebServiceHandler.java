@@ -2049,6 +2049,13 @@ public class WebServiceHandler {
 		public List<GISVisualizationDetailsVO> getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
 		 return webServiceHandlerService.getMembershipDriveVisualizationDetails(inputVO);
 		}
+		@POST
+		@Path("/getMembershipDriveDayWiseVisualizationDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<GISVisualizationDetailsVO> getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO){
+		 return webServiceHandlerService.getMembershipDriveDayWiseVisualizationDetails(inputVO);
+		}
 		
 		@GET
 		@Path("/Secure/getStateWiseAssemblyConstituency/{stateId}")
