@@ -49,6 +49,7 @@ import org.springframework.util.StringUtils;
 
 import com.google.gson.Gson;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -150,6 +151,7 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.PaymentTransactionVO;
 import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -331,6 +333,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO;
+	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -347,6 +351,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.cadreTabRecordsStatusDAO = cadreTabRecordsStatusDAO;
 	}
 	
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}
+
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
 	}	
@@ -13373,31 +13386,66 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		
 	}*/
 	
-	 public List<IdAndNameVO> getPanchayatOrConsList(Long mandalOrMunpaId){
+	 public List<IdAndNameVO> getPanchayatOrConsList(Long mandalOrMunpaId,String typeId){
 			List<IdAndNameVO> retunList=new ArrayList<IdAndNameVO>();
 			try{
-				String subStrId=mandalOrMunpaId.toString().substring(0,1);
-				if(subStrId.trim().equalsIgnoreCase("1")){
-					List<Object[]> panchList=panchayatDAO.getPanchayatList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
-					for (Object[] objects : panchList) {
-						IdAndNameVO idAndNameVO =new IdAndNameVO();
-						
-						idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
-						idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");
-						retunList.add(idAndNameVO);
+				if(typeId.equalsIgnoreCase("1")){
+					String subStrId=mandalOrMunpaId.toString().substring(0,1);
+					if(subStrId.trim().equalsIgnoreCase("1")){
+						List<Object[]> panchList=panchayatDAO.getPanchayatList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
+						for (Object[] objects : panchList) {
+							IdAndNameVO idAndNameVO =new IdAndNameVO();
+							
+							idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+							idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");
+							retunList.add(idAndNameVO);
+						}
 					}
-				}
-				if(subStrId.trim().equalsIgnoreCase("2")){
-					List<Object[]> consiList=boothDAO.getboothList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
-					for (Object[] objects : consiList) {
-						IdAndNameVO  idAndNameVO=new IdAndNameVO();
-						idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
-						idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");//partNo
-						idAndNameVO.setName("Booth NO: "+idAndNameVO.getName());
-						retunList.add(idAndNameVO);
+					if(subStrId.trim().equalsIgnoreCase("2")){
+						List<Object[]> consiList=boothDAO.getboothList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
+						for (Object[] objects : consiList) {
+							IdAndNameVO  idAndNameVO=new IdAndNameVO();
+							idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+							idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");//partNo
+							idAndNameVO.setName("Booth NO: "+idAndNameVO.getName());
+							retunList.add(idAndNameVO);
+						}
 					}
+				}else if(typeId.equalsIgnoreCase("2") || typeId.equalsIgnoreCase("3")){
+					 List<Object[]> wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(Long.valueOf(mandalOrMunpaId.toString().substring(1)),IConstants.DELIMITATION_YEAR.toString());
+					 if(commonMethodsUtilService.isListOrSetValid(wardsList)){
+						 List<PaymentGatewayVO> wardsListDtls = new ArrayList<PaymentGatewayVO>(0);
+						 //PaymentGatewayVO vo1 = new PaymentGatewayVO();
+						 for (Object[] param : wardsList) {
+							 IdAndNameVO  vo=new IdAndNameVO();
+							 vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							 vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							 
+							 String[] strArr = vo.getName().split("-");
+							 String wardName = "WARD-";
+							 if(strArr != null && strArr.length>0){
+								 int length = strArr[1].toString().length();
+								 if(length ==1)
+									 wardName = wardName+"00"+strArr[1].toString();
+								 else if(length ==2)
+									 wardName = wardName+"0"+strArr[1].toString();
+								 vo.setMobileNumber(wardName);
+							 }
+							 if(!commonMethodsUtilService.getStringValueForObject(param[2]).isEmpty())
+								 vo.setName(vo.getName()+"- ("+commonMethodsUtilService.getStringValueForObject(param[2])+")");
+							 retunList.add(vo);
+						}
+						 
+						 	if(commonMethodsUtilService.isListOrSetValid(wardsListDtls)){
+							 
+							 Collections.sort(retunList, new Comparator<IdAndNameVO>() {
+								public int compare(IdAndNameVO o1,IdAndNameVO o2) {
+									return o1.getMobileNumber().compareTo(o2.getMobileNumber());
+								}
+							});
+						 }
+					 }
 				}
-				
 			}catch(Exception e){
 				 LOG.error("Error occured at getPanchayatOrConsList() in CadreRegistrationService {}",e);
 				
