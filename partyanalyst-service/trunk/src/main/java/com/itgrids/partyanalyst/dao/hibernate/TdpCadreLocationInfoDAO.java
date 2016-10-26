@@ -1,10 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -21,12 +16,13 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 		super(TdpCadreLocationInfo.class);
 	}
 	
-	 public int deleteAllRecords(){
-	    	
-    	Query query = getSession().createSQLQuery(" delete from tdp_cadre_location_info ");
+	public int deleteAllRecords(List<Long> locationScopeIds){
+    	
+    	Query query = getSession().createSQLQuery(" delete from tdp_cadre_location_info where location_scope_id in (:locationScopeIds) ");
+    	query.setParameterList("locationScopeIds",locationScopeIds);
     	return query.executeUpdate();
     }
-    public int setPrimaryKeyAutoIncrementToOne(){
+	public int setPrimaryKeyAutoIncrementToOne(){
     	Query query = getSession().createSQLQuery(" ALTER TABLE tdp_cadre_location_info AUTO_INCREMENT = 1 ");
     	return query.executeUpdate();
     }
@@ -273,5 +269,29 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
         }
       
         return query.list();
+    }
+    
+public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  INSERT INTO tdp_cadre_location_info( type,location_scope_id,location_value,cadre_2014,cadre_2014_percent," +
+    	"                                       cadre_2016,cadre_2016_percent,new_cadre,new_cadre_percent,renewal_cadre," +
+    	"                                       renewal_cadre_percent,inserted_time) " +
+        "         SELECT TEMP.type,TEMP.location_scope_id,TEMP.location_value,TEMP.cadre_2014,TEMP.cadre_2014_percent," +
+        "                TEMP.cadre_2016,TEMP.cadre_2016_percent,TEMP.new_cadre,TEMP.new_cadre_percent,TEMP.renewal_cadre,TEMP.renewal_cadre_percent,TEMP.inserted_time " +
+        "         FROM   tdp_cadre_location_info_temp TEMP " );
+    	return query.executeUpdate();
+    }
+    
+    public int insertTdpCadreLocationInfoUpToLowLevel(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  INSERT INTO tdp_cadre_location_info( type,location_scope_id,location_value,cadre_2014,cadre_2014_percent," +
+    	"                                       cadre_2016,cadre_2016_percent,new_cadre,new_cadre_percent,renewal_cadre," +
+    	"                                       renewal_cadre_percent,inserted_time) " +
+        "         SELECT TEMP.type,TEMP.location_scope_id,TEMP.location_value,TEMP.cadre_2014,TEMP.cadre_2014_percent," +
+        "                TEMP.cadre_2016,TEMP.cadre_2016_percent,TEMP.new_cadre,TEMP.new_cadre_percent,TEMP.renewal_cadre,TEMP.renewal_cadre_percent,TEMP.inserted_time " +
+        "         FROM   tdp_cadre_location_info_temp1 TEMP " );
+    	return query.executeUpdate();
     }
 }
