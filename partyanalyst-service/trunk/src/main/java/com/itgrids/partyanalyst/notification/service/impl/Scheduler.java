@@ -406,9 +406,30 @@ public class Scheduler {
 		}
 		
 		try{
-			//System.out.println("pushTotalTodayTdpCadreDataToIntermediate started..");
+			 //System.out.println("pushTotalTodayTdpCadreDataToIntermediate started.."+new DateUtilService().getCurrentDateAndTimeInStringFormat());
 			 //long startTime = System.currentTimeMillis();
 			rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediate();
+			//System.out.println("time for saving total tody wise method is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTotalTodayTdpCadreDataToIntermediate "); 
+		}
+		return rs;
+	}
+	
+	public ResultStatus pushTotalTodayTdpCadreDataToIntermediateByLowLevel()
+	{	
+		
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{
+			//System.out.println("pushTotalTodayTdpCadreDataToIntermediate started..");
+			 //long startTime = System.currentTimeMillis();
+			rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediateByLowLevel();
 			//System.out.println("time for saving total tody wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
 		}
 		catch(Exception e)
@@ -427,7 +448,7 @@ public class Scheduler {
 		}
 		
 		try{
-			 //System.out.println("pushTdpCadreDataToIntermediateDateWise started..");
+			 //System.out.println("pushTdpCadreDataToIntermediateDateWise started.. "+new DateUtilService().getCurrentDateAndTimeInStringFormat() );
 			//long startTime = System.currentTimeMillis();
 			rs = cadreRegistrationServiceNew.pushTdpCadreDataToIntermediateDateWise();
 			//System.out.println("time taking for date wise method  is : " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds");
