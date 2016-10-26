@@ -12,10 +12,13 @@ import com.itgrids.partyanalyst.model.TdpCadreLocationInfo;
 
 public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInfo,Long>{
 	
-	public int deleteAllRecords();
+	public int deleteAllRecords(List<Long> locationScopeIds);
 	public int setPrimaryKeyAutoIncrementToOne();
 	public List<Object[]> get2014TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId);
 	public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue);
 	public List<Object[]> get2014TotalCadreCountBasedOnUserType(List<Long> locationValue,Long userType,Long activityMemberId);
 	public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
+	
+	public int insertTdpCadreLocationInfoUpToConstituencyLevel();
+	public int insertTdpCadreLocationInfoUpToLowLevel();
 }
