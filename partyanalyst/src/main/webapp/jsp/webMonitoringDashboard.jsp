@@ -103,9 +103,22 @@
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".singleDate").daterangepicker({
-	opens:'left'
+	opens:'left',
+	ranges:{
+		'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
 });
+
  onLoadCalls();
+ 
+$(document).on("click",".ranges li",function(){
+	 onLoadCalls();
+});
  
 $(document).on("click",".applyBtn",function(){
 	getLocationWiseOverAllDetails("state",0,"districtWiseOverviewDetailsId");

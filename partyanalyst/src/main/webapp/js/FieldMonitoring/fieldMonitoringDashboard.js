@@ -370,7 +370,7 @@ $(document).on("click",".issuesBtn",function(){
 	
 	getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatus);
 	getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
-	getConstituencyByVendor();
+	//getConstituencyByVendor();
     $("#issuesModal").modal('show');
   });
   function getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId){
@@ -379,8 +379,6 @@ $(document).on("click",".issuesBtn",function(){
 	   $("#closedIssuesId").html(0);
 	   $("#totalIssuesId").html(0);
 	   
-	var vendorId = $("#hiddenVendorId").val();
-	var constituencyId = $("#hiddenConstituencyId").val();
 	var dates = $(".singleDate").val();
 	var dateArr = dates.split("-");
 	var fromDate;
@@ -389,22 +387,17 @@ $(document).on("click",".issuesBtn",function(){
 		fromDate = dateArr[0];
 		toDate = dateArr[1];
 	}
-	var locationType  = "constituency";
-	var locationVal = constituencyId;
 	
 	 var jsObj =
      {				
 		cadreSurveyUserId : cadreSurveyUserId,
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
-		toDate : toDate,
-		vendor : vendorId,
-		locationType : locationType,
-		locationVal : locationVal
-     }
+		toDate : toDate
+	}
     $.ajax({
           type:'GET',
-          url: 'getIssuesCountsForATabUserAction.action',
+          url: 'getIssuesCountsForATabUserNewAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -477,7 +470,7 @@ $(document).on("click",".issueTypeCls",function(){
 function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatusId){
 		$("#issueDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	 
 		$("#hiddenIssueStatusId").val(issueStatusId);
-		var vendorId = $("#hiddenVendorId").val();
+		
 		var constituencyId = $("#hiddenConstituencyId").val();
 		var dates = $(".singleDate").val();
 		var dateArr = dates.split("-");
@@ -487,8 +480,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 			fromDate = dateArr[0];
 			toDate = dateArr[1];
 		}
-		var locationType  = "constituency";
-		var locationVal = constituencyId;
+		
 	
 	 var jsObj =
      {				
@@ -496,14 +488,11 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
 		toDate : toDate,
-        issueStatusId : issueStatusId,
-		vendor : vendorId,
-		locationType : locationType,
-		locationVal : locationVal
+        issueStatusId : issueStatusId
 	 }
     $.ajax({
           type:'GET',
-          url: 'getIssuesForATabUserByStatusAction.action',
+          url: 'getIssuesForATabUserByStatusNewAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -632,7 +621,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 				clearErrorFields();
 				getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,0);
 				getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId);
-				$("#issuesModal").modal('hide');
+				//$("#issuesModal").modal('hide');
                 //getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count);
 			}, 2000);
 	   }else{
