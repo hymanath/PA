@@ -8284,4 +8284,85 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		query.setParameterList("accessLvlValue", accessLvlValue);
 		return (Long) query.uniqueResult();
 	}
+	
+public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelType){
+		
+		StringBuilder sbS = new StringBuilder();
+		
+		sbS.append(" select ");
+		StringBuilder sbE = new StringBuilder();
+		if(levelType.equalsIgnoreCase("tehsil")){
+			sbS.append(" model.tdpCadre.userAddress.tehsil.tehsilId ");
+			sbE.append(" group by model.tdpCadre.userAddress.tehsil.tehsilId ");
+		}else if(levelType.equalsIgnoreCase("leb")){
+			sbS.append(" model.tdpCadre.userAddress.localElectionBody.localElectionBodyId ");
+			sbE.append(" group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId ");
+		}else if(levelType.equalsIgnoreCase("panchayat")){
+			sbS.append(" model.tdpCadre.userAddress.panchayat.panchayatId ");
+			sbE.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId ");
+		}else if(levelType.equalsIgnoreCase("ward")){
+			sbS.append(" model.tdpCadre.userAddress.ward.constituencyId ");
+			sbE.append(" group by model.tdpCadre.userAddress.ward.constituencyId ");
+		}else if(levelType.equalsIgnoreCase("booth")){
+			sbS.append(" model.tdpCadre.userAddress.booth.boothId ");
+			sbE.append(" group by model.tdpCadre.userAddress.booth.boothId ");
+		}
+		sbS.append(" ,count(model.tdpCadre.tdpCadreId ) " +
+				"   from  TdpCadreEnrollmentYear model " +
+				"   where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+				"         model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId" );
+		if( date != null ){
+			sbS.append(" and date(model.tdpCadre.surveyTime) = :date ");
+		}
+		
+		Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+		
+		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		if( date != null ){
+			query.setDate("date",date);
+		}
+		
+		return query.list();
+	}
+	public List<Object[]> levelWiseRenewalTdpCareDataByTodayOrTotal(Date date,String levelType){
+		
+		StringBuilder sbS = new StringBuilder();
+		sbS.append(" select ");
+		StringBuilder sbE = new StringBuilder();
+		if(levelType.equalsIgnoreCase("tehsil")){
+			sbS.append(" tc.userAddress.tehsil.tehsilId ");
+			sbE.append(" group by tc.userAddress.tehsil.tehsilId ");
+		}else if(levelType.equalsIgnoreCase("leb")){
+			sbS.append(" tc.userAddress.localElectionBody.localElectionBodyId ");
+			sbE.append(" group by tc.userAddress.localElectionBody.localElectionBodyId ");
+		}else if(levelType.equalsIgnoreCase("panchayat")){
+			sbS.append(" tc.userAddress.panchayat.panchayatId ");
+			sbE.append(" group by tc.userAddress.panchayat.panchayatId ");
+		}else if(levelType.equalsIgnoreCase("ward")){
+			sbS.append(" tc.userAddress.ward.constituencyId ");
+			sbE.append(" group by tc.userAddress.ward.constituencyId ");
+		}else if(levelType.equalsIgnoreCase("booth")){
+			sbS.append(" tc.userAddress.booth.boothId ");
+			sbE.append(" group by tc.userAddress.booth.boothId ");
+		}
+		sbS.append("      ,count(distinct tc.tdpCadreId) " +
+				"   from  TdpCadre tc , TdpCadreEnrollmentYear year1, TdpCadreEnrollmentYear year2 " +
+				"   where tc.tdpCadreId = year1.tdpCadre.tdpCadreId and  tc.tdpCadreId = year2.tdpCadre.tdpCadreId and " +
+				"         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
+				"         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
+				"         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear ");
+				  
+		if( date != null ){
+			sbS.append(" and date(tc.surveyTime) = :date ");
+		}
+		
+		Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+		
+		query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
+		query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		if( date != null ){
+			query.setDate("date",date);
+		}
+		return query.list();
+	}
 }
