@@ -3296,4 +3296,17 @@
 		<bean id="parliamentAssemblyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ParliamentAssemblyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tdpCadreLocationInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationInfoTempDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreLocationInfoTemp1DAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationInfoTemp1DAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreDateWiseInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDateWiseInfoTempDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
