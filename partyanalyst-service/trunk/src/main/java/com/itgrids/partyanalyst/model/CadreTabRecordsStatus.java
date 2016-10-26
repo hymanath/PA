@@ -36,7 +36,7 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date minRecordTime;	
 	private Date maxRecordTime;	
-	private Date surveyTime;
+	private Date surveyDate;
 	private String isDeleted;
 	
 	private CadreSurveyUser cadreSurveyUser;
@@ -159,12 +159,12 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	public void setMaxRecordTime(Date maxRecordTime) {
 		this.maxRecordTime = maxRecordTime;
 	}
-	@Column(name="survey_time")
-	public Date getSurveyTime() {
-		return surveyTime;
+	@Column(name="survey_date")
+	public Date getSurveyDate() {
+		return surveyDate;
 	}
-	public void setSurveyTime(Date surveyTime) {
-		this.surveyTime = surveyTime;
+	public void setSurveyDate(Date surveyDate) {
+		this.surveyDate = surveyDate;
 	}
 	
 	
