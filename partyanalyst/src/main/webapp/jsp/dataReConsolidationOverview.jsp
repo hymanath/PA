@@ -46,14 +46,16 @@
 							</div>
 					</div>
 						
-						
+				<div class="col-md-4 col-xs-12 col-sm-4">
+					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
+				</div>	
 						
 					</div>
 				</div>
 			</div>
 		
-				<div class="panel panel-default m_top10">
-					<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>
+				<div class="panel panel-default m_top10" id="dataReconsalationOverviewId">
+					<!--<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>
 					<div class="panel-body" style="padding: 25px;">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 ">
@@ -79,10 +81,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
-				<div class="panel panel-default">
-					<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>
+				<div class="panel panel-default" id="userWiseTotalViewId">
+					<!--<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>
 					<div class="panel-body" style="padding: 25px;">
 						<table class="table table-condensed">
 							<thead>
@@ -104,26 +106,10 @@
 									<td>1000</td>
 									<td>200 <button class="btn btn-sm btn-success openPopUpModel" >VIEW DAY WISE</button></td>
 								</tr>
-								<tr> 
-									<td >U1984</td>
-									<td>D1234</td>
-									<td>96358571237985</td>
-									<td>Ramu</td>
-									<td>1000</td>
-									<td>200 <button class="btn btn-sm btn-success openPopUpModel" >VIEW DAY WISE</button></td>
-								</tr>
-								<tr> 
-									<td >U1984</td>
-									<td>D1234</td>
-									<td>96358571237985</td>
-									<td>Ramu</td>
-									<td>1000</td>
-									<td>200 <button class="btn btn-sm btn-success openPopUpModel" >VIEW DAY WISE</button></td>
-								</tr>
-							</tbody>
+								</tbody>
 						</table>
 					</div>
-				</div>
+				</div>-->
 			</div>
 
 	

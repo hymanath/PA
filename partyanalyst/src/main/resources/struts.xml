@@ -14286,5 +14286,15 @@
 		<result name="success">/jsp/dataReConsolidationOverview.jsp</result>  
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	 <action name="getDataReConsalationOverViewAction" class="dataReconsolidationOverViewAction"  method="dataReConsalationOverView">
+			<result type="json" name="success">
+			<param name="root">dataReConsalationOverView</param>
+		</result>
+	</action>
+	 <action name="getdataReConsalationTotalOverViewAction" class="dataReconsolidationOverViewAction"  method="dataReConsalationTotalOverView">
+			<result type="json" name="success">
+			<param name="root">dataReConsalationOverView</param>
+		</result>
+	</action>
 </package>
 </struts>
