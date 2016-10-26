@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -903,4 +904,195 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	}
 
 
+	public List<Object[]> getDistrictLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append(" SELECT c.district_id,sum(votes_earned),sum(BR.valid_votes)  FROM ");
+		queryStr.append(" candidate_booth_result CBR, ");
+		queryStr.append(" nomination N, ");
+		queryStr.append(" booth_constituency_election BCE, ");
+		queryStr.append(" constituency_election CE, ");
+		queryStr.append(" booth B, ");
+		queryStr.append(" booth_result BR, ");
+		queryStr.append(" constituency c ");
+		queryStr.append(" WHERE ");
+		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		queryStr.append(" N.party_id = 872 AND ");
+		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		queryStr.append(" CE.election_id = 258 AND ");
+		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_id = B.booth_id AND ");
+		queryStr.append(" B.local_election_body_id IS null  and B.constituency_id = c.constituency_id   ");
+		
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()==1)
+			queryStr.append(" and  (c.district_id BETWEEN 11 and 23)");
+		else if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()==1)
+			queryStr.append(" and (c.district_id BETWEEN 1 and 10)");
+		queryStr.append(" group by c.district_id");
+		queryStr.append(" order by c.district_id ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getAssemblyLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT B.constituency_id,sum(votes_earned),sum(BR.valid_votes)  FROM ");
+		queryStr.append(" candidate_booth_result CBR, ");
+		queryStr.append(" nomination N, ");
+		queryStr.append(" booth_constituency_election BCE, ");
+		queryStr.append(" constituency_election CE, ");
+		queryStr.append(" booth B, ");
+		queryStr.append(" booth_result BR, ");
+		queryStr.append(" constituency c ");
+		queryStr.append(" WHERE ");
+		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		queryStr.append(" N.party_id = 872 AND ");
+		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		queryStr.append(" CE.election_id = 258 AND ");
+		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_id = B.booth_id AND ");
+		queryStr.append(" B.local_election_body_id IS null  and B.constituency_id = c.constituency_id  ");
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			queryStr.append(" and   c.district_id = "+inputVO.getParentLocationTypeId().longValue()+"");
+		queryStr.append(" group by  B.constituency_id ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getMandalLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT B.tehsil_id,SUM(votes_earned),SUM(BR.valid_votes)  FROM ");
+		queryStr.append(" candidate_booth_result CBR, ");
+		queryStr.append(" nomination N, ");
+		queryStr.append(" booth_constituency_election BCE, ");
+		queryStr.append(" constituency_election CE, ");
+		queryStr.append(" booth B, ");
+		queryStr.append(" booth_result BR ");
+		queryStr.append(" WHERE ");
+		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		queryStr.append(" N.party_id = 872 AND ");
+		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		queryStr.append(" CE.election_id = 258 AND ");
+		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_id = B.booth_id AND ");
+		queryStr.append(" B.local_election_body_id IS null   ");
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			queryStr.append(" and B.constituency_id = "+inputVO.getParentLocationTypeId().toString()+"  ");
+		queryStr.append(" GROUP BY B.tehsil_id ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getMunciORUrbanLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT B.local_election_body_id,SUM(votes_earned),SUM(BR.valid_votes)  FROM ");
+		queryStr.append(" candidate_booth_result CBR, ");
+		queryStr.append(" nomination N, ");
+		queryStr.append(" booth_constituency_election BCE, ");
+		queryStr.append(" constituency_election CE, ");
+		queryStr.append(" booth B, ");
+		queryStr.append(" booth_result BR ");
+		queryStr.append(" WHERE ");
+		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		queryStr.append(" N.party_id = 872 AND ");
+		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		queryStr.append(" CE.election_id = 258 AND ");
+		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_id = B.booth_id AND ");
+		queryStr.append(" B.local_election_body_id IS NOT null   ");
+		//queryStr.append(" B.constituency_id = 232 ");		
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			queryStr.append(" and B.constituency_id =  "+inputVO.getParentLocationTypeId().toString()+"  ");
+		queryStr.append(" GROUP BY B.local_election_body_id ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder quertStr = new StringBuilder();
+		quertStr.append(" SELECT B.panchayat_id,SUM(votes_earned),SUM(BR.valid_votes)  FROM ");
+		quertStr.append(" candidate_booth_result CBR, ");
+		quertStr.append(" nomination N, ");
+		quertStr.append(" booth_constituency_election BCE, ");
+		quertStr.append(" constituency_election CE, ");
+		quertStr.append(" booth B, ");
+		quertStr.append(" booth_result BR ");
+		quertStr.append(" WHERE ");
+		quertStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		quertStr.append(" N.party_id = 872 AND ");
+		quertStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		quertStr.append(" CE.election_id = 258 AND ");
+		quertStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		quertStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		quertStr.append(" BCE.booth_id = B.booth_id AND ");
+		quertStr.append(" B.local_election_body_id IS null   ");
+		
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			quertStr.append(" and B.panchayat_id  =  "+inputVO.getParentLocationTypeId().longValue()+"  ");
+		quertStr.append(" GROUP BY B.panchayat_id ");		
+		Query query = getSession().createSQLQuery(quertStr.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT B.booth_id,votes_earned,BR.valid_votes  FROM ");
+		queryStr.append(" candidate_booth_result CBR, ");
+		queryStr.append(" nomination N, ");
+		queryStr.append(" booth_constituency_election BCE, ");
+		queryStr.append(" constituency_election CE, ");
+		queryStr.append(" booth B, ");
+		queryStr.append(" booth_result BR ");
+		queryStr.append(" WHERE ");
+		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		queryStr.append(" N.party_id = 872 AND ");
+		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		queryStr.append(" CE.election_id = 258 AND ");
+		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_id = B.booth_id AND ");
+		queryStr.append(" B.local_election_body_id IS null   ");
+		
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			queryStr.append(" and B.panchayat_id  =  "+inputVO.getParentLocationTypeId().longValue()+"  ");
+				
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalBodyBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT B.booth_id,votes_earned,BR.valid_votes  FROM ");
+		queryStr.append(" candidate_booth_result CBR, ");
+		queryStr.append(" nomination N, ");
+		queryStr.append(" booth_constituency_election BCE, ");
+		queryStr.append(" constituency_election CE, ");
+		queryStr.append(" booth B, ");
+		queryStr.append(" booth_result BR ");
+		queryStr.append(" WHERE ");
+		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+		queryStr.append(" N.party_id = 872 AND ");
+		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+		queryStr.append(" CE.election_id = 258 AND ");
+		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+		queryStr.append(" BCE.booth_id = B.booth_id AND ");
+		queryStr.append(" B.local_election_body_id IS not null   ");
+		
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			queryStr.append(" and B.local_election_body_id  =  "+inputVO.getParentLocationTypeId().longValue()+"  ");
+				
+		Query query = getSession().createSQLQuery(queryStr.toString());
+		return query.list();
+	}
+	
 }
+	
