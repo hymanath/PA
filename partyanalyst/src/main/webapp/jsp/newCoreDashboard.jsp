@@ -73,14 +73,21 @@
                 </div>
 				<div class="col-md-4 col-xs-12 col-sm-3 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
-					<!--	<li>
-							<img src="today" id="todayRadio" class="datesClass" attr_type="today" title="today"/>
-						 </li>
 						<li>
-							<img src="lastMonth" id="lastMonthRadio" class="datesClass" checked="true" attr_type="lastMonth"/>
-						 </li>
-						 -->
-                    	<li class="active" >
+							<!--<img src="today" id="thisMonthRadionBtnId" class="datesClass" attr_type="today" title="today"/>-->
+							<!--<button type="button" attr_type="currentMonth" class="btn btn-success datesClass">Current Month</button>-->
+							 <label style="color:green;" class="radio-inline">
+							  <input type="radio" attr_type="currentMonth" class="datesClass" name="optradio">Current Month
+							 </label>
+							<label style="color:green;"  class="radio-inline">
+							  <input type="radio" attr_type="lastMonth"  class="datesClass" name="optradio">Last Month
+							</label>
+						</li> 
+						<!--<li>
+							<!--<img src="lastMonth" id="lastMonthRadio" class="datesClass" checked="true" attr_type="lastMonth"/>-->
+						     <!--<button type="button" attr_type="lastMonth"  class="btn btn-success datesClass">Last Month</button> -->
+						 <!--</li>-->
+						<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
 						
@@ -875,6 +882,7 @@
 								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+								
 								
 								<div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
@@ -2044,7 +2052,7 @@
 							</span>
 							 <!--<span class="cadreExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>-->  
+							</span>-->
 							<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">

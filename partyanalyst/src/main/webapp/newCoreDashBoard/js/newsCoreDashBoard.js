@@ -7083,9 +7083,9 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		
 	}
 	
-	$(document).on("click",".datesClass",function(){
+	  $(document).on("click",".datesClass",function(){
 		var type = $(this).attr("attr_type");
-		if(type == "today"){
+		if(type == "currentMonth"){
 			currentFromDate = moment().format('DD-MM-YYYY');
 			currentToDate = moment().format('DD-MM-YYYY');
 			$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");

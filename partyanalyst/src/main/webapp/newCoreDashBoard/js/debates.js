@@ -26,7 +26,25 @@ $(document).ready(function(){
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()]
         }
-	})
+	});
+	
+	 $(document).on("click",".datesClass",function(){
+		var type = $(this).attr("attr_type");
+		if(type == "currentMonth"){
+			customStartDate = moment().format('DD/MM/YYYY');
+			customEndDate = moment().format('DD/MM/YYYY');
+			$(".debatesDate").html(" TODAY ( "+customStartDate+" )");
+			 $("#dateRangeIdForDebates").val(customStartDate+" - "+customEndDate);
+			getPartyWiseTotalDebateDetails();
+		}else if(type == "lastMonth"){
+			customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
+			customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+			$(".debatesDate").html("Last Month ( "+customStartDate+" to "+customEndDate+" )");
+			$("#dateRangeIdForDebates").val(customStartDate+" - "+customEndDate);
+			getPartyWiseTotalDebateDetails();
+		}
+	  });
+	
 	//$(".debatesDate").html(" LAST MONTH ( "+customStartDate+" to "+customEndDate+" )");
 	$(".debatesDate").html(" TODAY ( "+customStartDate+" )");
 	$('#dateRangeIdForDebates').on('apply.daterangepicker', function(ev, picker) {
