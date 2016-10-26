@@ -3,11 +3,13 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -19,15 +21,20 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTemp1DAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
-import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo;
-import com.itgrids.partyanalyst.model.TdpCadreLocationInfo;
+import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp1;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew{
 
@@ -43,6 +50,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IDistrictDAO districtDAO;
 	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
+	private ITdpCadreLocationInfoTempDAO tdpCadreLocationInfoTempDAO;
+	private ITdpCadreLocationInfoTemp1DAO tdpCadreLocationInfoTemp1DAO ;
+	private ITdpCadreDateWiseInfoTempDAO tdpCadreDateWiseInfoTempDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -77,9 +87,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO) {
 		this.tdpCadreDateWiseInfoDAO = tdpCadreDateWiseInfoDAO;
 	}
+	public void setTdpCadreLocationInfoTempDAO(
+			ITdpCadreLocationInfoTempDAO tdpCadreLocationInfoTempDAO) {
+		this.tdpCadreLocationInfoTempDAO = tdpCadreLocationInfoTempDAO;
+	}
+	public void setTdpCadreLocationInfoTemp1DAO(
+			ITdpCadreLocationInfoTemp1DAO tdpCadreLocationInfoTemp1DAO) {
+		this.tdpCadreLocationInfoTemp1DAO = tdpCadreLocationInfoTemp1DAO;
+	}
 	
+	public void setTdpCadreDateWiseInfoTempDAO(
+			ITdpCadreDateWiseInfoTempDAO tdpCadreDateWiseInfoTempDAO) {
+		this.tdpCadreDateWiseInfoTempDAO = tdpCadreDateWiseInfoTempDAO;
+	}
 	//Business methods
-	
 	/**
 	  *  Service To get All Assembly Constituencies for AP and Ts and the constituency corresponding parliament Constituency.
 	  */
@@ -174,6 +195,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   try{
 			   
 			   List<Object[]> previousCadreList = tdpCadreLocationInfoCountDAO.getAllLocationsTdpCadreCount(3L);
+			   
 			   if( previousCadreList != null && previousCadreList.size() > 0){
 				   
 				   finalMap = new HashMap<String, TdpCadreLocationInfoVO>(0);
@@ -199,7 +221,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	   }
 	   
 	   
-	/**
+	/** 1)
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	  *  Pushing tdpcadre data to intermediate tables
 	  *  @since 18-OCTOBER-2016
@@ -228,10 +250,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   finalList.add(todayDataVO);
 			   
 			   
-			   //long startTime = System.currentTimeMillis();
-			   rs =  saveTotalTodayTdpCadreDataToIntermediate(finalList);
-			   //System.out.println("time for saving is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+			   //long tempStartTime = System.currentTimeMillis();
+			   rs =  saveTotalTodayTdpCadreDataToIntermediateTemp(finalList);
+			   //System.out.println("time for saving in temp table : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
 			   
+			   List<Long> locationScopeIds = new ArrayList<Long>(0);
+			   locationScopeIds.add(4L);//assembly
+			   locationScopeIds.add(10L);//parliament
+			   locationScopeIds.add(3L);//district
+			   locationScopeIds.add(2L);//state
+			   
+			  // long intermediateStartTime = System.currentTimeMillis();
+			    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
+			    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToConstituencyLevel();
+			   //System.out.println("time for saving in intermediate table : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 			   
 		  }catch(Exception e){
 			  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -450,7 +482,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   }
 	   }
 	   
-	   public ResultStatus saveTotalTodayTdpCadreDataToIntermediate(final List<TdpCadreLocationInfoVO> finalList ){
+	   public ResultStatus saveTotalTodayTdpCadreDataToIntermediateTemp(final List<TdpCadreLocationInfoVO> finalList){
 		   
 			final ResultStatus rs = new ResultStatus();
 			final DateUtilService dateUtilService = new DateUtilService();
@@ -462,24 +494,25 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			        	
 			        	if(finalList != null && finalList.size() > 0){
 			        		
-			        		int deletedRecords = tdpCadreLocationInfoDAO.deleteAllRecords();
-						    int count = tdpCadreLocationInfoDAO.setPrimaryKeyAutoIncrementToOne();
+			        		int deletedRecords = tdpCadreLocationInfoTempDAO.deleteAllRecords();
+						    int count = tdpCadreLocationInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 						    
 						    Date currentTime = dateUtilService.getCurrentDateAndTime();
 						    
 						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
-				        		
-				        		List<TdpCadreLocationInfoVO> assemblyList = dateTypeVO.getAssemblyList();
-				        		savingService(assemblyList,currentTime);
-				        		
-				        		List<TdpCadreLocationInfoVO> parliamentList = dateTypeVO.getParliamentList();
-				        		savingService(parliamentList,currentTime);
-				        		
-				        		List<TdpCadreLocationInfoVO> districtList = dateTypeVO.getDistrictList();
-				        		savingService(districtList,currentTime);
-				        		
-				        		List<TdpCadreLocationInfoVO> stateList = dateTypeVO.getStateList();
-				        		savingService(stateList,currentTime);
+						    	
+						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){
+						    		savingService(dateTypeVO.getAssemblyList(),currentTime);
+						    	}
+				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){
+				        			savingService(dateTypeVO.getParliamentList(),currentTime);
+				        		}
+				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){
+				        			savingService(dateTypeVO.getDistrictList(),currentTime);
+				        		}
+				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){
+				        			savingService(dateTypeVO.getStateList(),currentTime);
+				        		}
 				        		
 				        	}
 			        	}
@@ -504,7 +537,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					for(TdpCadreLocationInfoVO locationVO : list  )
 					{
 			    		 
-			    		 TdpCadreLocationInfo info = new TdpCadreLocationInfo();
+						  TdpCadreLocationInfoTemp info = new TdpCadreLocationInfoTemp();
 		    			  
 		    			  info.setLocationScopeId(locationVO.getLocationScopeId());
 		    			  info.setLocationValue(locationVO.getId());
@@ -540,19 +573,312 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		    			  info.setType(locationVO.getDateType());
 		    			  info.setInsertedTime(currentTime);
 		    			  
-		    			  tdpCadreLocationInfoDAO.save(info);
+		    			  tdpCadreLocationInfoTempDAO.save(info);
 			    	 }
 				}
 	   		
 			}catch(Exception e){
 				LOG.error("Exception raised at savingService", e);
-				throw new RuntimeException("Exception At savingService..");
+				//throw new RuntimeException("Exception At savingService..");
 			}
 	   }
 	   
 	   
 	   
-	   /**
+	   
+	   /** 2) 
+		  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+		  *  Pushing tdpcadre data to intermediate tables
+		  *  @since 18-OCTOBER-2016
+		  */
+		public ResultStatus pushTotalTodayTdpCadreDataToIntermediateByLowLevel(){
+			
+			   ResultStatus rs = null;
+			   try{
+				   Map<String,Long> locationTargetMap = getTdpCadreTargetCountLocationWise();
+				   Map<String,TdpCadreLocationInfoVO> previousCadreMap = locationWisePreviousCadreCount();
+				   
+				   List<TdpCadreLocationInfoVO> finalList = new ArrayList<TdpCadreLocationInfoVO>(0);
+				   
+				   //Total
+				   TdpCadreLocationInfoVO totalDataVO = new TdpCadreLocationInfoVO();
+				   getLevelWiseDataTodayOrTotal("Total",totalDataVO,locationTargetMap,previousCadreMap);
+				   finalList.add(totalDataVO);
+				   
+				   //Today
+				   TdpCadreLocationInfoVO todayDataVO = new TdpCadreLocationInfoVO();
+				   getLevelWiseDataTodayOrTotal("Today",todayDataVO,locationTargetMap,previousCadreMap);
+				   finalList.add(todayDataVO);
+				   
+				   //long tempStartTime = System.currentTimeMillis();
+				   rs =  saveTotalTodayTdpCadreDataToIntermediateTempByLowLevel(finalList);
+				   //System.out.println("time for saving in temp table : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
+				   
+				   List<Long> locationScopeIds = new ArrayList<Long>();
+				   locationScopeIds.add(5L);
+				   locationScopeIds.add(6L);
+				   locationScopeIds.add(7L);
+				   locationScopeIds.add(8L);
+				   locationScopeIds.add(9L);
+				   
+				   //long intermediateStartTime = System.currentTimeMillis();
+				    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
+				    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToLowLevel();
+				   //System.out.println("time for saving in intermediate table : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				   
+				   
+			  }catch(Exception e){
+				  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
+			  }
+			   return rs;
+		   }
+		
+		
+		   public void getLevelWiseDataTodayOrTotal(String dateType,TdpCadreLocationInfoVO finalVO,Map<String,Long> locationTargetMap,Map<String,TdpCadreLocationInfoVO> previousCadreMap){
+			  
+			   try{ 
+				    //tehsil
+				       List<TdpCadreLocationInfoVO> tehsilList = levelWiseTdpCareDataByTodayOrTotal(dateType,"tehsil",locationTargetMap,previousCadreMap);
+				       finalVO.setTehsilList(tehsilList);
+				    
+				    //leb
+				      List<TdpCadreLocationInfoVO> lebList = levelWiseTdpCareDataByTodayOrTotal(dateType,"leb",locationTargetMap,previousCadreMap);
+				      finalVO.setAssemblyList(lebList);
+				    
+				    //panchayat
+				      List<TdpCadreLocationInfoVO> panchayatList = levelWiseTdpCareDataByTodayOrTotal(dateType,"panchayat",locationTargetMap,previousCadreMap);
+				      finalVO.setParliamentList(panchayatList);
+				      
+				    //ward
+				      List<TdpCadreLocationInfoVO> wardList = levelWiseTdpCareDataByTodayOrTotal(dateType,"ward",locationTargetMap,previousCadreMap);
+				      finalVO.setDistrictList(wardList);
+				      
+				    //booth
+				      List<TdpCadreLocationInfoVO> boothList = levelWiseTdpCareDataByTodayOrTotal(dateType,"booth",locationTargetMap,previousCadreMap);
+				      finalVO.setStateList(boothList);
+				   
+			   }catch(Exception e){
+				   LOG.error("Exception raised in getLevelWiseDataTodayOrTotal() in CadreRegistrationServiceNew class", e);
+			   }
+		   }
+	      
+		
+		public List<TdpCadreLocationInfoVO> levelWiseTdpCareDataByTodayOrTotal(String dateType,String levelType,Map<String,Long> locationTargetMap,Map<String,TdpCadreLocationInfoVO> previousCadreMap){
+			   
+			   List<TdpCadreLocationInfoVO> finalList = null;
+			   Map<Long,TdpCadreLocationInfoVO> levelMap = null;
+			   
+			   try{
+				   
+				   Long locationscopeId = null;
+				   if(levelType.equalsIgnoreCase("tehsil")){
+					   locationscopeId = 5L;
+				   }else  if(levelType.equalsIgnoreCase("leb")){
+					   locationscopeId = 7L;
+				   }else  if(levelType.equalsIgnoreCase("panchayat")){
+					   locationscopeId = 6L;
+				   }else  if(levelType.equalsIgnoreCase("ward")){
+					   locationscopeId = 8L;
+				   }else  if(levelType.equalsIgnoreCase("booth")){
+					   locationscopeId = 9L;
+				   }
+				   
+				   
+				     Date currentDate = null;
+				     if(dateType != null && dateType.equalsIgnoreCase("Today")){
+				    	 currentDate = new DateUtilService().getCurrentDateAndTime();
+				     }
+				     
+				     //all Records
+				      List<Object[]> totalList = tdpCadreDAO.levelWiseTdpCareDataByTodayOrTotal(currentDate,levelType);
+				      if(totalList != null && totalList.size() > 0)
+				      {  
+				    	  levelMap = new TreeMap<Long, TdpCadreLocationInfoVO>();
+				    	  for(Object[] obj : totalList )
+				    	  {  
+				    		  TdpCadreLocationInfoVO locationVO = null;
+				    		  if(obj[0]!=null)//tehsilId
+				    		  {
+				    			  locationVO = levelMap.get((Long)obj[0]);
+				    			  if(locationVO == null)
+				    			  {
+				    				  locationVO = new TdpCadreLocationInfoVO();
+				    				  
+				    				  locationVO.setId((Long)obj[0]);
+				    				  locationVO.setLocationScopeId(locationscopeId);
+				    				  locationVO.setDateType(dateType);
+				    				  
+				    				  locationVO.setCadre2016Records(obj[1]!=null ? (Long)obj[1]:0l);
+				    				  locationVO.setCadre2016NewRecords(locationVO.getCadre2016Records());
+				    				  
+				    				  //2014 cadre data
+				    				  String key = locationVO.getLocationScopeId() + "_" + locationVO.getId();
+									  TdpCadreLocationInfoVO previousCadreData = previousCadreMap.get(key);
+									   if(previousCadreData != null){
+										   locationVO.setCadreCount(previousCadreData.getCadreCount());
+										   locationVO.setCadrePercent(previousCadreData.getCadrePercent());
+									   }
+									   
+									   levelMap.put(locationVO.getId(),locationVO);
+				    			  }
+				    		  }
+				    	  }
+				      }
+				      
+				      //Renewal Records
+				      List<Object[]> renewalList = tdpCadreDAO.levelWiseRenewalTdpCareDataByTodayOrTotal(currentDate,levelType);
+				      if(renewalList != null && renewalList.size() > 0)
+				      {
+				    	  for( Object[] obj : renewalList)
+				    	  {
+				    		  if(obj[0] != null)//tehsilId
+				    		  {
+				    			  TdpCadreLocationInfoVO locationVO = levelMap.get((Long)obj[0]);
+				    			  if(locationVO != null){
+				    				  locationVO.setCadre2016RenewalRecords(obj[1]!= null ? (Long)obj[1] : 0l);
+				    				  locationVO.setCadre2016NewRecords( locationVO.getCadre2016Records() - locationVO.getCadre2016RenewalRecords() );
+				    			  }
+				    		  }
+				    	  }
+				      }
+				      
+				      //calculating percantage
+				      if(levelMap != null && levelMap.size() > 0)
+				      {
+				    	  finalList = new ArrayList<TdpCadreLocationInfoVO>(levelMap.values());
+				    	  if(finalList != null && finalList.size() > 0)
+				    	  {
+				    		  for(TdpCadreLocationInfoVO VO : finalList )
+				    		  {  
+				    			  String key = VO.getLocationScopeId() + "_" + VO.getId();
+				    			  Long targetCount = locationTargetMap.get(key); 
+				    			  if(targetCount != null && targetCount > 0l){
+				    				  VO.setCadre2016RecordsPerc( calcPercantage( VO.getCadre2016Records() , targetCount ) );  
+				    			  }
+				    			  
+				    			  if(VO.getCadre2016Records() != null && VO.getCadre2016Records() > 0l){
+				    				  VO.setCadre2016RenewalRecordsPerc( calcPercantage( VO.getCadre2016RenewalRecords() , VO.getCadre2016Records()) );
+				    				  VO.setCadre2016NewRecordsPerc( calcPercantage( VO.getCadre2016NewRecords() , VO.getCadre2016Records()) );
+				    			  }
+				    		  }
+				    	  }
+				      }
+				      
+			   }catch(Exception e){
+				   e.printStackTrace();
+				   LOG.error("Exception raised in levelWiseTdpCareDataByTodayOrTotal() in CadreRegistrationServiceNew class", e);
+			   }
+			   return finalList;
+		   }
+		public ResultStatus saveTotalTodayTdpCadreDataToIntermediateTempByLowLevel(final List<TdpCadreLocationInfoVO> finalList){
+			   
+			final ResultStatus rs = new ResultStatus();
+			final DateUtilService dateUtilService = new DateUtilService();
+			
+			try {
+				
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        	
+			        	if(finalList != null && finalList.size() > 0){
+			        		
+			        		List<Long> locationScopeIds = new ArrayList<Long>();
+			        		
+			        		int deletedRecords = tdpCadreLocationInfoTemp1DAO.deleteAllRecords();
+						    int count = tdpCadreLocationInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
+						    
+						    Date currentTime = dateUtilService.getCurrentDateAndTime();
+						    
+						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
+				        		
+						    	if(dateTypeVO.getTehsilList() != null && dateTypeVO.getTehsilList().size() > 0){//tehsil
+						    		savingServiceLowLevel(dateTypeVO.getTehsilList(),currentTime);
+						    	}
+						    	
+						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){//leb
+						    		savingServiceLowLevel(dateTypeVO.getAssemblyList(),currentTime);
+						    	}
+				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){//panchayat
+				        			savingServiceLowLevel(dateTypeVO.getParliamentList(),currentTime);
+				        		}
+				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){//ward
+				        			savingServiceLowLevel(dateTypeVO.getDistrictList(),currentTime);
+				        		}
+				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){//booth
+				        			savingServiceLowLevel(dateTypeVO.getStateList(),currentTime);
+				        		}
+				        		
+				        	}
+			        	}
+			        	   
+				          rs.setResultCode(1);
+				          rs.setMessage("success");
+			         }
+			    });
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at CadreRegistrationServiceNew", e);
+				rs.setResultCode(0);
+				rs.setMessage("failure");
+			}
+			return rs;
+		}
+		public void savingServiceLowLevel(List<TdpCadreLocationInfoVO> list , Date currentTime){
+		   	
+		   	try{
+					if( list != null && list.size() > 0)
+					{
+						for(TdpCadreLocationInfoVO locationVO : list  )
+						{
+				    		 
+							  TdpCadreLocationInfoTemp1 info = new TdpCadreLocationInfoTemp1();
+			    			  
+			    			  info.setLocationScopeId(locationVO.getLocationScopeId());
+			    			  info.setLocationValue(locationVO.getId());
+			    			  
+			    			  if(locationVO.getCadreCount() != null && locationVO.getCadreCount() > 0l){
+			    				  info.setCadre2014(locationVO.getCadreCount());  
+			    			  }
+			    			  if(locationVO.getCadrePercent() != null){
+			    				  info.setCadre2014Percent(locationVO.getCadrePercent());
+			    			  }
+			    			  
+			    			  if( locationVO.getCadre2016Records() != null && locationVO.getCadre2016Records() > 0l){
+			    				  info.setCadre2016(locationVO.getCadre2016Records()); 
+			    			  }
+			    			  if(locationVO.getCadre2016RecordsPerc() != null && locationVO.getCadre2016RecordsPerc() > 0l){
+			    				  info.setCadre2016Percent(locationVO.getCadre2016RecordsPerc().toString());
+			    			  }
+			    			  
+			    			  if( locationVO.getCadre2016RenewalRecords() != null && locationVO.getCadre2016RenewalRecords() > 0l){
+			    				  info.setRenewalCadre(locationVO.getCadre2016RenewalRecords()); 
+			    			  }
+			    			  if(locationVO.getCadre2016RenewalRecordsPerc() != null && locationVO.getCadre2016RenewalRecordsPerc() > 0l){
+			    				  info.setRenewalCadrePercent(locationVO.getCadre2016RenewalRecordsPerc().toString());
+			    			  }
+			    			  
+			    			  if( locationVO.getCadre2016NewRecords() != null && locationVO.getCadre2016NewRecords() > 0l){
+			    				  info.setNewCadre(locationVO.getCadre2016NewRecords()); 
+			    			  }
+			    			  if(locationVO.getCadre2016NewRecordsPerc() != null && locationVO.getCadre2016NewRecordsPerc() > 0l){
+			    				  info.setNewCadrePercent(locationVO.getCadre2016NewRecordsPerc().toString());
+			    			  }
+			    			  
+			    			  info.setType(locationVO.getDateType());
+			    			  info.setInsertedTime(currentTime);
+			    			  
+			    			  tdpCadreLocationInfoTemp1DAO.save(info);
+				    	 }
+					}
+		   		
+				}catch(Exception e){
+					LOG.error("Exception raised at savingService", e);
+					//throw new RuntimeException("Exception At savingService..");
+				}
+		   } 
+	   
+	   
+	   /** 3)
 		  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 		  *  Pushing tdpcadre data to intermediate tables date wise.
 		  *  @since 18-OCTOBER-2016
@@ -568,14 +894,25 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				   Map<Long,Long> distStateMap = getAllDistrictsAndItsStates();
 				   Map<String,Long> locationTargetMap = getTdpCadreTargetCountLocationWise();
 				   
+				   
+				   //Get From Date.
+				    Calendar cal = Calendar.getInstance();
+				    cal.add(Calendar.DATE, - IConstants.DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS);
+				    Date fromDate = cal.getTime();
+				    
+				    
 				   TdpCadreLocationInfoVO finalVO = new TdpCadreLocationInfoVO();
 				  
-				   geTdpCadreDataByDateAndLocation(finalVO,acpcMap,constDistrictMap,distStateMap,locationTargetMap);
-				   			   
-				   
+				   geTdpCadreDataByDateAndLocation(finalVO,acpcMap,constDistrictMap,distStateMap,locationTargetMap,fromDate);
+				    
 				   //long startTime = System.currentTimeMillis();
-				   rs =  saveTdpCadreDataToIntermediateDateWise(finalVO);
-				   //System.out.println("time for saving date wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+				   rs =  saveTdpCadreDataToIntermediateTempDateWise(finalVO,fromDate);
+				  // System.out.println("time for saving temp data date wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+				   
+				   //long intermediateStartTime = System.currentTimeMillis();
+				    int deletedRecords =  tdpCadreDateWiseInfoDAO.deleteAllRecords(fromDate);
+				    int insertedRecordsCount = tdpCadreDateWiseInfoDAO.insertTdpCadreLocInfoDateWiseUpToConstituencyLevel();
+				   //System.out.println("time for saving  intermediate table date wise is : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				   
 			  }catch(Exception e){
 				  LOG.error("Exception raised in pushTdpCadreDataToIntermediateDateWise() in CadreRegistrationServiceNew class", e);
@@ -584,10 +921,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   }
 		   
 		   
-		   public void geTdpCadreDataByDateAndLocation(TdpCadreLocationInfoVO finalVO,Map<Long,Long> acpcMap,Map<Long,Long> constDistrictMap,Map<Long,Long> distStateMap,Map<String,Long> locationTargetMap){
+		   public void geTdpCadreDataByDateAndLocation(TdpCadreLocationInfoVO finalVO,Map<Long,Long> acpcMap,Map<Long,Long> constDistrictMap,Map<Long,Long> distStateMap,Map<String,Long> locationTargetMap,Date fromDate){
 			  
 			   try{ 
-				     Map<String,Map<Long,TdpCadreLocationInfoVO>> constituencyMap =  geTdpCadreDataByDateAndConstituency(locationTargetMap);
+				     Map<String,Map<Long,TdpCadreLocationInfoVO>> constituencyMap =  geTdpCadreDataByDateAndConstituency(locationTargetMap,fromDate);
 				     Map<String,Map<Long,TdpCadreLocationInfoVO>> parliamentMap = setDataDateWise("parliament", constituencyMap , acpcMap  , locationTargetMap );
 				     Map<String,Map<Long,TdpCadreLocationInfoVO>> districtMap = setDataDateWise("district"  , constituencyMap , constDistrictMap , locationTargetMap );
 				     Map<String,Map<Long,TdpCadreLocationInfoVO>> stateMap = setDataDateWise("state" , districtMap , distStateMap , locationTargetMap );
@@ -602,14 +939,14 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   }
 		   }
 		   
-		   public Map<String,Map<Long,TdpCadreLocationInfoVO>> geTdpCadreDataByDateAndConstituency(Map<String,Long> locationTargetMap){
+		   public Map<String,Map<Long,TdpCadreLocationInfoVO>> geTdpCadreDataByDateAndConstituency(Map<String,Long> locationTargetMap,Date fromDate){
 			   
 			   Map<String,Map<Long,TdpCadreLocationInfoVO>> finalMap = new LinkedHashMap<String, Map<Long,TdpCadreLocationInfoVO>>(0);
 			   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			   try{  
 				   
 				     //all Records
-				      List<Object[]> constTotalList = tdpCadreDAO.getTdpCadreDataByDateAndConstituency();
+				      List<Object[]> constTotalList = tdpCadreDAO.getTdpCadreDataByDateAndConstituency(fromDate);
 				      
 				      if(constTotalList != null && constTotalList.size() > 0)
 				      {  
@@ -650,7 +987,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				      }
 				      
 				      //Renewal Records
-				      List<Object[]> constRenewalList = tdpCadreDAO.getRenewalTdpCadreDataByDateAndConstituency();
+				      List<Object[]> constRenewalList = tdpCadreDAO.getRenewalTdpCadreDataByDateAndConstituency(fromDate);
 				      if(constRenewalList != null && constRenewalList.size() > 0)
 				      {
 				    	  for( Object[] obj : constRenewalList)
@@ -773,12 +1110,12 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    				  if(constVO != null)
 				    				  {  
 				    					  Long targetCount = locationTargetMap.get(constVO.getLocationScopeId() + "_" + constVO.getId());
-				    					  if (targetCount != null && targetCount > 0l);
+				    					  if (targetCount != null && targetCount.longValue() > 0l)
 				    					  {
 				    						  constVO.setCadre2016RecordsPerc( calcPercantage( constVO.getCadre2016Records() , targetCount ) );  
 				    					  }
 				    					  
-				    					  if(constVO.getCadre2016Records() != null && constVO.getCadre2016Records() > 0l)
+				    					  if(constVO.getCadre2016Records() != null && constVO.getCadre2016Records().longValue() > 0l)
 				    					  {
 				    						  constVO.setCadre2016RenewalRecordsPerc( calcPercantage( constVO.getCadre2016RenewalRecords() , constVO.getCadre2016Records()) );
 				    						  constVO.setCadre2016NewRecordsPerc( calcPercantage( constVO.getCadre2016NewRecords() , constVO.getCadre2016Records()) );
@@ -812,7 +1149,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			  return finalList;
 		   }
 		   
-		   public ResultStatus saveTdpCadreDataToIntermediateDateWise(final TdpCadreLocationInfoVO finalVO ){
+		   public ResultStatus saveTdpCadreDataToIntermediateTempDateWise(final TdpCadreLocationInfoVO finalVO,final Date fromDate ){
 			   
 				final ResultStatus rs = new ResultStatus();
 				final DateUtilService dateUtilService = new DateUtilService();
@@ -825,11 +1162,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				        	if(finalVO != null)
 				        	{
 				        		
-				        		int deletedRecords = tdpCadreDateWiseInfoDAO.deleteAllRecords();
-							    int count = tdpCadreDateWiseInfoDAO.setPrimaryKeyAutoIncrementToOne();
+				        		int deletedRecords = tdpCadreDateWiseInfoTempDAO.deleteAllRecords();
+							    int count = tdpCadreDateWiseInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 							    
 							    Date currentTime = dateUtilService.getCurrentDateAndTime();
-							   
 					        		
 				        		List<TdpCadreLocationInfoVO> assemblyList = finalVO.getAssemblyList();
 				        		savingServiceDateWise(assemblyList,currentTime);
@@ -866,7 +1202,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    		  if(locationVO != null)
 				    		  {
 				    			  
-				    			  TdpCadreDateWiseInfo info = new TdpCadreDateWiseInfo();
+				    			  TdpCadreDateWiseInfoTemp info = new TdpCadreDateWiseInfoTemp();
 				    			  
 				    			  info.setSurveyDate(locationVO.getSurveyDate());
 				    			  
@@ -896,22 +1232,22 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    			  
 				    			  info.setInsertedTime(currentTime);
 				    			  
-				    			  tdpCadreDateWiseInfoDAO.save(info);
+				    			  tdpCadreDateWiseInfoTempDAO.save(info);
 				    		  }
 				    	 }
 					}
 		   		
 				}catch(Exception e){
 					LOG.error("Exception raised at savingServiceDateWise", e);
-					throw new RuntimeException("Exception At savingServiceDateWise..");
+					//throw new RuntimeException("Exception At savingServiceDateWise..");
 				}
 		   }
 		   
 		   
 		   //Calculating percantage.
 		   public Double calcPercantage(Long subCount,Long totalCount){
-				Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				return d;
+			   Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			   return d;
 		  }
 	
 }
