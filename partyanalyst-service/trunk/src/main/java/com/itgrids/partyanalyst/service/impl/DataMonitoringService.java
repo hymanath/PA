@@ -78,7 +78,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 		   
 		     List<Object[]> rtrnTtlRgstrtnCntObjLst = tdpCadreEnrollmentYearDAO.getCadreRegistrationCountByDataSourceType(fromDate, toDate);
 		     List<Object[]> rtrnVerifyRegCntObjLst = tdpCadreEnrollmentYearDAO.getCadreRegistrationCountByCadreVerificationStatus(fromDate, toDate);
-		     Long activyTeamMemberCnt = tdpCadreDataVerificationDAO.getActiveTeamMemberCnt(fromDate, toDate);
+		     Long activyTeamMemberCnt = tdpCadreDataVerificationDAO.getActiveTeamMemberCnt();
 		     
 		     resultVO.setActivyTeamMemberCnt(commonMethodsUtilService.getLongValueForObject(activyTeamMemberCnt));
 			 if(rtrnTtlRgstrtnCntObjLst != null && rtrnTtlRgstrtnCntObjLst.size() > 0){

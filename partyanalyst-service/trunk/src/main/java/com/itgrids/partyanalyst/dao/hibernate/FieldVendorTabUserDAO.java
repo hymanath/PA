@@ -89,6 +89,38 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		return query.list();
 	}
 	
+	public List<Object[]> getStatusWiseIssuesDetailsNew(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct CRI.cadreSurveyUser.cadreSurveyUserId," +
+					" CRI.cadreSurveyUser.userName," +
+					" CRI.tabUserInfo.tabUserInfoId," +
+					" CRI.tabUserInfo.name," +
+					" CRI.tabUserInfo.mobileNo," +
+					" CRI.userAddress.state.stateId," +
+					" CRI.userAddress.district.districtId," +
+					" CRI.userAddress.district.districtName," +
+					" CRI.userAddress.constituency.constituencyId," +
+					" CRI.userAddress.constituency.name"+
+					" from CadreRegIssue CRI,CadreRegUserTabUser CRUTU" +
+					" where CRI.cadreSurveyUser.cadreSurveyUserId = CRUTU.cadreSurveyUser.cadreSurveyUserId" +
+					" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
+					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
+		
+		sb.append(" and CRUTU.isDeleted = 'N'");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		query.setParameter("issueTypeId", issueTypeId);
+		query.setParameter("statusTypeId", statusTypeId);
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getUserWiseIssuesCounts(Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select CRI.cadreSurveyUser.cadreSurveyUserId," +
@@ -110,5 +142,14 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		}
 		
 		return query.list();
+	}
+	
+	public String getVendorNameByCadreSurveyUserId(Long cadreSurveyUserId){
+		Query query = getSession().createQuery("select model.fieldVendor.vendorName" +
+									" from FieldVendorTabUser model" +
+									" where model.cadreSurveyUser.cadreSurveyUserId = :cadreSurveyUserId" +
+									" and model.isDeleted = 'N'");
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		return (String) query.uniqueResult();
 	}
 }

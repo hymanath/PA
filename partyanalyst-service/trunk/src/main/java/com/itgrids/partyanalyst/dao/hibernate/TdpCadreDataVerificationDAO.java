@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDataVerification, Long> implements ITdpCadreDataVerificationDAO{
 
@@ -14,20 +15,17 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 		super(TdpCadreDataVerification.class);
 		
 	}
-	public Long getActiveTeamMemberCnt(Date fromDate,Date toDate){
+	public Long getActiveTeamMemberCnt(){
 		
 		  StringBuilder queryStr = new StringBuilder();
 		  queryStr.append("select  count(distinct model.cadreRegUser.cadreRegUserId)  from TdpCadreDataVerification model where model.tdpCadre.isDeleted='N' ");
 		  
-		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
-		  }
+		  queryStr.append(" and date(model.tdpCadre.surveyTime) = :today ");	 
+		 
 	    
 		 Query query = getSession().createQuery(queryStr.toString());
-	     if(fromDate!= null && toDate!=null){
-			   query.setDate("fromDate", fromDate);
-			   query.setDate("toDate", toDate);
-			 }
+	     query.setDate("today", new DateUtilService().getCurrentDateAndTime());
+		
 	     return (Long) query.uniqueResult();
 	}
 
