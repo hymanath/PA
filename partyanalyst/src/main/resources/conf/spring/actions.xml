@@ -1713,7 +1713,7 @@
 	</bean>	
 	
 	<bean id="dataReconsolidationOverViewAction" class="com.itgrids.partyanalyst.web.action.DataReconsolidationOverViewAction" singleton="false">
-			<!-- <property name="dataReconsolidationService" ref="dataReconsolidationService" />  -->
+			<property name="dataReconsolidationService" ref="dataReconsolidationService" />
 			
 	</bean>	
 </beans>	

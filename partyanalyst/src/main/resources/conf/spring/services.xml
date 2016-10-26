@@ -3630,6 +3630,7 @@
 	</bean>
 	
 	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
+	 <property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
 	</bean>
 </beans>		
 			
