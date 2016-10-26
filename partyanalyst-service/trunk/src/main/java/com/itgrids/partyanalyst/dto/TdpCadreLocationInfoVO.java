@@ -34,6 +34,7 @@ public class TdpCadreLocationInfoVO implements Serializable{
 	private List<TdpCadreLocationInfoVO> parliamentList;
 	private List<TdpCadreLocationInfoVO> districtList;
 	private List<TdpCadreLocationInfoVO> stateList;
+	private List<TdpCadreLocationInfoVO> tehsilList;
 	
 	private Map<Long,TdpCadreLocationInfoVO> subMap;
 	
@@ -157,6 +158,12 @@ public class TdpCadreLocationInfoVO implements Serializable{
 	}
 	public void setSurveyDate(Date surveyDate) {
 		this.surveyDate = surveyDate;
+	}
+	public List<TdpCadreLocationInfoVO> getTehsilList() {
+		return tehsilList;
+	}
+	public void setTehsilList(List<TdpCadreLocationInfoVO> tehsilList) {
+		this.tehsilList = tehsilList;
 	}
 	
 	
