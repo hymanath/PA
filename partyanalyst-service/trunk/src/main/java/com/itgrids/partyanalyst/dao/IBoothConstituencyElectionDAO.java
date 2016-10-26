@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -182,4 +183,13 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId);
 	
 	public Long getValidVotesforBoothByElectionId(Long boothId,Long electionId);
+	
+	public List<Object[]> getDistrictLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getAssemblyLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getMandalLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getMunciORUrbanLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getPanchayatLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getPanchayatBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getLocalBodyBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO);
+	
 }
