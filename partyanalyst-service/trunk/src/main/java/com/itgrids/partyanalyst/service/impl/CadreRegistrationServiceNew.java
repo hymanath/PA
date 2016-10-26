@@ -896,10 +896,12 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				   
 				   
 				   //Get From Date.
-				    Calendar cal = Calendar.getInstance();
-				    cal.add(Calendar.DATE, - IConstants.DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS);
-				    Date fromDate = cal.getTime();
-				    
+				    Date fromDate = null; 
+				    if(IConstants.DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS >= 0){
+				    	Calendar cal = Calendar.getInstance();
+				    	cal.add(Calendar.DATE, - IConstants.DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS);
+				    	fromDate = cal.getTime();
+				    }
 				    
 				   TdpCadreLocationInfoVO finalVO = new TdpCadreLocationInfoVO();
 				  
