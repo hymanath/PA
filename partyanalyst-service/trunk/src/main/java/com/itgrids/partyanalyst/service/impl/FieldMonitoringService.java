@@ -961,7 +961,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				endDate = sdf.parse(toDateStr);
 			}
 			if(task.equalsIgnoreCase("dataMonitoringDashboard")){
-				   Long activeUrsCount = cadreRegIssueDAO.getActiveUsersCount(startDate,endDate);
+				   Long activeUrsCount = cadreRegIssueDAO.getActiveUsersCount();
 				   if(activeUrsCount != null && activeUrsCount.longValue() > 0l){
 					   IdAndNameVO vo1 = new IdAndNameVO(); 
 					   vo1.setName("DataMoniDashBrd");
@@ -1000,7 +1000,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 		if (returnList == null || returnList.size() == 0)
 			return null;
 		for (IdAndNameVO vo : returnList) {
-			if (vo.getId().longValue() == id) {
+			if (vo.getId() != null && vo.getId().longValue() == id) {
 				return vo;
 			}
 		}
@@ -1167,12 +1167,12 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				endDate = sdf.parse(toDateStr);
 			}
 			
-			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetails(issueTypeId, statusTypeId, startDate, endDate);
+			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetailsNew(issueTypeId, statusTypeId, startDate, endDate);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					FieldMonitoringVO vo = new FieldMonitoringVO();
-					
-					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					Long cadreSurveyUserId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setCadreSurveyUserId(cadreSurveyUserId);
 					vo.setUserName(obj[1] != null ? obj[1].toString():"");
 					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
@@ -1186,9 +1186,10 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 					vo.setDistrictName(obj[7] != null ? obj[7].toString():"");
 					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
 					vo.setConstituencyName(obj[9] != null ? obj[9].toString():"");
-					vo.setVendorId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
-					vo.setVendorName(obj[11] != null ? obj[11].toString():"");
-					
+					//vo.setVendorId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
+					//vo.setVendorName(obj[11] != null ? obj[11].toString():"");
+					String vendorName = fieldVendorTabUserDAO.getVendorNameByCadreSurveyUserId(cadreSurveyUserId);
+					vo.setVendorName(vendorName);
 					returnList.add(vo);
 				}
 			}

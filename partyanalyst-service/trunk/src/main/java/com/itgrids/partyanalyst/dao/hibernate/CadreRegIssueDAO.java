@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> implements ICadreRegIssueDAO {
 
@@ -588,18 +589,17 @@ public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUser
 		return query.list();
 	}
 	
-public Long getActiveUsersCount(Date fromDate,Date toDate){
+public Long getActiveUsersCount(){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select  count(distinct model.createdBy) " +
 				"  from CadreRegIssue model  " );
 		
-		if(fromDate != null && toDate != null)
-			sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
+		sb.append(" where date(model.insertedTime) = :today");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		query.setDate("today", new DateUtilService().getCurrentDateAndTime());
+		
 		return (Long)query.uniqueResult();
 	}
 
