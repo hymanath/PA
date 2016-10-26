@@ -1603,6 +1603,16 @@
 	  	<property name="targetMethod" value="pushTotalTodayTdpCadreDataToIntermediate" />
     </bean>
     
+      <bean name="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" />
+    	<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>
+    <bean name="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushTotalTodayTdpCadreDataToIntermediateByLowLevel" />
+    </bean> 
+    
+    
     <bean name="tdpCadreDetailsUpdationForDateWise" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreDateWisePush" />
     	<property name="cronExpression" value="0 0 0/3 * * ?" />
@@ -1645,8 +1655,10 @@
 			<ref bean="tdpcadreInfo" />-->
 			
 			<ref bean="partyMeetingStatusUpdation" />
-			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" />
-			<ref bean="tdpCadreDetailsUpdationForDateWise" />
+			
+			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
+			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
+			<!-- <ref bean="tdpCadreDetailsUpdationForDateWise" /> --> 
 			
         </list>
     	</property>
@@ -3612,6 +3624,9 @@
 	   <property name="districtDAO" ref="districtDAO" />
 	   <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	   <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO" />
+	   <property name="tdpCadreLocationInfoTempDAO" ref="tdpCadreLocationInfoTempDAO" />
+	   <property name="tdpCadreLocationInfoTemp1DAO" ref="tdpCadreLocationInfoTemp1DAO" />
+	   <property name="tdpCadreDateWiseInfoTempDAO" ref="tdpCadreDateWiseInfoTempDAO" />
 	</bean>
 	
 	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
