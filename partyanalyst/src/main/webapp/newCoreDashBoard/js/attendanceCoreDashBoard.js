@@ -553,11 +553,12 @@
 		str+='<th>MOBILE NO</th>'; 
 		str+='<th>STATUS</th>';
 		str+='<th>ATTENDED TIME</th>';
+		str+='<th>LATE COMER</th>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){  
 			if(result[i].status=="absent"){
-				continue;
+				continue;  
 			}   
 			str+='<tr>'; 
 			str+='<td>'+result[i].districtName.toUpperCase()+'</td>';
@@ -573,8 +574,13 @@
 				totalLate = totalLate + 1;    
 			}else{  
 				str+='<td class="text-success">'+result[i].wish.toUpperCase()+'</td>';  
-			}	
-			str+='</tr>';       
+			}
+			if((parseInt(result[i].wish.substring(0,2)) == 10 && parseInt(result[i].wish.substring(3,5)) >= 31) || (parseInt(result[i].wish.substring(0,2)) >= 11 )){
+				str+='<td class="text-danger">Yes</td>';
+			}else{  
+				str+='<td class="text-success">No</td>';  
+			}
+			str+='</tr>';         
 		} 
 		str2+='<span class="label label-warning" style="margin-right: 5px;">Late Commings-'+totalLate+'</span>';
 		$("#positionId").html(str2); 
@@ -596,6 +602,7 @@
 		str+='<th>MOBILE NO</th>'; 
 		str+='<th>STATUS</th>';
 		str+='<th>ATTENDED TIME</th>';
+		str+='<th>LATE COMER</th>';      
 		str+='</thead>';
 		str+='<tbody>';
 		total = result.length;
@@ -627,8 +634,18 @@
 				}
 			}else{    
 				str+='<td>-</td>';  
-			}	
-			str+='</tr>';   
+			}
+			if(result[i].wish != null){
+				if((parseInt(result[i].wish.substring(0,2)) == 10 && parseInt(result[i].wish.substring(3,5)) >= 31) || (parseInt(result[i].wish.substring(0,2)) >= 11 )){
+					str+='<td class="text-danger">Yes</td>';  
+				}else{  
+					str+='<td class="text-success">No</td>';  
+				}
+			}else{    
+				str+='<td>-</td>';  
+			}
+			
+			str+='</tr>';       
 		} 
 		str2+='<span class="label label-primary" style="margin-right: 5px;">All-'+total+'</span>'; 
 		str2+='<span class="label label-success" style="margin-right: 5px;">Attended-'+present+'</span>';    
