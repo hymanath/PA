@@ -1605,7 +1605,7 @@
     
       <bean name="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" />
-    	<property name="cronExpression" value="0 0/30 * * * ?" />
+    	<property name="cronExpression" value="0 0 0/1 * * ?" />
 	</bean>
     <bean name="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1615,7 +1615,7 @@
     
     <bean name="tdpCadreDetailsUpdationForDateWise" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreDateWisePush" />
-    	<property name="cronExpression" value="0 0 0/3 * * ?" />
+    	<property name="cronExpression" value="0 0 0/2 * * ?" />
 	</bean>
     <bean name="insertTriggerForTdpCadreDateWisePush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1658,7 +1658,7 @@
 			
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
-			<!-- <ref bean="tdpCadreDetailsUpdationForDateWise" /> --> 
+		    <ref bean="tdpCadreDetailsUpdationForDateWise" /> 
 			
         </list>
     	</property>
