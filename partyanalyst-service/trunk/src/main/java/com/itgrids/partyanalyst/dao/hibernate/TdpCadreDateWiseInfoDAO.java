@@ -133,18 +133,21 @@ return query.list();
      }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
    	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model1.deformDate is null "); 
-      if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
-   	      queryStr.append("  and model.locationScopeId=3 ");	
-   	    }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
-   	    	queryStr.append("  and model.locationScopeId=10 ");	
-   	    }else{
-   	      queryStr.append("  and model.locationScopeId=4 ");	
-   	    }
+        if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
+ 	    	queryStr.append("  and model.locationScopeId=10 ");	
+ 	    }else{
+ 	      queryStr.append("  and model.locationScopeId=4 ");	
+ 	    }
      }
-   
-   	if(locationValue != null && locationValue.size() > 0){
-   	 	  queryStr.append(" and model.locationValue in (:locationValue) ");  
-   	}
+    if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+	  	  if(locationValue != null && locationValue.size() > 0){
+		      queryStr.append("  and model1.district.districtId in (:locationValue) ");	
+	  	  }
+  	  }else{
+	        if(locationValue != null && locationValue.size() > 0){
+	  	 	   queryStr.append(" and model.locationValue in (:locationValue)");  
+	  	    }
+	    }
    	if(fromDate!= null && toDate!=null){
 	          queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
    	}
@@ -196,17 +199,21 @@ return query.list();
          }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
    	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
        	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");
-          if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
-       	      queryStr.append("  and model.locationScopeId=3 ");	
-       	    }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
+           if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
        	    	queryStr.append("  and model.locationScopeId=10 ");	
        	    }else{
        	      queryStr.append("  and model.locationScopeId=4 ");	
        	    }
          }
-          if(locationValue != null && locationValue.size() > 0){
-  	 	  queryStr.append(" and model.locationValue in (:locationValue)");  
-  	    }
+         if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+        	  if(locationValue != null && locationValue.size() > 0){
+      	      queryStr.append("  and model1.district.districtId in (:locationValue) ");	
+        	  }
+      	    }else {
+      	      if(locationValue != null && locationValue.size() > 0){
+      	  	 	   queryStr.append(" and model.locationValue in (:locationValue)");  
+      	  	    }
+      	    }
         if(fromDate!= null && toDate!=null){
 		    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
 		  }
