@@ -363,15 +363,15 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 					queryStr.append(" '','','',booth.localBody.localElectionBodyId,booth.localBody.name,'"+IConstants.MUNCIPALITY_CORPORATION_LEVEL+"'," +
 							"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
-				queryStr.append(" constituency.tehsil.tehsilId , constituency.tehsil.tehsilName  as name  ,'RURAL','','',''," +
+				queryStr.append(" booth.panchayat.panchayatId , booth.panchayat.panchayatName  as name  ,'Panchayat','','',''," +
 						"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				queryStr.append(" booth.boothId  as name  ,booth.partNo ,'POLLINGSTATION','','',''," +
 						"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+			}/*else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				queryStr.append(" '','','',booth.localBody.localElectionBodyId,booth.localBody.name,'"+IConstants.MUNCIPALITY_CORPORATION_LEVEL+"'," +
 						"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
-			}
+			}*/
 			
 			queryStr.append(" from ");
 			queryStr.append(" TdpCadreDateWiseInfo model ");
@@ -379,12 +379,12 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 				queryStr.append("  ,District district ");
 			}
-			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){			
+			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT) ){			
 				queryStr.append(" ,Constituency constituency ");
 			}
 			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){			
 				queryStr.append(" ,Booth booth ");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
 				queryStr.append(" ,Booth booth ");
 			}
 			
@@ -428,16 +428,16 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 							}
 						}
 				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
-					queryStr.append("  and  model.locationScopeId = 5 and model.locationValue = constituency.tehsil.tehsilId and  constituency.constituencyId = :parentLocationTypeId and booth.publicationDate.publicationDateId = "+IConstants.AFFILIATED_VOTER_PUBLICATION_ID+" ");
+					queryStr.append("   and model.locationScopeId = 6 and model.locationValue = booth.panchayat.panchayatId and  booth.tehsil.tehsilId = :parentLocationTypeId and booth.publicationDate.publicationDateId = "+IConstants.AFFILIATED_VOTER_PUBLICATION_ID+" ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
-						queryStr.append(" and constituency.tehsil.tehsilId = :childLocationTypeId ");
+						queryStr.append(" and  booth.tehsil.tehsilId = :childLocationTypeId ");
 					}
-				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+				}/*else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 					queryStr.append(" and  model.locationScopeId = 7 and model.locationValue = booth.localBody.localElectionBodyId and booth.constituency.constituencyId = :parentLocationTypeId ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and booth.localBody.localElectionBodyId = :childLocationTypeId ");
 					}
-				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+				}*/else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 					queryStr.append(" and  model.locationScopeId = 6 and model.locationValue = booth.boothId and booth.panchayat.panchayatId = :parentLocationTypeId ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and booth.boothId = :childLocationTypeId ");
@@ -466,7 +466,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 					queryStr.append(" booth.localBody.localElectionBodyId ");
 			}
 			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
-					queryStr.append(" constituency.tehsil.tehsilId ");
+					queryStr.append(" booth.tehsil.tehsilId ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				queryStr.append(" booth.localBody.localElectionBodyId ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
