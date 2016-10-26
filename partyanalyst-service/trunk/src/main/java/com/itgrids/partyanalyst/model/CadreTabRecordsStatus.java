@@ -34,7 +34,9 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	private Long sync;
 	private Long pending;
 	private Date insertedTime;
-	private Date surveyDate;	
+	private Date minRecordTime;	
+	private Date maxRecordTime;	
+	private Date surveyTime;
 	private String isDeleted;
 	
 	private CadreSurveyUser cadreSurveyUser;
@@ -123,13 +125,6 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
-	@Column(name="survey_date")
-	public Date getSurveyDate() {
-		return surveyDate;
-	}
-	public void setSurveyDate(Date surveyDate) {
-		this.surveyDate = surveyDate;
-	}
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "cadre_survey_user_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -150,6 +145,28 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	public void setTabUserInfo(TabUserInfo tabUserInfo) {
 		this.tabUserInfo = tabUserInfo;
 	}
+	@Column(name="min_record_time")
+	public Date getMinRecordTime() {
+		return minRecordTime;
+	}
+	public void setMinRecordTime(Date minRecordTime) {
+		this.minRecordTime = minRecordTime;
+	}
+	@Column(name="max_record_time")
+	public Date getMaxRecordTime() {
+		return maxRecordTime;
+	}
+	public void setMaxRecordTime(Date maxRecordTime) {
+		this.maxRecordTime = maxRecordTime;
+	}
+	@Column(name="survey_time")
+	public Date getSurveyTime() {
+		return surveyTime;
+	}
+	public void setSurveyTime(Date surveyTime) {
+		this.surveyTime = surveyTime;
+	}
+	
 	
 	
 }
