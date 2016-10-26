@@ -31,7 +31,10 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	private Long targetCount=0L;
 	private String achievedPerc;
 	
-	
+	private String earnedVotesIn2014;
+	private String earnedVotesPercIn2014;
+	private String validVotes;
+	private String isYCPArea;
 	
 	
 	//VERY-GOOD, GOOD, OK, POOR, VERY_POOR / ISSSUES Status Details
@@ -46,7 +49,30 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	}
 	
 	
-	
+	public String getIsYCPArea() {
+		return isYCPArea;
+	}
+	public void setIsYCPArea(String isYCPArea) {
+		this.isYCPArea = isYCPArea;
+	}
+	public String getEarnedVotesIn2014() {
+		return earnedVotesIn2014;
+	}
+	public void setEarnedVotesIn2014(String earnedVotesIn2014) {
+		this.earnedVotesIn2014 = earnedVotesIn2014;
+	}
+	public String getEarnedVotesPercIn2014() {
+		return earnedVotesPercIn2014;
+	}
+	public void setEarnedVotesPercIn2014(String earnedVotesPercIn2014) {
+		this.earnedVotesPercIn2014 = earnedVotesPercIn2014;
+	}
+	public String getValidVotes() {
+		return validVotes;
+	}
+	public void setValidVotes(String validVotes) {
+		this.validVotes = validVotes;
+	}
 	public Long getTargetCount() {
 		return targetCount;
 	}
