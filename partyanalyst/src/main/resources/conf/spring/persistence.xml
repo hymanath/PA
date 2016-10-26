@@ -1013,7 +1013,8 @@
                       <value>com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo</value>
                       
                       <value>com.itgrids.partyanalyst.model.CadreTabRecordsStatus</value>   
-                      <value>com.itgrids.partyanalyst.model.CadreRegUserTabUser</value>                      
+                      <value>com.itgrids.partyanalyst.model.CadreRegUserTabUser</value> 
+                      <value>com.itgrids.partyanalyst.model.ParliamentAssembly</value> 	                     
 				 </list>
 			
 		</property>
