@@ -13923,7 +13923,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			}			
 			
 		}catch(Exception e){
-			LOG.error("Exception riased at getLatestLattitudeLangitudeOfTabUser in CadreRegistrationService Service class", e);
+			LOG.error("Exception riased at getLatestLattitudeLangitudeOfTabUser in CadreRegistrationService class", e);
 		}
 		return finalList;
 	}
@@ -13938,6 +13938,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			
 			if(cadreTabRecordsStatusList !=null && cadreTabRecordsStatusList.size()>0){
 				for (CadreTabRecordsStatusVO tabVO : cadreTabRecordsStatusList) {	
+					cadreTabRecordsStatusDAO.deleteExstngCadreTdpRecords(tabVO.getCadreSurveyUserId(),tabVO.getTabUserInfoId(),sdf.parse(tabVO.getSurveyDate()));
 					
 					CadreTabRecordsStatus model = new CadreTabRecordsStatus();	
 					
@@ -13954,9 +13955,16 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					model.setPending(tabVO.getPending() !=null ? tabVO.getPending() :0l);
 					model.setIsDeleted("N");
 					
+					
 					model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					model.setKafkaPending(tabVO.getKafkaPending() !=null ? tabVO.getKafkaPending() :0l);
+					model.setServerPending(tabVO.getServerPending() !=null ? tabVO.getServerPending() :0l);
 					if(tabVO.getSurveyDate() !=null && !tabVO.getSurveyDate().trim().isEmpty())
 						model.setSurveyDate(tabVO.getSurveyDate() !=null ? sdf.parse(tabVO.getSurveyDate()):null);
+					if(tabVO.getMinRecordTime() != null && tabVO.getMinRecordTime().trim().isEmpty())
+						model.setMinRecordTime(tabVO.getMinRecordTime() !=null ? sdf.parse(tabVO.getMinRecordTime()):null);
+					if(tabVO.getMaxRecordTime() != null && tabVO.getMaxRecordTime().trim().isEmpty())
+						model.setMaxRecordTime(tabVO.getMaxRecordTime() !=null ? sdf.parse(tabVO.getMaxRecordTime()):null);
 					
 					cadreTabRecordsStatusDAO.save(model);
 					
@@ -14007,4 +14015,5 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return finalList;
 	}
+	
 }
