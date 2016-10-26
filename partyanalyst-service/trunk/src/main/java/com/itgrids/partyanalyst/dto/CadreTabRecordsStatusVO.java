@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 
+
 public class CadreTabRecordsStatusVO implements Serializable{
 
 	private Long cadreSurveyUserId;
@@ -13,6 +14,10 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	private Long sync;
 	private Long pending;
 	private String surveyDate;
+	private String minRecordTime;
+	private String maxRecordTime;
+	private Long kafkaPending;
+	private Long serverPending;
 	
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
@@ -67,6 +72,30 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	}
 	public void setSurveyDate(String surveyDate) {
 		this.surveyDate = surveyDate;
+	}
+	public String getMinRecordTime() {
+		return minRecordTime;
+	}
+	public void setMinRecordTime(String minRecordTime) {
+		this.minRecordTime = minRecordTime;
+	}
+	public String getMaxRecordTime() {
+		return maxRecordTime;
+	}
+	public void setMaxRecordTime(String maxRecordTime) {
+		this.maxRecordTime = maxRecordTime;
+	}
+	public Long getKafkaPending() {
+		return kafkaPending;
+	}
+	public void setKafkaPending(Long kafkaPending) {
+		this.kafkaPending = kafkaPending;
+	}
+	public Long getServerPending() {
+		return serverPending;
+	}
+	public void setServerPending(Long serverPending) {
+		this.serverPending = serverPending;
 	}
 	
 	
