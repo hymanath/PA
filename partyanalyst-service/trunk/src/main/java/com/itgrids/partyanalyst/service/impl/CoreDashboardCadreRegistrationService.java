@@ -1345,27 +1345,19 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  }
 		if(userAccessLevelMap != null && userAccessLevelMap.size() > 0){
 			 for(Entry<Long,Set<Long>> entry:userAccessLevelMap.entrySet()){
-					   Long accessLevelId =0l;	
-					     if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency in the case of core dashboard
-					    	 accessLevelId = 10l; //region scope 10  means parliament constituency in intermediate table so that we are replacing value
-					     }else if(entry.getKey().longValue()==5l){// user level 5 means constituency in the case of core dashboard
-					    	 accessLevelId = 4l;  //region scope 4  means constituency in intermediate table so that we are replacing value
-					     }else{
-					    	 accessLevelId = entry.getKey();	 
-					     }
 					     List<Long> locationValue=null;
-					     if(accessLevelId.longValue() == 2l){//state access
+					     if(entry.getKey().longValue() == 2l){//state access
 					    	 locationValue = new ArrayList<Long>(locationIdAndNameMap.keySet());// getting all district details
 					     }else{
 					    	 locationValue = new ArrayList<Long>(entry.getValue());	
 					     }
 					  //List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, null, null, 3l, userTypeId); //2014 total cadre
-						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreLocationInfoDAO.get2014TotalCadreCountBasedOnUserType(accessLevelId,locationValue, stateId, userTypeId,activityMemberId);
+						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreLocationInfoDAO.get2014TotalCadreCountBasedOnUserType(locationValue, userTypeId,activityMemberId);
 						set2014CadreCountToMap(rtrn2014CadreDtlsObjLst, locationWiseCadreDetaislMap,locationIdAndNameMap);
 						//List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, fromDate, toDate, 4l, userTypeId); //2016 total cadre
-						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountBasedOnUserType(accessLevelId,locationValue, stateId, fromDate, toDate, userTypeId,activityMemberId);
+						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountBasedOnUserType(locationValue, fromDate, toDate, userTypeId,activityMemberId);
 						set2016CadreCountToMap(rtrnCadreDtlsObjLst,locationWiseCadreDetaislMap);
-						List<Object[]> rtrnRenewalObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountBasedOnUserType(accessLevelId,locationValue, stateId, fromDate, toDate, userTypeId,activityMemberId);
+						List<Object[]> rtrnRenewalObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountBasedOnUserType(locationValue, fromDate, toDate, userTypeId,activityMemberId);
 						setRenewalCountToMap(rtrnRenewalObjList,locationWiseCadreDetaislMap);
 			 }
 		 }
