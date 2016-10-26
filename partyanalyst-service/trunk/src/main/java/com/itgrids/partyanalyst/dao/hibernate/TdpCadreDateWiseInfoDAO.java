@@ -26,7 +26,9 @@ public class TdpCadreDateWiseInfoDAO extends GenericDaoHibernate<TdpCadreDateWis
 			sb.append(" where survey_date >= :fromDate "); 
 		 }
    	Query query = getSession().createSQLQuery(sb.toString());
-   	query.setDate("fromDate",fromDate );
+   	if(fromDate != null){
+   		query.setDate("fromDate",fromDate );
+   	}
    	
    	return query.executeUpdate();
    }
