@@ -123,22 +123,22 @@
         <div class="block m_top20" id="issueTypeDivId" style="display:none;">
 		<div id="submitButId"></div>
         	<div class="row">
-            	<div class="col-md-4 col-xs-12 col-sm-4">
+            	<div class="col-md-3 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label><span style="color:red"> *</span>
                     <select class="select" id="issueTypeId">
                     </select>
                 </div>
-                <div class="col-md-8 col-xs-12 col-sm-8">
+                <div class="col-md-7 col-xs-12 col-sm-8">
                 	<label>Issue Description</label><span style="color:red"> *</span>
                     <input type="text" class="form-control" id="descriptionId"/>
                 </div>
-				<div class="col-md-4 col-xs-12 col-sm-4">
+				<!--<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select Constituency</label><span style="color:red"> *</span>
                     <select class="select" id="issueConstituencyId">
                     	<option value="0">Select Constituency</option>
                     </select>
-                </div>
-				<div class="col-md-4 col-xs-12 col-sm-4">
+                </div>-->
+				<div class="col-md-2 col-xs-12 col-sm-4">
 					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
 					<span id="savingDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 				</div>
@@ -219,6 +219,12 @@ $(document).on("click",".ranges li",function(){
 		getIssueTypeWiseCounts();
 		getCadreRegIssueType();
 	});
+	
+$(document).on("click",".modalCloseCls",function(){
+	setTimeout(function(){
+		$('body').addClass("modal-open");
+	}, 1000);
+});
 
 getCadreRegIssueType();
 </script>
