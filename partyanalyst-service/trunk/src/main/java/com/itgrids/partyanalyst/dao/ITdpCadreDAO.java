@@ -481,4 +481,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Voter getTdpCadreVoterByvoterId(Long voterId);
 	  public Long getCadreWithOwnVoter(Long accessLvlId, List<Long> accessLvlValue);
 	  public Long getCadreWithFamilyVoter(Long accessLvlId, List<Long> accessLvlValue);
+	  
+	  public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelType);
+	  public List<Object[]> levelWiseRenewalTdpCareDataByTodayOrTotal(Date date,String levelType);
 } 
