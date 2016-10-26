@@ -6,7 +6,18 @@ $(document).on("click",".compareBlockSwitchCls",function(){
 });
 $(document).on("click",".cadreComparison",function(){
 	$(".detailsCls").show();     
-	$(".compareCls").hide();           
+	$(".compareCls").hide(); 
+    var filterApplyType="No";
+	var accessLevelId=0;
+	var accessLevelValues=[];
+    var renewal2016CheckboxIsChecked="Y";
+	var new2016CheckboxIsChecked="Y";
+	var cadre2014CheckboxIsChecked="Y";  
+	getCadreDetailsBasedOnUserType(filterApplyType);  
+	getSourceOfRegistrationDtls(globalActivityMemberId);       
+	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
+	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
+	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);	
 }); 
    
 $(document).ready(function() {
@@ -2305,6 +2316,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 });  
 
 	function getSourceOfRegistrationDtls(globalActivityMemberId){
+		$("#sourceTypeId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var startDate = '';    
 		var endDate = '';    
 		var jsObj={  
