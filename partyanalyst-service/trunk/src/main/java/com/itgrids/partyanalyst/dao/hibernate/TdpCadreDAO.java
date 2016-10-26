@@ -8186,24 +8186,29 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		return (Voter)query.uniqueResult();
 		
 	}
-	public List<Object[]> getTdpCadreDataByDateAndConstituency(){
+	public List<Object[]> getTdpCadreDataByDateAndConstituency(Date fromDate){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select  date(model.tdpCadre.surveyTime),model.tdpCadre.userAddress.constituency.constituencyId,count(model.tdpCadre.tdpCadreId )  " +
 				  " from    TdpCadreEnrollmentYear model " +
 				  " where   model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and "+
 				  "         model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId  " );
-		
-		sb.append(" group by date(model.tdpCadre.surveyTime),model.tdpCadre.userAddress.constituency.constituencyId ");
+		if(fromDate != null){
+			sb.append(" and date(model.tdpCadre.surveyTime) >= :fromDate ");
+		}
+		sb.append(" group by date(model.tdpCadre.surveyTime),model.tdpCadre.userAddress.constituency.constituencyId " +
+				"   order by date(model.tdpCadre.surveyTime)");
 		
 		Query query = getSession().createQuery(sb.toString());
-		
+		if(fromDate != null){
+			query.setDate("fromDate", fromDate);
+		}
 		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 		
 		return query.list();
 	}
 	
-	public List<Object[]> getRenewalTdpCadreDataByDateAndConstituency(){
+	public List<Object[]> getRenewalTdpCadreDataByDateAndConstituency(Date fromDate){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select  date(tc.surveyTime), tc.userAddress.constituency.constituencyId,count(tc.tdpCadreId )  " +
@@ -8213,14 +8218,18 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 				  "         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
 				  "         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear  ");
 				  
-		
+		if(fromDate != null){
+			sb.append(" and date(tc.surveyTime) >= :fromDate ");
+		}
 		sb.append(" group by date(tc.surveyTime),tc.userAddress.constituency.constituencyId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
 		query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
-		
+		if(fromDate != null){
+			query.setDate("fromDate", fromDate);
+		}
 		return query.list();
 	}
 	
