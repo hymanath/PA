@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /*
@@ -243,10 +245,10 @@ public class GISVisualizationService implements IGISVisualizationService{
 			else {
 				Long mandalORMuncipalityId = inputVO.getParentLocationTypeId();
 				//String mandalORMuncipalityIdStr = mandalORMuncipalityId.toString().substring(0, 1);
-				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.URBAN) ){
+				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ){
 					locationsList= boothDAO.getBoothsByLocalElectionBody(mandalORMuncipalityId,IConstants.AFFILIATED_VOTER_PUBLICATION_ID);
 				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
-					locationsList= boothDAO.getBoothsByTehsilId(mandalORMuncipalityId,IConstants.AFFILIATED_VOTER_PUBLICATION_ID);
+					locationsList= panchayatDAO.getPanchayatsBymandalId(mandalORMuncipalityId);
 				}
 				returnMap = buildLocationsDetails(locationsList);
 			}
@@ -263,7 +265,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 		  Map<Long,GISVisualizationDetailsVO> locationsMap = null;
 		   locationsMap =  getLocationDetailsBasedOnParameters(inputVO);
 		   Map<Long,Long> loctnsTargetCntMap = new HashMap<Long,Long>();
-		   updateUserTrackingDetasil(locationsMap,inputVO);
+		   //updateUserTrackingDetasil(locationsMap,inputVO);
 		   List<Object[]> targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
 		   
 		   if(targetList != null && targetList.size() > 0){
@@ -285,6 +287,35 @@ public class GISVisualizationService implements IGISVisualizationService{
 				  setMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
 		   
+		   //between dates
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
+			   List<Object[]> locationDetails = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+			   setDateWiseMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			   inputVO.setChildLocationType(IConstants.RURAL) ;
+			   List<Object[]> locationDetails1 = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+			   setDateWiseMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}else{
+				 List<Object[]> locationDetails2 = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}
+		   
+		   //today
+		   inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		   inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		   
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
+			   List<Object[]> locationDetails = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+			   setDateWiseMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			   inputVO.setChildLocationType(IConstants.RURAL) ;
+			   List<Object[]> locationDetails1 = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+			   setDateWiseMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}else{
+				 List<Object[]> locationDetails2 = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
+				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}
+		   
 	} catch (Exception e) {
 		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
 	}
@@ -294,8 +325,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 	public void setMembershipDriveVisualizationDetails(List<Object[]> locationDetails,GISVisualizationDetailsVO parentLocationVO,
 			Map<Long,GISVisualizationDetailsVO> locationsMap,Map<Long,Long> loctnsTargetCntMap){
 		try{
-			Long dailyTargetCount = IConstants.DAY_WISE_TARGET_REGISTRATIONS_COUNT;
-			   Long totalTerget  = 1000000l;
+			//Long dailyTargetCount = IConstants.DAY_WISE_TARGET_REGISTRATIONS_COUNT;
+			 //  Long totalTerget  = 1000000l;
 		 if(commonMethodsUtilService.isListOrSetValid(locationDetails)){
 			   for (Object[] param : locationDetails) {
 					Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -390,14 +421,14 @@ public class GISVisualizationService implements IGISVisualizationService{
 							if(trackingVO != null){
 								trackingVO.setRegisteredCount(trackingVO.getRegisteredCount()+commonMethodsUtilService.getLongValueForObject(param[7]));
 								
-								GISUserTrackingVO userVO = new GISUserTrackingVO();
+								/*GISUserTrackingVO userVO = new GISUserTrackingVO();
 								userVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
 								userVO.setRegisteredCount(commonMethodsUtilService.getLongValueForObject(param[7]));
 								if(!userIdsList.contains(userVO.getId())){
 									trackingVO.getUsersList().add(userVO);
 									userIdsList.add(userVO.getId());
 								
-								}
+								}*/
 							}
 						}
 					}
@@ -414,7 +445,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							if(trackingVO != null){
 								trackingVO.setLastOneHrCount(trackingVO.getLastOneHrCount()+commonMethodsUtilService.getLongValueForObject(param[7]));
 								
-								GISUserTrackingVO userVO = new GISUserTrackingVO();
+								/*GISUserTrackingVO userVO = new GISUserTrackingVO();
 								userVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
 								userVO.setLastOneHrCount(commonMethodsUtilService.getLongValueForObject(param[7]));
 								
@@ -422,7 +453,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 									trackingVO.getLastOneHrusersList().add(userVO);
 									OneHruserIdsList.add(userVO.getId());
 									
-								}
+								}*/
 							}
 						}
 					}
