@@ -18,16 +18,23 @@ public class TdpCadreDateWiseInfoDAO extends GenericDaoHibernate<TdpCadreDateWis
 		super(TdpCadreDateWiseInfo.class);
 	}
 	
-	 public int deleteAllRecords(){
-	    	
-    	Query query = getSession().createSQLQuery(" delete from tdp_cadre_date_wise_info ");
-    	return query.executeUpdate();
-    }
+	public int deleteAllRecords(Date fromDate){
+	    
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" delete from tdp_cadre_date_wise_info  ");
+		 if(fromDate != null){
+			sb.append(" where survey_date >= :fromDate "); 
+		 }
+   	Query query = getSession().createSQLQuery(sb.toString());
+   	query.setDate("fromDate",fromDate );
+   	
+   	return query.executeUpdate();
+   }
 	 
-    public int setPrimaryKeyAutoIncrementToOne(){
-    	Query query = getSession().createSQLQuery(" ALTER TABLE tdp_cadre_date_wise_info AUTO_INCREMENT = 1 ");
-    	return query.executeUpdate();
-    }
+	 public int setPrimaryKeyAutoIncrementToOne(){
+	    	Query query = getSession().createSQLQuery(" ALTER TABLE tdp_cadre_date_wise_info AUTO_INCREMENT = 1 ");
+	    	return query.executeUpdate();
+	  }
     
     public List<Object[]> get2016TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Date fromDate,Date toDate){
 		
@@ -509,5 +516,17 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public int insertTdpCadreLocInfoDateWiseUpToConstituencyLevel(){
+		
+		Query query = getSession().createSQLQuery("" +
+		"  INSERT INTO tdp_cadre_date_wise_info( survey_date,location_scope_id,location_value,cadre_2016,cadre_2016_percent," +
+		"                                        new_cadre,new_cadre_percent,renewal_cadre,renewal_cadre_percent,inserted_time" +
+		"                                       ) " +
+	    "         SELECT TEMP.survey_date,TEMP.location_scope_id,TEMP.location_value,TEMP.cadre_2016,TEMP.cadre_2016_percent," +
+	    "                TEMP.new_cadre,TEMP.new_cadre_percent,TEMP.renewal_cadre,TEMP.renewal_cadre_percent,TEMP.inserted_time " +
+	    "         FROM   tdp_cadre_date_wise_info_temp TEMP " );
+		return query.executeUpdate();
 	}
 }
