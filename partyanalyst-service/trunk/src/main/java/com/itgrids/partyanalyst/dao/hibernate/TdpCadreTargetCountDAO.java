@@ -17,7 +17,7 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 	public TdpCadreTargetCountDAO() {
 		super(TdpCadreTargetCount.class);
 	}
-	public List<Object[]> getTotalCadreTargetCountLocationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long enrollmentYearId){
+	public List<Object[]> getTotalCadreTargetCountLocationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long enrollmentYearId,Long activityMemberId){
 		
 		StringBuilder queryStr = new StringBuilder();  
 	        queryStr.append(" select");
@@ -35,8 +35,7 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 				" TdpCadreTargetCount model " +
 				" where " +
 				" model.enrollmentYear.enrollmentYearId=:enrollmentYearId ");
-         
-		   if(stateId != null && stateId.longValue() > 0){
+           if(stateId != null && stateId.longValue() > 0){
 				 if(stateId != null && stateId.longValue() > 0){
 					   if(stateId.longValue()==1l){
 							queryStr.append(" and  model.constituency.district.districtId > 10 and  model.constituency.state.stateId = 1 ");
@@ -45,6 +44,11 @@ public class TdpCadreTargetCountDAO extends GenericDaoHibernate<TdpCadreTargetCo
 						}
 				 } 
 		   }
+           if(activityMemberId != null && activityMemberId.longValue()==4l){
+        	  queryStr.append(" and model.constituencyId not in(244,246,248,250,251,252) ");//activity memberId 4 has access only 4 constituency access of kadapa district so we are ignoring 6 constituency of kadapa district
+           }else if(activityMemberId != null && activityMemberId.longValue()==5l){
+        	  queryStr.append(" and model.constituencyId not in(242,243,245,249) ");//activity memberId 5 has access only 6 constituency access of kadapa district so we are ignoring 4 constituency of kadapa district
+           }
 		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	         queryStr.append(" group by model.constituency.state.stateId ");  
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){

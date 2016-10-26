@@ -1091,7 +1091,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			    	 
 					  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
 						  
-						List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l);
+						List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l,null);
 						  
 						if(returnObjList != null && returnObjList.size() > 0){
 							
@@ -1332,15 +1332,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		     setRequiredLocationName(locationIdAndNameObjList,locationIdAndNameMap);
 	 
 	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 3l);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 3l,activityMemberId);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 4l);// 2016 target 
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 4l,activityMemberId);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 	  }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 	     	  || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l,null, stateId, 3l);// 2014 target 
+			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l,null, stateId, 3l,activityMemberId);// 2014 target 
 			setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l,null, stateId, 4l);// 2016 target 
+			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l,null, stateId, 4l,activityMemberId);// 2016 target 
 			setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 	  }
 		if(userAccessLevelMap != null && userAccessLevelMap.size() > 0){
@@ -1502,14 +1502,14 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			 fromDate = sdf.parse(fromDateStr);
 		 }
 		 if(locationType != null && locationType.equalsIgnoreCase("District")){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 3l);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 3l,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 4l);// 2016 target 
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(3l, null, stateId, 4l,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 		 }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 3l);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 3l,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 4l);// 2016 target 
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(5l, null, stateId, 4l,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 		 }
 		    
@@ -1745,7 +1745,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					}else{  
 						accessLevelValue = entry.getKey();   
 					}*/ // xxxx
-					List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l);
+					List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l,null);
 					if(returnObjList != null && returnObjList.size() > 0){
 						for (Object[] param : returnObjList) {
 							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
@@ -1979,7 +1979,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//get target Count
 			Long totalTarget = 0l;
 			
-			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l);
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
 			
 			if(totalTargetList != null && totalTargetList.size() > 0){
 				for(Object[] param : totalTargetList){
@@ -2095,7 +2095,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			Long totalTarget = 0l;
 			
-			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l);
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
 			if(totalTargetList != null && totalTargetList.size() > 0){
 				for(Object[] param : totalTargetList){
 					if(accessLvlValue.contains((Long)param[0]))
@@ -2193,7 +2193,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			  //get target countxxxx
 		 	  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 		 		  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-		 			  List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l);
+		 			  List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l,null);
 		 			  if(returnObjList != null && returnObjList.size() > 0){
 		 				  for (Object[] param : returnObjList) {
 							   String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -2479,7 +2479,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			}
 			//get 2014 total target location wise 
-			List<Object[]> totalTargetList2014 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 3l);
+			List<Object[]> totalTargetList2014 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 3l,null);
 			if(totalTargetList2014 != null && totalTargetList2014.size() > 0){
 				for(Object[] param : totalTargetList2014){
 					if(accessLvlValue.contains((Long)param[0])){
@@ -2508,7 +2508,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//get 2016 total target location wise
 			//List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l);
 			
-			List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,4l);
+			List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,4l,null);
 			
 			if(totalTargetList2016 != null && totalTargetList2016.size() > 0){
 				for(Object[] param : totalTargetList2016){
