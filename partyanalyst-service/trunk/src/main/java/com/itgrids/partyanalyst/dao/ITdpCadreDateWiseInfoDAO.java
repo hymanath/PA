@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfo;
 
 public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInfo,Long>{
 	
-	public int deleteAllRecords();
+	public int deleteAllRecords(Date fromDate);
 	public int setPrimaryKeyAutoIncrementToOne();
 	public List<Object[]> get2016TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Date fromDate,Date toDate);
 	public List<Object[]> get2016TotalRenewalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Date fromDate,Date toDate);
@@ -23,4 +23,6 @@ public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInf
 	public List<Object[]> get2016TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> get2016TotalRenewalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
+	
+	public int insertTdpCadreLocInfoDateWiseUpToConstituencyLevel();
 }
