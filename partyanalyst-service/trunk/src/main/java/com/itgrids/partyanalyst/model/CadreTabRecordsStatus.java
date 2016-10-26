@@ -38,7 +38,8 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	private Date maxRecordTime;	
 	private Date surveyDate;
 	private String isDeleted;
-	
+	private Long kafkaPending;
+	private Long serverPending;
 	private CadreSurveyUser cadreSurveyUser;
 	private TabUserInfo tabUserInfo;
 	
@@ -166,7 +167,20 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	public void setSurveyDate(Date surveyDate) {
 		this.surveyDate = surveyDate;
 	}
-	
+	@Column(name="kafka_pending")
+	public Long getKafkaPending() {
+		return kafkaPending;
+	}
+	public void setKafkaPending(Long kafkaPending) {
+		this.kafkaPending = kafkaPending;
+	}
+	@Column(name="server_pending")
+	public Long getServerPending() {
+		return serverPending;
+	}
+	public void setServerPending(Long serverPending) {
+		this.serverPending = serverPending;
+	}
 	
 	
 }
