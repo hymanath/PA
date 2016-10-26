@@ -50,7 +50,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 		  
 	     return query.list();
 	}
-    public List<Object[]> get2014TotalCadreCountBasedOnUserType(Long locationScopeId,List<Long> locationValue,Long stateId,Long userTypeId,Long activityMemberId){
+    public List<Object[]> get2014TotalCadreCountBasedOnUserType(List<Long> locationValue,Long userTypeId,Long activityMemberId){
     	   
               StringBuilder queryStr = new StringBuilder(); 
               queryStr.append("select distinct ");
@@ -61,8 +61,10 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
               		 queryStr.append(" model2.districtId,");
               	  }   
               }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-        	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+        	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
             	  queryStr.append(" model1.constituencyId,");  
+              }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
+            	  queryStr.append(" model3.assemblyId,") ; 
               }
              queryStr.append("  sum(model.cadre2014) from TdpCadreLocationInfo model ");
              if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
@@ -72,32 +74,35 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
            		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
            	  }
              }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-       	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-           	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model1.deformDate is null "); 
-           	   if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
-         	    	queryStr.append("  and model.locationScopeId=10 ");	
-         	    }else{
-         	      queryStr.append("  and model.locationScopeId=4 ");	
-         	    }
-             }
+       	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+           	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model.locationScopeId=4 and model1.deformDate is null "); 
+           	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+           	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
+           	 }
              if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
 	           	  if(locationValue != null && locationValue.size() > 0){
 	         	      queryStr.append("  and model1.district.districtId in (:locationValue) ");	
 	           	  }
-         	 }else {
-     	        if(locationValue != null && locationValue.size() > 0){
-     	  	 	     queryStr.append(" and model.locationValue in (:locationValue)");  
-     	  	    }
-         	 }
-        	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+         	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+         		 if(locationValue != null && locationValue.size() > 0){
+         			 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
+         		 } 
+         	 }else if(locationValue != null && locationValue.size() > 0){
+         		 if(locationValue != null && locationValue.size() > 0){
+     	  	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
+         		 }
+     	  	 }
+         	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
         		  if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
                		 queryStr.append(" group by model1.district.districtId ");; 
                	  }else{
                		 queryStr.append(" group by model2.districtId ");
                	  }   
         	 }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-            	     || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-        		 queryStr.append("  group by model1.constituencyId ");
+            	|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+        		  queryStr.append("  group by model1.constituencyId ");
+        	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+        		  queryStr.append("  group by model3.assemblyId "); 
         	 }
 	      
 		  Query query = getSession().createQuery(queryStr.toString());
