@@ -18,6 +18,12 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	private String maxRecordTime;
 	private Long kafkaPending;
 	private Long serverPending;
+	private String name;
+	private String totalImeiNo;
+	private Long sumRecords;
+	private Long totalSyn;
+	private Long totalPending;
+
 	
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
@@ -96,6 +102,37 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	}
 	public void setServerPending(Long serverPending) {
 		this.serverPending = serverPending;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTotalImeiNo() {
+		return totalImeiNo;
+	}
+	public void setTotalImeiNo(String totalImeiNo) {
+		this.totalImeiNo = totalImeiNo;
+	}
+	public Long getSumRecords() {
+		return sumRecords;
+	}
+	public void setSumRecords(Long sumRecords) {
+		this.sumRecords = sumRecords;
+	}
+	public Long getTotalSyn() {
+		return totalSyn;
+	}
+	public void setTotalSyn(Long totalSyn) {
+		this.totalSyn = totalSyn;
+	}
+	public Long getTotalPending() {
+		return totalPending;
+	}
+	public void setTotalPending(Long totalPending) {
+		this.totalPending = totalPending;
 	}
 	
 	
