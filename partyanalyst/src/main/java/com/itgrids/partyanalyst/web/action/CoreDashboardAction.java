@@ -138,6 +138,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String mn;
 	private String en;
 	private String AuthDesc;
+	private List<IdNameVO> idNameVOs;
 	/**
 	 * Ending Payment Gateway required parameters
 	 * 
@@ -693,6 +694,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setConstName(String constName) {
 		this.constName = constName;
+	}
+	
+	public List<IdNameVO> getIdNameVOs() {
+		return idNameVOs;
+	}
+
+	public void setIdNameVOs(List<IdNameVO> idNameVOs) {
+		this.idNameVOs = idNameVOs;
 	}
 
 	//business methods
@@ -1508,45 +1517,7 @@ public String getRoleBasedPerformanceCohort(){
 		}
 		return Action.SUCCESS;
 	}
-	public String getStateLevelCampAttendedDetails(){  
-		try {
-			jObj = new JSONObject(getTask());
-			List<Long> programIdList = new ArrayList<Long>();
-			String dateStr = jObj.getString("dateStr");
-			Long stateId = jObj.getLong("stateId");
-			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
-			if(programIdArr!=null &&  programIdArr.length()>0){
-				for( int i=0;i<programIdArr.length();i++){
-					programIdList.add(Long.valueOf(programIdArr.getString(i)));
-				}
-			}
-			String option = jObj.getString("option");
-			
-			idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr,option);   
-			
-		} catch (Exception e) {
-			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e); 
-		}
-		return Action.SUCCESS; 
-	}
-	public String getStateLevelCampDetailsRepresentative(){
-		try{
-			jObj = new JSONObject(getTask());
-			List<Long> programIdList = new ArrayList<Long>();
-			String dateStr = jObj.getString("dateStr");
-			Long stateId = jObj.getLong("stateId");
-			JSONArray programIdArr=jObj.getJSONArray("programIdArr");
-			if(programIdArr!=null &&  programIdArr.length()>0){
-				for( int i=0;i<programIdArr.length();i++){
-					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
-				}
-			}
-			idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative(programIdList,stateId,dateStr);
-		}catch(Exception e){
-			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
-		}
-		return Action.SUCCESS;      
-	}
+	
 	public String getDistrictWiseCampAttendedMembers(){ 
 		try {
 			jObj = new JSONObject(getTask());
@@ -2898,4 +2869,34 @@ public String validateUpdateVoterDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getParyMeetingMemberDtls(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		
+		Long meetingId = jObj.getLong("meetingId");
+		Long partyMeetingMainTypeId = jObj.getLong("meetingMainTypeId");
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("meetingTypeIdArr");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+			}
+		}
+		
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");    
+		String status   = jObj.getString("status");
+		
+		
+		idNameVOs = coreDashboardPartyMeetingService.getParyMeetingMemberDtls(partyMeetingMainTypeId,partyMeetingTypeIds,meetingId,state,startDateString,endDateString,status);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getPartyMeetingsMainTypeOverViewData() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
+
 }

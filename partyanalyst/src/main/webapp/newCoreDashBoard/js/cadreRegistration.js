@@ -2591,6 +2591,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		
 	});
 	function getDirectChildMembers(ActivityMemberId,userTypeId){
+		$("#accessMemberId").show();    
 		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
@@ -2612,11 +2613,13 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){
 			if(result != null && result.length > 0){
 				buildDirectChildMembers(result);
+				        
 			}else{
 				$("#directChildId").html('');
 				$("#enumeratorsId").html('');        
 				$("#individualDtlsId").html(''); 
 				$("#voterDtlsId").html('');       
+				$("#accessMemberId").hide();         
 			}
 		});
 	}
@@ -2655,13 +2658,29 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		str+='</div>';
 		$("#directChildId").html(str);
 		//$("#belowLvlMemId0").trigger("click");
-		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
-		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$(".headingColor").hide();
-		getEnumerationDtlsForMem(activityMemberId);    
-		getDtlsOfBellowLvlMember(activityMemberId);
-		getVoterInfo(activityMemberId);          
+		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		//$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//$(".headingColor").hide();
+		if(k == 0){
+			$("#directChildId").html('');
+			$("#enumeratorsId").html('');        
+			$("#individualDtlsId").html('');   
+			$("#voterDtlsId").html('');
+			$(".headingColor").hide();
+			$("#accessMemberId").hide();  
+			
+		}else{
+			$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+			$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+			$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			$(".headingColor").hide();
+			$("#accessMemberId").show();              
+			getEnumerationDtlsForMem(activityMemberId);    
+			getDtlsOfBellowLvlMember(activityMemberId);
+			getVoterInfo(activityMemberId);    
+		} 
+		          
 			   
 	}  
 	$(document).on('click','.bellowLvlCls',function(){
