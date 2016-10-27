@@ -43,14 +43,9 @@
 								 <input type="text" class="form-control datePicker"/>
 							</div>
 					</div>
-						
-				<div class="col-md-4 col-xs-12 col-sm-4">
-					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
-				</div>	
-					<div id = "errorDivId" style = "color:red"></div>
-						
 					</div>
-					<input type="button" class ="btn btn-success pull-right" value ="submit" style="margin-bottom: 0px; margin-top: 5px;">
+					<input type="button" class ="btn btn-success pull-right" value ="submit" id="submitId" style="margin-bottom: 0px; margin-top: 5px;">
+					<div id = "errorDivId" style = "color:red"></div>
 				</div>
 				
 			</div>
