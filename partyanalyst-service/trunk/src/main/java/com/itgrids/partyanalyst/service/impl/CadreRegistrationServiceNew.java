@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,14 +28,18 @@ import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp1;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew{
 
@@ -53,6 +58,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreLocationInfoTempDAO tdpCadreLocationInfoTempDAO;
 	private ITdpCadreLocationInfoTemp1DAO tdpCadreLocationInfoTemp1DAO ;
 	private ITdpCadreDateWiseInfoTempDAO tdpCadreDateWiseInfoTempDAO;
+	private ImageAndStringConverter imageAndStringConverter;
+	private CommonMethodsUtilService commonMethodsUtilService;
+	private IVoterDAO voterDAO;
+	
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -99,6 +108,19 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreDateWiseInfoTempDAO(
 			ITdpCadreDateWiseInfoTempDAO tdpCadreDateWiseInfoTempDAO) {
 		this.tdpCadreDateWiseInfoTempDAO = tdpCadreDateWiseInfoTempDAO;
+	}
+	
+	public void setImageAndStringConverter(
+			ImageAndStringConverter imageAndStringConverter) {
+		this.imageAndStringConverter = imageAndStringConverter;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
 	}
 	//Business methods
 	/**
@@ -250,9 +272,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   finalList.add(todayDataVO);
 			   
 			   
-			   //long tempStartTime = System.currentTimeMillis();
+			   long tempStartTime = System.currentTimeMillis();
 			   rs =  saveTotalTodayTdpCadreDataToIntermediateTemp(finalList);
-			   //System.out.println("time for saving in temp table : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
+			   System.out.println("totaltoday const level temp : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
 			   
 			   List<Long> locationScopeIds = new ArrayList<Long>(0);
 			   locationScopeIds.add(4L);//assembly
@@ -260,10 +282,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   locationScopeIds.add(3L);//district
 			   locationScopeIds.add(2L);//state
 			   
-			  // long intermediateStartTime = System.currentTimeMillis();
+			   long intermediateStartTime = System.currentTimeMillis();
 			    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
 			    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToConstituencyLevel();
-			   //System.out.println("time for saving in intermediate table : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+			   System.out.println(" totaltoday const level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 			   
 		  }catch(Exception e){
 			  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -610,9 +632,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				   getLevelWiseDataTodayOrTotal("Today",todayDataVO,locationTargetMap,previousCadreMap);
 				   finalList.add(todayDataVO);
 				   
-				   //long tempStartTime = System.currentTimeMillis();
+				   long tempStartTime = System.currentTimeMillis();
 				   rs =  saveTotalTodayTdpCadreDataToIntermediateTempByLowLevel(finalList);
-				   //System.out.println("time for saving in temp table : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
+				   System.out.println(" totaltoday low level temp  : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
 				   
 				   List<Long> locationScopeIds = new ArrayList<Long>();
 				   locationScopeIds.add(5L);
@@ -621,11 +643,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				   locationScopeIds.add(8L);
 				   locationScopeIds.add(9L);
 				   
-				   //long intermediateStartTime = System.currentTimeMillis();
+				   long intermediateStartTime = System.currentTimeMillis();
 				    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
 				    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToLowLevel();
-				   //System.out.println("time for saving in intermediate table : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
-				   
+				   System.out.println("totaltoday low level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				   
 			  }catch(Exception e){
 				  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -792,20 +813,35 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
 				        		
 						    	if(dateTypeVO.getTehsilList() != null && dateTypeVO.getTehsilList().size() > 0){//tehsil
+						    		System.out.println("NO OF Records, tehsil wise :"+dateTypeVO.getTehsilList().size());
+									long intermediateStartTime = System.currentTimeMillis();
 						    		savingServiceLowLevel(dateTypeVO.getTehsilList(),currentTime);
+						    		System.out.println("NO OF Records, tehsil wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){//leb
+						    		System.out.println("NO OF Records, leb wise :"+dateTypeVO.getAssemblyList().size());
+						    		long intermediateStartTime = System.currentTimeMillis();
 						    		savingServiceLowLevel(dateTypeVO.getAssemblyList(),currentTime);
+						    		System.out.println("NO OF Records, leb wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){//panchayat
+				        			System.out.println("NO OF Records, panchayat wise :"+dateTypeVO.getParliamentList().size());
+				        			long intermediateStartTime = System.currentTimeMillis();
 				        			savingServiceLowLevel(dateTypeVO.getParliamentList(),currentTime);
+				        			System.out.println("NO OF Records, panchayat wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){//ward
+				        			System.out.println("NO OF Records, ward wise :"+dateTypeVO.getDistrictList().size());
+				        			long intermediateStartTime = System.currentTimeMillis();
 				        			savingServiceLowLevel(dateTypeVO.getDistrictList(),currentTime);
+				        			System.out.println("NO OF Records, ward wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){//booth
+				        			long intermediateStartTime = System.currentTimeMillis();
+				        			System.out.println("NO OF Records, booth wise :"+dateTypeVO.getStateList().size());
 				        			savingServiceLowLevel(dateTypeVO.getStateList(),currentTime);
+				        			System.out.println("NO OF Records, booth wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        	}
@@ -823,14 +859,17 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			}
 			return rs;
 		}
+		
 		public void savingServiceLowLevel(List<TdpCadreLocationInfoVO> list , Date currentTime){
 		   	
 		   	try{
 					if( list != null && list.size() > 0)
 					{
+						int i= 0;
 						for(TdpCadreLocationInfoVO locationVO : list  )
 						{
-				    		 
+				    		  i = i + 1;
+				    		  
 							  TdpCadreLocationInfoTemp1 info = new TdpCadreLocationInfoTemp1();
 			    			  
 			    			  info.setLocationScopeId(locationVO.getLocationScopeId());
@@ -868,6 +907,11 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			    			  info.setInsertedTime(currentTime);
 			    			  
 			    			  tdpCadreLocationInfoTemp1DAO.save(info);
+			    			  
+			    			  if( i % 100 == 0 ) { 
+			    			       //flush a batch of inserts and release memory:
+			    				  tdpCadreDAO.flushAndclearSession();
+			    			  }
 				    	 }
 					}
 		   		
@@ -907,14 +951,14 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				  
 				   geTdpCadreDataByDateAndLocation(finalVO,acpcMap,constDistrictMap,distStateMap,locationTargetMap,fromDate);
 				    
-				   //long startTime = System.currentTimeMillis();
+				   long startTime = System.currentTimeMillis();
 				   rs =  saveTdpCadreDataToIntermediateTempDateWise(finalVO,fromDate);
-				  // System.out.println("time for saving temp data date wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+				   System.out.println("date wise const level temp : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
 				   
-				   //long intermediateStartTime = System.currentTimeMillis();
+				   long intermediateStartTime = System.currentTimeMillis();
 				    int deletedRecords =  tdpCadreDateWiseInfoDAO.deleteAllRecords(fromDate);
 				    int insertedRecordsCount = tdpCadreDateWiseInfoDAO.insertTdpCadreLocInfoDateWiseUpToConstituencyLevel();
-				   //System.out.println("time for saving  intermediate table date wise is : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				   System.out.println("date wise const level intermediate  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				   
 			  }catch(Exception e){
 				  LOG.error("Exception raised in pushTdpCadreDataToIntermediateDateWise() in CadreRegistrationServiceNew class", e);
@@ -1251,5 +1295,168 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			   return d;
 		  }
-	
+		   
+		   /** 
+			  *  SAVING CADRE IMAGE.
+			  * 
+			  */
+		   public void saveCadreImage(ImageCadreVO inputVO)
+			{	
+				
+				if(inputVO.getMemberShipNo() == null || inputVO.getMemberShipNo().trim().length() == 0)
+					return;
+				
+				try{
+					
+					Long constituencyId = inputVO.getConstituencyId();
+					
+					String pathSeparator = System.getProperty(IConstants.FILE_SEPARATOR);
+					
+					String filePath = IConstants.STATIC_CONTENT_FOLDER_PATH+pathSeparator+"images"+pathSeparator+IConstants.CADRE_IMAGES+pathSeparator;
+					String imageUrl = "";
+					
+					if(constituencyId != null && constituencyId.longValue() > 0)
+					{
+						filePath = filePath +constituencyId.toString()+pathSeparator;
+						imageUrl = constituencyId.toString()+"/";
+					}
+					
+					filePath = filePath+inputVO.getMemberShipNo()+".jpg";
+					imageUrl = imageUrl + inputVO.getMemberShipNo()+".jpg";
+					inputVO.setImagePath(imageUrl);
+					
+					new File(filePath).getParentFile().mkdirs();
+					
+					if(inputVO.getPhotoType() != null && inputVO.getPhotoType().equalsIgnoreCase(IConstants.CADRE_IMAGE_TYPE_NEW))
+					{
+						if(inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_TAB) && inputVO.getImageBase64String() != null && inputVO.getImageBase64String().trim().length() > 0)
+						{
+							inputVO.setImageBase64String(inputVO.getImageBase64String().replace("_", "/"));
+							inputVO.setImageBase64String(inputVO.getImageBase64String().replace("-", "+"));
+							
+							boolean status = imageAndStringConverter.convertBase64StringToImage(inputVO.getImageBase64String(),filePath);
+							if(status)
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String - Available - Success");
+								inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+							}
+							else
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String - Available - Fail");
+								inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+								inputVO.setImageIssue("Base64 String Available But Saving Failed");
+							}
+						}
+						else if(inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_WEB) || inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_ONLINE))
+						{
+							if(inputVO.getUploadImage() != null)
+							{
+								boolean status = commonMethodsUtilService.fileCopy(inputVO.getUploadImage().getAbsolutePath(),filePath);
+								
+								if(status)
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Upload Image - Available - Success");
+									inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+								}
+								else
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Upload Image - Available Fail - Trying with Voter");
+									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+									saveCadreImage(inputVO);
+								}
+								
+							}
+							else
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Upload Image - Not Available Trying with Voter");
+								inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+								saveCadreImage(inputVO);
+							}
+						}
+						else
+						{
+							LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String - Not Available - Fail");
+							inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+							inputVO.setImageIssue("Base64 String Not Available, Failed");
+						}
+						{
+							//Here he should write for Web File Upload 
+						}
+					}
+					else if(inputVO.getPhotoType() != null && inputVO.getPhotoType().equalsIgnoreCase(IConstants.CADRE_IMAGE_TYPE_VOTER))
+					{
+						if(inputVO.getVoterId() != null)
+						{
+							String voterImgPath = voterDAO.getVoterImagePathByVoterId(inputVO.getVoterId());
+							
+							if(voterImgPath.trim().length() == 0)
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Voter Image Path - Not Available - Fail");
+								inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+								inputVO.setImageIssue("Voter Image Path - Not Available - Failed");
+							}
+							else
+							{
+								String sourcePath = IConstants.STATIC_CONTENT_FOLDER_PATH+pathSeparator+IConstants.VOTER_IMAGES+pathSeparator+voterImgPath;
+								boolean status = commonMethodsUtilService.fileCopy(sourcePath,filePath);
+								
+								if(status)
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Voter Image - Available Copy - Success");
+									inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+								}
+								else
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Voter Image - Available Copy - Fail");
+									inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+									inputVO.setImageIssue("Voter Image - Available Copy - Failed");
+								}
+								
+							}
+								
+						}
+						else
+						{
+							LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Voter Id - Not Available - Fail");
+							inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+							inputVO.setImageIssue("Voter Id - Not Available - Failed");
+						}
+					}
+					
+					else if(inputVO.getPhotoType() != null && inputVO.getPhotoType().equalsIgnoreCase(IConstants.CADRE_IMAGE_TYPE_CADRE))
+					{
+						String imgPath = tdpCadreDAO.getCadreImagePathByTdpCadreId(inputVO.getTdpCadreId());
+						
+						if(imgPath.trim().length() == 0)
+						{
+							if(inputVO.getVoterId() != null)
+							{
+								inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+								saveCadreImage(inputVO);
+							}
+							else
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Cadre Image Path - Not Available and Voter Id Not Available - Fail ");
+								inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+								inputVO.setImageIssue("Cadre Image Path - Not Available and Voter Id Not Available - Failed");
+							}
+						}
+						else
+						{
+							LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Cadre Image Path - Available Ignored - Success");
+							inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+						}
+					}
+					else
+					{
+						if(!inputVO.isUpdate())
+						{
+							inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+							saveCadreImage(inputVO);
+						}
+					}
+				}catch (Exception e) {
+					LOG.error("Exception occured in saveCadreImage() Method - ",e);
+				}
+			}
 }
