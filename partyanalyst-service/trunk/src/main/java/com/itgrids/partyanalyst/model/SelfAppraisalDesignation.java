@@ -34,7 +34,7 @@ public class SelfAppraisalDesignation {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	@Column(name="isActive")
+	@Column(name="is_active")
 	public String getIsActive() {
 		return isActive;
 	}
