@@ -1516,9 +1516,7 @@ var b = $(window).width();
 $(".page-load-svg").height(a);
 $(".page-load-svg").width(b);
 
-$(document).on("click",".onlineRegistration",function(){
 
-	//$(".landingPage").hide();
 	$(".page-load-svg").show();
 	setTimeout(function(){
 		$(".page-load-svg").remove();
@@ -1528,7 +1526,7 @@ $(document).on("click",".onlineRegistration",function(){
 	setTimeout(function(){
 		$(".mainBlocks").removeClass("animated fadeIn");
 	},1500);
-});
+
 $(document).on("click","#mainPageBackId",function(){
 	//$(".landingPage").addClass("animated fadeIn");
 	setTimeout(function(){
