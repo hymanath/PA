@@ -5052,7 +5052,14 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 									 str.append("'',");
 								 
 								 if(params[7] != null)
-									 str.append("'"+params[7].toString()+"',");
+								 {
+									 String image = params[7].toString();
+									 int ind = image.indexOf("/");
+									 
+									 if(ind != -1)
+										 image = image.substring(ind+1);
+									 str.append("'"+image+"',");
+								 }
 								 else
 									 str.append("'',");
 								 
@@ -5102,7 +5109,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 									 str.append("NULL,");
 								 
 								 if(params[17] != null)
-									 str.append("'"+params[11].toString()+"',");
+									 str.append("'"+params[17].toString()+"',");
 								 else
 									 str.append("NULL,");
 								 
@@ -5142,7 +5149,22 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 									 str.append("'',");
 								 
 								 if(params[25] != null)
-									 str.append("'"+params[25].toString()+"',");
+								 {
+									 String photoType = params[25].toString();
+									 
+									 if(photoType.equalsIgnoreCase("V"))
+										 photoType = "VOTER";
+									 else if(photoType.equalsIgnoreCase("C"))
+									 {
+										 photoType = "CADRE";
+									 }
+									 else if(photoType.equalsIgnoreCase("N"))
+									 {
+										 photoType = "NEW";
+									 }
+									 
+									 str.append("'"+photoType+"',");
+								 }
 								 else
 									 str.append("'',");
 								 
@@ -5266,6 +5288,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 								statement.executeUpdate("CREATE INDEX idx_voter_gender ON voter(gender)");
 								statement.executeUpdate("CREATE INDEX idx_voter_voter_id ON voter(voter_id)");
 								statement.executeUpdate("CREATE INDEX idx_voter_name ON voter(name)");
+								statement.executeUpdate("CREATE INDEX idx_voter_house_no ON voter(house_no)");
 								
 								statement.executeUpdate("CREATE INDEX idx_voter_booth_id ON booth_publication_voter(booth_id)");
 								statement.executeUpdate("CREATE INDEX idx_voter_voter_id ON booth_publication_voter(voter_id)");
