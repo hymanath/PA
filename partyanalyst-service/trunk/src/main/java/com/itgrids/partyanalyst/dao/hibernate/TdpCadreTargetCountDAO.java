@@ -133,12 +133,12 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
 				queryStr.append(" constituency.constituencyId,constituency.name as name ,model.targetCount ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
-				if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN))
+				if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN) || inputVO.getChildLocationType().equalsIgnoreCase("pollingstation"))
 					queryStr.append(" booth.boothId  as name  ,booth.partNo ,model.targetCount ");
 				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL))
 					queryStr.append(" booth.tehsil.tehsilId , booth.tehsil.tehsilName  as name  ,model.targetCount ");
-				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
-					queryStr.append(" localElectionBody.localElectionBodyId,localElectionBody.name,model.targetCount");
+				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) || inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN))
+					queryStr.append(" booth.localBody.localElectionBodyId,booth.localBody.name,model.targetCount");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
 				queryStr.append(" booth.panchayat.panchayatId , booth.panchayat.panchayatName  as name  ,model.targetCount ");
 			}/*else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
@@ -179,23 +179,23 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 					}
 				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 					
-						queryStr.append("  constituency.constituencyId = :parentLocationTypeId ");
-						if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN)){
+						queryStr.append(" booth.constituency.constituencyId = :parentLocationTypeId   ");
+						if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN)  || inputVO.getChildLocationType().equalsIgnoreCase("pollingstation")){
 							queryStr.append(" and model.locationScopeId = 9 and model.locationValue = booth.boothId and booth.publicationDate.publicationDateId = "+IConstants.AFFILIATED_VOTER_PUBLICATION_ID+" ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
 								queryStr.append(" and booth.boothId = :childLocationTypeId ");
 							}
 						}
-						else if(inputVO.getAreaType().equalsIgnoreCase(IConstants.RURAL) ){
+						else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL) ){
 							queryStr.append(" and model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
 								queryStr.append(" and booth.tehsil.tehsilId = :childLocationTypeId ");
 							}
 						}
-						else if((inputVO.getAreaType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ) ){
-							queryStr.append(" and model.locationScopeId = 7 and model.locationValue = booth.localBody.localElectionBodyId  ");
+						else if((inputVO.getChildLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ||inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN) ) ){
+							queryStr.append(" and model.locationScopeId = 7 and model.locationValue = booth.localBody.localElectionBodyId  and booth.localBody is not null ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
-								queryStr.append("  and booth.localBody.localElectionBodyId = :childLocationTypeId ");
+								queryStr.append(" and booth.localBody.localElectionBodyId = :childLocationTypeId ");
 							}
 						}
 				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
@@ -203,13 +203,8 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and  booth.tehsil.tehsilId = :childLocationTypeId ");
 					}
-				}/*else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-					queryStr.append(" and  model.locationScopeId = 7 and model.locationValue = booth.localBody.localElectionBodyId and booth.constituency.constituencyId = :parentLocationTypeId ");
-					if(inputVO.getChildLocationTypeId().longValue()>0L){
-						queryStr.append(" and booth.localBody.localElectionBodyId = :childLocationTypeId ");
-					}
-				}*/else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-					queryStr.append(" and  model.locationScopeId = 6 and model.locationValue = booth.boothId and booth.panchayat.panchayatId = :parentLocationTypeId ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+					queryStr.append(" and model.locationScopeId = 6 and model.locationValue = booth.boothId and booth.panchayat.panchayatId = :parentLocationTypeId ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and booth.boothId = :childLocationTypeId ");
 					}
@@ -223,26 +218,7 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 				queryStr.append(" and (district.districtId between 1 and 10) ");
 			}
 			
-			queryStr.append(" and model.isDeleted = 'N' group by ");
-			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" district.districtId ");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-				queryStr.append(" constituency.constituencyId ");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
-				if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN))
-					queryStr.append(" booth.boothId ");
-				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL))
-					queryStr.append(" booth.tehsil.tehsilId ");
-				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
-					queryStr.append(" booth.localBody.localElectionBodyId ");
-			}
-			else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
-					queryStr.append("  booth.tehsil.tehsilId ");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-				queryStr.append(" booth.localBody.localElectionBodyId ");
-			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
-				queryStr.append(" booth.boothId ");
-			}
+			queryStr.append(" and model.isDeleted = 'N' ");
 			
 			Query query = getSession().createQuery(queryStr.toString());
 			if( inputVO.getParentLocationTypeId().longValue()>0L)
