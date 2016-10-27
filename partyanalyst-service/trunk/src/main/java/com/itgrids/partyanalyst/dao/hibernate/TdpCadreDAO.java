@@ -8375,6 +8375,33 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		}
 		return query.list();
 	}
+	 public List<Object[]> getTdpMembersDetaislBasedOnSearchCriteria(Long locationId,String searchType,String searchValue){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select " +
+		   		           " model.tdpCadreId," +
+		   		           " model.firstname," +
+		   		           " model.voterId," +
+		   		           " model.memberShipNo," +
+		   		           " model.mobileNo," +
+		   		           " model.image " +
+		   		           " from TdpCadre model " +
+		   		           " where " +
+		   		           " model.isDeleted='N' and model.enrollmentYear=2014 " +
+		   		           " and model.userAddress.constituency.constituencyId=:locationId ");
+		     if(searchValue != null && searchValue.trim().length() > 0 && searchType != null && searchType.equalsIgnoreCase("MemberShipNo")){
+		    	  queryStr.append(" and model.memberShipNo=:searchValue ");
+		     }else if(searchValue != null && searchValue.trim().length() >0 && searchType != null && searchType.equalsIgnoreCase("MobileNo")){
+		    	 queryStr.append(" and model.mobileNo=:searchValue");
+		     }else if(searchValue != null && searchValue.trim().length() >0 && searchType != null && searchType.equalsIgnoreCase("Name")){
+		    	  queryStr.append(" and model.firstname=:searchValue");
+		     }
+		   Query query = getSession().createQuery(queryStr.toString());
+		   query.setParameter("locationId", locationId);
+		    if(searchValue != null && searchValue.trim().length() > 0){
+		    	query.setParameter("searchValue", searchValue);
+		    }
+		     return query.list();
+	 }
 	
 		public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers){
 		
