@@ -109,44 +109,38 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
 		}
     	return returnList;
     }
-public List<CadreTabRecordsStatusVO> dataReConsalationTotalOverView(Long constistuencyId,String fromDateStr,String toDateStr){
+public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuencyId,String fromDateStr,String toDateStr){
 	
-	List<CadreTabRecordsStatusVO> returnList = null;
+	  CadreTabRecordsStatusVO statusvo = null;
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
-	Date startDate = null;
-	Date endDate = null;
-	try{
-		
-		if(fromDateStr != null && toDateStr != null){
-			startDate = sdf.parse(fromDateStr);
-			endDate = sdf.parse(toDateStr);
-		}
-		
-		List<Object[]> dataReConsalation = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(constistuencyId,startDate,endDate);
-		
-		if( dataReConsalation != null && dataReConsalation.size() > 0)
-		{
-			returnList = new ArrayList<CadreTabRecordsStatusVO>();
+			Date startDate = null;
+			Date endDate = null;
 			
-			for(Object[] obj : dataReConsalation)
-			{
-				CadreTabRecordsStatusVO cadreTabRecordsStatusVO = new CadreTabRecordsStatusVO();
+			  try{
+				if(fromDateStr != null && toDateStr != null){
+					startDate = sdf.parse(fromDateStr);
+					endDate = sdf.parse(toDateStr);
+				}
 				
-				cadreTabRecordsStatusVO.setTotalImeiNo(obj[0]!=null ? obj[0].toString() :"");
-				cadreTabRecordsStatusVO.setTotalRecords(obj[1]!= null ? (Long)obj[1] : 0l);
-				cadreTabRecordsStatusVO.setTotalSyn(obj[2]!=null ? (Long)obj[2]:0l);
-				cadreTabRecordsStatusVO.setTotalPending(obj[3]!=null ? (Long)obj[3]:0l);
-				returnList.add(cadreTabRecordsStatusVO);
-			}
-		}
+		  Object[] dataReConsalationObj = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(constistuencyId,startDate,endDate);
 		
-	}catch(Exception e){
-		e.printStackTrace();
-		LOG.error("Exception raised at dataReConsalationOverView", e);
-	}
-	return returnList;
+				if( dataReConsalationObj != null)
+				{
+			      statusvo = new CadreTabRecordsStatusVO();
+	
+					statusvo.setTotalImeiNo(dataReConsalationObj[0] != null ? dataReConsalationObj[0].toString() :"");
+				    statusvo.setTotalRecords(dataReConsalationObj[1] != null ? (Long)dataReConsalationObj[1] : 0l);
+				    statusvo.setTotalSyn(dataReConsalationObj[2]!=null ? (Long)dataReConsalationObj[2] : 0l);
+				    statusvo.setTotalPending(dataReConsalationObj[3] != null ? (Long)dataReConsalationObj[3] : 0l);
+				  }
+		
+	   }catch(Exception e){
+		 e.printStackTrace();
+		   LOG.error("Exception raised at dataReConsalationOverView", e);
+	  }
+	   return statusvo;
 }
 
 public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,String startDate,String endDate){

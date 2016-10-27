@@ -59,13 +59,16 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		return query.list();
 	}
 
-	public List<Object[]> dataReConsalationTotalOverView(Long constistuencyId,
+	public Object[] dataReConsalationTotalOverView(Long constistuencyId,
 			Date fromDate, Date toDate) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("select count(distinct model.imeiNo),count(model.totalRecords),count(model.sync),count(model.pending)"
-				+ " from CadreTabRecordsStatus model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2"
-				+ " where model.cadreSurveyUserId = model2.cadreSurveyUserId and model.cadreSurveyUserId = model1.cadreSurveyUserId and  "
-				+ " model2.constituencyId = :constistuencyId ");
+		sb.append(" select count(distinct model.imeiNo)," +
+				  " sum(model.totalRecords)," +
+				  " sum(model.sync)," +
+				  " sum(model.pending) " +
+				 " from CadreTabRecordsStatus model,CadreSurveyUserAssignDetails model1" +
+				 " where model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
+				 " model1.constituencyId =:constistuencyId ");
 
 		if (fromDate != null && toDate != null)
 			sb.append(" and date(model.surveyDate) between :fromDate and :toDate");
@@ -77,7 +80,7 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		}
 		query.setParameter("constistuencyId", constistuencyId);
 
-		return query.list();
+		return (Object[])query.uniqueResult();
 	}
 
 	public List<Object[]> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,Date fromDate,Date toDate){
