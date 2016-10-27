@@ -27,7 +27,7 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private Long sumRecords;
 	private Long totalSyn;
 	private Long totalPending;
-	
+	private String userName;
 	private Long actualCount;
 
 	
@@ -170,6 +170,13 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	public void setActualCount(Long actualCount) {
 		this.actualCount = actualCount;
 	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 	
 	
 	

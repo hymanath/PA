@@ -8378,19 +8378,26 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	
 		public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers){
 		
-			StringBuilder str = new StringBuilder();
-			
-			str.append(" select model.insertedUserId,count(distinct model.tdpCadreId) " +
-					" from TdpCadre model " +
+			StringBuilder str = new StringBuilder();				
+			str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId) " +
+					" from TdpCadreEnrollmentYear model  " +
 					" where " +
-					"  model.isDeleted ='N' ");
+					" model.tdpCadre.isDeleted ='N'" +
+					" and model.tdpCadre.enrollmentYear = :enrollmentYear " +
+					" and model.enrollmentYearId = :enrollmentYearId ");					
 			
 			if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
-				str.append( " and model.insertedUserId in (:cadreSurveyUsers)  " );
+				str.append( " and model.tdpCadre.insertedUserId in (:cadreSurveyUsers)  " );
 			}
+			
+			str.append(" group by model.tdpCadre.insertedUserId ");
 			
 			Query query = getSession().createQuery(str.toString());
 			
+			
+			//CADRE_ENROLLMENT_NUMBER
+			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			query.setParameter("enrollmentYearId", 4l);
 			if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
 				query.setParameterList("cadreSurveyUsers", cadreSurveyUsers);
 			}
