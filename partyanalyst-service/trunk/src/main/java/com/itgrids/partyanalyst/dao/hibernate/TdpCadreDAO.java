@@ -8432,4 +8432,17 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			return query.list();
 			
 		}
+		
+		public String getCadreImagePathByTdpCadreId(Long tdpCadreId)
+	    {
+	      Query query = getSession().createQuery("SELECT model.image FROM TdpCadre model where model.tdpCadreId = :tdpCadreId");
+	      query.setParameter("tdpCadreId",tdpCadreId);
+	      
+	      Object str = query.uniqueResult();
+	      
+	      if(str != null )
+	        return str.toString();
+	      else
+	        return "";
+	    }
 	}
