@@ -395,7 +395,9 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 				queryStr.append(" booth.panchayat.panchayatId , booth.panchayat.panchayatName  as name  ,'Panchayat','','',''," +
 						"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-				queryStr.append(" booth.boothId  as name  ,booth.partNo ,'POLLINGSTATION','','',''," +
+				/*queryStr.append(" booth.boothId  as name  ,booth.partNo ,'POLLINGSTATION','','',''," +
+						"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");*/
+				queryStr.append(" booth.panchayat.panchayatId , booth.panchayat.panchayatName  as name  ,'Panchayat','','',''," +
 						"model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
 			}/*else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				queryStr.append(" '','','',booth.localBody.localElectionBodyId,booth.localBody.name,'"+IConstants.MUNCIPALITY_CORPORATION_LEVEL+"'," +
@@ -467,10 +469,14 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 						queryStr.append(" and booth.localBody.localElectionBodyId = :childLocationTypeId ");
 					}
 				}*/else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-					queryStr.append(" and  model.locationScopeId = 6 and model.locationValue = booth.boothId and booth.panchayat.panchayatId = :parentLocationTypeId ");
+					queryStr.append("   and model.locationScopeId = 6 and model.locationValue = booth.panchayat.panchayatId and  booth.tehsil.tehsilId = :parentLocationTypeId and booth.publicationDate.publicationDateId = "+IConstants.AFFILIATED_VOTER_PUBLICATION_ID+" ");
+					if(inputVO.getChildLocationTypeId().longValue()>0L){
+						queryStr.append(" and  booth.tehsil.tehsilId = :childLocationTypeId ");
+					}
+					/*queryStr.append(" and  model.locationScopeId = 6 and model.locationValue = booth.boothId and booth.panchayat.panchayatId = :parentLocationTypeId ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and booth.boothId = :childLocationTypeId ");
-					}
+					}*/
 				}
 			}
 			
@@ -499,7 +505,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				queryStr.append(" booth.localBody.localElectionBodyId ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
-				queryStr.append(" booth.boothId ");
+				queryStr.append(" booth.panchayat.panchayatId ");
 			}
 			
 			Query query = getSession().createQuery(queryStr.toString());

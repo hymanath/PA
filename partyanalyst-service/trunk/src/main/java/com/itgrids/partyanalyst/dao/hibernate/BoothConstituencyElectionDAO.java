@@ -1036,7 +1036,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		quertStr.append(" B.local_election_body_id IS null   ");
 		
 		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
-			quertStr.append(" and B.panchayat_id  =  "+inputVO.getParentLocationTypeId().longValue()+"  ");
+			quertStr.append(" and B.tehsil_id  =  "+inputVO.getParentLocationTypeId().longValue()+"  ");
 		quertStr.append(" GROUP BY B.panchayat_id ");		
 		Query query = getSession().createSQLQuery(quertStr.toString());
 		return query.list();
