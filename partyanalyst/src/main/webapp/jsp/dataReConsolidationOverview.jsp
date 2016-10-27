@@ -17,23 +17,21 @@
 				<div class="row">
 					<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
 					
-						<select  class="form-control" >
+						<select  class="form-control" id="stateOverViewId" >
 							<option value="0">Select State</option>
 							<option value="1">ANDHRA PRADESH</option>
-							<option value="2">TELANGANA</option>
+							<option value="36">TELANGANA</option>
 						</select>
 					</div>
 						
 					<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
-						<select  class="form-control" >
+						<select  class="form-control" id = "districtOverViewId">
 							<option value="0">Select District</option>
 						</select>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
-						<select  class="form-control" >
-							<option value="selectConstituency"> Constituency</option>
-							<option value="0">All Constituency</option>
-							<option value="1">Kavali</option>
+						<select  class="form-control" id ="constituencyOverViewId" >
+							<option value="0">Select Constituency</option>
 						</select>
 				   </div>
 						
@@ -49,9 +47,12 @@
 				<div class="col-md-4 col-xs-12 col-sm-4">
 					<button type="button" class="btn btn-success text-capital m_top25" id="submitId">Submit</button>
 				</div>	
+					<div id = "errorDivId" style = "color:red"></div>
 						
 					</div>
+					<input type="button" class ="btn btn-success pull-right" value ="submit" style="margin-bottom: 0px; margin-top: 5px;">
 				</div>
+				
 			</div>
 		
 				<div class="panel panel-default m_top10" id="dataReconsalationOverviewId">
@@ -123,7 +124,7 @@
 		  </div>
 		  <div class="modal-body">
 			<table class="table table-condensed">
-				<thead>
+				<!-- <thead>
 					<tr> 
 						<th>Date</th> 
 						<th>Name</th>
@@ -170,7 +171,7 @@
 						<td class="text_center">50</td>
 						<td class="text_center">7000/- </td>
 					</tr>
-				</tbody>
+				</tbody> -->
 			</table>
 		  </div>
 		  <div class="modal-footer">
@@ -187,7 +188,9 @@
 <script src="js/dataReconsolidationOverview/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="js/dataReconsolidationOverview/js/dataReConsolidationOverview.js" type="text/javascript"></script>
 <script type="text/javascript">
-$(".datePicker").daterangepicker();
+$(".datePicker").daterangepicker({
+	opens :'left'
+});
 
 $(document).on('click','.openPopUpModel',function(){
 	$("#myModal").modal("show");

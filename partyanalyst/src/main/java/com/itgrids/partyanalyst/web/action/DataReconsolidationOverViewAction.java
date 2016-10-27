@@ -118,4 +118,21 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCadreSurveyUserWiseRegistrations(){
+		try{
+			LOG.info("Entered into DataReconsolidationOverViewAction of getCadreSurveyUserWiseRegistrations ()");
+			jObj = new JSONObject(getTask());
+			Long cadreSrveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String startDate = jObj.getString("strtDate");
+			String toDate =jObj.getString("endDate");
+			dataReConsalationOverView = dataReconsolidationService.getCadreSurveyUserWiseRegistrations(cadreSrveyUserId,constituencyId,startDate,toDate);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured into DataReconsolidationOverViewAction of getCadreSurveyUserWiseRegistrations ()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

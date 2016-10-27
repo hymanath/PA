@@ -1,14 +1,16 @@
 function getDataReConsalationOverView(){
-	 
-	  //var constistuencyId = $("#vendorId option:selected").val();
-	  var dates = $(".datePicker").val();
-	  var dateArr = dates.split("-");
-	  var fromDate;
-	  var toDate;
-	  var jsObj = { constistuencyId : 331,
-                    fromDate : "10/21/2016",
-                   	toDate : "10/26/2016"
-				  }
+	
+	  var constId = $("#constituencyOverViewId").val();
+	  var dateArr = $(".datePicker").val();
+	  var dateVal = [];
+	  dateVal = dateArr.split("-")
+	  var strtDate = dateVal[0];
+	  var endDate = dateVal[1];
+	  var jsObj = { 
+	      constistuencyId : constId,
+          fromDate : strtDate,
+          toDate : endDate
+	 }
 	 
     $.ajax({
           type:'GET',
@@ -22,15 +24,16 @@ function getDataReConsalationOverView(){
    });
   }
   function getdataReConsalationTotalOverView(){
-	 
-	  //var constistuencyId = $("#vendorId option:selected").val();
-	  var dates = $(".datePicker").val();
-	  var dateArr = dates.split("-");
-	  var fromDate;
-	  var toDate;
-	  var jsObj = { constistuencyId : 331,
-                    fromDate : "10/21/2016",
-                   	toDate : "10/26/2016"
+	  var constId = $("#constituencyOverViewId").val();
+	  var dateArr = $(".datePicker").val();
+	  var dateVal = [];
+	  dateVal = dateArr.split("-")
+	  var strtDate = dateVal[0];
+	  var endDate = dateVal[1];
+	  var jsObj = { 
+	      constistuencyId : constId,
+          fromDate : strtDate,
+          toDate : endDate
 				  }
 	 
     $.ajax({
@@ -76,6 +79,29 @@ function getDataReConsalationOverView(){
  }
  
 $(document).on("click","#submitId",function(){
+	
+	  var stateId = $("#stateOverViewId option:selected").val();
+	  var districtId = $("#districtOverViewId").val();
+	  var constId = $("#constituencyOverViewId").val();
+	  
+	  if(stateId == 0){
+		  $("#errorDivId").html('Please Select State');
+		  return ;
+	  }
+	   $("#errorDivId").html(' ');
+	   
+	   if(districtId == 0){
+		  $("#errorDivId").html('Please Select District');
+		  return ;
+	  }
+	   $("#errorDivId").html(' ');
+	   
+	   if(constId==0){
+		  $("#errorDivId").html('Please Select Constituency');
+		  return ;
+	  }
+	   $("#errorDivId").html(' ');
+	     
 	getdataReConsalationTotalOverView();
 	getDataReConsalationOverView();
 });
@@ -108,7 +134,7 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].totalRecords+'</td>';  
                  str+='<td>'+result[i].pending+'</td>'; 
 				str+='<td>'+result[i].kafkaPending+'</td>'; 				
-				str+='<td>'+result[i].serverPending+'<button class="btn btn-sm btn-success openPopUpModel" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
+				str+='<td>'+result[i].serverPending+'<button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -118,3 +144,123 @@ $(document).on("click","#submitId",function(){
 				$("#userWiseTotalViewId").html(str);
 	 
  }
+ 
+ $(document).on('change','#stateOverViewId',function(){
+	var jsObj = {
+			stateId : $("#stateOverViewId option:selected").val()
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getDistrictsWiseStateAction.action',
+		dataType :'json',
+		data : {task:JSON.stringify(jsObj)}
+			
+	}).done(function(result){
+		$('#districtOverViewId').html(' ');
+		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
+		if(result !=null && result.length>0){
+			for(var i in result){
+				$('#districtOverViewId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		}
+		
+	});
+});
+ 
+ $(document).on('change','#districtOverViewId',function(){
+	var districtId = $("#districtOverViewId").val();
+	 var jsObj = {
+			districtId : districtId
+			
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getConstituenciesListForDistrictAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+			
+	}).done(function(result){
+		$('#constituencyOverViewId').html(' ');
+		$('#constituencyOverViewId').append('<option value="0">Please Select Constituency </option>');
+		if(result !=null && result.length>0){
+			for(var i in result){
+				$('#constituencyOverViewId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		}
+		
+	});
+});
+/* 
+$(document).on('click','#viewDayWiseId',function(){
+	$("#myModal").modal("show");
+	getCadreSurveyUserWiseRegistrations();
+}) */
+
+$(document).on("click",".tabUserDtlsCls",function(){
+	  var cdrSurveyUserId = $(this).attr("attr_cdr_srv_usr_id");
+	  var constId = $("#constituencyOverViewId").val();
+	  var dateArr = $(".datePicker").val();
+	  var dateVal = [];
+	  dateVal = dateArr.split("-")
+	  var strtDate = dateVal[0];
+	  var endDate = dateVal[1];
+	 getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,endDate);
+	 $("#myModal").modal("show");
+	 
+ });
+
+
+function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,endDate){
+	
+	var jsObj = {
+			cadreSurveyUserId : cdrSurveyUserId,
+			constituencyId : constId,
+			strtDate : strtDate,
+			endDate : endDate
+	}
+	$.ajax({
+		type : "GET",
+		url : "getCadreSurveyUserWiseRegistrationsAction.action",
+		dataType : "json",
+		data : {task:JSON.stringify(jsObj)}
+			
+	}).done(function(result){
+		buildPopUpModeldetails(result);
+		
+	});
+}
+
+function buildPopUpModeldetails(result){
+	var str ='';
+	str +='<table>';
+	str +='<thead>';
+	str +='<tr>';
+	str +='<th>Date</th>';
+	str +='<th>Name</th>';
+	str +='<th>Mobile No</th>';
+	str +='<th>First Record Received</th>'; 
+	str +='<th>Last Record Received</th>'; 
+    str +='<th>Registrations</th>'; 
+	str +='<th>Synced</th>';
+	str +='<th>Sync Pending</th>';
+	str +='<th>Total Amount</th>';
+    str +='</tr>';
+	str +='</thead>';
+	str +='<tbody>';
+	str +='<tr>';
+	for(var i in result){
+		str +='<td>'+result[i].surveyDate+'</td>';
+		str +='<td>'+result[i].name+'</td>';
+		str +='<td>'+result[i].mobileNo+'</td>';
+		str +='<td>'+result[i].firstRecord+'</td>';
+		str +='<td>'+result[i].lastRecord+'</td>';
+		str +='<td>'+result[i].totalRecords+'</td>';
+		str +='<td>'+result[i].sync+'</td>';
+		str +='<td>'+result[i].pending+'</td>';
+		str +='<td>'+result[i].totalAmount+'</td>';
+	}
+	str +='</tr>';
+	str +='</tbody>';
+	str +='</table>';
+	
+}

@@ -14296,5 +14296,11 @@
 			<param name="root">dataReConsalationOverView</param>
 		</result>
 	</action>
+	
+	<action name="getCadreSurveyUserWiseRegistrationsAction" class="dataReconsolidationOverViewAction"  method="getCadreSurveyUserWiseRegistrations">
+			<result type="json" name="success">
+			<param name="root">dataReConsalationOverView</param>
+		</result>
+	</action>
 </package>
 </struts>
