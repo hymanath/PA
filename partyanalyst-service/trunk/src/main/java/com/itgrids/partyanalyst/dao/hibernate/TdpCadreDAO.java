@@ -8240,7 +8240,8 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 				" TC.aadhar_no,TC.voter_relation_id,TC.nominee_age,TC.nominee_gender,TC.photo_type,TC.cadre_aadher_no,TC.family_voterId,TC.card_no,TC.email_id, " +
 				" UA.state_id,UA.district_id,UA.constituency_id,UA.tehsil_id,UA.address_lane1,UA.address_lane2,UA.street,UA.pincode,UA.local_area,UA.local_election_body,UA.ward," +
 				" UA.parliament_constituency_id,UA.booth_id,UA.panchayat_id,TC.is_deleted_voter " +
-				" FROM tdp_cadre TC,user_address UA WHERE TC.address_id = UA.user_address_id AND " +
+				" FROM tdp_cadre TC,user_address UA,tdp_cadre_enrollment_year EY WHERE TC.address_id = UA.user_address_id AND " +
+				" EY.tdp_cadre_id = TC.tdp_cadre_id AND EY.enrollment_year_id = 3 AND EY.is_deleted = 'N' AND " +
 				" TC.enrollment_year = 2014 AND TC.is_deleted = 'N' AND UA.constituency_id = :constituencyId " +
 				" GROUP BY TC.tdp_cadre_id ");
 		
