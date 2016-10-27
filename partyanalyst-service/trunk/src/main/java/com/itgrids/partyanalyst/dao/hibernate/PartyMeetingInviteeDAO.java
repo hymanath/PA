@@ -619,4 +619,87 @@ public List<Object[]> getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds
 	}
    return sqlQuery.list();
 }
+public List<Long> getInvitedMemberCadreId(PartyMeetingsInputVO inputVO){
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select distinct TC.tdp_cadre_id as id " +//2
+			  " from   party_meeting_invitee PMI,party_meeting PM,party_meeting_type PMT,party_meeting_main_type PMMT,tdp_cadre TC,user_address UA " +
+			  " where  PMI.tdp_cadre_id = TC.tdp_cadre_id and " +
+			  "        PMI.party_meeting_id = PM.party_meeting_id and " +
+			  "        PM.party_meeting_type_id = PMT.party_meeting_type_id and " +
+			  "        PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
+			  "        PM.meeting_address_id = UA.user_address_id and " +
+			  "        PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+			  "        TC.is_deleted = 'N' and TC.enrollment_year = 2014 and PM.is_active='Y' ");
+	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+		 sb.append(" and date(PM.start_date) between :startDate and :endDate ");	 
+	}
+	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+		sb.append(" and UA.state_id = :stateId ");
+	}
+	if(inputVO.getDistId() != null && inputVO.getDistId() > 0l){
+		sb.append(" and PMT.party_meeting_type_id = :meetingId ");
+				 
+	}
+	
+	Query query = getSession().createSQLQuery(sb.toString())  
+	.addScalar("id",Hibernate.LONG);
+	
+	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+		query.setDate("startDate",inputVO.getStartDate());
+		query.setDate("endDate",inputVO.getEndDate());	 
+	}
+	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+		query.setParameter("stateId",inputVO.getStateId());
+	}
+	if(inputVO.getDistId() != null && inputVO.getDistId() > 0l){
+		query.setParameter("meetingId",inputVO.getDistId());
+	}
+	query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+	return query.list();
 }
+public List<Long> getAttendedMemberCadreId(PartyMeetingsInputVO inputVO){
+	
+	StringBuilder sb = new StringBuilder();       
+	
+	sb.append(" select  distinct TC.tdp_cadre_id as id " +
+			"   from    party_meeting_attendance PMA,attendance A,party_meeting_invitee PMI,party_meeting PM,party_meeting_type PMT,party_meeting_main_type PMMT,tdp_cadre TC,user_address UA " +
+			"   where   PMA.attendance_id = A.attendance_id and " +
+			"           A.tdp_cadre_id = PMI.tdp_cadre_id and " +
+			"           PMI.tdp_cadre_id = TC.tdp_cadre_id and " +
+			"           PMI.party_meeting_id = PMA.party_meeting_id and " +  
+			"           PMA.party_meeting_id = PM.party_meeting_id and " +
+			"           PM.party_meeting_type_id = PMT.party_meeting_type_id and " +
+			"           PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
+			"           PM.meeting_address_id = UA.user_address_id and " +
+			"           PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+			"           TC.is_deleted = 'N' and TC.enrollment_year = 2014 and PM.is_active='Y' " );
+	
+	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+		 sb.append(" and date(PM.start_date) between :startDate and :endDate ");	 
+	}
+	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+		sb.append(" and UA.state_id = :stateId ");
+	}
+	if(inputVO.getDistId() != null && inputVO.getDistId() > 0){
+		   sb.append(" and PMT.party_meeting_type_id = :meetingId ");	
+	}
+	
+	Query query = getSession().createSQLQuery(sb.toString())
+	.addScalar("id",Hibernate.LONG);
+	
+	if(inputVO.getDistId() != null && inputVO.getDistId() > 0){  
+		query.setParameter("meetingId",inputVO.getDistId());
+	}
+	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+		query.setDate("startDate",inputVO.getStartDate());
+		query.setDate("endDate",inputVO.getEndDate());	 
+	}
+	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+		query.setParameter("stateId",inputVO.getStateId());
+	}
+	
+	query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+   return query.list();
+}
+}  
