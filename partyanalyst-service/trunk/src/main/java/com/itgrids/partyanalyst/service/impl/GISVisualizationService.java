@@ -640,7 +640,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 					GISVisualizationBasicVO statusVO = new GISVisualizationBasicVO();
 					statusVO.setStatus(commonMethodsUtilService.getStringValueForObject(tempstatusArr[0]));
 					statusVO.setPerc(commonMethodsUtilService.getStringValueForObject(tempstatusArr[1]));
-					statusVO.setColorCode(commonMethodsUtilService.getStringValueForObject(tempstatusArr[2]));
+					//statusVO.setColorCode(commonMethodsUtilService.getStringValueForObject(tempstatusArr[2]));
 					
 					statusMap.put(statusVO.getStatus(), statusVO);
 				}
@@ -651,7 +651,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 					try {
 						GISVisualizationDetailsVO vo = locationsMap.get(locationId);
 						if(vo != null){
-							Double perc = Double.valueOf(vo.getPerc());
+							Double perc = Double.valueOf(vo.getRegCount2016Perc());
 							if(perc>=90.0){
 								GISVisualizationBasicVO statusVO = statusMap.get("VERY GOOD".trim());
 								statusVO.setCount(statusVO.getCount()+1);
@@ -718,10 +718,10 @@ public class GISVisualizationService implements IGISVisualizationService{
 				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
 		   
-		   List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
+		 //  List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
 
-		   if(commonMethodsUtilService.isListOrSetValid(statusList))
-			   parentLocationVO.getStatusList().addAll(statusList);
+		   //if(commonMethodsUtilService.isListOrSetValid(statusList))
+			//   parentLocationVO.getStatusList().addAll(statusList);
 	} catch (Exception e) {
 		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
 	}
