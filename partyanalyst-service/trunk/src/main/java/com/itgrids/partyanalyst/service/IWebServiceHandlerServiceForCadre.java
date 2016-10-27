@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
@@ -18,4 +20,6 @@ public interface IWebServiceHandlerServiceForCadre {
 	public List<VoterSearchVO> getVotersBySearch(WebServiceCadreVO inputVO);
 	public NewCadreRegistrationVO getRegistrationPersonDetails(WebServiceCadreVO inputVO);
 	public List<TdpCadreVO> getTdpCadresBySearch(WebServiceCadreVO inputVO);
+	
+	public void saveCadreImage(ImageCadreVO inputVO);
 }
