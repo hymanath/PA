@@ -1716,5 +1716,9 @@
 			<property name="dataReconsolidationService" ref="dataReconsolidationService" />
 			
 	</bean>	
+	
+	 <bean id="toursAction" class="com.itgrids.partyanalyst.web.action.ToursAction" singleton="false">
+		  <property name="toursService" ref="toursService" />
+	</bean>	
 </beans>	
 	

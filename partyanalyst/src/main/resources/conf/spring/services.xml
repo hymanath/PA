@@ -3632,6 +3632,12 @@
 	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
 	 <property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
 	</bean>
+	
+	<bean name="toursService" class="com.itgrids.partyanalyst.service.impl.ToursService" >
+	 <property name="selfAppraisalDesignationDAO" ref="selfAppraisalDesignationDAO" />
+	 <property name="selfAppraisalCandidateDAO" ref="selfAppraisalCandidateDAO" />
+	 <property name="selfAppraisalCandidateDetailsDAO" ref="selfAppraisalCandidateDetailsDAO" />
+	</bean>
 </beans>		
 			
 	

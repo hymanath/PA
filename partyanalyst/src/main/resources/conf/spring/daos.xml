@@ -3309,4 +3309,23 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	
+	<bean id="selfAppraisalCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="selfAppraisalDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalCandidateDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalCandidateLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateLocationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalLocationScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalLocationScopeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
