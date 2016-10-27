@@ -115,10 +115,10 @@
 		<div class="modal-content">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="text-capital"><b>UserId:5262 - Day Wise Registration Details</b></h4>
+			<h4 class="text-capital" id="userHeadinId"></h4>
 		  </div>
 		  <div class="modal-body">
-			<table class="table table-condensed">
+			<table class="table table-condensed id ="tabUserWiseRegistionDetilsId">
 				<!-- <thead>
 					<tr> 
 						<th>Date</th> 
