@@ -3638,6 +3638,12 @@
 	 <property name="selfAppraisalDesignationDAO" ref="selfAppraisalDesignationDAO" />
 	 <property name="selfAppraisalCandidateDAO" ref="selfAppraisalCandidateDAO" />
 	 <property name="selfAppraisalCandidateDetailsDAO" ref="selfAppraisalCandidateDetailsDAO" />
+	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+	 <property name="selfAppraisalCandidateLocationDAO" ref="selfAppraisalCandidateLocationDAO"></property>
+	 <property name="constituencyDAO" ref="constituencyDAO"></property>
+	 <property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+	 <property name="transactionTemplate" ref="transactionTemplate"></property>
+	 
 	</bean>
 </beans>			
 	

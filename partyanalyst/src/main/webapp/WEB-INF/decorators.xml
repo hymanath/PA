@@ -703,6 +703,7 @@
 		<pattern>/tdpAgentAreaMapAction*</pattern>
 		<pattern>/dataReconsolidationOverViewAction*</pattern>
 		<pattern>/updateToursDetailsAction*</pattern>
+		<pattern>/updateToursAction*</pattern>
 		
 	</decorator> 
 </decorators>
