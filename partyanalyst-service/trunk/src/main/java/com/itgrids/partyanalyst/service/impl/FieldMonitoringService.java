@@ -1410,27 +1410,28 @@ public List<DataMonitoringVerificationVO> getLocationWiseDetailedOverViewDetails
 			}
 		}
 		
-		//IssuesCounts.
-		List<Object[]> list2 = cadreRegIssueDAO.getLocationWiseStatusWiseIssuesCounts(startDate, endDate, locationType, locationVal);
-		if(list2 != null && !list2.isEmpty()){
-			for (Object[] obj : list2) {
-				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-				if(locationType != null && locationType.equalsIgnoreCase("constituency"))
-					if(id.longValue() == 0l)
-						id = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-				DataMonitoringVerificationVO vo = getMatchDataVerificationVO(returnList, id);
-				if(vo != null){
-					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
-					if(statusId.longValue() == 1l)
-						vo.setOpenIssues(count);
-					else if(statusId.longValue() == 2l)
-						vo.setFixedIssues(count);
-					else if(statusId.longValue() == 3l)
-						vo.setClosedIssues(count);
+		if(locationType != null && (locationType.equalsIgnoreCase("state") || locationType.equalsIgnoreCase("district"))){
+			//IssuesCounts.
+			List<Object[]> list2 = cadreRegIssueDAO.getLocationWiseIssuesCounts(startDate, endDate, locationType, locationVal);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					
+					DataMonitoringVerificationVO vo = getMatchDataVerificationVO(returnList, id);
+					if(vo != null){
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						if(statusId.longValue() == 1l)
+							vo.setOpenIssues(count);
+						else if(statusId.longValue() == 2l)
+							vo.setFixedIssues(count);
+						else if(statusId.longValue() == 3l)
+							vo.setClosedIssues(count);
+					}
 				}
 			}
 		}
+		
 	} catch (Exception e) {
 		LOG.error("Exception occurred at getLocationWiseDetailedOverViewDetails() of FieldMonitoringService", e);
 	}

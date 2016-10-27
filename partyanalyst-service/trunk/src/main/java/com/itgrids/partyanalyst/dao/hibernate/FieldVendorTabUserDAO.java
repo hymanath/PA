@@ -101,14 +101,13 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.userAddress.district.districtName," +
 					" CRI.userAddress.constituency.constituencyId," +
 					" CRI.userAddress.constituency.name"+
-					" from CadreRegIssue CRI,CadreRegUserTabUser CRUTU" +
-					" where CRI.cadreSurveyUser.cadreSurveyUserId = CRUTU.cadreSurveyUser.cadreSurveyUserId" +
-					" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
+					" from CadreRegIssue CRI" +
+					" where CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
 					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
 		
-		sb.append(" and CRUTU.isDeleted = 'N'");
+		//sb.append(" and CRUTU.isDeleted = 'N'");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null && toDate != null){
