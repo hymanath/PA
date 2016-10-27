@@ -1,0 +1,136 @@
+* , select
+{
+	outline: 0 !important;
+}
+body
+{
+	background:#EEF0EF;
+	font-size:13px;
+	font-family: 'Roboto', sans-serif;
+	font-weight:500;
+}
+h1,h2,h3,h4,h5,h6,p,ul,.table
+{
+	margin:0px !important;
+}
+.panelWhite
+{
+	border-radius:0px;
+}
+.panelWhite .panel-heading
+{
+	background-color:#fff;
+	border-radius:0px;
+}
+.pad_0
+{
+	padding:0px;
+}
+.border_0
+{
+	border:0px;
+}
+.tableOverview thead th
+{
+	font-size:13px;
+	color:#C5D1D7;
+	font-weight:400;
+}
+.tableOverview tr td
+{
+	padding:12px 8px !important;
+}
+.text-capital
+{
+	text-transform:uppercase;
+}
+.block
+{
+	border:1px solid #ddd;
+	padding:8px;
+	display:table;
+	width:100%
+}
+.panelProfile
+{
+	border:1px solid #659C47;
+	border-radius:0px;
+	margin-bottom:0px;
+}
+.panelProfile .panel-footer
+{
+	background-color:#fff;
+}
+.panelProfile .img-responsive
+{
+	height:50px;
+	width:50px;
+	border:1px solid #ddd;
+}
+.m_top10{margin-top:10px !important;}
+.m_top20{margin-top:20px !important;}
+.form-control
+{
+	border-radius:0px;
+}
+.submitedDataModal
+{
+	cursor:pointer;
+	text-decoration:underline;
+}
+.bg_ED
+{
+	background-color:#EDEEF0
+}
+.tableModal thead
+{
+	background-color:#DBDFE2
+}
+.tableModal tr td
+{
+	padding:15px 8px !important;
+}
+.tableModal tr:hover td
+{
+	background-color:#EDEEF0 !important;
+	border-top:1px solid #333 !important;
+	border-bottom:1px solid #333 !important;
+}
+.editBtn , .editBtn:hover , .editBtn:active , .editBtn:focus
+{
+	display:none;
+	background-color:#EBEEEC;
+	color:#449D44;
+}
+.tableModal tr:hover td .editBtn
+{
+	display:inline-block;
+}
+.tableModal tr:hover td:first-child
+{
+	border-left:1px solid #333 !important;
+}
+.tableModal tr:hover td:last-child
+{
+	border-right:1px solid #333 !important;
+}
+.tableModal tr td img
+{
+	height:30px;
+	width:30px;
+	display:inline-block !important;
+}
+.viewBtn , .viewBtn:hover , .viewBtn:focus , .viewBtn:active
+{
+	background-color:#FAF8FE;
+	text-transform:uppercase;
+	color:#449D44;
+	border:1px solid #449D44;
+}
+.deleteBtn , .deleteBtn:hover , .deleteBtn:focus , .deleteBtn:active
+{
+	background-color:#FAF8FE;
+	text-transform:uppercase;
+	color:#C50F04;
+	border:1px solid #C50F04;
+}
