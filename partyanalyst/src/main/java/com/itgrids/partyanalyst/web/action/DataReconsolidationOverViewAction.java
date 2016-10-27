@@ -22,10 +22,20 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 	  private String task;
 	  
 	  private IDataReconsolidationService dataReconsolidationService;
-	  List<CadreTabRecordsStatusVO>  dataReConsalationOverView;
+	  private List<CadreTabRecordsStatusVO>  cadreTabRecordsStatusVOList;
 	  private  CadreTabRecordsStatusVO finalvo;
 	  
-	  public void setServletRequest(HttpServletRequest request) {
+	  
+	  public List<CadreTabRecordsStatusVO> getCadreTabRecordsStatusVOList() {
+		return cadreTabRecordsStatusVOList;
+	}
+
+	public void setCadreTabRecordsStatusVOList(
+			List<CadreTabRecordsStatusVO> cadreTabRecordsStatusVOList) {
+		this.cadreTabRecordsStatusVOList = cadreTabRecordsStatusVOList;
+	}
+
+	public void setServletRequest(HttpServletRequest request) {
 			this.request = request;
 		}
 	  
@@ -63,14 +73,6 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 		}
 
 
-		public List<CadreTabRecordsStatusVO> getDataReConsalationOverView() {
-			return dataReConsalationOverView;
-		}
-	
-		public void setDataReConsalationOverView(
-				List<CadreTabRecordsStatusVO> dataReConsalationOverView) {
-			this.dataReConsalationOverView = dataReConsalationOverView;
-		}
 
 		public CadreTabRecordsStatusVO getFinalvo() {
 				return finalvo;
@@ -79,7 +81,7 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 				this.finalvo = finalvo;
 		}
 		
-	  public String dataReConsalationOverView(){
+	  public String getDataReConsalationOverViewAction(){
 		  try {
 			
 			jObj = new JSONObject(getTask());
@@ -88,7 +90,7 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			
-			dataReConsalationOverView = dataReconsolidationService.dataReConsalationOverView(constistuencyId,fromDateStr,toDateStr);
+			cadreTabRecordsStatusVOList = dataReconsolidationService.dataReConsalationOverView(constistuencyId,fromDateStr,toDateStr);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at dataReConsalationOverView()  of DataReconsolidationOverViewAction", e);
@@ -120,7 +122,7 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 			Long constituencyId = jObj.getLong("constituencyId");
 			String startDate = jObj.getString("strtDate");
 			String toDate =jObj.getString("endDate");
-			dataReConsalationOverView = dataReconsolidationService.getCadreSurveyUserWiseRegistrations(cadreSrveyUserId,constituencyId,startDate,toDate);
+			cadreTabRecordsStatusVOList = dataReconsolidationService.getCadreSurveyUserWiseRegistrations(cadreSrveyUserId,constituencyId,startDate,toDate);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured into DataReconsolidationOverViewAction of getCadreSurveyUserWiseRegistrations ()",e);

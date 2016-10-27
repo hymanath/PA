@@ -138,9 +138,10 @@ $(document).on("click","#submitId",function(){
 				str+='<th>IMEI Number</th>';
 				str+='<th>Vendor Name</th>'; 
 				str+='<th>Total Registration</th>'; 
-				str+='<th>KafkaPending</th>'; 
-				str+='<th>ServerPending</th>'; 
 				str+='<th>Sync Pending</th>';
+				str+='<th>Kafka Pending</th>'; 
+				str+='<th>Kaafka Sync</th>'; 
+				
 				str+='<th>ActualServer Status</th>';
 				str+='</tr>';
 				str+='</thead>'; 
@@ -148,14 +149,15 @@ $(document).on("click","#submitId",function(){
            for(var i in result )
 		   {			   
 				str+='<tr>'; 
-				str+='<td>'+result[i].cadreSurveyUserId+'</td>';
+				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>'+result[i].imeiNo+'</td>';      
 				str+='<td>'+result[i].name+'</td>';
 				str+='<td>'+result[i].totalRecords+'</td>';  
                 str+='<td>'+result[i].pending+'</td>'; 
 				str+='<td>'+result[i].kafkaPending+'</td>'; 
-                str+='<td>'+result[i].serverPending+'</td>';				
-				str+='<td>'+result[i].actualCount+'<button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
+                str+='<td>'+result[i].kafkaSync+'</td>';				
+				str+='<td>'+result[i].actualCount+'</td>';
+				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -249,22 +251,22 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 
 function buildPopUpModeldetails(result){
 	var str ='';
-	str +='<table>';
-	str +='<thead>';
-	str +='<tr>';
-	str +='<th>Date</th>';
-	str +='<th>Name</th>';
-	str +='<th>Mobile No</th>';
-	str +='<th>First Record Received</th>'; 
-	str +='<th>Last Record Received</th>'; 
-    str +='<th>Registrations</th>'; 
-	str +='<th>Synced</th>';
-	str +='<th>Sync Pending</th>';
-	str +='<th>Total Amount</th>';
-    str +='</tr>';
-	str +='</thead>';
-	str +='<tbody>';
-	str +='<tr>';
+	str+='<table class="table table-condensed">';
+	str+='<thead>';
+	str+='<tr>';
+		str+='<th>Date</th>';
+		str+='<th>Name</th>';
+		str+='<th>Mobile No</th>';
+		str+='<th>First Record Received</th>'; 
+		str+='<th>Last Record Received</th>'; 
+		str+='<th>Registrations</th>'; 
+		str+='<th>Synced</th>';
+		str+='<th>Sync Pending</th>';
+		str+='<th>Total Amount</th>';
+    str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	str+='<tr>';
 	for(var i in result){
 		var totRecrds = result[i].totalRecords;
 		var totalSync = result[i].sync;
@@ -288,12 +290,13 @@ function buildPopUpModeldetails(result){
 			str +='<td>'+totPending+'</td>';
 		}else {
 			str +='<td>'+0+'</td>';
-		}
-      $("#tabUserWiseRegistionDetilsId").html(str);
-$("#tabUserWiseRegistionDetilsId").dataTable();
+		}		
 	}
 	str +='</tr>';
 	str +='</tbody>';
 	str +='</table>';
+	
+	$("#tabUserWiseRegistionDetilsId").html(str);
+	$("#tabUserWiseRegistionDetilsId").dataTable();
 	
 }
