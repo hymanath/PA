@@ -34,8 +34,8 @@
 	<global-results>
     <result name="multipleAccess" type="redirect">homePage.action?action=multipleAccess</result>
 	<result name="exception">jsp/globalError.jsp</result>
-	<!-- <result name="tdpLoginPage" type="redirect">login.action</result> -->
-	<result name="tdpLoginPage" type="redirect">https://mytdp.com/login.action</result>
+<!-- <result name="tdpLoginPage" type="redirect">https://mytdp.com/login.action</result> -->
+	<result name="tdpLoginPage" type="redirect">login.action</result>
 	<result name="dashboard" type="redirect">dashBoardAction.action</result>
 	</global-results>
 
@@ -223,6 +223,11 @@
 			<result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
 			<result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>
 			<result type="redirect" name="cadreWebMonitoring">webMonitoringDashboardAction.action</result>
+			<result type="redirect" name="cadreWebMonitoringDashboard">webMonitoringDashboardAction.action</result>
+			<result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
+			<result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
+			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
+			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -13146,6 +13151,12 @@
 		<result name="success">/jsp/coreDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	
+	<action name="partyAndLeaderActivitiesAndPerformanceTracking" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
+		<result name="success">/jsp/newCoreDashboard.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	
 	<action name="coreDashboardAction1" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>
@@ -14226,7 +14237,7 @@
       <param name="root">resultList</param>
     </result>
   </action>
-	<action name="webMonitoringDashboardAction" class="fieldMonitoringAction">
+	<action name="webMonitoringDashboardAction" class="fieldMonitoringAction" method="webMonitoringDashboard">
 		<result name="input">/jsp/loginForm.jsp?src=webMonitoringDashboardAction</result>
 		<result name="success">/jsp/webMonitoringDashboard.jsp</result>  
 		<result name="error" type="redirect">login.action</result>
