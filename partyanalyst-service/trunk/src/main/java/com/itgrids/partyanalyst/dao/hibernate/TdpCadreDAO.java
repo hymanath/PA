@@ -8374,4 +8374,27 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		}
 		return query.list();
 	}
-}
+	
+		public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers){
+		
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.insertedUserId,count(distinct model.tdpCadreId) " +
+					" from TdpCadre model " +
+					" where " +
+					"  model.isDeleted ='N' ");
+			
+			if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+				str.append( " and model.insertedUserId in (:cadreSurveyUsers)  " );
+			}
+			
+			Query query = getSession().createQuery(str.toString());
+			
+			if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+				query.setParameterList("cadreSurveyUsers", cadreSurveyUsers);
+			}
+			
+			return query.list();
+			
+		}
+	}
