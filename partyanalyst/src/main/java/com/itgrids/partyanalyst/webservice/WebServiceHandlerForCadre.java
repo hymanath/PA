@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
@@ -157,6 +158,28 @@ public class WebServiceHandlerForCadre {
 		}
 		return null;
 	}
+	
+	
+	//CADRE IMAGE RELATED
+	@POST
+	@Path("/saveCadreImage")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ImageCadreVO saveCadreImage(ImageCadreVO inputVO){ 
+		try {
+			 
+			   webServiceHandlerServiceForCadre.saveCadreImage(inputVO);
+              return inputVO;
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreImage() in WebServiceHandlerForCadre class",e);
+		}
+		return inputVO;
+	}
+	
+	
+	
+	
+	
 	
 	
 }
