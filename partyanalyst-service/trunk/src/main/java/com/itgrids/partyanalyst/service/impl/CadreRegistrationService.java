@@ -13958,7 +13958,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					
 					model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					model.setKafkaPending(tabVO.getKafkaPending() !=null ? tabVO.getKafkaPending() :0l);
-					model.setServerPending(tabVO.getServerPending() !=null ? tabVO.getServerPending() :0l);
+					model.setKafkaSync(tabVO.getKafkaSync() !=null ? tabVO.getKafkaSync() :0l);
 					if(tabVO.getSurveyDate() !=null && !tabVO.getSurveyDate().trim().isEmpty())
 						model.setSurveyDate(tabVO.getSurveyDate() !=null ? sdf.parse(tabVO.getSurveyDate()):null);
 					if(tabVO.getMinRecordTime() != null && tabVO.getMinRecordTime().trim().isEmpty())

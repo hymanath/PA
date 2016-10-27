@@ -78,7 +78,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     				
     				cadreTabRecordsStatusVO.setPending(obj[4]!=null ? (Long)obj[4]:0l);
     				cadreTabRecordsStatusVO.setKafkaPending(obj[5]!=null ? (Long)obj[5]:0l);
-    				cadreTabRecordsStatusVO.setServerPending(obj[6]!=null ? (Long)obj[6]:0l);
+    				cadreTabRecordsStatusVO.setKafkaSync(obj[6]!=null ? (Long)obj[6]:0l);
     				    				
     				cadreSurveyUsers.add(obj[0]!= null ? Long.valueOf(obj[0].toString()) : 0l);
     				

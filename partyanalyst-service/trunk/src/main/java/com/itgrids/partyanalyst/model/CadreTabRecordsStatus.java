@@ -39,7 +39,7 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	private Date surveyDate;
 	private String isDeleted;
 	private Long kafkaPending;
-	private Long serverPending;
+	private Long kafkaSync;
 	private CadreSurveyUser cadreSurveyUser;
 	private TabUserInfo tabUserInfo;
 	
@@ -174,12 +174,12 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	public void setKafkaPending(Long kafkaPending) {
 		this.kafkaPending = kafkaPending;
 	}
-	@Column(name="server_pending")
-	public Long getServerPending() {
-		return serverPending;
+	@Column(name="kafka_sync")
+	public Long getKafkaSync() {
+		return kafkaSync;
 	}
-	public void setServerPending(Long serverPending) {
-		this.serverPending = serverPending;
+	public void setKafkaSync(Long kafkaSync) {
+		this.kafkaSync = kafkaSync;
 	}
 	
 	
