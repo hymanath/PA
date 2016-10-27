@@ -218,6 +218,7 @@ $(document).on("click",".ranges li",function(){
 		getIssueStatusWiseCounts();
 		getIssueTypeWiseCounts();
 		getCadreRegIssueType();
+		$("#dtatusDivId").hide();
 	});
 	
 $(document).on("click",".modalCloseCls",function(){
