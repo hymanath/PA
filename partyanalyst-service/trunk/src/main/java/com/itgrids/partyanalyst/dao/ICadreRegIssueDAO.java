@@ -31,4 +31,5 @@ public interface ICadreRegIssueDAO extends GenericDao<CadreRegIssue, Long> {
 	public Long getActiveDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date lastOneHourTime,Date today);
 	public List<Object[]> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId,Long cadreRegUserId);
 	public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long cadreRegUserId);
+	public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal);
 }

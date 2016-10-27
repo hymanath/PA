@@ -763,6 +763,45 @@ public List<Object[]> getLocationWiseDataVerifiedCounts(Date fromDate,Date toDat
 	return query.list();
 }
 
+public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select");
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.userAddress.district.districtId,");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.userAddress.constituency.constituencyId,");
+	
+	sb.append(" model.cadreRegIssueStatus.cadreRegIssueStatusId," +
+				" count(distinct model.cadreRegIssueId)" +
+				" from CadreRegIssue model");
+	
+	if(fromDate != null && toDate != null)
+		sb.append(" where (date(model.insertedTime) between :fromDate and :toDate)");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
+		sb.append(" and model.userAddress.state.stateId = :locationVal");
+	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
+		sb.append(" and model.userAddress.district.districtId = :locationVal");
+	
+	sb.append(" group by");
+	if(locationType != null && locationType.equalsIgnoreCase("state"))
+		sb.append(" model.userAddress.district.districtId,model.cadreRegIssueStatus.cadreRegIssueStatusId" +
+					" order by model.userAddress.district.districtName");
+	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+		sb.append(" model.userAddress.constituency.constituencyId,model.cadreRegIssueStatus.cadreRegIssueStatusId" +
+					" order by model.userAddress.constituency.name");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+	}
+	if(locationVal != null && locationVal.longValue() > 0l)
+		query.setParameter("locationVal", locationVal);
+	
+	return query.list();
+}
+
 public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal){
 	StringBuilder sb = new StringBuilder();
 	sb.append("select");
@@ -792,7 +831,7 @@ public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date t
 				" and model.isDeleted = 'N'" +
 				" and model.tdpCadre.isDeleted = 'N'");
 	if(fromDate != null && toDate != null)
-		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
+		sb.append(" and date(model1.insertedTime) between :fromDate and :toDate");
 	
 	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
 		sb.append(" and model.tdpCadre.userAddress.state.stateId = :locationVal");
@@ -823,8 +862,8 @@ public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date t
 	
 	Query query = getSession().createQuery(sb.toString());
 	if(fromDate != null && toDate != null){
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
 	}
 	if(locationVal != null && locationVal.longValue() > 0l)
 		query.setParameter("locationVal", locationVal);
