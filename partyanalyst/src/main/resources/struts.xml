@@ -14310,5 +14310,33 @@
 	<action name="updateToursDetailsAction" class="toursAction">
 		<result name="success">/jsp/updateToursDetails.jsp</result>
 	</action>
+  <action name="updateToursAction" class="toursAction">
+    <result name="success">/jsp/toursDetails.jsp</result>   
+  </action>
+	<action name="getDesigationListAction" class="toursAction"  method="getDesigationList">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
+	<action name="getConstituenciesListAction" class="toursAction"  method="getConstituenciesList">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
+	<action name="getCandidateListAction" class="toursAction"  method="getCandidateList">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
+	<action name="getCandiateDetailsAction" class="toursAction"  method="getCandiateDetails">
+			<result type="json" name="success">
+			<param name="root">resultVO</param>
+		</result>
+	</action>
+	<action name="getSearchMembersDetailsAction" class="toursAction"  method="getSearchMembersDetails">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
 </package>
 </struts>
