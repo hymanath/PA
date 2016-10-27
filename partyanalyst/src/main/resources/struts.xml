@@ -14307,5 +14307,8 @@
 			<param name="root">dataReConsalationOverView</param>
 		</result>
 	</action>
+	<action name="updateToursDetailsAction" class="toursAction">
+		<result name="success">/jsp/updateToursDetails.jsp</result>
+	</action>
 </package>
 </struts>

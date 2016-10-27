@@ -702,5 +702,7 @@
 		<pattern>/fieldMonitoringNewAction*</pattern>
 		<pattern>/tdpAgentAreaMapAction*</pattern>
 		<pattern>/dataReconsolidationOverViewAction*</pattern>
+		<pattern>/updateToursDetailsAction*</pattern>
+		
 	</decorator> 
 </decorators>

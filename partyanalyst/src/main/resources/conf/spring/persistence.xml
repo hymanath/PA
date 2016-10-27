@@ -1018,7 +1018,14 @@
                       
                       <value>com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp</value>
                       <value>com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp1</value>
-                      <value>com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp</value> 	                     
+                      <value>com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp</value> 
+                   
+                      <value>com.itgrids.partyanalyst.model.SelfAppraisalLocationScope</value>
+                      <value>com.itgrids.partyanalyst.model.SelfAppraisalDesignation</value>
+                      <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidate</value>  
+                      <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation</value>
+                      <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails</value> 
+                      	                     
 				 </list>
 			
 		</property>
