@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
@@ -29,6 +31,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private HttpServletRequest request;
 		  private JSONObject jObj;
 		  private String task;
+		  private HttpSession session;
 		  private List<IdAndNameVO> idAndNameVOList;
 		  private IdNameVO idNameVO;
 		  private List<IdNameVO> idNameVOs;
@@ -50,7 +53,15 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   public JSONObject getjObj() {
 			   return jObj;
 		   }
-		   public void setjObj(JSONObject jObj) {
+		   public HttpSession getSession() {
+			return session;
+		}
+
+		public void setSession(HttpSession session) {
+			this.session = session;
+		}
+
+		public void setjObj(JSONObject jObj) {
 				this.jObj = jObj;
 		   }
 		   public String getTask() {
@@ -124,6 +135,23 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 
 		//Business methods
 		public String execute(){
+			
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			List<String> entitlements = null;
+			boolean noaccess = false;
+			
+			if(regVO == null)
+				return Action.INPUT;
+			
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(!(entitlements.contains("CADRE_DATA_MONITORING".trim())))
+				 {
+				        noaccess = true ;  
+				 }
+			}
 			return Action.SUCCESS;
 		}
 		
@@ -167,8 +195,26 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		
 		    return Action.SUCCESS;
 		}
-	    public String dataMonitoringDashboard(){
-	     return Action.SUCCESS;
+		
+	    public String dataMonitoringDashboard()
+	    {
+	    	session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			List<String> entitlements = null;
+			boolean noaccess = false;
+			
+			if(regVO == null)
+				return Action.INPUT;
+			
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(!(entitlements.contains("CADRE_DATA_MONITORING_DASHBOARD".trim())))
+				 {
+				        noaccess = true ;  
+				 }
+			}
+			return Action.SUCCESS;
 	    }
 	    
 	   public String getDataMonitoringOverViewDetails(){
