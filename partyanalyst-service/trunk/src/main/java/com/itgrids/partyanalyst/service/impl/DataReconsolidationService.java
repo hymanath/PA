@@ -48,7 +48,6 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     	List<CadreTabRecordsStatusVO> returnList = null;
     	
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		//SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
 		
 		Date startDate = null;
 		Date endDate = null;
@@ -70,7 +69,9 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     			{
     				CadreTabRecordsStatusVO cadreTabRecordsStatusVO = new CadreTabRecordsStatusVO();
     				
-    				cadreTabRecordsStatusVO.setCadreSurveyUserId( obj[0]!= null ? Long.valueOf(obj[0].toString()) : 0l);
+    				cadreTabRecordsStatusVO.setCadreSurveyUserId( obj[7]!= null ? Long.valueOf(obj[7].toString()) : 0l);
+    				
+    				cadreTabRecordsStatusVO.setUserName(obj[0]!= null ?obj[0].toString() : "");
     				cadreTabRecordsStatusVO.setImeiNo(obj[1]!=null ? obj[1].toString() :"");
     				
     				cadreTabRecordsStatusVO.setName(obj[2]!=null ? obj[2].toString() :"");
@@ -80,7 +81,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     				cadreTabRecordsStatusVO.setKafkaPending(obj[5]!=null ? (Long)obj[5]:0l);
     				cadreTabRecordsStatusVO.setKafkaSync(obj[6]!=null ? (Long)obj[6]:0l);
     				    				
-    				cadreSurveyUsers.add(obj[0]!= null ? Long.valueOf(obj[0].toString()) : 0l);
+    				cadreSurveyUsers.add(obj[7]!= null ? Long.valueOf(obj[7].toString()) : 0l);
     				
     				returnList.add(cadreTabRecordsStatusVO);
     			}
@@ -91,7 +92,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     		
     		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
     			for (Object[] objects : cadreSurveyCountObj) {
-    				actualMap.put((Long)objects[0],(Long)objects[1] );
+    				actualMap.put((Long)objects[0],objects[1] !=null ? (Long)objects[1]:0l);
 				}
     		}
     		
@@ -146,54 +147,40 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuency
 public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,String startDate,String endDate){
 	
 	
-	  List<CadreTabRecordsStatusVO> finalList = new ArrayList<CadreTabRecordsStatusVO>(0);
-	   Long totRegCont = 0l;
-	   Long totalAmount = 0l;
-	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-	   Date fromDate = null;
-	   Date toDate = null;
-	   try{
-	   if(startDate !=null){
-		   fromDate = sdf.parse(startDate);
-	   }
-	   if(endDate != null){
-		   toDate = sdf.parse(endDate);
-	   }
-	   }catch(Exception e){
-		   e.printStackTrace();
-	   }
-	
+	  List<CadreTabRecordsStatusVO> finalList = new ArrayList<CadreTabRecordsStatusVO>(0);	 
 	try{
 	
 		LOG.info("Entered into DataReconsolidationService of getCadreSurveyUserWiseRegistrations");
+		
+		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		   Date fromDate = null;
+		   Date toDate = null;
+		
+		   if(startDate !=null && endDate != null){			   
+			   fromDate = sdf.parse(startDate);
+			   toDate = sdf.parse(endDate);
+		   }
+		 
 		List<Object[]> cadreRegDetils = cadreTabRecordsStatusDAO.getCadreSurveyUserWiseRegistrations(cadreSrveyUserId,constituencyId,fromDate,toDate);
 		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
 			
 			for(Object[] param : cadreRegDetils){
 				CadreTabRecordsStatusVO tabStatsVO = new CadreTabRecordsStatusVO();
-				tabStatsVO.setSurveyDate(param[0] != null ? sdf.format((Date)param[0]) : "");
+				tabStatsVO.setSurveyDate(param[0] != null ? param[0].toString() : "");
 				tabStatsVO.setName(param[1] != null ? param[1].toString() : "");
 				tabStatsVO.setMobileNo(param[2] != null ? param[2].toString() : "");
-				tabStatsVO.setFirstRecord(param[3] != null ? sdf.format((Date)param[3]) : "");
-				tabStatsVO.setLastRecord(param[4] != null ? sdf.format((Date)param[4]) : "");
-				//tabStatsVO.setTotalRecords(param[5]!=null?(Long.valueOf(param[5].toString())) :0l);
-				Long syncRecord = param[6] != null ? (Long)param[6] : 0l;
-                 if(syncRecord.longValue() > 0l){
-              	   tabStatsVO.setSync(syncRecord);
+				tabStatsVO.setFirstRecord(param[3] != null ? param[3].toString() : "");
+				tabStatsVO.setLastRecord(param[4] != null ? param[4].toString() : "");
+				tabStatsVO.setTotalRecords(param[5]!=null?(Long.valueOf(param[5].toString())) :0l);				
+				tabStatsVO.setSync(param[6] != null ? (Long)param[6] : 0l);
+				tabStatsVO.setPending(param[7] != null ? (Long)param[7] : 0l);
+				tabStatsVO.setKafkaPending(param[8] != null ? (Long)param[8] : 0l);
+				tabStatsVO.setKafkaSync(param[9] != null ? (Long)param[9] : 0l);
+				tabStatsVO.setTabUserInfoId(param[10] != null ? (Long)param[10] : 0l);
+
+                 if(tabStatsVO.getTotalRecords() !=null && tabStatsVO.getTotalRecords().longValue()>0l) {
+              	   	 tabStatsVO.setTotalAmount(tabStatsVO.getTotalRecords() * 100);
                  }
-                 Long pendingRecord = param[7] != null ? (Long)param[7] :0l;
-                 if(pendingRecord.longValue()>0l){
-              	   tabStatsVO.setPending(pendingRecord);
-                 }
-                 totRegCont = param[5] != null ? (Long) param[5]  : 0l;
-                 if(totRegCont.longValue()>0l) {
-              	   tabStatsVO.setTotalRecords(totRegCont);
-                 }
-                 
-                 if(totalAmount.longValue() > 0l){
-              	   totalAmount = totalAmount * 100;
-                 }
-				tabStatsVO.setTotalAmount(totalAmount);
 				finalList.add(tabStatsVO);
 			}
 		

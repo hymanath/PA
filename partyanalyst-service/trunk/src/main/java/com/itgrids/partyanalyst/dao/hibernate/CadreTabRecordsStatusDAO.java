@@ -38,8 +38,8 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 			Date fromDate, Date toDate) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.cadreSurveyUser.userName,model.imeiNo,"
-				 + " model1.cadreRegUser.user.userName,count(model.totalRecords),count(model.pending)," +
-				 " count(model.kafkaPending),count(model.serverPending)" +
+				 + " model1.cadreRegUser.user.userName,sum(model.totalRecords),sum(model.pending)," +
+				 " sum(model.kafkaPending),sum(model.kafkaSync),model.cadreSurveyUserId" +
 				" from CadreTabRecordsStatus model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
 				 " where model.cadreSurveyUserId = model2.cadreSurveyUserId and model.cadreSurveyUserId = model1.cadreSurveyUserId and  " +
 				 " model2.constituencyId = :constistuencyId ");
@@ -85,24 +85,30 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 
 	public List<Object[]> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,Date fromDate,Date toDate){
 		StringBuilder sb =new StringBuilder();
-		sb.append(" select date(model.surveyDate)," +
-				  " model.tabUserInfo.name," +
-				  " model.tabUserInfo.mobileNo," +
-				  " model.minRecordTime ," +
-				  " model.maxRecordTime , " +
-				  " model.totalRecords ," +
-				  " model.sync ," +
-				  " model.pending  from " +
-				  " CadreTabRecordsStatus model," +
-				  " CadreSurveyUserAssignDetails model1 " +
-				  " where model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
-				  " model.cadreSurveyUser.cadreSurveyUserId =:cadreSrveyUserId and " +
-				  " model1.constituencyId =:constituencyId ") ;
-		
+		sb.append(" SELECT date(model.surveyDate)," +
+					  " model.tabUserInfo.name," +
+					  " model.tabUserInfo.mobileNo," +
+					  " min(model.minRecordTime) ," +
+					  " max(model.maxRecordTime) , " +
+					  " SUM(model.totalRecords) ," +
+					  " SUM(model.sync)," +
+					  " SUM(model.pending)," +
+					  " SUM(model.kafkaPending)," +
+					  " SUM(model.kafkaSync)," +
+					  " model.tabUserInfo.tabUserInfoId  " +
+				  " FROM " +
+					  " CadreTabRecordsStatus model," +
+					  " CadreSurveyUserAssignDetails model1 " +
+				  " WHERE model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
+					  " model.cadreSurveyUserId =:cadreSrveyUserId " );
+				 if(constituencyId != null && constituencyId.longValue()>0l){
+					 sb.append(" and model1.constituencyId =:constituencyId ") ;
+				 }
+		 
 				  if(fromDate != null && toDate != null){
-				  sb.append(" and date(model.surveyDate) between :fromDate and  :toDate ") ;
+					  sb.append(" and date(model.surveyDate) between :fromDate and  :toDate ") ;
 				  }
-				  sb.append(" group by model.surveyDate, model.tabUserInfo.tabUserInfoId ");
+				  sb.append(" group by date(model.surveyDate), model.tabUserInfo.tabUserInfoId ");
 		
 		   Query qry = getSession().createQuery(sb.toString());
 		   if(cadreSrveyUserId != null && cadreSrveyUserId.longValue()>0l){
