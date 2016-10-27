@@ -1297,15 +1297,11 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		  }
 		   
 		   /** 
-			  *  SAVING CADRE IMAGE.
-			  * 
-			  */
-		   public void saveCadreImage(ImageCadreVO inputVO)
-			{	
-				
-				if(inputVO.getMemberShipNo() == null || inputVO.getMemberShipNo().trim().length() == 0)
-					return;
-				
+		    *  SAVING CADRE IMAGE.
+		    * 
+		    */
+		  public void saveCadreImage(ImageCadreVO inputVO)
+		  {	
 				try{
 					
 					Long constituencyId = inputVO.getConstituencyId();
@@ -1347,6 +1343,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 								inputVO.setImageIssue("Base64 String Available But Saving Failed");
 							}
 						}
+						
+						//Consider here Online-Tab
 						else if(inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_WEB) || inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_ONLINE))
 						{
 							if(inputVO.getUploadImage() != null)
@@ -1366,6 +1364,25 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 								}
 								
 							}
+							
+							else if(inputVO.getImageBase64String() != null && inputVO.getImageBase64String().trim().length() > 0)
+							{
+								inputVO.setImageBase64String(inputVO.getImageBase64String().replace("_", "/"));
+								inputVO.setImageBase64String(inputVO.getImageBase64String().replace("-", "+"));
+								
+								boolean status = imageAndStringConverter.convertBase64StringToImage(inputVO.getImageBase64String(),filePath);
+								if(status)
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String - Available - Success");
+									inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+								}
+								else
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String - Available - Fail");
+									inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
+									inputVO.setImageIssue("Web Base64 String Available But Saving Failed");
+								}
+							}
 							else
 							{
 								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Upload Image - Not Available Trying with Voter");
@@ -1378,9 +1395,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 							LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String - Not Available - Fail");
 							inputVO.setImageSaveStatus(IConstants.STATUS_FAIL);
 							inputVO.setImageIssue("Base64 String Not Available, Failed");
-						}
-						{
-							//Here he should write for Web File Upload 
 						}
 					}
 					else if(inputVO.getPhotoType() != null && inputVO.getPhotoType().equalsIgnoreCase(IConstants.CADRE_IMAGE_TYPE_VOTER))
@@ -1413,7 +1427,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 								}
 								
 							}
-								
 						}
 						else
 						{
