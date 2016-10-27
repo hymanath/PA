@@ -13961,10 +13961,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					model.setKafkaSync(tabVO.getKafkaSync() !=null ? tabVO.getKafkaSync() :0l);
 					if(tabVO.getSurveyDate() !=null && !tabVO.getSurveyDate().trim().isEmpty())
 						model.setSurveyDate(tabVO.getSurveyDate() !=null ? sdf.parse(tabVO.getSurveyDate()):null);
-					if(tabVO.getMinRecordTime() != null && tabVO.getMinRecordTime().trim().isEmpty())
-						model.setMinRecordTime(tabVO.getMinRecordTime() !=null ? sdf.parse(tabVO.getMinRecordTime()):null);
-					if(tabVO.getMaxRecordTime() != null && tabVO.getMaxRecordTime().trim().isEmpty())
-						model.setMaxRecordTime(tabVO.getMaxRecordTime() !=null ? sdf.parse(tabVO.getMaxRecordTime()):null);
+					if(tabVO.getMinRecordTime() != null && !tabVO.getMinRecordTime().trim().isEmpty())
+						model.setMinRecordTime(tabVO.getMinRecordTime() !=null ? tabVO.getMinRecordTime():null);
+					if(tabVO.getMaxRecordTime() != null && !tabVO.getMaxRecordTime().trim().isEmpty())
+						model.setMaxRecordTime(tabVO.getMaxRecordTime() !=null ? tabVO.getMaxRecordTime():null);
 					
 					cadreTabRecordsStatusDAO.save(model);
 					

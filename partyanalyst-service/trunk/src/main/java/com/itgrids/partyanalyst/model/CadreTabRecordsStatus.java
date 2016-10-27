@@ -34,8 +34,8 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 	private Long sync;
 	private Long pending;
 	private Date insertedTime;
-	private Date minRecordTime;	
-	private Date maxRecordTime;	
+	private String minRecordTime;	
+	private String maxRecordTime;	
 	private Date surveyDate;
 	private String isDeleted;
 	private Long kafkaPending;
@@ -147,17 +147,17 @@ public class CadreTabRecordsStatus extends BaseModel implements Serializable{
 		this.tabUserInfo = tabUserInfo;
 	}
 	@Column(name="min_record_time")
-	public Date getMinRecordTime() {
+	public String getMinRecordTime() {
 		return minRecordTime;
 	}
-	public void setMinRecordTime(Date minRecordTime) {
+	public void setMinRecordTime(String minRecordTime) {
 		this.minRecordTime = minRecordTime;
 	}
 	@Column(name="max_record_time")
-	public Date getMaxRecordTime() {
+	public String getMaxRecordTime() {
 		return maxRecordTime;
 	}
-	public void setMaxRecordTime(Date maxRecordTime) {
+	public void setMaxRecordTime(String maxRecordTime) {
 		this.maxRecordTime = maxRecordTime;
 	}
 	@Column(name="survey_date")
