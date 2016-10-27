@@ -14291,9 +14291,9 @@
 			<param name="root">idNameVOs</param>    
 		</result>
 	</action>
-	 <action name="getDataReConsalationOverViewAction" class="dataReconsolidationOverViewAction"  method="dataReConsalationOverView">
+	 <action name="getDataReConsalationOverViewAction" class="dataReconsolidationOverViewAction"  method="getDataReConsalationOverViewAction">
 			<result type="json" name="success">
-			<param name="root">dataReConsalationOverView</param>
+			<param name="root">cadreTabRecordsStatusVOList</param>
 		</result>
 	</action>
 	 <action name="getdataReConsalationTotalOverViewAction" class="dataReconsolidationOverViewAction"  method="dataReConsalationTotalOverView">
@@ -14304,7 +14304,7 @@
 	
 	<action name="getCadreSurveyUserWiseRegistrationsAction" class="dataReconsolidationOverViewAction"  method="getCadreSurveyUserWiseRegistrations">
 			<result type="json" name="success">
-			<param name="root">dataReConsalationOverView</param>
+			<param name="root">cadreTabRecordsStatusVOList</param>
 		</result>
 	</action>
 	<action name="updateToursDetailsAction" class="toursAction">
