@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -257,7 +258,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 		}
 		return returnMap;
 	}
-	
+
 	
 	public GISVisualizationDetailsVO getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
 		GISVisualizationDetailsVO parentLocationVO = new GISVisualizationDetailsVO();
@@ -266,23 +267,53 @@ public class GISVisualizationService implements IGISVisualizationService{
 		   locationsMap =  getLocationDetailsBasedOnParameters(inputVO);
 		   Map<Long,Long> loctnsTargetCntMap = new HashMap<Long,Long>();
 		   //updateUserTrackingDetasil(locationsMap,inputVO);
-		   List<Object[]> targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
-		   
-		   if(targetList != null && targetList.size() > 0){
-			   for(Object[] obj :targetList){
-				   loctnsTargetCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),commonMethodsUtilService.getLongValueForObject(obj[2]));
+		   if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+			   inputVO.setChildLocationType(IConstants.RURAL);
+			   List<Object[]> targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
+			   
+			   if(targetList != null && targetList.size() > 0){
+				   for(Object[] obj :targetList){
+					   loctnsTargetCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),commonMethodsUtilService.getLongValueForObject(obj[2]));
+				   }
 			   }
+			   
+			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
+			   targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
+			   
+			   if(targetList != null && targetList.size() > 0){
+				   for(Object[] obj :targetList){
+					   loctnsTargetCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),commonMethodsUtilService.getLongValueForObject(obj[2]));
+				   }
+			   }
+			   inputVO.setChildLocationType(IConstants.RURALURBAN);
+		   }else{
+			   	List<Object[]> targetList = tdpCadreTargetCountDAO.getTargetCountForLocationsWise(inputVO);
+			   
+			   	if(targetList != null && targetList.size() > 0){
+				   for(Object[] obj :targetList){
+					   loctnsTargetCntMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]),commonMethodsUtilService.getLongValueForObject(obj[2]));
+				   }
+			   	}
 		   }
 		   //tdpCadreDAO.getLocationsRegistrationsDetails(inputVO);
+			upateElectionResulstsForVisualization(parentLocationVO,locationsMap,inputVO);
 		   
-		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
 			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
 			   List<Object[]> locationDetails = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
 			   setMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			   inputVO.setChildLocationType(IConstants.RURAL) ;
 			   List<Object[]> locationDetails1 = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
 			   setMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap,loctnsTargetCntMap);
+			}else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+					inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
+				   List<Object[]> locationDetails = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
+				   setMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
+				   inputVO.setChildLocationType(IConstants.RURAL) ;
+				   List<Object[]> locationDetails1 = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
+				   setMembershipDriveVisualizationDetails(locationDetails1,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}else{
+			
 				 List<Object[]> locationDetails2 = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
 				  setMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
@@ -301,8 +332,11 @@ public class GISVisualizationService implements IGISVisualizationService{
 			}
 		   
 		   //today
-		   inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
-		   inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		  // inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		  // inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		   
+		   inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("dd-MM-yyyy").parse("26-10-2016")));
+		   inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("dd-MM-yyyy").parse("26-10-2016")));
 		   
 		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
 			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
@@ -316,12 +350,114 @@ public class GISVisualizationService implements IGISVisualizationService{
 				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
 		   
+		 
+		 	
 	} catch (Exception e) {
 		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
 	}
 	  return parentLocationVO;
 	}
 	
+	public void upateElectionResulstsForVisualization(GISVisualizationDetailsVO parentLocationVO,Map<Long,GISVisualizationDetailsVO> locationsMap,GISVisualizationParameterVO inputVO){
+		try {
+			List<Object[]> resultList = null;
+			Map<Long,String> YCPMLAMap = new HashMap<Long, String>();
+				if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+					resultList = boothConstituencyElectionDAO.getDistrictLevelElectionResultsForGISVisualization(inputVO);
+					setDataToMap( resultList,locationsMap, YCPMLAMap);
+				}else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+					resultList = boothConstituencyElectionDAO.getAssemblyLevelElectionResultsForGISVisualization(inputVO);
+					YCPMLAMap = getYcpCandidatesJoinedIntoTDPParty();
+					setDataToMap( resultList,locationsMap, YCPMLAMap);
+				}else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+					if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL)){
+						resultList = boothConstituencyElectionDAO.getMandalLevelElectionResultsForGISVisualization(inputVO);
+						setDataToMap( resultList,locationsMap, YCPMLAMap);
+					}else if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+						inputVO.setParentLocationType(IConstants.RURAL);
+						resultList = boothConstituencyElectionDAO.getMandalLevelElectionResultsForGISVisualization(inputVO);
+						setDataToMap( resultList,locationsMap, YCPMLAMap);
+						
+						inputVO.setParentLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
+						resultList = boothConstituencyElectionDAO.getMunciORUrbanLevelElectionResultsForGISVisualization(inputVO);
+						setDataToMap( resultList,locationsMap, YCPMLAMap);
+						inputVO.setParentLocationType(IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
+					}
+					else if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN)){
+						resultList = boothConstituencyElectionDAO.getLocalBodyBoothLevelElectionResultsForGISVisualization(inputVO);
+						setDataToMap( resultList,locationsMap, YCPMLAMap);
+					}
+				}
+				else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
+					inputVO.setParentLocationType(IConstants.PANCHAYAT);
+					resultList = boothConstituencyElectionDAO.getPanchayatLevelElectionResultsForGISVisualization(inputVO);
+					setDataToMap( resultList,locationsMap, YCPMLAMap);
+				}
+				else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.URBAN) || 
+						 inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+					resultList = boothConstituencyElectionDAO.getLocalBodyBoothLevelElectionResultsForGISVisualization(inputVO);
+					setDataToMap( resultList,locationsMap, YCPMLAMap);
+				}
+				
+		} catch (Exception e) {
+			LOG.error("Exception Occured in upateElectionResulstsForVisualization Method in GISVisualizationService Class",e);
+		}
+	}
+
+	public void setDataToMap(List<Object[]> resultList,Map<Long,GISVisualizationDetailsVO> locationsMap,Map<Long,String> YCPMLAMap){
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(resultList)){
+				for (Object[] param : resultList) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long votersEarned = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Long validVotes = commonMethodsUtilService.getLongValueForObject(param[2]);
+					GISVisualizationDetailsVO vo = locationsMap.get(locationId);
+					if(vo != null){
+						String perc = (new BigDecimal(votersEarned*(100.0)/validVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						vo.setIsYCPArea("false");
+						vo.setValidVotes(validVotes.toString());
+						vo.setEarnedVotesIn2014(votersEarned.toString());
+						vo.setEarnedVotesPercIn2014(perc.toString());
+						if(YCPMLAMap.get(locationId) != null){
+							vo.setIsYCPArea("true");
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	public Map<Long,String> getYcpCandidatesJoinedIntoTDPParty(){
+		
+		 Map<Long,String> YCPCandidatesMap = new HashMap<Long, String>(0);
+		try {
+			YCPCandidatesMap.put(271L,"Chand Basha");						//kadiri
+			YCPCandidatesMap.put(149L,"Jyothula Nehru");					//jaggampeta
+			YCPCandidatesMap.put(212L,"Varapula Subbarao");					//prathipadu
+			YCPCandidatesMap.put(244L,"Adi narayana Reddy");				//jammalamadugu
+			YCPCandidatesMap.put(242L,"Jayaramulu");						//badvel
+			YCPCandidatesMap.put(196L,"Jaleel Khan");						//vijayawada west
+			YCPCandidatesMap.put(258L,"M.Mani Gandhi");						//kodumuru
+			YCPCandidatesMap.put(262L,"Bhuma Nagi Reddy");					//nandyal
+			YCPCandidatesMap.put(254L,"Bhuma Akhila Priya");				//allagadda
+			YCPCandidatesMap.put(332L,"Budda Rajashekar Reddy");			//Srisailam
+			YCPCandidatesMap.put(260L,"SV Mohan Reddy");					//Kurnool
+			YCPCandidatesMap.put(231L,"Pasim Sunil Kumar");					//gudur
+			YCPCandidatesMap.put(344L,"David Raju");						//yerragondapalem
+			YCPCandidatesMap.put(218L,"Gottipati Ravi Kumar");				//Addanki
+			YCPCandidatesMap.put(222L,"Muthamula Ashok Reddy");				//Giddalur
+			YCPCandidatesMap.put(223L,"Pothula Rama Rao");					//Kandukur
+			YCPCandidatesMap.put(114L,"Kalamatta Venkata Ramana"); 			//Pathapatnam
+			YCPCandidatesMap.put(122L,"Ravu Venkata Sujaya Krishna Ranga Rao");//bobbili
+			YCPCandidatesMap.put(359L,"Kidari Sarveswar Rao");				//Araku
+			YCPCandidatesMap.put(284L,"N.Amarnath Reddy"); 					//Palamaner
+
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getYcpCandidatesJoinedIntoTDPParty Method in GISVisualizationService Class",e);
+		}
+		return YCPCandidatesMap;
+	}
 	public void setMembershipDriveVisualizationDetails(List<Object[]> locationDetails,GISVisualizationDetailsVO parentLocationVO,
 			Map<Long,GISVisualizationDetailsVO> locationsMap,Map<Long,Long> loctnsTargetCntMap){
 		try{
@@ -582,6 +718,10 @@ public class GISVisualizationService implements IGISVisualizationService{
 				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
 		   
+		   List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
+
+		   if(commonMethodsUtilService.isListOrSetValid(statusList))
+			   parentLocationVO.getStatusList().addAll(statusList);
 	} catch (Exception e) {
 		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
 	}
@@ -642,10 +782,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			parentLocationVO.setRegCount2016Perc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(todayReg2016Perc));
 			parentLocationVO.setNewRegCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(todayNewCadrePerc));
 			parentLocationVO.setRenewalCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(todayRenewalCadrePerc));
-		   List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
-
-		   if(commonMethodsUtilService.isListOrSetValid(statusList))
-			   parentLocationVO.getStatusList().addAll(statusList);
+		   
 		   
 	}catch (Exception e) {
 				LOG.error("Exception Occured in setDateWiseMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
