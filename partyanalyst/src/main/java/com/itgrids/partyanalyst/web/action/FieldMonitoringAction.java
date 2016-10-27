@@ -140,9 +140,33 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		boolean noaccess = false;
 		if(regVO == null)
 			return Action.INPUT;
-		if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		
+		if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+		{
 			entitlements = regVO.getEntitlements();
-			 if(!(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ADMIN_ENTITLEMENT".trim()))){
+			 if(!(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD".trim())))
+			 {
+			        noaccess = true ;  
+			 }
+		}
+		
+		return Action.SUCCESS;    
+	}
+	
+	public String webMonitoringDashboard(){
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		boolean noaccess = false;
+		if(regVO == null)
+			return Action.INPUT;
+		
+		if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+		{
+			entitlements = regVO.getEntitlements();
+			 if(!(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD".trim())))
+			 {
 			        noaccess = true ;  
 			 }
 		}
@@ -164,12 +188,15 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		
 		//constituencyList = fieldMonitoringService.getCadreRegUserAssignedConstituencies(userId);
 		//usersList = fieldMonitoringService.getCadreRegUserAssignedUsers(userId);
-		/*if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		
+		if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+		{
 			entitlements = regVO.getEntitlements();
-			 if(!(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ADMIN_ENTITLEMENT".trim()))){
+			 if(!(entitlements.contains("CADRE_FIELD_MONITORING".trim())))
+			 {
 			        noaccess = true ;  
 			 }
-		}*/
+		}
 		
 		return Action.SUCCESS;    
 	}
