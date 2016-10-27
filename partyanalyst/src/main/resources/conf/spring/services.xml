@@ -3631,6 +3631,7 @@
 	
 	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
 	 <property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
+	  <property name="tdpCadreDAO" ref="tdpCadreDAO" />	
 	</bean>
 	
 	<bean name="toursService" class="com.itgrids.partyanalyst.service.impl.ToursService" >
@@ -3638,6 +3639,5 @@
 	 <property name="selfAppraisalCandidateDAO" ref="selfAppraisalCandidateDAO" />
 	 <property name="selfAppraisalCandidateDetailsDAO" ref="selfAppraisalCandidateDetailsDAO" />
 	</bean>
-</beans>		
-			
+</beans>			
 	

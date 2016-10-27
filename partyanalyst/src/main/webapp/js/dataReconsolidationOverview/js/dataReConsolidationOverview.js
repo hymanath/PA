@@ -121,6 +121,7 @@ $(document).on("click","#submitId",function(){
 				str+='<th>KafkaPending</th>'; 
 				str+='<th>ServerPending</th>'; 
 				str+='<th>Sync Pending</th>';
+				str+='<th>ActualServer Status</th>';
 				str+='</tr>';
 				str+='</thead>'; 
 				str+='<tbody>';
@@ -132,9 +133,10 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].imeiNo+'</td>';      
 				str+='<td>'+result[i].name+'</td>';
 				str+='<td>'+result[i].totalRecords+'</td>';  
-                 str+='<td>'+result[i].pending+'</td>'; 
-				str+='<td>'+result[i].kafkaPending+'</td>'; 				
-				str+='<td>'+result[i].serverPending+'<button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
+                str+='<td>'+result[i].pending+'</td>'; 
+				str+='<td>'+result[i].kafkaPending+'</td>'; 
+                str+='<td>'+result[i].serverPending+'</td>';				
+				str+='<td>'+result[i].actualCount+'<button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -204,8 +206,8 @@ $(document).on("click",".tabUserDtlsCls",function(){
 	  dateVal = dateArr.split("-")
 	  var strtDate = dateVal[0];
 	  var endDate = dateVal[1];
-	 getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,endDate);
-	 $("#myModal").modal("show");
+	  getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,endDate);
+	  $("#myModal").modal("show");
 	 
  });
 
