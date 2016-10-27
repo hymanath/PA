@@ -2423,4 +2423,104 @@ public void setDataToResultList(List<Object[]> returnObjList,List<PartyMeetingsV
 		LOG.error("Error occured at setDataToResultList() in CoreDashboardPartyMeetingService {}",e);
 	}
 }
+	public List<IdNameVO> getParyMeetingMemberDtls(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,Long meetingId,String state,String startDateString,String endDateString,String status){
+		LOG.info("Entered into ");
+		try{ 
+			//creating inputVO
+			PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();  
+			
+			inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+			inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+			List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+			inputVO.setStartDate(datesList.get(0));
+			inputVO.setEndDate(datesList.get(1));
+			Long stateId = coreDashboardGenericService.getStateIdByState(state);
+			inputVO.setStateId(stateId);
+			inputVO.setDistId(meetingId);
+			List<Long> absentList = new ArrayList<Long>();
+			List<Long> cadreIdList = new ArrayList<Long>();
+			List<Long> cadreIdAttendList = new ArrayList<Long>();
+			if(status.equalsIgnoreCase("invited")){
+				List<Long> inviteesList = partyMeetingInviteeDAO.getInvitedMemberCadreId(inputVO);
+				cadreIdAttendList = partyMeetingInviteeDAO.getAttendedMemberCadreId(inputVO);
+				cadreIdList.addAll(inviteesList);
+			}else if(status.equalsIgnoreCase("attended")){
+				List<Long> attendedList = partyMeetingAttendanceDAO.getAttendedMemberCadreId(inputVO);
+				cadreIdList.addAll(attendedList);  
+			}else{
+				List<Long> inviteesList = partyMeetingInviteeDAO.getInvitedMemberCadreId(inputVO);
+				List<Long> attendedList = partyMeetingInviteeDAO.getAttendedMemberCadreId(inputVO);
+				absentList.addAll(inviteesList);
+				absentList.removeAll(attendedList);
+				cadreIdList.addAll(absentList);    
+			}
+			Long cadreId = 0l;
+			IdNameVO idNameVO = null;
+			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+			Map<Long,IdNameVO> idAndMemberDtlsMap = new HashMap<Long,IdNameVO>();  
+			if(cadreIdList != null && cadreIdList.size() > 0){
+				List<Object[]> membersDesignationDtlsList = trainingCampAttendanceDAO.getMembersDetails(cadreIdList);
+				if(membersDesignationDtlsList != null && membersDesignationDtlsList.size() > 0){
+					for(Object[] obj : membersDesignationDtlsList){
+						cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+						idNameVO = idAndMemberDtlsMap.get(cadreId);
+						if(idNameVO != null){
+							String sts = idNameVO.getStatus();
+							if(obj[2] != null){
+								sts = sts+","+obj[2].toString();
+								idNameVO.setStatus(sts);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}else{
+								if(obj[3] != null){
+									sts = sts+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+									idNameVO.setStatus(sts);
+									idAndMemberDtlsMap.put(cadreId, idNameVO);
+								}
+							}  
+							
+						}else{
+							idNameVO = new IdNameVO();
+							idNameVO.setId(cadreId); //cadreId
+							idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+							if(obj[2] != null){
+								idNameVO.setStatus(obj[2].toString());
+							}else if(obj[3] != null){
+								idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+							}else{
+								idNameVO.setStatus("");
+							}
+							idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+							//idNameVO.setWish("attended");
+							idAndMemberDtlsMap.put(cadreId, idNameVO); 
+						}
+					}
+				}
+			}
+			idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
+			if(status.equalsIgnoreCase("invited")){
+				for(IdNameVO nameVO : idNameVOs){
+					if(cadreIdAttendList.contains(nameVO.getId())){
+						nameVO.setWish("attended");
+					}else{
+						nameVO.setWish("absent");
+					}
+				}
+			}else if(status.equalsIgnoreCase("attended")){
+				for(IdNameVO nameVO : idNameVOs){
+					nameVO.setWish("attended");
+				}
+			}else{     
+				for(IdNameVO nameVO : idNameVOs){
+					nameVO.setWish("absent");    
+				}
+			}
+		return idNameVOs;     
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured at getParyMeetingMemberDtls() in CoreDashboardPartyMeetingService {}",e);
+		}
+		return null;
+	}
+
 }
