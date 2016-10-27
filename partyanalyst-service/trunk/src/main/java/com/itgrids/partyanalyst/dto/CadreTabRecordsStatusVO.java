@@ -89,7 +89,7 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 		return name;
 	}
 	public void setName(String name) {
-		name = name;
+		this.name = name;
 	}
 	public String getMobileNo() {
 		return mobileNo;
