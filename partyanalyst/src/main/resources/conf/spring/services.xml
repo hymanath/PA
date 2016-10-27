@@ -3585,6 +3585,7 @@
 	<bean name="webServiceHandlerServiceForCadre" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerServiceForCadre" >
 	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
 	   <property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService"/>
+	   <property name="cadreRegistrationServiceNew" ref="cadreRegistrationServiceNew"/>
 	</bean>
 	
 	<bean name="fieldMonitoringService" class="com.itgrids.partyanalyst.service.impl.FieldMonitoringService" >
@@ -3627,6 +3628,11 @@
 	   <property name="tdpCadreLocationInfoTempDAO" ref="tdpCadreLocationInfoTempDAO" />
 	   <property name="tdpCadreLocationInfoTemp1DAO" ref="tdpCadreLocationInfoTemp1DAO" />
 	   <property name="tdpCadreDateWiseInfoTempDAO" ref="tdpCadreDateWiseInfoTempDAO" />
+	   <property name="imageAndStringConverter" ref="imageAndStringConverter" />
+	   <property name="voterDAO" ref="voterDAO" />
+	</bean>
+	
+	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
 	</bean>
 	
 	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
