@@ -566,9 +566,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			Long userId = user.getRegistrationID();
-			if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim())){
+			/*if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim())){
 				return "cadreWebMonitoring";   
-			}
+			}*/
 			if(entitlements.contains("MEMBERSHIP_DRIVE_CONSTITUENCY_OVERVIEW_ENTITLEMENT".trim())){
 				return "membershipDriveConstituencyOverviewEntitlement";
 			}
@@ -716,6 +716,27 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			else if(entitlements.contains("AFFILIATED_UNION_REGISTRATION_REDIRECT_ENTITLEMENT"))
 			{
 				return "affiliatedUnionRegistrationPage";
+			}
+			
+			if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD"))
+			{
+				return "cadreWebMonitoringDashboard";
+			}
+			else if(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD"))
+			{
+				return "cadreFiledMonitoringDashboard";
+			}
+			else if(entitlements.contains("CADRE_FIELD_MONITORING"))
+			{
+				return "cadreFiledMonitoring";
+			}
+			else if(entitlements.contains("CADRE_DATA_MONITORING_DASHBOARD"))
+			{
+				return "cadreDataMonitoringDashboard";
+			}
+			else if(entitlements.contains("CADRE_DATA_MONITORING"))
+			{
+				return "cadreDataMonitoring";
 			}
 		}
 		
