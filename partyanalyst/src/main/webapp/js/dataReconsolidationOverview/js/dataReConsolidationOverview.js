@@ -47,36 +47,56 @@ function getDataReConsalationOverView(){
 		 }   
    });
   }
- function  buildDataReConsalationTotalOverView(result)
- {
-	 var str ='';
-	    str+='<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>';
-				str+='<div class="panel-body" style="padding: 25px;">';
-					str+='<div class="row">';
-						str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
-						for(var i in result){
-						str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
-						str+='<p class="text_bold">Total Smart Devices</p>';
-						str+='<p class="text_bold">'+result[i].totalImeiNo+'</p>';
-						str+='</div>';
-						str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
-						str+='<p class="text_bold">Total Registration</p>';
-						str+='<p class="text_bold">'+result[i].totalRecords+'</p>';
-						str+='</div>';
-						str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
-						str+='<p class="text_bold">Data Synced Records</p>';
-						str+='<p class="text_bold">'+result[i].totalSyn+'</p>';
-						str+='</div>';
-						str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-						str+='<p class="text_bold">Data Synced Pending Records</p>';
-						str+='<p class="text_bold">'+result[i].totalPending+'</p>';
-						str+='</div>';
-						}
-						str+='</div>';
-					    str+='</div>';
-				       str+='</div>';
-					   $("#dataReconsalationOverviewId").html(str);
- }
+  function  buildDataReConsalationTotalOverView(result)
+  {
+ 	 var str ='';
+ 	    str+='<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>';
+ 				str+='<div class="panel-body" style="padding: 25px;">';
+ 					str+='<div class="row">';
+ 						str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+ 						var totImeiNo = result.totalImeiNo;
+ 						var totRecords = result.totalRecords;
+ 						var totSynRec =result.totalSyn;
+ 						var totPending  = result.totalPending;
+ 						if(result != null){
+ 						str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+ 						str+='<p class="text_bold">Total Smart Devices</p>';
+ 						if(totImeiNo != null){
+ 								str+='<p class="text_bold">'+totImeiNo+'</p>';
+ 						}else{
+ 							 str+='<p class="text_bold">'+0+'</p>';
+ 						}
+ 						str+='</div>';
+ 						str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+ 						str+='<p class="text_bold">Total Registration</p>';
+ 						if(totRecords != null){
+ 							str+='<p class="text_bold">'+result.totalRecords+'</p>';
+ 						}else {
+ 							 str+='<p class="text_bold">'+0+'</p>';
+ 						}
+ 						str+='</div>';
+ 						str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+ 						str+='<p class="text_bold">Data Synced Records</p>';
+ 						if(totSynRec != null){
+ 							str+='<p class="text_bold">'+totSynRec+'</p>';
+ 						}else {
+ 							str+='<p class="text_bold" text-center>'+0+'</p>';
+ 						}
+ 						str+='</div>';
+ 						str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+ 						str+='<p class="text_bold">Data Synced Pending Records</p>';
+ 						 if(totPending !=null){
+ 							 str+='<p class="text_bold">'+totPending+'</p>';
+ 						 }else{
+ 							 str+='<p class="text_bold">'+0+'</p>';
+ 						 }
+ 						str+='</div>';
+ 						}
+ 						str+='</div>';
+ 					    str+='</div>';
+ 				       str+='</div>';
+ 					   $("#dataReconsalationOverviewId").html(str);
+  }
  
 $(document).on("click","#submitId",function(){
 	
@@ -128,7 +148,6 @@ $(document).on("click","#submitId",function(){
            for(var i in result )
 		   {			   
 				str+='<tr>'; 
-				//str+='<td ></td>';
 				str+='<td>'+result[i].cadreSurveyUserId+'</td>';
 				str+='<td>'+result[i].imeiNo+'</td>';      
 				str+='<td>'+result[i].name+'</td>';
@@ -192,15 +211,11 @@ $(document).on("click","#submitId",function(){
 		
 	});
 });
-/* 
-$(document).on('click','#viewDayWiseId',function(){
-	$("#myModal").modal("show");
-	getCadreSurveyUserWiseRegistrations();
-}) */
 
 $(document).on("click",".tabUserDtlsCls",function(){
 	  var cdrSurveyUserId = $(this).attr("attr_cdr_srv_usr_id");
 	  var constId = $("#constituencyOverViewId").val();
+	  $("#userHeadinId").html("<b>UserId:"+cdrSurveyUserId+" - Day Wise Registration Details</b>")
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
 	  dateVal = dateArr.split("-")
@@ -251,15 +266,31 @@ function buildPopUpModeldetails(result){
 	str +='<tbody>';
 	str +='<tr>';
 	for(var i in result){
+		var totRecrds = result[i].totalRecords;
+		var totalSync = result[i].sync;
+		var totPending = result[i].pending;
 		str +='<td>'+result[i].surveyDate+'</td>';
 		str +='<td>'+result[i].name+'</td>';
 		str +='<td>'+result[i].mobileNo+'</td>';
 		str +='<td>'+result[i].firstRecord+'</td>';
 		str +='<td>'+result[i].lastRecord+'</td>';
-		str +='<td>'+result[i].totalRecords+'</td>';
-		str +='<td>'+result[i].sync+'</td>';
-		str +='<td>'+result[i].pending+'</td>';
-		str +='<td>'+result[i].totalAmount+'</td>';
+		if(totRecrds != null){
+			str +='<td>'+totRecrds+'</td>';
+		}else {
+			str +='<td>'+0+'</td>';
+		}
+		if(totalSync !=null){
+			str +='<td>'+totalSync+'</td>';
+		}else {
+			str +='<td>'+0+'</td>';
+		}
+		if(totPending != null){
+			str +='<td>'+totPending+'</td>';
+		}else {
+			str +='<td>'+0+'</td>';
+		}
+      $("#tabUserWiseRegistionDetilsId").html(str);
+$("#tabUserWiseRegistionDetilsId").dataTable();
 	}
 	str +='</tr>';
 	str +='</tbody>';

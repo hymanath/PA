@@ -23,71 +23,64 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 	  
 	  private IDataReconsolidationService dataReconsolidationService;
 	  List<CadreTabRecordsStatusVO>  dataReConsalationOverView;
+	  private  CadreTabRecordsStatusVO finalvo;
 	  
 	  public void setServletRequest(HttpServletRequest request) {
 			this.request = request;
 		}
 	  
-
 	  public HttpServletRequest getRequest() {
 		return request;
-	}
+	  }
+	  
+		public void setRequest(HttpServletRequest request) {
+			this.request = request;
+		}
+		public JSONObject getjObj() {
+			return jObj;
+		}
+		
+		public void setjObj(JSONObject jObj) {
+			this.jObj = jObj;
+		}
+		public String getTask() {
+			return task;
+		}
+
+		public void setTask(String task) {
+			this.task = task;
+		}
+		public String execute(){
+				return Action.SUCCESS;
+		}
+		
+		public IDataReconsolidationService getDataReconsolidationService() {
+			return dataReconsolidationService;
+		}
+		public void setDataReconsolidationService(
+				IDataReconsolidationService dataReconsolidationService) {
+			this.dataReconsolidationService = dataReconsolidationService;
+		}
 
 
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-
-	public JSONObject getjObj() {
-		return jObj;
-	}
-
-
-	public void setjObj(JSONObject jObj) {
-		this.jObj = jObj;
-	}
-
-
-	public String getTask() {
-		return task;
-	}
-
-
-	public void setTask(String task) {
-		this.task = task;
-	}
-
-
-	public String execute(){
-			return Action.SUCCESS;
+		public List<CadreTabRecordsStatusVO> getDataReConsalationOverView() {
+			return dataReConsalationOverView;
 		}
 	
-	
-	public IDataReconsolidationService getDataReconsolidationService() {
-		return dataReconsolidationService;
-	}
+		public void setDataReConsalationOverView(
+				List<CadreTabRecordsStatusVO> dataReConsalationOverView) {
+			this.dataReConsalationOverView = dataReConsalationOverView;
+		}
 
-
-	public void setDataReconsolidationService(
-			IDataReconsolidationService dataReconsolidationService) {
-		this.dataReconsolidationService = dataReconsolidationService;
-	}
-
-
-	public List<CadreTabRecordsStatusVO> getDataReConsalationOverView() {
-		return dataReConsalationOverView;
-	}
-
-
-	public void setDataReConsalationOverView(
-			List<CadreTabRecordsStatusVO> dataReConsalationOverView) {
-		this.dataReConsalationOverView = dataReConsalationOverView;
-	}
-
-
-	public String dataReConsalationOverView(){
-		try {
+		public CadreTabRecordsStatusVO getFinalvo() {
+				return finalvo;
+			}
+		public void setFinalvo(CadreTabRecordsStatusVO finalvo) {
+				this.finalvo = finalvo;
+		}
+		
+	  public String dataReConsalationOverView(){
+		  try {
 			
 			jObj = new JSONObject(getTask());
 			
@@ -111,7 +104,7 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			
-			dataReConsalationOverView = dataReconsolidationService.dataReConsalationTotalOverView(constistuencyId,fromDateStr,toDateStr);
+			finalvo = dataReconsolidationService.dataReConsalationTotalOverView(constistuencyId,fromDateStr,toDateStr);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at dataReConsalationTotalOverView()  of DataReconsolidationOverViewAction", e);
