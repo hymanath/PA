@@ -19,16 +19,16 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	{
 		StringBuilder queryStr=new StringBuilder();
 		  	queryStr.append(" delete from CadreTabRecordsStatus model" +
-				" where model.cadreSurveyUserId := cadreSurveyUserId" +
-				" and model.tabUserInfoId := tabUserInfoId");
+				" where model.cadreSurveyUserId = :cadreSurveyUserId" +
+				" and model.tabUserInfoId = :tabUserInfoId ");
 		if(surveyDate != null)
-			queryStr.append("and date(model.surveyDate) :=surveyDate");
+			queryStr.append(" and date(model.surveyDate) = :surveyDate ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 			query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
 			query.setParameter("tabUserInfoId", tabUserInfoId);
 			if(surveyDate != null)
-			query.setParameter("surveyDate", surveyDate);
+			query.setDate("surveyDate", surveyDate);
 		
 			return query.executeUpdate();
 	}
