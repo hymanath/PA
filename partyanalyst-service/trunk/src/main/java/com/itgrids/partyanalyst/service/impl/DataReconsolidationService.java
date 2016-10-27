@@ -114,5 +114,68 @@ public List<CadreTabRecordsStatusVO> dataReConsalationTotalOverView(Long constis
 	return returnList;
 }
 
+public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,String startDate,String endDate){
+	
+	
+	  List<CadreTabRecordsStatusVO> finalList = new ArrayList<CadreTabRecordsStatusVO>(0);
+	   Long totRegCont = 0l;
+	   Long totalAmount = 0l;
+	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	   Date fromDate = null;
+	   Date toDate = null;
+	   try{
+	   if(startDate !=null){
+		   fromDate = sdf.parse(startDate);
+	   }
+	   if(endDate != null){
+		   toDate = sdf.parse(endDate);
+	   }
+	   }catch(Exception e){
+		   e.printStackTrace();
+	   }
+	
+	try{
+	
+		LOG.info("Entered into DataReconsolidationService of getCadreSurveyUserWiseRegistrations");
+		List<Object[]> cadreRegDetils = cadreTabRecordsStatusDAO.getCadreSurveyUserWiseRegistrations(cadreSrveyUserId,constituencyId,fromDate,toDate);
+		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
+			
+			for(Object[] param : cadreRegDetils){
+				CadreTabRecordsStatusVO tabStatsVO = new CadreTabRecordsStatusVO();
+				tabStatsVO.setSurveyDate(param[0] != null ? sdf.format((Date)param[0]) : "");
+				tabStatsVO.setName(param[1] != null ? param[1].toString() : "");
+				tabStatsVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+				tabStatsVO.setFirstRecord(param[3] != null ? sdf.format((Date)param[3]) : "");
+				tabStatsVO.setLastRecord(param[4] != null ? sdf.format((Date)param[4]) : "");
+				//tabStatsVO.setTotalRecords(param[5]!=null?(Long.valueOf(param[5].toString())) :0l);
+				Long syncRecord = param[6] != null ? (Long)param[6] : 0l;
+                 if(syncRecord.longValue() > 0l){
+              	   tabStatsVO.setSync(syncRecord);
+                 }
+                 Long pendingRecord = param[7] != null ? (Long)param[7] :0l;
+                 if(pendingRecord.longValue()>0l){
+              	   tabStatsVO.setPending(pendingRecord);
+                 }
+                 totRegCont = param[5] != null ? (Long) param[5]  : 0l;
+                 if(totRegCont.longValue()>0l) {
+              	   tabStatsVO.setTotalRecords(totRegCont);
+                 }
+                 
+                 if(totalAmount.longValue() > 0l){
+              	   totalAmount = totalAmount * 100;
+                 }
+				tabStatsVO.setTotalAmount(totalAmount);
+				finalList.add(tabStatsVO);
+			}
+		
+		}
+	}catch(Exception e){
+		LOG.error("Exception Occured into DataReconsolidationService of getCadreSurveyUserWiseRegistrations",e);
+	}
+	return finalList;
+}
+
+
+
 
 }
