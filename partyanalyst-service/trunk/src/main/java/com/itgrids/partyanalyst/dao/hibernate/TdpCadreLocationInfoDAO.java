@@ -125,7 +125,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 					queryStr.append(" booth.boothId  as name  ,booth.partNo ,'POLLINGSTATION','','','',model.cadre2014,model.cadre2014Percent" +
 						" ,model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent ");
 				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL))
-					queryStr.append(" tehsil.tehsilId , tehsil.tehsilName  as name  ,'RURAL','','','',model.cadre2014,model.cadre2014Percent" +
+					queryStr.append(" booth.tehsil.tehsilId , booth.tehsil.tehsilName  as name  ,'RURAL','','','',model.cadre2014,model.cadre2014Percent" +
 						" ,model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent ");
 				else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
 					queryStr.append(" '','','',localElectionBody.localElectionBodyId,localElectionBody.name,'"+IConstants.MUNCIPALITY_CORPORATION_LEVEL+"',model.cadre2014,model.cadre2014Percent" +
@@ -234,7 +234,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				queryStr.append(" booth.localBody.localElectionBodyId ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
-				queryStr.append(" booth.boothId ");
+				queryStr.append(" booth.boothId  ");
 			}
 			
 			Query query = getSession().createQuery(queryStr.toString());
