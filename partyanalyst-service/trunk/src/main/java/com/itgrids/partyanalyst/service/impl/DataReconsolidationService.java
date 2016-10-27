@@ -3,17 +3,23 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICadreTabRecordsStatusDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
 import com.itgrids.partyanalyst.service.IDataReconsolidationService;
 
 public class DataReconsolidationService implements IDataReconsolidationService {
 	private static final Logger LOG = Logger.getLogger(FieldMonitoringService.class);
 	private ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO;
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	
   public ICadreTabRecordsStatusDAO getCadreTabRecordsStatusDAO() {
@@ -24,6 +30,16 @@ public class DataReconsolidationService implements IDataReconsolidationService {
 	public void setCadreTabRecordsStatusDAO(
 			ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO) {
 		this.cadreTabRecordsStatusDAO = cadreTabRecordsStatusDAO;
+	}
+ 
+
+public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
 
@@ -45,6 +61,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     		
     		List<Object[]> dataReConsalation = cadreTabRecordsStatusDAO.dataReConsalationOverView(constistuencyId,startDate,endDate);
     		
+    		Set<Long> cadreSurveyUsers = new HashSet<Long>();
     		if( dataReConsalation != null && dataReConsalation.size() > 0)
     		{
     			returnList = new ArrayList<CadreTabRecordsStatusVO>();
@@ -53,7 +70,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     			{
     				CadreTabRecordsStatusVO cadreTabRecordsStatusVO = new CadreTabRecordsStatusVO();
     				
-    				cadreTabRecordsStatusVO.setCadreSurveyUserId( obj[0]!= null ? Long.valueOf(obj[0].toString()) : 0);
+    				cadreTabRecordsStatusVO.setCadreSurveyUserId( obj[0]!= null ? Long.valueOf(obj[0].toString()) : 0l);
     				cadreTabRecordsStatusVO.setImeiNo(obj[1]!=null ? obj[1].toString() :"");
     				
     				cadreTabRecordsStatusVO.setName(obj[2]!=null ? obj[2].toString() :"");
@@ -62,11 +79,29 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     				cadreTabRecordsStatusVO.setPending(obj[4]!=null ? (Long)obj[4]:0l);
     				cadreTabRecordsStatusVO.setKafkaPending(obj[5]!=null ? (Long)obj[5]:0l);
     				cadreTabRecordsStatusVO.setServerPending(obj[6]!=null ? (Long)obj[6]:0l);
+    				    				
+    				cadreSurveyUsers.add(obj[0]!= null ? Long.valueOf(obj[0].toString()) : 0l);
     				
     				returnList.add(cadreTabRecordsStatusVO);
     			}
     		}
     		
+    		Map<Long,Long> actualMap = new HashMap<Long, Long>();
+    		List<Object[]> cadreSurveyCountObj =  tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+    		
+    		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
+    			for (Object[] objects : cadreSurveyCountObj) {
+    				actualMap.put((Long)objects[0],(Long)objects[1] );
+				}
+    		}
+    		
+    		for(CadreTabRecordsStatusVO vo : returnList){
+    		  Long count = actualMap.get(vo.getCadreSurveyUserId());
+    		  if(count !=null)
+    			  vo.setActualCount(count);
+    		}
+
+    		return returnList;
     		
 		}catch(Exception e){
 			e.printStackTrace();
