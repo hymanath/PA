@@ -605,5 +605,21 @@ public class CommonMethodsUtilService {
 				}
 			}
 		  
-		  
+		  public boolean fileCopy(String sourcePath,String destinationPath)
+		  {
+			   try{
+				   File file = new File(sourcePath);
+				   
+				   if(file.exists())
+				   {
+					   FileUtils.copyFile(file,  new File(destinationPath));
+					   return true;
+				   }
+				   else
+					   return false;
+			    }catch(Exception e){
+			      LOG.error("Exception raised in copyFile ", e);
+			      return false;
+			    }
+		}  
 }
