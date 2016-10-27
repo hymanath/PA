@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 
-public class CadreTabRecordsStatusVO implements Serializable{
+public class CadreTabRecordsStatusVO implements java.io.Serializable{
 
 	private Long cadreSurveyUserId;
 	private Long tabUserInfoId;
@@ -14,11 +14,15 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	private Long sync;
 	private Long pending;
 	private String surveyDate;
+	private String name;
+	private String mobileNo;
+	private String firstRecord;
+	private String lastRecord;
+	private Long totalAmount;
 	private String minRecordTime;
 	private String maxRecordTime;
 	private Long kafkaPending;
 	private Long serverPending;
-	private String name;
 	private String totalImeiNo;
 	private Long sumRecords;
 	private Long totalSyn;
@@ -79,6 +83,37 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	public void setSurveyDate(String surveyDate) {
 		this.surveyDate = surveyDate;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		name = name;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getFirstRecord() {
+		return firstRecord;
+	}
+	public void setFirstRecord(String firstRecord) {
+		this.firstRecord = firstRecord;
+	}
+	public String getLastRecord() {
+		return lastRecord;
+	}
+	public void setLastRecord(String lastRecord) {
+		this.lastRecord = lastRecord;
+	}
+	public Long getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(Long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	
 	public String getMinRecordTime() {
 		return minRecordTime;
 	}
@@ -102,13 +137,6 @@ public class CadreTabRecordsStatusVO implements Serializable{
 	}
 	public void setServerPending(Long serverPending) {
 		this.serverPending = serverPending;
-	}
-
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getTotalImeiNo() {
 		return totalImeiNo;

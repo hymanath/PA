@@ -13,4 +13,5 @@ public interface ICadreTabRecordsStatusDAO extends GenericDao<CadreTabRecordsSta
 	public List<Object[]> dataReConsalationTotalOverView(Long constistuencyId,
 			Date fromDate, Date toDate);
 	public Integer deleteExstngCadreTdpRecords(Long cadreSurveyUserId,Long tabUserInfoId,Date surveyDate);
+	public List<Object[]> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,Date fromDate,Date toDate);
 }

@@ -80,6 +80,40 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		return query.list();
 	}
 
-	
+	public List<Object[]> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,Date fromDate,Date toDate){
+		StringBuilder sb =new StringBuilder();
+		sb.append(" select date(model.surveyDate)," +
+				  " model.tabUserInfo.name," +
+				  " model.tabUserInfo.mobileNo," +
+				  " model.minRecordTime ," +
+				  " model.maxRecordTime , " +
+				  " model.totalRecords ," +
+				  " model.sync ," +
+				  " model.pending  from " +
+				  " CadreTabRecordsStatus model," +
+				  " CadreSurveyUserAssignDetails model1 " +
+				  " where model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
+				  " model.cadreSurveyUser.cadreSurveyUserId =:cadreSrveyUserId and " +
+				  " model1.constituencyId =:constituencyId ") ;
+		
+				  if(fromDate != null && toDate != null){
+				  sb.append(" and date(model.surveyDate) between :fromDate and  :toDate ") ;
+				  }
+				  sb.append(" group by model.surveyDate, model.tabUserInfo.tabUserInfoId ");
+		
+		   Query qry = getSession().createQuery(sb.toString());
+		   if(cadreSrveyUserId != null && cadreSrveyUserId.longValue()>0l){
+				qry.setParameter("cadreSrveyUserId", cadreSrveyUserId);
+		   }
+		   if(fromDate !=null && toDate !=null){
+			   qry.setDate("fromDate", fromDate);
+			   qry.setDate("toDate", toDate);
+		   }
+		   if(constituencyId != null && constituencyId.longValue()>0l){
+			   qry.setParameter("constituencyId", constituencyId);
+		   }
+		
+		return qry.list();
+	}
 	
 }
