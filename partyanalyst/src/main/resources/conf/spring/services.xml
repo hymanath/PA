@@ -1656,9 +1656,9 @@
 			
 			<ref bean="partyMeetingStatusUpdation" />
 			
-			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
+			<!-- <ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
-		    <ref bean="tdpCadreDetailsUpdationForDateWise" /> 
+		    <ref bean="tdpCadreDetailsUpdationForDateWise" /> -->
 			
         </list>
     	</property>
