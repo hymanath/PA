@@ -1174,6 +1174,7 @@ public interface IConstants {
 	
 	public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
 	//public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";     
+	
 	public static final String MEMBERSHIP_DRIVE_PERFORMANCE_PARAMETERS[] = {"VERY GOOD-90-#196F3D","GOOD-80-#27AE60","OK-60-#A9DFBF","POOR-30-F5B7B1","VERY POOR-10-#FF5733","OTHERS-0-#FBFCFC"};
 	public static final Long DAY_WISE_TARGET_REGISTRATIONS_COUNT = 7000L;
 	public static final Long DAY_WISE_AP_TARGET_REGISTRATIONS_COUNT = 350000L;
@@ -1181,5 +1182,19 @@ public interface IConstants {
 	public static final Long CADRE_REGISTRATION_2016_PUBLICATION_ID = 22L;
 	public static final Long  PRESENT_CADRE_ENROLLMENT_YEAR = 4L;
 	public static final Long  PREVIOUS_CADRE_ENROLLMENT_YEAR = 3L;
-	public static final int  DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS = 4;
+	public static final int  DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS = -1;
+	
+	//cadre image saving .
+	public static final String STATIC_CONTENT_FOLDER_PATH = "/app/static_content";
+	//public static final String STATIC_CONTENT_FOLDER_PATH = "D:\\cadre_registation";
+	public static final String CADRE_DATA_SOURCE_TYPE_TAB = "TAB";
+	public static final String CADRE_DATA_SOURCE_TYPE_WEB = "WEB";
+	public static final String CADRE_DATA_SOURCE_TYPE_ONLINE = "ONLINE";
+	public static final String STATUS_SUCCESS = "Success";
+	public static final String STATUS_FAIL = "Fail";
+	public static final String CADRE_IMAGE_TYPE_VOTER = "VOTER";
+	public static final String CADRE_IMAGE_TYPE_CADRE = "CADRE";
+	public static final String CADRE_IMAGE_TYPE_NEW = "NEW";
+	public static final String VOTER_IMAGES = "voter_images";
+	
 }
