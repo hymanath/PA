@@ -5,11 +5,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerServiceForCadre;
 
@@ -20,6 +22,7 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 	
 	private ICadreRegistrationService  cadreRegistrationService;
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+	private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
 	
 	public void setCadreRegistrationService(ICadreRegistrationService cadreRegistrationService) {
 		this.cadreRegistrationService = cadreRegistrationService;
@@ -29,6 +32,12 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 	public void setCoreDashboardCadreRegistrationService(
 			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
 		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
+	}
+	
+
+	public void setCadreRegistrationServiceNew(
+			ICadreRegistrationServiceNew cadreRegistrationServiceNew) {
+		this.cadreRegistrationServiceNew = cadreRegistrationServiceNew;
 	}
 
 
@@ -146,6 +155,17 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 			log.error("Entered into the getRegistrationPersonDetails() in WebServiceHandlerServiceForCadre ");
 		}
 		return cadreList;
+	}
+	
+	public void saveCadreImage(ImageCadreVO inputVO){
+		
+		try{
+			 cadreRegistrationServiceNew.saveCadreImage(inputVO);
+			
+		}catch(Exception e) {
+			log.error("Entered into the getRegistrationPersonDetails() in WebServiceHandlerServiceForCadre ");
+		}
+		
 	}
 	
 }
