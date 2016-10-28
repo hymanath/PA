@@ -487,4 +487,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTdpMembersDetaislBasedOnSearchCriteria(Long locationId,String searchType,String searchValue);
 	  public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers);
 	  public String getCadreImagePathByTdpCadreId(Long tdpCadreId);
+	  public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type);
 } 

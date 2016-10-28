@@ -176,4 +176,5 @@ public interface IWebServiceHandlerService {
     public List<IdAndNameVO> getStateWiseDistrict(Long stateId);
     public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
     public List<GISVisualizationDetailsVO> getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO);
+    public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO);
 }

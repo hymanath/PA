@@ -22,11 +22,47 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private String surveyTime;
 	private String startDate;
 	private String endDate;
+	private Long locationId;
+	private String locationName;
+	private Long totalCount = 0l;
+	private Long todayCount = 0l;
+	private String imagePath;
 	
 	private List<GISUserTrackingVO> usersList = new ArrayList<GISUserTrackingVO>(0);
 	private List<GISUserTrackingVO> lastOneHrusersList = new ArrayList<GISUserTrackingVO>(0);
 	
 	
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getTodayCount() {
+		return todayCount;
+	}
+	public void setTodayCount(Long todayCount) {
+		this.todayCount = todayCount;
+	}
 	public List<GISUserTrackingVO> getLastOneHrusersList() {
 		return lastOneHrusersList;
 	}
