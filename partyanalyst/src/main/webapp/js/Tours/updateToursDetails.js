@@ -1,4 +1,22 @@
- getDesigationList();
+	function savingApplication(){
+		var flag = true;
+		var uploadHandler = {
+			upload: function(o) {
+				$("#savingAjaxImg").css("display","none");
+				uploadResult = o.responseText;
+				showSbmitStatus(uploadResult);
+			}
+		};
+		YAHOO.util.Connect.setForm('submitApplication',true);  
+		YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);  
+			
+	}  
+	function showSbmitStatus(uploadResult){   
+		
+		console.log(uploadResult);     
+		console.log(111);
+	}
+	getDesigationList();
  function getDesigationList()
 	{ 
 	var jsObj = { }
