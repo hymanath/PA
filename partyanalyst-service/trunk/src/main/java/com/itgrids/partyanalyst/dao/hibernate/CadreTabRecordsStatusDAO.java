@@ -95,7 +95,8 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 					  " SUM(model.pending)," +
 					  " SUM(model.kafkaPending)," +
 					  " SUM(model.kafkaSync)," +
-					  " model.tabUserInfo.tabUserInfoId  " +
+					  " model.tabUserInfo.tabUserInfoId,  " +
+					  " model.tabUserInfo.imgPath " +
 				  " FROM " +
 					  " CadreTabRecordsStatus model," +
 					  " CadreSurveyUserAssignDetails model1 " +

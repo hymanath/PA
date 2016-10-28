@@ -177,6 +177,7 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 				tabStatsVO.setKafkaPending(param[8] != null ? (Long)param[8] : 0l);
 				tabStatsVO.setKafkaSync(param[9] != null ? (Long)param[9] : 0l);
 				tabStatsVO.setTabUserInfoId(param[10] != null ? (Long)param[10] : 0l);
+				tabStatsVO.setImagePath(param[11] != null ?param[11].toString():"");
 
                  if(tabStatsVO.getTotalRecords() !=null && tabStatsVO.getTotalRecords().longValue()>0l) {
               	   	 tabStatsVO.setTotalAmount(tabStatsVO.getTotalRecords() * 100);
