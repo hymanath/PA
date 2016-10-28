@@ -137,16 +137,8 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 				}  
 			     
 				resultStatus = toursService.saveTourDtls(toursInputVO,1l,mapfiles);    
-	             
-				if(resultStatus!=null){
-					if(resultStatus.getResultCode() == 0){
-						inputStream = new StringBufferInputStream(resultStatus.getMessage());
-					}else if(resultStatus.getResultCode() == 1){
-						inputStream = new StringBufferInputStream(resultStatus.getMessage());
-					}
-				}
-				
-			} catch (Exception e) {
+	        
+			 } catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception raised at savingNominatedPostProfileApplication", e);
 			}
@@ -181,28 +173,39 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			LOG.error("Exception raised at getCandidateList()  of ToursAction", e);
 		}
 	    return Action.SUCCESS;
-	}
-	public String getCandiateDetails(){
-		try{
-			jObj = new JSONObject(getTask());
-			Long candidateId = jObj.getLong("candidateId");
-			resultVO = toursService.getCandiateDetails(candidateId);
-		}catch(Exception e){
-			LOG.error("Exception raised at getCandiateDetails()  of ToursAction", e);  
-		}
-		return Action.SUCCESS;
-	}
-	public String getSearchMembersDetails(){
-		try{
-			jObj = new JSONObject(getTask());
-			Long locationId = jObj.getLong("locationId");
-			String searchType = jObj.getString("searchType");
-			String searchValue = jObj.getString("searchValue");
-			Long designationId =jObj.getLong("designationId");
-			resultList = toursService.getSearchMembersDetails(locationId,searchType,searchValue,designationId);
-		}catch(Exception e){
-			LOG.error("Exception raised at getSearchMembersDetails()  of ToursAction", e);  
-		}
-		return Action.SUCCESS;
-	}
+       }
+       public String getCandiateDetails(){
+    	   try{
+    		   jObj = new JSONObject(getTask());
+   			   Long candidateId = jObj.getLong("candidateId");
+   			   resultVO = toursService.getCandiateDetails(candidateId);
+    	   }catch(Exception e){
+    		   LOG.error("Exception raised at getCandiateDetails()  of ToursAction", e);  
+    	   }
+    	   return Action.SUCCESS;
+       }
+       public String getSearchMembersDetails(){
+    	   try{
+    		   jObj = new JSONObject(getTask());
+   			   Long locationId = jObj.getLong("locationId");
+   			   String searchType = jObj.getString("searchType");
+   			   String searchValue = jObj.getString("searchValue");
+   			   Long designationId =jObj.getLong("designationId");
+   			   resultList = toursService.getSearchMembersDetails(locationId,searchType,searchValue,designationId);
+    	   }catch(Exception e){
+    		   LOG.error("Exception raised at getSearchMembersDetails()  of ToursAction", e);  
+    	   }
+    	   return Action.SUCCESS;
+       }
+       public String getToursDetailsOverview(){
+    	   try{
+    		   jObj = new JSONObject(getTask());
+   			   String fromDateStr = jObj.getString("fromDate");
+   			   String toDate = jObj.getString("toDate");
+   			   resultList = toursService.getToursDetailsOverview(fromDateStr,toDate);
+    	   }catch(Exception e){
+    		   LOG.error("Exception raised at getToursDetailsOverview()  of ToursAction", e);  
+    	   }
+    	   return Action.SUCCESS;
+       }
 }

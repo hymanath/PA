@@ -1,3 +1,104 @@
+$("#toursDateRangePicker").daterangepicker({
+		opens: 'left',
+	     startDate: moment().startOf('month'),
+         endDate: moment().endOf('month'),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	})
+	 $('#toursDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	  getToursDetailsOverview();
+	});
+	getToursDetailsOverview(); //default call 
+	function getToursDetailsOverview(){ 
+	$("#overAllLeaderDivId").html(' ');
+	$("#overAllLeaderDivProcessImgId").show();
+	  var dates=$("#toursDateRangePicker").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+	var jsObj = { 
+			 fromDate : fromDateStr,
+			 toDate : toDateStr,
+			}
+		$.ajax({
+			type : 'POST',
+			url : 'getToursDetailsOverviewAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#overAllLeaderDivProcessImgId").hide();
+		 if(result != null && result.length > 0){
+			 buildLeadersOverviewRslt(result);
+		 }else{
+			$("#overAllLeaderDivId").html('NO DATA AVAILABLE.'); 
+		 }
+		});
+	}
+	function buildLeadersOverviewRslt(result){
+	 var str='';
+	 str+='<table class="table table-condensed tableOverview">';
+		str+='<thead>';
+			str+='<th></th>';
+			str+='<th>Total Leaders</th>';
+			str+='<th>Submited Leaders</th>';
+			str+='<th>Not Submited Leaders</th>';
+			str+='<th>Submited Tours</th>';
+			str+='<th>Average Tours</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+			str+='<td>'+result[i].designation+'</td>';
+			if(result[i].noOfLeaderCnt != null && result[i].noOfLeaderCnt > 0){
+				str+='<td>'+result[i].noOfLeaderCnt+'</td>';
+			}else{
+			str+='<td> - </td>';
+			}
+			if(result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0){
+				str+='<td><a style="cursor:pointer;" class="getSubMitedLeadersDtlsCls" attr_designation_id='+result[i].id+'>'+result[i].submitedLeaderCnt+'</a></td> ';
+			}else{
+			str+='<td> - </td>';
+			}
+			if(result[i].notSubmitedLeaserCnt != null && result[i].notSubmitedLeaserCnt > 0){
+				str+='<td>'+result[i].notSubmitedLeaserCnt+'</td>';
+			}else{
+			str+='<td> - </td>';
+			}
+			if(result[i].totalSubmittedToursCnt != null && result[i].totalSubmittedToursCnt > 0){
+				str+='<td>'+result[i].totalSubmittedToursCnt+'</td>';
+			}else{
+			str+='<td> - </td>';
+			}
+			if(result[i].averageTours != null && result[i].averageTours > 0){
+				str+='<td>'+result[i].averageTours.toFixed(2)+'</td>';
+			}else{
+			str+='<td> - </td>';
+			}
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	  str+='</table>';
+	  $("#overAllLeaderDivId").html(str);
+	}
+
+
+
+
 	function savingApplication(){
 		var flag = true;
 		var uploadHandler = { 
@@ -10,12 +111,23 @@
 		YAHOO.util.Connect.setForm('submitApplication',true);  
 		YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
 	}  
-	function showSbmitStatus(uploadResult){     
-		
-		console.log(uploadResult);     
-		console.log(111);
+	function showSbmitStatus(uploadResult){
+			console.log(uploadResult);
+			 $(".clearFieldCls").val(' ');
+			 $("#monthSelectBoxId").val(0);
+			 $(".selectChosen").trigger("chosen:updated");
+        /*  if(uploadResult != null && uploadResult.resultCode==1){
+			$(".updateTourStatusCls").html("<p style='color:green'>"+uploadResult.message+"</p>");
+			 $(".clearFieldCls").val(' ');
+			 $("#monthSelectBoxId").val(0);
+			 $(".selectChosen").trigger("chosen:updated");
+		 }else{
+		   $(".updateTourStatusCls").html("<p style='color:red'>"+uploadResult.message+"</p>"); 
+		 }
+		 setTimeout(function(){ $(".updateTourStatusCls").modal("hide"); }, 3000); */
 	}
-	getDesigationList();
+	
+	getDesigationList(); //default call 
 	function getDesigationList(){      
 		var jsObj = { }
 		$.ajax({
@@ -36,6 +148,8 @@
 	}
 	$(document).on("change","#designationSlctBxId",function(){
 		var designationId = $(this).val();
+		$("#selectedMemberDtslDivId").html(' ');
+		$(".showDivCls").hide();
 		 if(designationId != null && designationId > 0){
 			 getCandidateList(designationId);
 		 }
