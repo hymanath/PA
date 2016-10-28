@@ -1,6 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +21,17 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.dto.ToursInputVO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidate;
+import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation;
 import com.itgrids.partyanalyst.service.IToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class ToursService implements IToursService {
 	 
@@ -64,6 +74,121 @@ public class ToursService implements IToursService {
    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
+	public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles){  
+		LOG.info("Entered into saveTourDtls() of ToursService{}");
+		try{
+			DateUtilService dateUtilService = new DateUtilService();
+			String destPath = saveUploadFile(mapfiles);  
+			SelfAppraisalCandidateDetails selfAppraisalCandidateDetails = new SelfAppraisalCandidateDetails();
+			selfAppraisalCandidateDetails.setSelfAppraisalCandidateId(toursInputVO.getCandidateId());
+			selfAppraisalCandidateDetails.setMonth(toursInputVO.getMonth());
+			selfAppraisalCandidateDetails.setYear(toursInputVO.getYear());
+			selfAppraisalCandidateDetails.setOwnLocationScopeId(toursInputVO.getOwnLocationScopeId());
+			selfAppraisalCandidateDetails.setOwnLocationId(toursInputVO.getOwnLocationId());
+			selfAppraisalCandidateDetails.setOwnTours(toursInputVO.getOwnTours());
+			selfAppraisalCandidateDetails.setInchargeLocationScopeId(toursInputVO.getInchargeLocationScopeId());
+			selfAppraisalCandidateDetails.setInchargeLocationId(toursInputVO.getInchargeLocationId());
+			selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());
+			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());
+			selfAppraisalCandidateDetails.setReportPath(destPath);     
+			selfAppraisalCandidateDetails.setInsertedBy(userId);
+			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());  
+			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails);  
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in saveTourDtls() of ToursService{}", e);
+		}
+		return null;
+	}
+	public String saveUploadFile(Map<File,String> mapfiles){
+		try{
+			String destPath = new String();
+			StringBuilder returnPath = new StringBuilder();
+			String folderName = folderCreation();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH);
+
+			int temp = month+1;
+			String monthText = getMonthForInt(temp);
+			
+			StringBuilder pathBuilder = null;
+			StringBuilder str ;
+			int i = 0;
+			for (Map.Entry<File, String> entry : mapfiles.entrySet()){
+				pathBuilder = new StringBuilder();
+				str = new StringBuilder();
+				Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				destPath = folderName+"\\"+randomNumber+"."+entry.getValue();           
+				pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".").append(entry.getValue());
+				if(i == 0){
+					returnPath.append(destPath);
+				}else{
+					returnPath.append(","+destPath);
+				}
+				i++;
+				str.append(randomNumber).append(".").append(entry.getValue());
+				ActivityService activityService = new ActivityService();  
+				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+				 
+				if(fileCpyStts.equalsIgnoreCase("error")){
+					LOG.error(" Exception Raise in copying file");  
+						throw new ArithmeticException();
+				}
+			}  
+			return returnPath.toString();
+		}catch(Exception e){
+			e.printStackTrace();  
+		}
+		return null;
+	}
+	public static String folderCreation(){
+		try {
+			LOG.debug(" in FolderForArticle ");
+	  		
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH);
+			
+			String staticPath = IConstants.TOUR_DOCUMENTS;
+			String tourDir = ActivityService.createFolder("D:/"+staticPath);  
+			tourDir = ActivityService.createFolder("D:/"+staticPath+"/"+IConstants.TOUR_DOCUMENTS);
+			 
+			String yr = String.valueOf(year); // YEAR YYYY
+			
+			StringBuilder str = new StringBuilder();
+			int temp = month+1;
+			String monthText = getMonthForInt(temp);
+			str.append(monthText).append("-").append(yr);  
+			 
+			 
+			String mnthYr = str.toString();
+			String mnthYrDir = staticPath+"/"+IConstants.TOUR_DOCUMENTS+"/"+mnthYr;
+			String mnthDirSts = ActivityService.createFolder("D:/"+mnthYrDir);      
+			if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				return "FAILED";
+			}
+			 
+			return "D:\\"+staticPath+"\\"+IConstants.TOUR_DOCUMENTS+"\\"+mnthYr;  
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");  
+			return "FAILED";
+		}
+	}
+	public static String getMonthForInt(int num) {    
+		String month = "";
+		DateFormatSymbols dfs = new DateFormatSymbols();
+		String[] months = dfs.getMonths();
+		if (num >= 0 && num <= 11 ) {
+			month = months[num-1];
+		}
+		return month;  
+    }
+	
+    
 	public List<ToursBasicVO> getDesigationList(){
 		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 		try{
@@ -220,4 +345,4 @@ public class ToursService implements IToursService {
     	}
     	return resultList;
     }
-}
+};
