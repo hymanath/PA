@@ -53,21 +53,34 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		 return (Long) query.uniqueResult();
 	 }
 	 public List<Object[]> getTotalLeadersDesignationBy(Long desigId){
-	     StringBuilder queryStr = new StringBuilder();
-	       queryStr.append(" select " +
-	                     " model.selfAppraisalDesignation.selfAppraisalDesignationId, " +
-	                     " model.selfAppraisalDesignation.designation," +
-	                     " count(distinct model.selfAppraisalCandidateId) " +
-	                     " from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalDesignation.isActive='Y' ");
-	       if(desigId != null){
-	         queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId = :desigId ");
-	       }
-	       queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId " +  
-	                 " order by model.selfAppraisalDesignation.selfAppraisalDesignationId ");
-	       Query query = getSession().createQuery(queryStr.toString());
-	       if(desigId != null){
-	         query.setParameter("desigId",desigId);
-	       }  
-	       return query.list();
-	   }
+		 StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select " +
+		   		          " model.selfAppraisalDesignation.selfAppraisalDesignationId, " +
+		   		          " model.selfAppraisalDesignation.designation," +
+		   		          " count(distinct model.selfAppraisalCandidateId) " +
+		   		          " from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalDesignation.isActive='Y' ");
+		   if(desigId != null){
+			   queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId = :desigId ");
+		   }
+		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId " +  
+		   				  " order by model.selfAppraisalDesignation.selfAppraisalDesignationId ");
+		   Query query = getSession().createQuery(queryStr.toString());
+		   if(desigId != null){
+			   query.setParameter("desigId",desigId);
+		   }  
+		   return query.list();
+	 }
+	 public List<Long> getCandidateList(Long desigId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select distinct SAC.selfAppraisalCandidateId from SelfAppraisalCandidate SAC " +
+		 				" where " +
+		 				" SAC.selfAppraisalDesignation.selfAppraisalDesignationId = :desigId and " +
+		 				" SAC.selfAppraisalDesignation.isActive = 'Y' and " +
+		 				" SAC.isActive = 'Y' ");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(desigId != null){
+			   query.setParameter("desigId",desigId);
+		   }
+		 return query.list();
+	 }
 }
