@@ -42,7 +42,13 @@ public ITdpCadreDAO getTdpCadreDAO() {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
-
+	/**
+	* @param  Long constistuencyId,cadreSrveyUserId,fromDateStr, toDateStr
+	* @return  CadreTabRecordsStatusVO
+	* @author srujana 
+	* @Description : This Service is total tab user wise total Registration count and sync pending   details
+	*  @since 27th-October-2016
+	*/
 public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuencyId,String fromDateStr,String toDateStr){
     	
     	List<CadreTabRecordsStatusVO> returnList = null;
@@ -110,6 +116,15 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
 		}
     	return returnList;
     }
+
+
+	/**
+	* @param  Long constistuencyId,fromDateStr, toDateStr
+	* @return  CadreTabRecordsStatusVO
+	* @author Krishna 
+	* @Description : This Service is user to get the day wise total Registration and sum of pending counts
+	*  @since 27th-October-2016
+	*/
 public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuencyId,String fromDateStr,String toDateStr){
 	
 	  CadreTabRecordsStatusVO statusvo = null;
@@ -144,6 +159,14 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuency
 	   return statusvo;
 }
 
+
+/**
+* @param  Long constistuencyId,cadreSrveyUserId,fromDateStr, toDateStr
+* @return  CadreTabRecordsStatusVO
+* @author Krishna 
+* @Description : This Service is user to get the Survey  user wise  Registration count  details and sync pending count
+*  @since 27th-October-2016
+*/
 public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long cadreSrveyUserId,Long constituencyId,String startDate,String endDate){
 	
 	
