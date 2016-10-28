@@ -14346,5 +14346,13 @@
 			<param name="root">resultList</param>
 		</result>
 	</action>
+	<action name="savingTourDtlsApplicationAction" class="toursAction" method="savingTourDtlsApplication">  
+		<result type="stream" name="success">
+   			<param name="inputName">inputStream</param>
+   		</result>
+	</action>
+	<action name="updateToursAction" class="toursAction">
+		<result name="success">/jsp/toursDetails.jsp</result>   
+	</action>
 </package>
 </struts>
