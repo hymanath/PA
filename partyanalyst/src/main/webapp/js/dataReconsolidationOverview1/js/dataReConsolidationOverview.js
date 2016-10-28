@@ -339,6 +339,73 @@ function buildPopUpModelDetails(result){
 	str +='</table>';
 	$("#tabUserWiseRegistionDetilsId").html(str);	
 	$("#tabUserDetailsId").dataTable();	
+	
+	var str1 = '';
+	str1+='<table class="table table-condensed " id="tabUserExportExcelId">';
+	str1+='<thead>';
+	    str1+='<tr>';
+		str1+='<th>Date</th>';
+		str1+='<th>Name</th>';
+		str1+='<th>Mobile No</th>';
+		str1+='<th>First Record Received</th>'; 
+		str1+='<th>Last Record Received</th>'; 
+		str1+='<th>Registrations</th>'; 
+		str1+='<th>Synced</th>';
+		str1+='<th>Sync Pending</th>';
+		str1+='<th>kafka Pending</th>';
+		str1+='<th>kafka Sync</th>';
+		str1+='<th>Total Amount</th>';
+      str1+='</tr>';
+	str1+='</thead>';
+	str1+='<tbody>';
+	  for(var i in result){
+		str+='<tr>';
+		var totRecrds = result[i].totalRecords;
+		var totalSync = result[i].sync;
+		var totPending = result[i].pending;
+		var kafkaPending = result[i].kafkaPending;
+		var  kafkaSync =result[i].kafkaSync;
+		var totAmount = result[i].totalAmount;
+		str1 +='<td class ="text-center">'+result[i].surveyDate+'</td>';
+		str1 +='<td class ="text-center">'+result[i].name+'</td>';
+		str1 +='<td class ="text-center">'+result[i].mobileNo+'</td>';
+		str1 +='<td class ="text-center">'+result[i].firstRecord+'</td>';
+		str1 +='<td>'+result[i].lastRecord+'</td>';
+		if(totRecrds != null){
+			str1 +='<td class ="text-center">'+totRecrds+'</td>';
+		}else {
+			str1 +='<td class ="text-center">'+0+'</td>';
+		}
+		if(totalSync !=null){
+			str1 +='<td class="textAlign">'+totalSync+'</td>';
+		}else {
+			str1 +='<td class="textAlign">'+0+'</td>';
+		}
+		if(totPending != null){
+			str1 +='<td >'+totPending+'</td>';
+		}else {
+			str1 +='<td >'+0+'</td>';
+		}
+       if(kafkaPending != null)	{
+		   str1 +='<td >'+kafkaPending+'</td>';
+	   }else {
+		   str1 +='<td >'+0+'</td>';
+	   }
+	   if(kafkaSync != null){
+		  str1 +='<td >'+kafkaSync+'</td>';
+	   }else {
+		  str1 +='<td >'+0+'</td>';
+	   }
+	   if(totAmount != null){
+		 str1 +='<td >'+totAmount+'</td>';
+	  }else {
+		 str +='<td >'+0+'</td>';
+		}
+		str1 +='</tr>';
+	}
+	str +='</tbody>';
+	str +='</table>';
+	$("#tabUserWiseExportExcelDivId").html(str1);	
 }
 
 function setDefaultImage(img){
