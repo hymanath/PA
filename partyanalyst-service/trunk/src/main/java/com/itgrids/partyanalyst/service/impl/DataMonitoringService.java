@@ -12,10 +12,13 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dao.IDataRejectReasonDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -35,7 +38,23 @@ public class DataMonitoringService implements IDataMonitoringService {
 	private DateUtilService dateUtilService;
 	private ITdpCadreDAO tdpCadreDAO;
 	private IDataRejectReasonDAO dataRejectReasonDAO;
+	private ICadreRegUserDAO cadreRegUserDAO;
+	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	
+	
+	public ICadreRegUserTabUserDAO getCadreRegUserTabUserDAO() {
+		return cadreRegUserTabUserDAO;
+	}
+	public void setCadreRegUserTabUserDAO(
+			ICadreRegUserTabUserDAO cadreRegUserTabUserDAO) {
+		this.cadreRegUserTabUserDAO = cadreRegUserTabUserDAO;
+	}
+	public ICadreRegUserDAO getCadreRegUserDAO() {
+		return cadreRegUserDAO;
+	}
+	public void setCadreRegUserDAO(ICadreRegUserDAO cadreRegUserDAO) {
+		this.cadreRegUserDAO = cadreRegUserDAO;
+	}
 	public void setTdpCadreDataVerificationDAO(
 			ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO) {
 		this.tdpCadreDataVerificationDAO = tdpCadreDataVerificationDAO;
@@ -199,6 +218,53 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 		return null;  
 	}
+	
+	public IdNameVO getTotalRegCdrVendorWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate){
+		LOG.info("Entered into getTotalRegCdrVendorWise() of DataMonitoringService");
+		try{
+			
+			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
+			IdNameVO idNameVO = new IdNameVO();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date stDate = null;
+			Date ndDate = null;
+			if(startDate != null && startDate.length() > 0 && endDate != null && endDate.length() > 0){
+				stDate = sdf.parse(startDate);
+				ndDate = sdf.parse(endDate);
+			}
+			Long pending = 0l;
+			Long approved = 0l;
+			Long rejected = 0l;
+			Long total = 0l;
+			//tab user dtls
+			List<Object[]> totalCnt = tdpCadreDAO.getTotalRegCdrVendorWiseNew(cadreRegUserId, userId, constId, stDate, ndDate);
+			if(totalCnt != null && totalCnt.size() > 0){
+				for(Object[] param : totalCnt){
+					if(param[0] != null){
+						if((Long)param[0] == 1){
+							approved = (Long)param[1];
+						}else{
+							rejected = (Long)param[1];
+						}
+					}else{
+						pending = (Long)param[1];    
+					}
+					
+				}
+			}
+			total = approved + rejected + pending;  
+			idNameVO.setCount(total);//total
+			idNameVO.setActualCount(approved);//approved
+			idNameVO.setAvailableCount(pending);//pending
+			idNameVO.setOrderId(rejected);//rejected
+			//web and online user dtls
+			return idNameVO;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getTotalRegCdrVendorWise() of DataMonitoringService", e); 
+		}
+		return null;  
+	}
 	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWise(Long stateId, Long vendorId, Long distId, Long constId, String startDate, String endDate){
 		LOG.info("Entered into getTotalRegCdrVendorAndTabUserWise() of DataMonitoringService");  
 		try{
@@ -271,6 +337,82 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 		return null;
 	}
+	
+	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate){
+		LOG.info("Entered into getTotalRegCdrVendorAndTabUserWise() of DataMonitoringService");  
+		try{
+			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
+			
+			DateUtilService dateUtilService = new DateUtilService();
+			IdNameVO idNameVO = null;
+			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date stDate = null;
+			Date ndDate = null;
+			if(startDate != null && startDate.length() > 0 && endDate != null && endDate.length() > 0){
+				stDate = sdf.parse(startDate);
+				ndDate = sdf.parse(endDate);
+			}
+			//for total count
+			List<Object[]> totalCountList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWiseNew(cadreRegUserId, userId, constId, stDate, ndDate, "");
+			if(totalCountList != null && totalCountList.size() > 0){
+				for(Object[] param : totalCountList){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(param[0] != null ? (Long)param[0] : 0l);
+					idNameVO.setName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setTabUserId(param[2] != null ? (Long)param[2] : 0l);
+					idNameVO.setTabUserName(param[3] != null ? param[3].toString() : "");
+					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
+					idNameVO.setTotalCount(param[5] != null ? (Long)param[5] : 0l);
+					idNameVOs.add(idNameVO);
+				}
+			}
+			//for approved count
+			
+			List<Object[]> totalApprovedList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWiseNew(cadreRegUserId, userId, constId, stDate, ndDate, "approved");
+			if(totalApprovedList != null && totalApprovedList.size() > 0){
+				for(Object[] param : totalApprovedList){
+					pushApprovedCount(idNameVOs,(Long)param[0],(Long)param[2],(Long)param[5]);
+				}
+			} 
+			//for rejected count
+			List<Object[]> totalRejectedList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWiseNew(cadreRegUserId, userId, constId, stDate, ndDate, "rejected");
+			if(totalRejectedList != null && totalRejectedList.size() > 0){
+				for(Object[] param : totalRejectedList){
+					pushRejectedCount(idNameVOs,(Long)param[0],(Long)param[2],(Long)param[5]);
+				}
+			} 
+			//for pending count
+			List<Object[]> totalPendingList = tdpCadreDAO.getTotalRegCdrVendorAndTabUserWiseNew(cadreRegUserId, userId, constId, stDate, ndDate, "pending");
+			if(totalPendingList != null && totalPendingList.size() > 0){
+				for(Object[] param : totalPendingList){
+					pushPendingCount(idNameVOs,(Long)param[0],(Long)param[2],(Long)param[5]);
+				}
+			} 
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			//push active status 
+			//SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			//String dt = "2016-10-19 18:00:00";
+			//lastOneHourTime = sdf1.parse(dt);              
+			List<Object[]> activeUserList = tdpCadreDAO.getActiveUserListNew(cadreRegUserId, userId, constId, stDate, ndDate, lastOneHourTime);
+			if(activeUserList != null && activeUserList.size() > 0){
+				for(Object[] param : activeUserList){
+					pushActiveStatus(idNameVOs,(Long)param[0],(Long)param[1]); 
+				}
+			} 
+			
+			return idNameVOs;  
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getTotalRegCdrVendorAndTabUserWise() of DataMonitoringService", e); 
+		}
+		return null;
+	}
+	
 	public void pushApprovedCount(List<IdNameVO> idNameVOs,Long surveyUserId,Long tabUserId,Long count){
 		if(idNameVOs.size() > 0){
 			for(IdNameVO idNameVO : idNameVOs){
@@ -586,8 +728,9 @@ public class DataMonitoringService implements IDataMonitoringService {
   			TdpCadreDataVerification tdpCadreDataVerification = new TdpCadreDataVerification();
   			if(idNameVOs.size() > 0){  
   				for(IdNameVO idNameVO : idNameVOs){
+  					Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(idNameVO.getId());
   					tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
-  					tdpCadreDataVerification.setVerifiedBy(idNameVO.getId());
+  					tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
   					tdpCadreDataVerification.setDataRejectReasonId(idNameVO.getRejectedCount());
   					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),2l);   
@@ -615,8 +758,9 @@ public class DataMonitoringService implements IDataMonitoringService {
   			TdpCadreDataVerification tdpCadreDataVerification = new TdpCadreDataVerification();
   			if(idNameVOs.size() > 0){
   				for(IdNameVO idNameVO : idNameVOs){
+  					Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(idNameVO.getId());
   					tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
-  					tdpCadreDataVerification.setVerifiedBy(idNameVO.getId());
+  					tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
   					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);      
@@ -634,5 +778,49 @@ public class DataMonitoringService implements IDataMonitoringService {
   			return resultStatus;  
   		}  
   		
+  	}
+  	
+  	public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
+  		List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
+  		try {
+  			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
+  			if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+  				List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId);
+  				if(list != null && list.size() > 0){
+  					for (Object[] obj : list) {
+  						CadreRegUserVO vo = new CadreRegUserVO();
+  						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+  						vo.setName(obj[1] != null ? obj[1].toString():"");
+  						returnList.add(vo);
+  					}
+  				}
+  			}
+  			
+  		} catch (Exception e) {
+  			LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+  		}
+  		return returnList;
+  	}
+
+  	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId){
+  		List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
+  		try {
+  			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
+  			if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+  				List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedUsers(cadreRegUserId,constituencyId);
+  				if(list != null && list.size() > 0){
+  					for (Object[] obj : list) {
+  						CadreRegUserVO vo = new CadreRegUserVO();
+  						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+  						vo.setName(obj[1] != null ? obj[1].toString():"");
+  						returnList.add(vo);
+  					}
+  				}
+  			}
+  			
+  		} catch (Exception e) {
+  			LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+  		}
+  		return returnList;
   	}
 }

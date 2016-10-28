@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -16,4 +17,8 @@ public interface IDataMonitoringService {
 	public List<IdNameVO> getDataRejectReason();
 	public ResultStatus updateRejectDtls(List<IdNameVO> idNameVOs);
 	public ResultStatus updateApproveDtls(List<IdNameVO> idNameVOs);
+	public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId);
+	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId);
+	public IdNameVO getTotalRegCdrVendorWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
+	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
 }
