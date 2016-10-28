@@ -8398,7 +8398,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   Query query = getSession().createQuery(queryStr.toString());
 		   query.setParameter("locationId", locationId);
 		    if(searchValue != null && searchValue.trim().length() > 0){
-		    	query.setParameter("searchValue", searchValue);
+		    	query.setParameter("searchValue", searchValue.trim());
 		    }
 		     return query.list();
 	 }
