@@ -1,6 +1,6 @@
 	function savingApplication(){
 		var flag = true;
-		var uploadHandler = {
+		var uploadHandler = { 
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
 				uploadResult = o.responseText;
@@ -8,18 +8,16 @@
 			}
 		};
 		YAHOO.util.Connect.setForm('submitApplication',true);  
-		YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);  
-			
+		YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
 	}  
-	function showSbmitStatus(uploadResult){   
+	function showSbmitStatus(uploadResult){     
 		
 		console.log(uploadResult);     
 		console.log(111);
 	}
 	getDesigationList();
- function getDesigationList()
-	{ 
-	var jsObj = { }
+	function getDesigationList(){      
+		var jsObj = { }
 		$.ajax({
 			type : 'POST',
 			url : 'getDesigationListAction.action',
@@ -43,26 +41,26 @@
 		 }
 	});
 	function getCandidateList(designationId){ 
-	var jsObj = { 
-			 designationId : designationId
-			}
+		var jsObj = {     
+			designationId : designationId
+		}
 		$.ajax({
 			type : 'POST',
 			url : 'getCandidateListAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#memberSlctBxId").empty();
+			$("#memberSlctBxId").append("  <option value='0'>Select Name</option>");
 			if(result != null && result.length > 0){
-				$("#memberSlctBxId").empty();
-				$("#memberSlctBxId").append("	<option value='0'>Select Name</option>");
 				for(var i in result){
-				 $("#memberSlctBxId").append("<option value="+result[i].id+">"+result[i].name+"</option>");	
+					$("#memberSlctBxId").append("<option value="+result[i].id+">"+result[i].name+"</option>");  
 				}
-				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");	
-				$(".selectChosen").trigger("chosen:updated");
+				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");  
 			}
+			$(".selectChosen").trigger("chosen:updated");
 		});
-	}
+	}  
 	$(document).on("change","#memberSlctBxId",function(){
 		var candidateId = $(this).val();
 		 if(candidateId != null && candidateId > 0){
@@ -273,3 +271,4 @@
 	        str+='</ul>';
 		$("#selectedMemberDtslDivId").html(str);
 	}
+	
