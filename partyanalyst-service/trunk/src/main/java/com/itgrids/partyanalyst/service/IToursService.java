@@ -1,10 +1,17 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.File;
+import java.util.Map;
+
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.ToursInputVO;
+
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 
 public interface IToursService {
+	public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
 	 public List<ToursBasicVO> getDesigationList();
 	 public List<ToursBasicVO> getConstituenciesList(Long stateId);
 	 public List<ToursBasicVO> getCandidateList(Long designationId);
