@@ -166,7 +166,7 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].kafkaPending+'</td>'; 
                 str+='<td>'+result[i].kafkaSync+'</td>';				
 				str+='<td>'+result[i].actualCount+'</td>';
-				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
+				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -232,8 +232,9 @@ $(document).on("click","#submitId",function(){
 
 $(document).on("click",".tabUserDtlsCls",function(){
 	  var cdrSurveyUserId = $(this).attr("attr_cdr_srv_usr_id");
+	  var cdrSurveyUserName =$(this).attr("attr_userName");
 	  var constId = $("#constituencyOverViewId").val();
-	  $("#userHeadinId").html("<b>UserId:"+cdrSurveyUserId+" - Day Wise Registration Details</b>")
+	  $("#userHeadinId").html("<b>UserName:"+cdrSurveyUserName+" - Day Wise Registration Details</b>")
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
 	  dateVal = dateArr.split("-")
