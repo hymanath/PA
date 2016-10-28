@@ -59,9 +59,9 @@
 					<div id = "errorDivId" style = "color:red"></div>
 				</div>
 			</div>
-				<div class="panel panel-default m_top10" id="dataReconsalationOverviewId">
+				<div  id="dataReconsalationOverviewId">
 				</div>
-				<div class="panel panel-default" id="userWiseTotalViewId">
+				<div  id="userWiseTotalViewId">
 			   </div>
 		 </div>  
 
