@@ -1976,6 +1976,7 @@ function addressFieldsValidation()
 	   }
    });
   }
+  /*
   function getConstituenciesForDistricts(district,id){
 	  if(id == 1){
 		 $("#constituencyDivIdImg").show();
@@ -2076,6 +2077,7 @@ function addressFieldsValidation()
 	   }
    });
   }
+  */
   $(document).on("click","#findTrackId",function(){
 	   $("#errorDivTrackId"). html("");
 	  var stateId = $("#stateId").val();
