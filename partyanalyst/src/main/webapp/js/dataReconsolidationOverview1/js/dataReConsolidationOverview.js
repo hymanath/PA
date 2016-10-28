@@ -270,6 +270,7 @@ function buildPopUpModelDetails(result){
 	str+='<thead>';
 	    str+='<tr>';
 		str+='<th>Date</th>';
+		str +='<th>ImagePath</th>';
 		str+='<th>Name</th>';
 		str+='<th>Mobile No</th>';
 		str+='<th>First Record Received</th>'; 
@@ -292,6 +293,7 @@ function buildPopUpModelDetails(result){
 		var  kafkaSync =result[i].kafkaSync;
 		var totAmount = result[i].totalAmount;
 		str +='<td class ="text-center">'+result[i].surveyDate+'</td>';
+		str+='<td><img src="https://www.mytdp.com/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 		str +='<td class ="text-center">'+result[i].name+'</td>';
 		str +='<td class ="text-center">'+result[i].mobileNo+'</td>';
 		str +='<td class ="text-center">'+result[i].firstRecord+'</td>';
@@ -333,3 +335,9 @@ function buildPopUpModelDetails(result){
 	$("#tabUserWiseRegistionDetilsId").html(str);	
 	$("#tabUserDetailsId").dataTable();	
 }
+
+function setDefaultImage(img){
+    img.onerror = "";
+    img.src = "images/cadre_images/human.jpg";
+    return true;
+  }
