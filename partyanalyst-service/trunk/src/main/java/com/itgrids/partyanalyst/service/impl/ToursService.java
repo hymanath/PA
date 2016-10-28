@@ -146,7 +146,7 @@ public class ToursService implements IToursService {
 						throw new ArithmeticException();
 				}
 			}  
-			return returnPath.toString();
+			return returnPath.toString(); 
 		}catch(Exception e){
 			e.printStackTrace();  
 		}
@@ -162,8 +162,8 @@ public class ToursService implements IToursService {
 			int month = calendar.get(Calendar.MONTH);
 			
 			String staticPath = IConstants.TOUR_DOCUMENTS;
-			String tourDir = ActivityService.createFolder("D:/"+staticPath);  
-			tourDir = ActivityService.createFolder("D:/"+staticPath+"/"+IConstants.TOUR_DOCUMENTS);
+			String tourDir = ActivityService.createFolder("E:/"+staticPath);  
+			tourDir = ActivityService.createFolder("E:/"+staticPath+"/"+IConstants.TOUR_DOCUMENTS);
 			 
 			String yr = String.valueOf(year); // YEAR YYYY
 			
@@ -175,12 +175,12 @@ public class ToursService implements IToursService {
 			 
 			String mnthYr = str.toString();
 			String mnthYrDir = staticPath+"/"+IConstants.TOUR_DOCUMENTS+"/"+mnthYr;
-			String mnthDirSts = ActivityService.createFolder("D:/"+mnthYrDir);      
+			String mnthDirSts = ActivityService.createFolder("E:/"+mnthYrDir);      
 			if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
 				return "FAILED";
 			}
 			 
-			return "D:\\"+staticPath+"\\"+IConstants.TOUR_DOCUMENTS+"\\"+mnthYr;  
+			return "E:\\"+staticPath+"\\"+IConstants.TOUR_DOCUMENTS+"\\"+mnthYr;  
 			 
 		} catch (Exception e) {
 			LOG.error(" Failed to Create");  
