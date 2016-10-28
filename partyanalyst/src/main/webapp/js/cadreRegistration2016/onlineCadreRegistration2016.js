@@ -1,7 +1,7 @@
 function onLoadCalls(){
 	setTimeout(function(){
 		$('.eventsheader,.footerCls,.line_heightDiv').addClass('hide');
-	},1000);
+	},500);
 	
 	 getStatewisesCastNames();
 	 getEducationalQualifications();
@@ -65,6 +65,10 @@ function onLoadCalls(){
 function getSearchByMyVoterIdDetails(){
 	eachTimeClearFields();
 	$('#checkbox8').attr('checked', false);
+	$('#prmaryAddrsId').attr('checked', true);
+	$('#deliveryCheckBox').attr('checked', false);
+	// $('#nameId1').attr('readonly',true);
+	//$('#prmaryAddrsId').trigger('click');
 	$('.deliveryAddrCls').html('');
 	$('.delvryAdrCls').val(0);
 	$("delvryAdrCls").trigger("chosen:updated");
@@ -103,6 +107,7 @@ function getSearchByMyVoterIdDetails(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
+			//console.log(result);
 			$('#changeNomineeId').prop('checked','checked');
 		//if(result != null){
 			if(result != null && result.paymentStatus != null && result.paymentStatus =='NOT PAID'){
@@ -110,10 +115,10 @@ function getSearchByMyVoterIdDetails(){
 				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
 				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
 				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
-				str+='<input type="hidden" name="Order_Id" value="'+result.paymentGatewayVO.orderNo.trim()+'">';				
-				str+='<input type="hidden" name="Checksum" value="'+result.paymentGatewayVO.checkSum.trim()+'">';
-				str+='<input type="hidden" name="Redirect_Url" value="'+result.paymentGatewayVO.redirectURL.trim()+'">';
-				str+='<input type="hidden" name="Amount" value="'+result.paymentGatewayVO.amount.trim()+'">';
+				str+='<input type="hidden" name="Order_Id" value="'+result.paymentGatewayVO.orderNo+'">';				
+				str+='<input type="hidden" name="Checksum" value="'+result.paymentGatewayVO.checkSum+'">';
+				str+='<input type="hidden" name="Redirect_Url" value="'+result.paymentGatewayVO.redirectURL+'">';
+				str+='<input type="hidden" name="Amount" value="'+result.paymentGatewayVO.amount+'">';
 				str+='<input type="hidden" name="billing_cust_name" value="">';
 				str+='<input type="hidden" name="billing_cust_address" value="">';
 				str+='<input type="hidden" name="billing_cust_tel" value="">';
@@ -128,7 +133,7 @@ function getSearchByMyVoterIdDetails(){
 				str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
 				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
 
-				if(registrationType=="new"){
+				/* if(registrationType=="new"){
 					str+='<div class="panel-heading new animated fadeIn">';
 					str+='	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>';
 					str+='    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
@@ -139,9 +144,9 @@ function getSearchByMyVoterIdDetails(){
 					str+='	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>';
 					str+='    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
 					str+='</div>';
-				}
+				} */
 				str+='</hr>';
-				str+='<div class="container m_top10" id="yourElement;">';
+				str+='<div class="container m_top10" id="yourElement">';
 				str+='<div class="span12  show-grid" style="position: relative;margin-left:250px">';
 				str+= '<div class="span12  show-grid" style="position: relative;">';
 				str+= '<p class="text-align"> <b>Cadre Name :</b> '+result.lastName+' </p>';
@@ -332,13 +337,15 @@ var str = "";
 		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
 		
 		if(result.paymentGatewayVO != null){
-			$('#wardsDivId').removeClass('hide');
-			if(result.paymentGatewayVO.subList != null){
+			if(result.paymentGatewayVO.subList != null && result.paymentGatewayVO.subList.lenght>0){
+				$('#wardsDivId').removeClass('hide');
 				$("#wardsList").append('<option value="0"> Select Ward </option>');
 				for(var k in result.paymentGatewayVO.subList){
 					$("#wardsList").append('<option value="'+result.paymentGatewayVO.subList[k].id+'">'+result.paymentGatewayVO.subList[k].name+'</option>');
 				 }
 				 $("#wardsList").trigger("chosen:updated");
+			}else{
+				$('#wardsDivId').addClass('hide');
 			}
 		}
 		else{
@@ -672,7 +679,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
  }
  
 $(document).on("click",".checkboxCls",function(){
-	$("#prvNomneNameId").prop( 'disabled',true);
+	//$("#prvNomneNameId").prop( 'disabled',true);
 	  $(".checkboxCls").prop( 'checked',false);  
 	  $(this).prop( 'checked', true );
 	  var name = $(this).attr("attr_name");
@@ -771,6 +778,7 @@ $(document).on("click",".isImageCheck",function(){
  {
 	 $("#checkVoterId,#imgErrDivId,#cadreMobileNoId,#emailErrId,#cadreCasteId,#cadreEducationId,#cadreOccupationId,#prvNomneNameDivId,#prvNomneGendrDivId,#prvNomneGendrDivId,#prevNomneAgeDivId,#prevNomneReltvDivId,#nomineeDivId,#stateErrPhId,#stateErrPaId,#stateErrPa1Id,#stateErrPsId,#stateErrPlId,#stateErrPh1Id,#stateErrId,#distriErrId,#constErrId,#mandalErrId,#wardErrId,#stateErrDhId,#stateErrDaId,#stateErrDa1Id,#stateErrDsId,#stateErrDlId,#stateErrDh1Id,#wrkSateErrId,#wrkDistErrId,#wrkDistErrId,#wrkConstitErrId,#wrkConstitErrId,#wrkMadalErrId,#wrkVillageErrId").html(''); 
 	 $('#deliveryAddrId').hide();
+	 $('#nameId1').attr('readonly');
 	$("#existImgId").attr('src','dist/img/default_image.png');
 	$("#nameId1").val('');  
 	$("#actuploadImg").removeAttr('src');
