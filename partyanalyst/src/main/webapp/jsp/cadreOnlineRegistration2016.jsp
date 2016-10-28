@@ -10,8 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cadre Online Registration</title>
 <link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/cadreRegistration/landingPage/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/cadreRegistration/landingPage/css/responsive.css" rel="stylesheet" type="text/css">
+<!--<link href="dist/cadreRegistration/landingPage/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/cadreRegistration/landingPage/css/responsive.css" rel="stylesheet" type="text/css">-->
 <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
 <!--<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">-->
 <link href="dist/cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
@@ -27,8 +27,11 @@
 <link rel="stylesheet" href="js/flipclock/flipclock.css">
 <!-- online First Page-->
 	
-		
 <style type="text/css">
+.eventsheader , .footerCls,.line_heightDiv
+{
+	display:none;
+}
  #example {
             height: 400px;
             width: 300px;
@@ -213,22 +216,23 @@
 </g>
 </svg>
 <!-- Cadre Online Registration -->
-<div class="container cadreRegistration hide">
-	<div class="row mainBlocks hide">
+<div class="container cadreRegistration ">
+	<div class="row mainBlocks ">
     	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top30">
         	<hr class="rulerLine"/>
         	<h2><span class="mainHeading">Welcome to cadre registration</span></h2>
-			  <div>
+			 <!-- <div>
 		          <div class="col-md-1 col-xs-12 col-sm-1">
 				      <span id="mainPageBackId" class="backBtn"> ← Back</span>
 			      </div>
 	 	       </div>	
+			   -->
         </div>
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock new">
              <div class="row">
                 	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
-                    	<h2 class="text-left text-muted">కొత్త సభ్యత్వం</h2>
+                    	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
                     </div>
                     <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
                     	<h3 class="text-left text-capital text-muted">New Membership</h3>
@@ -244,7 +248,7 @@
         	<div class="mainBlock renewal">
             	<div class="row">
                 	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
-                    	<h2 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h2>
+                    	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     </div>
                     <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
                     	<h3 class="text-left text-capital text-muted">Renewal Membership</h3>
@@ -280,7 +284,7 @@
 <!-- Confirmation Block -->
      <div class="panel-body voterIdConfirm hide">
 		<div>
-		   <div class="col-md-1 col-xs-12 col-sm-1">
+		   <div class="col-md-2 col-xs-12 col-sm-2">
 				<span id="voterIdBack" class="backBtn"> ← Back</span>
 			</div>
 	 	</div>	
@@ -298,24 +302,24 @@
     </div>
 <!-- Entering VoterId Block -->
   <div class="panel-body enterVoterIdBlock hide">
-    <div>
-	 <div class="col-md-1 col-xs-12 col-sm-1">
+    <div class="row">
+	 <div class="col-md-2 col-xs-12 col-sm-2">
 		<span id="enterVoterIdBack" class="backBtn"> ← Back</span>
 	</div>
   </div>
   <div class="row">
-       <div class="col-md-3 col-xs-3 col-sm-3 m_top10 hide">
+       <div class="col-md-3 col-xs-12 col-sm-3 m_top10 hide">
             <label>CONSTITUENCY</label><span style="color:red;">*</span>
 				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                     <select class="select" id="voterConstId" class="form-control">
 					    <option value="0">Select Constituency</option>
 					</select>
         </div>
-        <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
+        <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
               <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
                 <input type="text" class="form-control" id="inpVoterId"/>
         </div>
-		<div  class="col-md-3 col-xs-3 col-sm-3 m_top30">
+		<div  class="col-md-3 col-xs-12 col-sm-3 m_top30">
 	        <button class="btn btn-success text-capital submitVoterId" onclick="getVoterDetails();">SUBMIT</button> 
 	     </div>		 
 	   </div>
@@ -328,10 +332,10 @@
                 <!-- Voter ID Search Block -->
                 <div class="panel-body voterIdSearch hide">
                 	<div class="row">
-				       <div class="col-md-1 col-xs-12 col-sm-1 " id="searchOwnVoterIdBack">
+				       <div class="col-md-2 col-xs-12 col-sm-2 " id="searchOwnVoterIdBack">
 							<span id="searchVoterIdBack" class="backBtn"> ← Back</span>
 						 </div>
-						 <div class="col-md-1 col-xs-12 col-sm-1" id="searchFamiVoterIdBack">
+						 <div class="col-md-2 col-xs-12 col-sm-2" id="searchFamiVoterIdBack">
 							<span id="searchFamVoterIdBack" class="backBtn"> ← Back</span>
 						 </div>
 					</div>	
@@ -345,12 +349,10 @@
                         	<h4 class="panel-title text-capital">Search Your Family Voter Id</h4>
                         </div>
                     </div>
-                    <div class="row m_top30">
+					<div class="row m_top20">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="errorDivId" style="color:red;"></div>
 						</div>
-					</div>
-					<div class="row m_top30">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>STATE</label><span style="color:red;">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -400,17 +402,10 @@
                         </div>
 					</div>
 					 <div class="row m_top30">
-					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
-                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID
-						   </label>
-                        </div>
-						<div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                            <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO
-						</label>
-                        </div>
-                       <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId"/>NAME
-						   </label>
+					    <div class="col-md-6 col-xs-12 col-sm-3 m_top10">
+                        	 <!--<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID</label>-->
+						   <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO</label>
+						   <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId" checked/>NAME</label>
                         </div>
 					  </div>
 					<div class="row m_top30">
@@ -428,10 +423,10 @@
                 <!-- Voter ID Search Block End-->
                 <!-- search Results Block -->
                 <div class="panel-body searchResultsBlock hide" >
-				       <div class="col-md-1 col-xs-12 col-sm-1 m_top5" id="voterIdSearchBack">
+				       <div class="col-md-2 col-xs-12 col-sm-2 m_top5" id="voterIdSearchBack">
 							<span id="searchResultsBack" class="backBtn"> ← Back</span>
 						</div>
-						 <div class="col-md-1 col-xs-12 col-sm-1 m_top5" id="enterVoterIdDetailsBack">
+						 <div class="col-md-2 col-xs-12 col-sm-2 m_top5" id="enterVoterIdDetailsBack">
 							<span id="enterVoterIdResultsBack" class="backBtn"> ← Back</span>
 						</div>
                 	<div class="row">
@@ -475,10 +470,10 @@
 
 					<div class="col-md-8 col-xs-12 col-sm-12 m_top30">
 						<div class="row">
-							<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
+							<div class="col-md-2 col-xs-12 col-sm-2 m_top30  hide">
 								<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
 							</div>
-							<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
+							<div class="col-md-2 col-xs-12 col-sm-2 m_top30 hide">
 								<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
 							</div>
 						</div>
@@ -1166,7 +1161,7 @@
                             	<input type="checkbox" />Change Nominee
                             </label>
                         </div>
-						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
+						<div class="col-md-2 col-xs-12 col-sm-2 m_top30">
 							<span id="profileBackR" class="backBtn"> ← Back</span>
 						</div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
@@ -1245,7 +1240,7 @@
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
 <!-- online First Page Script -->
-<script src="dist/cadreRegistration/landingPage/js/jquery-1.11.3.js" type="text/javascript"></script>
+<!--<script src="dist/cadreRegistration/landingPage/js/jquery-1.11.3.js" type="text/javascript"></script>-->
 <!--<script src="dist/cadreRegistration/landingPage/js/bootstrap.js" type="text/javascript"></script>-->
 
 <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
@@ -1262,7 +1257,9 @@
 
 
 <script type="text/javascript">
-$("#wrapper").hide();
+setTimeout(function(){
+	$("#wrapper").hide();
+},1000);
 var a = $(window).height();
 var b = $(window).width();
 $(".page-load-svg").height(a);
@@ -1278,15 +1275,15 @@ setTimeout(function(){
 	$(".mainBlocks").removeClass("animated fadeIn");
 },1500);
 $(document).on("click","#mainPageBackId",function(){
-	$(".landingPage").addClass("animated fadeIn");
+	//$(".landingPage").addClass("animated fadeIn");
 	setTimeout(function(){
-		$(".landingPage").show();
-		$(".mainBlocks").addClass("animated fadeOut");
+		//$(".landingPage").show();
+		//$(".mainBlocks").addClass("animated fadeOut");
 	},1000)
 	setTimeout(function(){
-		$(".landingPage").removeClass("animated fadeIn");
-		$(".cadreRegistration").addClass("hide");
-		$(".mainBlocks").removeClass("animated fadeOut");
+		//$(".landingPage").removeClass("animated fadeIn");
+		//$(".cadreRegistration").addClass("hide");
+		//$(".mainBlocks").removeClass("animated fadeOut");
 	},1500);
 	
 });
@@ -1802,6 +1799,8 @@ $(document).on("click","#deliveryCheckBox",function(){
 });
 
 $(document).on("click",".homeCls",function(){
+	//window.location = "http://www.telugudesam.org/cadre-registration-portal/registration";
+	//window.location = "https://mytdp.com/cadreOnlineRegistrationAction.action";
 	window.location.reload();
 });
 </script>
