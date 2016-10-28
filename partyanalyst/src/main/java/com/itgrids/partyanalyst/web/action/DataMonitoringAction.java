@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringOverviewVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -39,6 +40,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		  private DataMonitoringOverviewVO resultVO;
 		  private List<DataMonitoringOverviewVO> resultList;
 		  private ResultStatus resultStatus;
+		  private List<CadreRegUserVO> cadreRegUserList;
 		//Attributes
 		   private IDataMonitoringService dataMonitoringService ;
 		   private IFieldMonitoringService fieldMonitoringService;
@@ -132,7 +134,14 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		public ResultStatus getResultStatus() {
 			return resultStatus;
 		}
+		public List<CadreRegUserVO> getCadreRegUserList() {
+			return cadreRegUserList;
+		}
+		public void setCadreRegUserList(List<CadreRegUserVO> cadreRegUserList) {
+			this.cadreRegUserList = cadreRegUserList;
+		}
 
+		
 		//Business methods
 		public String execute(){
 			
@@ -153,6 +162,46 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				 }
 			}
 			return Action.SUCCESS;
+		}
+		
+		public String getUserAssignedConstituencies(){
+			
+			try {
+				session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long userId = regVO.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				
+				cadreRegUserList = dataMonitoringService.getCadreRegUserAssignedConstituencies(userId);
+			} catch (Exception e) {
+				LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}
+		
+		public String getUserAssignedUsers(){
+			
+			try {
+				session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long userId = regVO.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				/*JSONArray constArr = jObj.getJSONArray("constituencyId");  
+				List<Long> constIds = new ArrayList<Long>();
+				for( int i=0;i<constArr.length();i++){
+					constIds.add(Long.valueOf(constArr.getString(i)));
+				}*/
+				Long constituencyId = jObj.getLong("constituencyId");
+				
+				cadreRegUserList = dataMonitoringService.getCadreRegUserAssignedUsers(userId,constituencyId);
+			} catch (Exception e) {
+				LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
 		}
 		
 		public String getVendors(){
@@ -246,6 +295,30 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		
 		    return Action.SUCCESS;
 		}
+	   
+	   public String getTotalRegCdrVendorWiseNew(){
+			
+			try {
+				session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long loginUserId = 0l;
+				if(regVO != null)
+					loginUserId = regVO.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				
+				Long userId = jObj.getLong("userId");
+				Long constituencyId = jObj.getLong("constituencyId");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				idNameVO = dataMonitoringService.getTotalRegCdrVendorWiseNew(loginUserId, userId, constituencyId, startDate, endDate);
+			} catch (Exception e) {  
+				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}
+	   
 	   public String getTotalRegCdrVendorAndTabUserWise(){
 			
 			try {
@@ -263,6 +336,29 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		
 		    return Action.SUCCESS;
 		}  
+	   
+	   public String getTotalRegCdrVendorAndTabUserWiseNew(){
+			
+			try {
+				session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long loginUserId = 0l;
+				if(regVO != null)
+					loginUserId = regVO.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				Long userId = jObj.getLong("userId");
+				Long constituencyId = jObj.getLong("constituencyId");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				idNameVOs = dataMonitoringService.getTotalRegCdrVendorAndTabUserWiseNew(loginUserId, userId, constituencyId, startDate, endDate);
+			} catch (Exception e) {  
+				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
+			}
+		
+		    return Action.SUCCESS;
+		}  
+	   
 		public String getVerifiedDtls(){
 			
 			try {
@@ -308,9 +404,16 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 	   }
 	   public String updateRejectList(){    
 		   try{
+			   session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long userId = 0l;
+				if(regVO != null)
+					userId = regVO.getRegistrationID();
+				
 			   Long cadreId = 0l;
 			   Long reasonId = 0l;
-			   Long userId = 0l;
+			   //Long userId = 0l;
 			   IdNameVO idNameVO = new IdNameVO();
 			   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
 			   jObj = new JSONObject(getTask());
@@ -320,7 +423,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				   jObj = jsonArray.getJSONObject(i);
 				   cadreId = jObj.getLong("cadreId");
 				   reasonId = jObj.getLong("reasonId");
-				   userId = jObj.getLong("userId");
+				   //userId = jObj.getLong("userId");
 				   idNameVO.setCadreId(cadreId);
 				   idNameVO.setRejectedCount(reasonId);
 				   idNameVO.setId(userId);
@@ -335,8 +438,14 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 	   }
 	   public String updateApproveList(){    
 		   try{
+			   session = request.getSession();
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long userId = 0l;
+				if(regVO != null)
+					userId = regVO.getRegistrationID();
 			   Long cadreId = 0l;
-			   Long userId = 0l;
+			   //Long userId = 0l;
 			   IdNameVO idNameVO = new IdNameVO();
 			   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
 			   jObj = new JSONObject(getTask());
@@ -345,7 +454,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				   idNameVO = new IdNameVO();
 				   jObj = jsonArray.getJSONObject(i);
 				   cadreId = jObj.getLong("cadreId");
-				   userId = jObj.getLong("userId");
+				   //userId = jObj.getLong("userId");
 				   idNameVO.setCadreId(cadreId);
 				   idNameVO.setId(userId);
 				   idNameVOs.add(idNameVO);  

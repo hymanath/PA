@@ -162,6 +162,7 @@ $(".multiDateRangePicker").daterangepicker({
 		}		
 });
 getDataMonitoringOverViewDetails();
+$("#cadreRegliId").hide();
 </script>
 </body>
 </html>
