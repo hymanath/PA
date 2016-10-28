@@ -5631,51 +5631,57 @@
 	     <action name="home" class="home">
 	      <result type="redirect"  name="success" >dashBoardAction.action</result>
 	     </action>
-	     <action name="dashBoardAction" class="dashBoardAction"> 
-		    <result name="success">/jsp/dashBoard.jsp</result>
-		    <result name="input">/jsp/loginForm.jsp?src=dashBoardAction</result>
-		    <result name="userProfile" type="redirect">userProfile.action</result>
-		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
-		    <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
-		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
-		    <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
-		    <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
-		    <result name="partyDashBoard" type="redirect">partyDashBoardAction.action</result>
-		    <result name="cadreIVrDashBoard" type="redirect">cadreIvrReportAction.action</result>		      
-		    <result type="redirect" name="misReportAction">misReportAction.action</result>
-		    <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
-		    <result name="cadreTransactionsDashBoard" type="redirect">cadreSurveyTransactionsDashboardAction.action</result>
-		    <result name="cadreMemberShipCardDispatcher" type="redirect">cadreMemberShipCardDispatcherAction.action</result>
-		    <result name="tabAllocationDetailsAction" type="redirect">tabAllocationDetailsAction.action</result> 
-		    <result name="cadre2014CardSample" type="redirect">memberShipCardSamplePrint.action</result>
-		    <result name="ghmcMegaDriveUser" type="redirect">tdpCadreVolunteersDetailsAction.action</result>
-		    <result name="CADRE_COMMITTEE_MANAGEMENT" type="redirect">cadreCommitteeAction.action</result>	
-		    <result name="tdpCommitteeAdmin" type="redirect">committeeDashBoardAction.action</result>	  
-		    <result name="tirupatiByeElection" type="redirect">currentBoothsStatus.action</result>
-		    <result name="cadreCommitteeDashBoard" type="redirect">committeeDashBoardAction.action</result>   		    
-		    <result name="tdpCommitteeStateDistrictAdmin" type="redirect">committeeManagementAction.action</result>
-		    <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>	
-		    <result name="cadreRegistrationForOtherStates" type="redirect">cadreSearchAndRegAction.action</result>
-		    <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
-		    <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>
-		    <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>
-		    <result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
-		    <result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
-		    <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
-		    <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>	
-		    <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>   
-		    <result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>  
-		    <result type="redirect" name="cadreWebMonitoring">webMonitoringDashboardAction.action</result>  
-		    <result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
-		    <result type="redirect" name="appointmentsManagmentPage">appointmentsAction.action</result>
-			<result type="redirect" name="eventDashboard">eventDashboardAction.action?eventId=30</result>
-			<result type="redirect"  name="bloodBankRegistration" >bloodBankRegistrationAction.action</result>
-			 <result type="redirect"  name="bloodBankDashboard" >bloodBankDashBoardAction.action</result>
-			 <result type="redirect"  name="bloodBankBleeding" >bloodBankBleadingAction.action</result>
-			 <result type="redirect"  name="debate" >debateAction.action</result>
-			 <result type="redirect" name="nominatedPostProfileAction">nominatedPostProfileAction.action</result> 
-			 <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>			 
-		</action>
+	     
+	<action name="dashBoardAction" class="dashBoardAction"> 
+        <result name="success">/jsp/dashBoard.jsp</result>
+        <result name="input">/jsp/loginForm.jsp?src=dashBoardAction</result>
+        <result name="userProfile" type="redirect">userProfile.action</result>
+        <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
+        <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
+        <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
+        <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
+        <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
+        <result name="partyDashBoard" type="redirect">partyDashBoardAction.action</result>
+        <result name="cadreIVrDashBoard" type="redirect">cadreIvrReportAction.action</result>          
+        <result type="redirect" name="misReportAction">misReportAction.action</result>
+        <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
+        <result name="cadreTransactionsDashBoard" type="redirect">cadreSurveyTransactionsDashboardAction.action</result>
+        <result name="cadreMemberShipCardDispatcher" type="redirect">cadreMemberShipCardDispatcherAction.action</result>
+        <result name="tabAllocationDetailsAction" type="redirect">tabAllocationDetailsAction.action</result> 
+        <result name="cadre2014CardSample" type="redirect">memberShipCardSamplePrint.action</result>
+        <result name="ghmcMegaDriveUser" type="redirect">tdpCadreVolunteersDetailsAction.action</result>
+        <result name="CADRE_COMMITTEE_MANAGEMENT" type="redirect">cadreCommitteeAction.action</result>  
+        <result name="tdpCommitteeAdmin" type="redirect">committeeDashBoardAction.action</result>    
+        <result name="tirupatiByeElection" type="redirect">currentBoothsStatus.action</result>
+        <result name="cadreCommitteeDashBoard" type="redirect">committeeDashBoardAction.action</result>           
+        <result name="tdpCommitteeStateDistrictAdmin" type="redirect">committeeManagementAction.action</result>
+        <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>  
+        <result name="cadreRegistrationForOtherStates" type="redirect">cadreSearchAndRegAction.action</result>
+        <result name="mahanaduTabUsersManageAction" type="redirect">mahanaduTabUsersManageAction.action</result>
+        <result name="otherStateTempararyCardsPrinting" type="redirect">tdpTempararyCardsRegistration.action</result>
+        <result name="cadreFamilyDetailsUpdation" type="redirect">tdpCadreFamilyUpdationAction.action</result>
+        <result type="redirect" name="callCenterTrainingAdmin">callCenterTrainingAdmin.action</result>
+        <result type="redirect" name="callCenterTrainingAgent">callCenterTrainingAgentDashBoard.action</result>
+        <result type="redirect" name="committeemgt">committeeInfoAction.action</result>
+        <result type="redirect" name="trainingCampFeedbackUpdate">trainingCampMainDashboard.action</result>  
+        <result type="redirect" name="trainingCampAdminPage">trainingCenterDashBoardAction.action</result>   
+        <result type="redirect" name="membershipDriveConstituencyOverviewEntitlement">cadreRegistrationOverviewAction.action</result>  
+        <result type="redirect" name="cadreWebMonitoring">webMonitoringDashboardAction.action</result>  
+        <result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
+        <result type="redirect" name="appointmentsManagmentPage">appointmentsAction.action</result>
+      <result type="redirect" name="eventDashboard">eventDashboardAction.action?eventId=30</result>
+      <result type="redirect"  name="bloodBankRegistration" >bloodBankRegistrationAction.action</result>
+       <result type="redirect"  name="bloodBankDashboard" >bloodBankDashBoardAction.action</result>
+       <result type="redirect"  name="bloodBankBleeding" >bloodBankBleadingAction.action</result>
+       <result type="redirect"  name="debate" >debateAction.action</result>
+       <result type="redirect" name="nominatedPostProfileAction">nominatedPostProfileAction.action</result> 
+       <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>
+       <result type="redirect" name="cadreWebMonitoringDashboard">webMonitoringDashboardAction.action</result>
+      <result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
+      <result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
+      <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
+      <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>       
+    </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
 			<result type="json" name="success">
