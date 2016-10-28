@@ -37,20 +37,18 @@ function getDataReConsalationOverView(){
           fromDate : strtDate,
           toDate : endDate
 				  }
-	 $("#submitDivIdImg").show();
+	 
     $.ajax({
           type:'GET',
           url: 'getdataReConsalationTotalOverViewAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	    $("#submitDivIdImg").hide();
 	   if(result != null){
 	   buildDataReConsalationTotalOverView(result);
 		 }else {
 			  $("#dataReconsalationOverviewId").html('No Data Available');
 		 }
-		getDataReConsalationOverView(); 
    });
   }
   function  buildDataReConsalationTotalOverView(result)
@@ -107,33 +105,31 @@ function getDataReConsalationOverView(){
  
 $(document).on("click","#submitId",function(){
 	 $("#errorDivId").html(' ');
-	
+	 
 	  var stateId = $("#stateOverViewId option:selected").val();
 	  var districtId = $("#districtOverViewId").val();
 	  var constId = $("#constituencyOverViewId").val();
 	  
 	  if(stateId == 0){
 		  $("#errorDivId").html('Please Select State');
-		  return;
-	  }else{
-	   $("#errorDivId").html(' ');
+		  return ;
 	  }
+	   $("#errorDivId").html(' ');
 	   
 	   if(districtId == 0){
 		  $("#errorDivId").html('Please Select District');
-		  return;
-	  }else{
-	   $("#errorDivId").html(' ');
+		  return ;
 	  }
+	   $("#errorDivId").html(' ');
 	   
-	  if(constId==0){
+	   if(constId==0){
 		  $("#errorDivId").html('Please Select Constituency');
-		  return;
-	  }else{
-	   $("#errorDivId").html(' ');
+		  return ;
 	  }
+	   $("#errorDivId").html(' ');
 	     
 	getdataReConsalationTotalOverView();
+	getDataReConsalationOverView();
 });
  function buildDataReConsalationOverView(result)
  {
@@ -168,7 +164,7 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].kafkaPending+'</td>'; 
                 str+='<td>'+result[i].kafkaSync+'</td>';				
 				str+='<td>'+result[i].actualCount+'</td>';
-				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></span></td>';
+				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -180,7 +176,7 @@ $(document).on("click","#submitId",function(){
  }
  
  $(document).on('change','#stateOverViewId',function(){
-	  $("#errorDivId").html(' ');
+    $("#errorDivId").html(' ');
 	 $("#stateDivIdImg").show();
 	var jsObj = {
 			stateId : $("#stateOverViewId option:selected").val()
@@ -192,7 +188,7 @@ $(document).on("click","#submitId",function(){
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
-		$("#stateDivIdImg").hide();
+	$("#stateDivIdImg").hide();
 		$('#districtOverViewId').html(' ');
 		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
 		if(result !=null && result.length>0){
@@ -205,7 +201,7 @@ $(document).on("click","#submitId",function(){
 });
  
  $(document).on('change','#districtOverViewId',function(){
-	  $("#errorDivId").html(' ');
+  $("#errorDivId").html(' ');
 	 $("#districtDivIdImg").show();
 	var districtId = $("#districtOverViewId").val();
 	 var jsObj = {
@@ -219,7 +215,7 @@ $(document).on("click","#submitId",function(){
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
-		 $("#districtDivIdImg").hide();
+	 $("#districtDivIdImg").hide();
 		$('#constituencyOverViewId').html(' ');
 		$('#constituencyOverViewId').append('<option value="0">Please Select Constituency </option>');
 		if(result !=null && result.length>0){
@@ -254,7 +250,6 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 			strtDate : strtDate,
 			endDate : endDate
 	}
-	$("#dayWiseDivIdImg").show();
 	$.ajax({
 		type : "GET",
 		url : "getCadreSurveyUserWiseRegistrationsAction.action",
@@ -262,7 +257,6 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
-		$("#dayWiseDivIdImg").hide();
 		if(result != null){
 			buildPopUpModelDetails(result);
 		}else {
@@ -271,7 +265,7 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 	});
 }
 
-function buildPopUpModeldetails(result){	
+function buildPopUpModelDetails(result){
 	var str = '';
 	$("#tabUserWiseRegistionDetilsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	str+='<table class="table table-condensed " id="tabUserDetailsId">';
@@ -299,48 +293,45 @@ function buildPopUpModeldetails(result){
 		var kafkaPending = result[i].kafkaPending;
 		var  kafkaSync =result[i].kafkaSync;
 		var totAmount = result[i].totalAmount;
-		str +='<td>'+result[i].surveyDate+'</td>';
-		str +='<td>'+result[i].name+'</td>';
-		str +='<td>'+result[i].mobileNo+'</td>';
-		str +='<td>'+result[i].firstRecord+'</td>';
+		str +='<td class ="text-center">'+result[i].surveyDate+'</td>';
+		str +='<td class ="text-center">'+result[i].name+'</td>';
+		str +='<td class ="text-center">'+result[i].mobileNo+'</td>';
+		str +='<td class ="text-center">'+result[i].firstRecord+'</td>';
 		str +='<td>'+result[i].lastRecord+'</td>';
 		if(totRecrds != null){
-			str +='<td>'+totRecrds+'</td>';
+			str +='<td class ="text-center">'+totRecrds+'</td>';
 		}else {
-			str +='<td>'+0+'</td>';
+			str +='<td class ="text-center">'+0+'</td>';
 		}
 		if(totalSync !=null){
-			str +='<td>'+totalSync+'</td>';
+			str +='<td class="textAlign">'+totalSync+'</td>';
 		}else {
-			str +='<td>'+0+'</td>';
+			str +='<td class="textAlign">'+0+'</td>';
 		}
 		if(totPending != null){
-			str +='<td>'+totPending+'</td>';
+			str +='<td >'+totPending+'</td>';
 		}else {
-			str +='<td>'+0+'</td>';
+			str +='<td >'+0+'</td>';
 		}
        if(kafkaPending != null)	{
-		   str +='<td>'+kafkaPending+'</td>';
+		   str +='<td >'+kafkaPending+'</td>';
 	   }else {
-		   str +='<td>'+0+'</td>';
+		   str +='<td >'+0+'</td>';
 	   }
 	   if(kafkaSync != null){
-		  str +='<td>'+kafkaSync+'</td>';
+		  str +='<td >'+kafkaSync+'</td>';
 	   }else {
-		    str +='<td>'+0+'</td>';
+		    str +='<td >'+0+'</td>';
 	   }
 	   if(totAmount != null){
-		 str +='<td>'+totAmount+'</td>';
+		 str +='<td >'+totAmount+'</td>';
 	  }else {
-		 str +='<td>'+0+'</td>';
+		 str +='<td >'+0+'</td>';
 		}
 		str +='</tr>';
 	}
 	str +='</tbody>';
 	str +='</table>';
 	$("#tabUserWiseRegistionDetilsId").html(str);	
-	
-	$("#tabUserDetailsId").dataTable();
-	
-	
+	$("#tabUserDetailsId").dataTable();	
 }
