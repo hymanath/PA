@@ -52,5 +52,16 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		 query.setParameter("designationId", designationId);
 		 return (Long) query.uniqueResult();
 	 }
-	 
+	 public List<Object[]> getTotalLeadersDesignationBy(){
+		 StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select " +
+		   		          " model.selfAppraisalDesignation.selfAppraisalDesignationId, " +
+		   		          " model.selfAppraisalDesignation.designation," +
+		   		          " count(distinct model.selfAppraisalCandidateId) " +
+		   		          " from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalDesignation.isActive='Y' " +
+		   				  " group by model.selfAppraisalDesignation.selfAppraisalDesignationId " +
+		   				  " order by model.selfAppraisalDesignation.selfAppraisalDesignationId ");
+		   Query query = getSession().createQuery(queryStr.toString());
+		   return query.list();
+	 }
 }
