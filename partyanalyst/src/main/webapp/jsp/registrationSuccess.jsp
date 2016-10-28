@@ -4,7 +4,12 @@
 <link href="dist/activity/css/bootstrap.min.css" rel="stylesheet"/>
 <script src="dist/activity/js/bootstrap.min.js" type="text/javascript"></script> 
  <link href="css/style.css" rel="stylesheet"/>
- 
+<style type="text/css">
+.eventsheader , .footerCls,.line_heightDiv
+{
+	display:none;
+}
+</style> 
 </head>
 <body>
 <div id="statusDiv"></div>
@@ -19,6 +24,7 @@ $(document).ready(function(){
 	$("#wrapper").hide();
 	$("#trigger").hide();
 	$("#loginId").hide();
+	$('.eventsheader,.footerCls,.line_heightDiv').addClass('hide');
 	showUploadStatus();
 });
 
@@ -26,7 +32,8 @@ $(document).ready(function(){
 function startSearchingPage(){
 
 	//window.location.href="http://telugudesam.org/emembership/teluguNaduGraduatesRegistration.html";
-	window.location.href="http://www.telugudesam.org/cadre-registration-portal/registration";
+	//window.location.href="http://www.telugudesam.org/cadre-registration-portal/registration";
+	  window.location = "https://mytdp.com/cadreOnlineRegistrationAction.action";
 }
 function showUploadStatus()
 	{
