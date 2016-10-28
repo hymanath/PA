@@ -1118,6 +1118,7 @@ public interface IConstants {
 	public static final String SHORTLISTED_STATUS ="Shortlisted";
 	public static final String RUNNING_NOMINATED_POSTS_STATUS_IDS ="1";
 	public static final String NOMINATED_POST_DOCUMENTS ="nominated_post_documents";
+	public static final String TOUR_DOCUMENTS ="tour_documents";  
 	public static final String GO_DOCUMENTS ="GO_documents";
 	
 	public static final String NOMINATED_APPLIED_STATUS ="'Applied'";
