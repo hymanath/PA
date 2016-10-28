@@ -20,7 +20,9 @@ function getDataReConsalationOverView(){
    }).done(function(result){
 	    if(result != null){
 	   buildDataReConsalationOverView(result);
-		} 
+		}else {
+			$("#userWiseTotalViewId").html('No Data Available');
+		}
    });
   }
   function getdataReConsalationTotalOverView(){
@@ -44,7 +46,9 @@ function getDataReConsalationOverView(){
    }).done(function(result){
 	   if(result != null){
 	   buildDataReConsalationTotalOverView(result);
-		 }   
+		 }else {
+			  $("#dataReconsalationOverviewId").html('No Data Available');
+		 }
    });
   }
   function  buildDataReConsalationTotalOverView(result)
@@ -130,10 +134,10 @@ $(document).on("click","#submitId",function(){
 	 var str = '';
 	 str+='<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>';
 				str+='<div class="panel-body" style="padding: 25px;">';
-				str+='<table class="table table-condensed">';
+				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
 				str+='<thead>';
 				str+='<tr>'; 
-				str+='<th>User Id</th>'; 
+				str+='<th>User Name</th>'; 
 				//str+='<th>Device Number</th>';
 				str+='<th>IMEI Number</th>';
 				str+='<th>Vendor Name</th>'; 
@@ -141,8 +145,8 @@ $(document).on("click","#submitId",function(){
 				str+='<th>Sync Pending</th>';
 				str+='<th>Kafka Pending</th>'; 
 				str+='<th>Kaafka Sync</th>'; 
-				
 				str+='<th>ActualServer Status</th>';
+				str+='<th></th>';
 				str+='</tr>';
 				str+='</thead>'; 
 				str+='<tbody>';
@@ -165,7 +169,7 @@ $(document).on("click","#submitId",function(){
 				str+='</div>';
 			    str+='</div>';
 				$("#userWiseTotalViewId").html(str);
-	 
+				$("#userWiseTotalRegstSyncId").dataTable();
  }
  
  $(document).on('change','#stateOverViewId',function(){
@@ -183,7 +187,7 @@ $(document).on("click","#submitId",function(){
 		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
 		if(result !=null && result.length>0){
 			for(var i in result){
-				$('#districtOverViewId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				$('#districtOverViewId').append('<option value="'+result[i].id+'">'+result[i].name.toUpperCase()+'</option>');
 			}
 		}
 		
@@ -244,16 +248,19 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
-		buildPopUpModeldetails(result);
-		
+		if(result != null){
+			buildPopUpModeldetails(result);
+		}else {
+			$("#tabUserWiseRegistionDetilsId").html('No Data Available');	
+		}
 	});
 }
 
 function buildPopUpModeldetails(result){
-	var str ='';
-	str+='<table class="table table-condensed">';
+	var str = '';
+	str+='<table class="table table-condensed table-bordered" id="tabUserDetailsId">';
 	str+='<thead>';
-	str+='<tr>';
+	    str+='<tr>';
 		str+='<th>Date</th>';
 		str+='<th>Name</th>';
 		str+='<th>Mobile No</th>';
@@ -262,15 +269,20 @@ function buildPopUpModeldetails(result){
 		str+='<th>Registrations</th>'; 
 		str+='<th>Synced</th>';
 		str+='<th>Sync Pending</th>';
+		str+='<th>kafka Pending</th>';
+		str+='<th>kafka Sync</th>';
 		str+='<th>Total Amount</th>';
-    str+='</tr>';
+      str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
-	str+='<tr>';
-	for(var i in result){
+	  for(var i in result){
+		   str+='<tr>';
 		var totRecrds = result[i].totalRecords;
 		var totalSync = result[i].sync;
 		var totPending = result[i].pending;
+		var kafkaPending = result[i].kafkaPending;
+		var  kafkaSync =result[i].kafkaSync;
+		var totAmount = result[i].totalAmount;
 		str +='<td>'+result[i].surveyDate+'</td>';
 		str +='<td>'+result[i].name+'</td>';
 		str +='<td>'+result[i].mobileNo+'</td>';
@@ -290,13 +302,29 @@ function buildPopUpModeldetails(result){
 			str +='<td>'+totPending+'</td>';
 		}else {
 			str +='<td>'+0+'</td>';
-		}		
+		}
+       if(kafkaPending != null)	{
+		   str +='<td>'+kafkaPending+'</td>';
+	   }else {
+		   str +='<td>'+0+'</td>';
+	   }
+	   if(kafkaSync != null){
+		  str +='<td>'+kafkaSync+'</td>';
+	   }else {
+		    str +='<td>'+0+'</td>';
+	   }
+	   if(totAmount != null){
+		 str +='<td>'+totAmount+'</td>';
+	  }else {
+		 str +='<td>'+0+'</td>';
+		}
+		str +='</tr>';
 	}
-	str +='</tr>';
 	str +='</tbody>';
 	str +='</table>';
+	$("#tabUserWiseRegistionDetilsId").html(str);	
 	
-	$("#tabUserWiseRegistionDetilsId").html(str);
-	$("#tabUserWiseRegistionDetilsId").dataTable();
+	$("#tabUserDetailsId").dataTable();
+	
 	
 }
