@@ -46,7 +46,7 @@ public class NewCadreRegistrationVO implements Serializable{
 	private Long mandalId;
 	private Long villageId;
 	private Long pincode;
-	private PaymentGatewayVO paymentGatewayVO;
+	private PaymentGatewayVO paymentGatewayVO = new PaymentGatewayVO();
 	
 	
 	public String getHouseNo() {
