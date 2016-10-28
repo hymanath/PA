@@ -29,6 +29,7 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private Long totalPending;
 	private String userName;
 	private Long actualCount;
+	private String imagePath;
 
 	
 	public Long getCadreSurveyUserId() {
@@ -175,6 +176,12 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	
