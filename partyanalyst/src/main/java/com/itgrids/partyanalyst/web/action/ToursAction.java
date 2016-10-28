@@ -189,15 +189,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
     	   return Action.SUCCESS;
        }
        public String getSearchMembersDetails(){
-    	   try{
-    		   jObj = new JSONObject(getTask());
-   			   Long locationId = jObj.getLong("locationId");
-   			   String searchType = jObj.getString("searchType");
-   			   String searchValue = jObj.getString("searchValue");
-   			   resultList = toursService.getSearchMembersDetails(locationId,searchType,searchValue);
-    	   }catch(Exception e){
-    		   LOG.error("Exception raised at getSearchMembersDetails()  of ToursAction", e);  
-    	   }
-    	   return Action.SUCCESS;
-       }
+           try{
+             jObj = new JSONObject(getTask());
+              Long locationId = jObj.getLong("locationId");
+              String searchType = jObj.getString("searchType");
+              String searchValue = jObj.getString("searchValue");
+              Long designationId =jObj.getLong("designationId");
+              resultList = toursService.getSearchMembersDetails(locationId,searchType,searchValue,designationId);
+           }catch(Exception e){
+             LOG.error("Exception raised at getSearchMembersDetails()  of ToursAction", e);  
+           }
+           return Action.SUCCESS;
+         }
 }
