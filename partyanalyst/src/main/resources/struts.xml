@@ -14353,12 +14353,17 @@
 		</result>
 	</action>
 	<action name="savingTourDtlsApplicationAction" class="toursAction" method="savingTourDtlsApplication">  
-		<result type="stream" name="success">
-   			<param name="inputName">inputStream</param>
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
    		</result>
 	</action>
 	<action name="updateToursAction" class="toursAction">
 		<result name="success">/jsp/toursDetails.jsp</result>   
+	</action>
+	<action name="getToursDetailsOverviewAction" class="toursAction"  method="getToursDetailsOverview">
+			<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
 	</action>
 </package>
 </struts>
