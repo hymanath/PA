@@ -140,7 +140,7 @@ public class ToursService implements IToursService {
     	return resultVO;
     }
     @SuppressWarnings("unchecked")
-	public List<ToursBasicVO> getSearchMembersDetails(final Long locationId,String searchType,String searchValue){
+	public List<ToursBasicVO> getSearchMembersDetails(final Long locationId,String searchType,String searchValue,final Long designationId){
     	
     	final Map<Long,ToursBasicVO> membersMap = new HashMap<Long, ToursBasicVO>(0);
     	List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
@@ -167,7 +167,7 @@ public class ToursService implements IToursService {
 		    		 if(membersMap != null && !membersMap.isEmpty()){
 		    			 for(Entry<Long, ToursBasicVO> entry:membersMap.entrySet()){
 		    				 List<ToursBasicVO> locationList = new ArrayList<ToursBasicVO>();
-		 		    		 Long candidateId = selfAppraisalCandidateDAO.getCandidateId(entry.getKey());
+		 		    		 Long candidateId = selfAppraisalCandidateDAO.getCandidateId(entry.getKey(),designationId);
 		    				 if(candidateId == null ){
 		    					 
 		    					 SelfAppraisalCandidate selfAppraisalCandidate = new SelfAppraisalCandidate();
