@@ -52,7 +52,7 @@
 					</div>
 					<div class="col-md-1 col-xs-12 col-sm-1">
 					<label></label>
-					<input type="button" class ="btn btn-success" value ="submit" id="submitId" style="margin: 20px 10px 0px 0px;">
+					<input type="button" class ="btn btn-success" value ="submit" id="submitId" style="margin: 13px 10px 0px 0px; padding-right: 27px;">
 					<!--<span id="submitDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>-->
 					</div>
 					</div>
@@ -76,7 +76,9 @@
 			    style="margin-left: 1px; width: 126px; padding-left: 17px; border-left-width: 0px; border-top-width: 0px;" id="exportToExcelId" onClick ="generateExcelReport()" ></input>
 		    </div>
 		<div class="modal-body">
-			   <div class="table table-condensed" id ="tabUserWiseRegistionDetilsId">
+			   <div class="table table-condensed" id ="tabUserWiseRegistionDetilsId" style="display:none;">
+			   </div>
+			   <div class="table table-condensed" id ="tabUserWiseExportExcelDivId">
 			   </div>
 		</div>
 		<div class="modal-footer">
@@ -107,7 +109,7 @@ $(document).on('click','.openPopUpModel',function(){
 
 function generateExcelReport()
 {	
- tableToExcel("tabUserDetailsId", 'Tab user wise Registration Report');
+ tableToExcel("tabUserExportExcelId", 'Tab user wise Registration Report');
 }
 </script>
 <script>
