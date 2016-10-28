@@ -1,5 +1,5 @@
 function getDataReConsalationOverView(){
-	
+	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var constId = $("#constituencyOverViewId").val();
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
@@ -26,6 +26,7 @@ function getDataReConsalationOverView(){
    });
   }
   function getdataReConsalationTotalOverView(){
+	  $("#dataReconsalationOverviewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var constId = $("#constituencyOverViewId").val();
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
@@ -54,7 +55,6 @@ function getDataReConsalationOverView(){
   function  buildDataReConsalationTotalOverView(result)
   {
  	 var str ='';
-	  $("#dataReconsalationOverviewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
  	    str+='<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>';
  				str+='<div class="panel-body" style="padding: 25px;">';
  					str+='<div class="row">';
@@ -134,7 +134,6 @@ $(document).on("click","#submitId",function(){
  function buildDataReConsalationOverView(result)
  {
 	 var str = '';
-	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 str+='<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>';
 				str+='<div class="panel-body" style="padding: 25px;">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
@@ -243,7 +242,7 @@ $(document).on("click",".tabUserDtlsCls",function(){
 
 
 function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,endDate){
-	
+	$("#tabUserWiseRegistionDetilsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var jsObj = {
 			cadreSurveyUserId : cdrSurveyUserId,
 			constituencyId : constId,
@@ -267,7 +266,6 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 
 function buildPopUpModelDetails(result){
 	var str = '';
-	$("#tabUserWiseRegistionDetilsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	str+='<table class="table table-condensed " id="tabUserDetailsId">';
 	str+='<thead>';
 	    str+='<tr>';
