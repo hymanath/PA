@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.io.File;
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
@@ -88,13 +89,13 @@ public class ToursService implements IToursService {
 			selfAppraisalCandidateDetails.setMonth(toursInputVO.getMonth());
 			selfAppraisalCandidateDetails.setYear(toursInputVO.getYear());
 			selfAppraisalCandidateDetails.setOwnLocationScopeId(toursInputVO.getOwnLocationScopeId());
-			selfAppraisalCandidateDetails.setOwnLocationId(toursInputVO.getOwnLocationId());
+			selfAppraisalCandidateDetails.setOwnLocationValue(toursInputVO.getOwnLocationId());
 			selfAppraisalCandidateDetails.setOwnTours(toursInputVO.getOwnTours());
 			selfAppraisalCandidateDetails.setInchargeLocationScopeId(toursInputVO.getInchargeLocationScopeId());
-			selfAppraisalCandidateDetails.setInchargeLocationId(toursInputVO.getInchargeLocationId());
+			selfAppraisalCandidateDetails.setInchargeLocationValue(toursInputVO.getInchargeLocationId());
 			selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());
 			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());
-			selfAppraisalCandidateDetails.setReportPath(destPath);     
+			selfAppraisalCandidateDetails.setReportPath(destPath);       
 			selfAppraisalCandidateDetails.setInsertedBy(userId);
 			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			selfAppraisalCandidateDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -351,9 +352,92 @@ public class ToursService implements IToursService {
     		}
     		});
     	}catch(Exception e){
-    	 LOG.error("Error Occured at getSearchMembersDetails() in ToursService class",e);	
+    		LOG.error("Error Occured at getSearchMembersDetails() in ToursService class",e);	
     	}
     	return resultList;
+    }
+    public ToursBasicVO getDesignationDtls(Long desigId, String startDateStr, String endDateStr){
+    	LOG.info("Entered into getDesignationDtls() of ToursService{}");
+    	try{
+    		ToursBasicVO toursBasicVO = new ToursBasicVO();
+    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    		Date startDate = null;
+    		Date endDate = null;
+    		if(startDateStr != null && startDateStr.length() > 0 && endDateStr != null && endDateStr.length() > 0){
+    			startDate = sdf.parse(startDateStr);
+    			endDate = sdf.parse(endDateStr);  
+    		}
+    		List<Object[]> desigDtls = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(desigId);
+    		
+    		if(desigDtls != null && desigDtls.size() > 0){
+    			toursBasicVO.setCandidateCount(desigDtls.get(0)[2] != null ? (Long)desigDtls.get(0)[2] : 0l);
+    		}
+    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(startDate,endDate,desigId);
+    		if(memDtlsList != null && memDtlsList.size() > 0){
+    			toursBasicVO.setSelectedCandCount(memDtlsList.get(0)[1] != null ? (Long)memDtlsList.get(0)[1] : 0l);
+    			toursBasicVO.setTotalTour((memDtlsList.get(0)[2] != null ? (Long)memDtlsList.get(0)[2] : 0l) + (memDtlsList.get(0)[3] != null ? (Long)memDtlsList.get(0)[3] : 0l));
+    		}  
+    		return toursBasicVO;
+    		
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		LOG.error("Error Occured at getDesignationDtls() in ToursService class",e);
+    	}
+    	return null;  
+    }
+    public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr){
+    	LOG.info("Entered into getDesignationDtls() of ToursService{}");
+    	try{
+    		ToursBasicVO toursBasicVO = new ToursBasicVO();
+    		List<ToursBasicVO> basicVOs = new ArrayList<ToursBasicVO>();
+    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    		Date startDate = null;
+    		Date endDate = null;
+    		if(startDateStr != null && startDateStr.length() > 0 && endDateStr != null && endDateStr.length() > 0){
+    			startDate = sdf.parse(startDateStr);
+    			endDate = sdf.parse(endDateStr);  
+    		}
+    		
+    		//get total candidate in the same designation.
+    		List<Long> candidateList = selfAppraisalCandidateDAO.getCandidateList(desigId);
+    		//get candidate dtls.
+    		StringBuilder builder = new StringBuilder();
+    		if(candidateList != null && candidateList.size() > 0){
+    			List<Object[]> candidateDtlsList = selfAppraisalCandidateDetailsDAO.getCandidateDtlsList(startDate,endDate,candidateList);
+    			if(candidateDtlsList != null && candidateDtlsList.size() > 0){
+    				for(Object[] param : candidateDtlsList){
+    					toursBasicVO = new ToursBasicVO();  
+    					toursBasicVO.setId(param[0] != null ? (Long)param[0] : 0l);
+    					toursBasicVO.setName(param[2] != null ? param[2].toString() : "");
+    					toursBasicVO.setTotalTour((param[5] != null ? (Long)param[5] : 0l) + (param[6] != null ? (Long)param[6] : 0l));
+    					toursBasicVO.setYear(param[4] != null ? (Long)param[4] : 0l);
+    					toursBasicVO.setMonth(param[3] != null ? param[3].toString() : "");
+    					toursBasicVO.setComment(param[7] != null ? param[7].toString() : "");
+    					builder = new StringBuilder();  
+    					if(param[8] != null){    
+    						if(param[8].toString().trim().length() > 0){
+    							toursBasicVO.setFilePath(param[8].toString().trim());
+    							String strArr[] = param[8].toString().trim().split(",");
+        						for(int i = 0 ; i < strArr.length ; i++){
+        							if(i == 0){
+        								builder.append((strArr[i]).split("\\.")[1]);
+        							}else{
+        								builder.append(","+strArr[i].split("\\.")[1]);  
+        							}
+        						}
+        						toursBasicVO.setType(builder.toString());
+    						}
+    					}
+    					basicVOs.add(toursBasicVO);
+    				}
+    			}  
+    		}  
+    		return basicVOs;
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		LOG.error("Error Occured at getDesignationDtls() in ToursService class",e);
+    	}
+    	return null;
     }
     public List<ToursBasicVO> getToursDetailsOverview(String fromDateStr,String toDateStr){
     	List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
