@@ -8,7 +8,7 @@ body
 	font-style: normal;
 	font-weight: 400;
 	font-size:14px;
-	background-color:#ECF0F1;
+	background-color:#fff;
 }
 h1,h2,h3,h4,h5,h6,ul,.table,p
 {
@@ -39,7 +39,7 @@ input.form-control
 }
 .mainHeading
 {
-	color:#59AB5F;
+	color:#fff;
 	position: relative; 
 	text-align: center; 
 	top: -43px; 
