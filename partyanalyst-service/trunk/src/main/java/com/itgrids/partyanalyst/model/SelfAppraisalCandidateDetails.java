@@ -27,7 +27,7 @@ public class SelfAppraisalCandidateDetails {
 	private Long selfAppraisalCandidateDetailsId;
 	private Long selfAppraisalCandidateId;
 	private String month;
-	private String year;
+	private Long year;
 	private Long ownLocationId;
 	private Long ownLocationScopeId;
 	private Long ownTours;
@@ -69,11 +69,11 @@ public class SelfAppraisalCandidateDetails {
 		this.month = month;
 	}
 	@Column(name="year")
-	public String getYear() {
+	public Long getYear() {
 		return year;
 	}
-	public void setYear(String year) {
-		this.year = year;
+	public void setYear(Long year) {
+		this.year = year;  
 	}
 	@Column(name="own_location_id")
 	public Long getOwnLocationId() {
