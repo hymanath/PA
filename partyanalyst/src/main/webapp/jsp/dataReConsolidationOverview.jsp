@@ -17,29 +17,32 @@
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="row">
-					<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
+				<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
 					 <lable>STATE<span style="color:red"> * </span></label>
+					 <span id="stateDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
 						<select  class="form-control" id="stateOverViewId" >
 							<option value="0">Select State</option>
 							<option value="1">ANDHRA PRADESH</option>
 							<option value="36">TELANGANA</option>
-						</select>
+						</select> 
 					</div>
 						
-					<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
+					<div class="col-md-2 col-xs-12 col-sm-5 ">
 					<lable>DISTRICT<span style="color:red"> * </span></label>
+					<span id="districtDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
 						<select  class="form-control" id = "districtOverViewId">
 							<option value="0">Select District</option>
 						</select>
 					</div>
-					<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
+					<div class="col-md-3 col-xs-12 col-sm-6 ">
 					<lable>CONSTITUENCY<span style="color:red"> * </span></label>
+						<span id="constituencyDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
 						<select  class="form-control" id ="constituencyOverViewId" >
 							<option value="0">Select Constituency</option>
 						</select>
 				   </div>
 						
-					 <div class="col-md-3 col-xs-12 col-sm-6 pull-right">
+					 <div class="col-md-3 col-xs-12 col-sm-6 ">
 					 <div><lable>DATE</label></div>
 							<div class="input-group inputGCustom">
 								<span class="input-group-addon">
@@ -48,8 +51,12 @@
 								 <input type="text" class="form-control datePicker"/>
 							</div>
 					</div>
+					<div class="col-md-1 col-xs-12 col-sm-1">
+					<label></label>
+					<input type="button" class ="btn btn-success" value ="submit" id="submitId" style="margin: 20px 10px 0px 0px;">
+					<!--<span id="submitDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>-->
 					</div>
-					<input type="button" class ="btn btn-success pull-right" value ="Submit" id="submitId" style="margin-bottom: 0px; margin-top: 5px; width: 97px;">
+					</div>
 					<div id = "errorDivId" style = "color:red"></div>
 				</div>
 			</div>
@@ -61,7 +68,7 @@
 
 	
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
    <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
 	  <div class="modal-content">
 		    <div class="modal-header">

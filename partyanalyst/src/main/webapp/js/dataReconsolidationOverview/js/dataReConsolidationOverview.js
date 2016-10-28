@@ -37,23 +37,26 @@ function getDataReConsalationOverView(){
           fromDate : strtDate,
           toDate : endDate
 				  }
-	 
+	 $("#submitDivIdImg").show();
     $.ajax({
           type:'GET',
           url: 'getdataReConsalationTotalOverViewAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	    $("#submitDivIdImg").hide();
 	   if(result != null){
 	   buildDataReConsalationTotalOverView(result);
 		 }else {
 			  $("#dataReconsalationOverviewId").html('No Data Available');
 		 }
+		getDataReConsalationOverView(); 
    });
   }
   function  buildDataReConsalationTotalOverView(result)
   {
  	 var str ='';
+	  $("#dataReconsalationOverviewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
  	    str+='<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>';
  				str+='<div class="panel-body" style="padding: 25px;">';
  					str+='<div class="row">';
@@ -103,6 +106,7 @@ function getDataReConsalationOverView(){
   }
  
 $(document).on("click","#submitId",function(){
+	 $("#errorDivId").html(' ');
 	
 	  var stateId = $("#stateOverViewId option:selected").val();
 	  var districtId = $("#districtOverViewId").val();
@@ -110,28 +114,31 @@ $(document).on("click","#submitId",function(){
 	  
 	  if(stateId == 0){
 		  $("#errorDivId").html('Please Select State');
-		  return ;
-	  }
+		  return;
+	  }else{
 	   $("#errorDivId").html(' ');
+	  }
 	   
 	   if(districtId == 0){
 		  $("#errorDivId").html('Please Select District');
-		  return ;
-	  }
+		  return;
+	  }else{
 	   $("#errorDivId").html(' ');
+	  }
 	   
-	   if(constId==0){
+	  if(constId==0){
 		  $("#errorDivId").html('Please Select Constituency');
-		  return ;
-	  }
+		  return;
+	  }else{
 	   $("#errorDivId").html(' ');
+	  }
 	     
 	getdataReConsalationTotalOverView();
-	getDataReConsalationOverView();
 });
  function buildDataReConsalationOverView(result)
  {
 	 var str = '';
+	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 str+='<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>';
 				str+='<div class="panel-body" style="padding: 25px;">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
@@ -161,7 +168,7 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].kafkaPending+'</td>'; 
                 str+='<td>'+result[i].kafkaSync+'</td>';				
 				str+='<td>'+result[i].actualCount+'</td>';
-				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
+				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></span></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -173,6 +180,8 @@ $(document).on("click","#submitId",function(){
  }
  
  $(document).on('change','#stateOverViewId',function(){
+	  $("#errorDivId").html(' ');
+	 $("#stateDivIdImg").show();
 	var jsObj = {
 			stateId : $("#stateOverViewId option:selected").val()
 	}
@@ -183,6 +192,7 @@ $(document).on("click","#submitId",function(){
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
+		$("#stateDivIdImg").hide();
 		$('#districtOverViewId').html(' ');
 		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
 		if(result !=null && result.length>0){
@@ -195,6 +205,8 @@ $(document).on("click","#submitId",function(){
 });
  
  $(document).on('change','#districtOverViewId',function(){
+	  $("#errorDivId").html(' ');
+	 $("#districtDivIdImg").show();
 	var districtId = $("#districtOverViewId").val();
 	 var jsObj = {
 			districtId : districtId
@@ -207,6 +219,7 @@ $(document).on("click","#submitId",function(){
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
+		 $("#districtDivIdImg").hide();
 		$('#constituencyOverViewId').html(' ');
 		$('#constituencyOverViewId').append('<option value="0">Please Select Constituency </option>');
 		if(result !=null && result.length>0){
@@ -241,6 +254,7 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 			strtDate : strtDate,
 			endDate : endDate
 	}
+	$("#dayWiseDivIdImg").show();
 	$.ajax({
 		type : "GET",
 		url : "getCadreSurveyUserWiseRegistrationsAction.action",
@@ -248,6 +262,7 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
+		$("#dayWiseDivIdImg").hide();
 		if(result != null){
 			buildPopUpModelDetails(result);
 		}else {
@@ -256,8 +271,9 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 	});
 }
 
-function buildPopUpModelDetails(result){
+function buildPopUpModeldetails(result){	
 	var str = '';
+	$("#tabUserWiseRegistionDetilsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	str+='<table class="table table-condensed " id="tabUserDetailsId">';
 	str+='<thead>';
 	    str+='<tr>';
