@@ -14,6 +14,13 @@ public class ToursBasicVO {
     private Long locationScopeId;
     private Long locationValue;
     private String image;
+    private Long candidateCount = 0l;
+    private Long selectedCandCount = 0l;
+    private Long totalTour = 0l;
+    private Long year = 0l;
+    private String month ;
+    private String comment ;
+    private String filePath;
 	private List<ToursBasicVO> subList;
 	
 	private String designation;
@@ -100,6 +107,50 @@ public class ToursBasicVO {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	public Long getCandidateCount() {
+		return candidateCount;
+	}
+	public void setCandidateCount(Long candidateCount) {
+		this.candidateCount = candidateCount;
+	}
+	public Long getSelectedCandCount() {
+		return selectedCandCount;
+	}
+	public void setSelectedCandCount(Long selectedCandCount) {
+		this.selectedCandCount = selectedCandCount;
+	}
+	public Long getTotalTour() {
+		return totalTour;    
+	}
+	public void setTotalTour(Long totalTour) {
+		this.totalTour = totalTour;
+	}
+	public Long getYear() {
+		return year;
+	}
+	public void setYear(Long year) {
+		this.year = year;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	
+	
 	public String getDesignation() {
 		return designation;
 	}
