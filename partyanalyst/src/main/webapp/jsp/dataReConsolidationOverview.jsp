@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Core Dashboard</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="dist/dataReconsolidationOverview/custom.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
@@ -89,11 +89,15 @@
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/Date/moment.min.js" type="text/javascript"></script>
 <script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="js/dataReconsolidationOverview/dataReConsolidationOverview.js" type="text/javascript"></script>
+<script src="js/dataReconsolidationOverview1/js/dataReConsolidationOverview.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
+var defaultDate = moment().format("MM/DD/YYYY")+' -'+moment().format("MM/DD/YYYY")
+$(".datePicker").val(defaultDate)
 $(".datePicker").daterangepicker({
 	opens :'left',
+	startDate:moment(),
+	endDaste:moment(),
 	maxDate:moment()
 });
 
