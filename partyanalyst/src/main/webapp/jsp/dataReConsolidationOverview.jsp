@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="js/dataReconsolidationOverview/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+<link href="js/dataReconsolidationOverview/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+
 </head>
 <body>
 	<div class="container m_top20">
@@ -80,93 +82,22 @@
 					</div>-->
 				</div>
 				<div class="panel panel-default" id="userWiseTotalViewId">
-					<!--<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>
-					<div class="panel-body" style="padding: 25px;">
-						<table class="table table-condensed">
-							<thead>
-								<tr> 
-									<th>User Id</th> 
-									<th>Device Number</th>
-									<th>IMEI Number</th>
-									<th>Vendor Name</th> 
-									<th>Total Registration</th> 
-									<th>Sync Pending</th> 
-								</tr>
-							</thead>
-							<tbody> 
-								<tr> 
-									<td >U1984</td>
-									<td>D1234</td>
-									<td>96358571237985</td>
-									<td>Ramu</td>
-									<td>1000</td>
-									<td>200 <button class="btn btn-sm btn-success openPopUpModel" >VIEW DAY WISE</button></td>
-								</tr>
-								</tbody>
-						</table>
-					</div>
-				</div>-->
-			</div>
+					
+			   </div>
+			 </div>  
 
 	
 
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
 		<div class="modal-content">
+		 <input type="button" class="btn btn-success pull-right" value ="ExportToExcel" style="margin-left: 0px; width: 152px;" id="exportToExcelId" onClick ="generateExcelReport()" ></input>
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="text-capital" id="userHeadinId"></h4>
 		  </div>
 		  <div class="modal-body">
-			<table class="table table-condensed id ="tabUserWiseRegistionDetilsId">
-				<!-- <thead>
-					<tr> 
-						<th>Date</th> 
-						<th>Name</th>
-						<th>Mobile No</th>
-						<th>First Record Received</th> 
-						<th>Last Record Received</th> 
-						<th>Registrations</th> 
-						<th>Synced</th>
-						<th>Sync Pending</th>
-						<th>Total Amount</th>
-					</tr>
-				</thead>
-				<tbody> 
-					<tr> 
-						<td >29-10-2016</td>
-						<td><img src="dist/img/human.jpg" style="width: 40px; height: 40px;"/>Ramesh</td>
-						<td class="text_center">999999999</td>
-						<td class="text_center">7:15 am</td>
-						<td class="text_center">6:30 pm</td>
-						<td class="text_center">700</td>
-						<td class="text_center">600</td>
-						<td class="text_center">50</td>
-						<td class="text_center">7000/- </td>
-					</tr>
-					<tr> 
-						<td >29-10-2016</td>
-						<td><img src="dist/img/human.jpg" style="width: 40px; height: 40px;"/>Ramesh</td>
-						<td class="text_center">999999999</td>
-						<td class="text_center">7:15 am</td>
-						<td class="text_center">6:30 pm</td>
-						<td class="text_center">700</td>
-						<td class="text_center">600</td>
-						<td class="text_center">50</td>
-						<td class="text_center">7000/- </td>
-					</tr>
-					<tr> 
-						<td >29-10-2016</td>
-						<td><img src="dist/img/human.jpg" style="width: 40px; height: 40px;"/>Ramesh</td>
-						<td class="text_center">999999999</td>
-						<td class="text_center">7:15 am</td>
-						<td class="text_center">6:30 pm</td>
-						<td class="text_center">700</td>
-						<td class="text_center">600</td>
-						<td class="text_center">50</td>
-						<td class="text_center">7000/- </td>
-					</tr>
-				</tbody> -->
+			<table class="table table-condensed" id ="tabUserWiseRegistionDetilsId">
 			</table>
 		  </div>
 		  <div class="modal-footer">
@@ -175,21 +106,40 @@
 		</div>
 	  </div>
 </div>
-
-
 <script src="js/dataReconsolidationOverview/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="js/dataReconsolidationOverview/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/dataReconsolidationOverview/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="js/dataReconsolidationOverview/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="js/dataReconsolidationOverview/js/dataReConsolidationOverview.js" type="text/javascript"></script>
+<script src="js/dataReconsolidationOverview/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".datePicker").daterangepicker({
-	opens :'left'
+	opens :'left',
+	maxDate:moment()
 });
 
 $(document).on('click','.openPopUpModel',function(){
 	$("#myModal").modal("show");
 });
+
+function generateExcelReport()
+{	
+ tableToExcel("tabUserDetailsId", 'Tab user wise Registration Report');
+}
 </script>
+<script>
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
+
 </body>
 </html>
