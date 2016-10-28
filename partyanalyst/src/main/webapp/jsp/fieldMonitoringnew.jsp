@@ -238,6 +238,8 @@
 			$('body').addClass("modal-open");
 		}, 1000);
 	});
+	
+$("#cadreRegliId").hide();
 </script>
 </body>
 </html>

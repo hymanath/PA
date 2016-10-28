@@ -226,7 +226,7 @@ $(document).on("click",".modalCloseCls",function(){
 		$('body').addClass("modal-open");
 	}, 1000);
 });
-
+$("#cadreRegliId").hide();
 getCadreRegIssueType();
 </script>
 </body>

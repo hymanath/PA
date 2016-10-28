@@ -626,8 +626,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 					
 							str+='<tr>';
 								str+='<td>';  
-									str+='<button class="btn btn-success singleApproveCls"  attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>&nbsp';
-									str+='<button class="btn btn-danger singleRejectCls"  attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'">Reject</button>';
+									str+='<button class="btn btn-success singleApproveCls btn-sm"  attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>&nbsp';
+									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;">Reject</button>';
 								str+='</td>';
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
@@ -741,8 +741,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 							str2+='</tr>'; 
 							str2+='<tr>';
 								str2+='<td>';
-									str2+='<button class="btn btn-success singleApproveCls" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>&nbsp';//familyHideSelectBoxId0
-									str2+='<button class="btn btn-danger singleRejectCls" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'">Reject</button>';
+									str2+='<button class="btn btn-success singleApproveCls btn-sm" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>&nbsp';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-danger singleRejectCls btn-sm" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" style="margin-left: 5px;">Reject</button>';
 								str2+='</td>';
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
@@ -886,7 +886,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
   }); 
   function approveSingleMember(cadreId){
 		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
+		rejectList.push({"cadreId" : cadreId}); 
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
@@ -930,14 +930,14 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 			$('.localSelectOwnCls').each(function(){  
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId});     
 				}
 			});
 		}else{
 			$('.localSelectFamilyCls').each(function(){  
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId});     
 				}
 			});
 		}  
@@ -980,7 +980,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
   });
   function singleReject(cadreId,reasonId){
 	  	var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 }); 
+		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId}); 
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
@@ -1054,7 +1054,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 					cadreId = $(this).attr("attr_cadre_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId});     
 				}
 			});
 		}else{
@@ -1063,7 +1063,7 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 					cadreId = $(this).attr("attr_cadre_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });     
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId});     
 				}
 			});
 		}

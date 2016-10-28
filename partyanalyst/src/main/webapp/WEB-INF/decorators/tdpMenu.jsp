@@ -767,6 +767,44 @@
 										 </ul>
 									</li>
 									</c:if>
+									
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING') || 
+				        fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING_DASHBOARD') ||
+						 fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING') ||
+						 fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING_DASHBOARD') ||
+						 fn:contains(sessionScope.USER.entitlements, 'CADRE_WEB_MONITORING_DASHBOARD')}">
+									<li>
+										<a href="#"><i class="fa fa-envelope ico-white"></i><span>&nbsp;&nbsp;Web Monitoring</span></a>
+										 <h2><i class="fa fa-envelope ico-white line_heightDiv"></i>Web Monitoring</h2>
+										 <ul>
+											 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING')}">
+												<li>
+													<a href="fieldMonitoringNewAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Field Monitoring</span></a>
+												</li>
+											</c:if>
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING_DASHBOARD')}">
+												<li>
+													<a href="fieldMonitoringDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Field Monitoring DashBoard</span></a>
+												</li>
+											</c:if>
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING')}">
+												<li>
+													<a href="dataMonitoringAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Data Monitoring</span></a>
+												</li>
+											</c:if>
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING_DASHBOARD')}">
+												<li>
+													<a href="dataMonitoringDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Data Monitoring DashBoard</span></a>
+												</li>
+											</c:if>
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_WEB_MONITORING_DASHBOARD')}">
+												<li>
+													<a href="webMonitoringDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Web Monitoring DashBoard</span></a>
+												</li>
+											</c:if>
+										 </ul>
+									</li>
+									</c:if>
                   				 
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>

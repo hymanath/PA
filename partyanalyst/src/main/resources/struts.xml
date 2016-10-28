@@ -14125,6 +14125,16 @@
 		<result name="success">/jsp/fieldMonitoringDashboard.jsp</result>  
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="getDataMntrgUsersConstituenciesAction" class="dataMonitoringAction"  method="getUserAssignedConstituencies">
+			<result type="json" name="success">
+			<param name="root">cadreRegUserList</param>
+		</result>
+	</action>
+	<action name="getDataMntrgUserAssignedUsersAction" class="dataMonitoringAction"  method="getUserAssignedUsers">
+			<result type="json" name="success">
+			<param name="root">cadreRegUserList</param>
+		</result>
+	</action>
 	<action name="saveFieldIssueAction" class="fieldMonitoringAction"  method="saveFieldIssue">
 			<result type="json" name="success">
 			<param name="root">resultStatus</param>
@@ -14223,7 +14233,17 @@
 			<param name="root">idNameVO</param>  
 		</result>
 	</action>
+	<action name="getTotalRegCdrVendorWiseNewAction" class="dataMonitoringAction"  method="getTotalRegCdrVendorWiseNew">
+			<result type="json" name="success">
+			<param name="root">idNameVO</param>  
+		</result>
+	</action>
 	<action name="getTotalRegCdrVendorAndTabUserWiseAction" class="dataMonitoringAction"  method="getTotalRegCdrVendorAndTabUserWise">
+			<result type="json" name="success">
+			<param name="root">idNameVOs</param>  
+		</result>
+	</action>	
+	<action name="getTotalRegCdrVendorAndTabUserWiseNewAction" class="dataMonitoringAction"  method="getTotalRegCdrVendorAndTabUserWiseNew">
 			<result type="json" name="success">
 			<param name="root">idNameVOs</param>  
 		</result>

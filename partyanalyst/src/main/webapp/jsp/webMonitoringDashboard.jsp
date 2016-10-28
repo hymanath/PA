@@ -123,6 +123,8 @@ $(document).on("click",".ranges li",function(){
 $(document).on("click",".applyBtn",function(){
 	getLocationWiseOverAllDetails("state",0,"districtWiseOverviewDetailsId");
 });
+
+$("#cadreRegliId").hide();
 </script>
 </body>
 </html>

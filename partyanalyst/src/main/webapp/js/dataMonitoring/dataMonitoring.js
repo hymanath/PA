@@ -7,6 +7,52 @@
 	$(document).on("change", "#districtId", function(e){
 		getVendorConstituencies();
 	});	
+	
+function getConstituencies(){
+	$('#constituencyId').find('option').remove();
+	var jsObj = { 
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getDataMntrgUsersConstituenciesAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		$("#constituencyId").append('<option value="0">All</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#constituencyId").trigger("chosen:updated");		
+	});
+}
+
+function getUsers(constituencyId){
+	$('#cadreSurveyUserId').find('option').remove();
+	$("#cadreSurveyUserId").trigger("chosen:updated");		
+	/*var constituencyId = [];
+	if(type == "onchange")
+		constituencyId = $("#constituencyId").val();*/
+	
+	var jsObj = { 
+	constituencyId : constituencyId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getDataMntrgUserAssignedUsersAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		$("#cadreSurveyUserId").append('<option value="0">All</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#cadreSurveyUserId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#cadreSurveyUserId").trigger("chosen:updated");		
+	});
+}
 		
 	function getVendors(){
 		clearVendors();
@@ -102,6 +148,7 @@
 		$("#"+selectBoxId).trigger("chosen:updated");
 	}
 	$(document).on("click","#getRegStatusId",function(){
+		$("#detailsDivId").show();
 		$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#loggedInFieldUsersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		getCadreRegStatusType();
@@ -128,9 +175,8 @@
 		});
 	}
 	function getCadreRegStatusType(){
-		var stateId = $("#stateId").val();
-		var vendorId = $("#vendorId").val();
-		var districtId = $("#districtId").val();
+		
+		var userId = $("#cadreSurveyUserId").val();
 		var constituencyId = $("#constituencyId").val();
 		var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
@@ -138,16 +184,14 @@
 		var endDate = dateArr[1].trim();
 		var jsObj=
 		{				
-			stateId : stateId,
-			vendorId : vendorId,
-			districtId : districtId,
+			userId : userId,
 			constituencyId : constituencyId,
 			startDate : modifyDate(startDate),
 			endDate : modifyDate(endDate)          
 		}
 		$.ajax({
 			type:'GET',
-			url: 'getCadreRegStatusTypeAction.action',    
+			url: 'getTotalRegCdrVendorWiseNewAction.action',    
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -160,7 +204,7 @@
 		});
 		$.ajax({
 			type:'GET',
-			url: 'getTotalRegCdrVendorAndTabUserWiseAction.action',    
+			url: 'getTotalRegCdrVendorAndTabUserWiseNewAction.action',    
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -400,8 +444,8 @@
 					
 							str+='<tr class="ownDeleteRow'+i+'">';    
 								str+='<td>';  
-									str+='<button class="btn btn-success singleApproveCls" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
-									str+='<button class="btn btn-danger singleRejectCls"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'">Reject</button>';
+									str+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
+									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;">Reject</button>';
 								str+='</td>';    
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
@@ -514,8 +558,8 @@
 							str2+='</tr>'; 
 							str2+='<tr class="familyDeleteRow'+i+'">';
 								str2+='<td>';
-									str2+='<button class="btn btn-success singleApproveCls" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
-									str2+='<button class="btn btn-danger singleRejectCls" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'">Reject</button>';
+									str2+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-danger singleRejectCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" style="margin-left: 5px;">Reject</button>';
 								str2+='</td>';
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
@@ -673,7 +717,7 @@
 			return;  
 		} 
 		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });
+		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId });
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
@@ -762,7 +806,7 @@
 					cadreId = $(this).attr("attr_cadre_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 }); 
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId}); 
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);
@@ -774,7 +818,7 @@
 					cadreId = $(this).attr("attr_cadre_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "userId" : 3256 });
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId});
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);      
@@ -827,7 +871,7 @@
 		var cadreId = $(this).attr("attr_cadre_id");
 		var position = $(this).attr("attr_position_id");   
 		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "userId" : 3256 }); 
+		rejectList.push({"cadreId" : cadreId}); 
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
@@ -884,7 +928,7 @@
 			$('.localSelectOwnCls').each(function(){  
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });
+					rejectList.push({"cadreId" : cadreId});
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);
@@ -894,7 +938,7 @@
 			$('.localSelectFamilyCls').each(function(){    
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId, "userId" : 3256 });
+					rejectList.push({"cadreId" : cadreId});
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);
