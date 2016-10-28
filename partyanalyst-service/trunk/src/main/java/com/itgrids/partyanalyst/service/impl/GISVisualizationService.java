@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITabUserLocationDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
@@ -37,7 +39,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /*
@@ -68,10 +69,18 @@ public class GISVisualizationService implements IGISVisualizationService{
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
 	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
+	private ITabUserLocationDetailsDAO tabUserLocationDetailsDAO;
 	
 	
 	
 	
+	public ITabUserLocationDetailsDAO getTabUserLocationDetailsDAO() {
+		return tabUserLocationDetailsDAO;
+	}
+	public void setTabUserLocationDetailsDAO(
+			ITabUserLocationDetailsDAO tabUserLocationDetailsDAO) {
+		this.tabUserLocationDetailsDAO = tabUserLocationDetailsDAO;
+	}
 	public ITdpCadreTargetCountDAO getTdpCadreTargetCountDAO() {
 		return tdpCadreTargetCountDAO;
 	}
@@ -788,4 +797,79 @@ public class GISVisualizationService implements IGISVisualizationService{
 				LOG.error("Exception Occured in setDateWiseMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
 			}
 	}
+	
+	public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
+		GISUserTrackingVO returnVO = new GISUserTrackingVO();
+		try{
+			List<GISUserTrackingVO> tabUserList = new ArrayList<GISUserTrackingVO>();
+			Map<Long,GISUserTrackingVO> tabUserMap = new HashMap<Long,GISUserTrackingVO>();
+			List<Object[]> totalTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			setLocationWiseTabUserTrackingDetails(totalTabUsersData,"total",returnVO,tabUserMap);
+			
+			
+			List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			setLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap);
+			
+			Date fromDate=null;
+			Date toDate=null;
+			
+			if(inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				fromDate = sdf.parse(inputVO.getStartDate());
+				 toDate  =sdf.parse(inputVO.getEndDate());
+			}
+			
+			List<Object[]> latestObj = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabUser(inputVO.getParentLocationTypeId(),fromDate,toDate,inputVO.getParentLocationType());
+			if(commonMethodsUtilService.isListOrSetValid(latestObj)){
+				for (Object[] param : latestObj) {
+					GISUserTrackingVO tabVO =  tabUserMap.get(param[0] !=null ? (Long)param[0]:0l);
+					if(tabVO != null){
+						tabVO.setLattitude(param[3] !=null ? param[3].toString():"");
+						tabVO.setLongitude(param[4] !=null ? param[4].toString():"");
+						tabVO.setSurveyTime(param[5] !=null ? param[5].toString():"");
+					 }
+				   }
+				}
+			
+			if(commonMethodsUtilService.isMapValid(tabUserMap)){
+				for(GISUserTrackingVO tabUser :tabUserMap.values()){
+					tabUserList.add(tabUser);
+				}
+			}
+			
+			returnVO.setUsersList(tabUserList);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
+		}
+		return returnVO;
+	}
+	public void setLocationWiseTabUserTrackingDetails(List<Object[]> tabusersData , String type,GISUserTrackingVO returnVO,Map<Long,GISUserTrackingVO> tabUserMap){
+		
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(tabusersData)){
+				for (Object[] param : tabusersData) {
+					returnVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					GISUserTrackingVO tabUser = new GISUserTrackingVO();
+					tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+					tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					tabUser.setImagePath(commonMethodsUtilService.getStringValueForObject(param[4]));
+					tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+					
+					if(type.equalsIgnoreCase("total")){
+						tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));	
+					}else if(type.equalsIgnoreCase("today")){
+						tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+					}
+					tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
+		}
+	}
+	
 }

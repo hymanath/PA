@@ -8445,4 +8445,81 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	      else
 	        return "";
 	    }
+		
+		public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type){
+			
+			try {
+				StringBuilder queryStr = new StringBuilder();
+				
+				queryStr.append(" select  ");
+					
+				 if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+					queryStr.append(" district.districtId,district.districtName,tdpCadre.tabUserInfo.tabUserInfoId,tdpCadre.tabUserInfo.name,tdpCadre.tabUserInfo.imgPath,tdpCadre.tabUserInfo.mobileNo, count(tdpCadre.tdpCadreId) ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+					queryStr.append("  constituency.constituencyId,constituency.name,tdpCadre.tabUserInfo.tabUserInfoId,tdpCadre.tabUserInfo.name,tdpCadre.tabUserInfo.imgPath,tdpCadre.tabUserInfo.mobileNo, count(tdpCadre.tdpCadreId) ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
+					queryStr.append("  booth.tehsil.tehsilId,booth.tehsil.tehsilName,tdpCadre.tabUserInfo.tabUserInfoId,tdpCadre.tabUserInfo.name,tdpCadre.tabUserInfo.imgPath,tdpCadre.tabUserInfo.mobileNo, count(tdpCadre.tdpCadreId) ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+					queryStr.append("  booth.panchayat.panchayatId,booth.panchayat.panchayatName,tdpCadre.tabUserInfo.tabUserInfoId,tdpCadre.tabUserInfo.name,tdpCadre.tabUserInfo.imgPath,tdpCadre.tabUserInfo.mobileNo, count(tdpCadre.tdpCadreId) ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+					queryStr.append("  booth.localBody.localElectionBodyId,booth.localBody.name,tdpCadre.tabUserInfo.tabUserInfoId,tdpCadre.tabUserInfo.name,tdpCadre.tabUserInfo.imgPath,tdpCadre.tabUserInfo.mobileNo, count(tdpCadre.tdpCadreId) ");
+				}
+				 
+				queryStr.append(" from ");
+				
+				queryStr.append(" TdpCadre tdpCadre ");
+				
+				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){		
+					queryStr.append(" left join tdpCadre.userAddress.district district ");
+				}
+				else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){			
+					queryStr.append(" left join tdpCadre.userAddress.constituency constituency ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+					queryStr.append(" left join tdpCadre.userAddress.booth booth  ");
+				}
+				queryStr.append(" where tdpCadre.isDeleted='N' and tdpCadre.enrollmentYear = 2014l ");
+				
+				 if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+					queryStr.append(" and (date(tdpCadre.surveyTime) between :startDate and :endDate) ");
+				}
+				if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+				{
+					if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+						queryStr.append(" and district.districtId = :parentLocationTypeId ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+							queryStr.append("  and constituency.constituencyId = :parentLocationTypeId ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
+						queryStr.append(" and  booth.tehsil.tehsilId = :parentLocationTypeId ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+						queryStr.append("  and booth.panchayat.panchayatId = :parentLocationTypeId ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+						queryStr.append(" and booth.localBody.localElectionBodyId = :parentLocationTypeId ");
+					}
+				}
+				
+				queryStr.append(" group by tdpCadre.tabUserInfo.tabUserInfoId ");
+				
+				
+				Query query = getSession().createQuery(queryStr.toString());
+				if(!inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getParentLocationTypeId().longValue()>0L)
+					query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
+				
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				if(type.equalsIgnoreCase("total")){
+					if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+						query.setDate("startDate", format.parse(inputVO.getStartDate()));
+						query.setDate("endDate", format.parse(inputVO.getEndDate()));
+					}
+				}else if(type.equalsIgnoreCase("today")){
+					query.setDate("startDate", new DateUtilService().getCurrentDateAndTime());
+					query.setDate("endDate", new DateUtilService().getCurrentDateAndTime());
+				}
+				
+				return query.list();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
 	}

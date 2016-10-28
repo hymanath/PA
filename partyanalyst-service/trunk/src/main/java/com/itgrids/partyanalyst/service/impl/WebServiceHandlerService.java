@@ -4307,6 +4307,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return returnList;
 	  }
+	  
+	  public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
+		  GISUserTrackingVO returnVO = new GISUserTrackingVO();
+		  try {
+			  returnVO =  gisVisualizationService.getLocationWiseTabUserTrackingDetails(inputVO);
+			 
+		} catch (Exception e) {
+			log.debug("Entered into the getLocationWiseTabUserTrackingDetails  method in WebServiceHandlerService");
+		}
+		  return returnVO; 
+	  }
 	 
 }
 
