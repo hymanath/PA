@@ -40,7 +40,7 @@
 				for(var i in result){
 				 $("#memberSlctBxId").append("<option value="+result[i].id+">"+result[i].name+"</option>");	
 				}
-				 $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");	
+				// $("#memberSlctBxId").append("<option value='-1'>Other Name</option>");	
 				$(".selectChosen").trigger("chosen:updated");
 			}
 		});
@@ -48,14 +48,14 @@
 	$(document).on("change","#memberSlctBxId",function(){
 		var candidateId = $(this).val();
 		 if(candidateId != null && candidateId > 0){
-			$(".otherMemberBlockCls").hide();
-			$(".showDivCls").show();
-			$(".hideProfileDivCls").show();
+			//$(".otherMemberBlockCls").hide();
+			//$(".showDivCls").show();
+			//$(".hideProfileDivCls").show();
 			 getCandiateSearchDetails(candidateId);
 		 }else if(candidateId == -1){
-			$(".otherMemberBlockCls").show();
-			$(".showDivCls").hide();
-			$(".hideProfileDivCls").hide();
+			//$(".otherMemberBlockCls").show();
+			//$(".showDivCls").hide();
+			//$(".hideProfileDivCls").hide();
 			 //$("#searchValueInputBoxId").val(' ');
 			 //$("#searchValueInputBoxId").attr("placeholder","Enter MemberShip Number");	
 			getConstituenciesList();
@@ -187,6 +187,7 @@
 	 $(document).on("click","#searchMemberBtnId",function(){
 		 var locationId = $("#constituencySelectBoxId").val();
 		 var searchValue = $("#searchValueInputBoxId").val();
+		 var designationId = $("#designationSlctBxId").val();
 		 var searchType;
 		 if(locationId == 0){
 		  $("#constituencyErrorId").html("Please Select Constituency.");
@@ -209,13 +210,14 @@
 			 }
 		  }
 	   });
-	  // getSearchMembersDetailsAction(locationId,searchType,searchValue);
+	   //getSearchMembersDetailsAction(locationId,searchType,searchValue,designationId);
 	 });
-	function getSearchMembersDetailsAction(locationId,searchType,searchValue){ 
+	function getSearchMembersDetailsAction(locationId,searchType,searchValue,designationId){ 
 	var jsObj = { 
 			 locationId : locationId,
 			 searchType : searchType,
-			 searchValue : searchValue
+			 searchValue : searchValue,
+			 designationId :designationId
 			}
 		$.ajax({
 			type : 'POST',
@@ -223,5 +225,33 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			if(result != null && result.length > 0){
+			 buildSearchProfileDetails(result);	
+			}
 		});
+	}
+	function buildSearchProfileDetails(result){
+		$(".showDivCls").show();
+		$(".hideProfileDivCls").show();
+		var str='';
+			str+='<ul class="list-inline">';
+			for(var i in result){
+				str+='<li>';
+				str+='<div class="panel panel-default panelProfile">';
+					str+='<div class="panel-body">';
+						str+='<img src="http://mytdp.com/images/cadre_images/'+result[i].image+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img>';
+						str+='<p>'+result[i].name+'</p>';
+						str+='<p>'+result[i].memberShipNo+'</p>';
+						str+='<p>'+result[i].mobileNo+'</p>';
+					str+='</div>';
+					str+='<div class="panel-footer">';
+						str+='<label class="checkbox-inline">';
+							str+='<input attr_location_scope_str="'+result[i].subList+'" id="profileCheckboxId" type="checkbox"/>Select Profile';
+						str+='</label>';
+					str+='</div>';
+				str+='</div>';
+			str+='</li>';	
+			}
+	        str+='</ul>';
+		$("#selectedMemberDtslDivId").html(str);
 	}
