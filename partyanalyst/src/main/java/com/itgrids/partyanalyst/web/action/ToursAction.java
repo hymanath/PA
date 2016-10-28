@@ -173,39 +173,65 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			LOG.error("Exception raised at getCandidateList()  of ToursAction", e);
 		}
 	    return Action.SUCCESS;
-       }
-       public String getCandiateDetails(){
-    	   try{
-    		   jObj = new JSONObject(getTask());
-   			   Long candidateId = jObj.getLong("candidateId");
-   			   resultVO = toursService.getCandiateDetails(candidateId);
-    	   }catch(Exception e){
-    		   LOG.error("Exception raised at getCandiateDetails()  of ToursAction", e);  
-    	   }
-    	   return Action.SUCCESS;
-       }
-       public String getSearchMembersDetails(){
-    	   try{
-    		   jObj = new JSONObject(getTask());
-   			   Long locationId = jObj.getLong("locationId");
-   			   String searchType = jObj.getString("searchType");
-   			   String searchValue = jObj.getString("searchValue");
-   			   Long designationId =jObj.getLong("designationId");
-   			   resultList = toursService.getSearchMembersDetails(locationId,searchType,searchValue,designationId);
-    	   }catch(Exception e){
-    		   LOG.error("Exception raised at getSearchMembersDetails()  of ToursAction", e);  
-    	   }
-    	   return Action.SUCCESS;
-       }
-       public String getToursDetailsOverview(){
-    	   try{
-    		   jObj = new JSONObject(getTask());
-   			   String fromDateStr = jObj.getString("fromDate");
-   			   String toDate = jObj.getString("toDate");
-   			   resultList = toursService.getToursDetailsOverview(fromDateStr,toDate);
-    	   }catch(Exception e){
-    		   LOG.error("Exception raised at getToursDetailsOverview()  of ToursAction", e);  
-    	   }
-    	   return Action.SUCCESS;
-       }
-}
+    }
+    public String getCandiateDetails(){
+ 	   try{
+ 		   jObj = new JSONObject(getTask());
+			   Long candidateId = jObj.getLong("candidateId");
+			   resultVO = toursService.getCandiateDetails(candidateId);
+ 	   }catch(Exception e){
+ 		   LOG.error("Exception raised at getCandiateDetails()  of ToursAction", e);  
+ 	   }
+ 	   return Action.SUCCESS;
+    }
+    public String getSearchMembersDetails(){
+ 	   try{
+ 		   jObj = new JSONObject(getTask());
+			   Long locationId = jObj.getLong("locationId");
+			   String searchType = jObj.getString("searchType");
+			   String searchValue = jObj.getString("searchValue");
+			   Long designationId =jObj.getLong("designationId");
+			   resultList = toursService.getSearchMembersDetails(locationId,searchType,searchValue,designationId);
+ 	   }catch(Exception e){
+ 		   LOG.error("Exception raised at getSearchMembersDetails()  of ToursAction", e);  
+ 	   }
+ 	   return Action.SUCCESS;
+    }
+    public String getToursDetailsOverview(){
+ 	   try{
+ 		   jObj = new JSONObject(getTask());
+			   String fromDateStr = jObj.getString("fromDate");
+			   String toDate = jObj.getString("toDate");
+			   resultList = toursService.getToursDetailsOverview(fromDateStr,toDate);
+ 	   }catch(Exception e){
+ 		   LOG.error("Exception raised at getToursDetailsOverview()  of ToursAction", e);  
+ 	   }
+ 	   return Action.SUCCESS;
+    }
+	public String getDesignationDtls(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long desigId = jObj.getLong("desigId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			resultVO = toursService.getDesignationDtls(desigId,startDateStr,endDateStr);
+		}catch(Exception e){
+			e.printStackTrace();  
+			LOG.error("Exception raised at getDesignationDtls()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getMemDtls(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long desigId = jObj.getLong("desigId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			resultList = toursService.getMemDtls(desigId,startDateStr,endDateStr);
+		}catch(Exception e){
+			e.printStackTrace();  
+			LOG.error("Exception raised at getDesignationDtls()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+}//public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr)
