@@ -1510,7 +1510,7 @@
 
 
 <script type="text/javascript">
-$("#wrapper").hide();
+setTimeout(function(){ $("#wrapper").hide(); }, 3000);
 var a = $(window).height();
 var b = $(window).width();
 $(".page-load-svg").height(a);
