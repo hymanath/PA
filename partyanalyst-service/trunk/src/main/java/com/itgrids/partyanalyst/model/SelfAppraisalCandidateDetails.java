@@ -28,11 +28,11 @@ public class SelfAppraisalCandidateDetails {
 	private Long selfAppraisalCandidateId;
 	private String month;
 	private Long year;
-	private Long ownLocationId;
-	private Long ownLocationScopeId;
+	private Long ownLocationValue;//own_location_value
+	private Long ownLocationScopeId;//own_location_scope_id
 	private Long ownTours;
-	private Long inchargeLocationId;
-	private Long inchargeLocationScopeId;
+	private Long inchargeLocationValue;//incharge_location_value
+	private Long inchargeLocationScopeId;//incharge_location_scope_id
 	private Long inchargeTours;
 	private String remarks;
 	private String reportPath;
@@ -75,13 +75,7 @@ public class SelfAppraisalCandidateDetails {
 	public void setYear(Long year) {
 		this.year = year;  
 	}
-	@Column(name="own_location_id")
-	public Long getOwnLocationId() {
-		return ownLocationId;
-	}
-	public void setOwnLocationId(Long ownLocationId) {
-		this.ownLocationId = ownLocationId;
-	}
+	
 	@Column(name="own_location_scope_id")
 	public Long getOwnLocationScopeId() {
 		return ownLocationScopeId;
@@ -96,13 +90,7 @@ public class SelfAppraisalCandidateDetails {
 	public void setOwnTours(Long ownTours) {
 		this.ownTours = ownTours;
 	}
-	@Column(name="incharge_location_id")
-	public Long getInchargeLocationId() {
-		return inchargeLocationId;
-	}
-	public void setInchargeLocationId(Long inchargeLocationId) {
-		this.inchargeLocationId = inchargeLocationId;
-	}
+	
 	@Column(name="incharge_location_scope_id")
 	public Long getInchargeLocationScopeId() {
 		return inchargeLocationScopeId;
@@ -189,5 +177,21 @@ public class SelfAppraisalCandidateDetails {
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
-	}  
+	}
+	@Column(name="own_location_value")
+	public Long getOwnLocationValue() {
+		return ownLocationValue;
+	}
+	public void setOwnLocationValue(Long ownLocationValue) {
+		this.ownLocationValue = ownLocationValue;
+	}
+	@Column(name="incharge_location_value")
+	public Long getInchargeLocationValue() {
+		return inchargeLocationValue;
+	}
+	public void setInchargeLocationValue(Long inchargeLocationValue) {
+		this.inchargeLocationValue = inchargeLocationValue;
+	} 
+	
+	
 }
