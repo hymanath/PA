@@ -192,8 +192,8 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 				tabStatsVO.setSurveyDate(param[0] != null ? param[0].toString() : "");
 				tabStatsVO.setName(param[1] != null ? param[1].toString() : "");
 				tabStatsVO.setMobileNo(param[2] != null ? param[2].toString() : "");
-				tabStatsVO.setFirstRecord(param[3] != null ? param[3].toString() : "");
-				tabStatsVO.setLastRecord(param[4] != null ? param[4].toString() : "");
+				tabStatsVO.setFirstRecord(param[3] != null ? param[3].toString().substring(0,10) : "");
+				tabStatsVO.setLastRecord(param[4] != null ? param[4].toString().substring(0,10) : "");
 				tabStatsVO.setTotalRecords(param[5]!=null?(Long.valueOf(param[5].toString())) :0l);				
 				tabStatsVO.setSync(param[6] != null ? (Long)param[6] : 0l);
 				tabStatsVO.setPending(param[7] != null ? (Long)param[7] : 0l);
