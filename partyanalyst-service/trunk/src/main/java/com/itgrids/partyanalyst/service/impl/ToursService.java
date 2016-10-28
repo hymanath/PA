@@ -71,12 +71,14 @@ public class ToursService implements IToursService {
     public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
-   public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
 	public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles){  
 		LOG.info("Entered into saveTourDtls() of ToursService{}");
+		ResultStatus resultStatus = new ResultStatus();
 		try{
+			
 			DateUtilService dateUtilService = new DateUtilService();
 			String destPath = saveUploadFile(mapfiles);  
 			SelfAppraisalCandidateDetails selfAppraisalCandidateDetails = new SelfAppraisalCandidateDetails();
@@ -93,12 +95,17 @@ public class ToursService implements IToursService {
 			selfAppraisalCandidateDetails.setReportPath(destPath);     
 			selfAppraisalCandidateDetails.setInsertedBy(userId);
 			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());  
-			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails);  
+			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails);
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("Saved Successfully");
+			return resultStatus;
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception raised in saveTourDtls() of ToursService{}", e);
+			resultStatus.setResultCode(0);
+			resultStatus.setMessage("Failed");
+			return resultStatus;
 		}
-		return null;
 	}
 	public String saveUploadFile(Map<File,String> mapfiles){
 		try{
