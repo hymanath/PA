@@ -2103,7 +2103,7 @@ function addressFieldsValidation()
 				return ;
 			}			
 		}
-		//browser1 = window.open("tdpAgentAreaMapAction.action?constitunecyId="+constitunecyId+"&startDate="+startDate+"&endDate="+endDate+"");
-		browser1 = window.open("tdpAgentAreaMapAction.action?constitunecyId="+constitunecyId+"&startDate="+"10/20/2016"+"&endDate="+"10/20/2016"+"");
+		browser1 = window.open("tdpAgentAreaMapAction.action?constitunecyId="+constitunecyId+"&startDate="+startDate+"&endDate="+endDate+"");
+		//browser1 = window.open("tdpAgentAreaMapAction.action?constitunecyId="+constitunecyId+"&startDate="+"10/20/2016"+"&endDate="+"10/20/2016"+"");
 		browser1.focus();
   }); 
