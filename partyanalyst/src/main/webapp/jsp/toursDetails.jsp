@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!doctype html>
+
 <html>
 <head>
 <meta charset="utf-8">
@@ -11,6 +11,16 @@
 <link href="tourDetails/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/get-min.js"></script> 	  
 </head>
 <body>
 <div class="container">
