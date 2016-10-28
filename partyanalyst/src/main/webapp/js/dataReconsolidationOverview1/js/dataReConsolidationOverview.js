@@ -55,6 +55,7 @@ function getDataReConsalationOverView(){
   function  buildDataReConsalationTotalOverView(result)
   {
  	 var str ='';
+	    str+='<div class="panel panel-default m_top10">';
  	    str+='<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>';
  				str+='<div class="panel-body" style="padding: 25px;">';
  					str+='<div class="row">';
@@ -100,6 +101,7 @@ function getDataReConsalationOverView(){
  						str+='</div>';
  					    str+='</div>';
  				       str+='</div>';
+					   str+='</div>';
  					   $("#dataReconsalationOverviewId").html(str);
   }
  
@@ -134,6 +136,7 @@ $(document).on("click","#submitId",function(){
  function buildDataReConsalationOverView(result)
  {
 	 var str = '';
+	 str+='<div class="panel panel-default">';
 	 str+='<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>';
 				str+='<div class="panel-body" style="padding: 25px;">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
@@ -170,6 +173,7 @@ $(document).on("click","#submitId",function(){
 				str+='</table>';
 				str+='</div>';
 			    str+='</div>';
+				str+='</div>';
 				$("#userWiseTotalViewId").html(str);
 				$("#userWiseTotalRegstSyncId").dataTable();
  }
