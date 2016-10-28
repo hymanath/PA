@@ -249,16 +249,16 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 			
 	}).done(function(result){
 		if(result != null){
-			buildPopUpModeldetails(result);
+			buildPopUpModelDetails(result);
 		}else {
 			$("#tabUserWiseRegistionDetilsId").html('No Data Available');	
 		}
 	});
 }
 
-function buildPopUpModeldetails(result){
+function buildPopUpModelDetails(result){
 	var str = '';
-	str+='<table class="table table-condensed table-bordered" id="tabUserDetailsId">';
+	str+='<table class="table table-condensed " id="tabUserDetailsId">';
 	str+='<thead>';
 	    str+='<tr>';
 		str+='<th>Date</th>';
@@ -276,7 +276,7 @@ function buildPopUpModeldetails(result){
 	str+='</thead>';
 	str+='<tbody>';
 	  for(var i in result){
-		   str+='<tr>';
+		str+='<tr>';
 		var totRecrds = result[i].totalRecords;
 		var totalSync = result[i].sync;
 		var totPending = result[i].pending;
