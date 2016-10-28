@@ -8,5 +8,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
 
 public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfAppraisalCandidateDetails, Long> {
-	public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate);
+	public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,Long desigId);
 }

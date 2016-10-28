@@ -16,6 +16,15 @@ public class ToursBasicVO {
     private String image;
 	private List<ToursBasicVO> subList;
 	
+	private String designation;
+	private Long noOfLeaderCnt=0l;
+	private Long submitedLeaderCnt=0l;
+	private Long notSubmitedLeaserCnt=0l;
+	private Long ownToursCnt=0l;
+	private Long inchargerToursCnt=0l;
+	private Long totalSubmittedToursCnt=0l;
+	private Double averageTours=0.0d;
+	
 	
 	public ToursBasicVO() {
 		super();
@@ -91,4 +100,53 @@ public class ToursBasicVO {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public Long getNoOfLeaderCnt() {
+		return noOfLeaderCnt;
+	}
+	public void setNoOfLeaderCnt(Long noOfLeaderCnt) {
+		this.noOfLeaderCnt = noOfLeaderCnt;
+	}
+	public Long getSubmitedLeaderCnt() {
+		return submitedLeaderCnt;
+	}
+	public void setSubmitedLeaderCnt(Long submitedLeaderCnt) {
+		this.submitedLeaderCnt = submitedLeaderCnt;
+	}
+	public Long getNotSubmitedLeaserCnt() {
+		return notSubmitedLeaserCnt;
+	}
+	public void setNotSubmitedLeaserCnt(Long notSubmitedLeaserCnt) {
+		this.notSubmitedLeaserCnt = notSubmitedLeaserCnt;
+	}
+	public Long getOwnToursCnt() {
+		return ownToursCnt;
+	}
+	public void setOwnToursCnt(Long ownToursCnt) {
+		this.ownToursCnt = ownToursCnt;
+	}
+	public Long getInchargerToursCnt() {
+		return inchargerToursCnt;
+	}
+	public void setInchargerToursCnt(Long inchargerToursCnt) {
+		this.inchargerToursCnt = inchargerToursCnt;
+	}
+	public Long getTotalSubmittedToursCnt() {
+		return totalSubmittedToursCnt;
+	}
+	public void setTotalSubmittedToursCnt(Long totalSubmittedToursCnt) {
+		this.totalSubmittedToursCnt = totalSubmittedToursCnt;
+	}
+	public Double getAverageTours() {
+		return averageTours;
+	}
+	public void setAverageTours(Double averageTours) {
+		this.averageTours = averageTours;
+	}
+	
 }

@@ -17,4 +17,5 @@ public interface IToursService {
 	 public List<ToursBasicVO> getCandidateList(Long designationId);
 	 public ToursBasicVO getCandiateDetails(Long candidateId);
 	 public List<ToursBasicVO> getSearchMembersDetails(Long locationId,String searchType,String searchValue,Long designationId);
+	 public List<ToursBasicVO> getToursDetailsOverview(String fromDateStr,String toDateStr);
 }
