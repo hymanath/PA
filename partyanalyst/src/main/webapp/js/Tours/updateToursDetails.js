@@ -385,4 +385,22 @@ $("#toursDateRangePicker").daterangepicker({
 	        str+='</ul>';
 		$("#selectedMemberDtslDivId").html(str);
 	}
+	getDesignationDtls();
+	function getDesignationDtls(){ 
+		var jsObj = { 
+			 desigId : 3,
+			 startDateStr : '27/10/2016',
+			 endDateStr : '29/10/2016'  
+			}
+		$.ajax({
+			type : 'POST',
+			url : 'getMemDtlsAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				console.log(result);               
+			}
+		});
+	}
 	
