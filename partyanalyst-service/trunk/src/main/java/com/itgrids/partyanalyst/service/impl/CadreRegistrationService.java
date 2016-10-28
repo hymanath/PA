@@ -13436,7 +13436,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							 retunList.add(vo);
 						}
 						 
-						 	if(commonMethodsUtilService.isListOrSetValid(wardsListDtls)){
+						 	if(commonMethodsUtilService.isListOrSetValid(retunList)){
 							 
 							 Collections.sort(retunList, new Comparator<IdAndNameVO>() {
 								public int compare(IdAndNameVO o1,IdAndNameVO o2) {
@@ -13444,6 +13444,29 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 								}
 							});
 						 }
+					 }
+					 else {
+							String subStrId=mandalOrMunpaId.toString().substring(0,1);
+							if(subStrId.trim().equalsIgnoreCase("1")){
+								List<Object[]> panchList=panchayatDAO.getPanchayatList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
+								for (Object[] objects : panchList) {
+									IdAndNameVO idAndNameVO =new IdAndNameVO();
+									
+									idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+									idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");
+									retunList.add(idAndNameVO);
+								}
+							}
+							if(subStrId.trim().equalsIgnoreCase("2")){
+								List<Object[]> consiList=boothDAO.getboothList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
+								for (Object[] objects : consiList) {
+									IdAndNameVO  idAndNameVO=new IdAndNameVO();
+									idAndNameVO.setId(objects[0]!=null?(Long)objects[0]:0l);
+									idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");//partNo
+									idAndNameVO.setName("Booth NO: "+idAndNameVO.getName());
+									retunList.add(idAndNameVO);
+								}
+							}
 					 }
 				}
 			}catch(Exception e){
