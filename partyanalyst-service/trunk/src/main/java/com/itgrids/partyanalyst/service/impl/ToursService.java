@@ -94,8 +94,9 @@ public class ToursService implements IToursService {
 			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());
 			selfAppraisalCandidateDetails.setReportPath(destPath);     
 			selfAppraisalCandidateDetails.setInsertedBy(userId);
-			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());  
-			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails);
+			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			selfAppraisalCandidateDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails); 
 			resultStatus.setResultCode(1);
 			resultStatus.setMessage("Saved Successfully");
 			return resultStatus;
