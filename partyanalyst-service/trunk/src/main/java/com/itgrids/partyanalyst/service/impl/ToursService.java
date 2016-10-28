@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.io.File;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -351,6 +353,51 @@ public class ToursService implements IToursService {
     	}catch(Exception e){
     	 LOG.error("Error Occured at getSearchMembersDetails() in ToursService class",e);	
     	}
+    	return resultList;
+    }
+    public List<ToursBasicVO> getToursDetailsOverview(String fromDateStr,String toDateStr){
+    	List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
+    	Map<Long,ToursBasicVO> leadersDetailsMap = new HashMap<Long, ToursBasicVO>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date toDate=null;
+		Date fromDate=null;
+    	try{
+    		if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 toDate = sdf.parse(toDateStr);
+				 fromDate = sdf.parse(fromDateStr);
+			 }
+    		 List<Object[]> rtrnLeadersDtlsObjLst = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(null);
+    		 	if(rtrnLeadersDtlsObjLst != null && !rtrnLeadersDtlsObjLst.isEmpty()){
+    		 		for(Object[] param:rtrnLeadersDtlsObjLst){
+    				  ToursBasicVO leaderVO = new ToursBasicVO();
+    				  leaderVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				  leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				  leaderVO.setNoOfLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+    				  leadersDetailsMap.put(leaderVO.getId(), leaderVO);
+    		 		}
+    		 }
+    		List<Object[]> rtrnLdrsTrsSbmttdDtlsObjLst = selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(fromDate, toDate,null);
+    		 if(rtrnLdrsTrsSbmttdDtlsObjLst != null && !rtrnLdrsTrsSbmttdDtlsObjLst.isEmpty()){
+    			 for(Object[] param:rtrnLdrsTrsSbmttdDtlsObjLst){
+    				 ToursBasicVO leaderVO = leadersDetailsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				   if(leaderVO != null ){
+    					   leaderVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[1]));
+    					   leaderVO.setNotSubmitedLeaserCnt(leaderVO.getNoOfLeaderCnt()-leaderVO.getSubmitedLeaderCnt());
+    					   leaderVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+    					   leaderVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
+    					   leaderVO.setTotalSubmittedToursCnt(leaderVO.getOwnToursCnt()+leaderVO.getInchargerToursCnt());
+    					   Double averageTours = leaderVO.getTotalSubmittedToursCnt().doubleValue()/leaderVO.getSubmitedLeaderCnt().doubleValue();
+    					   leaderVO.setAverageTours(averageTours);
+    				   }
+    			 }
+    		 }
+    		 if(leadersDetailsMap != null && leadersDetailsMap.size() > 0){
+    			 resultList.addAll(leadersDetailsMap.values());
+    			 leadersDetailsMap.clear();
+    		 }
+   	}catch(Exception e) {
+			LOG.error("Error Occured at getToursDetailsOverview() in ToursService class",e);	
+		}
     	return resultList;
     }
 };
