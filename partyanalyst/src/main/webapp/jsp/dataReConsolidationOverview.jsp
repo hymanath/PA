@@ -4,12 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Core Dashboard</title>
-<link href="js/dataReconsolidationOverview/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="js/dataReconsolidationOverview/css/custom.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="dist/dataReconsolidationOverview/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
-<link href="js/dataReconsolidationOverview/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
-<link href="js/dataReconsolidationOverview/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link href="dist/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -86,12 +85,12 @@
 	 </div>
   </div>
 </div>
-<script src="js/dataReconsolidationOverview/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="js/dataReconsolidationOverview/js/bootstrap.js" type="text/javascript"></script>
-<script src="js/dataReconsolidationOverview/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="js/dataReconsolidationOverview/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="js/dataReconsolidationOverview/js/dataReConsolidationOverview.js" type="text/javascript"></script>
-<script src="js/dataReconsolidationOverview/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/Date/moment.min.js" type="text/javascript"></script>
+<script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="js/dataReconsolidationOverview/dataReConsolidationOverview.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".datePicker").daterangepicker({
 	opens :'left',
