@@ -337,7 +337,8 @@ var str = "";
 		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
 		
 		if(result.paymentGatewayVO != null){
-			if(result.paymentGatewayVO.subList != null && result.paymentGatewayVO.subList.lenght>0){
+			if(result.paymentGatewayVO.subList != null && result.paymentGatewayVO.subList.length>0){
+				//console.log(result.paymentGatewayVO);
 				$('#wardsDivId').removeClass('hide');
 				$("#wardsList").append('<option value="0"> Select Ward </option>');
 				for(var k in result.paymentGatewayVO.subList){
@@ -373,7 +374,11 @@ var str = "";
 		if(registrationVoterType=='familyVoterId'){
 			$("#voterDvId").show();
 			//$("#familyDetailsDivId").show();
-}
+			$('#nameId1').removeAttr("disabled");
+			$("#cadreMembrSpId").hide();
+		}else{
+			$('#nameId1').attr("disabled",true);
+		}
  		
 }
 function buildCasteDetails(result) {
@@ -510,7 +515,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		{
 			//alert("fail 1");
 			$("#imagDivId").scroll();
-			//return;
+			return;
 		}	
 		if(addressFieldsValidation())
 		{
