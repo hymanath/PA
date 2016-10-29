@@ -59,7 +59,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreLocationInfoTemp1DAO tdpCadreLocationInfoTemp1DAO ;
 	private ITdpCadreDateWiseInfoTempDAO tdpCadreDateWiseInfoTempDAO;
 	private ImageAndStringConverter imageAndStringConverter;
-	private CommonMethodsUtilService commonMethodsUtilService;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IVoterDAO voterDAO;
 	
 	//setters
@@ -1411,6 +1411,19 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						{
 							if(inputVO.getUploadImage() != null)
 							{
+								boolean status = imageAndStringConverter.convertBase64StringToImage(inputVO.getImageBase64String(),filePath);
+								if(status)
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String  - Available - Success");
+									inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+								}
+								else
+								{
+									LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Base64 String  - Available Fail - Trying with Voter");
+									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+									saveCadreImage(inputVO);
+								}								
+								/*
 								boolean status = commonMethodsUtilService.fileCopy(inputVO.getUploadImage().getAbsolutePath(),filePath);
 								
 								if(status)
@@ -1424,7 +1437,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
 									saveCadreImage(inputVO);
 								}
-								
+								*/
 							}
 							
 							else if(inputVO.getImageBase64String() != null && inputVO.getImageBase64String().trim().length() > 0)
