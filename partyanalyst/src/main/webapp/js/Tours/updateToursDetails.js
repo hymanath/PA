@@ -70,7 +70,7 @@ $("#toursDateRangePicker").daterangepicker({
 			str+='<td> - </td>';
 			}
 			if(result[i].submitedLeaderCnt != null && result[i].submitedLeaderCnt > 0){
-				str+='<td><a style="cursor:pointer;" class="getSubMitedLeadersDtlsCls" attr_designation_id='+result[i].id+'>'+result[i].submitedLeaderCnt+'</a></td> ';
+				str+='<td><a style="cursor:pointer;" class="getSubMitedLeadersDtlsCls" attr_desig_name="'+result[i].designation+'" attr_designation_id='+result[i].id+'>'+result[i].submitedLeaderCnt+'</a></td> ';
 			}else{
 			str+='<td> - </td>';
 			}
@@ -251,7 +251,7 @@ $("#toursDateRangePicker").daterangepicker({
 						 $("#ownLabelId").html("Own Parliament");
 						 $("#ownLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
-						 $(".ownDivCls").show();
+						 $(".ownDivCls").show();    
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
 						$("#ownLabelId").html("Incharge Parliament");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
@@ -386,9 +386,14 @@ $("#toursDateRangePicker").daterangepicker({
 		$("#selectedMemberDtslDivId").html(str);
 	}
 	$(document).on("click",".getSubMitedLeadersDtlsCls",function(){
-		$("#myModal").modal("show");  
+		var desigName = $(this).attr("attr_desig_name");
+		$("#myModalLabel").html(desigName+" OVERVIEW");
+		$("#desigDtlsId").html("");
+		$("#memDtlsId").html(""); 
 		$("#desigDtlsProcessImgId").show();  
-		$("#memDtlsProcessImgId").show();
+		$("#memDtlsProcessImgId").show();   		
+		$("#myModal").modal("show");  
+		
 		var desigId = $(this).attr("attr_designation_id");
 		var dates=$("#toursDateRangePicker").val();        
 		var fromDateStr;
@@ -508,7 +513,7 @@ $("#toursDateRangePicker").daterangepicker({
 						}
 						str+='</div>';  
 						str+='<div class="col-md-3">';
-						str+='<button class="btn btn-success editBtn updateMemCls" attr_candidate_dtls_id="'+result[i].id+'">EDIT</button>';    
+						str+='<button class="btn btn-success editBtn updateMemCls" attr_name="'+result[i].name+'" attr_candidate_dtls_id="'+result[i].id+'">EDIT</button>';    
 						str+='</div>';   
 						str+='</div>';   
 					str+='</td>';  
@@ -519,9 +524,12 @@ $("#toursDateRangePicker").daterangepicker({
 		$("#memTableId").dataTable();        
 	}
 	$(document).on("click",".updateMemCls",function(){
-		$("#desigDtlsId").html("");
-		$("#myModal").modal("show"); 
-		$("#memDtlsProcessImgId").show();
+		var name = $(this).attr("attr_name");
+		
+		$("#myModalLabelUpdateId").html(name+" - TOURS");       
+		$("#memDtlsUpdateId").html("");   
+		$("#myModalUpdateId").modal("show"); 
+		$("#memDtlsUpdateProcessImgId").show();  
 		var candidateDtlsId = $(this).attr("attr_candidate_dtls_id");
 		var jsObj = { 
 			 candidateDtlsId : candidateDtlsId
@@ -532,7 +540,7 @@ $("#toursDateRangePicker").daterangepicker({
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#memDtlsProcessImgId").hide();  
+			$("#memDtlsUpdateProcessImgId").hide();  
 			if(result != null){
 				buildUniqueMemDtls(result);                 
 			}
@@ -541,9 +549,10 @@ $("#toursDateRangePicker").daterangepicker({
 	function buildUniqueMemDtls(result){
 		var monthArr = ["January","February","March","May","June","July","August","September","October","November","December"]
 		var str='';
+		str+='<form name="updateApplication" method="post">';  
 		str+='<div class="row m_top20 showDivCls">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h4 class="panel-title text-capital">update your details</h4>';
+				//str+='<h4 class="panel-title text-capital">update your details</h4>';
 				str+='<div class="block">';
 					str+='<div class="row">';  
 						str+='<div class="col-md-3 col-xs-12 col-sm-6">';
@@ -569,17 +578,12 @@ $("#toursDateRangePicker").daterangepicker({
 							str+='<input type="text" value="'+result.year+'" length="4"  placeholder="Type Year Here" id="updateYearId" class="form-control clearFieldCls" name="toursInputVO.year"></input>';
 						str+='</div>';
 						str+='<div class="col-md-3 col-xs-12 col-sm-6 ownDivCls">';
-							str+='<label Id="ownLabelId">Own DIstrict</label>';
-							str+='<input type="text" value="'+result.ownToursCnt+'" length="2" placeholder="Type No of Tour Here" id="updateOwnLocationId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>';
+							str+='<label Id="ownLabelId">Tours</label>';
+							var total = result.ownToursCnt + result.inchargerToursCnt;
+							str+='<input type="text" value="'+total+'" length="2" placeholder="Type No of Tour Here" id="updateOwnLocationId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>';
 							str+='<input type="hidden" id="" name="toursInputVO.ownLocationScopeId">';
 							str+='<input type="hidden" id="" name="toursInputVO.ownLocationId">';
-						str+='</div>';
-						str+='<div class="col-md-3 col-xs-12 col-sm-6 inchageDivCls">';
-							str+='<label id="">Incharge DIstrict</label>';
-							str+='<input type="text" value="'+result.inchargerToursCnt+'" length="2" placeholder="Type No of Tour Here" id="updateInchargeLocationId" class="form-control clearFieldCls" name="toursInputVO.inchargeTours"></input>';
-							str+='<input type="hidden" id="" name=" toursInputVO.inchargeLocationScopeId">';
-							str+='<input type="hidden" id="" name="toursInputVO.inchargeLocationId">';
-						str+='</div>';    
+						str+='</div>'; 
 					str+='</div>';
 					str+='<div class="row m_top10">';  
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
@@ -590,6 +594,29 @@ $("#toursDateRangePicker").daterangepicker({
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
+		str+='<div class="row m_top20">';    
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<label>UPLOAD ATTACHMENTS:</label>';    
+			str+='</div>';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<table class="table table-bordered">';  
+					str+='<tr style="height:50px;">';  
+						str+='<td>';
+						
+						if(result.type=="pdf"){
+							str+='<span><img src="images/pdf.jpg" class="img-responsive" alt="" style="width:80px;"/>';
+						}else if(result.type=="xls"){  
+							str+='<span><img src="images/excel.jpg" class="img-responsive" alt="" style="width:80px;"/>';       
+						}else if(result.type=="doc"){
+							str+='<span><img src="images/word.jpg" class="img-responsive" alt="" style="width:80px;"/>';         
+						}else{  
+							str+='<span><img src="" class="img-responsive" alt=""/>';           
+						}  
+						str+=''+result.filePath+'</span><button type="button" class="btn btn-default navbar-btn pull-right btn-success">VIEW</button>&nbsp&nbsp&nbsp<button type="button" class="btn btn-default navbar-btn pull-right btn-danger">DELETE</button></td>';  
+					str+='</tr>';      
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';      
 		str+='<div class="row showDivCls" id="">'; 
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str+='<p class="m_0 text-success font_16 font_weight">UPLOAD SCAN COPY</p>';
@@ -599,11 +626,32 @@ $("#toursDateRangePicker").daterangepicker({
 		
 		str+='<div class="row showDivCls">';
 			str+='<div class="col-md-4 col-md-offset-4">';
-			   str+='<span class="updateTourStatusCls"></span>';
-				str+='<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>';
+			   str+='<span class="updateTourStatusCls"></span>';  
+				str+='<button class="btn btn-success btn-block" onclick="updatingApplication();" type="button">UPDATE APPLICATION</button>';
 			str+='</div>';
-			  str+='<div class="col-md-12 col-sm-12 col-xs-12" id=""></div>';
-		str+='</div>';  
-		$("#memDtlsId").html(str);  
+			  str+='<div class="col-md-12 col-sm-12 col-xs-12" id=""></div>';  
+		str+='</div>';
+		str+='</form>';
+		$("#memDtlsUpdateId").html(str);      
+		$("#updateMonthId").val(result.month);
+		$('#updateMonthId').chosen({width:'100%'});  
+		$("#updateMonthId").trigger("chosen:updated");    	
 	}
+	function updatingApplication(){    
+		var flag = true;
+		var uploadHandler = { 
+			upload: function(o) {
+				$("#savingAjaxImg").css("display","none");
+				uploadResult = o.responseText;
+				showSbmitStatus(uploadResult);
+			}
+		};
+		YAHOO.util.Connect.setForm('updateApplication',true);      
+		YAHOO.util.Connect.asyncRequest('POST','updatingTourDtlsApplicationAction.action',uploadHandler);
+	} 
+	$(document).on('click','.closeButtonCls',function(){  
+		setTimeout(function(){
+			$('body').addClass("modal-open");  
+		}, 500);    
+	});
 	
