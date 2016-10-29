@@ -39,12 +39,12 @@ input.form-control
 }
 .mainHeading
 {
-	color:#fff;
+	color:#333;
 	position: relative; 
 	text-align: center; 
 	top: -43px; 
 	padding: 3px 8px; 
-	background-color:#ECF0F1;
+	background-color:#fff;
 	left:25%;
 	text-transform:uppercase;
 	font-weight:600;
