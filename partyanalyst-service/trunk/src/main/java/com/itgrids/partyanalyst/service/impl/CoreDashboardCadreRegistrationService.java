@@ -436,12 +436,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  				voterCardNo = objects[2] != null ? objects[2].toString() : "";
 	  			}
 	  		}
-	  		List<Long> voterIdsList = new ArrayList<Long>(0);
-	  		voterIdsList.add(voterId);
+	  		//List<Long> voterIdsList = new ArrayList<Long>(0);
+	  		//voterIdsList.add(voterId);
 	  		vo.setVoterCardNo(voterCardNo.trim());
-	  		Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
-	  		getAddressDetailsForVoter(addressMap,voterIdsList);
-	  		
+	  		//Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
+	  		//getAddressDetailsForVoter(addressMap,voterIdsList);
+	  		/*
 	  		if(addressMap.get(vo.getVoterCardNo()) != null){
 				NewCadreRegistrationVO vo1 = addressMap.get(voterCardNo.trim()) ;
 				if(vo1 != null){
@@ -456,7 +456,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					vo.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 				}
 			}
-	  		
+	  		*/
 	  		List<Object[]> familyVoterDetails = boothPublicationVoterDAO.getFamilyVoterDetails(boothId,houseNo);
 	  		if(familyVoterDetails != null && familyVoterDetails.size() > 0){
 	  			for (Object[] objects : familyVoterDetails) {
@@ -775,7 +775,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setVillageId(vo.getVillageId());
 					returnVO.setPincode(vo.getPincode());
 					
-					returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
+					if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
+						returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 				}
 			}
 		}
@@ -826,13 +827,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 							 vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							 
 							 String[] strArr = vo.getName().split("-");
-							 String wardName = "WARD-";
+							 String wardName = "WARD";
 							 if(strArr != null && strArr.length>0){
 								 int length = strArr[1].toString().length();
 								 if(length ==1)
-									 wardName = wardName+"00"+strArr[1].toString();
+									 wardName = wardName+"-00"+strArr[1].toString();
 								 else if(length ==2)
-									 wardName = wardName+"0"+strArr[1].toString();
+									 wardName = wardName+"-0"+strArr[1].toString();
+								 else
+									 wardName = wardName+"-"+strArr[1].toString();
 								 vo.setOrderNo(wardName);
 							 }
 							 if(!commonMethodsUtilService.getStringValueForObject(param[2]).isEmpty())
@@ -848,7 +851,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 								}
 							});
 							// address.setPaymentGatewayVO(vo1);
-							 address.getPaymentGatewayVO().getSubList().addAll(wardsListDtls);
+							 if(address.getPaymentGatewayVO().getSubList() != null && address.getPaymentGatewayVO().getSubList().size() == 0)
+								 address.getPaymentGatewayVO().getSubList().addAll(wardsListDtls);
 						 }
 					 }
 				 }
@@ -976,8 +980,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						returnVO.setMandalId(vo.getMandalId());
 						returnVO.setVillageId(vo.getVillageId());
 						returnVO.setPincode(vo.getPincode());
-						
-						returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
+						if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
+							returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 					}
 				}
 				if(registrationStatusMap.get(returnVO.getVoterCardNo()) != null){
