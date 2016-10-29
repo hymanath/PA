@@ -2494,6 +2494,46 @@
         </div>
 		<!--Cadre Registration ENd -->
 	 </div>
+	 <!-- TOURS START -->
+	<!-- <div class="row">
+		<div class="col-md-6 col-xs-12 col-sm-6">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+				 <div class="panel-heading">
+                	<div class="row">
+                    	<div class="col-md-8 col-sm-8 col-xs-8">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
+								Tours <small class="text-muted"></small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-4">
+							<span class="cadreSettings pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="cadreNotes pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
+							</span>
+							 <!--<span class="tourExpand pull-right">  
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+							</span>-->
+							<span class="input-group pull-right  m_XsTop10 hide">
+								<input type="text" id="tourDateRange"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+                    </div>      
+                </div>
+				</div>
+				<div class="panel-body">
+				 <div id="tourOverviewDivId"></div>
+				</div>
+			</div>
+		</div>
+	</div>-->
+	<!-- TOURS END -->
 	</div>
 </div> 
 <!--model start -->
@@ -2867,6 +2907,7 @@
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
+<script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).on("click","#demoBtn",function(){
 		$("#attendanceModal").modal('show');
@@ -2983,7 +3024,9 @@
 		getPartyWiseTotalDebateDetails();
         //cadreRegistration
 		cadreRegistrationBasicCall(globalActivityMemberId);              
-		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);              
+		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
+        /* Tours Default Call */
+        //getToursBasicOverviewCountDetails();		
 	}
 	
 	

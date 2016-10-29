@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -49,6 +50,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
+import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.opensymphony.xwork2.Action;
@@ -79,12 +81,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
 	private PartyMeetingsDataVO partyMeetingDataVO;
 	private CadreRegistratedCountVO cadreRegistratedCountVO;
+	private ToursBasicVO toursBasicVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
 	private ICoreDashboardMainService coreDashboardMainService;
 	private ICoreDashboardGenericService coreDashboardGenericService;
 	private IAttendanceCoreDashBoardService attendanceCoreDashBoardService;
+	private ICoreDashboardToursService coreDashboardToursService;
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
@@ -703,6 +707,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setIdNameVOs(List<IdNameVO> idNameVOs) {
 		this.idNameVOs = idNameVOs;
 	}
+   public void setCoreDashboardToursService(ICoreDashboardToursService coreDashboardToursService) {
+		this.coreDashboardToursService = coreDashboardToursService;
+	}
+  	public ToursBasicVO getToursBasicVO() {
+	return toursBasicVO;
+    }
+  	public void setToursBasicVO(ToursBasicVO toursBasicVO) {
+	this.toursBasicVO = toursBasicVO;
+   }
 
 	//business methods
 	public String execute(){
@@ -2936,5 +2949,19 @@ public String getStateLevelCampDetailsRepresentative(){
 		LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
 	}
 	return Action.SUCCESS;      
+}
+public String getToursBasicOverviewCountDetails(){
+	try {
+		LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		toursBasicVO = coreDashboardToursService.getToursBasicOverviewCountDetails(stateId,fromDate,toDate,activityMemberId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
 }
 }

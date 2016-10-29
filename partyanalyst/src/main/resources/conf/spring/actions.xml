@@ -1696,7 +1696,8 @@
 	    <property name="attendanceCoreDashBoardService" ref="attendanceCoreDashBoardService" />  
 	    <property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService" /> 
 	    <property name="paymentGatewayService" ref="paymentGatewayService" /> 
-	    <property name="cadreRegistrationService" ref="cadreRegistrationService" /> 
+	    <property name="cadreRegistrationService" ref="cadreRegistrationService" />
+	    <property name="coreDashboardToursService" ref="coreDashboardToursService" /> 
 	</bean>
 	
 	<bean id="leadersBirthdayAction" class="com.itgrids.partyanalyst.web.action.LeadersBirthdayAction" singleton="false">
