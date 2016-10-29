@@ -8638,10 +8638,14 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 					queryStr.append(" left join tdpCadre.userAddress.booth booth  ");
 				}
 				queryStr.append(" where tdpCadre.isDeleted='N' and tdpCadre.enrollmentYear = 2014l ");
-				
-				 if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
-					queryStr.append(" and (date(tdpCadre.surveyTime) between :startDate and :endDate) ");
+				if(!type.trim().equalsIgnoreCase("LastOneHr")){
+					 if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+						queryStr.append(" and (date(tdpCadre.surveyTime) between :startDate and :endDate) ");
+					}
+				}else{
+					queryStr.append(" and (date(tdpCadre.surveyTime) = :startDate) ");
 				}
+				
 				if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
 				{
 					if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -8657,7 +8661,22 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 					}
 				}
 				
-				queryStr.append(" group by tdpCadre.tabUserInfo.tabUserInfoId ");
+				queryStr.append(" group by " );
+				if(!type.trim().equalsIgnoreCase("LastOneHr")){
+				queryStr.append(" tdpCadre.tabUserInfo.tabUserInfoId ");
+				}else{
+					if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+						queryStr.append("  district.districtId ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+						queryStr.append(" constituency.constituencyId ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
+						queryStr.append(" booth.tehsil.tehsilId  ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+						queryStr.append(" booth.localBody.constituencyId  ");
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+						queryStr.append("  booth.localBody.localElectionBodyId ");
+					}
+				}
 				
 				
 				Query query = getSession().createQuery(queryStr.toString());
@@ -8665,6 +8684,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 					query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
 				
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				if(!type.trim().equalsIgnoreCase("LastOneHr")){
 				if(type.equalsIgnoreCase("total")){
 					if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
 						query.setDate("startDate", format.parse(inputVO.getStartDate()));
@@ -8673,6 +8693,11 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 				}else if(type.equalsIgnoreCase("today")){
 					query.setDate("startDate", new DateUtilService().getCurrentDateAndTime());
 					query.setDate("endDate", new DateUtilService().getCurrentDateAndTime());
+				}
+				}else{
+					Calendar cal = Calendar.getInstance();
+					cal.add(Calendar.HOUR_OF_DAY, 1);// last one hour
+					query.setCalendarDate("startDate",cal);
 				}
 				
 				return query.list();

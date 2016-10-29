@@ -17,7 +17,7 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		super(TabUserLocationDetails.class);
 	}
 	
-	public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
+	/*public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -76,6 +76,61 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 				str.append(" and date(tuld.survey_time) between :startDate and :endDate ");
 			}
 			str.append(" group by tui.tab_user_info_id;");
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("tabUserInfoId", Hibernate.LONG)
+				.addScalar("name", Hibernate.STRING)
+				.addScalar("mobileNo", Hibernate.STRING)
+				.addScalar("latitude", Hibernate.STRING)
+				.addScalar("longititude", Hibernate.STRING)
+				.addScalar("surveyTime", Hibernate.STRING);
+		
+		query.setParameter("locationId", locationId);
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		
+		return query.list();
+		
+	}*/
+public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
+				",tuld.latitude as latitude,tuld.longititude as longititude,max(tuld.survey_time) as surveyTime " +
+				" FROM " +
+				" tab_user_location_details tuld,booth booth,tab_user_info tui,district d,constituency c  ");
+		
+				str.append("  WHERE " +
+				" tuld.booth_id = booth.booth_id " +
+				" and tui.tab_user_info_id = tuld.tab_user_info_id and " +
+				" tuld.constituency_id = c.constituency_id and d.district_id=c.district_id " );
+				
+				if(startDate !=null && endDate !=null){
+					str.append(" and date(tuld.survey_time) between :startDate and :endDate ");
+				}
+				
+		if(type != null &&  locationId.longValue()>0L)
+		{
+			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
+				str.append(" and d.district_id = :locationId ");
+			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				str.append("  and ua.constituency_id = :locationId ");
+			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
+				str.append(" and  ua.tehsil_id = :locationId ");
+			}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+				str.append("  and ua.panchayat_id = :locationId ");
+			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+				str.append(" and ua.local_election_body = :locationId ");
+			}
+		}
+			
+			
+			str.append(" group by tui.tab_user_info_id ");
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("tabUserInfoId", Hibernate.LONG)

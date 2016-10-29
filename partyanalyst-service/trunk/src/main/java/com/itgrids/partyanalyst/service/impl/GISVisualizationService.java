@@ -831,12 +831,36 @@ public class GISVisualizationService implements IGISVisualizationService{
 				   }
 				}
 			
+			List<Object[]>  assignedUsersList = cadreSurveyUserAssignDetailsDAO.getUserTrackingDetails(inputVO);
+			
+			if(commonMethodsUtilService.isListOrSetValid(assignedUsersList)){
+				for (Object[] param : assignedUsersList) { 
+					if(returnVO.getLocationId().longValue() == commonMethodsUtilService.getLongValueForObject(param[0]))
+						returnVO.setAllocatedCount(commonMethodsUtilService.getLongValueForObject(param[2]));//total Allocated count
+				   }
+				}
+			
+			List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			
+			if(commonMethodsUtilService.isListOrSetValid(lastOneHrTrackingList)){
+				returnVO.setRegisteredCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
+				for (Object[] param : lastOneHrTrackingList) {
+						returnVO.setLastOneHrCount(returnVO.getLastOneHrCount()+commonMethodsUtilService.getLongValueForObject(param[6]));//last one hour Output
+				    }
+				if(returnVO.getRegisteredCount() != null && returnVO.getRegisteredCount().longValue() > 0l)
+					returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getRegisteredCount());
+				}
+			
+			returnVO.setActiveCount(Long.valueOf(tabUserMap.size()));//total active members
 			if(commonMethodsUtilService.isMapValid(tabUserMap)){
 				for(GISUserTrackingVO tabUser :tabUserMap.values()){
+					returnVO.setOverAllOutput(returnVO.getOverAllOutput()+tabUser.getTotalCount());//total output
 					tabUserList.add(tabUser);
 				}
 			}
 			
+			if(returnVO.getOverAllOutput() != null && returnVO.getOverAllOutput().longValue() > 0l)
+			returnVO.setAvgOutput(returnVO.getActiveCount()/returnVO.getOverAllOutput());
 			returnVO.setUsersList(tabUserList);
 			
 		}catch (Exception e) {
@@ -851,10 +875,15 @@ public class GISVisualizationService implements IGISVisualizationService{
 				for (Object[] param : tabusersData) {
 					returnVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					GISUserTrackingVO tabUser = new GISUserTrackingVO();
+					
+					GISUserTrackingVO tabUser =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+					if(tabUser == null){
+						tabUser = new GISUserTrackingVO();
+						tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+					}
 					tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-					tabUser.setImagePath(commonMethodsUtilService.getStringValueForObject(param[4]));
+					tabUser.setImagePath("https://mytdp.com/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 					tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 					
 					if(type.equalsIgnoreCase("total")){
@@ -862,7 +891,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 					}else if(type.equalsIgnoreCase("today")){
 						tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
 					}
-					tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+					
 				}
 			}
 			
