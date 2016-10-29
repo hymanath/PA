@@ -76,9 +76,9 @@
 			    style="margin-left: 1px; width: 126px; padding-left: 17px; border-left-width: 0px; border-top-width: 0px;" id="exportToExcelId" onClick ="generateExcelReport()" ></input>
 		    </div>
 		<div class="modal-body">
-			   <div class="table table-condensed" id ="tabUserWiseRegistionDetilsId" style="display:none;">
+			   <div class="table table-condensed" id ="tabUserWiseRegistionDetilsId">
 			   </div>
-			   <div class="table table-condensed" id ="tabUserWiseExportExcelDivId">
+			   <div class="table table-condensed" id ="tabUserWiseExportExcelDivId" style="display:none;">
 			   </div>
 		</div>
 		<div class="modal-footer">
