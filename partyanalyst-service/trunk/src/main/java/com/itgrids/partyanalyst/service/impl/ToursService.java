@@ -86,20 +86,32 @@ public class ToursService implements IToursService {
 			selfAppraisalCandidateDetails.setSelfAppraisalCandidateId(toursInputVO.getCandidateId());
 			selfAppraisalCandidateDetails.setMonth(toursInputVO.getMonth());
 			selfAppraisalCandidateDetails.setYear(toursInputVO.getYear());
-			selfAppraisalCandidateDetails.setOwnLocationScopeId(toursInputVO.getOwnLocationScopeId());
-			selfAppraisalCandidateDetails.setOwnLocationValue(toursInputVO.getOwnLocationId());
-			selfAppraisalCandidateDetails.setOwnTours(toursInputVO.getOwnTours());
-			selfAppraisalCandidateDetails.setInchargeLocationScopeId(toursInputVO.getInchargeLocationScopeId());
-			selfAppraisalCandidateDetails.setInchargeLocationValue(toursInputVO.getInchargeLocationId());
-			selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());
-			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());
-			selfAppraisalCandidateDetails.setReportPath(destPath);       
+			if(toursInputVO.getOwnLocationScopeId() != null){
+				selfAppraisalCandidateDetails.setOwnLocationScopeId(toursInputVO.getOwnLocationScopeId());
+			}
+			if(toursInputVO.getOwnLocationId() != null){
+				selfAppraisalCandidateDetails.setOwnLocationValue(toursInputVO.getOwnLocationId());
+			}
+			if(toursInputVO.getOwnTours() != null){ 
+				selfAppraisalCandidateDetails.setOwnTours(toursInputVO.getOwnTours());
+			}
+			if(toursInputVO.getInchargeLocationScopeId() != null){
+				selfAppraisalCandidateDetails.setInchargeLocationScopeId(toursInputVO.getInchargeLocationScopeId());
+			}
+			if(toursInputVO.getInchargeLocationId() != null){
+				selfAppraisalCandidateDetails.setInchargeLocationValue(toursInputVO.getInchargeLocationId());
+			}
+			if(toursInputVO.getInchargeTours() != null){
+				selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());
+			}
+			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());      
+			selfAppraisalCandidateDetails.setReportPath(destPath);         
 			selfAppraisalCandidateDetails.setInsertedBy(userId);
 			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			selfAppraisalCandidateDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails); 
 			resultStatus.setResultCode(1);
-			resultStatus.setMessage("Saved Successfully");
+			resultStatus.setMessage("Saved");  
 			return resultStatus;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -481,5 +493,65 @@ public class ToursService implements IToursService {
 			LOG.error("Error Occured at getToursDetailsOverview() in ToursService class",e);	
 		}
     	return resultList;
+    }
+    public ToursBasicVO getUniqueMemDtls(Long candidateDtlsId){
+    	LOG.info("Entered into getUniqueMemDtls() of ToursService{}");
+    	try{
+    		StringBuilder builder = new StringBuilder();  
+    		ToursBasicVO basicVO = new ToursBasicVO();
+    		List<Object[]> memberDtls = selfAppraisalCandidateDetailsDAO.getMemberDtls(candidateDtlsId);
+    		if(memberDtls != null && memberDtls.size() > 0){
+    			for(Object[] param : memberDtls){
+    				basicVO.setId(param[0] != null ? (Long)param[0] : 0l);
+    				basicVO.setMonth(param[1] != null ? param[1].toString() : "");
+    				basicVO.setYear(param[2] != null ? (Long)param[2] : 0l);
+    				basicVO.setOwnToursCnt(param[5] != null ? (Long)param[5] : 0l);
+    				basicVO.setInchargerToursCnt(param[8] != null ? (Long)param[8] : 0l);
+    				basicVO.setComment(param[9] != null ? param[9].toString() : "");
+    				if(param[10] != null){    
+						if(param[10].toString().trim().length() > 0){
+							basicVO.setFilePath(param[10].toString().trim());
+							String strArr[] = param[10].toString().trim().split(",");
+    						for(int i = 0 ; i < strArr.length ; i++){
+    							if(i == 0){
+    								builder.append((strArr[i]).split("\\.")[1]);
+    							}else{
+    								builder.append(","+strArr[i].split("\\.")[1]);  
+    							}
+    						}    
+    						basicVO.setType(builder.toString()); 
+						}
+					}
+    				if(param[4] != null){
+    					if(((Long)param[4]).longValue() == 1l){
+    						basicVO.setLocationScope("District");
+    					}else if(((Long)param[4]).longValue() == 2l){
+    						basicVO.setLocationScope("Parliament");
+    					}else if(((Long)param[4]).longValue() == 3l){
+    						basicVO.setLocationScope("Assembly");
+    					}else{
+    						basicVO.setLocationScope("Other");
+    					}
+    					
+    				}
+    				if(param[7] != null){   
+    					if(((Long)param[7]).longValue() == 1l){
+    						basicVO.setLocationScope("District");
+    					}else if(((Long)param[7]).longValue() == 2l){
+    						basicVO.setLocationScope("Parliament");
+    					}else if(((Long)param[7]).longValue() == 3l){
+    						basicVO.setLocationScope("Assembly");
+    					}else{
+    						basicVO.setLocationScope("Other");    
+    					}
+    				}
+    			}
+    		}      
+    	return basicVO;    
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		LOG.error("Error Occured at getUniqueMemDtls() in ToursService class",e);
+    	}
+    	return null;
     }
 };
