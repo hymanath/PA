@@ -1,4 +1,5 @@
  function getConstituenciesForDistricts(district,id){
+	
 	  if(id == 1){
 		 $("#constituencyDivIdImg").show();
 		 $("#panchayatTwnId").show();
@@ -19,6 +20,13 @@
 		$("#nameId").val('');
 		$("#mobileId").val('');
 		$("#huseNOId").val('');
+		
+		if(district ==5 || district ==13){
+			$('#notGreaterCitiesDivId').addClass('hide');
+		}else{
+			$('#notGreaterCitiesDivId').removeClass('hide');
+		}
+		
 	  }else  if(id == 2){		
 		$("#PrsntConstutuencyList  option").remove();
 		$("#PrsntConstutuencyList").append('<option value="0">Select Constituency</option>');
@@ -74,15 +82,15 @@
 				  $("#PrsntConstutuencyList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 			}
-			
-			
-			 $("#PrsntConstutuencyList").val(presntConstituencyId);
-			$("#PrsntConstutuencyList").trigger("chosen:updated");
-			$('#constErrId').html('');
-			 setTimeout(function(){
-				 getMandalCorporationsByConstituency(presntConstituencyId,2);
-			},500);
-			
+			//if(presntConstituencyId != null && presntConstituencyId!='' && typeof presntConstituencyId != "undefined" &&presntConstituencyId.lenght > 0  ) 
+			//{
+				$("#PrsntConstutuencyList").val(presntConstituencyId);
+				$("#PrsntConstutuencyList").trigger("chosen:updated");
+				$('#constErrId').html('');
+				 setTimeout(function(){
+					 getMandalCorporationsByConstituency(presntConstituencyId,2);
+				},500);
+			//}
 	   }
 	   else if(id == 3){
 			for(var i in result){
@@ -119,6 +127,16 @@
 		$("#nameId").val('');
 		$("#mobileId").val('');
 		$("#huseNOId").val('');
+		
+		var districtId = $('#districtId').val();
+		if(districtId !=5 && districtId !=13){
+			if(consistency ==331 || consistency ==195 || consistency ==196){
+				$('#notGreaterCitiesDivId').addClass('hide');
+			}else{
+				$('#notGreaterCitiesDivId').removeClass('hide');
+			}
+		}
+		
 	 }else if(id==2){
 		$("#PrsntMandalList  option").remove();
 		$("#PrsntMandalList").append('<option value="0">Select Mandal/Municipality</option>');
@@ -180,15 +198,16 @@
 					presntMandalsId = parseInt("1"+presntMandalsId);
 				}
 		
-			
-			 $("#PrsntMandalList").val(presntMandalsId);
-			 $("#PrsntMandalList").trigger("chosen:updated");
-			
-			$('#mandalErrId').html('');
-			 setTimeout(function(){
-				 getPanchayatWardByMandal(presntMandalsId,2);
-			},500);
-					   
+			//if(presntMandalsId != null && presntMandalsId!='' && typeof presntMandalsId != "undefined" &&presntMandalsId.lenght > 0  ) 
+			//{
+				 $("#PrsntMandalList").val(presntMandalsId);
+				 $("#PrsntMandalList").trigger("chosen:updated");
+				
+				$('#mandalErrId').html('');
+				 setTimeout(function(){
+					 getPanchayatWardByMandal(presntMandalsId,2);
+				},500);
+			//}	   
 	   }else if(id==3){		   
 		   for(var i in result){
 			   if(result[i].id == 0){
@@ -296,10 +315,12 @@
 						
 						
 							 
-						
-						 $("#PrsntVillageList").val(presntVillagId);
-						 $("#PrsntVillageList").trigger("chosen:updated");
-						 $('#wardErrId').html('');
+						//if(presntVillagId != null && presntVillagId!='' && typeof presntVillagId != "undefined" &&presntVillagId.lenght > 0  ) 
+						//{
+							 $("#PrsntVillageList").val(presntVillagId);
+							 $("#PrsntVillageList").trigger("chosen:updated");
+							 $('#wardErrId').html('');
+						//}
 					}
 					else if(id==3){
 						 for(var i in result){
@@ -590,7 +611,7 @@ $(document).on("change","#boothsList",function(){
 
   if(registrationVoterType == 'ownVoterId'){
 		$("#voterBtnsDivId").show();
-	  $("#rlatveVoterId").hide();
+		$("#rlatveVoterId").hide();
   }else{
 	  $("#rlatveVoterId").show();
 	  $("#voterBtnsDivId").hide();
@@ -1295,9 +1316,9 @@ function fieldsValidationForSearch()
 	   }
 	 if(typeof type == "undefined")
 	  {
-		 $("#errorDivId").html("Celect Category.");
+		 $("#errorDivId").html("Select Category.");
 		 return false;
-	   } 
+	   }
 	 if(typeVal == "")
 	  {
 		if(type == "name")
