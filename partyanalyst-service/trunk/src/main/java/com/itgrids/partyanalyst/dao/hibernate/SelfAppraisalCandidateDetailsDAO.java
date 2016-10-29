@@ -92,6 +92,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  Query query = getSession().createQuery(queryStr.toString());
 		  query.setParameter("candidateDtlsId",candidateDtlsId);
 		  return query.list();  
+	  }
 	  
 	  public List<Object[]> getToursDetailstDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
 		     StringBuilder queryStr = new StringBuilder();
