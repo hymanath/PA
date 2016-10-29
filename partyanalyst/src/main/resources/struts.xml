@@ -14400,6 +14400,11 @@
 			<param name="root">resultVO</param>
 		</result>
 	</action>
+	<action name="updatingTourDtlsApplicationAction" class="toursAction" method="updateTourDtlsApplication">  
+		<result type="json" name="success">
+   			<param name="root">successMsg</param>        
+   		</result>
+	</action>
 	<action name="getToursBasicOverviewCountDetailsAction" class="coreDashboardAction"  method="getToursBasicOverviewCountDetails">
 			<result type="json" name="success">
 			<param name="root">toursBasicVO</param>
