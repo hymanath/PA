@@ -164,8 +164,12 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].totalRecords+'</td>';  
                 str+='<td>'+result[i].pending+'</td>'; 
 				str+='<td>'+result[i].kafkaPending+'</td>'; 
-                str+='<td>'+result[i].kafkaSync+'</td>';				
+                str+='<td>'+result[i].kafkaSync+'</td>';
+             if(result[i].actualCount != null){				
 				str+='<td>'+result[i].actualCount+'</td>';
+              }else{
+	            str+='<td>0</td>';
+                 }
 				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
