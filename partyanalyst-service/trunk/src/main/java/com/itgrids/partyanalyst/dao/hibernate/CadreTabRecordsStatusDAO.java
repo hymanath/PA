@@ -41,20 +41,24 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				 + " model1.cadreRegUser.user.userName,sum(model.totalRecords),sum(model.pending)," +
 				 " sum(model.kafkaPending),sum(model.kafkaSync),model.cadreSurveyUserId" +
 				" from CadreTabRecordsStatus model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
-				 " where model.cadreSurveyUserId = model2.cadreSurveyUserId and model.cadreSurveyUserId = model1.cadreSurveyUserId and  " +
-				 " model2.constituencyId = :constistuencyId ");
-				
-		if(fromDate != null && toDate != null)
+				 " where model.cadreSurveyUserId = model2.cadreSurveyUserId and model.cadreSurveyUserId = model1.cadreSurveyUserId ");
+		 if(constistuencyId != null && constistuencyId.longValue()>0l){
+			 sb.append(" and model2.constituencyId =:constistuencyId ");
+		 }
+		 if(fromDate != null && toDate != null){
 			sb.append(" and date(model.surveyDate) between :fromDate and :toDate");
+		 }
 		
-		   sb.append(" group by model.cadreSurveyUser.userName");
+		   sb.append(" group by model.cadreSurveyUserId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		query.setParameter("constistuencyId", constistuencyId);
+		if(constistuencyId != null && constistuencyId.longValue()>0l){
+			 query.setParameter("constistuencyId", constistuencyId);
+		   }
 		
 		return query.list();
 	}
@@ -67,19 +71,24 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				  " sum(model.sync)," +
 				  " sum(model.pending) " +
 				 " from CadreTabRecordsStatus model,CadreSurveyUserAssignDetails model1" +
-				 " where model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
-				 " model1.constituencyId =:constistuencyId ");
+				 " where model.cadreSurveyUserId = model1.cadreSurveyUserId");
+				
+		 if(constistuencyId != null && constistuencyId.longValue()>0l){
+			 sb.append(" and model1.constituencyId =:constistuencyId ");
+		 }
 
-		if (fromDate != null && toDate != null)
+		if (fromDate != null && toDate != null){
 			sb.append(" and date(model.surveyDate) between :fromDate and :toDate");
+		}
 		Query query = getSession().createQuery(sb.toString());
 
 		if (fromDate != null && toDate != null) {
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		query.setParameter("constistuencyId", constistuencyId);
-
+		if(constistuencyId != null && constistuencyId.longValue()>0l){
+			 query.setParameter("constistuencyId", constistuencyId);
+		   }
 		return (Object[])query.uniqueResult();
 	}
 
