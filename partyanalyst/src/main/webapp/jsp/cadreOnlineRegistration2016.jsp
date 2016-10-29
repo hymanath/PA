@@ -378,7 +378,7 @@
 							</select>
                         </div>
 					</div>
-					<div class="row m_top30">
+					<div class="row m_top30 hide" id="notGreaterCitiesDivId">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>MANDAL/MUNCIPALITY</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -403,9 +403,9 @@
 					</div>
 					 <div class="row m_top30">
 					    <div class="col-md-6 col-xs-12 col-sm-3 m_top10">
-                        	 <!--<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID</label>-->
+                        	<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID</label>
 						   <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO</label>
-						   <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId" checked/>NAME</label>
+						   <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId" />NAME</label>
                         </div>
 					  </div>
 					<div class="row m_top30">
@@ -747,7 +747,7 @@
                         </div>
 						 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Pincode</label>
-                            <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
+                            <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode" maxlength="6"/>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
                         	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>: </br> </br> 
@@ -817,7 +817,7 @@
 								</div>
 								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
 									<label>Pincode</label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsPincode"/>
+									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsPincode" maxlength="6"/>
 								</div>
 							</div>
                     </div>
@@ -1275,6 +1275,7 @@ setTimeout(function(){
 	$(".mainBlocks").removeClass("animated fadeIn");
 },1500);
 $(document).on("click","#mainPageBackId",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	//$(".landingPage").addClass("animated fadeIn");
 	setTimeout(function(){
 		//$(".landingPage").show();
@@ -1333,6 +1334,7 @@ $('.select').chosen({width:'100%'});
 	},1000);
 });*/
 $(document).on("click","#searchResultsBackBtn",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".profileDetailsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".profileDetailsBlock").addClass("hide");
@@ -1346,6 +1348,7 @@ $(document).on("click","#searchResultsBackBtn",function(){
 });
 
 $(document).on("click","#voterIdBack",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".subBlock,.voterIdSearch").addClass("hide");
@@ -1359,6 +1362,7 @@ $(document).on("click","#voterIdBack",function(){
 	},1000)
 });
 function searchVoterDetails(){
+//	alert("registrationVoterType :"+registrationVoterType);
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdSearch").addClass("hide");
@@ -1371,6 +1375,7 @@ function searchVoterDetails(){
 	},500);
 }
 function myVoterButtonDetails(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".searchResultsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
@@ -1386,6 +1391,7 @@ function myVoterButtonDetails(){
 
 /* Renewal Click Actions*/
 $(document).on("click",".renewalBtn",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".mainBlocks").addClass("animated fadeOut");
 	registrationType="renewal";
 	setTimeout(function(){
@@ -1404,6 +1410,7 @@ $(document).on("click",".renewalBtn",function(){
 });
 //renewalBtn
 $(document).on("click","#profileBackR",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".profileDetailsBlockR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".profileDetailsBlockR").addClass("hide");
@@ -1426,6 +1433,7 @@ $(document).on("click","#profileBackR",function(){
 	$("#ownVIDR").val(' ');
 });
 $(document).on("click","#profileBackBtnR",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".updateProfileR").addClass("hide");
@@ -1441,6 +1449,7 @@ $(document).on("click","#profileBackBtnR",function(){
 });
 
 $(document).on("click","#renewalBackBtn",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".selectMembership,.subBlockR,.renewalN").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".selectMembership,.subBlockR,.renewalN").addClass("hide");
@@ -1457,6 +1466,7 @@ $(document).on("click","#renewalBackBtn",function(){
 });
 
 $(document).on("click",".validateNo",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".existingMembershipR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".existingMembershipR").addClass("hide");
@@ -1470,6 +1480,7 @@ $(document).on("click",".validateNo",function(){
 	
 });
 $(document).on("click","#searchResultsBackBtnR",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".profileDetailsBlock,.subBlockR").addClass("animated fadeOut");
 	
 	setTimeout(function(){
@@ -1484,6 +1495,7 @@ $(document).on("click","#searchResultsBackBtnR",function(){
 });
 
 $(document).on("click",".voterSearchR",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdSearchR").addClass("hide");
@@ -1492,6 +1504,7 @@ $(document).on("click",".voterSearchR",function(){
 	},500);
 });
 $(document).on("click",".updateId",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".updateProfileR,.renewal,.subBlockR,.newProfile").addClass("hide");
@@ -1596,6 +1609,7 @@ function changeImg()
 		});  
 		
 $(document).on("click",".registerNew",function(){ 
+//alert("registrationVoterType :"+registrationVoterType);
 	$(".mainBlocks").addClass("animated fadeOut");
 	registrationType="new";
 	setTimeout(function(){
@@ -1612,6 +1626,9 @@ $(document).on("click",".registerNew",function(){
 });
 
 $(document).on("click",".submitVoterSearch",function(){
+	registrationVoterType = "ownVoterId";
+	//alert("registrationVoterType :"+registrationVoterType);
+	$('#notGreaterCitiesDivId').addClass('hide');
 	$(".voterIdConfirm").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdConfirm").addClass("hide");
@@ -1643,6 +1660,8 @@ function submitVoterIdDetails(){
 	},1000);
 }
 $(document).on("click",".forgetVoterId",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
+	$('#notGreaterCitiesDivId').addClass('hide');
 	$(".enterVoterIdBlock").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".enterVoterIdBlock").addClass("hide");
@@ -1662,12 +1681,16 @@ $(document).on("click",".forgetVoterId",function(){
 });
 
 $(document).on("click",".checkCls",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".checkCls").attr("checked",false);
 	$(this).attr("checked",true);
 	$('#serchVoterNameId').val('');
 });
 $(document).on("click",".noVoterId",function(){
 	registrationVoterType='familyVoterId';
+	//alert("registrationVoterType :"+registrationVoterType);
+	$('#notGreaterCitiesDivId').addClass('hide');
+	
 	$(".voterIdConfirm").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdConfirm").addClass("hide");
@@ -1702,6 +1725,7 @@ function submitVoterDetails(){
 	},1000);
 }
 $(document).on("click","#enterVoterIdBack",function(){
+	//alert("registrationVoterType :"+registrationVoterType);
 	$(".enterVoterIdBlock").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".subBlock,.enterVoterIdBlock").addClass("hide");
@@ -1715,6 +1739,7 @@ $(document).on("click","#enterVoterIdBack",function(){
 });
 $(document).on("click","#searchResultsBack",function(){
 	$(".searchResultsBlock").addClass("animated fadeOut");
+	//alert("registrationVoterType :"+registrationVoterType);
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
@@ -1729,6 +1754,7 @@ $(document).on("click","#searchResultsBack",function(){
 });
 $(document).on("click","#searchVoterIdBack",function(){
 	$(".voterIdSearch").addClass("animated fadeOut");
+	//alert("registrationVoterType :"+registrationVoterType);
 	setTimeout(function(){
 		$(".voterIdSearch").addClass("hide");
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
@@ -1743,6 +1769,7 @@ $(document).on("click","#searchVoterIdBack",function(){
 });
 $(document).on("click","#searchFamVoterIdBack",function(){
 	$(".voterIdSearch").addClass("animated fadeOut");
+	//alert("registrationVoterType :"+registrationVoterType);
 	setTimeout(function(){
 		$(".voterIdSearch").addClass("hide");
 		$(".subBlock,.voterIdConfirm").removeClass("hide");
@@ -1757,6 +1784,7 @@ $(document).on("click","#searchFamVoterIdBack",function(){
 
 $(document).on("click","#enterVoterIdResultsBack",function(){
 	$(".searchResultsBlock").addClass("animated fadeOut");
+	//alert("registrationVoterType :"+registrationVoterType);
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
@@ -1771,7 +1799,7 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 });
 
 $(document).on("click","#prmaryAddrsId",function(){
-	
+	//alert("registrationVoterType :"+registrationVoterType);
 	if($(this).is(":checked")){
 		$('#deliveryCheckBox').attr('checked', false);
 		$('#deliveryAddrId').hide();
@@ -1784,6 +1812,7 @@ $(document).on("click","#prmaryAddrsId",function(){
 });
 
 $(document).on("click","#deliveryCheckBox",function(){
+//	alert("registrationVoterType :"+registrationVoterType);
 	$('#prmaryAddrsId').attr('checked', false);
 	if($(this).is(":checked")){
 		$('#deliveryAddrId').show();
