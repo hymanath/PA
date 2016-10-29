@@ -10,6 +10,7 @@
 <link href="tourDetails/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>  
 
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -20,7 +21,7 @@
 <script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
 <script type="text/javascript" src="js/yahoo/datasource-min.js"></script>  
 <script type="text/javascript" src="js/yahoo/get-min.js"></script> 	  
-<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>  
+<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>    
 </head>
 <body>
 <div class="container">
@@ -199,77 +200,24 @@
       <div class="modal-body">
         <div class="row">
         	<div class="col-md-12 col-xs-12 col-sm-12">
-            	<div class="bg_ED block">
-                	<table class="table">
-                    	<tr>
-                        	<td>
-                            	<h4 class="text-capitalize text-muted">Total Leaders</h4>
-                                <h3>5</h3>
-                            </td>
-                            <td>
-                            	<h4 class="text-capitalize text-muted">Total Leaders</h4>
-                                <h3>5<small class="text-success">80%</small></h3>
-                            </td>
-                            <td>
-                            	<h4 class="text-capitalize text-muted">Total Leaders</h4>
-                                <h3>5<small class="text-success">20%</small></h3>
-                            </td>
-                            <td>
-                            	<h4 class="text-capitalize text-muted">Total Leaders</h4>
-                                <h3>5</h3>
-                            </td>
-                            <td>
-                            	<h4 class="text-capitalize text-muted">Total Leaders</h4>
-                                <h3>5</h3>
-                            </td>
-                        </tr>
-                    </table>
+            	<div class="bg_ED block" id="desigDtlsId">
+					<div >
+						<center >
+							<img style="display: none;" src="images/icons/loading.gif" id="desigDtlsProcessImgId">
+						</center>
+					</div>	
                 </div>
             </div>
             <div class="col-md-12 col-xs-12 col-sm-12">
-            	<table class="table table-condensed tableModal">
-                	<thead class="text-capital">
-                    	<th>general secretary name</th>
-                        <th>total tours submited</th>
-                        <th>comments</th>
-                        <th>attachments</th>
-                    </thead>
-                    <tr>
-                    	<td>B Jaya Nageshwar Reddy</td>
-                        <td>7</td>
-                        <td>Tour comments</td>
-                        <td>
-                        	<img src="" class="img-responsive" alt=""/>
-                        	<button class="btn btn-success editBtn">EDIT</button>
-                        </td>
-                    </tr>
-                    <tr>
-                    	<td>B Jaya Nageshwar Reddy</td>
-                        <td>7</td>
-                        <td>Tour comments</td>
-                        <td>
-                        	<img src="" class="img-responsive" alt=""/>
-                        	<button class="btn btn-success editBtn">EDIT</button>
-                        </td>
-                    </tr>
-                    <tr>
-                    	<td>B Jaya Nageshwar Reddy</td>
-                        <td>7</td>
-                        <td>Tour comments</td>
-                        <td>
-                        	<img src="" class="img-responsive" alt=""/>
-                        	<button class="btn btn-success editBtn">EDIT</button>
-                        </td>
-                    </tr>
-                </table>
+				<div id="memDtlsId">         
+					<div >
+						<center >
+							<img style="display: none;" src="images/icons/loading.gif" id="memDtlsProcessImgId">  
+						</center>
+					</div>
+				</div>
             </div>
-            <div class="col-md-12 col-xs-12 col-sm-12">
-            	<h4 class="panel-title text-capital">uploaded attachments</h4>
-                <div class="block">
-                    <button class="btn btn-success deleteBtn pull-right">delete</button>
-                	<button class="btn btn-success viewBtn pull-right">view</button>
-                </div>
-            </div>
+             
         </div>
       </div>
     </div>
@@ -280,7 +228,8 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>  
+<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>    
 <script type="text/javascript">
 //$("#uploadFile").dropzone({ url: "/file/post" });
 $(document).on("click",".submitedDataModal",function(){
@@ -289,4 +238,4 @@ $(document).on("click",".submitedDataModal",function(){
 $('.selectChosen').chosen({width:'100%'})
 </script>
 </body>
-</html>
+</html>  
