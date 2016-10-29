@@ -8278,7 +8278,7 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 		return query.list();
 		
 	}
-public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
+	public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select  model.tdpCadre.userAddress.constituency.constituencyId,count(model.tdpCadre.tdpCadreId )  " +
@@ -8292,7 +8292,7 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 		
 		Query query = getSession().createQuery(sb.toString());
 		
-		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		query.setParameter("enrollmentYearId",3L);//IConstants.PRESENT_CADRE_ENROLLMENT_YEAR
 		if( date != null ){
 			query.setDate("date",date);
 		}
@@ -8345,17 +8345,19 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 				  " from    TdpCadreEnrollmentYear model " +
 				  " where   model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and "+
 				  "         model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId  " );
-		if(fromDate != null){
+		/*if(fromDate != null){
 			sb.append(" and date(model.tdpCadre.surveyTime) >= :fromDate ");
-		}
+		}*/
+		//2014 checking
+		sb.append(" and date(model.tdpCadre.surveyTime) between '2014-11-14' and '2014-11-18' ");
 		sb.append(" group by date(model.tdpCadre.surveyTime),model.tdpCadre.userAddress.constituency.constituencyId " +
 				"   order by date(model.tdpCadre.surveyTime)");
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(fromDate != null){
+		/*if(fromDate != null){
 			query.setDate("fromDate", fromDate);
-		}
-		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		}*/
+		query.setParameter("enrollmentYearId",3L);//IConstants.PRESENT_CADRE_ENROLLMENT_YEAR
 		
 		return query.list();
 	}
@@ -8370,18 +8372,21 @@ public List<Object[]> getTdpCadreRecordsCountLocWise(Date date){
 				  "         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
 				  "         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear  ");
 				  
-		if(fromDate != null){
+		/*if(fromDate != null){
 			sb.append(" and date(tc.surveyTime) >= :fromDate ");
-		}
+		}*/
+		//2014 checking
+		 //sb.append(" and date(model.tdpCadre.surveyTime) between '2014-11-14' and '2014-11-18' ");
+		 
 		sb.append(" group by date(tc.surveyTime),tc.userAddress.constituency.constituencyId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
 		query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
-		if(fromDate != null){
+		/*if(fromDate != null){
 			query.setDate("fromDate", fromDate);
-		}
+		}*/
 		return query.list();
 	}
 	
@@ -8476,10 +8481,12 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		if( date != null ){
 			sbS.append(" and date(model.tdpCadre.surveyTime) = :date ");
 		}
+		//for 2014 checking
+		//sbS.append(" and model.tdpCadre.userAddress.district.districtId in (19,23)");
 		
 		Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
 		
-		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		query.setParameter("enrollmentYearId",3L);//IConstants.PRESENT_CADRE_ENROLLMENT_YEAR
 		if( date != null ){
 			query.setDate("date",date);
 		}
@@ -8517,7 +8524,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		if( date != null ){
 			sbS.append(" and date(tc.surveyTime) = :date ");
 		}
-		
+		//for 2014 checking
+		   sbS.append(" and tc.userAddress.district.districtId in (19,23)");
 		Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
 		
 		query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
