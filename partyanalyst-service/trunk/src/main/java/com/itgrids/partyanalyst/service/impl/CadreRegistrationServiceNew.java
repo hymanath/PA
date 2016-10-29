@@ -528,33 +528,33 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						    		LOG.error("NO OF Records, assembly wise "+dateTypeVO.getDateType() +":"+dateTypeVO.getAssemblyList().size());
 						    		long intermediateStartTime = System.currentTimeMillis();
 						    		savingService(dateTypeVO.getAssemblyList(),currentTime);
-						    		LOG.error("NO OF Records, assembly wise time for saving "+dateTypeVO.getDateType() +" : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+						    		LOG.error("NO OF Records, assembly wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, parliament wise "+dateTypeVO.getDateType() +":"+dateTypeVO.getParliamentList().size());
+				        			LOG.error("NO OF Records, parliament wise :"+dateTypeVO.getParliamentList().size());
 				        			long intermediateStartTime = System.currentTimeMillis();
 				        			savingService(dateTypeVO.getParliamentList(),currentTime);
-				        			LOG.error("NO OF Records, parliament wise time for saving  "+dateTypeVO.getDateType() +": " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			LOG.error("NO OF Records, parliament wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		
 				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, district wise "+dateTypeVO.getDateType() +" :"+dateTypeVO.getDistrictList().size());
+				        			LOG.error("NO OF Records, district wise  :"+dateTypeVO.getDistrictList().size());
 				        			long intermediateStartTime = System.currentTimeMillis();
 				        			savingService(dateTypeVO.getDistrictList(),currentTime);
-				        			LOG.error("NO OF Records, district wise time for saving "+dateTypeVO.getDateType() +" : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			LOG.error("NO OF Records, district wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, state wise "+dateTypeVO.getDateType() +" :"+dateTypeVO.getStateList().size());
+				        			LOG.error("NO OF Records, state wise  :"+dateTypeVO.getStateList().size());
 				        			long intermediateStartTime = System.currentTimeMillis();
 				        			
 				        			savingService(dateTypeVO.getStateList(),currentTime);
-				        			LOG.error("NO OF Records, state wise time for saving  "+dateTypeVO.getDateType() +" : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			LOG.error("NO OF Records, state wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        	}
