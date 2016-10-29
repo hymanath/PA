@@ -50,9 +50,9 @@ import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
-import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -2807,7 +2807,11 @@ public String savingCadreDetails(){
 			   	            String ext = "";
 			   	            if(extension.length > 1){
 			   	            	ext = extension[extension.length-1];
-			   	            	cadreRegistrationVO.setUploadImage(f);
+			   	            	
+			   	            	ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+								String imageBase64String  = imageAndStringConverter.convertImageFileToBase64String(f);
+								cadreRegistrationVO.setImageBase64String(imageBase64String);
+			   	            	//cadreRegistrationVO.setUploadImage(f);
 			   	            	//mapfiles.put(f,ext);
 			   	            }
 			   	        
