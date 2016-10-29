@@ -193,31 +193,57 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:80%">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header">    
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">General Secretarys overview<small class="text-muted">- Last Month(September)</small></h4>
+        <h4 class="modal-title" id="myModalLabel"><small class="text-muted" id="timeId"></small></h4>
       </div>
       <div class="modal-body">
         <div class="row">
         	<div class="col-md-12 col-xs-12 col-sm-12">
             	<div class="bg_ED block" id="desigDtlsId">
-					<div >
+						
+                </div>
+				<div >
 						<center >
 							<img style="display: none;" src="images/icons/loading.gif" id="desigDtlsProcessImgId">
 						</center>
-					</div>	
-                </div>
+					</div>
             </div>
             <div class="col-md-12 col-xs-12 col-sm-12">
 				<div id="memDtlsId">         
-					<div >
+					
+				</div>
+				<div >
 						<center >
 							<img style="display: none;" src="images/icons/loading.gif" id="memDtlsProcessImgId">  
 						</center>
 					</div>
-				</div>
             </div>
              
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myModalUpdateId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:80%">
+    <div class="modal-content">
+      <div class="modal-header">    
+        <button type="button" class="close closeButtonCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabelUpdateId"><small class="text-muted" id="timeId"></small></h4>
+      </div>
+      <div class="modal-body">  
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+				<div id="memDtlsUpdateId">         
+					
+				</div>
+				<div >
+					<center >
+						<img style="display: none;" src="images/icons/loading.gif" id="memDtlsUpdateProcessImgId">    
+					</center>
+				</div>
+            </div>
         </div>
       </div>
     </div>
