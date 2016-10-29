@@ -42,4 +42,20 @@ public class ImageAndStringConverter {
 		 }
 	 }
 
+	public String convertImageFileToBase64String(File file)
+	{
+     try{
+    	// File file = new File(imagePath);
+    	 FileInputStream imageInFile = new FileInputStream(file);
+         byte imageData[] = new byte[(int) file.length()];
+         imageInFile.read(imageData);
+         imageInFile.close();
+         return Base64.encodeBase64URLSafeString(imageData);
+     }catch(Exception e)
+     {
+    	 LOG.error(e);
+    	 return null;
+     }
+   }
+	
 }
