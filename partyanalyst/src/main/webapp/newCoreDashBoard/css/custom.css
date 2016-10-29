@@ -724,7 +724,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	font-weight:bold;
 }
 
-.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .stateLevelTraining , .stateLevelTrainingInd, .notesIconTraining , .newsIconExpand , .committeeMeetingsSettings , .notesIconDebates , .notesIconNews , .notesIconMeeting,.stateLevelMeetingSeeting, .specialMeetingSeeting , .stateLevelMeetingsExpand , .stateGeneralMeeting , .specialMeetings , .eventsIconExpand , .notesIconEvents , .eventsListExpandIcon , .attendaceIconExpand, .notesIconattendance , .attendanceSetIcon , .cadreExpand , .cadreNotes  , .cadreSettings 
+.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .stateLevelTraining , .stateLevelTrainingInd, .notesIconTraining , .newsIconExpand , .committeeMeetingsSettings , .notesIconDebates , .notesIconNews , .notesIconMeeting,.stateLevelMeetingSeeting, .specialMeetingSeeting , .stateLevelMeetingsExpand , .stateGeneralMeeting , .specialMeetings , .eventsIconExpand , .notesIconEvents , .eventsListExpandIcon , .attendaceIconExpand, .notesIconattendance , .attendanceSetIcon , .cadreExpand , .cadreNotes  , .cadreSettings , .emnSetIcon , .notesIconEmn , .emnIconExpand
 {
 	border:1px solid #999;
 	border-radius:5px;
@@ -736,11 +736,11 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	background-color:#FECB00;
 	margin-right:2px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i , .stateLevelTraining i , .stateLevelTrainingInd i, .newsIconExpand i , .committeeMeetingsSettings i , .notesIconDebates i , .notesIconNews i , .stateLevelMeetingSeeting i ,.specialMeetingSeeting i , .stateLevelMeetingsExpand i , .stateGeneralMeeting i , .specialMeetings i , .eventsIconExpand i, .notesIconEvents i , .eventsListExpandIcon i , .attendaceIconExpand i, .notesIconattendance i , .attendanceSetIcon i, .cadreExpand i , .cadreNotes  i, .cadreSettings i
+.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i , .stateLevelTraining i , .stateLevelTrainingInd i, .newsIconExpand i , .committeeMeetingsSettings i , .notesIconDebates i , .notesIconNews i , .stateLevelMeetingSeeting i ,.specialMeetingSeeting i , .stateLevelMeetingsExpand i , .stateGeneralMeeting i , .specialMeetings i , .eventsIconExpand i, .notesIconEvents i , .eventsListExpandIcon i , .attendaceIconExpand i, .notesIconattendance i , .attendanceSetIcon i, .cadreExpand i , .cadreNotes  i, .cadreSettings i , .emnSetIcon i, .notesIconEmn i, .emnIconExpand i
 {
 	transition:all .2s ease-in-out;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover , .stateLevelTraining i:hover , .stateLevelTrainingInd i:hover, .newsIconExpand i:hover , .committeeMeetingsSettings i:hover , .notesIconDebates i:hover , .notesIconNews i:hover , .stateLevelMeetingSeeting i:hover , .specialMeetingSeeting i:hover , .stateLevelMeetingsExpand i:hover , .stateGeneralMeeting i:hover , .specialMeetings i:hover , .eventsIconExpand i:hover, .notesIconEvents i:hover , .eventsListExpandIcon i:hover , .attendaceIconExpand i:hover , .notesIconattendance i:hover , .attendanceSetIcon i:hover, .cadreExpand i:hover , .cadreNotes i:hover  , .cadreSettings i:hover 
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover , .stateLevelTraining i:hover , .stateLevelTrainingInd i:hover, .newsIconExpand i:hover , .committeeMeetingsSettings i:hover , .notesIconDebates i:hover , .notesIconNews i:hover , .stateLevelMeetingSeeting i:hover , .specialMeetingSeeting i:hover , .stateLevelMeetingsExpand i:hover , .stateGeneralMeeting i:hover , .specialMeetings i:hover , .eventsIconExpand i:hover, .notesIconEvents i:hover , .eventsListExpandIcon i:hover , .attendaceIconExpand i:hover , .notesIconattendance i:hover , .attendanceSetIcon i:hover, .cadreExpand i:hover , .cadreNotes i:hover  , .cadreSettings i:hover , .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover
 {
 	transform: scale(1.4); 
 }
@@ -1979,4 +1979,28 @@ margin-top: 5px; margin-bottom: 2px;
 	border-radius:1px;
 	margin-left:3px;
 	cursor:pointer;
+}
+.tableEMN
+{
+	border-spacing:10px 0px;
+	border-top:0px;
+	border-collapse:unset;
+}
+.tableEMN tr
+{
+	border-top:0px;
+}
+.tableEMN tr td
+{
+	background-color:#EDEEF0;
+	border-top:0px;
+}
+.tableEMN tr td h5
+{
+	font-size:12px !important;
+	color:#BEBFC3 !important;
+}
+.tableEMN tr td h4
+{
+	font-size:14px !important;
 }
