@@ -405,11 +405,14 @@ public class Scheduler {
 			return rs;
 		}
 		
-		try{
-			 //System.out.println("pushTotalTodayTdpCadreDataToIntermediate started.."+new DateUtilService().getCurrentDateAndTimeInStringFormat());
-			 //long startTime = System.currentTimeMillis();
-			rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediate();
-			//System.out.println("time for saving total tody wise method is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+		try{ 
+			 long startTime = System.currentTimeMillis();
+			 log.error("totaltoday const level starting..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			 
+			 rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediate();
+			 
+			 log.error("totaltoday const level method : " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds");
+			 
 		}
 		catch(Exception e)
 		{
@@ -426,11 +429,14 @@ public class Scheduler {
 			return rs;
 		}
 		
-		try{
-			//System.out.println("pushTotalTodayTdpCadreDataToIntermediate started..");
-			 //long startTime = System.currentTimeMillis();
-			rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediateByLowLevel();
-			//System.out.println("time for saving total tody wise is : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+		try{  
+			 long startTime = System.currentTimeMillis();
+			 log.error("totaltoday low level starting ..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			 
+			 rs = cadreRegistrationServiceNew.pushTotalTodayTdpCadreDataToIntermediateByLowLevel();
+			 
+			log.error("totaltoday low level method : " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds");
+			
 		}
 		catch(Exception e)
 		{
@@ -441,17 +447,20 @@ public class Scheduler {
 	
 	public ResultStatus pushTdpCadreDataToIntermediateDateWise()
 	{	
-		
 		ResultStatus rs = new ResultStatus();
 		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
 			return rs;
 		}
 		
-		try{
-			 //System.out.println("pushTdpCadreDataToIntermediateDateWise started.. "+new DateUtilService().getCurrentDateAndTimeInStringFormat() );
-			//long startTime = System.currentTimeMillis();
+		try{ 
+			
+			long startTime = System.currentTimeMillis();
+			log.error("date wise const level starting..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			
 			rs = cadreRegistrationServiceNew.pushTdpCadreDataToIntermediateDateWise();
-			//System.out.println("time taking for date wise method  is : " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds");
+			
+			log.error("date wise const level method  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+			
 		}
 		catch(Exception e)
 		{
