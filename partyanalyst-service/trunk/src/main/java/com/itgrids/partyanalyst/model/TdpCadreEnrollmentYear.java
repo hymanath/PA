@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,6 +28,10 @@ public class TdpCadreEnrollmentYear {
 	private Long tdpCadreEnrollmentYearId;
 	private TdpCadre tdpCadre;
 	private EnrollmentYear enrollmentYear;
+	private Date  insertedTime;
+	private Date  updatedTime;
+	private Date insertedDate;
+	private Date updatedDate;
 	private String isDeleted;
 	
 	private Long tdpCadreId;
@@ -77,6 +83,38 @@ public class TdpCadreEnrollmentYear {
 	}
 	public void setEnrollmentYearId(Long enrollmentYearId) {
 		this.enrollmentYearId = enrollmentYearId;
+	}
+	
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	@Column(name = "inserted_date")
+	public Date getInsertedDate() {
+		return insertedDate;
+	}
+	public void setInsertedDate(Date insertedDate) {
+		this.insertedDate = insertedDate;
+	}
+	
+	@Column(name = "updated_date")
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 	
 	@Column(name = "is_deleted")
