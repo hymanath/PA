@@ -69,4 +69,26 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  
 		  return query.list();
 	  }
+	  public List<Object[]> getMemberDtls(Long candidateDtlsId){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select " +
+				  		  " SACD.selfAppraisalCandidateId, " +//0
+				  		  " SACD.month, " +//1
+				  		  " SACD.year, " +//2
+				  		  " SACD.ownLocationValue, " +//3
+				  		  " SACD.ownLocationScopeId, " +//4
+				  		  " SACD.ownTours, " +//5
+				  		  " SACD.inchargeLocationValue, " +//6
+				  		  " SACD.inchargeLocationScopeId, " +//7
+				  		  " SACD.inchargeTours, " +//8
+				  		  " SACD.remarks, " +//9
+				  		  " SACD.reportPath " +//10
+				  		  " from " +
+				  		  " SelfAppraisalCandidateDetails SACD " +
+				  		  " where " +
+				  		  " SACD.selfAppraisalCandidateDetailsId = :candidateDtlsId");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameter("candidateDtlsId",candidateDtlsId);
+		  return query.list();  
+	  }
 }
