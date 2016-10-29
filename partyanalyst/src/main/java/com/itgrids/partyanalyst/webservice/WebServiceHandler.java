@@ -2093,4 +2093,11 @@ public class WebServiceHandler {
 			return webServiceHandlerService.getDistrictWiseConstituency(district);
 			//return cadreRegistrationService.getDistrictWiseConstituency(district);
 		}
+		@POST
+		@Path("/getLocationWiseTabUserTrackingDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
+			return webServiceHandlerService.getLocationWiseTabUserTrackingDetails(inputVO);
+		}
 }
