@@ -1024,7 +1024,8 @@
                       <value>com.itgrids.partyanalyst.model.SelfAppraisalDesignation</value>
                       <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidate</value>  
                       <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation</value>
-                      <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails</value> 
+                      <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails</value>
+                      <value>com.itgrids.partyanalyst.model.TabUserLocationDetails</value> 
                       	                     
 				 </list>
 			

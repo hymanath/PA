@@ -3580,6 +3580,7 @@
 		<property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO"/>
 		<property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO"/>
 		<property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"/>
+		<property name="tabUserLocationDetailsDAO" ref="tabUserLocationDetailsDAO"/>
 	</bean>
 	
 	<bean name="webServiceHandlerServiceForCadre" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerServiceForCadre" >
