@@ -87,10 +87,10 @@ IDistrictDAO {
 		Long sid=1l;
 		StringBuilder query = new StringBuilder();
 		query.append("select model.districtId,model.districtName from District model where model.state.stateId = ? ");
-		if(stateId==1){
+		if(stateId.longValue()==1L){
 			query.append(" and model.districtId>10 and model.districtId<=23 ");
 		}
-		if(stateId==36){
+		if(stateId.longValue()==36L){
 			query.append(" and model.districtId>=1 and model.districtId<=10 ");
 		}
 		query.append(" order by model.districtName");
