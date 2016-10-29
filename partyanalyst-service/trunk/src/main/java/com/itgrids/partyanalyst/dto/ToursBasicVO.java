@@ -33,6 +33,10 @@ public class ToursBasicVO {
 	private Double averageTours=0.0d;
 	private String locationScope;
 	
+	private Double submitedCandidateTourPer=0.0d;
+	private Double notsubmitedCandidateTourPer=0.0d;
+	private ToursBasicVO overAllDetailsVO;
+	
 	
 	public ToursBasicVO() {
 		super();
@@ -207,5 +211,22 @@ public class ToursBasicVO {
 		this.locationScope = locationScope;
 	}
 	
-	
+	public Double getSubmitedCandidateTourPer() {
+		return submitedCandidateTourPer;
+	}
+	public void setSubmitedCandidateTourPer(Double submitedCandidateTourPer) {
+		this.submitedCandidateTourPer = submitedCandidateTourPer;
+	}
+	public Double getNotsubmitedCandidateTourPer() {
+		return notsubmitedCandidateTourPer;
+	}
+	public void setNotsubmitedCandidateTourPer(Double notsubmitedCandidateTourPer) {
+		this.notsubmitedCandidateTourPer = notsubmitedCandidateTourPer;
+	}
+	public ToursBasicVO getOverAllDetailsVO() {
+		return overAllDetailsVO;
+	}
+	public void setOverAllDetailsVO(ToursBasicVO overAllDetailsVO) {
+		this.overAllDetailsVO = overAllDetailsVO;
+	}   	
 }
