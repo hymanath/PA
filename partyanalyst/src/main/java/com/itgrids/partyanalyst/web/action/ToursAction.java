@@ -259,4 +259,49 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	public String updateTourDtlsApplication(){
+		try { 
+			final HttpSession session = request.getSession();
+			/*final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}*/
+			  
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			String fileUrl = "" ;
+			List<String> filePaths = null;  
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+		   			
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				filePaths = new ArrayList<String>();
+				if(files != null && files.length > 0)
+					for(File f : files){
+						String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+						String ext = "";
+						if(extension.length > 1){
+							ext = extension[extension.length-1];
+								mapfiles.put(f,ext);
+							}
+						}
+			}  
+		     
+			resultStatus = toursService.saveTourDtls(toursInputVO,1l,mapfiles);
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					successMsg = resultStatus.getMessage();
+				}else if(resultStatus.getResultCode() == 1){
+					successMsg = resultStatus.getMessage();  
+				}
+			}    
+        
+		 } catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at savingNominatedPostProfileApplication", e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
