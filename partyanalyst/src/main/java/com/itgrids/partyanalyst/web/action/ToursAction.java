@@ -38,6 +38,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private InputStream	inputStream;
 	   private ToursBasicVO resultVO;
 	   private List<ToursBasicVO> resultList;
+	   private String successMsg;
 	
 	   public JSONObject getjObj() {
 		   return jObj;
@@ -101,7 +102,14 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   }
 	   public void setInputStream(InputStream inputStream) {
 		   this.inputStream = inputStream;
-	   }
+	   }  
+	   
+		public String getSuccessMsg() {
+			return successMsg;
+		}
+		public void setSuccessMsg(String successMsg) {
+			this.successMsg = successMsg;
+		}
 	//Business method
 	   public String execute(){
 		   return Action.SUCCESS;
@@ -132,11 +140,17 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 								ext = extension[extension.length-1];
 									mapfiles.put(f,ext);
 								}
-					   	        
 							}
 				}  
 			     
-				resultStatus = toursService.saveTourDtls(toursInputVO,1l,mapfiles);    
+				resultStatus = toursService.saveTourDtls(toursInputVO,1l,mapfiles);
+				if(resultStatus!=null){
+					if(resultStatus.getResultCode() == 0){
+						successMsg = resultStatus.getMessage();
+					}else if(resultStatus.getResultCode() == 1){
+						successMsg = resultStatus.getMessage();  
+					}
+				}
 	        
 			 } catch (Exception e) {
 				e.printStackTrace();
@@ -234,4 +248,15 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
-}//public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr)
+	public String getUniqueMemDtls(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long candidateDtlsId = jObj.getLong("candidateDtlsId");
+			resultVO = toursService.getUniqueMemDtls(candidateDtlsId);
+		}catch(Exception e){  
+			e.printStackTrace();  
+			LOG.error("Exception raised at getDesignationDtls()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
+}
