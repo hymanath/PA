@@ -285,7 +285,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   long intermediateStartTime = System.currentTimeMillis();
 			    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
 			    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToConstituencyLevel();
-			    LOG.error(" totaltoday const level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+			   LOG.error(" totaltoday const level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 			   
 		  }catch(Exception e){
 			  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -404,7 +404,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			      }
 			      
 		   }catch(Exception e){
-			   e.printStackTrace();
+			   //e.printStackTrace();
 			   LOG.error("Exception raised in getTdpCadredetailsConstituencyWise() in CadreRegistrationServiceNew class", e);
 		   }
 		   return finalList;
@@ -525,36 +525,36 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			        			
 						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){
 						    		
-						    		LOG.error("NO OF Records, assembly wise "+dateTypeVO.getDateType() +":"+dateTypeVO.getAssemblyList().size());
-						    		long intermediateStartTime = System.currentTimeMillis();
+						    		//LOG.error("NO OF Records, assembly wise "+dateTypeVO.getDateType() +":"+dateTypeVO.getAssemblyList().size());
+						    		//long intermediateStartTime = System.currentTimeMillis();
 						    		savingService(dateTypeVO.getAssemblyList(),currentTime);
-						    		LOG.error("NO OF Records, assembly wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+						    		//LOG.error("NO OF Records, assembly wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, parliament wise :"+dateTypeVO.getParliamentList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, parliament wise :"+dateTypeVO.getParliamentList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingService(dateTypeVO.getParliamentList(),currentTime);
-				        			LOG.error("NO OF Records, parliament wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, parliament wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		
 				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, district wise  :"+dateTypeVO.getDistrictList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, district wise  :"+dateTypeVO.getDistrictList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingService(dateTypeVO.getDistrictList(),currentTime);
-				        			LOG.error("NO OF Records, district wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, district wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, state wise  :"+dateTypeVO.getStateList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, state wise  :"+dateTypeVO.getStateList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			
 				        			savingService(dateTypeVO.getStateList(),currentTime);
-				        			LOG.error("NO OF Records, state wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, state wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        	}
@@ -674,7 +674,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    long intermediateStartTime = System.currentTimeMillis();
 				    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
 				    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToLowLevel();
-				    LOG.error("totaltoday low level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				   LOG.error("totaltoday low level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				   
 			  }catch(Exception e){
 				  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -814,7 +814,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				      }
 				      
 			   }catch(Exception e){
-				   e.printStackTrace();
+				   //e.printStackTrace();
 				   LOG.error("Exception raised in levelWiseTdpCareDataByTodayOrTotal() in CadreRegistrationServiceNew class", e);
 			   }
 			   return finalList;
@@ -841,37 +841,37 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
 				        		
 						    	if(dateTypeVO.getTehsilList() != null && dateTypeVO.getTehsilList().size() > 0){//tehsil
-						    		LOG.error("NO OF Records, tehsil wise :"+dateTypeVO.getTehsilList().size());
-									long intermediateStartTime = System.currentTimeMillis();
+						    		//LOG.error("NO OF Records, tehsil wise :"+dateTypeVO.getTehsilList().size());
+									//long intermediateStartTime = System.currentTimeMillis();
 						    		savingServiceLowLevel(dateTypeVO.getTehsilList(),currentTime);
-						    		LOG.error("NO OF Records, tehsil wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+						    		//LOG.error("NO OF Records, tehsil wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){//leb
-						    		LOG.error("NO OF Records, leb wise :"+dateTypeVO.getAssemblyList().size());
-						    		long intermediateStartTime = System.currentTimeMillis();
+						    		//LOG.error("NO OF Records, leb wise :"+dateTypeVO.getAssemblyList().size());
+						    		//long intermediateStartTime = System.currentTimeMillis();
 						    		savingServiceLowLevel(dateTypeVO.getAssemblyList(),currentTime);
-						    		LOG.error("NO OF Records, leb wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+						    		//LOG.error("NO OF Records, leb wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){//panchayat
-				        			LOG.error("NO OF Records, panchayat wise :"+dateTypeVO.getParliamentList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, panchayat wise :"+dateTypeVO.getParliamentList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingServiceLowLevel(dateTypeVO.getParliamentList(),currentTime);
-				        			LOG.error("NO OF Records, panchayat wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, panchayat wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){//ward
-				        			LOG.error("NO OF Records, ward wise :"+dateTypeVO.getDistrictList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, ward wise :"+dateTypeVO.getDistrictList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingServiceLowLevel(dateTypeVO.getDistrictList(),currentTime);
-				        			LOG.error("NO OF Records, ward wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, ward wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){//booth
-				        			long intermediateStartTime = System.currentTimeMillis();
-				        			LOG.error("NO OF Records, booth wise :"+dateTypeVO.getStateList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, booth wise :"+dateTypeVO.getStateList().size());
 				        			savingServiceLowLevel(dateTypeVO.getStateList(),currentTime);
-				        			LOG.error("NO OF Records, booth wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, booth wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        	}
@@ -1088,7 +1088,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				      calculateCadrePercantage(finalMap,locationTargetMap);
 				      
 			   }catch(Exception e){
-				   e.printStackTrace();
+				   //e.printStackTrace();
 				   LOG.error("Exception raised in geTdpCadreDataByDateAndConstituency() in CadreRegistrationServiceNew class", e);
 			   }
 			   return finalMap;
@@ -1245,38 +1245,38 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					    		
 					    		if( finalVO.getAssemblyList() != null && finalVO.getAssemblyList().size() > 0){
 					    			
-					    			LOG.error("NO OF Records, date wise assembly  :"+finalVO.getAssemblyList().size());
-					    			long intermediateStartTime = System.currentTimeMillis();
+					    			//LOG.error("NO OF Records, date wise assembly  :"+finalVO.getAssemblyList().size());
+					    			//long intermediateStartTime = System.currentTimeMillis();
 					    			
 					    			savingServiceDateWise(finalVO.getAssemblyList(),currentTime);
-					    			LOG.error("NO OF Records, date wise assembly  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+					    			//LOG.error("NO OF Records, date wise assembly  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 					    		}
 				        		
 				        		if(finalVO.getParliamentList() != null && finalVO.getParliamentList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, date wise parliament  :"+finalVO.getParliamentList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, date wise parliament  :"+finalVO.getParliamentList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			
 				        			savingServiceDateWise(finalVO.getParliamentList(),currentTime);
-				        			LOG.error("NO OF Records, date wise parliament  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, date wise parliament  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if( finalVO.getDistrictList() != null && finalVO.getDistrictList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, date wise district  :"+finalVO.getParliamentList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, date wise district  :"+finalVO.getParliamentList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			
 				        			savingServiceDateWise(finalVO.getDistrictList(),currentTime);
-				        			LOG.error("NO OF Records, date wise district  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, date wise district  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(finalVO.getStateList() != null && finalVO.getStateList().size() > 0){
 				        			
-				        			LOG.error("NO OF Records, date wise state  :"+finalVO.getParliamentList().size());
-				        			long intermediateStartTime = System.currentTimeMillis();
+				        			//LOG.error("NO OF Records, date wise state  :"+finalVO.getParliamentList().size());
+				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			
 				        			savingServiceDateWise(finalVO.getStateList(),currentTime);
-				        			LOG.error("NO OF Records, date wise state  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				        			//LOG.error("NO OF Records, date wise state  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		
