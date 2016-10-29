@@ -2517,7 +2517,7 @@
 							 <!--<span class="tourExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>-->
-							<span class="input-group pull-right  m_XsTop10 hide">
+							<!--<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="tourDateRange"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -3026,7 +3026,7 @@
 		cadreRegistrationBasicCall(globalActivityMemberId);              
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
-        //getToursBasicOverviewCountDetails();		
+       // getToursBasicOverviewCountDetails();		
 	}
 	
 	
