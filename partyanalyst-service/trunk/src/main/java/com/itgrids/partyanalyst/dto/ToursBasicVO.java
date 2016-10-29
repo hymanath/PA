@@ -31,6 +31,7 @@ public class ToursBasicVO {
 	private Long inchargerToursCnt=0l;
 	private Long totalSubmittedToursCnt=0l;
 	private Double averageTours=0.0d;
+	private String locationScope;
 	
 	
 	public ToursBasicVO() {
@@ -199,5 +200,12 @@ public class ToursBasicVO {
 	public void setAverageTours(Double averageTours) {
 		this.averageTours = averageTours;
 	}
+	public String getLocationScope() {
+		return locationScope;
+	}
+	public void setLocationScope(String locationScope) {
+		this.locationScope = locationScope;
+	}
+	
 	
 }
