@@ -17,6 +17,21 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		super(TdpCadreEnrollmentYear.class);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public TdpCadreEnrollmentYear getOnlineTdpCadreEnrollmentYearDetailsByTdpCadreId(Long tdpCadreId,String dataSourceType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model from TdpCadreEnrollmentYear model where model.tdpCadreId = :tdpCadreId  and ");
+		queryStr.append(" model.tdpCadre.isDeleted = 'O' and model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId and model.isDeleted = 'Y' ");
+			queryStr.append(" and model.tdpCadre.payMentStatus ='"+IConstants.NOT_PAID_STATUS+"' ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("enrollmentYearId",  IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		return (TdpCadreEnrollmentYear)query.uniqueResult();
+		
+	}
+	
 	public List<Long> getPreviousElectionYearsOfCadre(Long tdpCadreId){
 		
 		Query query = getSession().createQuery("select model.enrollmentYear.year from TdpCadreEnrollmentYear model " +
