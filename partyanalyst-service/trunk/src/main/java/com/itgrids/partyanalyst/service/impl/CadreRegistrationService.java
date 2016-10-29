@@ -98,6 +98,8 @@ import com.itgrids.partyanalyst.dao.ITabUserKeysDAO;
 import com.itgrids.partyanalyst.dao.ITabUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHistoryDAO;
@@ -146,7 +148,6 @@ import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
@@ -196,6 +197,7 @@ import com.itgrids.partyanalyst.model.TabUserKeys;
 import com.itgrids.partyanalyst.model.TabUserLoginDetails;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
+import com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyInfo;
 import com.itgrids.partyanalyst.model.TdpCadreHistory;
@@ -334,7 +336,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
-	
+	private ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;   
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -351,6 +354,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.cadreTabRecordsStatusDAO = cadreTabRecordsStatusDAO;
 	}
 	
+	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+		return tdpCadreEnrollmentYearDAO;
+	}
+
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
+
+	public ITdpCadreEnrollmentInfoDAO getTdpCadreEnrollmentInfoDAO() {
+		return tdpCadreEnrollmentInfoDAO;
+	}
+
+	public void setTdpCadreEnrollmentInfoDAO(
+			ITdpCadreEnrollmentInfoDAO tdpCadreEnrollmentInfoDAO) {
+		this.tdpCadreEnrollmentInfoDAO = tdpCadreEnrollmentInfoDAO;
+	}
+
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
 	}
@@ -13187,6 +13208,13 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						else if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)  && AuthDesc.equalsIgnoreCase("Y")){
 							TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
 							if(tdpCadre != null){
+								
+								TdpCadreEnrollmentYear tdpCadreEnrollmentYear = tdpCadreEnrollmentYearDAO.getOnlineTdpCadreEnrollmentYearDetailsByTdpCadreId(tdpCadreId,"ONLINE");
+								if(tdpCadreEnrollmentYear != null && tdpCadreEnrollmentYear.getTdpCadreEnrollmentYearId() > 0){
+									tdpCadreEnrollmentYear.setIsDeleted("N");
+									tdpCadreEnrollmentYear.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									tdpCadreEnrollmentYearDAO.save(tdpCadreEnrollmentYear);
+								}
 								saveDataToHistoryTable(tdpCadre);
 								tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
 								tdpCadre.setIsDeleted("N");
