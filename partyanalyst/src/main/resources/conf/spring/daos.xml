@@ -3328,4 +3328,7 @@
 	<bean id="selfAppraisalLocationScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalLocationScopeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tabUserLocationDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserLocationDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
