@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -300,5 +301,82 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
         "                TEMP.cadre_2016,TEMP.cadre_2016_percent,TEMP.new_cadre,TEMP.new_cadre_percent,TEMP.renewal_cadre,TEMP.renewal_cadre_percent,TEMP.inserted_time " +
         "         FROM   tdp_cadre_location_info_temp1 TEMP " );
     	return query.executeUpdate();
+    }
+    
+    public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select model.locationValue," +
+    				" model.cadre2014,model.cadre2014Percent," +
+    				" model.cadre2016,model.cadre2016Percent," +
+    				" model.newCadre,model.newCadrePercent," +
+    				" model.renewalCadre,model.renewalCadrePercent," +
+    				" model.locationScopeId,model.type" +
+					" from TdpCadreLocationInfo model" +
+					" where");
+    	if(locationScopeId != null && locationScopeId.longValue() > 0l)
+    		sb.append(" model.locationScopeId = :locationScopeId");
+    	
+    	if(type != null && type.equalsIgnoreCase("Total"))
+    		sb.append(" and model.type = 'Total'");
+    	else if(type != null && type.equalsIgnoreCase("Today"))
+    		sb.append(" and model.type = 'Today'");
+    	sb.append(" group by model.locationValue");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	if(locationScopeId != null && locationScopeId.longValue() > 0l)
+    		query.setParameter("locationScopeId", locationScopeId);
+    	
+    	return query.list();
+    }
+    
+    public List<Object[]> getDataSourceTypeWiseRegisteredDetails(Date fromDate,Date toDate){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select model.tdpCadre.dataSourceType," +
+    				" model.enrollmentYearId," +
+		     		" count(distinct model.tdpCadre.tdpCadreId)" +
+    				" from TdpCadreEnrollmentYear model" +
+    				" where model.tdpCadre.enrollmentYear='2014'" +
+    				" and model.tdpCadre.isDeleted='N'" +
+				    " and model.enrollmentYearId in (3,4)" +
+				    " and model.isDeleted='N'" +
+				    " and (model.tdpCadre.insertedWebUser.userId not in (3930,7394) or model.tdpCadre.insertedWebUser.userId is null)");
+    	if(fromDate!= null && toDate!=null){
+			  sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+		 }
+    	sb.append(" group by model.tdpCadre.dataSourceType,model.enrollmentYearId");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	if(fromDate!= null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+		}
+    	
+    	return query.list();
+    }
+    
+    public List<Object[]> getDataSourceTypeWiseRegisteredDetails1(Date fromDate,Date toDate){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select model.tdpCadre.dataSourceType," +
+    				" model.insertedWebUser.userId," +
+    				" model.enrollmentYearId," +
+		     		" count(distinct model.tdpCadre.tdpCadreId)" +
+    				" from TdpCadreEnrollmentYear model" +
+    				" where model.tdpCadre.enrollmentYear='2014'" +
+    				" and model.tdpCadre.isDeleted='N'" +
+				    " and model.enrollmentYearId in (3,4)" +
+				    " and model.isDeleted='N'" +
+				    " and model.tdpCadre.insertedWebUser.userId in (3930,7394)");
+    	if(fromDate!= null && toDate!=null){
+			  sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
+		 }
+    	sb.append(" group by model.tdpCadre.dataSourceType,model.insertedWebUser.userId,model.enrollmentYearId");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	if(fromDate!= null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+		}
+    	
+    	return query.list();
     }
 }

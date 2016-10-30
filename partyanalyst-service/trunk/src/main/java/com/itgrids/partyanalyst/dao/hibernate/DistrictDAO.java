@@ -219,7 +219,7 @@ public List<Object[]> getDistrictIdAndNameByStateForStateTypeId(Long stateId,Lon
 public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 {
 	Query query = getSession().createQuery("select D.districtId,D.districtName from District D where " +
-			"D.districtId in(:districtIds)");
+			"D.districtId in (:districtIds)");
 	query.setParameterList("districtIds", districtIds);
 	return query.list();
 }
