@@ -25,9 +25,9 @@ import org.apache.poi.ss.usermodel.Row;
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreGhmcDriveUsersDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
-import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssigneeDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
@@ -37,12 +37,16 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
+import com.itgrids.partyanalyst.dto.CadreDashboardVO;
+import com.itgrids.partyanalyst.dto.CadreDataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -57,8 +61,8 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
-import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -89,8 +93,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ICadreGhmcDriveUsersDAO cadreGhmcDriveUsersDAO;
-
+	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
+	private IStateDAO stateDAO;
 	
+	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
+		return tdpCadreLocationInfoDAO;
+	}
+
+	public void setTdpCadreLocationInfoDAO(
+			ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO) {
+		this.tdpCadreLocationInfoDAO = tdpCadreLocationInfoDAO;
+	}
+
 	public ICadreGhmcDriveUsersDAO getCadreGhmcDriveUsersDAO() {
 		return cadreGhmcDriveUsersDAO;
 	}
@@ -6161,4 +6184,239 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 }
 			return returnVo;
 		 }
+		 
+		 
+	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId){
+		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
+		 try {
+			 Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId);
+		 	if(list != null && !list.isEmpty()){
+		 		for (Object[] obj : list) {
+		 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					CadreDashboardVO vo = new CadreDashboardVO();
+					vo.setId(id);
+					vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
+					vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					vo.setPerc2016(obj[4] != null ? obj[4].toString():"");
+					vo.setNewCount(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setNewPerc(obj[6] != null ? obj[6].toString():"");
+					vo.setRenewalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
+					vo.setLocationScopeId(locationScopeId);
+					vo.setType(type);
+					
+					locationIds.add(id);
+					returnList.add(vo);
+				}
+		 	}
+		 	
+		 	List<Object[]> list1 = null;
+		 	if(locationScopeId != null && locationScopeId.longValue() == 2l)
+		 		list1 = stateDAO.getStatesForList(locationIds);
+		 	else if(locationScopeId != null && locationScopeId.longValue() == 3l)
+		 		list1 = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
+		 	else if(locationScopeId != null && locationScopeId.longValue() == 4l)
+		 		list1 = constituencyDAO.getConstituenctNamesByIds(locationIds);
+		 	
+		 	if(list1 != null && !list1.isEmpty()){
+		 		for (Object[] obj : list1) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String name = obj[1] != null ? obj[1].toString():"";
+					locationNameMap.put(id, name);
+				}
+		 	}
+		 	
+		 	if(returnList != null && !returnList.isEmpty()){
+		 		for (CadreDashboardVO vo : returnList) {
+					vo.setName(locationNameMap.get(vo.getId()));
+				}
+		 	}
+		 	
+		 	if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
+		 		if(returnList != null && !returnList.isEmpty()){
+			 		for (CadreDashboardVO vo : returnList) {
+						vo.setPercentage(new BigDecimal(vo.getCount2016()*(100.0)/vo.getCount2014()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+			 	}
+		 	}
+			 	
+		} catch (Exception e) {
+			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
+		}
+		 return returnList;
+	}
+	
+	public List<CadreDataSourceTypeVO> getDataSourceTypeWiseRegisteredDetails(){
+		List<CadreDataSourceTypeVO> returnList = new ArrayList<CadreDataSourceTypeVO>();
+		try {
+			Date currentDate = dateService.getCurrentDateAndTime();
+			CadreDataSourceTypeVO todayVO = new CadreDataSourceTypeVO();
+			CadreDataSourceTypeVO totalVO = new CadreDataSourceTypeVO();
+			
+			List<Object[]> list = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails(currentDate, currentDate);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long enrolYrId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					if(sourceType.trim().equalsIgnoreCase("WEB")){
+						if(enrolYrId == 3l){
+							todayVO.setWebRenewal(count);
+							todayVO.setWebTotal(todayVO.getWebTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							todayVO.setWebNew(count);
+							todayVO.setWebTotal(todayVO.getWebTotal()+count);
+						}
+					}
+					else if(sourceType.trim().equalsIgnoreCase("TAB")){
+						if(enrolYrId == 3l){
+							todayVO.setTabRenewal(count);
+							todayVO.setTabTotal(todayVO.getTabTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							todayVO.setTabNew(count);
+							todayVO.setTabTotal(todayVO.getTabTotal()+count);
+						}
+					}
+					else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+						if(enrolYrId == 3l){
+							todayVO.setOnlineRenewal(count);
+							todayVO.setOnlineTotal(todayVO.getOnlineTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							todayVO.setOnlineNew(count);
+							todayVO.setOnlineTotal(todayVO.getOnlineTotal()+count);
+						}
+					}
+				}
+			}
+			
+			List<Object[]> list1 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails1(currentDate, currentDate);
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long userId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long enrolYrId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					if(userId == 3930l){					//Hyd PartyOfc
+						if(enrolYrId == 3l){
+							todayVO.setPartyOfcHydRenewal(count);
+							todayVO.setPartyOfcHydTotal(todayVO.getPartyOfcHydTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							todayVO.setPartyOfcHydNew(count);
+							todayVO.setPartyOfcHydTotal(todayVO.getPartyOfcHydTotal()+count);
+						}
+					}
+					else if(userId == 7394l){				//Vij PartyOfc
+						if(enrolYrId == 3l){
+							todayVO.setPartyOfcVijRenewal(count);
+							todayVO.setPartyOfcVijTotal(todayVO.getPartyOfcVijTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							todayVO.setPartyOfcVijNew(count);
+							todayVO.setPartyOfcVijTotal(todayVO.getPartyOfcVijTotal()+count);
+						}
+					}
+					
+				}
+			}
+			
+			/*List<Object[]> stateList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today", 2l);
+			if(stateList != null && !stateList.isEmpty()){
+				for (Object[] obj : stateList) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long newCount = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					if(id == 1l){
+						todayVO.setApNew(Long.valueOf(s))
+					}
+				}
+			}*/
+			
+			List<Object[]> list2 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails(null, null);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long enrolYrId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					if(sourceType.trim().equalsIgnoreCase("WEB")){
+						if(enrolYrId == 3l){
+							totalVO.setWebRenewal(count);
+							totalVO.setWebTotal(totalVO.getWebTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							totalVO.setWebNew(count);
+							totalVO.setWebTotal(totalVO.getWebTotal()+count);
+						}
+					}
+					else if(sourceType.trim().equalsIgnoreCase("TAB")){
+						if(enrolYrId == 3l){
+							totalVO.setTabRenewal(count);
+							totalVO.setTabTotal(totalVO.getTabTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							totalVO.setTabNew(count);
+							totalVO.setTabTotal(totalVO.getTabTotal()+count);
+						}
+					}
+					else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+						if(enrolYrId == 3l){
+							totalVO.setOnlineRenewal(count);
+							totalVO.setOnlineTotal(totalVO.getOnlineTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							totalVO.setOnlineNew(count);
+							totalVO.setOnlineTotal(totalVO.getOnlineTotal()+count);
+						}
+					}
+				}
+			}
+			
+			List<Object[]> list3 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails1(null, null);
+			if(list3 != null && !list3.isEmpty()){
+				for (Object[] obj : list3) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long userId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long enrolYrId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					if(userId == 3930l){					//Hyd PartyOfc
+						if(enrolYrId == 3l){
+							totalVO.setPartyOfcHydRenewal(count);
+							totalVO.setPartyOfcHydTotal(totalVO.getPartyOfcHydTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							totalVO.setPartyOfcHydNew(count);
+							totalVO.setPartyOfcHydTotal(totalVO.getPartyOfcHydTotal()+count);
+						}
+					}
+					else if(userId == 7394l){				//Vij PartyOfc
+						if(enrolYrId == 3l){
+							totalVO.setPartyOfcVijRenewal(count);
+							totalVO.setPartyOfcVijTotal(totalVO.getPartyOfcVijTotal()+count);
+						}
+						else if(enrolYrId == 4l){
+							totalVO.setPartyOfcVijNew(count);
+							totalVO.setPartyOfcVijTotal(totalVO.getPartyOfcVijTotal()+count);
+						}
+					}
+					
+				}
+			}
+			
+			returnList.add(todayVO);
+			returnList.add(totalVO);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDataSourceTypeWiseRegisteredDetails() method in CadreDashBoardService().",e);
+		}
+		return returnList;
+	}
 }

@@ -816,7 +816,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			
     		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-		        	
+		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
 		        	Date currentDate = dateUtilService.getCurrentDateAndTime();
 		        	
 		        	CadreRegIssue cadreRegIssue = cadreRegIssueDAO.get(cadreRegIssueId);
@@ -831,7 +831,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 		    			if(newStatusId != null && newStatusId> 0l){
 		    				cadreRegIssue.setCadreRegIssueStatusId(newStatusId);
 		    			}
-		    			cadreRegIssue.setUpdatedBy(loginUserId);
+		    			cadreRegIssue.setUpdatedBy(cadreRegUserId);
 		    			cadreRegIssue.setUpdatedTime(currentDate);
 		    			
 		    			cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
@@ -844,7 +844,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			        	cadreRegIssueTrack.setCadreRegIssueTypeId(cadreRegIssue.getCadreRegIssueTypeId());
 			        	cadreRegIssueTrack.setDescription(cadreRegIssue.getDescription());
 			        	cadreRegIssueTrack.setCadreRegIssueStatusId(cadreRegIssue.getCadreRegIssueStatusId());
-			        	cadreRegIssueTrack.setInsertedBy(loginUserId);
+			        	cadreRegIssueTrack.setInsertedBy(cadreRegUserId);
 			        	cadreRegIssueTrack.setInsertedTime(currentDate);
 			        	cadreRegIssueTrackDAO.save(cadreRegIssueTrack);
 		    			

@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dao.IDataRejectReasonDAO;
+import com.itgrids.partyanalyst.dao.ITabUserInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
 import com.itgrids.partyanalyst.service.IDataMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class DataMonitoringService implements IDataMonitoringService {
 	
@@ -40,8 +42,15 @@ public class DataMonitoringService implements IDataMonitoringService {
 	private IDataRejectReasonDAO dataRejectReasonDAO;
 	private ICadreRegUserDAO cadreRegUserDAO;
 	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
+	private ITabUserInfoDAO tabUserInfoDAO;
 	
 	
+	public ITabUserInfoDAO getTabUserInfoDAO() {
+		return tabUserInfoDAO;
+	}
+	public void setTabUserInfoDAO(ITabUserInfoDAO tabUserInfoDAO) {
+		this.tabUserInfoDAO = tabUserInfoDAO;
+	}
 	public ICadreRegUserTabUserDAO getCadreRegUserTabUserDAO() {
 		return cadreRegUserTabUserDAO;
 	}
@@ -822,5 +831,27 @@ public class DataMonitoringService implements IDataMonitoringService {
   			LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
   		}
   		return returnList;
+  	}
+  	
+  	public String getTabUserImages(){
+  		try {
+			List<Object[]> list = tabUserInfoDAO.getTotalTabUserImages();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String imageStr = obj[1] != null ? obj[1].toString():"";
+					String imagePath = obj[2] !=null ? obj[2].toString():"";
+					String imageName = imagePath.split("/")[2];
+					Boolean image = new ImageAndStringConverter().convertBase64StringToImage(imageStr, "D:\\TabUserImages\\"+imageName+"");
+					/*if(image)
+						return "success";*/
+					
+				}
+			}
+			return "success";
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getTabUserImages() of FieldMonitoringService", e);
+			return "failure";
+		}
   	}
 }
