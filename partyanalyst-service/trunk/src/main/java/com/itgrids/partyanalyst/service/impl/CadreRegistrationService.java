@@ -6000,43 +6000,50 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 	
 	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
 	try{
-		if(input.getUname() == null || input.getUname().trim().length() == 0)
-	 {
+		
+		//USER CHECKING
+		if(input.getUname() == null || input.getUname().trim().length() == 0){
 			CadrePrintVO returnVO = new CadrePrintVO();
 			returnVO.setStatus("Invalid");
 			finalList.add(returnVO);
 			 return finalList;
-	   
-	 }
-	 List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUname(),input.getPwd());;
-	 if(validCheck == null || validCheck.size() == 0)
-	 {
+	    }
+	    List validCheck = cardPrintUserDAO.checkUserEixsts(input.getUname(),input.getPwd());;
+	   if(validCheck == null || validCheck.size() == 0){
 		 CadrePrintVO returnVO = new CadrePrintVO();
 		 returnVO.setStatus("Invalid");
 		 finalList.add(returnVO);
 		 return finalList;
-	 }
+	   }
 	 
-	 	String date = input.getDate();
+	   //GET INPUTS
+	   
+	 	//String date = input.getDate();
 		String trNo = input.getTrNo();
-		String constituency = input.getConstituency();
-		Long constiNo = input.getConstituecyNo();
+		
 		String mobileNo = input.getMobileNo();
-		Long constiId = input.getConstituencyId();
+		
+		//String constituency = input.getConstituency();
+		//Long constiId = input.getConstituencyId();
+		Long constiNo = input.getConstituecyNo();
+		
 		Long distId = input.getDistrictId();
 		Long mandalId = input.getMandalId();
 		Long townId = input.getTownId();
-		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String isOtherState = input.getIsOtherState();
-		Date srvyDt = null;
-		/*if(date!=null){
-			srvyDt = originalFormat.parse(date);
-		}*/
 		
-		/*if(date!=null && date.trim().length()>0){
+		String isOtherState = input.getIsOtherState();
+		
+		Date srvyDt = null;
+		/*SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+		if(date!=null){
+			srvyDt = originalFormat.parse(date);
+		}
+		if(date!=null && date.trim().length()>0){
 			sb.append(" and date(model.surveyTime) =:surveyDate");
 		}*/
+		
+		//Query building
+		StringBuffer sb = new StringBuffer();
 		if(trNo!=null && trNo.trim().length()>0){
 			sb.append(" and model.refNo =:trNo");
 		}
@@ -6063,9 +6070,10 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		
 		if(input.getMemberShipNumber() != null && input.getMemberShipNumber().trim().length() > 0)
 		{
-			String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
+			/*String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
 			String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
-		 	sb.append(" and (model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		 	sb.append(" and (model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");*/
+			sb.append(" and model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' ");
 		}
 		
 		if(input.getName() != null && input.getName().trim().length() > 0)
@@ -6082,6 +6090,8 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		{
 			sb.append(" and model.voter.voterIDCardNo = '"+input.getVoterIdCardNo().trim()+"' ");
 		}
+		
+		//Get MembershipIds For voter and family voter ids scenarion search.
 		Set<String> voterMemberCards = new HashSet<String>();
 		Set<String> nonVoterMemberCards = new HashSet<String>();
 		List<String> memberCards = null;
@@ -6098,15 +6108,14 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		
 		if(isOtherState.equalsIgnoreCase("false"))
 		{
-			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
-			 memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
-		}
+			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);//vid registered
+			 memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);//fvid registered
+ 		}
 		else if(isOtherState.equalsIgnoreCase("true"))
 		{
-			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
-			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
+			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);//vid registerd
+			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);//fvid registered
 		}
-			
 		
 		if(memberCards!=null && memberCards.size()>0)
 			voterMemberCards.addAll(memberCards);
@@ -6114,6 +6123,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		if(memberCardsForNonVoters!=null && memberCardsForNonVoters.size()>0)
 			nonVoterMemberCards.addAll(memberCardsForNonVoters);
 		
+		//
 		if(voterMemberCards!=null && voterMemberCards.size()>0 ){
 			
 			List<String> voterMemberCardsList = new ArrayList<String>(voterMemberCards);
@@ -6301,6 +6311,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
 	try{
 		
+		//USER CHECKING
 		if(input.getUname() == null || input.getUname().trim().length()  == 0)
 		 {
 				CadrePrintVO returnVO = new CadrePrintVO();
@@ -6317,13 +6328,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			 finalList.add(returnVO);
 			 return finalList;
 		 }
+		 
+		 //QUERY BUILDING
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
 		Date srvyDt = null;
 		
 		String isOtherState = input.getIsOtherState();
-		
 		if(isOtherState == null)
 			isOtherState = "false";
 		else if(isOtherState != null && isOtherState.equalsIgnoreCase("true"))
@@ -6337,10 +6348,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		{
 			if(input.getMemberShipNumber() != null && input.getMemberShipNumber().trim().length() > 0)
 			{
-				String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
+				/*String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
 				String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
 			 	StringBuilder queryStr = new StringBuilder();
-			 	sb.append(" and ( model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR  model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+			 	sb.append(" and ( model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR  model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");*/
+				sb.append(" and  model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' ");
 			}
 		}
 		else
@@ -6353,6 +6365,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			}
 		}
 		
+		//QUERIES
 		Set<String> voterMemberCards = new HashSet<String>();
 		Set<String> nonVoterMemberCards = new HashSet<String>();
 		
@@ -6429,25 +6442,28 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							returnVO.setPrintStatus("print");	
 					returnVO.setMobileNo(obj[9] != null ? obj[9].toString() : "");
 					try{
-					if(obj[10] != null)
-					{
-						String photoType = obj[10].toString();
-						if(photoType.equalsIgnoreCase("NEW"))
-						{
-							String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
-							returnVO.setVoterImgPath(url);
-						
-						}
-						else if(photoType.equalsIgnoreCase("CADRE"))
-						{							
+						if(obj[10] != null){
+							String photoType = obj[10].toString();
+							/*if(photoType.equalsIgnoreCase("NEW"))
+							{
 								String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
 								returnVO.setVoterImgPath(url);
+							
+							}
+							else if(photoType.equalsIgnoreCase("CADRE"))
+							{							
+									String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
+									returnVO.setVoterImgPath(url);
+							}
+							else
+							{
+								returnVO.setVoterImgPath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId((Long)obj[4]));
+							}*/
+							if(obj[11] != null && obj[11].toString().trim().length() > 0){
+								String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
+								returnVO.setVoterImgPath(url);
+							}
 						}
-						else
-						{
-							returnVO.setVoterImgPath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId((Long)obj[4]));
-						}
-					}
 					}
 					catch(Exception e)
 					{
@@ -6537,30 +6553,37 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						else
 							returnVO.setPrintStatus("print");	
 					try{
-					if(obj[8] != null)
-					{
-						String photoType = obj[8].toString();
-						if(photoType.equalsIgnoreCase("NEW"))
-						{
-							String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
-							returnVO.setVoterImgPath(url);
+						 if(obj[8] != null){
 						
-						}
-						else if(photoType.equalsIgnoreCase("CADRE"))
-						{							
+							String photoType = obj[8].toString();
+							/*if(photoType.equalsIgnoreCase("NEW"))
+							{
 								String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
 								returnVO.setVoterImgPath(url);
+							
+							}
+							else if(photoType.equalsIgnoreCase("CADRE"))
+							{							
+									String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
+									returnVO.setVoterImgPath(url);
+							}
+							else
+							{
+								String url = "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+								returnVO.setVoterImgPath(url);
+							}*/
+							if(obj[9] != null && obj[9].toString().trim().length() > 0){
+								String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
+								returnVO.setVoterImgPath(url);
+							}
+							
 						}
-						else
+						else if(obj[8] == null && isOtherState.equalsIgnoreCase("true"))
 						{
-							String url = "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-							returnVO.setVoterImgPath(url);
+							if(obj[9] != null && obj[9].toString().trim().length() > 0){
+								returnVO.setVoterImgPath("https://mytdp.com/images/cadre_images/"+obj[9].toString());
+							}
 						}
-					}
-					else if(obj[8] == null && isOtherState.equalsIgnoreCase("true"))
-					{
-						returnVO.setVoterImgPath("https://mytdp.com/images/cadre_images/"+obj[9].toString());
-					}
 					}
 					catch(Exception e)
 					{
