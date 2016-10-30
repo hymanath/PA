@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
+import com.itgrids.partyanalyst.dto.CadreDashboardVO;
+import com.itgrids.partyanalyst.dto.CadreDataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -107,4 +109,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getGHMCRegisteredCountDetails(String type);
 	 public CadreRegisterInfo getDashBoardBasicRegistrationInfo(String accessType,Long accessValue,Long stateId);
 	 public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr,Long memberTypeId);
+	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId);
+	 public List<CadreDataSourceTypeVO> getDataSourceTypeWiseRegisteredDetails();
 }

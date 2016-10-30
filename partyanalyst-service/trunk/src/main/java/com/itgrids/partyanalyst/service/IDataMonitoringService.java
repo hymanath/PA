@@ -21,4 +21,5 @@ public interface IDataMonitoringService {
 	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId);
 	public IdNameVO getTotalRegCdrVendorWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
 	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
+	public String getTabUserImages();
 }
