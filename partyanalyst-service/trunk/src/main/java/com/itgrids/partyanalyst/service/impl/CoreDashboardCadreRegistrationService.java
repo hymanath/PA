@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -21,10 +20,8 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
-import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -42,7 +39,6 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
-import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -706,7 +702,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setAge(Long.valueOf(String.valueOf(diffYear)));
 				}
 			}
-			returnVO.setDobStr(objects[6]!=null?objects[6].toString():"");//DOB
+			returnVO.setDobStr(objects[6]!=null?objects[6].toString().substring(0,10):"");//DOB
 			
 			if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
 			  
@@ -717,7 +713,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 
 				int diffYear = endDate.get(Calendar.YEAR) - returnVO.getAge().intValue();
 				
-				returnVO.setDobStr(String.valueOf(diffYear)+"-01-01   ");
+				returnVO.setDobStr(String.valueOf(diffYear)+"-01-01");
 				
 				}
 			returnVO.setImageBase64String(objects[7]!=null?objects[7].toString():"");//ImagePath
@@ -948,7 +944,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						}
 					}
 
-					returnVO.setDobStr(objects[4]!=null?objects[4].toString():"");//DOB
+					returnVO.setDobStr(objects[4]!=null?objects[4].toString().substring(0,10):"");//DOB
 					if((returnVO.getDobStr() == null || returnVO.getDobStr().toString().trim().length()<=0) && returnVO.getAge() != null){
 						  
 						Calendar startDate = new GregorianCalendar();
@@ -957,7 +953,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						endDate.setTime(new Date());
 		
 						int diffYear = endDate.get(Calendar.YEAR) - returnVO.getAge().intValue();
-						returnVO.setDobStr(String.valueOf(diffYear)+"-01-01   ");
+						returnVO.setDobStr(String.valueOf(diffYear)+"-01-01");
 						
 						}
 					returnVO.setImageBase64String(objects[5]!=null?objects[5].toString():"");//ImagePath
