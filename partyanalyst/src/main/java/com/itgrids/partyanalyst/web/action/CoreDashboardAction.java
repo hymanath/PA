@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
+import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;

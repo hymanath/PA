@@ -83,6 +83,9 @@
 					<div class="col-md-3 col-xs-12 col-sm-6">
                     	<button class="btn btn-success m_top25 text-capital" id="getRegStatusId">submit</button>
 					</div>
+					<!--<div class="col-md-3 col-xs-12 col-sm-6">
+                    	<button class="btn btn-success m_top25 text-capital" id="imageId">image</button>
+					</div>-->
                 </div>
             </div>
             <div class="block pad_20 m_top20" id="detailsDivId" style="display:none;">
@@ -199,6 +202,19 @@ $("#cadreRegliId").hide();
 
 getConstituencies();
 getUsers(0);
+
+/*$(document).on('click','#imageId',function(){
+	var jsObj={}    
+	$.ajax({
+		type:'GET',
+		url: 'getTabUserImagesAction.action',           
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result == 'success')
+			alert(123);
+	});
+});*/
 </script>
 </body>
 </html>

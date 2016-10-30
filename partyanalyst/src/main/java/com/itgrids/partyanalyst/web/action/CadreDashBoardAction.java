@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
+import com.itgrids.partyanalyst.dto.CadreDashboardVO;
+import com.itgrids.partyanalyst.dto.CadreDataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -54,8 +56,27 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private Long stateId;
 	private CadreManagementService cadreManagementService;
 	private IMahaNaduService mahaNaduService;
+	private List<CadreDashboardVO> cadreDashboardVOList;
+	private List<CadreDataSourceTypeVO> cadreDataSourceTypeVOList;
 	
 	
+	public List<CadreDataSourceTypeVO> getCadreDataSourceTypeVOList() {
+		return cadreDataSourceTypeVOList;
+	}
+
+	public void setCadreDataSourceTypeVOList(
+			List<CadreDataSourceTypeVO> cadreDataSourceTypeVOList) {
+		this.cadreDataSourceTypeVOList = cadreDataSourceTypeVOList;
+	}
+
+	public List<CadreDashboardVO> getCadreDashboardVOList() {
+		return cadreDashboardVOList;
+	}
+
+	public void setCadreDashboardVOList(List<CadreDashboardVO> cadreDashboardVOList) {
+		this.cadreDashboardVOList = cadreDashboardVOList;
+	}
+
 	public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
@@ -1030,4 +1051,33 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String get2016LocationWiseRegisteredCounts()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			String type = jObj.getString("type");
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			
+			cadreDashboardVOList = cadreDashBoardService.get2016LocationWiseRegisteredCounts(type, locationScopeId);
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDataSourceTypeWiseRegisteredDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			cadreDataSourceTypeVOList = cadreDashBoardService.getDataSourceTypeWiseRegisteredDetails();
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
 }

@@ -2586,7 +2586,8 @@
 		   <property name="regionServiceDataImp" ref="regionServiceDataImp" />        
             <property name="cadreGhmcDriveUsersDAO" ref="cadreGhmcDriveUsersDAO" />          
           <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
-          
+          <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
+          <property name="stateDAO" ref="stateDAO" />
      </bean>
     <bean name="ctpCasteReportService"  class="com.itgrids.partyanalyst.service.impl.CtpCasteReportService">
      
@@ -3618,6 +3619,7 @@
 	 <property name="dataRejectReasonDAO" ref="dataRejectReasonDAO"/>
 	 <property name="cadreRegUserDAO" ref="cadreRegUserDAO"/>
 	 <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO"/>
+	 <property name="tabUserInfoDAO" ref="tabUserInfoDAO"/>
 	</bean>
 	
 	<bean name="cadreRegistrationServiceNew" class="com.itgrids.partyanalyst.service.impl.CadreRegistrationServiceNew" >
@@ -3655,6 +3657,7 @@
 	 <property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
 	 <property name="transactionTemplate" ref="transactionTemplate"></property>
 	</bean>
+	
 	
 	<bean name="coreDashboardToursService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardToursService" >
 	 <property name="selfAppraisalCandidateDetailsDAO" ref="selfAppraisalCandidateDetailsDAO" />

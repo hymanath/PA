@@ -466,4 +466,14 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   }
 		   return Action.SUCCESS;
 	   }
+	   
+	   public String getTabUserImages(){  
+		   try{
+			   task = dataMonitoringService.getTabUserImages();
+		   }catch(Exception e){
+			   e.printStackTrace();
+			   LOG.error("Exception raised at getDataRejectReason()  of DataMonitoringAction", e);
+		   }
+		   return Action.SUCCESS;
+	   }
 }
