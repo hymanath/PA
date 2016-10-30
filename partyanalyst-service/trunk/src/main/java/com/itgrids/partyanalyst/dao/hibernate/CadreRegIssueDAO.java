@@ -208,8 +208,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		if(userId != null && userId.longValue() > 0l)
 			sb.append(" and model1.cadreSurveyUser.cadreSurveyUserId = :userId");
 							
-		if(startDate != null && endDate != null)
-			sb.append(" and date(model.insertedTime) between :startDate and :endDate");
+		/*if(startDate != null && endDate != null)
+			sb.append(" and date(model.insertedTime) between :startDate and :endDate");*/
 				
 		sb.append(" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
@@ -223,10 +223,10 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
 			query.setParameter("userId", userId);
-		if(startDate != null && endDate != null){
+		/*if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
-		}
+		}*/
 		
 		return query.list();
 	}
@@ -512,9 +512,9 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		if(issueStatusId != null && issueStatusId > 0l){
 			sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId  = :issueStatusId");
 		}
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
-		}
+		}*/
 		    sb.append(" order by model.insertedTime desc ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
@@ -523,10 +523,10 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		if(issueStatusId != null && issueStatusId > 0l){
 			query.setParameter("issueStatusId",issueStatusId );
 		}
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			query.setDate("fromDate",fromDate );
 			query.setDate("toDate",toDate );
-		}
+		}*/
 		return query.list();
 	}
 	
@@ -573,19 +573,19 @@ public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUser
 				"   and  model.cadreSurveyUserId = :cadreSurveyUserId and model.tabUserInfoId = :tabUserInfoId " +
 				"  and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
-		}
+		}*/
 		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
 		query.setParameter("tabUserInfoId",tabUserInfoId );
 		query.setParameter("cadreRegUserId", cadreRegUserId);
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			query.setDate("fromDate",fromDate );
 			query.setDate("toDate",toDate );
-		}
+		}*/
 		return query.list();
 	}
 	
