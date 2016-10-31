@@ -1093,8 +1093,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			     if(locationLevelMap != null && locationLevelMap.size() > 0){
 			    	 
 					  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
-						  
-						List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(entry.getKey(),entry.getValue(),4l,activityMemberId);
+					     Long accessLevelValue =0l;	
+					     if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency in the case of core dashboard
+					    	 accessLevelValue = 10l; //region scope 10  means parliament constituency in intermediate table so that we are replacing value
+					     }else if(entry.getKey().longValue()==5l){// user level 5 means constituency in the case of core dashboard
+					    	 accessLevelValue = 4l;  //region scope 4  means constituency in intermediate table so that we are replacing value
+					     }else{
+					    	 accessLevelValue = entry.getKey();	 
+					     }
+						List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(accessLevelValue,entry.getValue(),4l,null,null);
 						  
 						if(returnObjList != null && returnObjList.size() > 0){
 							
@@ -1335,15 +1342,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		     setRequiredLocationName(locationIdAndNameObjList,locationIdAndNameMap);
 	 
 	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,3l,activityMemberId);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null,3l,activityMemberId,"District");// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null, 4l,activityMemberId);// 2016 target 
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 4l,activityMemberId,"District");// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 	  }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 	     	  || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 3l,null);// 2014 target 
+			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 3l,null,null);// 2014 target 
 			setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 4l,null);// 2016 target 
+			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 4l,null,null);// 2016 target 
 			setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 	  }
 		if(userAccessLevelMap != null && userAccessLevelMap.size() > 0){
@@ -1505,14 +1512,14 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			 fromDate = sdf.parse(fromDateStr);
 		 }
 		 if(locationType != null && locationType.equalsIgnoreCase("District")){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,3l,null);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,3l,null,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null, 4l,null);// 2016 target 
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null, 4l,null,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 		 }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 3l,null);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 3l,null,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
-				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 4l,null);// 2016 target 
+				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 4l,null,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 		 }
 		    
