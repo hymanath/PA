@@ -72,8 +72,8 @@
 	  <div class="modal-content">
 		    <div class="modal-header">
 			   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			    <h4 class="text-capital" id="userHeadinId"> </h4> <input type="button" class="btn btn-success pull-right" value ="ExportToExcel" 
-			    style="margin-left: 1px; width: 126px; padding-left: 17px; border-left-width: 0px; border-top-width: 0px;" id="exportToExcelId" onClick ="generateExcelReport()" ></input>
+			    <h4 class="text-capital" id="userHeadinId"></h4> <button type="button" class="btn btn-success pull-right" 
+			    style="margin-left: 1px; width: 126px; padding-left: 17px; border-left-width: 0px; border-top-width: 0px;" id="exportToExcelId" onClick ="generateExcelReport()" ><img src ="img/Excel.png" style="height:18px;width:18px;"/>ExportToExcel</button>
 		    </div>
 		<div class="modal-body">
 			   <div class="table table-condensed" id ="tabUserWiseRegistionDetilsId">

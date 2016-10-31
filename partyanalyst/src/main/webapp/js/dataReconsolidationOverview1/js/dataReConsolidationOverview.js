@@ -56,7 +56,7 @@ function getDataReConsalationOverView(){
   {
  	 var str ='';  
 	    str+='<div class="panel panel-default m_top10">';    
- 	    str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>DATA RECONSALIDATION OVERVIEW</b></h4>';
+ 	    str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
  				str+='<div class="panel-body" style="padding: 25px;">';
  					str+='<div class="row">';
  						str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
@@ -353,11 +353,11 @@ function buildPopUpModelDetails(result){
 		str1+='<th>Mobile No</th>';
 		str1+='<th>First Record Received</th>'; 
 		str1+='<th>Last Record Received</th>'; 
-		str1+='<th>Registrations</th>'; 
+		str1+='<th>Total Registrations</th>'; 
 		str1+='<th>Synced</th>';
-		str1+='<th>Sync Pending</th>';
+		str1+='<th>Tab Sync Pending</th>';
 		str1+='<th>kafka Pending</th>';
-		str1+='<th>kafka Sync</th>';
+		str1+='<th>Server Sync</th>';
 		str1+='<th>Total Amount</th>';
       str1+='</tr>';
 	str1+='</thead>';
