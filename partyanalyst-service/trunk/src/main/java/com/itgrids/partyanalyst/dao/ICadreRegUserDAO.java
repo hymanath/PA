@@ -6,6 +6,6 @@ import com.itgrids.partyanalyst.model.CadreRegUser;
 
 public interface ICadreRegUserDAO extends GenericDao<CadreRegUser, Long> {
 
-	public Long getCadreRegUserByUser(Long userId);
+	public Long getCadreRegUserByUser(Long userId,Long stateId);
 	public Long getCadreRegUserByUserForDataMonitoring(Long userId);
 }

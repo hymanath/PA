@@ -459,7 +459,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 		}
 	}
 	
-	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue,String resultType,String verificationStatus,String dataSourceType){
+	public List<List<IdNameVO>> getVerifiedDtls(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate,Integer minValue,Integer maxValue,String resultType,String verificationStatus,String dataSourceType,Long stateId){
 		LOG.info("Entered into getVerifiedDtls() of DataMonitoringService");  
 		try{
 			DateUtilService dateUtilService = new DateUtilService();
@@ -479,7 +479,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 			}  
 			//get verified dtls  
 			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Self")){
-				List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",minValue,maxValue,verificationStatus,dataSourceType);
+				List<Object[]> ownVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",minValue,maxValue,verificationStatus,dataSourceType,stateId);
 				if(ownVoterVerifiedDtlsList != null && ownVoterVerifiedDtlsList.size() > 0){
 					for(Object[] param : ownVoterVerifiedDtlsList){
 						idNameVO = new IdNameVO();
@@ -496,7 +496,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 						ownVoterDtls.add(idNameVO);
 					}
 				  if(minValue == 0){
-					  List<Object[]> allOwnVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",0,0,verificationStatus,dataSourceType);
+					  List<Object[]> allOwnVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"own",0,0,verificationStatus,dataSourceType,stateId);
 					    if(ownVoterDtls != null && ownVoterDtls.size() > 0){
 					    	ownVoterDtls.get(0).setTotalCount(Long.valueOf(allOwnVoterVerifiedDtlsList.size()));	
 					    }
@@ -506,7 +506,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 				}
 			}
 			if(resultType != null && resultType.equalsIgnoreCase("All") || resultType.equalsIgnoreCase("Relative")){
-				List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",minValue,maxValue,verificationStatus,dataSourceType);
+				List<Object[]> familyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",minValue,maxValue,verificationStatus,dataSourceType,stateId);
 				if(familyVoterVerifiedDtlsList != null && familyVoterVerifiedDtlsList.size() > 0){
 					for(Object[] param : familyVoterVerifiedDtlsList){
 						idNameVO = new IdNameVO();
@@ -523,7 +523,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 						familyVoterDtls.add(idNameVO);
 					}
 					 if(minValue == 0){
-						   List<Object[]> allFamilyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",0,0,verificationStatus,dataSourceType);
+						   List<Object[]> allFamilyVoterVerifiedDtlsList = tdpCadreDAO.getVoterCardDtlsList(surveyUserId,tabUserId,webUserId,startDate,endDate,"family",0,0,verificationStatus,dataSourceType,stateId);
 						    if(familyVoterDtls != null && familyVoterDtls.size() > 0){
 						    	familyVoterDtls.get(0).setTotalCount(Long.valueOf(allFamilyVoterVerifiedDtlsList.size()));	
 						    }
@@ -555,7 +555,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 	* @Description :This Service Method is used to get Data Monitoring User Wise Registration Count details. 
 	* @since 20-OCT-2016
 	*/
-	public List<DataMonitoringOverviewVO> getRegistrationDetailsUserWise(String fromDateStr,String toDateStr,String dataSourceType,String verificationStatus){
+	public List<DataMonitoringOverviewVO> getRegistrationDetailsUserWise(String fromDateStr,String toDateStr,String dataSourceType,String verificationStatus,Long stateId){
 		
 		List<DataMonitoringOverviewVO> resultList = new ArrayList<DataMonitoringOverviewVO>();
 		Map<Long,DataMonitoringOverviewVO> webAndOnlineDetailsMap = new HashMap<Long, DataMonitoringOverviewVO>();
@@ -581,9 +581,9 @@ public class DataMonitoringService implements IDataMonitoringService {
 			
 			
 			if(dataSourceType != null && dataSourceType.equalsIgnoreCase("WEB") || dataSourceType.equalsIgnoreCase("ONLINE")){
-			  List<Object[]> rtrnActiveMemberObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus);
+			  List<Object[]> rtrnActiveMemberObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus,stateId);
 			    setWebAndOnlineActiveMembersCntDetails(rtrnActiveMemberObjList,webAndOnlineActiveUserMap);
-			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus);
+			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getWebAndOnlineCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus,stateId);
 			    setWebAndOnlineMemberDetails(rtrnObjList,webAndOnlineDetailsMap,webAndOnlineActiveUserMap);
 			   if(webAndOnlineDetailsMap != null && webAndOnlineDetailsMap.size() > 0){
 				 for(Entry<Long,DataMonitoringOverviewVO> entry:webAndOnlineDetailsMap.entrySet()){
@@ -591,9 +591,9 @@ public class DataMonitoringService implements IDataMonitoringService {
 				 }
 			   }
  			}else if(dataSourceType != null && dataSourceType.equalsIgnoreCase("TAB")){
- 			  List<Object[]> rtrnTabActiveMemberObjList = tdpCadreEnrollmentYearDAO.getTabCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus);
+ 			  List<Object[]> rtrnTabActiveMemberObjList = tdpCadreEnrollmentYearDAO.getTabCadreRegistrationCountLastOneHoursUserWise(lastOneHourTime, dataSourceType, verificationStatus,stateId);
  			   setTabActiveMemberDetailsCnt(rtrnTabActiveMemberObjList,tabActiveMemberCntMap);
- 			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getTabCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus);
+ 			  List<Object[]> rtrnObjList = tdpCadreEnrollmentYearDAO.getTabCadreRegistrationCountUserWise(fromDate, toDate, dataSourceType, verificationStatus,stateId);
  			   setTabMembersCntDetails(rtrnObjList,cadreSurveyUserDtlsMap,tabActiveMemberCntMap,surveryUserIdNameMap);
  			   if(cadreSurveyUserDtlsMap != null && cadreSurveyUserDtlsMap.size() > 0){
  				   for(Entry<Long,Map<Long,DataMonitoringOverviewVO>> entry:cadreSurveyUserDtlsMap.entrySet()){

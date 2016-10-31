@@ -328,13 +328,14 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N' " +
 				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
 		     
-		     if(stateId != null && stateId.longValue() == 1l){
+		     	if(stateId != null && stateId.longValue() == 1l){
 		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 				}else if(stateId != null && stateId.longValue() == 36l){
 					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 				}else if(stateId != null && stateId.longValue() == 0l){
 					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
 				}
+		     	
 		     if(fromDate!= null && toDate!=null){
 				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
 			 }
@@ -348,7 +349,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				 }
 		     return query.list();
 	  }
-	  public List<Object[]> getTabCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus){
+	  public List<Object[]> getTabCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus,Long stateId){
 		  
 		        StringBuilder queryStr = new StringBuilder();
 		     
@@ -365,6 +366,14 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 					  queryStr.append(" and model.tdpCadre.surveyTime >=:lastOneHour ");	 
 				 }
 		    
+			     	if(stateId != null && stateId.longValue() == 1l){
+			    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+					}else if(stateId != null && stateId.longValue() == 36l){
+						queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					}else if(stateId != null && stateId.longValue() == 0l){
+						queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
+					}
+			     
 		    	 if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
 		    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
 		    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
@@ -385,7 +394,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				 }
 		     return query.list();
 	  }
-	  public List<Object[]> getTabCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus){
+	  public List<Object[]> getTabCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus,Long stateId){
 		  
 	       StringBuilder queryStr = new StringBuilder();
 	     
@@ -406,6 +415,14 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
 			 }
 		      
+	         	if(stateId != null && stateId.longValue() == 1l){
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 36l){
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 0l){
+					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
+				}
+	         
 	    	 if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
 	    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
 	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
@@ -427,7 +444,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			 }
 	     return query.list();
  }
-	  public List<Object[]> getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus){
+	  public List<Object[]> getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus,Long stateId){
 		  
 	       StringBuilder queryStr = new StringBuilder();
 	     
@@ -443,6 +460,14 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				  queryStr.append(" and model.tdpCadre.surveyTime >=:lastOneHour ");	 
 			 }
 	    
+		     	if(stateId != null && stateId.longValue() == 1l){
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 36l){
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 0l){
+					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
+				}
+		     
 	    	 if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
 	    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
 	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
@@ -465,7 +490,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		     }
 	     return query.list();
  }
-	  public List<Object[]> getWebAndOnlineCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus){
+	  public List<Object[]> getWebAndOnlineCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus,Long stateId){
 		  
 	       StringBuilder queryStr = new StringBuilder();
 	     
@@ -483,6 +508,15 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 	         if(fromDate!= null && toDate!=null){
 				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
 			 }
+	         
+	         	if(stateId != null && stateId.longValue() == 1l){
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 36l){
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 0l){
+					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
+				}
+	         
 		     if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
 	    	   queryStr.append(" and model.tdpCadre.cadreVerificationStatusId =1 ");	 
 	    	 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){

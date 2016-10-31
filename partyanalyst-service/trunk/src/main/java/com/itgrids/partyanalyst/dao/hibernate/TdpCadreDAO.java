@@ -8128,7 +8128,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			query.setParameterList("voterCardNosList", voterCardNosList);
 			return query.list();
 	}
-	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue,String verificationStatus,String dataSourceType){
+	public List<Object[]> getVoterCardDtlsList(Long surveyUserId, Long tabUserId, Long webUserId, String startDate, String endDate, String status,Integer minValue,Integer maxValue,String verificationStatus,String dataSourceType,Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct " +
 						" tc.tdp_cadre_id as cadreId, " +  //0
@@ -8148,11 +8148,13 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 						" left outer join data_reject_reason drr on tcdv.data_reject_reason_id = drr.data_reject_reason_id  "+
 						" left outer join cadre_verification_status cvs on tc.cadre_verification_status_id = cvs.cadre_verification_status_id , "+
 						" tdp_cadre_enrollment_year tcey, "+
-						" voter v "+
+						" voter v, "+
+						" user_address ua" + 
 						" where "+
 						" tc.is_deleted = 'N' and "+
 						" tc.enrollment_year = 2014 and "+
 						" tc.tdp_cadre_id = tcey.tdp_cadre_id and "+
+						" ua.user_address_id = tc.address_id and " +
 						" tcey.is_deleted = 'N' and "+
 						" tcey.enrollment_year_id = 4 and "+
 						" date(tc.survey_time) between :startDate and :endDate ");
@@ -8163,7 +8165,15 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			queryStr.append(" and tc.family_voterId = v.voter_id "+  
 							" and tc.voter_id is null ");
 		}
-						
+			
+		if(stateId != null && stateId.longValue() == 1l){
+    	    queryStr.append("  and  ua.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			queryStr.append(" and  ua.district_id in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			queryStr.append(" and  ua.state_id = 1 ");
+		}
+		
 		if(webUserId != null && webUserId.equals(0l)){
 			queryStr.append(" and tc.created_by = :surveyUserId "+
 							" and tc.tab_user_info_id = :tabUserId ");
