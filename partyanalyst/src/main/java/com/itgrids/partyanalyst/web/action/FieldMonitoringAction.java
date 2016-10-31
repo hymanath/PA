@@ -373,7 +373,8 @@ public String getIssueStatusWiseCounts(){
 		String fromDateStr = jObj.getString("fromDate");
 		String toDateStr = jObj.getString("toDate");
 		String  task = jObj.getString("task");
-		idAndNameVOList =fieldMonitoringService.getIssueStatusWiseCounts(fromDateStr,toDateStr,task);
+		Long stateId = jObj.getLong("stateId");
+		idAndNameVOList =fieldMonitoringService.getIssueStatusWiseCounts(fromDateStr,toDateStr,task,stateId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getIssueStatusWiseCounts()  of FieldMonitoringAction", e);
 	}
@@ -386,9 +387,10 @@ try {
 	jObj = new JSONObject(getTask());
 	String fromDateStr = jObj.getString("fromDate");
 	String toDateStr = jObj.getString("toDate");
-	idAndNameVOList =fieldMonitoringService.getIssueTypeWiseCounts(fromDateStr,toDateStr);
+	Long stateId = jObj.getLong("stateId");
+	idAndNameVOList =fieldMonitoringService.getIssueTypeWiseCounts(fromDateStr,toDateStr,stateId);
 } catch (Exception e) {
-	LOG.error("Exception raised at getStatusWiseIssueTypeCount()  of FieldMonitoringAction", e);
+	LOG.error("Exception raised at getIssueTypeWiseCounts()  of FieldMonitoringAction", e);
 }
 
 return Action.SUCCESS;
@@ -411,8 +413,9 @@ public String getConstituencyByVendor(){
 			
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
 			
-			fieldMonitoringVO = fieldMonitoringService.getOverAllDataCollectorsDetails(fromDateStr,toDateStr);
+			fieldMonitoringVO = fieldMonitoringService.getOverAllDataCollectorsDetails(fromDateStr,toDateStr,stateId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllDataCollectorsDetails()  of FieldMonitoringAction", e);
 		}
@@ -575,17 +578,17 @@ public String getConstituencyByVendor(){
    		}*/
    		
 			jObj = new JSONObject(getTask());
-			JSONArray stateIds = jObj.getJSONArray("stateIds");  
+			/*JSONArray stateIds = jObj.getJSONArray("stateIds");  
 			List<Long> stateIdList = new ArrayList<Long>();
 			for( int i=0;i<stateIds.length();i++){
 				stateIdList.add(Long.valueOf(stateIds.getString(i)));
-			}
+			}*/
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			Long issueStatusId = jObj.getLong("issueStatusId");
+			Long stateId = jObj.getLong("stateId");
 			
-			
-			idAndNameVOList = fieldMonitoringService.getDistrictWiseIssueTypesCount(fromDateStr,toDateStr,issueStatusId,stateIdList);
+			idAndNameVOList = fieldMonitoringService.getDistrictWiseIssueTypesCount(fromDateStr,toDateStr,issueStatusId,stateId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseIssueTypesCount()  of FieldMonitoringAction", e);

@@ -72,12 +72,13 @@
 		}	
 		
 		
-	function getIssueTypeWiseCounts(){
+	function getIssueTypeWiseCounts(state){
 		var openIssuesArr = [];
 		var fixedIssuesArr = [];
 			var jsObj = { 
 				fromDate : customStartDate, //"10/01/2016",
-				toDate : customEndDate      //"10/20/2016",
+				toDate : customEndDate ,     //"10/20/2016",
+				stateId : state
 			}
 			$.ajax({
 				type : 'GET',

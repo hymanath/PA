@@ -122,22 +122,35 @@ $(".singleDate").daterangepicker({
  onLoadCalls();
  
 $(document).on("click",".ranges li",function(){
-	 onLoadCalls();
+	var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+		getOverAllDataCollectorsCounts(stateId)
+		getIssueStatusWiseCounts(stateId);
+		getIssueTypeWiseCounts(stateId);
+		getDataMonitoringOverViewDetails(stateId);
+		getDistrictWiseIssueTypesCount(stateId);
+		getLocationWiseOverAllDetails("state",stateId,"districtWiseOverviewDetailsId");
 });
  
 $(document).on("click",".applyBtn",function(){
-	getLocationWiseOverAllDetails("state",0,"districtWiseOverviewDetailsId");
+	var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+	getLocationWiseOverAllDetails("state",stateId,"districtWiseOverviewDetailsId");
 });
 
 $("#cadreRegliId").hide();
 function stateWisePopulateWebMonitoringData(state)
 {
-	getOverAllDataCollectorsCounts(state)
+	getOverAllDataCollectorsCounts(state);
 	getIssueStatusWiseCounts(state);
 	getIssueTypeWiseCounts(state);
 	getDataMonitoringOverViewDetails(state);
 	getDistrictWiseIssueTypesCount(state);
-	getLocationWiseOverAllDetails("state",1,"districtWiseOverviewDetailsId");
+	getLocationWiseOverAllDetails("state",state,"districtWiseOverviewDetailsId");
 }
 </script>
 </body>
