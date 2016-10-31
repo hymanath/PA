@@ -1702,7 +1702,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return null;
 		
 	}
-	/**aaaaaa
+	/**aaaaaa//position one
 	* @param  Long parentActivityMemberId
 	* @param  Long childUserTypeId
 	* @param Long stateId
@@ -1712,7 +1712,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @since 14-Oct-2016
 	*/
 	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr){
-		try{
+		try{  
 			Date toDay = new Date();
 			List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0); 
 			Map<String,Long> targetCdrCntMap = new HashMap<String, Long>(0);
@@ -1755,10 +1755,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					}else{  
 						accessLevelValue = entry.getKey();   
 					}*/ // xxxx
-					List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l,null);
-					if(returnObjList != null && returnObjList.size() > 0){
+					
+					//List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l,null);
+					List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( entry.getKey(),entry.getValue(),4l);
+					if(returnObjList != null && returnObjList.size() > 0){    
 						for (Object[] param : returnObjList) {
-							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
+							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();    
 							targetCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
 						}
 					}
@@ -1845,7 +1847,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					if(totalRegCadreList != null && totalRegCadreList.size() > 0){
 						for (Object[] param : totalRegCadreList) {
 							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
-							regCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
+							regCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);  
 						}
 					}
 				}
@@ -1989,11 +1991,19 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//get target Count
 			Long totalTarget = 0l;
 			
-			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
-			
-			if(totalTargetList != null && totalTargetList.size() > 0){
+			//List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
+			Long accessLevelValue =0l;      
+			if(accessLvlId.longValue() == 4l){// user level 4 means parliament constituency
+				accessLevelValue = 10l; //region scope 10  means parliament constituency 
+			}else if(accessLvlId.longValue()==5l){
+				accessLevelValue = 4l;  
+			}else{
+				accessLevelValue = accessLvlId;     
+			}
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( accessLevelValue,new HashSet<Long>(accessLvlValue), 4l);
+			if(totalTargetList != null && totalTargetList.size() > 0){  
 				for(Object[] param : totalTargetList){
-					if(accessLvlValue.contains((Long)param[0]))
+					if(accessLvlValue.contains((Long)param[0]))    
 						totalTarget += ((Long)param[1]);
 				}
 			}  
@@ -2104,18 +2114,27 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//get target Count
 			
 			Long totalTarget = 0l;
+			Long accessLevelValue =0l;      
+			if(accessLvlId.longValue() == 4l){// user level 4 means parliament constituency
+				accessLevelValue = 10l; //region scope 10  means parliament constituency 
+			}else if(accessLvlId.longValue()==5l){
+				accessLevelValue = 4l;  
+			}else{
+				accessLevelValue = accessLvlId;     
+			}
 			
-			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
-			if(totalTargetList != null && totalTargetList.size() > 0){
+			//List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( accessLevelValue,new HashSet<Long>(accessLvlValue), 4l);
+			if(totalTargetList != null && totalTargetList.size() > 0){   
 				for(Object[] param : totalTargetList){
-					if(accessLvlValue.contains((Long)param[0]))
+					if(accessLvlValue.contains((Long)param[0]))        
 						totalTarget += ((Long)param[1]);
 				}
 			}
 			cadreRegistratedCountVO.setTotalCount(totalCadre);
 			cadreRegistratedCountVO.setRenewalCount(totalRenewal);
-			cadreRegistratedCountVO.setNewCount(totalNew);
-			cadreRegistratedCountVO.setTarget(totalTarget);
+			cadreRegistratedCountVO.setNewCount(totalNew);  
+			cadreRegistratedCountVO.setTarget(totalTarget);    
 			cadreRegistratedCountVO.setTotalPercent(calculatePercantage(cadreRegistratedCountVO.getTotalCount(),totalTarget));
 			
 			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
@@ -2478,25 +2497,21 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			}
 			//get location id and name
+			List<Object[]> locationIdAndNameList = null;    
 			
-			List<Object[]> locationIdAndNameList = tdpCadreDAO.getLocationIdAndName(accessLvlId,accessLvlValue,stateId);
+			locationIdAndNameList = tdpCadreDAO.getLocationIdAndName(accessLvlId,accessLvlValue,stateId);
+			List<Long> locIdList = new ArrayList<Long>();
 			if(locationIdAndNameList != null && locationIdAndNameList.size() > 0){
 				for(Object[] param: locationIdAndNameList){
 					cadreRegistratedCountVO = new CadreRegistratedCountVO();
 					cadreRegistratedCountVO.setId(param[0] != null ? (Long)param[0] : 0l);
 					cadreRegistratedCountVO.setSourceName(param[1] != null ? param[1].toString() : "");
 					cadreRegistratedCountVOs.add(cadreRegistratedCountVO);
+					locIdList.add(param[0] != null ? (Long)param[0] : 0l);
 				}
 			}
 			//get 2014 total target location wise 
-			List<Object[]> totalTargetList2014 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 3l,null);
-			if(totalTargetList2014 != null && totalTargetList2014.size() > 0){
-				for(Object[] param : totalTargetList2014){
-					if(accessLvlValue.contains((Long)param[0])){
-						setTarget2014ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
-					}
-				}
-			}
+			//List<Object[]> totalTargetList2014 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 3l,null);
 			Long accessLevelValue =0l;      
 			if(accessLvlId.longValue() == 4l){// user level 4 means parliament constituency
 				accessLevelValue = 10l; //region scope 10  means parliament constituency 
@@ -2505,24 +2520,35 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			}else{
 				accessLevelValue = accessLvlId;     
 			}
+			List<Object[]> totalTargetList2014 = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCountSpecial(accessLevelValue,new HashSet<Long>(accessLvlValue), 3l);
+			
+			if(totalTargetList2014 != null && totalTargetList2014.size() > 0){       
+				for(Object[] param : totalTargetList2014){
+					if(locIdList.contains((Long)param[0])){
+						setTarget2014ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
+					}
+				}
+			}
+			
 			//get 2014 totalcadre location wise//xxxx 
 			//List<Object[]> totalRegCadreList2014 = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt,3l);
-			List<Object[]> totalRegCadreList2014 = tdpCadreLocationInfoCountDAO.getTotalCadreCountLocationWise2014(accessLevelValue,accessLvlValue);
-			if(totalRegCadreList2014 != null && totalRegCadreList2014.size() > 0){  
+			List<Object[]> totalRegCadreList2014 = tdpCadreLocationInfoDAO.getTotalCadreCountLocationWise2014(accessLevelValue,accessLvlValue);
+			if(totalRegCadreList2014 != null && totalRegCadreList2014.size() > 0){    
 				for(Object[] param : totalRegCadreList2014){
-					if(accessLvlValue.contains((Long)param[0])){
+					if(locIdList.contains((Long)param[0])){  
 						setCdrCount2014ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
 					}
 				}
-			}  
+			}          
 			//get 2016 total target location wise
 			//List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l);
-			
-			List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,4l,null);
-			
-			if(totalTargetList2016 != null && totalTargetList2016.size() > 0){
+			//List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,4l,null);
+			//List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount(accessLvlId,new HashSet<Long>(accessLvlValue), 4l);
+			List<Object[]> totalTargetList2016 = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCountSpecial(accessLevelValue,new HashSet<Long>(accessLvlValue), 4l);
+
+			if(totalTargetList2016 != null && totalTargetList2016.size() > 0){    
 				for(Object[] param : totalTargetList2016){
-					if(accessLvlValue.contains((Long)param[0])){
+					if(locIdList.contains((Long)param[0])){  
 						setTarget2016ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
 					}  
 				}
@@ -2530,10 +2556,10 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//get 2016 total cadre location wise
 			
 			//List<Object[]> totalRegCadreList2016 = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt,4l);
-			List<Object[]> totalRegCadreList2016 = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,accessLvlValue,stateId,frmDt, toDt);
+			List<Object[]> totalRegCadreList2016 = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCountSpecial(accessLevelValue,accessLvlValue,stateId,frmDt, toDt);
 			if(totalRegCadreList2016 != null && totalRegCadreList2016.size() > 0){
 				for(Object[] param : totalRegCadreList2016){
-					if(accessLvlValue.contains((Long)param[0])){
+					if(locIdList.contains((Long)param[0])){
 						setCdrCount2016ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]);
 					}
 				}
@@ -2542,18 +2568,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			List<Object[]> totalRegCadreRenewalList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWiseCount(accessLevelValue,accessLvlValue,stateId,frmDt, toDt);
 			if(totalRegCadreRenewalList != null && totalRegCadreRenewalList.size() > 0){
 				for(Object[] param : totalRegCadreRenewalList){  
-					if(accessLvlValue.contains((Long)param[0])){  
+					if(locIdList.contains((Long)param[0])){  
 						setRenewCdrCount2016ValueToMatchedVO((Long)param[0],cadreRegistratedCountVOs,(Long)param[1]); 
 					}  
 				}
 			}
-			//get 2016 new cadre
+			//get 2016 new cadre    
 			if(cadreRegistratedCountVOs.size() > 0){
 				for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 					vo.setNewCount(vo.getTotalCount() - vo.getRenewalCount());
 				}
 			}
-			//calculate and push % for 2014
+			//calculate and push % for 2014  
 			if(cadreRegistratedCountVOs.size() > 0){
 				for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 					vo.setCadreCountPer2014(calculatePercantage(vo.getTotalCount2014(),vo.getTarget2014()));
@@ -2573,15 +2599,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			}
 			return cadreRegistratedCountVOs;
 		}catch(Exception e){
-			e.printStackTrace();
+			e.printStackTrace();  
 			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
 		}
-		return null;
+		return null; 
 	}
 	public void setTarget2014ValueToMatchedVO(Long locationValueId,List<CadreRegistratedCountVO> cadreRegistratedCountVOs,Long count){
 		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
 			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 				if(vo.getId().equals(locationValueId)){
+					if(count != null)
 					vo.setTarget2014(count);
 				}
 			}
@@ -2591,6 +2618,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
 			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 				if(vo.getId().equals(locationValueId)){
+					if(count != null)
 					vo.setTotalCount2014(count);
 				}
 			}
@@ -2600,6 +2628,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
 			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 				if(vo.getId().equals(locationValueId)){
+					if(count != null)
 					vo.setTarget(count);
 				}
 			}
@@ -2609,6 +2638,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
 			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 				if(vo.getId().equals(locationValueId)){
+					if(count != null)
 					vo.setTotalCount(count);
 				}
 			}
@@ -2618,9 +2648,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		if(cadreRegistratedCountVOs != null && cadreRegistratedCountVOs.size() > 0){
 			for(CadreRegistratedCountVO vo : cadreRegistratedCountVOs){
 				if(vo.getId().equals(locationValueId)){
-					vo.setRenewalCount(count);
+					if(count != null){
+						vo.setRenewalCount(count);
+					}
 				}
-			}
+			} 
 		}
 	}
 
