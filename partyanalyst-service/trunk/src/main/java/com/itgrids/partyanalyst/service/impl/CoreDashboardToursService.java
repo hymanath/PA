@@ -438,7 +438,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 								  if(!VO.getLocationSet().contains(id)){
 									  
 									  VO.getLocationSet().add(id);
-									   VO.setName(VO.getName()+","+districtMap.get(id));
+									  VO.setName(VO.getName()+","+districtMap.get(id));
 								   }
 							   }
 							   
