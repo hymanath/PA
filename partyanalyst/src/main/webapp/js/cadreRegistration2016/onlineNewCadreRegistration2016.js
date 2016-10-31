@@ -188,7 +188,7 @@
 			}
 
 		
-				var presntMandalsId = '';
+				var presntMandalsId = 0;
 				if(presntLebId != null && presntLebId>0){
 						presntMandalsId = presntLebId+'';
 						presntMandalsId = parseInt("2"+presntMandalsId);
@@ -303,7 +303,7 @@
 								$("#PrsntVillageList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 							}
 						 }
-						 var presntVillagId ='';
+						 var presntVillagId =0;
 					
 						 /*if(localElectionBodyId != null && localElectionBodyId>0){
 							 presntVillagId = localElectionBodyId+'';
@@ -1695,7 +1695,10 @@ function addressFieldsValidation()
 	var constituency=$("#PrsntConstutuencyList").val();
 	var mandal=$("#PrsntMandalList").val();
 	var village=$("#PrsntVillageList").val();
-	
+	if(village==null){
+		village = 0;
+	}
+		//alert(village);
 	var prsmtHno=$("#phnoId").val();
 	var prsmtAprt=$("#paptId").val();
 	var prsmtArea=$("#pareaId").val();
@@ -1765,36 +1768,37 @@ function addressFieldsValidation()
 			$("#stateErrPh1Id").html("");
 		}
 	
-		if(state == 0)
+		if(state == null || state == 0)
 		{
 			$("#stateErrId").html("<span style='color:red;'>Select State</span>");
 			isError=true;
 		}else{
 			$("#stateErrId").html("");
 		}
-		if(district == 0)
+		if(district == null || district == 0)
 		{
 			$("#distriErrId").html("<span style='color:red;'>Select District</span>");
 			isError=true;
 		}else{
 			$("#distriErrId").html("");
 		}
-		if(constituency == 0)
+		if(constituency == null || constituency == 0)
 		{
 			$("#constErrId").html("<span style='color:red;'>Select Constituency</span>");
 			isError=true;
 		}else{
 			$("#constErrId").html("");
 		}
-		if(mandal == 0)
+		if(mandal == null || mandal == 0)
 		{
 			$("#mandalErrId").html("<span style='color:red;'>Select Mandal/Town/Division</span>");
 			isError=true;
 		}else{
 			$("#mandalErrId").html("");
 		}
-		if(village == 0)
+		if(village == null || village == 0)
 		{
+			//alert(1212);
 			$("#wardErrId").html("<span style='color:red;'>Select Village/Ward</span>");
 			isError=true;
 		}else{
@@ -1850,35 +1854,35 @@ function addressFieldsValidation()
 			$("#stateErrDh1Id").html("");
 		}
 		
-		if(workState == 0)
+		if(workState == null || workState == 0)
 		{
 			$("#wrkSateErrId").html("<span style='color:red;'>Select State</span>");
 			isError=true;
 		}else{
 			$("#wrkSateErrId").html("");
 		}
-		if(workDistrict == 0)
+		if(workDistrict == null ||workDistrict == 0)
 		{
 			$("#wrkDistErrId").html("<span style='color:red;'>Select District</span>");
 			isError=true;
 		}else{
 			$("#wrkDistErrId").html("");
 		}
-		if(workConstituency == 0)
+		if(workConstituency == null ||workConstituency == 0)
 		{
 			$("#wrkConstitErrId").html("<span style='color:red;'>Select Constituency.</span>");
 			isError=true;
 		}else{
 			$("#wrkConstitErrId").html("");
 		}
-		if(workMandal == 0)
+		if(workMandal == null ||workMandal == 0)
 		{
 			$("#wrkMadalErrId").html("<span style='color:red;'>Select Mandal/Town.</span>");
 			isError=true;
 		}else{
 			$("#wrkMadalErrId").html("");
 		}
-		if(workVillage == 0)
+		if(workVillage == null ||workVillage == 0)
 		{
 			$("#wrkVillageErrId").html("<span style='color:red;'>Select Village/ward.</span>");
 			isError=true;
