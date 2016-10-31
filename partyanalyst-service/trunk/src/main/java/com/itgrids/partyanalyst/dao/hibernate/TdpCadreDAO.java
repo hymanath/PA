@@ -8574,7 +8574,8 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId) " +
 					" from TdpCadreEnrollmentYear model  " +
 					" where " +
-					" model.tdpCadre.isDeleted ='N'" +
+					" model.tdpCadre.isDeleted ='N' " +
+					" and model.isDeleted = 'N' " +
 					" and model.tdpCadre.enrollmentYear = :enrollmentYear " +
 					" and model.enrollmentYearId = :enrollmentYearId ");					
 			
