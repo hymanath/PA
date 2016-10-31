@@ -107,7 +107,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		return query.list();
 	}
 	
-	public List<Object[]> getStatusWiseIssuesDetailsNew(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate){
+	public List<Object[]> getStatusWiseIssuesDetailsNew(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct CRI.cadreSurveyUser.cadreSurveyUserId," +
 					" CRI.cadreSurveyUser.userName," +
@@ -124,6 +124,14 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and CRI.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and  CRI.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and CRI.userAddress.state.stateId = 1 ");
+		}
 		
 		//sb.append(" and CRUTU.isDeleted = 'N'");
 		

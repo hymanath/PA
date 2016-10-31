@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.CadreRegIssueTrack;
 
 public interface ICadreRegIssueTrackDAO extends GenericDao<CadreRegIssueTrack, Long> {
 	
-	public List<Object[]> trackingRegIssueByRegIssueId(Long cadreRegIssueId);
+	public List<Object[]> trackingRegIssueByRegIssueId(Long cadreRegIssueId,Long stateId);
 }

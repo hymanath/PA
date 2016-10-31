@@ -13,6 +13,6 @@ public interface IFieldVendorTabUserDAO extends GenericDao<FieldVendorTabUser, L
 	public Long getActiveDataCollectorsCount(Date lastHourTime,Date today,Long stateId);
 	public List<Object[]> getStatusWiseIssuesDetails(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getUserWiseIssuesCounts(Date fromDate,Date toDate);
-	public List<Object[]> getStatusWiseIssuesDetailsNew(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate);
+	public List<Object[]> getStatusWiseIssuesDetailsNew(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate,Long stateId);
 	public String getVendorNameByCadreSurveyUserId(Long cadreSurveyUserId);
 }

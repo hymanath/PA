@@ -517,7 +517,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId,Long cadreRegUserId){
+	public List<Object[]> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId,Long cadreRegUserId,Long stateId){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.cadreRegIssueId,model.description,model.insertedTime," +
@@ -534,6 +534,15 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		/*if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
 		}*/
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  model.userAddress.state.stateId = 1 ");
+		}
+		
 		    sb.append(" order by model.insertedTime desc ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreSurveyUserId",cadreSurveyUserId );
@@ -583,7 +592,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long cadreRegUserId){
+public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long cadreRegUserId,Long stateId){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.cadreRegIssueStatus.cadreRegIssueStatusId, model.cadreRegIssueStatus.status,count(model.cadreRegIssueId) " +
@@ -595,6 +604,14 @@ public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUser
 		/*if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
 		}*/
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  model.userAddress.state.stateId = 1 ");
+		}
+		
 		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());

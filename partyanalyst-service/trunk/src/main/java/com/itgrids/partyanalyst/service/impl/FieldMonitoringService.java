@@ -311,7 +311,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		
     	try {
     		
-    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,0l);
     		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
     			List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
     			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -526,7 +526,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 		        	
-		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(inputVO.getLoginUserId());
+		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(inputVO.getLoginUserId(),0l);
 		        	   CadreRegIssue cadreRegIssue = new CadreRegIssue();
 		        	
 		        	   cadreRegIssue.setCadreSurveyUserId(inputVO.getCadreSurveyUserId());
@@ -655,7 +655,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnList;
     }
     
-public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId,Long loginUserId){
+public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long issueStatusId,Long loginUserId,Long stateId){
     	
     	List<FieldMonitoringIssueVO> returnList = null;
     	
@@ -665,14 +665,14 @@ public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSu
 		Date startDate = null;
 		Date endDate = null;
     	try{
-    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,stateId);
     		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
     			if(fromDateStr != null && toDateStr != null){
         			startDate = sdf.parse(fromDateStr);
         			endDate = sdf.parse(toDateStr);
         		}
         		
-        		List<Object[]> issueDetails = cadreRegIssueDAO.getIssuesForATabUserByStatusNew(cadreSurveyUserId, tabUserInfoId, startDate, endDate, issueStatusId, cadreRegUserId);
+        		List<Object[]> issueDetails = cadreRegIssueDAO.getIssuesForATabUserByStatusNew(cadreSurveyUserId, tabUserInfoId, startDate, endDate, issueStatusId, cadreRegUserId,stateId);
         		
         		if( issueDetails != null && issueDetails.size() > 0)
         		{
@@ -711,10 +711,10 @@ public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSu
     	return returnList;
     }
     
-public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long loginUserId){
+public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long loginUserId,Long stateId){
 	List<FieldMonitoringIssueVO> returnList = new ArrayList<FieldMonitoringIssueVO>();
 	try {
-		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,stateId);
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Long totalCount = 0l;
@@ -732,7 +732,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 	    	totalvo.setCount(0l);
 	    	returnList.add(totalvo);
 	    	
-	    	List<Object[]> list = cadreRegIssueDAO.getIssuesCountsForATabUserByStatusNew(cadreSurveyUserId, tabUserInfoId, startDate, endDate, cadreRegUserId);
+	    	List<Object[]> list = cadreRegIssueDAO.getIssuesCountsForATabUserByStatusNew(cadreSurveyUserId, tabUserInfoId, startDate, endDate, cadreRegUserId,stateId);
 	    	if(list != null && !list.isEmpty()){
 	    		for (Object[] obj : list) {
 					FieldMonitoringIssueVO vo = new FieldMonitoringIssueVO();
@@ -816,7 +816,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			
     		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,0l);
 		        	Date currentDate = dateUtilService.getCurrentDateAndTime();
 		        	
 		        	CadreRegIssue cadreRegIssue = cadreRegIssueDAO.get(cadreRegIssueId);
@@ -869,13 +869,13 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 	  *  Getting Track for a Particular issue. 
 	  *  @since 18-OCTOBER-2016
 	  */
-    public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId){
+    public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId,Long stateId){
     	
     	List<FieldMonitoringIssueVO> finalList = null;
     	SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
     	try{
     		
-    		List<Object[]> trackList = cadreRegIssueTrackDAO.trackingRegIssueByRegIssueId(cadreRegIssueId);
+    		List<Object[]> trackList = cadreRegIssueTrackDAO.trackingRegIssueByRegIssueId(cadreRegIssueId,stateId);
     		if(trackList != null && trackList.size() > 0)
     		{
     			finalList = new ArrayList<FieldMonitoringIssueVO>();
@@ -1155,7 +1155,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 	   return returnVO;
    }
    
-   public List<FieldMonitoringVO> getStatusWiseIssuesDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId){
+   public List<FieldMonitoringVO> getStatusWiseIssuesDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId,Long stateId){
 	   List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
 	   try {
 		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -1167,7 +1167,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				endDate = sdf.parse(toDateStr);
 			}
 			
-			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetailsNew(issueTypeId, statusTypeId, startDate, endDate);
+			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetailsNew(issueTypeId, statusTypeId, startDate, endDate,stateId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					FieldMonitoringVO vo = new FieldMonitoringVO();
@@ -1452,7 +1452,7 @@ public DataMonitoringVerificationVO getMatchDataVerificationVO(List<DataMonitori
 public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
-		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId,0l);
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId);
 			if(list != null && list.size() > 0){
@@ -1474,7 +1474,7 @@ public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
 public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId){
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
-		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId,0l);
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedUsers(cadreRegUserId,constituencyId);
 			if(list != null && list.size() > 0){
