@@ -8,12 +8,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cadre Online Registration</title>
+<title>Cadre Registration</title>
 <link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<!--<link href="dist/cadreRegistration/landingPage/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/cadreRegistration/landingPage/css/responsive.css" rel="stylesheet" type="text/css">-->
-<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
-<!--<link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">-->
 <link href="dist/cadreRegistration/dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/cadreRegistration/dist/css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="dist/cadreRegistration/dist/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -22,11 +18,10 @@
 <link href="dist/cadreRegistration/dist/plugins/scrollNew/scroll.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
-<link rel="stylesheet" href="js/flipclock/flipclock.css">
-<!-- online First Page-->
-	
+		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
 		
 <style type="text/css">
  #example {
@@ -46,11 +41,10 @@
 {
 	list-style:none;
 }
- 
 </style>
 </head>
 <body>
-<svg class="page-load-svg m_top20" style="display:none;" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg class="page-load-svg m_top20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="100%" height="100%" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve">
 	 <g>
 	<path class="path" stroke="red" stroke-width="2" d="M940.68,291.557l-1.934,9.289h-8.186l9.41-40.654h10.119l8.443,40.654h-8.186l-1.869-9.289H940.68z M947.705,285.404
@@ -212,269 +206,17 @@
 	</g>
 </g>
 </svg>
-<div class="landingPage hide">
-<header>
-	<div class="container">
-    	<div class="row">
-        	<div class="col-md-3 col-xs-8 col-xs-offset-2 col-sm-4 col-lg-3 col-sm-offset-0 col-lg-offset-0 col-md-offset-0">
-            	<img src="dist/cadreRegistration/landingPage/img/Logo.png" class="img-responsive" alt="Logo"/>
-            </div>
-        </div>
-    </div>
-</header>
-<section>
-	<div class="headerBlock">
-    	<div class="container">
-            <div class="row">
-	        	<img src="dist/cadreRegistration/landingPage/img/headerVideoBlock.png" class="videoBlock" alt="Video"/>
-                <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
-                    <img src="dist/cadreRegistration/landingPage/img/CBN.png" class="img-responsive" alt="Chandra Babu Naidu"/>
-                </div>
-                <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 col-md-offse-4 col-sm-offset-4 col-lg-offset-4 col-xs-offset-4">
-                    <img src="dist/cadreRegistration/landingPage/img/NTR.png" class="img-responsive" alt="Chandra Babu Naidu"/>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</section>
-<section>
-	<div class="cadreRegistrationBlock">
-    	<div class="cadreRegistrationBlockImage">
-        	 <div class="container">
-             	<div class="row">
-                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                    	<h1 class="text-capital text-center">cadre registration 2016-2018</h1>
-                    </div>
-                    <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-3 m_top10">
-                       
-                    </div>
-                </div>
-                <div class="row m_top20">
-                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-                        <div class="registrationblock registerBlockImageB">
-                        	<div class="pad_20">
-	                            <img src="dist/cadreRegistration/landingPage/img/renewal.png" alt="renewal Membership"/>
-                            </div>
-                            <div class="bg_EF pad_10 registerSubBlock">
-                            	<div class="row">
-                                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                    	<h4 class="m_top20 text-capital text-center">required</h4>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/cadreRegistration/landingPage/img/voterImage.png" class="media-object" alt="Voter Image"/>
-                                            </div>
-                                            <div class="media-body text-capital">
-                                                <h4 class="m_top10 c_333" style="font-weight:300">Voter ID</h4>
-                                            </div>
-                                        </div>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/cadreRegistration/landingPage/img/mobileNo.png" class="media-object" alt="Voter Image"/>
-                                            </div>
-                                            <div class="media-body text-capital">
-                                                <h4 class="m_top10 c_333" style="font-weight:300">Mobile Number</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-                        <div class="registrationblock registerBlockImageR">
-                        	<div class="pad_20">
-	                            <img src="dist/cadreRegistration/landingPage/img/newMembership.png" alt="renewal Membership"/>
-                            </div>
-                            <div class="bg_EF pad_10 registerSubBlock">
-                            	<div class="row">
-                                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                                    	<h4 class="m_top20 text-capital text-center">required</h4>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/cadreRegistration/landingPage/img/voterImage.png" class="media-object" alt="Voter Image"/>
-                                            </div>
-                                            <div class="media-body text-capital">
-                                                <h4 class="m_top10 c_333" style="font-weight:300">Voter ID</h4>
-                                            </div>
-                                        </div>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/cadreRegistration/landingPage/img/mobileNo.png" class="media-object" alt="Voter Image"/>
-                                            </div>
-                                            <div class="media-body text-capital">
-                                                <h4 class="m_top10 c_333" style="font-weight:300">Mobile Number</h4>
-                                            </div>
-                                        </div>
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img src="dist/cadreRegistration/landingPage/img/voterImage.png" class="media-object" alt="Voter Image"/>
-                                            </div>
-                                            <div class="media-body text-capital">
-                                                <h4 class="c_333" style="font-weight:300">If you dont have voter id can register with family voter id</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section>
-	<div class="registerOptionsBlock m_top40">
-    	<div class="container">
-            <div class="row">
-                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                    <h1 class="text-capital text-center">registration @</h1>
-                </div>
-            </div>
-            <div class="row m_top20">
-                <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
-                    <div class="registrationBlocks onlineRegistration" >
-                        <h2 class="text-capital text-center">online</h2>
-                        <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/landingPage/img/onlineRegister.png" class="img-responsive " alt="OnlineRegister"/>
-                    </div>
-                </div>
-                <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
-                    <div class="registrationBlocks">
-                        <h2 class="text-capital text-center">party office</h2>
-                        <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/landingPage/img/partyOffice.png" class="img-responsive" alt="PartyOffice"/>
-                    </div>
-                </div>
-                <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4">
-                    <div class="registrationBlocks">
-                        <h2 class="text-capital text-center">tdp agent</h2>
-                        <img src="dist/cadreRegistration/landingPage/img/borderImage.png" class="img-responsive" alt="borderImage"/>
-                        <img src="dist/cadreRegistration/landingPage/img/tdpAgent.png" class="img-responsive" alt="TdpAgent"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-	
-</section>
-<section>
-	<div class="benefitsBlock">
-    	<div class="container">
-        	<div class="row">
-            	<div class="col-md-12 col-xs-12 col-sm-12">
-                	<h3 class="text-capital">benefits</h3>
-                    <ul class="benfitsList">
-                    	<li>
-                        	<h4 class="text-capital">accidental insurance</h4>
-                            <p class="text-capitalize">Those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
-                        </li>
-                        <li>
-                        	<h4 class="text-capital">accidental insurance</h4>
-                            <p class="text-capitalize">Those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
-                        </li>
-                        <li>
-                        	<h4 class="text-capital">accidental insurance</h4>
-                            <p class="text-capitalize">Those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
-                        </li>
-                        <li>
-                        	<h4 class="text-capital">accidental insurance</h4>
-                            <p class="text-capitalize">those who registered will get 2 years accidental insurance. valid 2017 jan 1st to 2018 dec 31st. T&amp;C apply</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section>
-	<div class="registrationCloseBlock">
-        <div class="container">
-            <div class="row">
-            	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                	<h4 class="text-capital text-success text-center">registration close in</h4>
-                </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-                <h1 id="clockdiv" class="timeFont"></h1>
-                	<ul class="list-inline registrationTime">
-                    	<li class="timeFont">
-                        	<h1><span class="days">30</span><small>days</small></h1>
-                        </li>
-                        <li class="timeFont">
-                        	<h1><span class="hours">30</span><small>hours</small></h1>
-                        </li>
-                        <li class="timeFont">
-                        	<h1><span class="minutes">30</span><small>minutes</small></h1>
-                        </li>
-                        <li class="timeFont">
-                        	<h1><span class="seconds">30</span><small>seconds</small></h1>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section>
-	<div class="trackAgent">
-    	<div class="container">
-        	<div class="row">
-            	<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">
-                	<img src="dist/cadreRegistration/landingPage/img/indiaMap.png" class="img-responsive" alt="indiaMap"/>
-                </div>
-                <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40">
-                	<h4 class="text-capital">Track Our TDP Agent In your area</h4>
-					<div id="errorDivTrackId" style="color:red;"></div>
-				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-                    <select class="m_top40 select" id="stateId" onchange="getDistrictsForStateId(this.value,1);">
-						<option value="0">All</option>
-                    	<option value="1">AndhraPradesh</option>
-                    	<option value="36">Telangana</option>
-                    </select>
-				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-                    <select class="m_top40 select" id="trackDistrictId" onchange="getConstituenciesForDistricts(this.value,1);">
-                    	<option value="0">All</option>
-                    </select>
-				</div>
-				<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top40 chosenSelect">
-                    <select class="m_top40 select" id="trackConstituencyId">
-                    	<option value="0">All</option>
-                    </select>
-                    <button class="btn btn-success btnCustom btn-block btn-lg text-capital" id="findTrackId">find now</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<footer >
-	<div class="container">
-    	<div class="row">
-        	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-            	<img src="dist/cadreRegistration/landingPage/img/footerLogo.png" class="img-responsive" alt="logo"/>
-            	<p class="text-center text-capital">copyright telugu desam party &copy; 2016</p>
-            </div>
-        </div>
-    </div>
-</footer>
-</div>
-<!-- Cadre Online Registration -->
-<div class="container cadreRegistration ">
-	<div class="row mainBlocks hide">
+
+
+<div class="container cadreRegistration hide">
+	<div class="row mainBlocks">
     	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top30">
         	<hr class="rulerLine"/>
         	<h2><span class="mainHeading">Welcome to cadre registration</span></h2>
-			  <div>
-		          <div class="col-md-1 col-xs-12 col-sm-1">
-				      <span id="mainPageBackId" class="backBtn"> ← Back</span>
-			      </div>
-	 	       </div>	
         </div>
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock new">
-             <div class="row">
+            	<div class="row">
                 	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
                     	<h2 class="text-left text-muted">కొత్త సభ్యత్వం</h2>
                     </div>
@@ -505,104 +247,33 @@
             </div>
         </div>
     </div>
-	
-	 <div class="row PaymentCls">
-		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default panelRegistration">
-				<div id="savingStatusDivId"></div>
-			</div>
-		</div>
-	</div>
-	
     <div class="row  hide subBlock">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default panelRegistration m_top20">
-				<div class="panel-heading renewalN hide" >
+        	<div class="panel panel-default panelRegistration">
+				<div class="panel-heading renewalN">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
                 </div>
             	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10">New Membership</h3>
                 </div>
-<!-- Confirmation Block -->
-     <div class="panel-body voterIdConfirm hide">
-		<div>
-		   <div class="col-md-1 col-xs-12 col-sm-1">
-				<span id="voterIdBack" class="backBtn"> ← Back</span>
-			</div>
-	 	</div>	
-	    <div class="row">
-          <div class="col-md-12 col-xs-12 col-sm-12">
-            <h4 class="panel-title text-capital">Do you have voter id ?</h4>
-           </div>
-        </div>
-	   <div class="col-md-2 col-xs-12 col-sm-2 m_top30">
-          <button class="btn btn-success btn-block btn-lg text-capital submitVoterSearch">YES</button>
-       </div>
-       <div class="col-md-2 col-xs-12 col-sm-2 m_top30">
-        <button class="btn btn-success btn-block btn-lg text-capital noVoterId">NO</button>
-      </div>
-    </div>
-<!-- Entering VoterId Block -->
-  <div class="panel-body enterVoterIdBlock hide">
-    <div>
-	 <div class="col-md-1 col-xs-12 col-sm-1">
-		<span id="enterVoterIdBack" class="backBtn"> ← Back</span>
-	</div>
-  </div>
-  <div class="row">
-       <div class="col-md-3 col-xs-3 col-sm-3 m_top10 hide">
-            <label>CONSTITUENCY</label><span style="color:red;">*</span>
-				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                    <select class="select" id="voterConstId" class="form-control">
-					    <option value="0">Select Constituency</option>
-					</select>
-        </div>
-        <div class="col-md-3 col-xs-3 col-sm-3 m_top10">
-              <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
-                <input type="text" class="form-control" id="inpVoterId"/>
-        </div>
-		<div  class="col-md-3 col-xs-3 col-sm-3 m_top30">
-	        <button class="btn btn-success text-capital submitVoterId" onclick="getVoterDetails();">SUBMIT</button> 
-	     </div>		 
-	   </div>
-      <div  class="col-md-4 col-xs-12 col-sm-6 m_top10">
-	   <!--<button class="btn btn-success text-capital forgetVoterId" style="margin-left:100px;">Forget Voter Card NO</button> -->
-	   <a href="" aria-controls="home" role="tab" data-toggle="tab" id="frgtVotCardNoId" class="forgetVoterId" style="margin-left:100px;">Forget Voter ID</a>
-	 </div>
-   </div>
-	
                 <!-- Voter ID Search Block -->
                 <div class="panel-body voterIdSearch hide">
                 	<div class="row">
-				       <div class="col-md-1 col-xs-12 col-sm-1 " id="searchOwnVoterIdBack">
-							<span id="searchVoterIdBack" class="backBtn"> ← Back</span>
-						 </div>
-						 <div class="col-md-1 col-xs-12 col-sm-1" id="searchFamiVoterIdBack">
-							<span id="searchFamVoterIdBack" class="backBtn"> ← Back</span>
-						 </div>
-					</div>	
-                	<div class="row" id="serchOwnVoterDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">Search Your Own Voter Id</h4>
+                        	<h4 class="panel-title text-capital">search your voter id</h4>
                         </div>
                     </div>
-					<div class="row" id="serchFamVoterDivId">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">Search Your Family Voter Id</h4>
-                        </div>
-                    </div>
+					
                     <div class="row m_top30">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="errorDivId" style="color:red;"></div>
 						</div>
-					</div>
-					<div class="row m_top30">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>STATE</label><span style="color:red;">*</span>
+                        	<label>State </label><span class="text-danger">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-						  <select id="statesDivId" onchange="getDistrictsForStates(this.value,1);" class="select">
+						  <select id="statesDivId" onchange="getDistrictsForStates(this.value);" class="select">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="36">Telangana</option>
@@ -610,88 +281,92 @@
 						 
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>DISTRICT</label><span style="color:red;">*</span>
+                        	<label>District </label><span class="text-danger">*</span>
 							<span id="districtDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                            <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value,1)">
+                            <select class="select" id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							<option value="0">Select District</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>CONSTITUENCY</label><span style="color:red;">*</span>
+                        	<label>Constituency </label><span class="text-danger">*</span>
 							<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                            <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value,1)">
+                            <select class="select" id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value)">
 							<option value="0">Select Constituency</option>
 							</select>
                         </div>
-					</div>
-					<div class="row m_top30">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>MANDAL/MUNCIPALITY</label>
+                        	<label>Mandal</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                            <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value,1)">
-							<option value="0">Select Mandal/Muncipality</option>
+                            <select class="select" id="mandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value)">
+							<option value="0">Select Mandal</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="panchayatTwnId">
-                        	<label>VILLAGE/WARD</label>
+                        	<label>Village/Panchayat</label>
+							<span id="pancyatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 							<span id="panchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-                           <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value,1)">
-						   <option value="0">Select Village/Ward</option>
+                           <select class="select" id="panchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
+						   <option value="0">Select Village/Panchayat</option>
 							</select>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>BOOTH</label>
+                        	<label>Booth</label>
 							<span id="boothDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
                              <select class="select" id="boothsList" class="form-control">
 							  <option value="0">Select Booth</option>
 							</select>
                         </div>
 					</div>
-					 <div class="row m_top30">
-					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
-                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID
-						   </label>
+					<div class="row">
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>VoterId</label>
+                            <input type="text" class="form-control" id="searchVoterId"/>
                         </div>
-						<div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                            <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO
-						</label>
+                       <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Name</label>
+                            <input type="text" class="form-control" id="nameId"/>
                         </div>
-                       <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId"/>NAME
-						   </label>
+                        <!--<div class="col-md-3 col-xs-12 col-sm-6 m_top10">
+                        	<label>Mobile No</label>
+                            <input type="text" class="form-control" id="mobileId"/>
+                        </div>-->
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>House Number</label>
+                            <input type="text" class="form-control" id="huseNOId"/>
                         </div>
-					  </div>
-					<div class="row m_top30">
-					 <div class="col-md-4 col-xs-12 col-sm-6">
-                           <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter Voter ID/H.No/Name"/>
-                      </div>
 					</div>
 					<div class="row">
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
+							<span id="voterIdBack" class="backBtn"> ← Back</span>
+						</div>
                         <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
-                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search Details</button>
+                        	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getNewCadreDetails();">Search</button>
                         </div>
                     </div>
                 </div>
-				
                 <!-- Voter ID Search Block End-->
                 <!-- search Results Block -->
                 <div class="panel-body searchResultsBlock hide" >
-				       <div class="col-md-1 col-xs-12 col-sm-1 m_top5" id="voterIdSearchBack">
-							<span id="searchResultsBack" class="backBtn"> ← Back</span>
-						</div>
-						 <div class="col-md-1 col-xs-12 col-sm-1 m_top5" id="enterVoterIdDetailsBack">
-							<span id="enterVoterIdResultsBack" class="backBtn"> ← Back</span>
-						</div>
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12" id="searchVoterDetailsId"></div>
-                    	<div id="searchVoterDetailsImgId" style="display:none;"><center><img src="images/search.gif"/></center></div>
-						
-                        <div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByRelativeVoterIdDetails()" id="rlatveVoterId">relative voter id</button>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-4 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()" id="myVoterId">my voter id</button>
-                        </div>
+                    	<div id="searchVoterDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30">
+							<span id="searchResultsBack" class="backBtn"> ← Back</span>
+						</div>
+						<div id="voterBtnsDivId" style="display:none;">
+							<div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30">
+								<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByRelativeVoterIdDetails()">relative voter id</button>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-4 m_top30">
+								<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn" onclick="getSearchByMyVoterIdDetails()">my voter id</button>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30" id="newRenwalBtnId" style="display:none;">
+							<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByMyVoterIdDetails()">renewal</button>
+						</div>
+						<div class="col-md-4 col-xs-12 col-sm-4 col-md-offset-3 col-sm-offset-1 m_top30" id="newUpdateBtnId" style="display:none;">
+							<button class="btn btn-success btn-block btn-lg text-capital voterIdBtn"  onclick="getSearchByMyVoterIdDetails()">update</button>
+						</div>
                     </div>
 					<div id="checkVoterId" style="color:red;"></div>
                 </div>
@@ -699,58 +374,25 @@
                 <!-- profile details Block -->
 				
              <div class="panel-body profileDetailsBlock hide">
-				
-				 <div class="row ExistingPaymentCls hide">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div class="panel panel-default panelRegistration">
-							<div id="existingSavingStatusDivId"></div>
-						</div>
-					</div>
-				</div>
-            
 				<div id="populatingDtsDivImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
-				<input type="hidden" class="form-control" id="dataSourceType" value="ONLINE" name="cadreRegistrationVO.dataSourceType"/>
-				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
-				
-				
-				<div class="panel-heading rRenewal">
-                	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ </h3>
-                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
-					<hr>
-                </div>
-				
-
-					<div class="col-md-8 col-xs-12 col-sm-12 m_top30">
-						<div class="row">
-							<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
-								<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
-							</div>
-							<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
-								<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
-							</div>
-						</div>
-					</div>
-						
+				<input type="hidden" class="form-control" id="dataSourceType" value="WEB" name="cadreRegistrationVO.dataSourceType"/>
                 	<div class="row" id="basicDataId1">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="text-capital">profile details</h4>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
-                        	<div class="row" id="existingCadreInfo">
+                        	<div class="row">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName" disabled="true"/>
+                                    <label>Name<span style="color:red;">*</span>&nbsp;<span id="cadreNameId" style="color:red;"></span></label>
+                                    <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName"/>
 									<input type="hidden" class="form-control" id="hiddenTdpCadreId" name="cadreRegistrationVO.tdpCadreId"/>
 									<input type="hidden" class="form-control" id="hiddenVoterId" name="cadreRegistrationVO.voterId"/>
 									<input type="hidden" class="form-control" id="hiddenFamilyVoterId" name="cadreRegistrationVO.familyVoterId"/>
-									<input type="hidden" class="form-control" id="checkNomineeNameId" name="cadreRegistrationVO.newNomineeName"/>
-                                    <input type="hidden" class="form-control" id="checkNomineeGenderId" name="cadreRegistrationVO.newNomineeGender"/>
-                                    <input type="hidden" class="form-control" id="checkNomineeAgeId" name="cadreRegistrationVO.newNomineeAge"/>
-                                    <input type="hidden" class="form-control" id="checkNomineeRelaTypeId" name="cadreRegistrationVO.newNomineeRelationType"/>									
 									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
 									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
 									<input type="hidden" class="form-control" id="hiddenIsNomneeChngd" name="cadreRegistrationVO.isNomineeChanged"/>
+									<input type="hidden" class="form-control" id="hiddenNewVoterId" name="cadreRegistrationVO.newVoterId"/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
@@ -760,8 +402,6 @@
                                     <label>Existing Membership Number</label>
                                     <input type="text" class="form-control" id="membershipId" name="cadreRegistrationVO.memberShipNo" disabled/>
                                 </div>
-                             </div>
-							<div class="row">
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
                                     <label>Gender<span style="color:red;">*</span>&nbsp;<span id="cadreGenderId" style="color:red;"></span></label>
                                     <select class="select" id="genderId" name="cadreRegistrationVO.gender">
@@ -772,7 +412,7 @@
 									</select>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3 m_top20">
-                                    <label>Age<span style="color:red;">*</span>&nbsp;<span id="cadreAgeId" style="color:red;" alt="Age must be Minimum of 15 year." title="Age must be Minimum of 15 year."></span></label>
+                                    <label>Age<span style="color:red;">*</span>&nbsp;<span id="cadreAgeId" style="color:red;"></span></label>
                                     <input type="text" class="form-control" id="ageId" name="cadreRegistrationVO.age" maxlength='2'/>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-6 m_top20">
@@ -781,16 +421,15 @@
                                 </div>
                             </div>
                         </div>
-					
+					<div id="imgErrDivId" style="color:red;"></div>
                         <div class="col-md-4 col-xs-12 col-sm-12 m_top30">
                         	<div class="col-md-6 col-xs-12 col-sm-6">
-                            	<div class="imageDiv" id="imagDivId">
+                            	<div class="imageDiv">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option" checked/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option"/>Existing Image
                                     </label>
                                 </div>
-								
                             </div>
 							<div class="col-md-6 col-xs-12 col-sm-6">
 								<div class="imageDiv" style="padding:10px 2px;">
@@ -813,11 +452,34 @@
                                     	<input type="checkbox" class="imageCheckBox isImageCheck" id="newCheckImgId"  value="1" name="option"/><input type="file"   onchange="loadFile(event)" id="upladImgId" name="uploadImage" style="width:80px"/>
                                     </label>
                                 </div>-->
-								<span id="imgErrDivId" style="color:red;"></span>
                             </div>
                         </div>
                   	</div>
                  	<div class="row">
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Apartment Name</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Street Name</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Area Name</label>
+                            <input type="text" class="form-control" id="areaId"/>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Land Mark</label>
+                            <input type="text" class="form-control" id="landMarkId"/>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Hamlet</label>
+                            <input type="text" class="form-control" id="hamletId"/>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>Pincode</label>
+                            <input type="text" class="form-control" id="pinCodeId"/>
+                        </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label class="control-label" for="inputSuccess2">Mobile Number<span style="color:red;">*</span>&nbsp;<span id="cadreMobileNoId" style="color:red;"></span></label>
                         	<div class="form-group has-feedback formExtra">
@@ -826,11 +488,10 @@
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="emailDivId" style="display:none;">
-                        	<label class="control-label" for="inputSuccess2">Email Id&nbsp;<span id="emailErrId"></span></label>
+                        	<label class="control-label" for="inputSuccess2">Email Id</label>
                         	<div class="form-group has-feedback formExtra">
-                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.emailId">
+                              <input type="text" class="form-control" id="emailId" name="cadreRegistrationVO.email">
                               <span class="form-control-feedback text-muted" aria-hidden="true">@</span>
-							  
                             </div>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreVoterDivId" style="display:none;">
@@ -839,7 +500,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="cadreUpdateVotrDivId" style="display:none;">
                         	<label>Updated Voter Id -<i> <span class="text-danger">Self V.ID</span></i></label>
-                            <input type="text" class="form-control" id="updatedVoetrId" disabled/>
+                            <input type="text" class="form-control" id="updatedVoetrId" />
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="voterDvId" style="display:none;">
                         	<label>Voter Id -<i> <span class="" id="relVotCls">Relative V.ID</span> / <span class="" id="selfVotCls">Self V.ID</span></i></label>
@@ -849,7 +510,7 @@
                      <div class="row">
                      	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Aadhar Number</label>
-                            <input type="text" class="form-control" id="aadharId" name="cadreRegistrationVO.aadharNo" />
+                            <input type="text" class="form-control" id="aadharId" name="cadreRegistrationVO.aadharNo"/>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Caste<span style="color:red;">*</span>&nbsp;<span id="cadreCasteId" style="color:red;"></span></label>
@@ -858,7 +519,7 @@
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Education<span style="color:red;">*</span>&nbsp;<span id="cadreEducationId" style="color:red;"></span></label>
-							<select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
+                           <select class="select" id="eductnQualId" name="cadreRegistrationVO.educationId">
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -866,16 +527,10 @@
                            <select class="select" id="occupationId" name="cadreRegistrationVO.occupationId">
                             </select>
                         </div>
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10 hide" id="wardsDivId">
-                        	<label>Ward <span style="color:red;">*</span>&nbsp;<span id="wardErr" style="color:red;"></span></label>
-                           <select class="select" id="wardsList" name="cadreRegistrationVO.wardId">
-                            </select>
-                        </div>
                     </div>
 					<div class="row" id="cadrePrvNomneDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<h4 class="text-capital" id="newNomineeID" style="display:none;">nominee details<span class="text-capitalize text-warning"></span></h4>
-                        	<h4 class="text-capital" id="existingNomineeID" style="display:none;">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
+                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning" id="prievsNmneDivId"><i> - Your Previous nominee</i></span></h4>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name<span style="color:red;">*</span>&nbsp;<span id="prvNomneNameDivId" style="color:red;"></span></label>
@@ -904,7 +559,7 @@
                         </div>
 						<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee AadharNo</label>
-                            <input type="text" class="form-control" id="prevNomneAadharNoId" name="cadreRegistrationVO.nomineeAadharNo"/>
+                            <input type="text" class="form-control" id="prevNomneAadharNoId" name="cadreRegistrationVO.prevNomineeAadharNo"/>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top30">
                         	<label class="checkbox-inline" id="prevNomineeId">
@@ -912,7 +567,7 @@
                             </label>
                             <span style="margin-left:10px;margin-right:10px;" id="prevNomiConId"><i>/Or/</i></span>
                             <label class="checkbox-inline" id="familyNomineeChId">
-                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls isNomineeChangd" checked="true"/>Select Nominee From Family
+                            	<input type="checkbox" id="changeNomineeId" class="nomineeDetailsCls isNomineeChangd"/>Select Nominee From Family
                             </label>
 							<span style="margin-left:10px;margin-right:10px;" id="familyNomineeOrId"><i>/Or/</i></span>
                             <label class="checkbox-inline">
@@ -925,158 +580,7 @@
                         </div>-->
                     </div>
 					
-					<div class="row m_top30" style="display:none;" id="familyDetailsDivId">
-                    	<!--<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="panel-title text-capital">select nominee</h4>
-                        </div>-->
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreFamilyDetailsCls" >
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-						</div>
-                    </div>
-					
-					 <div class=" m_top30" style="" id="">
-					 <!-- 999 -->
-						<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">Address Details : </h4>
-                        </div>
-						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"> Primary Address  : </h6>
-                        </div>
-						
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>H.No <span style="color:red;">*</span>&nbsp;<span id="stateErrPhId"></span></label>
-                            <input type="text"  id="phnoId"  class="form-control" name="cadreRegistrationVO.prsntAddrsHNo"/>
-                        </div>
-                    	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrPaId"></span></label>
-                            <input type="text"  id="paptId" class="form-control"  name="cadreRegistrationVO.prsntAddrsApartment" />
-                        </div>
-                       
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Area Name<span style="color:red;">*</span>&nbsp;<span id="stateErrPa1Id"></span></label>
-                            <input type="text"  id="pareaId" class="form-control"  name="cadreRegistrationVO.prsntAddrsAreaName"/>
-                        </div>
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-							<label>Street Name/Road No <span style="color:red;">*</span>&nbsp;<span id="stateErrPsId"></span></label>
-							<input type="text"   id="pStreetId" class="form-control "  name="cadreRegistrationVO.prsntAddrsStreet"/>
-						</div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrPlId"></span></label>
-                            <input type="text"  id="pLandmarkId" class="form-control"  name="cadreRegistrationVO.prsntAddrsLandmark"/>
-                        </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrPh1Id"></span></label>
-                            <input type="text"  id="phamletId"class="form-control"  name="cadreRegistrationVO.prsntAddrsHamlet"/>
-                        </div>
-                        
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label> State <span style="color:red;">*</span>&nbsp;<span id="stateErrId"></span></label>
-                            <select class="select presntAddrCls" id="PrsntStateList" name="cadreRegistrationVO.prsntAddrsStateId" onchange="getDistrictsForStates(this.value,2);">
-								<option value="0">Select State</option>
-								<option value="1">AndhraPradesh</option>
-								<option value="36">Telangana</option>
-                            </select>
-                        </div>
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>District<span style="color:red;">*</span>&nbsp;<span id="distriErrId"></span></label>
-                            <select class="select presntAddrCls" id="PrsntDistrictList" name="cadreRegistrationVO.prsntAddrsDistId" onchange="getConstituenciesForDistricts(this.value,2);">
-                            </select>
-                        </div>
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Constituency<span style="color:red;">*</span>&nbsp;<span id="constErrId"></span></label>
-                            <select class="select presntAddrCls" id="PrsntConstutuencyList" name="cadreRegistrationVO.prsntAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,2);">
-                            </select>
-                        </div>
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Mandal/Town/Division<span style="color:red;">*</span>&nbsp;<span id="mandalErrId"></span></label>
-                            <select class="select presntAddrCls" id="PrsntMandalList" name="cadreRegistrationVO.prsntAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,2);">
-                            </select>
-                        </div>
-						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wardErrId"></span></label>
-                            <select class="select presntAddrCls" id="PrsntVillageList" name="cadreRegistrationVO.prsntAddrsVillId">
-                            </select>
-                        </div>
-						 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Pincode</label>
-                            <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>: </br> </br> 
-								<input id="prmaryAddrsId" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
-								<label for="prmaryAddrsId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
-								<input id="deliveryCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
-								<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
-											</h6>
-                        </div>
-						
-						<div style="display:none" id="deliveryAddrId">  
-							<div >  
-								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>H.No./ Plot No. <span style="color:red;">*</span>&nbsp;<span id="stateErrDhId"></span> </label>
-									<input type="text" id="dhnoId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrDaId"></span></label>
-									<input type="text"  id="dAptId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
-								</div>
-							   
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Area Name/Street/Road <span style="color:red;">*</span>&nbsp;<span id="stateErrDa1Id"></span></label>
-									<input type="text"  id="dareaId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Street Name/Road No <span style="color:red;">*</span>&nbsp;<span id="stateErrDsId"></span></label>
-									<input type="text"  id="dStreetId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsStreet"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrDlId"></span></label>
-									<input type="text"  id="dLandmarkId" class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrDh1Id"></span></label>
-									<input type="text"  id="dhamletId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHamlet"/>
-								</div>
-								
-							
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label> State <span style="color:red;">*</span>&nbsp;<span id="wrkSateErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workStateList" name="cadreRegistrationVO.workAddrsStateId" onchange="getDistrictsForStates(this.value,3);">
-									<option value="0">Select State</option>
-									<option value="1">AndhraPradesh</option>
-									<option value="36">Telangana</option>
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>District<span style="color:red;">*</span>&nbsp;<span id="wrkDistErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workDistrictList" name="cadreRegistrationVO.workAddrsDistId" onchange="getConstituenciesForDistricts(this.value,3);">
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Constituency<span style="color:red;">*</span>&nbsp;<span id="wrkConstitErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workConstuencyList" name="cadreRegistrationVO.workAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,3);">
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Mandal/Town/Division<span style="color:red;">*</span>&nbsp;<span id="wrkMadalErrId"></span></label>
-									<select class="select  delvryAdrCls"   id="workMandalList" name="cadreRegistrationVO.workAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,3);">
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wrkVillageErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workVillageList" name="cadreRegistrationVO.workAddrsVillId" >
-									</select>
-								</div>
-								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Pincode</label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsPincode"/>
-								</div>
-							</div>
-                    </div>
-					
-					
-                    <div class="row">
+					<div class="row">
 						<!--<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
 								<label>Nominee Name</label>
@@ -1102,13 +606,18 @@
 									<!--<option></option>-->
 								<!--</select>
 							</div>
+						</div>-->
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30  hide">
+							<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
 						</div>
-						   </div>-->
+						<div class="col-md-1 col-xs-12 col-sm-1 m_top30 hide">
+							<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
+						</div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
-                        	<button class="btn btn-success btn-block btn-lg text-capital" type="button" id="saveBtnId" onclick="savingCadreDetails();">submit</button>
+                        	<button class="btn btn-success btn-block btn-lg text-capital" type="button" onclick="savingCadreDetails();">submit</button>
                         </div>
 						 <span id="savingCadreDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-						<div id="savingStatusDivId" style="padding:15px;"></div>
+						<div id="savingStatusDivId"></div>
                     </div>
 					</form>
                 </div>
@@ -1117,41 +626,41 @@
             </div>
         </div>
     </div>
-    </div>
     <div class="row hide subBlockR">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default panelRegistration" style="margin-bottom: 100px;">
+        	<div class="panel panel-default panelRegistration">
             	<div class="panel-heading renewal">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;" > Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small></h3>
                 </div>
                 <div class="panel-body selectMembership hide">
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #333;">
                         	<div class="pad_20">
-							<span id="renErrDivId" style="color:red;"></span>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top30">
-									<span id="renewalBackBtn" class="backBtn"> ← Back</span>
-								</div>
+							    <div id="errorId" style="color:red;"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label>MEMBERSHIP ID</label>
-									<input type="text" class="form-control" id="validateRenMemshipId" maxlength="8"/>
+									<label>Please Enter your existing membership number</label>
+									<input type="text" class="form-control" id="validateRenMemshipId" maxlength='8'/>
 								</div>
+								<span style="margin-left:220px;"><i>/Or/</i></span>
                             	 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label> (OR) MOBILE NO</label>
-									<input type="text" class="form-control" id="renewalMobileId" maxlength="10"/>
+									<label>Mobile Number</label>
+									<input type="text" class="form-control" id="renewalMobileId" maxlength='10'/>
 								</div>
+								<span style="margin-left:220px;"><i>/Or/</i></span>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<label> (OR) VOTER ID</label>
+									<label>Voter ID</label>
 									<input type="text" class="form-control" id="renewalVoterId"/>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<button class="btn btn-success btn-block m_top10 text-capital validateNumber" onclick="validateRenewalMemshipDetails()">SEARCH CADRE</button>
+									<button class="btn btn-success btn-block m_top10 text-capital validateNumber" onclick="validateRenewalMemshipDetails()">search cadre</button>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<p>Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
 								</div>
-								
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top30">
+									<span id="renewalBackBtn" class="backBtn"> ← Back</span>
+								</div>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId"></div>
@@ -1161,7 +670,7 @@
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6 m_top30" style="border-right:1px solid #333;">
                         	<div class="pad_20">
-                            	<label>MEMBERSHIP NO</label>
+                            	<label>Please Enter your existing membership number</label>
                                 <input type="text" class="form-control"/>
                                 <button class="btn btn-success btn-block m_top30 text-capital validateNo">validate membership number</button>
                                 <p class="m_top50">Note: <i>If you forgot your membership number search using your Mobile Number, Voter Id</i></p>
@@ -1185,7 +694,7 @@
                                         <h4 class="panel-title">registered with relative voter id</h4>
                                     </div>
                                 	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                    	<button class="btn btn-success btn-block text-capital updateId" onclick="getCadreDetailsForRelativeCadre('update')">update your voter id</button>
+                                    	<button class="btn btn-success btn-block text-capital updateId" onclick="getCadreDetailsForRelativeCadre('updateVoter')">update your voter id</button>
                                         <div class="m_top20 text-center">/Or/</div>
                                         <button class="btn btn-success btn-block text-capital m_top20 updateId" onclick="getCadreDetailsForRelativeCadre('continue')">continue with relative voter id</button>
                                     </div>
@@ -1266,7 +775,207 @@
                         	<h4 class="panel-title text-capital">search results</h4>
                         </div>
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<ul class="searchResults">                               
+                        	<ul class="searchResults">
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-7" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-7" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-8" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-8" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-9" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-9" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-10" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-10" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-11" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-11" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-12" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-12" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-13" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-13" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-14" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-14" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-15" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-15" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="dist/img/default_image.png" class="media-object cadreImage" alt="candidateImage"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-capitalize">Harish Kumar</h5>
+                                            <p>S/o: Balaraj</p>
+                                            <p>V.ID VD32564789</p>
+                                            <p>H.no: 5-6-11/2A &nbsp;&nbsp;|
+                                                <span>&nbsp;&nbsp;Gender : M&nbsp;&nbsp;|</span>
+                                                <span>&nbsp;&nbsp;Age : 28</span>
+                                            </p>
+                                            <div class="checkboxAlign">
+                                                <input id="checkbox-16" class="checkbox-custom" name="checkbox-1" type="checkbox">
+                                                <label for="checkbox-16" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-md-4 col-md-offset-8 col-sm-offset-8 col-xs-12 col-sm-4 m_top30">
@@ -1385,7 +1094,7 @@
                     </div>
                     <div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning" id="prvsNomneHeadingId"><i>Your Previous nominee</i></span></h4>
+                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
@@ -1427,7 +1136,6 @@
         </div>
 	</div>
 </div>
-<!--
 <div class="modal fade" id="nomineeModalId">
   <div class="modal-dialog" role="document" style="width:80%;">
     <div class="modal-content">
@@ -1442,45 +1150,61 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       
-      </div>
-    </div>
-  </div>
-</div>-->
-<div class="modal fade" id="memChckBoxModalId">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">VALIDATING CADRE DETAILS WITH MOBILE NUMBER</h4>
-      </div>
-      <div class="modal-body">
-	  <div>
-		<label>OTP Send To:</label>
-		 <input type="text" id="checkMblNoId" disabled/>
-		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Genarate OTP</button>
-		</div>
-		<div id="otpMsgDivId"></div>
-		<div style="padding-top:6px;margin-left:18px;">
-		   <label>Enter OTP:</label>
-			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/><span id="otpErrDivId" style="color:red;"></span>
-			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
-			   <button id="renwalOKDivId" type="button" class="btn btn-success validateROTPCls" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
-		</div>	
-		<div><span id="otpStusErrDivId"></span><span id="otpStusErrImgId" style="display:none;"><img src="images/search.gif"/></span></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <!--<button type="button" class="btn btn-primary">Add Nominee</button>-->
       </div>
     </div>
   </div>
 </div>
+<div class="modal fade" id="trNumberModal">
+  <div class="modal-dialog" role="document" style="width:50%;">
+    <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.7);">
+      <div class="modal-body"  style="position: relative;">
+		
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 text-center" style="position:relative;">
+				<div  class="pad_20">
+					<!--<span style="position: absolute; background-color: rgb(255, 255, 255); border-radius: 50%; padding: 2px 5px; right: -6px; top: -26px; cursor: pointer;" data-dismiss="modal" aria-label="Close">X</span>-->
+					<div id="">
+						<p class="text-align" style="color:#fff">Thank You For Your Registration</p>
+						<h3 class="text-align" style="color:#fff"> Successfully Registration Completed </h3>
+						<h2 style="margin: 0px; text-align: center;color:#fff" >TR NUMBER : <span id="trNumberId"></span></h2>
+						<h2 style="margin: 0px; text-align: center;color:#fff" >MEMBERSHIP NO : <span id="membrShpNoId"></span></h2>
+					</div>
+				</div>
+				
+				
+				<button class="btn btn-success btn-xs" id="contineueBtn" type="button" style="position: absolute; margin: auto; left: 45%; bottom: -24px;">Continue</button>
+			</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="updateVoterModelDiv">
+  <div class="modal-dialog" role="document" style="width:50%;">
+    <div class="modal-content" >
+      <div class="modal-body"  style="position: relative;"><h4>Enter New VoterIdCardNo</h4>
+		<span style="position: absolute; background-color: rgb(255, 255, 255); border-radius: 50%; padding: 0px 5px; right: -6px; top: -4px; cursor: pointer;" data-dismiss="modal" aria-label="Close">X</span>
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 text-center" style="position:relative;">
+				<div  class="pad_20">
+					<div>
+						<input type="text" class="form-control" id="voterCardNoId"/>
+						<div id="updateVoterErr" style="color:red;"></div>
+					</div>
+					
+				</div>
+				<button class="btn btn-success btn-xs" id="updateVoterButton" type="button" style="position: absolute; margin: auto; left: 45%; bottom: -24px;" onclick="validateUpdateVoterId();">UPDATE</button>
+			</div>
+		</div>
+      </div>
+    </div>
+  </div>
 </div>
 	<div id="wrapper">
-		<div id="example" ></div>
+		<div id="example"></div>
 	</div>
-<div id=""  style="margin-top:150px;"></div>
+
 <input type="hidden" id="voterId"/>
 <input type="hidden" id="tdpCadreId"/>
 <input type="hidden" id="statusId"/>
@@ -1488,58 +1212,23 @@
 <input type="hidden" id="stusIdR"/>
 <input type="hidden" id="votrIdR"/>
 <input type="hidden" id="hidnFamlyVoterId"/>
-<input type="hidden" id="hiddenMblNo"/>
 
 
-<!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
-<!-- online First Page Script -->
-<!--<script src="dist/cadreRegistration/landingPage/js/jquery-1.11.3.js" type="text/javascript"></script>-->
-<!--<script src="dist/cadreRegistration/landingPage/js/bootstrap.js" type="text/javascript"></script>-->
-
+<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript" src="https://wolframhempel.github.io/photobooth-js/photobooth_min.js"></script>
 <script src="dist/cadreRegistration/dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/cadreRegistration/dist/plugins/scrollNew/scroll.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/cadreRegistration2016/onlineCadreRegistration2016.js" type="text/javascript"></script>
-<script src="js/cadreRegistration2016/onlineNewCadreRegistration2016.js" type="text/javascript"></script>
+<script src="js/cadreRegistration2016/cadreRegistration2016.js" type="text/javascript"></script>
+<script src="js/cadreRegistration2016/NewCadreRegistration2016.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/photobooth/website/js/cadreRegistration.js"></script>
 <script src="js/flipclock/flipclock.js"></script>
-
+	 	
 
 <script type="text/javascript">
-setTimeout(function(){ $("#wrapper").hide(); }, 3000);
-var a = $(window).height();
-var b = $(window).width();
-$(".page-load-svg").height(a);
-$(".page-load-svg").width(b);
-
-
-	$(".page-load-svg").show();
-	setTimeout(function(){
-		$(".page-load-svg").remove();
-		$(".cadreRegistration,.mainBlocks").removeClass("hide");
-		$(".mainBlocks").addClass("animated fadeIn");
-	},1000);
-	setTimeout(function(){
-		$(".mainBlocks").removeClass("animated fadeIn");
-	},1500);
-
-$(document).on("click","#mainPageBackId",function(){
-	//$(".landingPage").addClass("animated fadeIn");
-	setTimeout(function(){
-		//$(".landingPage").show();
-		//$(".mainBlocks").addClass("animated fadeOut");
-	},1000)
-	setTimeout(function(){
-		//$(".landingPage").removeClass("animated fadeIn");
-		//$(".cadreRegistration").addClass("hide");
-		//$(".mainBlocks").removeClass("animated fadeOut");
-	},1500);
-	
-});
 
 $("#dobId").datetimepicker({
 	   format:'YYYY-MM-DD',
@@ -1555,17 +1244,21 @@ $("#dobId").datetimepicker({
   var educationsArray = [];
   var relationsArray = [];
   var occupationArray =[];
-  var presntStateId =0;
-  var presntDistrictId =0;
-  var presntConstituencyId =0;
-  var presntLebId =0;
-  var presntMandalId =0;
-  var presntVillageId =0;
-  var registrationVoterType='ownVoterId';
-  var registrationType="new";
+   
   onLoadCalls();
  
-
+var a = $(window).height();
+var b = $(window).width();
+$(".page-load-svg").height(a);
+$(".page-load-svg").width(b);
+setTimeout(function(){
+	$(".page-load-svg").remove();
+	$(".cadreRegistration").removeClass("hide");
+	$(".mainBlocks").addClass("animated fadeIn");
+},1000)
+setTimeout(function(){
+	$(".mainBlocks").removeClass("animated fadeIn");
+},1500);
 $(".searchResults").mCustomScrollbar({
 	setHeight:'300px'
 });
@@ -1573,8 +1266,9 @@ $(".renewalSearchResults").mCustomScrollbar({
 	setHeight:'300px'
 });
 $('.select').chosen({width:'100%'});
-/*$(document).on("click",".registerNew",function(){
+$(document).on("click",".registerNew",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
+	$("#statesDivId").val(0).trigger('chosen:updated'); 
 	setTimeout(function(){
 		$(".mainBlocks").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
@@ -1584,7 +1278,7 @@ $('.select').chosen({width:'100%'});
 		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
 		$(".mainBlocks").removeClass("animated fadeOut");
 	},1000);
-});*/
+});
 $(document).on("click","#searchResultsBackBtn",function(){
 	$(".profileDetailsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1604,7 +1298,6 @@ $(document).on("click","#voterIdBack",function(){
 		$(".subBlock,.voterIdSearch").addClass("hide");
 		$(".mainBlocks").addClass("animated fadeIn");
 		$(".mainBlocks").removeClass("hide");
-		$(".voterIdConfirm").removeClass("hide");
 	},500)
 	setTimeout(function(){
 		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
@@ -1640,22 +1333,17 @@ function myVoterButtonDetails(){
 /* Renewal Click Actions*/
 $(document).on("click",".renewalBtn",function(){
 	$(".mainBlocks").addClass("animated fadeOut");
-	registrationType="renewal";
 	setTimeout(function(){
-		$(".mainBlocks,.newProfile.renewal,.newProfile").addClass("hide");
-		$("#renwalOKDivId").show();
-		$("#newRegOKDivId").hide();
-		$(".subBlock,.subBlockR,.selectMembership").removeClass("hide");
-		$(".subBlock,.subBlockR,.selectMembership").addClass("animated fadeIn");
-		$(".voterIdConfirm").addClass("hide");
-		fieldsValusEmpty();
-	},500);
+		$(".mainBlocks").addClass("hide");
+		$(".subBlockR,.selectMembership").removeClass("hide");
+		$(".subBlockR,.selectMembership").addClass("animated fadeIn");
+	},500)
 	setTimeout(function(){
 		$(".mainBlocks").removeClass("animated fadeOut");
 		$(".subBlockR,.selectMembership").removeClass("animated fadeIn");
-	},1500);
+	},1500)
 });
-//renewalBtn
+
 $(document).on("click","#profileBackR",function(){
 	$(".profileDetailsBlockR").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1693,6 +1381,19 @@ $(document).on("click","#profileBackBtnR",function(){
 	$("#renewalMembershipId").html(' ');
 });
 
+$(document).on("click","#searchResultsBack",function(){
+	$(".searchResultsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".searchResultsBlock").addClass("hide");
+		$(".voterIdSearch").removeClass("hide");
+		$(".voterIdSearch").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".voterIdSearch").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+	},1000);
+	//$("#nameId").
+});
 $(document).on("click","#renewalBackBtn",function(){
 	$(".selectMembership,.subBlockR,.renewalN").addClass("animated fadeOut");
 	setTimeout(function(){
@@ -1772,7 +1473,9 @@ $('.imageDiv input:checkbox').click(function() {
     imagePath.src = URL.createObjectURL(event.target.files[0]);
 	$("#imgErrDivId").html("");
   };
-  
+  $(document).ready(function(){
+	$("#wrapper").hide();
+});
 function showTakeImage(){
   $('#wrapper').dialog({
 		autoOpen: true,
@@ -1847,281 +1550,6 @@ function changeImg()
 			 $("#ageId").val(year);
 			}
 		});  
-		
-$(document).on("click",".registerNew",function(){ 
-	$(".mainBlocks").addClass("animated fadeOut");
-	registrationType="new";
-	setTimeout(function(){
-		$(".mainBlocks").addClass("hide");
-		$("#newRegOKDivId").show();
-		$("#renwalOKDivId").hide();
-		$(".subBlock,.voterIdConfirm,.newProfile").removeClass("hide");
-		$(".subBlock,.voterIdConfirm,.newProfile").addClass("animated fadeIn");
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.voterIdConfirm").removeClass("animated fadeIn");
-		$(".mainBlocks").removeClass("animated fadeOut");
-	},1000);
-});
-
-$(document).on("click",".submitVoterSearch",function(){
-	$(".voterIdConfirm").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".voterIdConfirm").addClass("hide");
-		$("#rlatveVoterId").hide();
-		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
-		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
-		fieldsValusEmpty();
-		divsEmpty();
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeIn");
-		$(".voterIdConfirm").removeClass("animated fadeOut");
-	},1000);
-});
-
-function submitVoterIdDetails(){
-	$(".enterVoterIdBlock").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".enterVoterIdBlock").addClass("hide");
-		$("#enterVoterIdDetailsBack").show();
-		$("#voterIdSearchBack").hide();
-		
-		$(".subBlock,.searchResultsBlock").removeClass("hide");
-		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.searchResultsBlock").removeClass("animated fadeIn");
-		$(".enterVoterIdBlock").removeClass("animated fadeOut");
-	},1000);
-}
-$(document).on("click",".forgetVoterId",function(){
-	$(".enterVoterIdBlock").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".enterVoterIdBlock").addClass("hide");
-		$("#serchFamVoterDivId").hide();
-	   $("#serchOwnVoterDivId").show();
-	   $("#searchOwnVoterIdBack").show();
-	   $("#searchFamiVoterIdBack").hide();
-		$(".subBlock,.voterIdSearch").removeClass("hide");
-		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
-		fieldsValusEmpty();
-		divsEmpty();
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
-		$(".enterVoterIdBlock").removeClass("animated fadeOut");
-	},1000);
-});
-
-$(document).on("click",".checkCls",function(){
-	$(".checkCls").attr("checked",false);
-	$(this).attr("checked",true);
-	$('#serchVoterNameId').val('');
-});
-$(document).on("click",".noVoterId",function(){
-	registrationVoterType='familyVoterId';
-	$(".voterIdConfirm").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".voterIdConfirm").addClass("hide");
-		$("#serchFamVoterDivId").show();
-	    $("#serchOwnVoterDivId").hide();
-	    $("#searchOwnVoterIdBack").hide();
-	    $("#searchFamiVoterIdBack").show();
-		$("#myVoterId").hide();
-		$(".subBlock,.voterIdSearch").removeClass("hide");
-		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
-		fieldsValusEmpty();
-		divsEmpty();
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.voterIdSearch").removeClass("animated fadeIn");
-		$(".voterIdConfirm").removeClass("animated fadeOut");
-	},1000);
-});
-
-function submitVoterDetails(){
-	$(".voterIdSearch").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".voterIdSearch").addClass("hide");
-		$("#enterVoterIdDetailsBack").hide();
-		$("#voterIdSearchBack").show();
-		$(".subBlock,.searchResultsBlock").removeClass("hide");
-		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.searchResultsBlock").removeClass("animated fadeIn");
-		$(".voterIdSearch").removeClass("animated fadeOut");
-	},1000);
-}
-$(document).on("click","#enterVoterIdBack",function(){
-	$(".enterVoterIdBlock").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".subBlock,.enterVoterIdBlock").addClass("hide");
-		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
-		$(".subBlock,.voterIdConfirm").removeClass("hide");
-	},500)
-	setTimeout(function(){
-		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeIn");
-		$(".subBlock,.voterIdConfirm").removeClass("animated fadeIn");
-	},1000)
-});
-$(document).on("click","#searchResultsBack",function(){
-	$(".searchResultsBlock").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".searchResultsBlock").addClass("hide");
-		$(".subBlock,.voterIdSearch").removeClass("hide");
-		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
-		//fieldsValusEmpty();
-	},500);
-	setTimeout(function(){
-		$(".searchResultsBlock").removeClass("animated fadeIn");
-		$(".subBlock,.voterIdSearch").removeClass("animated fadeOut");
-	},1000);
-	
-});
-$(document).on("click","#searchVoterIdBack",function(){
-	$(".voterIdSearch").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".voterIdSearch").addClass("hide");
-		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
-		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
-		
-	},500);
-	setTimeout(function(){
-		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
-		$(".voterIdSearch").removeClass("animated fadeIn");
-	},1000);
-	
-});
-$(document).on("click","#searchFamVoterIdBack",function(){
-	$(".voterIdSearch").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".voterIdSearch").addClass("hide");
-		$(".subBlock,.voterIdConfirm").removeClass("hide");
-		$(".subBlock,.voterIdConfirm").addClass("animated fadeIn");
-	},500);
-	setTimeout(function(){
-		$(".subBlock,.voterIdConfirm").removeClass("animated fadeOut");
-		$(".voterIdSearch").removeClass("animated fadeIn");
-	},1000);
-	
-});
-
-$(document).on("click","#enterVoterIdResultsBack",function(){
-	$(".searchResultsBlock").addClass("animated fadeOut");
-	setTimeout(function(){
-		$(".searchResultsBlock").addClass("hide");
-		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
-		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
-		//fieldsValusEmpty();
-	},500);
-	setTimeout(function(){
-		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
-		$(".searchResultsBlock").removeClass("animated fadeIn");
-	},1000);
-	//$("#nameId").
-});
-
-$(document).on("click","#prmaryAddrsId",function(){
-	
-	if($(this).is(":checked")){
-		$('#deliveryCheckBox').attr('checked', false);
-		$('#deliveryAddrId').hide();
-		$('.delvryAdrCls').val(0);
-		$('.delvryAddrCls').val('');
-		$("delvryAdrCls").trigger("chosen:updated");
-	}else{
-		$(this).trigger('click');
-	}
-});
-
-$(document).on("click","#deliveryCheckBox",function(){
-	$('#prmaryAddrsId').attr('checked', false);
-	if($(this).is(":checked")){
-		$('#deliveryAddrId').show();
-	}
-	else{
-		$('#deliveryAddrId').hide();
-		$('.delvryAdrCls').val(0);
-		$('.delvryAddrCls').val('');
-		 $(".delvryAdrCls").trigger("chosen:updated");
-		$(this).attr('checked', false);
-		$('#prmaryAddrsId').trigger('click');
-	}	
-});
-
-$(document).on("click",".homeCls",function(){
-	window.location.reload();
-});
-</script>
-<script>
-var userip = "";
-/*
-$('.onlyText').keydown(function (e) {
-	if (e.shiftKey || e.ctrlKey || e.altKey){         
-		e.preventDefault();
-	} else {
-		var key = e.keyCode; 
-		if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90) || (key >= 96 && key <= 105) || (key == 9))) {
-			e.preventDefault();
-		}
-	}
-});
-
-$(".onlyDigit").keydown(function (e) {
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
-            (e.keyCode >= 35 && e.keyCode <= 40)) {
-                return;
-        }
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-});*/
-<!-- online Script -->
-var deadline = 'November 2 2016 10:00:00';
-
-getTimeRemaining(deadline)
-initializeClock('clockdiv', deadline);
-function getTimeRemaining(endtime){
-
-  var t = Date.parse(endtime) - Date.parse(new Date());
-  var seconds = Math.floor( (t/1000) % 60 );
-  var minutes = Math.floor( (t/1000/60) % 60 );
-  var hours = Math.floor( (t/(1000*60*60)) % 24 );
-  var days = Math.floor( t/(1000*60*60*24) );
-  return {
-    'total': t,
-    'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
-}
-function initializeClock(id, endtime){
-  var clock = document.getElementById(id);
-  var timeinterval = setInterval(function(){
-    var t = getTimeRemaining(endtime);
-   $(".days").html(t.days);
-	$(".hours").html(t.hours);
-	$(".minutes").html(t.minutes);
-	$(".seconds").html(t.seconds);
-	
-    if(t.total<=0){
-      clearInterval(timeinterval);
-    }
-  },1000);
-}
-var maxHeight = 0;
-
-$(".registerSubBlock").each(function(){
-   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
-});
-$(".registerSubBlock").height(maxHeight);
-</script>
-<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script> 
-
 </script>
 </body>
 </html>
