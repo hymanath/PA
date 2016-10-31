@@ -109,6 +109,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getGHMCRegisteredCountDetails(String type);
 	 public CadreRegisterInfo getDashBoardBasicRegistrationInfo(String accessType,Long accessValue,Long stateId);
 	 public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr,Long memberTypeId);
-	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId);
+	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType);
 	 public List<CadreDataSourceTypeVO> getDataSourceTypeWiseRegisteredDetails();
 }

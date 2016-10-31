@@ -16,6 +16,7 @@ public class CadreDashboardVO {
 	private Long locationScopeId;
 	private String type;
 	private String percentage;
+	private Long targetCount;
 	
 	
 	public Long getId() {
@@ -95,5 +96,11 @@ public class CadreDashboardVO {
 	}
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
+	}
+	public Long getTargetCount() {
+		return targetCount;
+	}
+	public void setTargetCount(Long targetCount) {
+		this.targetCount = targetCount;
 	}
 }
