@@ -46,7 +46,7 @@
                         	<div class="block m_top20">
                             	<div class="row">
                                 	<div class="col-md-4 col-xs-12 col-sm-6 b_right1">
-                                    	<h4 class="text-capital panel-title"><b>data collectors</b></h4>
+                                    	<h4 class="text-capital panel-title"><b>data collectors</b><small>(Today)</small></h4>
 										<ul class="dashedB m_top10">
 											<li>total data collectors<span id="totalDataCollectorsId">0</span></li>
 											<li>active<span id="activeDataCollectorsId">0</span></li>

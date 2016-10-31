@@ -1,12 +1,34 @@
 function onLoadCalls(){
-	getConstituencies();
+	getDistricts();
+	getConstituencies(0);
 	getUsers(0);
 	getCadreRegIssueType();
 }
 
-function getConstituencies(){
+function getDistricts(){
+	$('#districtId').find('option').remove();
+	var jsObj = { 
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getCadreRegUserAssignedDistrictsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		$("#districtId").append('<option value="0">All</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#districtId").trigger("chosen:updated");		
+	});
+}
+
+function getConstituencies(districtId){
 	$('#constituencyId').find('option').remove();
 	var jsObj = { 
+		districtId :districtId
 	}
 	$.ajax({
 		type : 'GET',
@@ -242,7 +264,8 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
 		toDate : toDate,
-        issueStatusId : issueStatusId
+        issueStatusId : issueStatusId,
+		stateId : 1
 	 }
     $.ajax({
           type:'GET',
@@ -342,7 +365,8 @@ function getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId){
 		cadreSurveyUserId : cadreSurveyUserId,
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
-		toDate : toDate
+		toDate : toDate,
+		stateId : 1
 	}
     $.ajax({
           type:'GET',
