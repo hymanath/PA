@@ -122,7 +122,295 @@
 	<!-- Error Msg For Committee End --->
 <div class="container m_top20">
 		<div class="row">
-			
+			<!--Cadre Registration -->
+		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">
+        	<div class="panel panel-default panelNewCustom">
+            	<div class="panel-heading">
+                	<div class="row">
+                    	<div class="col-md-8 col-sm-8 col-xs-8">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
+								cadre registration <small class="text-muted">2016-2018</small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-4">
+							<span class="cadreSettings pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="cadreNotes pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
+							</span>
+							 <span class="cadreExpand pull-right">  
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+							</span> 
+							<span class="input-group pull-right  m_XsTop10 hide">
+								<input type="text" id="dateRangeId"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+                    </div>      
+                </div>
+                <div class="panel-body">
+			    	<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
+						</div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
+						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
+						
+						    <div>
+								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
+								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
+							</div>  
+							
+                            <div class="row">
+							
+							   <div id="enumeratorsInfoDivId"></div>
+							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
+									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
+							   </div>
+							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
+									<button class="btn btn-success btn-block text-capital " id="cadreModalTabDivid">Kuppam Constitency Tab User<br/> Detailed Report</button>
+							   </div>
+                            </div>
+                        </div>
+						
+						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+                        	<div class="row">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="row">';
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											
+											
+										</div>
+									</div>
+                                <div id="constituenctDetailedReport"></div>	     
+                                </div>
+                            </div>
+					     </div>
+					    <div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+                        	<div class="row">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
+                                	<ul class="activeUlCls list-inline pull-right">
+                                    	<li class="active cadrePositiveNegativeCls" attr_value="positive" ><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
+										<li class="cadrePositiveNegativeCls" attr_value="negative"><i class="fa fa-arrow-down"></i>&nbsp;top 5 Negative</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                	<div id="userTypeWiseTop5PositiveAndNegitiveCadreDivId"></div>
+                                </div>
+                            </div>
+                        </div>
+						
+						<div class="col-xs-12 col-sm-12 col-md-12">      
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksCadreIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">   
+                        	<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
+                                <li class="text-capital"><i class="fa fa-gears"></i></li>
+                            </ul>    
+                            <ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
+                                <li class="text-capital cadreComparison">Detailed</li>
+								<li class="text-capital compareBlockSwitchCls">Comparison</li>  
+                            </ul>
+                            
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls m_top20">        
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<span class="headingColor">State Wise Overview</span>
+								</div>
+								<div class="panel-body">
+									<div class="row" id="sourceTypeId">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	<div class="row">
+                                    	<div class="col-md-6 col-xs-12 col-sm-12">
+                                        	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
+                                        	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
+                                        </div>
+                                        <div class="col-md-6 col-xs-12 col-sm-12 m_XsTop10">
+                                        	<ul class="activeUlCls list-inline pull-right">
+                                                <li class="active districtFilterCls" attr_filter_value="All">All</li>
+                                                <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
+                                                <li class="districtFilterCls" attr_filter_value="good">Good</li>
+                                                <li class="districtFilterCls" attr_filter_value="ok">Ok</li>
+												<li class="districtFilterCls" attr_filter_value="poor">Poor</li>
+                                                <li class="districtFilterCls" attr_filter_value="verypoor">Very Poor</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                	
+                                </div>  
+                                <div class="panel-body">
+                                	<div class="row">
+                                    	<div class="col-md-12 col-xs-12 col-sm-12">
+                                        	<div id="userTypeWiseHighChartDivId"></div>
+                                        </div>
+                                    </div>
+									<div class="row">
+								    	<div class="col-md-12 col-xs-12 col-sm-12">
+                                        	<h2><span class="headingColor" id="tsDistrictHeadingId" style="display:none;" >Telangana</span></h2>
+                                        	<div id="tsDistrictWiseRegistrationDivId"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">         
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	<div class="row">
+                                    	<div class="col-md-6 col-xs-12 col-sm-12">
+                                        	<h4><span class="headingColor text-capitalize">contituency wise registrations</span></h4>
+                                        </div>
+                                        <div class="col-md-6 col-xs-12 col-sm-12" style="position:relative;">
+											<!--<span class="pull-right" style="font-size:8px;position:absolute;top:-10px;right:10px;cursor:pointer;">Clear Filter</span>-->
+											<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
+												<li  id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
+											</ul>
+                                        	<ul class="activeUlCls list-inline pull-right constituencyUlCls"">
+                                            	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All" attr_all_contituency_cnt="0" >All - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood">Very Good - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId" attr_good_cnt="0" attr_filter_value="good">Good - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyOkCntId" attr_ok_cnt="0" attr_filter_value="ok">Ok - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId" attr_poor_cnt="0" attr_filter_value="poor">poor - 0</li>
+                                                <li class="constituencyFilterCls" id="cnsttncyveryPoorCntId" attr_very_poor_cnt="0" attr_filter_value="verypoor">Very Poor - 0</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                <div class="cadreRDD documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;display:none;" >
+										<i class="glyphicon glyphicon-remove newsSetClose pull-right closePopUpCls"></i>
+										<div class="row">
+										   <div><span style="color:red;margin-left:20px" id="cadreRegSearchErrorId"></span></div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="pad_15 bg_EE">
+													<label class="checkbox-inline">
+														<input attr_cadre_search_type="2016Renewal" checked id="2016RenewalCheckBoxId" type="checkbox"/>2016 Renewal
+													</label>
+													<label class="checkbox-inline">
+														<input attr_cadre_search_type="2016New" checked id="2016NewCheckBoxId" type="checkbox"/>2016 New
+													</label>
+													<label class="checkbox-inline">
+														<input attr_cadre_search_type="2014Cadre" checked id="2014CadreCheckBoxId" type="checkbox"/>2014 cadre
+													</label>
+												</div>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+											   <p>AP DISTRICTS</p>
+											   <ul class="list-inline">
+											    <li><label><input type="checkbox" class="selectAllApDistrict"/>&nbsp&nbspSelect All</label></li>
+										       </ul>
+											   <div id="apDistrictId"></div>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+											  <p>TS DISTRICTS</p>
+											  <ul class="list-inline">
+											    <li><label><input type="checkbox" class="selectAllTsDistrict"/>&nbsp&nbspSelect All</label></li>
+										       </ul>
+											  <div id="tsDistrictId"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<input type="button" class="btn btn-success" id="getCadreRegistrationDetailsBtnId" value="GetDetails"/>
+											</div>
+										</div>
+									</div>
+                                </div>
+                                <div class="panel-body">
+                                	<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-6">  
+											<h4>Andhra Pradesh</h4>
+											<div class="row m_top20">
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<i class="glyphicon glyphicon-sort-by-attributes decendingApSorting pull-left" attr_filter_value="No" style="transform:rotate(180deg)"></i>
+													<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingApSorting pull-left" attr_filter_value="No"></i>
+												</div>
+												<div class="col-md-4 col-xs-12 col-sm-4">
+													<select attr_filter_value="All" class="form-control" id="apConstituencySelectBoxId"></select>
+												</div>
+											</div>
+											<div Id="apscrollBarDivId">
+											<div id="apConstituencyRegistrationReportDivId" class="m_top20"></div>
+											</div>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4>Telangana</h4>
+											<div class="row m_top20">
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<i class="glyphicon glyphicon-sort-by-attributes decendingTsSorting pull-left" attr_filter_value="No" style="transform:rotate(180deg)"></i>
+													<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingTsSorting pull-left" attr_filter_value="No"></i>
+												</div>
+												<div class="col-md-4 col-xs-12 col-sm-4">
+													<select attr_filter_value="All" class="form-control" id="tsConstituencySelectBoxId"></select>
+												</div>
+											</div>
+											<div Id="tsscrollBarDivId">
+											<div id="tsConstituencyRegistrationReportDivId" class="m_top20"></div>
+											</div>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                   
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocksCadre compareCls">                
+							<div class="panel panel-default panelNew">   
+								<div class="panel-heading">
+									<div id="designationListId"></div>
+								</div>
+								<div class="panel-body">  
+									<div class="row" id="childMembersId">
+
+									</div>
+									<div class="bg_ED pad_15">
+										<div class="row" id="directChildId"></div>   
+										<div class="row" id="enumeratorsId"></div>     
+										<div class="row m_top20">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<span class="headingColor" style="display:none;">DISTRICT WISE REGISTRATIONS</span>
+												<div id="individualDtlsId"></div>   
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<span class="headingColor" style="display:none;">REGISTERED VOTER ID</span>  
+												<div id="voterDtlsId"></div>  
+											</div>
+										</div>
+										
+										<div class="row m_top20">
+										  <div class="col-md-5 col-xs-12 col-sm-5">
+											<h4><span class="headingColor">CONSTITUENCY WISE REGISTRATIONS</span></h4>
+										  </div>
+										  <div class="col-md-7 col-xs-12 col-sm-7">
+											<ul class="activeUlCls list-inline pull-right">
+                                                <li class="active consFilterCls" attr_filter_value="All">All</li>
+                                                <li class="consFilterCls" attr_filter_value="verygood">Very Good</li>
+                                                <li class="consFilterCls" attr_filter_value="good">Good</li>
+                                                <li class="consFilterCls" attr_filter_value="ok">Ok</li>
+												<li class="consFilterCls" attr_filter_value="poor">Poor</li>
+                                                <li class="consFilterCls" attr_filter_value="verypoor">Very Poor</li>
+                                            </ul>
+										  </div>
+										  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<div id="individualDtls"></div>      
+										  </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>    
+						
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!--Cadre Registration ENd -->
 			<!--  NEWS BLOCK START-->
 			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -832,6 +1120,8 @@
 				</div>
 			</div>
 			<!-- NEWS BLOCK END-->
+		</div>
+		<div class="row">
 			<!-- DEBATES PROGRAM BLOCK -->
 			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -1097,8 +1387,6 @@
 				</div>
 			</div>
 			<!-- DEBATES PROGRAM BLOCK END-->
-		</div>	
-		<div class="row">
 			<!--Meetings Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock">
 				<div class="panel panel-default panelNewCustom">
@@ -1280,6 +1568,8 @@
 				</div>
 			</div>	
 			<!--Meetings End-->
+		</div>	
+		<div class="row">
 			<!-- Training Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
 			<div class="panel panel-default panelNewCustom panel1">
@@ -1501,8 +1791,6 @@
 				</div>
 			</div>
 			<!-- Training End-->
-		</div>
-		<div class="row">
 		<!--Events Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
 				<div class="panel panel-default panelNewCustom">
@@ -1623,6 +1911,8 @@
 			</div>	
 	
 		<!--Events End -->
+		</div>
+		<div class="row">
 		<!-- Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -1905,8 +2195,6 @@
             </div>
         </div>
 		<!-- Committees End-->
-	</div>
-	<div class="row">
 		<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock">
             <div class="panel panel-default panelNewCustom">
@@ -2032,295 +2320,9 @@
                 </div>
             </div>
        </div>
-	 	<!--Cadre Registration -->
-		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">
-        	<div class="panel panel-default panelNewCustom">
-            	<div class="panel-heading">
-                	<div class="row">
-                    	<div class="col-md-8 col-sm-8 col-xs-8">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
-								cadre registration <small class="text-muted">2016-2018</small>
-							</h4>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4">
-							<span class="cadreSettings pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="cadreNotes pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
-							</span>
-							 <span class="cadreExpand pull-right">  
-								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span> 
-							<span class="input-group pull-right  m_XsTop10 hide">
-								<input type="text" id="dateRangeId"	 class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>
-                    </div>      
-                </div>
-                <div class="panel-body">
-			    	<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
-						</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
-						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
-						
-						    <div>
-								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
-								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
-							</div>  
-							
-                            <div class="row">
-							
-							   <div id="enumeratorsInfoDivId"></div>
-							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
-									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
-							   </div>
-							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
-									<button class="btn btn-success btn-block text-capital " id="cadreModalTabDivid">Kuppam Constitency Tab User<br/> Detailed Report</button>
-							   </div>
-                            </div>
-                        </div>
-						
-						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
-                        	<div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="row">';
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											
-											
-										</div>
-									</div>
-                                <div id="constituenctDetailedReport"></div>	     
-                                </div>
-                            </div>
-					     </div>
-					    <div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
-                        	<div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
-                                	<ul class="activeUlCls list-inline pull-right">
-                                    	<li class="active cadrePositiveNegativeCls" attr_value="positive" ><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
-										<li class="cadrePositiveNegativeCls" attr_value="negative"><i class="fa fa-arrow-down"></i>&nbsp;top 5 Negative</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                	<div id="userTypeWiseTop5PositiveAndNegitiveCadreDivId"></div>
-                                </div>
-                            </div>
-                        </div>
-						
-						<div class="col-xs-12 col-sm-12 col-md-12">      
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksCadreIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">   
-                        	<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-                                <li class="text-capital"><i class="fa fa-gears"></i></li>
-                            </ul>    
-                            <ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-                                <li class="text-capital cadreComparison">Detailed</li>
-								<li class="text-capital compareBlockSwitchCls">Comparison</li>  
-                            </ul>
-                            
-                        </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls m_top20">        
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<span class="headingColor">State Wise Overview</span>
-								</div>
-								<div class="panel-body">
-									<div class="row" id="sourceTypeId">
-										
-									</div>
-								</div>
-							</div>
-						</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">
-                        	<div class="panel panel-default panelNew">
-                            	<div class="panel-heading">
-                                	<div class="row">
-                                    	<div class="col-md-6 col-xs-12 col-sm-12">
-                                        	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
-                                        	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
-                                        </div>
-                                        <div class="col-md-6 col-xs-12 col-sm-12 m_XsTop10">
-                                        	<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active districtFilterCls" attr_filter_value="All">All</li>
-                                                <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
-                                                <li class="districtFilterCls" attr_filter_value="good">Good</li>
-                                                <li class="districtFilterCls" attr_filter_value="ok">Ok</li>
-												<li class="districtFilterCls" attr_filter_value="poor">Poor</li>
-                                                <li class="districtFilterCls" attr_filter_value="verypoor">Very Poor</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                	
-                                </div>  
-                                <div class="panel-body">
-                                	<div class="row">
-                                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                                        	<div id="userTypeWiseHighChartDivId"></div>
-                                        </div>
-                                    </div>
-									<div class="row">
-								    	<div class="col-md-12 col-xs-12 col-sm-12">
-                                        	<h2><span class="headingColor" id="tsDistrictHeadingId" style="display:none;" >Telangana</span></h2>
-                                        	<div id="tsDistrictWiseRegistrationDivId"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">         
-                        	<div class="panel panel-default panelNew">
-                            	<div class="panel-heading">
-                                	<div class="row">
-                                    	<div class="col-md-6 col-xs-12 col-sm-12">
-                                        	<h4><span class="headingColor text-capitalize">contituency wise registrations</span></h4>
-                                        </div>
-                                        <div class="col-md-6 col-xs-12 col-sm-12" style="position:relative;">
-											<!--<span class="pull-right" style="font-size:8px;position:absolute;top:-10px;right:10px;cursor:pointer;">Clear Filter</span>-->
-											<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-												<li  id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
-											</ul>
-                                        	<ul class="activeUlCls list-inline pull-right constituencyUlCls"">
-                                            	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All" attr_all_contituency_cnt="0" >All - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood">Very Good - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId" attr_good_cnt="0" attr_filter_value="good">Good - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyOkCntId" attr_ok_cnt="0" attr_filter_value="ok">Ok - 0</li>
-												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId" attr_poor_cnt="0" attr_filter_value="poor">poor - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyveryPoorCntId" attr_very_poor_cnt="0" attr_filter_value="verypoor">Very Poor - 0</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                <div class="cadreRDD documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;display:none;" >
-										<i class="glyphicon glyphicon-remove newsSetClose pull-right closePopUpCls"></i>
-										<div class="row">
-										   <div><span style="color:red;margin-left:20px" id="cadreRegSearchErrorId"></span></div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="pad_15 bg_EE">
-													<label class="checkbox-inline">
-														<input attr_cadre_search_type="2016Renewal" checked id="2016RenewalCheckBoxId" type="checkbox"/>2016 Renewal
-													</label>
-													<label class="checkbox-inline">
-														<input attr_cadre_search_type="2016New" checked id="2016NewCheckBoxId" type="checkbox"/>2016 New
-													</label>
-													<label class="checkbox-inline">
-														<input attr_cadre_search_type="2014Cadre" checked id="2014CadreCheckBoxId" type="checkbox"/>2014 cadre
-													</label>
-												</div>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-											   <p>AP DISTRICTS</p>
-											   <ul class="list-inline">
-											    <li><label><input type="checkbox" class="selectAllApDistrict"/>&nbsp&nbspSelect All</label></li>
-										       </ul>
-											   <div id="apDistrictId"></div>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-											  <p>TS DISTRICTS</p>
-											  <ul class="list-inline">
-											    <li><label><input type="checkbox" class="selectAllTsDistrict"/>&nbsp&nbspSelect All</label></li>
-										       </ul>
-											  <div id="tsDistrictId"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<input type="button" class="btn btn-success" id="getCadreRegistrationDetailsBtnId" value="GetDetails"/>
-											</div>
-										</div>
-									</div>
-                                </div>
-                                <div class="panel-body">
-                                	<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">  
-											<h4>Andhra Pradesh</h4>
-											<div class="row m_top20">
-												<div class="col-md-2 col-xs-12 col-sm-2">
-													<i class="glyphicon glyphicon-sort-by-attributes decendingApSorting pull-left" attr_filter_value="No" style="transform:rotate(180deg)"></i>
-													<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingApSorting pull-left" attr_filter_value="No"></i>
-												</div>
-												<div class="col-md-4 col-xs-12 col-sm-4">
-													<select attr_filter_value="All" class="form-control" id="apConstituencySelectBoxId"></select>
-												</div>
-											</div>
-											<div Id="apscrollBarDivId">
-											<div id="apConstituencyRegistrationReportDivId" class="m_top20"></div>
-											</div>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4>Telangana</h4>
-											<div class="row m_top20">
-												<div class="col-md-2 col-xs-12 col-sm-2">
-													<i class="glyphicon glyphicon-sort-by-attributes decendingTsSorting pull-left" attr_filter_value="No" style="transform:rotate(180deg)"></i>
-													<i class="glyphicon glyphicon-sort-by-attributes-alt ascendingTsSorting pull-left" attr_filter_value="No"></i>
-												</div>
-												<div class="col-md-4 col-xs-12 col-sm-4">
-													<select attr_filter_value="All" class="form-control" id="tsConstituencySelectBoxId"></select>
-												</div>
-											</div>
-											<div Id="tsscrollBarDivId">
-											<div id="tsConstituencyRegistrationReportDivId" class="m_top20"></div>
-											</div>
-										</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                   
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocksCadre compareCls">                
-							<div class="panel panel-default panelNew">   
-								<div class="panel-heading">
-									<div id="designationListId"></div>
-								</div>
-								<div class="panel-body">  
-									<div class="row" id="childMembersId">
-
-									</div>
-									<div class="bg_ED pad_15">
-										<div class="row" id="directChildId"></div>   
-										<div class="row" id="enumeratorsId"></div>     
-										<div class="row m_top20">
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="headingColor" style="display:none;">DISTRICT WISE REGISTRATIONS</span>
-												<div id="individualDtlsId"></div>   
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="headingColor" style="display:none;">REGISTERED VOTER ID</span>  
-												<div id="voterDtlsId"></div>  
-											</div>
-										</div>
-										
-										<div class="row m_top20">
-										  <div class="col-md-5 col-xs-12 col-sm-5">
-											<h4><span class="headingColor">CONSTITUENCY WISE REGISTRATIONS</span></h4>
-										  </div>
-										  <div class="col-md-7 col-xs-12 col-sm-7">
-											<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active consFilterCls" attr_filter_value="All">All</li>
-                                                <li class="consFilterCls" attr_filter_value="verygood">Very Good</li>
-                                                <li class="consFilterCls" attr_filter_value="good">Good</li>
-                                                <li class="consFilterCls" attr_filter_value="ok">Ok</li>
-												<li class="consFilterCls" attr_filter_value="poor">Poor</li>
-                                                <li class="consFilterCls" attr_filter_value="verypoor">Very Poor</li>
-                                            </ul>
-										  </div>
-										  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<div id="individualDtls"></div>      
-										  </div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>    
-						
-                    </div>
-                </div>
-            </div>
-        </div>
-		<!--Cadre Registration ENd -->
+	 </div>
+	<div class="row">
+		
 	 </div>
 	 <!-- TOURS START -->
 	<!-- <div class="row">
