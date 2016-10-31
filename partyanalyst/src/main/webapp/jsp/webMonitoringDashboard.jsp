@@ -132,7 +132,12 @@ $(document).on("click",".applyBtn",function(){
 $("#cadreRegliId").hide();
 function stateWisePopulateWebMonitoringData(state)
 {
-	alert(state);
+	getOverAllDataCollectorsCounts(state)
+	getIssueStatusWiseCounts(state);
+	getIssueTypeWiseCounts(state);
+	getDataMonitoringOverViewDetails(state);
+	getDistrictWiseIssueTypesCount(state);
+	getLocationWiseOverAllDetails("state",1,"districtWiseOverviewDetailsId");
 }
 </script>
 </body>
