@@ -145,6 +145,31 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 		 }
 		 		 return query.list();
 	   }
+	  public Long getTourCount(Long candidateId,List<Long> locValLst){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select sum(SACD.ownTours) from " +
+		  				" SelfAppraisalCandidateDetails SACD " +
+		  				" where " +
+		  				" SACD.selfAppraisalCandidateId = :candidateId and " +
+		  				" SACD.ownLocationValue in (:locValLst) ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameter("candidateId", candidateId);
+		  query.setParameterList("locValLst", locValLst);
+		  return (Long) query.uniqueResult();
+	  }
+	  public List<Object[]> getCndWiseAndLocValWiseCountList(){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select SACD.selfAppraisalCandidateId, SACD.ownLocationValue, sum(SACD.ownTours) " +
+		  		" from " +
+		  		" SelfAppraisalCandidateDetails SACD " +
+		  		" group by " +
+		  		" SACD.selfAppraisalCandidateId, SACD.ownLocationValue ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  return query.list();
+	  }
+	  /*select SACD.self_appraisal_candidate_id,SACD.own_location_value,sum(SACD.own_tours) 
+	  from self_appraisal_candidate_details SACD
+	  group by SACD.self_appraisal_candidate_id,SACD.own_location_value ;*/
 	  public List<Object[]> getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
 		     StringBuilder queryStr = new StringBuilder();
 		     queryStr.append(" select " +
