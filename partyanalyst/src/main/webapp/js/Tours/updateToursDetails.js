@@ -599,22 +599,34 @@ $("#toursDateRangePicker").daterangepicker({
 				str+='<label>UPLOAD ATTACHMENTS:</label>';    
 			str+='</div>';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<table class="table table-bordered">';  
-					str+='<tr style="height:50px;">';  
-						str+='<td>';
-						
-						if(result.type=="pdf"){
-							str+='<span><img src="images/pdf.jpg" class="img-responsive" alt="" style="width:80px;"/>';
-						}else if(result.type=="xls"){  
-							str+='<span><img src="images/excel.jpg" class="img-responsive" alt="" style="width:80px;"/>';       
-						}else if(result.type=="doc"){
-							str+='<span><img src="images/word.jpg" class="img-responsive" alt="" style="width:80px;"/>';         
-						}else{  
-							str+='<span><img src="" class="img-responsive" alt=""/>';           
-						}  
-						str+=''+result.filePath+'</span><button type="button" class="btn btn-default navbar-btn pull-right btn-success">VIEW</button>&nbsp&nbsp&nbsp<button type="button" class="btn btn-default navbar-btn pull-right btn-danger">DELETE</button></td>';  
-					str+='</tr>';      
-				str+='</table>';
+				str+='<div style="padding:10px;border:1px solid #ddd">';  
+					str+='<div class="row">';
+						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+							str+='<div class="media">';
+								str+='<div class="media-left">';
+									if(result.type=="pdf"){
+										str+='<span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/>';
+									}else if(result.type=="xls"){  
+										str+='<span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/>';       
+									}else if(result.type=="doc"){
+										str+='<span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/>';         
+									}else{  
+										str+='<span><img src="" class="media-object" alt=""/>';           
+									}  
+									str+='</span>';
+								str+='</div>';
+								str+='<div class="media-body">';      
+									str+=''+result.filePath+'';
+								str+='</div>';
+							str+='</div>';
+							
+						str+='</div>';
+						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+							str+='<button type="button" style="margin-left:5px;" class="btn btn-default btn-sm pull-right btn-success">VIEW</button>';
+							str+='<button type="button" class="btn btn-default btn-sm pull-right btn-danger">DELETE</button>';  
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';      
 		str+='<div class="row showDivCls" id="">'; 
