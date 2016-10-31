@@ -6186,13 +6186,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 }
 		 
 		 
-	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId){
+	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType){
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
 			 Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
+			 Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 			 List<Long> locationIds = new ArrayList<Long>();
 			 
-		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId);
+		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId,locationType);
 		 	if(list != null && !list.isEmpty()){
 		 		for (Object[] obj : list) {
 		 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -6236,6 +6237,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 		 	}
 		 	
+		 	List<Object[]> targrtLst = tdpCadreLocationInfoDAO.getLocationWiseTargets(locationScopeId);
+		 	if(targrtLst != null && !targrtLst.isEmpty()){
+		 		for (Object[] obj : targrtLst) {
+					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					targetMap.put(locaId, count);
+				}
+		 	}
+		 	
+		 	if(returnList != null && !returnList.isEmpty()){
+		 		for (CadreDashboardVO vo : returnList) {
+					vo.setTargetCount(targetMap.get(vo.getId()));
+				}
+		 	}
+		 	
 		 	if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
 		 		if(returnList != null && !returnList.isEmpty()){
 			 		for (CadreDashboardVO vo : returnList) {
@@ -6257,47 +6273,79 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			CadreDataSourceTypeVO todayVO = new CadreDataSourceTypeVO();
 			CadreDataSourceTypeVO totalVO = new CadreDataSourceTypeVO();
 			
-			List<Object[]> list = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails(currentDate, currentDate);
+			List<Object[]> list = tdpCadreLocationInfoDAO.getTdpCadreRecordsCountLocWise(currentDate,currentDate);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					String sourceType = obj[0] != null ? obj[0].toString():"";
-					Long enrolYrId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 					
 					if(sourceType.trim().equalsIgnoreCase("WEB")){
-						if(enrolYrId == 3l){
-							todayVO.setWebRenewal(count);
-							todayVO.setWebTotal(todayVO.getWebTotal()+count);
-						}
-						else if(enrolYrId == 4l){
-							todayVO.setWebNew(count);
-							todayVO.setWebTotal(todayVO.getWebTotal()+count);
-						}
+						todayVO.setWebTotal(count);
 					}
 					else if(sourceType.trim().equalsIgnoreCase("TAB")){
-						if(enrolYrId == 3l){
-							todayVO.setTabRenewal(count);
-							todayVO.setTabTotal(todayVO.getTabTotal()+count);
-						}
-						else if(enrolYrId == 4l){
-							todayVO.setTabNew(count);
-							todayVO.setTabTotal(todayVO.getTabTotal()+count);
-						}
+						todayVO.setTabTotal(count);
 					}
 					else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
-						if(enrolYrId == 3l){
-							todayVO.setOnlineRenewal(count);
-							todayVO.setOnlineTotal(todayVO.getOnlineTotal()+count);
-						}
-						else if(enrolYrId == 4l){
-							todayVO.setOnlineNew(count);
-							todayVO.setOnlineTotal(todayVO.getOnlineTotal()+count);
-						}
+						todayVO.setOnlineTotal(count);
 					}
 				}
 			}
 			
-			List<Object[]> list1 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails1(currentDate, currentDate);
+			List<Object[]> otherList = tdpCadreLocationInfoDAO.getTdpCadreRecordsCount(currentDate,currentDate);
+			if(otherList != null && !otherList.isEmpty()){
+				for (Object[] obj : otherList) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(userId == 3930l){					//Hyd PartyOfc
+						todayVO.setPartyOfcHydTotal(count);
+					}
+					else if(userId == 7394l){				//Vij PartyOfc
+						todayVO.setPartyOfcVijTotal(count);
+					}
+				}
+			}
+			
+			List<Object[]> reneList = tdpCadreLocationInfoDAO.getRenewalTdpCadreRecordsCountLocWise(currentDate, currentDate);
+			if(reneList != null && !reneList.isEmpty()){
+				for (Object[] obj : reneList) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(sourceType.trim().equalsIgnoreCase("WEB")){
+						todayVO.setWebRenewal(count);
+					}
+					else if(sourceType.trim().equalsIgnoreCase("TAB")){
+						todayVO.setTabRenewal(count);
+					}
+					else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+						todayVO.setOnlineRenewal(count);
+					}
+				}
+			}
+			
+			List<Object[]> renOtrList = tdpCadreLocationInfoDAO.getRenewalTdpCadreRecordsCount(currentDate, currentDate);
+			if(renOtrList != null && !renOtrList.isEmpty()){
+				for (Object[] obj : renOtrList) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(userId == 3930l){					//Hyd PartyOfc
+						todayVO.setPartyOfcHydRenewal(count);
+					}
+					else if(userId == 7394l){				//Vij PartyOfc
+						todayVO.setPartyOfcVijRenewal(count);
+					}
+				}
+			}
+			
+			todayVO.setWebNew(todayVO.getWebTotal() - todayVO.getWebRenewal());
+			todayVO.setTabNew(todayVO.getTabTotal() - todayVO.getTabRenewal());
+			todayVO.setOnlineNew(todayVO.getOnlineTotal() - todayVO.getOnlineRenewal());
+			todayVO.setPartyOfcHydNew(todayVO.getPartyOfcHydTotal() - todayVO.getPartyOfcHydRenewal());
+			todayVO.setPartyOfcVijNew(todayVO.getPartyOfcVijTotal() - todayVO.getPartyOfcVijRenewal());
+			
+			/*List<Object[]> list1 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails1(currentDate, currentDate);
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					String sourceType = obj[0] != null ? obj[0].toString():"";
@@ -6340,7 +6388,80 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 			}*/
 			
-			List<Object[]> list2 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails(null, null);
+			List<Object[]> totalList = tdpCadreLocationInfoDAO.getTdpCadreRecordsCountLocWise(null,null);
+			if(totalList != null && !totalList.isEmpty()){
+				for (Object[] obj : totalList) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(sourceType.trim().equalsIgnoreCase("WEB")){
+						totalVO.setWebTotal(count);
+					}
+					else if(sourceType.trim().equalsIgnoreCase("TAB")){
+						totalVO.setTabTotal(count);
+					}
+					else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+						totalVO.setOnlineTotal(count);
+					}
+				}
+			}
+			
+			List<Object[]> othertotalList = tdpCadreLocationInfoDAO.getTdpCadreRecordsCount(null,null);
+			if(othertotalList != null && !othertotalList.isEmpty()){
+				for (Object[] obj : othertotalList) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(userId == 3930l){					//Hyd PartyOfc
+						totalVO.setPartyOfcHydTotal(count);
+					}
+					else if(userId == 7394l){				//Vij PartyOfc
+						totalVO.setPartyOfcVijTotal(count);
+					}
+				}
+			}
+			
+			List<Object[]> renetotalList = tdpCadreLocationInfoDAO.getRenewalTdpCadreRecordsCountLocWise(null, null);
+			if(renetotalList != null && !renetotalList.isEmpty()){
+				for (Object[] obj : renetotalList) {
+					String sourceType = obj[0] != null ? obj[0].toString():"";
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(sourceType.trim().equalsIgnoreCase("WEB")){
+						totalVO.setWebRenewal(count);
+					}
+					else if(sourceType.trim().equalsIgnoreCase("TAB")){
+						totalVO.setTabRenewal(count);
+					}
+					else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+						totalVO.setOnlineRenewal(count);
+					}
+				}
+			}
+			
+			List<Object[]> renOtrtotalList = tdpCadreLocationInfoDAO.getRenewalTdpCadreRecordsCount(null, null);
+			if(renOtrtotalList != null && !renOtrtotalList.isEmpty()){
+				for (Object[] obj : renOtrtotalList) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					if(userId == 3930l){					//Hyd PartyOfc
+						totalVO.setPartyOfcHydRenewal(count);
+					}
+					else if(userId == 7394l){				//Vij PartyOfc
+						totalVO.setPartyOfcVijRenewal(count);
+					}
+				}
+			}
+			
+			totalVO.setWebNew(totalVO.getWebTotal() - totalVO.getWebRenewal());
+			totalVO.setTabNew(totalVO.getTabTotal() - totalVO.getTabRenewal());
+			totalVO.setOnlineNew(totalVO.getOnlineTotal() - totalVO.getOnlineRenewal());
+			totalVO.setPartyOfcHydNew(totalVO.getPartyOfcHydTotal() - totalVO.getPartyOfcHydRenewal());
+			totalVO.setPartyOfcVijNew(totalVO.getPartyOfcVijTotal() - totalVO.getPartyOfcVijRenewal());
+			
+			
+			/*List<Object[]> list2 = tdpCadreLocationInfoDAO.getDataSourceTypeWiseRegisteredDetails(null, null);
 			if(list2 != null && !list2.isEmpty()){
 				for (Object[] obj : list2) {
 					String sourceType = obj[0] != null ? obj[0].toString():"";
@@ -6410,7 +6531,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 					
 				}
-			}
+			}*/
 			
 			returnList.add(todayVO);
 			returnList.add(totalVO);

@@ -22,9 +22,14 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	
 	public int insertTdpCadreLocationInfoUpToConstituencyLevel();
 	public int insertTdpCadreLocationInfoUpToLowLevel();
-	public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId);
+	public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails(Date fromDate,Date toDate);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails1(Date fromDate,Date toDate);
+	public List<Object[]> getTdpCadreRecordsCountLocWise(Date fromDate,Date toDate);
+	public List<Object[]> getTdpCadreRecordsCount(Date fromDate,Date toDate);
+	public List<Object[]> getRenewalTdpCadreRecordsCountLocWise(Date fromDate,Date toDate);
+	public List<Object[]> getRenewalTdpCadreRecordsCount(Date fromDate,Date toDate);
+	public List<Object[]> getLocationWiseTargets(Long locationScopeId);
 	public List<Object[]> getTotalCadreCountLocationWise2014(Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue);
 	 
