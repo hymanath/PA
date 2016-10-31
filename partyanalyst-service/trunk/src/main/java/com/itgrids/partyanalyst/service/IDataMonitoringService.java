@@ -17,9 +17,12 @@ public interface IDataMonitoringService {
 	public List<IdNameVO> getDataRejectReason();
 	public ResultStatus updateRejectDtls(List<IdNameVO> idNameVOs);
 	public ResultStatus updateApproveDtls(List<IdNameVO> idNameVOs);
-	public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId);
-	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId);
+	//public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId);
+	public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId,String userType,Long districtId);
+	//public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId);
+	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId,String userType);
 	public IdNameVO getTotalRegCdrVendorWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
 	public List<IdNameVO> getTotalRegCdrVendorAndTabUserWiseNew(Long loginUserId, Long userId, Long constId, String startDate, String endDate);
 	public String getTabUserImages();
+	public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType);
 }
