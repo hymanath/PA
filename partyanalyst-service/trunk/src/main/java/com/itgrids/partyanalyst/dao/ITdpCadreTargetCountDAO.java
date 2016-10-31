@@ -16,4 +16,6 @@ public interface ITdpCadreTargetCountDAO extends GenericDao<TdpCadreTargetCount,
 	public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO inputVO);
 	public List<Object[]> getTtalCadreTargetCountScopeWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId,Long activityMemberId,String reportType);
 	public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Long enrollmentYearId);	
+	public List<Object[]> getTtalCadreTargetCountScopeWiseCount(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId);
+	public List<Object[]> getTtalCadreTargetCountScopeWiseCountSpecial(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId);
 }
