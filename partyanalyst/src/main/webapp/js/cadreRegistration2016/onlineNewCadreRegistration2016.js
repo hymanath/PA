@@ -1543,17 +1543,17 @@ function addressFieldsValidation()
 	var PrvNomneAge=$("#prevNomneAgeId").val();
 	var PrvNomneReltv=$("#prevNomneReltvId").val();	
 	
-	var wardId=$("#wardsList").val();	
+	//var wardId=$("#wardsList").val();	
 	
-	if(presntLebId > 0 && wardId ==0){
+	/*if(presntLebId > 0 && wardId ==0){
 		$("#wardErr").html("Select Ward .");  
         isError=true;
 	}else{
 		 $("#wardErr").html("");
-	}
+	}*/
 	 if(name == 0 && name.trim() == '')
 	 {
-		$("#wardErr").html("Enter Name");  
+		$("#cadreNameId").html("Enter Name");  
         isError=true;		
 	 }else
 	 {
