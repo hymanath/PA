@@ -3664,6 +3664,9 @@
 	 <property name="selfAppraisalCandidateLocationDAO" ref="selfAppraisalCandidateLocationDAO"></property>
 	 <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
 	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+	 <property name="selfAppraisalCandidateDAO" ref="selfAppraisalCandidateDAO"></property>
+	 <property name="constituencyDAO" ref="constituencyDAO"></property>
+	 <property name="districtDAO" ref="districtDAO"></property>
 	</bean>
 	
 </beans>			

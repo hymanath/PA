@@ -83,6 +83,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private PartyMeetingsDataVO partyMeetingDataVO;
 	private CadreRegistratedCountVO cadreRegistratedCountVO;
 	private ToursBasicVO toursBasicVO;
+	private List<ToursBasicVO> toursDtlsList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -717,6 +718,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
   	public void setToursBasicVO(ToursBasicVO toursBasicVO) {
 	this.toursBasicVO = toursBasicVO;
    }
+   public List<ToursBasicVO> getToursDtlsList() {
+		return toursDtlsList;
+	}
+
+	public void setToursDtlsList(List<ToursBasicVO> toursDtlsList) {
+		this.toursDtlsList = toursDtlsList;
+	}
 
 	//business methods
 	public String execute(){
@@ -2966,6 +2974,21 @@ public String getToursBasicOverviewCountDetails(){
 		toursBasicVO = coreDashboardToursService.getToursBasicOverviewCountDetails(stateId,fromDate,toDate,activityMemberId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDistrictWiseToursSubmitedDetails(){
+	try {
+		LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long userTypeId = jObj.getLong("userTypeId");
+		toursDtlsList = coreDashboardToursService.getDistrictWiseToursSubmitedDetails(stateId,fromDate,toDate,activityMemberId,userTypeId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getDistrictWiseToursSubmitedDetails() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
 }

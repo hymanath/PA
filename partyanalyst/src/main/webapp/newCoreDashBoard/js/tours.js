@@ -91,3 +91,23 @@ function getToursBasicOverviewCountDetails()
 		str+='</div>';
 	  $("#tourOverviewDivId").html(str);  
 	 }
+	 
+	 function getDistrictWiseToursSubmitedDetails()
+		{    
+			$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			var jsObj ={ 
+						 activityMemberId : globalActivityMemberId,
+						 stateId : globalStateIdForTour,
+						 fromDate : "27/10/2016",
+						 toDate : "29/10/2016",
+						 userTypeId : 2
+					  }
+			$.ajax({
+				type : 'POST',
+				url : 'getDistrictWiseToursSubmitedDetailsAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				  console.log(result);
+			});
+		}
