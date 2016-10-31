@@ -278,6 +278,89 @@ public List<Object[]> getTtalCadreTargetCountScopeWise(Long userAccessLevelId,Se
 	    }
 	   return query.list();
 }
+public List<Object[]> getTtalCadreTargetCountScopeWiseCount(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId){
+	
+	StringBuilder queryStr = new StringBuilder();  
+        queryStr.append(" select");
+		
+        queryStr.append(" model.locationValue,sum(model.targetCount) " +
+        		" from " +
+        		" TdpCadreTargetCount model " +
+        		" where " +
+        		" model.isDeleted='N' and model.enrollmentYear.enrollmentYearId=:enrollmentYearId ");
+	   
+       if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+         	queryStr.append(" and model.locationValue in (:locationValue)");  
+       }
+       if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
+    	   queryStr.append(" and model.locationScopeId=:locationScopeId ");
+       }
+       queryStr.append(" group by model.locationValue order by model.locationValue asc ");
+	   Query query = getSession().createQuery(queryStr.toString());  
+	    query.setParameter("enrollmentYearId", enrollmentYearId);
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("locationValue", userAccessLevelValues);
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
+	      query.setParameter("locationScopeId", userAccessLevelId);
+	    }
+	   return query.list();  
+}
+public List<Object[]> getTtalCadreTargetCountScopeWiseCountSpecial(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId){
+	
+	StringBuilder queryStr = new StringBuilder();  
+        queryStr.append(" select");
+        if(userAccessLevelId.equals(4l)){ 
+     	   queryStr.append(" C.district.districtId ");    
+        }else if(userAccessLevelId.equals(10l)){
+     	   queryStr.append(" C.district.districtId ");
+        }else{
+     	   queryStr.append(" model.locationValue ");
+        }
+       
+        queryStr.append(" ,sum(model.targetCount) " +  
+        				" from " +
+        				" TdpCadreTargetCount model ");
+        if(userAccessLevelId.equals(4l)){
+        	queryStr.append(", Constituency C ");
+        }
+        if(userAccessLevelId.equals(10l)){
+        	queryStr.append(" ,ParliamentAssembly PA, Constituency C ");
+        }
+        queryStr.append(" where " +
+        				" model.isDeleted='N' and model.enrollmentYear.enrollmentYearId=:enrollmentYearId ");
+        if(userAccessLevelId.equals(4l)){
+        	queryStr.append(" and model.locationValue = C.constituencyId ");
+        }else if(userAccessLevelId.equals(10l)){
+        	queryStr.append(" and model.locationValue = PA.parliamentId " +
+        					" and PA.assemblyId = C.constituencyId ");
+        }
+        
+       if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+         	queryStr.append(" and model.locationValue in (:locationValue)");  
+       }
+       if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
+    	   queryStr.append(" and model.locationScopeId=:locationScopeId ");
+       }
+       if(userAccessLevelId.equals(4l)){
+    	   queryStr.append(" group by C.district.districtId order by C.district.districtId asc ");
+       }else if(userAccessLevelId.equals(10l)){
+    	   queryStr.append(" group by C.district.districtId order by C.district.districtId asc ");
+       }else{
+    	   queryStr.append(" group by model.locationValue order by model.locationValue asc ");
+       }
+        
+	  
+	    Query query = getSession().createQuery(queryStr.toString());  
+	    query.setParameter("enrollmentYearId", enrollmentYearId);
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("locationValue", userAccessLevelValues);
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
+	      query.setParameter("locationScopeId", userAccessLevelId);
+	    }  
+	   return query.list();  
+}
 
 public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Long enrollmentYearId){
 	
@@ -305,7 +388,7 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
     if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
     	queryStr.append(" and model2.district.districtId in (:locationValue) ");
     }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
-    	queryStr.append(",and model3.parliamentId in (:locationValue) ");
+    	queryStr.append(" and model3.parliamentId in (:locationValue) ");
     }else {
     	if(locationValue != null && locationValue.size() > 0){
 	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
