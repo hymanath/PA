@@ -340,4 +340,8 @@ label
 .backBtn
 {
 	cursor:pointer;
+	border:1px solid #ddd;
+	border-radius:14px;
+	float:right;
+	padding:5px 8px;
 }

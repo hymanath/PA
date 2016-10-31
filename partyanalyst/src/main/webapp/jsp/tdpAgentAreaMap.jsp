@@ -15,6 +15,11 @@
 .chosen-choices{
 	height:35px !important;
 }
+.eventsheader , .footerCls,.line_heightDiv
+{
+	display:none;
+}
+
 </style>
 <body>
 <div class="container">

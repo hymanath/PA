@@ -231,14 +231,14 @@
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock new">
              <div class="row">
-                	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
+                	<div class="col-md-9 col-xs-9 col-xs-offset-3 col-sm-9 col-md-offset-3">
                     	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
                     </div>
-                    <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
+                    <div class="col-md-9 col-xs-12 col-sm-12 col-md-offset-3 m_top30">
                     	<h3 class="text-left text-capital text-muted">New Membership</h3>
                         <h6 class="text-muted">Register as a new member using Own/Family Voter ID</h6>
                     </div>
-                	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 m_top50">
+                	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 m_top50">
                     	<button class="btn btn-success btn-block btn-lg text-capital registerNew">new registration</button>
                     </div>
                 </div>
@@ -247,14 +247,14 @@
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock renewal">
             	<div class="row">
-                	<div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3">
+                	<div class="col-md-9 col-xs-9 col-xs-offset-3 col-sm-9 col-md-offset-3">
                     	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
                     </div>
-                    <div class="col-md-8 col-xs-12 col-sm-6 col-md-offset-3 m_top30">
+                    <div class="col-md-9 col-xs-12 col-sm-12 col-md-offset-3 m_top30">
                     	<h3 class="text-left text-capital text-muted">Renewal Membership</h3>
                         <h6 class="text-muted">Using existing [2014-2016] membership number</h6>
                     </div>
-                	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 m_top50">
+                	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 m_top50">
                     	<button class="btn btn-success btn-block btn-lg text-capital renewalBtn">renewal now</button>
                     </div>
                 </div>
@@ -283,8 +283,8 @@
                 </div>
 <!-- Confirmation Block -->
      <div class="panel-body voterIdConfirm hide">
-		<div>
-		   <div class="col-md-2 col-xs-12 col-sm-2">
+		<div class="row">
+		   <div class="col-md-2 col-xs-12 col-sm-2 pull-right">
 				<span id="voterIdBack" class="backBtn"> ← Back</span>
 			</div>
 	 	</div>	
@@ -303,7 +303,7 @@
 <!-- Entering VoterId Block -->
   <div class="panel-body enterVoterIdBlock hide">
     <div class="row">
-	 <div class="col-md-2 col-xs-12 col-sm-2">
+	 <div class="col-md-2 col-xs-12 col-sm-2 pull-right">
 		<span id="enterVoterIdBack" class="backBtn"> ← Back</span>
 	</div>
   </div>
@@ -332,10 +332,10 @@
                 <!-- Voter ID Search Block -->
                 <div class="panel-body voterIdSearch hide">
                 	<div class="row">
-				       <div class="col-md-2 col-xs-12 col-sm-2 " id="searchOwnVoterIdBack">
+				       <div class="col-md-2 col-xs-12 col-sm-2 pull-right" id="searchOwnVoterIdBack">
 							<span id="searchVoterIdBack" class="backBtn"> ← Back</span>
 						 </div>
-						 <div class="col-md-2 col-xs-12 col-sm-2" id="searchFamiVoterIdBack">
+						 <div class="col-md-2 col-xs-12 col-sm-2 pull-right" id="searchFamiVoterIdBack">
 							<span id="searchFamVoterIdBack" class="backBtn"> ← Back</span>
 						 </div>
 					</div>	
@@ -423,10 +423,10 @@
                 <!-- Voter ID Search Block End-->
                 <!-- search Results Block -->
                 <div class="panel-body searchResultsBlock hide" >
-				       <div class="col-md-2 col-xs-12 col-sm-2 m_top5" id="voterIdSearchBack">
+				       <div class="col-md-2 col-xs-12 col-sm-2 m_top5 pull-right" id="voterIdSearchBack">
 							<span id="searchResultsBack" class="backBtn"> ← Back</span>
 						</div>
-						 <div class="col-md-2 col-xs-12 col-sm-2 m_top5" id="enterVoterIdDetailsBack">
+						 <div class="col-md-2 col-xs-12 col-sm-2 m_top5 pull-right" id="enterVoterIdDetailsBack">
 							<span id="enterVoterIdResultsBack" class="backBtn"> ← Back</span>
 						</div>
                 	<div class="row">
@@ -468,12 +468,12 @@
                 </div>
 				
 
-					<div class="col-md-8 col-xs-12 col-sm-12 m_top30">
+					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="row">
-							<div class="col-md-2 col-xs-12 col-sm-2 m_top30  hide">
+							<div class="col-md-2 col-xs-12 col-sm-2 hide pull-right">
 								<span id="searchResultsBackBtn" class="backBtn"> ← Back</span>
 							</div>
-							<div class="col-md-2 col-xs-12 col-sm-2 m_top30 hide">
+							<div class="col-md-2 col-xs-12 col-sm-2 hide pull-right">
 								<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
 							</div>
 						</div>
@@ -621,8 +621,8 @@
                     </div>
 					<div class="row" id="cadrePrvNomneDivId">
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<h4 class="text-capital" id="newNomineeID" style="display:none;">nominee details<span class="text-capitalize text-warning"></span></h4>
-                        	<h4 class="text-capital" id="existingNomineeID" style="display:none;">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
+                        	<h4 class="text-capital" id="newNomineeID" style="display:none;"><b>nominee details</b><span class="text-capitalize text-warning"></span></h4>
+                        	<h4 class="text-capital" id="existingNomineeID" style="display:none;"><b>nominee details</b><small class="text-capitalize text-warning"><i> Your Previous nominee</i></small></h4>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name<span style="color:red;">*</span>&nbsp;<span id="prvNomneNameDivId" style="color:red;"></span></label>
@@ -682,13 +682,13 @@
 						</div>
                     </div>
 					
-					 <div class=" m_top30" style="" id="">
+					 <div class="row m_top30" style="" id="">
 					 <!-- 999 -->
 						<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">Address Details : </h4>
+                        	<h4 class="text-capital"><b>Address Details : </b></h4>
                         </div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"> Primary Address  : </h6>
+                        	<h6 class="text-capital"><b> Primary Address  : </b></h6>
                         </div>
 						
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -750,12 +750,11 @@
                             <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode" maxlength="6"/>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>: </br> </br> 
-								<input id="prmaryAddrsId" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
-								<label for="prmaryAddrsId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
-								<input id="deliveryCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
-								<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
-											</h6>
+                        	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>:</h6>
+							<input id="prmaryAddrsId" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
+							<label for="prmaryAddrsId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
+							<input id="deliveryCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
+							<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
                         </div>
 						
 						<div style="display:none" id="deliveryAddrId">  
@@ -851,7 +850,7 @@
 							</div>
 						</div>
 						   </div>-->
-                        <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
+                        <div class="col-md-2 col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" id="saveBtnId" onclick="savingCadreDetails();">submit</button>
                         </div>
 						 <span id="savingCadreDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -878,7 +877,7 @@
                         	<div class="pad_20">
 							<span id="renErrDivId" style="color:red;"></span>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top30">
-									<span id="renewalBackBtn" class="backBtn"> ← Back</span>
+									<span id="renewalBackBtn" class="backBtn pull-right"> ← Back</span>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<label>MEMBERSHIP ID</label>
@@ -1026,7 +1025,7 @@
                 <div class="panel-body profileDetailsBlockR hide">
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">profile details</h4>
+                        	<h4 class="text-capital"><b>profile details</b></h4>
                         </div>
                         <div class="col-md-8 col-xs-12 col-sm-12 m_top30">
                         	<div class="row">
@@ -1161,8 +1160,8 @@
                             	<input type="checkbox" />Change Nominee
                             </label>
                         </div>
-						<div class="col-md-2 col-xs-12 col-sm-2 m_top30">
-							<span id="profileBackR" class="backBtn"> ← Back</span>
+						<div class="col-md-2 col-xs-12 col-sm-2 m_top30 pull-right">
+							<span id="profileBackR" class="backBtn "> ← Back</span>
 						</div>
                         <div class="col-md-2 col-xs-4 col-xs-offset-3 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital">submit</button>
