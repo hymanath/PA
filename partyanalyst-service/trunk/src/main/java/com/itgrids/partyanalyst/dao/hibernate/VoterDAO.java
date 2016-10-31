@@ -456,7 +456,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				 return query.list();
 			}
 			
-			public List<Object[]> getVoterDetailsByVoterId(Long voterId){
+			public List<Object[]> getVoterDetailsByVoterId(Long voterId,Long publicationDateId){
 				StringBuilder str = new StringBuilder(); 
 				
 				str.append(" select model.voter.voterId," +
@@ -469,11 +469,12 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 						" model.voter.relationshipType," +
 						" model.voter.voterIDCardNo,model.booth.constituency.constituencyId  "  +
 						" from BoothPublicationVoter model "+ //9
-						" where model.voter.voterId = :voterId  ");
+						" where model.voter.voterId = :voterId  and model.booth.publicationDate.publicationDateId = :publicationDateId ");
 				
 				Query query = getSession().createQuery(str.toString());
 				
 				query.setParameter("voterId", voterId);
+				query.setParameter("publicationDateId", publicationDateId);
 				return query.list();
 			}
 		public List<Object[]> getOnlineCadreRegistrationVoterDetails(String VoterCardNumber){
