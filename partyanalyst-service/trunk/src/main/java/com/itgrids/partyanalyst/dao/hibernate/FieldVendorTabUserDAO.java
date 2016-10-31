@@ -55,7 +55,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.cadreSurveyUser.cadreSurveyUserId)" +
 						" from CadreSurveyUserAssignDetails model" +
-						" where model.cadreSurveyUser.isEnabled = 'Y'");
+						" where model.cadreSurveyUser.isEnabled = 'Y'" +
+						" and model.cadreSurveyUser.isDeleted = 'N'");
 		/*if(startDate != null && endDate != null)
 			sb.append(" and date(model.tdpCadre.surveyTime) between :startDate and :endDate");*/
 		
