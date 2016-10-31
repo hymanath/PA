@@ -234,26 +234,41 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 		}
 		return null;
 	}
-public List<Object[]> getTtalCadreTargetCountScopeWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId,Long activityMemberId){
+public List<Object[]> getTtalCadreTargetCountScopeWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId,Long activityMemberId,String reportType){
 	
 	StringBuilder queryStr = new StringBuilder();  
         queryStr.append(" select");
+		if(reportType != null && reportType.equalsIgnoreCase("District")){
+			queryStr.append(" distinct model1.district.districtId,");
+		}else{
+		    queryStr.append(" model.locationValue,");	
+		}
+	    queryStr.append(" sum(model.targetCount) from TdpCadreTargetCount model  ");
 		
-        queryStr.append(" model.locationValue,sum(model.targetCount) from TdpCadreTargetCount model where model.isDeleted='N' and model.enrollmentYear.enrollmentYearId=:enrollmentYearId ");
-	   if(activityMemberId != null && activityMemberId.longValue()==4l){
-    	  queryStr.append(" and model.locationValue not in(244,246,248,250,251,252) ");//activity memberId 4 has access only 4 constituency access of kadapa district so we are ignoring 6 constituency of kadapa district
-       }else if(activityMemberId != null && activityMemberId.longValue()==5l){
-    	  queryStr.append(" and model.locationValue not in(242,243,245,249) ");//activity memberId 5 has access only 6 constituency access of kadapa district so we are ignoring 4 constituency of kadapa district
-       }
+		if(reportType != null && reportType.equalsIgnoreCase("District")){
+			queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 and model1.deformDate is null and model.isDeleted='N' and model.enrollmentYear.enrollmentYearId=:enrollmentYearId  ");
+		}else{
+			queryStr.append(" where model.isDeleted='N' and model.enrollmentYear.enrollmentYearId=:enrollmentYearId ");	
+		}
+		if(reportType != null && reportType.equalsIgnoreCase("District")){
+	       if(activityMemberId != null && activityMemberId.longValue()==4l){
+	    	  queryStr.append(" and model1.constituencyId not in(244,246,248,250,251,252) ");//activity memberId 4 has access only 4 constituency access of kadapa district so we are ignoring 6 constituency of kadapa district
+	       }else if(activityMemberId != null && activityMemberId.longValue()==5l){
+	    	  queryStr.append(" and model1.constituencyId not in(242,243,245,249) ");//activity memberId 5 has access only 6 constituency access of kadapa district so we are ignoring 4 constituency of kadapa district
+	       }
+		}
        if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
          	queryStr.append(" and model.locationValue in (:locationValue)");  
        }
        if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
     	   queryStr.append(" and model.locationScopeId=:locationScopeId ");
        }
-        queryStr.append(" group by model.locationValue order by model.locationValue asc ");
-	  
-	    Query query = getSession().createQuery(queryStr.toString());
+	   	if(reportType != null && reportType.equalsIgnoreCase("District")){
+	   	 queryStr.append(" group by model1.district.districtId order by model1.district.districtId asc ");	
+	   	}else{
+	   	 queryStr.append(" group by model.locationValue order by model.locationValue asc ");	
+	   	}
+        Query query = getSession().createQuery(queryStr.toString());
 	    query.setParameter("enrollmentYearId", enrollmentYearId);
 	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 	    	query.setParameterList("locationValue", userAccessLevelValues);
