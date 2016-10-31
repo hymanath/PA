@@ -290,6 +290,10 @@ var str = "";
 		 if(result.houseNo != null && result.houseNo != ""){
 			$("#phnoId").val(result.houseNo);
 		 }
+		 	$("#PrvNomineeDetailsId").prop( 'checked',false);
+			$("#addNewNomineeId").prop( 'checked',false);
+			$("#changeNomineeId").prop( 'checked',false);
+				
 		 if(result.tdpCadreId != null && result.nomineeName != null && result.nomineeName != ""){
 			$("#PrvNomineeDetailsId").prop( 'checked',true);
 			$("#changeNomineeId").prop( 'checked',false);
@@ -299,7 +303,10 @@ var str = "";
 			$("#prvNomneNameId").val(result.nomineeName);
 		 }else{
 				$("#PrvNomineeDetailsId").prop( 'checked',false);
-				$("#changeNomineeId").prop( 'checked',false);
+				$("#addNewNomineeId").prop( 'checked',false);
+				
+				$("#addNewNomineeId").prop( 'checked',true);
+				
 				//$("#prvNomneNameId").prop( 'disabled',true);
 
 				$("#newNomineeID").show();
@@ -332,26 +339,29 @@ var str = "";
 		 $("#PrvNomineeDetailsId").attr("attr_nomineName",result.nomineeName);
 		 $("#PrvNomineeDetailsId").attr("attr_nomineeGender",result.nomineeGender);
 		 if(result.tdpCadreId != null && result.nomineeAge != null && result.nomineeAge != "" && result.nomineeAge > 0){
-		 $("#PrvNomineeDetailsId").attr("attr_nomineAge",result.nomineeAge);
+			$("#PrvNomineeDetailsId").attr("attr_nomineAge",result.nomineeAge);
 		 }
-		 $("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
-		
+			$("#PrvNomineeDetailsId").attr("attr_nomineRelative",result.nomineeRelationId);
+		 
+		/*
 		if(result.paymentGatewayVO != null){
 			if(result.paymentGatewayVO.subList != null && result.paymentGatewayVO.subList.length>0){
 				//console.log(result.paymentGatewayVO);
-				$('#wardsDivId').removeClass('hide');
+				//$('#wardsDivId').removeClass('hide');
 				$("#wardsList").append('<option value="0"> Select Ward </option>');
 				for(var k in result.paymentGatewayVO.subList){
 					$("#wardsList").append('<option value="'+result.paymentGatewayVO.subList[k].id+'">'+result.paymentGatewayVO.subList[k].name+'</option>');
 				 }
 				 $("#wardsList").trigger("chosen:updated");
 			}else{
-				$('#wardsDivId').addClass('hide');
+				;//$('#wardsDivId').addClass('hide');
 			}
 		}
 		else{
-			$('#wardsDivId').addClass('hide');
+			;//$('#wardsDivId').addClass('hide');
 		}
+		*/
+		
 		  presntDistrictId =result.districtId;
 		  presntConstituencyId =result.constituencyId;
 		  if(result.localElectionBodyId != null && result.localElectionBodyId>0){
@@ -376,8 +386,19 @@ var str = "";
 			//$("#familyDetailsDivId").show();
 			$('#nameId1').removeAttr("disabled");
 			$("#cadreMembrSpId").hide();
+			//$('#exstCheckImgId').removeAttr("checked");
+			//$('#newCheckImgId').attr("checked","");
+			
+			$('#exstCheckImgId').prop("checked",false);			
+			$('#newCheckImgId').prop("checked",true);
+			
+			
+			//console.log(" family voter id");
 		}else{
-			$('#nameId1').attr("disabled",true);
+			//console.log("not family voter id");
+			$('#nameId1').attr("disabled",true);		
+			$('#newCheckImgId').prop("checked",false);			
+			$('#exstCheckImgId').prop("checked",true);
 		}
  		
 }
@@ -464,7 +485,7 @@ function buildCasteDetails(result) {
 }
   $(document).on("click","#addNewNomineeId",function(){
 	  $("#familyDetailsDivId").hide(); 
-
+	$('#prvsNomneHeadingId').hide();
 	$("#prvNomneNameId").val('');
 	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
 	$("#prevNomneAgeId").val('');
@@ -499,6 +520,7 @@ function buildCadreRelativesDetails(result,id) {
 }	
 
 $(document).on("click", "#changeNomineeId", function(e) {
+	$('#prvsNomneHeadingId').hide();
 	$('.checkboxCls').attr('checked', false);
 	$("#prvNomneNameDivId").html("");
 	$("#prvNomneGendrDivId").html("");
@@ -536,7 +558,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		$('#saveBtnId').hide();
 		
 		//alert("success");
-		
+		//return;
 	var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
@@ -700,6 +722,7 @@ $(document).on("click",".checkboxCls",function(){
 	
 });
 $(document).on("click",".nomineeDetailsCls",function(){
+	$('#prvsNomneHeadingId').hide();
 	$(".nomineeDetailsCls").prop( 'checked',false);
 	 $(this).prop( 'checked', true );
 });
@@ -710,8 +733,11 @@ function imageValidations()
 	var exstImgPath=$("#existImgId").attr("src");
 	var newImagPath=$("#actuploadImg").attr("src");
 	var existImgCheck=$("#exstCheckImgId").is(':checked') ? 1 : 0;
-	var newImgCheck=$("#newCheckImgId").is(':checked') ? 1 : 0;
-
+	var newImgCheck=0;
+	$("#newCheckImgId").is(':checked') ? 1 : 0;
+	if(existImgCheck == 0){
+		newImgCheck=$("#newCheckImgId").is(':checked') ? 1 : 0;
+	}
  
 	if(existImgCheck=="0" && newImgCheck == "0")
 	{
@@ -752,6 +778,7 @@ $(document).on("click",".isImageCheck",function(){
 	});    
  
  $(document).on("click","#PrvNomineeDetailsId",function(){ 
+	$('#prvsNomneHeadingId').show();
 	$('#prvNomneGendrId').val(0).trigger('chosen:updated');
 	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
 	
@@ -789,7 +816,7 @@ $(document).on("click",".isImageCheck",function(){
 	$("#actuploadImg").removeAttr('src');
 	$("#actuploadImg").attr('src','dist/img/default_image.png');
 	$("#newCheckImgId").attr('checked', false);
-	$("#exstCheckImgId").attr('checked',false);
+	//$("#exstCheckImgId").attr('checked',false);
 	$("#genderId").val(0).trigger('chosen:updated');
 	$("#ageId").val(''); 
 	$("#dobId").val('');  
