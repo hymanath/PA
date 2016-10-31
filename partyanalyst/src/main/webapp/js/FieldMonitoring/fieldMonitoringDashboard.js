@@ -267,12 +267,16 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count){
 		fromDate = dateArr[0];
 		toDate = dateArr[1];
 	}
-	
+	var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
 	var jsObj = { 
 	  fromDate : fromDate,    //"10/18/2016",
 	  toDate : toDate,  		  //"10/20/2016",		
 	  issueType : issueType,
-	  issueStatus : issueStatus
+	  issueStatus : issueStatus,
+	  stateId  : stateId
 	}
 	$.ajax({
 		type : 'GET',
@@ -390,13 +394,17 @@ $(document).on("click",".issuesBtn",function(){
 		fromDate = dateArr[0];
 		toDate = dateArr[1];
 	}
-	
+	var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
 	 var jsObj =
      {				
 		cadreSurveyUserId : cadreSurveyUserId,
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
-		toDate : toDate
+		toDate : toDate,
+		stateId  : stateId
 	}
     $.ajax({
           type:'GET',
@@ -483,7 +491,10 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 			fromDate = dateArr[0];
 			toDate = dateArr[1];
 		}
-		
+		var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
 	
 	 var jsObj =
      {				
@@ -491,7 +502,8 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
 		toDate : toDate,
-        issueStatusId : issueStatusId
+        issueStatusId : issueStatusId,
+		stateId  : stateId
 	 }
     $.ajax({
           type:'GET',
@@ -716,7 +728,11 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 	  $("#issueTrackingBodyId").html("");
 	  $("#issueTrackingModal").modal("show");
 	  $("#issueTrackingImgId").show();
-	   var jsObj = { cadreRegIssueId :cadreRegIssueId}
+	  var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+	   var jsObj = { cadreRegIssueId :cadreRegIssueId,stateId : stateId}
 	  
 	   $.ajax({
           type:'POST',

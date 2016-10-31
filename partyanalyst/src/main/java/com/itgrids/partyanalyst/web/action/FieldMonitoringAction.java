@@ -430,8 +430,9 @@ public String getConstituencyByVendor(){
 			String toDateStr = jObj.getString("toDate");
 			Long issueTypeId = jObj.getLong("issueType");
 			Long issueStatusId = jObj.getLong("issueStatus");
+			Long stateId = jObj.getLong("stateId");
 			
-			fieldMonitoringList = fieldMonitoringService.getStatusWiseIssuesDetails(fromDateStr,toDateStr,issueTypeId,issueStatusId);
+			fieldMonitoringList = fieldMonitoringService.getStatusWiseIssuesDetails(fromDateStr,toDateStr,issueTypeId,issueStatusId,stateId);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getStatusWiseIssuesDetails()  of FieldMonitoringAction", e);
 		}
@@ -470,8 +471,9 @@ public String getConstituencyByVendor(){
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			Long issueStatusId = jObj.getLong("issueStatusId");
+			Long stateId = jObj.getLong("stateId");
 			
-			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesForATabUserByStatusNew(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,issueStatusId,userId);
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesForATabUserByStatusNew(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,issueStatusId,userId,stateId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getIssuesForATabUserByStatus()  of FieldMonitoringAction", e);
@@ -490,8 +492,10 @@ public String getConstituencyByVendor(){
 			Long tabUserInfoId = jObj.getLong("tabUserInfoId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
 			
-			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesCountsForATabUserByStatusNew(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,userId);
+			
+			fieldMonitoringIssueVOList = fieldMonitoringService.getIssuesCountsForATabUserByStatusNew(cadreSurveyUserId,tabUserInfoId,fromDateStr,toDateStr,userId,stateId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getIssuesCountsForATabUser()  of FieldMonitoringAction", e);
@@ -548,8 +552,9 @@ public String getConstituencyByVendor(){
 			jObj = new JSONObject(getTask());
 			
 			Long cadreRegIssueId = jObj.getLong("cadreRegIssueId");
+			Long stateId = jObj.getLong("stateId");
 			
-			fieldMonitoringIssueVOList = fieldMonitoringService.trackingRegIssueByRegIssueId(cadreRegIssueId);
+			fieldMonitoringIssueVOList = fieldMonitoringService.trackingRegIssueByRegIssueId(cadreRegIssueId,stateId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at trackingRegIssueByRegIssueId()  of FieldMonitoringAction", e);
