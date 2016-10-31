@@ -2050,9 +2050,9 @@
 							<span class="cadreNotes pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
 							</span>
-							 <!--<span class="cadreExpand pull-right">  
+							 <span class="cadreExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>-->
+							</span> 
 							<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">
@@ -2127,7 +2127,7 @@
                             </ul>
                             
                         </div>
-                     	<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">        
+						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls m_top20">        
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
 									<span class="headingColor">State Wise Overview</span>
@@ -2147,7 +2147,7 @@
                                         	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
                                         	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
                                         </div>
-                                        <div class="col-md-6 col-xs-12 col-sm-12">
+                                        <div class="col-md-6 col-xs-12 col-sm-12 m_XsTop10">
                                         	<ul class="activeUlCls list-inline pull-right">
                                                 <li class="active districtFilterCls" attr_filter_value="All">All</li>
                                                 <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
@@ -2236,7 +2236,7 @@
                                 </div>
                                 <div class="panel-body">
                                 	<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
+										<div class="col-md-6 col-xs-12 col-sm-6">  
 											<h4>Andhra Pradesh</h4>
 											<div class="row m_top20">
 												<div class="col-md-2 col-xs-12 col-sm-2">
@@ -2284,11 +2284,11 @@
 										<div class="row" id="enumeratorsId"></div>     
 										<div class="row m_top20">
 											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="headingColor" style="display:none;">Constituency Wise Registrations</span>
+												<span class="headingColor" style="display:none;">DISTRICT WISE REGISTRATIONS</span>
 												<div id="individualDtlsId"></div>   
 											</div>
 											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="headingColor" style="display:none;">Registered Voter Id</span>
+												<span class="headingColor" style="display:none;">REGISTERED VOTER ID</span>  
 												<div id="voterDtlsId"></div>  
 											</div>
 										</div>
@@ -2308,11 +2308,9 @@
                                             </ul>
 										  </div>
 										  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<div id=""></div>
+											<div id="individualDtls"></div>      
 										  </div>
 										</div>
-										
-										
 									</div>
 								</div>
 							</div>
@@ -2325,7 +2323,7 @@
 		<!--Cadre Registration ENd -->
 	 </div>
 	 <!-- TOURS START -->
-	<!-- <div class="row">
+	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2346,14 +2344,14 @@
 							</span>
 							 <!--<span class="tourExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>-->
+							</span>-->  
 							<!--<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="tourDateRange"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>
-						</div>
+						</div>  
                     </div>      
                 </div>
 				</div>
@@ -2856,6 +2854,8 @@
 		cadreRegistrationBasicCall(globalActivityMemberId);              
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
+        getToursBasicOverviewCountDetails();
+		//getDesigWiseMemberDtls();  
        // getToursBasicOverviewCountDetails();		
 	}
 	
