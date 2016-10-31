@@ -380,6 +380,58 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     	
     	return query.list();
     }
+    public List<Object[]> getTotalCadreCountLocationWise2014(Long userAccessLevelId,List<Long> userAccessLevelValues){
+    	StringBuilder queryStr = new StringBuilder();  
+        queryStr.append(" select"); 
+        if(userAccessLevelId.equals(4l)){
+     	   queryStr.append(" C.district.districtId ");
+        }else if(userAccessLevelId.equals(10l)){
+     	   queryStr.append(" C.district.districtId ");
+        }else{
+     	   queryStr.append(" model.locationValue ");
+        }
+       
+        queryStr.append(" ,sum(model.cadre2014) " +  
+        				" from " +
+        				" TdpCadreLocationInfo model ");
+        if(userAccessLevelId.equals(4l)){
+        	queryStr.append(", Constituency C ");
+        }
+        if(userAccessLevelId.equals(10l)){
+        	queryStr.append(" ,ParliamentAssembly PA, Constituency C ");
+        }
+        queryStr.append(" where ");
+        if(userAccessLevelId.equals(4l)){
+        	queryStr.append("  model.locationValue = C.constituencyId and ");
+        }else if(userAccessLevelId.equals(10l)){
+        	queryStr.append("   model.locationValue = PA.parliamentId " +
+        					" and PA.assemblyId = C.constituencyId and ");
+        }
+        
+       if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+         	queryStr.append("  model.locationValue in (:locationValue)");  
+       }
+       if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
+    	   queryStr.append(" and model.locationScopeId=:locationScopeId ");
+       }
+       if(userAccessLevelId.equals(4l)){
+    	   queryStr.append(" group by C.district.districtId order by C.district.districtId asc ");
+       }else if(userAccessLevelId.equals(10l)){
+    	   queryStr.append(" group by C.district.districtId order by C.district.districtId asc ");
+       }else{
+    	   queryStr.append(" group by model.locationValue order by model.locationValue asc ");
+       }
+        
+	  
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("locationValue", userAccessLevelValues);
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
+	      query.setParameter("locationScopeId", userAccessLevelId);
+	    }  
+	   return query.list();   
+    }
     public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue){
     	
    	 StringBuilder queryStr = new StringBuilder();  
