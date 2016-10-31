@@ -1183,7 +1183,7 @@ public interface IConstants {
 	public static final Long CADRE_REGISTRATION_2016_PUBLICATION_ID = 22L;
 	public static final Long  PRESENT_CADRE_ENROLLMENT_YEAR = 4L;
 	public static final Long  PREVIOUS_CADRE_ENROLLMENT_YEAR = 3L;
-	public static final int  DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS = -1;
+	public static final int  DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS = 2;
 	
 	//cadre image saving .
 	public static final String STATIC_CONTENT_FOLDER_PATH = "/app/static_content";
