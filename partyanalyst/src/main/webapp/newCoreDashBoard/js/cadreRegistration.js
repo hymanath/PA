@@ -166,9 +166,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">total</h5>';
-							str+='<h3 class="cadreCount">'+emptyCheck(result.totalCount)+'</h3>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_top20">';
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
@@ -184,9 +184,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">today</h5>';
-							str+='<h3 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h4>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_top20">';
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
 						str+='</div>';  
