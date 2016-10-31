@@ -25,6 +25,7 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails(Date fromDate,Date toDate);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails1(Date fromDate,Date toDate);
+	public List<Object[]> getTotalCadreCountLocationWise2014(Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue);
 	 
 }
