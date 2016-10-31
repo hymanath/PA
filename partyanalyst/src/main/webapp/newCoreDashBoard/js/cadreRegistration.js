@@ -2386,7 +2386,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 					str+='</table>';
 				str+='</div>';
 			str+='</div>';      
-			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_left0" >';  
+			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_left0" >';    
 				str+='<div class="pad_5">';
 					str+='<h5 class="text-capital">new</h5>';
 					str+='<h3>'+newCount+'</h3>';
@@ -2395,7 +2395,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 					for(var i in result){
 						str+='<tr style="'+colorArr[i]+'">';
 							str+='<td>'+result[i].sourceName+'</td>';
-							str+='<td>'+result[i].newCount+'</td>'; 
+							str+='<td>'+result[i].newCount+'</td>';     
 							var percent = (result[i].newCount * (100/newCount)).toFixed(2);    
 							str+='<td><small class="text-muted">'+percent+'%</small></td>';          
 						str+='</tr>';
@@ -2440,11 +2440,14 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			str += '</ul>';    
 		}
 		$("#designationListId").html(str); 
-		//$("#desigPosition0").trigger("click");   
-		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
+		$("#desigPosition0").trigger("click");   
+		//getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
 		
 	}
-	
+	$(document).on("click","#desigPosition0",function(){
+		firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
+		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);            
+	});
 	$(document).on('click','.childMemCls',function(){      
 		var firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
 		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -2539,9 +2542,19 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		$("#childMembersId").html(str);  
 		//$("#directChildId0").trigger("click"); 
 		
-		
+
 		getDirectChildMembers(attrActivityMemberId,attrUserTypeId);
-		getDtlsOfBellowLvlMember(attrActivityMemberId)
+		//change
+		
+		getEnumerationDtlsForMem(attrActivityMemberId);
+		if(attrUserTypeId == 3 || attrUserTypeId == 5){
+			getGSAndDPDtls(attrActivityMemberId);
+		}else{
+			$("#individualDtlsId").html("");
+		}
+		getDtlsOfBellowLvlMember(attrActivityMemberId);
+		getVoterInfo(attrActivityMemberId);        
+		  
 		$("#childActivityMemberDivIdForMeeting").html(str);
 			$(".slickPanelSliderCadre").slick({
 				 slide: 'li',
@@ -2586,10 +2599,18 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			});      		
 	} 
 	$(document).on('click','.directChildCls',function(){
-		var ActivityMemberId = $(this).attr("attr_activity_member_id");
+		var activityMemberId = $(this).attr("attr_activity_member_id");
 		var userTypeId = $(this).attr("attr_user_type_id");
-		getDirectChildMembers(ActivityMemberId,userTypeId);
-		getDtlsOfBellowLvlMember(ActivityMemberId);
+		getDirectChildMembers(activityMemberId,userTypeId);
+		//changed 
+		if(userTypeId == 3 || userTypeId == 5){    
+			getGSAndDPDtls(activityMemberId);
+		}else{
+			$("#individualDtlsId").html("");    
+		}
+		getEnumerationDtlsForMem(activityMemberId);      
+		getVoterInfo(activityMemberId);
+		getDtlsOfBellowLvlMember(activityMemberId);  
 		
 	});
 	function getDirectChildMembers(ActivityMemberId,userTypeId){
@@ -2601,7 +2622,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		$(".headingColor").hide();
 		var userTypeIdArr = [];
 		userTypeIdArr.push(userTypeId);     
-		var jsObj ={ parentActivityMemberId : ActivityMemberId,      
+		var jsObj ={ parentActivityMemberId : ActivityMemberId,        
 			         childUserTypeIdsArray : userTypeIdArr,    
 					 stateId : globalStateId,
 					 fromDateStr : '02/10/2016',
@@ -2625,38 +2646,49 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			}
 		});
 	}
-	function buildDirectChildMembers(result){  
+	function buildDirectChildMembers(result){    
 		var activityMemberId = result[0].activityMemberId;  
 		var str = '';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<table class="table table-condensed tableHoverLevels m_top20">';
-				str+='<thead>';
-					str+='<th>%RANK</th>';
-					str+='<th class="text-capital">'+result[0].userType+' NAME</th>';
-					str+='<th>TOTAL</th>';
-					str+='<th>TODAY</th>';
-					str+='<th>%</th>';
-				str+='</thead>';
-				str+='<tbody>';
-					   
-					var k = 0;
-					for(var i in result){
-						if(result[i].totalCadreCount > 0){     
-							str+='<tr id="belowLvlMemId'+i+'" class="bellowLvlCls" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
-								k = parseInt(k) + 1;      
-								str+='<td>';
-									str+='<span class="tableCount">'+k+'</span>';
-								str+='</td>';
-								str+='<td>'+result[i].name+'</td>';
-								str+='<td>'+result[i].totalCadreCount+'</td>';
-								str+='<td>'+result[i].totalCadreCountToday+'</td>';
-								str+='<td>'+result[i].totalCadreCountPer+'</td>';
-							str+='</tr>';   
-						}
-					}  
-					
-				str+='</tbody>';
-			str+='</table>';  
+			if($(window).width < 768)
+			{
+				str+='<div class="table-responsive">';
+			}
+			
+				str+='<table class="table table-condensed tableHoverLevels m_top20">';
+					str+='<thead>';
+						str+='<th>%RANK</th>';
+						str+='<th>DESIGNATION</th>';
+						str+='<th class="text-capital">NAME</th>';      
+						str+='<th>TOTAL</th>';
+						str+='<th>TODAY</th>';
+						str+='<th>%</th>';
+					str+='</thead>';
+					str+='<tbody>';
+						   
+						var k = 0;
+						for(var i in result){
+							if(result[i].totalCadreCount > 0){         
+								str+='<tr id="belowLvlMemId'+i+'" class="bellowLvlCls" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
+									k = parseInt(k) + 1;      
+									str+='<td>';
+										str+='<span class="tableCount">'+k+'</span>';
+									str+='</td>';
+									str+='<td>'+result[i].userType+'</td>';    
+									str+='<td>'+result[i].name+'</td>';
+									str+='<td>'+result[i].totalCadreCount+'</td>';
+									str+='<td>'+result[i].totalCadreCountToday+'</td>';
+									str+='<td>'+result[i].totalCadreCountPer+'</td>';
+								str+='</tr>';   
+							}
+						}  
+						
+					str+='</tbody>';
+				str+='</table>';  
+			if($(window).width < 768)
+			{
+				str+='</div>';
+			}
 		str+='</div>';
 		$("#directChildId").html(str);
 		//$("#belowLvlMemId0").trigger("click");
@@ -2664,7 +2696,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		//$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		//$(".headingColor").hide();
-		if(k == 0){
+		/* if(k == 0){
 			$("#directChildId").html('');
 			$("#enumeratorsId").html('');        
 			$("#individualDtlsId").html('');   
@@ -2680,7 +2712,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			$("#accessMemberId").show();              
 			getEnumerationDtlsForMem(activityMemberId);    
 			getVoterInfo(activityMemberId);    
-		} 
+		}  */  
 		          
 			   
 	}  
@@ -2690,8 +2722,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$(".headingColor").hide();
 		var activityMemberId = $(this).attr("attr_activity_member_id");
-		getEnumerationDtlsForMem(activityMemberId);    
-		getDtlsOfBellowLvlMember(activityMemberId);
+		getEnumerationDtlsForMem(activityMemberId);   
 		getVoterInfo(activityMemberId);
 		getDtlsOfBellowLvlMember(activityMemberId);
 	});
@@ -2723,7 +2754,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	function buildEnumerationDtlsForMem(result){
 		var str = '';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<span class="headingColor">enumerators info</span>';
+			str+='<span class="headingColor">ENUMERATORS INFO</span>';  
 		str+='</div>';
 		str+='<div class="col-md-3 col-xs-12 col-sm-3 text-capital">';
 			str+='<h3>'+result.todayFieldMembersCount+'</h3>';
@@ -2741,10 +2772,10 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	}
 	$(document).on("click",".consFilterCls",function(){
      var filterApplyType = $(this).attr("attr_filter_value");
-      buildDtlsOfBellowLvlMember(globalSubLevelRslt,"individualDtlsId",filterApplyType);
+      buildDtlsOfBellowLvlMember(globalSubLevelRslt,"individualDtls",filterApplyType);
   });
 	function getDtlsOfBellowLvlMember(globalActivityMemberId){
-		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#individualDtls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		var startDate = '';    
 		var endDate = '';  
          var flterApplyType="No";		
@@ -2760,10 +2791,10 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){        
-		   buildDtlsOfBellowLvlMember(result,"individualDtlsId",flterApplyType);
+		   buildDtlsOfBellowLvlMember(result,"individualDtls",flterApplyType);
 		   globalSubLevelRslt = result;
 		});
-	}
+	}  
 	function buildDtlsOfBellowLvlMember(result,divId,filterApplyType){
 		var locationNameArr = [];
 		var renewalArr = [];
@@ -2949,7 +2980,8 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			$("#voterDtlsId").highcharts({
 				colors: ['#53BF8B','#F56800','#66728C'],
 				chart: {
-					type: 'column'
+					type: 'column',
+					backgroundColor:'transparent'
 				},
 				title: {
 					text: ''
@@ -3039,4 +3071,95 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		} 
 		var today = dd+'/'+mm+'/'+yyyy;
 		return today;
-	}  
+	}
+	function getGSAndDPDtls(globalActivityMemberId){
+		var startDate = '';    
+		var endDate = '';    
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,
+			stateId : globalStateId,         
+			startDate : '02/10/2016',         
+			endDate : getTodayDate()
+		};
+		$.ajax({           
+			type : 'GET',         
+			url : 'getDtlsOfBellowLvlMember.action',    
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){        
+			
+			 if(result != null && result.length > 0){
+				 buildGetGSAndDPDtls(result);
+				 $(".headingColor").show();     
+			 }else{        
+				 $("#individualDtlsId").html("")
+			 }
+		});
+	}
+	function buildGetGSAndDPDtls(result){    
+		var locationNameArr = [];
+		var renewalArr = [];
+		var newCadreArr = [];
+		var cadre2014ArrPer = [];
+		var colorArr=[];
+		var jsonDataArr=[];
+		for(var i in result){
+			locationNameArr.push(result[i].sourceName);         
+			renewalArr.push(parseFloat(result[i].renewalPerCount));
+			newCadreArr.push(parseFloat(result[i].newPercCnt));   
+			cadre2014ArrPer.push(result[i].cadreCountPer2014);
+		}
+		if(renewalArr.length > 0){
+        jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+        colorArr.push('#30AA74');      
+        }
+        if(newCadreArr.length > 0){
+        jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+        colorArr.push('#F36800');      
+        }
+        if(cadre2014ArrPer.length > 0){
+        jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+        colorArr.push('#FFCA00');      
+        }
+		if(result!= null && result.length > 10){
+        var highChartDivHight = result.length*20;
+        $("#individualDtlsId").height(highChartDivHight);  
+        }else{
+        $("#individualDtlsId").height(260);    
+        }
+        $(function () {
+          $("#individualDtlsId").highcharts({
+            colors: colorArr,
+            chart: {
+              type: 'bar'
+            },
+            title: {
+              text: null
+            },
+            xAxis: {
+              min: 0,
+              gridLineWidth: 0,
+              minorGridLineWidth: 0,
+              categories: locationNameArr
+            },
+            yAxis: {
+              min: 0,
+              gridLineWidth: 0,
+              minorGridLineWidth: 0,
+              title: {
+                text: null
+              }
+            },
+            legend: {
+              reversed: true
+            },
+            plotOptions: {
+              series: {
+                stacking: 'normal'
+              }
+            },
+            series:jsonDataArr 
+          });
+        });
+		  
+	}
