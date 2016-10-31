@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
+import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.IToursService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -33,6 +33,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private String task;
 	     
 	   private IToursService toursService;
+	   private ICoreDashboardToursService coreDashboardToursService;
 	   private ToursInputVO toursInputVO;
 	   private ResultStatus	resultStatus;
 	   private InputStream	inputStream;
@@ -104,12 +105,22 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		   this.inputStream = inputStream;
 	   }  
 	   
-		public String getSuccessMsg() {
-			return successMsg;
-		}
-		public void setSuccessMsg(String successMsg) {
-			this.successMsg = successMsg;
-		}
+	   public String getSuccessMsg() {
+		   return successMsg;
+	   }
+	   public void setSuccessMsg(String successMsg) {
+		   this.successMsg = successMsg;
+	   }
+	   public ICoreDashboardToursService getCoreDashboardToursService() {
+		   return coreDashboardToursService;
+	   }
+	   public void setCoreDashboardToursService(
+			   ICoreDashboardToursService coreDashboardToursService) {
+		   this.coreDashboardToursService = coreDashboardToursService;
+	   }
+	public static Logger getLog() {
+		return LOG;
+	}
 	//Business method
 	   public String execute(){
 		   return Action.SUCCESS;
@@ -302,6 +313,21 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			LOG.error("Exception raised at savingNominatedPostProfileApplication", e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	public String getDesigWiseMemberDtls(){
+		try {
+			LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			successMsg = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId); 
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
+		}
 		return Action.SUCCESS;
 	}
 }
