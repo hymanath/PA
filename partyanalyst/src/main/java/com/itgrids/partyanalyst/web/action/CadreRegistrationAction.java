@@ -153,6 +153,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<UserTypeVO> activityMembersList;
 	private List<CadreRegistratedCountVO> cadreRegistratedCountVOs;
 	private IdAndNameVO nameVO;
+	private List<CadreReportVO> cadreCnsttuncyList;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -795,6 +796,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public void setNameVO(IdAndNameVO nameVO) {
 		this.nameVO = nameVO;
+	}
+	public List<CadreReportVO> getCadreCnsttuncyList() {
+		return cadreCnsttuncyList;
+	}
+	public void setCadreCnsttuncyList(List<CadreReportVO> cadreCnsttuncyList) {
+		this.cadreCnsttuncyList = cadreCnsttuncyList;
 	}
 	public String execute()
 	{
@@ -2920,5 +2927,19 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }*/
+  public String getConstituencyWiseReportBasedOnUserType(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");  
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreCnsttuncyList = coreDashboardCadreRegistrationService.getConstituencyWiseReportBasedOnUserType(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){  
+		  e.printStackTrace();  
+		  LOG.error("Error occured at getConstituencyWiseReportBasedOnUserType() in CadreRegistrationAction class",e);
+	  }
+	  return Action.SUCCESS;
+  }
 }
 
