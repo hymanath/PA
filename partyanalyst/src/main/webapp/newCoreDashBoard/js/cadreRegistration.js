@@ -1045,7 +1045,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 	var globalApConstituencyWithDefaultSorting;
 	var globalTsConstituencyWithAscendingArr=[];
 	var globalApConstituencyWithAscendingArr=[];
-	
+	var globalSubLevelRslt;
 	 function getUserTypeWiseTotalCadreRegistrationCount(){
 		$("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
@@ -2396,7 +2396,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 						str+='<tr style="'+colorArr[i]+'">';
 							str+='<td>'+result[i].sourceName+'</td>';
 							str+='<td>'+result[i].newCount+'</td>'; 
-							var percent = (result[i].renewalCount * (100/newCount)).toFixed(2);    
+							var percent = (result[i].newCount * (100/newCount)).toFixed(2);    
 							str+='<td><small class="text-muted">'+percent+'%</small></td>';          
 						str+='</tr>';
 					}	
@@ -2541,6 +2541,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		
 		
 		getDirectChildMembers(attrActivityMemberId,attrUserTypeId);
+		getDtlsOfBellowLvlMember(attrActivityMemberId)
 		$("#childActivityMemberDivIdForMeeting").html(str);
 			$(".slickPanelSliderCadre").slick({
 				 slide: 'li',
@@ -2588,6 +2589,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		var ActivityMemberId = $(this).attr("attr_activity_member_id");
 		var userTypeId = $(this).attr("attr_user_type_id");
 		getDirectChildMembers(ActivityMemberId,userTypeId);
+		getDtlsOfBellowLvlMember(ActivityMemberId);
 		
 	});
 	function getDirectChildMembers(ActivityMemberId,userTypeId){
@@ -2677,7 +2679,6 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			$(".headingColor").hide();
 			$("#accessMemberId").show();              
 			getEnumerationDtlsForMem(activityMemberId);    
-			getDtlsOfBellowLvlMember(activityMemberId);
 			getVoterInfo(activityMemberId);    
 		} 
 		          
@@ -2692,6 +2693,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		getEnumerationDtlsForMem(activityMemberId);    
 		getDtlsOfBellowLvlMember(activityMemberId);
 		getVoterInfo(activityMemberId);
+		getDtlsOfBellowLvlMember(activityMemberId);
 	});
 	function getEnumerationDtlsForMem(globalActivityMemberId){
 		
@@ -2737,10 +2739,15 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		str+='</div>'; 
 		$("#enumeratorsId").html(str);    
 	}
-	 
+	$(document).on("click",".consFilterCls",function(){
+     var filterApplyType = $(this).attr("attr_filter_value");
+      buildDtlsOfBellowLvlMember(globalSubLevelRslt,"individualDtlsId",filterApplyType);
+  });
 	function getDtlsOfBellowLvlMember(globalActivityMemberId){
+		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		var startDate = '';    
-		var endDate = '';    
+		var endDate = '';  
+         var flterApplyType="No";		
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,
 			stateId : globalStateId,         
@@ -2749,85 +2756,156 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		};
 		$.ajax({           
 			type : 'GET',       
-			url : 'getDtlsOfBellowLvlMember.action',    
+			url : 'getConstituencyWiseReportBasedOnUserTypeAction.action',    
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){        
-			
-			 if(result != null && result.length > 0){
-				 buildDtlsOfBellowLvlMember(result);
-				 $(".headingColor").show();     
-			 }else{  
-				 $("#individualDtlsId").html("No Data Available.")
-			 }
+		   buildDtlsOfBellowLvlMember(result,"individualDtlsId",flterApplyType);
+		   globalSubLevelRslt = result;
 		});
 	}
-	function buildDtlsOfBellowLvlMember(result){
+	function buildDtlsOfBellowLvlMember(result,divId,filterApplyType){
 		var locationNameArr = [];
 		var renewalArr = [];
 		var newCadreArr = [];
 		var cadre2014ArrPer = [];
 		var colorArr=[];
 		var jsonDataArr=[];
-		for(var i in result){
-			locationNameArr.push(result[i].sourceName);         
-			renewalArr.push(parseFloat(result[i].renewalPerCount));
-			newCadreArr.push(parseFloat(result[i].newPercCnt));   
-			cadre2014ArrPer.push(result[i].cadreCountPer2014);
+		if(result != null && result.length > 0){
+		  for(var i in result){
+				if(filterApplyType != null && filterApplyType=="All" || filterApplyType =="No"){
+						locationNameArr.push(result[i].locationName);
+						if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+				 }else if(filterApplyType=="verygood"){
+				 if(result[i].total2016CadrePer > 100){
+					  locationNameArr.push(result[i].locationName);
+					   if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+				 }	
+				}else if(filterApplyType=="good"){
+				  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+					   locationNameArr.push(result[i].locationName);
+					   if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+				  }
+				}else if(filterApplyType=="ok"){
+					  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+					   locationNameArr.push(result[i].locationName);
+				       if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+				      }
+				}else if(filterApplyType=="poor"){
+				  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+					 locationNameArr.push(result[i].locationName);
+					   if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+				  }
+				}else if(filterApplyType == "verypoor"){
+					if(result[i].total2016CadrePer <= 60){
+				      locationNameArr.push(result[i].locationName);
+				      if(result[i].total2014CadrePer > 0){
+						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+						}
+						if(result[i].total2016RenewalCadrePer > 0){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						}
+						if(result[i].total2016NewCadrePer > 0){
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						}
+					}
+				}
+			}
+			if(renewalArr.length > 0){
+			jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+			colorArr.push('#30AA74');      
+			}
+			if(newCadreArr.length > 0){
+			jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+			colorArr.push('#F36800');      
+			}
+			if(cadre2014ArrPer.length > 0){
+			jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+			colorArr.push('#FFCA00');      
+			}
+			if(result!= null && result.length > 10){
+			var highChartDivHight = result.length*20;
+			$("#"+divId).height(highChartDivHight);  
+			}else{
+			$("#"+divId).height(260);    
+			}
+			$(function () {
+			  $("#"+divId).highcharts({
+				colors: colorArr,
+				chart: {
+				  type: 'bar'
+				},
+				title: {
+				  text: null
+				},
+				xAxis: {
+				  min: 0,
+				  gridLineWidth: 0,
+				  minorGridLineWidth: 0,
+				  categories: locationNameArr
+				},
+				yAxis: {
+				  min: 0,
+				  gridLineWidth: 0,
+				  minorGridLineWidth: 0,
+				  title: {
+					text: null
+				  }
+				},
+				legend: {
+				  reversed: true
+				},
+				plotOptions: {
+				  series: {
+					stacking: 'normal'
+				  }
+				},
+				series:jsonDataArr 
+			  });
+			});
+		}else{
+		 $("#"+divId).html("NO DATA AVAILABLE");	
 		}
-		if(renewalArr.length > 0){
-        jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
-        colorArr.push('#30AA74');      
-        }
-        if(newCadreArr.length > 0){
-        jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
-        colorArr.push('#F36800');      
-        }
-        if(cadre2014ArrPer.length > 0){
-        jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
-        colorArr.push('#FFCA00');      
-        }
-		if(result!= null && result.length > 10){
-        var highChartDivHight = result.length*20;
-        $("#individualDtlsId").height(highChartDivHight);  
-        }else{
-        $("#individualDtlsId").height(260);    
-        }
-        $(function () {
-          $("#individualDtlsId").highcharts({
-            colors: colorArr,
-            chart: {
-              type: 'bar'
-            },
-            title: {
-              text: null
-            },
-            xAxis: {
-              min: 0,
-              gridLineWidth: 0,
-              minorGridLineWidth: 0,
-              categories: locationNameArr
-            },
-            yAxis: {
-              min: 0,
-              gridLineWidth: 0,
-              minorGridLineWidth: 0,
-              title: {
-                text: null
-              }
-            },
-            legend: {
-              reversed: true
-            },
-            plotOptions: {
-              series: {
-                stacking: 'normal'
-              }
-            },
-            series:jsonDataArr 
-          });
-        });
-		  
 	}
 	function getVoterInfo(activityMemberId){          
 		var startDate = '';    
