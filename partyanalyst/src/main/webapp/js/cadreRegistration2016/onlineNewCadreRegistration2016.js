@@ -21,7 +21,7 @@
 		$("#mobileId").val('');
 		$("#huseNOId").val('');
 		
-		if(district ==5 || district ==13){
+		if(district ==5 || district ==13 || district ==6){
 			$('#notGreaterCitiesDivId').addClass('hide');
 		}else{
 			$('#notGreaterCitiesDivId').removeClass('hide');
@@ -569,7 +569,7 @@ $(document).on("change","#boothsList",function(){
 				  str += '</p>';
 					if(registrationVoterType=='familyVoterId'){
 						str += '<div class="checkboxAlign">';
-						str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].tdpCadreId+'" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].actualMobiNumber+'"/>';
+						str += '<input type="radio" id="checkbox'+i+'" name="searchNewSelect" class="checkbox-custom searchChkboxCls" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="0" attr_fam_voter_id="'+result[i].voterIDCardNo+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_mobile_no="'+result[i].mobileNumber+'" attr_act_mbl_no="'+result[i].actualMobiNumber+'"/>';
 						str += '<label for="checkbox'+i+'" class="checkbox-custom-label" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 					}				  
 					else if(result[i].enrollmentYearId != 4){
