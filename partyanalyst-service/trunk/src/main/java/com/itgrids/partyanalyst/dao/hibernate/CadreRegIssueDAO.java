@@ -683,7 +683,7 @@ public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date 
 	if(fromDate != null && toDate != null)
 		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
 	
-	if(locationType != null && locationType.equalsIgnoreCase("state")){
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l){
 		if(locationVal.longValue() == 1l){
 			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		}else if(locationVal.longValue() == 36l){
@@ -720,8 +720,8 @@ public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date 
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 	}
-	/*if(locationVal != null && locationVal.longValue() > 0l)
-		query.setParameter("locationVal", locationVal);*/
+	if(locationType != null && !locationType.equalsIgnoreCase("state") && locationVal != null && locationVal.longValue() > 0l)
+		query.setParameter("locationVal", locationVal);
 	
 	return query.list();
 }
@@ -755,8 +755,13 @@ public List<Object[]> getLocationWiseDataVerifiedCounts(Date fromDate,Date toDat
 	if(fromDate != null && toDate != null)
 		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
 	
-	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
-		sb.append(" and model.tdpCadre.userAddress.state.stateId = :locationVal");
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l){
+		if(locationVal.longValue() == 1l){
+			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(locationVal.longValue() == 36l){
+			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}
+	}
 	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
 		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationVal");
 	else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal.longValue() > 0l)
@@ -787,7 +792,7 @@ public List<Object[]> getLocationWiseDataVerifiedCounts(Date fromDate,Date toDat
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 	}
-	if(locationVal != null && locationVal.longValue() > 0l)
+	if(locationType != null && !locationType.equalsIgnoreCase("state") && locationVal != null && locationVal.longValue() > 0l)
 		query.setParameter("locationVal", locationVal);
 	
 	return query.list();
@@ -808,8 +813,13 @@ public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,Stri
 	if(fromDate != null && toDate != null)
 		sb.append(" where (date(model.insertedTime) between :fromDate and :toDate)");
 	
-	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
-		sb.append(" and model.userAddress.state.stateId = :locationVal");
+	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l){
+		if(locationVal.longValue() == 1l){
+			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(locationVal.longValue() == 36l){
+			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}
+	}
 	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
 		sb.append(" and model.userAddress.district.districtId = :locationVal");
 	
