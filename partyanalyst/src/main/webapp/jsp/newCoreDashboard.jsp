@@ -2323,7 +2323,7 @@
 		<!--Cadre Registration ENd -->
 	 </div>
 	 <!-- TOURS START -->
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2352,7 +2352,7 @@
 								</span>
 							</span>
 						</div>  
-                    </div>      
+                    </div>        
                 </div>
 				</div>
 				<div class="panel-body">
