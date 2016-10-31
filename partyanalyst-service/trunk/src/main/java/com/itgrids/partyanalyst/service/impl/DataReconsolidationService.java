@@ -176,6 +176,10 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 		LOG.info("Entered into DataReconsolidationService of getCadreSurveyUserWiseRegistrations");
 		
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		 SimpleDateFormat outputFormat = new SimpleDateFormat("KK:mm a");
+		 SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy");
+	
 		   Date fromDate = null;
 		   Date toDate = null;
 		
@@ -189,11 +193,11 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 			
 			for(Object[] param : cadreRegDetils){
 				CadreTabRecordsStatusVO tabStatsVO = new CadreTabRecordsStatusVO();
-				tabStatsVO.setSurveyDate(param[0] != null ? param[0].toString() : "");
+				tabStatsVO.setSurveyDate(param[0] != null ? format1.format((Date)param[0]) : "");
 				tabStatsVO.setName(param[1] != null ? param[1].toString() : "");
 				tabStatsVO.setMobileNo(param[2] != null ? param[2].toString() : "");
-				tabStatsVO.setFirstRecord(param[3] != null ? param[3].toString().substring(0,10) : "");
-				tabStatsVO.setLastRecord(param[4] != null ? param[4].toString().substring(0,10) : "");
+				tabStatsVO.setFirstRecord(param[3] != null ? outputFormat.format(inputFormat.parse(param[3].toString())) : "");
+				tabStatsVO.setLastRecord(param[4] != null ?  outputFormat.format(inputFormat.parse(param[4].toString())) : "");
 				tabStatsVO.setTotalRecords(param[5]!=null?(Long.valueOf(param[5].toString())) :0l);				
 				tabStatsVO.setSync(param[6] != null ? (Long)param[6] : 0l);
 				tabStatsVO.setPending(param[7] != null ? (Long)param[7] : 0l);
