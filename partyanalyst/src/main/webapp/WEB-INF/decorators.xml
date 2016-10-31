@@ -704,6 +704,6 @@
 		<pattern>/dataReconsolidationOverViewAction*</pattern>
 		<pattern>/updateToursDetailsAction*</pattern>
 		<pattern>/updateToursAction*</pattern>
-		
+		<pattern>/newCadreDashBoard2016Action*</pattern>
 	</decorator> 
 </decorators>

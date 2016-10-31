@@ -767,7 +767,11 @@
 										 </ul>
 									</li>
 									</c:if>
-									
+												
+								<li style="text-align: right">
+									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
+								</li>
+								
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING') || 
 				        fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING_DASHBOARD') ||
 						 fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING') ||
