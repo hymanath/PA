@@ -161,8 +161,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			   //setting result to final result VO
 			   resultVO.setOverAllDetailsVO(overAllDtlsVO);
 			   if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
-				   resultVO.setSubList(new ArrayList<ToursBasicVO>(LeaderMemebersMap.values()));   
-				   LeaderMemebersMap.clear();
+				   resultVO.getSubList().addAll(new ArrayList<ToursBasicVO>(LeaderMemebersMap.values()));   
+				   LeaderMemebersMap.clear();  
 			   }
 		}catch(Exception e){
 			LOG.error("Error occured at getToursBasicOverviewCountDetails() in CoreDashboardToursService ",e);	
@@ -178,7 +178,171 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
 	}
 	return d;
-	} 
+	}
+	public String getDesigWiseMemberDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId){
+		try{
+			ToursBasicVO resultVO = null;
+			Long locationScopeId = 0l;
+			Set<Long> locationValueSet = new HashSet<Long>(0);
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date fromDate=null;
+		    Date toDate=null;
+		    if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 fromDate = sdf.parse(fromDateStr);
+				 toDate = sdf.parse(toDateStr);  
+		    }
+		    List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+		    	locationScopeId = (Long)rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+		    	for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+		    		locationValueSet.add(param[1] != null ? (Long)param[1] : 0l); 
+		    	}
+		    }
+		    //take all the tour counts first..
+		    /*
+ 			S_A_C_I		L_V		own_tour_count   
+			1			504		30
+			1			505		20
+			1			506		40	
+			3			464		10
+			16			14		2
+			17			14		3
+			18			16		1
+			19			16		11
+			*/
+		    List<Object[]> cndWiseAndLocValWiseCountList = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountList();
+		    Map<Long,Map<Long,Long>> candIdAndLocValAndCountMap = new HashMap<Long,Map<Long,Long>>();
+		    //Map<Long>
+			if(cndWiseAndLocValWiseCountList != null && cndWiseAndLocValWiseCountList.size() > 0){
+				for(Object[] param : cndWiseAndLocValWiseCountList){
+					
+					
+				}
+			}
+			 
+		    Map<Long, String> candidateIdAndNameMap = new HashMap<Long,String>();
+		    Map<Long, Long> candidateIdAndLocationScopeIdMap = new HashMap<Long,Long>();
+		    Map<Long,Set<Long>> desigIdAndCandidateIdSetMap = new HashMap<Long,Set<Long>>();
+		    Map<Long,String> desigIdAndDesigMap = new HashMap<Long,String>();
+		    Set<Long> candidateIdList = new HashSet<Long>();
+		    Set<Long> locationScopeIdList = new HashSet<Long>();
+		    Set<Long> candidateIdSet = null;
+		    Long candidateId = null;
+		    Long designationId = null;
+    	/*  
+    	 * S_A_D_I[0]		designation[1]				S_A_C_I[2]		S_A_L_C_I[3]	name[4]
+    	    ====================================================================================
+    	    3			GENERAL SECRETARIES				239					1			RAMMANAIDU NIMMALA
+			3			GENERAL SECRETARIES				240					1			BUCHAYYA CHOWDARI GORANTLA
+			3			GENERAL SECRETARIES				241					1			SUBRAHMANYAM REDDY
+			3			GENERAL SECRETARIES				242					1			B JAYANAGESWARA REDDY
+			3			GENERAL SECRETARIES				243					1			RAMAIAH VARLA
+			4			ORGANIZING SECRETARIES			32					1			Krishan Ganni
+			4			ORGANIZING SECRETARIES			33					1			VENKATESWARA RAO VANAMADI
+		*/
+		    
+		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet);
+		    
+		    if(desigWiseAllCandidate != null && desigWiseAllCandidate.size() > 0){
+		    	for(Object[] param : desigWiseAllCandidate){
+		    		designationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+		    		candidateId = commonMethodsUtilService.getLongValueForObject(param[2]);
+		    		candidateIdSet = desigIdAndCandidateIdSetMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+		    		if(candidateIdSet != null){
+		    			candidateIdSet.add(candidateId);
+		    			desigIdAndCandidateIdSetMap.put(designationId, candidateIdSet);
+		    		}else{
+		    			candidateIdSet = new HashSet<Long>();
+		    			candidateIdSet.add(candidateId);
+		    			desigIdAndCandidateIdSetMap.put(designationId, candidateIdSet);
+		    		}
+		    		candidateIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[4]));
+		    		candidateIdAndLocationScopeIdMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[3]));
+		    		desigIdAndDesigMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+		    		candidateIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+		    		locationScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+		    	}
+		    }
+	    /*  
+	        S_A_C_I			S_A_L_S_I		L_V	
+			1, 				2, 				504
+			1, 				2, 				509
+			3, 				2, 				464
+			4, 				2, 				479
+			5, 				2, 				463
+			6, 				2, 				500
+			7, 				2,				473
+		*/
+		    Map<Long,Set<Long>> candIdAndSetOfLocValMap = new HashMap<Long,Set<Long>>();
+		    Set<Long> locationValSet = null;
+		    Long locationValue = null;
+		    List<Object[]> locationValueListForAllCnd = selfAppraisalCandidateLocationDAO.getLocationListByCndIdAndScopeId(candidateIdList,locationScopeIdList);
+		    if(locationValueListForAllCnd != null && locationValueListForAllCnd.size() > 0){
+		    	for(Object[] param : locationValueListForAllCnd){
+		    		candidateId = commonMethodsUtilService.getLongValueForObject(param[0]);
+		    		locationValue = commonMethodsUtilService.getLongValueForObject(param[2]);
+		    		locationValSet = candIdAndSetOfLocValMap.get(candidateId);
+		    		if(locationValSet != null){
+		    			locationValSet.add(locationValue);
+		    			candIdAndSetOfLocValMap.put(candidateId, locationValSet);
+		    		}else{
+		    			locationValSet = new HashSet<Long>();
+		    			locationValSet.add(locationValue);
+		    			candIdAndSetOfLocValMap.put(candidateId, locationValSet);
+		    		}
+		    	}  
+		    }
+		    Long selfAppLocationScpId = null;
+		    Map<Long,Map<Long,ToursBasicVO>> desigIdAndMapOfCandIdAndCandDtlsMap = new HashMap<Long,Map<Long,ToursBasicVO>>();
+		    Map<Long,ToursBasicVO> candIdAndCandDtlsMap = null;
+		    if(desigIdAndCandidateIdSetMap != null & desigIdAndCandidateIdSetMap.size() > 0){
+		    	for(Entry<Long,Set<Long>> entry : desigIdAndCandidateIdSetMap.entrySet()){
+		    		candidateIdSet = entry.getValue();
+		    		if(candidateIdSet != null && candidateIdSet.size() >0){
+		    			candIdAndCandDtlsMap = new HashMap<Long,ToursBasicVO>();
+		    			for(Long cndId : candidateIdSet){
+		    				if(candIdAndSetOfLocValMap.get(cndId) != null){
+		    					resultVO = new ToursBasicVO();
+			    				selfAppLocationScpId = candidateIdAndLocationScopeIdMap.get(cndId);
+			    				resultVO.setId(cndId);
+			    				resultVO.setName(candidateIdAndNameMap.get(cndId));
+			    				resultVO.setDesignation(desigIdAndDesigMap.get(entry.getKey()));
+			    				resultVO.setLocationScopeId(selfAppLocationScpId);
+			    				resultVO.getLocationValueList().addAll(new ArrayList<Long>(candIdAndSetOfLocValMap.get(cndId)));
+			    				candIdAndCandDtlsMap.put(cndId, resultVO);
+		    				}    
+		    			}
+		    		}
+		    		desigIdAndMapOfCandIdAndCandDtlsMap.put(entry.getKey(), candIdAndCandDtlsMap);
+		    	}
+		    }
+		    List<Long> locValLst = null;
+		    Long tourCount = null;
+		    if(desigIdAndMapOfCandIdAndCandDtlsMap != null && desigIdAndMapOfCandIdAndCandDtlsMap.size() > 0){
+		    	for(Entry<Long,Map<Long,ToursBasicVO>> enter : desigIdAndMapOfCandIdAndCandDtlsMap.entrySet()){
+		    		candIdAndCandDtlsMap = enter.getValue();
+		    		if(candIdAndCandDtlsMap != null && candIdAndCandDtlsMap.size() > 0){
+		    			for(Entry<Long,ToursBasicVO> entry1 : candIdAndCandDtlsMap.entrySet()){
+		    				resultVO = entry1.getValue();
+		    				candidateId = resultVO.getId();
+		    				locValLst = resultVO.getLocationValueList();
+		    				tourCount = selfAppraisalCandidateDetailsDAO.getTourCount(candidateId,locValLst);
+		    				if(tourCount != null){
+		    					resultVO.setTotalTour(tourCount);  
+		    				}
+		    			}
+		    		}
+		    		
+		    	}
+		    }
+		    System.out.println("Hi");    
+			return "hi";
+		}catch(Exception e){ 
+			e.printStackTrace();
+			LOG.error("Error occured at getDesigWiseMemberDtls() in CoreDashboardToursService ",e);
+		}
+		return null;
+	}
 	
 	public List<ToursBasicVO> getDistrictWiseToursSubmitedDetails(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
 		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();

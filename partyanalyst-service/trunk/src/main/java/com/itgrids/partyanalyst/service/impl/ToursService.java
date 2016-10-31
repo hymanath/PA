@@ -278,7 +278,7 @@ public class ToursService implements IToursService {
     	  			locationVO.setType(commonMethodsUtilService.getStringValueForObject(param[2]));
     	  			locationList.add(locationVO);
     	  		}
-    	  		resultVO.setSubList(locationList);
+    	  		resultVO.getSubList().addAll(locationList);
     	  	}
     	}catch(Exception e){
     		LOG.error("Error Occured at getCandiateDetails() in ToursService class",e);	
@@ -338,7 +338,7 @@ public class ToursService implements IToursService {
 		    					 locationVO.setType("Own");
 		    					 locationList.add(locationVO);
 		    					 
-		    					 entry.getValue().setSubList(locationList);
+		    					 entry.getValue().getSubList().addAll(locationList);
 		    				 }else{
 		    					List<Object[]> rtrnCandiateLocationObjList = selfAppraisalCandidateLocationDAO.getCandiateLocationScopeIdAndValues(candidateId);
 		    					 if(rtrnCandiateLocationObjList != null && !rtrnCandiateLocationObjList.isEmpty()){
@@ -349,7 +349,7 @@ public class ToursService implements IToursService {
 		    		    	  			locationVO.setType(commonMethodsUtilService.getStringValueForObject(param[2]));
 		    		    	  			locationList.add(locationVO);
 		    						}
-		    						entry.getValue().setSubList(locationList);
+		    						entry.getValue().getSubList().addAll(locationList);
 		    					 }
 		    				 }
 		    			 }
