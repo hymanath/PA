@@ -176,9 +176,14 @@ table.dataTable tr.odd {
  var strIndex = 0;
 </script>
 <div class="container m_top10">
-
+		
+		<div class="row-fluid" >
+		
+		<button type="button" class="btn btn-primary pull-right show2016DashBoard">click here to view 2016 Cadre DashBoard </button>
+		
+		</div>
 		<!-- Title Row -->
-		<div class="row-fluid" id="fadeInDown">
+		<div class="row-fluid m_top10" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2014 Cadre Admin Dashboard</h3>
 			</div>
@@ -2468,6 +2473,10 @@ function SortByName(a, b){
 				
 			});
 	}
+	 $(".show2016DashBoard").click(function(){
+			window.location.replace('newCadreDashBoard2016Action.action');
+	   });
+	
 </script>
 
 </body>

@@ -1057,8 +1057,9 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			jObj = new JSONObject(getTask());
 			String type = jObj.getString("type");
 			Long locationScopeId = jObj.getLong("locationScopeId");
+			String locationType = jObj.getString("locationType");
 			
-			cadreDashboardVOList = cadreDashBoardService.get2016LocationWiseRegisteredCounts(type, locationScopeId);
+			cadreDashboardVOList = cadreDashBoardService.get2016LocationWiseRegisteredCounts(type, locationScopeId, locationType);
 		}
 		catch(Exception e)
 		{
@@ -1078,6 +1079,10 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		{
 			LOG.error(e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String newCadreDashBoard2016(){
 		return Action.SUCCESS;
 	}
 }

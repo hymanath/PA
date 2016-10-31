@@ -8526,6 +8526,11 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreDashBoardAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
+		<action name="newCadreDashBoard2016Action" class="cadreDashBoardAction" method="newCadreDashBoard2016">
+			<result name="success">/jsp/NewCadreDashBoard2016.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreDashBoardAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
 		 <action name="cadredashBoardAction" class="cadreDashBoardAction">
 			<result name="success">/jsp/cadreDashBoardPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=cadreDashBoardAction</result>
