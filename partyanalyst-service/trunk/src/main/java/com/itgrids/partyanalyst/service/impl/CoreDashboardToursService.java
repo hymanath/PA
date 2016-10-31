@@ -452,7 +452,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  ToursBasicVO VO = new ToursBasicVO();
 					   VO.setId(entry.getKey());
 					   VO.setDesignation(designationMap.get(entry.getKey()));
-					   VO.setSubList(new ArrayList<ToursBasicVO>(entry.getValue().values()));
+					   VO.getSubList().addAll(new ArrayList<ToursBasicVO>(entry.getValue().values()));
 					   resultList.add(VO);
 				  }
 			  }
