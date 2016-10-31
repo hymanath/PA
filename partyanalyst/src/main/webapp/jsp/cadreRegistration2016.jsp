@@ -787,7 +787,7 @@
                             	<div class="imageDiv" id="imagDivId">
                                 	<img src="" class="cadreImage img-responsive" id="existImgId"/>
                                     <label class="checkbox-inline m_top5">
-                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option"/>Existing Image
+                                    	<input type="checkbox" class="imageCheckBox isImageCheck"  value="existImage" id="exstCheckImgId" name="option" checked/>Existing Image
                                     </label>
                                 </div>
 								
@@ -1385,7 +1385,7 @@
                     </div>
                     <div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning"><i>Your Previous nominee</i></span></h4>
+                        	<h4 class="text-capital">nominee details<span class="text-capitalize text-warning" id="prvsNomneHeadingId"><i>Your Previous nominee</i></span></h4>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top20">
                             <label>Nominee Name</label>
