@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +40,7 @@ public class ToursBasicVO {
 	private Double notsubmitedCandidateTourPer=0.0d;
 	private ToursBasicVO overAllDetailsVO;
 	private List<Long> locationValueList = null;
-	
+	private Set<Long> locationSet = new HashSet<Long>(0); 
 	public ToursBasicVO() {
 		super();
 	}
@@ -241,4 +242,10 @@ public class ToursBasicVO {
 			return subList;   
 		}
 	}
+	public Set<Long> getLocationSet() {
+		return locationSet;
+	}
+	public void setLocationSet(Set<Long> locationSet) {
+		this.locationSet = locationSet;
+	} 	
 }
