@@ -54,9 +54,9 @@ function getDataReConsalationOverView(){
   }
   function  buildDataReConsalationTotalOverView(result)
   {
- 	 var str ='';
-	    str+='<div class="panel panel-default m_top10">';
- 	    str+='<h4 class=" headingStyle text-capital"><b>DATA RECONSALATION OVERVIEW</b></h4>';
+ 	 var str ='';  
+	    str+='<div class="panel panel-default m_top10">';    
+ 	    str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>DATA RECONSALIDATION OVERVIEW</b></h4>';
  				str+='<div class="panel-body" style="padding: 25px;">';
  					str+='<div class="row">';
  						str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
@@ -134,23 +134,23 @@ $(document).on("click","#submitId",function(){
 	getDataReConsalationOverView();
 });
  function buildDataReConsalationOverView(result)
- {
+ {                                                        
 	 var str = '';
-	 str+='<div class="panel panel-default">';
-	 str+='<h4 class=" headingStyle text-capital"><b>user wise total registrations & sync pending details</b></h4>';
+	 str+='<div class="panel panel-default">';       
+	 str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>USER WISE TOTAL REGISTRATIONS & SYNC PENDING DETAILS</b></h4>';
 				str+='<div class="panel-body" style="padding: 25px;">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
 				str+='<thead>';
 				str+='<tr>'; 
-				str+='<th>User Name</th>'; 
+				str+='<th>USER NAME</th>'; 
 				//str+='<th>Device Number</th>';
-				str+='<th>IMEI Number</th>';
-				str+='<th>Vendor Name</th>'; 
-				str+='<th>Total Registration</th>'; 
-				str+='<th>Sync Pending</th>';
-				str+='<th>Kafka Pending</th>'; 
-				str+='<th>Kaafka Sync</th>'; 
-				str+='<th>ActualServer Status</th>';
+				str+='<th>IMEI NUMBER</th>';
+				str+='<th>VENDOR NAME</th>'; 
+				str+='<th>TOTAL REGISTRATION</th>'; 
+				str+='<th>SYNC PENDING</th>';
+				str+='<th>KAFKA PENDING</th>'; 
+				str+='<th>KAFKA SYNC</th>'; 
+				str+='<th>ACTUAL SERVER SYNC</th>';
 				str+='<th></th>';
 				str+='</tr>';
 				str+='</thead>'; 
@@ -177,7 +177,7 @@ $(document).on("click","#submitId",function(){
 				str+='</table>';
 				str+='</div>';
 			    str+='</div>';
-				str+='</div>';
+			
 				$("#userWiseTotalViewId").html(str);
 				$("#userWiseTotalRegstSyncId").dataTable();
  }
