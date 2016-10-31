@@ -72,4 +72,65 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		 		}
 		 		 return query.list();
 	   }
+	   public List<Object[]> getDesigWiseAllCandidate(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select  " +
+		   				" SAC.selfAppraisalDesignation.selfAppraisalDesignationId, " +
+		   				" SAC.selfAppraisalDesignation.designation, " +
+		   				" SAC.selfAppraisalCandidateId, " +
+		   				" SACL.selfAppraisalLocationScopeId, " +
+		   				" SAC.tdpCadre.firstname " +
+				   		" from " +
+				   		" SelfAppraisalCandidateLocation SACL, SelfAppraisalCandidate SAC " +
+				   		" where " +
+				   		" SACL.selfAppraisalCandidateId = SAC.selfAppraisalCandidateId and" +
+				   		" SAC.isActive = 'Y' and " +
+				   		" SAC.selfAppraisalDesignation.isActive = 'Y' and " +
+				   		" SACL.userAddress.state.stateId = :stateId ");
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues)");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			   queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			   queryStr.append(" and SACL.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			   queryStr.append(" and SACL.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			   queryStr.append(" and SACL.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+		   }
+		   queryStr.append(" group by SAC.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		   				" SAC.selfAppraisalCandidateId");  
+		   Query query = getSession().createQuery(queryStr.toString());	
+		   
+		   if(locationValueSet != null && locationValueSet.size() > 0){
+			   query.setParameterList("userAccessLevelValues", locationValueSet);
+		   }
+		   if(stateId != null && stateId.longValue() > 0){
+			   query.setParameter("stateId", stateId);
+		   }
+		   return query.list();  
+	   }
+	   public List<Object[]> getLocationListByCndIdAndScopeId(Set<Long> cndIdList, Set<Long> selfAppLocationScpIdList){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select " +
+		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId, " +
+		   				" SACL.selfAppraisalLocationScopeId," +
+		   				" SACL.locationValue " +
+		   				" from " +
+		   				" SelfAppraisalCandidateLocation SACL " +
+		   				" where " +
+		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId in (:cndIdList) and " +
+		   				" SACL.selfAppraisalLocationScopeId in (:selfAppLocationScpIdList) and " +
+		   				" SACL.selfAppraisalCandidate.isActive = 'Y' ");
+		   Query query = getSession().createQuery(queryStr.toString());
+		   query.setParameterList("cndIdList", cndIdList);
+		   query.setParameterList("selfAppLocationScpIdList", selfAppLocationScpIdList);  
+		   return query.list();        
+	   }
 }
