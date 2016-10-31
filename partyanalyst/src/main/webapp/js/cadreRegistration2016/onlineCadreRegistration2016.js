@@ -555,10 +555,13 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				}
 			});
 		}
-		$('#saveBtnId').hide();
 		
 		//alert("success");
 		//return;
+		
+		$('#saveBtnId').hide();
+		
+		
 	var uploadHandler = {
 				upload: function(o) {
 					//$("#savingAjaxImg").css("display","none");
@@ -747,7 +750,7 @@ function imageValidations()
 		$("#imgErrDivId").html("");
 	}
 	if(newImgCheck == "1" || existImgCheck == "1")
-	  {
+	{
 		if(newImagPath == "dist/img/default_image.png" && exstImgPath == "dist/img/default_image.png")
 		{
 			$("#imgErrDivId").html("Please select Image.");
