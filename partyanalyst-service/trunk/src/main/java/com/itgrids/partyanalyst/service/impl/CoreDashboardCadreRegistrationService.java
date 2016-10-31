@@ -2720,5 +2720,59 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return null;
 	}
- 
+ public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate){
+	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
+	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
+	 Map<Long,Long> cadreTarget2016Map = new HashMap<Long, Long>();
+	 Map<Long,CadreReportVO> locationWiseCadreDetaislMap = new HashMap<Long, CadreReportVO>();
+	 Map<Long,String> locationIdAndNameMap = new HashMap<Long, String>();
+	 try{
+		
+		 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date frmDt = null;
+			Date toDt = null;
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				frmDt = sdf.parse(startDate);
+				toDt = sdf.parse(endDate);  
+			}
+			Long accessLvlId = null;
+			List<Long> accessLvlValue = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				accessLvlId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					accessLvlValue.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			} 
+            List<Object[]> rturnLctnObjLst = userAddressDAO.getConstituencyIdAndName(stateId,"Constituency");
+             if(rturnLctnObjLst != null && rturnLctnObjLst.size() > 0){
+            	 for(Object[] param:rturnLctnObjLst){
+            		 locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])); 
+            	 }
+             }
+		    List<Object[]> rtrn2014TargetObj = tdpCadreTargetCountDAO.getConstitiuencyWiseTargetBasedOnUserType(accessLvlId, new HashSet<Long>(accessLvlValue),3l);
+		    setCadreTargetCntToMap(rtrn2014TargetObj,cadreTarget2014Map);
+		    List<Object[]> rtrn2016TargetObj = tdpCadreTargetCountDAO.getConstitiuencyWiseTargetBasedOnUserType(accessLvlId, new HashSet<Long>(accessLvlValue),4l);
+		    setCadreTargetCntToMap(rtrn2016TargetObj,cadreTarget2016Map);
+		    
+		    List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreLocationInfoDAO.getConstitiuencyWise2014CadreCountBasedOnUserType(accessLvlId, new HashSet<Long>(accessLvlValue));
+			set2014CadreCountToMap(rtrn2014CadreDtlsObjLst, locationWiseCadreDetaislMap,locationIdAndNameMap);
+			List<Object[]> rtrn2016CadreDtlsObjLst = tdpCadreDateWiseInfoDAO.getConstitiuencyWise2016CadreCountBasedOnUserType(accessLvlId,new HashSet<Long>(accessLvlValue),frmDt,toDt);
+			set2016CadreCountToMap(rtrn2016CadreDtlsObjLst,locationWiseCadreDetaislMap);
+			List<Object[]> rtrnR2016enewalObjList = tdpCadreDateWiseInfoDAO.getConstitiuencyWise2016RenewalCadreCountBasedOnUserType(accessLvlId,new HashSet<Long>(accessLvlValue),frmDt,toDt);
+			setRenewalCountToMap(rtrnR2016enewalObjList,locationWiseCadreDetaislMap);
+			
+			  calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
+			  //sortring 
+			  if(locationWiseCadreDetaislMap != null && locationWiseCadreDetaislMap.size() > 0){
+				  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
+			 }
+			 if(resultList != null && resultList.size() > 0){
+				  Collections.sort(resultList, cadreRegistrationCountDeccAsc);
+			 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in getConstituencyWiseReportBasedOnUserType() in CoreDashboardCadreRegistrationService service", e); 
+	 }
+	 return resultList;
+ }
 }

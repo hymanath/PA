@@ -40,5 +40,6 @@ public interface ICoreDashboardCadreRegistrationService {
 	public CadreRegistratedCountVO getEnumerationDtlsForMem(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public String getOtpStatus(Long cadreId,String otp);
 	public NewCadreRegistrationVO validateUpdateVoterDetails(String voterCardNo);
-	public IdAndNameVO getVoterInfo(Long activityMemberId,Long stateId,String startDate, String endDate);  
+	public IdAndNameVO getVoterInfo(Long activityMemberId,Long stateId,String startDate, String endDate); 
+	public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate);
 }

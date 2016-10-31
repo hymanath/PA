@@ -278,4 +278,51 @@ public List<Object[]> getTtalCadreTargetCountScopeWise(Long userAccessLevelId,Se
 	    }
 	   return query.list();
 }
+
+public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Long enrollmentYearId){
+	
+	 StringBuilder queryStr = new StringBuilder();  
+	    
+     queryStr.append(" select distinct ");
+     
+     if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+     	queryStr.append(" model2.constituencyId,");
+     }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+     	queryStr.append(" model3.assemblyId,");
+     }else{
+    	queryStr.append(" model.locationValue,"); 
+     }
+     queryStr.append(" sum(model.targetCount) from TdpCadreTargetCount model ");
+     
+    if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+    	queryStr.append(",Constituency model2 where model2.constituencyId = model.locationValue and model2.electionScope.electionScopeId=2 and model2.deformDate is null and model.enrollmentYearId=:enrollmentYearId ");
+    }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+    	queryStr.append(",ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.enrollmentYearId=:enrollmentYearId ");
+    }else {
+      queryStr.append(" where model.enrollmentYearId=:enrollmentYearId ");
+    }
+    queryStr.append(" and model.locationScopeId=4 ");
+    if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
+    	queryStr.append(" and model2.district.districtId in (:locationValue) ");
+    }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
+    	queryStr.append(",and model3.parliamentId in (:locationValue) ");
+    }else {
+    	if(locationValue != null && locationValue.size() > 0){
+	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
+	    }
+    }
+    if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+    	queryStr.append(" group by model2.constituencyId ");
+    }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+    	queryStr.append(" group by model3.assemblyId ");
+    }else {
+    	queryStr.append(" group by model.locationValue ");
+    }
+	  Query query = getSession().createQuery(queryStr.toString());
+	   query.setParameter("enrollmentYearId", enrollmentYearId);
+	  if(locationValue != null && locationValue.size() > 0){
+		query.setParameterList("locationValue", locationValue);  
+	  }
+	  return query.list();
+}
 }

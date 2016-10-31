@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -25,4 +26,7 @@ public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInf
 	public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
 	
 	public int insertTdpCadreLocInfoDateWiseUpToConstituencyLevel();
+	
+	public List<Object[]> getConstitiuencyWise2016CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Date fromDate,Date toDate);
+	public List<Object[]> getConstitiuencyWise2016RenewalCadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Date fromDate,Date toDate);
 }

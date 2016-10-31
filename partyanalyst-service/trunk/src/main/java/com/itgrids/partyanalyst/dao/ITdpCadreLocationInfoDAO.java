@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails(Date fromDate,Date toDate);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails1(Date fromDate,Date toDate);
+	public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue);
+	 
 }
