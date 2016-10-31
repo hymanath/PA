@@ -14306,7 +14306,7 @@
 	<action name="getVoterInfo" class="cadreRegistrationAction"  method="getVoterInfo">
 			<result type="json" name="success">
 			<param name="root">nameVO</param>
-		</result>
+		</result>  
 	</action>
 	<action name="getLatestLattitudeLangitudeOfTabUserAgentDetailsAction" class="cadreCommitteeAction"  method="getLatestLattitudeLangitudeOfTabUserAgentDetails">
 			<result type="json" name="success">
@@ -14414,6 +14414,11 @@
 			<result type="json" name="success">
 			<param name="root">toursBasicVO</param>
 		</result>
+	</action>
+	<action name="getDesigWiseMemberDtlsAction" class="toursAction"  method="getDesigWiseMemberDtls">
+			<result type="json" name="success">
+			<param name="root">successMsg</param>
+		</result>  
 	</action>
 	<action name="getDistrictWiseToursSubmitedDetailsAction" class="coreDashboardAction"  method="getDistrictWiseToursSubmitedDetails">
 			<result type="json" name="success">
