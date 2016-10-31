@@ -7736,41 +7736,44 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 	}
 	public List<Object[]> getLocationIdAndName(Long accessLvlId,List<Long> userAccessLevelValues,Long stateId){
 		StringBuilder queryStr = new StringBuilder(); 
-		queryStr.append("select distinct ");      
-		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-	         queryStr.append(" TC.userAddress.state.stateId , TC.userAddress.state.stateName ");  
-		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.userAddress.district.districtId, TC.userAddress.district.districtName ");  
-		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId, TC.userAddress.parliamentConstituency.name ");  
-		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.userAddress.constituency.constituencyId, TC.userAddress.constituency.name ");      
+		queryStr.append("select distinct ");
+		if(accessLvlId.equals(3l)){
+			queryStr.append(" D.districtId, D.districtName ");
+		}else if(accessLvlId.equals(5l)){  
+			queryStr.append(" C.district.districtId, C.district.districtName "); 
+		}else{
+			queryStr.append(" PA.parliamentAssembly.district.districtId, PA.parliamentAssembly.district.districtName "); 
 		}
-		queryStr.append(" from  TdpCadre TC where ");
-		if(stateId != null && stateId.longValue() > 0){
-			if(stateId != null && stateId.longValue() > 0){
-				if(stateId.longValue()==1l){
-					queryStr.append(" TC.userAddress.district.districtId > 10 and  TC.userAddress.state.stateId = 1 and ");
-				}else if(stateId.longValue()==36l){
-					queryStr.append(" TC.userAddress.district.districtId < 11 and ");
-				}
-			} 
-		}
-		if(accessLvlId != null && accessLvlId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-	         queryStr.append(" TC.userAddress.state.stateId in (:userAccessLevelValues) ");  
-		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.userAddress.district.districtId in (:userAccessLevelValues) ");  
+		 
+		/*if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" UA.district.districtId, UA.district.districtName ");  
 		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+			queryStr.append(" UA.district.districtId, UA.district.districtName ");  
 		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			queryStr.append(" TC.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
+			queryStr.append(" UA.constituency.constituencyId, UA.constituency.name ");      
+		}*/
+		if(accessLvlId.equals(3l)){
+			queryStr.append(" from  District D ");
+		}else if(accessLvlId.equals(5l)){       
+			queryStr.append(" from  Constituency C ");  
+		}else{
+			queryStr.append(" from  ParliamentAssembly PA ");  
+		}
+		queryStr.append("where ");    
+		
+		if(accessLvlId != null && accessLvlId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" D.districtId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" PA.parliamentAssembly.constituencyId in (:userAccessLevelValues) ");  
+		}else if(accessLvlId != null && accessLvlId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" C.constituencyId  in (:userAccessLevelValues) ");    
 		}
 		Query query = getSession().createQuery(queryStr.toString());   
 		
 		if(userAccessLevelValues != null){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
-		return query.list();
+		return query.list();  
 	}
 	public Long getTotalConstituencyForCdrRegStarted(Long stateId){
 		StringBuilder queryStr = new StringBuilder(); 
