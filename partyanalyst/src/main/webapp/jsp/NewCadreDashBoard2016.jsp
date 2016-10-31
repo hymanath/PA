@@ -566,7 +566,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='</table>';
 
 					   str+='<div class="span1">';
-					   str+='<img src="images/icons/arr.png" style="margin-top: 10px; margin-left: 5px;margin-top: 100px;">';
+					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 10px; margin-left: 5px;margin-top: 100px;">';
 					   str+='</div>';
 					   str+='<div class="span3" style="margin-top: 100px;">';
 					   str+='<h2>'+todayCount+'</h2>';
@@ -621,7 +621,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str1+='</table>';
 
 					   str1+='<div class="span1">';
-					   str1+='<img src="images/icons/arr.png" style="margin-top: 10px; margin-left: 5px;margin-top: 100px;">';
+					   str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 10px; margin-left: 5px;margin-top: 100px;">';
 					   str1+='</div>';
 					   str1+='<div class="span3" style="margin-top: 100px;">';
 					   str1+='<h2>'+totalCount+'</h2>';
