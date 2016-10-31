@@ -1,11 +1,11 @@
 	
 	function onLoadCalls(){
-		getOverAllDataCollectorsCounts();
-		getIssueStatusWiseCounts();
-		getIssueTypeWiseCounts();
+		getOverAllDataCollectorsCounts(1);
+		getIssueStatusWiseCounts(1);
+		getIssueTypeWiseCounts(1);
 	}
 	
-	function getOverAllDataCollectorsCounts(){
+	function getOverAllDataCollectorsCounts(state){
 		var dates = $(".singleDate").val();
 		var dateArr = dates.split("-");
 		var fromDate;
@@ -14,7 +14,8 @@
 			fromDate = dateArr[0];
 			toDate = dateArr[1];
 		}
-		var jsObj = { 
+		var jsObj = {
+            stateId :state,			
 		  fromDate : fromDate,		//"10/01/2016",
 		  toDate : toDate		 	//"10/18/2016"  
 		}
@@ -31,7 +32,7 @@
 			}	
 		});
 	}
-	function getIssueStatusWiseCounts(){
+	function getIssueStatusWiseCounts(state){
 			$("#statusCountDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			var dates = $(".singleDate").val();
 	        var dateArr = dates.split("-");
@@ -43,6 +44,7 @@
 	       }
 
 			var jsObj = { 
+			              stateId : state,
 			              fromDate : fromDate,    //"2016-10-01",
 		                  toDate : toDate,			//"2016-10-18"
 						  task   : "fieldMonitoringDashboard"						  
@@ -76,7 +78,7 @@
 		}	
 		
 		
-	function getIssueTypeWiseCounts(){
+	function getIssueTypeWiseCounts(state){
 		var openIssuesArr = [];
 		var fixedIssuesArr = [];
 			var dates = $(".singleDate").val();
@@ -88,6 +90,7 @@
 		     toDate = dateArr[1];
 	       }
 			var jsObj = { 
+			    stateId :state,
 				fromDate : fromDate, //"10/01/2016",
 				toDate : toDate      //"10/20/2016",
 			}
