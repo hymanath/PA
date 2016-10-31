@@ -2535,7 +2535,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			if(AuthDesc != null){
 				//membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
 				membershipNo = mn.toString().trim();
-				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION");
+				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION",enrollMentNO);
 				if(resultStatus != null && resultStatus.getResultCode()==0)
 					status="success";
 				else
