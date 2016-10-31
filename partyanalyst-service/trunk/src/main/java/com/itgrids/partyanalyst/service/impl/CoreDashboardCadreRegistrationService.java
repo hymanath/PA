@@ -1333,13 +1333,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		     setRequiredLocationName(locationIdAndNameObjList,locationIdAndNameMap);
 	 
 	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,4l,activityMemberId);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,3l,activityMemberId);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
 				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null, 4l,activityMemberId);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 	  }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 	     	  || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 4l,null);// 2014 target 
+			List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 3l,null);// 2014 target 
 			setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
 			List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l,null, 4l,null);// 2016 target 
 			setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
@@ -1503,12 +1503,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			 fromDate = sdf.parse(fromDateStr);
 		 }
 		 if(locationType != null && locationType.equalsIgnoreCase("District")){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,4l,null);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,3l,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
 				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null, 4l,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
 		 }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 4l,null);// 2014 target 
+				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 3l,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
 				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 4l,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
