@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class ToursBasicVO {
     private String month ;
     private String comment ;
     private String filePath;
-	private List<ToursBasicVO> subList;
+	private List<ToursBasicVO> subList = null;
 	
 	private String designation;
 	private Long noOfLeaderCnt=0l;
@@ -37,7 +38,7 @@ public class ToursBasicVO {
 	private Double submitedCandidateTourPer=0.0d;
 	private Double notsubmitedCandidateTourPer=0.0d;
 	private ToursBasicVO overAllDetailsVO;
-	private Set<Long> locationSet;
+	private List<Long> locationValueList = null;
 	
 	public ToursBasicVO() {
 		super();
@@ -82,12 +83,6 @@ public class ToursBasicVO {
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
-	}
-	public List<ToursBasicVO> getSubList() {
-		return subList;
-	}
-	public void setSubList(List<ToursBasicVO> subList) {
-		this.subList = subList;
 	}
 	public String getType() {
 		return type;
@@ -230,10 +225,20 @@ public class ToursBasicVO {
 	public void setOverAllDetailsVO(ToursBasicVO overAllDetailsVO) {
 		this.overAllDetailsVO = overAllDetailsVO;
 	}
-	public Set<Long> getLocationSet() {
-		return locationSet;
+	public List<Long> getLocationValueList() {
+		if(locationValueList != null){
+			return locationValueList;
+		}else{
+			locationValueList = new ArrayList<Long>();
+			return locationValueList;    
+		}
 	}
-	public void setLocationSet(Set<Long> locationSet) {
-		this.locationSet = locationSet;
-	}  
+	public List<ToursBasicVO> getSubList() {   
+		if(subList != null){
+			return subList;
+		}else{
+			subList = new ArrayList<ToursBasicVO>();
+			return subList;   
+		}
+	}
 }
