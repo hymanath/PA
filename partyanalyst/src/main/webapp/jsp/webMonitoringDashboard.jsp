@@ -17,12 +17,17 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<h4 class="panel-title text-capital">web monitoring dashboard</h4>
+        	<h4 class="panel-title text-capital"></h4>
             <div class="panel panel-default panelWhite">
             	<div class="panel-heading">
                 	<div class="row">
-                    	<div class="col-md-9 col-xs-12 col-sm-9">
-                        	<h4 class="panel-title"></h4>
+                    	<div class="col-md-7 col-xs-12 col-sm-9">
+                        	<h4 class="panel-title">WEB MONITORING DASHBOARD</h4>
+                        </div>
+						<div class="col-md-2 col-xs-12 col-sm-9">
+                        	<input type="radio" name="radio" value="1" checked="true" class="stateWiseCls" onclick ="stateWisePopulateWebMonitoringData(this.value);"> AP</input>
+							<input type="radio" name="radio" value="36" class="stateWiseCls" onclick ="stateWisePopulateWebMonitoringData(this.value);"> TS</input>
+							 <input type="radio" name="radio" value="0" class="stateWiseCls" onclick ="stateWisePopulateWebMonitoringData(this.value);"> All</input>
                         </div>
                         <div class="col-md-3 col-xs-12 col-sm-3">
                         	<div class="input-group inputGCustom">
@@ -125,6 +130,10 @@ $(document).on("click",".applyBtn",function(){
 });
 
 $("#cadreRegliId").hide();
+function stateWisePopulateWebMonitoringData(state)
+{
+	alert(state);
+}
 </script>
 </body>
 </html>

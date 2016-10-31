@@ -1,14 +1,14 @@
 	var customStartDate = moment().format("MM/DD/YYYY");
 	var customEndDate = moment().format("MM/DD/YYYY");
 	function onLoadCalls(){
-		getOverAllDataCollectorsCounts()
-		getIssueStatusWiseCounts();
-		getIssueTypeWiseCounts();
-		getDataMonitoringOverViewDetails();
-		getDistrictWiseIssueTypesCount();
-		getLocationWiseOverAllDetails("state",0,"districtWiseOverviewDetailsId");
+		getOverAllDataCollectorsCounts(1)
+		getIssueStatusWiseCounts(1);
+		getIssueTypeWiseCounts(1);
+		getDataMonitoringOverViewDetails(1);
+		getDistrictWiseIssueTypesCount(1);
+		getLocationWiseOverAllDetails("state",1,"districtWiseOverviewDetailsId");
 	}
-	function getOverAllDataCollectorsCounts(){
+	function getOverAllDataCollectorsCounts(state){
 		var dates = $(".singleDate").val();
 		var dateArr = dates.split("-");
 		var fromDate;
@@ -18,6 +18,7 @@
 			toDate = dateArr[1];
 		}
 		var jsObj = { 
+		  stateId : state,
 		  fromDate : fromDate,		//"10/01/2016",
 		  toDate : toDate		 	//"10/18/2016"  
 		}
@@ -34,10 +35,11 @@
 			}	
 		});
 	}
-	function getIssueStatusWiseCounts(){
+	function getIssueStatusWiseCounts(state){
 			$("#statusCountDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			
 			var jsObj = { 
+			              stateId : state,
 			              fromDate : customStartDate,    //"2016-10-01",
 		                  toDate : customEndDate,			//"2016-10-18" 
 						  task   : "dataMonitoringDashboard"
@@ -234,10 +236,10 @@
 			});
 		}
 		
-function getDataMonitoringOverViewDetails(){
+function getDataMonitoringOverViewDetails(state){
  $("#dataMonitoringOverviewTblId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
      var jsObj = {
-	   
+	      stateId :state,
 		  fromDate : customStartDate,
 		  toDate : customEndDate
    }
@@ -300,24 +302,25 @@ function getDataMonitoringOverViewDetails(){
    $('.singleDate').on("apply.daterangepicker",function(ev,picker){
 		customStartDate = picker.startDate.format("MM/DD/YYYY");
 		customEndDate = picker.endDate.format("MM/DD/YYYY");
-		getOverAllDataCollectorsCounts();
-		getIssueStatusWiseCounts();
-		getIssueTypeWiseCounts();
-		getDataMonitoringOverViewDetails();
-		getDistrictWiseIssueTypesCount();
+		var state = '';
+       $('.stateWiseCls').each(function (){
+        state = $(":radio:checked").val();
+        });
+		getOverAllDataCollectorsCounts(state);
+		getIssueStatusWiseCounts(state);
+		getIssueTypeWiseCounts(state);
+		getDataMonitoringOverViewDetails(state);
+		getDistrictWiseIssueTypesCount(state);
    });
-   function getDistrictWiseIssueTypesCount(){
+   function getDistrictWiseIssueTypesCount(state){
 		$("#districtWiseNewsIssuesReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		var stateArr = [];
-		stateArr.push("1");
-		stateArr.push("36");
+		
 		
 		var jsObj = { 
+		  stateId : state,
 		  fromDate : customStartDate,		//"10/01/2016",
 		  toDate : customEndDate,		 	//"10/18/2016"  
-		  issueStatusId : 1,
-		  stateIds  : stateArr
-		  
+		  issueStatusId : 1 
 		}
 		$.ajax({
 			type : 'GET',
@@ -610,3 +613,4 @@ $(document).on("click",".removecls",function(){
 	var divId = $(this).parent().attr("id");
 	$("#"+divId).hide();
 });
+
