@@ -314,7 +314,7 @@ return query.list();
 	    
 		StringBuilder queryStr = new StringBuilder();  
       
-		if(locationValue != null && locationValue.size() > 0){
+	  if(locationValue != null && locationValue.size() > 0){
 			queryStr.append(" select model.locationValue,sum(model.cadre2016) from TdpCadreDateWiseInfo model where model.locationScopeId =:locationScopeId ");
 		}
       if(fromDate!= null && toDate!=null){

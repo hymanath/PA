@@ -25,9 +25,11 @@ public class SelfAppraisalCandidate {
 	private Long tdpCadreId;
 	private Long selfAppraisalDesignationId;
 	private String isActive; 
+	private Long activityMemberId;
 	
 	private TdpCadre tdpCadre;
 	private SelfAppraisalDesignation selfAppraisalDesignation;
+	private ActivityMember activityMember;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -79,6 +81,23 @@ public class SelfAppraisalCandidate {
 	public void setSelfAppraisalDesignation(
 			SelfAppraisalDesignation selfAppraisalDesignation) {
 		this.selfAppraisalDesignation = selfAppraisalDesignation;
+	}
+	@Column(name="activity_member_id")
+	public Long getActivityMemberId() {
+		return activityMemberId;
+	}
+	public void setActivityMemberId(Long activityMemberId) {
+		this.activityMemberId = activityMemberId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_member_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityMember getActivityMember() {
+		return activityMember;
+	}
+	public void setActivityMember(ActivityMember activityMember) {
+		this.activityMember = activityMember;
 	}
 	
 	

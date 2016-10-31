@@ -1961,6 +1961,25 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("stateId", stateId);
 		return query.list();
 	}
+public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constitueciesIds){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" SELECT distinct  model.district.districtId,model.district.districtName FROM Constituency model " +
+				  " WHERE " +
+				  " model.deformDate is null and model.electionScope.electionScopeId = :electionScopeId  " );
+		
+		 if(constitueciesIds != null && constitueciesIds.size() > 0){
+			  str.append(" and model.constituencyId in (:constitueciesIds )");
+		 }
+		 Query query = getSession().createQuery(str.toString());
+		query.setParameter("electionScopeId", 2l);
+		if(constitueciesIds != null && constitueciesIds.size() > 0){
+			query.setParameterList("constitueciesIds", constitueciesIds);
+		}
+		return query.list();
+		
+	}
 }
 
 
