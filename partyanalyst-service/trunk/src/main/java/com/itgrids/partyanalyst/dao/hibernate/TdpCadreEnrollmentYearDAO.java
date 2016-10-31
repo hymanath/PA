@@ -296,9 +296,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
 		     
 		     if(stateId != null && stateId.longValue() == 1l){
-		    	    queryStr.append("  and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		    	    queryStr.append("  and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 				}else if(stateId != null && stateId.longValue() == 36l){
-					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 				}else if(stateId != null && stateId.longValue() == 0l){
 					queryStr.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
 				} 
@@ -329,9 +329,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
 		     
 		     	if(stateId != null && stateId.longValue() == 1l){
-		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 				}else if(stateId != null && stateId.longValue() == 36l){
-					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 				}else if(stateId != null && stateId.longValue() == 0l){
 					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
 				}
@@ -367,9 +367,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				 }
 		    
 			     	if(stateId != null && stateId.longValue() == 1l){
-			    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 					}else if(stateId != null && stateId.longValue() == 36l){
-						queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+						queryStr.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 					}else if(stateId != null && stateId.longValue() == 0l){
 						queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
 					}
@@ -416,9 +416,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			 }
 		      
 	         	if(stateId != null && stateId.longValue() == 1l){
-		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 				}else if(stateId != null && stateId.longValue() == 36l){
-					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 				}else if(stateId != null && stateId.longValue() == 0l){
 					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
 				}
@@ -461,9 +461,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			 }
 	    
 		     	if(stateId != null && stateId.longValue() == 1l){
-		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 				}else if(stateId != null && stateId.longValue() == 36l){
-					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 				}else if(stateId != null && stateId.longValue() == 0l){
 					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
 				}
@@ -510,9 +510,9 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			 }
 	         
 	         	if(stateId != null && stateId.longValue() == 1l){
-		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 				}else if(stateId != null && stateId.longValue() == 36l){
-					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 				}else if(stateId != null && stateId.longValue() == 0l){
 					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
 				}
