@@ -24,8 +24,13 @@
         	<div class="panel panel-default panelWhite">
             	<div class="panel-heading">
                 	<div class="row">
-                    	<div class="col-md-9 col-xs-12 col-sm-9">
+                    	<div class="col-md-7 col-xs-12 col-sm-9">
                         	<h4 class="panel-title">FIELD MONITORING DASHBOARD</h4>
+                        </div>
+						<div class="col-md-2 col-xs-12 col-sm-9">
+                        	<input type="radio" name="radio" value="1" checked="true" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> AP</input>
+							<input type="radio" name="radio" value="36" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> TS</input>
+							 <input type="radio" name="radio" value="0" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> All</input>
                         </div>
                         <div class="col-md-3 col-xs-12 col-sm-3">
                         	<div class="input-group inputGCustom">
@@ -228,6 +233,14 @@ $(document).on("click",".modalCloseCls",function(){
 });
 $("#cadreRegliId").hide();
 getCadreRegIssueType();
+
+function stateWisePopulateData(state)
+{
+    getOverAllDataCollectorsCounts(state);
+	getIssueStatusWiseCounts(state);
+	getIssueTypeWiseCounts(state); 	
+}
+
 </script>
 </body>
 </html>
