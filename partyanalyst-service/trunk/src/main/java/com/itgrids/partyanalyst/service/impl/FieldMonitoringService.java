@@ -311,8 +311,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		
     	try {
     		
-    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,0l);
-    		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+    		//if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
     			List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
     			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
     			SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
@@ -391,7 +391,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			
     			returnVO = getDataCollectorsCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, fromDateStr, toDateStr);
     			returnVO.setSubList(returnList);
-    		}
+    		//}
     		
 		} catch (Exception e) {
 			LOG.error("Exception occurred at getTabUsersDetailsByVendorAndLocation() of FieldMonitoringService", e);
@@ -526,7 +526,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 		        	
-		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(inputVO.getLoginUserId(),0l);
+		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(inputVO.getLoginUserId());
 		        	   CadreRegIssue cadreRegIssue = new CadreRegIssue();
 		        	
 		        	   cadreRegIssue.setCadreSurveyUserId(inputVO.getCadreSurveyUserId());
@@ -665,8 +665,8 @@ public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSu
 		Date startDate = null;
 		Date endDate = null;
     	try{
-    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,stateId);
-    		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+    		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+    		//if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
     			if(fromDateStr != null && toDateStr != null){
         			startDate = sdf.parse(fromDateStr);
         			endDate = sdf.parse(toDateStr);
@@ -703,7 +703,7 @@ public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSu
         				returnList.add(issueVO);
         			}
         		}
-    		}
+    		//}
     		
 		}catch(Exception e){
 			LOG.error("Exception raised at getIssuesForATabUser", e);
@@ -714,8 +714,8 @@ public List<FieldMonitoringIssueVO> getIssuesForATabUserByStatusNew(Long cadreSu
 public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long loginUserId,Long stateId){
 	List<FieldMonitoringIssueVO> returnList = new ArrayList<FieldMonitoringIssueVO>();
 	try {
-		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,stateId);
-		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
+		//if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Long totalCount = 0l;
 			
@@ -750,7 +750,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 						vo.setCount(totalCount);
 				}
 	    	}
-		}
+		//}
 		
 	} catch (Exception e) {
 		// TODO: handle exception
@@ -816,7 +816,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			
     		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId,0l);
+		        	Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(loginUserId);
 		        	Date currentDate = dateUtilService.getCurrentDateAndTime();
 		        	
 		        	CadreRegIssue cadreRegIssue = cadreRegIssueDAO.get(cadreRegIssueId);
@@ -869,13 +869,13 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 	  *  Getting Track for a Particular issue. 
 	  *  @since 18-OCTOBER-2016
 	  */
-    public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId,Long stateId){
+    public List<FieldMonitoringIssueVO> trackingRegIssueByRegIssueId(Long cadreRegIssueId){
     	
     	List<FieldMonitoringIssueVO> finalList = null;
     	SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
     	try{
     		
-    		List<Object[]> trackList = cadreRegIssueTrackDAO.trackingRegIssueByRegIssueId(cadreRegIssueId,stateId);
+    		List<Object[]> trackList = cadreRegIssueTrackDAO.trackingRegIssueByRegIssueId(cadreRegIssueId);
     		if(trackList != null && trackList.size() > 0)
     		{
     			finalList = new ArrayList<FieldMonitoringIssueVO>();
@@ -1129,13 +1129,14 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
-			
+			Date currentDate = dateUtilService.getCurrentDateAndTime();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(today);
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
 			
-			Long totalCount = fieldVendorTabUserDAO.getTotalDataCollectorsCount(startDate, endDate,stateId);
+			//Long totalCount = fieldVendorTabUserDAO.getTotalDataCollectorsCount(currentDate, currentDate,stateId);
+			Long totalCount = fieldVendorTabUserDAO.getOverAllTotalDataCollectorsCount(stateId);
 			Long activeCount = fieldVendorTabUserDAO.getActiveDataCollectorsCount(lastOneHourTime, today,stateId);
 			Long passiveCount = 0l;
 			if(totalCount == null)
@@ -1195,7 +1196,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			}
 			
 			//IssuesCounts
-			List<Object[]> list1 = fieldVendorTabUserDAO.getUserWiseIssuesCounts(startDate, endDate);
+			List<Object[]> list1 = fieldVendorTabUserDAO.getUserWiseIssuesCounts(startDate, endDate,issueTypeId, statusTypeId);
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -1449,12 +1450,15 @@ public DataMonitoringVerificationVO getMatchDataVerificationVO(List<DataMonitori
 	return null;
 }
 
-public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
+public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType){
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
-		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId,0l);
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
-			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId);
+			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedDistricts(cadreRegUserId);
+			if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
+				list = cadreRegUserTabUserDAO.getAllAssignedDistricts("FM");
+			}
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
 					CadreRegUserVO vo = new CadreRegUserVO();
@@ -1471,12 +1475,40 @@ public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
 	return returnList;
 }
 
-public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId){
+public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId,String userType,Long districtId){
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
-		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId,0l);
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId,districtId);
+			if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
+				list = cadreRegUserTabUserDAO.getAllAssignedConstituencies(districtId,"FM");
+			}
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					CadreRegUserVO vo = new CadreRegUserVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+	}
+	return returnList;
+}
+
+public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId,String userType){
+	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
+	try {
+		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedUsers(cadreRegUserId,constituencyId);
+			if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
+				list = cadreRegUserTabUserDAO.getAllUserAssignedUsers(constituencyId,"FM");
+			}
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
 					CadreRegUserVO vo = new CadreRegUserVO();
