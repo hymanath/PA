@@ -815,9 +815,9 @@ public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,Stri
 	
 	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l){
 		if(locationVal.longValue() == 1l){
-			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		}else if(locationVal.longValue() == 36l){
-			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 		}
 	}
 	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
@@ -836,7 +836,7 @@ public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,Stri
 		query.setParameter("fromDate", fromDate);
 		query.setParameter("toDate", toDate);
 	}
-	if(locationVal != null && locationVal.longValue() > 0l)
+	if(locationType != null && !locationType.equalsIgnoreCase("state") && locationVal != null && locationVal.longValue() > 0l)
 		query.setParameter("locationVal", locationVal);
 	
 	return query.list();
