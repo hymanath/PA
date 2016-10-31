@@ -376,7 +376,7 @@
 							</select>
                         </div>
 					</div>
-					<div class="row m_top30">
+					<div class="row m_top30 hide" id="notGreaterCitiesDivId" >
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>MANDAL/MUNCIPALITY</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
