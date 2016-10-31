@@ -243,5 +243,27 @@ public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String Locati
 	    }
 	    return query.list();
 }
-
+public List<Object[]> getConstituencyIdAndName(Long stateId,String LocationType){
+	
+	StringBuilder queryStr = new StringBuilder();
+	   
+	   if(LocationType != null && LocationType.equalsIgnoreCase("Constituency")){
+   	 	  queryStr.append(" select distinct model.constituencyId,");
+	      queryStr.append(" model.name"); 
+	   }
+		queryStr.append(" from Constituency model where model.electionScope.electionScopeId=2 and model.deformDate is null ");
+	   if(stateId != null && stateId.longValue() > 0){
+			 if(stateId != null && stateId.longValue() > 0){
+				   if(stateId.longValue()==1l){
+						queryStr.append(" and model.district.districtId > 10 and  model.state.stateId = 1 ");
+					}else if(stateId.longValue()==36l){
+						queryStr.append(" and  model.district.districtId < 11 ");
+					}
+			 } 
+	   }
+	
+	    Query query = getSession().createQuery(queryStr.toString());
+	  
+	    return query.list();
+}
 }

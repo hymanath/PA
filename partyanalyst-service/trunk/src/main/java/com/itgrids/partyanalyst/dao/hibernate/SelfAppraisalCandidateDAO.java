@@ -90,8 +90,8 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	   
 	     queryStr.append(" select " +
 	     				 " model.selfAppraisalCandidateId," +//0
-	     				 " model1.activityMember.activityMemberLevelId," +//1
-	     				 " model1.activityMember.activityLocationValue " +//2
+	     				 " model1.activityMemberLevelId," +//1
+	     				 " model1.activityLocationValue " +//2
 	     				 " from SelfAppraisalCandidate model,ActivityMemberAccessLevel model1 " +
 	     	         	 " where " +
 	     	         	 " model.activityMember.activityMemberId=model1.activityMember.activityMemberId " +

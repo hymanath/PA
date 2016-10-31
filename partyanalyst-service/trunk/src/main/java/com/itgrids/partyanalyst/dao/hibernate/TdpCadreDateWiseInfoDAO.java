@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -537,4 +538,109 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	    "         FROM   tdp_cadre_date_wise_info_temp TEMP " );
 		return query.executeUpdate();
 	}
+	 public List<Object[]> getConstitiuencyWise2016CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Date fromDate,Date toDate){
+	    	
+	   	 StringBuilder queryStr = new StringBuilder();  
+	   	    
+	        queryStr.append(" select distinct ");
+	        
+	        if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	        	queryStr.append(" model2.constituencyId,");
+	        }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        	queryStr.append(" model3.assemblyId,");
+	        }else{
+	       	queryStr.append(" model.locationValue,"); 
+	        }
+	        queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
+	        
+	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	       	queryStr.append(",Constituency model2 where model2.constituencyId = model.locationValue and model2.electionScope.electionScopeId=2 and model2.deformDate is null and model.locationScopeId=4 ");
+	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	       	queryStr.append(",ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4d ");
+	       }else {
+	         queryStr.append(" where model.locationScopeId=4 ");
+	       }
+	     
+	       if(fromDate!= null && toDate!=null){
+		   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+		   	  }
+	       
+	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
+	       	queryStr.append(" and model2.district.districtId in (:locationValue) ");
+	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
+	       	queryStr.append(" and model3.parliamentId in (:locationValue) ");
+	       }else {
+	       	if(locationValue != null && locationValue.size() > 0){
+	   	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
+	   	    }
+	       }
+	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	       	queryStr.append(" group by model2.constituencyId ");
+	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	       	queryStr.append(" group by model3.assemblyId ");
+	       }else {
+	       	queryStr.append(" group by  model.locationValue ");
+	       }
+	   	  Query query = getSession().createQuery(queryStr.toString());
+	   	 if(fromDate!= null && toDate!=null){
+			 query.setDate("fromDate", fromDate);
+		     query.setDate("toDate", toDate);
+		  }
+	   	  if(locationValue != null && locationValue.size() > 0){
+	   		query.setParameterList("locationValue", locationValue);  
+	   	  }
+	   	  return query.list();
+	   }
+	 public List<Object[]> getConstitiuencyWise2016RenewalCadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Date fromDate,Date toDate){
+	    	
+	   	 StringBuilder queryStr = new StringBuilder();  
+	   	    
+	        queryStr.append(" select distinct ");
+	        
+	        if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	        	queryStr.append(" model2.constituencyId,");
+	        }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        	queryStr.append(" model3.assemblyId,");
+	        }else{
+	       	    queryStr.append(" model.locationValue,"); 
+	        }
+	        queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
+	        
+	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	       	queryStr.append(",Constituency model2 where model2.constituencyId = model.locationValue and model2.electionScope.electionScopeId=2 and model2.deformDate is null and model.locationScopeId=4 ");
+	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	       	queryStr.append(",ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");
+	       }else {
+	         queryStr.append(" where model.locationScopeId=4 ");
+	       }
+	       if(fromDate!= null && toDate!=null){
+		   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+		   	  }
+	       
+	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
+	       	queryStr.append(" and model2.district.districtId in (:locationValue) ");
+	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
+	       	queryStr.append(" and model3.parliamentId in (:locationValue) ");
+	       }else {
+	       	if(locationValue != null && locationValue.size() > 0){
+	   	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
+	   	    }
+	       }
+	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	       	queryStr.append(" group by model2.constituencyId ");
+	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	       	queryStr.append(" group by model3.assemblyId ");
+	       }else {
+	       	queryStr.append(" group by model.locationValue ");
+	       }
+	   	  Query query = getSession().createQuery(queryStr.toString());
+	   	 if(fromDate!= null && toDate!=null){
+			 query.setDate("fromDate", fromDate);
+		     query.setDate("toDate", toDate);
+		  }
+	   	  if(locationValue != null && locationValue.size() > 0){
+	   		query.setParameterList("locationValue", locationValue);  
+	   	  }
+	   	  return query.list();
+	   }
 }
