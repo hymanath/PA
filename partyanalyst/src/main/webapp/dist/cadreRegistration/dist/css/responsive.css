@@ -1,15 +1,94 @@
-body
-{
-  	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 400;
-	font-size:14px;
+@media (min-width: 100px) and (max-width:500px) {
+	.renewal
+	{
+		margin-top:20px;
+	}
+	.renewal:before
+	{
+		background-image:url("../img/renewal.png");
+		background-size: 70px 70px;
+		content: " ";
+		display: block;
+		height: 70px;
+		left: 0;
+		top:0px;
+		position: absolute;
+		width: 70px;
+	}
+	.panel-heading.new:before , .mainBlock.new:before
+	{
+		background-image: url("../img/NewRegistration.png");
+		background-size: 70px 70px;
+		content: " ";
+		display: block;
+		height: 70px;
+		left: 0;
+		top:0px;
+		position: absolute;
+		width: 70px;
+	}
+	.rulerLine
+	{
+		display:none;
+	}
+	.mainHeading
+	{
+		top:0px;
+		left:0px;
+		border:1px solid #333;
+		font-size:14px !important;
+	}
+	.pad_20
+	{
+		padding:0px
+	}
+	.searchResults li
+	{
+		width:100%;
+	}
+	.imageDiv
+	{
+		padding:2px;
+	}
 }
-h1,h2,h3,h4,h5,h6,ul,.table
-{
-	margin:0px;
-}
-.text-capital
-{
-	text-transform:uppercase;
+@media (min-width: 768px) and (max-width:992px) {
+	.renewal , .mainBlock.new
+	{
+		margin-top:20px;
+	}
+	.renewal:before
+	{
+		background-image:url("../img/renewal.png");
+		background-size: 100px 100px;
+		content: " ";
+		display: block;
+		height: 100px;
+		left: 0;
+		top:0px;
+		position: absolute;
+		width: 100px;
+	}
+	.panel-heading.new:before , .mainBlock.new:before
+	{
+		background-image: url("../img/NewRegistration.png");
+		background-size: 100px 100px;
+		content: " ";
+		display: block;
+		height: 100px;
+		left: 0;
+		top:0px;
+		position: absolute;
+		width: 100px;
+	}
+	.rulerLine
+	{
+		display:none;
+	}
+	.mainHeading
+	{
+		top:0px;
+		left:0px;
+		border:1px solid #333;
+		text-align:center;
+	}
 }
