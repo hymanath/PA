@@ -284,7 +284,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		return query.list();   
 	}
 
-	  public List<Object[]> getCadreRegistrationCountByDataSourceType(Date fromDate,Date toDate){
+	  public List<Object[]> getCadreRegistrationCountByDataSourceType(Date fromDate,Date toDate,Long stateId){
 		  
 		     StringBuilder queryStr = new StringBuilder();
 		     
@@ -294,6 +294,14 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		     		         " where " +
 		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N'" +
 				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
+		     
+		     if(stateId != null && stateId.longValue() == 1l){
+		    	    queryStr.append("  and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 36l){
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 0l){
+					queryStr.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
+				} 
 		     
 		     if(fromDate!= null && toDate!=null){
 				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
@@ -309,7 +317,7 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 				 }
 		     return query.list();
 	  }
-	  public List<Object[]> getCadreRegistrationCountByCadreVerificationStatus(Date fromDate,Date toDate){
+	  public List<Object[]> getCadreRegistrationCountByCadreVerificationStatus(Date fromDate,Date toDate,Long stateId){
 		  
 		     StringBuilder queryStr = new StringBuilder();
 		     
@@ -320,6 +328,13 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		     		         " model.tdpCadre.enrollmentYear='2014' and model.tdpCadre.isDeleted='N' " +
 				             " and model.enrollmentYearId= 4 and model.isDeleted='N' ");
 		     
+		     if(stateId != null && stateId.longValue() == 1l){
+		    	    queryStr.append("  and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 36l){
+					queryStr.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}else if(stateId != null && stateId.longValue() == 0l){
+					queryStr.append(" and  model.tdpCadre.userAddress.state.stateId = 1 ");
+				}
 		     if(fromDate!= null && toDate!=null){
 				  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
 			 }

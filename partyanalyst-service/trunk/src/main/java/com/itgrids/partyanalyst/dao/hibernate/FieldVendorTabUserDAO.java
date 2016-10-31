@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.model.FieldVendorTabUser;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUser, Long> implements IFieldVendorTabUserDAO{
 
@@ -16,13 +17,21 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		
 	}
 
-	public Long getTotalDataCollectorsCount(Date startDate,Date endDate){
+	public Long getTotalDataCollectorsCount(Date startDate,Date endDate,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
 						" from TdpCadreEnrollmentYear model" +
 						" where model.tdpCadre.enrollmentYear = 2014");
 		if(startDate != null && endDate != null)
 			sb.append(" and date(model.tdpCadre.surveyTime) between :startDate and :endDate");
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
+		}
 		
 		sb.append(" and model.tdpCadre.isDeleted = 'N'" +
 					" and model.enrollmentYear.enrollmentYearId = 4" +
@@ -35,13 +44,22 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		return (Long) query.uniqueResult();
 	}
 	
-	public Long getActiveDataCollectorsCount(Date lastHourTime,Date today){
+	public Long getActiveDataCollectorsCount(Date lastHourTime,Date today,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
 						" from TdpCadreEnrollmentYear model" +
 						" where model.tdpCadre.enrollmentYear = 2014");
 		if(lastHourTime != null && today != null)
 			sb.append(" and model.tdpCadre.surveyTime between :lastHourTime and :today");
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
+		}
+		
 		
 		sb.append(" and model.tdpCadre.isDeleted = 'N'" +
 					" and model.enrollmentYear.enrollmentYearId = 4" +

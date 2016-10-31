@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> implements ICadreRegIssueDAO {
 
@@ -422,14 +423,24 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return (Long) query.uniqueResult();
 	}
 
-	public List<Object[]> getIssueStatusWiseCounts(Date fromDate,Date toDate){
+	public List<Object[]> getIssueStatusWiseCounts(Date fromDate,Date toDate,Long stateId){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status " +
 				"         from CadreRegIssue model  " );
 		
+		sb.append(" where ");
+		
 		if(fromDate != null && toDate != null)
-			sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
+			sb.append("   date(model.insertedTime) between :fromDate and :toDate and ");
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  model.userAddress.state.stateId = 1 ");
+		}
 		
 		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId ");
 		
@@ -439,14 +450,22 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getIssueTypeWiseCounts(Date fromDate,Date toDate){
+	public List<Object[]> getIssueTypeWiseCounts(Date fromDate,Date toDate,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status," +
 				" model.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegIssueType.issueType from " +
 				" CadreRegIssue model   ");
+		sb.append(" where ");
 		if(fromDate != null && toDate != null)
-			sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
+			sb.append("  date(model.insertedTime) between :fromDate and :toDate and ");
 		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append("   model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  model.userAddress.state.stateId = 1 ");
+		}
 		sb.append(" group by model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueType.cadreRegIssueTypeId ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -603,7 +622,7 @@ public Long getActiveUsersCount(){
 		return (Long)query.uniqueResult();
 	}
 
-public List<Object[]> getDistrictWiseIssueTypesCount(Date fromDate,Date toDate,Long statusTypeId,List<Long> stateIds){
+public List<Object[]> getDistrictWiseIssueTypesCount(Date fromDate,Date toDate,Long statusTypeId,Long stateId){
 	StringBuilder sb = new StringBuilder();
 	sb.append(" select count(model.cadreRegIssueId),model.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegIssueStatus.status," +
 			" model.cadreRegIssueType.cadreRegIssueTypeId,model.userAddress.district.districtId" +
@@ -613,8 +632,14 @@ public List<Object[]> getDistrictWiseIssueTypesCount(Date fromDate,Date toDate,L
 		sb.append(" where date(model.insertedTime) between :fromDate and :toDate");
 	
 		sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId ");
-		if(stateIds != null  && stateIds.size()>0)
-		sb.append(" and model.userAddress.district.state.stateId in (1) ");
+		if(stateId != null && stateId.longValue() == 1l ){
+			sb.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and model.userAddress.state.stateId = 1 ");
+		}
+		
 				
 	sb.append(" group by model.userAddress.district.districtId,model.cadreRegIssueType.cadreRegIssueTypeId ");
 	
@@ -658,8 +683,13 @@ public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date 
 	if(fromDate != null && toDate != null)
 		sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");
 	
-	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l)
-		sb.append(" and model.tdpCadre.userAddress.state.stateId = :locationVal");
+	if(locationType != null && locationType.equalsIgnoreCase("state")){
+		if(locationVal.longValue() == 1l){
+			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(locationVal.longValue() == 36l){
+			sb.append(" and model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}
+	}
 	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
 		sb.append(" and model.tdpCadre.userAddress.district.districtId = :locationVal");
 	else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal.longValue() > 0l)
@@ -690,8 +720,8 @@ public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date 
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 	}
-	if(locationVal != null && locationVal.longValue() > 0l)
-		query.setParameter("locationVal", locationVal);
+	/*if(locationVal != null && locationVal.longValue() > 0l)
+		query.setParameter("locationVal", locationVal);*/
 	
 	return query.list();
 }
