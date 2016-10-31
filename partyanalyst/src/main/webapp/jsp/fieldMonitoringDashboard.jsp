@@ -214,14 +214,24 @@ $('.select').chosen({width:'100%'});
  onLoadCalls();
 
 $(document).on("click",".applyBtn",function(){
-	onLoadCalls();
+	var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+		getOverAllDataCollectorsCounts(stateId);
+		getIssueStatusWiseCounts(stateId);
+		getIssueTypeWiseCounts(stateId);
     $("#dtatusDivId").hide();
 });
 
 $(document).on("click",".ranges li",function(){
-		getOverAllDataCollectorsCounts();
-		getIssueStatusWiseCounts();
-		getIssueTypeWiseCounts();
+	var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+		getOverAllDataCollectorsCounts(stateId);
+		getIssueStatusWiseCounts(stateId);
+		getIssueTypeWiseCounts(stateId);
 		getCadreRegIssueType();
 		$("#dtatusDivId").hide();
 	});
@@ -236,7 +246,7 @@ getCadreRegIssueType();
 
 function stateWisePopulateData(state)
 {
-    getOverAllDataCollectorsCounts(state);
+	getOverAllDataCollectorsCounts(state);
 	getIssueStatusWiseCounts(state);
 	getIssueTypeWiseCounts(state); 	
 }

@@ -39,7 +39,8 @@
    var jsObj = {
 	   
 		  fromDate : fromDate,
-		  toDate : toDateDate
+		  toDate : toDateDate,
+		  stateId  : 0
    }
    $.ajax({
      type : 'GET',    

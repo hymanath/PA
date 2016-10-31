@@ -271,7 +271,8 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 	        	jObj = new JSONObject(getTask());
 	          String fromDate = jObj.getString("fromDate");
 	          String toDate =jObj.getString("toDate");
-	          resultVO = dataMonitoringService.getDataMonitoringOverViewDetails(fromDate,toDate);
+	          Long stateId = jObj.getLong("stateId");
+	          resultVO = dataMonitoringService.getDataMonitoringOverViewDetails(fromDate,toDate,stateId);
 	        }catch(Exception e){
 	          LOG.error("Exception Occured into  DataMonitoringAction of getDataMonitoringOverViewDetails",e);
 	        }
