@@ -219,7 +219,7 @@
         	<hr class="rulerLine"/>
         	<h2><span class="mainHeading">Welcome to cadre registration</span></h2>
 			  <div>
-		          <div class="col-md-1 col-xs-12 col-sm-1">
+		          <div class="col-md-12 col-xs-12 col-sm-12">
 				      <span id="mainPageBackId" class="backBtn"> ← Back</span>
 			      </div>
 	 	       </div>	
@@ -271,11 +271,11 @@
         	<div class="panel panel-default panelRegistration m_top20">
 				<div class="panel-heading renewalN hide" >
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small> <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10"  style="float:right;"	>Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small><!-- <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button>--></h3>
                 </div>
             	<div class="panel-heading new newProfile">
                 	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10">New Membership <!--<button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button>--></h3>
                 </div>
 <!-- Confirmation Block -->
      <div class="panel-body voterIdConfirm hide">
@@ -321,7 +321,7 @@
 	   </div>
       <div  class="col-md-4 col-xs-12 col-sm-6 m_top10">
 	   <!--<button class="btn btn-success text-capital forgetVoterId" style="margin-left:100px;">Forget Voter Card NO</button> -->
-	   <a href="" aria-controls="home" role="tab" data-toggle="tab" id="frgtVotCardNoId" class="forgetVoterId" style="margin-left:100px;">Forget Voter ID</a>
+	   <a href="" aria-controls="home" role="tab" data-toggle="tab" id="frgtVotCardNoId" class="forgetVoterId">Forget Voter ID</a>
 	 </div>
    </div>
 	
@@ -350,7 +350,7 @@
 							<div id="errorDivId" style="color:red;"></div>
 						</div>
 					</div>
-					<div class="row m_top30">
+					<div class="row">
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>STATE</label><span style="color:red;">*</span>
                            <span id="statesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -376,7 +376,7 @@
 							</select>
                         </div>
 					</div>
-					<div class="row m_top30 hide" id="notGreaterCitiesDivId" >
+					<div class="row m_top10 hide" id="notGreaterCitiesDivId" >
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>MANDAL/MUNCIPALITY</label>
 							<span id="mandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
@@ -399,27 +399,18 @@
 							</select>
                         </div>
 					</div>
-					 <div class="row m_top30">
-					    <div class="col-md-1 col-xs-10 col-sm-3 m_top10" style="margin-left: 32px;">
-                        	 <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID
-						   </label>
+					 <div class="row m_top10">
+					    <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+                        	<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="radVoterId" checked/>VOTER ID</label>
+                            <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO</label>
+							<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId"/>NAME</label>
                         </div>
-						<div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                            <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="radHNoId"/>H.NO
-						</label>
-                        </div>
-                       <div class="col-md-1 col-xs-10 col-sm-3 m_top10">
-                        <label class="radio inline checkCls"> <input type="radio" name="radioVal" value="name" id="radNameId"/>NAME
-						   </label>
-                        </div>
-					  </div>
-					<div class="row m_top30">
-					 <div class="col-md-4 col-xs-12 col-sm-6">
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                            <input type="text" class="form-control" id="serchVoterNameId" placeholder="Please enter Voter ID/H.No/Name"/>
-                      </div>
-					</div>
+						</div>
+					  </div>
 					<div class="row">
-                        <div class="col-md-6 col-md-offset-5 col-xs-12 col-sm-6 m_top10 col-sm-offset-5 m_top30">
+                        <div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-4 m_top10 col-sm-offset-4 m_top20">
                         	<button class="btn btn-block btn-success text-capital btn-lg voterSearch" onclick="getSearchVoterDetails();">Search Details</button>
                         </div>
                     </div>
@@ -468,8 +459,7 @@
 				
 				<div class="panel-heading rRenewal">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ </h3>
-                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>
-					<hr>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <!--<button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>-->
                 </div>
 				
 
@@ -754,8 +744,10 @@
                         	<label>Pincode</label>
                             <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px">
-                        	<h6 class="text-capital"><b> Membership Card Delivery Address  </b>:</h6>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                        	<h5 class="text-capital"><b> Membership Card Delivery Address  </b>:</h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<input id="prmaryAddrsId" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
 							<label for="prmaryAddrsId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
 							<input id="deliveryCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
@@ -874,7 +866,7 @@
         	<div class="panel panel-default panelRegistration" style="margin-bottom: 100px;">
             	<div class="panel-heading renewal">
                 	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>
-                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;" > Home </button></h3>
+                    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <!--<button class="btn btn-xs btn-mini homeCls" style="float:right;" > Home </button>--></h3>
                 </div>
                 <div class="panel-body selectMembership hide">
                 	<div class="row">
