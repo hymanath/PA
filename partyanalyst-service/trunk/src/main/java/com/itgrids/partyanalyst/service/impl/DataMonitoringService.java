@@ -789,12 +789,15 @@ public class DataMonitoringService implements IDataMonitoringService {
   		
   	}
   	
-  	public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId){
+  	public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId,String userType,Long districtId){
   		List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
   		try {
   			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
   			if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
-  				List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId);
+  				List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId,districtId);
+  				if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
+  					list = cadreRegUserTabUserDAO.getAllAssignedConstituencies(districtId,"DV");
+  				}
   				if(list != null && list.size() > 0){
   					for (Object[] obj : list) {
   						CadreRegUserVO vo = new CadreRegUserVO();
@@ -811,12 +814,40 @@ public class DataMonitoringService implements IDataMonitoringService {
   		return returnList;
   	}
 
-  	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId){
+  	public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long constituencyId,String userType){
   		List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
   		try {
   			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
   			if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
   				List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedUsers(cadreRegUserId,constituencyId);
+  				if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
+  					list = cadreRegUserTabUserDAO.getAllUserAssignedUsers(constituencyId,"DV");
+  				}
+  				if(list != null && list.size() > 0){
+  					for (Object[] obj : list) {
+  						CadreRegUserVO vo = new CadreRegUserVO();
+  						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+  						vo.setName(obj[1] != null ? obj[1].toString():"");
+  						returnList.add(vo);
+  					}
+  				}
+  			}
+  			
+  		} catch (Exception e) {
+  			LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+  		}
+  		return returnList;
+  	}
+  	
+  	public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType){
+  		List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
+  		try {
+  			Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUserForDataMonitoring(userId);
+  			if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+  				List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedDistricts(cadreRegUserId);
+  				if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
+  					list = cadreRegUserTabUserDAO.getAllAssignedDistricts("DV");
+  				}
   				if(list != null && list.size() > 0){
   					for (Object[] obj : list) {
   						CadreRegUserVO vo = new CadreRegUserVO();
