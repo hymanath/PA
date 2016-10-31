@@ -8504,12 +8504,13 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		return query.list();
 	}
-	public List<Object[]> getVoterDetails(Long voterId) {
+	public List<Object[]> getVoterDetails(Long voterId,Long publicationDateId) {
 		Query query = getSession().createQuery(
 				"select distinct model.booth.boothId,model.voter.houseNo,model.voter.voterIDCardNo "
 						+ " from BoothPublicationVoter model  "
-						+ " where model.voter.voterId = :voterId");
+						+ " where model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId = :publicationDateId");
 		query.setParameter("voterId", voterId);
+		query.setParameter("publicationDateId", publicationDateId);
 		return query.list();
 	}
 
