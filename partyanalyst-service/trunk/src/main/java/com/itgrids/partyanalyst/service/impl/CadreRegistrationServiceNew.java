@@ -450,7 +450,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			    					 locationVO.setDateType(dateType);
 			    					 
 			    					//2014 counts
-			    					 String key = dataVO.getLocationScopeId() + "_" + dataVO.getId();
+			    					 String key = locationVO.getLocationScopeId() + "_" + locationVO.getId();
 			    					 TdpCadreLocationInfoVO previousCadreData = previousCadreMap.get(key);
 			    					 if(previousCadreData != null){
 			    						 locationVO.setCadreCount(previousCadreData.getCadreCount());
