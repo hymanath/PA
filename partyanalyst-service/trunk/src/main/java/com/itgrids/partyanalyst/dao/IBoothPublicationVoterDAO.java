@@ -741,7 +741,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<String> getPartNoForRTCRegistration(Long constituencyId,Long voterId);
 	  public List<Object[]> getVotersBySearch(Long searchVal,String searchType,String name,String hNo,String voterCardNo);
 	  public List<Object[]> getRegisteredCadresForVoterIds(List<Long> voterIds);
-	  public List<Object[]> getVoterDetails(Long voterId);
+	  public List<Object[]> getVoterDetails(Long voterId,Long publicationDateId); 
 	  public List<Object[]> getFamilyVoterDetails(Long boothId,String houseNo);
 	  public List<Object[]> getOnliCadRegistrSearchVoteDetails(Long searchVal,String searchType,String type,String typeVal);
 	  public List<Object[]> getVoterLocationDetailsByVotersIdsList(List<Long> voterIdsList);
