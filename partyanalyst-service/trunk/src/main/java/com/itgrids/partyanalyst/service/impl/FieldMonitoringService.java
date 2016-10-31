@@ -949,7 +949,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 	* @Description : 
 	*  @since 17-October-2016
 	*/
-   public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr,String task){
+   public List<IdAndNameVO> getIssueStatusWiseCounts(String fromDateStr,String toDateStr,String task,Long stateId){
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
 		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -971,7 +971,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				   
 			   }
 		   returnList.addAll(getAllIssueStatus());
-		   List<Object[]> list = cadreRegIssueDAO.getIssueStatusWiseCounts(startDate,endDate);
+		   List<Object[]> list = cadreRegIssueDAO.getIssueStatusWiseCounts(startDate,endDate,stateId);
 		   if(list != null && list.size() >0){
 				 for(Object[] obj : list){
 					 IdAndNameVO vo = getMatchVO(returnList, (Long)obj[1]);	
@@ -1014,7 +1014,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
   	* @Description : 
   	*  @since 17-October-2016
   	*/
-   public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr) {
+   public List<IdAndNameVO> getIssueTypeWiseCounts(String fromDateStr,String toDateStr,Long stateId) {
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   try{
 		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -1026,7 +1026,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 		   }
 		   returnList.addAll(getAllIssueStatus());
 		   
-		   List<Object[]> list = cadreRegIssueDAO.getIssueTypeWiseCounts(startDate,endDate);
+		   List<Object[]> list = cadreRegIssueDAO.getIssueTypeWiseCounts(startDate,endDate, stateId);
 		   
 		   if(list != null && list.size() >0){
 			 for(Object[] obj : list){
@@ -1118,7 +1118,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 		return constituencyByVendor;
 	} 
     
-   public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr){
+   public FieldMonitoringVO getOverAllDataCollectorsDetails(String fromDateStr,String toDateStr,Long stateId){
 	   FieldMonitoringVO returnVO = new FieldMonitoringVO();
 	   try {
 		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -1135,8 +1135,8 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
 			
-			Long totalCount = fieldVendorTabUserDAO.getTotalDataCollectorsCount(startDate, endDate);
-			Long activeCount = fieldVendorTabUserDAO.getActiveDataCollectorsCount(lastOneHourTime, today);
+			Long totalCount = fieldVendorTabUserDAO.getTotalDataCollectorsCount(startDate, endDate,stateId);
+			Long activeCount = fieldVendorTabUserDAO.getActiveDataCollectorsCount(lastOneHourTime, today,stateId);
 			Long passiveCount = 0l;
 			if(totalCount == null)
 				totalCount = 0l;
@@ -1247,7 +1247,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
   	* @Description : 
   	*  @since 20-October-2016
   	*/
-   public List<IdAndNameVO> getDistrictWiseIssueTypesCount(String fromDateStr,String toDateStr,Long statusTypeId,List<Long> stateIds){
+   public List<IdAndNameVO> getDistrictWiseIssueTypesCount(String fromDateStr,String toDateStr,Long statusTypeId,Long stateId){
 	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 	   
 	   try {
@@ -1261,7 +1261,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				endDate = sdf.parse(toDateStr);
 			}
 			
-			List<Object[]> distWiseIssTyps = cadreRegIssueDAO.getDistrictWiseIssueTypesCount(startDate,endDate,statusTypeId,stateIds);
+			List<Object[]> distWiseIssTyps = cadreRegIssueDAO.getDistrictWiseIssueTypesCount(startDate,endDate,statusTypeId,stateId);
 				if (distWiseIssTyps != null && distWiseIssTyps.size() > 0) {
 					setDistrictWiseIssueTypesCount(distWiseIssTyps,returnList);
 				}

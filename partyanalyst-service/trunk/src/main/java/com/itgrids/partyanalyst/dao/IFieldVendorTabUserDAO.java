@@ -9,8 +9,8 @@ import com.itgrids.partyanalyst.model.FieldVendorTabUser;
 
 public interface IFieldVendorTabUserDAO extends GenericDao<FieldVendorTabUser, Long>{
 
-	public Long getTotalDataCollectorsCount(Date startDate,Date endDate);
-	public Long getActiveDataCollectorsCount(Date lastHourTime,Date today);
+	public Long getTotalDataCollectorsCount(Date startDate,Date endDate,Long stateId);
+	public Long getActiveDataCollectorsCount(Date lastHourTime,Date today,Long stateId);
 	public List<Object[]> getStatusWiseIssuesDetails(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getUserWiseIssuesCounts(Date fromDate,Date toDate);
 	public List<Object[]> getStatusWiseIssuesDetailsNew(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate);

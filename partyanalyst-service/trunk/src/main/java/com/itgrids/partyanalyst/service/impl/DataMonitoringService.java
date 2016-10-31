@@ -92,7 +92,7 @@ public class DataMonitoringService implements IDataMonitoringService {
 	* @Description :This Service Method is used to get Data Monitoring Verification Overview details. 
 	* @since 19-OCT-2016
 	*/
-   public DataMonitoringOverviewVO getDataMonitoringOverViewDetails(String fromDateStr,String toDateStr){
+   public DataMonitoringOverviewVO getDataMonitoringOverViewDetails(String fromDateStr,String toDateStr,Long stateId){
 	  
 	   DataMonitoringOverviewVO resultVO = new DataMonitoringOverviewVO();
 	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -104,9 +104,9 @@ public class DataMonitoringService implements IDataMonitoringService {
 				 fromDate = sdf.parse(fromDateStr);
 			 }
 		   
-		     List<Object[]> rtrnTtlRgstrtnCntObjLst = tdpCadreEnrollmentYearDAO.getCadreRegistrationCountByDataSourceType(fromDate, toDate);
-		     List<Object[]> rtrnVerifyRegCntObjLst = tdpCadreEnrollmentYearDAO.getCadreRegistrationCountByCadreVerificationStatus(fromDate, toDate);
-		     Long activyTeamMemberCnt = tdpCadreDataVerificationDAO.getActiveTeamMemberCnt();
+		     List<Object[]> rtrnTtlRgstrtnCntObjLst = tdpCadreEnrollmentYearDAO.getCadreRegistrationCountByDataSourceType(fromDate, toDate,stateId);
+		     List<Object[]> rtrnVerifyRegCntObjLst = tdpCadreEnrollmentYearDAO.getCadreRegistrationCountByCadreVerificationStatus(fromDate, toDate,stateId);
+		     Long activyTeamMemberCnt = tdpCadreDataVerificationDAO.getActiveTeamMemberCnt(stateId);
 		     
 		     resultVO.setActivyTeamMemberCnt(commonMethodsUtilService.getLongValueForObject(activyTeamMemberCnt));
 			 if(rtrnTtlRgstrtnCntObjLst != null && rtrnTtlRgstrtnCntObjLst.size() > 0){
