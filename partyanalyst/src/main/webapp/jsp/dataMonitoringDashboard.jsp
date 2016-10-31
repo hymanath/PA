@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Workspace</title>
+<title>DATA MONITORING DASHBOARD</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/WebMonitoring/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -20,10 +20,15 @@
         	<div class="panel panel-default panelWhite">
             	<div class="panel-heading">
                 	<div class="row">
-                    	<div class="col-md-8 col-xs-12 col-sm-9">
-                        	<h4 class="panel-title"></h4>
+                    	<div class="col-md-7 col-xs-12 col-sm-9">
+                        	<h4 class="panel-title">DATA MONITORING DASHBOARD</h4>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-3">
+						<div class="col-md-2 col-xs-12 col-sm-9">
+                        	<input type="radio" name="radio" value="1" checked="true" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> AP</input>
+							<input type="radio" name="radio" value="36" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> TS</input>
+							 <input type="radio" name="radio" value="0" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> All</input>
+                        </div>
+                        <div class="col-md-3 col-xs-12 col-sm-3">
                         	<div class="input-group inputGCustom">
                             	<span class="input-group-addon">
                                 	<i class="glyphicon glyphicon-calendar"></i>
@@ -161,8 +166,15 @@ $(".multiDateRangePicker").daterangepicker({
 		  format: 'MM/DD/YYYY'
 		}		
 });
-getDataMonitoringOverViewDetails();
+getDataMonitoringOverViewDetails(1);
 $("#cadreRegliId").hide();
+
+function stateWisePopulateData(state)
+{
+	$("#cadreRegliId").hide();
+	getDataMonitoringOverViewDetails(state);	
+	
+}
 </script>
 </body>
 </html>

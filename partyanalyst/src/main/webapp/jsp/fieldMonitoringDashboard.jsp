@@ -248,7 +248,8 @@ function stateWisePopulateData(state)
 {
 	getOverAllDataCollectorsCounts(state);
 	getIssueStatusWiseCounts(state);
-	getIssueTypeWiseCounts(state); 	
+	getIssueTypeWiseCounts(state); 
+    $("#dtatusDivId").hide();	
 }
 
 </script>

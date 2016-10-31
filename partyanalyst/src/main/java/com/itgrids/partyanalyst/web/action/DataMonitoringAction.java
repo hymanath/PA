@@ -374,7 +374,9 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				String resultType = jObj.getString("resultType");
 				String verificationStatus = jObj.getString("verificationStatus");
 				String dataSourceType = jObj.getString("dataSourceType");
-				listofIdNameVOs = dataMonitoringService.getVerifiedDtls(surveyUserId, tabUserId, webUserId, startDate, endDate,minValue,maxValue,resultType,verificationStatus,dataSourceType);  
+				Long stateId = jObj.getLong("stateId"); 
+				
+				listofIdNameVOs = dataMonitoringService.getVerifiedDtls(surveyUserId, tabUserId, webUserId, startDate, endDate,minValue,maxValue,resultType,verificationStatus,dataSourceType,stateId);  
 			} catch (Exception e) {  
 				LOG.error("Exception raised at getVendorConstituencies()  of DataMonitoringAction", e);
 			}
@@ -388,7 +390,8 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		        String verificationStatus = jObj.getString("verificationStatus");
 		        String  fromDate = jObj.getString("fromDate");
 		        String toDate = jObj.getString("toDate");
-		        resultList = dataMonitoringService.getRegistrationDetailsUserWise(fromDate, toDate,dataSourceType,verificationStatus);
+		        Long  stateId = jObj.getLong("stateId");
+		        resultList = dataMonitoringService.getRegistrationDetailsUserWise(fromDate, toDate,dataSourceType,verificationStatus,stateId);
 		      } catch (Exception e) {  
 		        LOG.error("Exception raised at getRegistrationDetailsUserWise()  of DataMonitoringAction", e);
 		      }

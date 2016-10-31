@@ -1,5 +1,9 @@
   $(document).on("click",".applyBtn",function(){
-	getDataMonitoringOverViewDetails();
+  var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+	getDataMonitoringOverViewDetails(stateId);
   });
   getReasons();
   var globalSrt = '';
@@ -22,7 +26,7 @@
 			}     
 		});
 	}
-  function getDataMonitoringOverViewDetails(){
+  function getDataMonitoringOverViewDetails(state){
  $("#dataMonitoringOverviewTblId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
  $("#dataMonitoringOverviewHighChartDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
  $("#webTabOnlineHighchartDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -40,7 +44,7 @@
 	   
 		  fromDate : fromDate,
 		  toDate : toDateDate,
-		  stateId  : 0
+		  stateId  : state
    }
    $.ajax({
      type : 'GET',    
@@ -311,6 +315,10 @@
    });
   
    function getRegistrationDetailsUserWise(dataSourceType,dataVerificationStatus,totalRegCnt){
+   var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
 	  $("#totalHeadingId").html(" ");
 	  $(".headingCls").hide();
 	  $("#userWiseRegDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -325,7 +333,8 @@
         dataSourceType : dataSourceType,
         verificationStatus : dataVerificationStatus,
         fromDate : fromDate,
-        toDate : toDateDate
+        toDate : toDateDate,
+		stateId  : stateId
      }
      $.ajax({
        url:'getRegistrationDetailsUserWiseAction.action',
@@ -501,6 +510,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 		  $("#relativeDivId").html(' ');   
 		   $("#relativeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   }
+	    var stateId = '';
+		$('.stateWiseCls').each(function (index, value){
+			stateId = $(":radio:checked").val();
+		});
 	   var fromDate;
        var toDateDate;
        var date=$(".multiDateRangePicker").val();
@@ -519,7 +532,8 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
             maxValue :10,
 			resultType:resultType,
 			verificationStatus:verificationStatus,
-			dataSourceType:dataSourceType
+			dataSourceType:dataSourceType,
+			stateId : stateId
       }
 		$.ajax({
 			type:'GET',
