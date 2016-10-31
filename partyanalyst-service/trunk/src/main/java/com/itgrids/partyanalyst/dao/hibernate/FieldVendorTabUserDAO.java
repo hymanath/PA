@@ -16,6 +16,13 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		super(FieldVendorTabUser.class);
 		
 	}
+	
+	/*public Long getTotalCadreSurveyUserForToday(Date startDate,Date endDate,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select *" +
+							" from CadreSurveyUserAssignDetails model" +
+							" where model.");
+	}*/
 
 	public Long getTotalDataCollectorsCount(Date startDate,Date endDate,Long stateId){
 		StringBuilder sb = new StringBuilder();
@@ -26,9 +33,9 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			sb.append(" and date(model.tdpCadre.surveyTime) between :startDate and :endDate");
 		
 		if(stateId != null && stateId.longValue() == 1l){
-			sb.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 		}else if(stateId != null && stateId.longValue() == 0l){
 			sb.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
 		}
@@ -44,6 +51,33 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		return (Long) query.uniqueResult();
 	}
 	
+	public Long getOverAllTotalDataCollectorsCount(Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select count(distinct model.cadreSurveyUser.cadreSurveyUserId)" +
+						" from CadreSurveyUserAssignDetails model" +
+						" where model.cadreSurveyUser.isEnabled = 'Y'");
+		/*if(startDate != null && endDate != null)
+			sb.append(" and date(model.tdpCadre.surveyTime) between :startDate and :endDate");*/
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append(" and  model.constituency.district.districtId between 11 and 23 ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and  model.constituency.district.districtId between 1 and 10 ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and model.constituency.state.stateId = 1 ");
+		}
+		
+		/*sb.append(" and model.tdpCadre.isDeleted = 'N'" +
+					" and model.enrollmentYear.enrollmentYearId = 4" +
+					" and model.isDeleted = 'N'");*/
+		Query query = getSession().createQuery(sb.toString());
+		/*if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}*/
+		return (Long) query.uniqueResult();
+	}
+	
 	public Long getActiveDataCollectorsCount(Date lastHourTime,Date today,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
@@ -53,9 +87,9 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			sb.append(" and model.tdpCadre.surveyTime between :lastHourTime and :today");
 		
 		if(stateId != null && stateId.longValue() == 1l){
-			sb.append("  and model.tdpCadre.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append("  and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and  model.tdpCadre.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 		}else if(stateId != null && stateId.longValue() == 0l){
 			sb.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
 		}
@@ -126,9 +160,9 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
 		
 		if(stateId != null && stateId.longValue() == 1l){
-			sb.append("  and CRI.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append("  and CRI.userAddress.district.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and  CRI.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and  CRI.userAddress.district.districtId between 1 and 10 ");
 		}else if(stateId != null && stateId.longValue() == 0l){
 			sb.append(" and CRI.userAddress.state.stateId = 1 ");
 		}
@@ -146,16 +180,18 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		return query.list();
 	}
 	
-	public List<Object[]> getUserWiseIssuesCounts(Date fromDate,Date toDate){
+	public List<Object[]> getUserWiseIssuesCounts(Date fromDate,Date toDate,Long issueTypeId,Long issueStatusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select CRI.cadreSurveyUser.cadreSurveyUserId," +
 					" CRI.tabUserInfo.tabUserInfoId," +
 					" CRI.cadreRegIssueStatus.cadreRegIssueStatusId," +
 					" count(CRI.cadreRegIssueId)," +
 					" CRI.userAddress.constituency.constituencyId" +
-					" from CadreRegIssue CRI");
+					" from CadreRegIssue CRI" +
+					" where CRI.cadreRegIssueTypeId = :issueTypeId" +
+					" and CRI.cadreRegIssueStatusId = :issueStatusId");
 		if(fromDate != null && toDate != null)
-			sb.append(" where date(CRI.insertedTime) between :fromDate and :toDate");
+			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
 		
 		sb.append(" group by CRI.cadreSurveyUser.cadreSurveyUserId,CRI.tabUserInfo.tabUserInfoId,CRI.cadreRegIssueStatus.cadreRegIssueStatusId,CRI.userAddress.constituency.constituencyId" +
 					" order by CRI.cadreRegIssueStatus.cadreRegIssueStatusId");
@@ -165,6 +201,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		query.setParameter("issueTypeId", issueTypeId);
+		query.setParameter("issueStatusId", issueStatusId);
 		
 		return query.list();
 	}

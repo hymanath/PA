@@ -17,7 +17,7 @@ public class CadreRegIssueTrackDAO extends GenericDaoHibernate<CadreRegIssueTrac
 	}
 	
 	
-	public List<Object[]> trackingRegIssueByRegIssueId(Long cadreRegIssueId,Long stateId){
+	public List<Object[]> trackingRegIssueByRegIssueId(Long cadreRegIssueId){
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -28,13 +28,13 @@ public class CadreRegIssueTrackDAO extends GenericDaoHibernate<CadreRegIssueTrac
 		" from    CadreRegIssueTrack model " +
 		" where   model.cadreRegIssueId = :cadreRegIssueId ");
 		
-		if(stateId != null && stateId.longValue() == 1l){
-			sb.append("  and  model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		/*if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and  model.userAddress.district.districtId in between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and  model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			sb.append(" and  model.userAddress.district.districtId in between 1 and 10 ");
 		}else if(stateId != null && stateId.longValue() == 0l){
 			sb.append(" and  model.userAddress.state.stateId = 1 ");
-		}
+		}*/
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("cadreRegIssueId",cadreRegIssueId);
