@@ -83,4 +83,21 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		   }
 		 return query.list();
 	 }
+	 
+   public List<Object[]> getMemberAccessLevelIdsAndValue(){
+	   
+	   StringBuilder queryStr = new StringBuilder();
+	   
+	     queryStr.append(" select " +
+	     				 " model.selfAppraisalCandidateId," +//0
+	     				 " model1.activityMember.activityMemberLevelId," +//1
+	     				 " model1.activityMember.activityLocationValue " +//2
+	     				 " from SelfAppraisalCandidate model,ActivityMemberAccessLevel model1 " +
+	     	         	 " where " +
+	     	         	 " model.activityMember.activityMemberId=model1.activityMember.activityMemberId " +
+	     	         	 " and model1.isActive='Y' and model.isActive='Y' " +
+	     	         	 " and model.selfAppraisalDesignationId=3  ");
+	     Query query = getSession().createQuery(queryStr.toString());
+	      return query.list();
+   }
 }

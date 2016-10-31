@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
+import java.util.Set;
 
 public class ToursBasicVO {
 
@@ -36,7 +37,7 @@ public class ToursBasicVO {
 	private Double submitedCandidateTourPer=0.0d;
 	private Double notsubmitedCandidateTourPer=0.0d;
 	private ToursBasicVO overAllDetailsVO;
-	
+	private Set<Long> locationSet;
 	
 	public ToursBasicVO() {
 		super();
@@ -228,5 +229,11 @@ public class ToursBasicVO {
 	}
 	public void setOverAllDetailsVO(ToursBasicVO overAllDetailsVO) {
 		this.overAllDetailsVO = overAllDetailsVO;
-	}   	
+	}
+	public Set<Long> getLocationSet() {
+		return locationSet;
+	}
+	public void setLocationSet(Set<Long> locationSet) {
+		this.locationSet = locationSet;
+	}  
 }
