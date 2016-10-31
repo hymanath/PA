@@ -59,6 +59,12 @@
                     </div>
                 </div>-->
 				<div class="row">
+					<div class="col-md-3 col-xs-12 col-sm-6">
+                    	<label>Select District</label><span style="color:red"> *</span>
+						<select class="select" id="districtId" onchange="getConstituencies(this.value)">
+						    <option value="0">Select District</option>
+                        </select>
+					</div>
                 	<div class="col-md-3 col-xs-12 col-sm-6">
                     	<label>Select Constituency</label><span style="color:red"> *</span>
 						<select class="select" id="constituencyId" onchange="getUsers(this.value)">
@@ -200,9 +206,9 @@
 	$('.select').chosen({width:'100%'});    
 $("#cadreRegliId").hide();
 
-getConstituencies();
+getConstituencies(0);
 getUsers(0);
-
+getDistricts();
 /*$(document).on('click','#imageId',function(){
 	var jsObj={}    
 	$.ajax({

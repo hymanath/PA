@@ -49,7 +49,7 @@
                         	<div class="block m_top20">
                             	<div class="row">
                                 	<div class="col-md-6 col-xs-12 col-sm-6 b_right1">
-                                    	<h4 class="text-capital panel-title"><b>data collectors</b></h4>
+                                    	<h4 class="text-capital panel-title"><b>data collectors</b><small>(Today)</small></h4>
                                         <div class="row">
                                         	<div class="col-md-8 col-xs-12 col-sm-10">
                                             	<ul class="dashedB">
@@ -239,7 +239,7 @@ $(document).on("click",".ranges li",function(){
 $(document).on("click",".modalCloseCls",function(){
 	setTimeout(function(){
 		$('body').addClass("modal-open");
-	}, 1000);
+	}, 500);
 });
 $("#cadreRegliId").hide();
 getCadreRegIssueType();

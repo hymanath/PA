@@ -306,9 +306,10 @@ function buildStatusWiseDetails(result){
 			str+='<th>district</th>';
 			str+='<th>constituency</th>';
 			str+='<th>vendor name</th>';
-			str+='<th>leader name</th>';
+			//str+='<th>leader name</th>';
 			str+='<th>open issues</th>';
 			str+='<th>fixed issues</th>';
+			str+='<th>closed issues</th>';
 			str+='<th></th>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -333,7 +334,7 @@ function buildStatusWiseDetails(result){
 					str+='<td>'+result[i].vendorName+'</td>';
 				else
 					str+='<td> - </td>';
-				str+='<td> - </td>';
+				//str+='<td> - </td>';
 				if(result[i].openIssues != null)
 					str+='<td>'+result[i].openIssues+'</td>';
 				else
@@ -342,7 +343,11 @@ function buildStatusWiseDetails(result){
 					str+='<td>'+result[i].fixedIssues+'</td>';
 				else
 					str+='<td> - </td>';
-				str+='<td><button class="btn btn-success text-capitalize issuesBtn" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result[i].tabUserId+'" attr_cadre_survey_userName="'+result[i].userName+'" attr_tab_userName="'+result[i].tabUserName+'" attr_vendor_Id ="'+result[i].vendorId+'" attr_constistuency_Id = "'+result[i].constituencyId+'" attr_mobileNo="'+result[i].mobileNo+'">manage issues</button></td>';
+				if(result[i].closedIssues != null)
+					str+='<td>'+result[i].closedIssues+'</td>';
+				else
+					str+='<td> - </td>';
+				str+='<td><i class="glyphicon glyphicon-cog issuesBtn" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result[i].tabUserId+'" attr_cadre_survey_userName="'+result[i].userName+'" attr_tab_userName="'+result[i].tabUserName+'" attr_vendor_Id ="'+result[i].vendorId+'" attr_constistuency_Id = "'+result[i].constituencyId+'" attr_mobileNo="'+result[i].mobileNo+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -404,7 +409,7 @@ $(document).on("click",".issuesBtn",function(){
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
 		toDate : toDate,
-		stateId  : stateId
+		stateId : stateId
 	}
     $.ajax({
           type:'GET',

@@ -8,9 +8,30 @@
 		getVendorConstituencies();
 	});	
 	
-function getConstituencies(){
+function getDistricts(){
+	$('#districtId').find('option').remove();
+	var jsObj = { 
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getDataCadreRegUserAssignedDistrictsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		$("#districtId").append('<option value="0">All</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#districtId").trigger("chosen:updated");		
+	});
+}
+	
+function getConstituencies(districtId){
 	$('#constituencyId').find('option').remove();
 	var jsObj = { 
+		districtId :districtId
 	}
 	$.ajax({
 		type : 'GET',
@@ -268,7 +289,7 @@ function getUsers(constituencyId){
 							str+='<td>'+result[i].approvedCount+'</td>';
 							str+='<td>'+result[i].rejectedCount+'</td>';
 							str+='<td>'+result[i].pendingCount+'</td>';  
-							str+='<td><button class="btn btn-success issuesBtn" attr_user_mobile="'+result[i].mobileNo+'" attr_user_name="'+result[i].tabUserName+'" attr_survey_user_id="'+result[i].id+'" attr_tab_user_id="'+result[i].tabUserId+'" attr_web_user_id="'+0+'" attr_start_date="'+startDate+'" attr_end_date="'+endDate+'">Verify Pending Records</button></td>';
+							str+='<td><button class="btn btn-success issuesBtn" attr_user_mobile="'+result[i].mobileNo+'" attr_user_name="'+result[i].tabUserName+'" attr_survey_user_id="'+result[i].id+'" attr_tab_user_id="'+result[i].tabUserId+'" attr_web_user_id="'+0+'" attr_start_date="'+startDate+'" attr_end_date="'+endDate+'">Verify Records</button></td>';
 						str+='</tr>';  
 					}
 				str+='</table>';
@@ -333,7 +354,8 @@ function getUsers(constituencyId){
             maxValue :10,
 			resultType:resultType,
 			verificationStatus:"Total",
-            dataSourceType:""			
+            dataSourceType:"",
+			stateId : 1
 		}    
 		$.ajax({
 			type:'GET',
