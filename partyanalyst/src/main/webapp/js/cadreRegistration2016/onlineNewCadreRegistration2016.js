@@ -129,7 +129,7 @@
 		$("#huseNOId").val('');
 		
 		var districtId = $('#districtId').val();
-		if(districtId !=5 && districtId !=13){
+		if(districtId !=5 && districtId !=13 && districtId !=6){
 			if(consistency ==331 || consistency ==195 || consistency ==196){
 				$('#notGreaterCitiesDivId').addClass('hide');
 			}else{
