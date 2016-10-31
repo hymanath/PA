@@ -206,11 +206,48 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		try {
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			
+			List<String> entitlements = null;
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
+			Long districtId = jObj.getLong("districtId");
+			String userType = null;
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD".trim()))
+				 {
+				       userType = "dashboard";
+				 }
+			}
 			
-			constituencyList = fieldMonitoringService.getCadreRegUserAssignedConstituencies(userId);
+			constituencyList = fieldMonitoringService.getCadreRegUserAssignedConstituencies(userId,userType,districtId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
+	
+	public String getCadreRegUserAssignedDistricts(){
+		
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			List<String> entitlements = null;
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			//Long districtId = jObj.getLong("districtId");
+			String userType = null;
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD".trim()))
+				 {
+				       userType = "dashboard";
+				 }
+			}
+			
+			constituencyList = fieldMonitoringService.getCadreRegUserAssignedDistricts(userId,userType);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
 		}
@@ -226,14 +263,24 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 			
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
+			List<String> entitlements = null;
 			/*JSONArray constArr = jObj.getJSONArray("constituencyId");  
 			List<Long> constIds = new ArrayList<Long>();
 			for( int i=0;i<constArr.length();i++){
 				constIds.add(Long.valueOf(constArr.getString(i)));
 			}*/
 			Long constituencyId = jObj.getLong("constituencyId");
+			String userType = null;
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD".trim()) || entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD".trim()))
+				 {
+				       userType = "dashboard";
+				 }
+			}
 			
-			constituencyList = fieldMonitoringService.getCadreRegUserAssignedUsers(userId,constituencyId);
+			constituencyList = fieldMonitoringService.getCadreRegUserAssignedUsers(userId,constituencyId,userType);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVendors()  of FieldMonitoringAction", e);
 		}
@@ -552,9 +599,9 @@ public String getConstituencyByVendor(){
 			jObj = new JSONObject(getTask());
 			
 			Long cadreRegIssueId = jObj.getLong("cadreRegIssueId");
-			Long stateId = jObj.getLong("stateId");
+			//Long stateId = jObj.getLong("stateId");
 			
-			fieldMonitoringIssueVOList = fieldMonitoringService.trackingRegIssueByRegIssueId(cadreRegIssueId,stateId);
+			fieldMonitoringIssueVOList = fieldMonitoringService.trackingRegIssueByRegIssueId(cadreRegIssueId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at trackingRegIssueByRegIssueId()  of FieldMonitoringAction", e);
