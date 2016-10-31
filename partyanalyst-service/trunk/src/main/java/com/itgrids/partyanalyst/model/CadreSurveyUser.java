@@ -32,7 +32,7 @@ public class CadreSurveyUser implements Serializable {
 	private String               name;
 	private String              isExcluded;
 	private String 				userType; 
-	
+	private String 				isEnabled;
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -113,6 +113,14 @@ public class CadreSurveyUser implements Serializable {
 	}
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+	
+	@Column(name="is_enabled")
+	public String getIsEnabled() {
+		return isEnabled;
+	}
+	public void setIsEnabled(String isEnabled) {
+		this.isEnabled = isEnabled;
 	}
 	
 	
