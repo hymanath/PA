@@ -23,7 +23,7 @@ public class TabUserEnrollmentInfoSourceDAO extends GenericDaoHibernate<TabUserE
 		query.setParameter("stateId",stateId);  
 		query.setParameter("lastOneHourTime",lastOneHourTime);        
 		query.setParameter("today",today);
-		return (Long)query.uniqueResult();
+		return (Long)query.uniqueResult();  
 	}//select * from tab_user_enrollment_info_source where end_time between '2016-10-12 12:00:00' and '2016-10-12 13:00:00'; 
 
 }
