@@ -68,7 +68,7 @@
 			str +='<div class="col-md-8 col-xs-12 col-sm-10">';
 			str +='<ul class="dashedB">';
 			for(var i in result){
-			   str +='<li>'+result[i].name+' issues<span>'+result[i].inviteeCount+'</span></li>';
+			   str +='<li>'+result[i].name+' issues<span><a attr_id='+result[i].id+' attr_statusStr="'+result[i].name+' Issues"  attr_count='+result[i].inviteeCount+' class="issueTypeMonitoringCls" style="cursor:pointer;">'+result[i].inviteeCount+'</a></span></li>';
 			}
 			str +='</ul>';
 			str +='</div>';
@@ -77,10 +77,18 @@
 		
 		}	
 		
+	$(document).on("click",".issueTypeMonitoringCls",function(){		
+		var issueStatusId = $(this).attr("attr_id");
+		var statusStr = $(this).attr("attr_statusStr");
+		var count = $(this).attr("attr_count");
+		getStatusWiseIssuesDetails(statusStr,issueStatusId,count,"issueStatus");		
+	});
+		
 		
 	function getIssueTypeWiseCounts(state){
 		var openIssuesArr = [];
 		var fixedIssuesArr = [];
+		var closedIssuesArr  = [];
 			var dates = $(".singleDate").val();
 	        var dateArr = dates.split("-");
 	        var fromDate;
@@ -119,6 +127,14 @@
 									fixedIssuesArr.push(dataArr);
 								}
 							}
+							if(result[i].id == 3){
+								for(var j in result[i].issueTypes){
+									var dataArr = [];
+									dataArr.push(result[i].issueTypes[j].name+"-"+parseInt(result[i].issueTypes[j].id));
+									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
+									closedIssuesArr.push(dataArr);
+								}
+							}
 						}
 					}
 					 $('#openIssues').highcharts({
@@ -143,15 +159,15 @@
 						  symbolPadding: 20,
 						  symbolWidth: 10,
 							labelFormatter: function() {
-							  return '<span class=\"' + this.name + '-arrow\"><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span></span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
+							  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
 												Highcharts.numberFormat(this.percentage,2)+'%';
 						}
 					  },
 						plotOptions: {
 						  pie: {
 							allowPointSelect: false,
-							innerSize: 120,
-							depth: 10,
+							innerSize: 150,
+							depth: 30,
 							cursor: 'pointer',
 							
 							showInLegend: true
@@ -247,17 +263,90 @@
 							},
 						}]
 					});
+					$('#closedIssues').highcharts({
+						chart: {
+							type: 'pie',
+							options3d: {
+								enabled: true,
+								alpha: 45
+							}
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						legend: {
+						  layout: 'vertical',
+						  floating: false,
+						  align: 'right',
+						  verticalAlign: 'middle',
+						  symbolPadding: 20,
+						  symbolWidth: 10,
+							labelFormatter: function() {
+							  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
+												Highcharts.numberFormat(this.percentage,2)+'%';
+						}
+					  },
+						plotOptions: {
+						  pie: {
+							allowPointSelect: false,
+							innerSize: 120,
+							depth: 10,
+							cursor: 'pointer',
+							
+							showInLegend: true
+
+						  },
+						  series: {
+							point: {
+							  events: {
+								legendItemClick: function () {
+									getStatusWiseIssuesDetails(this.name,3,this.y);
+									return false;
+								}
+							  }
+							}
+						  }
+						},
+						series: [{
+							name: 'Count',
+							data: closedIssuesArr,
+							dataLabels:{
+								enabled: true,
+								 distance: -20,
+								  formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.percentage,2)+ '%';
+										}
+									} 
+							},
+						}]
+					});
+					
 				}
 			});
 		}
 		
-function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count){
+function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
 	$("#statusWiseDetailsDivId").html('');
 	$("#statusWiseDetailsImgId").show();
 	$("#dtatusDivId").show();
-	$("#issueTypeHeadingId").html(issueTypeStr.split("-")[0]+" - "+count);
+
+	var issueType = 0;
+	if(type != null && type != undefined && type.trim() =="issueStatus"){
+		$("#issueTypeHeadingId").html(issueTypeStr+" - "+count);
+		issueType=0;
+	}else{
+		$("#issueTypeHeadingId").html(issueTypeStr.split("-")[0]+" - "+count);
+		issueType = issueTypeStr.split("-")[1];
+	}
+	
 	$("#hiddenIssueStatusId").val(issueStatus);
-	var issueType = issueTypeStr.split("-")[1];
+	
 	
 	var dates = $(".singleDate").val();
 	var dateArr = dates.split("-");
