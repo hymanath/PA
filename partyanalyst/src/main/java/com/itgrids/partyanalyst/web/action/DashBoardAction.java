@@ -718,23 +718,23 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				return "affiliatedUnionRegistrationPage";
 			}
 			
-			if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD"))
+			if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_REDIRECTION"))
 			{
 				return "cadreWebMonitoringDashboard";
 			}
-			else if(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD"))
+			else if(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD_REDIRECTION"))
 			{
 				return "cadreFiledMonitoringDashboard";
 			}
-			else if(entitlements.contains("CADRE_FIELD_MONITORING"))
+			else if(entitlements.contains("CADRE_FIELD_MONITORING_REDIRECTION"))
 			{
 				return "cadreFiledMonitoring";
 			}
-			else if(entitlements.contains("CADRE_DATA_MONITORING_DASHBOARD"))
+			else if(entitlements.contains("CADRE_DATA_MONITORING_DASHBOARD_REDIRECTION"))
 			{
 				return "cadreDataMonitoringDashboard";
 			}
-			else if(entitlements.contains("CADRE_DATA_MONITORING"))
+			else if(entitlements.contains("CADRE_DATA_MONITORING_REDIRECTION"))
 			{
 				return "cadreDataMonitoring";
 			}
