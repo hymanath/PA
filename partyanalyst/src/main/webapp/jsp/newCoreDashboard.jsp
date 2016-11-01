@@ -168,6 +168,7 @@
                             <div class="row">
 							
 							   <div id="enumeratorsInfoDivId"></div>
+							   <div id="enumeratorsInfoDivTSId"></div>    
 							   <!-- 
 							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
@@ -403,7 +404,7 @@
                                             </ul>
 										  </div>
 										  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<div id="individualDtls"></div>      
+											<div id="individualDtls"></div>        
 										  </div>
 										</div>
 									</div>
@@ -434,7 +435,7 @@
 								</span>
 								<span class="notesIconNews pull-right">
 									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
-								</span>
+								</span>   
 								<span class="newsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
@@ -456,7 +457,7 @@
 							<div id="notesNewsId"></div>
 							<hr/>
 							<div id="newsUpId" style="color:red;"></div>
-							<label>Create Notes</label>
+							<label>Create Notes</label>  
 							<textarea class="form-control notesAreaNews"></textarea>
 							<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
 						</div>
@@ -2888,7 +2889,7 @@
 		getAllNewsPapers();
 		//getPaperWiseNewsBasicCounts();
 		//Debates
-		getPartyWiseTotalDebateDetails();
+		getPartyWiseTotalDebateDetails();    
         //cadreRegistration
 		cadreRegistrationBasicCall(globalActivityMemberId);              
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
