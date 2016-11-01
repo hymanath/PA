@@ -2336,11 +2336,11 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){        
 			 $("#sourceTypeId").html('');  
 			 if(result != null && result.length > 0){
-				buildSourceOfRegistrationDtls(result,globalStateId);  
+				buildSourceOfRegistrationDtls(result,globalStateId);    
 			 }  
 		});
 	}
-	function getSourceOfRegistrationTSDtls(globalActivityMemberId){
+	function getSourceOfRegistrationTSDtls(globalActivityMemberId){ 
 		
 		$("#sourceTypeTsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var startDate = '';    
@@ -2365,7 +2365,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	}
 //for dynamic calls  	
 	 function buildSourceOfRegistrationDtls(result,globalStateId){
-		 $("#sourceTypeId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
+		  
 		 var str = '';
 		 var totalCount = 0;
 		 var newCount = 0;
