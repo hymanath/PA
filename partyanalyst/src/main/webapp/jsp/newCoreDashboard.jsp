@@ -168,12 +168,14 @@
                             <div class="row">
 							
 							   <div id="enumeratorsInfoDivId"></div>
+							   <!-- 
 							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
 							   </div>
 							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-block text-capital " id="cadreModalTabDivid">Kuppam Constitency Tab User<br/> Detailed Report</button>
 							   </div>
+							    -->
                             </div>
                         </div>
 						
