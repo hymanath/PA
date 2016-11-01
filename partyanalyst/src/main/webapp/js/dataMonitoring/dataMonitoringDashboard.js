@@ -575,10 +575,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						if(result[0][i].status == "Approved"){
 							str+='<tr>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="https://www.mytdp.com/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="https://www.mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';  
@@ -601,10 +601,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						if(result[0][i].status == "Rejected"){
 							str+='<tr>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="https://www.mytdp.com/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="https://www.mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
@@ -627,10 +627,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						if(result[0][i].status == "noStatus"){
 							str+='<tr>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="https://www.mytdp.com/images/cadre_images/'+result[0][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td rowspan="2">';
-									str+='<img src="http://mytdp.in/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str+='<img src="https://www.mytdp.com/voter_images/'+result[0][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str+='</td>';
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
@@ -692,10 +692,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						if(result[1][i].status == "Approved"){
 							str2+='<tr>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="https://www.mytdp.com/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.in/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="https://www.mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
@@ -718,10 +718,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						if(result[1][i].status == "Rejected"){
 							str2+='<tr>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="https://www.mytdp.com/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.in/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="https://www.mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
@@ -744,10 +744,10 @@ function buildUserWiseResult(result,totalRegCnt,dataVerificationStatus,dataSourc
 						if(result[1][i].status == "noStatus"){
 							str2+='<tr>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.in/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="https://www.mytdp.com/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
 								str2+='<td rowspan="2">';
-									str2+='<img src="http://mytdp.in/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
+									str2+='<img src="https://www.mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';  
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
