@@ -246,9 +246,9 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			queryStr.append(" select distinct ");
 			
 			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append("  district.districtId,district.districtName as name ,count(model.cadreSurveyUserAssignDetails) ");
+				queryStr.append("  constituency.district.districtId,constituency.district.districtName as name ,count(model.cadreSurveyUserAssignDetails) ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-				queryStr.append("  district.districtId,district.districtName as name ,count(model.cadreSurveyUserAssignDetails) ");
+				queryStr.append("  constituency.district.districtId,constituency.district.districtName as name ,count(model.cadreSurveyUserAssignDetails) ");
 			}
 			else{
 				queryStr.append(" constituency.constituencyId,constituency.name as name ,count(model.cadreSurveyUserAssignDetails) ");
@@ -258,7 +258,7 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			queryStr.append(" CadreSurveyUserAssignDetails model," +
 					" Constituency constituency ");
 			//if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" left join constituency.district district ");// where model.levelValue = constituency.constituencyId ");
+				//queryStr.append(" left join constituency.district district ");// where model.levelValue = constituency.constituencyId ");
 			//}
 			//else {
 				queryStr.append(" where model.levelValue = constituency.constituencyId ");
@@ -276,23 +276,23 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 				}
 			}
 			
-			if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+			/*if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
 				queryStr.append(" and (district.districtId between 11 and 23) ");
 			else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
-				queryStr.append(" and (district.districtId between 1 and 10) ");
+				queryStr.append(" and (district.districtId between 1 and 10) ");*/
 			
 			queryStr.append(" group by ");
 			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
-				queryStr.append(" district.districtId ");
+				queryStr.append(" constituency.district.districtId ");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-				queryStr.append(" district.districtId ");
+				queryStr.append(" constituency.district.districtId ");
 			}
 			else{
 				queryStr.append(" constituency.constituencyId ");
 			}
 			
 			query = getSession().createQuery(queryStr.toString());
-			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT) && inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationTypeId().longValue()>0L)
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
 			if(!inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());

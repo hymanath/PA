@@ -17,32 +17,32 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		super(TabUserLocationDetails.class);
 	}
 	
-	/*public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
+	public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
 				",tuld.latitude as latitude,tuld.longititude as longititude,tuld.survey_time as surveyTime " +
 				" FROM " +
-				" tab_user_location_details tuld,booth booth,tab_user_info tui,district d,constituency c  " +
+				" tab_user_location_details tuld,tab_user_info tui,district d,constituency c  " +
 					"  join ( select tui.tab_user_info_id as tab_user_info_id,max(tuld.survey_time) as survey_time " +
 					" from " +
-					" tab_user_location_details tuld,booth booth,tab_user_info tui,district d,constituency c " +
+					" tab_user_location_details tuld,tab_user_info tui,constituency c " +
 					" where " +
-					" tuld.booth_id = booth.booth_id " +
-					" and tui.tab_user_info_id = tuld.tab_user_info_id and tuld.constituency_id = c.constituency_id and d.district_id=c.district_id " );
+					//" tuld.booth_id = booth.booth_id " +
+					"  tui.tab_user_info_id = tuld.tab_user_info_id and tuld.constituency_id = c.constituency_id  " );
 		if(type != null &&  locationId.longValue()>0L)
 		{
 			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
-				str.append(" and d.district_id = :locationId ");
+				str.append(" and c.district_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 				str.append("  and c.constituency_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
-				str.append(" and booth.tehsil_id = :locationId ");
-			}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+				str.append(" and c.tehsil_id = :locationId ");
+			}/*else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
 				str.append("  and booth.panchayat_id = :locationId ");
-			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-				str.append(" and booth.local_election_body_id = :locationId ");
+			}*/else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+				str.append(" and c.local_election_body_id = :locationId ");
 			}
 		}
 		
@@ -52,23 +52,23 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		
 		str.append(" group by tui.tab_user_info_id) as result " +
 				" WHERE " +
-				" tuld.booth_id = booth.booth_id " +
-				" and tui.tab_user_info_id = tuld.tab_user_info_id and " +
-				" tuld.constituency_id = c.constituency_id and d.district_id=c.district_id " +
+				//" tuld.booth_id = booth.booth_id " +
+				"  tui.tab_user_info_id = tuld.tab_user_info_id and " +
+				" tuld.constituency_id = c.constituency_id  " +
 				" and result.tab_user_info_id = tui.tab_user_info_id " +
 				" and result.survey_time = tuld.survey_time");
 		if(type != null &&  locationId.longValue()>0L)
 		{
 			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
-				str.append(" and d.district_id = :locationId ");
+				str.append(" and c.district_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
-				str.append("  and ua.constituency_id = :locationId ");
+				str.append("  and c.constituency_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
-				str.append(" and  ua.tehsil_id = :locationId ");
-			}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
-				str.append("  and ua.panchayat_id = :locationId ");
-			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-				str.append(" and ua.local_election_body = :locationId ");
+				str.append(" and  c.tehsil_id = :locationId ");
+			}/*else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+				str.append("  and c.panchayat_id = :locationId ");
+			}*/else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+				str.append(" and c.local_election_body = :locationId ");
 			}
 		}
 			
@@ -95,20 +95,19 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		
 		return query.list();
 		
-	}*/
-public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
+	}
+/*public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
 				",tuld.latitude as latitude,tuld.longititude as longititude,max(tuld.survey_time) as surveyTime " +
 				" FROM " +
-				" tab_user_location_details tuld,booth booth,tab_user_info tui,district d,constituency c  ");
+				" tab_user_location_details tuld,tab_user_info tui,constituency c  ");
 		
 				str.append("  WHERE " +
-				" tuld.booth_id = booth.booth_id " +
-				" and tui.tab_user_info_id = tuld.tab_user_info_id and " +
-				" tuld.constituency_id = c.constituency_id and d.district_id=c.district_id " );
+				"  tui.tab_user_info_id = tuld.tab_user_info_id and " +
+				" tuld.constituency_id = c.constituency_id  " );
 				
 				if(startDate !=null && endDate !=null){
 					str.append(" and date(tuld.survey_time) between :startDate and :endDate ");
@@ -117,15 +116,15 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		if(type != null &&  locationId.longValue()>0L)
 		{
 			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
-				str.append(" and d.district_id = :locationId ");
+				str.append(" and c.district_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
-				str.append("  and ua.constituency_id = :locationId ");
+				str.append("  and c.constituency_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
-				str.append(" and  ua.tehsil_id = :locationId ");
-			}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+				str.append(" and  c.tehsil_id = :locationId ");
+			}/*else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
 				str.append("  and ua.panchayat_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-				str.append(" and ua.local_election_body = :locationId ");
+				str.append(" and c.local_election_body_id = :locationId ");
 			}
 		}
 			
@@ -150,5 +149,5 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		
 		return query.list();
 		
-	}
+	}*/
 }
