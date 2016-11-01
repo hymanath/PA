@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
@@ -42,4 +43,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public NewCadreRegistrationVO validateUpdateVoterDetails(String voterCardNo);
 	public IdAndNameVO getVoterInfo(Long activityMemberId,Long stateId,String startDate, String endDate); 
 	public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate);
+	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWiseTS(Long activityMemberId,Long stateId,String startDate, String endDate);
+	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate);
+	public IdAndNameVO getInFieldCount(Long stateId, String fromDateStr, String toDateStr);
 }
