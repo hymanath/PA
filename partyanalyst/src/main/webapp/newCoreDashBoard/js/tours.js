@@ -1,3 +1,20 @@
+$(document).on("click",".tourExpand",function(){
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	//$(".cadreBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	
+	setTimeout(function(){
+		$(".toursHiddenBlock").toggle();      
+	},800);
+});
+$(document).on("click",".moreToursBlocksIcon",function(){
+	$(".moreToursBlocks1,.moreToursBlocksDetailed").toggle(); 
+	   getDistrictWiseToursSubmitedDetails();		
+});
+$(document).on("click",".toursDetailedBlock",function(){
+	   getDistrictWiseToursSubmitedDetails();		
+});
+
 
 var globalStateIdForTour=1; //for ap
 function getToursBasicOverviewCountDetails()
@@ -93,14 +110,14 @@ function getToursBasicOverviewCountDetails()
 	 }
 	 
 	 function getDistrictWiseToursSubmitedDetails()
-		{    
-			$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		{   
+			$("#districtWiseLeaderDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			var jsObj ={ 
 						 activityMemberId : globalActivityMemberId,
 						 stateId : globalStateIdForTour,
 						 fromDate : "27/10/2016",
 						 toDate : "29/10/2016",
-						 userTypeId : 2
+						 userTypeId : globalUserTypeId
 					  }
 			$.ajax({
 				type : 'POST',
@@ -108,6 +125,110 @@ function getToursBasicOverviewCountDetails()
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				  console.log(result);
+			   buildDistrictWiseToursSubmitedDetails(result);
 			});
 		}
+		
+	function buildDistrictWiseToursSubmitedDetails(result){
+		$("#districtWiseLeaderDiv").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+=result[i].designation;
+				str+='<div id="designationWiseCandidate'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+									
+		}
+		$("#districtWiseLeaderDiv").html(str);
+	 if(result != null && result.length > 0){
+		    for(var i in result){
+					var locationNameArr =[];
+					var averageToursArr = [];
+					if(result[i].subList !=null && result[i].subList.length > 0){
+						for(var j in result[i].subList){
+									locationNameArr.push(result[i].subList[j].name);
+									averageToursArr.push(result[i].subList[j].averageTours);
+						}
+					}
+					$(function () {
+							$('#designationWiseCandidate'+i+'').highcharts({
+								colors: ['#53BF8B'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: locationNameArr,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: false,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,2) +"";
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Average',
+									data: averageToursArr
+								}]
+							});
+						});
+		   }
+	}else{
+		$("#districtWiseLeaderDiv").html("No Data Available.")
+	}	
+  }
