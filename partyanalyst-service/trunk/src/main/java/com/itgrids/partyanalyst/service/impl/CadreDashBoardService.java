@@ -6189,6 +6189,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType){
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
+			 Long veryGood =0l ;
+			 Long good = 0l ;
+			 Long ok = 0l ;
+			 Long poor = 0l ;
+			 Long veryPoor = 0l ;
+			 
 			 Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
 			 Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 			 List<Long> locationIds = new ArrayList<Long>();
@@ -6202,14 +6208,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
 					vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
 					vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-					vo.setPerc2016(obj[4] != null ? obj[4].toString():"");
+					vo.setPerc2016(obj[4] != null ? obj[4].toString():"0.00");
 					vo.setNewCount(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
 					vo.setNewPerc(obj[6] != null ? obj[6].toString():"");
 					vo.setRenewalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
 					vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
 					vo.setLocationScopeId(locationScopeId);
 					vo.setType(type);
-					
+					Double perCount2016=Double.parseDouble(vo.getPerc2016());
+					if(perCount2016 == 100)
+	 				{
+	 					veryGood++;
+	 				}else if(perCount2016 >= 90 && perCount2016 < 100){
+	 					good ++;
+	 				}else if(perCount2016 >= 80 && perCount2016 < 90){
+	 					ok++;
+	 				}else if(perCount2016 >= 60 && perCount2016 < 80){
+	 					poor++;
+	 				}else{
+	 					veryPoor++;
+	 				}
+	 			
 					locationIds.add(id);
 					returnList.add(vo);
 				}
@@ -6259,7 +6278,16 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 			 	}
 		 	}
-			 	
+			
+		 	if(returnList !=null && !returnList.isEmpty()){
+		 		CadreDashboardVO countList=returnList.get(0);
+		 			countList.setVeryGood(veryGood);
+		 			countList.setGood(good);
+		 			countList.setOk(ok);
+		 			countList.setPoor(poor);
+		 			countList.setVeryPoor(veryPoor);
+				}
+		 		
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
