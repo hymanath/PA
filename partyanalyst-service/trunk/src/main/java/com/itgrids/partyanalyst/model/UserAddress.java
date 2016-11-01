@@ -74,6 +74,7 @@ public class UserAddress implements java.io.Serializable,Cloneable {
 	private String addressLane1;
 	private String addressLane2;
 	private String landmark;
+	private String deliveryLocation;
 	
 	public UserAddress() {
 		super();		
@@ -356,4 +357,15 @@ public class UserAddress implements java.io.Serializable,Cloneable {
 	public void setLandmark(String landmark) {
 		this.landmark = landmark;
 	}
+
+	@Column(name="delivery_location")
+	public String getDeliveryLocation() {
+		return deliveryLocation;
+	}
+
+	public void setDeliveryLocation(String deliveryLocation) {
+		this.deliveryLocation = deliveryLocation;
+	}
+	
+	
 }
