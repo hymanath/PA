@@ -1083,6 +1083,22 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	}
 	
 	public String newCadreDashBoard2016(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD".trim()))){
+				noaccess = true ;
+			}
+		
+			if(noaccess){
+				return "error";
+			}
+		}
 		return Action.SUCCESS;
 	}
 }
