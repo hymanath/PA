@@ -167,9 +167,6 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  Query query = getSession().createQuery(queryStr.toString());
 		  return query.list();
 	  }
-	  /*select SACD.self_appraisal_candidate_id,SACD.own_location_value,sum(SACD.own_tours) 
-	  from self_appraisal_candidate_details SACD
-	  group by SACD.self_appraisal_candidate_id,SACD.own_location_value ;*/
 	  public List<Object[]> getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
 		     StringBuilder queryStr = new StringBuilder();
 		     queryStr.append(" select " +

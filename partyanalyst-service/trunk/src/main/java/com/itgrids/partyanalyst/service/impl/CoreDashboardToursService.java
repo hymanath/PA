@@ -366,7 +366,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-			 if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
 				 List<Object[]> rtrnObjLst = selfAppraisalCandidateDAO.getMemberAccessLevelIdsAndValue();
 				   if(rtrnObjLst != null && rtrnObjLst.size() > 0){
 					   for(Object[] param:rtrnObjLst){
@@ -403,47 +402,45 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						  }
 					  }
 				  }
-				   List<Object[]> rtrnObjList = districtDAO.getDistrictListBystateId(stateId);
-				   if(rtrnObjLst != null && rtrnObjList.size() > 0){
-					   for(Object[] param:rtrnObjLst){
+				   List<Object[]> rtrnDistrictList = districtDAO.getDistrictListBystateId(stateId);
+				   if(rtrnDistrictList != null && rtrnDistrictList.size() > 0){
+					   for(Object[] param:rtrnDistrictList){
 						   districtMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])); 
 					   }
 				   }
-			 }
+				   
 			 List<Object[]> rtrnObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,null);
 			 setMemberDetails(rtrnObjList,memberDetaislMap,designationMap);
 			 if(locationAccessLevelId == 2l){//state access
 				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
 				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
 			 }
-			 
-			 if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+			 if(memberDetaislMap != null && memberDetaislMap.size() > 0){
+				 Map<Long,ToursBasicVO> gsMap = memberDetaislMap.get(3l);
 				 
-			 Map<Long,ToursBasicVO> gsMap = memberDetaislMap.get(3l);
-			 
-			  if(gsMap != null && gsMap.size() > 0){
-				
-				  for(Entry<Long,ToursBasicVO> entry:gsMap.entrySet()){
+				  if(gsMap != null && gsMap.size() > 0){
 					
-					  ToursBasicVO VO = entry.getValue();
-					  
-						  Map<Long,Set<Long>> locationMap = candiateAccessLevelMap.get(VO.getId());
+					  for(Entry<Long,ToursBasicVO> entry:gsMap.entrySet()){
+						
+						  ToursBasicVO VO = entry.getValue();
 						  
-						  for(Entry<Long,Set<Long>> locationEntry:locationMap.entrySet()){
+							  Map<Long,Set<Long>> locationMap = candiateAccessLevelMap.get(VO.getId());
 							  
-							  for(Long id:locationEntry.getValue()){
+							  for(Entry<Long,Set<Long>> locationEntry:locationMap.entrySet()){
 								  
-								  if(!VO.getLocationSet().contains(id)){
+								  for(Long id:locationEntry.getValue()){
 									  
-									  VO.getLocationSet().add(id);
-									  VO.setName(VO.getName()+","+districtMap.get(id));
+									  if(!VO.getLocationSet().contains(id)){
+										  
+										  VO.getLocationSet().add(id);
+										  VO.setName(VO.getName()+","+districtMap.get(id)); // setting all district access of GS
+									   }
 								   }
-							   }
+						  }
 					  }
-				  }
-			  }
+				  } 
 			 }
-			  if(memberDetaislMap != null && memberDetaislMap.size() > 0){
+			 if(memberDetaislMap != null && memberDetaislMap.size() > 0){
 				  for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDetaislMap.entrySet()){
 					  ToursBasicVO VO = new ToursBasicVO();
 					   VO.setId(entry.getKey());
