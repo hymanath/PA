@@ -273,7 +273,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		fromDate : fromDate,   
 		toDate : toDate,
         issueStatusId : issueStatusId,
-		stateId : 1
+		stateId : 0
 	 }
     $.ajax({
           type:'GET',
@@ -374,7 +374,7 @@ function getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId){
 		tabUserInfoId : tabUserInfoId,
 		fromDate : fromDate,   
 		toDate : toDate,
-		stateId : 1
+		stateId : 0
 	}
     $.ajax({
           type:'GET',

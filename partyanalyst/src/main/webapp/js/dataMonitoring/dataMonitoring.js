@@ -355,7 +355,7 @@ function getUsers(constituencyId){
 			resultType:resultType,
 			verificationStatus:"Total",
             dataSourceType:"",
-			stateId : 1
+			stateId : 0
 		}    
 		$.ajax({
 			type:'GET',
