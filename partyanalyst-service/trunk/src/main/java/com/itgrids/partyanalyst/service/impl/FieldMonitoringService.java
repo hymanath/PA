@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -1242,6 +1243,7 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 				endDate = sdf.parse(toDateStr);
 			}
 			
+			List<Long> cadreSurveyUserIds = new ArrayList<Long>();
 			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetailsNew(issueTypeId, statusTypeId, startDate, endDate,stateId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
@@ -1263,9 +1265,31 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 					vo.setConstituencyName(obj[9] != null ? obj[9].toString():"");
 					//vo.setVendorId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
 					//vo.setVendorName(obj[11] != null ? obj[11].toString():"");
-					String vendorName = fieldVendorTabUserDAO.getVendorNameByCadreSurveyUserId(cadreSurveyUserId);
-					vo.setVendorName(vendorName);
+					
+					cadreSurveyUserIds.add(cadreSurveyUserId);
+					
+					//String vendorName = fieldVendorTabUserDAO.getVendorNameByCadreSurveyUserId(cadreSurveyUserId);
+					//vo.setVendorName(vendorName);
 					returnList.add(vo);
+				}
+			}
+			
+			Map<Long,String> nameMap = new HashMap<Long, String>();
+						
+			List<Object[]> objList = fieldVendorTabUserDAO.getVendorNameByCadreSurveyUserId(cadreSurveyUserIds);
+			if(objList !=null && objList.size()>0){
+				for (Object[] obj : objList) {					
+					nameMap.put((Long)obj[0], obj[1] !=null ? obj[1].toString():"");					
+				}
+			}
+			
+			//Vendor Names
+			if(returnList !=null && returnList.size()>0){
+				for (FieldMonitoringVO objects : returnList) {					
+					String name = nameMap.get(objects.getCadreSurveyUserId());
+					if(name !=null){
+						objects.setVendorName(name);
+					}
 				}
 			}
 			
