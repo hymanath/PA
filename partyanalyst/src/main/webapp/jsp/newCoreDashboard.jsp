@@ -2330,12 +2330,11 @@
 		
 	 </div>
 	 <!-- TOURS START -->
-	<!-- <div class="row">
-		<div class="col-md-6 col-xs-12 col-sm-6">
+	<!--<div class="row">
+		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
-				 <div class="panel-heading">
-                	<div class="row">
+					<div class="row">
                     	<div class="col-md-8 col-sm-8 col-xs-8">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
@@ -2349,10 +2348,10 @@
 							<span class="cadreNotes pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
 							</span>
-							 <!--<span class="tourExpand pull-right">  
+							 <span class="tourExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>-->  
-							<!--<span class="input-group pull-right  m_XsTop10 hide">
+							</span>
+							<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="tourDateRange"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -2361,13 +2360,46 @@
 						</div>  
                     </div>        
                 </div>
-				</div>
 				<div class="panel-body">
 				 <div id="tourOverviewDivId"></div>
+				           <div class="col-md-6 col-xs-12 col-sm-12" style="display:none;">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline ">
+											<li class="toursCls active" attr_value="strong">top 5 strong</li>
+											<li class="toursCls" attr_value="poor">last 5 poor</li>
+										</ul>
+									</div>
+									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 toursHiddenBlock" style="display:none;">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreToursBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreToursBlocks1" style="display:none;">
+								<ul class="list-inline pull-right activeUlCls">
+									<li class="active toursDetailedBlock">Detailed</li>
+									<li class="toursComparisionBlock">Comparison</li>
+								</ul>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreToursBlocksDetailed" style="display:none">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-8 col-xs-12 col-sm-6">
+												<span class="headingColor text-capitalize">District Wise Average Tours Performers</span>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div id="districtWiseLeaderDiv"></div>
+									</div>
+								</div>
+							</div>
 				</div>
 			</div>
 		</div>
-	</div>-->
+	</div> -->
 	<!-- TOURS END -->
 	</div>
 </div> 
@@ -2863,7 +2895,8 @@
         /* Tours Default Call */
         getToursBasicOverviewCountDetails();
 		//getDesigWiseMemberDtls();  
-       // getToursBasicOverviewCountDetails();		
+        //getToursBasicOverviewCountDetails();
+  
 	}
 	
 	
