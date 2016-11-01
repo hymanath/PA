@@ -80,7 +80,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreRegUser.userType = 'FM'");
-				//	" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+				sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -101,7 +102,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" group by model.tdpCadre.insertedBy.cadreSurveyUserId,model.tdpCadre.tabUserInfoId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -113,6 +115,49 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model1.cadreSurveyUser.cadreSurveyUserId," +
+					" model1.cadreSurveyUser.userName" +
+					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
+					" where model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+					" and model1.cadreRegUser.userType = 'FM'");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and model2.constituency.district.districtId = :districtId");
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			sb.append(" and model2.constituency.constituencyId = :constituencyId");
+		if(userId != null && userId.longValue() > 0l)
+			sb.append(" and model1.cadreSurveyUser.cadreSurveyUserId = :userId");
+				
+		/*if(fromDate != null && toDate != null)
+			sb.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate");*/
+		
+		sb.append(" and model1.isDeleted = 'N'" +
+					" and model2.isDeleted = 'N'" +
+					" and model1.cadreSurveyUser.isDeleted = 'N'" +
+					" and model1.cadreSurveyUser.isEnabled = 'Y'");
+					//" group by model.tdpCadre.insertedBy.cadreSurveyUserId,model.tdpCadre.tabUserInfoId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			query.setParameter("constituencyId", constituencyId);;
+		if(userId != null && userId.longValue() > 0l)
+			query.setParameter("userId", userId);
+		
+		/*if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}*/
 		
 		return query.list();
 	}
@@ -167,7 +212,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreRegUser.userType = 'FM'");
-					//" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+					sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -189,7 +235,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" group by model.tdpCadre.insertedBy.cadreSurveyUserId,model.tdpCadre.tabUserInfoId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -214,7 +261,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreRegUser.userType = 'FM'");
-					//" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+					sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -232,7 +280,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" order by model.cadreRegIssueStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -309,9 +358,13 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					//" group by model1.cadreRegUser.cadreRegUserId");*/
 		
 		sb.append("select count(distinct model.cadreSurveyUser.cadreSurveyUserId)" +
-					" from CadreSurveyUserAssignDetails model" +
-					" where model.isDeleted = 'N'" +
-					" and model.cadreSurveyUser.isEnabled = 'Y'");
+					" from CadreSurveyUserAssignDetails model,CadreRegUserTabUser model1" +
+					" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+					" and model.isDeleted = 'N'" +
+					" and model.cadreSurveyUser.isEnabled = 'Y'" +
+					" and model.cadreSurveyUser.isDeleted = 'N'");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model.constituency.district.districtId = :districtId");
@@ -321,7 +374,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			sb.append(" and model.cadreSurveyUser.cadreSurveyUserId = :userId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -380,7 +434,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" from TdpCadreEnrollmentYear model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId");
-					//" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+					sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -404,7 +459,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					//" group by model1.cadreRegUser.cadreRegUserId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
@@ -416,6 +472,14 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setParameter("today", today);
 		}
 		
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getCadreRegUsersId(Long cadreRegUserId){
+		Query query = getSession().createQuery("select count(distinct model.cadreSurveyUserId) from CadreRegUserTabUser model" +
+				" where model.cadreRegUserId = :cadreRegUserId" +
+				" and model.isDeleted = 'N'");
+		query.setParameter("cadreRegUserId", cadreRegUserId);
 		return (Long) query.uniqueResult();
 	}
 	

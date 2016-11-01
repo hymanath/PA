@@ -324,31 +324,93 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     				endDate = sdf.parse(toDateStr);
     			}
     			
+    			Map<Long,FieldMonitoringVO> templMap = new LinkedHashMap<Long, FieldMonitoringVO>();
+    			List<Long> startedUsers = new ArrayList<Long>();
+    			
+    			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    			if(templist == null || templist.isEmpty())
+    				templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    			if(templist != null && !templist.isEmpty()){
+    				for (Object[] obj : templist) {
+						Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						FieldMonitoringVO vo = new FieldMonitoringVO();
+						vo.setCadreSurveyUserId(userId);
+						vo.setUserName(obj[1] != null ? obj[1].toString():"");
+						vo.setTabUserId(0l);
+						templMap.put(userId, vo);
+					}
+    			}
+    			
     			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    			if(list == null || list.isEmpty())
+    				list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
     			if(list != null && !list.isEmpty()){
     				for (Object[] obj : list) {
-    					FieldMonitoringVO vo = new FieldMonitoringVO();
     					
-    					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-    					vo.setUserName(obj[1] != null ? obj[1].toString():"");
-    					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
-    					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
-    					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-    					 if(obj[5]!=null){
-    	    					Date date = (Date)obj[5];
-    	    					vo.setFirstRecord(returnTime.format(date));
-    	    				}
-    					 if(obj[6]!=null){
-    	    					Date date = (Date)obj[6];
-    	    					vo.setRecentRecord(returnTime.format(date));
-    	    				}
-    					//vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
-    					//vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
-    					vo.setTotalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
-    					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
-    					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+    					Long cadreUserId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+    					Long tabUserId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
     					
-    					returnList.add(vo);
+    					if(startedUsers != null && !startedUsers.contains(cadreUserId))
+    						startedUsers.add(cadreUserId);
+    					
+    					FieldMonitoringVO vo = templMap.get(cadreUserId);
+    					if(vo != null){
+    						if(vo.getTabUserId().longValue() == 0l){
+    							vo.setCadreSurveyUserId(cadreUserId);
+    	    					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+    	    					vo.setTabUserId(tabUserId);
+    	    					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+    	    					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+    	    					 if(obj[5]!=null){
+    	    	    					Date date = (Date)obj[5];
+    	    	    					vo.setFirstRecord(returnTime.format(date));
+    	    	    				}
+    	    					 if(obj[6]!=null){
+    	    	    					Date date = (Date)obj[6];
+    	    	    					vo.setRecentRecord(returnTime.format(date));
+    	    	    				}
+    	    					//vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
+    	    					//vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
+    	    					vo.setTotalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+    	    					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+    	    					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+    	    					
+    	    					returnList.add(vo);
+    						}
+    						else{
+    							vo = new FieldMonitoringVO();
+    							
+    							vo.setCadreSurveyUserId(cadreUserId);
+    	    					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+    	    					vo.setTabUserId(tabUserId);
+    	    					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+    	    					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+    	    					 if(obj[5]!=null){
+    	    	    					Date date = (Date)obj[5];
+    	    	    					vo.setFirstRecord(returnTime.format(date));
+    	    	    				}
+    	    					 if(obj[6]!=null){
+    	    	    					Date date = (Date)obj[6];
+    	    	    					vo.setRecentRecord(returnTime.format(date));
+    	    	    				}
+    	    					//vo.setFirstRecord(obj[5] != null ? obj[5].toString():"");
+    	    					//vo.setRecentRecord(obj[6] != null ? obj[6].toString():"");
+    	    					vo.setTotalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+    	    					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+    	    					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+    	    					
+    	    					returnList.add(vo);
+    						}
+    					}
+    					
+    				}
+    			}
+    			
+    			if(templMap != null){
+    				for (Map.Entry<Long, FieldMonitoringVO> entry : templMap.entrySet()){
+    					Long cadreUser = entry.getKey();
+    					if(startedUsers != null && !startedUsers.contains(cadreUser))
+    						returnList.add(entry.getValue());
     				}
     			}
     			
@@ -359,6 +421,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			
     			//LastHour Counts
     			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCountsNew(cadreRegUserId, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId);
+    			if(list1 == null || list1.isEmpty())
+    				list1 = cadreRegIssueDAO.getLastHourCountsNew(null, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId);
     			if(list1 != null && !list1.isEmpty()){
     				for (Object[] obj : list1) {
     					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -371,6 +435,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			
     			//Issues Counts
     			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, startDate, endDate, districtId);
+    			if(list2 == null || list2.isEmpty())
+    				list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(null, constituencyId, cadreSurveyUserId, startDate, endDate, districtId);
     			if(list2 != null && !list2.isEmpty()){
     				for (Object[] obj : list2) {
     					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -455,8 +521,14 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
 			
+			Long usersCnt = cadreRegIssueDAO.getCadreRegUsersId(cadreRegUserId);
+			
 			Long totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, startDate, endDate, districtId);
+			if(totalCount == null || totalCount == 0l)
+				totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocationNew(null, constituencyId, userId, startDate, endDate, districtId);
 			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, lastOneHourTime, today, districtId);
+			if((activeCount == null || activeCount == 0l) && (usersCnt == null || usersCnt == 0l))
+				activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocationNew(null, constituencyId, userId, lastOneHourTime, today, districtId);
 			Long passiveCount = 0l;
 			if(totalCount == null)
 				totalCount = 0l;
