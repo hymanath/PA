@@ -305,7 +305,7 @@
 														<input attr_cadre_search_type="2016New" checked id="2016NewCheckBoxId" type="checkbox"/>2016 New
 													</label>
 													<label class="checkbox-inline">
-														<input attr_cadre_search_type="2014Cadre" checked id="2014CadreCheckBoxId" type="checkbox"/>2014 cadre
+														<input attr_cadre_search_type="2014Cadre" attr_2014_active="Yes" id="2014CadreCheckBoxId" type="checkbox"/>2014 cadre
 													</label>
 												</div>
 											</div>
