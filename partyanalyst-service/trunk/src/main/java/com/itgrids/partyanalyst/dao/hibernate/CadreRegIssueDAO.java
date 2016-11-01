@@ -64,7 +64,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId){
+	public List<Object[]> getTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model1.cadreSurveyUser.cadreSurveyUserId," +
 					" model1.cadreSurveyUser.userName," +
@@ -81,6 +81,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreRegUser.userType = 'FM'");
 				//	" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model2.constituency.constituencyId = :constituencyId");
 		if(userId != null && userId.longValue() > 0l)
@@ -100,6 +102,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		
 		Query query = getSession().createQuery(sb.toString());
 		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
@@ -154,7 +158,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getLastHourCountsNew(Long cadreRegUserId,Date lastOneHourTime,Date today,Long constituencyId,Long userId){
+	public List<Object[]> getLastHourCountsNew(Long cadreRegUserId,Date lastOneHourTime,Date today,Long constituencyId,Long userId,Long districtId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model1.cadreSurveyUser.cadreSurveyUserId," +
 					" model.tdpCadre.tabUserInfo.tabUserInfoId," +
@@ -164,6 +168,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreRegUser.userType = 'FM'");
 					//" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model2.constituency.constituencyId = :constituencyId");
 		if(userId != null && userId.longValue() > 0l)
@@ -184,6 +190,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		
 		Query query = getSession().createQuery(sb.toString());
 		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
@@ -196,7 +204,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getcadreRegIssuesCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,Date startDate,Date endDate){
+	public List<Object[]> getcadreRegIssuesCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,Date startDate,Date endDate,Long districtId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.cadreSurveyUserId," +
 					" model.tabUserInfoId," +
@@ -207,6 +215,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreRegUser.userType = 'FM'");
 					//" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model2.constituency.constituencyId = :constituencyId");
 		if(userId != null && userId.longValue() > 0l)
@@ -223,6 +233,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		
 		Query query = getSession().createQuery(sb.toString());
 		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
@@ -271,9 +283,9 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return query.list();
 	}
 	
-	public Long getTotalDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date fromDate,Date toDate){
+	public Long getTotalDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date fromDate,Date toDate,Long districtId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
+		/*sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
 					" from TdpCadreEnrollmentYear model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId");
@@ -293,19 +305,33 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
 					" and model1.cadreSurveyUser.isDeleted = 'N'" +
-					" and model1.cadreRegUser.userType = 'FM'" +
-					" group by model1.cadreRegUser.cadreRegUserId");
+					" and model1.cadreRegUser.userType = 'FM'");
+					//" group by model1.cadreRegUser.cadreRegUserId");*/
+		
+		sb.append("select count(distinct model.cadreSurveyUser.cadreSurveyUserId)" +
+					" from CadreSurveyUserAssignDetails model" +
+					" where model.isDeleted = 'N'" +
+					" and model.cadreSurveyUser.isEnabled = 'Y'");
+		
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and model.constituency.district.districtId = :districtId");
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			sb.append(" and model.constituency.constituencyId = :constituencyId");
+		if(userId != null && userId.longValue() > 0l)
+			sb.append(" and model.cadreSurveyUser.cadreSurveyUserId = :userId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
 			query.setParameter("userId", userId);
-		if(fromDate != null && toDate != null){
+		/*if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
-		}
+		}*/
 		
 		return (Long) query.uniqueResult();
 	}
@@ -348,13 +374,15 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		return (Long) query.uniqueResult();
 	}
 	
-	public Long getActiveDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date lastOneHourTime,Date today){
+	public Long getActiveDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date lastOneHourTime,Date today,Long districtId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
 					" from TdpCadreEnrollmentYear model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
 					" where model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId");
 					//" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" and model2.constituency.district.districtId = :districtId");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model2.constituency.constituencyId = :constituencyId");
 		if(userId != null && userId.longValue() > 0l)
@@ -372,11 +400,13 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
 					" and model1.cadreSurveyUser.isDeleted = 'N'" +
-					" and model1.cadreRegUser.userType = 'FM'" +
-					" group by model1.cadreRegUser.cadreRegUserId");
+					" and model1.cadreRegUser.userType = 'FM'");
+					//" group by model1.cadreRegUser.cadreRegUserId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		//query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
