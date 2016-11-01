@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoSourceDAO;
 import com.itgrids.partyanalyst.dao.ITabUserInfoDAO;
 import com.itgrids.partyanalyst.dao.ITabUserOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -95,6 +96,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
     private ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO;
     private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+    private ITabUserEnrollmentInfoSourceDAO tabUserEnrollmentInfoSourceDAO;
     
     
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
@@ -234,8 +236,10 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO) {
 		this.tdpCadreLocationInfoCountDAO = tdpCadreLocationInfoCountDAO;
 	}
-
-	
+	public void setTabUserEnrollmentInfoSourceDAO(
+			ITabUserEnrollmentInfoSourceDAO tabUserEnrollmentInfoSourceDAO) {
+		this.tabUserEnrollmentInfoSourceDAO = tabUserEnrollmentInfoSourceDAO;
+	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
 	    try {
@@ -2034,16 +2038,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(today);
-			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
 			Date lastOneHourTime = cal.getTime();
 			//pending    
 			//Long ttlTabUserInField = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,lastOneHourTime,today,"oneHour");
 			String dtStr = sdf1.format(today);
 			Date now = sdf1.parse(dtStr);
-			Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(accessLvlId,accessLvlValue,stateId,now);    
-			       
+			//Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(accessLvlId,accessLvlValue,stateId,now);    
+			Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
 			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);    
-			
 			
 			//total submitted data
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
