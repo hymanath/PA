@@ -1855,6 +1855,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 		var cadre2014ArrPer = [];
 		var renewalArr=[];
 		var jsonDataArr=[];
+		
 		if(result != null && result.length > 0){
 			for(var i in result){
 			   if((renewal2016CheckboxIsChecked=="Y" && new2016CheckboxIsChecked=="Y" && cadre2014CheckboxIsChecked=="Y")||(renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre")){
@@ -2130,10 +2131,10 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  }
 			 /*Setting Dynamic height for highChart */
 			 if(locationNameArr!= null && locationNameArr.length > 10){
-			  var highChartDivHight = locationNameArr.length*20;
+			  var highChartDivHight = locationNameArr.length*25;
 			  $("#"+divId).height(highChartDivHight); 
              }else{
-			  $("#"+divId).height(260);		
+			  $("#"+divId).height(280);		
 			  }
 				$(function () {
 					$("#"+divId).highcharts({
@@ -2159,8 +2160,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 							}
 						},
 						tooltip: {
-				          valueSuffix:  '%' 
-			            },
+							formatter: function() {
+								var series = this.point.series.chart.series, // get all series 
+								index = this.point.series.xData.indexOf(this.point.x); // get index																
+								return '<b>'+this.x +'<br/>' + this.y + '%<br/>2016 Reg-Count:' + result[index].total2016CadreCnt + '<br/>2016 New Reg-Count:' + result[index].total2016NewCadreCount + '<br/>2016 Renewal Reg-Count:'+ result[index].total2016RenewalCadreCount;
+							}
+						 },
 						legend: {
 							reversed: true
 						},
