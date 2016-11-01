@@ -55,6 +55,56 @@ function getDataReConsalationOverView(){
   function  buildDataReConsalationTotalOverView(result)
   {
  	 var str ='';  
+	str+='<div class="panel panel-default m_top10">';    
+		str+='<div class="panel-heading">';
+			str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
+		str+='</div>';
+		str+='<div class="panel-body" style="padding: 25px;">';
+			str+='<div class="row">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+				var totImeiNo = result.totalImeiNo;
+				var totRecords = result.totalRecords;
+				var totSynRec =result.totalSyn;
+				var totPending  = result.totalPending;
+				if(result != null){
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">Total Smart Devices</p>';
+				if(totImeiNo != null){
+						str+='<p class="text_bold">'+totImeiNo+'</p>';
+				}else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				}
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">Total Registration</p>';
+				if(totRecords != null){
+					str+='<p class="text_bold">'+result.totalRecords+'</p>';
+				}else {
+					 str+='<p class="text_bold">'+0+'</p>';
+				}
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">Data Synced Records</p>';
+				if(totSynRec != null){
+					str+='<p class="text_bold">'+totSynRec+'</p>';
+				}else {
+					str+='<p class="text_bold" text-center>'+0+'</p>';
+				}
+				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">Data Synced Pending Records</p>';
+				 if(totPending !=null){
+					 str+='<p class="text_bold">'+totPending+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
+				str+='</div>';
+				}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#dataReconsalationOverviewId").html(str);
 	    str+='<div class="panel panel-default m_top10">';    
  	    str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
  				str+='<div class="panel-body" style="padding: 25px;">';
@@ -136,9 +186,11 @@ $(document).on("click","#submitId",function(){
  function buildDataReConsalationOverView(result)
  {                                                        
 	 var str = '';
-	 str+='<div class="panel panel-default">';       
-	 str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>USER WISE TOTAL REGISTRATIONS & SYNC PENDING DETAILS</b></h4>';
-				str+='<div class="panel-body" style="padding: 25px;">';
+	 str+='<div class="panel panel-default">';  
+		str+='<div class="panel-heading">';
+			str+='<h4 class=" headingStyle text-capital"><span style="font-size:15px;"><b>USER WISE TOTAL REGISTRATIONS & SYNC PENDING DETAILS</b></h4>';
+		str+='</div>';
+		str+='<div class="panel-body" style="padding: 25px;">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
 				str+='<thead>';
 				str+='<tr>'; 
@@ -174,12 +226,11 @@ $(document).on("click","#submitId",function(){
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
-				str+='</table>';
-				str+='</div>';
-			    str+='</div>';
-			
-				$("#userWiseTotalViewId").html(str);
-				$("#userWiseTotalRegstSyncId").dataTable();
+			str+='</table>';
+		str+='</div>';
+    str+='</div>';
+	$("#userWiseTotalViewId").html(str);
+	$("#userWiseTotalRegstSyncId").dataTable();
  }
  
  $(document).on('change','#stateOverViewId',function(){

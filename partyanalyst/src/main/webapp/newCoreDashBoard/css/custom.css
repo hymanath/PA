@@ -2004,6 +2004,39 @@ margin-top: 5px; margin-bottom: 2px;
 {
 	font-size:14px !important;
 }
+
+* , select
+{
+	outline: 0 !important;
+}
+body
+{
+	background:#ECF0F1;
+}
+h1,h2,h3,h4,h5,h6,p,ul,.table
+{
+	margin:0px !important;
+}
+
+.text-capital
+{
+	text-transform:uppercase;
+}
+.m_top10
+{
+	margin-top:10px !important;
+}
+.text_bold{
+font-weight:bold;
+}
+
+.border_right{
+border-right: 2px solid #d3d3d3;
+}
+
+.text_center{
+text-align:center
+}
 .border_right{
 border-right: 2px solid #d3d3d3;
 }
