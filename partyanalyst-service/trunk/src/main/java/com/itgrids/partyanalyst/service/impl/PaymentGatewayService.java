@@ -15,12 +15,15 @@ import com.itgrids.partyanalyst.dao.IPaymentAmountDAO;
 import com.itgrids.partyanalyst.dao.IPaymentMethodDAO;
 import com.itgrids.partyanalyst.dao.IPaymentModuleGatewayMerchantDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPaymentTransactionDAO;
+import com.itgrids.partyanalyst.dao.IPaymentTransactionInfoDAO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.PaymentTransactionVO;
 import com.itgrids.partyanalyst.model.PaymentMethod;
 import com.itgrids.partyanalyst.model.PaymentTransaction;
+import com.itgrids.partyanalyst.model.PaymentTransactionInfo;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.MD5Algoritm;
 
@@ -34,8 +37,16 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 	private TransactionTemplate transactionTemplate;
 	private IPaymentAmountDAO paymentAmountDAO;
 	private IPaymentModuleGatewayMerchantDetailsDAO paymentModuleGatewayMerchantDetailsDAO;
+	private IPaymentTransactionInfoDAO paymentTransactionInfoDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
+	public IPaymentTransactionInfoDAO getPaymentTransactionInfoDAO() {
+		return paymentTransactionInfoDAO;
+	}
+	public void setPaymentTransactionInfoDAO(
+			IPaymentTransactionInfoDAO paymentTransactionInfoDAO) {
+		this.paymentTransactionInfoDAO = paymentTransactionInfoDAO;
+	}
 	public IPaymentModuleGatewayMerchantDetailsDAO getPaymentModuleGatewayMerchantDetailsDAO() {
 		return paymentModuleGatewayMerchantDetailsDAO;
 	}
@@ -129,7 +140,7 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 		return returnVo;
 	}
 
-	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId,String moduleStr,String subTypeStr){
+	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId,String moduleStr,String subTypeStr,String otherAmountType){
 		PaymentGatewayVO pamentGatewayVO = new PaymentGatewayVO();
 		try {
 				String encryptedCodeMN = randomNo;//md5Algoritm.generateMD5Encrypt(randomNo);
@@ -140,7 +151,14 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 		        String MerchantId ="";//IConstants.TGNF_ENROLLMENT_MERCHANT_ID;
 		        String Amount = paymentAmountDAO.getPaymentAmountByRegistrationType(moduleStr, subTypeStr).toString();//IConstants.TGNF_ENROLLMENT_AMOUNT;
 		        String redirectUrl = "";//IConstants.TGNF_REGISTRATION_REDIRECTURL
-		        		
+		        Long selectedAmount=0L;
+		        if(otherAmountType != null && !otherAmountType.isEmpty()){
+		        	if(otherAmountType.equalsIgnoreCase("CR"))
+		        		selectedAmount = 30L;
+		        }
+		        
+		        Long finalAmount = Long.valueOf(Amount)+selectedAmount;
+		        Amount = finalAmount.toString();
 				if(paymemtGatwayDtls != null && paymemtGatwayDtls.size()>0)
 					 for (Object[] param : paymemtGatwayDtls) {
 						 redirectUrl = commonMethodsUtilService.getStringValueForObject(param[6]);
@@ -156,7 +174,7 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 				}while(randomNum<0 && randomNum.toString().length()<7);
 				randomNum = Long.valueOf(randomNum.toString().substring(1, 8));
 		       // String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNum;
-				 String OrderId =IConstants.CADRE_2016_ONLINE_REGISTRATION+randomNum;
+				final String OrderId =IConstants.CADRE_2016_ONLINE_REGISTRATION+randomNum;
 		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
 		        Adler32  adl = new Adler32();
 		        adl.update(str.getBytes());
@@ -203,6 +221,26 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 			LOG.error(e);
 			return null;
 		}
+	}
+	
+	public String updateTransactionTrackingDetals(final String OrderId,final String status){
+		LOG.fatal("Transaction Started for OrderId : "+OrderId);
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus arg) {
+					PaymentTransactionInfo paymentTransactionInfo = new PaymentTransactionInfo();
+					paymentTransactionInfo.setTransactionId(OrderId);
+					paymentTransactionInfo.setStatus(status);
+					paymentTransactionInfo.setTransactionTime(new DateUtilService().getCurrentDateAndTime());
+					paymentTransactionInfoDAO.save(paymentTransactionInfo);
+				}
+			});
+		} catch (Exception e) {
+			LOG.fatal("Transaction Started for OrderId : "+OrderId);
+			LOG.error("error occured while saving payment transaction details.",e);
+			return "failure";
+		}
+		return "success";
 	}
 	public String savePaymenyTransactionDetails(final PaymentTransactionVO paymentTransactionVO){
 		try{
