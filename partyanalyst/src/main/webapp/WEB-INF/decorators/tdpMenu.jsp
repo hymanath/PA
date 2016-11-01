@@ -768,9 +768,9 @@
 									</li>
 									</c:if>
 												
-								<li style="text-align: right">
+								<!--<li style="text-align: right">
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
-								</li>
+								</li>-->
 								
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING') || 
 				        fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING_DASHBOARD') ||
@@ -809,6 +809,12 @@
 										 </ul>
 									</li>
 									</c:if>
+									
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD')}">
+								<li>
+									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
+								</li>
+							</c:if>
                   				 
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
