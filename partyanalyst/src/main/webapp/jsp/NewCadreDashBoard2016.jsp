@@ -566,10 +566,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='</table>';
 
 					   str+='<div class="span1">';
-					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 10px; margin-left: 5px;margin-top: 100px;">';
+					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px; margin-left: 44px;">';
 					   str+='</div>';
-					   str+='<div class="span3" style="margin-top: 100px;">';
-					   str+='<h2>'+todayCount+'</h2>';
+					   str+='<div class="span3" style="margin-top: 100px; margin-left: 45px;">';
+					   str+='<h2 class="f_26">'+todayCount+'</h2>';
 					   str+='<p>Members Registered <br>';
 					   str+='<span style="font-weight:bold;">Today</span>';
 					   str+='</p> </div>';
@@ -621,10 +621,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str1+='</table>';
 
 					   str1+='<div class="span1">';
-					   str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 10px; margin-left: 5px;margin-top: 100px;">';
+					   str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px; margin-left: 49px;">';
 					   str1+='</div>';
-					   str1+='<div class="span3" style="margin-top: 100px;">';
-					   str1+='<h2>'+totalCount+'</h2>';
+					   str1+='<div class="span3" style="margin-top: 100px; margin-left: 44px;">';
+					   str1+='<h2 class="f_26">'+totalCount+'</h2>';
 					   str1+='<p>Members Registered <br>';
 					   str1+='<span style="font-weight:bold;">Total</span>';
 					   str1+='</p> </div>';
