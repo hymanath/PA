@@ -89,7 +89,7 @@ function getDataReConsalationOverView(){
  							str+='<p class="text_bold" text-center>'+0+'</p>';
  						}
  						str+='</div>';
- 						str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+ 						str+='<div class="col-md-3 col-xs-12 col-sm-6">';
  						str+='<p class="text_bold">Data Synced Pending Records</p>';
  						 if(totPending !=null){
  							 str+='<p class="text_bold">'+totPending+'</p>';
