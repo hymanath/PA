@@ -239,10 +239,10 @@ table.dataTable tr.odd {
 				    <table class="table table-bordered border-radius-0 mb-0 membercount" style="background:#ffffff;">
 						<tbody>
 							<tr>
-								<td style="background-color:#c8d7f4"><div id="todayRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
+								<td style="background-color:#c8d7f4"><p style="font-size: 18px; font-weight: bold;">TODAY</p><div id="todayRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
 								<!--<td><div id="thisWeekRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="monthRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>-->
-								<td style="background-color:#eae798"><div id="totalRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
+								<td style="background-color:#eae798"><p style="font-size: 18px; font-weight: bold;">TOTAL</p><div id="totalRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
 							</tr>
 							<tr>
 								<td class="indiEle">
@@ -498,10 +498,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					
 						$("#ts2016CountId").html(str1)
 						$("#ts2016PrecCountId").html('<h2>'+result[1].percentage+'</h2>');
-						$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#EAE798" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[0].count2016+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#EAE798;" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[1].count2016+'</span><span class="text-skyblue"> </span></div>');
+						$("#totalApTgRegisCount").html('<div style="background-color:#EAE798" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[0].count2016+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#EAE798;" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[1].count2016+'</span><span class="text-skyblue"> </span></div>');
 						
 					}else if(typeId == 'today'){
-						$("#todayApTgRegisCount").html('<div style="cursor:pointer;background-color:#C8D7F4;" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">  AP </span></strong><br><span style="margin-left:10px;"> '+result[0].count2016+'</span></div><div style="cursor:pointer;background-color:#C8D7F4;" class="span6 text-center mytooltip" ><strong><span style="margin-right:15px;"> TELANGANA </span></strong><br/><span style="margin-right:15px;"> '+result[1].count2016+'</span></div>');
+						$("#todayApTgRegisCount").html('<div style="background-color:#C8D7F4;" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">  AP </span></strong><br><span style="margin-left:10px;"> '+result[0].count2016+'</span></div><div style="cursor:pointer;background-color:#C8D7F4;" class="span6 text-center mytooltip" ><strong><span style="margin-right:15px;"> TELANGANA </span></strong><br/><span style="margin-right:15px;"> '+result[1].count2016+'</span></div>');
 						
 					
 					}
@@ -534,33 +534,100 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						str+='<tbody style="background:#fff;">';
 						str+='<tr>';
 							str+='<td>Tab</td>';
-							str+='<td>'+result[0].tabNew+'</td>';
-							str+='<td>'+result[0].tabRenewal+'</td>';
-							str+='<td>'+result[0].tabTotal+'</td>';
+							if(result[0].tabNew == null || result[0].tabNew == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].tabNew+'</td>';
+							}
+							if(result[0].tabRenewal == null || result[0].tabRenewal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].tabRenewal+'</td>';
+							}
+							if(result[0].tabTotal == null || result[0].tabTotal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].tabTotal+'</td>';
+							}
+							
 						str+='</tr>';
 						str+='<tr>';
 							str+='<td>Web</td>';
-							str+='<td>'+result[0].webNew+'</td>';
-							str+='<td>'+result[0].webRenewal+'</td>';
-							str+='<td>'+result[0].webTotal+'</td>';
+							if(result[0].webNew == null || result[0].webNew == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].webNew+'</td>';
+							}
+							if(result[0].webRenewal == null || result[0].webRenewal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].webRenewal+'</td>';
+							}
+							if(result[0].webTotal == null || result[0].webTotal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].webTotal+'</td>';
+							}
+							
 						str+='</tr>';
 						str+='<tr>';
 							str+='<td>Partyoffice(Hyd)</td>';
-							str+='<td>'+result[0].partyOfcHydNew+'</td>';
-							str+='<td>'+result[0].partyOfcHydRenewal+'</td>';
-							str+='<td>'+result[0].partyOfcHydTotal+'</td>';
+							if(result[0].partyOfcHydNew == null || result[0].partyOfcHydNew == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].partyOfcHydNew+'</td>';
+							}
+							if(result[0].partyOfcHydRenewal == null || result[0].partyOfcHydRenewal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].partyOfcHydRenewal+'</td>';
+							}
+							if(result[0].partyOfcHydTotal == null || result[0].partyOfcHydTotal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].partyOfcHydTotal+'</td>';
+							}
+							
+							
 						str+='</tr>';
 						str+='<tr>';
 							str+='<td>Partyoffice(Vij)</td>';
-							str+='<td>'+result[0].partyOfcVijNew+'</td>';
-							str+='<td>'+result[0].partyOfcVijRenewal+'</td>';
-							str+='<td>'+result[0].partyOfcVijTotal+'</td>';
+							if(result[0].partyOfcVijNew == null || result[0].partyOfcVijNew == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].partyOfcVijNew+'</td>';
+							}
+							if(result[0].partyOfcVijRenewal == null || result[0].partyOfcVijRenewal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].partyOfcVijRenewal+'</td>';
+							}
+							if(result[0].partyOfcVijTotal == null || result[0].partyOfcVijTotal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].partyOfcVijTotal+'</td>';
+							}
+							
+							
 						str+='</tr>';
 						str+='<tr>';
 							str+='<td>Online</td>';
-							str+='<td>'+result[0].onlineNew+'</td>';
-							str+='<td>'+result[0].onlineRenewal+'</td>';
-							str+='<td>'+result[0].onlineTotal+'</td>';
+							if(result[0].onlineNew == null || result[0].onlineNew == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].onlineNew+'</td>';
+							}
+							if(result[0].onlineRenewal == null || result[0].onlineRenewal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].onlineRenewal+'</td>';
+							}
+							if(result[0].onlineTotal == null || result[0].onlineTotal == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[0].onlineTotal+'</td>';
+							}
+							
 						str+='</tr>';
 						str+='</tbody>';
 					str+='</table>';
@@ -589,33 +656,101 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						str1+='<tbody style="background:#fff;">';
 						str1+='<tr>';
 							str1+='<td>Tab</td>';
-							str1+='<td>'+result[1].tabNew+'</td>';
-							str1+='<td>'+result[1].tabRenewal+'</td>';
-							str1+='<td>'+result[1].tabTotal+'</td>';
+							if(result[1].tabNew == null || result[1].tabNew == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].tabNew+'</td>';
+							}
+							if(result[1].tabRenewal == null || result[1].tabRenewal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].tabRenewal+'</td>';
+							}
+							if(result[1].tabTotal == null || result[1].tabTotal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].tabTotal+'</td>';
+							}
+							
 						str1+='</tr>';
 						str1+='<tr>';
 							str1+='<td>Web</td>';
-							str1+='<td>'+result[1].webNew+'</td>';
-							str1+='<td>'+result[1].webRenewal+'</td>';
-							str1+='<td>'+result[1].webTotal+'</td>';
+							if(result[1].webNew == null || result[1].webNew == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].webNew+'</td>';
+							}
+							if(result[1].webRenewal == null || result[1].webRenewal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].webRenewal+'</td>';
+							}
+							if(result[1].webTotal == null || result[1].webTotal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].webTotal+'</td>';
+							}
+							
+							
 						str1+='</tr>';
 						str1+='<tr>';
 							str1+='<td>Partyoffice(Hyd)</td>';
-							str1+='<td>'+result[1].partyOfcHydNew+'</td>';
-							str1+='<td>'+result[1].partyOfcHydRenewal+'</td>';
-							str1+='<td>'+result[1].partyOfcHydTotal+'</td>';
+							if(result[1].partyOfcHydNew == null || result[1].partyOfcHydNew == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].partyOfcHydNew+'</td>';
+							}
+							if(result[1].partyOfcHydRenewal == null || result[1].partyOfcHydRenewal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].partyOfcHydRenewal+'</td>';
+							}
+							if(result[1].partyOfcHydTotal == null || result[1].partyOfcHydTotal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].partyOfcHydTotal+'</td>';
+							}
+							
+							
 						str1+='</tr>';
 						str1+='<tr>';
 							str1+='<td>Partyoffice(Vij)</td>';
-							str1+='<td>'+result[1].partyOfcVijNew+'</td>';
-							str1+='<td>'+result[1].partyOfcVijRenewal+'</td>';
-							str1+='<td>'+result[1].partyOfcVijTotal+'</td>';
+							if(result[1].partyOfcVijNew == null || result[1].partyOfcVijNew == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].partyOfcVijNew+'</td>';
+							}
+							if(result[1].partyOfcVijRenewal == null || result[1].partyOfcVijRenewal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].partyOfcVijRenewal+'</td>';
+							}
+							if(result[1].partyOfcVijTotal == null || result[1].partyOfcVijTotal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].partyOfcVijTotal+'</td>';
+							}
+							
+							
 						str1+='</tr>';
 						str1+='<tr>';
 							str1+='<td>Online</td>';
-							str1+='<td>'+result[1].onlineNew+'</td>';
-							str1+='<td>'+result[1].onlineRenewal+'</td>';
-							str1+='<td>'+result[1].onlineTotal+'</td>';
+							if(result[1].onlineNew == null || result[1].onlineNew == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].onlineNew+'</td>';
+							}
+							if(result[1].onlineRenewal == null || result[1].onlineRenewal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].onlineRenewal+'</td>';
+							}
+							if(result[1].onlineTotal == null || result[1].onlineTotal == 0){
+								str1+='<td> - </td>';
+							}else{
+								str1+='<td>'+result[1].onlineTotal+'</td>';
+							}
+						
 						str1+='</tr>';
 						str1+='</tbody>';
 					str1+='</table>';
@@ -691,7 +826,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		if(result !=null && result.length >0){
 			str+='<table class="table table-bordered" id="districtWise2016DataTableId">';
 				str+='<thead>';
-					str+='<th>Constituency</th>';
+					str+='<th>District</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
@@ -703,18 +838,39 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='<tr>';
 					str+='<td>'+result[i].name+'</td>';
 					str+='<td>'+result[i].targetCount+'</td>';
-					if(result[i].renewalCount == null || result[i].renewalCount == 0){
+					
+					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
+						str+='<td> - </td>';
+					}else{
+						if(result[i].renewalCount == null || result[i].renewalCount == 0){
 						str+='<td>'+result[i].renewalCount+'</td>';
-					}else{
-						str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+')</small></td>';
+						}else{
+							str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+						}
 					}
-					if(result[i].newCount == null || result[i].newCount == 0){
-						str+='<td>'+result[i].newCount+'</td>';
+					
+					
+					if(result[i].newPerc == null || result[i].newPerc == 0){
+						str+='<td> - </td>';
 					}else{
-						str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+')</small></td>';
+						if(result[i].newCount == null || result[i].newCount == 0){
+							str+='<td>'+result[i].newCount+'</td>';
+						}else{
+							str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+						}
 					}
-					str+='<td>'+result[i].count2016+'</td>';
-					str+='<td>'+result[i].perc2016+'</td>';
+					
+					
+					if(result[i].count2016 == null || result[i].count2016 == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].count2016+'</td>';
+					}
+					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].perc2016+'</td>';
+					}
 					str+='</tr>';
 				}
 				str+='</tbody>';
@@ -745,18 +901,37 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='<tr>';
 					str+='<td>'+result[i].name+'</td>';
 					str+='<td>'+result[i].targetCount+'</td>';
-					if(result[i].renewalCount == null || result[i].renewalCount == 0){
+					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
+						str+='<td> - </td>';
+					}else{
+						if(result[i].renewalCount == null || result[i].renewalCount == 0){
 						str+='<td>'+result[i].renewalCount+'</td>';
-					}else{
-						str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+')</small></td>';
+						}else{
+							str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+						}
 					}
-					if(result[i].newCount == null || result[i].newCount == 0){
-						str+='<td>'+result[i].newCount+'</td>';
+					
+					
+					if(result[i].newPerc == null || result[i].newPerc == 0){
+						str+='<td> - </td>';
 					}else{
-						str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+')</small></td>';
+						if(result[i].newCount == null || result[i].newCount == 0){
+							str+='<td>'+result[i].newCount+'</td>';
+						}else{
+							str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+						}
 					}
-					str+='<td>'+result[i].count2016+'</td>';
-					str+='<td>'+result[i].perc2016+'</td>';
+					if(result[i].count2016 == null || result[i].count2016 == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].count2016+'</td>';
+					}
+					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].perc2016+'</td>';
+					}
+					
 					str+='</tr>';
 				}
 				str+='</tbody>';
