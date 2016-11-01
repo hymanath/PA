@@ -859,7 +859,8 @@ public interface IConstants {
     public static final boolean ENABLE_LOGS_SAVE = true;
     public static final Long CADREPERCENTAGE = 30l;
     public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","s" +
-    		"aveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction","displayDashboardCommentsAction","savingDashboardCommentAction","deleteDashBoardcommentsAction","coreDashboardAction1"};
+    		"aveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction","displayDashboardCommentsAction","savingDashboardCommentAction","deleteDashBoardcommentsAction",
+    		 "coreDashboardAction1","updateTransactionTrackingDtalsAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     
@@ -1198,4 +1199,5 @@ public interface IConstants {
 	public static final String CADRE_IMAGE_TYPE_NEW = "NEW";
 	public static final String VOTER_IMAGES = "voter_images";
 	
+	public static final String COURIER_AMOUNT="30";
 }
