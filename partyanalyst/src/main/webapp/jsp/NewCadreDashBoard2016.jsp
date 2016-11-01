@@ -117,6 +117,10 @@ table.dataTable thead .sorting , table.dataTable thead .sorting_desc , table.dat
 	.text-skyblue{color:#46acca;}
 	.mb-0{margin-bottom:0px}
 	.mb-10{margin-bottom:10px}
+	.Previousmembercount td:first-child{width:13%;}
+	.Previousmembercount td:nth-child(2){width:13%;vertical-align:middle}
+	.Previousmembercount td:nth-child(3){width:13%;vertical-align:middle}
+	.Previousmembercount td:last-child{width:13%;vertical-align:middle;text-align:center}
 	.Previousmembercount td{width:22%;}
 	.Previousmembercount td:last-child{width:10%;}
 	.membercount td{width:25%;}
@@ -270,23 +274,29 @@ table.dataTable tr.odd {
 						<tbody>
 						    <tr class="">
 								<td>
-									<h2 style="display:inline-block">TS</h2>
-									<img class="pull-right" src="images/TS.png">
+									<img style="margin:auto;display:block" src="images/TS.png">
+									<h3 class="text-center" style="margin:auto;">TS</h3>
 								</td>
-								<td><div id="tsConstiCountId"><h2>119</h2><p style="font-size:12px;">Registration Started Constituencies</p></div></td>
+								<td><div id="tsConstiCountId"><h2>119</h2>
+									<p style="font-size:12px;">Total Constituencies</p></div>
+								</td>
 								<td><p><span class="text-red">2014 </span></p><div id="ts2014NewCountId"><h2 class="text_color f_26">794427</h2></div></td>
 								<td>
 									<p><span class="text-blue">2016 </span></p>
-									<div id="ts2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
-								<td><p><span class="text-orange">Total - [%] </span></p><div id="ts2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
+									<div id="ts2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+								</td>
+								<td>
+									<p><span class="text-orange">Total - [%] </span></p>
+									<div id="ts2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+								</td>
 								
 							</tr>
 							<tr class="">
 								<td>
-									<h2 style="display:inline-block">AP</h2>
-									<img class="pull-right" src="images/AP.png">
+									<img style="margin:auto;display:block" src="images/AP.png">
+									<h3 class="text-center" style="margin:auto;">AP</h3>
 								</td>
-								<td><div id="apConstiCountId"><h2>175</h2><p style="font-size:12px;">Registration Started Constituencies</p></div></td>
+								<td><div id="apConstiCountId"><h2>175</h2><p style="font-size:12px;">Total Constituencies</p></div></td>
 								<td><p><span class="text-red">2014 </span></p><div id="ap2014NewCountId"><h2 class="text_color f_26">4716975</h2></div></td>
 								<td><p><span class="text-blue">2016 </span></p><div id="ap2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 								<td><p><span class="text-orange">Total - [%] </span></p><div id="ap2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
@@ -535,31 +545,30 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					if(typeId == 'total'){
 						var str='';
 						var str1='';
-						str+='<h2>'+result[0].count2016+'</h2>';
-						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<h2 class="text-center"><small style="color:#d3d3d3">Total</small>&nbsp;&nbsp;'+result[0].count2016+'</h2>';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-top:1px solid #ddd;padding-top:10px">';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right: 1px solid #d3d3d3;">';
-						str+='<p class="text-muted">Renewal<p>';
-						str+='<p style="font-size: 18px;"><b>'+result[0].renewalCount+'</b></p>';
+						str+='<p class="text-center text-muted">Renewal</p>';
+						str+='<p style="font-size: 18px;" class="text-muted text-center"><b>'+result[0].renewalCount+'</b></p>';
 						str+='</div>';
 						
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p style="text-align: center;" class="text-muted">New</p>';
-						str+='<p style="text-align: center;font-size: 18px;"><b>'+result[0].newCount+'</b></p>';
+						str+='<p style="text-align: center;font-size: 18px;" class="text-muted"><b>'+result[0].newCount+'</b></p>';
 						str+='</div>';
 						
 						str+='</div>';
 						
-						
-						str1+='<h2>'+result[1].count2016+'</h2>';
-						str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str1+='<h2 class="text-center"><small style="color:#d3d3d3">Total</small>&nbsp;&nbsp;'+result[1].count2016+'</h2>';
+						str1+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-top:1px solid #ddd;padding-top:10px">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right: 1px solid #d3d3d3;">';
-						str1+='<p class="text-muted">Renewal<p>';
-						str1+='<p style="font-size: 18px;"><b>'+result[1].renewalCount+'</b></p>';
+						str1+='<p class="text-center text-muted">Renewal</p>';
+						str1+='<p style="font-size: 18px;" class="text-muted text-center"><b>'+result[1].renewalCount+'</b></p>';
 						str1+='</div>';
 						
 						str1+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str1+='<p style="text-align: center;" class="text-muted">New</p>';
-						str1+='<p style="text-align: center;font-size: 18px;"><b>'+result[1].newCount+'</b></p>';
+						str1+='<p style="text-align: center;font-size: 18px;" class="text-muted"><b>'+result[1].newCount+'</b></p>';
 						str1+='</div>';
 						
 						str1+='</div>';
@@ -596,7 +605,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					var str1='';
 					//today
 					var todayCount = result[0].tabTotal+result[0].webTotal+result[0].partyOfcHydTotal+result[0].partyOfcVijTotal+result[0].onlineTotal;
-					str+='<div class="col-md-9 col-xs-12 col-sm-9">';
+					str+='<div class="col-md-8 col-xs-12 col-sm-8">';
 					str+='<div class="table-responsive">';
 						
 					
@@ -712,7 +721,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					   str+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
 					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px;">';
 					   str+='</div>';
-					   str+='<div class="col-md-2 col-xs-12 col-sm-2" style="margin-top: 100px;">';
+					   str+='<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top: 100px;">';
 					   str+='<h2 class="f_26">'+todayCount+'</h2>';
 					   str+='<p>Members Registered <br>';
 					   str+='<span style="font-weight:bold;">Today</span>';
@@ -721,7 +730,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					
 					//total
 					var totalCount = result[1].tabTotal+result[1].webTotal+result[1].partyOfcHydTotal+result[1].partyOfcVijTotal+result[1].onlineTotal;
-					str1+='<div class="col-md-9 col-xs-12 col-sm-9">';
+					str1+='<div class="col-md-8 col-xs-12 col-sm-8">';
 					str1+='<div class="table-responsive">';
 					str1+='<table class="table tableCadreDash">';
 						str1+='<thead>';
@@ -837,7 +846,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str1+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
 					str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px;">';
 					str1+='</div>';
-					str1+='<div class="col-md-2 col-xs-12 col-ms-2" style="margin-top: 100px;">';
+					str1+='<div class="col-md-3 col-xs-12 col-ms-3" style="margin-top: 100px;">';
 					str1+='<h2 class="f_26">'+totalCount+'</h2>';
 					str1+='<p>Members Registered <br>';
 					str1+='<span style="font-weight:bold;">Total</span>';
