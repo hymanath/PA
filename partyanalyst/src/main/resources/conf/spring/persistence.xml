@@ -1026,7 +1026,7 @@
                       <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocation</value>
                       <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails</value>
                       <value>com.itgrids.partyanalyst.model.TabUserLocationDetails</value> 
-                      	                     
+                      <value>com.itgrids.partyanalyst.model.TabUserEnrollmentInfoSource</value>	                     
 				 </list>
 			
 		</property>
