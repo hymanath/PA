@@ -285,17 +285,17 @@ public List<Object[]> getTtalCadreTargetCountScopeWiseCount(Long userAccessLevel
 		
         queryStr.append(" model.locationValue,sum(model.targetCount) " +
         		" from " +
-        		" TdpCadreTargetCount model " +
+        		" TdpCadreTargetCount model " +  
         		" where " +
         		" model.isDeleted='N' and model.enrollmentYear.enrollmentYearId=:enrollmentYearId ");
 	   
-       if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+       if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){    
          	queryStr.append(" and model.locationValue in (:locationValue)");  
        }
        if(userAccessLevelId != null && userAccessLevelId.longValue() > 0){
     	   queryStr.append(" and model.locationScopeId=:locationScopeId ");
        }
-       queryStr.append(" group by model.locationValue order by model.locationValue asc ");
+       queryStr.append(" group by model.locationValue order by model.locationValue asc ");  
 	   Query query = getSession().createQuery(queryStr.toString());  
 	    query.setParameter("enrollmentYearId", enrollmentYearId);
 	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){

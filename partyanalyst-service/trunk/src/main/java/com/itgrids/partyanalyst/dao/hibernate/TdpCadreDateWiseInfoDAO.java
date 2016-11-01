@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -721,4 +722,43 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	   	  }
 	   	  return query.list();
 	   }
+	 	public Long getTotalCadreCountLocationWiseTS(Long stateId, Date frmDt, Date toDt){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select sum(TCDWI.cadre2016) from TdpCadreDateWiseInfo TCDWI where ");
+			
+			queryStr.append(" TCDWI.locationScopeId = :accessLvlId and " +    
+							" TCDWI.locationValue in (:accessLvlValue)  ");
+			if(frmDt != null && toDt != null){
+				queryStr.append(" and (date(TCDWI.surveyDate) between :frmDt and :toDt) ");  
+			}
+			Query query = getSession().createQuery(queryStr.toString());  
+			query.setParameter("accessLvlId", 2l);    
+			//List<Long> stateIdList = new ArrayList<Long>
+			query.setParameterList("accessLvlValue", new ArrayList<Long>(){{
+				add(36l);
+			}});
+			if(frmDt != null && toDt != null){  
+				query.setDate("frmDt", frmDt);  
+				query.setDate("toDt", toDt);
+			}
+			return (Long) query.uniqueResult();  
+		}
+	 	public Long getTotalRenewlCadreLocationWiseTS(Long stateId, Date frmDt, Date toDt){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select sum(TCDWI.renewalCadre) from TdpCadreDateWiseInfo TCDWI where ");
+			
+			queryStr.append(" TCDWI.locationScopeId = :accessLvlId and " +
+							" TCDWI.locationValue in (:accessLvlValue)  ");
+			if(frmDt != null && toDt != null){
+				queryStr.append(" and (date(TCDWI.surveyDate) between :frmDt and :toDt) ");
+			}
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("accessLvlId", 2l);
+			query.setParameterList("accessLvlValue", new ArrayList<Long>(){{add(36l);}});
+			if(frmDt != null && toDt != null){
+				query.setDate("frmDt", frmDt);  
+				query.setDate("toDt", toDt);
+			}
+			return (Long) query.uniqueResult();
+		} 
 }

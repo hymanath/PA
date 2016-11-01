@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
@@ -611,6 +613,23 @@ public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long use
 		query.setParameterList("locationValue", locationValue);  
 	  }
 	  return query.list();
+}
+public Long getTotalConstituencyForCdrRegStarted(Long stateId){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("SELECT count( DISTINCT location_value) as count FROM tdp_cadre_location_info I,constituency C,state S WHERE "+
+			" I.location_value = C.constituency_id AND "+
+			" type = 'Total' AND "+
+			" location_scope_id = 4 AND "+
+			" cadre_2016 IS NOT null AND "+    
+			" cadre_2016 > 0 AND ");
+	if(stateId.equals(1l)){
+		queryStr.append(" C.district_id BETWEEN 11 AND 23;");
+	}else{
+		queryStr.append(" C.district_id BETWEEN 1 AND 10;");
+	}  
+			
+	SQLQuery query = getSession().createSQLQuery(queryStr.toString()).addScalar("count", Hibernate.LONG);    
+	return (Long)query.uniqueResult();
 }
 
 }

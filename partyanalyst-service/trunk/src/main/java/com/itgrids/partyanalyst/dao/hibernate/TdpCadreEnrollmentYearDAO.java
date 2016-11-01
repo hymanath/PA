@@ -540,5 +540,51 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		    	 query.setParameter("dataSourceType", dataSourceType); 
 		     }
 	     return query.list();
-}	  
+	  }
+	  public Long getInFieldCount(Long stateId, Date today){
+		  StringBuilder queryStr = new StringBuilder();
+	      queryStr.append("select count(distinct TCEY.tdpCadre.insertedUserId) from " +
+	      		" TdpCadreEnrollmentYear TCEY where ");
+	      if(stateId == 1l){
+	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+	      }else{
+	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 1 and 10 ");
+	      }
+	      queryStr.append(" and TCEY.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.enrollmentYear = 2014 " +
+	      		" and TCEY.enrollmentYearId = 4 " +   
+	      		" and TCEY.tdpCadre.surveyTime > (:today)");
+	      Query query = getSession().createQuery(queryStr.toString());
+	      query.setParameter("today", today);
+	      return (Long)query.uniqueResult();  
+	  }
+	  public Long getTodayFieldCount(Long stateId,Date today){
+		  StringBuilder queryStr = new StringBuilder();
+	      queryStr.append("select count(distinct TCEY.tdpCadre.insertedUserId) from " +
+	      		" TdpCadreEnrollmentYear TCEY where ");
+	      if(stateId == 1l){
+	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+	      }else{
+	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 1 and 10 ");
+	      }
+	      queryStr.append(" and TCEY.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.enrollmentYear = 2014 " +
+	      		" and TCEY.enrollmentYearId = 4 " +  
+	      		" and date(TCEY.tdpCadre.surveyTime) = (:today) ");
+	      Query query = getSession().createQuery(queryStr.toString());
+	      query.setDate("today", today);      
+	      return (Long)query.uniqueResult();    
+	  }
+	  /*SELECT COUNT(DISTINCT TC.created_by) FROM tdp_cadre_enrollment_year EY,tdp_cadre TC,user_address UA
+	  WHERE
+	  EY.tdp_cadre_id = TC.tdp_cadre_id AND
+	  TC.address_id = UA.user_address_id AND
+	  TC.is_deleted = 'N' AND
+	  TC.enrollment_year = 2014 AND
+	  EY.enrollment_year_id = 4 AND
+	  EY.is_deleted = 'N' AND 
+	  UA.district_id BETWEEN 11 AND 23 AND
+	  TC.survey_time > '2016-11-01 16:23:00';*/
 }
