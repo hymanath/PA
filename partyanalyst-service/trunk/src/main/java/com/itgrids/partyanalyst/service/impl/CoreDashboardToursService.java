@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.HashNMap;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -24,7 +24,6 @@ import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.jersey.client.impl.CopyOnWriteHashMap;
 
 public class CoreDashboardToursService implements ICoreDashboardToursService {
 
@@ -347,7 +346,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	public List<ToursBasicVO> getDistrictWiseToursSubmitedDetails(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
 		List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>();
 		Set<Long> locationValues = new java.util.HashSet<Long>();
-		Map<Long,Map<Long,Set<Long>>> candiateAccessLevelMap = new CopyOnWriteHashMap();
+		Map<Long,Map<Long,Set<Long>>> candiateAccessLevelMap = new ConcurrentHashMap();
 		Map<Long,Map<Long,ToursBasicVO>> memberDetaislMap = new HashMap<Long, Map<Long,ToursBasicVO>>();
 		Map<Long,String> designationMap = new HashMap<Long, String>();
 		Map<Long,String> districtMap = new HashMap<Long, String>();
@@ -417,6 +416,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
 				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
 			 }
+			 
 			 if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
 				 
 			 Map<Long,ToursBasicVO> gsMap = memberDetaislMap.get(3l);
@@ -427,8 +427,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					
 					  ToursBasicVO VO = entry.getValue();
 					  
-					  if(VO.getId().equals(243) || VO.getId().equals(242)){
-						
 						  Map<Long,Set<Long>> locationMap = candiateAccessLevelMap.get(VO.getId());
 						  
 						  for(Entry<Long,Set<Long>> locationEntry:locationMap.entrySet()){
@@ -441,8 +439,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 									  VO.setName(VO.getName()+","+districtMap.get(id));
 								   }
 							   }
-							   
-						   }
 					  }
 				  }
 			  }
