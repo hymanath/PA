@@ -124,7 +124,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		sb.append("select model1.cadreSurveyUser.cadreSurveyUserId," +
 					" model1.cadreSurveyUser.userName," +
 					" model3.tabUserInfoId," +
-					" model3.name" +
+					" model3.name," +
+					" model3.mobileNo" +
 					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2,TabUserInfo model3" +
 					" where model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 					" and model1.cadreSurveyUser.cadreSurveyUserId = model3.cadreSurveyUserId" +
