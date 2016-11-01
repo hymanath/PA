@@ -242,7 +242,7 @@ table.dataTable tr.odd {
 								<td style="background-color:#c8d7f4"><p style="font-size: 18px; font-weight: bold;">TODAY</p><div id="todayRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
 								<!--<td><div id="thisWeekRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="monthRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>-->
-								<td style="background-color:#eae798"><p style="font-size: 18px; font-weight: bold;">TOTAL</p><div id="totalRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
+								<td style="background-color:#eae798"><p style="font-size: 18px; font-weight: bold;">OVER ALL</p><div id="totalRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
 							</tr>
 							<tr>
 								<td class="indiEle">
@@ -277,8 +277,8 @@ table.dataTable tr.odd {
 					<span style="margin-right:10px;"> OVER ALL </span>
 					
 					<div class="btn-group pull-right">
-					<input type="button" class="btn btn-mini btn-success apele aptsclass apdistcls" value="AP" name="constTargetBtn" id="apDistTargetComp" checked="checked">AP</input>
-					<input type="button" class="btn btn-mini aptsclass tsdistclass" value="TS" name="constTargetBtn" id="tgDistTargetComp" >TS</input>
+					<input type="button" class="btn btn-mini btn-success  aptsclass " value="AP" name="constTargetBtn" id="apDistTargetComp" checked="checked">AP</input>
+					<input type="button" class="btn btn-mini aptsclass " value="TS" name="constTargetBtn" id="tgDistTargetComp" >TS</input>
 				</div>
 				</div>
 				<div id="districtWise2016Details"   class="m_top10"></div>
@@ -295,16 +295,16 @@ table.dataTable tr.odd {
 				</h4>
 				
 				<div style="padding:5px;">
-					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="" name="compareD" value="today" checked="true" style="margin-top:0px;"/>
+					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="todayconstituencyValue" name="compareD" value="today" checked="true" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> TODAY</span>
 					<!--<input type="radio" class="typeRd" id="" name="compareD" value="asoftoday" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> AS OF TODAY</span>-->
-					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="" name="compareD" value="total" style="margin-top:0px;"/>
+					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> OVER ALL</span>
 					
 					<div class="btn-group pull-right">
-					<input type="button" value="AP" class="btn btn-mini btn-success  apconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</input>
-					<input type="button" value="TS" class="btn btn-mini  tsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</input>
+					<input type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</input>
+					<input type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</input>
 				</div>
 				</div>
 				<div id="constituencyWise2016Details"   class="m_top10"></div>
@@ -331,99 +331,48 @@ $('#membersCount').addClass('animated fadeInX');
 	window.location.replace('cadreDashBoardAction.action');
 });
 //dist
-$(document).on("click",".apdistcls",function(){
-	$("#tgDistTargetComp").removeAttr('checked');
-	$("#tgDistTargetComp").removeClass("btn-success");
-	$("#apDistTargetComp").addClass("btn-success");
-	$("#apDistTargetComp").attr('checked', 'checked');
-	 if($(".aptsclass").hasClass("btn-success")){
-		 get2016LocationWiseRegisteredCountsDistrictWise("today",3,"AP");
-	 }else{
-		 get2016LocationWiseRegisteredCountsDistrictWise("today",3,"TS");
-	 }
+
+$(document).on("click",".aptsclass",function(){
 	
-	
-	
-});
-$(document).on("click",".tsdistclass",function(){
-	$("#apDistTargetComp").removeAttr('checked');
-	$("#apDistTargetComp").removeClass("btn-success");
-	$("#tgDistTargetComp").attr('checked', 'checked');
-	$("#tgDistTargetComp").addClass("btn-success");
-	if($(".aptsclass").hasClass("btn-success")){
-		 get2016LocationWiseRegisteredCountsDistrictWise("today",3,"AP");
-	 }else{
-		 get2016LocationWiseRegisteredCountsDistrictWise("today",3,"TS");
-	 }
-	
+	  $(".aptsclass").removeClass("btn-success");
+	  $(this).addClass("btn-success");
+	  
+	 get2016LocationWiseRegisteredCountsDistrictWise( $('input[name=compareD]:checked').val(),3,$(this).val() );
 	
 });
 $(document).on("click",".radiobuttonSelectedWise",function(){
+	 
 	 var selectedRadioButton = $(this).val();
-	 if(selectedRadioButton == "today"){
-		 if($(".aptsclass").hasClass("btn-success")){
-			 get2016LocationWiseRegisteredCountsDistrictWise("today",3,"AP");
-		 }else{
-			 get2016LocationWiseRegisteredCountsDistrictWise("today",3,"TS");
-		 }
-	 }
-	 if(selectedRadioButton == "total"){
-		 if($(".aptsclass").hasClass("btn-success")){
-			 get2016LocationWiseRegisteredCountsDistrictWise("total",3,"AP");
-		 }else{
-			 get2016LocationWiseRegisteredCountsDistrictWise("total",3,"TS");
-		 }
-	 }
+	 var state = ''; 
+	 $('.aptsclass').each(function(i, obj){
+          if($(this).hasClass("btn-success")){
+			  state = $(this).val();
+		  }
+     });
+	 get2016LocationWiseRegisteredCountsDistrictWise(selectedRadioButton,3,state);
+	 
 	
 });
 //cons
-$(document).on("click",".apconsSele",function(){
-	$("#tsConsTargetComp").removeAttr('checked');
-	$("#tsConsTargetComp").removeClass("btn-success");
-	$("#apConsTargetComp").addClass("btn-success");
-	$("#apConsTargetComp").attr('checked', 'checked');
-	
-		 if($(".aptsconsSele").hasClass("btn-success")){
-			 get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"AP");
-		 }else{
-			 get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"TS");
-		 }
+$(document).on("click",".aptsconsSele",function(){
 	 
-	
+	  $(".aptsconsSele").removeClass("btn-success");
+	  $(this).addClass("btn-success");
+	  
+	 get2016LocationWiseRegisteredCountsConstituencyWise( $('input[name=compareD]:checked').val(),4,$(this).val() );
 	
 });
-$(document).on("click",".tsconsSele",function(){
-	$("#apConsTargetComp").removeAttr('checked');
-	$("#apConsTargetComp").removeClass("btn-success");
-	$("#tsConsTargetComp").attr('checked', 'checked');
-	$("#tsConsTargetComp").addClass("btn-success");
-	
-	
-		 if($(".aptsconsSele").hasClass("btn-success")){
-			 get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"AP");
-		 }else{
-			 get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"TS");
-		 }
-	 
-	
-});
+
 $(document).on("click",".radiobuttonSelectedConsWise",function(){
-	 var selectedRadioButton = $(this).val();
-	 if(selectedRadioButton == "today"){
-		 if($(".aptsconsSele").hasClass("btn-success")){
-			 get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"AP");
-		 }else{
-			 get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"TS");
-		 }
-	 }
-	 if(selectedRadioButton == "total"){
-		 if($(".aptsconsSele").hasClass("btn-success")){
-			 get2016LocationWiseRegisteredCountsConstituencyWise("total",4,"AP");
-		 }else{
-			 get2016LocationWiseRegisteredCountsConstituencyWise("total",4,"TS");
-		 }
-	 }
 	
+	 var selectedRadioButton = $(this).val();
+	 var state = ''; 
+	 $('.aptsconsSele').each(function(i, obj){
+          if($(this).hasClass("btn-success")){
+			  state = $(this).val();
+		  }
+     });
+	 get2016LocationWiseRegisteredCountsConstituencyWise(selectedRadioButton,4,state);
 });
 
  get2016LocationWiseRegisteredCounts("total");
