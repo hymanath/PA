@@ -160,8 +160,14 @@ function buildTabUserDetails(result){
 						str+='<td class="issueCmpltd">'+result.subList[i].userName+'</td>';
 					else
 						str+='<td class="issuePending">'+result.subList[i].userName+'</td>';
-					str+='<td title="UserId : '+result.subList[i].userName+'">'+result.subList[i].tabUserName+'</td>';
-					str+='<td>'+result.subList[i].mobileNo+'</td>';
+					if(result.subList[i].tabUserName != null)
+						str+='<td title="UserId : '+result.subList[i].userName+'">'+result.subList[i].tabUserName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result.subList[i].mobileNo != null)
+						str+='<td>'+result.subList[i].mobileNo+'</td>';
+					else
+						str+='<td> - </td>';
 					if(result.subList[i].todayTarget != null)
 						str+='<td>'+result.subList[i].todayTarget+'</td>';
 					else
