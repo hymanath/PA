@@ -81,6 +81,7 @@ function getTabUsersDetailsByVendorAndLocation(){
 	
 	var userId = $("#userId").val();
 	var constituencyId = $("#constituencyId").val();
+	var districtId = $("#districtId").val();
 	var dates = $(".singleDate").val();
 	var dateArr = dates.split("-");
 	var fromDate;
@@ -107,7 +108,8 @@ function getTabUsersDetailsByVendorAndLocation(){
 		userId : userId,
 		constituencyId : constituencyId,
 		fromDate : fromDate,    //"2016-10-01",
-		toDate : toDate			//"2016-10-18"
+		toDate : toDate,		//"2016-10-18"
+		districtId : districtId
 	 }
     $.ajax({
           type:'GET',

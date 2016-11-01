@@ -404,8 +404,9 @@ public String getTabUsersDetailsByVendorAndLocationNew(){
 		}*/
 		Long constituencyId = jObj.getLong("constituencyId");
 		Long userId = jObj.getLong("userId");
+		Long districtId = jObj.getLong("districtId");
 		
-		fieldMonitoringVO = fieldMonitoringService.getTabUsersDetailsByVendorAndLocationNew(loginUserId, constituencyId, userId, fromDateStr, toDateStr);
+		fieldMonitoringVO = fieldMonitoringService.getTabUsersDetailsByVendorAndLocationNew(loginUserId, constituencyId, userId, fromDateStr, toDateStr, districtId);
 		
 	} catch (Exception e) {
 		// TODO: handle exception
