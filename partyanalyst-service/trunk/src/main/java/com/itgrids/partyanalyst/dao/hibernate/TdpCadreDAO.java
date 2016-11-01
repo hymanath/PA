@@ -6853,7 +6853,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		/*Query query = getSession().createQuery("select distinct model.tdpCadreId,model.mobileNo, model.payMentStatus from TdpCadre model where model.memberShipNo = '"+memberShipNo.trim()+"' and " +
 				" model.isDeleted = 'N' and model.tdpMemberTypeId ="+tdpMemberTypeId+" and model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");*/
 		Query query = getSession().createQuery("select distinct model.tdpCadreId,model.mobileNo, model.payMentStatus from TdpCadre model where model.memberShipNo = '"+memberShipNo.trim()+"' and " +
-				" model.isDeleted = 'O' and model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");
+				"  model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");
 		return query.list();
 	}
 	public List<Object[]> getPRConstituenciesByCadreIds(List<Long> cadreIds)
@@ -8125,8 +8125,8 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 	{
 			Query query = getSession().createQuery("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.voter.voterIDCardNo," +//1
 					" model.tdpCadre.payMentStatus,model.tdpCadre.isDeleted,model.tdpCadre.memberShipNo,model.tdpCadre.gender,model.tdpCadre.age," +//2,3,4,5,6
-					" model.tdpCadre.mobileNo,model.tdpCadre.emailId,model.tdpCadre.casteStateId,model.tdpCadre.educationId,model.tdpCadre.occupationId,model.tdpCadre.dateOfBirth," +
-					"   model.tdpCadre.refNo from TdpCadreEnrollmentYear model where model.tdpCadre.voter.voterIDCardNo in (:voterCardNosList) " +
+					" model.tdpCadre.mobileNo,model.tdpCadre.emailId,model.tdpCadre.casteStateId,model.tdpCadre.educationId,model.tdpCadre.occupationId,model.tdpCadre.dateOfBirth," +//7-12
+					"   model.tdpCadre.refNo,model.tdpCadre.userAddress.deliveryLocation from TdpCadreEnrollmentYear model where model.tdpCadre.voter.voterIDCardNo in (:voterCardNosList) " +//13,14
 					" and model.tdpCadre.isDeleted in ('N','O')  and model.enrollmentYearId = 4l  ");
 			query.setParameterList("voterCardNosList", voterCardNosList);
 			return query.list();
