@@ -127,12 +127,65 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
 })
 	
-   function cadreRegistrationBasicCall(globalActivityMemberId){  
+   function cadreRegistrationBasicCall(globalActivityMemberId){ 
+		
 		showCadreRegistreredCount(globalActivityMemberId);
+		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
+		getEnumeratorsInfoTS(globalActivityMemberId,36);  
 		getCadreRecentTime();  
 	}
-
+	var inFieldAP = 0;
+	var totalMemAP = 0;
+	var inFieldTS = 0;
+	var totalMemTS = 0;
+	function getInFieldCountAP(stateId){
+		var startDate = '';
+		var endDate = '';
+		var jsObj={
+			stateId : stateId,           
+			startDate : '02/10/2016',        
+			endDate : getTodayDate()    
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getInFieldCountAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+            if(result != null){
+				inFieldAP = result.id;
+				totalMemAP = result.attenteeCount;
+				$("#inFieldAP").html(inFieldAP); 
+				//alert("inFieldAP:"+inFieldAP+"totalMemAP:"+totalMemAP);  
+			}else{
+			}	
+		});
+	}
+	function getInFieldCountTS(stateId){
+		var startDate = '';
+		var endDate = '';
+		var jsObj={
+			stateId : stateId,           
+			startDate : '02/10/2016',        
+			endDate : getTodayDate()    
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getInFieldCountAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+            if(result != null){
+				inFieldTS = result.id;
+				totalMemTS = result.attenteeCount;
+				$("#inFieldTS").html(inFieldTS);
+				//alert("inFieldTS:"+inFieldTS+"totalMemTS:"+totalMemTS);   
+			}else{    
+			}	
+		});
+	}
+	
 	//swadhin
 	function showCadreRegistreredCount(globalActivityMemberId){
 		$("#totalTodayCadreRegistrationBlockDivAPId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -149,7 +202,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			type : 'GET',
 			url : 'getTotalNewRenewalCadreStateWiseAction.action',
 			dataType : 'json',  
-			data : {task :JSON.stringify(jsObj)}  
+			data : {task :JSON.stringify(jsObj)}          
 		}).done(function(result){
             if(result != null){
 				buildTotalTodayRegistrationsAP(result);
@@ -160,8 +213,33 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 		});	
            
 	}
-	
-	function buildTotalTodayRegistrationsAP(result){
+	function showCadreRegistreredCountTS(globalActivityMemberId,stateId){
+		$("#totalTodayCadreRegistrationBlockDivAPId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
+		var startDate = '';
+		var endDate = '';
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,      
+			stateId : stateId,           
+			startDate : '02/10/2016',        
+			endDate : getTodayDate()    
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getTotalNewRenewalCadreStateWiseTSAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}  
+		}).done(function(result){
+            if(result != null){
+				//buildTotalTodayRegistrationsAP(result,globalStateId);
+				buildTotalTodayRegistrationsTS(result);
+			}else{
+				$("#totalTodayCadreRegistrationBlockDivAPId").html('NO DATA AVAILABLE');
+			}	
+		});	  
+           
+	}
+	function buildTotalTodayRegistrationsTS(result){
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
@@ -177,7 +255,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 							str+='<h4 class="f_14" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>'; 
+					str+='<div id="totalOverAllRegistrationGraphTS" class="chartLiD" style="height:120px" ></div>'; 
 				str+='</div>';
 				
 			str+='</div>';
@@ -196,7 +274,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 						str+='</div>';  
 
 					str+='</div>';
-					str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>';
+					str+='<div id="todayOverAllRegistrationGraphTS" class="chartLiD" style="height:120px" ></div>';
 					}      
 				str+='</div>';
 				
@@ -204,8 +282,8 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			
 		str+='</div>';
 		
-		$("#totalTodayCadreRegistrationBlockDivAPId").html(str);
-		$('.cadreCount').each(function () {
+		$("#totalTodayCadreRegistrationBlockDivTSId").html(str);
+		/* $('.cadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
 				}, {
@@ -216,7 +294,244 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 						$(this).text(Math.ceil(now));
 					}
 				});
+			}); */      
+		//total block graph.
+			var totalRenewalCountArray = [];
+			var totalNewCountArray =[];
+			totalRenewalCountArray.push(emptyCheck(result.renewalCount));
+			totalNewCountArray.push(emptyCheck(result.newCount));
+			
+			$('#totalOverAllRegistrationGraphTS').highcharts({
+				colors: ['#53BF8B','#f7a423'],
+				chart: {
+					backgroundColor: '#EDEEF0',
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					 gridLineWidth: 0,  
+					 minorGridLineWidth: 0,
+					categories: ['Telangana States']
+				},
+				yAxis: {
+					min: 0,
+				   gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+								(this.y);
+						});
+
+						return s;
+					},
+					shared: true
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1) + '%';
+								}
+							} 
+						  
+						}
+					}
+				},
+				series: [{
+					name: 'Renewal',
+					data: totalRenewalCountArray
+				}, {
+					name: 'New',
+					data: totalNewCountArray
+				}]
 			});
+		
+		   //today block graph.
+			var todayRenewalCountArray = [];
+			var todayNewCountArray =[];
+			todayRenewalCountArray.push(emptyCheck(result.todayRenewalCount));
+			todayNewCountArray.push(emptyCheck(result.todayNewCount));
+			$('#todayOverAllRegistrationGraphTS').highcharts({
+				colors: ['#53BF8B','#f7a423'],
+				chart: {
+					backgroundColor: '#EDEEF0', 
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: ['Telangana States']   
+				},
+				yAxis: {
+					min: 0,
+				   gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+								(this.y);
+						});
+
+						return s;
+					},
+					shared: true
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1) + '%';
+								}
+							} 
+						  
+						}
+					}
+				},
+				series: [{
+					name: 'Renewal',
+					data: todayRenewalCountArray
+				}, {
+					name: 'New',
+					data: todayNewCountArray
+				}]  
+			});
+	         
+	}
+	function emptyCheck(filedValue){
+		var returnVal = ' - ';
+		if( filedValue !=null && filedValue > 0){
+			returnVal = filedValue;
+		}
+		return returnVal;
+	}
+	function buildTotalTodayRegistrationsAP(result){
+	 var str= '';
+	 // Total today Registrations block
+	  str+='<div class="row m_top10">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+				str+='<div class="bg_ED pad_15" style="height:200px;">';    
+					str+='<div class="row m_top10">';
+						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+							str+='<h5 class="text-capital">total</h5>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
+						str+='</div>';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_top20">';
+							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
+							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>'; 
+				str+='</div>';
+				
+			str+='</div>';
+			
+			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+				str+='<div class="bg_ED pad_15" style="height:200px;">';  
+					if(result.todayTotalCount != 0){    
+					str+='<div class="row m_top10">';
+						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+							str+='<h5 class="text-capital">today</h5>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h4>';
+						str+='</div>';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_top20">';
+							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
+							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
+						str+='</div>';  
+
+					str+='</div>';
+					str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>';
+					}      
+				str+='</div>';
+				
+			str+='</div>';
+			
+		str+='</div>';
+		
+		$("#totalTodayCadreRegistrationBlockDivAPId").html(str);
+		/* $('.cadreCount').each(function () {
+				$(this).prop('Counter',0).animate({
+					Counter: $(this).text()
+				}, {
+					duration: 1500,
+					easing: 'swing',
+					step: function (now) {
+						if(now != null && now > 0)
+						$(this).text(Math.ceil(now));
+					}
+				});
+			}); */  
 		//total block graph.
 			var totalRenewalCountArray = [];
 			var totalNewCountArray =[];
@@ -404,7 +719,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 		var startDate = '';    
 		var endDate = ''; 
 		var jsObj={  
-			activityMemberId : globalActivityMemberId,
+			activityMemberId : globalActivityMemberId,  
 			stateId : globalStateId,         
 			startDate : '02/10/2016',      
 			endDate : getTodayDate()           
@@ -421,8 +736,98 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					$("#enumeratorsInfoDivId").html('NO DATA AVAILABLE');
 				}	
 		});
-	}  
-	
+	} 
+function getEnumeratorsInfoTS(globalActivityMemberId,stateId){  
+		$("#enumeratorsInfoDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var startDate = '';    
+		var endDate = ''; 
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,
+			stateId : stateId,         
+			startDate : '02/10/2016',      
+			endDate : getTodayDate()           
+		};
+		$.ajax({          
+			type : 'GET',       
+			url : 'getStateDtlsTS.action',       
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+				if(result != null){
+					buildEnumeratorsInfoTS(result);
+				}else{
+					$("#enumeratorsInfoDivTSId").html('NO DATA AVAILABLE');
+				}	
+		});
+	}	
+	function buildEnumeratorsInfoTS(result){
+		//Enumerators block
+			var str1='';
+			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				str1+='<div class="bg_ED pad_15">';
+					str1+='<table class="table text-capital">';
+						str1+='<tr>';
+							str1+='<td>';
+								str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/>';
+							str1+='</td>';  
+							str1+='<td>';
+								str1+='<h5>Total-';            
+								if(result.totalCount != null && result.totalCount > 0){
+									str1+='- <span class="text-muted">'+result.totalPercent+'%</span></h5>';
+								}
+								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>';
+							str1+='</td>';     
+							str1+='<td>';
+								str1+='<h5>Today'; 
+								//if(result.todayPercenCount != null && result.todayPercenCount > 0){
+									str1+='- <span class="text-muted">'+result.totalPercentToday+'%</span></h5>';
+								//}
+								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
+							str1+='</td>';
+							str1+='<td>';
+								str1+='<h5 class="EnumCadreCount cadreCount">'+emptyCheck(result.constStartedCount)+' ';
+								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
+									str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
+								//}
+								str1+='<h5>Started<br> Constituencies</h5>';
+							str1+='</td>';
+						str1+='</tr>';
+					str1+='</table>';
+					
+					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
+					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
+					str1+='<div class="row" style="margin-top:-10px">';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS">-</h3>'; 
+							str1+='<h5 class="text-capital">IN FIELD NOW</h5>';
+						str1+='</div>';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.inFieldCount)+'</h3>';
+							//str1+='<h5 class="text-capital">in field now</h5>';
+						str1+='</div>';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
+							str1+='<h5 class="text-capital">today submitted data</h5>';    
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>';
+			$("#enumeratorsInfoDivTSId").html(str1);  
+			/* $('.EnumCadreCount').each(function () {
+				$(this).prop('Counter',0).animate({
+					Counter: $(this).text()
+				}, {
+					duration: 1500,
+					easing: 'swing',
+					step: function (now) {
+						if(now != null && now > 0)
+						$(this).text(Math.ceil(now));
+					}
+				});
+			}); */  
+			getInFieldCountTS(36);
+	}
 	function buildEnumeratorsInfo(result){
 		//Enumerators block
 			var str1='';
@@ -461,7 +866,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.inField)+'</h3>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP">-</h3>';  
 							str1+='<h5 class="text-capital">IN FIELD NOW</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
@@ -477,7 +882,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str1+='</div>';
 			str1+='</div>';
 			$("#enumeratorsInfoDivId").html(str1);
-			$('.EnumCadreCount').each(function () {
+			/* $('.EnumCadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
 				}, {
@@ -488,8 +893,8 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 						$(this).text(Math.ceil(now));
 					}
 				});
-			});
-			
+			}); */       
+			getInFieldCountAP(1);    
 	}
 	
 	function getRegistrationCountDtls(location,scope){
@@ -1872,7 +2277,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 		var cadre2014ArrPer = [];
 		var renewalArr=[];
 		var jsonDataArr=[];
-		
 		if(result != null && result.length > 0){
 			for(var i in result){
 			   if((renewal2016CheckboxIsChecked=="Y" && new2016CheckboxIsChecked=="Y" && cadre2014CheckboxIsChecked=="Y")||(renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre")){
@@ -2150,10 +2554,10 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  }
 			 /*Setting Dynamic height for highChart */
 			 if(locationNameArr!= null && locationNameArr.length > 10){
-			  var highChartDivHight = locationNameArr.length*25;
+			  var highChartDivHight = locationNameArr.length*20;
 			  $("#"+divId).height(highChartDivHight); 
              }else{
-			  $("#"+divId).height(280);		
+			  $("#"+divId).height(260);		
 			  }
 				$(function () {
 					$("#"+divId).highcharts({
@@ -2179,7 +2583,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 							}
 						},
 						tooltip: {
-							formatter: function() {
+				         formatter: function() {
 								var series = this.point.series.chart.series, // get all series 
 								index = this.point.series.xData.indexOf(this.point.x); // get index																
 								return '<b>'+this.x +'<br/>'+this.series.name+':'+ this.y + '%<br/>2016 Reg-Count:' + result[index].total2016CadreCnt + '<br/>2016 New Reg-Count:' + result[index].total2016NewCadreCount + '<br/>2016 Renewal Reg-Count:'+ result[index].total2016RenewalCadreCount;
@@ -2370,11 +2774,11 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){        
 			 $("#sourceTypeId").html('');  
 			 if(result != null && result.length > 0){
-				buildSourceOfRegistrationDtls(result,globalStateId);    
+				buildSourceOfRegistrationDtls(result,1);  
 			 }  
 		});
 	}
-	function getSourceOfRegistrationTSDtls(globalActivityMemberId){ 
+	function getSourceOfRegistrationTSDtls(globalActivityMemberId){
 		
 		$("#sourceTypeTsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var startDate = '';    
@@ -2398,14 +2802,13 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		});
 	}
 //for dynamic calls  	
-	 function buildSourceOfRegistrationDtls(result,globalStateId){
-		  
+	 function buildSourceOfRegistrationDtls(result,globalStateId){  
 		 var str = '';
 		 var totalCount = 0;
 		 var newCount = 0;
 		 var renewalCount = 0;
 		 for(var i in result){
-			 totalCount = totalCount + result[i].totalCount;
+			 totalCount = totalCount + result[i].totalCount;  
 			 newCount = newCount + result[i].newCount;
 			 renewalCount = renewalCount + result[i].renewalCount;
 		 }
