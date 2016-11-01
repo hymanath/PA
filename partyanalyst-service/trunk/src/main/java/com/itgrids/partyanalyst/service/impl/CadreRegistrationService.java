@@ -13249,29 +13249,29 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 								sendSMSInTelugu(tdpCadre.getMobileNo().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C38\u0C2D\u0C4D\u0C2F\u0C24\u0C4D\u0C35\u0C02 \u0C24\u0C40\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C2E\u0C32\u0C41. ")+"Ref. No: "+enrollmentNumber));
 							}
 						}
+						
+						PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
+						paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
+						paymentTransactionVO.setPaymentGatewayId(1L);
+						paymentTransactionVO.setPaymentMethodId(1L);
+						//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
+						paymentTransactionVO.setTransactionId("2016-2018"+memberShipNo);
+						paymentTransactionVO.setTransactionStatusId(2L);
+						paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
+						paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
+						paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
+						paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
+						if(AuthDesc.equalsIgnoreCase("Y"))
+							paymentTransactionVO.setStatusCode("SUCCESS");
+						else
+							paymentTransactionVO.setStatusCode("FAILURE");
+					//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+					//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+						paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
+						paymentTransactionVO.setReferenceUserId("2016-2018"+tdpCadreId);
+						paymentTransactionVO.setPaymentModuleId(1L);
+						paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 					}
-					
-					PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
-					paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
-					paymentTransactionVO.setPaymentGatewayId(1L);
-					paymentTransactionVO.setPaymentMethodId(1L);
-					//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
-					paymentTransactionVO.setTransactionId("2016-2018"+memberShipNo);
-					paymentTransactionVO.setTransactionStatusId(2L);
-					paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
-					paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
-					paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
-					paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
-					if(AuthDesc.equalsIgnoreCase("Y"))
-						paymentTransactionVO.setStatusCode("SUCCESS");
-					else
-						paymentTransactionVO.setStatusCode("FAILURE");
-				//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-				//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-					paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
-					paymentTransactionVO.setReferenceUserId("2016-2018"+tdpCadreId);
-					paymentTransactionVO.setPaymentModuleId(1L);
-					paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 				}				
 			});
 			
