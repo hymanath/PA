@@ -155,8 +155,12 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.userAddress.constituency.constituencyId," +
 					" CRI.userAddress.constituency.name"+
 					" from CadreRegIssue CRI" +
-					" where CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId" +
-					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId");
+					" where CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId " );
+		
+		if(issueTypeId !=null && issueTypeId.longValue()>0l){
+			sb.append(" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId");
+		}
+		
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
 		
@@ -175,7 +179,9 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		query.setParameter("issueTypeId", issueTypeId);
+		if(issueTypeId !=null && issueTypeId>0l){
+			query.setParameter("issueTypeId", issueTypeId);
+		}
 		query.setParameter("statusTypeId", statusTypeId);
 		
 		return query.list();
@@ -189,8 +195,13 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" count(CRI.cadreRegIssueId)," +
 					" CRI.userAddress.constituency.constituencyId" +
 					" from CadreRegIssue CRI" +
-					" where CRI.cadreRegIssueTypeId = :issueTypeId" +
-					" and CRI.cadreRegIssueStatusId = :issueStatusId");
+					" where " +
+					"  CRI.cadreRegIssueStatusId = :issueStatusId");
+		
+		if(issueTypeId !=null && issueTypeId.longValue()>0l){
+			sb.append(" and  CRI.cadreRegIssueTypeId = :issueTypeId ");
+		}
+		
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
 		
@@ -202,7 +213,10 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		query.setParameter("issueTypeId", issueTypeId);
+		
+		if(issueTypeId !=null && issueTypeId.longValue()>0l){
+			query.setParameter("issueTypeId", issueTypeId);
+		}
 		query.setParameter("issueStatusId", issueStatusId);
 		
 		return query.list();
@@ -216,4 +230,12 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
 		return (String) query.uniqueResult();
 	}
+	public List<Object[]> getVendorNameByCadreSurveyUserId(List<Long> cadreSurveyUserIds){
+		Query query = getSession().createQuery("select model.fieldVendorId,model.fieldVendor.vendorName" +
+									" from FieldVendorTabUser model" +
+									" where model.cadreSurveyUser.cadreSurveyUserId in (:cadreSurveyUserIds) " +
+									" and model.isDeleted = 'N'");
+		query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
+		return query.list();
+	}	
 }
