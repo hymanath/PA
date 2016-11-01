@@ -238,11 +238,11 @@
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
-                                    	<div class="col-md-6 col-xs-12 col-sm-12">
+                                    	<div class="col-md-5 col-xs-12 col-sm-12">
                                         	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
                                         	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
                                         </div>
-                                        <div class="col-md-6 col-xs-12 col-sm-12 m_XsTop10">
+                                        <div class="col-md-7 col-xs-12 col-sm-12 m_XsTop10">
                                         	<ul class="activeUlCls list-inline pull-right">
                                                 <li class="active districtFilterCls" attr_filter_value="All">All</li>
                                                 <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
