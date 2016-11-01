@@ -72,9 +72,13 @@
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-6">
                         	<h4 class="panel-title text-capital">fixed issues</h4>
-                            <div id="fixedIssues" class="m_top20"></div>
+                            <div id="fixedIssues" class="m_top20" ></div>
                         </div>
-                    </div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+                        	<h4 class="panel-title text-capital">Closed issues</h4>
+                            <div id="closedIssues" class="m_top20"></div>
+                        </div>
+					</div>
                 </div>
             </div>
             <div class="row m_top20">
