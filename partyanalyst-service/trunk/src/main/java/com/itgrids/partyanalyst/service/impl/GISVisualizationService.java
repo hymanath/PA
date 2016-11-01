@@ -804,10 +804,12 @@ public class GISVisualizationService implements IGISVisualizationService{
 			List<GISUserTrackingVO> tabUserList = new ArrayList<GISUserTrackingVO>();
 			Map<Long,GISUserTrackingVO> tabUserMap = new HashMap<Long,GISUserTrackingVO>();
 			List<Object[]> totalTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			//List<Object[]> totalTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
 			setLocationWiseTabUserTrackingDetails(totalTabUsersData,"total",returnVO,tabUserMap);
 			
 			
 			List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			//List<Object[]> todayTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
 			setLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap);
 			
 			Date fromDate=null;
@@ -841,7 +843,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 				}
 			
 			List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
-			
+			//List<Object[]> lastOneHrTrackingList = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			if(commonMethodsUtilService.isListOrSetValid(lastOneHrTrackingList)){
 				returnVO.setRegisteredCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
 				for (Object[] param : lastOneHrTrackingList) {
@@ -859,8 +861,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 				}
 			}
 			
-			if(returnVO.getOverAllOutput() != null && returnVO.getOverAllOutput().longValue() > 0l)
-			returnVO.setAvgOutput(returnVO.getActiveCount()/returnVO.getOverAllOutput());
+			if(returnVO.getActiveCount() != null && returnVO.getActiveCount().longValue() > 0l)
+			returnVO.setAvgOutput(returnVO.getOverAllOutput()/returnVO.getActiveCount());
 			returnVO.setUsersList(tabUserList);
 			
 		}catch (Exception e) {

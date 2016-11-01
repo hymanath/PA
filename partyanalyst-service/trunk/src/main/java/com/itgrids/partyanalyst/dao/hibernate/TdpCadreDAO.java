@@ -8691,9 +8691,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURAL)){
 						queryStr.append(" booth.tehsil.tehsilId  ");
 					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-						queryStr.append(" booth.localBody.constituencyId  ");
+						queryStr.append(" booth.localBody.localElectionBodyId  ");
 					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
-						queryStr.append("  booth.localBody.localElectionBodyId ");
+						queryStr.append("  booth.panchayat.panchayatId ");
 					}
 				}
 				
