@@ -10,4 +10,5 @@ import com.itgrids.partyanalyst.model.TabUserLocationDetails;
 public interface ITabUserLocationDetailsDAO extends GenericDao<TabUserLocationDetails, Long>{
 
 	public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type);
+	//public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type);
 }
