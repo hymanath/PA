@@ -901,9 +901,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 							vo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[0]));
 							vo.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[1]));
 							
-							if(isDeleted.trim().equalsIgnoreCase("O")){
-								vo.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
-								pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,vo.getMembershipNo().trim(),commonMethodsUtilService.getStringValueForObject(param[13]).trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION");
+							if(commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)){
+								vo.setPaymentStatus(IConstants.NOT_PAID_STATUS);
+								String otherAmountType = commonMethodsUtilService.getStringValueForObject(param[14]);
+								vo.setNameType(otherAmountType);
+								pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,vo.getMembershipNo().trim(),commonMethodsUtilService.getStringValueForObject(param[13]).trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION",otherAmountType);
 								if(pamentGateWayVO != null)
 									returnVO.setPaymentGatewayVO(pamentGateWayVO);
 							}
