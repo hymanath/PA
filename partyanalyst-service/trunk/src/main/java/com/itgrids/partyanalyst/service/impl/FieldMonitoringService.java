@@ -338,6 +338,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 						vo.setUserName(obj[1] != null ? obj[1].toString():"");
 						vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 						vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+						vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
 						templMap.put(userId, vo);
 					}
     			}
