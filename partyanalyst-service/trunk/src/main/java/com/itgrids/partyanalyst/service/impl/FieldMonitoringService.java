@@ -306,7 +306,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnVO;
     }
     
-    public FieldMonitoringVO getTabUsersDetailsByVendorAndLocationNew(Long loginUserId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr){
+    public FieldMonitoringVO getTabUsersDetailsByVendorAndLocationNew(Long loginUserId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long districtId){
     	FieldMonitoringVO returnVO = new FieldMonitoringVO();
 		
     	try {
@@ -324,7 +324,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     				endDate = sdf.parse(toDateStr);
     			}
     			
-    			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId);
+    			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
     			if(list != null && !list.isEmpty()){
     				for (Object[] obj : list) {
     					FieldMonitoringVO vo = new FieldMonitoringVO();
@@ -358,7 +358,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			Date lastOneHourTime = cal.getTime();
     			
     			//LastHour Counts
-    			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCountsNew(cadreRegUserId, lastOneHourTime, today, constituencyId, cadreSurveyUserId);
+    			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCountsNew(cadreRegUserId, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId);
     			if(list1 != null && !list1.isEmpty()){
     				for (Object[] obj : list1) {
     					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -370,7 +370,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			}
     			
     			//Issues Counts
-    			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, startDate, endDate);
+    			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, startDate, endDate, districtId);
     			if(list2 != null && !list2.isEmpty()){
     				for (Object[] obj : list2) {
     					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -389,7 +389,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     				}
     			}
     			
-    			returnVO = getDataCollectorsCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, fromDateStr, toDateStr);
+    			returnVO = getDataCollectorsCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, fromDateStr, toDateStr, districtId);
     			returnVO.setSubList(returnList);
     		//}
     		
@@ -438,7 +438,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	return returnvo;
     }
     
-    public FieldMonitoringVO getDataCollectorsCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,String fromDateStr,String toDateStr){
+    public FieldMonitoringVO getDataCollectorsCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,String fromDateStr,String toDateStr,Long districtId){
     	FieldMonitoringVO returnvo = new FieldMonitoringVO();
     	try {
     		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -455,8 +455,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
 			
-			Long totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, startDate, endDate);
-			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, lastOneHourTime, today);
+			Long totalCount = cadreRegIssueDAO.getTotalDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, startDate, endDate, districtId);
+			Long activeCount = cadreRegIssueDAO.getActiveDataCollectorsCountsVendorAndLocationNew(cadreRegUserId, constituencyId, userId, lastOneHourTime, today, districtId);
 			Long passiveCount = 0l;
 			if(totalCount == null)
 				totalCount = 0l;
