@@ -3562,6 +3562,7 @@
 		 <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
 		 <property name="tdpCadreLocationInfoCountDAO" ref="tdpCadreLocationInfoCountDAO" />
 		 <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+		 <property name="tabUserEnrollmentInfoSourceDAO" ref="tabUserEnrollmentInfoSourceDAO" />
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>
