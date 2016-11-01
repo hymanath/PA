@@ -902,6 +902,26 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		
 		var str='';
 		if(result !=null && result.length >0){
+			str+='<div class="table-responsive" style="margin-top:20px;">';
+			str+='<table class="table table-bordered" >';
+				str+='<thead>';
+					str+='<th>VERY GOOD</th>';
+					str+='<th>GOOD</th>';
+					str+='<th>OK</th>';
+					str+='<th>POOR</th>';
+					str+='<th>VERY POOR</th>';
+				str+='</thead>';
+			   str+='<tbody>';
+					str+='<tr>';
+						str+='<td>'+result[0].veryGood+'</td>';
+						str+='<td>'+result[0].good+'</td>';
+						str+='<td>'+result[0].ok+'</td>';
+						str+='<td>'+result[0].poor+'</td>';
+						str+='<td>'+result[0].veryPoor+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+			
 			if($(window).width > 768)
 			{
 				str+='<div class="table-responsive">';
@@ -974,6 +994,25 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		
 		var str='';
 		if(result !=null && result.length >0){
+			str+='<div class="table-responsive" style="margin-top:20px;">';
+			str+='<table class="table table-bordered" >';
+				str+='<thead>';
+					str+='<th>VERY GOOD</th>';
+					str+='<th>GOOD</th>';
+					str+='<th>OK</th>';
+					str+='<th>POOR</th>';
+					str+='<th>VERY POOR</th>';
+				str+='</thead>';
+			   str+='<tbody>';
+					str+='<tr>';
+						str+='<td>'+result[0].veryGood+'</td>';
+						str+='<td>'+result[0].good+'</td>';
+						str+='<td>'+result[0].ok+'</td>';
+						str+='<td>'+result[0].poor+'</td>';
+						str+='<td>'+result[0].veryPoor+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
 			if($(window).width > 768)
 			{
 				str+='<div class="table-responsive">';
