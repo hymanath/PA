@@ -14454,6 +14454,21 @@
 			<result type="json" name="success">
 			<param name="root">cadreCnsttuncyList</param>
 		</result>
-	</action>  
+	</action>
+	<action name="getTotalNewRenewalCadreStateWiseTSAction" class="cadreRegistrationAction"  method="getTotalNewRenewalCadreStateWiseTS">
+			<result type="json" name="success">
+			<param name="root">cadreRegistratedCountVO</param>
+		</result>  
+	</action>
+	<action name="getStateDtlsTS" class="cadreRegistrationAction"  method="getStateDtlsTS">    
+			<result type="json" name="success">
+			<param name="root">cadreRegistratedCountVO</param>
+		</result>
+	</action> 
+	<action name="getInFieldCountAction" class="cadreRegistrationAction"  method="getInFieldCount">    
+			<result type="json" name="success">        
+			<param name="root">nameVO</param>
+		</result>
+	</action> 
 </package>
 </struts>
