@@ -17,7 +17,11 @@ public class CadreDashboardVO {
 	private String type;
 	private String percentage;
 	private Long targetCount;
-	
+	private Long veryGood;
+	private Long good;
+	private Long ok;
+	private Long poor;
+	private Long veryPoor;
 	
 	public Long getId() {
 		return id;
@@ -103,4 +107,35 @@ public class CadreDashboardVO {
 	public void setTargetCount(Long targetCount) {
 		this.targetCount = targetCount;
 	}
+	public Long getVeryGood() {
+		return veryGood;
+	}
+	public void setVeryGood(Long veryGood) {
+		this.veryGood = veryGood;
+	}
+	public Long getGood() {
+		return good;
+	}
+	public void setGood(Long good) {
+		this.good = good;
+	}
+	public Long getOk() {
+		return ok;
+	}
+	public void setOk(Long ok) {
+		this.ok = ok;
+	}
+	public Long getPoor() {
+		return poor;
+	}
+	public void setPoor(Long poor) {
+		this.poor = poor;
+	}
+	public Long getVeryPoor() {
+		return veryPoor;
+	}
+	public void setVeryPoor(Long veryPoor) {
+		this.veryPoor = veryPoor;
+	}
+	
 }
