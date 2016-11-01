@@ -1409,7 +1409,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						//Consider here Online-Tab
 						else if(inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_WEB) || inputVO.getDataSourceType().equalsIgnoreCase(IConstants.CADRE_DATA_SOURCE_TYPE_ONLINE))
 						{
-							if(inputVO.getUploadImage() != null)
+							/*if(inputVO.getUploadImage() != null)
 							{
 								boolean status = imageAndStringConverter.convertBase64StringToImage(inputVO.getImageBase64String(),filePath);
 								if(status)
@@ -1423,7 +1423,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
 									saveCadreImage(inputVO);
 								}								
-								/*
+								
 								boolean status = commonMethodsUtilService.fileCopy(inputVO.getUploadImage().getAbsolutePath(),filePath);
 								
 								if(status)
@@ -1437,10 +1437,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
 									saveCadreImage(inputVO);
 								}
-								*/
-							}
+								
+							}*/
 							
-							else if(inputVO.getImageBase64String() != null && inputVO.getImageBase64String().trim().length() > 0)
+							if(inputVO.getImageBase64String() != null && inputVO.getImageBase64String().trim().length() > 0)
 							{
 								inputVO.setImageBase64String(inputVO.getImageBase64String().replace("_", "/"));
 								inputVO.setImageBase64String(inputVO.getImageBase64String().replace("-", "+"));
@@ -1461,8 +1461,12 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 							else
 							{
 								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Upload Image - Not Available Trying with Voter");
-								inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
-								saveCadreImage(inputVO);
+								
+								if(inputVO.getVoterId() != null)
+								{	
+									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+									saveCadreImage(inputVO);
+								}
 							}
 						}
 						else
@@ -1532,15 +1536,34 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						else
 						{
 							LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Cadre Image Path - Available Ignored - Success");
-							inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+							
+							boolean status = commonMethodsUtilService.fileCopy(IConstants.STATIC_CONTENT_FOLDER_PATH+pathSeparator+"images"+pathSeparator+IConstants.CADRE_IMAGES+pathSeparator+imgPath.trim(),filePath);	
+							
+							if(status)
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Cadre Image - Available - Success");
+								inputVO.setImageSaveStatus(IConstants.STATUS_SUCCESS);
+							}
+							else
+							{
+								LOG.fatal("Cadre Image Save Status - For Cadre - "+inputVO.getMemberShipNo()+" - Photo Type - "+inputVO.getPhotoType()+" Cadre Image - Available Fail - Trying with Voter");
+								if(inputVO.getVoterId() != null)
+								{
+									inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+									saveCadreImage(inputVO);
+								}
+							}	
 						}
 					}
 					else
 					{
 						if(!inputVO.isUpdate())
 						{
-							inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
-							saveCadreImage(inputVO);
+							if(inputVO.getVoterId() != null)
+							{
+								inputVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_VOTER);
+								saveCadreImage(inputVO);
+							}
 						}
 					}
 				}catch (Exception e) {
