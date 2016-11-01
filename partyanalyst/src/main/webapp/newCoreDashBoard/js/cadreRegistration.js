@@ -15,6 +15,7 @@ $(document).on("click",".cadreComparison",function(){
 	var cadre2014CheckboxIsChecked="Y";  
 	getCadreDetailsBasedOnUserType(filterApplyType);  
 	getSourceOfRegistrationDtls(globalActivityMemberId);       
+	getSourceOfRegistrationTSDtls(globalActivityMemberId);       
 	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
 	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);	
@@ -118,6 +119,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	var cadre2014CheckboxIsChecked="Y";  
 	getCadreDetailsBasedOnUserType(filterApplyType);  
 	getSourceOfRegistrationDtls(globalActivityMemberId);       
+	getSourceOfRegistrationTSDtls(globalActivityMemberId);       
 	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
 	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked);
@@ -2316,6 +2318,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 });  
 
 	function getSourceOfRegistrationDtls(globalActivityMemberId){
+		
 		$("#sourceTypeId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var startDate = '';    
 		var endDate = '';    
@@ -2333,12 +2336,35 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){        
 			 $("#sourceTypeId").html('');  
 			 if(result != null && result.length > 0){
-				buildSourceOfRegistrationDtls(result);  
+				buildSourceOfRegistrationDtls(result,globalStateId);  
+			 }  
+		});
+	}
+	function getSourceOfRegistrationTSDtls(globalActivityMemberId){
+		
+		$("#sourceTypeTsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var startDate = '';    
+		var endDate = '';    
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,
+			stateId : 36,         
+			startDate : '02/10/2016',      
+			endDate : getTodayDate()
+		};
+		$.ajax({          
+			type : 'GET',            
+			url : 'getSourceOfRegistrationDtls.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){        
+			 $("#sourceTypeTsId").html('');  
+			 if(result != null && result.length > 0){
+				buildSourceOfRegistrationDtls(result,36);  
 			 }  
 		});
 	}
 //for dynamic calls  	
-	 function buildSourceOfRegistrationDtls(result){
+	 function buildSourceOfRegistrationDtls(result,globalStateId){
 		 $("#sourceTypeId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
 		 var str = '';
 		 var totalCount = 0;
@@ -2351,7 +2377,12 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		 }
 		 var colorArr = ["color:#1770C4","color:#55E1DA","color:#CDA737","color:#540B88"];
 		 str+='<div class="col-md-12 col-xs-12 col-sm-6">';
-			str+='<h4 class="bg_ED pad_15 text-capitalize text-center">Andhra Pradesh</h4>';
+			 if(globalStateId == 1){           
+				str+='<h4 class="bg_ED pad_15 text-capitalize text-center">Andhra Pradesh</h4>';
+			}else{
+				str+='<h4 class="bg_ED pad_15 text-capitalize text-center">Telangana States</h4>';  
+			}
+			
 			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_right0" >';
 				str+='<div class="pad_5">';
 					str+='<h5 class="text-capital">total</h5>';	
@@ -2404,7 +2435,12 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-		$("#sourceTypeId").html(str);      
+		if(globalStateId == 1){           
+			$("#sourceTypeId").html(str);  
+		}else{
+			$("#sourceTypeTsId").html(str);
+		}
+		      
 	 }
 	function getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId){  
 		$("#designationListId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -2718,7 +2754,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	}  
 	$(document).on('click','.bellowLvlCls',function(){
 		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
-		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#individualDtlsId").html(''); 
 		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$(".headingColor").hide();
 		var activityMemberId = $(this).attr("attr_activity_member_id");
