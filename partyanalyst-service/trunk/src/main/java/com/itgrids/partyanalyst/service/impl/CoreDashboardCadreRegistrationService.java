@@ -2017,22 +2017,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	
 			//total const started
 			Long ttlContStarted = 0l;  
-			if(stateId == 1l){
-				
-				//ttlContStarted = tdpCadreDAO.getTotalConstituencyForCdrRegStarted(1l);
-				ttlContStarted = tdpCadreDateWiseInfoDAO.getTotalConstituencyForCdrRegStarted(1l);
-				if(ttlContStarted != null){
-					cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);   
-					cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,175l));
-				}
-			}else{
-				//ttlContStarted = tdpCadreDAO.getTotalConstituencyForCdrRegStarted(36l);
-				ttlContStarted = tdpCadreDateWiseInfoDAO.getTotalConstituencyForCdrRegStarted(36l);
-				if(ttlContStarted != null){
-					cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);
-					cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,119l));
-				}
-			}  
+			
+			//ttlContStarted = tdpCadreDAO.getTotalConstituencyForCdrRegStarted(1l);
+			ttlContStarted = tdpCadreLocationInfoDAO.getTotalConstituencyForCdrRegStarted(1l);
+			if(ttlContStarted != null){
+				cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);   
+				cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,175l));
+			}
 			
 			//total tab user in field AP
 			
@@ -2047,6 +2038,130 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(accessLvlId,accessLvlValue,stateId,now);    
 			Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
 			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);    
+			
+			//total submitted data
+			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
+			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
+			
+			return cadreRegistratedCountVO;         
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getStateDtls in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;  
+	}
+	public IdAndNameVO getInFieldCount(Long stateId, String fromDateStr, String toDateStr){
+		try{
+			IdAndNameVO idNameVO = new IdAndNameVO();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date today = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
+			Date lastOneHourTime = cal.getTime();
+			Long inFieldCount = tdpCadreEnrollmentYearDAO.getInFieldCount(stateId, lastOneHourTime);
+			if(toDateStr != null && toDateStr.trim().length() > 0 ){
+				today = sdf.parse(toDateStr);
+			}
+			Long todayFieldCount = tdpCadreEnrollmentYearDAO.getTodayFieldCount(stateId,today);
+			if(inFieldCount != null){
+				idNameVO.setId(inFieldCount);//inFieldCount
+			}
+			if(todayFieldCount != null){
+				idNameVO.setAttenteeCount(todayFieldCount);//todayfieldcount
+			}
+			return idNameVO;    
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in getInFieldCount in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;
+	}
+	
+	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = new Date();
+			Date frmDt = null;
+			Date toDt = null;
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				frmDt = sdf.parse(startDate);
+				toDt = sdf.parse(endDate);
+			}
+			Long totalCadre = 0l;
+			Long totalCadreToday = 0l;
+			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO();
+			Long accessLvlId = null;
+			List<Long> accessLvlValue = new ArrayList<Long>();
+			accessLvlValue.add(36l);
+			
+			//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt,4l);
+			Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);
+			//get total reg cadre
+			if(totalRegCadre2016 != null){
+				totalCadre = totalRegCadre2016;
+			}
+			/*if(totalRegCadreList != null && totalRegCadreList.size() > 0){
+				for(Object[] param : totalRegCadreList){
+					if(accessLvlValue.contains((Long)param[0]))
+					totalCadre += param[1] != null ? (Long)param[1] : 0l;
+				}
+			}*/
+			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
+			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);
+			cadreRegistratedCountVO.setTotalCount(totalCadre);
+			//get total reg cadre for today
+			if(totalRegCadreForToday != null){
+				totalCadreToday = totalRegCadreForToday;
+			}
+			/*if(totalRegCadreListForToday != null && totalRegCadreListForToday.size() > 0){
+				for(Object[] param : totalRegCadreListForToday){
+					if(accessLvlValue.contains((Long)param[0]))
+					totalCadreToday += param[1] != null ? (Long)param[1] : 0l;
+				}
+			}*/  
+			cadreRegistratedCountVO.setTodayTotalCount(totalCadreToday);
+			//get target Count
+			Long totalTarget = 0l;
+			
+			//List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
+			
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( 2l,new HashSet<Long>(){{add(36l);}}, 4l);
+			if(totalTargetList != null && totalTargetList.size() > 0){  
+				for(Object[] param : totalTargetList){
+					if(accessLvlValue.contains((Long)param[0]))    
+						totalTarget += ((Long)param[1]);
+				}
+			}  
+			cadreRegistratedCountVO.setTarget(totalTarget);
+			cadreRegistratedCountVO.setTotalPercent(calculatePercantage(cadreRegistratedCountVO.getTotalCount(),totalTarget));
+			cadreRegistratedCountVO.setTotalPercentToday(calculatePercantage(cadreRegistratedCountVO.getTodayTotalCount(),totalTarget));
+	
+			//total const started
+			Long ttlContStarted = 0l;  
+			
+			//ttlContStarted = tdpCadreDAO.getTotalConstituencyForCdrRegStarted(36l);
+			ttlContStarted = tdpCadreLocationInfoDAO.getTotalConstituencyForCdrRegStarted(36l);
+			if(ttlContStarted != null){
+				cadreRegistratedCountVO.setConstStartedCount(ttlContStarted);
+				cadreRegistratedCountVO.setConstStartedCountPer(calculatePercantage(ttlContStarted,119l));
+			}      
+		
+			
+			//total tab user in field AP
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
+			Date lastOneHourTime = cal.getTime();
+			//pending    
+			//Long ttlTabUserInField = tdpCadreDAO.getTotalTabUserWorkingInField(accessLvlId,new HashSet<Long>(accessLvlValue),stateId,lastOneHourTime,today,"oneHour");
+			String dtStr = sdf1.format(today);
+			Date now = sdf1.parse(dtStr);
+			//Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(accessLvlId,accessLvlValue,stateId,now);    
+			Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
+			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);      
 			
 			//total submitted data
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
@@ -2077,7 +2192,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			Long totalCadreToday = 0l;
 			Long totalCadreTodayNew = 0l;
 			Long totalCadreTodayRenewal = 0l;
-			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO();
+			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO(); 
 			Long accessLvlId = null;
 			List<Long> accessLvlValue = new ArrayList<Long>();
 			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
@@ -2181,8 +2296,94 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return null;
 	}
+	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWiseTS(Long activityMemberId,Long stateId,String startDate, String endDate){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = new Date();
+			//getTotalNewRenewalCadreStateWise
+			Date frmDt = null;
+			Date toDt = null;
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				frmDt = sdf.parse(startDate);
+				toDt = sdf.parse(endDate);
+			}  
+			Long totalCadre = 0l;  
+			Long totalNew = 0l;
+			Long totalRenewal = 0l;
+			Long totalCadreToday = 0l;
+			Long totalCadreTodayNew = 0l;
+			Long totalCadreTodayRenewal = 0l;
+			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO();
+			Long accessLvlId = null;
+			List<Long> accessLvlValue = new ArrayList<Long>();
+			accessLvlValue.add(36l);  
+			//Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);    
+			//Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,frmDt, toDt);
+			//get total reg cadre
+			if(totalRegCadre2016 != null){
+				totalCadre = totalRegCadre2016;
+			}
+			
+			//get total renewal cadre
+			if(totalRegCadreRenewal2016 != null){
+				totalRenewal = totalRegCadreRenewal2016;
+			}
+			
+			//get tolal new cadre
+			totalNew = totalCadre - totalRenewal;      
+			//get target Count
+			
+			Long totalTarget = 0l;
+			//List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( 2l,new HashSet<Long>(){{add(36l);}}, 4l);  
+			if(totalTargetList != null && totalTargetList.size() > 0){       
+				for(Object[] param : totalTargetList){
+					if(accessLvlValue.contains((Long)param[0]))        
+						totalTarget += ((Long)param[1]);
+				}
+			}
+			cadreRegistratedCountVO.setTotalCount(totalCadre);
+			cadreRegistratedCountVO.setRenewalCount(totalRenewal);
+			cadreRegistratedCountVO.setNewCount(totalNew);  
+			cadreRegistratedCountVO.setTarget(totalTarget);    
+			cadreRegistratedCountVO.setTotalPercent(calculatePercantage(cadreRegistratedCountVO.getTotalCount(),totalTarget));
+			
+			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
+			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);
+			//List<Object[]> totalRegCadreRenewalListForToday = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,today, today);
+			Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,frmDt, toDt);  
+			//get total reg cadre for today
+			totalCadreToday = 0l;
+			if(totalRegCadreForToday != null){
+				totalCadreToday = totalRegCadreForToday;
+			}
+			
+			//get total renewal cadre 
+			totalCadreTodayRenewal = 0l;
+			if(totalRegCadreRenewalForToday != null){
+				totalCadreTodayRenewal = totalRegCadreRenewalForToday;  
+			}
+			
+			//get tolal new cadre
+			totalCadreTodayNew = totalCadreToday - totalCadreTodayRenewal;  
+			  
+			cadreRegistratedCountVO.setTodayTotalCount(totalCadreToday);
+			cadreRegistratedCountVO.setTodayRenewalCount(totalCadreTodayRenewal);
+			cadreRegistratedCountVO.setTodayNewCount(totalCadreTodayNew);   
+			cadreRegistratedCountVO.setTotalPercentToday(calculatePercantage(cadreRegistratedCountVO.getTodayTotalCount(),totalTarget));
+			
+			return cadreRegistratedCountVO;   
+		}catch(Exception e){   
+			e.printStackTrace();  
+			LOG.error("Exception raised in getTotalNewRenewalCadreStateWise in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;
+	}
 	/**
-	* @param  Long parentActivityMemberId
+	* @param  Long parentActivityMemberId  
 	* @param  Long childUserTypeId
 	* @param Long stateId
 	* @return List<UserTypeVO>
