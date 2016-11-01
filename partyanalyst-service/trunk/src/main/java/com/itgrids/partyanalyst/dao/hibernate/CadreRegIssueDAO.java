@@ -122,9 +122,13 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 	public List<Object[]> getTotalTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model1.cadreSurveyUser.cadreSurveyUserId," +
-					" model1.cadreSurveyUser.userName" +
-					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
+					" model1.cadreSurveyUser.userName," +
+					" model3.tabUserInfoId," +
+					" model3.name" +
+					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2,TabUserInfo model3" +
 					" where model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+					" and model1.cadreSurveyUser.cadreSurveyUserId = model3.cadreSurveyUserId" +
+					" and model3.isEnabled = 'Y'" +
 					" and model1.cadreRegUser.userType = 'FM'");
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
