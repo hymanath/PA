@@ -8,9 +8,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CADRE DASHBOARD</title>
-<link rel="stylesheet" type="text/css" href="styles/bootstrapInHome/bootstrap.css"/> 
+
+<link rel="stylesheet" type="text/css" href="newCoreDashBoard/css/bootstrap.min.css"/> 
 <link rel="stylesheet" type="text/css" href="css/style.css"> 
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/DatatableBootstrap/DatatableB.css" type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="css/cadreRegistrationCSS/animate.css" >
 <!-- YUI Dependency files (Start) -->
@@ -47,6 +49,60 @@
 </head>
 <style>
 body{background:#e5e5e5 }
+table.dataTable thead .sorting , table.dataTable thead .sorting_desc , table.dataTable thead .sorting_asc
+{
+	background-image:none
+}
+/* Loader */
+.spinner {
+  margin: 30px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  text-align: center;
+  
+  -webkit-animation: sk-rotate 2.0s infinite linear;
+  animation: sk-rotate 2.0s infinite linear;
+}
+
+.dot1, .dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #1ABC9C;
+  border-radius: 100%;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
 	p{margin:0px}
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -61,7 +117,8 @@ body{background:#e5e5e5 }
 	.text-skyblue{color:#46acca;}
 	.mb-0{margin-bottom:0px}
 	.mb-10{margin-bottom:10px}
-	.Previousmembercount td{width:20%;}
+	.Previousmembercount td{width:22%;}
+	.Previousmembercount td:last-child{width:10%;}
 	.membercount td{width:25%;}
 	.membercount td h2, .Previousmembercount td h2{margin:0px;}
 	.progress{height:10px;}
@@ -187,83 +244,149 @@ table.dataTable tr.odd {
     color: #777777;
 }
 .f_26{font-size: 26.5px !important;}
+.well
+{
+	background-color:#fff;
+}
 </style>
 <body>
 <div class="container">
-		<div class="row-fluid" >
+		<div class="row" >
 			<button type="button" class="btn btn-primary pull-right show2014DashBoard">click here to view 2014 Cadre DashBoard </button>
 		</div>
 		<!-- Title Row -->
-		<div class="row-fluid m_top10" id="fadeInDown">
-			<div class="span12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
+		<div class="row m_top10" id="fadeInDown">
+			<div class="col-md-12 col-xs-12 col-sm-12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
 			</div>
 		</div><!-- Title Row End-->
 			<!-- Members Registered Previous Row -->
 			
-		<div class="row-fluid " id="PreviousmembersCount">
-		
-			<div class="span12 show-grid well well-small border-radius-0 mb-10">
+		<div class="row " id="PreviousmembersCount">
+			
+			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
+				<div class="table-responsive">
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
 						    <tr class="">
 								<td>
-									<h2>TS</h2>
-									<img class="pull-right" src="images/TS.png" style="margin-top: -40px;">
+									<h2 style="display:inline-block">TS</h2>
+									<img class="pull-right" src="images/TS.png">
 								</td>
 								<td><div id="tsConstiCountId"><h2>119</h2><p style="font-size:12px;">Registration Started Constituencies</p></div></td>
 								<td><p><span class="text-red">2014 </span></p><div id="ts2014NewCountId"><h2 class="text_color f_26">794427</h2></div></td>
-								<td><p><span class="text-blue">2016 </span></p><div id="ts2016CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
-								<td><p><span class="text-orange">Total - [%] </span></p><div id="ts2016PrecCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
+								<td>
+									<p><span class="text-blue">2016 </span></p>
+									<div id="ts2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
+								<td><p><span class="text-orange">Total - [%] </span></p><div id="ts2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 								
 							</tr>
 							<tr class="">
 								<td>
-									<h2>AP</h2>
-									<img class="pull-right" src="images/AP.png" style="margin-top: -40px;">
+									<h2 style="display:inline-block">AP</h2>
+									<img class="pull-right" src="images/AP.png">
 								</td>
 								<td><div id="apConstiCountId"><h2>175</h2><p style="font-size:12px;">Registration Started Constituencies</p></div></td>
 								<td><p><span class="text-red">2014 </span></p><div id="ap2014NewCountId"><h2 class="text_color f_26">4716975</h2></div></td>
-								<td><p><span class="text-blue">2016 </span></p><div id="ap2016CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
-								<td><p><span class="text-orange">Total - [%] </span></p><div id="ap2016PrecCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
+								<td><p><span class="text-blue">2016 </span></p><div id="ap2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
+								<td><p><span class="text-orange">Total - [%] </span></p><div id="ap2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							</tr>
 							
 						</tbody>
 					</table>
+				</div>
 			</div>
 		  
 		</div><!-- Members Registered Previous Row -->
 		<!-- Members Count Row -->
-		<div class="row-fluid fadeInUp">
-			<div class="span12 show-grid well well-small border-radius-0 mb-10">
+		<div class="row fadeInUp">
+			<div class="col-md-12 col-xs-12 col-sm-12 well well-small border-radius-0 mb-10">
+				<div class="row">
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading" style="background-color:#c8d7f4">
+								<h4 class="panel-title">TODAY</h4>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div id="todayRegisCount">
+										<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading" style="background-color:#eae798">
+								<h4 class="panel-title">OVER ALL</h4>
+							</div>
+							<div class="panel-body">
+								<div id="totalRegisCount">
+									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
+				<div class="row">
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading" style="background-color:#c8d7f4">
+								<h4 class="panel-title">TODAY</h4>
+							</div>
+							<div class="panel-body">
+								<div id="todayApTgRegisCount" class="row ">
+									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading" style="background-color:#eae798">
+								<h4 class="panel-title">OVER ALL</h4>
+							</div>
+							<div class="panel-body">
+								<div id="totalApTgRegisCount" class="row">
+									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
 				    <table class="table table-bordered border-radius-0 mb-0 membercount" style="background:#ffffff;">
 						<tbody>
 							<tr>
-								<td style="background-color:#c8d7f4"><p style="font-size: 18px; font-weight: bold;">TODAY</p><div id="todayRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
+								<td style="background-color:#c8d7f4"><p style="font-size: 18px; font-weight: bold;">TODAY</p></td>
 								<!--<td><div id="thisWeekRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="monthRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>-->
-								<td style="background-color:#eae798"><p style="font-size: 18px; font-weight: bold;">OVER ALL</p><div id="totalRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
+								<td><div id="monthRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
+								<td style="background-color:#eae798"><p style="font-size: 18px; font-weight: bold;">OVER ALL</p></td>					
 							</tr>
 							<tr>
 								<td class="indiEle">
-									<div id="todayApTgRegisCount" class="row-fluid ">
-										<img class="ajaxImgStyle" style="margin-left:130px;" src="images/icons/search.gif"/>
-									</div>
+									
 								</td>
 								
 								<td class="indiEle">
-									<div id="totalApTgRegisCount" class="row-fluid">
-										<img class="ajaxImgStyle" style="margin-left:134px;" src="images/icons/search.gif"/>
-									</div>
+									
 								</td>
 							</tr>
 						</tbody>
 					</table>
-			</div>
+			</div>-->
 		</div><!-- Members Count Row End -->
 		<!----New code for constituency and district wise Start ----->
-		<div class="row-fluid">
-			<div class="span12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<h4> District  Target VS Registered Cadre  
 				
 				</h4>
@@ -277,8 +400,8 @@ table.dataTable tr.odd {
 					<span style="margin-right:10px;"> OVER ALL </span>
 					
 					<div class="btn-group pull-right">
-					<input type="button" class="btn btn-mini btn-success  aptsclass " value="AP" name="constTargetBtn" id="apDistTargetComp" checked="checked">AP</input>
-					<input type="button" class="btn btn-mini aptsclass " value="TS" name="constTargetBtn" id="tgDistTargetComp" >TS</input>
+					<button type="button" class="btn btn-mini btn-success  aptsclass " value="AP" name="constTargetBtn" id="apDistTargetComp" checked="checked">AP</button>
+					<button type="button" class="btn btn-mini aptsclass " value="TS" name="constTargetBtn" id="tgDistTargetComp" >TS</button>
 				</div>
 				</div>
 				<div id="districtWise2016Details"   class="m_top10"></div>
@@ -287,8 +410,8 @@ table.dataTable tr.odd {
 				</div>
 			</div>
 			</div>
-			<div class="row-fluid">
-			<div class="span12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+			<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<h4> Constituency  Target Vs Registered Cadre  
 				
 				
@@ -303,8 +426,8 @@ table.dataTable tr.odd {
 					<span style="margin-right:10px;"> OVER ALL</span>
 					
 					<div class="btn-group pull-right">
-					<input type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</input>
-					<input type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</input>
+					<button type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</inpbuttonut>
+					<button type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</button>
 				</div>
 				</div>
 				<div id="constituencyWise2016Details"   class="m_top10"></div>
@@ -317,7 +440,7 @@ table.dataTable tr.odd {
 		
 </div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/bootstrap3/bootstrap.js"></script>
+<script type="text/javascript" src="newCoreDashBoard/js/bootstrap.min.js"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 $('#fadeInDown').addClass('animated fadeInDown');
@@ -384,10 +507,10 @@ $(document).on("click",".radiobuttonSelectedConsWise",function(){
 function get2016LocationWiseRegisteredCounts(typeId){
 
 			if(typeId == 'total'){
-				$("#ap2016CountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');
-				$("#ap2016PrecCountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');
-				$("#ts2016CountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');	
-				$("#ts2016PrecCountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');	
+				$("#ap2016CountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
+				$("#ap2016PrecCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
+				$("#ts2016CountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
+				$("#ts2016PrecCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 			}else if(typeId == 'today'){
 				
 			}
@@ -413,13 +536,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						var str='';
 						var str1='';
 						str+='<h2>'+result[0].count2016+'</h2>';
-						str+='<div class="span12">';
-						str+='<div class="span6" style="border-right: 1px solid #d3d3d3;">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right: 1px solid #d3d3d3;">';
 						str+='<p class="text-muted">Renewal<p>';
 						str+='<p style="font-size: 18px;"><b>'+result[0].renewalCount+'</b></p>';
 						str+='</div>';
 						
-						str+='<div class="span6">';
+						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p style="text-align: center;" class="text-muted">New</p>';
 						str+='<p style="text-align: center;font-size: 18px;"><b>'+result[0].newCount+'</b></p>';
 						str+='</div>';
@@ -428,13 +551,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						
 						
 						str1+='<h2>'+result[1].count2016+'</h2>';
-						str1+='<div class="span12">';
-						str1+='<div class="span6" style="border-right: 1px solid #d3d3d3;">';
+						str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right: 1px solid #d3d3d3;">';
 						str1+='<p class="text-muted">Renewal<p>';
 						str1+='<p style="font-size: 18px;"><b>'+result[1].renewalCount+'</b></p>';
 						str1+='</div>';
 						
-						str1+='<div class="span6">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str1+='<p style="text-align: center;" class="text-muted">New</p>';
 						str1+='<p style="text-align: center;font-size: 18px;"><b>'+result[1].newCount+'</b></p>';
 						str1+='</div>';
@@ -447,10 +570,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					
 						$("#ts2016CountId").html(str1)
 						$("#ts2016PrecCountId").html('<h2>'+result[1].percentage+'</h2>');
-						$("#totalApTgRegisCount").html('<div style="background-color:#EAE798" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[0].count2016+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#EAE798;" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[1].count2016+'</span><span class="text-skyblue"> </span></div>');
+						$("#totalApTgRegisCount").html('<div class="col-md-6 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center"> AP  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div><div style="cursor:pointer;" class="col-md-6 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div>');
 						
 					}else if(typeId == 'today'){
-						$("#todayApTgRegisCount").html('<div style="background-color:#C8D7F4;" class="span6 mytooltip text-center" ><strong><span style="margin-left:10px;">  AP </span></strong><br><span style="margin-left:10px;"> '+result[0].count2016+'</span></div><div style="cursor:pointer;background-color:#C8D7F4;" class="span6 text-center mytooltip" ><strong><span style="margin-right:15px;"> TELANGANA </span></strong><br/><span style="margin-right:15px;"> '+result[1].count2016+'</span></div>');
+						$("#todayApTgRegisCount").html('<div class="col-md-6 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">  AP </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div><div style="cursor:pointer;" class="col-md-6 col-xs-12 col-sm-6 text-center mytooltip" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div>');
 						
 					
 					}
@@ -473,7 +596,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					var str1='';
 					//today
 					var todayCount = result[0].tabTotal+result[0].webTotal+result[0].partyOfcHydTotal+result[0].partyOfcVijTotal+result[0].onlineTotal;
-					str+='<table class="table tableCadreDash span7">';
+					str+='<div class="col-md-9 col-xs-12 col-sm-9">';
+					str+='<div class="table-responsive">';
+						
+					
+					str+='<table class="table tableCadreDash">';
 						str+='<thead>';
 							str+='<th></th>';
 							str+='<th>New</th>';
@@ -580,22 +707,23 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						str+='</tr>';
 						str+='</tbody>';
 					str+='</table>';
-
-					   str+='<div class="span1">';
-					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px; margin-left: 44px;">';
+					str+='</div>';
+					str+='</div>';
+					   str+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
+					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px;">';
 					   str+='</div>';
-					   str+='<div class="span3" style="margin-top: 100px; margin-left: 45px;">';
+					   str+='<div class="col-md-2 col-xs-12 col-sm-2" style="margin-top: 100px;">';
 					   str+='<h2 class="f_26">'+todayCount+'</h2>';
 					   str+='<p>Members Registered <br>';
 					   str+='<span style="font-weight:bold;">Today</span>';
 					   str+='</p> </div>';
-					  
-					   str+='</td>';
-					str+='</div>';
+					
 					
 					//total
 					var totalCount = result[1].tabTotal+result[1].webTotal+result[1].partyOfcHydTotal+result[1].partyOfcVijTotal+result[1].onlineTotal;
-					str1+='<table class="table tableCadreDash span7">';
+					str1+='<div class="col-md-9 col-xs-12 col-sm-9">';
+					str1+='<div class="table-responsive">';
+					str1+='<table class="table tableCadreDash">';
 						str1+='<thead>';
 							str1+='<th></th>';
 							str1+='<th>New</th>';
@@ -703,18 +831,19 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						str1+='</tr>';
 						str1+='</tbody>';
 					str1+='</table>';
-
-					   str1+='<div class="span1">';
-					   str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px; margin-left: 49px;">';
-					   str1+='</div>';
-					   str1+='<div class="span3" style="margin-top: 100px; margin-left: 44px;">';
-					   str1+='<h2 class="f_26">'+totalCount+'</h2>';
-					   str1+='<p>Members Registered <br>';
-					   str1+='<span style="font-weight:bold;">Total</span>';
-					   str1+='</p> </div>';
-					  
-					   str1+='</td>';
 					str1+='</div>';
+					str1+='</div>';
+
+					str1+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
+					str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px;">';
+					str1+='</div>';
+					str1+='<div class="col-md-2 col-xs-12 col-ms-2" style="margin-top: 100px;">';
+					str1+='<h2 class="f_26">'+totalCount+'</h2>';
+					str1+='<p>Members Registered <br>';
+					str1+='<span style="font-weight:bold;">Total</span>';
+					str1+='</p> </div>';
+					  
+					  
 					
 					$("#todayRegisCount").html(str);
 					$("#totalRegisCount").html(str1);
@@ -724,7 +853,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	}
 	
 	function get2016LocationWiseRegisteredCountsConstituencyWise(type,locationScope,locationType){
-		$("#constituencyWise2016Details").html('<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>');
+		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
 				var locationType =locationType;
@@ -747,7 +876,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	}
 	
 	function get2016LocationWiseRegisteredCountsDistrictWise(type,locationScope,locationType){
-		$("#districtWise2016Details").html('<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>');
+		$("#districtWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
 				var locationType =locationType;
@@ -773,6 +902,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		
 		var str='';
 		if(result !=null && result.length >0){
+			if($(window).width > 768)
+			{
+				str+='<div class="table-responsive">';
+			}
+			
 			str+='<table class="table table-bordered" id="districtWise2016DataTableId">';
 				str+='<thead>';
 					str+='<th>District</th>';
@@ -824,6 +958,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				}
 				str+='</tbody>';
 			str+='</table>';
+			if($(window).width > 768)
+			{
+				str+='</div>';
+			}
 		}
 		
 		$("#districtWise2016Details").html(str);
@@ -836,6 +974,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		
 		var str='';
 		if(result !=null && result.length >0){
+			if($(window).width > 768)
+			{
+				str+='<div class="table-responsive">';
+			}
 			str+='<table class="table table-bordered" id="constituencyWise2016DataTableId">';
 				str+='<thead>';
 					str+='<th>Constituency</th>';
@@ -885,6 +1027,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				}
 				str+='</tbody>';
 			str+='</table>';
+			if($(window).width > 768)
+			{
+				str+='</div>';
+			}
 		}
 		
 		$("#constituencyWise2016Details").html(str);
