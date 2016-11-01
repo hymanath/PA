@@ -2004,3 +2004,6 @@ margin-top: 5px; margin-bottom: 2px;
 {
 	font-size:14px !important;
 }
+.border_right{
+border-right: 2px solid #d3d3d3;
+}
