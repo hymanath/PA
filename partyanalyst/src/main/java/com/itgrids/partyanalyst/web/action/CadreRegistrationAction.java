@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -2941,5 +2942,43 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
-}
+  public String getTotalNewRenewalCadreStateWiseTS(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getTotalNewRenewalCadreStateWiseTS(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){
+		  e.printStackTrace();
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getStateDtlsTS(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long activityMemberId = jobj.getLong("activityMemberId");  
+		  Long stateId = jobj.getLong("stateId"); 
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getStateDtlsTS(activityMemberId,stateId,startDate, endDate);
+	  }catch(Exception e){
+		  e.printStackTrace();    
+	  }
+	  return Action.SUCCESS;
+  }
+  public String getInFieldCount(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		  String startDate = jobj.getString("startDate");
+		  String endDate = jobj.getString("endDate");
+		  Long stateId = jobj.getLong("stateId"); 
+		  nameVO = coreDashboardCadreRegistrationService.getInFieldCount(stateId,startDate, endDate);
+	  }catch(Exception e){ 
+		  e.printStackTrace();      
+	  }
+	  return Action.SUCCESS;
+  }
+}//public IdNameVO getInFieldCount(Long stateId, String fromDateStr, String toDateStr)
 
