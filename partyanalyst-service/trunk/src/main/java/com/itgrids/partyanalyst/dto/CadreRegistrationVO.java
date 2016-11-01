@@ -210,16 +210,21 @@ public class CadreRegistrationVO implements Serializable{
 	private String 	prevNomineeAadharNo;
 	private String isNomineeChanged;
 	private Long newVoterId;
+	private String deliveryLocation;
 	
 	
-	
+	public String getDeliveryLocation() {
+		return deliveryLocation;
+	}
+	public void setDeliveryLocation(String deliveryLocation) {
+		this.deliveryLocation = deliveryLocation;
+	}
 	public Long getNewVoterId() {
 		return newVoterId;
 	}
 	public void setNewVoterId(Long newVoterId) {
 		this.newVoterId = newVoterId;
 	}
-	
 	
 	public String getPrsntAddrsAreaName() {
 		return prsntAddrsAreaName;
