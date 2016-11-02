@@ -1200,4 +1200,5 @@ public interface IConstants {
 	public static final String VOTER_IMAGES = "voter_images";
 	
 	public static final String COURIER_AMOUNT="30";
+	public static final Long CADRE_REGISTRATION_2016_DAYS=30L;
 }
