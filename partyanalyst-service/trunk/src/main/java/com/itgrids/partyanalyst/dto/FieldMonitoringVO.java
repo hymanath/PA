@@ -46,7 +46,7 @@ public class FieldMonitoringVO {
 	private List<IdAndNameVO> idnameList;
 	private List<IdAndNameVO> idnameList1;
 	private String imagePath;
-	
+	private Long notYetStartedUsers;
 	
 	public String getImagePath() {
 		return imagePath;
@@ -228,4 +228,11 @@ public class FieldMonitoringVO {
 	public void setIdnameList1(List<IdAndNameVO> idnameList1) {
 		this.idnameList1 = idnameList1;
 	}
+	public Long getNotYetStartedUsers() {
+		return notYetStartedUsers;
+	}
+	public void setNotYetStartedUsers(Long notYetStartedUsers) {
+		this.notYetStartedUsers = notYetStartedUsers;
+	}
+	
 }
