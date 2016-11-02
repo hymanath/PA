@@ -555,8 +555,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				$("#ap2016PrecCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 				$("#ts2016CountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 				$("#ts2016PrecCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
+				$("#totalApTgRegisCount").html('');
 			}else if(typeId == 'today'){
-				
+				$("#todayApTgRegisCount").html('');
 			}
 			
 			
@@ -613,10 +614,12 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					
 						$("#ts2016CountId").html(str1)
 						$("#ts2016PrecCountId").html('<h2>'+result[1].percentage+'</h2>');
-						$("#totalApTgRegisCount").html('<div class="col-md-6 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center"> AP  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div><div style="cursor:pointer;" class="col-md-6 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div>');
+						var overalltotal = result[0].count2016+result[1].count2016;
+						$("#totalApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center"> TOTAL  </h4></strong><h3 class="text-center" style="margin:0px">'+overalltotal+'</h3><span class="text-skyblue"></span></div><div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center"> AP  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div><div  class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div>');
 						
 					}else if(typeId == 'today'){
-						$("#todayApTgRegisCount").html('<div class="col-md-6 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">  AP </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div><div style="cursor:pointer;" class="col-md-6 col-xs-12 col-sm-6 text-center mytooltip" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div>');
+						var todaytotal = result[0].count2016+result[1].count2016;
+						$("#todayApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">  TOTAL </h4></strong><h3 class="text-center" style="margin:0px"> '+todaytotal+'</h3></div><div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">  AP </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div><div  class="col-md-4 col-xs-12 col-sm-6 text-center mytooltip" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div>');
 						
 					
 					}
@@ -765,7 +768,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					//total
 					var totalCount = result[1].tabTotal+result[1].webTotal+result[1].partyOfcHydTotal+result[1].partyOfcVijTotal+result[1].onlineTotal;
 					str1+='<div class="col-md-8 col-xs-12 col-sm-8">';
-					str1+='<div class="table-responsive">';
+					str1+='<div class="">';
 					str1+='<table class="table tableCadreDash">';
 						str1+='<thead>';
 							str1+='<th></th>';
