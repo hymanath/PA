@@ -391,7 +391,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     	    					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
     	    					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
     	    					
-    	    					returnList.add(vo);
+    	    					//returnList.add(vo);
     						/*}
     						else{
     							vo = new FieldMonitoringVO();
