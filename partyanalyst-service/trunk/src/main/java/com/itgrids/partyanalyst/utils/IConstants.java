@@ -543,6 +543,9 @@ public interface IConstants {
 	
 	public static final String ADMIN_SENDERID_FOR_SMS = "16242";
 	
+	public static final String ADMIN_USERNAME_FOR_SMS_FOR_OTP = "Koffeemediaotp";
+	public static final String ADMIN_PASSWORD_FOR_SMS_FOR_OTP = "otp@account";
+	
 	public static final String DEFAULT_MAIL_SERVER = "server";
 	public static final String DEFAULT_SCHEDULER_SEVER = "localhost";
 	public static final String DEFAULT_SCHEDULER_UPDATES_SEVER = "localhost";
@@ -1174,10 +1177,10 @@ public interface IConstants {
 	public static final String CORE_DEBATE_ELIMINATED_PARTIES_TS = "1676,1677,1678,1887,662,514,268,1117";
 	public static final String[] EXCLUDE_URL_LIST = {};
 	
-	public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
-	//public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";     
+	//public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
+	public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";     
 	
-	public static final String MEMBERSHIP_DRIVE_PERFORMANCE_PARAMETERS[] = {"VERY GOOD-90-#196F3D","GOOD-80-#27AE60","OK-60-#A9DFBF","POOR-30-F5B7B1","VERY POOR-10-#FF5733","OTHERS-0-#FBFCFC"};
+	public static final String MEMBERSHIP_DRIVE_PERFORMANCE_PARAMETERS[] = {"VERY GOOD-90-#196F3D","GOOD-80-#27AE60","OK-60-#A9DFBF","POOR-30-F5B7B1","VERY POOR-10-#FF5733"};//,"OTHERS-0-#FBFCFC"};
 	public static final Long DAY_WISE_TARGET_REGISTRATIONS_COUNT = 7000L;
 	public static final Long DAY_WISE_AP_TARGET_REGISTRATIONS_COUNT = 350000L;
 	public static final Long DAY_WISE_TS_TARGET_REGISTRATIONS_COUNT = 350000L; 
@@ -1187,8 +1190,8 @@ public interface IConstants {
 	public static final int  DATE_WISE_CADRE_INTERMEDIATE_PUSH_DAYS = 2;
 	
 	//cadre image saving .
-	public static final String STATIC_CONTENT_FOLDER_PATH = "/app/static_content";
-	//public static final String STATIC_CONTENT_FOLDER_PATH = "D:\\cadre_registation";
+	//public static final String STATIC_CONTENT_FOLDER_PATH = "/app/static_content";
+	public static final String STATIC_CONTENT_FOLDER_PATH = "D:\\static_content";
 	public static final String CADRE_DATA_SOURCE_TYPE_TAB = "TAB";
 	public static final String CADRE_DATA_SOURCE_TYPE_WEB = "WEB";
 	public static final String CADRE_DATA_SOURCE_TYPE_ONLINE = "ONLINE";
