@@ -219,9 +219,9 @@
         	<hr class="rulerLine"/>
         	<h2><span class="mainHeading">Welcome to cadre registration</span></h2>
 			  <div>
-		          <div class="col-md-12 col-xs-12 col-sm-12">
+		       <!--   <div class="col-md-12 col-xs-12 col-sm-12">
 				      <span id="mainPageBackId" class="backBtn"> ← Back</span>
-			      </div>
+			      </div>-->
 	 	       </div>	
         </div>
         <div class="col-md-6 col-xs-12 col-sm-6">
@@ -817,8 +817,25 @@
 								</div>
 							</div>
                     </div>
-					
-					
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="margin-left: 15px;">
+							<!-- <input id="bycourierId" class="checkbox-custom deliveriAddrCls" value="CR" type="checkbox" checked="true"  name="cadreRegistrationVO.deliveryLocation">
+							<label for="bycourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" >30/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp;</label>
+							<br/>
+							<input id="byPartyOfcId" class="checkbox-custom  deliveriAddrCls"  value="PO" type="checkbox"  name="cadreRegistrationVO.deliveryLocation">
+							<label for="byPartyOfcId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase">No Delivery Charges will Apply, if collected at Party Office</label>
+							-->
+							
+							<input id="bycourierId" class="checkbox-custom" name="checkbox-3" type="checkbox" checked="true">
+							<label for="bycourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > 30/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp;</label>
+							</br></br>
+							<input id="byPartyOfcId" class="checkbox-custom" name="checkbox-4" type="checkbox">
+							<label for="byPartyOfcId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> No Delivery Charges will Apply, if collected at Party Office</label>
+							
+							<input type="hidden" value="CR" id="deliveryStatsId" name="cadreRegistrationVO.deliveryLocation"/>
+						</div>
+					 </div>
+					 
                     <div class="row">
 						<!--<div id="addNewNominatedId" style="display:none;">
 							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
@@ -1802,9 +1819,45 @@ $(document).on("click","#deliveryCheckBox",function(){
 	}	
 });
 
+
+$(document).on("click","#prmaryAddrsId",function(){
+	
+	if($(this).is(":checked")){
+		$('#deliveryCheckBox').attr('checked', false);
+		$('#deliveryAddrId').hide();
+		$('.delvryAdrCls').val(0);
+		$('.delvryAddrCls').val('');
+		$("delvryAdrCls").trigger("chosen:updated");
+	}else{
+		$(this).trigger('click');
+	}
+});
+
+$(document).on("click","#bycourierId",function(){
+	$('#deliveryStatsId').val('CR');
+	$('#byPartyOfcId').attr('checked', false);
+	$(this).attr('checked', true);	
+});
+
+$(document).on("click","#byPartyOfcId",function(){
+	
+	$('#deliveryStatsId').val('PO');
+	$('#bycourierId').attr('checked', false);
+	$(this).attr('checked', true);	
+});
+
+
 $(document).on("click",".homeCls",function(){
 	window.location.reload();
 });
+
+$(document).on("click",".deliveriAddrCls",function(){
+	
+	$('.deliveriAddrCls').prop('checked',false);
+	$(this).prop('checked',false);
+	
+});
+
 </script>
 <script>
 var userip = "";
