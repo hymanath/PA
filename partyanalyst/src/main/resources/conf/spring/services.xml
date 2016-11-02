@@ -3610,6 +3610,7 @@
 	   <property name="cadreRegIssueStatusDAO" ref="cadreRegIssueStatusDAO"/>
 	   <property name="cadreRegUserDAO" ref="cadreRegUserDAO"/>
 	   <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO"/>
+	   <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO"/>
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >

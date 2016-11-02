@@ -220,6 +220,26 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="userPerformanceModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width:80%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>User ID - <span class="PerfmCadreUserName"></span></p>
+        <p><i><span class="tabUserPerMblDetailsId"></span></i></p>
+      </div>
+      <div class="modal-body">
+		<div id="userPerformanceImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+        <div id="userPerformanceBodyId"></div>
+      </div>
+	
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <input type="hidden" id="hiddenCadreSurveyUserId"></input>
 <input type="hidden" id="hiddenTabUserInfoId"></input>
 <input type="hidden" id="hiddenIssueStatusId"></input>
