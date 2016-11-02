@@ -1666,143 +1666,185 @@ public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long consti
 					if(vo == null){
 						vo = new UserPerformanceVO();
 						vo.setName(dateStr);
-						
-						if(hourId == 8l){
-							vo.setFrom8to9Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 9l){
-							vo.setFrom9to10Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 10l){
-							vo.setFrom10to11Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 11l){
-							vo.setFrom11to12Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 12l){
-							vo.setFrom12to1Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 13l){
-							vo.setFrom1to2Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 14l){
-							vo.setFrom2to3Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 15l){
-							vo.setFrom3to4Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 16l){
-							vo.setFrom4to5Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 17l){
-							vo.setFrom5to6Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 18l){
-							vo.setFrom6to7Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 19l){
-							vo.setFrom7to8Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else{
-							vo.setFrom8pmto8amCount(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
+						vo.setId(new Long(presentHour));
+						if(hourId <= presentHour){
+							//vo.setId(vo.getId()+1l);
+							vo.setUptoNowCount(vo.getUptoNowCount()+count);
 						}
+							if(hourId == 8l){
+								vo.setFrom8to9Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 9l){
+								vo.setFrom9to10Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 10l){
+								vo.setFrom10to11Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 11l){
+								vo.setFrom11to12Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 12l){
+								vo.setFrom12to1Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 13l){
+								vo.setFrom1to2Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 14l){
+								vo.setFrom2to3Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 15l){
+								vo.setFrom3to4Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 16l){
+								vo.setFrom4to5Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 17l){
+								vo.setFrom5to6Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 18l){
+								vo.setFrom6to7Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 19l){
+								vo.setFrom7to8Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else{
+								vo.setFrom8pmto8amCount(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}
+						/*}
+						else{
+							if(hourId == 8l){
+								vo.setFrom8to9Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 9l){
+								vo.setFrom9to10Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 10l){
+								vo.setFrom10to11Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 11l){
+								vo.setFrom11to12Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 12l){
+								vo.setFrom12to1Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 13l){
+								vo.setFrom1to2Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 14l){
+								vo.setFrom2to3Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 15l){
+								vo.setFrom3to4Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 16l){
+								vo.setFrom4to5Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 17l){
+								vo.setFrom5to6Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 18l){
+								vo.setFrom6to7Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 19l){
+								vo.setFrom7to8Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else{
+								vo.setFrom8pmto8amCount(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}
+						}*/
 						
 						dayWiseMap.put(dateStr, vo);
 					}
 					else{
-						if(hourId == 8l){
-							vo.setFrom8to9Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 9l){
-							vo.setFrom9to10Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 10l){
-							vo.setFrom10to11Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 11l){
-							vo.setFrom11to12Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 12l){
-							vo.setFrom12to1Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 13l){
-							vo.setFrom1to2Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 14l){
-							vo.setFrom2to3Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 15l){
-							vo.setFrom3to4Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 16l){
-							vo.setFrom4to5Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 17l){
-							vo.setFrom5to6Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 18l){
-							vo.setFrom6to7Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else if(hourId == 19l){
-							vo.setFrom7to8Count(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}else{
-							vo.setFrom8pmto8amCount(count);
-							vo.setOverAllCount(vo.getOverAllCount()+count);
-							if(hourId <= presentHour)
-								vo.setUptoNowCount(vo.getUptoNowCount()+count);
+						if(hourId <= presentHour){
+							//vo.setId(vo.getId()+1l);
+							vo.setUptoNowCount(vo.getUptoNowCount()+count);
 						}
+							if(hourId == 8l){
+								vo.setFrom8to9Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 9l){
+								vo.setFrom9to10Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 10l){
+								vo.setFrom10to11Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 11l){
+								vo.setFrom11to12Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 12l){
+								vo.setFrom12to1Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 13l){
+								vo.setFrom1to2Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 14l){
+								vo.setFrom2to3Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 15l){
+								vo.setFrom3to4Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 16l){
+								vo.setFrom4to5Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 17l){
+								vo.setFrom5to6Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 18l){
+								vo.setFrom6to7Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 19l){
+								vo.setFrom7to8Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else{
+								vo.setFrom8pmto8amCount(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}
+						/*}
+						else{
+							if(hourId == 8l){
+								vo.setFrom8to9Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 9l){
+								vo.setFrom9to10Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 10l){
+								vo.setFrom10to11Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 11l){
+								vo.setFrom11to12Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 12l){
+								vo.setFrom12to1Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 13l){
+								vo.setFrom1to2Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 14l){
+								vo.setFrom2to3Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 15l){
+								vo.setFrom3to4Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 16l){
+								vo.setFrom4to5Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 17l){
+								vo.setFrom5to6Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 18l){
+								vo.setFrom6to7Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else if(hourId == 19l){
+								vo.setFrom7to8Count(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}else{
+								vo.setFrom8pmto8amCount(count);
+								vo.setOverAllCount(vo.getOverAllCount()+count);
+							}
+						}*/
 					}
 				}
 			}
