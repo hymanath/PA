@@ -342,6 +342,11 @@
 												<div class="col-md-4 col-xs-12 col-sm-4">
 													<select attr_filter_value="All" class="form-control" id="apConstituencySelectBoxId"></select>
 												</div>
+												<div class="col-md-4 col-xs-12 col-sm-4">
+												<label class="checkbox-inline">
+													<input id="kuppamConstituencyCheckBoxId" checked type="checkbox">Exclude Kuppam 
+												</label>
+												</div>
 											</div>
 											<div Id="apscrollBarDivId">
 											<div id="apConstituencyRegistrationReportDivId" class="m_top20"></div>
