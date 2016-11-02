@@ -1959,7 +1959,7 @@ function getTabUserInfoDetails(tabUserIdStr){
    }else{
 	 $("#"+divId).html('NO DATA AVAILABLE.');	 
 	}
-	 $("#"+divId).find(".highcharts-legend-item:nth-child(3)").trigger("click")
+	 $("#"+divId).find(".highcharts-legend-item:nth-child(3)").trigger("click");
   }
   function getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active){
 	  $("#apConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -3283,7 +3283,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	function buildDtlsOfBellowLvlMember(result,divId,filterApplyType){
 		var locationNameArr = [];
 		var renewalArr = [];
-		var newCadreArr = [];
+		var newCadreArr = []; 
 		var cadre2014ArrPer = [];
 		var colorArr=[];
 		var jsonDataArr=[];
@@ -3380,10 +3380,10 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 			colorArr.push('#FFCA00');      
 			}
 			if(result!= null && result.length > 10){
-			var highChartDivHight = result.length*20;
+			var highChartDivHight = result.length*25;
 			$("#"+divId).height(highChartDivHight);  
 			}else{
-			$("#"+divId).height(260);    
+			$("#"+divId).height(280);    
 			}
 			$(function () {
 			  $("#"+divId).highcharts({
@@ -3408,6 +3408,13 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 					text: null
 				  }
 				},
+				tooltip: {
+					formatter: function() {
+						var series = this.point.series.chart.series, // get all series 
+						index = this.point.series.xData.indexOf(this.point.x); // get index																
+						return '<b>'+this.x +'<br/>'+this.series.name+':'+ this.y + '%<br/>2016 Reg-Count:' + result[index].total2016CadreCnt + '<br/>2016 New Reg-Count:' + result[index].total2016NewCadreCount + '<br/>2016 Renewal Reg-Count:'+ result[index].total2016RenewalCadreCount;
+					}
+				 },
 				legend: {
 				  reversed: true
 				},
@@ -3422,6 +3429,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		}else{
 		 $("#"+divId).html("NO DATA AVAILABLE");	
 		}
+		$("#"+divId).find(".highcharts-legend-item:nth-child(1)").trigger("click");
 	}
 	function getVoterInfo(activityMemberId){          
 		var startDate = '';    
@@ -3646,5 +3654,5 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
             series:jsonDataArr 
           });
         });
-		  
+	$("#individualDtlsId").find(".highcharts-legend-item:nth-child(1)").trigger("click");  
 	}
