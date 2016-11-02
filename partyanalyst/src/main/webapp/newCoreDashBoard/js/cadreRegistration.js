@@ -1,4 +1,5 @@
 
+
 $(document).on("click",".compareBlockSwitchCls",function(){
 	$(".detailsCls").hide();           
 	$(".compareCls").show();  
@@ -1941,15 +1942,19 @@ function getTabUserInfoDetails(tabUserIdStr){
 					text: ' '
 				}
 			},
-			  tooltip: {
-					formatter: function() {
-						var series = this.point.series.chart.series, // get all series 
-						index = this.point.series.xData.indexOf(this.point.x); // get index																
-						return '<b>'+this.x +'<br/>'+this.series.name+':'+ this.y + '%<br/>2016 Reg-Count:' + result[index].total2016CadreCnt + '<br/>2016 New Reg-Count:' + result[index].total2016NewCadreCount + '<br/>2016 Renewal Reg-Count:'+ result[index].total2016RenewalCadreCount;
-					}
-				 },
-
-			plotOptions: {
+			tooltip: {
+			 formatter: function() {
+					var series = this.point.series.chart.series, // get all series 
+					index = this.point.series.xData.indexOf(this.point.x); // get index	
+					var _locationName = this.x;
+						var obj = result.filter(function ( obj ) {
+							var objLocation = obj.locationName;
+							return objLocation.toUpperCase() === _locationName.toUpperCase();
+						})[0];
+					 return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + '<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+'<br/>'+this.series.name+':'+ this.y +'%';
+				}
+			},
+           plotOptions: {
 				column: {
 					stacking: 'normal'
 				}
@@ -2597,14 +2602,14 @@ function getTabUserInfoDetails(tabUserIdStr){
 						tooltip: {
 				         formatter: function() {
 								var series = this.point.series.chart.series, // get all series 
-								index = this.point.series.xData.indexOf(this.point.x); // get index																
-								return '<b>'+this.x +'<br/>'+this.series.name+':'+ this.y + '%<br/>2016 Reg-Count:' + result[index].total2016CadreCnt + '<br/>2016 New Reg-Count:' + result[index].total2016NewCadreCount + '<br/>2016 Renewal Reg-Count:'+ result[index].total2016RenewalCadreCount;
+								index = this.point.series.xData.indexOf(this.point.x); // get index	
+								var _locationName = this.x;
+									var obj = result.filter(function ( obj ) {
+										return obj.locationName === _locationName.toUpperCase();
+									})[0];
+								 return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + '<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+'<br/>'+this.series.name+':'+ this.y +'%';
 							}
 						 },
-						/* legend: {
-							reversed: true,
-							
-						}, */
 						legend: {
 							enabled: true,
 							floating: false,
@@ -3409,12 +3414,16 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 				  }
 				},
 				tooltip: {
-					formatter: function() {
-						var series = this.point.series.chart.series, // get all series 
-						index = this.point.series.xData.indexOf(this.point.x); // get index																
-						return '<b>'+this.x +'<br/>'+this.series.name+':'+ this.y + '%<br/>2016 Reg-Count:' + result[index].total2016CadreCnt + '<br/>2016 New Reg-Count:' + result[index].total2016NewCadreCount + '<br/>2016 Renewal Reg-Count:'+ result[index].total2016RenewalCadreCount;
-					}
-				 },
+					 formatter: function() {
+							var series = this.point.series.chart.series, // get all series 
+							index = this.point.series.xData.indexOf(this.point.x); // get index	
+							var _locationName = this.x;
+								var obj = result.filter(function ( obj ) {
+									return obj.locationName === _locationName.toUpperCase();
+								})[0];
+							 return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + '<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+'<br/>'+this.series.name+':'+ this.y +'%';
+						}
+					},
 				legend: {
 				  reversed: true
 				},
