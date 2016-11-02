@@ -56,6 +56,7 @@
                                                     <li>total data collectors<span id="totalDataCollectorsId">0</span></li>
                                                     <li>active<span id="activeDataCollectorsId">0</span></li>
                                                     <li>passive<span id="passiveDataCollectorsId">0</span></li>
+													<li>not yet started<span id="notYetStartedDataCollectorsId">0</span></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -70,14 +71,15 @@
                         	<h4 class="panel-title text-capital">open issues</h4>
                             <div id="openIssues" class="m_top20"></div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-6">
-                        	<h4 class="panel-title text-capital">fixed issues</h4>
-                            <div id="fixedIssues" class="m_top20" ></div>
-                        </div>
 						<div class="col-md-6 col-xs-12 col-sm-6">
                         	<h4 class="panel-title text-capital">Closed issues</h4>
                             <div id="closedIssues" class="m_top20"></div>
                         </div>
+                        <div class="col-md-6 col-xs-12 col-sm-6">
+                        	<h4 class="panel-title text-capital">fixed issues</h4>
+                            <div id="fixedIssues" class="m_top20" ></div>
+                        </div>
+						
 					</div>
                 </div>
             </div>
