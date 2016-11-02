@@ -1835,7 +1835,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}
 				 }	
 				}else if(filterApplyType=="good"){
-				  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+				  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 					   locationNameArr.push(result[i].locationName);
 					   if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -1848,7 +1848,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}
 				  }
 				}else if(filterApplyType=="ok"){
-					  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+					  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 					   locationNameArr.push(result[i].locationName);
 				       if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -1861,7 +1861,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}
 				      }
 				}else if(filterApplyType=="poor"){
-				  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+				  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 					 locationNameArr.push(result[i].locationName);
 					   if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -1874,7 +1874,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 						}
 				  }
 				}else if(filterApplyType == "verypoor"){
-					if(result[i].total2016CadrePer <= 60){
+					if(result[i].total2016CadrePer < 60){
 				      locationNameArr.push(result[i].locationName);
 				      if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -1951,7 +1951,11 @@ function getTabUserInfoDetails(tabUserIdStr){
 							var objLocation = obj.locationName;
 							return objLocation.toUpperCase() === _locationName.toUpperCase();
 						})[0];
-					 return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + '<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+'<br/>'+this.series.name+':'+ this.y +'%';
+					     var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
+						  newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
+						  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+						  
+					return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+'%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%"+cadre2014; 
 				}
 			},
            plotOptions: {
@@ -2097,19 +2101,19 @@ function getTabUserInfoDetails(tabUserIdStr){
 				   $("#"+divId).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>")
 				 }	
 				}else if(filterApplyType=="good"){
-				  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+				  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						$("#"+divId).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>")
 				  }
 				}else if(filterApplyType=="ok"){
-					  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+					  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 					  $("#"+divId).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>")
 					  }
 				}else if(filterApplyType=="poor"){
-				  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+				  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 					 $("#"+divId).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>")
 				  }
 				}else if(filterApplyType == "verypoor"){
-					if(result[i].total2016CadrePer <= 60){
+					if(result[i].total2016CadrePer < 60){
 					   $("#"+divId).append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>")
 					}
 				}	  
@@ -2311,28 +2315,28 @@ function getTabUserInfoDetails(tabUserIdStr){
 								  newCadreArr.push(result[i].total2016NewCadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						   locationNameArr.push(result[i].locationName);
 						   cadre2014ArrPer.push(result[i].total2014CadrePer);
 						   renewalArr.push(result[i].total2016RenewalCadrePer);
 						   newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
 							   cadre2014ArrPer.push(result[i].total2014CadrePer);
 							   renewalArr.push(result[i].total2016RenewalCadrePer);
 							   newCadreArr.push(result[i].total2016NewCadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							 locationNameArr.push(result[i].locationName);
 							 cadre2014ArrPer.push(result[i].total2014CadrePer);
 							 renewalArr.push(result[i].total2016RenewalCadrePer);
 							 newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							   locationNameArr.push(result[i].locationName);
 							   cadre2014ArrPer.push(result[i].total2014CadrePer);
 							   renewalArr.push(result[i].total2016RenewalCadrePer);
@@ -2353,25 +2357,25 @@ function getTabUserInfoDetails(tabUserIdStr){
 					               newCadreArr.push(result[i].total2016NewCadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						         locationNameArr.push(result[i].locationName);
 						 	     renewalArr.push(result[i].total2016RenewalCadrePer);
 					             newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							    locationNameArr.push(result[i].locationName);
 								renewalArr.push(result[i].total2016RenewalCadrePer);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							    locationNameArr.push(result[i].locationName);
 								renewalArr.push(result[i].total2016RenewalCadrePer);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							    locationNameArr.push(result[i].locationName);
 							 	renewalArr.push(result[i].total2016RenewalCadrePer);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
@@ -2391,25 +2395,25 @@ function getTabUserInfoDetails(tabUserIdStr){
 								 cadre2014ArrPer.push(result[i].total2014CadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						     locationNameArr.push(result[i].locationName);
 							 renewalArr.push(result[i].total2016RenewalCadrePer);
 							 cadre2014ArrPer.push(result[i].total2014CadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
 					           renewalArr.push(result[i].total2016RenewalCadrePer);
 					           cadre2014ArrPer.push(result[i].total2014CadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							    locationNameArr.push(result[i].locationName);
 					            renewalArr.push(result[i].total2016RenewalCadrePer);
 					            cadre2014ArrPer.push(result[i].total2014CadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							   locationNameArr.push(result[i].locationName);
 					           renewalArr.push(result[i].total2016RenewalCadrePer);
 					           cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -2430,25 +2434,25 @@ function getTabUserInfoDetails(tabUserIdStr){
 					              cadre2014ArrPer.push(result[i].total2014CadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						     locationNameArr.push(result[i].locationName);
 							 newCadreArr.push(result[i].total2016NewCadrePer);
 					         cadre2014ArrPer.push(result[i].total2014CadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
 					           newCadreArr.push(result[i].total2016NewCadrePer);
 					           cadre2014ArrPer.push(result[i].total2014CadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							    locationNameArr.push(result[i].locationName);
 					          	newCadreArr.push(result[i].total2016NewCadrePer);
 					            cadre2014ArrPer.push(result[i].total2014CadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							    locationNameArr.push(result[i].locationName);
 					         	newCadreArr.push(result[i].total2016NewCadrePer);
 					            cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -2466,22 +2470,22 @@ function getTabUserInfoDetails(tabUserIdStr){
 								 renewalArr.push(result[i].total2016RenewalCadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						     locationNameArr.push(result[i].locationName);
 							 renewalArr.push(result[i].total2016RenewalCadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
 					         	renewalArr.push(result[i].total2016RenewalCadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							    locationNameArr.push(result[i].locationName);
 					           	renewalArr.push(result[i].total2016RenewalCadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							  locationNameArr.push(result[i].locationName);
 					          renewalArr.push(result[i].total2016RenewalCadrePer);
 							}
@@ -2498,22 +2502,22 @@ function getTabUserInfoDetails(tabUserIdStr){
 								 newCadreArr.push(result[i].total2016NewCadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						     locationNameArr.push(result[i].locationName);
 							 newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
 					           newCadreArr.push(result[i].total2016NewCadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							     locationNameArr.push(result[i].locationName);
 					             newCadreArr.push(result[i].total2016NewCadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							    locationNameArr.push(result[i].locationName);
 					            newCadreArr.push(result[i].total2016NewCadrePer);
 							}
@@ -2530,22 +2534,22 @@ function getTabUserInfoDetails(tabUserIdStr){
 								  cadre2014ArrPer.push(result[i].total2014CadrePer);
 							 }	
 						}else if(filterApplyType=="good"){
-						  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						     locationNameArr.push(result[i].locationName);
 							 cadre2014ArrPer.push(result[i].total2014CadrePer);
 						  }
 						}else if(filterApplyType=="ok"){
-							  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
 					           cadre2014ArrPer.push(result[i].total2014CadrePer);
 							  }
 						}else if(filterApplyType=="poor"){
-						  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							    locationNameArr.push(result[i].locationName);
 					        	 cadre2014ArrPer.push(result[i].total2014CadrePer);
 						  }
 						}else if(filterApplyType == "verypoor"){
-							if(result[i].total2016CadrePer <= 60){
+							if(result[i].total2016CadrePer < 60){
 							   locationNameArr.push(result[i].locationName);
 					           cadre2014ArrPer.push(result[i].total2014CadrePer);
 							}
@@ -2569,6 +2573,9 @@ function getTabUserInfoDetails(tabUserIdStr){
 			   colorArr.push('#FFCA00');		  
 			   } 
 			  }
+			  
+		
+		
 			 /*Setting Dynamic height for highChart */
 			 if(locationNameArr!= null && locationNameArr.length > 10){
 			  var highChartDivHight = locationNameArr.length*20;
@@ -2607,7 +2614,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 									var obj = result.filter(function ( obj ) {
 										return obj.locationName === _locationName.toUpperCase();
 									})[0];
-								 return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + '<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+'<br/>'+this.series.name+':'+ this.y +'%';
+								 var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
+								  newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
+								  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+								 
+								 /* return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + newPer +'<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+renewalPer + cadre2014; */
+							return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+ '%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%"+cadre2014; 
+
 							}
 						 },
 						legend: {
@@ -3319,7 +3332,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 						}
 				 }	
 				}else if(filterApplyType=="good"){
-				  if(result[i].total2016CadrePer >= 90 && result[i].total2016CadrePer<=100){
+				  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 					   locationNameArr.push(result[i].locationName);
 					   if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -3332,7 +3345,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 						}
 				  }
 				}else if(filterApplyType=="ok"){
-					  if(result[i].total2016CadrePer >= 80 && result[i].total2016CadrePer<=90){
+					  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 					   locationNameArr.push(result[i].locationName);
 				       if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -3345,7 +3358,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 						}
 				      }
 				}else if(filterApplyType=="poor"){
-				  if(result[i].total2016CadrePer >= 60 && result[i].total2016CadrePer <= 80){
+				  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 					 locationNameArr.push(result[i].locationName);
 					   if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -3358,7 +3371,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 						}
 				  }
 				}else if(filterApplyType == "verypoor"){
-					if(result[i].total2016CadrePer <= 60){
+					if(result[i].total2016CadrePer < 60){
 				      locationNameArr.push(result[i].locationName);
 				      if(result[i].total2014CadrePer > 0){
 						  cadre2014ArrPer.push(result[i].total2014CadrePer);
@@ -3414,16 +3427,19 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 				  }
 				},
 				tooltip: {
-					 formatter: function() {
-							var series = this.point.series.chart.series, // get all series 
-							index = this.point.series.xData.indexOf(this.point.x); // get index	
-							var _locationName = this.x;
-								var obj = result.filter(function ( obj ) {
-									return obj.locationName === _locationName.toUpperCase();
-								})[0];
-							 return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + '<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+'<br/>'+this.series.name+':'+ this.y +'%';
-						}
-					},
+				 formatter: function() {
+						var series = this.point.series.chart.series, // get all series 
+						index = this.point.series.xData.indexOf(this.point.x); // get index	
+						var _locationName = this.x;
+							var obj = result.filter(function ( obj ) {
+								return obj.locationName === _locationName.toUpperCase();
+							})[0];
+						 var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
+						  newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
+						  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+						  return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+ '%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%" +cadre2014; 
+					}
+				},
 				legend: {
 				  reversed: true
 				},
