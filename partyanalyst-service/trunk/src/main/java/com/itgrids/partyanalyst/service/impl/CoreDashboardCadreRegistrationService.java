@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -1501,7 +1502,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description :This Service Method is used get cadre details Location wise. 
 	* @since 14-OCT-2016
 	*/
- public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues){
+ public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded){
 	
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
@@ -1531,7 +1532,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		 }
 		    
 			 // setting location name 
-			  List<Object[]> locationIdsAndNameObjList = userAddressDAO.getLocationTypeWiseLocationName(stateId,locationType,accessLevelId,userAccessLevelValues);
+			  List<Object[]> locationIdsAndNameObjList = userAddressDAO.getLocationTypeWiseLocationName(stateId,locationType,accessLevelId,userAccessLevelValues,isKuppamExcluded);
 			  setRequiredLocationName(locationIdsAndNameObjList,locationIdAndNameMap);
 		   
 		 
@@ -1544,13 +1545,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		     userAccessLevelValues = new ArrayList<Long>(locationIdAndNameMap.keySet()); 
 		  
 		   List<Object[]> total2014CadreObjList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues);//2014 cadre
-		  set2014CadreCountToMap(total2014CadreObjList,locationWiseCadreDetaislMap,locationIdAndNameMap);
-		 // List<Object[]> total2016CadreObjList = tdpCadreDAO.getTotalCadreCountLocationWiseBasedOnYear(locationType, stateId, fromDate, toDate, 4l,accessLevelId,userAccessLevelValues);//2016 cadre
-		  List<Object[]> total2016CadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues, fromDate, toDate);
-		  set2016CadreCountToMap(total2016CadreObjList,locationWiseCadreDetaislMap);
-		 // List<Object[]> total2016RenewalCadreObjList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreCntLocationWise(stateId, locationType, fromDate, toDate,accessLevelId,userAccessLevelValues);
-		  List<Object[]> total2016RenewalCadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWise(locationScopeId, userAccessLevelValues, fromDate, toDate);
-		  setRenewalCountToMap(total2016RenewalCadreObjList,locationWiseCadreDetaislMap);
+		   set2014CadreCountToMap(total2014CadreObjList,locationWiseCadreDetaislMap,locationIdAndNameMap);
+		   List<Object[]> total2016CadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues, fromDate, toDate);
+		   set2016CadreCountToMap(total2016CadreObjList,locationWiseCadreDetaislMap);
+		   List<Object[]> total2016RenewalCadreObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountLocationWise(locationScopeId, userAccessLevelValues, fromDate, toDate);
+		   setRenewalCountToMap(total2016RenewalCadreObjList,locationWiseCadreDetaislMap);
 		  //calculating new cadre and percentage
 		  calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
 		  //sortring 
@@ -1570,16 +1569,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				   if(cadreReportVO.getTotal2016CadrePer() > 100){
 					   veryGoodCnt = veryGoodCnt+1;
 					}
-					if(cadreReportVO.getTotal2016CadrePer() >= 90 && cadreReportVO.getTotal2016CadrePer()<=100){
+					if(cadreReportVO.getTotal2016CadrePer() > 90 && cadreReportVO.getTotal2016CadrePer()<=100){
 				      goodCnt=goodCnt+1;
 				    }
-					if(cadreReportVO.getTotal2016CadrePer() >= 80 && cadreReportVO.getTotal2016CadrePer()<=90){
+					if(cadreReportVO.getTotal2016CadrePer() > 80 && cadreReportVO.getTotal2016CadrePer()<=90){
 					  okCnt=okCnt+1;
 				    }
-					if(cadreReportVO.getTotal2016CadrePer() >= 60 && cadreReportVO.getTotal2016CadrePer() <= 80){
+					if(cadreReportVO.getTotal2016CadrePer() > 60 && cadreReportVO.getTotal2016CadrePer() <= 80){
 					  poorCnt=poorCnt+1;
 				   }
-				   if(cadreReportVO.getTotal2016CadrePer() <= 60){
+				   if(cadreReportVO.getTotal2016CadrePer() < 60){
 					 veryPoorCnt=veryPoorCnt+1;
 				   }
 		  }

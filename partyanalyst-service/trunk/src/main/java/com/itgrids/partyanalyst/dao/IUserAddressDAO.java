@@ -22,6 +22,6 @@ public interface IUserAddressDAO extends GenericDao<UserAddress, Long>  {
 	public Long getLocalElectionBodyByUserAddress(Long userAddressId);
 	public List<Object[]> getUserAddressDetailsByMinuteId(Long userAddressId);
 	public List<Object[]> getUserTypeWiseLocationName(Long stateId,Long userType);
-	public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String LocationType,Long accessLevelId,List<Long> accessLevelValue);
+	public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String LocationType,Long accessLevelId,List<Long> accessLevelValue,String isKuppamExcluded);
 	public List<Object[]> getConstituencyIdAndName(Long stateId,String LocationType);
 }
