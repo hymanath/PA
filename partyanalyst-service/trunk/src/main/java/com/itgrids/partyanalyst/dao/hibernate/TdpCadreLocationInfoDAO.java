@@ -143,7 +143,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 				queryStr.append(" booth.panchayat.panchayatId , booth.panchayat.panchayatName  as name  ,'Panchayat','','','',model.cadre2014,model.cadre2014Percent" +
 						",model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-				queryStr.append(" '','','',booth.localElectionBodyId,booth.name,'"+IConstants.MUNCIPALITY_CORPORATION_LEVEL+"',model.cadre2014,model.cadre2014Percent" +
+				queryStr.append(" '','','',booth.localBody.localElectionBodyId,booth.name,'"+IConstants.MUNCIPALITY_CORPORATION_LEVEL+"',model.cadre2014,model.cadre2014Percent" +
 						",model.cadre2016,model.cadre2016Percent,model.newCadre,model.newCadrePercent,model.renewalCadre,model.renewalCadrePercent");
 			}
 			
