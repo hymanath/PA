@@ -156,7 +156,10 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
             if(result != null){
 				inFieldAP = result.id;
 				totalMemAP = result.attenteeCount;
+				$("#memDtlsUpdateProcessImgAPhourId").hide();
+				$("#memDtlsUpdateProcessImgAPtotalId").hide();         
 				$("#inFieldAP").html(inFieldAP); 
+				$("#totalInFieldAP").html(totalMemAP);     
 				//alert("inFieldAP:"+inFieldAP+"totalMemAP:"+totalMemAP);  
 			}else{
 			}	
@@ -179,10 +182,13 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
             if(result != null){
 				inFieldTS = result.id;
 				totalMemTS = result.attenteeCount;
+				$("#memDtlsUpdateProcessImgTShourId").hide();
+				$("#memDtlsUpdateProcessImgTStotalId").hide(); 
 				$("#inFieldTS").html(inFieldTS);
+				$("#totalInFieldTS").html(inFieldTS); 
 				//alert("inFieldTS:"+inFieldTS+"totalMemTS:"+totalMemTS);   
 			}else{    
-			}	
+			}	    
 		});
 	}
 	
@@ -798,12 +804,12 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS">-</h3>'; 
-							str1+='<h5 class="text-capital">IN FIELD NOW</h5>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS"><div id="memDtlsUpdateProcessImgTShourId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>'; 
+							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.inFieldCount)+'</h3>';
-							//str1+='<h5 class="text-capital">in field now</h5>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldTS"><div id="memDtlsUpdateProcessImgTStotalId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>';
+							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
 							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
@@ -826,6 +832,8 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					}
 				});
 			}); */  
+			$("#memDtlsUpdateProcessImgTShourId").show();  
+			$("#memDtlsUpdateProcessImgTStotalId").show();    
 			getInFieldCountTS(36);
 	}
 	function buildEnumeratorsInfo(result){
@@ -866,15 +874,15 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP">-</h3>';  
-							str1+='<h5 class="text-capital">IN FIELD NOW</h5>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP"><div id="memDtlsUpdateProcessImgAPhourId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>';       
+							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.inFieldCount)+'</h3>';
-							//str1+='<h5 class="text-capital">in field now</h5>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldAP"><div id="memDtlsUpdateProcessImgAPtotalId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>';
+							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';      
+							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';     
 							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
 							str1+='<h5 class="text-capital">today submitted data</h5>';    
 						str1+='</div>';
@@ -893,8 +901,12 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 						$(this).text(Math.ceil(now));
 					}
 				});
-			}); */       
-			getInFieldCountAP(1);    
+			}); */ 
+			$("#memDtlsUpdateProcessImgAPhourId").show();
+			$("#memDtlsUpdateProcessImgAPtotalId").show();      
+			getInFieldCountAP(1); 
+			
+			
 	}
 	
 	function getRegistrationCountDtls(location,scope){
@@ -1750,7 +1762,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 activityMemberId : globalActivityMemberId,
 				 stateId : globalStateId,
 				 userTypeId : globalUserTypeId,
-				 fromDate : "2/6/2016",
+				 fromDate : "2/10/2016",
 				 todate : getTodayDate()
 			  }
 		$.ajax({
@@ -2204,7 +2216,7 @@ function getTabUserInfoDetails(tabUserIdStr){
  
  $(document).on("click",".ascendingTsSorting",function(){
 	   var tsConsascendingOrderArr=[];
-	   var renewal2016CheckboxIsChecked="Y";
+	   var renewal2016CheckboxIsChecked="Y"; 
 	   var new2016CheckboxIsChecked="Y";
 	   var cadre2014CheckboxIsChecked="Y";
 	   var  is2014Active='No';
