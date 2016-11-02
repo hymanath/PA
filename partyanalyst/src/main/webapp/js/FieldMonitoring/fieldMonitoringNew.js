@@ -152,7 +152,7 @@ function buildTabUserDetails(result){
 				str+='<th>fixed issues</th>';
 				str+='<th>closed issues</th>';
 				str+='<th></th>';
-				str+='<th></th>';
+				//str+='<th></th>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result.subList){
@@ -202,7 +202,7 @@ function buildTabUserDetails(result){
 					else
 						str+='<td> - </td>';
 					str+='<td><i class="glyphicon glyphicon-cog manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'" attr_constituency_id="'+result.subList[i].constituencyId+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
-					str+='<td><i class="glyphicon glyphicon-eye-open userPerformanceCls" title="Click Here to View User Performance" style="cursor:pointer;" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'"></i></td>'
+					//str+='<td><i class="glyphicon glyphicon-eye-open userPerformanceCls" title="Click Here to View User Performance" style="cursor:pointer;" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'"></i></td>'
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -249,13 +249,177 @@ function getUserPerformanceInfo(cadreSurveyUserId,tabUserInfoId){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		   /*if(result != null && result.length > 0)
-			   buildIssueTrackingDetails(result);
+		   if(result != null && result.length > 0)
+			   buildUserPerformanceDetails(result[result.length - 1]);
 			else{
-				 $("#issueTrackingImgId").hide();
-				 $("#issueTrackingBodyId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
-			}*/
+				 $("#userPerformanceImgId").hide();
+				 $("#userPerformanceBodyId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+			}
 	   });
+  }
+  
+  function buildUserPerformanceDetails(result){
+	  var str = '';
+	  
+	str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="panel panel-default">';
+				str+='<div class="panel-heading" style="background-color:#7FB0EC">';
+					str+='<h4 class="panel-title">Today <small>Till Now</small> '+result.overAllCount+' </h4>';
+				str+='</div>';
+				str+='<div class="panel-body pad_0">';
+					str+='<table class="table table-bordered tableModalCls">';
+						str+='<tr>';
+						if(result.id > 8)
+							str+='<td class="completed">';
+						else if(result.id == 8)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from8to9Count+'</h4>';
+								str+='<p>8AM - 9AM</p>';
+							str+='</td>';
+						if(result.id > 9)
+							str+='<td class="completed">';
+						else if(result.id == 9)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from9to10Count+'</h4>';
+								str+='<p>9AM - 10AM</p>';
+							str+='</td>';
+						if(result.id > 10)
+							str+='<td class="completed">';
+						else if(result.id == 10)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from10to11Count+'</h4>';
+								str+='<p>10AM - 11AM</p>';
+							str+='</td>';
+						if(result.id > 11)
+							str+='<td class="completed">';
+						else if(result.id == 11)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from11to12Count+'</h4>';
+								str+='<p>11AM - 12PM</p>';
+							str+='</td>';
+						if(result.id > 12)
+							str+='<td class="completed">';
+						else if(result.id == 12)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from12to1Count+'</h4>';
+								str+='<p>12PM - 1PM</p>';
+							str+='</td>';
+						if(result.id > 13)
+							str+='<td class="completed">';
+						else if(result.id == 13)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from1to2Count+'</h4>';
+								str+='<p>1PM - 2PM</p>';
+							str+='</td>';
+						if(result.id > 14)
+							str+='<td class="completed">';
+						else if(result.id == 14)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from2to3Count+'</h4>';
+								str+='<p>2PM - 3PM</p>';
+							str+='</td>';
+						if(result.id > 15)
+							str+='<td class="completed">';
+						else if(result.id == 15)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from3to4Count+'</h4>';
+								str+='<p>3PM - 4PM</p>';
+							str+='</td>';
+						if(result.id > 16)
+							str+='<td class="completed">';
+						else if(result.id == 16)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from4to5Count+'</h4>';
+								str+='<p>4PM - 5PM</p>';
+							str+='</td>';
+						if(result.id > 17)
+							str+='<td class="completed">';
+						else if(result.id == 17)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from5to6Count+'</h4>';
+								str+='<p>5PM - 6PM</p>';
+							str+='</td>';
+						if(result.id > 18)
+							str+='<td class="completed">';
+						else if(result.id == 18)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from6to7Count+'</h4>';
+								str+='<p>6PM - 7PM</p>';
+							str+='</td>';
+						if(result.id > 19)
+							str+='<td class="completed">';
+						else if(result.id == 19)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from7to8Count+'</h4>';
+								str+='<p>7PM - 8PM</p>';
+							str+='</td>';
+						if(result.id > 20)
+							str+='<td class="completed">';
+						else if(result.id == 20)
+							str+='<td class="active">';
+						else
+							str+='<td>';
+								str+='<h4>'+result.from8pmto8amCount+'</h4>';
+								str+='<p>8PM - 8AM</p>';
+							str+='</td>';
+							/*str+='<td class="completed arrowOpen">';
+								str+='<h4 class="">60</h4>';
+								str+='<p>8AM - 9AM</p>';
+								str+='<div class="arrowBox">';
+									str+='<div class="row">';
+										str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+											str+='<small>Till 2 PM</small>';
+										str+='</div>';
+										str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+											str+='<h4>01/11/2016</h4>';
+										str+='</div>';
+										str+='<div class="col-md-8 col-xs-12 col-sm-8">';
+											str+='<div class="progress">';
+											  str+='<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">120';
+											  str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</td>';
+							str+='<td class="active">';
+								str+='<h4>60</h4>';
+								str+='<p>8AM - 9AM</p>';
+							str+='</td>';*/
+						str+='</tr>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#userPerformanceImgId").hide();
+	$("#userPerformanceBodyId").html(str);
   }
 
 $(document).on("click",".manageIssues",function(){

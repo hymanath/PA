@@ -14,7 +14,42 @@
 
 </head>
 <body>
-<style>
+<style type="text/css">
+.pad_0
+{
+	padding:0px;
+}
+.arrowBox
+{
+	width:300px;
+	display:none;
+	position:absolute;
+	top:-50px;
+	background-color:#fff;
+	padding:10px;
+	z-index:99
+}
+.tableModalCls .completed
+{
+	background-color:#82B0E6;
+	position:relative;
+}
+.tableModalCls .active
+{
+	background-color:#E3C05E !important;
+}
+.arrowOpen
+{
+	cursor:pointer;
+}
+.arrowOpen:hover .arrowBox
+{
+	display:block;
+}
+.table , .panel
+{
+	margin-bottom:0px !important;
+}
 #detailsTable_filter{
 	float:right !important;
 }
@@ -222,7 +257,7 @@
 
 <div class="modal fade" id="userPerformanceModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width:80%;" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width:80%">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>User ID - <span class="PerfmCadreUserName"></span></p>
