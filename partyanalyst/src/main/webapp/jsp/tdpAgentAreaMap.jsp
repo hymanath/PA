@@ -90,7 +90,7 @@ var pathArr = [];
 			endDate:"${param.endDate}"
 			
 		}
-		
+		$('#map1').html('<div id=""><img class="ajaxImgStyle" src="images/icons/search.gif"/></div>');
 		$.ajax({
           type:'GET',
           url: 'getLatestLattitudeLangitudeOfTabUserAgentDetailsAction.action',
@@ -100,6 +100,7 @@ var pathArr = [];
 			markersArr = [];
 			pathArr = [];
 			if(result != null && result.length > 0){
+				$('#map1').html('');
 				for(var i in result){
 					//var obj={lat:parseFloat(result[i].latitude), lng:parseFloat(result[i].longitude)};
 					//pathArr.push(obj);
@@ -116,7 +117,11 @@ var pathArr = [];
 					markersArr.push(temparr); */
 					//displayLocation(result[i].lattitude,result[i].longitude);
 				}
+				
 			}
+			else{
+					alert('No Registration staff are available in this Constituency.Please try later...');
+				}
 			//buildUserTrackingMap(markersArr,pathArr);
 			//initMap(markersArr);
 		});
