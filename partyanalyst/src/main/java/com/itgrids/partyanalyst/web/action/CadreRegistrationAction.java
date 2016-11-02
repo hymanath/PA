@@ -2974,8 +2974,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  jobj = new JSONObject(getTask());
 		  String startDate = jobj.getString("startDate");
 		  String endDate = jobj.getString("endDate");
-		  Long stateId = jobj.getLong("stateId"); 
-		  nameVO = coreDashboardCadreRegistrationService.getInFieldCount(stateId,startDate, endDate);
+		  //Long stateId = jobj.getLong("stateId"); 
+		  nameVO = coreDashboardCadreRegistrationService.getInFieldCount(startDate, endDate);  
 	  }catch(Exception e){ 
 		  e.printStackTrace();      
 	  }
