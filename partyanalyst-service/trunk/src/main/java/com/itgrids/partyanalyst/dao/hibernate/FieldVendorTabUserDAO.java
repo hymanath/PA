@@ -237,5 +237,36 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 									" and model.isDeleted = 'N'");
 		query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
 		return query.list();
-	}	
+	}
+	
+	public Long getPassiveDataCollectorsCount(Date today,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select count(distinct model.tdpCadre.insertedBy.cadreSurveyUserId)" +
+						" from TdpCadreEnrollmentYear model" +
+						" where model.tdpCadre.enrollmentYear = 2014");
+		if(today != null)
+			sb.append(" and date(model.tdpCadre.surveyTime) =:today");
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and  model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and model.tdpCadre.userAddress.state.stateId = 1 ");
+		}
+		
+		
+		sb.append(" and model.tdpCadre.isDeleted = 'N'" +
+					" and model.enrollmentYear.enrollmentYearId = 4" +
+					" and model.isDeleted = 'N'");
+		/*if(lastHourTime != null)
+		sb.append(" and model.tdpCadre.surveyTime not in (:lastHourTime) ");*/
+		Query query = getSession().createQuery(sb.toString());
+		if(today != null)
+			query.setParameter("today", today);
+		/*if(lastHourTime != null)
+			query.setParameter("lastHourTime", lastHourTime);*/
+		return (Long) query.uniqueResult();
+	}
+	
 }
