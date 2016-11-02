@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /*
@@ -307,7 +308,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 		   //tdpCadreDAO.getLocationsRegistrationsDetails(inputVO);
 			upateElectionResulstsForVisualization(parentLocationVO,locationsMap,inputVO);
 		   
-		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN)){
 			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
 			   List<Object[]> locationDetails = tdpCadreLocationInfoDAO.getLocationsRegistrationsDetails(inputVO);
 			   setMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
@@ -328,7 +329,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			}
 		   
 		   //between dates
-		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN)){
 			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
 			   List<Object[]> locationDetails = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
 			   setDateWiseMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
@@ -341,13 +342,10 @@ public class GISVisualizationService implements IGISVisualizationService{
 			}
 		   
 		   //today
-		  // inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
-		  // inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		   inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
+		   inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new DateUtilService().getCurrentDateAndTime()));
 		   
-		   inputVO.setStartDate(new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("dd-MM-yyyy").parse("26-10-2016")));
-		   inputVO.setEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("dd-MM-yyyy").parse("26-10-2016")));
-		   
-		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+		   if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && inputVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN)){
 			   inputVO.setChildLocationType(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ;
 			   List<Object[]> locationDetails = tdpCadreDateWiseInfoDAO.getDateWiseLocationsRegistrationsDetails(inputVO);
 			   setDateWiseMembershipDriveVisualizationDetails(locationDetails,parentLocationVO,locationsMap,loctnsTargetCntMap);
@@ -379,10 +377,10 @@ public class GISVisualizationService implements IGISVisualizationService{
 					YCPMLAMap = getYcpCandidatesJoinedIntoTDPParty();
 					setDataToMap( resultList,locationsMap, YCPMLAMap);
 				}else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
-					if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL)){
+					if(inputVO.getAreaType() != null && inputVO.getAreaType().equalsIgnoreCase(IConstants.RURAL)){
 						resultList = boothConstituencyElectionDAO.getMandalLevelElectionResultsForGISVisualization(inputVO);
 						setDataToMap( resultList,locationsMap, YCPMLAMap);
-					}else if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURALURBAN)){
+					}else if(inputVO.getAreaType() != null && inputVO.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN)){
 						inputVO.setParentLocationType(IConstants.RURAL);
 						resultList = boothConstituencyElectionDAO.getMandalLevelElectionResultsForGISVisualization(inputVO);
 						setDataToMap( resultList,locationsMap, YCPMLAMap);
@@ -392,7 +390,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 						setDataToMap( resultList,locationsMap, YCPMLAMap);
 						inputVO.setParentLocationType(IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
 					}
-					else if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN)){
+					else if(inputVO.getAreaType() != null && inputVO.getAreaType().equalsIgnoreCase(IConstants.URBAN)){
 						resultList = boothConstituencyElectionDAO.getLocalBodyBoothLevelElectionResultsForGISVisualization(inputVO);
 						setDataToMap( resultList,locationsMap, YCPMLAMap);
 					}
@@ -517,7 +515,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 		   
 		   parentLocationVO.setTotalCount(Long.valueOf(String.valueOf(locationsMap.size())));
 		   parentLocationVO.setNotStartedCount(parentLocationVO.getTotalCount()-parentLocationVO.getStartedCount());
-		   parentLocationVO.getLocationsList().addAll(locationsMap.values());
+		   if(parentLocationVO.getLocationsList() != null && parentLocationVO.getLocationsList().size()==0)
+			   parentLocationVO.getLocationsList().addAll(locationsMap.values());
 		   
 		   if(parentLocationVO.getTargetCount() != null && parentLocationVO.getTargetCount().longValue() >0l){
 		   Float reg2014Perc = (float) (parentLocationVO.getRegCount2014()*100.0/parentLocationVO.getTargetCount());
@@ -530,6 +529,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			parentLocationVO.setNewRegCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(newCadrePerc));
 			parentLocationVO.setRenewalCountPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(renewalCadrePerc));
 		   }
+		   
 		   List<GISVisualizationBasicVO> statusList = updateLocationPerformanceStatusDetails(locationsMap);
 
 		   if(commonMethodsUtilService.isListOrSetValid(statusList))
@@ -648,7 +648,17 @@ public class GISVisualizationService implements IGISVisualizationService{
 					String[] tempstatusArr =statusArr[i].split("-");
 					GISVisualizationBasicVO statusVO = new GISVisualizationBasicVO();
 					statusVO.setStatus(commonMethodsUtilService.getStringValueForObject(tempstatusArr[0]));
-					statusVO.setPerc(commonMethodsUtilService.getStringValueForObject(tempstatusArr[1]));
+					if(i==0)
+						statusVO.setPerc(" Above-100 % ");
+					else if(i==1)
+						statusVO.setPerc(" 90 - 100 % ");
+					else if(i==2)
+						statusVO.setPerc(" 80 - 90 % ");
+					else if(i==3)
+						statusVO.setPerc(" 60 - 80 % ");
+					else if(i==4)
+						statusVO.setPerc(" Below - 60 % ");
+					//statusVO.setPerc(commonMethodsUtilService.getStringValueForObject(tempstatusArr[1]));
 					//statusVO.setColorCode(commonMethodsUtilService.getStringValueForObject(tempstatusArr[2]));
 					
 					statusMap.put(statusVO.getStatus(), statusVO);
@@ -661,29 +671,29 @@ public class GISVisualizationService implements IGISVisualizationService{
 						GISVisualizationDetailsVO vo = locationsMap.get(locationId);
 						if(vo != null){
 							Double perc = Double.valueOf(vo.getRegCount2016Perc());
-							if(perc>=90.0){
+							if(perc>100.0){
 								GISVisualizationBasicVO statusVO = statusMap.get("VERY GOOD".trim());
 								statusVO.setCount(statusVO.getCount()+1);
 							}
-							else if(perc>=80.0 && perc<90.0){
+							else if(perc>90.0 && perc<=100.0){
 								GISVisualizationBasicVO statusVO = statusMap.get("GOOD".trim());
 								statusVO.setCount(statusVO.getCount()+1);
 							}
-							else if(perc>=60.0 && perc<80.0){
+							else if(perc>80.0 && perc<=90.0){
 								GISVisualizationBasicVO statusVO = statusMap.get("OK".trim());
 								statusVO.setCount(statusVO.getCount()+1);
 							}
-							else if(perc>=30.0 && perc<60.0){
+							else if(perc>60.0 && perc<=80.0){
 								GISVisualizationBasicVO statusVO = statusMap.get("POOR".trim());
 								statusVO.setCount(statusVO.getCount()+1);
 							}
-							else if(perc>=10.0 && perc<30.0){
+							else if(perc<60.0){
 								GISVisualizationBasicVO statusVO = statusMap.get("VERY POOR".trim());
 								statusVO.setCount(statusVO.getCount()+1);
-							}else{
+							}/*else{
 								GISVisualizationBasicVO statusVO = statusMap.get("OTHERS".trim());
 								statusVO.setCount(statusVO.getCount()+1);
-							}
+							}*/
 						}
 					} catch (Exception e) {
 						//LOG.error("103 :  Exception Occured While updating percentage ranges in updateLocationPerformanceStatusDetails method of GISVisualizationService ",e);
@@ -781,7 +791,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 		   
 		   parentLocationVO.setTotalCount(Long.valueOf(String.valueOf(locationsMap.size())));
 		   parentLocationVO.setNotStartedCount(parentLocationVO.getTotalCount()-parentLocationVO.getStartedCount());
-		   parentLocationVO.getLocationsList().addAll(locationsMap.values());
+		   if( parentLocationVO.getLocationsList() != null &&  parentLocationVO.getLocationsList().size() == 0)
+			   parentLocationVO.getLocationsList().addAll(locationsMap.values());
 		   
 		  
 		   Float todayReg2016Perc = (float) (parentLocationVO.getTodayRegCount()*100.0/parentLocationVO.getTargetCount());
