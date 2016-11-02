@@ -22,6 +22,8 @@ public class CadreDashboardVO {
 	private Long ok;
 	private Long poor;
 	private Long veryPoor;
+	private String levelPerformanceType;
+	
 	
 	public Long getId() {
 		return id;
@@ -136,6 +138,12 @@ public class CadreDashboardVO {
 	}
 	public void setVeryPoor(Long veryPoor) {
 		this.veryPoor = veryPoor;
+	}
+	public String getLevelPerformanceType() {
+		return levelPerformanceType;
+	}
+	public void setLevelPerformanceType(String levelPerformanceType) {
+		this.levelPerformanceType = levelPerformanceType;
 	}
 	
 }
