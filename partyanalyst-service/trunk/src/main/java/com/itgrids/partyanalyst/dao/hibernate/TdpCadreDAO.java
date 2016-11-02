@@ -8721,9 +8721,14 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 				
 				return query.list();
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 			return null;
+		}
+		public Date getLastUpdatedTime(Date today){
+			Query query = getSession().createQuery("select max(model.insertedTime) from TdpCadre model where date(model.insertedTime) <= :today ");
+			query.setDate("today", today);
+			return (Date) query.uniqueResult();
 		}
 		
 	}

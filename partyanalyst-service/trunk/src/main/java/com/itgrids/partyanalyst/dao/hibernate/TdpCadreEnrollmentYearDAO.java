@@ -541,41 +541,36 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		     }
 	     return query.list();
 	  }
-	  public Long getInFieldCount(Long stateId, Date today){
+	  public List<Object[]> getInFieldCount(Date today){  
 		  StringBuilder queryStr = new StringBuilder();
-	      queryStr.append("select count(distinct TCEY.tdpCadre.insertedUserId) from " +
+	      queryStr.append("select TCEY.tdpCadre.userAddress.district.districtId, count(distinct TCEY.tdpCadre.insertedUserId) from " +
 	      		" TdpCadreEnrollmentYear TCEY where ");
-	      if(stateId == 1l){
-	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 11 and 23 ");
-	      }else{
-	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 1 and 10 ");
-	      }
+	      queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 1 and 23 ");
 	      queryStr.append(" and TCEY.isDeleted = 'N' " +
 	      		" and TCEY.tdpCadre.isDeleted = 'N' " +
 	      		" and TCEY.tdpCadre.enrollmentYear = 2014 " +
 	      		" and TCEY.enrollmentYearId = 4 " +   
-	      		" and TCEY.tdpCadre.surveyTime > (:today)");
+	      		" and TCEY.tdpCadre.surveyTime > (:today) " +
+	      		" group by TCEY.tdpCadre.userAddress.district.districtId ");  
 	      Query query = getSession().createQuery(queryStr.toString());
 	      query.setParameter("today", today);
-	      return (Long)query.uniqueResult();  
+	      return query.list();      
 	  }
-	  public Long getTodayFieldCount(Long stateId,Date today){
+	  public List<Object[]> getTodayFieldCount(Date today){  
 		  StringBuilder queryStr = new StringBuilder();
-	      queryStr.append("select count(distinct TCEY.tdpCadre.insertedUserId) from " +
+	      queryStr.append("select TCEY.tdpCadre.userAddress.district.districtId, count(distinct TCEY.tdpCadre.insertedUserId) from " +
 	      		" TdpCadreEnrollmentYear TCEY where ");
-	      if(stateId == 1l){
-	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 11 and 23 ");
-	      }else{
-	    	  queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 1 and 10 ");
-	      }
+	      queryStr.append(" TCEY.tdpCadre.userAddress.district.districtId between 1 and 23 ");
+	      
 	      queryStr.append(" and TCEY.isDeleted = 'N' " +
 	      		" and TCEY.tdpCadre.isDeleted = 'N' " +
 	      		" and TCEY.tdpCadre.enrollmentYear = 2014 " +
 	      		" and TCEY.enrollmentYearId = 4 " +  
-	      		" and date(TCEY.tdpCadre.surveyTime) = (:today) ");
+	      		" and date(TCEY.tdpCadre.surveyTime) = (:today) " +
+	      		" group by TCEY.tdpCadre.userAddress.district.districtId ");  
 	      Query query = getSession().createQuery(queryStr.toString());
 	      query.setDate("today", today);      
-	      return (Long)query.uniqueResult();    
+	      return query.list();          
 	  }
 	  /*SELECT COUNT(DISTINCT TC.created_by) FROM tdp_cadre_enrollment_year EY,tdp_cadre TC,user_address UA
 	  WHERE
