@@ -1223,20 +1223,26 @@ public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long c
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
 			Date lastOneHourTime = cal.getTime();
 			
+			
 			//Long totalCount = fieldVendorTabUserDAO.getTotalDataCollectorsCount(currentDate, currentDate,stateId);
 			Long totalCount = fieldVendorTabUserDAO.getOverAllTotalDataCollectorsCount(stateId);
 			Long activeCount = fieldVendorTabUserDAO.getActiveDataCollectorsCount(lastOneHourTime, today,stateId);
-			Long passiveCount = 0l;
+			Long passiveCount = fieldVendorTabUserDAO.getPassiveDataCollectorsCount(today, stateId);
+			Long notYetStartedCount = 0l;
 			if(totalCount == null)
 				totalCount = 0l;
 			if(activeCount == null)
 				activeCount = 0l;
+			if(passiveCount > 0l && passiveCount != null)
+				passiveCount =passiveCount - activeCount ;
+			else
+				passiveCount = 0l;
 			if(totalCount > 0l)
-				passiveCount = totalCount - activeCount;
-			
+				notYetStartedCount = totalCount - activeCount -passiveCount;
 			returnVO.setTotalDataCollectors(totalCount);
 			returnVO.setActiveUsers(activeCount);
 			returnVO.setPassiveUsers(passiveCount);
+			returnVO.setNotYetStartedUsers(notYetStartedCount);
 			
 	} catch (Exception e) {
 		LOG.error("Exception occurred at getOverAllDataCollectorsDetails() of FieldMonitoringService", e);
