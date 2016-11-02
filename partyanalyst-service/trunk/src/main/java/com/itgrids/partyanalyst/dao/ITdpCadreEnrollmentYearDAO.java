@@ -23,7 +23,7 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getTabCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus,Long stateId);
 	public List<Object[]> getWebAndOnlineCadreRegistrationCountLastOneHoursUserWise(Date date,String dataSourceType,String verificationStatus,Long stateId);
 	public List<Object[]> getWebAndOnlineCadreRegistrationCountUserWise(Date fromDate,Date toDate,String dataSourceType,String verificationStatus,Long stateId);
-	public Long getInFieldCount(Long stateId, Date today);
-	public Long getTodayFieldCount(Long stateId,Date today);
+	public List<Object[]> getInFieldCount(Date today);
+	public List<Object[]> getTodayFieldCount(Date today);
 	public List<Object[]> getHourWiseUserPerformanceInfo(Long cadreSurveyUserId,Long tabUserId,Date dayBfrYes,Date today);
 }
