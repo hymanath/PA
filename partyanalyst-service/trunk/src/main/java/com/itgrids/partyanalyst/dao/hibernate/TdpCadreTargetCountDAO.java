@@ -163,7 +163,7 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 				queryStr.append(" ,Booth booth ");
 			}
 			
-			queryStr.append(" where  ");
+			queryStr.append(" where model.enrollmentYearId = 4 and ");
 			
 			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
 			{
