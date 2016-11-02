@@ -3334,4 +3334,7 @@
 	<bean id="tabUserEnrollmentInfoSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserEnrollmentInfoSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="paymentTransactionInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PaymentTransactionInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

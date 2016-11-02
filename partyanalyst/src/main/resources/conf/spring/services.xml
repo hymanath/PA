@@ -3264,6 +3264,7 @@
 		<property name="paymentAmountDAO" ref="paymentAmountDAO" />
 	    <property name="paymentModuleGatewayMerchantDetailsDAO" ref="paymentModuleGatewayMerchantDetailsDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
+	     <property name="paymentTransactionInfoDAO" ref="paymentTransactionInfoDAO" />
 	</bean>
 	
 	<bean id="mahanaduDashBoardService1" class="com.itgrids.partyanalyst.service.impl.MahanaduDashBoardService1">
