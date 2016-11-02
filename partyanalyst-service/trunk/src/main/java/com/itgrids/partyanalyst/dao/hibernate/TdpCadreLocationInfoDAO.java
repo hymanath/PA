@@ -257,7 +257,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 			return query.list();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}  
 		return null;
 	}
     public List<Object[]> get2014TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId){
@@ -273,7 +273,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
         queryStr.append(" group by model.locationValue order by model.locationValue asc");
       
         Query query = getSession().createQuery(queryStr.toString());
-        query.setParameter("locationScopeId", locationScopeId);
+        query.setParameter("locationScopeId", locationScopeId);  
         
         if(locationValue != null && locationValue.size() > 0){
         	query.setParameterList("locationValue", locationValue);  
