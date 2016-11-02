@@ -239,6 +239,20 @@
                     </div>
                 </div>
             </div>
+			<div class="row" style="margin-top:20px;">
+				 <div class="container breadcrumb">
+					  <p> <b>Note:</b><br/>
+							New and Renewal Membership charges are  &#x20B9; 100/-. This Enrollment is valid for 2 years (2016-2018).</p>
+							Membership card delivery charges:
+							  <ul>    
+								<li>India: &#x20B9;10/-</li>
+								<li>Outside India: &#x20B9;30/-</li>
+								<li>No charges applicable, if you collect at State Party Office [Hyderabad  or Guntur]</li>
+							  </ul> 
+					  <p><br/>    
+					   <i>For any Technical Support, please contact +91-7997950724</i></p>
+				</div>
+			</div>
         </div>
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock renewal">
