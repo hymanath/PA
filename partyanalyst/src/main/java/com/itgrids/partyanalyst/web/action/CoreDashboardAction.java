@@ -2843,7 +2843,7 @@ public String savingCadreDetails(){
 		CadreResponseVO responceVO =coreDashboardCadreRegistrationService.savingCadreDetails(cadreRegistrationVO);
 		if(responceVO!=null && responceVO.getSaveStatus().equalsIgnoreCase("Success")){
 			
-			PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,responceVO.getMemberShipNo().trim(),responceVO.getRefNo().trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION");			            
+			PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,responceVO.getMemberShipNo().trim(),responceVO.getRefNo().trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION",cadreRegistrationVO.getDeliveryLocation());			            
 			inputStream = new StringBufferInputStream("SUCCESS" +"," +responceVO.getRefNo()+"," +//1
 	                ""+responceVO.getMemberShipNo().trim()+"," +//2
 	                ""+pamentGateWayVO.getOrderNo().trim()+"," +//3
@@ -2861,7 +2861,16 @@ public String savingCadreDetails(){
 	return Action.SUCCESS;
 }
 
-
+public String updateTransactionTrackingDetals(){
+	try {
+		jObj = new JSONObject(getTask());
+		String orderId = jObj.getString("orderId");
+		status = paymentGatewayService.updateTransactionTrackingDetals(orderId,"STARTED");
+	} catch (Exception e) {
+		LOG.error("Exception raised at updateTransactionTrackingDetals", e);
+	}
+	return Action.SUCCESS;
+}
 public String registrationsSuccess(){
 	try {
 		//enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
