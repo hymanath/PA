@@ -13979,7 +13979,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				startDate = date.parse(inputVO.getStartDate());
 				endDate   = date.parse(inputVO.getEndDate());
 			}
-			
+			else{
+				startDate = new DateUtilService().getCurrentDateAndTime();
+				endDate = new DateUtilService().getCurrentDateAndTime();
+			}
 			//0.tabUserId,1.name,2.mobileNo,3.lattitude,4.longitude,5.surveyTime
 			List<Object[]> latestObj = tdpCadreDAO.getLatestLattitudeLangitudeOfTabUser(inputVO.getId(),startDate,endDate);
 			if(latestObj !=null && latestObj.size()>0){
