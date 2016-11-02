@@ -6216,16 +6216,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					vo.setLocationScopeId(locationScopeId);
 					vo.setType(type);
 					Double perCount2016=Double.parseDouble(vo.getPerc2016());
-					if(perCount2016 == 100)
-	 				{
-	 					veryGood++;
+					if(perCount2016 >= 100){
+	 					vo.setLevelPerformanceType("VeryGood");
+						veryGood++;
 	 				}else if(perCount2016 >= 90 && perCount2016 < 100){
+	 					vo.setLevelPerformanceType("Good");
 	 					good ++;
 	 				}else if(perCount2016 >= 80 && perCount2016 < 90){
+	 					vo.setLevelPerformanceType("Ok");
 	 					ok++;
 	 				}else if(perCount2016 >= 60 && perCount2016 < 80){
+	 					vo.setLevelPerformanceType("Poor");
 	 					poor++;
 	 				}else{
+	 					vo.setLevelPerformanceType("VeryPoor");
 	 					veryPoor++;
 	 				}
 	 			
