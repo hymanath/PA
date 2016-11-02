@@ -130,45 +130,16 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
 })
 	
-   function cadreRegistrationBasicCall(globalActivityMemberId){ 
-		
+   function cadreRegistrationBasicCall(globalActivityMemberId){   
+		getCadreRecentTime();    
 		showCadreRegistreredCount(globalActivityMemberId);
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
 		getEnumeratorsInfoTS(globalActivityMemberId,36);  
-		getCadreRecentTime();  
+		
 	}
-	var inFieldAP = 0;
-	var totalMemAP = 0;
-	var inFieldTS = 0;
-	var totalMemTS = 0;
-	function getInFieldCountAP(stateId){
-		var startDate = '';
-		var endDate = '';
-		var jsObj={
-			stateId : stateId,           
-			startDate : '02/10/2016',        
-			endDate : getTodayDate()    
-		};
-		$.ajax({
-			type : 'GET',
-			url : 'getInFieldCountAction.action',
-			dataType : 'json',  
-			data : {task :JSON.stringify(jsObj)}          
-		}).done(function(result){
-            if(result != null){
-				inFieldAP = result.id;
-				totalMemAP = result.attenteeCount;
-				$("#memDtlsUpdateProcessImgAPhourId").hide();
-				$("#memDtlsUpdateProcessImgAPtotalId").hide();         
-				$("#inFieldAP").html(inFieldAP); 
-				$("#totalInFieldAP").html(totalMemAP);     
-				//alert("inFieldAP:"+inFieldAP+"totalMemAP:"+totalMemAP);  
-			}else{
-			}	
-		});
-	}
-	function getInFieldCountTS(stateId){
+	  
+	/* function getInFieldCountTS(stateId){
 		var startDate = '';
 		var endDate = '';
 		var jsObj={
@@ -188,12 +159,12 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				$("#memDtlsUpdateProcessImgTShourId").hide();
 				$("#memDtlsUpdateProcessImgTStotalId").hide(); 
 				$("#inFieldTS").html(inFieldTS);
-				$("#totalInFieldTS").html(totalMemTS);  
+				$("#totalInFieldTS").html(totalMemTS);      
 				//alert("inFieldTS:"+inFieldTS+"totalMemTS:"+totalMemTS);   
 			}else{    
 			}	    
 		});
-	}
+	} */
 	
 	//swadhin
 	function showCadreRegistreredCount(globalActivityMemberId){
@@ -252,8 +223,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
+			str+='<h4 class="text-capital m_top10"><span class="headingColor">TELANGANA</span></h4>';       
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15" style="height:200px;">';    
+				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">total</h5>';
@@ -270,7 +242,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			str+='</div>';
 			
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15" style="height:200px;">';  
+				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';  
 					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
@@ -323,7 +295,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					min: 0,
 					 gridLineWidth: 0,  
 					 minorGridLineWidth: 0,
-					categories: ['Telangana']
+					categories: ['Telangana']     
 				},
 				yAxis: {
 					min: 0,
@@ -409,7 +381,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					min: 0,
 					 gridLineWidth: 0,
 					 minorGridLineWidth: 0,
-					categories: ['Telangana']   
+					categories: ['Telangana']     
 				},
 				yAxis: {
 					min: 0,
@@ -489,8 +461,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
+			str+='<h4 class="text-capital m_top10"><span class="headingColor">ANDHRA PRADESH</span></h4>'; 
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15" style="height:200px;">';    
+				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
 							str+='<h5 class="text-capital">total</h5>';
@@ -507,7 +480,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 			str+='</div>';
 			
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15" style="height:200px;">';  
+				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';  
 					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
@@ -769,6 +742,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				}	
 		});
 	}	
+	var statusCall = 0;       
 	function buildEnumeratorsInfoTS(result){
 		//Enumerators block
 			var str1='';
@@ -836,8 +810,10 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				});
 			}); */  
 			$("#memDtlsUpdateProcessImgTShourId").show();  
-			$("#memDtlsUpdateProcessImgTStotalId").show();    
-			getInFieldCountTS(36);
+			$("#memDtlsUpdateProcessImgTStotalId").show();
+			statusCall = parseInt(statusCall) + parseInt(1);
+			getCount();       
+			//getInFieldCountTS(36);  
 	}
 	function buildEnumeratorsInfo(result){
 		//Enumerators block
@@ -901,15 +877,53 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					easing: 'swing',
 					step: function (now) {
 						if(now != null && now > 0)
-						$(this).text(Math.ceil(now));
+						$(this).text(Math.ceil(now));  
 					}
 				});
 			}); */ 
 			$("#memDtlsUpdateProcessImgAPhourId").show();
-			$("#memDtlsUpdateProcessImgAPtotalId").show();      
-			getInFieldCountAP(1); 
+			$("#memDtlsUpdateProcessImgAPtotalId").show();
+			statusCall = parseInt(statusCall) + parseInt(1);
+			getCount();   
+			//getInFieldCountAP(1); 
 			
 			
+	}
+	function getCount(){ 
+		if(statusCall == 2){  
+			getInFieldCount();         
+		}  
+	}
+	function getInFieldCount(){  
+		var startDate = '';
+		var endDate = '';
+		var jsObj={         
+			startDate : '02/10/2016',        
+			endDate : getTodayDate()    
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getInFieldCountAction.action',    
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+            if(result != null){
+				apNow = result.apNow;
+				apTotal = result.apTotal;
+				tsNow = result.tsNow;
+				tsTotal = result.tsTotal;  
+				$("#memDtlsUpdateProcessImgAPhourId").hide();
+				$("#memDtlsUpdateProcessImgAPtotalId").hide(); 
+				$("#memDtlsUpdateProcessImgTShourId").hide();
+				$("#memDtlsUpdateProcessImgTStotalId").hide(); 				
+				$("#inFieldAP").html(apNow); 
+				$("#totalInFieldAP").html(apTotal);
+				$("#inFieldTS").html(tsNow);  
+				$("#totalInFieldTS").html(tsTotal);	    			
+				//alert("inFieldAP:"+inFieldAP+"totalMemAP:"+totalMemAP);  
+			}else{
+			}	
+		});
 	}
 	
 	function getRegistrationCountDtls(location,scope){
@@ -1335,17 +1349,18 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 		data : {task:JSON.stringify( )}
 	}).done(function(result){
 		if(result != null){
-		setLastUpdatedTime(result)	
+		setLastUpdatedTime(result);	
 		}
 	});
 }
 setInterval(function() {
-    cadreRegistrationBasicCall();
-  }, 60 * 500000);
+	statusCall = 0;           
+    cadreRegistrationBasicCall();  
+  }, 60 * 1000000);  
   
 
-function setLastUpdatedTime(lastUpdatedTime){
-	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");
+function setLastUpdatedTime(lastUpdatedTime){ 
+	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");  
 }
 
 function getNotReceiveRegistrationPerson(constituencyId,currentDate){
@@ -2235,7 +2250,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 	   var new2016CheckboxIsChecked="Y";
 	   var cadre2014CheckboxIsChecked="Y";
 	   var  is2014Active='No';
-	   var filterApplyType=$(this).attr("attr_filter_value");
+	   var filterApplyType=$(this).attr("attr_filter_value");  
 	   $("#tsConstituencySelectBoxId").val(0);
 	   if($("#2016RenewalCheckBoxId").is(':checked')){
 		  renewal2016CheckboxIsChecked=$("#2016RenewalCheckBoxId").attr("attr_cadre_search_type");
@@ -3140,7 +3155,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 				  }       
 	   	$.ajax({  
 			type : 'POST',   
-			url : 'getSelectedChildTypeMembersForCadreReg.action',
+			url : 'getSelectedChildTypeMembersForCadreReg.action',    
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -3688,6 +3703,18 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
         });
 	$("#individualDtlsId").find(".highcharts-legend-item:nth-child(1)").trigger("click");  
 	}
+	$(document).on("click",".refreshCadreCls",function(){
+		$("#totalTodayCadreRegistrationBlockDivAPId").html('');
+		$("#totalTodayCadreRegistrationBlockDivTSId").html('');
+		$("#enumeratorsInfoDivId").html('');
+		$("#enumeratorsInfoDivTSId").html(''); 
+		statusCall = 0;       
+		getCadreRecentTime();        
+		showCadreRegistreredCount(globalActivityMemberId);
+		showCadreRegistreredCountTS(globalActivityMemberId,36);
+		getEnumeratorsInfo(globalActivityMemberId);
+		getEnumeratorsInfoTS(globalActivityMemberId,36);        
+	});
 
    $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
 	  var isKuppamExcluded;
