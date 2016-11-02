@@ -352,21 +352,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	  }
 	public String getCadreLastUpdatedTime(){
 		String status = null;
+		Date date = null;
 	    try {
-	      
-	      
-	         ClientConfig clientConfig = new DefaultClientConfig();
-	         
-	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-	         Client client = Client.create(clientConfig);
-	       
-	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getCadreLastUpdatedTime";
-	           
-	         WebResource webResource = client.resource( webServiceUrl );
-	           
-	         status = webResource.accept("application/json").post(String.class);
-	        
-	        
+	    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");  
+	    	Date today = dateUtilService.getCurrentDateAndTime();
+	    	date = tdpCadreDAO.getLastUpdatedTime(today);
+	    	status = sdf.format(date);
 	    } catch (Exception e) {
 	      LOG.error("Exception raised at getCadreLastUpdatedTime", e);
 	    }
@@ -1753,17 +1744,17 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//calculate target count
 			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-					/*Long accessLevelValue =0l;  
+					Long accessLevelValue =0l;  
 					if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency
 						accessLevelValue = 10l; //region scope 10  means parliament constituency 
 					}else if(entry.getKey().longValue()==5l){
 						accessLevelValue = 4l;  
 					}else{  
 						accessLevelValue = entry.getKey();   
-					}*/ // xxxx
+					} // xxxx    
 					
 					//List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(entry.getKey(),entry.getValue(),stateId,4l,null);
-					List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( entry.getKey(),entry.getValue(),4l);
+					List<Object[]> returnObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( accessLevelValue,entry.getValue(),4l);
 					if(returnObjList != null && returnObjList.size() > 0){    
 						for (Object[] param : returnObjList) {
 							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();    
@@ -1882,7 +1873,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					}else if(entry.getKey().longValue()==5l){
 						accessLevelValue = 4l;  
 					}else{
-						accessLevelValue = entry.getKey();   
+						accessLevelValue = entry.getKey();     
 					}
 					//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay,3l);
 					List<Object[]> totalRegCadreList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId);
@@ -2052,7 +2043,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		}
 		return null;  
 	}
-	public IdAndNameVO getInFieldCount(Long stateId, String fromDateStr, String toDateStr){
+	public IdAndNameVO getInFieldCount(String fromDateStr, String toDateStr){
 		try{
 			IdAndNameVO idNameVO = new IdAndNameVO();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -2061,17 +2052,43 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			cal.setTime(today);
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
 			Date lastOneHourTime = cal.getTime();
-			Long inFieldCount = tdpCadreEnrollmentYearDAO.getInFieldCount(stateId, lastOneHourTime);
+			List<Long> tsDistId = new ArrayList<Long>(){{
+				add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);add(8l);add(9l);add(10l);
+			}};
+			
+			Long tsInFieldCount = 0l;
+			Long apInFieldCount = 0l;
+			List<Object[]> inFieldCountList = tdpCadreEnrollmentYearDAO.getInFieldCount(lastOneHourTime);
+			if(inFieldCountList != null && inFieldCountList.size() > 0){
+				for(Object[] param : inFieldCountList){
+					if(tsDistId.contains((Long)param[0])){
+						tsInFieldCount = tsInFieldCount + (Long)param[1];
+					}else{
+						apInFieldCount = apInFieldCount + (Long)param[1];
+					}
+					
+				}
+			}
 			if(toDateStr != null && toDateStr.trim().length() > 0 ){
 				today = sdf.parse(toDateStr);
 			}
-			Long todayFieldCount = tdpCadreEnrollmentYearDAO.getTodayFieldCount(stateId,today);
-			if(inFieldCount != null){
-				idNameVO.setId(inFieldCount);//inFieldCount
+			Long tsTotalFieldCount = 0l; 
+			Long apTotalFieldCount = 0l;
+			List<Object[]> todayFieldCount = tdpCadreEnrollmentYearDAO.getTodayFieldCount(today);
+			if(todayFieldCount != null && todayFieldCount.size() > 0){
+				for(Object[] param : todayFieldCount){
+					if(tsDistId.contains((Long)param[0])){
+						tsTotalFieldCount = tsTotalFieldCount + (Long)param[1];
+					}else{
+						apTotalFieldCount = apTotalFieldCount + (Long)param[1];
+					}
+					
+				}
 			}
-			if(todayFieldCount != null){
-				idNameVO.setAttenteeCount(todayFieldCount);//todayfieldcount
-			}
+			idNameVO.setTsNow(tsInFieldCount);//inFieldCount
+			idNameVO.setApNow(apInFieldCount);//inFieldCount
+			idNameVO.setTsTotal(tsTotalFieldCount);
+			idNameVO.setApTotal(apTotalFieldCount);
 			return idNameVO;    
 		}catch(Exception e){
 			e.printStackTrace();
