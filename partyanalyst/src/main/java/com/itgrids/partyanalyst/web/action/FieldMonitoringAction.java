@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.UserPerformanceVO;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,6 +40,7 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 		private List<DataMonitoringVerificationVO> dataMonitoringVerificationVOList;
 		private List<CadreRegUserVO> constituencyList;
 		private List<CadreRegUserVO> usersList;
+		private List<UserPerformanceVO> userPerformanceList;
 		
 	//Attributes
 	   private IFieldMonitoringService fieldMonitoringService;
@@ -128,6 +130,12 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
 	}
 	public void setUsersList(List<CadreRegUserVO> usersList) {
 		this.usersList = usersList;
+	}
+	public List<UserPerformanceVO> getUserPerformanceList() {
+		return userPerformanceList;
+	}
+	public void setUserPerformanceList(List<UserPerformanceVO> userPerformanceList) {
+		this.userPerformanceList = userPerformanceList;
 	}
 	
 	
@@ -662,6 +670,22 @@ public String getConstituencyByVendor(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseDetailedOverViewDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+  
+  public String getUserPerformanceDetailsByUser(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long tabUserId = jObj.getLong("tabUserInfoId");
+			
+			userPerformanceList = fieldMonitoringService.getUserPerformanceDetailsByUser(cadreSurveyUserId, tabUserId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserPerformanceDetailsByUser()  of FieldMonitoringAction", e);
 		}
 		return Action.SUCCESS;
 	}

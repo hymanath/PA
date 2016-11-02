@@ -152,6 +152,7 @@ function buildTabUserDetails(result){
 				str+='<th>fixed issues</th>';
 				str+='<th>closed issues</th>';
 				str+='<th></th>';
+				str+='<th></th>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result.subList){
@@ -201,6 +202,7 @@ function buildTabUserDetails(result){
 					else
 						str+='<td> - </td>';
 					str+='<td><i class="glyphicon glyphicon-cog manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'" attr_constituency_id="'+result.subList[i].constituencyId+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
+					str+='<td><i class="glyphicon glyphicon-eye-open userPerformanceCls" title="Click Here to View User Performance" style="cursor:pointer;" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'"></i></td>'
 				str+='</tr>';
 			}
 			str+='</tbody>';
@@ -218,6 +220,43 @@ function buildTabUserDetails(result){
 		$("#tabUserDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
 	}
 }
+
+$(document).on("click",".userPerformanceCls",function(){
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+    var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
+	var cadreSurveyUserName = $(this).attr("attr_cadre_survey_userName");
+	var tabUserName = $(this).attr("attr_tab_userName");
+	var mobileNo = $(this).attr("attr_mobileNo");
+	
+	$(".PerfmCadreUserName").html(cadreSurveyUserName);
+	$(".tabUserPerMblDetailsId").html(tabUserName+" - "+mobileNo);
+	
+	getUserPerformanceInfo(cadreSurveyUserId,tabUserInfoId);
+});
+
+function getUserPerformanceInfo(cadreSurveyUserId,tabUserInfoId){
+	  $("#userPerformanceBodyId").html("");
+	  $("#userPerformanceModal").modal("show");
+	  $("#userPerformanceImgId").show();
+	   var jsObj = { 
+	   cadreSurveyUserId : cadreSurveyUserId,
+	   tabUserInfoId : tabUserInfoId
+	   }
+	  
+	   $.ajax({
+          type:'POST',
+          url: 'getUserPerformanceDetailsByUserAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   /*if(result != null && result.length > 0)
+			   buildIssueTrackingDetails(result);
+			else{
+				 $("#issueTrackingImgId").hide();
+				 $("#issueTrackingBodyId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+			}*/
+	   });
+  }
 
 $(document).on("click",".manageIssues",function(){
 	clearErrorFields();
