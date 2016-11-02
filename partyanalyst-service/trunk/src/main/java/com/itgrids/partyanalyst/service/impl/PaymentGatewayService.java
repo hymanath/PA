@@ -167,14 +167,14 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 					}
 				
 				redirectUrl = redirectUrl+"?mn="+encryptedCodeMN.trim()+"&en="+encryptedCodeEN.trim()+"";
-				Random random = new Random();
-				Long randomNum = 0L;
+				//Random random = new Random();
+				/*Long randomNum = 0L;
 				do{
 					randomNum = random.nextLong();
 				}while(randomNum<0 && randomNum.toString().length()<7);
-				randomNum = Long.valueOf(randomNum.toString().substring(1, 8));
+				randomNum = Long.valueOf(randomNum.toString().substring(1, 8));*/
 		       // String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNum;
-				final String OrderId =IConstants.CADRE_2016_ONLINE_REGISTRATION+randomNum;
+				final String OrderId =IConstants.CADRE_2016_ONLINE_REGISTRATION+encryptedCodeMN;
 		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
 		        Adler32  adl = new Adler32();
 		        adl.update(str.getBytes());
