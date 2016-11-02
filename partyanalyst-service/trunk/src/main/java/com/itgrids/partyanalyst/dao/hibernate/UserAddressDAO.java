@@ -212,7 +212,7 @@ public List<Object[]> getUserTypeWiseLocationName(Long stateId,Long userType){
 	   
 	   return query.list();
 }
-public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String LocationType,Long accessLevelId,List<Long> accessLevelValue){
+public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String LocationType,Long accessLevelId,List<Long> accessLevelValue,String isKuppamExcluded){
 	
 	StringBuilder queryStr = new StringBuilder();
 	   
@@ -233,6 +233,9 @@ public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String Locati
 						queryStr.append(" and  model.district.districtId < 11 ");
 					}
 			 } 
+	   }
+	   if(stateId != null && stateId.longValue()==1l && isKuppamExcluded != null && isKuppamExcluded.equalsIgnoreCase("True")){
+		  queryStr.append(" and model.constituencyId not in(282) ");  
 	   }
 	   if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		    queryStr.append(" and  model.district.districtId in (:accessLevelValue) ");
