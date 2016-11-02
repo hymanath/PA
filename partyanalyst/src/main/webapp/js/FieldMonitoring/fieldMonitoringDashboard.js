@@ -29,6 +29,7 @@
 				$("#totalDataCollectorsId").html(result.totalDataCollectors);
 				$("#activeDataCollectorsId").html(result.activeUsers);
 				$("#passiveDataCollectorsId").html(result.passiveUsers);
+				$("#notYetStartedDataCollectorsId").html(result.notYetStartedUsers);
 			}	
 		});
 	}
@@ -229,7 +230,7 @@
 						plotOptions: {
 						  pie: {
 							allowPointSelect: false,
-							innerSize: 120,
+							innerSize: 180,
 							depth: 10,
 							cursor: 'pointer',
 							
