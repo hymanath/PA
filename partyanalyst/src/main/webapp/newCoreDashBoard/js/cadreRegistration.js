@@ -185,7 +185,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				$("#memDtlsUpdateProcessImgTShourId").hide();
 				$("#memDtlsUpdateProcessImgTStotalId").hide(); 
 				$("#inFieldTS").html(inFieldTS);
-				$("#totalInFieldTS").html(inFieldTS); 
+				$("#totalInFieldTS").html(totalMemTS);  
 				//alert("inFieldTS:"+inFieldTS+"totalMemTS:"+totalMemTS);   
 			}else{    
 			}	    
