@@ -6261,18 +6261,26 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 	}
 		 	
 		 	List<Object[]> targrtLst = tdpCadreLocationInfoDAO.getLocationWiseTargets(locationScopeId);
-		 	if(targrtLst != null && !targrtLst.isEmpty()){
-		 		for (Object[] obj : targrtLst) {
-					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					targetMap.put(locaId, count);
-				}
-		 	}
-		 	
-		 	if(returnList != null && !returnList.isEmpty()){
-		 		for (CadreDashboardVO vo : returnList) {
+		 			if(targrtLst != null && !targrtLst.isEmpty()){
+		 				for (Object[] obj : targrtLst) {
+		 					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+		 					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+		 					targetMap.put(locaId, count);
+		 				}
+		 			}
+		 		
+		 		if(returnList != null && !returnList.isEmpty()){
+		 			for (CadreDashboardVO vo : returnList) {
 					vo.setTargetCount(targetMap.get(vo.getId()));
-				}
+		 				}
+		 			}
+		 		
+		 if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
+			 if(returnList != null && !returnList.isEmpty()){
+		 			for (CadreDashboardVO vo : returnList) {
+		 				vo.setTargetCount(vo.getTargetCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);
+		 			}
+			 	}
 		 	}
 		 	
 		 	if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
