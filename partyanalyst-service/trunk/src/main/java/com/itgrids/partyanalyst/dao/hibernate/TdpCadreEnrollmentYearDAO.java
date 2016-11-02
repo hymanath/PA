@@ -587,4 +587,36 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 	  EY.is_deleted = 'N' AND 
 	  UA.district_id BETWEEN 11 AND 23 AND
 	  TC.survey_time > '2016-11-01 16:23:00';*/
+	  
+	  public List<Object[]> getHourWiseUserPerformanceInfo(Long cadreSurveyUserId,Long tabUserId,Date dayBfrYes,Date today){
+		  /**
+		   * select date(tc.survey_time),hour(tc.survey_time),count(tc.tdp_cadre_id) 
+				from tdp_cadre_enrollment_year ey,tdp_cadre tc
+				where ey.tdp_cadre_id = tc.tdp_cadre_id and ey.enrollment_year_id = 4
+							and ey.is_deleted = 'N' and tc.enrollment_year = 2014 
+				            and tc.is_deleted = 'N' and date(tc.survey_time) between '2016-10-30' and '2016-11-01'
+				group by hour(tc.survey_time),date(tc.survey_time)
+				order by date(tc.survey_time),hour(tc.survey_time);
+		   */
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select date(tc.survey_time),hour(tc.survey_time),count(tc.tdp_cadre_id)" +
+		  					" from tdp_cadre_enrollment_year ey,tdp_cadre tc" +
+		  					" where ey.tdp_cadre_id = tc.tdp_cadre_id");
+		  if(dayBfrYes != null && today != null)
+			  sb.append(" and (date(tc.survey_time) between :dayBfrYes and :today)");
+		  sb.append(" and tc.created_by = :cadreSurveyUserId and tc.tab_user_info_id = :tabUserId" +
+		  					" and ey.enrollment_year_id = 4" +
+		  					" and ey.is_deleted = 'N' and tc.enrollment_year = 2014" +
+		  					" and tc.is_deleted = 'N'" +
+		  					" group by hour(tc.survey_time),date(tc.survey_time),tc.tab_user_info_id,tc.created_by" +
+		  					" order by date(tc.survey_time),hour(tc.survey_time)");
+		  Query query = getSession().createSQLQuery(sb.toString());
+		  if(dayBfrYes != null && today != null){
+			  query.setParameter("dayBfrYes", dayBfrYes);
+			  query.setParameter("today", today);
+		  }
+		  query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		  query.setParameter("tabUserId", tabUserId);
+		  return query.list();
+	  }
 }
