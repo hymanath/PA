@@ -2456,7 +2456,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			                ""+checkSumDetails+"," +//4
 			                ""+"https://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success"+"," +//5
 			                "100,");//6*/
-					PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,surveyCadreResponceVO.getMembershipNo().trim(),surveyCadreResponceVO.getEnrollmentNumber().trim(),"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION");			            
+					PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,surveyCadreResponceVO.getMembershipNo().trim(),surveyCadreResponceVO.getEnrollmentNumber().trim(),"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION","0");//0 means other extra charges like delivery charges	            
 					inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +//1
 			                ""+surveyCadreResponceVO.getMembershipNo().trim()+"," +//2
 			                ""+pamentGateWayVO.getOrderNo().trim()+"," +//3
