@@ -112,7 +112,7 @@ function getSearchByMyVoterIdDetails(){
 		//if(result != null){
 			if(result != null && result.paymentStatus != null && result.paymentStatus =='NOT PAID'){
 				var str='';
-				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
+				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post"  >';
 				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
 				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
 				str+='<input type="hidden" name="Order_Id" value="'+result.paymentGatewayVO.orderNo+'">';				
@@ -158,7 +158,7 @@ function getSearchByMyVoterIdDetails(){
 				str+='</div>';
 				str+='<div class="container m_top10" id="yourElement">';
 				str+='<div class="span12  show-grid" style="position: relative;text-align: center;margin-bottom: 25px;">';
-				str+='<input type="submit" name="submit button" value="PAY NOW" class="btn btn-warning offset5">'; 
+				str+='<input type="button" attr_order_id="'+result.paymentGatewayVO.orderNo+'" name="submit button" value="PAY NOW" class="btn btn-warning offset5 paymentStatusCls" onclick="updateTransactionTrackingDtals(\''+result.paymentGatewayVO.orderNo+'\')">'; 
 				str+='</div>';
 				str+='</div>';
 				str+='</form>';
@@ -635,7 +635,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				str+='</div>';
 				str+='<div class="container m_top10" id="yourElement">';
 				str+='<div class="span12  show-grid" style="position: relative;text-align: center;margin-bottom: 25px;">';
-				str+='<input type="submit" name="submit button" value="PAY NOW" class="btn btn-warning offset5">'; 
+				str+='<input type="button"   attr_order_id="'+resultArr[3].trim()+'" name="submit button" value="PAY NOW" class="btn btn-warning offset5 paymentStatusCls" onclick="updateTransactionTrackingDtals(\''+resultArr[3].trim()+'\');"/>'; 
 				str+='</div>';
 				str+='</div>';
 				str+='</form>';
@@ -886,5 +886,21 @@ function getOccupationList(){
 			 eachTimeClearFields();
 			 window.location.reload();
  });
- 
- 
+
+  //$(document).on("click","#paymentStatusCls",function(){ 
+  function updateTransactionTrackingDtals(orderId){
+$("#affiliatedCadreForm").submit();	
+	 var jsObj={
+		orderId:orderId
+	 }
+	 
+	  $.ajax({          
+			type : 'GET',    
+			url : 'updateTransactionTrackingDtalsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			 console.log(result);	
+		});
+  }
+ //});
