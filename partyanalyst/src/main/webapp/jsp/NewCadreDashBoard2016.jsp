@@ -460,6 +460,40 @@ $('.fadeInUp').addClass('animated fadeInUp');
 $('#fadeInUp1').addClass('animated fadeInUp');
 $('#PreviousmembersCount').addClass('animated fadeInUp');
 $('#membersCount').addClass('animated fadeInX');
+
+//color codes code start
+var statusColorArr = [];
+var statusarr = ['VeryGood','Good','Ok','Poor','VeryPoor'];
+function setcolorsForStatus(){
+		statusColorArr = new Array();
+		var colorStatic = new Array('#008000','#90EE90','#FFFF00','#FFA500','#C43C35');
+		var colorCount = 0;
+		for(var i in statusarr){
+				var obj = {
+				 status : statusarr[i],
+				 color : colorStatic[colorCount]
+				}
+				statusColorArr.push(obj)
+			  
+				if(colorCount == (colorStatic.length)-1)
+				colorCount = 0;
+				 colorCount++;
+		}
+		
+		return statusColorArr;
+	}
+
+	function getColorCodeByStatus(status){
+		if(statusColorArr != null && statusColorArr.length > 0){
+			for(var i in statusColorArr){
+				if(statusColorArr[i].status.toLowerCase() == status.toLowerCase())
+					return statusColorArr[i].color;
+			}
+		}
+	}
+
+//color codes starts end
+
  $(".show2014DashBoard").click(function(){
 	window.location.replace('cadreDashBoardAction.action');
 });
@@ -862,6 +896,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	}
 	
 	function get2016LocationWiseRegisteredCountsConstituencyWise(type,locationScope,locationType){
+		setcolorsForStatus();
 		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
@@ -885,6 +920,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	}
 	
 	function get2016LocationWiseRegisteredCountsDistrictWise(type,locationScope,locationType){
+		setcolorsForStatus();
 		$("#districtWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
@@ -922,11 +958,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				str+='</thead>';
 			   str+='<tbody>';
 					str+='<tr>';
-						str+='<td>'+result[0].veryGood+'</td>';
-						str+='<td>'+result[0].good+'</td>';
-						str+='<td>'+result[0].ok+'</td>';
-						str+='<td>'+result[0].poor+'</td>';
-						str+='<td>'+result[0].veryPoor+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[0].veryGood+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[0].good+'</td>';
+						str+='<td><div class="cCodeDiv" style="background-color:yellow;"/>'+result[0].ok+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[0].poor+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[0].veryPoor+'</td>';
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
@@ -978,10 +1014,12 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					}else{
 						str+='<td>'+result[i].count2016+'</td>';
 					}
+					
 					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
 						str+='<td> - </td>';
 					}else{
-						str+='<td>'+result[i].perc2016+'</td>';
+						var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+						str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
 					}
 					str+='</tr>';
 				}
@@ -1014,11 +1052,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				str+='</thead>';
 			   str+='<tbody>';
 					str+='<tr>';
-						str+='<td>'+result[0].veryGood+'</td>';
-						str+='<td>'+result[0].good+'</td>';
-						str+='<td>'+result[0].ok+'</td>';
-						str+='<td>'+result[0].poor+'</td>';
-						str+='<td>'+result[0].veryPoor+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[0].veryGood+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[0].good+'</td>';
+						str+='<td><div class="cCodeDiv" style="background-color:yellow;"/>'+result[0].ok+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[0].poor+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[0].veryPoor+'</td>';
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
@@ -1068,7 +1106,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
 						str+='<td> - </td>';
 					}else{
-						str+='<td>'+result[i].perc2016+'</td>';
+						var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+						str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
+						
 					}
 					
 					str+='</tr>';
@@ -1086,6 +1126,8 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			"order": [ 4, 'desc' ]
 		});
 	}
+	
+
 </script>
 </body>
 </html>
