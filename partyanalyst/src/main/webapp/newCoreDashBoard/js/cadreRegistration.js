@@ -320,7 +320,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					min: 0,
 					 gridLineWidth: 0,  
 					 minorGridLineWidth: 0,
-					categories: ['Telangana States']
+					categories: ['Telangana']
 				},
 				yAxis: {
 					min: 0,
@@ -406,7 +406,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					min: 0,
 					 gridLineWidth: 0,
 					 minorGridLineWidth: 0,
-					categories: ['Telangana States']   
+					categories: ['Telangana']   
 				},
 				yAxis: {
 					min: 0,
