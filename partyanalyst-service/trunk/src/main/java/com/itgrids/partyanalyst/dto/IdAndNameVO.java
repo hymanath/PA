@@ -13,6 +13,10 @@ public class IdAndNameVO {
 	private List<IdAndNameVO> issueTypes ;
 	private String actualMobNumber;
 	private List<IdAndNameVO> distList ;
+	private Long apTotal = 0l;
+	private Long tsTotal = 0l;
+	private Long apNow = 0l;
+	private Long tsNow = 0l;
 	
 	
 	
@@ -78,7 +82,29 @@ public class IdAndNameVO {
 	public void setActualMobNumber(String actualMobNumber) {
 		this.actualMobNumber = actualMobNumber;
 	}
-	
-	
+	public Long getApTotal() {
+		return apTotal;
+	}
+	public void setApTotal(Long apTotal) {
+		this.apTotal = apTotal;
+	}
+	public Long getTsTotal() {
+		return tsTotal;
+	}
+	public void setTsTotal(Long tsTotal) {
+		this.tsTotal = tsTotal;
+	}
+	public Long getApNow() {
+		return apNow;
+	}
+	public void setApNow(Long apNow) {
+		this.apNow = apNow;
+	}
+	public Long getTsNow() {
+		return tsNow;
+	}
+	public void setTsNow(Long tsNow) {
+		this.tsNow = tsNow;
+	}
 
 }
