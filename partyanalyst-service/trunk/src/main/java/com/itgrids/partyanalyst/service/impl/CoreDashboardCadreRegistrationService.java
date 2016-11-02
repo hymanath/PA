@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
@@ -2572,7 +2573,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						String finalDateStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(calendar.getTime());
 						String message = "your OTP is "+otp+" for Reference Id # " +referenceNo+" This OTP Validate upto Next "+finalDateStr+" .";
 						String[] phoneNumbers = {mobileNo.toString()};
-						smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+						//smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+						smsCountrySmsService.sendOTPSmsFromAdmin(message, true,phoneNumbers);
 						status=referenceNo;
 		    	 }
 				else{
@@ -2607,8 +2609,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				String otpNum = String.valueOf(otpRand);
 				String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" This OTP Validate for Next 15 mins.";
 				String[] phoneNumbers = {mobileNo.toString()};
-				smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
-				
+				//smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+				smsCountrySmsService.sendOTPSmsFromAdmin(message, true,phoneNumbers);
 				tabUserOtpDetails = new TabUserOtpDetails();
 				//tabUserOtpDetails.setTabUserInfoId(tabUserInfoId);
 				//tabUserOtpDetails.setCadreSurveyUserId(cadreSurveyUserId);
