@@ -15,11 +15,12 @@ $(document).on("click",".cadreComparison",function(){
     var renewal2016CheckboxIsChecked="Y";
 	var new2016CheckboxIsChecked="Y";
 	var cadre2014CheckboxIsChecked="Y";  
+	var isKuppamExcluded="True";
 	getCadreDetailsBasedOnUserType(filterApplyType);  
 	getSourceOfRegistrationDtls(globalActivityMemberId);       
 	getSourceOfRegistrationTSDtls(globalActivityMemberId);       
 	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
-	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
+	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);	
 }); 
    
@@ -120,11 +121,12 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	var new2016CheckboxIsChecked="Y";
 	var cadre2014CheckboxIsChecked="Y";  
 	var is2014Active='No';
+	var isKuppamExcluded="True";
 	getCadreDetailsBasedOnUserType(filterApplyType);  
 	getSourceOfRegistrationDtls(globalActivityMemberId);       
 	getSourceOfRegistrationTSDtls(globalActivityMemberId);       
 	getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);
-	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
+	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);
 	getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
 })
 	
@@ -1790,7 +1792,8 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 fromDate : "2/10/2016",
 				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId,
-				 accessLevelValues:accessLevelValues
+				 accessLevelValues:accessLevelValues,
+				 isKuppamExcluded:"False"
 			  }
 		$.ajax({
 			type : 'POST',
@@ -1970,7 +1973,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 	}
 	 $("#"+divId).find(".highcharts-legend-item:nth-child(3)").trigger("click");
   }
-  function getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active){
+  function getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded){
 	  $("#apConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	     $("#cnsttncyverlAllCntId").html("All - 0 ");
 		 $("#cnsttncyveryGoodCntId").html("Very Good - 0 ");
@@ -1993,7 +1996,8 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 fromDate : "2/10/2016",
 				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId, 
-				 accessLevelValues:accessLevelValues
+				 accessLevelValues:accessLevelValues,
+				 isKuppamExcluded:isKuppamExcluded
 			  }
 		$.ajax({
 			type : 'POST',
@@ -2014,13 +2018,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 					 $("#cnsttncyOkCntId").html("Ok - "+((overallApConstituencyRankRslt.okCnt)+(parseInt($("#cnsttncyOkCntId").attr("attr_ok_cnt")))));
 					 $("#cnsttncyverlPoorCntId").html("Poor - "+((overallApConstituencyRankRslt.poorCnt)+(parseInt($("#cnsttncyverlPoorCntId").attr("attr_poor_cnt")))));
 					 $("#cnsttncyveryPoorCntId").html("Very Poor - "+((overallApConstituencyRankRslt.veryPoorCnt)+(parseInt($("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt")))));
-					 
 					 $("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt",overallApConstituencyRankRslt.allConstituencyCnt);
 					 $("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt",overallApConstituencyRankRslt.veryGoodCnt);
 					 $("#cnsttncyverlGoodCntId").attr("attr_good_cnt",overallApConstituencyRankRslt.goodCnt);
 					 $("#cnsttncyOkCntId").attr("attr_ok_cnt",overallApConstituencyRankRslt.okCnt);
 					 $("#cnsttncyverlPoorCntId").attr("attr_poor_cnt",overallApConstituencyRankRslt.poorCnt);
 					 $("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt",overallApConstituencyRankRslt.veryPoorCnt);
+					 
 					 if(result != null && result.length > 0){
 						 globalApConstituencyWithAscendingArr=[];
 						 for(var counter=result.length - 1; counter >= 0;counter--){
@@ -2053,7 +2057,8 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 fromDate : "2/10/2016",
 				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId,
-				 accessLevelValues:accessLevelValues
+				 accessLevelValues:accessLevelValues,
+				 isKuppamExcluded :"False"
 			  }
 		$.ajax({
 			type : 'POST',
@@ -2080,6 +2085,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 $("#cnsttncyOkCntId").attr("attr_ok_cnt",overallApConstituencyRankRslt.okCnt);
 				 $("#cnsttncyverlPoorCntId").attr("attr_poor_cnt",overallApConstituencyRankRslt.poorCnt);
 				 $("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt",overallApConstituencyRankRslt.veryPoorCnt);
+				 
 				  if(result != null && result.length > 0){
 					  globalTsConstituencyWithAscendingArr=[];
 					for(var counter=result.length - 1; counter >= 0;counter--){
@@ -2574,9 +2580,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			   } 
 			  }
 			  
-		
-		
-			 /*Setting Dynamic height for highChart */
+		     /*Setting Dynamic height for highChart */
 			 if(locationNameArr!= null && locationNameArr.length > 10){
 			  var highChartDivHight = locationNameArr.length*20;
 			  $("#"+divId).height(highChartDivHight); 
@@ -2731,6 +2735,9 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	  var new2016CheckboxIsChecked="N";
 	  var cadre2014CheckboxIsChecked="N";
 	  var is2014Active="No";
+	  var isKuppamExcluded="True";
+	  $('#kuppamConstituencyCheckBoxId').prop('checked', true);
+	 
 	  if($("#2016RenewalCheckBoxId").is(':checked')){
 		  renewal2016CheckboxIsChecked=$("#2016RenewalCheckBoxId").attr("attr_cadre_search_type");
 	  }
@@ -2771,7 +2778,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	    $(".decendingTsSorting").attr("attr_filter_value","All");
 	    $(".ascendingTsSorting").attr("attr_filter_value","All");
 	   if(apDistrictArr.length > 0){
-		getApConstituencyCadreRegistrationDetails(3,apDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);  
+		getApConstituencyCadreRegistrationDetails(3,apDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);  
 	   }else{
 		   $("#apConstituencyRegistrationReportDivId").html(' ');
 		   globalApConstituencyRslt="";  
@@ -3681,3 +3688,19 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
         });
 	$("#individualDtlsId").find(".highcharts-legend-item:nth-child(1)").trigger("click");  
 	}
+
+   $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
+	  var isKuppamExcluded;
+	  if($(this).prop("checked")){
+		  isKuppamExcluded="True";
+	  }else{
+		  isKuppamExcluded="False";
+	  }
+	var is2014Active="No";
+	var accessLevelId=0;
+	var accessLevelValues=[];
+    var renewal2016CheckboxIsChecked="Y";
+	var new2016CheckboxIsChecked="Y";
+	var cadre2014CheckboxIsChecked="Y";  
+	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);
+   });	

@@ -2736,7 +2736,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
-			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues);
+			String isKuppamExcluded = jobj.getString("isKuppamExcluded");
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues,isKuppamExcluded);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
 	  }
