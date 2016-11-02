@@ -2111,7 +2111,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			}*/
 			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
-			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);
+			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,toDt, toDt);
 			cadreRegistratedCountVO.setTotalCount(totalCadre);
 			//get total reg cadre for today
 			if(totalRegCadreForToday != null){
@@ -2354,13 +2354,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			cadreRegistratedCountVO.setTotalPercent(calculatePercantage(cadreRegistratedCountVO.getTotalCount(),totalTarget));
 			
 			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
-			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);
+			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,toDt, toDt); 
 			//List<Object[]> totalRegCadreRenewalListForToday = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,today, today);
-			Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,frmDt, toDt);  
+			Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,toDt, toDt);     
 			//get total reg cadre for today
 			totalCadreToday = 0l;
 			if(totalRegCadreForToday != null){
-				totalCadreToday = totalRegCadreForToday;
+				totalCadreToday = totalRegCadreForToday;  
 			}
 			
 			//get total renewal cadre 
