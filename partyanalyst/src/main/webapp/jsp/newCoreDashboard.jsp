@@ -123,7 +123,7 @@
 <div class="container m_top20">
 		<div class="row">
 			<!--Cadre Registration -->
-		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">
+		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">  
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
                 	<div class="row">
@@ -134,6 +134,7 @@
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4">
+							    
 							<span class="cadreSettings pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
@@ -143,7 +144,7 @@
 							 <span class="cadreExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span> 
-							<span class="input-group pull-right  m_XsTop10 hide">
+							<span class="input-group pull-right  m_XsTop10 hide">  
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -154,21 +155,23 @@
                 </div>
                 <div class="panel-body">
 			    	<div class="row">
+						  
 						<div class="col-md-12 col-xs-12 col-sm-12">
+							<span class="cadreSettings pull-right refreshCadreCls">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span>    
 							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
 						</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
-						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
-						
 						    <div>
 								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
 								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
 							</div>  
 							
-                            <div class="row">
+                            <div class="row">  
 							
 							   <div id="enumeratorsInfoDivId"></div>
-							   <div id="enumeratorsInfoDivTSId"></div>    
+							   <div id="enumeratorsInfoDivTSId"></div>      
 							   <!-- 
 							   <div class="col-md-6 col-xs-12 col-sm-12 m_top20">
 									<button class="btn btn-success btn-block text-capital " id="cadreModalDivid">kuppam constituency <br/>detailed report</button>
@@ -2894,7 +2897,7 @@
 		getAllNewsPapers();
 		//getPaperWiseNewsBasicCounts();
 		//Debates
-		getPartyWiseTotalDebateDetails();    
+		getPartyWiseTotalDebateDetails();      
         //cadreRegistration
 		cadreRegistrationBasicCall(globalActivityMemberId);              
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
@@ -2954,7 +2957,7 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	if($("#switchButtonId").hasClass("showCls")){ 
 		$(".trainingDetailedBlock").hide();
 		$("#switchButtonId").addClass("hdCls");
-		$("#switchButtonId").removeClass("showCls");  
+		$("#switchButtonId").removeClass("showCls");    
 	}else{
 		$(".trainingDetailedBlock").show();
 		$("#switchButtonId").removeClass("hdCls");
