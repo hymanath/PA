@@ -45,5 +45,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWiseTS(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate);
-	public IdAndNameVO getInFieldCount(Long stateId, String fromDateStr, String toDateStr);
+	public IdAndNameVO getInFieldCount(String fromDateStr, String toDateStr);
 }
