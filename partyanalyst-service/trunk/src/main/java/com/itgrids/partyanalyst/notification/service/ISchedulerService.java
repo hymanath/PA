@@ -30,4 +30,5 @@ public interface ISchedulerService {
 	public void runTheJobForEveryDayToSendEmpAttendanceDeptWise();
 	
 	public ResultStatus pushDataToPartyMeetingStatusTable();
+	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable();
 }
