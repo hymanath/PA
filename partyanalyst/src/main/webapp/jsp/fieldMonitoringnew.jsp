@@ -143,14 +143,23 @@
                 	<div class="col-md-12 col-xs-12 col-sm-12">
                     	<div class="block bg_F4 pad_20" id="dataCollectionsId">
                         	<div class="row">
-                            	<div class="col-md-5 col-xs-12 col-sm-5">
-                                	<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId"></span></h4>
+                            	<div class="col-md-4 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">total data collectors : <span id="totalDataCollectorsId"></span></h5>
                                 </div>
-                                <div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h4 class="text-success text-capital">active users - <span id="activeDataCollectorsId"></span></h4>
+                                <div class="col-md-4 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">total registered : <span id="totalRegId"></span></h5>
                                 </div>
-                                <div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h4 class="text-danger text-capital">passive users - <span id="passiveDataCollectorsId"></span></h4>
+                                <div class="col-md-4 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">today - active members : <span id="todayActMebrId"></span></h5>
+                                </div>
+								<div class="col-md-4 col-xs-12 col-sm-3" style="margin-top:20px;">
+                                	<h5 class="text-capital">today - active since last one hour : <span id="lastOneHrActId"></span></h5>
+                                </div>
+								<div class="col-md-4 col-xs-12 col-sm-3" style="margin-top:20px;">
+                                	<h5 class="text-capital">today - passive since last one hour : <span id="passOneHrId"></span></h5>
+                                </div>
+								<div class="col-md-4 col-xs-12 col-sm-3" style="margin-top:20px;">
+                                	<h5 class="text-capital">today - not yet started : <span id="todayNotYetStrtId"></span></h5>
                                 </div>
                             </div>
                         </div>
