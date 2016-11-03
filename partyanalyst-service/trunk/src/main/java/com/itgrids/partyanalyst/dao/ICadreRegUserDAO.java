@@ -8,4 +8,5 @@ public interface ICadreRegUserDAO extends GenericDao<CadreRegUser, Long> {
 
 	public Long getCadreRegUserByUser(Long userId);
 	public Long getCadreRegUserByUserForDataMonitoring(Long userId);
+	public Long getCadreRegId(Long loginUserId);
 }
