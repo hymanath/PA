@@ -1857,4 +1857,60 @@ public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long consti
 		}
 		return returnList;
 	}
+	
+	public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long stateId,Long districtId,Long constituencyId,Long userId, String fromDateStr,String toDateStr){
+		FieldMonitoringVO returnVO = new FieldMonitoringVO();
+		try{
+			Long cadreRegUserId=cadreRegUserDAO.getCadreRegId(loginUserId);
+			Long usersCount = fieldVendorTabUserDAO.getAssignedUsersCountForRegUser(cadreRegUserId);
+			if(usersCount == null || usersCount.longValue() == 0l){
+				cadreRegUserId = null;
+			}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = null;	
+			Date endDate = null;
+			Date today = new Date();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			Date currentDate = dateUtilService.getCurrentDateAndTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
+			Long totalDataCollectorsCount = fieldVendorTabUserDAO.getTotalDataCollectorsCountFrMnrtg(stateId, districtId, constituencyId, cadreRegUserId, userId);
+			Long registeredCount = fieldVendorTabUserDAO.getTotalRegisteredCount(stateId, districtId, constituencyId, cadreRegUserId, userId);
+		    Long todayActMbersCount = fieldVendorTabUserDAO.getTodayActiveMbrsCount(stateId, districtId, constituencyId, cadreRegUserId, userId, today);
+		    Long oneHrActMbersCount = fieldVendorTabUserDAO.getOneHourActiveUsersCount(stateId, districtId, constituencyId, cadreRegUserId, userId, lastOneHourTime, today);
+		    Long passiveCount = 0l;
+		    Long notYetStarted = 0l;
+		    
+		    if(totalDataCollectorsCount == null)
+		    	totalDataCollectorsCount = 0l;
+		    if(registeredCount == null)
+		    	registeredCount = 0l;
+		    if(todayActMbersCount == null)
+		    	todayActMbersCount = 0l;
+		    if(oneHrActMbersCount == null)
+		    	oneHrActMbersCount = 0l;
+		    passiveCount = todayActMbersCount - oneHrActMbersCount;
+		    notYetStarted = registeredCount - todayActMbersCount;
+		   
+		    
+		    returnVO.setTotalDataCollectors(totalDataCollectorsCount);
+		    returnVO.setTodayRegCount(registeredCount);
+		    returnVO.setTodayActiveUsers(todayActMbersCount);
+		    returnVO.setLastOneHrActUsers(oneHrActMbersCount);
+		    returnVO.setPassiveUsers(passiveCount);
+		    returnVO.setNotYetStartedUsers(notYetStarted);
+		    
+		    
+	}catch(Exception e){
+		LOG.error("Exception occurred at getAllDataCollectorsDetails() of FieldMonitoringService", e);
+	}
+	return returnVO;
+	}		
 }
