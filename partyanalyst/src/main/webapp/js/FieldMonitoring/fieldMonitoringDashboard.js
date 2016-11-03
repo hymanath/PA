@@ -144,7 +144,8 @@
 							options3d: {
 								enabled: true,
 								alpha: 45
-							}
+							},
+							spacingTop: -180,
 						},
 						title: {
 							text: null
@@ -153,26 +154,25 @@
 							text: null
 						},
 						legend: {
-						  layout: 'vertical',
-						  floating: false,
-						  align: 'right',
-						  verticalAlign: 'middle',
-						  symbolPadding: 20,
-						  symbolWidth: 10,
+							layout: 'horizontal',
+							floating: false,
+							align: 'bottom',
+							verticalAlign: 'bottom',
+							symbolPadding: 20,
+							symbolWidth: 10,
 							labelFormatter: function() {
-							  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
-												Highcharts.numberFormat(this.percentage,2)+'%';
-						}
-					  },
+								  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
+													Highcharts.numberFormat(this.percentage,2)+'%';
+							}
+						},
 						plotOptions: {
 						  pie: {
+							size: 160,
 							allowPointSelect: false,
-							innerSize: 150,
-							depth: 30,
+							innerSize: 80,
+							depth: 50,
 							cursor: 'pointer',
-							
 							showInLegend: true
-
 						  },
 						  series: {
 							point: {
@@ -190,14 +190,14 @@
 							data: openIssuesArr,
 							dataLabels:{
 								enabled: true,
-								 distance: -20,
-								  formatter: function() {
-										if (this.y === 0) {
-											return null;
-										} else {
-											return Highcharts.numberFormat(this.percentage,2)+ '%';
-										}
-									} 
+								distance: -50,
+								formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.percentage,2)+ '%';
+									}
+								} 
 							},
 						}]
 					});
@@ -207,7 +207,8 @@
 							options3d: {
 								enabled: true,
 								alpha: 45
-							}
+							},
+							spacingTop: -180,
 						},
 						title: {
 							text: null
@@ -216,11 +217,11 @@
 							text: null
 						},
 						legend: {
-						  layout: 'vertical',
+						  layout: 'horizontal',
 						  floating: false,
-						  align: 'right',
-						  verticalAlign: 'middle',
-						  symbolPadding: 20,
+						  align: 'bottom',
+						  verticalAlign: 'bottom',
+						  symbolPadding: 10,
 						  symbolWidth: 10,
 							labelFormatter: function() {
 							  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
@@ -229,11 +230,11 @@
 					  },
 						plotOptions: {
 						  pie: {
+							size: 160,
 							allowPointSelect: false,
-							innerSize: 180,
-							depth: 10,
+							innerSize: 80,
+							depth: 50,
 							cursor: 'pointer',
-							
 							showInLegend: true
 
 						  },
@@ -270,7 +271,9 @@
 							options3d: {
 								enabled: true,
 								alpha: 45
-							}
+							},
+							spacingTop: -200,
+							
 						},
 						title: {
 							text: null
@@ -279,10 +282,11 @@
 							text: null
 						},
 						legend: {
-						  layout: 'vertical',
+							
+						  layout: 'horizontal',
 						  floating: false,
-						  align: 'right',
-						  verticalAlign: 'middle',
+						  align: 'bottom',
+						  verticalAlign: 'bottom',
 						  symbolPadding: 20,
 						  symbolWidth: 10,
 							labelFormatter: function() {
@@ -292,9 +296,10 @@
 					  },
 						plotOptions: {
 						  pie: {
+							size: 160,
 							allowPointSelect: false,
-							innerSize: 120,
-							depth: 10,
+							innerSize: 80,
+							depth: 50,
 							cursor: 'pointer',
 							
 							showInLegend: true
