@@ -49,8 +49,11 @@
                                     	<h4 class="text-capital panel-title"><b>data collectors</b><small>(Today)</small></h4>
 										<ul class="dashedB m_top10">
 											<li>total data collectors<span id="totalDataCollectorsId">0</span></li>
-											<li>active<span id="activeDataCollectorsId">0</span></li>
-											<li>passive<span id="passiveDataCollectorsId">0</span></li>
+											<li>total registered<span id="totalRegisteredId">0</span></li>
+											<li>today - active members<span id="todayActMembersId">0</span></li>
+											<li>today - active since last one hour<span id="lastHrActiveId">0</span></li>
+											<li>today - passive since last one hour<span id="passiveHrId">0</span></li>
+											<li>today - not yet started<span id="notYetStartId">0</span></li>
 										</ul>
                                     </div>
                                     <div class="col-md-4 col-xs-12 col-sm-6 b_right1" id="statusCountDivId">
