@@ -154,7 +154,7 @@
 								enabled: true,
 								alpha: 45
 							},
-							spacingTop: -180,
+							spacingTop: -370,
 						},
 						title: {
 							text: null
@@ -217,7 +217,7 @@
 								enabled: true,
 								alpha: 45
 							},
-							spacingTop: -180,
+							spacingTop: -370,
 						},
 						title: {
 							text: null
@@ -281,8 +281,7 @@
 								enabled: true,
 								alpha: 45
 							},
-							spacingTop: -200,
-							
+							spacingTop: -370,
 						},
 						title: {
 							text: null
