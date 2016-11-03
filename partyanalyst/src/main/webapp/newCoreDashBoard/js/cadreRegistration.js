@@ -131,12 +131,11 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 })
 	
    function cadreRegistrationBasicCall(globalActivityMemberId){   
-		getCadreRecentTime();    
 		showCadreRegistreredCount(globalActivityMemberId);
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
 		getEnumeratorsInfoTS(globalActivityMemberId,36);  
-		
+		getCadreRecentTime();    
 	}
 	  
 	/* function getInFieldCountTS(stateId){
@@ -223,7 +222,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
-			str+='<h4 class="text-capital m_top10"><span class="headingColor">TELANGANA</span></h4>';       
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<h4 class="text-capital m_top10"><span class="headingColor">TELANGANA</span></h4>';       
+			str+='</div>';
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
@@ -461,7 +462,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
-			str+='<h4 class="text-capital m_top10"><span class="headingColor">ANDHRA PRADESH</span></h4>'; 
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<h4 class="text-capital m_top10"><span class="headingColor">ANDHRA PRADESH</span></h4>'; 
+			str+='</div>';
 			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
@@ -1342,17 +1345,18 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 	
 	
 	function getCadreRecentTime(){
- 	$.ajax({
-		type : 'POST',
-		url : 'getCadreLastUpdatedTimeAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify( )}
-	}).done(function(result){
-		if(result != null){
-		setLastUpdatedTime(result);	
-		}
-	});
-}
+		$.ajax({
+			type : 'GET',
+			url : 'getCadreLastUpdatedTimeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify( )}
+		}).done(function(result){
+			if(result != null){
+			setLastUpdatedTime(result);	
+			}
+		});
+		
+	}
 setInterval(function() {
 	statusCall = 0;           
     cadreRegistrationBasicCall();  
