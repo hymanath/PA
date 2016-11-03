@@ -47,6 +47,9 @@ public class FieldMonitoringVO {
 	private List<IdAndNameVO> idnameList1;
 	private String imagePath;
 	private Long notYetStartedUsers;
+	private Long todayRegCount;
+	private Long todayActiveUsers;
+	private Long lastOneHrActUsers;
 	
 	public String getImagePath() {
 		return imagePath;
@@ -233,6 +236,24 @@ public class FieldMonitoringVO {
 	}
 	public void setNotYetStartedUsers(Long notYetStartedUsers) {
 		this.notYetStartedUsers = notYetStartedUsers;
+	}
+	public Long getTodayRegCount() {
+		return todayRegCount;
+	}
+	public void setTodayRegCount(Long todayRegCount) {
+		this.todayRegCount = todayRegCount;
+	}
+	public Long getTodayActiveUsers() {
+		return todayActiveUsers;
+	}
+	public void setTodayActiveUsers(Long todayActiveUsers) {
+		this.todayActiveUsers = todayActiveUsers;
+	}
+	public Long getLastOneHrActUsers() {
+		return lastOneHrActUsers;
+	}
+	public void setLastOneHrActUsers(Long lastOneHrActUsers) {
+		this.lastOneHrActUsers = lastOneHrActUsers;
 	}
 	
 }
