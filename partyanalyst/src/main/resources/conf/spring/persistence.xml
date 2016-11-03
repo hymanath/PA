@@ -1030,6 +1030,7 @@
                       <value>com.itgrids.partyanalyst.model.PaymentTransactionInfo</value>	  
                       <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo</value>	  
                       <value>com.itgrids.partyanalyst.model.TdpCadreHourRegInfo</value>	                 
+				 	  <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp</value>
 				 </list>
 			
 		</property>
