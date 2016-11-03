@@ -1,5 +1,3 @@
-
-
 $(document).on("click",".compareBlockSwitchCls",function(){
 	$(".detailsCls").hide();           
 	$(".compareCls").show();  
@@ -219,6 +217,27 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
            
 	}
 	function buildTotalTodayRegistrationsTS(result){
+		
+	  var total = $("#totalRegId").attr("attr_total");
+	 var totalPer = $("#totalRegId").attr("attr_total_per");
+	 var totalToday = $("#totalTodayId").attr("attr_today");
+	 var totalTodayPer = $("#totalTodayId").attr("attr_today_per");
+	
+	   //$("#totalRegId").html(""+(result.totalCount+parseInt(total))+"-<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
+	  //$("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"-<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
+	  
+	    $("#totalRegId").html(""+(result.totalCount+parseInt(total))+"");
+	  $("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"");
+		
+		$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
+		$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
+		
+	  
+	 $("#totalRegId").attr("attr_total",result.totalCount);
+	 $("#totalRegId").attr("attr_total_per",result.totalPercent);
+	 $("#totalTodayId").attr("attr_today",result.todayTotalCount);
+	 $("#totalTodayId").attr("attr_today_per",result.totalPercentToday);	
+	  $(".showCadrecls").show();
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
@@ -229,7 +248,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
-							str+='<h5 class="text-capital">total</h5>';
+							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
@@ -247,7 +266,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
-							str+='<h5 class="text-capital">today</h5>';
+							str+='<h5 class="text-capital">today-'+emptyCheck(result.totalPercentToday)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h4>';
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
@@ -461,6 +480,26 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	function buildTotalTodayRegistrationsAP(result){
 	 var str= '';
 	 // Total today Registrations block
+	 //$("#overallTodalRegId").html(result.totalCount);
+	
+	
+	 var total = $("#totalRegId").attr("attr_total");
+	 var totalPer = $("#totalRegId").attr("attr_total_per");
+	 var totalToday = $("#totalTodayId").attr("attr_today");
+	 var totalTodayPer = $("#totalTodayId").attr("attr_today_per");
+	
+	   $("#totalRegId").html(""+(result.totalCount+parseInt(total))+"");
+	  $("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"");
+		
+		$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
+		$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
+	  
+	  
+	 $("#totalRegId").attr("attr_total",result.totalCount);
+	 $("#totalRegId").attr("attr_total_per",result.totalPercent);
+	 $("#totalTodayId").attr("attr_today",result.todayTotalCount);
+	 $("#totalTodayId").attr("attr_today_per",result.totalPercentToday);	
+	 $(".showCadrecls").show();
 	  str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<h4 class="text-capital m_top10"><span class="headingColor">ANDHRA PRADESH</span></h4>'; 
@@ -469,7 +508,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
-							str+='<h5 class="text-capital">total</h5>';
+							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_top20">';
@@ -487,7 +526,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 					if(result.todayTotalCount != 0){    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
-							str+='<h5 class="text-capital">today</h5>';
+							str+='<h5 class="text-capital">today-'+emptyCheck(result.totalPercentToday)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h4>';
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_top20">';
@@ -747,7 +786,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 	}	
 	 
 	function buildEnumeratorsInfoTS(result){
-		//Enumerators block
+		//Enumerators block	
 			var str1='';
 			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str1+='<div class="bg_ED pad_15">';
@@ -757,45 +796,54 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 								str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/>';
 							str1+='</td>';  
 							str1+='<td>';
-								str1+='<h5>Total-';            
-								if(result.totalCount != null && result.totalCount > 0){
+								str1+='<h5>Today</h5>';            
+								/* if(result.totalCount != null && result.totalCount > 0){
 									str1+='- <span class="text-muted">'+result.totalPercent+'%</span></h5>';
 								}
-								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>';
+								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>'; */
 							str1+='</td>';     
-							str1+='<td>';
+							/* str1+='<td>';
 								str1+='<h5>Today'; 
 								//if(result.todayPercenCount != null && result.todayPercenCount > 0){
 									str1+='- <span class="text-muted">'+result.totalPercentToday+'%</span></h5>';
 								//}
 								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
+							str1+='</td>'; */
+							str1+='<td>';
+							str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5></a>';
+							 str1+='<h5> Started Constituencies</h5>';
+								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
+									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
+								//}
+								
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<h5 class="EnumCadreCount cadreCount">'+emptyCheck(result.constStartedCount)+' ';
+							str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5></a>';
+							  str1+='<h5> Yet to start Constituencies</h5>';
 								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
-									str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
+									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
 								//}
-								str1+='<h5>Started<br> Constituencies</h5>';
-							str1+='</td>';
+								
+							str1+='</td>'
 						str1+='</tr>';
 					str1+='</table>';
 					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS">'+result.inField+'</h3>'; 
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldTS">'+result.todayFieldMembersCount+'</h3>';
 							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+						//str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
 							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
-							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
-							str1+='<h5 class="text-capital">today submitted data</h5>';    
-						str1+='</div>';
+							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
+							//str1+='<h5 class="text-capital">today submitted data</h5>';    
+						//str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
 			str1+='</div>';
@@ -818,6 +866,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 	}
 	function buildEnumeratorsInfo(result){
 		//Enumerators block
+		
 			var str1='';
 			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str1+='<div class="bg_ED pad_15">';
@@ -827,25 +876,32 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 								str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<h5>Total-';
-								if(result.totalCount != null && result.totalCount > 0){
+								str1+='<h5>Today';
+								/* if(result.totalCount != null && result.totalCount > 0){
 									str1+='- <span class="text-muted">'+result.totalPercent+'%</span></h5>';
 								}
-								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>';
+								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>'; */
 							str1+='</td>';
-							str1+='<td>';
+							/* str1+='<td>';
 								str1+='<h5>Today'; 
 								//if(result.todayPercenCount != null && result.todayPercenCount > 0){
 									str1+='- <span class="text-muted">'+result.totalPercentToday+'%</span></h5>';
 								//}
 								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
-							str1+='</td>';
+							str1+='</td>'; */
 							str1+='<td>';
-								str1+='<h5 class="EnumCadreCount cadreCount">'+emptyCheck(result.constStartedCount)+' ';
+								str1+='<a style="cursor:pointer;"><h5 attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5></a>';
 								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
-									str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
+									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
 								//}
 								str1+='<h5>Started<br> Constituencies</h5>';
+							str1+='</td>';
+							str1+='<td>';
+								str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5></a>';
+								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
+									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
+								//}
+								str1+='<h5>Yet To Start<br> Constituencies</h5>';
 							str1+='</td>';
 						str1+='</tr>';
 					str1+='</table>';
@@ -853,19 +909,19 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP">'+result.inField+'</h3>';       
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldAP">'+result.todayFieldMembersCount+'</h3>';
 							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
-						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';      
+						//str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';      
 							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';     
-							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
-							str1+='<h5 class="text-capital">today submitted data</h5>';    
-						str1+='</div>';
+							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
+							//str1+='<h5 class="text-capital">today submitted data</h5>';    
+						//str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
 			str1+='</div>';
@@ -3710,3 +3766,104 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	var cadre2014CheckboxIsChecked="Y";  
 	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);
    });	
+   
+  $(document).on("click",".getConstituencyCls",function(){
+		var stateId = $(this).attr("attr_state_id");
+		var constituencyIds = $(this).attr("attr_location_ids");
+		var reportType="Started";
+		var locationIdsArr=[];
+		 if(constituencyIds != null && constituencyIds != 0){
+			locationIdsArr = constituencyIds.split(",");
+			reportType="NotStarted";
+		} 
+		 getLocationWiseCadreInfoTodayDetails(stateId,locationIdsArr,reportType);
+	});
+	function getLocationWiseCadreInfoTodayDetails(stateId,locationIdsArr,reportType){
+		$("#locationWiseCadreReportModalId").modal("show");
+		$("#locationWiseCadreReportDivId").html(' ');
+		$("#locationWiseProcessImgReport").show();
+		var jsObj={  
+			stateId : stateId,
+			locationIdsArr : locationIdsArr
+			
+		};
+		$.ajax({          
+			type : 'GET',       
+			url : 'getLocationWiseCadreInfoTodayDetailsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#locationWiseProcessImgReport").hide();
+			if(result != null && result.length > 0){
+				buildLocationWiseReport(result,reportType);
+			}else{
+			   $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE.");	
+			}
+		});
+	} 
+	function buildLocationWiseReport(result,reportType){
+	   var str='';
+	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-responsive" id="constituencyDtlsDataTblId">';   
+	   str+='<thead>';
+             str+='<th>District Name</th>';
+			 str+='<th>Constituency Name</th>'	 
+			 if(reportType=="Started"){
+			  str+='<th>Total Registrations </th>';	 
+			 }
+		 str+='</thead>';
+		 str+='<tbody>';
+		  for(var i in result){
+				str+='<tr>';
+				 if(result[i].name != null && result[i].name.length > 0){
+					str+='<td>'+result[i].name+'</td>';      
+				  }else{
+					str+='<td> - </td>';  
+				  }
+				  if(result[i].locationName != null && result[i].locationName.length > 0){
+					str+='<td>'+result[i].locationName+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
+				   if(reportType=="Started"){
+			 	 if(result[i].total2016CadreCnt != null && result[i].total2016CadreCnt > 0){
+						 str+='<td>'+result[i].total2016CadreCnt+'</td>';       
+					  }else{
+						str+='<td> - </td>';  
+					  }			  
+			        }
+				 
+				str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+		 $("#locationWiseCadreReportDivId").html(str);
+		  if(reportType=="Started"){
+			 $("#constituencyDtlsDataTblId").dataTable({
+			 "aaSorting": [[ 2, "desc" ]], 
+			"iDisplayLength" : 10	
+		 }); 
+		  }else{
+			$("#constituencyDtlsDataTblId").dataTable({
+			 "aaSorting": [[ 1, "desc" ]], 
+			"iDisplayLength" : 10	
+		 });  
+		  }
+		
+	  }
+   
+  $(document).on("click","#statewiseoverview",function(){
+	  
+	  if($(this).data("hidden")== "false"){
+		  $(this).data("hidden", "true");
+		  $(this).html("Hide");
+		  $("#statewiseoverviewPanel").show();
+	  }
+	  else {
+		  $(this).data("hidden", "false");
+		  $(this).html("Show");
+		  $("#statewiseoverviewPanel").hide();
+	  }
+	  
+  });  // end of click function statewiseoverview
+  
+ 

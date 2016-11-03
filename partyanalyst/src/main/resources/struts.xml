@@ -14500,5 +14500,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getLocationWiseCadreInfoTodayDetailsAction" class="coreDashboardAction"  method="getLocationWiseCadreInfoTodayDetails">
+			<result type="json" name="success">
+			<param name="root">cadreDtlsList</param>
+		</result>
+	</action>
 </package>
 </struts>
