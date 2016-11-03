@@ -20,4 +20,5 @@ public interface ITdpCadreUserHourRegInfo extends GenericDao<TdpCadreUserHourReg
 	public List<Object[]> getTdpCadreDataHourWiseForTabUsers(Date date,Integer hour);
 	public int deleteAllRecords(Date fromDate);
 	public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall();
+	public int insertCadreDataByUserWiseHourWise();
 }
