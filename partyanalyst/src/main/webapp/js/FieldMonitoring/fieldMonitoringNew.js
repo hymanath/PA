@@ -78,6 +78,7 @@ function getUsers(constituencyId){
 */
 $(document).on("click","#getDetails",function(){
 	getOverAllDataCollectorsCountsForFieldMontoring();
+	getTabUsersDetailsByVendorAndLocation();
 });
 
 function getTabUsersDetailsByVendorAndLocation(){
@@ -109,15 +110,17 @@ function getTabUsersDetailsByVendorAndLocation(){
 	$("#dataCollectorsDiv").show();
 	 var jsObj=
      {				
-		userId : userId,
+		cadreSurveyUserId : userId,
 		constituencyId : constituencyId,
-		fromDate : fromDate,    //"2016-10-01",
-		toDate : toDate,		//"2016-10-18"
-		districtId : districtId
+		//fromDate : fromDate,    //"2016-10-01",
+		//toDate : toDate,		//"2016-10-18"
+		districtId : districtId,
+		stateId : 0
 	 }
     $.ajax({
           type:'GET',
-          url: 'getTabUsersDetailsByVendorAndLocationNewAction.action',
+         // url: 'getTabUsersDetailsByVendorAndLocationNewAction.action',
+          url: 'getDataCollectorsPerformanceDetailsAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -134,9 +137,9 @@ function getTabUsersDetailsByVendorAndLocation(){
 
 function buildTabUserDetails(result){
 	$("#dataCollectionsId").show();
-	$("#totalDataCollectorsId").html(result.totalDataCollectors);
+	/*$("#totalDataCollectorsId").html(result.totalDataCollectors);
 	$("#activeDataCollectorsId").html(result.activeUsers);
-	$("#passiveDataCollectorsId").html(result.passiveUsers);
+	$("#passiveDataCollectorsId").html(result.passiveUsers);*/
 	
 	if(result.subList != null && result.subList.length > 0){
 		var str = '';
