@@ -2029,14 +2029,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			String dtStr = sdf1.format(today);
 			Date now = sdf1.parse(dtStr);
 			//Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(accessLvlId,accessLvlValue,stateId,now);    
-			Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
+			//Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
+			Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTodayInFieldList(stateId,lastOneHourTime);
 			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);    
-			
+			Long ttlTabUserInFieldToday = tabUserEnrollmentInfoDAO.getTodayPresentList(stateId,toDt);
+			cadreRegistratedCountVO.setTodayFieldMembersCount(ttlTabUserInFieldToday != null ? ttlTabUserInFieldToday : 0l);   
 			//total submitted data
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
 			
-			return cadreRegistratedCountVO;         
+			return cadreRegistratedCountVO;           
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception raised in getStateDtls in CoreDashboardCadreRegistrationService service", e);
@@ -2052,7 +2054,34 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			cal.setTime(today);
 			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
 			Date lastOneHourTime = cal.getTime();
-			List<Long> tsDistId = new ArrayList<Long>(){{
+			Long tsInFieldCount = 0l;
+			Long apInFieldCount = 0l;
+			Long tsTotalFieldCount = 0l; 
+			Long apTotalFieldCount = 0l;  
+			/*List<Object[]> todayInFieldList = tabUserEnrollmentInfoDAO.getTodayInFieldList(lastOneHourTime);
+			if(todayInFieldList != null && todayInFieldList.size() > 0){
+				for(Object[] param : todayInFieldList){
+					if(((Long)param[0]) == 1l){
+						apInFieldCount = (Long)param[1];
+					}else{
+						tsInFieldCount = (Long)param[1];
+					}
+				}
+			}
+			if(toDateStr != null && toDateStr.trim().length() > 0 ){
+				today = sdf.parse(toDateStr);
+			}
+			List<Object[]> todayPresentList = tabUserEnrollmentInfoDAO.getTodayPresentList(today);
+			if(todayPresentList != null && todayPresentList.size() > 0){
+				for(Object[] param : todayPresentList){
+					if(((Long)param[0]) == 1l){
+						apTotalFieldCount = (Long)param[1];
+					}else{
+						tsTotalFieldCount = (Long)param[1];
+					}
+				}
+			}    */
+			/*List<Long> tsDistId = new ArrayList<Long>(){{
 				add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);add(8l);add(9l);add(10l);
 			}};
 			
@@ -2084,7 +2113,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					}
 					
 				}
-			}
+			}*/
 			idNameVO.setTsNow(tsInFieldCount);//inFieldCount
 			idNameVO.setApNow(apInFieldCount);//inFieldCount
 			idNameVO.setTsTotal(tsTotalFieldCount);
@@ -2179,14 +2208,17 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			String dtStr = sdf1.format(today);
 			Date now = sdf1.parse(dtStr);
 			//Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTotalTabUserWorkingInField(accessLvlId,accessLvlValue,stateId,now);    
-			Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
-			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);      
+			//Long ttlTabUserInField = tabUserEnrollmentInfoSourceDAO.getTotalTabUserWorkingInField(stateId,lastOneHourTime,today);      
+			Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTodayInFieldList(stateId,lastOneHourTime);
+			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l);    
+			Long ttlTabUserInFieldToday = tabUserEnrollmentInfoDAO.getTodayPresentList(stateId,toDt);
+			cadreRegistratedCountVO.setTodayFieldMembersCount(ttlTabUserInFieldToday != null ? ttlTabUserInFieldToday : 0l);       
 			
-			//total submitted data
+			//total submitted data  
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
 			
-			return cadreRegistratedCountVO;         
+			return cadreRegistratedCountVO;          
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception raised in getStateDtls in CoreDashboardCadreRegistrationService service", e);
