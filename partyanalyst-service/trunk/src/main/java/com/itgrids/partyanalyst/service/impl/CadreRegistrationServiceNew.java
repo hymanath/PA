@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,18 +24,23 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.CadreDateVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreHourRegInfo;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp1;
+import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -61,7 +67,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ImageAndStringConverter imageAndStringConverter;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IVoterDAO voterDAO;
-	
+	private ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO;
+	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -121,6 +128,16 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
+	}
+	
+	public void setTdpCadreHourRegInfoDAO(
+			ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO) {
+		this.tdpCadreHourRegInfoDAO = tdpCadreHourRegInfoDAO;
+	}
+	
+	public void setTdpCadreUserHourRegInfoDAO(
+			ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO) {
+		this.tdpCadreUserHourRegInfoDAO = tdpCadreUserHourRegInfoDAO;
 	}
 	//Business methods
 	/**
@@ -1570,8 +1587,365 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					LOG.error("Exception occured in saveCadreImage() Method - ",e);
 				}
 			}
+
+	/** 4)
+	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	 *  Pushing tdpcadre data to intermediate tables
+	 *  @since 03-NOVEMBER-2016 
+	 */
+
+		  public ResultStatus pushHourWiseTdpCadreDetailsByToday(){
+			   
+				final ResultStatus rs = new ResultStatus();
+				final Date currentDate = new DateUtilService().getCurrentDateAndTime();
+				try {
+					
+					final CadreDateVO finalVO = getHourWiseTdpCadreDetails(currentDate);
+					
+					
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				        	
+				        	if(finalVO != null){
+				        		
+				        		int deletedRecords = tdpCadreHourRegInfoDAO.deleteAllRecords(currentDate);
+							    
+							    Date currentTime = new DateUtilService().getCurrentDateAndTime();
+							    
+							    if(finalVO.getSubMap() != null && finalVO.getSubMap().size() > 0){
+							    	saveInToHourRegInfo(finalVO.getSubMap(),currentTime);
+							    }
+							    if(finalVO.getSubMap1() != null && finalVO.getSubMap1().size() > 0){
+							    	saveInToHourRegInfo(finalVO.getSubMap1(),currentTime);
+							    }
+				        	}
+				        	   
+					          rs.setResultCode(1);
+					          rs.setMessage("success");
+				         }
+				    });
+					
+				} catch (Exception e) {
+					LOG.error("Exception raised at CadreRegistrationServiceNew", e);
+					rs.setResultCode(0);
+					rs.setMessage("failure");
+				}
+				return rs;
+			}
+		   
+		   
+       public CadreDateVO getHourWiseTdpCadreDetails(Date currentDate){
+    	   
+    	   CadreDateVO finalVO = new CadreDateVO();
+    	   try{
+			    
+    		    Map<Integer,CadreDateVO> apMap = getStateVOList(1L);
+    		    Map<Integer,CadreDateVO> tsMap = getStateVOList(36L);
+    		    
+    		    List<Object[]> list = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(currentDate,1L);
+    		    if(list != null && list.size() > 0){
+    		    	for(Object[] obj : list){
+    		    		
+    		    		if(obj[3] != null && (Long)obj[3] > 0l && obj[1]!=null){
+    		    			
+    		    			CadreDateVO hourVO = apMap.get((Integer)obj[1]);
+    		    			if(hourVO != null){
+    		    				hourVO.setRegCount(obj[2]!=null ? (Long)obj[2]:0l);
+    		    				hourVO.setUsersCount((Long)obj[3]);
+    		    			}
+    		    		}
+    		    	}
+    		    }
+    		    
+    		    List<Object[]> list1 = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(currentDate,36L);
+    		    if(list1 != null && list1.size() > 0){
+    		    	for(Object[] obj : list1){
+    		    		
+    		    		if(obj[3] != null && (Long)obj[3] > 0l && obj[1]!=null){
+    		    			
+    		    			CadreDateVO hourVO = tsMap.get((Integer)obj[1]);
+    		    			if(hourVO != null){
+    		    				hourVO.setRegCount(obj[2]!=null ? (Long)obj[2]:0l);
+    		    				hourVO.setUsersCount((Long)obj[3]);
+    		    			}
+    		    		}
+    		    	}
+    		    }
+    		  
+    		    finalVO.setSubMap(apMap);
+    		    finalVO.setSubMap1(tsMap);
+    		    
+		   }catch(Exception e){
+			  LOG.error("Exception occured in getHourWiseTdpCadreDetails() Method - ",e);
+		   }
+    	   return finalVO;
+       }
+       public void saveInToHourRegInfo(Map<Integer,CadreDateVO> dataMap, Date currentTime){
+		   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		   	try{
+					if( dataMap != null && dataMap.size() > 0)
+					{	
+						int i= 0;
+						
+						for (Map.Entry<Integer, CadreDateVO> entry : dataMap.entrySet())
+						{
+				    		  i = i +1;
+				    		  CadreDateVO dataVO = entry.getValue();
+				    		  if(dataVO != null){
+				    			  TdpCadreHourRegInfo info = new TdpCadreHourRegInfo();
+				    			  info.setStateId(dataVO.getStateId());
+				    			  if(dataVO.getDateStr() != null){
+				    				  info.setSurveyDate(sdf.parse(dataVO.getDateStr()));
+				    			  }
+				    			  info.setHour(dataVO.getDayHour().longValue());
+				    			  if(dataVO.getRegCount() != null && dataVO.getRegCount() > 0l){
+				    				  info.setTotalRegistrations(dataVO.getRegCount());
+				    			  }
+				    			  if(dataVO.getUsersCount() != null && dataVO.getUsersCount() > 0){
+				    				  info.setCadreSurveyUsers(dataVO.getUsersCount());
+				    			  }
+				    			  info.setCadreSurveyUsers(dataVO.getUsersCount());
+				    			  info.setInsertedTime(currentTime);
+				    			  
+				    			  tdpCadreHourRegInfoDAO.save(info);
+				    		  }
+			    			  if( i % 100 == 0 ) { 
+			    			       //flush a batch of inserts and release memory:
+			    				  tdpCadreDAO.flushAndclearSession();
+			    			  }
+				    	 }
+					}
+		   		
+				}catch(Exception e){
+					LOG.error("Exception raised at savingService", e);
+					//throw new RuntimeException("Exception At savingService..");
+				}
+		   }
+       public  Map<Integer,CadreDateVO> getStateVOList(Long stateId){
+    	   
+    	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	   Date currentDate = new DateUtilService().getCurrentDateAndTime();
+    	   Map<Integer,CadreDateVO> stateMap = new HashMap<Integer, CadreDateVO>(0);
+    	   try{
+    		   
+	    		   for(int i=0;i<24;i++){
+		   		    	CadreDateVO hourVO = new CadreDateVO();
+		   		    	
+		   		    	hourVO.setStateId(stateId);
+		   		    	hourVO.setDateStr(sdf.format(currentDate));
+		   		    	hourVO.setDayHour(i);
+		   		    	hourVO.setRegCount(0l);
+		   		    	hourVO.setUsersCount(0l);
+		   		    	
+		   		    	stateMap.put(hourVO.getDayHour(),hourVO);
+	   		       }
+    		   
+		   }catch(Exception e){
+			   LOG.error("Exception occured in getHourWiseTdpCadreDetails() Method - ",e);
+		   }
+    	   return stateMap;
+       }
+       
+       
+     /** 5)
+   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+   	 *  Pushing tdpcadre data hour wise for Tab Users.
+   	 *  @since 03-NOVEMBER-2016 
+   	 */
+       
+       
+     public ResultStatus pushTdpCadreDataHourWiseForTabUsersByToday(){
+    	  
+    	  final ResultStatus rs = new ResultStatus();
+		  final DateUtilService dateUtilService = new DateUtilService();
+		  final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		  
+    	 try{
+    		 
+    		   //get current hour from current time.
+ 		       Date currentTime = new DateUtilService().getCurrentDateAndTime();
+ 		       Calendar calendar = Calendar.getInstance();
+ 		       calendar.setTime(currentTime);
+ 		       Integer hour = calendar.get(Calendar.HOUR_OF_DAY);
+ 		    
+ 			  final List<CadreDateVO> finalList = getTdpCadreDataHourWiseForTabUsersByToday(currentTime,hour);
+    		  
+    		  if(finalList != null && finalList.size() > 0){
+    			 
+    				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				        		
+				         Date time = dateUtilService.getCurrentDateAndTime();
+				         
+				         int deletedRecords = tdpCadreUserHourRegInfoDAO.deleteAllRecords(time);
+				         int i= 0;	    
+					     for(CadreDateVO VO  : finalList ){
+					    	 i = i + 1;	    
+					    	 TdpCadreUserHourRegInfo info = new TdpCadreUserHourRegInfo();
+					    	 info.setCadreSurveyUserId(VO.getCadreSurveyUserId());
+					    	 info.setTabUserInfoId(VO.getTabUserInfoId());
+					    	 if(VO.getDateStr() != null){
+					    		 try {
+									info.setSurveyDate(sdf.parse(VO.getDateStr()));
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+					    	 }
+					    	 info.setHour(VO.getHour());
+					    	 if(VO.getRegCount() != null && VO.getRegCount() > 0l){
+					    		 info.setRegCount(VO.getRegCount());
+					    	 }
+					    	 info.setInsertedTime(time);
+					    	 
+					    	 tdpCadreUserHourRegInfoDAO.save(info);
+					    	 
+					    	 if( i % 100 == 0 ) { 
+	 		    			     //flush a batch of inserts and release memory,
+	 		    				 tdpCadreDAO.flushAndclearSession();
+	 		    			 }
+					     }	   
+					          rs.setResultCode(1);
+					          rs.setMessage("success");
+				         }
+				    });
+    		 }
+    		 
+		}catch(Exception e){
+			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByToday() Method - ",e);
+			 rs.setResultCode(0);
+	         rs.setMessage("failure");
+		}
+    	 return rs;
+     }
+       
+       
+       
+       public List<CadreDateVO> getTdpCadreDataHourWiseForTabUsersByToday(Date currentTime,Integer hour){
+    	   List<CadreDateVO> finalList = null;
+    	   try{
+    		    
+    		    List<Object[]> list = tdpCadreUserHourRegInfoDAO.getTdpCadreDataHourWiseForTabUsers(currentTime,hour);//5500
+    		    if(list != null && list.size() > 0)
+    		    {	
+    		    	finalList = new ArrayList<CadreDateVO>();
+    		    	
+    		    	for(Object[] obj : list)
+    		    	{
+    		    		if(obj[2] != null && obj[3]!=null )
+    		    		{	
+    		    			CadreDateVO dataVO = new CadreDateVO();
+    		    			dataVO.setDateStr(obj[0] != null ? obj[0].toString() : null);
+    		    			dataVO.setHour(obj[0]!=null ? ((Integer)obj[1]).longValue() : null);
+    		    			dataVO.setCadreSurveyUserId(obj[2]!=null?(Long)obj[2]:null);
+    		    			dataVO.setTabUserInfoId(obj[3]!=null?(Long)obj[3]:null);
+    		    			dataVO.setRegCount(obj[4]!=null?(Long)obj[4]:0l);
+    		    			
+    		    			finalList.add(dataVO);
+    		    		}
+    		    	}
+    		    } 
+    		    
+		   }catch(Exception e){
+			   LOG.error("Exception occured in getTdpCadreDataHourWiseForTabUsers() Method - ",e);
+		   }
+    	   return finalList;
+       }
+       
+       /** 6)
+      	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+      	 *  Pushing tdpcadre data hour wise for Tab Users overall.
+      	 *  @since 03-NOVEMBER-2016 
+      	 */
+       public ResultStatus pushTdpCadreDataHourWiseForTabUsersByOverall(){
+     	  
+     	  final ResultStatus rs = new ResultStatus();
+ 		  final DateUtilService dateUtilService = new DateUtilService();
+ 		  final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+ 		  
+     	 try{ 
+  		    
+  			  final List<CadreDateVO> finalList = getTdpCadreDataHourWiseForTabUsersByOverall();
+     		  
+     		  if(finalList != null && finalList.size() > 0){
+     			 
+     				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+ 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+ 				        		
+ 				         Date time = dateUtilService.getCurrentDateAndTime();
+ 				         
+ 				         int deletedRecords = tdpCadreUserHourRegInfoDAO.deleteAllRecords(null);
+ 				         
+ 				         int i= 0;
+ 					     for(CadreDateVO VO  : finalList ){
+ 					    	 i = i + 1;	    
+ 					    	 
+ 					    	 TdpCadreUserHourRegInfo info = new TdpCadreUserHourRegInfo();
+ 					    	 info.setCadreSurveyUserId(VO.getCadreSurveyUserId());
+ 					    	 info.setTabUserInfoId(VO.getTabUserInfoId());
+ 					    	 if(VO.getDateStr() != null){
+ 					    		 try {
+ 									info.setSurveyDate(sdf.parse(VO.getDateStr()));
+ 								} catch (ParseException e) {
+ 									e.printStackTrace();
+ 								}
+ 					    	 }
+ 					    	 info.setHour(VO.getHour());
+ 					    	 if(VO.getRegCount() != null && VO.getRegCount() > 0l){
+ 					    		 info.setRegCount(VO.getRegCount());
+ 					    	 }
+ 					    	 info.setInsertedTime(time);
+ 					    	 
+ 					    	 tdpCadreUserHourRegInfoDAO.save(info);
+ 					    	 
+ 					    	if( i % 100 == 0 ) { 
+ 		    			       //flush a batch of inserts and release memory:
+ 		    				  tdpCadreDAO.flushAndclearSession();
+ 		    			    }
+ 					    	
+ 					     }	   
+ 					          rs.setResultCode(1);
+ 					          rs.setMessage("success");
+ 				         }
+ 				    });
+     			 
+     		 }
+     		 
+ 		}catch(Exception e){
+ 			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByToday() Method - ",e);
+ 			 rs.setResultCode(0);
+ 	         rs.setMessage("failure");
+ 		}
+     	 return rs;
+      }
+       
+       public List<CadreDateVO> getTdpCadreDataHourWiseForTabUsersByOverall(){
+    	   List<CadreDateVO> finalList = null;
+    	   try{
+    		    
+    		    List<Object[]> list = tdpCadreUserHourRegInfoDAO.getTdpCadreDataHourWiseForTabUsersOverall();//5500
+    		    if(list != null && list.size() > 0)
+    		    {	
+    		    	finalList = new ArrayList<CadreDateVO>();
+    		    	
+    		    	for(Object[] obj : list)
+    		    	{
+    		    		if(obj[2] != null && obj[3]!=null )
+    		    		{	
+    		    			CadreDateVO dataVO = new CadreDateVO();
+    		    			dataVO.setDateStr(obj[0] != null ? obj[0].toString() : null);
+    		    			dataVO.setHour(obj[0]!=null ? ((Integer)obj[1]).longValue() : null);
+    		    			dataVO.setCadreSurveyUserId(obj[2]!=null?(Long)obj[2]:null);
+    		    			dataVO.setTabUserInfoId(obj[3]!=null?(Long)obj[3]:null);
+    		    			dataVO.setRegCount(obj[4]!=null?(Long)obj[4]:0l);
+    		    			
+    		    			finalList.add(dataVO);
+    		    		}
+    		    	}
+    		    } 
+    		    
+		   }catch(Exception e){
+			   LOG.error("Exception occured in getTdpCadreDataHourWiseForTabUsersByOverall() Method - ",e);
+		   }
+    	   return finalList;
+       }
 }
-
-
-	
-
