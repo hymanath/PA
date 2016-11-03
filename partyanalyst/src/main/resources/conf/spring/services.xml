@@ -1704,7 +1704,7 @@
 		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />     
 		    
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
-		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/> 
+		    <!-- <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>  -->
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
         </list>
     	</property>
