@@ -2,12 +2,14 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.model.TabUserEnrollmentInfo;
+import com.itgrids.partyanalyst.model.VoterFamilyCount;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollmentInfo, Long> implements ITabUserEnrollmentInfoDAO {
@@ -32,6 +34,28 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		query.setParameter("stateId", stateId);   
 		query.setDate("today",today);
 		return (Long) query.uniqueResult();
+	}
+	public Long getTodayInFieldList(Long stateId,Date lastOneHourTime){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select count(distinct model.tabUserInfoId) from TabUserEnrollmentInfo model where model.endTime > (:lastOneHourTime) and " +
+						" model.stateId = :stateId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("lastOneHourTime", lastOneHourTime);
+		query.setParameter("stateId", stateId);
+		return (Long)query.uniqueResult();
+	}
+	public Long getTodayPresentList(Long stateId,Date surveyTime){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select count(distinct model.tabUserInfoId) from TabUserEnrollmentInfo model where date(model.surveyTime) = (:surveyTime) " +
+						" and  model.stateId = :stateId ");
+		Query query = getSession().createQuery(queryStr.toString());  
+		query.setDate("surveyTime", surveyTime);
+		query.setParameter("stateId", stateId);  
+		return (Long)query.uniqueResult();            
+	}
+	public int pushTabUserInfoIntoIntermediateTable(){
+		Query query = getSession().createSQLQuery("CALL cadre_core_dashboard2();");   
+		return query.executeUpdate();  
 	}
 	
 	public List<Object[]> getTabUserFirstLastRecord(List<Long> tabUserInfoIds){
