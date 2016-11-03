@@ -745,7 +745,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				}	
 		});
 	}	
-	var statusCall = 0;       
+	 
 	function buildEnumeratorsInfoTS(result){
 		//Enumerators block
 			var str1='';
@@ -784,11 +784,11 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS"><div id="memDtlsUpdateProcessImgTShourId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>'; 
+							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS">'+result.inField+'</h3>'; 
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldTS"><div id="memDtlsUpdateProcessImgTStotalId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldTS">'+result.todayFieldMembersCount+'</h3>';
 							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
@@ -814,9 +814,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 			}); */  
 			$("#memDtlsUpdateProcessImgTShourId").show();  
 			$("#memDtlsUpdateProcessImgTStotalId").show();
-			statusCall = parseInt(statusCall) + parseInt(1);
-			getCount();       
-			//getInFieldCountTS(36);  
+			
 	}
 	function buildEnumeratorsInfo(result){
 		//Enumerators block
@@ -856,12 +854,12 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP"><div id="memDtlsUpdateProcessImgAPhourId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>';       
+							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP">'+result.inField+'</h3>';       
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldAP"><div id="memDtlsUpdateProcessImgAPtotalId" style="display: none;"><center ><img src="images/icons/loading.gif" style="width:20px;"></center></div></h3>';
-							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';
+							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldAP">'+result.todayFieldMembersCount+'</h3>';
+							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
 						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';      
 							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';     
@@ -871,7 +869,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='</div>';
 				str1+='</div>';
 			str1+='</div>';
-			$("#enumeratorsInfoDivId").html(str1);
+			$("#enumeratorsInfoDivId").html(str1);  
 			/* $('.EnumCadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
@@ -886,49 +884,9 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 			}); */ 
 			$("#memDtlsUpdateProcessImgAPhourId").show();
 			$("#memDtlsUpdateProcessImgAPtotalId").show();
-			statusCall = parseInt(statusCall) + parseInt(1);
-			getCount();   
-			//getInFieldCountAP(1); 
 			
 			
 	}
-	function getCount(){ 
-		if(statusCall == 2){  
-			getInFieldCount();         
-		}  
-	}
-	function getInFieldCount(){  
-		var startDate = '';
-		var endDate = '';
-		var jsObj={         
-			startDate : '02/10/2016',        
-			endDate : getTodayDate()    
-		};
-		$.ajax({
-			type : 'GET',
-			url : 'getInFieldCountAction.action',    
-			dataType : 'json',  
-			data : {task :JSON.stringify(jsObj)}          
-		}).done(function(result){
-            if(result != null){
-				apNow = result.apNow;
-				apTotal = result.apTotal;
-				tsNow = result.tsNow;
-				tsTotal = result.tsTotal;  
-				$("#memDtlsUpdateProcessImgAPhourId").hide();
-				$("#memDtlsUpdateProcessImgAPtotalId").hide(); 
-				$("#memDtlsUpdateProcessImgTShourId").hide();
-				$("#memDtlsUpdateProcessImgTStotalId").hide(); 				
-				$("#inFieldAP").html(apNow); 
-				$("#totalInFieldAP").html(apTotal);
-				$("#inFieldTS").html(tsNow);  
-				$("#totalInFieldTS").html(tsTotal);	    			
-				//alert("inFieldAP:"+inFieldAP+"totalMemAP:"+totalMemAP);  
-			}else{
-			}	
-		});
-	}
-	
 	function getRegistrationCountDtls(location,scope){
 		$("#kupamRegDtlsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		//var location = "booth";
@@ -3730,8 +3688,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		$("#totalTodayCadreRegistrationBlockDivAPId").html('');
 		$("#totalTodayCadreRegistrationBlockDivTSId").html('');
 		$("#enumeratorsInfoDivId").html('');
-		$("#enumeratorsInfoDivTSId").html(''); 
-		statusCall = 0;  
+		$("#enumeratorsInfoDivTSId").html('');
 		showCadreRegistreredCount(globalActivityMemberId);
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
