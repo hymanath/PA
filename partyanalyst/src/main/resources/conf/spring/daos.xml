@@ -3344,6 +3344,12 @@
 	<bean id="tdpCadreUserHourRegInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreUserHourRegInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCadreDataSourceCountInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDataSourceCountInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreDataSourceCountInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDataSourceCountInfoTempDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="tdpCadreUserHourRegInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreUserHourRegInfoTempDAO">
 		<property name="sessionFactory" ref="sessionFactory" />

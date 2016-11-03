@@ -1343,7 +1343,9 @@
 		<property name="userEmailDAO" ref="userEmailDAO"/>
 		<property name="partyOfficeDAO" ref="partyOfficeDAO"/>  
 		<property name="eventAttendeeDAO" ref="eventAttendeeDAO"/> 
-		<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService"/> 	
+		<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService"/>
+		<property name="tdpCadreDataSourceCountInfoDAO" ref="tdpCadreDataSourceCountInfoDAO"/>
+		<property name="tdpCadreDataSourceCountInfoTempDAO" ref="tdpCadreDataSourceCountInfoTempDAO"/> 	
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
