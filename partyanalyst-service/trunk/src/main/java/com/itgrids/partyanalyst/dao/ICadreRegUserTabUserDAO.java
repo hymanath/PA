@@ -14,4 +14,9 @@ public interface ICadreRegUserTabUserDAO extends GenericDao<CadreRegUserTabUser,
 	public List<Object[]> getAllUserAssignedUsers(Long constituencyId,String searchType);
 	public List<Object[]> getUserAssignedDistricts(Long cadreRegUserId);
 	public List<Object[]> getAllAssignedDistricts(String searchType);
+	public Long getAssignedUsersCountForRegUser(Long cadreRegUserId);
+	
+	public List<Object[]> getFieldMonitoringUserWiseDetails();
+	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers();
+	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers();
 }
