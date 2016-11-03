@@ -1347,12 +1347,11 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 	function getCadreRecentTime(){
 		$.ajax({
 			type : 'GET',
-			url : 'getCadreLastUpdatedTimeAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify( )}
+			url : 'getCadreLastUpdatedTimeAction.action',  
+			dataType : 'json'
 		}).done(function(result){
 			if(result != null){
-			setLastUpdatedTime(result);	
+			setLastUpdatedTime(result);      	
 			}
 		});
 		
@@ -3707,18 +3706,19 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
         });
 	$("#individualDtlsId").find(".highcharts-legend-item:nth-child(1)").trigger("click");  
 	}
-	$(document).on("click",".refreshCadreCls",function(){
+	
+	function callFunction(){     
 		$("#totalTodayCadreRegistrationBlockDivAPId").html('');
 		$("#totalTodayCadreRegistrationBlockDivTSId").html('');
 		$("#enumeratorsInfoDivId").html('');
 		$("#enumeratorsInfoDivTSId").html(''); 
-		statusCall = 0;       
-		getCadreRecentTime();        
+		statusCall = 0;  
 		showCadreRegistreredCount(globalActivityMemberId);
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
-		getEnumeratorsInfoTS(globalActivityMemberId,36);        
-	});
+		getEnumeratorsInfoTS(globalActivityMemberId,36);
+		getCadreRecentTime();
+	}      
 
    $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
 	  var isKuppamExcluded;
