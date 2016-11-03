@@ -36,8 +36,8 @@ public class RMQCadreResponseConsumer{
 		 com.rabbitmq.client.Connection conn = factory.newConnection();
 	     Channel channel = conn.createChannel();
 	     String exchangeName = "cadre_response_exchange";
-	     String queueName = "imei0";
-	     String routingKey = "imei0";
+	     String queueName = "imei4";
+	     String routingKey = "imei4";
 	     boolean durable = true;
 	     
 	     channel.exchangeDeclare(exchangeName, "topic", durable);

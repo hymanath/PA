@@ -96,7 +96,7 @@ public class RMQCadreConsumer implements Runnable{
     	try{
     		
     		Client client = Client.create();
-     		WebResource webResource = client.resource("http://mytdp.in/WebService/saveFieldDataForCadre/");
+     		WebResource webResource = client.resource("http://192.168.11.143:8090/CadreReg-1.4.0.RELEASE/WebService/saveFieldDataForCadre/");
     		ClientResponse response = webResource.type("application/json").post(ClientResponse.class,str);
     		
     		int responseCode = response.getStatus();
@@ -127,7 +127,7 @@ public class RMQCadreConsumer implements Runnable{
    	 	conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		
-    	for(int i=0;i<100;i++)
+    	for(int i=0;i<5;i++)
     	{
     		RMQCadreConsumer consumer = new RMQCadreConsumer();
     		Thread thread = new Thread(consumer);

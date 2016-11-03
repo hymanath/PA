@@ -29,17 +29,17 @@ public class RMQCadreClient {
 		RMQCadreClient client = new RMQCadreClient();
 		RMQCadreProducer producer = new RMQCadreProducer();
 		
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",5115000,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",6115000,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",7115000,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",8115000,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",9115000,1000));
+		/*producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",5118500,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",6118000,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",7118000,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",8118000,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("VOTER",9118000,10));*/
 		
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",1015100,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",1211000,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",1410100,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",1610500,1000));
-		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",1810500,1000));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",108100,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",128000,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",148100,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",168500,10));
+		producer.sendMessagesWithReplyAck("cadre_exchange","Dandu",client.getData("CADRE",188500,10));
 		
 		//client.getData("VOTER",0,10);
 	}
