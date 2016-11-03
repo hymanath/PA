@@ -1005,6 +1005,24 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
    });
 }
 
+function exportToExcel(constiTableId)
+{
+tableToExcel(''+constiTableId+'', 'Constituency Wise Committees');
+	
+}
+
+var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
 function buildDataCollectorsPerformanceDetails(result){
 
 	if(result != null && result.length > 0){
@@ -1012,7 +1030,7 @@ function buildDataCollectorsPerformanceDetails(result){
 		
         //str+='<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId">'+result.length+'</span></h4>';
         $("#totalDataCollectorsId span").text("-"  +totalDataCollectors);
-		
+		str+='<span class="btn btn-info excelId form-inline pull-right" style="float:left;margin-left:250px;" onclick="exportToExcel(\'detailsTable\')"> Export To Excel </span>';
 		str+='<table class="table b_1 m_top10 " id="detailsTable">';
 			str+='<thead class="text-capitalize">';
 				//str+='<th>User Id</th>';
