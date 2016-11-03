@@ -3,6 +3,7 @@
 		getOverAllDataCollectorsCounts(1);
 		getIssueStatusWiseCounts(1);
 		getIssueTypeWiseCounts(1);
+		getDistricts();
 	}
 	
 	function getOverAllDataCollectorsCounts(state){
@@ -346,6 +347,10 @@
 		}
 		
 function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
+	$("#districtDiv").hide();
+	$("#dataCollectorsDiv").hide();
+	$("#dataCollectorsDivId").html('');
+	$("#dataCollectorsImgId").hide();
 	$("#statusWiseDetailsDivId").html('');
 	$("#statusWiseDetailsImgId").show();
 	$("#dtatusDivId").show();
@@ -924,3 +929,218 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 	 $("#changeIssueStatusId"+value).trigger("chosen:updated");
    });
   }
+
+  function getDistricts(){
+  $("#districtDiv").show();
+  var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+	$('#districtId').find('option').remove();
+	var jsObj = { 
+	stateId : 1,
+	stateTypeId : stateId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getDistrictByStateIdAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		$("#districtId").append('<option value="0">All</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#districtId").trigger("chosen:updated");		
+	});
+}
+  var globalDataCollectorsAscendingArr;
+  var globalDataCollectorsDecendingArr;
+  function getDataCollectorsPerformanceDetails(){
+	 var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+	$("#statusWiseDetailsDivId").html('');
+	$("#statusWiseDetailsImgId").hide();
+	$("#dtatusDivId").hide();
+	$("#dataCollectorsDiv").show();
+	$("#dataCollectorsDivId").html('');
+	$("#dataCollectorsImgId").show();
+	$("#issueTypeHeadingId").html("");
+	
+	 var jsObj=
+     {				
+		stateId : stateId,
+		districtId : $("#districtId").val()
+	 }
+    $.ajax({
+          type:'GET',
+          url: 'getDataCollectorsPerformanceDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  if(result != null){
+		  buildDataCollectorsPerformanceDetails(result.subList);
+		}
+	 if(result.subList != null && result.subList.length >0){
+	 
+		globalDataCollectorsDecendingArr = [];
+		for(var i in result.subList){
+		globalDataCollectorsDecendingArr.push(result.subList[i]);
+		}
+		/*globalDataCollectorsAscendingArr=[];
+		for(var counter=result.subList.length - 1; counter >= 0;counter--){
+			globalDataCollectorsAscendingArr.push(result.subList[counter]);
+		} */
+	}
+	movingDataToArrays(result.subList);
+   });
+}
+
+function buildDataCollectorsPerformanceDetails(result){
+
+	if(result != null && result.length > 0){
+		var str = '';
+		
+        //str+='<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId">'+result.length+'</span></h4>';
+        $("#totalDataCollectorsId span").text("-"  +result.length);
+		str+='<table class="table b_1 m_top10 " id="detailsTable">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>User Id</th>';
+				str+='<th>DC Name</th>';
+				str+='<th>DC Contact number</th>';
+				str+='<th>district</th>';
+				str+='<th>constituency</th>';
+				str+='<th>first record</th>';
+				str+='<th>recent record</th>';
+				str+='<th>last hour</th>';
+				str+='<th>Completed Registrations</th>';
+				str+='<th>today target</th>';
+				str+='<th>open issues</th>';
+				str+='<th>fixed issues</th>';
+				str+='<th>closed issues</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					if(result[i].lastHourCount != null && result[i].lastHourCount > 0)
+						str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
+					else
+						str+='<td class="issuePending">'+result[i].userName+'</td>';
+					if(result[i].tabUserName != null)
+						str+='<td title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].mobileNo != null)
+						str+='<td>'+result[i].mobileNo+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].districtName != null)
+						str+='<td>'+result[i].districtName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].constituencyName != null)
+						str+='<td>'+result[i].constituencyName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].firstRecord != null)
+						str+='<td>'+result[i].firstRecord+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].recentRecord != null)
+						str+='<td>'+result[i].recentRecord+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].lastHourCount != null)
+						str+='<td>'+result[i].lastHourCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].totalCount != null)
+						str+='<td>'+result[i].totalCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].todayTarget != null)
+						str+='<td>'+result[i].todayTarget+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].openIssues != null && result[i].openIssues > 0)
+						str+='<td>'+result[i].openIssues+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].fixedIssues != null && result[i].fixedIssues > 0)
+						str+='<td>'+result[i].fixedIssues+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].closedIssues != null && result[i].closedIssues > 0)
+						str+='<td>'+result[i].closedIssues+'</td>';
+					else
+						str+='<td> - </td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+		
+		$("#dataCollectorsDivId").html(str);
+		$("#dataCollectorsImgId").hide();
+		$('#detailsTable').dataTable({
+        "aaSorting": []
+			});
+		$('html,body').animate({scrollTop: $("#dataCollectorsDivId").offset().top}, 'slow');
+	}
+	else{
+			$("#dataCollectorsImgId").hide();
+			$("#dataCollectorsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+	}
+}
+
+$(document).on("click",".completedRegistrationsSorting",function(){
+	var resultType=$(this).attr("attr_value");
+	 if(resultType != null && resultType == "All"){
+		buildDataCollectorsPerformanceDetails(globalDataCollectorsDecendingArr); 
+	 }else if(resultType == "verygood"){
+		buildDataCollectorsPerformanceDetails(globalVeryGoodDataCollectors);
+	 }else if(resultType == "good"){
+		buildDataCollectorsPerformanceDetails(globalGoodDataCollectors);
+	 }else if(resultType == "poor"){
+		buildDataCollectorsPerformanceDetails(globalPoorDataCollectors);
+	 }else if(resultType == "verypoor"){
+		buildDataCollectorsPerformanceDetails(globalVeryPoorDataCollectors);
+	 }else if(resultType == "notstarted"){
+		buildDataCollectorsPerformanceDetails(globalNotAtStartedDataCollectors);
+	 }
+});
+var globalVeryGoodDataCollectors;
+var globalGoodDataCollectors;
+var globalPoorDataCollectors;
+var globalVeryPoorDataCollectors;
+var globalNotAtStartedDataCollectors;
+
+function movingDataToArrays(result){
+globalVeryGoodDataCollectors = [];
+globalGoodDataCollectors = [];
+globalPoorDataCollectors = [];
+globalVeryPoorDataCollectors = [];
+globalNotAtStartedDataCollectors = [];
+if(result != null){
+	for(var i in result){
+		if(result[i].countPerc > 100.00){
+		globalVeryGoodDataCollectors.push(result[i]);
+		}
+		if(result[i].countPerc > 80.00 && result[i].countPerc<=100.00){
+		globalGoodDataCollectors.push(result[i]);
+		}
+		if(result[i].countPerc > 50.00 && result[i].countPerc<=80.00){
+		globalPoorDataCollectors.push(result[i]);
+		}
+		if(result[i].countPerc > 1.00 && result[i].countPerc<=50.00){
+		globalVeryPoorDataCollectors.push(result[i]);
+		}
+		if(result[i].countPerc == 0.00){
+		globalNotAtStartedDataCollectors.push(result[i]);
+		}
+	}
+}
+}

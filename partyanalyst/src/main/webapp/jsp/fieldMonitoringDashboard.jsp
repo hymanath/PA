@@ -17,6 +17,24 @@
 #issueStatusTableId_filter{
 	float:right !important;
 }
+#detailsTable_filter{
+	display:none !important;
+}
+#detailsTable_length{
+	display:none !important;
+}
+.activeUlCls li {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 8px;
+    text-transform: capitalize;
+}
+.activeUlCls li.active {
+    background-color: #4a5863;
+    color: #fff;
+}
 </style>
 <div class="container">
 	<div class="row">
@@ -49,8 +67,8 @@
                         	<div class="block m_top20">
                             	<div class="row">
                                 	<div class="col-md-6 col-xs-12 col-sm-6 b_right1">
-                                    	<h4 class="text-capital panel-title"><b>data collectors</b><small>(Today)</small></h4>
-                                        <div class="row">
+                                    	<h4 class="text-capital panel-title"><b>data collectors</b><small>(Today)</small><button class="btn btn-sm btn-success btn-xs pull-right" type="button" onclick="getDataCollectorsPerformanceDetails();">Click to View DC Performances</button></h4>
+										<div class="row">
                                         	<div class="col-md-8 col-xs-12 col-sm-10">
                                             	<ul class="dashedB">
                                                    <li>total data collectors<span id="totalDataCollectorsId">0</span></li>
@@ -91,6 +109,33 @@
 						<h3 class="panel-title text-capital" id="issueTypeHeadingId"></h3>
 						<div id="statusWiseDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 						<div id="statusWiseDetailsDivId"></div>
+                    </div>
+					<div class="block table-responsive" id="dataCollectorsDiv" style="display:none;">
+						<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 20px; font-weight: bold;">
+							<h4 class="text-capital" id="totalDataCollectorsId" style="margin-top: 0px; font-weight: bold;">total data collectors <span></span></h4>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6">
+							<div  id="districtDiv" style="dispaly:none;">
+								<label>Select District</label><span style="color:red"> *</span>
+								<select class="select" id="districtId" onchange="getDataCollectorsPerformanceDetails();">
+									<option value="0">Select District</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-5 col-xs-12 col-sm-6" style="margin-top: 25px;" id="districtDiv" style="dispaly:none;">
+							<ul class="activeUlCls list-inline pull-right">
+								<li class="completedRegistrationsSorting" attr_value="All">
+									All</li>
+								<li class="completedRegistrationsSorting" attr_value="verygood">&nbsp;Very Good</li>
+								<li class="completedRegistrationsSorting" attr_value="good">&nbsp;Good</li>
+								<li class="completedRegistrationsSorting" attr_value="poor">&nbsp;Poor</li>
+								<li class="completedRegistrationsSorting" attr_value="verypoor">&nbsp;Very Poor</li>
+								<li class="completedRegistrationsSorting" attr_value="notstarted">&nbsp;Not At Started</li>
+								
+							</ul>
+						</div>
+						<div id="dataCollectorsImgId" class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+						<div id="dataCollectorsDivId" class="col-md-12 col-xs-12 col-sm-12"></div>
                     </div>
                 </div>
             </div>
@@ -203,6 +248,10 @@
 <script src="js/FieldMonitoring/fieldMonitoringDashboard.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(document).on("click",".activeUlCls li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+	});
 $(document).on("click",".issuesBtn",function(){
 	$("#issuesModal").modal('show');
 });
