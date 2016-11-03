@@ -134,13 +134,16 @@
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4">
-							    
+							   
 							<span class="cadreSettings pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="cadreNotes pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
 							</span>
+							<span class="cadreSettings pull-right refreshCadreCls">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
 							 <span class="cadreExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span> 
@@ -157,9 +160,7 @@
 			    	<div class="row">
 						  
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<span class="cadreSettings pull-right refreshCadreCls">
-								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
-							</span>    
+							   
 							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
 						</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
@@ -2335,9 +2336,57 @@
             </div>
        </div>
 	 </div>
-	<div class="row">
-		
-	 </div>
+	<!--<div class="row">
+		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/attendance.png" class="iconClass">
+								electronic media news - <small id="attendanceId" class="text-muted">TODAY (28-10-2016)</small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-5">
+							<span class="emnSetIcon pull-right">
+								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+							</span>
+							<span class="notesIconEmn pull-right">
+								<i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" data-placement="top" title="" onclick="displayDashboardCommentsForAttendance(7);" data-original-title="Notes"></i>
+							</span>
+							<span class="emnIconExpand pull-right mainExpandCls">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:110px;">
+								<input id="dateRangeIdForEmn" style="width:90px" class="form-control" type="text">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+                </div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="electronicMediaChannelCountId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 moreBlockEMN" style="display:none;">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="electronicMediaPrograms"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>-->
 	 <!-- TOURS START -->
 	<!--<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
@@ -2899,13 +2948,13 @@
 		//Debates
 		getPartyWiseTotalDebateDetails();      
         //cadreRegistration
-		cadreRegistrationBasicCall(globalActivityMemberId);              
+		cadreRegistrationBasicCall(globalActivityMemberId);
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
         getToursBasicOverviewCountDetails();
 		//getDesigWiseMemberDtls();  
         //getToursBasicOverviewCountDetails();
-  
+        
 	}
 	
 	
