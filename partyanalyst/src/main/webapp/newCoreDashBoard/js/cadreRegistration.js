@@ -3726,7 +3726,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	$("#individualDtlsId").find(".highcharts-legend-item:nth-child(1)").trigger("click");  
 	}
 	
-	function callFunction(){     
+	function refreshCadre(){        
 		$("#totalTodayCadreRegistrationBlockDivAPId").html('');
 		$("#totalTodayCadreRegistrationBlockDivTSId").html('');
 		$("#enumeratorsInfoDivId").html('');
@@ -3737,8 +3737,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		getEnumeratorsInfo(globalActivityMemberId);
 		getEnumeratorsInfoTS(globalActivityMemberId,36);
 		getCadreRecentTime();
-	}      
-
+	}    
   $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
 	  var isKuppamExcluded;
 	  if($(this).prop("checked")){
