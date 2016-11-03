@@ -6282,6 +6282,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 			}
 			 	}
 		 	}
+		 
+		 if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
+			 if(returnList != null && !returnList.isEmpty()){
+		 			for (CadreDashboardVO vo : returnList) {
+		 				vo.setPerc2016(new BigDecimal(vo.getCount2016()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 			}
+			 	}
+		 	}
 		 	
 		 	if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
 		 		if(returnList != null && !returnList.isEmpty()){
