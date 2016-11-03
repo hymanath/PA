@@ -3676,6 +3676,7 @@
 	   <property name="tabUserEnrollmentInfoDAO" ref="tabUserEnrollmentInfoDAO" />  
 	   <property name="tdpCadreHourRegInfoDAO" ref="tdpCadreHourRegInfoDAO" />
 	   <property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO" />
+	   <property name="tdpCadreUserHourRegInfoTempDAO" ref="tdpCadreUserHourRegInfoTempDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
