@@ -468,4 +468,53 @@ public class Scheduler {
 		}
 		return rs;
 	}
+	
+	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByToday()
+	{	
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{ 
+			
+			long startTime = System.currentTimeMillis();
+			log.error("user wise hour wise today insert..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			
+			rs = cadreRegistrationServiceNew.pushTdpCadreDataHourWiseForTabUsersByToday();
+			
+			log.error("user wise hour wise today insert..  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+			
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTdpCadreDataHourWiseForTabUsersByToday "); 
+		}
+		return rs;
+	}
+	
+	public ResultStatus pushTdpCadreDataHourWiseByToday()
+	{	
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{ 
+			
+			long startTime = System.currentTimeMillis();
+			log.error("hour wise today insert..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			
+			rs = cadreRegistrationServiceNew.pushHourWiseTdpCadreDetailsByToday();
+			
+			log.error("hour wise today insert..  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+			
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTdpCadreDataHourWiseForTabUsersByToday "); 
+		}
+		return rs;
+	}
+	
 }
