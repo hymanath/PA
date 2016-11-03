@@ -521,6 +521,31 @@ public class Scheduler {
 		return rs;
 	}
 	
+	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByOverall()
+	{	
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{ 
+			
+			long startTime = System.currentTimeMillis();
+			log.error("user wise hour wise overall insert..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			
+			rs = cadreRegistrationServiceNew.pushTdpCadreDataHourWiseForTabUsersByOverall();
+			
+			log.error("user wise hour wise overall insert..  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+			
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTdpCadreDataHourWiseForTabUsersByOverall "); 
+		}
+		return rs;
+	}
+	
+	
 	public ResultStatus pushTdpCadreDataHourWiseByToday()
 	{	
 		ResultStatus rs = new ResultStatus();
