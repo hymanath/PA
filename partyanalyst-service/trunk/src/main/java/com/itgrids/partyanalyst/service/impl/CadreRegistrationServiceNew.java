@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
+import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreDateVO;
@@ -42,8 +43,8 @@ import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreHourRegInfo;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp1;
-import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp1;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -74,7 +75,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO;
 	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	private ITdpCadreUserHourRegInfoTempDAO tdpCadreUserHourRegInfoTempDAO;
-	
+	private ITdpCadreUserHourRegInfoTemp1DAO tdpCadreUserHourRegInfoTemp1DAO;
 	
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
@@ -154,6 +155,11 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreUserHourRegInfoTempDAO(
 			ITdpCadreUserHourRegInfoTempDAO tdpCadreUserHourRegInfoTempDAO) {
 		this.tdpCadreUserHourRegInfoTempDAO = tdpCadreUserHourRegInfoTempDAO;
+	}
+	
+	public void setTdpCadreUserHourRegInfoTemp1DAO(
+			ITdpCadreUserHourRegInfoTemp1DAO tdpCadreUserHourRegInfoTemp1DAO) {
+		this.tdpCadreUserHourRegInfoTemp1DAO = tdpCadreUserHourRegInfoTemp1DAO;
 	}
 	//Business methods
 	/**
@@ -1781,8 +1787,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
    	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
    	 *  Pushing tdpcadre data hour wise for Tab Users.
    	 *  @since 03-NOVEMBER-2016 
-   	 */
-       
+   	 */ 
        
      public ResultStatus pushTdpCadreDataHourWiseForTabUsersByToday(){
     	  
@@ -1897,66 +1902,22 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
        /** 6)
       	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
       	 *  Pushing tdpcadre data hour wise for Tab Users overall.
-      	 *  @since 03-NOVEMBER-2016 
+      	 *  @since 03-NOVEMBER-2016 //tdpCadreUserHourRegInfoTemp1DAO
       	 */
+       
        public ResultStatus pushTdpCadreDataHourWiseForTabUsersByOverall(){
-     	  
-     	  final ResultStatus rs = new ResultStatus();
- 		  final DateUtilService dateUtilService = new DateUtilService();
- 		  final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
- 		  
+     	  ResultStatus rs = null;
      	 try{ 
   		    
-  			  final List<CadreDateVO> finalList = getTdpCadreDataHourWiseForTabUsersByOverall();
-     		  
-     		  if(finalList != null && finalList.size() > 0){
-     			 
-     				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
- 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
- 				        		
- 				         Date time = dateUtilService.getCurrentDateAndTime();
- 				         
- 				         int deletedRecords = tdpCadreUserHourRegInfoDAO.deleteAllRecords(null);
- 				         
- 				         int i= 0;
- 					     for(CadreDateVO VO  : finalList ){
- 					    	 i = i + 1;	    
- 					    	 
- 					    	 TdpCadreUserHourRegInfo info = new TdpCadreUserHourRegInfo();
- 					    	 info.setCadreSurveyUserId(VO.getCadreSurveyUserId());
- 					    	 info.setTabUserInfoId(VO.getTabUserInfoId());
- 					    	 if(VO.getDateStr() != null){
- 					    		 try {
- 									info.setSurveyDate(sdf.parse(VO.getDateStr()));
- 								} catch (ParseException e) {
- 									e.printStackTrace();
- 								}
- 					    	 }
- 					    	 info.setHour(VO.getHour());
- 					    	 if(VO.getRegCount() != null && VO.getRegCount() > 0l){
- 					    		 info.setRegCount(VO.getRegCount());
- 					    	 }
- 					    	 info.setInsertedTime(time);
- 					    	 
- 					    	 tdpCadreUserHourRegInfoDAO.save(info);
- 					    	 
- 					    	if( i % 100 == 0 ) { 
- 		    			       //flush a batch of inserts and release memory:
- 		    				  tdpCadreDAO.flushAndclearSession();
- 		    			    }
- 					    	
- 					     }	   
- 					          rs.setResultCode(1);
- 					          rs.setMessage("success");
- 				         }
- 				    });
-     			 
-     		 }
-     		 
+  			  List<CadreDateVO> finalList = getTdpCadreDataHourWiseForTabUsersByOverall();
+  			  
+  			  rs = pushUserWiseHoursDataToTempTableOverall(finalList);
+     	
+  			 int deletedRecords =  tdpCadreUserHourRegInfoDAO.deleteAllRecords(null);
+			 int insertedRecordsCount = tdpCadreUserHourRegInfoDAO.insertCadreDataByUserWiseHourWiseOverall();
+			 
  		}catch(Exception e){
- 			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByToday() Method - ",e);
- 			 rs.setResultCode(0);
- 	         rs.setMessage("failure");
+ 			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByOverall() Method - ",e);
  		}
      	 return rs;
       }
@@ -1965,7 +1926,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     	   List<CadreDateVO> finalList = null;
     	   try{
     		    
-    		    List<Object[]> list = tdpCadreUserHourRegInfoDAO.getTdpCadreDataHourWiseForTabUsersOverall();//5500
+    		    List<Object[]> list = tdpCadreUserHourRegInfoDAO.getTdpCadreDataHourWiseForTabUsersOverall();
     		    if(list != null && list.size() > 0)
     		    {	
     		    	finalList = new ArrayList<CadreDateVO>();
@@ -1991,4 +1952,64 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   }
     	   return finalList;
        }
+       
+       public ResultStatus pushUserWiseHoursDataToTempTableOverall(final List<CadreDateVO> finalList){
+    	   
+     	  final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+     	  final  ResultStatus rs = new ResultStatus();
+     	  try{
+     		
+     		 if(finalList != null && finalList.size() > 0){
+     			 
+  				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				        		
+				         Date time = new DateUtilService().getCurrentDateAndTime();
+				         
+				         int deletedRecords = tdpCadreUserHourRegInfoTemp1DAO.deleteAllRecords();
+ 				         int count = tdpCadreUserHourRegInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
+ 				         
+				         int i= 0;
+					     for(CadreDateVO VO  : finalList ){
+					    	 i = i + 1;	    
+					    	 
+					    	 TdpCadreUserHourRegInfoTemp1 info = new TdpCadreUserHourRegInfoTemp1();
+					    	 info.setCadreSurveyUserId(VO.getCadreSurveyUserId());
+					    	 info.setTabUserInfoId(VO.getTabUserInfoId());
+					    	 if(VO.getDateStr() != null){
+					    		 try {
+									info.setSurveyDate(sdf.parse(VO.getDateStr()));
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+					    	 }
+					    	 info.setHour(VO.getHour());
+					    	 if(VO.getRegCount() != null && VO.getRegCount() > 0l){
+					    		 info.setRegCount(VO.getRegCount());
+					    	 }
+					    	 info.setInsertedTime(time);
+					    	 
+					    	 tdpCadreUserHourRegInfoTemp1DAO.save(info);
+					    	 
+					    	if( i % 100 == 0 ) { 
+		    			       //flush a batch of inserts and release memory:
+		    				  tdpCadreDAO.flushAndclearSession();
+		    			    }
+					    	
+					     }	   
+					          rs.setResultCode(1);
+					          rs.setMessage("success");
+				         }
+				    });
+  		 }
+     		  
+ 		  }catch(Exception e){
+ 			  LOG.error("Exception occured in pushUserWiseHoursDataToTempTableOverall() Method - ",e);
+ 			  rs.setResultCode(0);
+ 		      rs.setMessage("failure");
+ 		  }
+     	  return rs;
+       } 
+       
+       
 }
