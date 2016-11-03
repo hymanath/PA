@@ -73,8 +73,8 @@
 			for(var i in result){
 			if(result[i].name != "DataMoniDashBrd")
 			   str +='<li>'+result[i].name+' issues<span>'+result[i].inviteeCount+'</span></li>';
-			else
-			   str +='<li>ACTIVE TEAM MEMBERS<span>'+result[i].inviteeCount+'</span></li>';
+			//else
+			   //str +='<li>ACTIVE TEAM MEMBERS<span>'+result[i].inviteeCount+'</span></li>';
 			}
 			str +='</ul>';
 			$("#statusCountDivId").html(str);
@@ -353,10 +353,10 @@ function getDataMonitoringOverViewDetails(state){
    function buildDataMonitoringOverViewRslt(result){
 	   var str='';
         str+='<ul class="dashedB text-capital">';
-		 str+='<li>';
+		 /*str+='<li>';
 			str+='active team members';
 			str+='<span class="pull-right"> - </span>';
-		 str+='</li>';
+		 str+='</li>';*/
 		  str+='<li>';
 			str+='total registrations';
 			if(result.totalRegCnt > 0){

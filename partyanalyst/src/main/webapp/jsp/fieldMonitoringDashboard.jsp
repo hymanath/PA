@@ -124,7 +124,7 @@
 						</div>
 						<div class="col-md-5 col-xs-12 col-sm-6" style="margin-top: 25px;" id="districtDiv" style="dispaly:none;">
 							<ul class="activeUlCls list-inline pull-right">
-								<li class="completedRegistrationsSorting" attr_value="All">
+								<li class="completedRegistrationsSorting active" attr_value="All">
 									All</li>
 								<li class="completedRegistrationsSorting" attr_value="verygood">&nbsp;Very Good</li>
 								<li class="completedRegistrationsSorting" attr_value="good">&nbsp;Good</li>
@@ -307,6 +307,9 @@ function stateWisePopulateData(state)
 	getIssueStatusWiseCounts(state);
 	getIssueTypeWiseCounts(state); 
     $("#dtatusDivId").hide();	
+	$("#dataCollectorsDivId").html('');
+	$("#statusWiseDetailsDivId").html('');
+	$("#issueTypeHeadingId").html("");
 }
 
 </script>

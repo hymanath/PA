@@ -5,7 +5,7 @@
 		getIssueTypeWiseCounts(1);
 		getDistricts();
 	}
-	
+	var totalDataCollectors = 0;
 	function getOverAllDataCollectorsCounts(state){
 		var dates = $(".singleDate").val();
 		var dateArr = dates.split("-");
@@ -39,6 +39,7 @@
 				$("#lastOneHrId").html(result.lastOneHrActUsers);
 				$("#passOneHrId").html(result.passiveUsers);
 				$("#notYetStartedId").html(result.notYetStartedUsers);
+				totalDataCollectors = result.totalDataCollectors;
 			}	
 		});
 	}
@@ -970,10 +971,14 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 	$("#dataCollectorsImgId").show();
 	$("#issueTypeHeadingId").html("");
 	
+	$('html,body').animate({scrollTop: $("#dataCollectorsDivId").offset().top}, 'slow');
+	
 	 var jsObj=
      {				
 		stateId : stateId,
-		districtId : $("#districtId").val()
+		districtId : $("#districtId").val(),
+		constituencyId : 0,
+		cadreSurveyUserId : 0
 	 }
     $.ajax({
           type:'GET',
@@ -1005,7 +1010,8 @@ function buildDataCollectorsPerformanceDetails(result){
 		var str = '';
 		
         //str+='<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId">'+result.length+'</span></h4>';
-        $("#totalDataCollectorsId span").text("-"  +result.length);
+        $("#totalDataCollectorsId span").text("-"  +totalDataCollectors);
+		
 		str+='<table class="table b_1 m_top10 " id="detailsTable">';
 			str+='<thead class="text-capitalize">';
 				str+='<th>User Id</th>';
@@ -1087,7 +1093,7 @@ function buildDataCollectorsPerformanceDetails(result){
 		$('#detailsTable').dataTable({
         "aaSorting": []
 			});
-		$('html,body').animate({scrollTop: $("#dataCollectorsDivId").offset().top}, 'slow');
+		//$('html,body').animate({scrollTop: $("#dataCollectorsDivId").offset().top}, 'slow');
 	}
 	else{
 			$("#dataCollectorsImgId").hide();

@@ -14480,6 +14480,16 @@
 			<param name="root">userPerformanceList</param>
 		</result>
 	</action>
+	<action name="fieldMonitoringReportAction" class="fieldMonitoringAction" method="fieldMonitoringReport">
+		<result name="success">/jsp/FieldMonitoringReport.jsp</result> 
+		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringReportAction</result>
+		<!-- <result name="error" type="redirect">login.action</result> -->
+	</action>
+	<action name="getFieldMonitoringUserWiseDetailsAction" class="fieldMonitoringAction"  method="getFieldMonitoringUserWiseDetails">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringList</param>
+		</result>
+	</action>
 	<action name="getDataCollectorsPerformanceDetailsAction" class="fieldMonitoringAction"  method="getDataCollectorsPerformanceDetails">
 			<result type="json" name="success">
 			<param name="root">fieldMonitoringVO</param>

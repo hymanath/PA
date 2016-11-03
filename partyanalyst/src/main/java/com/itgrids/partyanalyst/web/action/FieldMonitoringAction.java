@@ -697,6 +697,36 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  
+  public String getFieldMonitoringUserWiseDetails(){
+		try {
+			
+			/*jObj = new JSONObject(getTask());
+			
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			Long tabUserId = jObj.getLong("tabUserInfoId");*/
+			
+			fieldMonitoringList = fieldMonitoringService.getFieldMonitoringUserWiseDetails();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getFieldMonitoringUserWiseDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+  
+  public String fieldMonitoringReport(){
+	  try {
+		  session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			if(regVO == null)
+				return Action.INPUT;
+		  
+	} catch (Exception e) {
+		LOG.error("Exception raised at fieldMonitoringReport()  of FieldMonitoringAction", e);
+	}
+	  return Action.SUCCESS;	
+  }
   public String getDataCollectorsPerformanceDetails(){
 		try {
 			session = request.getSession();
@@ -707,8 +737,10 @@ public String getConstituencyByVendor(){
 			
 			Long districtId = jObj.getLong("districtId");
 			Long stateId = jObj.getLong("stateId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
 			
-			fieldMonitoringVO = fieldMonitoringService.getDataCollectorsPerformanceDetails(loginUserId, districtId,stateId);
+			fieldMonitoringVO = fieldMonitoringService.getDataCollectorsPerformanceDetails(loginUserId, districtId,stateId,constituencyId,cadreSurveyUserId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDataCollectorsPerformanceDetails()  of FieldMonitoringAction", e);
