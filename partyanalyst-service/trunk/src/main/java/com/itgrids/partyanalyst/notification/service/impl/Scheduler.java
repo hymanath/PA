@@ -468,6 +468,34 @@ public class Scheduler {
 		}
 		return rs;
 	}
+	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}
+		try{
+			long startTime = System.currentTimeMillis();
+			log.error("update table starting..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			//rs = cadreRegistrationServiceNew.pushSourceOfRegistrationIntoIntermediateTable();
+			log.error("update table ending..." + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+			
+		}catch(Exception e){
+			log.info("\n\n pushSourceOfRegistrationIntoIntermediateTable "); 
+		}
+		return rs;
+	}
+	public ResultStatus pushTabUserInfoIntoIntermediateTable(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}    
+		try{
+			rs = cadreRegistrationServiceNew.pushTabUserInfoIntoIntermediateTable();		
+		}catch(Exception e){
+			log.info("\n\n pushTabUserInfoIntoIntermediateTable "); 
+		}
+		return rs;  
+	}
 	
 	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByToday()
 	{	
