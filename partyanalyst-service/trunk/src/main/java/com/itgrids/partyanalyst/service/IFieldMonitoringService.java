@@ -40,4 +40,5 @@ public interface IFieldMonitoringService {
 	public List<FieldMonitoringIssueVO> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,String fromDateStr,String toDateStr,Long loginUserId,Long stateId);
 	public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType);
 	public List<UserPerformanceVO> getUserPerformanceDetailsByUser(Long cadreSurveyUserId,Long tabUserId);
+	public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long stateId,Long districtId,Long constituencyId,Long userId, String fromDateStr,String toDateStr);
 }
