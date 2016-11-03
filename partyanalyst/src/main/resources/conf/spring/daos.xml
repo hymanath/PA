@@ -3337,10 +3337,12 @@
 	<bean id="paymentTransactionInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PaymentTransactionInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCadreHourRegInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHourRegInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="tdpCadreUserHourRegInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreUserHourRegInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="tdpCadreUserRecordsTimeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreUserRecordsTimeInfoDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	
 </beans>		
