@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CadreRegistratedCountVO implements Serializable {
 	private Long totalCount = 0l;
@@ -43,6 +44,9 @@ public class CadreRegistratedCountVO implements Serializable {
 	private Long target2016 = 0l;
 	private Long totalCount2014 = 0l;
 	private Double cadreCountPer2014 ;
+	private Long todayStartedConsttuncyCnt=0l;
+	private Long todayNotStartedConsttuncyCnt=0l;
+	private List<Long> locationIdsList;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -338,5 +342,28 @@ public class CadreRegistratedCountVO implements Serializable {
 	public void setCadreCountPer2014(Double cadreCountPer2014) {
 		this.cadreCountPer2014 = cadreCountPer2014;
 	}
-	
+
+	public Long getTodayStartedConsttuncyCnt() {
+		return todayStartedConsttuncyCnt;
+	}
+
+	public void setTodayStartedConsttuncyCnt(Long todayStartedConsttuncyCnt) {
+		this.todayStartedConsttuncyCnt = todayStartedConsttuncyCnt;
+	}
+
+	public Long getTodayNotStartedConsttuncyCnt() {
+		return todayNotStartedConsttuncyCnt;
+	}
+
+	public void setTodayNotStartedConsttuncyCnt(Long todayNotStartedConsttuncyCnt) {
+		this.todayNotStartedConsttuncyCnt = todayNotStartedConsttuncyCnt;
+	}
+
+	public List<Long> getLocationIdsList() {
+		return locationIdsList;
+	}
+
+	public void setLocationIdsList(List<Long> locationIdsList) {
+		this.locationIdsList = locationIdsList;
+	}	
 }

@@ -12,7 +12,8 @@ public class CadreReportVO implements Serializable {
 	private String reportPath;
 	private String reportDate;
 	private Integer sno;
-	
+	private Long id;
+	private String name;
 	private Long locationId;
 	private String locationName;
 	private Long total2014CadreCnt=0l;
@@ -186,5 +187,16 @@ public class CadreReportVO implements Serializable {
 	public void setVeryPoorCnt(Long veryPoorCnt) {
 		this.veryPoorCnt = veryPoorCnt;
 	}
-	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }
