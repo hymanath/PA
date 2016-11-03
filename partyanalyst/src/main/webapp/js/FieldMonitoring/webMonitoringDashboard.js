@@ -13,12 +13,18 @@
 		var dateArr = dates.split("-");
 		var fromDate;
 		var toDate;
+		var district=0;
+		var constituency=0;
+		var user=0;
 		if(dateArr != null){
 			fromDate = dateArr[0];
 			toDate = dateArr[1];
 		}
 		var jsObj = { 
 		  stateId : state,
+		  districtId : district,
+		  constituencyId : constituency,
+		  userId : user,
 		  fromDate : fromDate,		//"10/01/2016",
 		  toDate : toDate		 	//"10/18/2016"  
 		}
@@ -30,8 +36,12 @@
 		}).done(function(result){
 			if(result != null){
 				$("#totalDataCollectorsId").html(result.totalDataCollectors);
-				$("#activeDataCollectorsId").html(result.activeUsers);
-				$("#passiveDataCollectorsId").html(result.passiveUsers);
+				$("#totalRegisteredId").html(result.todayRegCount);
+				$("#todayActMembersId").html(result.todayActiveUsers);
+				$("#lastHrActiveId").html(result.lastOneHrActUsers);
+				$("#passiveHrId").html(result.passiveUsers);
+				$("#notYetStartId").html(result.notYetStartedUsers);
+				
 			}	
 		});
 	}
