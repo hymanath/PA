@@ -72,8 +72,12 @@ function getUsers(constituencyId){
 	});
 }
 
-$(document).on("click","#getDetails",function(){
+/*$(document).on("click","#getDetails",function(){
 	getTabUsersDetailsByVendorAndLocation();
+});
+*/
+$(document).on("click","#getDetails",function(){
+	getOverAllDataCollectorsCountsForFieldMontoring();
 });
 
 function getTabUsersDetailsByVendorAndLocation(){
@@ -867,3 +871,44 @@ function clearErrorFields()
 	$("#submitButId").html('');
 	$("#savingDivIdImg").hide();
 }
+
+function getOverAllDataCollectorsCountsForFieldMontoring(){
+	   
+		var dates = $(".singleDate").val();
+		var dateArr = dates.split("-");
+		var fromDate;
+		var toDate;
+		var state=0;
+		var userId = $("#userId").val();
+		var constituencyId = $("#constituencyId").val();
+		var districtId = $("#districtId").val();
+		if(dateArr != null){
+			fromDate = dateArr[0];
+			toDate = dateArr[1];
+		}
+		var jsObj = { 
+		  stateId : state,
+		  districtId : districtId,
+		  constituencyId : constituencyId,
+		  userId : userId,
+		  fromDate : fromDate,		//"10/01/2016",
+		  toDate : toDate		 	//"10/18/2016"  
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getOverAllDataCollectorsDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			 $("#dataCollectorsDiv").show();
+			if(result != null){
+				$("#totalDataCollectorsId").html(result.totalDataCollectors);
+				$("#totalRegId").html(result.todayRegCount);
+				$("#todayActMebrId").html(result.todayActiveUsers);
+				$("#lastOneHrActId").html(result.lastOneHrActUsers);
+				$("#passOneHrId").html(result.passiveUsers);
+				$("#todayNotYetStrtId").html(result.notYetStartedUsers);
+				
+			}	
+		});
+	}
