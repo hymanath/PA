@@ -131,4 +131,54 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		query.setParameter("searchType", searchType);
 		return query.list();
 	}
+	
+	public Long getAssignedUsersCountForRegUser(Long cadreRegUserId){
+		Query query = getSession().createQuery("select count(distinct model.cadreSurveyUser.cadreSurveyUserId)" +
+										" from CadreRegUserTabUser model" +
+										" where model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
+										" and model.isDeleted = 'N'");
+		query.setParameter("cadreRegUserId", cadreRegUserId);
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getFieldMonitoringUserWiseDetails(){
+		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model.cadreRegUser.user.userName," +
+											" model1.constituency.district.districtId,model1.constituency.district.districtName" +
+											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1" +
+											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+											" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+											" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+											" and model.cadreRegUser.userType = 'FM'" +
+											" group by model1.constituency.district.districtId,model.cadreRegUser.user.userId" +
+											" order by model.cadreRegUser.user.userName");
+		return query.list();
+	}
+	
+	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers(){
+		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model1.constituency.district.districtId," +
+											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(model2.cadreRegIssueId)" +
+											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1,CadreRegIssue model2" +
+											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+											" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+											" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+											" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+											" and model.cadreRegUser.userType = 'FM'" +
+											" group by model2.cadreRegIssueType.cadreRegIssueTypeId,model1.constituency.district.districtId,model.cadreRegUser.user.userId" +
+											" order by model2.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegUser.user.userName");
+		return query.list();
+	}
+	
+	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers(){
+		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model1.constituency.district.districtId," +
+											" model2.cadreRegIssueStatus.cadreRegIssueStatusId,count(model2.cadreRegIssueId)" +
+											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1,CadreRegIssue model2" +
+											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+											" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+											" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+											" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+											" and model.cadreRegUser.userType = 'FM'" +
+											" group by model2.cadreRegIssueStatus.cadreRegIssueStatusId,model1.constituency.district.districtId,model.cadreRegUser.user.userId" +
+											" order by model2.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegUser.user.userName");
+		return query.list();
+	}
 }
