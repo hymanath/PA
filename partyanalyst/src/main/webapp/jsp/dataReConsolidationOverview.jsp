@@ -17,7 +17,7 @@
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="row">
 				<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
-					 <lable>STATE<span style="color:red"> * </span></label>
+					 <label>STATE<span style="color:red"> * </span></label>
 					 <span id="stateDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
 						<select  class="form-control" id="stateOverViewId" >
 							<option value="0">Select State</option>
@@ -27,14 +27,14 @@
 					</div>
 						
 					<div class="col-md-2 col-xs-12 col-sm-5 ">
-					<lable>DISTRICT<span style="color:red"> * </span></label>
+					<label>DISTRICT<span style="color:red"> * </span></label>
 					<span id="districtDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
 						<select  class="form-control" id = "districtOverViewId">
 							<option value="0">Select District</option>
 						</select>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6 ">
-					<lable>CONSTITUENCY<span style="color:red"> * </span></label>
+					<label>CONSTITUENCY<span style="color:red"> * </span></label>
 						<span id="constituencyDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
 						<select  class="form-control" id ="constituencyOverViewId" >
 							<option value="0">Select Constituency</option>
@@ -42,7 +42,7 @@
 				   </div>
 						
 					 <div class="col-md-3 col-xs-12 col-sm-6 ">
-					 <div><lable>DATE</label></div>
+					 <div><label>DATE</label></div>
 							<div class="input-group inputGCustom">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -73,7 +73,7 @@
 		    <div class="modal-header">
 			   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			    <h4 class="text-capital" id="userHeadinId"></h4> <button type="button" class="btn btn-success pull-right" 
-			    style="margin-left: 1px; width: 126px; padding-left: 17px; border-left-width: 0px; border-top-width: 0px;" id="exportToExcelId" onClick ="generateExcelReport()" ><img src ="img/Excel.png" style="height:18px;width:18px;"/>ExportToExcel</button>
+			    style="margin-left: 1px; width: 126px; padding-left: 10px; border-left-width: 0px; border-top-width: 0px;" id="exportToExcelId" onClick ="generateExcelReport()" ><img src ="img/Excel.png" style="height:18px;width:18px;"/>&nbsp;&nbsp;ExportToExcel</button>
 		    </div>
 		<div class="modal-body">
 			   <div class="table table-condensed" id ="tabUserWiseRegistionDetilsId">
