@@ -37,11 +37,19 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	public List<Object[]> dataReConsalationOverView(Long constistuencyId,
 			Date fromDate, Date toDate) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.cadreSurveyUser.userName,model.imeiNo,"
-				 + " model1.cadreRegUser.user.userName,sum(model.totalRecords),sum(model.pending)," +
-				 " sum(model.kafkaPending),sum(model.kafkaSync),model.cadreSurveyUserId" +
-				" from CadreTabRecordsStatus model,CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" +
-				 " where model.cadreSurveyUserId = model2.cadreSurveyUserId and model.cadreSurveyUserId = model1.cadreSurveyUserId ");
+		sb.append(" select model.cadreSurveyUser.userName," +
+				  " model.imeiNo,"  +
+				  " model1.cadreRegUser.user.userName," +
+				  " sum(model.totalRecords),sum(model.pending)," +
+				  " sum(model.kafkaPending)," +
+				  " sum(model.kafkaSync)," +
+				  " model.cadreSurveyUserId" +
+				  " from CadreTabRecordsStatus model," +
+				  " CadreRegUserTabUser model1," +
+				  " CadreSurveyUserAssignDetails model2 " +
+				  " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
+				  " model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
+				  " model1.cadreRegUser.userType = 'FM' ");
 		 if(constistuencyId != null && constistuencyId.longValue()>0l){
 			 sb.append(" and model2.constituencyId =:constistuencyId ");
 		 }
