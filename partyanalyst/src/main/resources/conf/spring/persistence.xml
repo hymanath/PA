@@ -1033,6 +1033,8 @@
                       <value>com.itgrids.partyanalyst.model.TdpCadreDataSourceCountInfo</value>	
                       <value>com.itgrids.partyanalyst.model.TdpCadreDataSourceCountInfoTemp</value>                 
 				 	  <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp</value>
+				 	  <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp1</value>
+				 	  
 				 </list>
 			
 		</property>
