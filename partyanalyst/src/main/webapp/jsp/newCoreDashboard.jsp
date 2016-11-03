@@ -141,7 +141,7 @@
 							<span class="cadreNotes pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
 							</span>
-							<span class="cadreSettings pull-right refreshCadreCls">
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshCadre();">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
 							 <span class="cadreExpand pull-right">  
