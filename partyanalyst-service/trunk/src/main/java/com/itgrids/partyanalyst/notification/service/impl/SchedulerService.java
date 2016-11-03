@@ -62,6 +62,8 @@ import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreAgerangeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceCountInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceCountInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
@@ -119,6 +121,8 @@ public class SchedulerService implements ISchedulerService{
 	private IPartyOfficeDAO partyOfficeDAO;
 	private IEventAttendeeDAO eventAttendeeDAO;
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
+	private ITdpCadreDataSourceCountInfoDAO tdpCadreDataSourceCountInfoDAO;
+	private ITdpCadreDataSourceCountInfoTempDAO tdpCadreDataSourceCountInfoTempDAO;
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
 		return trainingCampBatchDAO;
@@ -290,6 +294,15 @@ public class SchedulerService implements ISchedulerService{
 	public void setCoreDashboardPartyMeetingService(
 			ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService) {
 		this.coreDashboardPartyMeetingService = coreDashboardPartyMeetingService;
+	}
+	public void setTdpCadreDataSourceCountInfoDAO(
+			ITdpCadreDataSourceCountInfoDAO tdpCadreDataSourceCountInfoDAO) {
+		this.tdpCadreDataSourceCountInfoDAO = tdpCadreDataSourceCountInfoDAO;
+	}
+
+	public void setTdpCadreDataSourceCountInfoTempDAO(
+			ITdpCadreDataSourceCountInfoTempDAO tdpCadreDataSourceCountInfoTempDAO) {
+		this.tdpCadreDataSourceCountInfoTempDAO = tdpCadreDataSourceCountInfoTempDAO;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -1776,5 +1789,32 @@ public class SchedulerService implements ISchedulerService{
 			Log.error("Exception Occurred in pushDataToPartyMeetingStatusTable() of scheduler Service", e);
 		}
 		return rs;
+	}
+	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable(){  
+		   
+		final ResultStatus rs = new ResultStatus();
+		final DateUtilService dateUtilService = new DateUtilService();
+				
+		try {  
+					
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					
+					int deletedRecords = tdpCadreDataSourceCountInfoTempDAO.deleteAllRecords();
+				    int count = tdpCadreDataSourceCountInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+				    
+				    Date currentTime = dateUtilService.getCurrentDateAndTime();  
+				    
+					rs.setResultCode(1);
+					rs.setMessage("success");
+				}
+			});
+					
+		} catch (Exception e) {
+			LOG.error("Exception raised at CadreRegistrationServiceNew", e);
+			rs.setResultCode(0);
+			rs.setMessage("failure");
+		}
+		return rs;  
 	}
 }
