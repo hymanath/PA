@@ -85,6 +85,7 @@
 	function getIssueTypeWiseCounts(state){
 		var openIssuesArr = [];
 		var fixedIssuesArr = [];
+		var closedIssuesArr = [];
 			var jsObj = { 
 				fromDate : customStartDate, //"10/01/2016",
 				toDate : customEndDate ,     //"10/20/2016",
@@ -115,15 +116,25 @@
 									fixedIssuesArr.push(dataArr);
 								}
 							}
+							
+							if(result[i].id == 3){
+								for(var j in result[i].issueTypes){
+									var dataArr = [];
+									dataArr.push(result[i].issueTypes[j].name);
+									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
+									closedIssuesArr.push(dataArr);
+								}
+							}
 						}
 					}
 					  $('#openIssues').highcharts({
 						chart: {
-							type: 'pie',
-							options3d: {
-								enabled: true,
-								alpha: 45
-							}
+						  type: 'pie',
+						  options3d: {
+							enabled: true,
+							alpha: 45
+						  },
+						  spacingTop: -350,
 						},
 						title: {
 							text: null
@@ -132,10 +143,10 @@
 							text: null
 						},
 						legend: {
-						  layout: 'vertical',
+						  layout: 'horizontal',
 						  floating: false,
-						  align: 'right',
-						  verticalAlign: 'middle',
+						  align: 'bottom',
+						  verticalAlign: 'bottom',
 						  symbolPadding: 20,
 						  symbolWidth: 10,
 							labelFormatter: function() {
@@ -145,14 +156,15 @@
 					  },
 						plotOptions: {
 						  pie: {
-							allowPointSelect: false,
-							innerSize: 120,
-							depth: 10,
-							cursor: 'pointer',
-							
-							showInLegend: true
+							  size: 160,
+							  allowPointSelect: false,
+							  innerSize: 80,
+							  depth: 50,
+							  cursor: 'pointer',
+							  
+							  showInLegend: true
 
-						  },
+							  },
 						  series: {
 							point: {
 							  events: {
@@ -180,13 +192,16 @@
 							},
 						}]
 					});
+					
+					
 					$('#fixedIssues').highcharts({
 						chart: {
-							type: 'pie',
-							options3d: {
-								enabled: true,
-								alpha: 45
-							}
+						  type: 'pie',
+						  options3d: {
+							enabled: true,
+							alpha: 45
+						  },
+						  spacingTop: -350,
 						},
 						title: {
 							text: null
@@ -195,10 +210,10 @@
 							text: null
 						},
 						legend: {
-						  layout: 'vertical',
+						  layout: 'horizontal',
 						  floating: false,
-						  align: 'right',
-						  verticalAlign: 'middle',
+						  align: 'bottom',
+						  verticalAlign: 'bottom',
 						  symbolPadding: 20,
 						  symbolWidth: 10,
 							labelFormatter: function() {
@@ -208,14 +223,15 @@
 					  },
 						plotOptions: {
 						  pie: {
-							allowPointSelect: false,
-							innerSize: 120,
-							depth: 10,
-							cursor: 'pointer',
-							
-							showInLegend: true
+							  size: 160,
+							  allowPointSelect: false,
+							  innerSize: 80,
+							  depth: 50,
+							  cursor: 'pointer',
+							  
+							  showInLegend: true
 
-						  },
+							  },
 						  series: {
 							point: {
 							  events: {
@@ -230,6 +246,72 @@
 						series: [{
 							name: 'Count',
 							data: fixedIssuesArr,
+							dataLabels:{
+								enabled: true,
+								 distance: -20,
+								  formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.percentage,2)+ '%';
+										}
+									} 
+							},
+						}]
+					});
+					
+					$('#closedIssues').highcharts({
+						chart: {
+						  type: 'pie',
+						  options3d: {
+							enabled: true,
+							alpha: 45
+						  },
+						  spacingTop: -350,
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						legend: {
+						  layout: 'horizontal',
+						  floating: false,
+						  align: 'bottom',
+						  verticalAlign: 'bottom',
+						  symbolPadding: 20,
+						  symbolWidth: 10,
+							labelFormatter: function() {
+							  return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:16px">' + this.name.split("-")[0] +'</span><br/><span style="font-size:15px; color:#ababaa">(Count: ' + this.y + ') - ' +
+												Highcharts.numberFormat(this.percentage,2)+'%';
+						}
+					  },
+						plotOptions: {
+						  pie: {
+							  size: 160,
+							  allowPointSelect: false,
+							  innerSize: 80,
+							  depth: 50,
+							  cursor: 'pointer',
+							  
+							  showInLegend: true
+
+							  },
+						  series: {
+							point: {
+							  events: {
+								legendItemClick: function () {
+									//getStatusWiseIssuesDetails(this.name,2,this.y);
+									return false;
+								}
+							  }
+							}
+						  }
+						},
+						series: [{
+							name: 'Count',
+							data: closedIssuesArr,
 							dataLabels:{
 								enabled: true,
 								 distance: -20,

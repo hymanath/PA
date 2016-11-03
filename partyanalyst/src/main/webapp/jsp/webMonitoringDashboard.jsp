@@ -77,13 +77,17 @@
                         </div>
                     </div>
                     <div class="row m_top20">
-                    	<div class="col-md-6 col-xs-12 col-sm-6">
+                    	<div class="col-md-4 col-xs-12 col-sm-4">
                         	<h4 class="panel-title text-capital">open issues</h4>
-                            <div id="openIssues" class="m_top20"></div>
+                            <div id="openIssues" style="height:600px"></div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-6">
+                        <div class="col-md-4 col-xs-12 col-sm-4">
                         	<h4 class="panel-title text-capital">fixed issues</h4>
-                            <div id="fixedIssues" class="m_top20"></div>
+                            <div id="fixedIssues" style="height:600px"></div>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-4">
+                        	<h4 class="panel-title text-capital">closed issues</h4>
+                            <div id="closedIssues" style="height:600px"></div>
                         </div>
                     </div>
 					<div class="row m_top20">
