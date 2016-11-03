@@ -1030,7 +1030,7 @@ function buildDataCollectorsPerformanceDetails(result){
 		
         //str+='<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId">'+result.length+'</span></h4>';
         $("#totalDataCollectorsId span").text("-"  +totalDataCollectors);
-		str+='<span class="btn btn-info excelId form-inline pull-right" style="float:left;margin-left:250px;" onclick="exportToExcel(\'detailsTable\')"> Export To Excel </span>';
+		str+='<span class="btn btn-info excelId form-inline pull-right btn-sm btn-xs" style="float:left;margin-top: 10px" onclick="exportToExcel(\'detailsTable\')"><b> Export To Excel </b></span>';
 		str+='<table class="table b_1 m_top10 " id="detailsTable">';
 			str+='<thead class="text-capitalize">';
 				//str+='<th>User Id</th>';
