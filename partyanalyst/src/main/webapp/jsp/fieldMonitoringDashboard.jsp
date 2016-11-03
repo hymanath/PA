@@ -53,10 +53,12 @@
                                         <div class="row">
                                         	<div class="col-md-8 col-xs-12 col-sm-10">
                                             	<ul class="dashedB">
-                                                    <li>total data collectors<span id="totalDataCollectorsId">0</span></li>
-                                                    <li>active<span id="activeDataCollectorsId">0</span></li>
-                                                    <li>passive<span id="passiveDataCollectorsId">0</span></li>
-													<li>not yet started<span id="notYetStartedDataCollectorsId">0</span></li>
+                                                   <li>total data collectors<span id="totalDataCollectorsId">0</span></li>
+                                                   <li>total registered<span id="totalRegisteredId">0</span></li>
+                                                   <li>today - active members<span id="todayActId">0</span></li>
+												  <li>today - active since last one hour<span id="lastOneHrId">0</span></li>
+												  <li>today - passive since last one hour<span id="passOneHrId">0</span></li>
+												  <li>today - not yet started<span id="notYetStartedId">0</span></li>
                                                 </ul>
                                             </div>
                                         </div>
