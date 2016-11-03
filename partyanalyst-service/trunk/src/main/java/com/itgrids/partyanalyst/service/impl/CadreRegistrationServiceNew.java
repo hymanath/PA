@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
@@ -67,6 +68,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ImageAndStringConverter imageAndStringConverter;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IVoterDAO voterDAO;
+	private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
 	private ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO;
 	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	//setters
@@ -128,6 +130,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
+	}
+	public void setTabUserEnrollmentInfoDAO(
+			ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO) {
+		this.tabUserEnrollmentInfoDAO = tabUserEnrollmentInfoDAO;
 	}
 	
 	public void setTdpCadreHourRegInfoDAO(
@@ -1587,6 +1593,45 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					LOG.error("Exception occured in saveCadreImage() Method - ",e);
 				}
 			}
+	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable(){
+			   
+		final ResultStatus rs = new ResultStatus();
+		final DateUtilService dateUtilService = new DateUtilService();
+				
+		try {
+					
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					
+					int deletedRecords = tdpCadreLocationInfoTempDAO.deleteAllRecords();
+				    int count = tdpCadreLocationInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+				    
+				    Date currentTime = dateUtilService.getCurrentDateAndTime();
+					rs.setResultCode(1);
+					rs.setMessage("success");
+				}
+			});
+					
+		} catch (Exception e) {
+			LOG.error("Exception raised at CadreRegistrationServiceNew", e);
+			rs.setResultCode(0);
+			rs.setMessage("failure");
+		}
+		return rs;  
+	}
+	public ResultStatus pushTabUserInfoIntoIntermediateTable(){
+		ResultStatus rs = new ResultStatus();
+		try {
+			
+			int count = tabUserEnrollmentInfoDAO.pushTabUserInfoIntoIntermediateTable();  
+			LOG.error("Updated row:"+count);  
+		} catch (Exception e) {
+			LOG.error("Exception raised at CadreRegistrationServiceNew", e);
+			rs.setResultCode(0);
+			rs.setMessage("failure");
+		}
+		return rs;    
+	}
 
 	/** 4)
 	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
