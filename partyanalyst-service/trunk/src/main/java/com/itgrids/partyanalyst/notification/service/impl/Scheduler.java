@@ -476,11 +476,11 @@ public class Scheduler {
 		try{
 			long startTime = System.currentTimeMillis();
 			log.error("update table starting..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
-			//rs = cadreRegistrationServiceNew.pushSourceOfRegistrationIntoIntermediateTable();
+			rs = schedulerService.pushSourceOfRegistrationIntoIntermediateTable();    
 			log.error("update table ending..." + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
 			
 		}catch(Exception e){
-			log.info("\n\n pushSourceOfRegistrationIntoIntermediateTable "); 
+			log.info("\n\n pushSourceOfRegistrationIntoIntermediateTable ");  
 		}
 		return rs;
 	}
@@ -488,8 +488,8 @@ public class Scheduler {
 		ResultStatus rs = new ResultStatus();
 		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
 			return rs;
-		}    
-		try{
+		}   
+		try{  
 			rs = cadreRegistrationServiceNew.pushTabUserInfoIntoIntermediateTable();		
 		}catch(Exception e){
 			log.info("\n\n pushTabUserInfoIntoIntermediateTable "); 
