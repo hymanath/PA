@@ -1387,6 +1387,15 @@
     	<property name="jobDetail" ref="BatchJobForEmployeeAttendance" />
     	<property name="cronExpression" value="0 0 5  * * ?" />
 	</bean>
+	<bean name="BatchJobForTabUserInfoIntoIntermediateTable" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushTabUserInfoIntoIntermediateTable" /> 
+	</bean>   
+	 
+	<bean name="cronTriggerForTabUserInfoIntoIntermediateTable" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="BatchJobForTabUserInfoIntoIntermediateTable" />
+    	<property name="cronExpression" value="0 0/10 *  * * ?" />       
+	</bean>
 	<!-- swadhin -->
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayMobilesInsertJob" />
@@ -1678,6 +1687,7 @@
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
 		    <ref bean="tdpCadreDetailsUpdationForDateWise" />   
+		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />     
 		    
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
@@ -3645,7 +3655,7 @@
 	 <property name="dataRejectReasonDAO" ref="dataRejectReasonDAO"/>
 	 <property name="cadreRegUserDAO" ref="cadreRegUserDAO"/>
 	 <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO"/>
-	 <property name="tabUserInfoDAO" ref="tabUserInfoDAO"/>
+	 <property name="tabUserInfoDAO" ref="tabUserInfoDAO"/>    
 	</bean>
 	
 	<bean name="cadreRegistrationServiceNew" class="com.itgrids.partyanalyst.service.impl.CadreRegistrationServiceNew" >
@@ -3663,6 +3673,7 @@
 	   <property name="tdpCadreDateWiseInfoTempDAO" ref="tdpCadreDateWiseInfoTempDAO" />
 	   <property name="imageAndStringConverter" ref="imageAndStringConverter" />
 	   <property name="voterDAO" ref="voterDAO" />
+	   <property name="tabUserEnrollmentInfoDAO" ref="tabUserEnrollmentInfoDAO" />  
 	   <property name="tdpCadreHourRegInfoDAO" ref="tdpCadreHourRegInfoDAO" />
 	   <property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO" />
 	</bean>
