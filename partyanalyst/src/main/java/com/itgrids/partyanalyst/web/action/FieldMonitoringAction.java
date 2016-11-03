@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserPerformanceVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -465,13 +466,21 @@ public String getConstituencyByVendor(){
 }
 	public String getOverAllDataCollectorsDetails(){
 		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			Long loginUserId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long userId = jObj.getLong("userId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
-			Long stateId = jObj.getLong("stateId");
+		
 			
-			fieldMonitoringVO = fieldMonitoringService.getOverAllDataCollectorsDetails(fromDateStr,toDateStr,stateId);
+			fieldMonitoringVO = fieldMonitoringService.getAllDataCollectorsDetails(loginUserId,stateId,districtId,constituencyId,userId,fromDateStr,toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllDataCollectorsDetails()  of FieldMonitoringAction", e);
 		}
