@@ -1999,15 +1999,8 @@ function getTabUserInfoDetails(tabUserIdStr){
 		 $("#cnsttncyOkCntId").html("Ok - 0");
 		 $("#cnsttncyverlPoorCntId").html("Poor - 0 ");
 		 $("#cnsttncyveryPoorCntId").html("Very Poor - 0 ");
-		 
-		 $("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt",0);
-		 $("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt",0);
-		 $("#cnsttncyverlGoodCntId").attr("attr_good_cnt",0);
-		 $("#cnsttncyOkCntId").attr("attr_ok_cnt",0);
-		 $("#cnsttncyverlPoorCntId").attr("attr_poor_cnt",0);
-		 $("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt",0);
-		 
-	    var filterApplyType="No";
+	
+       var filterApplyType="No";
 		var jsObj ={ 
 				 locationType : "Constituency",
 				 stateId : 1,
@@ -2030,19 +2023,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 	
 			  if(result != null && result.length > 0){
 				  var overallApConstituencyRankRslt=result[0]; 
-					 $("#cnsttncyverlAllCntId").html("All - "+((overallApConstituencyRankRslt.allConstituencyCnt)+(parseInt($("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt")))));
-					 $("#cnsttncyveryGoodCntId").html("Very Good - "+((overallApConstituencyRankRslt.veryGoodCnt)+(parseInt($("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt")))));
-					 $("#cnsttncyverlGoodCntId").html("Good - "+((overallApConstituencyRankRslt.goodCnt)+(parseInt($("#cnsttncyverlGoodCntId").attr("attr_good_cnt")))));
-					 $("#cnsttncyOkCntId").html("Ok - "+((overallApConstituencyRankRslt.okCnt)+(parseInt($("#cnsttncyOkCntId").attr("attr_ok_cnt")))));
-					 $("#cnsttncyverlPoorCntId").html("Poor - "+((overallApConstituencyRankRslt.poorCnt)+(parseInt($("#cnsttncyverlPoorCntId").attr("attr_poor_cnt")))));
-					 $("#cnsttncyveryPoorCntId").html("Very Poor - "+((overallApConstituencyRankRslt.veryPoorCnt)+(parseInt($("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt")))));
-					 $("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt",overallApConstituencyRankRslt.allConstituencyCnt);
-					 $("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt",overallApConstituencyRankRslt.veryGoodCnt);
-					 $("#cnsttncyverlGoodCntId").attr("attr_good_cnt",overallApConstituencyRankRslt.goodCnt);
-					 $("#cnsttncyOkCntId").attr("attr_ok_cnt",overallApConstituencyRankRslt.okCnt);
-					 $("#cnsttncyverlPoorCntId").attr("attr_poor_cnt",overallApConstituencyRankRslt.poorCnt);
-					 $("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt",overallApConstituencyRankRslt.veryPoorCnt);
-					 
+					 $("#cnsttncyverlAllCntId").html("All - "+(overallApConstituencyRankRslt.allConstituencyCnt));
+					 $("#cnsttncyveryGoodCntId").html("Very Good - "+(overallApConstituencyRankRslt.veryGoodCnt));
+					 $("#cnsttncyverlGoodCntId").html("Good - "+(overallApConstituencyRankRslt.goodCnt));
+					 $("#cnsttncyOkCntId").html("Ok - "+(overallApConstituencyRankRslt.okCnt));
+					 $("#cnsttncyverlPoorCntId").html("Poor - "+(overallApConstituencyRankRslt.poorCnt));
+					 $("#cnsttncyveryPoorCntId").html("Very Poor - "+(overallApConstituencyRankRslt.veryPoorCnt));
 					 if(result != null && result.length > 0){
 						 globalApConstituencyWithAscendingArr=[];
 						 for(var counter=result.length - 1; counter >= 0;counter--){
@@ -2056,19 +2042,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 	   $("#tsConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   
 	     var filterApplyType="No"
-		 $("#cnsttncyverlAllCntId").html("All - 0 ");
-		 $("#cnsttncyveryGoodCntId").html("Very Good - 0 ");
-		 $("#cnsttncyverlGoodCntId").html("Good - 0 ");
-		 $("#cnsttncyOkCntId").html("Ok - ");
-		 $("#cnsttncyverlPoorCntId").html("Poor - 0 ");
-		 $("#cnsttncyveryPoorCntId").html("Very Poor - 0 ");
-		 
-		 $("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt",0);
-		 $("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt",0);
-		 $("#cnsttncyverlGoodCntId").attr("attr_good_cnt",0);
-		 $("#cnsttncyOkCntId").attr("attr_ok_cnt",0);
-		 $("#cnsttncyverlPoorCntId").attr("attr_poor_cnt",0);
-		 $("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt",0);
+		 $("#tsCnsttncyverlAllCntId").html("All - 0 ");
+		 $("#tsCnsttncyveryGoodCntId").html("Very Good - 0 ");
+		 $("#tsCnsttncyverlGoodCntId").html("Good - 0 ");
+		 $("#tsCnsttncyOkCntId").html("Ok - ");
+		 $("#tsCnsttncyverlPoorCntId").html("Poor - 0 ");
+		 $("#tsCnsttncyveryPoorCntId").html("Very Poor - 0 ");
+	
 		var jsObj ={ 
 				 locationType : "Constituency",
 				 stateId : 36,
@@ -2090,21 +2070,14 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  buildDropDown(result,"tsConstituencySelectBoxId",filterApplyType);
 			 if(result != null && result.length > 0){
 				  var overallApConstituencyRankRslt=result[0]; 
-				 $("#cnsttncyverlAllCntId").html("All - "+((overallApConstituencyRankRslt.allConstituencyCnt)+(parseInt($("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt")))));
-				 $("#cnsttncyveryGoodCntId").html("Very Good - "+((overallApConstituencyRankRslt.veryGoodCnt)+(parseInt($("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt")))));
-				 $("#cnsttncyverlGoodCntId").html("Good - "+((overallApConstituencyRankRslt.goodCnt)+(parseInt($("#cnsttncyverlGoodCntId").attr("attr_good_cnt")))));
-				 $("#cnsttncyOkCntId").html("Ok - "+((overallApConstituencyRankRslt.okCnt)+(parseInt($("#cnsttncyOkCntId").attr("attr_ok_cnt")))));
-				 $("#cnsttncyverlPoorCntId").html("Poor - "+((overallApConstituencyRankRslt.poorCnt)+(parseInt($("#cnsttncyverlPoorCntId").attr("attr_poor_cnt")))));
-				 $("#cnsttncyveryPoorCntId").html("Very Poor - "+((overallApConstituencyRankRslt.veryPoorCnt)+(parseInt($("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt")))));
-				 
-				 $("#cnsttncyverlAllCntId").attr("attr_all_contituency_cnt",overallApConstituencyRankRslt.allConstituencyCnt);
-				 $("#cnsttncyveryGoodCntId").attr("attr_very_good_cnt",overallApConstituencyRankRslt.veryGoodCnt);
-				 $("#cnsttncyverlGoodCntId").attr("attr_good_cnt",overallApConstituencyRankRslt.goodCnt);
-				 $("#cnsttncyOkCntId").attr("attr_ok_cnt",overallApConstituencyRankRslt.okCnt);
-				 $("#cnsttncyverlPoorCntId").attr("attr_poor_cnt",overallApConstituencyRankRslt.poorCnt);
-				 $("#cnsttncyveryPoorCntId").attr("attr_very_poor_cnt",overallApConstituencyRankRslt.veryPoorCnt);
-				 
-				  if(result != null && result.length > 0){
+				 $("#tsCnsttncyverlAllCntId").html("All - "+(overallApConstituencyRankRslt.allConstituencyCnt));
+				 $("#tsCnsttncyveryGoodCntId").html("Very Good - "+(overallApConstituencyRankRslt.veryGoodCnt));
+				 $("#tsCnsttncyverlGoodCntId").html("Good - "+(overallApConstituencyRankRslt.goodCnt));
+				 $("#tsCnsttncyOkCntId").html("Ok - "+(overallApConstituencyRankRslt.okCnt));
+				 $("#tsCnsttncyverlPoorCntId").html("Poor - "+(overallApConstituencyRankRslt.poorCnt));
+				 $("#tsCnsttncyveryPoorCntId").html("Very Poor - "+(overallApConstituencyRankRslt.veryPoorCnt));
+			
+			if(result != null && result.length > 0){
 					  globalTsConstituencyWithAscendingArr=[];
 					for(var counter=result.length - 1; counter >= 0;counter--){
 					  globalTsConstituencyWithAscendingArr.push(result[counter]);
@@ -2190,17 +2163,16 @@ function getTabUserInfoDetails(tabUserIdStr){
 	   var cadre2014CheckboxIsChecked="Y";
 	   var is2014Active='No';
 	   var filterApplyType=$(this).attr("attr_filter_value");
-	   if($("#2016RenewalCheckBoxId").is(':checked')){
-		  renewal2016CheckboxIsChecked=$("#2016RenewalCheckBoxId").attr("attr_cadre_search_type");
+	   if($("#2016TsRenewalCheckBoxId").is(':checked')){
+		  renewal2016CheckboxIsChecked=$("#2016TsRenewalCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  if($("#2016NewCheckBoxId").is(':checked')){
-		  new2016CheckboxIsChecked=$("#2016NewCheckBoxId").attr("attr_cadre_search_type");
+	  if($("#2016TsNewCheckBoxId").is(':checked')){
+		  new2016CheckboxIsChecked=$("#2016TsNewCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  if($("#2014CadreCheckBoxId").is(':checked')){
-		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
-		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
+	  if($("#2014TsCadreCheckBoxId").is(':checked')){
+		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
+		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
-	  
 	   buildConstituecnyWiseCadreResult(searchFilterArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
   });
   
@@ -2255,15 +2227,15 @@ function getTabUserInfoDetails(tabUserIdStr){
 	   var  is2014Active='No';
 	   var filterApplyType=$(this).attr("attr_filter_value");  
 	   $("#tsConstituencySelectBoxId").val(0);
-	   if($("#2016RenewalCheckBoxId").is(':checked')){
-		  renewal2016CheckboxIsChecked=$("#2016RenewalCheckBoxId").attr("attr_cadre_search_type");
+	  if($("#2016TsRenewalCheckBoxId").is(':checked')){
+		  renewal2016CheckboxIsChecked=$("#2016TsRenewalCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  if($("#2016NewCheckBoxId").is(':checked')){
-		  new2016CheckboxIsChecked=$("#2016NewCheckBoxId").attr("attr_cadre_search_type");
+	  if($("#2016TsNewCheckBoxId").is(':checked')){
+		  new2016CheckboxIsChecked=$("#2016TsNewCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  if($("#2014CadreCheckBoxId").is(':checked')){
-		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
-		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
+	  if($("#2014TsCadreCheckBoxId").is(':checked')){
+		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
+		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
      buildConstituecnyWiseCadreResult(globalTsConstituencyWithAscendingArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
 	 globalTsConstituencyRslt = globalTsConstituencyWithAscendingArr;
@@ -2274,28 +2246,25 @@ function getTabUserInfoDetails(tabUserIdStr){
 	   var cadre2014CheckboxIsChecked="Y";
 	   var  is2014Active="No";
 	   var filterApplyType=$(this).attr("attr_filter_value");
-	   if($("#2016RenewalCheckBoxId").is(':checked')){
-		  renewal2016CheckboxIsChecked=$("#2016RenewalCheckBoxId").attr("attr_cadre_search_type");
+	   if($("#2016TsRenewalCheckBoxId").is(':checked')){
+		  renewal2016CheckboxIsChecked=$("#2016TsRenewalCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  if($("#2016NewCheckBoxId").is(':checked')){
-		  new2016CheckboxIsChecked=$("#2016NewCheckBoxId").attr("attr_cadre_search_type");
+	  if($("#2016TsNewCheckBoxId").is(':checked')){
+		  new2016CheckboxIsChecked=$("#2016TsNewCheckBoxId").attr("attr_cadre_search_type");
 	  }
-	  if($("#2014CadreCheckBoxId").is(':checked')){
-		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
-		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
+	  if($("#2014TsCadreCheckBoxId").is(':checked')){
+		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
+		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
 	$("#tsConstituencySelectBoxId").val(0);
 	buildConstituecnyWiseCadreResult(globalTsConstituencyWithDefaultSorting,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
 	globalTsConstituencyRslt = globalTsConstituencyWithDefaultSorting;
  }); 
   $(document).on("click",".constituencyFilterCls",function(){
-       var filterApplyType = $(this).attr("attr_filter_value");
+	   var filterApplyType = $(this).attr("attr_filter_value");
 	   $("#apConstituencySelectBoxId").attr("attr_filter_value",filterApplyType);
-	   $("#tsConstituencySelectBoxId").attr("attr_filter_value",filterApplyType);
 	   $(".ascendingApSorting").attr("attr_filter_value",filterApplyType);
 	   $(".decendingApSorting").attr("attr_filter_value",filterApplyType);
-	   $(".decendingTsSorting").attr("attr_filter_value",filterApplyType);
-	   $(".ascendingTsSorting").attr("attr_filter_value",filterApplyType);
 	   var renewal2016CheckboxIsChecked="Y";
 	   var new2016CheckboxIsChecked="Y";
 	   var cadre2014CheckboxIsChecked="Y";
@@ -2310,11 +2279,32 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
 	  }
-	 buildDropDown(globalTsConstituencyRslt,"tsConstituencySelectBoxId",filterApplyType);
 	 buildDropDown(globalApConstituencyRslt,"apConstituencySelectBoxId",filterApplyType);
      buildConstituecnyWiseCadreResult(globalApConstituencyRslt,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+  });
+    $(document).on("click",".tsConstituencyFilterCls",function(){
+       var filterApplyType = $(this).attr("attr_filter_value");
+	   $("#tsConstituencySelectBoxId").attr("attr_filter_value",filterApplyType);
+	   $(".decendingTsSorting").attr("attr_filter_value",filterApplyType);
+	   $(".ascendingTsSorting").attr("attr_filter_value",filterApplyType);
+	   var renewal2016CheckboxIsChecked="Y";
+	   var new2016CheckboxIsChecked="Y";
+	   var cadre2014CheckboxIsChecked="Y";
+	   var is2014Active='No';
+	   if($("#2016TsRenewalCheckBoxId").is(':checked')){
+		  renewal2016CheckboxIsChecked=$("#2016TsRenewalCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if($("#2016TsNewCheckBoxId").is(':checked')){
+		  new2016CheckboxIsChecked=$("#2016TsNewCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if($("#2014TsCadreCheckBoxId").is(':checked')){
+		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
+		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
+	  }
+	 buildDropDown(globalTsConstituencyRslt,"tsConstituencySelectBoxId",filterApplyType);
 	 buildConstituecnyWiseCadreResult(globalTsConstituencyRslt,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
   });
+  
  function buildConstituecnyWiseCadreResult(result,divId,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active){
 	   $("#"+divId).html(' ');
     	var locationNameArr =[];
@@ -2600,10 +2590,10 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  
 		     /*Setting Dynamic height for highChart */
 			 if(locationNameArr!= null && locationNameArr.length > 10){
-			  var highChartDivHight = locationNameArr.length*20;
+			  var highChartDivHight = locationNameArr.length*25;
 			  $("#"+divId).height(highChartDivHight); 
              }else{
-			  $("#"+divId).height(260);		
+			  $("#"+divId).height(280);		
 			  }
 				$(function () {
 					$("#"+divId).highcharts({
@@ -2682,8 +2672,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 	 	$.ajax({
 			type : 'POST',
 			url : 'getApTsDistrictListAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify( )}
+			dataType : 'json'
 		}).done(function(result){
 	       if(result != null ){
 			 buildDistrictRslt(result);  
@@ -2738,15 +2727,13 @@ $(document).on("click",".selectAllTsDistrict",function(){
 	});
    }	
 });
- $(document).on("click","#settingsCadre",function(e){
-	 $("#cadreRegSearchErrorId").html(' ');
-	$(this).closest(".moreBlocksCadre").find(".cadreRDD").toggle();
+  $(document).on("click","#settingsCadre",function(){
+	$("#cadreRegSearchErrorId").html(' ');
+	$("#cadreTsRegSearchErrorId").html(' ');
+	$(".cadreRDD").hide();
+	$(this).closest(".settingsBlockCadre").find(".cadreRDD").toggle();
 	e.stopPropagation();
 });
-$(document).on("click","#settingsCadre",function(){
-	$(this).closest(".cadreRDD").hide();
-});
-
 $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	 
 	  var renewal2016CheckboxIsChecked="N";
@@ -2771,18 +2758,12 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		  return;
 	  }
 	  var apDistrictArr=[];
-	   var tsDistrictArr=[];
 	  $("#apDistrictUlId li").each(function() {
 		  if($(this).find("input").is(":checked")){
 			  apDistrictArr.push($(this).find("input").attr("id"));
 		  }
 	   });
-	    $("#tsDistrictULId li").each(function() {
-		  if($(this).find("input").is(":checked")){
-			  tsDistrictArr.push($(this).find("input").attr("id"));
-		  }
-	   });
-	   if(apDistrictArr.length == 0 && tsDistrictArr.length==0 ){
+	   if(apDistrictArr.length == 0){
 		 $("#cadreRegSearchErrorId").html("Please Select District.");
 		   return;
 	   }
@@ -2793,14 +2774,52 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 	    $("#tsConstituencySelectBoxId").attr("attr_filter_value","All");
 	    $(".ascendingApSorting").attr("attr_filter_value","All");
 	    $(".decendingApSorting").attr("attr_filter_value","All");
-	    $(".decendingTsSorting").attr("attr_filter_value","All");
-	    $(".ascendingTsSorting").attr("attr_filter_value","All");
 	   if(apDistrictArr.length > 0){
 		getApConstituencyCadreRegistrationDetails(3,apDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);  
 	   }else{
 		   $("#apConstituencyRegistrationReportDivId").html(' ');
 		   globalApConstituencyRslt="";  
 	   }
+	   $(".cadreRDD").hide();
+});  
+$(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
+	 
+	  var renewal2016CheckboxIsChecked="N";
+	  var new2016CheckboxIsChecked="N";
+	  var cadre2014CheckboxIsChecked="N";
+	  var is2014Active="No";
+	 
+	  if($("#2016TsRenewalCheckBoxId").is(':checked')){
+		  renewal2016CheckboxIsChecked=$("#2016TsRenewalCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if($("#2016TsNewCheckBoxId").is(':checked')){
+		  new2016CheckboxIsChecked=$("#2016TsNewCheckBoxId").attr("attr_cadre_search_type");
+	  }
+	  if($("#2014TsCadreCheckBoxId").is(':checked')){
+		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
+		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
+	  }
+	  if(renewal2016CheckboxIsChecked=="N" && new2016CheckboxIsChecked=="N" && cadre2014CheckboxIsChecked=="N"){
+		  $("#cadreTsRegSearchErrorId").html("Please Select Search Type");
+		  return;
+	  }
+	 
+	   var tsDistrictArr=[];
+	    $("#tsDistrictULId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  tsDistrictArr.push($(this).find("input").attr("id"));
+		  }
+	   });
+	   if(tsDistrictArr.length==0 ){
+		 $("#cadreTsRegSearchErrorId").html("Please Select District.");
+		   return;
+	   }
+	    $("#cadreTsRegSearchErrorId").html(' ');
+	   	$(".constituencyUlCls li").removeClass("active");
+		$(".constituencyUlCls li:first-child").addClass("active");
+	    $("#tsConstituencySelectBoxId").attr("attr_filter_value","All");
+	    $(".decendingTsSorting").attr("attr_filter_value","All");
+	    $(".ascendingTsSorting").attr("attr_filter_value","All");
 	   if(tsDistrictArr.length > 0){
 		  getTsConstituencyCadreRegistrationDetails(3,tsDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
 	   }else{
@@ -3720,7 +3739,7 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		getCadreRecentTime();
 	}      
 
-   $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
+  $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
 	  var isKuppamExcluded;
 	  if($(this).prop("checked")){
 		  isKuppamExcluded="True";
