@@ -1646,7 +1646,7 @@
     
     <bean name="tdpCadreDataHourWiseForTabUsersByOverall" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="triggerUserWiseHourWiseCadreDataOverall" />
-    	<property name="cronExpression" value="0 05 1 * * ?" />
+    	<property name="cronExpression" value="0 05 19 * * ?" />
 	</bean>
 	
     <bean name="triggerUserWiseHourWiseCadreDataOverall" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1704,7 +1704,7 @@
 		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />     
 		    
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
-		    <!-- <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>  -->
+		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
         </list>
     	</property>
