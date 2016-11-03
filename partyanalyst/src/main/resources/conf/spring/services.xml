@@ -3610,6 +3610,9 @@
 		 <property name="tdpCadreLocationInfoCountDAO" ref="tdpCadreLocationInfoCountDAO" />
 		 <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 		 <property name="tabUserEnrollmentInfoSourceDAO" ref="tabUserEnrollmentInfoSourceDAO" />
+		 <property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
+		 <property name="constituencyDAO" ref="constituencyDAO" />
+		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
 		<property name="stateDAO" ref="stateDAO"/>

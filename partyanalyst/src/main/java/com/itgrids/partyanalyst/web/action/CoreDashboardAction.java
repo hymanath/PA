@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CadreResponseVO;
 import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -95,6 +96,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
 	private IdNameVO idNameVO; 
+	private List<CadreReportVO> cadreDtlsList;
 	
 	private List<List<IdNameVO>> idNameVOsList;
     private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
@@ -559,6 +561,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setPropIdsStr(String propIdsStr) {
 		this.propIdsStr = propIdsStr;
+	}
+   public List<CadreReportVO> getCadreDtlsList() {
+		return cadreDtlsList;
+	}
+
+	public void setCadreDtlsList(List<CadreReportVO> cadreDtlsList) {
+		this.cadreDtlsList = cadreDtlsList;
 	}
 
 	//Implementation method
@@ -2998,6 +3007,24 @@ public String getDistrictWiseToursSubmitedDetails(){
 		toursDtlsList = coreDashboardToursService.getDistrictWiseToursSubmitedDetails(stateId,fromDate,toDate,activityMemberId,userTypeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getDistrictWiseToursSubmitedDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getLocationWiseCadreInfoTodayDetails(){
+	try {
+		LOG.info("Entered into getLocationWiseCadreInfoTodayDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long stateId = jObj.getLong("stateId");
+		List<Long> locationList = new ArrayList<Long>();
+		JSONArray locationIdsArr=jObj.getJSONArray("locationIdsArr");
+		if(locationIdsArr!=null &&  locationIdsArr.length()>0){
+			for( int i=0;i<locationIdsArr.length();i++){
+				locationList.add(Long.valueOf(locationIdsArr.getString(i))); 
+			}
+		}
+		cadreDtlsList = coreDashboardCadreRegistrationService.getLocationWiseCadreInfoTodayDetails(stateId,locationList);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getLocationWiseCadreInfoTodayDetails() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
 }

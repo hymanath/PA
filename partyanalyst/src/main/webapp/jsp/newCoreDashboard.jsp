@@ -17,6 +17,9 @@
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<style>
+#statewiseoverviewPanel{display:none;}
+</style>
 </head>
 <body>  
 <header>
@@ -163,7 +166,25 @@
 							   
 							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
 						</div>
+						
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
+						    <div class="row">
+							 <div class="col-md-12 col-xs-12 col-sm-12  showCadrecls" style="display:none;">
+								<h4 class="text-capital m_top10"><span class="headingColor">OVERALL REGISTRATIONS</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12">
+										<div class="bg_ED pad_15 m_top10">
+											<h5 class="text-capital" >TOTAL-<span id="totalperc"></span><h5><h4  class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0 </h4>
+										</div>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12">
+										<div class="bg_ED pad_15 m_top10">
+											<h5 class="text-capital">TODAY-<span id="todayperc1"></span></h5><h4  class ="cadreCount" id="totalTodayId" attr_today="0" attr_today_per ="0">0</h4>
+										</div>
+									</div>
+								</div>
+							   </div>
+							</div>
 						    <div>
 								<div id="totalTodayCadreRegistrationBlockDivAPId"></div>
 								<div id="totalTodayCadreRegistrationBlockDivTSId"></div>  
@@ -187,7 +208,7 @@
 						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="row">';
+									<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											
 											
@@ -223,13 +244,14 @@
 								<li class="text-capital compareBlockSwitchCls">Comparison</li>  
                             </ul>
                             
-                        </div>
+                        </div> 
 						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls m_top20">        
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
 									<span class="headingColor">State Wise Overview</span>
+									<a href="javascript:void(0);" class="btn btn-success btn-sm  pull-right" id="statewiseoverview" data-hidden="true"> Show </a>
 								</div>
-								<div class="panel-body">
+								<div class="panel-body" id="statewiseoverviewPanel">
 									<div class="row" id="sourceTypeId">
 										
 									</div>
@@ -2819,6 +2841,30 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="locationWiseCadreReportModalId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document" style="margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title" id="locationWiseCadreReportHeadingId">CONSTITUENCY WISE REPORT</h4> 
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="locationWiseProcessImgReport"></center></div>
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div id="locationWiseCadreReportDivId"> </div>    
+			</div>      
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
