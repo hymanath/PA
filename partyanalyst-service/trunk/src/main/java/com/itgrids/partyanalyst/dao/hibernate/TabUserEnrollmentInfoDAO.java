@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.model.TabUserEnrollmentInfo;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollmentInfo, Long> implements ITabUserEnrollmentInfoDAO {
 	public TabUserEnrollmentInfoDAO() {
@@ -31,6 +32,20 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		query.setParameter("stateId", stateId);   
 		query.setDate("today",today);
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getTabUserFirstLastRecord(List<Long> tabUserInfoIds){
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.startTime ,model.endTime ,model.cadreSurveyUserId,model.tabUserInfoId,model.totalRecords from " +
+				" TabUserEnrollmentInfo model where model.tabUserInfoId in (:tabUserInfoIds) and date(model.surveyTime) = :today " );
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("tabUserInfoIds", tabUserInfoIds);   
+		query.setDate("today",new DateUtilService().getCurrentDateAndTime());
+		
+		return query.list();
+		
 	}
 
 }

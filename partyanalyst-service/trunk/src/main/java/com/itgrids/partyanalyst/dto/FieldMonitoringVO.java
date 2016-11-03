@@ -27,7 +27,7 @@ public class FieldMonitoringVO {
 	private String firstRecord;
 	private String recentRecord;
 	private Long lastHourCount;
-	private Long totalCount;
+	private Long totalCount = 0l;
 	private Long openIssues = 0l;
 	private Long fixedIssues = 0l;
 	private Long closedIssues = 0l;
@@ -50,7 +50,15 @@ public class FieldMonitoringVO {
 	private Long todayRegCount;
 	private Long todayActiveUsers;
 	private Long lastOneHrActUsers;
+	private String countPerc;
 	
+	
+	public String getCountPerc() {
+		return countPerc;
+	}
+	public void setCountPerc(String countPerc) {
+		this.countPerc = countPerc;
+	}
 	public String getImagePath() {
 		return imagePath;
 	}
