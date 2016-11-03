@@ -407,12 +407,12 @@ function buildStatusWiseDetails(result){
 	
 	str+='<table class="table b_1" id="issueStatusTableId">';
 		str+='<thead class="text-capitalize">';
-			str+='<th>User Id</th>';
-			str+='<th>user name</th>';
-			str+='<th>user contact number</th>';
+			//str+='<th>User Id</th>';
 			str+='<th>state</th>';
 			str+='<th>district</th>';
 			str+='<th>constituency</th>';
+			str+='<th>user name</th>';
+			str+='<th>user contact number</th>';
 			str+='<th>vendor name</th>';
 			//str+='<th>leader name</th>';
 			str+='<th>open issues</th>';
@@ -423,9 +423,7 @@ function buildStatusWiseDetails(result){
 		str+='<tbody>';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
-				str+='<td>'+result[i].tabUserName+'</td>';
-				str+='<td>'+result[i].mobileNo+'</td>';
+				//str+='<td>'+result[i].userName+'</td>';
 				if(result[i].stateName != null)
 					str+='<td>'+result[i].stateName+'</td>';
 				else
@@ -438,6 +436,9 @@ function buildStatusWiseDetails(result){
 					str+='<td>'+result[i].constituencyName+'</td>';
 				else
 					str+='<td> - </td>';
+				str+='<td>'+result[i].tabUserName+'</td>';
+				str+='<td>'+result[i].mobileNo+'</td>';
+				
 				if(result[i].vendorName != null)
 					str+='<td>'+result[i].vendorName+'</td>';
 				else
@@ -1014,11 +1015,11 @@ function buildDataCollectorsPerformanceDetails(result){
 		
 		str+='<table class="table b_1 m_top10 " id="detailsTable">';
 			str+='<thead class="text-capitalize">';
-				str+='<th>User Id</th>';
-				str+='<th>DC Name</th>';
-				str+='<th>DC Contact number</th>';
+				//str+='<th>User Id</th>';
 				str+='<th>district</th>';
 				str+='<th>constituency</th>';
+				str+='<th>DC Name</th>';
+				str+='<th>DC Contact number</th>';
 				str+='<th>first record</th>';
 				str+='<th>recent record</th>';
 				str+='<th>last hour</th>';
@@ -1031,10 +1032,27 @@ function buildDataCollectorsPerformanceDetails(result){
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
-					if(result[i].lastHourCount != null && result[i].lastHourCount > 0)
-						str+='<td class="issueCmpltd">'+result[i].userName+'</td>';
+					if(result[i].lastHourCount != null && result[i].lastHourCount > 0){
+						if(result[i].districtName != null)
+							str+='<td class="issueCmpltd">'+result[i].districtName+'</td>';
+						else
+							str+='<td> - </td>';
+					}
+					else{
+						if(result[i].districtName != null)
+							str+='<td class="issuePending">'+result[i].districtName+'</td>';
+						else
+							str+='<td> - </td>';
+					}
+					if(result[i].constituencyName != null)
+						str+='<td>'+result[i].constituencyName+'</td>';
 					else
-						str+='<td class="issuePending">'+result[i].userName+'</td>';
+						str+='<td> - </td>';
+					/*if(result[i].lastHourCount != null && result[i].lastHourCount > 0)
+						str+='<td class="issueCmpltd" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
+					else
+						str+='<td class="issuePending" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
+						//str+='<td class="issuePending">'+result[i].userName+'</td>';*/
 					if(result[i].tabUserName != null)
 						str+='<td title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
 					else
@@ -1043,14 +1061,14 @@ function buildDataCollectorsPerformanceDetails(result){
 						str+='<td>'+result[i].mobileNo+'</td>';
 					else
 						str+='<td> - </td>';
-					if(result[i].districtName != null)
+					/*if(result[i].districtName != null)
 						str+='<td>'+result[i].districtName+'</td>';
 					else
 						str+='<td> - </td>';
 					if(result[i].constituencyName != null)
 						str+='<td>'+result[i].constituencyName+'</td>';
 					else
-						str+='<td> - </td>';
+						str+='<td> - </td>';*/
 					if(result[i].firstRecord != null)
 						str+='<td>'+result[i].firstRecord+'</td>';
 					else
