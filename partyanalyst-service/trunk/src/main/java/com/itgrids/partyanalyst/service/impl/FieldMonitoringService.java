@@ -2035,7 +2035,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			Date today = dateUtilService.getCurrentDateAndTime();
 			Long todayTarget = 200l;
 			
-			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId,stateId);
+			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
 				for (Object[] obj : templist) {
 					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
