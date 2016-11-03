@@ -170,8 +170,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		sb.append(" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
 					" and model1.cadreSurveyUser.isDeleted = 'N'" +
-					" and model1.cadreSurveyUser.isEnabled = 'Y'");
-					//" group by model.tdpCadre.insertedBy.cadreSurveyUserId,model.tdpCadre.tabUserInfoId");
+					" and model1.cadreSurveyUser.isEnabled = 'Y'" +
+					" group by model1.cadreSurveyUser.cadreSurveyUserId,model3.tabUserInfoId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
