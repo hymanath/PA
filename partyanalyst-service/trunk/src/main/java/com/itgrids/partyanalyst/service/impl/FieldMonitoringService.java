@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +31,9 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorLocationDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
@@ -71,12 +75,28 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ICadreRegUserDAO cadreRegUserDAO;
 	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+	private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
+	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	
 	
 	//Setters
 	
 	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
 		return tdpCadreEnrollmentYearDAO;
+	}
+	public ITdpCadreUserHourRegInfo getTdpCadreUserHourRegInfoDAO() {
+		return tdpCadreUserHourRegInfoDAO;
+	}
+	public void setTdpCadreUserHourRegInfoDAO(
+			ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO) {
+		this.tdpCadreUserHourRegInfoDAO = tdpCadreUserHourRegInfoDAO;
+	}
+	public ITabUserEnrollmentInfoDAO getTabUserEnrollmentInfoDAO() {
+		return tabUserEnrollmentInfoDAO;
+	}
+	public void setTabUserEnrollmentInfoDAO(
+			ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO) {
+		this.tabUserEnrollmentInfoDAO = tabUserEnrollmentInfoDAO;
 	}
 	public void setTdpCadreEnrollmentYearDAO(
 			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
@@ -338,9 +358,9 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			Map<Long,FieldMonitoringVO> templMap = new LinkedHashMap<Long, FieldMonitoringVO>();
     			List<Long> startedUsers = new ArrayList<Long>();
     			
-    			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,null);
     			if(templist == null || templist.isEmpty())
-    				templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    				templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(null, null, null, constituencyId, cadreSurveyUserId, districtId,null);
     			if(templist != null && !templist.isEmpty()){
     				for (Object[] obj : templist) {
 						Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -356,9 +376,9 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 					}
     			}
     			
-    			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    			List<Object[]> list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId,null);
     			if(list == null || list.isEmpty())
-    				list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, constituencyId, cadreSurveyUserId, districtId);
+    				list = cadreRegIssueDAO.getTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, constituencyId, cadreSurveyUserId, districtId,null);
     			if(list != null && !list.isEmpty()){
     				for (Object[] obj : list) {
     					
@@ -436,9 +456,9 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			Date lastOneHourTime = cal.getTime();
     			
     			//LastHour Counts
-    			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCountsNew(cadreRegUserId, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId);
+    			List<Object[]> list1 = cadreRegIssueDAO.getLastHourCountsNew(cadreRegUserId, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId,null);
     			if(list1 == null || list1.isEmpty())
-    				list1 = cadreRegIssueDAO.getLastHourCountsNew(null, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId);
+    				list1 = cadreRegIssueDAO.getLastHourCountsNew(null, lastOneHourTime, today, constituencyId, cadreSurveyUserId, districtId,null);
     			if(list1 != null && !list1.isEmpty()){
     				for (Object[] obj : list1) {
     					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -450,9 +470,9 @@ public class FieldMonitoringService implements IFieldMonitoringService {
     			}
     			
     			//Issues Counts
-    			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, startDate, endDate, districtId);
+    			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(cadreRegUserId, constituencyId, cadreSurveyUserId, startDate, endDate, districtId,null);
     			if(list2 == null || list2.isEmpty())
-    				list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(null, constituencyId, cadreSurveyUserId, startDate, endDate, districtId);
+    				list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(null, constituencyId, cadreSurveyUserId, startDate, endDate, districtId,null);
     			if(list2 != null && !list2.isEmpty()){
     				for (Object[] obj : list2) {
     					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -1642,275 +1662,415 @@ public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long consti
 	return returnList;
 }
 
-	public List<UserPerformanceVO> getUserPerformanceDetailsByUser(Long cadreSurveyUserId,Long tabUserId){
-		List<UserPerformanceVO> returnList = new ArrayList<UserPerformanceVO>();
-		try {
-			Map<String,UserPerformanceVO> dayWiseMap = new LinkedHashMap<String, UserPerformanceVO>();
+public List<UserPerformanceVO> getUserPerformanceDetailsByUser(Long cadreSurveyUserId,Long tabUserId){
+	List<UserPerformanceVO> returnList = new ArrayList<UserPerformanceVO>();
+	try {
+		Map<String,UserPerformanceVO> dayWiseMap = new LinkedHashMap<String, UserPerformanceVO>();
+		
+		Date today = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, -2);
+		
+		Date dayBfrYes =  cal.getTime();
+		int presentHour = cal.get(Calendar.HOUR_OF_DAY);
+		
+		List<Object[]> list = tdpCadreEnrollmentYearDAO.getHourWiseUserPerformanceInfo(cadreSurveyUserId, tabUserId, dayBfrYes, today);
+		if(list != null && !list.isEmpty()){
+			for (Object[] obj : list) {
+				String dateStr = obj[0] != null ? obj[0].toString().trim():"";
+				Long hourId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+				
+				UserPerformanceVO vo = dayWiseMap.get(dateStr);
+				if(vo == null){
+					vo = new UserPerformanceVO();
+					vo.setName(dateStr);
+					vo.setId(new Long(presentHour));
+					if(hourId <= presentHour){
+						//vo.setId(vo.getId()+1l);
+						vo.setUptoNowCount(vo.getUptoNowCount()+count);
+					}
+						if(hourId == 8l){
+							vo.setFrom8to9Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 9l){
+							vo.setFrom9to10Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 10l){
+							vo.setFrom10to11Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 11l){
+							vo.setFrom11to12Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 12l){
+							vo.setFrom12to1Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 13l){
+							vo.setFrom1to2Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 14l){
+							vo.setFrom2to3Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 15l){
+							vo.setFrom3to4Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 16l){
+							vo.setFrom4to5Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 17l){
+							vo.setFrom5to6Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 18l){
+							vo.setFrom6to7Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 19l){
+							vo.setFrom7to8Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else{
+							vo.setFrom8pmto8amCount(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}
+					/*}
+					else{
+						if(hourId == 8l){
+							vo.setFrom8to9Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 9l){
+							vo.setFrom9to10Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 10l){
+							vo.setFrom10to11Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 11l){
+							vo.setFrom11to12Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 12l){
+							vo.setFrom12to1Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 13l){
+							vo.setFrom1to2Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 14l){
+							vo.setFrom2to3Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 15l){
+							vo.setFrom3to4Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 16l){
+							vo.setFrom4to5Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 17l){
+							vo.setFrom5to6Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 18l){
+							vo.setFrom6to7Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 19l){
+							vo.setFrom7to8Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else{
+							vo.setFrom8pmto8amCount(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}
+					}*/
+					
+					dayWiseMap.put(dateStr, vo);
+				}
+				else{
+					if(hourId <= presentHour){
+						//vo.setId(vo.getId()+1l);
+						vo.setUptoNowCount(vo.getUptoNowCount()+count);
+					}
+						if(hourId == 8l){
+							vo.setFrom8to9Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 9l){
+							vo.setFrom9to10Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 10l){
+							vo.setFrom10to11Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 11l){
+							vo.setFrom11to12Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 12l){
+							vo.setFrom12to1Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 13l){
+							vo.setFrom1to2Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 14l){
+							vo.setFrom2to3Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 15l){
+							vo.setFrom3to4Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 16l){
+							vo.setFrom4to5Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 17l){
+							vo.setFrom5to6Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 18l){
+							vo.setFrom6to7Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 19l){
+							vo.setFrom7to8Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else{
+							vo.setFrom8pmto8amCount(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}
+					/*}
+					else{
+						if(hourId == 8l){
+							vo.setFrom8to9Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 9l){
+							vo.setFrom9to10Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 10l){
+							vo.setFrom10to11Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 11l){
+							vo.setFrom11to12Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 12l){
+							vo.setFrom12to1Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 13l){
+							vo.setFrom1to2Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 14l){
+							vo.setFrom2to3Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 15l){
+							vo.setFrom3to4Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 16l){
+							vo.setFrom4to5Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 17l){
+							vo.setFrom5to6Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 18l){
+							vo.setFrom6to7Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else if(hourId == 19l){
+							vo.setFrom7to8Count(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}else{
+							vo.setFrom8pmto8amCount(count);
+							vo.setOverAllCount(vo.getOverAllCount()+count);
+						}
+					}*/
+				}
+			}
+		}
+		
+		if(dayWiseMap != null)
+			returnList = new ArrayList<UserPerformanceVO>(dayWiseMap.values());
+		
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getUserPerformanceDetailsByUser() of FieldMonitoringService", e);
+	}
+	return returnList;
+}
+
+
+public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long stateId,Long districtId,Long constituencyId,Long userId, String fromDateStr,String toDateStr){
+	FieldMonitoringVO returnVO = new FieldMonitoringVO();
+	try{
+		Long cadreRegUserId=cadreRegUserDAO.getCadreRegId(loginUserId);
+		Long usersCount = fieldVendorTabUserDAO.getAssignedUsersCountForRegUser(cadreRegUserId);
+		if(usersCount == null || usersCount.longValue() == 0l){
+			cadreRegUserId = null;
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date startDate = null;	
+		Date endDate = null;
+		Date today = new Date();
+		if(fromDateStr != null && toDateStr != null){
+			startDate = sdf.parse(fromDateStr);
+			endDate = sdf.parse(toDateStr);
+		}
+		Date currentDate = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+		Date lastOneHourTime = cal.getTime();
+		
+		Long totalDataCollectorsCount = fieldVendorTabUserDAO.getTotalDataCollectorsCountFrMnrtg(stateId, districtId, constituencyId, cadreRegUserId, userId);
+		Long registeredCount = fieldVendorTabUserDAO.getTotalRegisteredCount(stateId, districtId, constituencyId, cadreRegUserId, userId);
+	    Long todayActMbersCount = fieldVendorTabUserDAO.getTodayActiveMbrsCount(stateId, districtId, constituencyId, cadreRegUserId, userId, today);
+	    Long oneHrActMbersCount = fieldVendorTabUserDAO.getOneHourActiveUsersCount(stateId, districtId, constituencyId, cadreRegUserId, userId, lastOneHourTime, today);
+	    Long passiveCount = 0l;
+	    Long notYetStarted = 0l;
+	    
+	    if(totalDataCollectorsCount == null)
+	    	totalDataCollectorsCount = 0l;
+	    if(registeredCount == null)
+	    	registeredCount = 0l;
+	    if(todayActMbersCount == null)
+	    	todayActMbersCount = 0l;
+	    if(oneHrActMbersCount == null)
+	    	oneHrActMbersCount = 0l;
+	    passiveCount = todayActMbersCount - oneHrActMbersCount;
+	    notYetStarted = registeredCount - todayActMbersCount;
+	   
+	    
+	    returnVO.setTotalDataCollectors(totalDataCollectorsCount);
+	    returnVO.setTodayRegCount(registeredCount);
+	    returnVO.setTodayActiveUsers(todayActMbersCount);
+	    returnVO.setLastOneHrActUsers(oneHrActMbersCount);
+	    returnVO.setPassiveUsers(passiveCount);
+	    returnVO.setNotYetStartedUsers(notYetStarted);
+	    
+	    
+}catch(Exception e){
+	LOG.error("Exception occurred at getAllDataCollectorsDetails() of FieldMonitoringService", e);
+}
+return returnVO;
+}		
+public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId){
+	List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	try{
+		List<Object[]> districts = districtDAO.getDistrictIdAndNameByStateForStateTypeId(stateId,stateTypeId);
+	
+		returnList = setDataToIdNameVOList(districts);
+
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getDistrictByStateId() of FieldMonitoringService", e);
+	}
+	return returnList;
+}
+
+/**
+* @param  Long loginUserId  
+* @param  Long districtId
+* @param Long stateId
+* @return FieldMonitoringVO
+* @author Hymavathi G 
+* @Description :This method for showing DataCollectors Performance Details 
+*  @since 02-Nov-2016
+*/
+public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId){
+	FieldMonitoringVO returnVO = new FieldMonitoringVO();
+	
+	try {
+			List<Long> tabUserInfoIds = new ArrayList<Long>();
+			List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
+		
+			SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+			Date startDate = dateUtilService.getCurrentDateAndTime();
+			Date endDate = dateUtilService.getCurrentDateAndTime();
+			Date today = new Date();
+			Long todayTarget = 1000l;
 			
-			Date today = dateUtilService.getCurrentDateAndTime();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(today);
-			cal.add(Calendar.DATE, -2);
+			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, null, null, districtId,stateId);
+			if(templist != null && !templist.isEmpty()){
+				for (Object[] obj : templist) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					FieldMonitoringVO vo = new FieldMonitoringVO();
+					vo.setCadreSurveyUserId(userId);
+					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+					vo.setConstituencyName(obj[8] != null ? obj[8].toString():"");
+					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+					vo.setTodayTarget(todayTarget.toString());
+					tabUserInfoIds.add(vo.getTabUserId());
+					returnList.add(vo);
+				}
+			}
 			
-			Date dayBfrYes =  cal.getTime();
-			int presentHour = cal.get(Calendar.HOUR_OF_DAY);
 			
-			List<Object[]> list = tdpCadreEnrollmentYearDAO.getHourWiseUserPerformanceInfo(cadreSurveyUserId, tabUserId, dayBfrYes, today);
+			List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecord(tabUserInfoIds);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
-					String dateStr = obj[0] != null ? obj[0].toString().trim():"";
-					Long hourId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					
-					UserPerformanceVO vo = dayWiseMap.get(dateStr);
-					if(vo == null){
-						vo = new UserPerformanceVO();
-						vo.setName(dateStr);
-						vo.setId(new Long(presentHour));
-						if(hourId <= presentHour){
-							//vo.setId(vo.getId()+1l);
-							vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}
-							if(hourId == 8l){
-								vo.setFrom8to9Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 9l){
-								vo.setFrom9to10Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 10l){
-								vo.setFrom10to11Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 11l){
-								vo.setFrom11to12Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 12l){
-								vo.setFrom12to1Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 13l){
-								vo.setFrom1to2Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 14l){
-								vo.setFrom2to3Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 15l){
-								vo.setFrom3to4Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 16l){
-								vo.setFrom4to5Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 17l){
-								vo.setFrom5to6Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 18l){
-								vo.setFrom6to7Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 19l){
-								vo.setFrom7to8Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else{
-								vo.setFrom8pmto8amCount(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}
-						/*}
-						else{
-							if(hourId == 8l){
-								vo.setFrom8to9Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 9l){
-								vo.setFrom9to10Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 10l){
-								vo.setFrom10to11Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 11l){
-								vo.setFrom11to12Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 12l){
-								vo.setFrom12to1Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 13l){
-								vo.setFrom1to2Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 14l){
-								vo.setFrom2to3Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 15l){
-								vo.setFrom3to4Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 16l){
-								vo.setFrom4to5Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 17l){
-								vo.setFrom5to6Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 18l){
-								vo.setFrom6to7Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 19l){
-								vo.setFrom7to8Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else{
-								vo.setFrom8pmto8amCount(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}
-						}*/
-						
-						dayWiseMap.put(dateStr, vo);
+					Long cadreUserId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long tabUserId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+					if(vo != null){
+							if(obj[0]!=null){
+	    	    					Date date = (Date)obj[0];
+	    	    					vo.setFirstRecord(returnTime.format(date));
+	    	    				}
+	    					 if(obj[1]!=null){
+	    	    					Date date = (Date)obj[1];
+	    	    					vo.setRecentRecord(returnTime.format(date));
+	    	    				}
+	    					vo.setTotalCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+	    					Float totalPerc = (float) (vo.getTotalCount()*100.0/todayTarget);
+	    					vo.setCountPerc(String.format("%.2f", totalPerc));
+	    					
 					}
-					else{
-						if(hourId <= presentHour){
-							//vo.setId(vo.getId()+1l);
-							vo.setUptoNowCount(vo.getUptoNowCount()+count);
-						}
-							if(hourId == 8l){
-								vo.setFrom8to9Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 9l){
-								vo.setFrom9to10Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 10l){
-								vo.setFrom10to11Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 11l){
-								vo.setFrom11to12Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 12l){
-								vo.setFrom12to1Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 13l){
-								vo.setFrom1to2Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 14l){
-								vo.setFrom2to3Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 15l){
-								vo.setFrom3to4Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 16l){
-								vo.setFrom4to5Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 17l){
-								vo.setFrom5to6Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 18l){
-								vo.setFrom6to7Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 19l){
-								vo.setFrom7to8Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else{
-								vo.setFrom8pmto8amCount(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}
-						/*}
-						else{
-							if(hourId == 8l){
-								vo.setFrom8to9Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 9l){
-								vo.setFrom9to10Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 10l){
-								vo.setFrom10to11Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 11l){
-								vo.setFrom11to12Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 12l){
-								vo.setFrom12to1Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 13l){
-								vo.setFrom1to2Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 14l){
-								vo.setFrom2to3Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 15l){
-								vo.setFrom3to4Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 16l){
-								vo.setFrom4to5Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 17l){
-								vo.setFrom5to6Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 18l){
-								vo.setFrom6to7Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else if(hourId == 19l){
-								vo.setFrom7to8Count(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}else{
-								vo.setFrom8pmto8amCount(count);
-								vo.setOverAllCount(vo.getOverAllCount()+count);
-							}
-						}*/
+					
+				}
+			}
+			
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			int lastHour = cal.get(Calendar.HOUR_OF_DAY);
+			Long lastOneHour = Long.valueOf(lastHour-1);
+			
+			List<Object[]> list1 = tdpCadreUserHourRegInfoDAO.getTabUserLastOneHourData(lastOneHour,tabUserInfoIds);
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long tabUserId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					if(vo != null){
+						vo.setLastHourCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					}
 				}
 			}
 			
-			if(dayWiseMap != null)
-				returnList = new ArrayList<UserPerformanceVO>(dayWiseMap.values());
-			
-		} catch (Exception e) {
-			LOG.error("Exception occurred at getUserPerformanceDetailsByUser() of FieldMonitoringService", e);
-		}
-		return returnList;
-	}
-	
-	public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long stateId,Long districtId,Long constituencyId,Long userId, String fromDateStr,String toDateStr){
-		FieldMonitoringVO returnVO = new FieldMonitoringVO();
-		try{
-			Long cadreRegUserId=cadreRegUserDAO.getCadreRegId(loginUserId);
-			Long usersCount = fieldVendorTabUserDAO.getAssignedUsersCountForRegUser(cadreRegUserId);
-			if(usersCount == null || usersCount.longValue() == 0l){
-				cadreRegUserId = null;
+			List<Object[]> list2 = cadreRegIssueDAO.getcadreRegIssuesCountsNew(null, null, null, startDate, endDate, districtId,stateId);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long tabUserId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					if(vo != null){
+						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						if(statusId.longValue() == 1l)
+							vo.setOpenIssues(count);
+						else if(statusId.longValue() == 2l)
+							vo.setFixedIssues(count);
+						else if(statusId.longValue() == 3l)
+							vo.setClosedIssues(count);
+					}
+				}
 			}
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			Date startDate = null;	
-			Date endDate = null;
-			Date today = new Date();
-			if(fromDateStr != null && toDateStr != null){
-				startDate = sdf.parse(fromDateStr);
-				endDate = sdf.parse(toDateStr);
-			}
-			Date currentDate = dateUtilService.getCurrentDateAndTime();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(today);
-			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
-			Date lastOneHourTime = cal.getTime();
+			if(returnList != null && returnList.size() > 0){
+				  Collections.sort(returnList, tabUserInfoTotalRegisCountAsc);
+			 }
 			
-			Long totalDataCollectorsCount = fieldVendorTabUserDAO.getTotalDataCollectorsCountFrMnrtg(stateId, districtId, constituencyId, cadreRegUserId, userId);
-			Long registeredCount = fieldVendorTabUserDAO.getTotalRegisteredCount(stateId, districtId, constituencyId, cadreRegUserId, userId);
-		    Long todayActMbersCount = fieldVendorTabUserDAO.getTodayActiveMbrsCount(stateId, districtId, constituencyId, cadreRegUserId, userId, today);
-		    Long oneHrActMbersCount = fieldVendorTabUserDAO.getOneHourActiveUsersCount(stateId, districtId, constituencyId, cadreRegUserId, userId, lastOneHourTime, today);
-		    Long passiveCount = 0l;
-		    Long notYetStarted = 0l;
-		    
-		    if(totalDataCollectorsCount == null)
-		    	totalDataCollectorsCount = 0l;
-		    if(registeredCount == null)
-		    	registeredCount = 0l;
-		    if(todayActMbersCount == null)
-		    	todayActMbersCount = 0l;
-		    if(oneHrActMbersCount == null)
-		    	oneHrActMbersCount = 0l;
-		    passiveCount = todayActMbersCount - oneHrActMbersCount;
-		    notYetStarted = registeredCount - todayActMbersCount;
-		   
-		    
-		    returnVO.setTotalDataCollectors(totalDataCollectorsCount);
-		    returnVO.setTodayRegCount(registeredCount);
-		    returnVO.setTodayActiveUsers(todayActMbersCount);
-		    returnVO.setLastOneHrActUsers(oneHrActMbersCount);
-		    returnVO.setPassiveUsers(passiveCount);
-		    returnVO.setNotYetStartedUsers(notYetStarted);
-		    
-		    
-	}catch(Exception e){
-		LOG.error("Exception occurred at getAllDataCollectorsDetails() of FieldMonitoringService", e);
+			returnVO.setSubList(returnList);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getDataCollectorsPerformanceDetails() of FieldMonitoringService", e);
 	}
 	return returnVO;
-	}		
+}
+public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new Comparator<FieldMonitoringVO>() {
+	public int compare(FieldMonitoringVO tabUserInfo2, FieldMonitoringVO tabUserInfo1) {
+	Long count2 = tabUserInfo2.getTotalCount();
+	Long count1 = tabUserInfo1.getTotalCount();
+	//Descending order of completed registrations.
+	 return count1.compareTo(count2);  
+	}
+}; 
 }

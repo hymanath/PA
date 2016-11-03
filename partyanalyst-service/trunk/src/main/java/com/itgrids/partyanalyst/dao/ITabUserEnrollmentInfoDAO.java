@@ -11,4 +11,5 @@ public interface ITabUserEnrollmentInfoDAO extends GenericDao<TabUserEnrollmentI
 	
 	public Long getTotalRecordSubmitedByTabUser(Date surveyTime, Long stateId);
 	public Long getTotalTabUserWorkingInField(Long accessLvlId,List<Long> accessLvlValue,Long stateId,Date today);
+	public List<Object[]> getTabUserFirstLastRecord(List<Long> tabUserInfoIds);
 }

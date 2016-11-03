@@ -24,14 +24,14 @@ public interface ICadreRegIssueDAO extends GenericDao<CadreRegIssue, Long> {
 	public List<Object[]> getLocationWiseStatusWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal);
 	
 	
-	public List<Object[]> getTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId);
-	public List<Object[]> getLastHourCountsNew(Long cadreRegUserId,Date lastOneHourTime,Date today,Long constituencyId,Long userId,Long districtId);
-	public List<Object[]> getcadreRegIssuesCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,Date startDate,Date endDate,Long districtId);
+	public List<Object[]> getTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId,Long stateId);
+	public List<Object[]> getLastHourCountsNew(Long cadreRegUserId,Date lastOneHourTime,Date today,Long constituencyId,Long userId,Long districtId,Long stateId);
+	public List<Object[]> getcadreRegIssuesCountsNew(Long cadreRegUserId,Long constituencyId,Long userId,Date startDate,Date endDate,Long districtId,Long stateId);
 	public Long getTotalDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date fromDate,Date toDate,Long districtId);
 	public Long getActiveDataCollectorsCountsVendorAndLocationNew(Long cadreRegUserId,Long constituencyId,Long userId,Date lastOneHourTime,Date today,Long districtId);
 	public List<Object[]> getIssuesForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long issueStatusId,Long cadreRegUserId,Long stateId);
 	public List<Object[]> getIssuesCountsForATabUserByStatusNew(Long cadreSurveyUserId,Long tabUserInfoId,Date fromDate,Date toDate,Long cadreRegUserId,Long stateId);
 	public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal);
-	public List<Object[]> getTotalTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId);
+	public List<Object[]> getTotalTabUsersDetailsByVendorAndLocationNew(Long cadreRegUserId,Date fromDate,Date toDate,Long constituencyId,Long userId,Long districtId,Long stateId);
 	public Long getCadreRegUsersId(Long cadreRegUserId);
 }
