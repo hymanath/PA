@@ -1953,12 +1953,12 @@ public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long state
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		Date startDate = null;	
 		Date endDate = null;
-		Date today = new Date();
+		Date today = dateUtilService.getCurrentDateAndTime();
 		if(fromDateStr != null && toDateStr != null){
 			startDate = sdf.parse(fromDateStr);
 			endDate = sdf.parse(toDateStr);
 		}
-		Date currentDate = dateUtilService.getCurrentDateAndTime();
+		//Date currentDate = dateUtilService.getCurrentDateAndTime();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(today);
 		cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
@@ -2032,7 +2032,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
 			Date startDate = dateUtilService.getCurrentDateAndTime();
 			Date endDate = dateUtilService.getCurrentDateAndTime();
-			Date today = new Date();
+			Date today = dateUtilService.getCurrentDateAndTime();
 			Long todayTarget = 200l;
 			
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, startDate, endDate, constituencyId, cadreSurveyUserId, districtId,stateId);
