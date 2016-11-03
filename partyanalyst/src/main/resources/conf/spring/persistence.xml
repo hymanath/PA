@@ -1028,7 +1028,8 @@
                       <value>com.itgrids.partyanalyst.model.TabUserLocationDetails</value> 
                       <value>com.itgrids.partyanalyst.model.TabUserEnrollmentInfoSource</value>	  
                       <value>com.itgrids.partyanalyst.model.PaymentTransactionInfo</value>	  
-                                         
+                         <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo</value>	  
+                      <value>com.itgrids.partyanalyst.model.TdpCadreUserRecordsTimeInfo</value>	                 
 				 </list>
 			
 		</property>
