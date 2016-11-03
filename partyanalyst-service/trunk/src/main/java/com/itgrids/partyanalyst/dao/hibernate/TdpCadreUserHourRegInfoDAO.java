@@ -3,6 +3,7 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -11,6 +12,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
  * @author sys
@@ -33,6 +35,66 @@ public List<Object[]> getTabUserLastOneHourData(Long lstHour,List<Long> tabUserI
 	query.setDate("today",new DateUtilService().getCurrentDateAndTime());
 	query.setParameter("lstHour", lstHour);   
 	
+	return query.list();
+}
+
+public List<Object[]> getTdpCadreDataHourWiseForTabUsers(Date date,Integer hour){
+	
+	StringBuilder sbS = new StringBuilder();
+	
+	sbS.append(" select date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime)," +
+			"           model.tdpCadre.insertedUserId,model.tdpCadre.tabUserInfoId,count(model.tdpCadre.tdpCadreId) " +
+			  "  from   TdpCadreEnrollmentYear model " +
+			  "  where  model.tdpCadre.isDeleted = 'N' and model.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+	if(date != null){
+		sbS.append(" and date(model.tdpCadre.surveyTime) =:date ");
+	}
+	if(hour != null){
+		sbS.append(" and hour(model.tdpCadre.surveyTime) < :hour ");
+	}
+	sbS.append(" group by hour(model.tdpCadre.surveyTime),model.tdpCadre.insertedUserId,model.tdpCadre.tabUserInfoId  ");
+	
+	
+	Query query = getSession().createQuery(sbS.toString());
+	query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+	if(date != null){
+		query.setDate("date",date);
+	}
+	if(hour != null){
+		query.setParameter("hour",hour);
+	}
+	return query.list();
+}
+
+public int deleteAllRecords(Date fromDate){
+    
+	 StringBuilder sb = new StringBuilder();
+	 
+	 sb.append(" delete from tdp_cadre_user_hour_reg_info  ");
+	 if(fromDate != null){
+		sb.append(" where survey_date = :fromDate "); 
+	 }
+	   Query query = getSession().createSQLQuery(sb.toString());
+	   if(fromDate != null){
+		  query.setDate("fromDate",fromDate );
+	   }
+	   return query.executeUpdate();
+}
+
+public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
+	
+	StringBuilder sbS = new StringBuilder();
+	
+	sbS.append(" select date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime)," +
+			"           model.tdpCadre.insertedUserId,model.tdpCadre.tabUserInfoId,count(model.tdpCadre.tdpCadreId) " +
+			  "  from   TdpCadreEnrollmentYear model " +
+			  "  where  model.tdpCadre.isDeleted = 'N' and model.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+	
+	sbS.append(" group by date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime),model.tdpCadre.insertedUserId,model.tdpCadre.tabUserInfoId  ");
+	
+	
+	Query query = getSession().createQuery(sbS.toString());
+	query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 	return query.list();
 }
 }

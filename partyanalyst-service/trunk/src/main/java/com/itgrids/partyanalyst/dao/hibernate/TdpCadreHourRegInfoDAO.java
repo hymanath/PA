@@ -1,0 +1,64 @@
+package com.itgrids.partyanalyst.dao.hibernate;
+
+import java.util.Date;
+import java.util.List;
+
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
+import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
+import com.itgrids.partyanalyst.model.TdpCadreHourRegInfo;
+import com.itgrids.partyanalyst.utils.IConstants;
+
+public class TdpCadreHourRegInfoDAO extends GenericDaoHibernate<TdpCadreHourRegInfo,Long> implements ITdpCadreHourRegInfoDAO {
+	
+	public TdpCadreHourRegInfoDAO() {
+		super(TdpCadreHourRegInfo.class);
+	}
+	
+	public List<Object[]> getDateHourWiseTdpCadreCount(Date date , Long stateId){
+		
+		StringBuilder sbS = new StringBuilder();
+		
+		sbS.append(" select date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime),count(model.tdpCadre.tdpCadreId),count(distinct model.tdpCadre.insertedUserId ) " +
+				  "  from   TdpCadreEnrollmentYear model " +
+				  "  where  model.tdpCadre.isDeleted = 'N' and model.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId ");
+		if(date != null){
+			sbS.append(" and date(model.tdpCadre.surveyTime) =:date ");
+		}
+		if(stateId == 1l){
+			sbS.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+		}else if(stateId == 36l){
+			sbS.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
+		}
+		if(date != null){ 
+			sbS.append(" group by date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime)");
+		}else{
+			sbS.append(" group by hour(model.tdpCadre.surveyTime) ");
+		}
+		Query query = getSession().createQuery(sbS.toString());
+		
+		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+		if(date != null){
+			query.setDate("date",date);
+		}
+		return query.list();
+	}
+	
+	public int deleteAllRecords(Date fromDate){
+	    
+		 StringBuilder sb = new StringBuilder();
+		 
+		 sb.append(" delete from tdp_cadre_hour_reg_info  ");
+		 if(fromDate != null){
+			sb.append(" where survey_date = :fromDate "); 
+		 }
+ 	   Query query = getSession().createSQLQuery(sb.toString());
+ 	   if(fromDate != null){
+ 		  query.setDate("fromDate",fromDate );
+ 	   }
+ 	   return query.executeUpdate();
+  }
+	
+	
+}
