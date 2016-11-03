@@ -484,7 +484,7 @@ function setcolorsForStatus(){
 	}
 
 	function getColorCodeByStatus(status){
-	    if(typeof status != "undefined"  && status != null && status!='' && status.lenght > 0  ) {
+	    if(typeof status != "undefined"  && status != null && status!='') {
 	      if(statusColorArr != null && statusColorArr.length > 0){
 	        for(var i in statusColorArr){
 	          if(statusColorArr[i].status.toLowerCase() == status.toLowerCase())
