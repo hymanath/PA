@@ -43,4 +43,13 @@ public class CadreRegUserDAO extends GenericDaoHibernate<CadreRegUser, Long> imp
 		query.setParameter("userId", userId);
 		return (Long) query.uniqueResult();
 	}
+	
+	public Long getCadreRegId(Long loginUserId){
+		Query query = getSession().createQuery("select model.cadreRegUserId" +
+				" from CadreRegUser model" +
+				" where model.user.userId = :loginUserId" +
+				" and model.userType = 'FM'");
+		query.setParameter("loginUserId", loginUserId);
+		return (Long) query.uniqueResult();
+	}
 }
