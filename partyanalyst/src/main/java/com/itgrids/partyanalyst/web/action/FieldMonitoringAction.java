@@ -682,7 +682,6 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
-  
   public String getUserPerformanceDetailsByUser(){
 		try {
 			
@@ -698,4 +697,36 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  public String getDataCollectorsPerformanceDetails(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			Long loginUserId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			Long districtId = jObj.getLong("districtId");
+			Long stateId = jObj.getLong("stateId");
+			
+			fieldMonitoringVO = fieldMonitoringService.getDataCollectorsPerformanceDetails(loginUserId, districtId,stateId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDataCollectorsPerformanceDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+  public String getDistrictByStateId(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			Long stateTypeId = jObj.getLong("stateTypeId");
+			idAndNameVOList =fieldMonitoringService.getDistrictByStateId(stateId,stateTypeId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictByStateId()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
+	
 }

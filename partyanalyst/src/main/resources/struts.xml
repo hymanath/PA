@@ -14480,5 +14480,15 @@
 			<param name="root">userPerformanceList</param>
 		</result>
 	</action>
+	<action name="getDataCollectorsPerformanceDetailsAction" class="fieldMonitoringAction"  method="getDataCollectorsPerformanceDetails">
+			<result type="json" name="success">
+			<param name="root">fieldMonitoringVO</param>
+		</result>
+	</action>
+	<action name="getDistrictByStateIdAction" class="fieldMonitoringAction" method="getDistrictByStateId">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>
