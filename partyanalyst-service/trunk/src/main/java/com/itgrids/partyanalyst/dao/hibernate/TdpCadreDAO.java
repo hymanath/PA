@@ -7659,29 +7659,35 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 				   if(stateId.longValue()==1l){
 						queryStr.append(" and model.tdpCadre.userAddress.district.districtId > 10 and  model.tdpCadre.userAddress.state.stateId = 1 ");
 					}else if(stateId.longValue()==36l){
-						queryStr.append(" and  model.tdpCadre.userAddress.district.districtId < 11 ");
+						queryStr.append(" and  model.tdpCadre.userAddress.district.districtId < 11 ");  
 					}
-			 } 
+			 }   
 	   }
 	   if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and date(model.tdpCadre.surveyTime) between :fromDate and :toDate ");	 
 		 }
-	   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-	         queryStr.append(" and model.tdpCadre.userAddress.state.stateId in (:userAccessLevelValues) ");  
-	   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-	             queryStr.append(" and model.tdpCadre.userAddress.district.districtId in (:userAccessLevelValues) ");  
-	   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-	          queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
-	   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-	          queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
+	   if(!(stateId.longValue()==36l)){
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		         queryStr.append(" and model.tdpCadre.userAddress.state.stateId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		             queryStr.append(" and model.tdpCadre.userAddress.district.districtId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		          queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+		          queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in (:userAccessLevelValues) ");  
+		   }
 	   }
+	   
 	
        queryStr.append(" group by model.tdpCadre.dataSourceType ");  
        
-	   Query query = getSession().createQuery(queryStr.toString()); 
-	   if(userAccessLevelId != null){
-    	   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-       }
+	   Query query = getSession().createQuery(queryStr.toString());
+	   if(!(stateId.longValue()==36l)){
+		   if(userAccessLevelId != null){
+	    	   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	       }  
+	   }
+	   
 	   if(fromDate!= null && toDate!=null){
 		   query.setDate("fromDate", fromDate);
 		   query.setDate("toDate", toDate);
