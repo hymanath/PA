@@ -3,15 +3,22 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="tab_user_enrollment_info")
@@ -32,7 +39,7 @@ public class TabUserEnrollmentInfo implements Serializable {
 	private Long   totalRecords;
 	private Date   startTime;
 	private Date   endTime;
-	
+	private Constituency constituency;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -148,5 +155,16 @@ public class TabUserEnrollmentInfo implements Serializable {
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
 	
 }
