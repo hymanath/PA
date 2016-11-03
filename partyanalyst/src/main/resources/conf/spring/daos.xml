@@ -3355,4 +3355,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreUserHourRegInfoTemp1DAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreUserHourRegInfoTemp1DAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		
