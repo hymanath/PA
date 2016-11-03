@@ -1603,32 +1603,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					LOG.error("Exception occured in saveCadreImage() Method - ",e);
 				}
 			}
-	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable(){
-			   
-		final ResultStatus rs = new ResultStatus();
-		final DateUtilService dateUtilService = new DateUtilService();
-				
-		try {
-					
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-					
-					int deletedRecords = tdpCadreLocationInfoTempDAO.deleteAllRecords();
-				    int count = tdpCadreLocationInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
-				    
-				    Date currentTime = dateUtilService.getCurrentDateAndTime();
-					rs.setResultCode(1);
-					rs.setMessage("success");
-				}
-			});
-					
-		} catch (Exception e) {
-			LOG.error("Exception raised at CadreRegistrationServiceNew", e);
-			rs.setResultCode(0);
-			rs.setMessage("failure");
-		}
-		return rs;  
-	}
+	
 	public ResultStatus pushTabUserInfoIntoIntermediateTable(){
 		ResultStatus rs = new ResultStatus();
 		try {
