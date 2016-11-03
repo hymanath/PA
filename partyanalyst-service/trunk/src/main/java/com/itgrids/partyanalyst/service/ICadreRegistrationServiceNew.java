@@ -9,4 +9,6 @@ public interface ICadreRegistrationServiceNew {
 	public ResultStatus pushTotalTodayTdpCadreDataToIntermediateByLowLevel();
 	public ResultStatus pushTdpCadreDataToIntermediateDateWise();
 	public void saveCadreImage(ImageCadreVO inputVO);
+	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByToday();
+	public ResultStatus pushHourWiseTdpCadreDetailsByToday();
 }
