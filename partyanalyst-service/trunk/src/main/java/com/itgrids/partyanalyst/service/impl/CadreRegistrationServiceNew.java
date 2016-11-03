@@ -1830,8 +1830,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     		 
 		}catch(Exception e){
 			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByToday() Method - ",e);
-			 rs.setResultCode(0);
-	         rs.setMessage("failure");
 		}
     	 return rs;
      }
