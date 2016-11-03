@@ -484,13 +484,17 @@ function setcolorsForStatus(){
 	}
 
 	function getColorCodeByStatus(status){
-		if(statusColorArr != null && statusColorArr.length > 0){
-			for(var i in statusColorArr){
-				if(statusColorArr[i].status.toLowerCase() == status.toLowerCase())
-					return statusColorArr[i].color;
-			}
-		}
-	}
+	    if(typeof status != "undefined"  && status != null && status!='' && status.lenght > 0  ) {
+	      if(statusColorArr != null && statusColorArr.length > 0){
+	        for(var i in statusColorArr){
+	          if(statusColorArr[i].status.toLowerCase() == status.toLowerCase())
+	            return statusColorArr[i].color;
+	        }
+	      }
+	    }
+	    else
+	      return '#000';
+  }
 
 //color codes starts end
 
