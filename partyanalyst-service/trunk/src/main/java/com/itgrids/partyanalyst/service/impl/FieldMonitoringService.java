@@ -1967,7 +1967,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			Date startDate = dateUtilService.getCurrentDateAndTime();
 			Date endDate = dateUtilService.getCurrentDateAndTime();
 			Date today = new Date();
-			Long todayTarget = 1000l;
+			Long todayTarget = 200l;
 			
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(null, startDate, endDate, null, null, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
@@ -2057,8 +2057,9 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			if(returnList != null && returnList.size() > 0){
 				  Collections.sort(returnList, tabUserInfoTotalRegisCountAsc);
 			 }
-			
+			if(returnList != null && returnList.size() > 0){
 			returnVO.setSubList(returnList);
+			}
 		
 	} catch (Exception e) {
 		LOG.error("Exception occurred at getDataCollectorsPerformanceDetails() of FieldMonitoringService", e);
