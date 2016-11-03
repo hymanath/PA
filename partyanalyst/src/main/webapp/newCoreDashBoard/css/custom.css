@@ -2012,11 +2012,5 @@ border-right: 2px solid #d3d3d3;
 	font-size:14px !important;
 }
 .text_bold{
-font-weight:bold;
+	font-weight:bold;
 }
-.cadreSettings.pull-right.refreshCadreCls{
-margin-top: -10px;  
-}
-.headingColor{
-margin-left: 15px;  
-}  
