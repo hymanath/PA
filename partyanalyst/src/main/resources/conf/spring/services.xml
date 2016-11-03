@@ -1622,6 +1622,25 @@
 	  	<property name="targetMethod" value="pushTdpCadreDataToIntermediateDateWise" />
     </bean>
     
+    
+     <bean name="tdpCadreDataHourWiseForTabUsersByToday" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="triggerUserWiseHourWiseCadreData" />
+    	<property name="cronExpression" value="0 0/15 * * * ?" />
+	</bean>
+    <bean name="triggerUserWiseHourWiseCadreData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseForTabUsersByToday" />
+    </bean>
+    
+    <bean name="tdpCadreDataHourWiseByToday" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="triggerHourWiseCadreData" />
+    	<property name="cronExpression" value="0 0/15 * * * ?" />
+	</bean>
+    <bean name="triggerHourWiseCadreData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseByToday" />
+    </bean>
+    
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1659,7 +1678,9 @@
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
 		    <ref bean="tdpCadreDetailsUpdationForDateWise" />   
-			
+		    
+		    <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
+		    <ref bean="tdpCadreDataHourWiseByToday"/> 
         </list>
     	</property>
 	</bean>
@@ -3642,6 +3663,8 @@
 	   <property name="tdpCadreDateWiseInfoTempDAO" ref="tdpCadreDateWiseInfoTempDAO" />
 	   <property name="imageAndStringConverter" ref="imageAndStringConverter" />
 	   <property name="voterDAO" ref="voterDAO" />
+	   <property name="tdpCadreHourRegInfoDAO" ref="tdpCadreHourRegInfoDAO" />
+	   <property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
