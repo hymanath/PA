@@ -18,4 +18,9 @@ public interface IFieldVendorTabUserDAO extends GenericDao<FieldVendorTabUser, L
 	public Long getOverAllTotalDataCollectorsCount(Long stateId);
 	public List<Object[]> getVendorNameByCadreSurveyUserId(List<Long> cadreSurveyUserIds);
 	public Long getPassiveDataCollectorsCount(Date today,Long stateId);
+	public Long getTotalDataCollectorsCountFrMnrtg(Long stateId,Long districtId,Long constituencyId,Long cadreRegUserId,Long userId);
+	public Long getTotalRegisteredCount(Long stateId,Long districtId,Long constituencyId,Long cadreRegUserId,Long userId);
+	public Long getTodayActiveMbrsCount(Long stateId,Long districtId,Long constituencyId,Long cadreRegUserId,Long userId,Date today);
+	public Long getOneHourActiveUsersCount(Long stateId,Long districtId,Long constituencyId,Long cadreRegUserId,Long userId,Date lastHourTime,Date today);
+	public Long getAssignedUsersCountForRegUser(Long cadreRegUserId);
 }
