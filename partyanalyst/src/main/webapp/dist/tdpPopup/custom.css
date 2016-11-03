@@ -1,6 +1,6 @@
 .modalFooterBody:after
 {
-	background-image:url("https://www.mytdp.com/dist/tdpPopup/footer.png");
+	background-image:url("footer.png");
 	content:' ';
 	display:block;
 	background-repeat:repeat;
@@ -44,7 +44,7 @@
 }
 .cardBlock
 {
-	background-image:url("https://www.mytdp.com/dist/tdpPopup/Card.png");
+	background-image:url("Card.png");
 	content:' ';
 	display:block;
 	background-repeat:no-repeat;
