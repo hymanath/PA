@@ -631,5 +631,40 @@ public Long getTotalConstituencyForCdrRegStarted(Long stateId){
 	SQLQuery query = getSession().createSQLQuery(queryStr.toString()).addScalar("count", Hibernate.LONG);    
 	return (Long)query.uniqueResult();
 }
-
+public List<Long> getTodayTotalStartedRegistrationConstituencyStateWise(Long stateId){
+      StringBuilder queryStr = new StringBuilder();
+      
+     queryStr.append(" select distinct model.locationValue from TdpCadreLocationInfo model,Constituency model1 where model1.constituencyId=model.locationValue " +
+     	 	         " and model1.deformDate is null and model1.electionScope.electionScopeId=2 and model.locationScopeId=4  and model.type='Today' " +
+     	 	         " and model.cadre2016 is not null and model.cadre2016 > 0");
+     if(stateId != null && stateId.longValue() == 1l){
+    	 queryStr.append(" and model1.district.districtId > 10 and model1.state.stateId=1");
+     }else if(stateId != null && stateId.longValue() == 36l){
+    	 queryStr.append(" and model1.district.districtId < 11 "); 
+     }
+     Query query = getSession().createQuery(queryStr.toString());
+      return query.list();
+}
+public List<Object[]> getTodayTotalStartedRegistrationConstituencyDetailsStateWise(Long stateId){
+    StringBuilder queryStr = new StringBuilder();
+    
+   queryStr.append(" select distinct " +
+   		         " model1.district.districtId," +
+   		         " model1.district.districtName," +
+   		         " model1.constituencyId," +
+   		         " model1.name," +
+   		         " model.cadre2016 " +
+   		         " from TdpCadreLocationInfo model,Constituency model1 " +
+   		         " where " +
+   		         " model1.constituencyId=model.locationValue " +
+   	 	         " and model1.deformDate is null and model1.electionScope.electionScopeId=2 and model.locationScopeId=4  and model.type='Today' " +
+   	 	         " and model.cadre2016 is not null and model.cadre2016 > 0 ");
+   if(stateId != null && stateId.longValue() == 1){
+  	 queryStr.append(" and model1.district.districtId > 10 and model1.state.stateId=1");
+   }else if(stateId != null && stateId.longValue() == 36){
+  	 queryStr.append(" and model1.district.districtId < 11 "); 
+   }
+   Query query = getSession().createQuery(queryStr.toString());
+    return query.list();
+}
 }

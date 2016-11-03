@@ -33,5 +33,7 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public List<Object[]> getTotalCadreCountLocationWise2014(Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue);
 	public Long getTotalConstituencyForCdrRegStarted(Long stateId);
+	public List<Long> getTodayTotalStartedRegistrationConstituencyStateWise(Long stateId);
+	public List<Object[]> getTodayTotalStartedRegistrationConstituencyDetailsStateWise(Long stateId);
 	 
 }

@@ -1980,6 +1980,25 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		return query.list();
 		
 	}
+  public List<Object[]> getDistAndConDtslByConstituenciesIds(List<Long> constitueciesIds){
+	
+	StringBuilder str = new StringBuilder();
+	
+	str.append(" SELECT distinct  model.district.districtId,model.district.districtName,model.constituencyId,model.name FROM Constituency model " +
+			  " WHERE " +
+			  " model.deformDate is null and model.electionScope.electionScopeId = :electionScopeId  " );
+	
+	 if(constitueciesIds != null && constitueciesIds.size() > 0){
+		  str.append(" and model.constituencyId in (:constitueciesIds )");
+	 }
+	 Query query = getSession().createQuery(str.toString());
+	query.setParameter("electionScopeId", 2l);
+	if(constitueciesIds != null && constitueciesIds.size() > 0){
+		query.setParameterList("constitueciesIds", constitueciesIds);
+	}
+	return query.list();
+	
+}
 }
 
 

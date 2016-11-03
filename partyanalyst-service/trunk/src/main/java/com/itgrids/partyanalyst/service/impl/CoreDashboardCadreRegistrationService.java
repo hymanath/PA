@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +22,8 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -50,7 +51,6 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
@@ -99,6 +99,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITdpCadreLocationInfoCountDAO tdpCadreLocationInfoCountDAO;
     private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
     private ITabUserEnrollmentInfoSourceDAO tabUserEnrollmentInfoSourceDAO;
+    private IDistrictConstituenciesDAO districtConstituenciesDAO;
+    private IConstituencyDAO constituencyDAO;
     
     
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
@@ -241,6 +243,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setTabUserEnrollmentInfoSourceDAO(
 			ITabUserEnrollmentInfoSourceDAO tabUserEnrollmentInfoSourceDAO) {
 		this.tabUserEnrollmentInfoSourceDAO = tabUserEnrollmentInfoSourceDAO;
+	}
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -2037,7 +2046,22 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//total submitted data
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
-			
+			 
+			  List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(1l);
+			  if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
+				  cadreRegistratedCountVO.setTodayStartedConsttuncyCnt(Long.valueOf(todayStaredConstituencyCntList.size()));
+			  }
+			  List<Object[]> allStateConstituencies = constituencyDAO.getStateWiseAssemblyConstituency(stateId);
+			  List<Long> apCnsttuncesIds = new ArrayList<Long>();
+			   if(allStateConstituencies != null && allStateConstituencies.size() > 0 ){
+				   for(Object [] param:allStateConstituencies){
+					   apCnsttuncesIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));  
+				   }
+			   }
+			   apCnsttuncesIds.removeAll(todayStaredConstituencyCntList);
+			   cadreRegistratedCountVO.setTodayNotStartedConsttuncyCnt(Long.valueOf(apCnsttuncesIds.size()));
+			   cadreRegistratedCountVO.setLocationIdsList(apCnsttuncesIds);
+			   
 			return cadreRegistratedCountVO;           
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2218,6 +2242,22 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
 			
+			
+			  List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(36l);
+			  if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
+				  cadreRegistratedCountVO.setTodayStartedConsttuncyCnt(Long.valueOf(todayStaredConstituencyCntList.size()));;
+			  }
+			  List<Object[]> allStateConstituencies = constituencyDAO.getStateWiseAssemblyConstituency(stateId);
+			  List<Long> tsCnsttuncesIds = new ArrayList<Long>();
+			   if(allStateConstituencies != null && allStateConstituencies.size() > 0 ){
+				   for(Object [] param:allStateConstituencies){
+					   tsCnsttuncesIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));  
+				   }
+			   }
+			   tsCnsttuncesIds.removeAll(todayStaredConstituencyCntList);
+			   cadreRegistratedCountVO.setTodayNotStartedConsttuncyCnt(Long.valueOf(tsCnsttuncesIds.size()));
+			   cadreRegistratedCountVO.setLocationIdsList(tsCnsttuncesIds);
+			   
 			return cadreRegistratedCountVO;          
 		}catch(Exception e){
 			e.printStackTrace();
@@ -3063,4 +3103,58 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	 }
 	 return resultList;
  }
+ public List<CadreReportVO> getLocationWiseCadreInfoTodayDetails(Long stateId,List<Long> locationIdsList){
+	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
+	 Map<Long,CadreReportVO> cnsttncsDstrctMap = new HashMap<Long, CadreReportVO>();
+	 try{
+		 
+		 List<Object[]> rtrnDistObjList = districtConstituenciesDAO.getConstituenciesOfDistrictStateWise(stateId);
+		 setDistrictToMap(rtrnDistObjList,cnsttncsDstrctMap);
+		 List<Object[]> rtrnObjList = null;
+		 if(locationIdsList != null && locationIdsList.size() > 0){
+			    rtrnObjList = constituencyDAO.getDistAndConDtslByConstituenciesIds(locationIdsList);
+			 	setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"False");
+		 }else{
+			    rtrnObjList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyDetailsStateWise(stateId); 
+			    setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"True");
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in getLocationWiseCadreInfo() in CoreDashboardCadreRegistrationService service", e); 
+	 }
+	 return resultList;
+ }
+ public void setLocationDtlsToList(List<Object[]> objList, List<CadreReportVO> resultList, Map<Long,CadreReportVO> cnsttncsDstrctMap,String isStartedCon){
+	 try{
+		  if(objList != null && !objList.isEmpty()){
+			  for(Object[] param:objList){
+				  CadreReportVO locationVO = new CadreReportVO();
+				  locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				  locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  if(cnsttncsDstrctMap.get(locationVO.getLocationId()) != null ){
+				   locationVO.setId(cnsttncsDstrctMap.get(locationVO.getLocationId()).getId());
+				   locationVO.setName(cnsttncsDstrctMap.get(locationVO.getLocationId()).getName());
+				  }
+				  locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				  if(isStartedCon.equalsIgnoreCase("True")){
+					  locationVO.setTotal2016CadreCnt(commonMethodsUtilService.getLongValueForObject(param[4]));	  
+				  }
+				  resultList.add(locationVO);
+			  }
+		  } 
+	 }catch(Exception e){
+		 LOG.error("Exception raised in setLocationDtlsToList() in CoreDashboardCadreRegistrationService service", e); 
+	 }
+ }
+ public void setDistrictToMap(List<Object[]> objList,Map<Long,CadreReportVO> cnsttncsDstrctMap){
+	 if(objList != null && objList.size() > 0){
+		 for(Object[] param:objList){
+			 CadreReportVO cnsttuncyDistVO = new CadreReportVO(); 
+			 cnsttuncyDistVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+			 cnsttuncyDistVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+			 cnsttncsDstrctMap.put(commonMethodsUtilService.getLongValueForObject(param[2]),cnsttuncyDistVO);
+		 }
+	 }
+ }
+
 }
