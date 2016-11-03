@@ -1949,7 +1949,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date today = new Date();
+			Date today = dateUtilService.getCurrentDateAndTime();
 			Date frmDt = null;
 			Date toDt = null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
@@ -2154,7 +2154,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date today = new Date();
+			Date today = dateUtilService.getCurrentDateAndTime();
 			Date frmDt = null;
 			Date toDt = null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
