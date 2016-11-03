@@ -107,4 +107,12 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 		return query.executeUpdate();
 	}
 	
+	public int insertCadreDataByUserWiseHourWiseOverall(){
+		
+		Query query = getSession().createSQLQuery("" +
+		"  INSERT INTO tdp_cadre_user_hour_reg_info( cadre_survey_user_id,tab_user_info_id,survey_date,hour,reg_count,inserted_time ) " +
+	    "         SELECT TEMP.cadre_survey_user_id,TEMP.tab_user_info_id,TEMP.survey_date,TEMP.hour,TEMP.reg_count,TEMP.inserted_time" +
+	    "         FROM   tdp_cadre_user_hour_reg_info_temp1 TEMP " );
+		return query.executeUpdate();
+	}
 }
