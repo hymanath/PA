@@ -29,6 +29,9 @@
 	
 		
 <style type="text/css">
+textarea {
+    resize: none !important;
+}
  #example {
             height: 400px;
             width: 300px;
@@ -756,7 +759,7 @@
                         </div>
 						 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
                         	<label>Pincode</label>
-                            <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode"/>
+                            <input type="text" class="form-control "  name="cadreRegistrationVO.prsntAddrsPincode" maxlength="6"/>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<h5 class="text-capital"><b> Membership Card Delivery Address  </b>:</h5>
@@ -765,119 +768,119 @@
 							<input id="prmaryAddrsId" class="checkbox-custom" name="checkbox-1" type="checkbox" checked="true">
 							<label for="prmaryAddrsId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > Same as primary Addres.&nbsp;&nbsp;</label>
 							<input id="deliveryCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
-							<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. </label>
+							<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. &nbsp;&nbsp;</label>
+							
+							<input id="deliveryPOCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
+							<label for="deliveryPOCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Party Office . &nbsp;&nbsp;</label>
+							
+							<input id="deliveryAbrodCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
+							<label for="deliveryAbrodCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Outside India. &nbsp;&nbsp;</label>
+							
+							<input type="hidden" value="CR" id="deliveryStatsId" name="cadreRegistrationVO.deliveryLocation"/>
                         </div>
 						
 						<div style="display:none" id="deliveryAddrId">  
 							<div >  
-								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>H.No./ Plot No. <span style="color:red;">*</span>&nbsp;<span id="stateErrDhId"></span> </label>
-									<input type="text" id="dhnoId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrDaId"></span></label>
-									<input type="text"  id="dAptId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
-								</div>
-							   
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Area Name/Street/Road <span style="color:red;">*</span>&nbsp;<span id="stateErrDa1Id"></span></label>
-									<input type="text"  id="dareaId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Street Name/Road No <span style="color:red;">*</span>&nbsp;<span id="stateErrDsId"></span></label>
-									<input type="text"  id="dStreetId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsStreet"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrDlId"></span></label>
-									<input type="text"  id="dLandmarkId" class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrDh1Id"></span></label>
-									<input type="text"  id="dhamletId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHamlet"/>
-								</div>
+								<div class="row m_top30 " >
+									<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label> State <span style="color:red;">*</span>&nbsp;<span id="wrkSateErrId"></span></label>
+											<select class="select  delvryAdrCls"  id="workStateList" name="cadreRegistrationVO.workAddrsStateId" onchange="getDistrictsForStates(this.value,3);">
+											<option value="0">Select State</option>
+											<option value="1">AndhraPradesh</option>
+											<option value="36">Telangana</option>
+											<option value="9999">Other State</option>
+											</select>
+									</div>
 								
-							
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label> State <span style="color:red;">*</span>&nbsp;<span id="wrkSateErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workStateList" name="cadreRegistrationVO.workAddrsStateId" onchange="getDistrictsForStates(this.value,3);">
-									<option value="0">Select State</option>
-									<option value="1">AndhraPradesh</option>
-									<option value="36">Telangana</option>
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>District<span style="color:red;">*</span>&nbsp;<span id="wrkDistErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workDistrictList" name="cadreRegistrationVO.workAddrsDistId" onchange="getConstituenciesForDistricts(this.value,3);">
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Constituency<span style="color:red;">*</span>&nbsp;<span id="wrkConstitErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workConstuencyList" name="cadreRegistrationVO.workAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,3);">
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Mandal/Town/Division<span style="color:red;">*</span>&nbsp;<span id="wrkMadalErrId"></span></label>
-									<select class="select  delvryAdrCls"   id="workMandalList" name="cadreRegistrationVO.workAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,3);">
-									</select>
-								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wrkVillageErrId"></span></label>
-									<select class="select  delvryAdrCls"  id="workVillageList" name="cadreRegistrationVO.workAddrsVillId" >
-									</select>
-								</div>
-								 <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-									<label>Pincode</label>
-									<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsPincode"/>
+									<div class="apTsStateCls" >
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>District<span style="color:red;">*</span>&nbsp;<span id="wrkDistErrId"></span></label>
+											<select class="select  delvryAdrCls"  id="workDistrictList" name="cadreRegistrationVO.workAddrsDistId" onchange="getConstituenciesForDistricts(this.value,3);">
+											</select>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Constituency<span style="color:red;">*</span>&nbsp;<span id="wrkConstitErrId"></span></label>
+											<select class="select  delvryAdrCls"  id="workConstuencyList" name="cadreRegistrationVO.workAddrsConstId" onchange="getMandalCorporationsByConstituency(this.value,3);">
+											</select>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Mandal/Town/Division<span style="color:red;">*</span>&nbsp;<span id="wrkMadalErrId"></span></label>
+											<select class="select  delvryAdrCls"   id="workMandalList" name="cadreRegistrationVO.workAddrsMandalId" onchange="getPanchayatWardByMandal(this.value,3);">
+											</select>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wrkVillageErrId"></span></label>
+											<select class="select  delvryAdrCls"  id="workVillageList" name="cadreRegistrationVO.workAddrsVillId" >
+											</select>
+										</div>
+										
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>H.No./ Plot No. <span style="color:red;">*</span>&nbsp;<span id="stateErrDhId"></span> </label>
+											<input type="text" id="dhnoId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrDaId"></span></label>
+											<input type="text"  id="dAptId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
+										</div>
+									   
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Area Name/Street/Road <span style="color:red;">*</span>&nbsp;<span id="stateErrDa1Id"></span></label>
+											<input type="text"  id="dareaId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Street Name/Road No <span style="color:red;">*</span>&nbsp;<span id="stateErrDsId"></span></label>
+											<input type="text"  id="dStreetId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsStreet"/>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrDlId"></span></label>
+											<input type="text"  id="dLandmarkId" class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrDh1Id"></span></label>
+											<input type="text"  id="dhamletId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHamlet"/>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+											<label>Pincode</label>
+											<input type="text" class="form-control delvryAddrCls"  name="cadreRegistrationVO.workAddrsPincode"  maxlength="6"/>
+										</div>
+									</div>
 								</div>
 							</div>
                     </div>
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="margin-left: 15px;">
+						<div class="col-md-6 col-xs-12 col-sm-4  shipAddressCls hide" style="margin-bottom:15px;">	
+							<span style="color:red;">*</span>&nbsp;<span id="wrkShippingErrId"></span>
+							<textarea class="form-control " placeholder="Please enter your address." id="shipAddress" name="cadreRegistrationVO.shipAddress" style="height: 100px;width: 500px;" maxlength="500"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="margin-left: 15px;">.
+						<ul>
+							<li><label for="bycourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" >30/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp; (outside india)&nbsp;&nbsp;</label></li>
+							<li><label for="byindianCourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > 10/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp; (in india)&nbsp;&nbsp;</label></li>							
+							<li><label for="byPartyOfcId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> No Delivery Charges will Apply, if collected at Party Office</label></li>
+						</ul>
 							<!-- <input id="bycourierId" class="checkbox-custom deliveriAddrCls" value="CR" type="checkbox" checked="true"  name="cadreRegistrationVO.deliveryLocation">
 							<label for="bycourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" >30/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp;</label>
 							<br/>
 							<input id="byPartyOfcId" class="checkbox-custom  deliveriAddrCls"  value="PO" type="checkbox"  name="cadreRegistrationVO.deliveryLocation">
 							<label for="byPartyOfcId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase">No Delivery Charges will Apply, if collected at Party Office</label>
 							-->
-							
-							<input id="bycourierId" class="checkbox-custom" name="checkbox-3" type="checkbox" checked="true">
-							<label for="bycourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > 30/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp;</label>
+							<!--
+							<input id="byindianCourierId" class="checkbox-custom" name="checkbox-3" type="checkbox" checked="true">
+							<label for="byindianCourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase" > 10/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp; (in india)&nbsp;&nbsp;</label>
+							</br></br>
+							<input id="bycourierId" class="checkbox-custom" name="checkbox-4" type="checkbox">
+							<label for="bycourierId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> 30/-  Rs. Delivery Charges  will Apply, if delivery by courier &nbsp;&nbsp; (outside India ) &nbsp;&nbsp;</label>
 							</br></br>
 							<input id="byPartyOfcId" class="checkbox-custom" name="checkbox-4" type="checkbox">
 							<label for="byPartyOfcId" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> No Delivery Charges will Apply, if collected at Party Office</label>
-							
-							<input type="hidden" value="CR" id="deliveryStatsId" name="cadreRegistrationVO.deliveryLocation"/>
+							<input type="hidden" value="OT" id="deliveryStatsId" name="cadreRegistrationVO.deliveryLocation"/>
+							-->
 						</div>
 					 </div>
-					 
+					
                     <div class="row">
-						<!--<div id="addNewNominatedId" style="display:none;">
-							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-								<label>Nominee Name</label>
-								<input type="text" class="form-control" id="nomineeNameId" name="cadreRegistrationVO.nomineeName"/>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-								<label>Gender</label>
-							<!--<input type="text" class="form-control" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender"/>-->
-								<!--<select class="select" id="nomineeGenderId" name="cadreRegistrationVO.nomineeGender">
-									<option value="0">Select Gender</option>
-									<option value="M">Male</option>
-									<option value="F">Female</option>
-									<option value="O">Others</option>
-								</select>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-								<label>Age</label>
-								<input type="text" class="form-control" id="nomineeAgeId" name="cadreRegistrationVO.nomineeAge"/>
-							</div>
-							<div class="col-md-4 col-xs-12 col-sm-6 m_top20">
-								<label>Relative Relationship</label>
-								<select class="select" id="relativeId" name="cadreRegistrationVO.nomineeRelationId">
-									<!--<option></option>-->
-								<!--</select>
-							</div>
-						</div>
-						   </div>-->
                         <div class="col-md-2 col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-7 col-md-offset-7 m_top30">
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" id="saveBtnId" onclick="savingCadreDetails();">submit</button>
                         </div>
@@ -1807,8 +1810,16 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 
 $(document).on("click","#prmaryAddrsId",function(){
 	
+	$('.shipAddressCls').addClass('hide');
+	$("#wrkShippingErrId").html("");
+	$("#deliveryStatsId").val("CR");
+	$("#shipAddress").val("");
+	$("#workStateList").val(0);
+	$("#workStateList").trigger("chosen:updated");
+	$('#deliveryPOCheckBox').attr('checked', false);
 	if($(this).is(":checked")){
 		$('#deliveryCheckBox').attr('checked', false);
+		$('#deliveryAbrodCheckBox').attr('checked', false);
 		$('#deliveryAddrId').hide();
 		$('.delvryAdrCls').val(0);
 		$('.delvryAddrCls').val('');
@@ -1819,7 +1830,15 @@ $(document).on("click","#prmaryAddrsId",function(){
 });
 
 $(document).on("click","#deliveryCheckBox",function(){
+	$("#deliveryStatsId").val("CR");
+	$("#workStateList").val(0);
+	$("#workStateList").trigger("chosen:updated");
 	$('#prmaryAddrsId').attr('checked', false);
+	$('#deliveryAbrodCheckBox').attr('checked', false);
+	$('#deliveryPOCheckBox').attr('checked', false);
+	$('.shipAddressCls').addClass('hide');
+	$("#wrkShippingErrId").html("");
+	$("#shipAddress").val("");
 	if($(this).is(":checked")){
 		$('#deliveryAddrId').show();
 	}
@@ -1828,12 +1847,47 @@ $(document).on("click","#deliveryCheckBox",function(){
 		$('.delvryAdrCls').val(0);
 		$('.delvryAddrCls').val('');
 		 $(".delvryAdrCls").trigger("chosen:updated");
-		$(this).attr('checked', false);
-		$('#prmaryAddrsId').trigger('click');
+		$(this).trigger('click');
+		//$('#prmaryAddrsId').trigger('click');
 	}	
 });
 
+$(document).on("click","#deliveryAbrodCheckBox",function(){
+	$("#deliveryStatsId").val("ACR");
+	$("#workStateList").val(0);
+	$("#workStateList").trigger("chosen:updated");
+	$('#prmaryAddrsId').attr('checked', false);
+	$('#deliveryCheckBox').attr('checked', false);
+	$('#deliveryPOCheckBox').attr('checked', false);
+	$("#wrkShippingErrId").html("");
+	$("#shipAddress").val("");
+	if($(this).is(":checked")){
+		$('.shipAddressCls').removeClass('hide');		
+		$('#deliveryAddrId').hide();
+	}else{
+			$(this).trigger('click');
+	}	
+});
 
+$(document).on("click","#deliveryPOCheckBox",function(){
+	$("#deliveryStatsId").val("PO");
+	$("#workStateList").val(0);
+	$("#workStateList").trigger("chosen:updated");
+	$('#prmaryAddrsId').attr('checked', false);
+	$('#deliveryCheckBox').attr('checked', false);
+	$('#deliveryAbrodCheckBox').attr('checked', false);
+	$("#wrkShippingErrId").html("");
+	$("#shipAddress").val("");
+	
+	if($(this).is(":checked")){
+		$('.shipAddressCls').addClass('hide');		
+		$('#deliveryAddrId').hide();
+	}else{
+		$(this).trigger('click');
+	}	
+});
+
+/*
 $(document).on("click","#prmaryAddrsId",function(){
 	
 	if($(this).is(":checked")){
@@ -1846,17 +1900,31 @@ $(document).on("click","#prmaryAddrsId",function(){
 		$(this).trigger('click');
 	}
 });
-
-$(document).on("click","#bycourierId",function(){
+*/
+$(document).on("click","#byindianCourierId",function(){
 	$('#deliveryStatsId').val('CR');
 	$('#byPartyOfcId').attr('checked', false);
+	$('#bycourierId').attr('checked', false);
+	$('.shipAddressCls').addClass('hide');
+	$('#shipAddress').val('');
+	$(this).attr('checked', true);	
+});
+
+$(document).on("click","#bycourierId",function(){
+	$('.shipAddressCls').removeClass('hide');
+	$('#shipAddress').val('');
+	$('#deliveryStatsId').val('OR');
+	$('#byPartyOfcId').attr('checked', false);
+	$('#byindianCourierId').attr('checked', false);
 	$(this).attr('checked', true);	
 });
 
 $(document).on("click","#byPartyOfcId",function(){
-	
+	$('.shipAddressCls').addClass('hide');
+	$('#shipAddress').val('');
 	$('#deliveryStatsId').val('PO');
 	$('#bycourierId').attr('checked', false);
+	$('#byindianCourierId').attr('checked', false);
 	$(this).attr('checked', true);	
 });
 
