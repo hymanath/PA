@@ -1091,7 +1091,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		List<String> entitlements = null;
 		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 			entitlements = regVO.getEntitlements();
-			if(!(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD".trim()))){
+			if(!(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD".trim())) || entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD_ADMIN_ENTITLEMENT".trim())){
 				noaccess = true ;
 			}
 		
