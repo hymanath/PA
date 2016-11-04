@@ -810,7 +810,7 @@
 									</li>
 									</c:if>
 									
-							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD')}">
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD') || fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD_ADMIN_ENTITLEMENT')}">
 								<li>
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
 								</li>
