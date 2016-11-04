@@ -17,12 +17,12 @@
 #issueStatusTableId_filter{
 	float:right !important;
 }
-#detailsTable_filter{
+/* #detailsTable_filter{
 	display:none !important;
 }
 #detailsTable_length{
 	display:none !important;
-}
+} */
 .activeUlCls li {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ddd;
@@ -292,6 +292,7 @@ $(document).on("click",".ranges li",function(){
 		getIssueStatusWiseCounts(stateId);
 		getIssueTypeWiseCounts(stateId);
 		getCadreRegIssueType();
+		getDistricts();
 		$("#dtatusDivId").hide();
 	});
 	
@@ -307,7 +308,8 @@ function stateWisePopulateData(state)
 {
 	getOverAllDataCollectorsCounts(state);
 	getIssueStatusWiseCounts(state);
-	getIssueTypeWiseCounts(state); 
+	getIssueTypeWiseCounts(state);
+	getDistricts();	
     $("#dtatusDivId").hide();	
 	$("#dataCollectorsDivId").html('');
 	$("#statusWiseDetailsDivId").html('');

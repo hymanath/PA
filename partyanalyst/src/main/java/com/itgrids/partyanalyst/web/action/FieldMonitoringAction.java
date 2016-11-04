@@ -739,8 +739,10 @@ public String getConstituencyByVendor(){
 			Long stateId = jObj.getLong("stateId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
 			
-			fieldMonitoringVO = fieldMonitoringService.getDataCollectorsPerformanceDetails(loginUserId, districtId,stateId,constituencyId,cadreSurveyUserId);
+			fieldMonitoringVO = fieldMonitoringService.getDataCollectorsPerformanceDetails(loginUserId, districtId,stateId,constituencyId,cadreSurveyUserId,startDate,endDate);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDataCollectorsPerformanceDetails()  of FieldMonitoringAction", e);

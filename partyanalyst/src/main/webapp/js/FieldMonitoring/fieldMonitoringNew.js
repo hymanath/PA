@@ -112,8 +112,8 @@ function getTabUsersDetailsByVendorAndLocation(){
      {				
 		cadreSurveyUserId : userId,
 		constituencyId : constituencyId,
-		//fromDate : fromDate,    //"2016-10-01",
-		//toDate : toDate,		//"2016-10-18"
+		fromDate : fromDate,    //"2016-10-01",
+		toDate : toDate,		//"2016-10-18"
 		districtId : districtId,
 		stateId : 0
 	 }
