@@ -7364,7 +7364,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 		str.append(" select model.tdpCadre.tdpCadreId," +//0
 				" model.tdpCadre.firstname," +
 				" model.tdpCadre.lastname," +
-				" model.tdpCadre.memberShipNo," +
+				" model.tdpCadre.memberShipNo," +//3
 				" model.tdpCadre.gender," +
 				" model.tdpCadre.age," +
 				" model.tdpCadre.dateOfBirth," +//6
@@ -7386,7 +7386,7 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 			str.append(",model.tdpCadre.familyVoter.voterIDCardNo,model.tdpCadre.familyVoter.voterId ");//19
 		 
 		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId, " +//20,21
-				" model.tdpCadre.payMentStatus,model.tdpCadre.isDeleted,model.tdpCadre.photoType,model.tdpCadre.userAddress.userAddressId  from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted in ('N','O')  ");
+				" model.tdpCadre.payMentStatus,model.tdpCadre.isDeleted,model.tdpCadre.photoType,model.tdpCadre.userAddress.userAddressId,tdpCadre.userAddress.deliveryLocation,tdpCadre.refNo   from TdpCadreEnrollmentYear model  where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.isDeleted in ('N','O')  ");
 		
 		if(status.equalsIgnoreCase("update")){
 			str.append(" and model.enrollmentYearId = 4l ");	
