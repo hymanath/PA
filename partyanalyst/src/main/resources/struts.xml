@@ -14505,5 +14505,8 @@
 			<param name="root">cadreDtlsList</param>
 		</result>
 	</action>
+	<action name="privilegedUserCadreRegAction" class="privilegedUserCadreRegAction">
+		<result name="success">/jsp/privilegedUserCadreReg.jsp</result>
+	</action>   
 </package>
 </struts>
