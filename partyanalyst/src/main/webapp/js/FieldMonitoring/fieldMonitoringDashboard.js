@@ -122,24 +122,32 @@
 				if(result != null && result.length >0){
 					for(var i in result){
 						if(result[i].issueTypes != null && result[i].issueTypes.length > 0){
+							var openIssueCount =0;
 							if(result[i].id == 1){
 								for(var j in result[i].issueTypes){
+										openIssueCount = openIssueCount+result[i].issueTypes[j].inviteeCount;
+									 $("#openIssuesCountId span").text("-"  +openIssueCount);
 									var dataArr = [];
 									dataArr.push(result[i].issueTypes[j].name+"-"+parseInt(result[i].issueTypes[j].id));
 									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
-									openIssuesArr.push(dataArr);
-								}
+									openIssuesArr.push(dataArr);								}
 							}
+							var fixedIssuecount= 0;
 							if(result[i].id == 2){
 								for(var j in result[i].issueTypes){
+									fixedIssuecount = fixedIssuecount+ result[i].issueTypes[j].inviteeCount;
+									$("#fixedIsuuesCountId span").text("-"  +fixedIssuecount);
 									var dataArr = [];
 									dataArr.push(result[i].issueTypes[j].name+"-"+parseInt(result[i].issueTypes[j].id));
 									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
 									fixedIssuesArr.push(dataArr);
 								}
 							}
+							var closedIssueCount= 0;
 							if(result[i].id == 3){
 								for(var j in result[i].issueTypes){
+								closedIssueCount = closedIssueCount+ result[i].issueTypes[j].inviteeCount;
+									$("#closedIssuesCountId span").text("-"  +closedIssueCount);
 									var dataArr = [];
 									dataArr.push(result[i].issueTypes[j].name+"-"+parseInt(result[i].issueTypes[j].id));
 									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
