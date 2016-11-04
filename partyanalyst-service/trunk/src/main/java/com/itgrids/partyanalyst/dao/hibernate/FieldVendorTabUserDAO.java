@@ -318,8 +318,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 				" and model.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 				" and model.cadreSurveyUserId = model3.cadreSurveyUser.cadreSurveyUserId" +
 				" and model1.isDeleted = 'N'" +
-				" and model3.isEnabled = 'Y'" +
-				" and model3.isOtpVerified = 'Y'");
+				" and model3.isEnabled = 'Y'");
+				//" and model3.isOtpVerified = 'Y'");
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(" and model2.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 					" and model2.isDeleted = 'N' and model2.cadreRegUser.cadreRegUserId = :cadreRegUserId");
