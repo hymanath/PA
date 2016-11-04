@@ -706,5 +706,6 @@
 		<pattern>/updateToursAction*</pattern>
 		<pattern>/newCadreDashBoard2016Action*</pattern>
 		<pattern>/fieldMonitoringReportAction*</pattern>
+		<pattern>/privilegedUserCadreRegAction*</pattern> 
 	</decorator> 
 </decorators>
