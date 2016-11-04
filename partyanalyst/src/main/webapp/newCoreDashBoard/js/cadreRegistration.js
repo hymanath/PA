@@ -28,6 +28,10 @@ $(document).ready(function() {
 
 //compareCls
 //detailsCls
+var globalStatusCount=0;
+var globalTargetCount=0;
+var globalTotalCnt=0;
+var globalTodayTotalCnt=0;
 function initialiseDatePickerForCadreRegistration(){
 		$("#dateRangeIdForCadre").daterangepicker({
 			opens: 'right',
@@ -217,27 +221,13 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
            
 	}
 	function buildTotalTodayRegistrationsTS(result){
-		
-	  var total = $("#totalRegId").attr("attr_total");
-	 var totalPer = $("#totalRegId").attr("attr_total_per");
-	 var totalToday = $("#totalTodayId").attr("attr_today");
-	 var totalTodayPer = $("#totalTodayId").attr("attr_today_per");
-	
-	   //$("#totalRegId").html(""+(result.totalCount+parseInt(total))+"-<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
-	  //$("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"-<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
-	  
-	    $("#totalRegId").html(""+(result.totalCount+parseInt(total))+"");
-	  $("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"");
-		
-		//$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
-		//$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
-		
-	  
-	 $("#totalRegId").attr("attr_total",result.totalCount);
-	 $("#totalRegId").attr("attr_total_per",result.totalPercent);
-	 $("#totalTodayId").attr("attr_today",result.todayTotalCount);
-	 $("#totalTodayId").attr("attr_today_per",result.totalPercentToday);	
-	  $(".showCadrecls").show();
+		globalStatusCount=globalStatusCount+1;
+		globalTargetCount=globalTargetCount+result.target;
+		globalTotalCnt=globalTotalCnt+result.totalCount;
+		globalTodayTotalCnt=globalTodayTotalCnt+result.todayTotalCount;
+		if(globalStatusCount == 2){
+			calculatingPercentage(globalTotalCnt,globalTodayTotalCnt,globalTargetCount);
+		}
 	 var str= '';
 	 // Total today Registrations block
 	  str+='<div class="row m_top10">';
@@ -478,28 +468,17 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 		return returnVal;
 	}
 	function buildTotalTodayRegistrationsAP(result){
-	 var str= '';
+	 var str= ''; 
 	 // Total today Registrations block
 	 //$("#overallTodalRegId").html(result.totalCount);
 	
-	
-	 var total = $("#totalRegId").attr("attr_total");
-	 var totalPer = $("#totalRegId").attr("attr_total_per");
-	 var totalToday = $("#totalTodayId").attr("attr_today");
-	 var totalTodayPer = $("#totalTodayId").attr("attr_today_per");
-	
-	   $("#totalRegId").html(""+(result.totalCount+parseInt(total))+"");
-	  $("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"");
-		
-		//$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
-		//$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
-	  
-	  
-	 $("#totalRegId").attr("attr_total",result.totalCount);
-	 $("#totalRegId").attr("attr_total_per",result.totalPercent);
-	 $("#totalTodayId").attr("attr_today",result.todayTotalCount);
-	 $("#totalTodayId").attr("attr_today_per",result.totalPercentToday);	
-	 $(".showCadrecls").show();
+	    globalStatusCount=globalStatusCount+1;
+		globalTargetCount=globalTargetCount+result.target;
+		globalTotalCnt=globalTotalCnt+result.totalCount;
+		globalTodayTotalCnt=globalTodayTotalCnt+result.todayTotalCount;
+		if(globalStatusCount == 2){
+			calculatingPercentage(globalTotalCnt,globalTodayTotalCnt,globalTargetCount);
+		}
 	  str+='<div class="row m_top10">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<h4 class="text-capital m_top10"><span class="headingColor">ANDHRA PRADESH</span></h4>'; 
@@ -3746,11 +3725,16 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		$("#totalTodayCadreRegistrationBlockDivTSId").html('');
 		$("#enumeratorsInfoDivId").html('');
 		$("#enumeratorsInfoDivTSId").html('');
+		 $(".showCadrecls").hide();
 		showCadreRegistreredCount(globalActivityMemberId);
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
 		getEnumeratorsInfoTS(globalActivityMemberId,36);
 		getCadreRecentTime();
+		globalStatusCount=0;
+        globalTargetCount=0;
+        globalTotalCnt=0;
+        globalTodayTotalCnt=0;
 	}    
   $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
 	  var isKuppamExcluded;
@@ -3867,4 +3851,10 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	  
   });  // end of click function statewiseoverview
   
- 
+ function calculatingPercentage(globalTotalCnt,globalTodayTotalCnt,globalTargetCount){
+	  $(".showCadrecls").show();
+	  $("#totalRegId").html(""+globalTotalCnt+"");
+	  $("#totalTodayId").html(""+globalTodayTotalCnt+"");
+	  $("#totalperc").html("<span style='font-size:12px;'>"+((globalTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");
+	  $("#todayperc1").html("<span style='font-size:12px;'>"+((globalTodayTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");	
+ }
