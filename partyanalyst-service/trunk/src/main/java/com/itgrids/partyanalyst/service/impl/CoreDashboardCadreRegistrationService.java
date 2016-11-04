@@ -757,11 +757,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			returnVO.setUserAddressId(objects[25]!=null?(Long)objects[25]:0l);
 
-			String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[23]);// ONLINE - 'O'
+			/*String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[22]);// ONLINE - 'O'
 			if(isDeleted.trim().equalsIgnoreCase("O")){
 				returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
-			}
+			}*/
 			
+			returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
 			
 			Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
 			List<Long> voterIdsList = new ArrayList<Long>(0);
