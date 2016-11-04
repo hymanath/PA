@@ -1013,25 +1013,85 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)} 
 	}).done(function(result){
-		
 		//$("#familyDetailsDivId").show();
+			//console.log(result);
+			$('#changeNomineeId').prop('checked','checked');
+			if(result != null && result.paymentStatus != null && result.paymentStatus =='NOT PAID'){
+				var str='<div class="col-md-12 col-xs-12 col-sm-12 " style="margin-top:150px;">';
+				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post"  >';
+				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
+				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
+				str+='<input type="hidden" name="Order_Id" value="'+result.paymentGatewayVO.orderNo+'">';				
+				str+='<input type="hidden" name="Checksum" value="'+result.paymentGatewayVO.checkSum+'">';
+				str+='<input type="hidden" name="Redirect_Url" value="'+result.paymentGatewayVO.redirectURL+'">';
+				str+='<input type="hidden" name="Amount" value="'+result.paymentGatewayVO.amount+'">';
+				str+='<input type="hidden" name="billing_cust_name" value="">';
+				str+='<input type="hidden" name="billing_cust_address" value="">';
+				str+='<input type="hidden" name="billing_cust_tel" value="">';
+				str+='<input type="hidden" name="billing_cust_email" value="">';
+				str+='<input type="hidden" name="Merchant_Param" value="">';
+				str+='<input type="hidden" name="billing_cust_notes" value="TDP E-Member Registration fee">';
+				str+='<input type="hidden" name="billing_zip_code" value="">';
+				str+='<input type="hidden" name="delivery_cust_name" maxlength="6" value="Telugau Desam Party">';
+				str+='<input type="hidden" name="delivery_cust_address" value="NTR Bhavan, Banjarahills, Road No:12">';
+				str+='<input type="hidden" name="delivery_cust_country" value="India">';
+				str+='<input type="hidden" name="delivery_cust_state" value="Andhrapradesh & Telangana">';
+				str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
+				str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
 
-		$("#submitCadreForm").show();
-		$("#populatingDtsDivImgId").hide();
-		hideShowDivs(status);
-		buildProfileDetails(result,status,"0");
-		buildCasteDetails(result);
-		buildEductnQualifns(result);
-		buildCadreFamilyDetails(result);
-		buildOccupationList(result,"occupationId");
-		
-		if(status == "new"){
-			buildCadreRelativesDetails(result,"relativeId");
-		}else if(status == "update" || status == "renewal"){
-			buildCadreRelativesDetails(result,"prevNomneReltvId");
-			buildCadreRelativesDetails(result,"relativeId");
-		}		
-		 $(".rRenewal").removeClass('hide');
+				if(registrationType=="new"){
+					str+='<div class="panel-heading new animated fadeIn">';
+					str+='	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>';
+					str+='    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
+					str+='</div>';
+				}
+				if(registrationType=="renewal"){
+					str+='<div class="panel-heading renewal">';
+					str+='	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>';
+					str+='    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
+					str+='</div>';
+				} 
+				str+='</hr>';
+				str+='<div class="container m_top10" id="yourElement">';
+				str+='<div class="span12  show-grid" style="position: relative;margin-left:250px">';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<p class="text-align"> <b>Cadre Name :</b> '+result.lastName+' </p>';
+				str+= '<p class="text-align"> <b>Voter Card NO :</b> '+result.voterCardNo+' </p>';			
+				str+= '</div>';
+				str+='<p class="text-align" style="font-weight:bold;color:green;"> You are Already Registered for 2016-2018. <span style="color:orange">Payment is pending! </span> </p>';
+				str+='<h3 class="text-align"> Please make payment , to complete your Registration .   </h3>';
+				str+='</div>';
+				str+='</div>';
+				str+='<div class="container m_top10" id="yoursElement">';
+				str+='<div class="span12  show-grid" style="position: relative;text-align: center;margin-bottom: 25px;">';
+				str+='<input type="button" attr_order_id="'+result.paymentGatewayVO.orderNo+'" name="submit button" value="PAY NOW" class="btn btn-warning offset5 paymentStatusCls" onclick="updateTransactionTrackingDtals(\''+result.paymentGatewayVO.orderNo+'\')">'; 
+				str+='</div>';
+				str+='</div>';
+				str+='</form>';
+				str+='</div>';
+				$('#savingStatusDivId').html(str);
+				$('.ExistingPaymentCls').removeClass('hide');
+				$(".selectMembership,.renewal").addClass('hide');
+			}
+			else{
+				
+				$("#submitCadreForm").show();
+				$("#populatingDtsDivImgId").hide();
+				hideShowDivs(status);
+				buildProfileDetails(result,status,"0"); 
+				buildCasteDetails(result);
+				buildEductnQualifns(result);
+				buildCadreFamilyDetails(result);
+				buildOccupationList(result,"occupationId");
+				
+				if(status == "new"){
+					buildCadreRelativesDetails(result,"relativeId");
+				}else if(status == "update" || status == "renewal"){
+					buildCadreRelativesDetails(result,"prevNomneReltvId");
+					buildCadreRelativesDetails(result,"relativeId");
+				}		
+				 $(".rRenewal").removeClass('hide');
+			}
 	});
 }
 
@@ -1447,7 +1507,7 @@ $(document).on("click",".searchChkboxClsR",function(){
 	 $("#otpInputId").val('');
 		 $("#otpMsgDivId").html('');
 	RvoterId=$(this).attr("attr_voterId");
-	RtdpCadreId=$(this).attr("attr_tdpCadre_id");//renewalVoterId
+	RtdpCadreId=$(this).attr("attr_tdpCadre_id");//checkMblNoId
 
 	  var voterId = $(this).attr("attr_voterId");
 	  var tdpCadreId = $(this).attr("attr_tdpCadre_id");
@@ -1485,7 +1545,19 @@ $(document).on("click",".searchChkboxClsR",function(){
 
 function renwalOtpDetails()
 {	
-
+/*
+$("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
+		   $("#otpStusErrImgId").show();
+		    $("#otpInputId").val('');
+		 $("#otpMsgDivId").html('');
+		   setTimeout(function(){
+			   $("#memChckBoxModalId").modal('hide');
+			    renMemberDetails();
+				$("#otpStusErrImgId").hide();
+			   }, 1500);
+	
+	return;
+*/
 	//var mobileNo=$("#hiddenMblNo").val();
 	var tdpCadreId=$("#tdpCadreId").val();
 	var otp=$("#otpInputId").val();
