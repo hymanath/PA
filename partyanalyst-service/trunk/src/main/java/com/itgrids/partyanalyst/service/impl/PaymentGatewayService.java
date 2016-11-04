@@ -155,7 +155,7 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 		        if(otherAmountType != null && !otherAmountType.isEmpty()){
 		        	if(otherAmountType.equalsIgnoreCase("CR"))
 		        		selectedAmount = 10L;
-		        	else if(otherAmountType.equalsIgnoreCase("OT"))
+		        	else if(otherAmountType.equalsIgnoreCase("ACR"))
 		        		selectedAmount = 30L;
 		        }
 		        
