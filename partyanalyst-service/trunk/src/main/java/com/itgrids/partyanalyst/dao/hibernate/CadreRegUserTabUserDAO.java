@@ -19,15 +19,17 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model1.constituency.constituencyId," +
 								" model1.constituency.name" +
-								" from CadreRegUserTabUser model");
-		sb.append(",CadreSurveyUserAssignDetails model1");
-		sb.append(" where model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
-								" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
-								" and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-								" and model1.isDeleted = 'N'");
+								" from CadreSurveyUserAssignDetails model1");
+			sb.append(",CadreRegUserTabUser model");
+			sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" );
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+		    sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+						" and model1.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model1.constituency.district.districtId = :districtId");
 		Query query = getSession().createQuery(sb.toString());
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 		query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(districtId != null && districtId.longValue() > 0l)
 			query.setParameter("districtId", districtId);
@@ -48,15 +50,16 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		sb.append("select distinct model.cadreSurveyUser.cadreSurveyUserId," +
 								" model.cadreSurveyUser.userName" +
 								" from CadreRegUserTabUser model");
-		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(",CadreSurveyUserAssignDetails model1");
-		sb.append(" where model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
-								" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'");
+		  sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId ");
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
+			" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-								" and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
+				sb.append("and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			query.setParameter("constituencyId", constituencyId);
 		return query.list();
@@ -97,7 +100,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(",CadreSurveyUserAssignDetails model1");
 		sb.append(" where (model.cadreRegUser.userType = :searchType or model.cadreRegUser.userType = 'WM')" +
-								" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'");
+				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 			sb.append(" and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
 								" and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
@@ -109,14 +112,19 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 	}
 	
 	public List<Object[]> getUserAssignedDistricts(Long cadreRegUserId){
-		Query query = getSession().createQuery("select distinct model1.constituency.district.districtId," +
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model1.constituency.district.districtId," +
 								" model1.constituency.district.districtName" +
-								" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1" +
-								" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-								" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
+								" from CadreSurveyUserAssignDetails model1" );
+			sb.append(",CadreRegUserTabUser model");
+		 sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId");
+		 if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			sb.append(	" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
 								" and model.isDeleted = 'N' and model1.isDeleted = 'N'" +
-								" and model.cadreSurveyUser.isDeleted = 'N'");
-		query.setParameter("cadreRegUserId", cadreRegUserId);
+								" and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y' ");
+		 Query query=getSession().createQuery(sb.toString());
+		 if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			 query.setParameter("cadreRegUserId", cadreRegUserId);
 		return query.list();
 	}
 	
