@@ -438,21 +438,21 @@
 									</div>
 									<div class="bg_ED pad_15">
 										<div class="row" id="directChildId"></div>   
-										<div class="row" id="enumeratorsId"></div>     
+										<!--<div class="row" id="enumeratorsId"></div> -->    
 										<div class="row m_top20">
 											<div class="col-md-6 col-xs-12 col-sm-6">
 												<span class="headingColor" style="display:none;">DISTRICT WISE REGISTRATIONS</span>
 												<div id="individualDtlsId"></div>   
 											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
+											<!--<div class="col-md-6 col-xs-12 col-sm-6">
 												<span class="headingColor" style="display:none;">REGISTERED VOTER ID</span>  
 												<div id="voterDtlsId"></div>  
-											</div>
+											   </div>-->
 										</div>
 										
 										<div class="row m_top20">
 										  <div class="col-md-5 col-xs-12 col-sm-5">
-											<h4><span class="headingColor">CONSTITUENCY WISE REGISTRATIONS</span></h4>
+											<h4><span class="headingColor hideConReport">CONSTITUENCY WISE REGISTRATIONS</span></h4>
 										  </div>
 										  <div class="col-md-7 col-xs-12 col-sm-7">
 											<ul class="activeUlCls list-inline pull-right">
