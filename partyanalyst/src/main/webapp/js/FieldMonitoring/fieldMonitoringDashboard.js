@@ -968,6 +968,15 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
   var globalDataCollectorsAscendingArr;
   var globalDataCollectorsDecendingArr;
   function getDataCollectorsPerformanceDetails(){
+  
+  var dates = $(".singleDate").val();
+		var dateArr = dates.split("-");
+		var fromDate;
+		var toDate;
+		if(dateArr != null){
+			fromDate = dateArr[0];
+			toDate = dateArr[1];
+		}
 	 var stateId = '';
 	$('.stateWiseCls').each(function (index, value){
 		stateId = $(":radio:checked").val();
@@ -987,7 +996,9 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		stateId : stateId,
 		districtId : $("#districtId").val(),
 		constituencyId : 0,
-		cadreSurveyUserId : 0
+		cadreSurveyUserId : 0,
+		startDate :fromDate,
+		endDate :toDate
 	 }
     $.ajax({
           type:'GET',
@@ -998,18 +1009,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 	  if(result != null){
 		  buildDataCollectorsPerformanceDetails(result.subList);
 		}
-	 if(result.subList != null && result.subList.length >0){
-	 
-		globalDataCollectorsDecendingArr = [];
-		for(var i in result.subList){
-		globalDataCollectorsDecendingArr.push(result.subList[i]);
-		}
-		/*globalDataCollectorsAscendingArr=[];
-		for(var counter=result.subList.length - 1; counter >= 0;counter--){
-			globalDataCollectorsAscendingArr.push(result.subList[counter]);
-		} */
-	}
-	movingDataToArrays(result.subList);
+		movingDataToArrays(result.subList);
    });
 }
 
@@ -1037,13 +1037,13 @@ function buildDataCollectorsPerformanceDetails(result){
 		var str = '';
 		
         //str+='<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId">'+result.length+'</span></h4>';
-        $("#totalDataCollectorsId span").text("-"  +totalDataCollectors);
+        $("#totalDataCollectorsId span").text("-"  +result.length);
 		str+='<span class="btn btn-info excelId form-inline pull-right btn-sm btn-xs" style="float:left;margin-top: 10px" onclick="exportToExcel(\'detailsTable\')"><b> Export To Excel </b></span>';
 		str+='<table class="table b_1 m_top10 " id="detailsTable">';
 			str+='<thead class="text-capitalize">';
-				//str+='<th>User Id</th>';
 				str+='<th>district</th>';
 				str+='<th>constituency</th>';
+				str+='<th>User Id</th>';
 				str+='<th>DC Name</th>';
 				str+='<th>DC Contact number</th>';
 				str+='<th>first record</th>';
@@ -1079,6 +1079,11 @@ function buildDataCollectorsPerformanceDetails(result){
 					else
 						str+='<td class="issuePending" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
 						//str+='<td class="issuePending">'+result[i].userName+'</td>';*/
+					if(result[i].userName != null)
+						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'</td>';
+					else
+						str+='<td> - </td>';
+						
 					if(result[i].tabUserName != null)
 						str+='<td title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
 					else
@@ -1168,6 +1173,7 @@ var globalVeryPoorDataCollectors;
 var globalNotAtStartedDataCollectors;
 
 function movingDataToArrays(result){
+globalDataCollectorsDecendingArr = [];
 globalVeryGoodDataCollectors = [];
 globalGoodDataCollectors = [];
 globalPoorDataCollectors = [];
@@ -1175,20 +1181,21 @@ globalVeryPoorDataCollectors = [];
 globalNotAtStartedDataCollectors = [];
 if(result != null){
 	for(var i in result){
+		globalDataCollectorsDecendingArr.push(result[i]);
 		if(result[i].countPerc > 100.00){
-		globalVeryGoodDataCollectors.push(result[i]);
+			globalVeryGoodDataCollectors.push(result[i]);
 		}
 		if(result[i].countPerc > 80.00 && result[i].countPerc<=100.00){
-		globalGoodDataCollectors.push(result[i]);
+			globalGoodDataCollectors.push(result[i]);
 		}
 		if(result[i].countPerc > 50.00 && result[i].countPerc<=80.00){
-		globalPoorDataCollectors.push(result[i]);
+			globalPoorDataCollectors.push(result[i]);
 		}
 		if(result[i].countPerc > 1.00 && result[i].countPerc<=50.00){
-		globalVeryPoorDataCollectors.push(result[i]);
+			globalVeryPoorDataCollectors.push(result[i]);
 		}
-		if(result[i].countPerc == 0.00){
-		globalNotAtStartedDataCollectors.push(result[i]);
+		if(result[i].totalCount == 0){
+			globalNotAtStartedDataCollectors.push(result[i]);
 		}
 	}
 }
