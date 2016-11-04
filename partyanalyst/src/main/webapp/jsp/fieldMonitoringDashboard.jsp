@@ -256,7 +256,10 @@ $(document).on("click",".issuesBtn",function(){
 });
 $(".singleDate").daterangepicker({
 	opens:'left',
+	startDate : '11/01/2016',
+	endDate:moment(),
 	ranges: {
+	   'Till Now': ['11/01/2016', moment()],
 	   'Today': [moment(), moment()],
 	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
