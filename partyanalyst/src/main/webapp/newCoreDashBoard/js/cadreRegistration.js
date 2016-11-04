@@ -2971,9 +2971,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		$("#designationListId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
+		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
 			type : 'POST',
@@ -3013,9 +3013,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		var firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
 		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$(".headingColor").hide();          
 		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);      
 	});
@@ -3107,14 +3107,14 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		getDirectChildMembers(attrActivityMemberId,attrUserTypeId);
 		//change
 		
-		getEnumerationDtlsForMem(attrActivityMemberId);
+		//getEnumerationDtlsForMem(attrActivityMemberId);
 		if(attrUserTypeId == 3 || attrUserTypeId == 5){
 			getGSAndDPDtls(attrActivityMemberId);
 		}else{
 			$("#individualDtlsId").html("");
 		}
 		getDtlsOfBellowLvlMember(attrActivityMemberId);
-		getVoterInfo(attrActivityMemberId);        
+		//getVoterInfo(attrActivityMemberId);        
 		  
 		$("#childActivityMemberDivIdForMeeting").html(str);
 			$(".slickPanelSliderCadre").slick({
@@ -3169,17 +3169,17 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		}else{
 			$("#individualDtlsId").html("");    
 		}
-		getEnumerationDtlsForMem(activityMemberId);      
-		getVoterInfo(activityMemberId);
+		//getEnumerationDtlsForMem(activityMemberId);      
+		//getVoterInfo(activityMemberId);
 		getDtlsOfBellowLvlMember(activityMemberId);  
 		
 	});
 	function getDirectChildMembers(ActivityMemberId,userTypeId){
 		$("#accessMemberId").show();    
 		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		$(".headingColor").hide();
 		var userTypeIdArr = [];
 		userTypeIdArr.push(userTypeId);     
@@ -3200,9 +3200,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 				        
 			}else{
 				$("#directChildId").html('');
-				$("#enumeratorsId").html('');        
+				//$("#enumeratorsId").html('');        
 				$("#individualDtlsId").html(''); 
-				$("#voterDtlsId").html('');       
+				//$("#voterDtlsId").html('');       
 				$("#accessMemberId").hide();         
 			}
 		});
@@ -3278,13 +3278,13 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			   
 	}  
 	$(document).on('click','.bellowLvlCls',function(){
-		$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
+		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html(''); 
-		$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$(".headingColor").hide();
 		var activityMemberId = $(this).attr("attr_activity_member_id");
-		getEnumerationDtlsForMem(activityMemberId);   
-		getVoterInfo(activityMemberId);
+		//getEnumerationDtlsForMem(activityMemberId);   
+		//getVoterInfo(activityMemberId);
 		getDtlsOfBellowLvlMember(activityMemberId);
 	});
 	function getEnumerationDtlsForMem(globalActivityMemberId){
@@ -3337,6 +3337,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
   });
 	function getDtlsOfBellowLvlMember(globalActivityMemberId){
 		$("#individualDtls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$(".hideConReport").show();
 		var startDate = '';    
 		var endDate = '';  
          var flterApplyType="No";		
