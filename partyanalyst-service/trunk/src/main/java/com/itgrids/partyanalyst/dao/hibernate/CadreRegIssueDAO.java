@@ -320,8 +320,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		if(userId != null && userId.longValue() > 0l)
 			sb.append(" and model1.cadreSurveyUser.cadreSurveyUserId = :userId");
 							
-		/*if(startDate != null && endDate != null)
-			sb.append(" and date(model.insertedTime) between :startDate and :endDate");*/
+		if(startDate != null && endDate != null)
+			sb.append(" and date(model.insertedTime) between :startDate and :endDate");
 				
 		sb.append(" and model1.isDeleted = 'N'" +
 					" and model2.isDeleted = 'N'" +
@@ -338,10 +338,10 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setParameter("constituencyId", constituencyId);;
 		if(userId != null && userId.longValue() > 0l)
 			query.setParameter("userId", userId);
-		/*if(startDate != null && endDate != null){
+		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
-		}*/
+		}
 		
 		return query.list();
 	}
