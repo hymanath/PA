@@ -2018,7 +2018,7 @@ public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId){
 * @Description :This method for showing DataCollectors Performance Details 
 *  @since 02-Nov-2016
 */
-public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId,Long constituencyId,Long cadreSurveyUserId){
+public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr){
 	FieldMonitoringVO returnVO = new FieldMonitoringVO();
 	
 	try {
@@ -2030,8 +2030,15 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
     			cadreRegUserId = null;
 		
 			SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
-			Date startDate = dateUtilService.getCurrentDateAndTime();
-			Date endDate = dateUtilService.getCurrentDateAndTime();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			   Date startDate = null;
+			   Date endDate = null;
+			   if(fromDateStr != null && toDateStr != null){
+				   startDate = sdf.parse(fromDateStr);
+				   endDate = sdf.parse(toDateStr);
+			   }
+			//Date startDate = dateUtilService.getCurrentDateAndTime();
+			//Date endDate = dateUtilService.getCurrentDateAndTime();
 			Date today = dateUtilService.getCurrentDateAndTime();
 			Long todayTarget = 200l;
 			Long totalWorkingHours = 10l;
@@ -2141,7 +2148,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 	Long count2 = tabUserInfo2.getTotalCount();
 	Long count1 = tabUserInfo1.getTotalCount();
 	//Descending order of completed registrations.
-	 return count1.compareTo(count2);  
+		return count1.compareTo(count2); 
 	}
 }; 
 	

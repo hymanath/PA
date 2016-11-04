@@ -43,6 +43,6 @@ public interface IFieldMonitoringService {
 	
 	public List<FieldMonitoringVO> getFieldMonitoringUserWiseDetails();
 	public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long stateId,Long districtId,Long constituencyId,Long userId, String fromDateStr,String toDateStr);
-	public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId,Long constituencyId,Long cadreSurveyUserId);
+	public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId);
 }
