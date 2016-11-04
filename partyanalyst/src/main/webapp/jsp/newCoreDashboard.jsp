@@ -174,12 +174,12 @@
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12">
 										<div class="bg_ED pad_15 m_top10">
-											<h5 class="text-capital" >TOTAL<span id="totalperc"></span><h5><h4  class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0 </h4>
+											<h5 class="text-capital" >TOTAL-<span id="totalperc"></span><h5><h4  class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0 </h4>
 										</div>
 									</div>
 									<div class="col-md-6 col-xs-12 col-sm-12">
 										<div class="bg_ED pad_15 m_top10">
-											<h5 class="text-capital">TODAY<span id="todayperc1"></span></h5><h4  class ="cadreCount" id="totalTodayId" attr_today="0" attr_today_per ="0">0</h4>
+											<h5 class="text-capital">TODAY-<span id="todayperc1"></span></h5><h4  class ="cadreCount" id="totalTodayId" attr_today="0" attr_today_per ="0">0</h4>
 										</div>
 									</div>
 								</div>
