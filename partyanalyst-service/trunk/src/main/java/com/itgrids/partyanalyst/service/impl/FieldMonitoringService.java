@@ -1653,7 +1653,7 @@ public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String 
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
 		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
-		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+		//if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedDistricts(cadreRegUserId);
 			if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
 				list = cadreRegUserTabUserDAO.getAllAssignedDistricts("FM");
@@ -1666,10 +1666,10 @@ public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String 
 					returnList.add(vo);
 				}
 			}
-		}
+		//}
 		
 	} catch (Exception e) {
-		LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+		LOG.error("Exception occurred at getCadreRegUserAssignedDistricts() of FieldMonitoringService", e);
 	}
 	return returnList;
 }
@@ -1678,7 +1678,7 @@ public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId,St
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
 		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
-		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+		//if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedConstituencies(cadreRegUserId,districtId);
 			if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
 				list = cadreRegUserTabUserDAO.getAllAssignedConstituencies(districtId,"FM");
@@ -1691,7 +1691,7 @@ public List<CadreRegUserVO> getCadreRegUserAssignedConstituencies(Long userId,St
 					returnList.add(vo);
 				}
 			}
-		}
+		//}
 		
 	} catch (Exception e) {
 		LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
@@ -1703,7 +1703,7 @@ public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long consti
 	List<CadreRegUserVO> returnList = new ArrayList<CadreRegUserVO>();
 	try {
 		Long cadreRegUserId = cadreRegUserDAO.getCadreRegUserByUser(userId);
-		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
+		//if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l){
 			List<Object[]> list = cadreRegUserTabUserDAO.getUserAssignedUsers(cadreRegUserId,constituencyId);
 			if((list == null || list.isEmpty()) && userType.equalsIgnoreCase("dashboard")){
 				list = cadreRegUserTabUserDAO.getAllUserAssignedUsers(constituencyId,"FM");
@@ -1716,10 +1716,10 @@ public List<CadreRegUserVO> getCadreRegUserAssignedUsers(Long userId,Long consti
 					returnList.add(vo);
 				}
 			}
-		}
+		//}
 		
 	} catch (Exception e) {
-		LOG.error("Exception occurred at getCadreRegUserAssignedConstituencies() of FieldMonitoringService", e);
+		LOG.error("Exception occurred at getCadreRegUserAssignedUsers() of FieldMonitoringService", e);
 	}
 	return returnList;
 }
