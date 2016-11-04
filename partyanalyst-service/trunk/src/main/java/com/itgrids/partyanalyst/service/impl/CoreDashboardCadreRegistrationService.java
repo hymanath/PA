@@ -780,8 +780,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setVillageId(vo.getVillageId());
 					returnVO.setPincode(vo.getPincode());
 					
-					if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
-						returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
+					//if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
+						//returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 				}
 			}
 		}
@@ -987,8 +987,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						returnVO.setMandalId(vo.getMandalId());
 						returnVO.setVillageId(vo.getVillageId());
 						returnVO.setPincode(vo.getPincode());
-						if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
-							returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
+						//if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
+						//	returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 					}
 				}
 				if(registrationStatusMap.get(returnVO.getVoterCardNo()) != null){
