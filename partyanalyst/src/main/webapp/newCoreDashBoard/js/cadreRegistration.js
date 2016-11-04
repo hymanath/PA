@@ -229,8 +229,8 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	    $("#totalRegId").html(""+(result.totalCount+parseInt(total))+"");
 	  $("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"");
 		
-		$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
-		$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
+		//$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
+		//$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
 		
 	  
 	 $("#totalRegId").attr("attr_total",result.totalCount);
@@ -491,8 +491,8 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	   $("#totalRegId").html(""+(result.totalCount+parseInt(total))+"");
 	  $("#totalTodayId").html(""+(result.todayTotalCount+parseInt(totalToday))+"");
 		
-		$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
-		$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
+		//$("#totalperc").html("<span style='font-size:12px;'>"+(result.totalPercent+parseFloat(totalPer)).toFixed(2)+"%</span>");
+		//$("#todayperc1").html("<span style='font-size:12px;'>"+(result.totalPercentToday+parseFloat(totalTodayPer)).toFixed(2)+"%</span>");	
 	  
 	  
 	 $("#totalRegId").attr("attr_total",result.totalCount);
@@ -829,7 +829,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='</table>';
 					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
-					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
+					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS">'+result.inField+'</h3>'; 
@@ -907,7 +907,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='</table>';
 					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
-					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
+					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP">'+result.inField+'</h3>';       
