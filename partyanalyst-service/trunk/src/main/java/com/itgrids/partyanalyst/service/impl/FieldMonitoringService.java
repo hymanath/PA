@@ -2034,7 +2034,8 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			Date endDate = dateUtilService.getCurrentDateAndTime();
 			Date today = dateUtilService.getCurrentDateAndTime();
 			Long todayTarget = 200l;
-			
+			Long totalWorkingHours = 10l;
+			Long eachHourTarget = todayTarget/totalWorkingHours;
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
 				for (Object[] obj : templist) {
@@ -2055,7 +2056,15 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 					returnList.add(vo);
 				}
 			}
-			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			int presentHour = cal.get(Calendar.HOUR_OF_DAY);
+			Long lastOneHour = Long.valueOf(presentHour-1);
+			Long workingHrs = 0l;
+			if(presentHour > 8){
+				workingHrs = Long.valueOf(presentHour - 8);
+			}
+			Long  uptoTarget = eachHourTarget*workingHrs;
 			
 			List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecord(tabUserInfoIds);
 			if(list != null && !list.isEmpty()){
@@ -2075,7 +2084,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 	    	    					vo.setRecentRecord(returnTime.format(date));
 	    	    				}
 	    					vo.setTotalCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
-	    					Float totalPerc = (float) (vo.getTotalCount()*100.0/todayTarget);
+	    					Float totalPerc = (float) (vo.getTotalCount()*100.0/uptoTarget);
 	    					vo.setCountPerc(String.format("%.2f", totalPerc));
 	    					
 					}
@@ -2083,11 +2092,6 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 				}
 			}
 			
-			
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(today);
-			int lastHour = cal.get(Calendar.HOUR_OF_DAY);
-			Long lastOneHour = Long.valueOf(lastHour-1);
 			
 			List<Object[]> list1 = tdpCadreUserHourRegInfoDAO.getTabUserLastOneHourData(lastOneHour,tabUserInfoIds);
 			if(list1 != null && !list1.isEmpty()){
