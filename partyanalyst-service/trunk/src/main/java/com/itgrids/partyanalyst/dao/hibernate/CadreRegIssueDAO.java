@@ -177,7 +177,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.isDeleted = 'N'" +
 					" and model1.isEnabled = 'Y'" +
 					" and model3.isEnabled = 'Y'" +
-					" and model3.isOtpVerified = 'Y' " +
+					//" and model3.isOtpVerified = 'Y' " +
 					" group by model1.cadreSurveyUserId ");
 		
 		Query query = getSession().createQuery(sb.toString());
