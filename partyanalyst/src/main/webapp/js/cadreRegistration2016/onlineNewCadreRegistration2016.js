@@ -428,6 +428,17 @@ $("#boothsList").trigger("chosen:updated");
 		$("#workMandalList").trigger("chosen:updated");
 		$("#workVillageList").trigger("chosen:updated");
 		$('#wrkDistErrId').html('<img src="images/search.gif">');
+		
+		if(state == 9999){
+			$('.apTsStateCls').addClass('hide');
+			$('.shipAddressCls').removeClass('hide');
+			
+		}
+	 else{
+			$('.apTsStateCls').removeClass('hide');
+			$('.shipAddressCls').addClass('hide');
+	 }
+		
 	 }
    var jsObj=
    {				
@@ -1805,92 +1816,128 @@ function addressFieldsValidation()
 			$("#wardErrId").html("");
 		}
 	
+	$("#wrkVillageErrId").html("");
+	$("#wrkMadalErrId").html("");
+	$("#wrkConstitErrId").html("");
+	$("#wrkDistErrId").html("");
+	$("#wrkSateErrId").html("");
+	$("#stateErrDh1Id").html("");
+	$("#stateErrDlId").html("");
+	$("#stateErrDsId").html("");
+	$("#stateErrDa1Id").html("");
+	$("#stateErrDhId").html("");
+	$("#stateErrDaId").html("");
+	
 	if($('#deliveryCheckBox').is(":checked"))
 	{
 	
-		if(workHno == null || workHno.length ==0 )
+		if(workState == null || workState<9999)
 		{
-			$("#stateErrDhId").html("<span style='color:red;'>Enter House No.</span>");
-			isError=true;
-		}else{
-			$("#stateErrDhId").html("");
-		}	
-		if(workAprt == null || workAprt.length ==0 )
-		{
-			$("#stateErrDaId").html("<span style='color:red;'>Enter Appt Name.</span>");
-			isError=true;
-		}else{
-			$("#stateErrDaId").html("");
-		}
-		if(workArea == null || workArea.length ==0 )
-		{
-			$("#stateErrDa1Id").html("<span style='color:red;'>Enter Area Name.</span>");
-			isError=true;
-		}else{
-			$("#stateErrDa1Id").html("");
-		}
+			if(workHno == null || workHno.length ==0 )
+			{
+				$("#stateErrDhId").html("<span style='color:red;'>Enter House No.</span>");
+				isError=true;
+			}else{
+				$("#stateErrDhId").html("");
+			}	
+			if(workAprt == null || workAprt.length ==0 )
+			{
+				$("#stateErrDaId").html("<span style='color:red;'>Enter Appt Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrDaId").html("");
+			}
+			if(workArea == null || workArea.length ==0 )
+			{
+				$("#stateErrDa1Id").html("<span style='color:red;'>Enter Area Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrDa1Id").html("");
+			}
+			
+			if(workStreet == null || workStreet.length ==0 )
+			{
+				$("#stateErrDsId").html("<span style='color:red;'>Enter Steet Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrDsId").html("");
+			}
+			
+			if(workLandmark == null || workLandmark.length ==0 )
+			{
+				$("#stateErrDlId").html("<span style='color:red;'>Enter Landmark Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrDlId").html("");
+			}
+			
+			if(workHamlet == null || workHamlet.length ==0 )
+			{
+				$("#stateErrDh1Id").html("<span style='color:red;'>Enter Hamlet Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrDh1Id").html("");
+			}
+			
+			if(workState == null || workState == 0)
+			{
+				$("#wrkSateErrId").html("<span style='color:red;'>Select State</span>");
+				isError=true;
+			}else{
+				$("#wrkSateErrId").html("");
+			}
+			if(workDistrict == null ||workDistrict == 0)
+			{
+				$("#wrkDistErrId").html("<span style='color:red;'>Select District</span>");
+				isError=true;
+			}else{
+				$("#wrkDistErrId").html("");
+			}
+			if(workConstituency == null ||workConstituency == 0)
+			{
+				$("#wrkConstitErrId").html("<span style='color:red;'>Select Constituency.</span>");
+				isError=true;
+			}else{
+				$("#wrkConstitErrId").html("");
+			}
+			if(workMandal == null ||workMandal == 0)
+			{
+				$("#wrkMadalErrId").html("<span style='color:red;'>Select Mandal/Town.</span>");
+				isError=true;
+			}else{
+				$("#wrkMadalErrId").html("");
+			}
+			if(workVillage == null ||workVillage == 0)
+			{
+				$("#wrkVillageErrId").html("<span style='color:red;'>Select Village/ward.</span>");
+				isError=true;
+			}else{
+				$("#wrkVillageErrId").html("");
+			}
+		}else if(workState == 9999){
+				
+				var shipAddress = $('#shipAddress').val();
+				if(shipAddress == null || shipAddress=='' || shipAddress.lenght==0)
+				{
+					$("#wrkShippingErrId").html("<span style='color:red;'>Enter your Courier Address Details.</span>");
+					isError=true;
+				}else{
+					$("#wrkShippingErrId").html("");
+				}
+			}
 		
-		if(workStreet == null || workStreet.length ==0 )
+	}
+	else if($('#deliveryAbrodCheckBox').is(":checked"))
+	{
+		var shipAddress = $('#shipAddress').val();
+		if(shipAddress == null || shipAddress=='' || shipAddress.lenght==0)
 		{
-			$("#stateErrDsId").html("<span style='color:red;'>Enter Steet Name.</span>");
+			$("#wrkShippingErrId").html("<span style='color:red;'>Enter your Courier Address Details.</span>");
 			isError=true;
 		}else{
-			$("#stateErrDsId").html("");
-		}
-		
-		if(workLandmark == null || workLandmark.length ==0 )
-		{
-			$("#stateErrDlId").html("<span style='color:red;'>Enter Landmark Name.</span>");
-			isError=true;
-		}else{
-			$("#stateErrDlId").html("");
-		}
-		
-		if(workHamlet == null || workHamlet.length ==0 )
-		{
-			$("#stateErrDh1Id").html("<span style='color:red;'>Enter Hamlet Name.</span>");
-			isError=true;
-		}else{
-			$("#stateErrDh1Id").html("");
-		}
-		
-		if(workState == null || workState == 0)
-		{
-			$("#wrkSateErrId").html("<span style='color:red;'>Select State</span>");
-			isError=true;
-		}else{
-			$("#wrkSateErrId").html("");
-		}
-		if(workDistrict == null ||workDistrict == 0)
-		{
-			$("#wrkDistErrId").html("<span style='color:red;'>Select District</span>");
-			isError=true;
-		}else{
-			$("#wrkDistErrId").html("");
-		}
-		if(workConstituency == null ||workConstituency == 0)
-		{
-			$("#wrkConstitErrId").html("<span style='color:red;'>Select Constituency.</span>");
-			isError=true;
-		}else{
-			$("#wrkConstitErrId").html("");
-		}
-		if(workMandal == null ||workMandal == 0)
-		{
-			$("#wrkMadalErrId").html("<span style='color:red;'>Select Mandal/Town.</span>");
-			isError=true;
-		}else{
-			$("#wrkMadalErrId").html("");
-		}
-		if(workVillage == null ||workVillage == 0)
-		{
-			$("#wrkVillageErrId").html("<span style='color:red;'>Select Village/ward.</span>");
-			isError=true;
-		}else{
-			$("#wrkVillageErrId").html("");
+			$("#wrkShippingErrId").html("");
 		}
 	}
-	
 	return isError;
 }  
   function getDistrictsForStateId(state,id){
