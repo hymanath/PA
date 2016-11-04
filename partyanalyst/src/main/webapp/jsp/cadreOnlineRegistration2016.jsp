@@ -277,8 +277,8 @@ textarea {
 	
 	 <div class="row PaymentCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default panelRegistration">
-				<div id="savingStatusDivId"></div>
+        	<div class="panel panel-default panel1Registration">
+				<div id="savingStatusDivId" ></div>
 			</div>
 		</div>
 	</div>
@@ -771,7 +771,7 @@ textarea {
 							<label for="deliveryCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Different Address. &nbsp;&nbsp;</label>
 							
 							<input id="deliveryPOCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
-							<label for="deliveryPOCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Party Office . &nbsp;&nbsp;</label>
+							<label for="deliveryPOCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Party Office  [Hyderabad  or Guntur] . &nbsp;&nbsp;</label>
 							
 							<input id="deliveryAbrodCheckBox" class="checkbox-custom" name="checkbox-2" type="checkbox">
 							<label for="deliveryAbrodCheckBox" class="checkbox-custom-label" style="font-size:13px;text-transform:uppercase"> Outside India. &nbsp;&nbsp;</label>
@@ -885,7 +885,7 @@ textarea {
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" id="saveBtnId" onclick="savingCadreDetails();">submit</button>
                         </div>
 						 <span id="savingCadreDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-						<div id="savingStatusDivId" style="padding:15px;"></div>
+						<div id="savingStatussDivId" style="padding:15px;margin-top:50px;"></div>
                     </div>
 					</form>
                 </div>
