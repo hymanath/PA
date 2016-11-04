@@ -137,7 +137,8 @@ public class TdpCadre {
 	private String						designationName;
 	private Long 						mobileNumberDetailsId;
 	private MobileNumberDetails			mobileNumberDetails;
-	private Long cadreVerificationStatusId;
+	private TabUserInfo					tabUserInfo;
+	private Long						tabUserInfoId;
 	
 	private String validStatus;
 	//private Long workLocationId;
@@ -155,9 +156,17 @@ public class TdpCadre {
 	
 	private String payMentStatus;
 	private Long parentTdpCadreId;
-	private Long tabUserInfoId;
-	private TabUserInfo tabUserInfo;
-	private CadreVerificationStatus cadreVerificationStatus;
+	private Date requestedTime;
+	private String synkType;
+	private String isDeletedVoter;
+	private String searchType; 
+	private String imei;
+	private String deviceName;
+	private String appVersion;
+	private String simSerialNo;
+	
+	private String isNomineeChanged;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -1096,6 +1105,17 @@ public class TdpCadre {
 		this.mobileNumberDetails = mobileNumberDetails;
 	}
 	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tab_user_info_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TabUserInfo getTabUserInfo() {
+		return tabUserInfo;
+	} 
+	public void setTabUserInfo(TabUserInfo tabUserInfo) {
+		this.tabUserInfo = tabUserInfo;
+	}
+	
 	@Column(name="tab_user_info_id")
 	public Long getTabUserInfoId() {
 		return tabUserInfoId;
@@ -1104,33 +1124,77 @@ public class TdpCadre {
 		this.tabUserInfoId = tabUserInfoId;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "tab_user_info_id" , insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TabUserInfo getTabUserInfo() {
-		return tabUserInfo;
+	@Column(name="requested_time")
+	public Date getRequestedTime() {
+		return requestedTime;
 	}
-	public void setTabUserInfo(TabUserInfo tabUserInfo) {
-		this.tabUserInfo = tabUserInfo;
+	public void setRequestedTime(Date requestedTime) {
+		this.requestedTime = requestedTime;
 	}
-	 @Column(name="cadre_verification_status_id")
-	public Long getCadreVerificationStatusId() {
-		return cadreVerificationStatusId;
+	
+	@Column(name="synk_type")
+	public String getSynkType() {
+		return synkType;
 	}
-	public void setCadreVerificationStatusId(Long cadreVerificationStatusId) {
-		this.cadreVerificationStatusId = cadreVerificationStatusId;
+	public void setSynkType(String synkType) {
+		this.synkType = synkType;
 	}
-	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "cadre_verification_status_id" , insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public CadreVerificationStatus getCadreVerificationStatus() {
-		return cadreVerificationStatus;
+	
+	@Column(name="is_deleted_voter")
+	public String getIsDeletedVoter() {
+		return isDeletedVoter;
 	}
-	public void setCadreVerificationStatus(
-			CadreVerificationStatus cadreVerificationStatus) {
-		this.cadreVerificationStatus = cadreVerificationStatus;
+	public void setIsDeletedVoter(String isDeletedVoter) {
+		this.isDeletedVoter = isDeletedVoter;
 	}
+	
+	@Column(name="search_type")
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	
+	@Column(name="imei")
+	public String getImei() {
+		return imei;
+	}
+	public void setImei(String imei) {
+		this.imei = imei;
+	}
+	
+	@Column(name="device_name")
+	public String getDeviceName() {
+		return deviceName;
+	}
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+	
+	@Column(name="app_version")
+	public String getAppVersion() {
+		return appVersion;
+	}
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
+	
+	@Column(name="sim_serial_no")
+	public String getSimSerialNo() {
+		return simSerialNo;
+	}
+	public void setSimSerialNo(String simSerialNo) {
+		this.simSerialNo = simSerialNo;
+	}
+	
+	@Column(name="is_nominee_changed")
+	public String getIsNomineeChanged() {
+		return isNomineeChanged;
+	}
+	public void setIsNomineeChanged(String isNomineeChanged) {
+		this.isNomineeChanged = isNomineeChanged;
+	}
+	
 	
 }
