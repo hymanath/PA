@@ -8273,7 +8273,7 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 					" and tcey.enrollment_year_id = :enrollmentYearId " );
 		
 		if(startDate !=null && endDate !=null){
-			str.append(" and date(tc.survey_time) between :startDate and :endDate ");
+			str.append(" and (date(tc.survey_time) between :startDate and :endDate) ");
 		}
 		
 		str.append(" group by tui.tab_user_info_id) as result " +
@@ -8288,7 +8288,7 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 				" and tcey.enrollment_year_id =:enrollmentYearId " );
 				
 			if(startDate !=null && endDate !=null){
-				str.append(" and date(tc.survey_time) between :startDate and :endDate ");
+				str.append(" and (date(tc.survey_time) between :startDate and :endDate) ");
 			}
 			str.append(" group by tui.tab_user_info_id;");
 		
@@ -8304,8 +8304,8 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 		query.setParameter("enrollmentYearId", 4l);
 		
 		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		
 		
