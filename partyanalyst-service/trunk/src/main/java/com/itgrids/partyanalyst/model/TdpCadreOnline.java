@@ -10,6 +10,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+/**
+ * @author Administrator
+ *
+ */
 @Entity
 @Table(name = "tdp_cadre_online")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -26,6 +30,7 @@ public class TdpCadreOnline {
 	private String email;
 	private String permanentAddress;
 	private String onlineId;
+	private Long tdpCadreId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -125,10 +130,17 @@ public class TdpCadreOnline {
 		return onlineId;
 	}
 
-
 	public void setOnlineId(String onlineId) {
 		this.onlineId = onlineId;
 	}
-	
+
+	@Column(name = "tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
 	
 }
