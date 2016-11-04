@@ -2059,6 +2059,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 					vo.setConstituencyName(obj[8] != null ? obj[8].toString():"");
 					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
 					vo.setTodayTarget(todayTarget.toString());
+					vo.setFieldMonitrngName(obj[11] != null ? obj[11].toString():"");
 					tabUserInfoIds.add(vo.getTabUserId());
 					returnList.add(vo);
 				}

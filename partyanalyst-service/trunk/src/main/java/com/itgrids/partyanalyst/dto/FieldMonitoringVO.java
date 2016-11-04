@@ -51,8 +51,15 @@ public class FieldMonitoringVO {
 	private Long todayActiveUsers;
 	private Long lastOneHrActUsers;
 	private String countPerc;
+	private String fieldMonitrngName;
 	
 	
+	public String getFieldMonitrngName() {
+		return fieldMonitrngName;
+	}
+	public void setFieldMonitrngName(String fieldMonitrngName) {
+		this.fieldMonitrngName = fieldMonitrngName;
+	}
 	public String getCountPerc() {
 		return countPerc;
 	}
