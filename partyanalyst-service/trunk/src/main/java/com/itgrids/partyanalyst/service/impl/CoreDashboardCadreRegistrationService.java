@@ -757,12 +757,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			returnVO.setUserAddressId(objects[25]!=null?(Long)objects[25]:0l);
 
-			/*String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[22]);// ONLINE - 'O'
+			String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[23]);// ONLINE - 'O'
 			if(isDeleted.trim().equalsIgnoreCase("O")){
 				returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
-			}*/
+			}
 			
-			returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
 			
 			Map<String,NewCadreRegistrationVO> addressMap = new HashMap<String, NewCadreRegistrationVO>(0);
 			List<Long> voterIdsList = new ArrayList<Long>(0);
@@ -780,8 +779,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					returnVO.setVillageId(vo.getVillageId());
 					returnVO.setPincode(vo.getPincode());
 					
-					//if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
-						//returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
+					if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
+						returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 				}
 			}
 		}
@@ -987,8 +986,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						returnVO.setMandalId(vo.getMandalId());
 						returnVO.setVillageId(vo.getVillageId());
 						returnVO.setPincode(vo.getPincode());
-						//if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
-						//	returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
+						if(returnVO.getPaymentGatewayVO().getSubList() != null && returnVO.getPaymentGatewayVO().getSubList().size() == 0)
+							returnVO.getPaymentGatewayVO().getSubList().addAll(vo.getPaymentGatewayVO().getSubList());
 					}
 				}
 				if(registrationStatusMap.get(returnVO.getVoterCardNo()) != null){
@@ -1910,7 +1909,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				resultList.addAll(childActivityMembersMap.values());
 			}
 			if(resultList != null && resultList.size() > 0){
-				Collections.sort(resultList, cadreMemberEligibleAttendedPercDesc);
+				Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
 			}
 			return resultList;
 		}catch(Exception e){
@@ -1950,7 +1949,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date today = dateUtilService.getCurrentDateAndTime();
+			Date today = new Date();
 			Date frmDt = null;
 			Date toDt = null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
@@ -2155,7 +2154,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date today = dateUtilService.getCurrentDateAndTime();
+			Date today = new Date();
 			Date frmDt = null;
 			Date toDt = null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
