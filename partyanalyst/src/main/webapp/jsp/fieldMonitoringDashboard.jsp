@@ -46,7 +46,7 @@
                         	<h4 class="panel-title">FIELD MONITORING DASHBOARD</h4>
                         </div>
 						<div class="col-md-2 col-xs-12 col-sm-9">
-                        	<input type="radio" name="radio" value="1" checked="true" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> AP</input>
+                        	<input type="radio" name="radio" value="1" checked="true" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);" id="stateApId"> AP</input>
 							<input type="radio" name="radio" value="36" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> TS</input>
 							 <input type="radio" name="radio" value="0" class="stateWiseCls" onclick ="stateWisePopulateData(this.value);"> All</input>
                         </div>
@@ -315,7 +315,9 @@ function stateWisePopulateData(state)
 	$("#statusWiseDetailsDivId").html('');
 	$("#issueTypeHeadingId").html("");
 }
-
+$( document ).ready(function() {
+	$("#stateApId").prop("checked", true); 
+});
 </script>
 </body>
 </html>
