@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -55,6 +56,7 @@ import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -101,8 +103,15 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITabUserEnrollmentInfoSourceDAO tabUserEnrollmentInfoSourceDAO;
     private IDistrictConstituenciesDAO districtConstituenciesDAO;
     private IConstituencyDAO constituencyDAO;
+    private ITdpCadreOnlineDAO tdpCadreOnlineDAO;
     
     
+	public ITdpCadreOnlineDAO getTdpCadreOnlineDAO() {
+		return tdpCadreOnlineDAO;
+	}
+	public void setTdpCadreOnlineDAO(ITdpCadreOnlineDAO tdpCadreOnlineDAO) {
+		this.tdpCadreOnlineDAO = tdpCadreOnlineDAO;
+	}
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
 	}
@@ -757,9 +766,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			returnVO.setUserAddressId(objects[25]!=null?(Long)objects[25]:0l);
 
-			String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[23]);// ONLINE - 'O'
+			/*String isDeleted=commonMethodsUtilService.getStringValueForObject(objects[23]);// ONLINE - 'O'
 			if(isDeleted.trim().equalsIgnoreCase("O")){
 				returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
+			}*/
+			returnVO.setPaymentStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
+			if(returnVO.getPaymentStatus().trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)){
+				String otherAmountType = commonMethodsUtilService.getStringValueForObject(objects[26]);
+				String refNo = commonMethodsUtilService.getStringValueForObject(objects[27]);
+				returnVO.setNameType(otherAmountType);
+				PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,returnVO.getMemberTypeId().trim(),refNo.trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION",otherAmountType);
+				if(pamentGateWayVO != null)
+					returnVO.setPaymentGatewayVO(pamentGateWayVO);
 			}
 			
 			
@@ -1048,11 +1066,17 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	           
 	         responceVO = webResource.accept("application/json").type("application/json").post(CadreResponseVO.class,cadreRegistrationVO);
 	        
-	         /*if(responceVO.getSaveStatus().equalsIgnoreCase("Success")){
-	        	 return "SUCCESS";
+	         if(responceVO.getSaveStatus().equalsIgnoreCase("Success") && responceVO.getTdpCadreId() != null && responceVO.getTdpCadreId().longValue()>0L &&
+	        		 cadreRegistrationVO.getShipAddress() != null && !cadreRegistrationVO.getShipAddress().isEmpty()){
+	        	 TdpCadreOnline  tdpCadreOnline = new TdpCadreOnline();
+	        	 tdpCadreOnline.setTdpCadreId(responceVO.getTdpCadreId());
+	        	 tdpCadreOnline.setShipAddress(cadreRegistrationVO.getShipAddress());
+	        	 tdpCadreOnline.setPermanentAddress(cadreRegistrationVO.getShipAddress());
+	        	 tdpCadreOnlineDAO.save(tdpCadreOnline);
+	        	 //return "SUCCESS";
 	         }else{
-	        	 return "FAIL";
-	         }*/
+	        	;// return "FAIL";
+	         }
 	        
 	    } catch (Exception e) {
 	      LOG.error("Exception raised at savingCadreDetails", e);
