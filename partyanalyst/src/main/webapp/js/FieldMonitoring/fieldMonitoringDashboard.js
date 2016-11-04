@@ -1140,8 +1140,10 @@ function buildDataCollectorsPerformanceDetails(result){
 		$("#dataCollectorsDivId").html(str);
 		$("#dataCollectorsImgId").hide();
 		$('#detailsTable').dataTable({
-        "aaSorting": []
-			});
+	         "aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 20,
+	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	    });
 		//$('html,body').animate({scrollTop: $("#dataCollectorsDivId").offset().top}, 'slow');
 	}
 	else{
