@@ -112,8 +112,8 @@ function getTabUsersDetailsByVendorAndLocation(){
      {				
 		cadreSurveyUserId : userId,
 		constituencyId : constituencyId,
-		fromDate : fromDate,    //"2016-10-01",
-		toDate : toDate,		//"2016-10-18"
+		startDate : fromDate,    //"2016-10-01",
+		endDate : toDate,		//"2016-10-18"
 		districtId : districtId,
 		stateId : 0
 	 }
@@ -509,13 +509,13 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		for( var i in result) {
 		str+='<tr>';
 		str+='<td>';
-		str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
+		str += '<h5 class="text-capital"><b>Issue Type :</b> '+ result[i].issueType	+ '</h5>';
 			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">EDIT</button>';
 			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px;">ISSUE TRACK</button>';
 			//str += '</h4>';
 			str +='<div class="descriptionCls">';
-                str+='<h4> Description </h4>';			
-				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
+                //str+='<h4> Description </h4>';			
+				str += '<p><b>Description : </b><span  class="issueDesc'+i+'">' + result[i].description + '</span></p>';
 				str += '<p class="m_top10">';
 				if(result[i].issueStatus == 'open')
 				{

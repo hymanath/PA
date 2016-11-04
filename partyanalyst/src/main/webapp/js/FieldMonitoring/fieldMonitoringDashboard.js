@@ -355,7 +355,7 @@
 		}
 		
 function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
-	$("#districtDiv").hide();
+	$(".districtDiv").hide();
 	$("#dataCollectorsDiv").hide();
 	$("#dataCollectorsDivId").html('');
 	$("#dataCollectorsImgId").hide();
@@ -419,6 +419,7 @@ function buildStatusWiseDetails(result){
 			str+='<th>state</th>';
 			str+='<th>district</th>';
 			str+='<th>constituency</th>';
+			str+='<th>User Id</th>';
 			str+='<th>user name</th>';
 			str+='<th>user contact number</th>';
 			str+='<th>vendor name</th>';
@@ -444,6 +445,7 @@ function buildStatusWiseDetails(result){
 					str+='<td>'+result[i].constituencyName+'</td>';
 				else
 					str+='<td> - </td>';
+				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>'+result[i].tabUserName+'</td>';
 				str+='<td>'+result[i].mobileNo+'</td>';
 				
@@ -651,12 +653,12 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		for( var i in result) {
 		str+='<tr>';
 		str+='<td>';
-		str += '<h4 class="text-capital">'+ result[i].issueType	+ '</h4>';
+		str += '<h5 class="text-capital"><b>Issue Type :</b> '+ result[i].issueType	+ '</h5>';
 			str+='<button class="btn btn-success editBtn pull-right btn-sm" attr_value="'+i+'" attr_issueStatus="'+result[i].issueStatus+'">edit</button>';
 			str+='<button class="btn btn-success pull-right btn-sm trackingIssueCls" type="button" attr_cadre_reg_issue_id="'+result[i].cadreRegIssueId+'" style="margin-right: 10px;">ISSUE TRACK</button>';
 			str +='<div class="descriptionCls">';
-                str+='<h4> Description </h4>';			
-				str += '<p class="issueDesc'+i+'">' + result[i].description + '</p>';
+                //str+='<h4> Description </h4>';			
+				str += '<p><b>Description : </b><span  class="issueDesc'+i+'">' + result[i].description + '</span></p>';
 				str += '<p class="m_top10">';
 				if(result[i].issueStatus == 'open')
 				{
@@ -940,7 +942,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
   }
 
   function getDistricts(){
-  $("#districtDiv").show();
+  $(".districtDiv").show();
   var stateId = '';
 	$('.stateWiseCls').each(function (index, value){
 		stateId = $(":radio:checked").val();
@@ -968,7 +970,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
   var globalDataCollectorsAscendingArr;
   var globalDataCollectorsDecendingArr;
   function getDataCollectorsPerformanceDetails(){
-  
+  $(".districtDiv").show();
   var dates = $(".singleDate").val();
 		var dateArr = dates.split("-");
 		var fromDate;
@@ -1046,6 +1048,7 @@ function buildDataCollectorsPerformanceDetails(result){
 				str+='<th>User Id</th>';
 				str+='<th>DC Name</th>';
 				str+='<th>DC Contact number</th>';
+				str+='<th>FM User Id</th>';
 				str+='<th>first record</th>';
 				str+='<th>recent record</th>';
 				str+='<th>last hour</th>';
@@ -1090,6 +1093,10 @@ function buildDataCollectorsPerformanceDetails(result){
 						str+='<td> - </td>';
 					if(result[i].mobileNo != null)
 						str+='<td>'+result[i].mobileNo+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].fieldMonitrngName != null)
+						str+='<td>'+result[i].fieldMonitrngName+'</td>';
 					else
 						str+='<td> - </td>';
 					/*if(result[i].districtName != null)

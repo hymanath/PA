@@ -12,19 +12,54 @@
 <link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 
+<style type="text/css">
+.bg_ff
+{
+	background-color:#fff
+}
+</style>
 </head>
 <body>
-<style type="text/css">
-</style>
 <div class="container m_top20">
   <h4></h4>
   <div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="block bg_ff">
-				<h4>FIELD MONITORING REPORT<button class="btn btn-success btn-sm">Export to PDF/Excel</button></h4>
-				<div id="fieldUserDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
-				<div id="errorDivId"></div>
-				<div id="fieldUserDetailsId"></div>
+			<div class="panel panel-default">
+				<div class="panel-heading bg_ff">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+							<h4>FIELD MONITORING REPORT</h4>
+						</div>
+						<!--<div class="col-md-3 col-xs-12 col-sm-3 pull-right">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+								<input type="text" class="form-control" id="singleDate"/>
+							</div>
+						</div>-->
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<!--<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="btn-group pull-right">
+							  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Export to PDF/Excel <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+							  </ul>
+							</div>
+						</div>-->
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="fieldUserDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+							<div id="errorDivId"></div>
+							<div id="fieldUserDetailsId"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -39,6 +74,10 @@
 
 
 <script type="text/javascript">
+$("#singleDate").daterangepicker({
+	singleDatePicker : true,
+	maxDate:moment()
+})
 getFieldMonitoringReport();
 
 function getFieldMonitoringReport(){

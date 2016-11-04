@@ -114,14 +114,14 @@
 							<h4 class="text-capital" id="totalDataCollectorsId" style="margin-top: 0px; font-weight: bold;">total data collectors <span></span></h4>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
-							<div  id="districtDiv" style="dispaly:none;">
+							<div class="districtDiv" style="dispaly:none;">
 								<label>Select District</label><span style="color:red"> *</span>
 								<select class="select" id="districtId" onchange="getDataCollectorsPerformanceDetails();">
 									<option value="0">Select District</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-md-5 col-xs-12 col-sm-6" style="margin-top: 25px;" id="districtDiv" style="dispaly:none;">
+						<div class="col-md-5 col-xs-12 col-sm-6 districtDiv" style="margin-top: 25px;" style="dispaly:none;">
 							<ul class="activeUlCls list-inline pull-right">
 								<li class="completedRegistrationsSorting active" attr_value="All">
 									All</li>
