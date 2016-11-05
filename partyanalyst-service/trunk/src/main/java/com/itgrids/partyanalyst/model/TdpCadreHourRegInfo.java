@@ -18,6 +18,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TdpCadreHourRegInfo extends BaseModel implements Serializable{
 	
+	private static final long serialVersionUID = 992536127053470977L;
+	
 	private Long tdpCadreHourRegInfoId;
 	private Long stateId;
 	private Date surveyDate;
