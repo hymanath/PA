@@ -52,8 +52,36 @@ public class FieldMonitoringVO {
 	private Long lastOneHrActUsers;
 	private String countPerc;
 	private String fieldMonitrngName;
+	private Long veryGoodCnt;
+	private Long goodCnt;
+	private Long poorCnt;
+	private Long veryPoorCnt;
 	
 	
+	public Long getVeryGoodCnt() {
+		return veryGoodCnt;
+	}
+	public void setVeryGoodCnt(Long veryGoodCnt) {
+		this.veryGoodCnt = veryGoodCnt;
+	}
+	public Long getGoodCnt() {
+		return goodCnt;
+	}
+	public void setGoodCnt(Long goodCnt) {
+		this.goodCnt = goodCnt;
+	}
+	public Long getPoorCnt() {
+		return poorCnt;
+	}
+	public void setPoorCnt(Long poorCnt) {
+		this.poorCnt = poorCnt;
+	}
+	public Long getVeryPoorCnt() {
+		return veryPoorCnt;
+	}
+	public void setVeryPoorCnt(Long veryPoorCnt) {
+		this.veryPoorCnt = veryPoorCnt;
+	}
 	public String getFieldMonitrngName() {
 		return fieldMonitrngName;
 	}
