@@ -8291,7 +8291,7 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 			if(startDate !=null && endDate !=null){
 				str.append(" and (date(tc.survey_time) between :startDate and :endDate) ");
 			}
-			str.append(" group by tui.tab_user_info_id;");
+			str.append(" group by tui.name");
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("tdpCadreId", Hibernate.LONG)
@@ -8743,7 +8743,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			//str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
 			//		",tc.latitude as latitude,tc.longititude as longititude,tc.survey_time as surveyTime " +
 			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0){
-				queryStr.append("select tabUserInfo.tabUserInfoId, tabUserInfo.name,tabUserInfo.mobileNo,model.longititude,model.latitude,model.surveyTime from " +
+				queryStr.append("select tabUserInfo.tabUserInfoId, tabUserInfo.name,tabUserInfo.mobileNo,model.latitude,model.longititude,model.surveyTime from " +
 						" TdpCadre model " +
 						" left join model.tabUserInfo tabUserInfo" +
 						"  where model.isDeleted = 'N' and  model.enrollmentYear = 2014 and " +
