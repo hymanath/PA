@@ -31,11 +31,13 @@ public class TdpCadreHourRegInfoDAO extends GenericDaoHibernate<TdpCadreHourRegI
 		}else if(stateId == 36l){
 			sbS.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
 		}
-		if(date != null){ 
-			sbS.append(" group by date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime)");
+		if(date != null){
+			sbS.append(" group by hour(model.tdpCadre.surveyTime)");
 		}else{
-			sbS.append(" group by hour(model.tdpCadre.surveyTime) ");
+			sbS.append(" group by date(model.tdpCadre.surveyTime),hour(model.tdpCadre.surveyTime)");
 		}
+		
+		
 		Query query = getSession().createQuery(sbS.toString());
 		
 		query.setParameter("enrollmentYearId",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
@@ -60,5 +62,22 @@ public class TdpCadreHourRegInfoDAO extends GenericDaoHibernate<TdpCadreHourRegI
  	   return query.executeUpdate();
   }
 	
+	public int insertCadreDataHourWiseToday(){
+		
+		Query query = getSession().createSQLQuery("" +
+		"  INSERT INTO tdp_cadre_hour_reg_info( state_id,survey_date,hour,total_registrations,cadre_survey_users,inserted_time ) " +
+	    "         SELECT TEMP.state_id,TEMP.survey_date,TEMP.hour,TEMP.total_registrations,TEMP.cadre_survey_users,TEMP.inserted_time" +
+	    "         FROM   tdp_cadre_hour_reg_info_temp TEMP " );
+		return query.executeUpdate();
+	}
+
+	public int insertCadreDataHourWiseOverall(){
+		
+		Query query = getSession().createSQLQuery("" +
+		"  INSERT INTO tdp_cadre_hour_reg_info( state_id,survey_date,hour,total_registrations,cadre_survey_users,inserted_time ) " +
+	    "         SELECT TEMP.state_id,TEMP.survey_date,TEMP.hour,TEMP.total_registrations,TEMP.cadre_survey_users,TEMP.inserted_time" +
+	    "         FROM   tdp_cadre_hour_reg_info_temp1 TEMP " );
+		return query.executeUpdate();
+	}
 	
 }
