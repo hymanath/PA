@@ -984,25 +984,27 @@ function renMemberDetails(){
 	else if(tdpCadreId != null && tdpCadreId > 0 && enrolYear == 4)
 		status = "update";
 	  
-	  if(relativeVoter != null && relativeVoter > 0){
-		  var image=$('.validateROTPCls').attr("attr_img1");
+	   getCadreDetailsForCadre(tdpCadreId,voterId,status,relativeVoter);
+	/*  if(relativeVoter != null && relativeVoter > 0){
+		  var image=$('.validateROTPCls').attr("attr_img1");//
 		  renewalSearchRelativeMembershipDetails($('.validateROTPCls').attr("attr_number"),image,tdpCadreId,status,relativeVoter,relativeType);
 	  }
 	  else{		  
 		 getCadreDetailsForCadre(tdpCadreId,voterId,status);
 	  }
+	  */
 }
 //});
 
   
-function getCadreDetailsForCadre(tdpCadreId,voterId,status){
+function getCadreDetailsForCadre(tdpCadreId,voterId,status,relativeVoter){
 	//eachTimeClearFields();
 	 $("#submitCadreForm").hide();
 	
 	 $("#populatingDtsDivImgId").show();
 	var jsObj={
 		 voterId:voterId,
-		 familyVoterId:0,
+		 familyVoterId:relativeVoter,
 		 cadreId:tdpCadreId,
 		 status:status
 	 }
@@ -1543,6 +1545,7 @@ $(document).on("click",".searchChkboxClsR",function(){
 
 });
 
+//7777
 function renwalOtpDetails()
 {	
 /*
