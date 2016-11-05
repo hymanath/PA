@@ -2675,10 +2675,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return null;
 	}
 
-	public String generatingAndSavingOTPDetails(String mobileNo){
+	public String generatingAndSavingOTPDetails(String mobileNoStr){
 		
 		String status = null;
 		try {
+			String mobileNo=mobileNoStr.trim();
+			if(mobileNoStr.length()>10)
+				mobileNo = mobileNoStr.substring(mobileNoStr.length() - 10,mobileNoStr.length());
 			
 			List<Object[]> existingOTPDtls = tabUserOtpDetailsDAO.isExistOTPDetails(mobileNo,new DateUtilService().getCurrentDateAndTime());
 			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
