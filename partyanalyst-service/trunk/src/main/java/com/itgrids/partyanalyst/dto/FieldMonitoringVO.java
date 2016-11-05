@@ -61,8 +61,23 @@ public class FieldMonitoringVO {
 	private Long veryPoorCnt;
 	private Long districtCount;
 	private Long constituencyCount;
+	private Long notYetStartedIssues;
+	private Long startedIssues;
 	
 	
+	
+	public Long getStartedIssues() {
+		return startedIssues;
+	}
+	public void setStartedIssues(Long startedIssues) {
+		this.startedIssues = startedIssues;
+	}
+	public Long getNotYetStartedIssues() {
+		return notYetStartedIssues;
+	}
+	public void setNotYetStartedIssues(Long notYetStartedIssues) {
+		this.notYetStartedIssues = notYetStartedIssues;
+	}
 	public Long getDistrictCount() {
 		return districtCount;
 	}

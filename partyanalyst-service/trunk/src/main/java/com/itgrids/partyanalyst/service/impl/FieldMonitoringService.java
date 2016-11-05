@@ -2409,4 +2409,130 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
     	return returnvo;
     }
 
+	/**
+	* @param  Long loginUserId  
+	* @param  Long districtId
+	* @param Long stateId
+	* @return FieldMonitoringVO
+	* @author Hymavathi G 
+	* @Description : 
+	*  @since 05-Nov-2016
+	*/
+	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCountAction(){
+		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
+		
+		List<Long> cadreSurveyuserIds = new ArrayList<Long>();
+		List<Long> tabUserInfoIds = new ArrayList<Long>();
+		Map<Long,List<Long>> fmUserWiseTotReg = new HashMap<Long,List<Long>>();
+		try {
+			
+			List<Object[]> fmUsersList = cadreRegUserTabUserDAO.getConstituencyWiseFMUsersDetails();
+			if(fmUsersList != null && !fmUsersList.isEmpty()){
+				for (Object[] obj : fmUsersList) {
+					FieldMonitoringVO vo = new FieldMonitoringVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setDistrictId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setDistrictName(obj[3] != null ? obj[3].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+					vo.setConstituencyName(obj[5] != null ? obj[5].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+			List<Object[]> usersForFMUser = cadreRegUserTabUserDAO.getTotalUsersCountForFMUsers();
+			if(usersForFMUser != null && !usersForFMUser.isEmpty()){
+				
+				for (Object[] obj : usersForFMUser) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOConstituencyId(constId,returnList);
+					if(vo != null){
+						vo.setTotalCount(count);// total Users Of FM
+					}
+				}
+			}
+			
+			List<Object[]> totalRegForFM = cadreRegUserTabUserDAO.getTotalRegisteredUsers();
+			if(totalRegForFM != null && !totalRegForFM.isEmpty()){
+				for (Object[] obj : totalRegForFM) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOConstituencyId(constId,returnList);
+					if(vo != null){
+						vo.setTodayRegCount(count);//total Registered users Of FM
+					}
+				}
+			}
+			
+			List<Object[]> totalStarted = cadreRegUserTabUserDAO.getTodayStartedUsersOfFMUser(dateUtilService.getCurrentDateAndTime());
+			if(totalStarted != null && !totalStarted.isEmpty()){
+				for (Object[] obj : totalStarted) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOConstituencyId(constId,returnList);
+					if(vo != null){
+						Long notStartedCnt = vo.getTodayRegCount()-count;
+						vo.setNotYetStartedUsers(notStartedCnt);//Not Started Users Of FM User
+					}
+				}
+			}
+			
+			List<Object[]> totalIssues = cadreRegUserTabUserDAO.getTodayTotalIssues(dateUtilService.getCurrentDateAndTime());
+			if(totalIssues != null && !totalIssues.isEmpty()){
+				for (Object[] obj : totalIssues) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOConstituencyId(constId,returnList);
+					if(vo != null){
+						vo.setOpenIssues(count);//Today Total Open Issues
+					}
+				}
+			}
+			
+			List<Object[]> todayTotalStartedIssues = cadreRegUserTabUserDAO.getTodayTotalStartedIssues(dateUtilService.getCurrentDateAndTime());
+			if(todayTotalStartedIssues != null && !todayTotalStartedIssues.isEmpty()){
+				for (Object[] obj : todayTotalStartedIssues) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOConstituencyId(constId,returnList);
+					if(vo != null){
+						Long notStartedIssuesCnt = vo.getOpenIssues()-count;
+						vo.setNotYetStartedIssues(notStartedIssuesCnt);//Today Total Not Started Issues
+						vo.setStartedIssues(count);//Today Total Started Issues
+					}
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getDataCollectorsConstituencyWiseCountAction() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
+	
+	public FieldMonitoringVO getMatchedVOConstituencyId(Long constituencyId,List<FieldMonitoringVO> list){
+    	FieldMonitoringVO returnvo = null;
+    	try {
+			if(list != null && !list.isEmpty()){
+				for (FieldMonitoringVO vo : list) {
+					if(vo.getConstituencyId().longValue() == constituencyId.longValue()){
+						return vo;
+					}
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getMatchedVOConstituencyId() of FieldMonitoringService", e);
+		}
+    	return returnvo;
+    }
+	
 }
