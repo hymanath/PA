@@ -443,4 +443,42 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 	    query.setParameter("cadreRegUserId", cadreRegUserId);
 	    return (Long) query.uniqueResult();
 	}
+	
+	public List<Object[]> getLocationWiseIssuesCount(String issueType,Long issueStatusId,Long stateId,Date fromDate,Date toDate){
+		StringBuilder sb=new StringBuilder();
+	     	sb.append("select count(distinct model.cadreRegIssueId)," +
+	     		" model.userAddress.district.districtId,model.userAddress.district.districtName" +
+	     		" model.userAddress.constituency.constituencyId,model.userAddress.constituency.name" +
+	     		" from CadreRegIssue model " +
+	     		" where model.locationScopeId = 4");
+	     if(issueType != null)
+	    	 sb.append(" and model.cadreRegIssueType.cadreRegIssueTypeId = :issueType");
+	     if(issueStatusId != null && issueStatusId.longValue() > 0l)
+	    	 sb.append(" and model.cadreRegIssueStatus.cadreRegIssueStatusId = :issueStatusId");
+	     if(stateId != null && stateId.longValue() == 1l){
+				sb.append("  and model.userAddress.district.districtId between 11 and 23 ");
+			}else if(stateId != null && stateId.longValue() == 36l){
+				sb.append(" and  model.userAddress.district.districtId between 1 and 10 ");
+			}else if(stateId != null && stateId.longValue() == 0l){
+				sb.append(" and model.userAddress.state.stateId = 1");
+			}
+	     if(fromDate !=null && toDate != null)
+	    	 sb.append(" and model.updatedTime between :fromDate and :toDate");
+	     sb.append(" group by model.userAddress.constituency.constituencyId,model.userAddress.district.districtId");
+	     
+	     Query query = getSession().createQuery(sb.toString());
+	     if(issueType != null)
+	    	query.setParameter("issueType", issueType);
+	     if(issueStatusId != null && issueStatusId.longValue() > 0l)
+	     	query.setParameter("issueStatusId", issueStatusId);
+	     if(stateId != null && stateId.longValue() > 0l)
+	    	 query.setParameter("stateId", stateId);
+	     if(fromDate !=null && toDate != null){
+	    	 query.setParameter("fromDate", fromDate);
+	    	 query.setParameter("toDate", toDate);
+	     }
+		 
+		return query.list();
+		
+	}
 }
