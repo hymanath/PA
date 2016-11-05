@@ -17,8 +17,11 @@
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
-<style>
-#statewiseoverviewPanel{display:none;}
+<style type="text/css">
+.eventsheader , #statewiseoverviewPanel
+{
+	display:none;
+}
 </style>
 </head>
 <body>  
@@ -2393,28 +2396,110 @@
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-7">
+						<div class="col-md-9 col-sm-9 col-xs-12 emnHead">
 							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/attendance.png" class="iconClass">
-								electronic media news - <small id="attendanceId" class="text-muted">TODAY (28-10-2016)</small>
+								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
+								electronic media news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
 							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-5">
+						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1">
 							<span class="emnSetIcon pull-right">
 								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 							</span>
 							<span class="notesIconEmn pull-right">
 								<i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" data-placement="top" title="" onclick="displayDashboardCommentsForAttendance(7);" data-original-title="Notes"></i>
 							</span>
-							<span class="emnIconExpand pull-right mainExpandCls">
+							<span class="emnIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:110px;">
-								<input id="dateRangeIdForEmn" style="width:90px" class="form-control" type="text">
+							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:200px;">
+								<input id="dateRangeIdForEmn" style="width:180px" class="form-control" type="text">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</span>
+						</div>
+					</div>
+					<div class="emnBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
+						<i class="glyphicon glyphicon-remove emnSetClose pull-right"></i>
+						<div class="row">
+							<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+								<ul class="nav nav-tabs navTabsSettings" role="tablist">
+									<li role="presentation" class="active text-capital"><a href="#EditionsEmn" aria-controls="EditionsEmn" role="tab" data-toggle="tab">News Channels</a></li>
+									<li role="presentation" class="text-capital"><a href="#impactScopeEmn" aria-controls="impactScopeEmn" role="tab" data-toggle="tab">Impact Scope</a></li>
+								</ul>
+							</div>
+							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+								<div class="tab-content navTabsSettingsContent">
+									<div role="tabpanel" class="tab-pane active" id="EditionsEmn">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+										<hr style ="margin-bottom:0px;" />
+										<div class="">
+											<ul class="settingsUlEmn" id="emnNewsChannelsUlId"></ul>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="impactScopeEmn">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
+										<hr style ="margin-bottom:0px;" />
+										<div class="">
+											<ul class="settingsUlEmn">
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="0" id="impactSelectAllIdEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="1" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
+													</label>
+												</li>
+												<li>												
+													<label class="checkbox-inline">
+														<input type="checkbox" value="2" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
+													</label>	
+												</li>	
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="3" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+													<input type="checkbox" value="4" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
+													</label>
+												</li>	
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="5" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="6" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Panchayat</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="8" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Municipality/Corporation</h5></div>
+													</label>	
+												</li>	
+											</ul>
+										</div>
+									</div>
+								</div>
+							  
+							</div>
+							<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+								<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
+							</div>
 						</div>
 					</div>
                 </div>
@@ -2429,8 +2514,115 @@
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-12 moreBlockEMN" style="display:none;">
 							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="col-md-7 col-xs-12 col-sm-7">
+									<h4 class="panel-title">
+										<span class="headingColor text-capital">media programs on party</span>
+									</h4>
+								</div>
+								<div class="col-md-5 col-xs-12 col-sm-5">
+									<ul class="activeUlCls list-inline emnMediaPrograms pull-right">
+										<li attr_searchType="top" class="active">Top</li>
+										<li attr_searchType="poor">Poor</li>
+									</ul>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="pull-right">
+										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="program" checked />Program Wise</label>
+										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>
+									</div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<div id="electronicMediaPrograms"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 moreBlockEMN">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreEmnBlocksIcon" title="Click here for more" style="display: inline;"></i>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 selectEmnCate">
+							<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
+								<li class="text-capital newsComparisonHeading">Comparison</li>
+								<li class="text-capital a viewsLiClassEmn" id="comparisonPartyLiIdEmn" attr_div_id="comparisonPartyMainDivId">Party</li>
+								<li class="text-capital a viewsLiClassEmn" id="comparisonGovernmentLiIdEmn" attr_div_id="comparisonGovernamentMainDivId">Government</li>
+							</ul>
+							
+							<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
+								<li class="text-capital newsComparisonHeading">Detailed</li>
+								<li class="active text-capital a viewsLiClassEmn" id="detailedPartyLiIdEmn" attr_div_id="detailedPartyMainDivId">Party</li>
+								<li class="text-capital a viewsLiClassEmn" id="detailedGovernmentLiIdEmn" attr_div_id="detailedGovernamentMainDivId">Government</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row m_top20 detailedPartyEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">District Wise - Programs Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="districtWiseProgramsOvrViewEMN"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4><span class="headingColor text-capitalize">Parties Vs Channels</span></h4>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<ul class="list-inline activeUlCls distWiseProgramOvrView pull-right">
+												<li class="active" attr_type="party">Parties District Wise</li>
+												<li attr_type="channel">Tv Channels Wise</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div id="partiesVsChannelsEMN"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row m_top20 detailedGovtEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="problemsDetailedOvrViewEMN"></div>
+									<div id="stateWiseEMNRelatedToProblem" class="m_top20"></div>
+									<div id="emmDetailedGovtDistDetailedOverview"></div>
+									<div id="districtWiseEMNRelatedToProblem"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row m_top20 compPartyEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row m_top20 compGovtEmn newEmnHideCls" >
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									
 								</div>
 							</div>
 						</div>
@@ -2906,6 +3098,7 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
+<!--<script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>-->
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
@@ -3030,7 +3223,9 @@
         getToursBasicOverviewCountDetails();
 		//getDesigWiseMemberDtls();  
         //getToursBasicOverviewCountDetails();
-        
+		/*Electronic Media Calls*/
+       // getEMMDetailedPartyDistrictWiseProgramsOverview();
+		//getAllTvChannels();
 	}
 	
 	

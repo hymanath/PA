@@ -53,6 +53,10 @@ table.dataTable thead .sorting , table.dataTable thead .sorting_desc , table.dat
 {
 	background-image:none
 }
+.panel
+{
+	margin-bottom:00px;
+}
 /* Loader */
 .spinner {
   margin: 30px auto;
@@ -226,22 +230,26 @@ table.dataTable tr.odd {
 .tableCadreDash
 {
 	border-collapse:unset;
-	border-spacing:0px 10px ;
-	text-align:center;
+	border-spacing:0px 2px ;
+	text-align:left;
+	font-size:16px !important;
 }
 .tableCadreDash thead th
 {
 	border-bottom:0px !important;
 	text-align:center;
+	background-color:#999999;
 }
-
 .tableCadreDash tr td
 {
-	border:1px solid #ADD8E6 !important;
-	
+	border:1px solid #ddd !important;
+	background-color:#999999;
+	padding:2px 6px!important;
+	color:#fff !important;
+	font-size:16px !important;
+	font-weight:bold;
+	border-radius:8px;
 }
-
-
 .text-blue{color:#0044CC}
 .text_color{color: #999999;}
 .text-muted {
@@ -260,7 +268,7 @@ table.dataTable tr.odd {
 		</div>
 		<!-- Title Row -->
 		<div class="row m_top10" id="fadeInDown">
-			<div class="col-md-12 col-xs-12 col-sm-12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
+			<div class="col-md-12 col-xs-12 col-sm-12 well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
 			</div>
 		</div><!-- Title Row End-->
@@ -274,16 +282,15 @@ table.dataTable tr.odd {
 						<tbody>
 						    <tr class="">
 								<td>
-									<img style="margin:auto;display:block" src="images/TS.png">
-									<h3 class="text-center" style="margin:auto;">TS</h3>
+									<h2 style="display:inline-block;">TS</h2>
+									<img style="display:inline-block;width:110px;" class="pull-right" src="images/TS.png">
 								</td>
 								<td><div id="tsConstiCountId"><h2>119</h2>
-									<p style="font-size:12px;">Total Constituencies</p></div>
+									<p>Registration Started Constituencies</p></div>
 								</td>
-								<td><p><span class="text-red">2014 </span></p><div id="ts2014NewCountId"><h2 class="text_color f_26">794427</h2></div></td>
+								<td><div id="ts2014NewCountId"><h2>794427</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>
 								<td>
-									<p><span class="text-blue">2016 </span></p>
-									<div id="ts2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+									<div id="ts2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 								</td>
 								<td>
 									<p><span class="text-orange">Total - [%] </span></p>
@@ -293,12 +300,12 @@ table.dataTable tr.odd {
 							</tr>
 							<tr class="">
 								<td>
-									<img style="margin:auto;display:block" src="images/AP.png">
-									<h3 class="text-center" style="margin:auto;">AP</h3>
+									<h2 style="display:inline-block;">AP</h2>
+									<img style="display:inline-block;width:110px;" class="pull-right" src="images/AP.png">
 								</td>
-								<td><div id="apConstiCountId"><h2>175</h2><p style="font-size:12px;">Total Constituencies</p></div></td>
-								<td><p><span class="text-red">2014 </span></p><div id="ap2014NewCountId"><h2 class="text_color f_26">4716975</h2></div></td>
-								<td><p><span class="text-blue">2016 </span></p><div id="ap2016CountId" class="text-muted"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
+								<td><div id="apConstiCountId"><h2>175</h2><p>Registration Started Constituencies</p></div></td>
+								<td><div id="ap2014NewCountId"><h2>4716975</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>
+								<td><div id="ap2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 								<td><p><span class="text-orange">Total - [%] </span></p><div id="ap2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							</tr>
 							
@@ -314,29 +321,34 @@ table.dataTable tr.odd {
 				<div class="row">
 					<div class="col-md-6 col-xs-12 col-sm-6">
 						<div class="panel panel-default">
-							<div class="panel-heading" style="background-color:#c8d7f4">
+							<div class="panel-heading" style="background-color:#EAEAEA;border-bottom:0px">
 								<h4 class="panel-title">TODAY</h4>
 							</div>
-							<div class="panel-body">
+							<div class="panel-body" style="background-color:#EAEAEA">
 								<div class="row">
 									<div id="todayRegisCount">
 										<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
 									</div>
 								</div>
-								
 							</div>
+						</div>
+						<div id="todayApTgRegisCount" class="row ">
+							<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
 						</div>
 					</div>
 					<div class="col-md-6 col-xs-12 col-sm-6">
 						<div class="panel panel-default">
-							<div class="panel-heading" style="background-color:#eae798">
+							<div class="panel-heading" style="background-color:#DBF1E4;border-bottom:0px">
 								<h4 class="panel-title">OVER ALL</h4>
 							</div>
-							<div class="panel-body">
+							<div class="panel-body" style="background-color:#DBF1E4">
 								<div id="totalRegisCount">
 									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
 								</div>
 							</div>
+						</div>
+						<div id="totalApTgRegisCount" class="row">
+							<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
 						</div>
 					</div>
 				</div>
@@ -344,34 +356,6 @@ table.dataTable tr.odd {
 			</div>
 			
 			
-			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
-				<div class="row">
-					<div class="col-md-6 col-xs-12 col-sm-6">
-						<div class="panel panel-default">
-							<div class="panel-heading" style="background-color:#c8d7f4">
-								<h4 class="panel-title">TODAY</h4>
-							</div>
-							<div class="panel-body">
-								<div id="todayApTgRegisCount" class="row ">
-									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-xs-12 col-sm-6">
-						<div class="panel panel-default">
-							<div class="panel-heading" style="background-color:#eae798">
-								<h4 class="panel-title">OVER ALL</h4>
-							</div>
-							<div class="panel-body">
-								<div id="totalApTgRegisCount" class="row">
-									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 			<!--<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
 				    <table class="table table-bordered border-radius-0 mb-0 membercount" style="background:#ffffff;">
 						<tbody>
@@ -584,7 +568,8 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					if(typeId == 'total'){
 						var str='';
 						var str1='';
-						str+='<h2 class="text-center"><small style="color:#d3d3d3">Total</small>&nbsp;&nbsp;'+result[0].count2016+'</h2>';
+						str+='<h2>'+result[0].count2016+'</h2>';
+						str+='<p>Members Registered in <span class="text-blue">2016</span></p>';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-top:1px solid #ddd;padding-top:10px">';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right: 1px solid #d3d3d3;">';
 						str+='<p class="text-center text-muted">Renewal</p>';
@@ -598,7 +583,8 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						
 						str+='</div>';
 						
-						str1+='<h2 class="text-center"><small style="color:#d3d3d3">Total</small>&nbsp;&nbsp;'+result[1].count2016+'</h2>';
+						str1+='<h2>'+result[1].count2016+'</h2>';
+						str1+='<p>Members Registered in <span class="text-blue">2016</span></p>';
 						str1+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-top:1px solid #ddd;padding-top:10px">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right: 1px solid #d3d3d3;">';
 						str1+='<p class="text-center text-muted">Renewal</p>';
@@ -619,11 +605,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						$("#ts2016CountId").html(str1)
 						$("#ts2016PrecCountId").html('<h2>'+result[1].percentage+'</h2>');
 						var overalltotal = result[0].count2016+result[1].count2016;
-						$("#totalApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center"> TOTAL  </h4></strong><h3 class="text-center" style="margin:0px">'+overalltotal+'</h3><span class="text-skyblue"></span></div><div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center"> AP  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div><div  class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div>');
+						$("#totalApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center"> TOTAL  </h4></strong><h3 class="text-center" style="margin:0px">'+overalltotal+'</h3><span class="text-skyblue"></span></div></div><div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center"> AP  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div></div><div  class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div></div>');
 						
 					}else if(typeId == 'today'){
 						var todaytotal = result[0].count2016+result[1].count2016;
-						$("#todayApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">  TOTAL </h4></strong><h3 class="text-center" style="margin:0px"> '+todaytotal+'</h3></div><div class="col-md-4 col-xs-12 col-sm-6 mytooltip text-center" ><strong><h4 class="panel-title text-center">  AP </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div><div  class="col-md-4 col-xs-12 col-sm-6 text-center mytooltip" ><strong><h4 class="panel-title text-center">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div>');
+						$("#todayApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center">  TOTAL </h4></strong><h3 class="text-center" style="margin:0px"> '+todaytotal+'</h3></div></div><div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center">  AP </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div></div><div  class="col-md-4 col-xs-12 col-sm-12 text-center mytooltip m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div></div>');
 						
 					
 					}
@@ -651,118 +637,121 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						
 					
 					str+='<table class="table tableCadreDash">';
-						str+='<thead>';
+						/* str+='<thead>';
 							str+='<th></th>';
 							str+='<th>New</th>';
 							str+='<th>Renewal</th>';
 							str+='<th>Total</th>';
-						str+='</thead>';
+						str+='</thead>'; */
 						str+='<tbody style="background:#fff;">';
 						str+='<tr>';
-							str+='<td>Tab</td>';
-							if(result[0].tabNew == null || result[0].tabNew == 0){
-								str+='<td> - </td>';
+							str+='<td>Tab :&nbsp;&nbsp;&nbsp;';
+							if(result[0].tabTotal == null || result[0].tabTotal == 0){
+								str+='0';
 							}else{
-								str+='<td>'+result[0].tabNew+'</td>';
+								str+=''+result[0].tabTotal+'';
+							}
+							if(result[0].tabNew == null || result[0].tabNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].tabNew+')';
 							}
 							if(result[0].tabRenewal == null || result[0].tabRenewal == 0){
-								str+='<td> - </td>';
+								str+='(R - 0)';
 							}else{
-								str+='<td>'+result[0].tabRenewal+'</td>';
-							}
-							if(result[0].tabTotal == null || result[0].tabTotal == 0){
-								str+='<td> - </td>';
-							}else{
-								str+='<td>'+result[0].tabTotal+'</td>';
+								str+='(R - '+result[0].tabRenewal+')';
 							}
 							
+							str+='</td>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<td>Web</td>';
-							if(result[0].webNew == null || result[0].webNew == 0){
-								str+='<td> - </td>';
+							str+='<td>Web :&nbsp;&nbsp;&nbsp;';
+							if(result[0].webTotal == null || result[0].webTotal == 0){
+								str+='0';
 							}else{
-								str+='<td>'+result[0].webNew+'</td>';
+								str+=''+result[0].webTotal+'';
+							}
+							if(result[0].webNew == null || result[0].webNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].webNew+')';
 							}
 							if(result[0].webRenewal == null || result[0].webRenewal == 0){
-								str+='<td> - </td>';
+								str+='(R - 0)';
 							}else{
-								str+='<td>'+result[0].webRenewal+'</td>';
-							}
-							if(result[0].webTotal == null || result[0].webTotal == 0){
-								str+='<td> - </td>';
-							}else{
-								str+='<td>'+result[0].webTotal+'</td>';
+								str+='(R - '+result[0].webRenewal+')';
 							}
 							
+							str+='</td>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<td>Partyoffice(Hyd)</td>';
-							if(result[0].partyOfcHydNew == null || result[0].partyOfcHydNew == 0){
-								str+='<td> - </td>';
+							str+='<td>Party Office(Hyd) :&nbsp;&nbsp;&nbsp;';
+							if(result[0].partyOfcHydTotal == null || result[0].partyOfcHydTotal == 0){
+								str+='-';
 							}else{
-								str+='<td>'+result[0].partyOfcHydNew+'</td>';
+								str+=''+result[0].partyOfcHydTotal+'';
+							}
+							if(result[0].partyOfcHydNew == null || result[0].partyOfcHydNew == 0){
+								str+='(N - )';
+							}else{
+								str+='(N - '+result[0].partyOfcHydNew+')';
 							}
 							if(result[0].partyOfcHydRenewal == null || result[0].partyOfcHydRenewal == 0){
-								str+='<td> - </td>';
+								str+='(R - )';
 							}else{
-								str+='<td>'+result[0].partyOfcHydRenewal+'</td>';
-							}
-							if(result[0].partyOfcHydTotal == null || result[0].partyOfcHydTotal == 0){
-								str+='<td> - </td>';
-							}else{
-								str+='<td>'+result[0].partyOfcHydTotal+'</td>';
+								str+='(R - '+result[0].partyOfcHydRenewal+')';
 							}
 							
-							
+							str+='</td>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<td>Partyoffice(Vij)</td>';
-							if(result[0].partyOfcVijNew == null || result[0].partyOfcVijNew == 0){
-								str+='<td> - </td>';
+							str+='<td>Partyoffice(Vij) : &nbsp;&nbsp;&nbsp;';
+							if(result[0].partyOfcVijTotal == null || result[0].partyOfcVijTotal == 0){
+								str+='0';
 							}else{
-								str+='<td>'+result[0].partyOfcVijNew+'</td>';
+								str+=''+result[0].partyOfcVijTotal+'';
+							}
+							if(result[0].partyOfcVijNew == null || result[0].partyOfcVijNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].partyOfcVijNew+')';
 							}
 							if(result[0].partyOfcVijRenewal == null || result[0].partyOfcVijRenewal == 0){
-								str+='<td> - </td>';
+								str+='(R - 0)';
 							}else{
-								str+='<td>'+result[0].partyOfcVijRenewal+'</td>';
-							}
-							if(result[0].partyOfcVijTotal == null || result[0].partyOfcVijTotal == 0){
-								str+='<td> - </td>';
-							}else{
-								str+='<td>'+result[0].partyOfcVijTotal+'</td>';
+								str+='(R - '+result[0].partyOfcVijRenewal+')';
 							}
 							
-							
+							str+='</td>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<td>Online</td>';
-							if(result[0].onlineNew == null || result[0].onlineNew == 0){
-								str+='<td> - </td>';
+							str+='<td>Online : &nbsp;&nbsp;&nbsp;';
+							if(result[0].onlineTotal == null || result[0].onlineTotal == 0){
+								str+='0';
 							}else{
-								str+='<td>'+result[0].onlineNew+'</td>';
+								str+=''+result[0].onlineTotal+'';
+							}
+							if(result[0].onlineNew == null || result[0].onlineNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].onlineNew+')';
 							}
 							if(result[0].onlineRenewal == null || result[0].onlineRenewal == 0){
-								str+='<td> - </td>';
+								str+='(R - 0)';
 							}else{
-								str+='<td>'+result[0].onlineRenewal+'</td>';
-							}
-							if(result[0].onlineTotal == null || result[0].onlineTotal == 0){
-								str+='<td> - </td>';
-							}else{
-								str+='<td>'+result[0].onlineTotal+'</td>';
+								str+='(R - '+result[0].onlineRenewal+')';
 							}
 							
+							str+='</td>';
 						str+='</tr>';
 						str+='</tbody>';
 					str+='</table>';
 					str+='</div>';
 					str+='</div>';
 					   str+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
-					   str+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px;">';
+					   str+='<img src="images/icons/arrowBrace.png" class="img-responsive" style="margin-top: 10px;">';
 					   str+='</div>';
-					   str+='<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top: 100px;">';
+					   str+='<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top: 10px;padding-left:0px;padding-right:0px">';
 					   str+='<h2 class="f_26">'+todayCount+'</h2>';
 					   str+='<p>Members Registered <br>';
 					   str+='<span style="font-weight:bold;">Today</span>';
@@ -774,110 +763,112 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str1+='<div class="col-md-8 col-xs-12 col-sm-8">';
 					str1+='<div class="">';
 					str1+='<table class="table tableCadreDash">';
-						str1+='<thead>';
+						/* str1+='<thead>';
 							str1+='<th></th>';
 							str1+='<th>New</th>';
 							str1+='<th>Renewal</th>';
 							str1+='<th>Total</th>';
-						str1+='</thead>';
+						str1+='</thead>'; */
 						str1+='<tbody style="background:#fff;">';
 						str1+='<tr>';
-							str1+='<td>Tab</td>';
-							if(result[1].tabNew == null || result[1].tabNew == 0){
-								str1+='<td> - </td>';
+							str1+='<td>Tab :&nbsp;&nbsp;&nbsp;';
+							if(result[1].tabTotal == null || result[1].tabTotal == 0){
+								str1+='0';
 							}else{
-								str1+='<td>'+result[1].tabNew+'</td>';
+								str1+=''+result[1].tabTotal+'';
+							}
+							if(result[1].tabNew == null || result[1].tabNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].tabNew+')';
 							}
 							if(result[1].tabRenewal == null || result[1].tabRenewal == 0){
-								str1+='<td> - </td>';
+								str1+='(R - 0)';
 							}else{
-								str1+='<td>'+result[1].tabRenewal+'</td>';
-							}
-							if(result[1].tabTotal == null || result[1].tabTotal == 0){
-								str1+='<td> - </td>';
-							}else{
-								str1+='<td>'+result[1].tabTotal+'</td>';
+								str1+='(R - '+result[1].tabRenewal+')';
 							}
 							
+							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
-							str1+='<td>Web</td>';
-							if(result[1].webNew == null || result[1].webNew == 0){
-								str1+='<td> - </td>';
+							str1+='<td>Web :&nbsp;&nbsp;&nbsp;';
+							if(result[1].webTotal == null || result[1].webTotal == 0){
+								str1+='0';
 							}else{
-								str1+='<td>'+result[1].webNew+'</td>';
+								str1+=''+result[1].webTotal+'';
+							}
+							if(result[1].webNew == null || result[1].webNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].webNew+')';
 							}
 							if(result[1].webRenewal == null || result[1].webRenewal == 0){
-								str1+='<td> - </td>';
+								str1+='(R - 0)';
 							}else{
-								str1+='<td>'+result[1].webRenewal+'</td>';
-							}
-							if(result[1].webTotal == null || result[1].webTotal == 0){
-								str1+='<td> - </td>';
-							}else{
-								str1+='<td>'+result[1].webTotal+'</td>';
+								str1+='(R - '+result[1].webRenewal+')';
 							}
 							
-							
+							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
-							str1+='<td>Partyoffice(Hyd)</td>';
-							if(result[1].partyOfcHydNew == null || result[1].partyOfcHydNew == 0){
-								str1+='<td> - </td>';
+							str1+='<td>Party Office(Hyd) :&nbsp;&nbsp;&nbsp;';
+							if(result[1].partyOfcHydTotal == null || result[1].partyOfcHydTotal == 0){
+								str1+='-';
 							}else{
-								str1+='<td>'+result[1].partyOfcHydNew+'</td>';
+								str1+=''+result[1].partyOfcHydTotal+'';
+							}
+							if(result[1].partyOfcHydNew == null || result[1].partyOfcHydNew == 0){
+								str1+='(N - )';
+							}else{
+								str1+='(N - '+result[1].partyOfcHydNew+')';
 							}
 							if(result[1].partyOfcHydRenewal == null || result[1].partyOfcHydRenewal == 0){
-								str1+='<td> - </td>';
+								str1+='(R - )';
 							}else{
-								str1+='<td>'+result[1].partyOfcHydRenewal+'</td>';
-							}
-							if(result[1].partyOfcHydTotal == null || result[1].partyOfcHydTotal == 0){
-								str1+='<td> - </td>';
-							}else{
-								str1+='<td>'+result[1].partyOfcHydTotal+'</td>';
+								str1+='(R - '+result[1].partyOfcHydRenewal+')';
 							}
 							
-							
+							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
-							str1+='<td>Partyoffice(Vij)</td>';
-							if(result[1].partyOfcVijNew == null || result[1].partyOfcVijNew == 0){
-								str1+='<td> - </td>';
+							str1+='<td>Partyoffice(Vij) : &nbsp;&nbsp;&nbsp;';
+							if(result[1].partyOfcVijTotal == null || result[1].partyOfcVijTotal == 0){
+								str1+='0';
 							}else{
-								str1+='<td>'+result[1].partyOfcVijNew+'</td>';
+								str1+=''+result[1].partyOfcVijTotal+'';
+							}
+							if(result[1].partyOfcVijNew == null || result[1].partyOfcVijNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].partyOfcVijNew+')';
 							}
 							if(result[1].partyOfcVijRenewal == null || result[1].partyOfcVijRenewal == 0){
-								str1+='<td> - </td>';
+								str1+='(R - 0)';
 							}else{
-								str1+='<td>'+result[1].partyOfcVijRenewal+'</td>';
-							}
-							if(result[1].partyOfcVijTotal == null || result[1].partyOfcVijTotal == 0){
-								str1+='<td> - </td>';
-							}else{
-								str1+='<td>'+result[1].partyOfcVijTotal+'</td>';
+								str1+='(R - '+result[1].partyOfcVijRenewal+')';
 							}
 							
-							
+							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
-							str1+='<td>Online</td>';
-							if(result[1].onlineNew == null || result[1].onlineNew == 0){
-								str1+='<td> - </td>';
+							str1+='<td>Online : &nbsp;&nbsp;&nbsp;';
+							if(result[1].onlineTotal == null || result[1].onlineTotal == 0){
+								str1+='0';
 							}else{
-								str1+='<td>'+result[1].onlineNew+'</td>';
+								str1+=''+result[1].onlineTotal+'';
+							}
+							if(result[1].onlineNew == null || result[1].onlineNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].onlineNew+')';
 							}
 							if(result[1].onlineRenewal == null || result[1].onlineRenewal == 0){
-								str1+='<td> - </td>';
+								str1+='(R - 0)';
 							}else{
-								str1+='<td>'+result[1].onlineRenewal+'</td>';
+								str1+='(R - '+result[1].onlineRenewal+')';
 							}
-							if(result[1].onlineTotal == null || result[1].onlineTotal == 0){
-								str1+='<td> - </td>';
-							}else{
-								str1+='<td>'+result[1].onlineTotal+'</td>';
-							}
-						
+							
+							str1+='</td>';
 						str1+='</tr>';
 						str1+='</tbody>';
 					str1+='</table>';
@@ -885,9 +876,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str1+='</div>';
 
 					str1+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
-					str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 100px;">';
+					str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 10px;" class="img-responsive">';
 					str1+='</div>';
-					str1+='<div class="col-md-3 col-xs-12 col-ms-3" style="margin-top: 100px;">';
+					str1+='<div class="col-md-3 col-xs-12 col-ms-3" style="margin-top: 10px;padding-left:0px;padding-right:0px">';
 					str1+='<h2 class="f_26">'+totalCount+'</h2>';
 					str1+='<p>Members Registered <br>';
 					str1+='<span style="font-weight:bold;">Total</span>';
