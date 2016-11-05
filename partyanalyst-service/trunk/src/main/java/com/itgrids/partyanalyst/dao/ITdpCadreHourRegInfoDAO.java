@@ -11,4 +11,6 @@ public interface ITdpCadreHourRegInfoDAO extends GenericDao<TdpCadreHourRegInfo,
 	
 	public List<Object[]> getDateHourWiseTdpCadreCount(Date date , Long stateId);
 	public int deleteAllRecords(Date fromDate);
+	public int insertCadreDataHourWiseToday();
+	public int insertCadreDataHourWiseOverall();
 }
