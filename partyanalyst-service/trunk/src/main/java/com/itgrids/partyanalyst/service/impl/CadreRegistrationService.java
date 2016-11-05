@@ -13984,19 +13984,27 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				endDate = new DateUtilService().getCurrentDateAndTime();
 			}
 			//0.tabUserId,1.name,2.mobileNo,3.lattitude,4.longitude,5.surveyTime
-			List<Object[]> latestObj = tdpCadreDAO.getLatestLattitudeLangitudeOfTabUser(inputVO.getId(),startDate,endDate);
-			if(latestObj !=null && latestObj.size()>0){
-				for(Object[] obj : latestObj) {					
-					GISUserTrackingVO Vo= new GISUserTrackingVO();
-					
-					Vo.setId(obj[0] !=null ? (Long)obj[0]:0l);
-					Vo.setName(obj[1] !=null ? obj[1].toString():"");
-					Vo.setMobileNo(obj[2] !=null ? obj[2].toString():"");
-					Vo.setLattitude(obj[3] !=null ? obj[3].toString():"");
-					Vo.setLongitude(obj[4] !=null ? obj[4].toString():"");
-					Vo.setSurveyTime(obj[5] !=null ? obj[5].toString():"");
-					
-					finalList.add(Vo);
+			List<Object[]> latestOb1j = tdpCadreDAO.getLatestLattitudeLangitudeOfTabUser(inputVO.getId(),startDate,endDate);
+			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+			if(latestOb1j !=null && latestOb1j.size()>0){
+				for(Object[] obj : latestOb1j) {		
+					tdpCadreIdsList.add(obj[0] !=null ? (Long)obj[0]:0l);
+				}
+				
+				List<Object[]> latestObj =  tdpCadreDAO.getTabUserInfoDetailsByTdpCadreIds(tdpCadreIdsList);
+				if(latestObj !=null && latestObj.size()>0){
+					for(Object[] obj : latestObj) {	
+						GISUserTrackingVO Vo= new GISUserTrackingVO();
+						
+						Vo.setId(obj[0] !=null ? (Long)obj[0]:0l);
+						Vo.setName(obj[1] !=null ? obj[1].toString():"");
+						Vo.setMobileNo(obj[2] !=null ? obj[2].toString():"");
+						Vo.setLattitude(obj[3] !=null ? obj[3].toString():"");
+						Vo.setLongitude(obj[4] !=null ? obj[4].toString():"");
+						Vo.setSurveyTime(obj[5] !=null ? obj[5].toString():"");
+						
+						finalList.add(Vo);
+					}
 				}
 			}			
 			
