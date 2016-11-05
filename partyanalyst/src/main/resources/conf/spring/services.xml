@@ -2634,6 +2634,8 @@
           <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
           <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO" />
           <property name="stateDAO" ref="stateDAO" />
+          <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
+          <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
      </bean>
     <bean name="ctpCasteReportService"  class="com.itgrids.partyanalyst.service.impl.CtpCasteReportService">
      
