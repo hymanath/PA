@@ -316,7 +316,7 @@
 										<div class="col-md-6 col-xs-12 col-sm-6 settingsBlockCadre">  
 											<h4>Andhra Pradesh</h4>
 											<ul class="activeUlCls list-inline pull-right m_top20" style="margin-right: 12px !important;display:inline-block">
-												<li onclick="settingsCadreFunction()"  id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
+												<li id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
 											</ul>
                                         	<ul class="activeUlCls list-inline  constituencyUlCls m_top20">
                                             	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All">All - 0</li>
@@ -3044,7 +3044,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title" id="locationWiseCadreReportHeadingId">CONSTITUENCY WISE REPORT</h4> 
+	    <h4 class="modal-title" id="locationWiseCadreReportHeadingId"></h4> 
       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">

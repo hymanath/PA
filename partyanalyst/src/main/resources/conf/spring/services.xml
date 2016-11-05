@@ -3624,7 +3624,9 @@
 		 <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 		 <property name="tabUserEnrollmentInfoSourceDAO" ref="tabUserEnrollmentInfoSourceDAO" />
 		 <property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
-		 <property name="constituencyDAO" ref="constituencyDAO" />
+	     <property name="constituencyDAO" ref="constituencyDAO" />
+		 <property name="constituencyTehsilDAO" ref="constituencyTehsilDAO" />
+		 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		  <property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
 		 
 	</bean>

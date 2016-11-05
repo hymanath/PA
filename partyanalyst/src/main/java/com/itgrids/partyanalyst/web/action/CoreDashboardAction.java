@@ -3030,4 +3030,23 @@ public String getLocationWiseCadreInfoTodayDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getMndlMncpalityTodayStatedNotStartedDetails(){
+	try {
+		LOG.info("Entered into getMndlMncpalityTodayStatedNotStartedDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long stateId = jObj.getLong("stateId");
+		List<Long> locationList = new ArrayList<Long>();
+		JSONArray locationIdsArr=jObj.getJSONArray("locationIdsArr");
+		if(locationIdsArr!=null &&  locationIdsArr.length()>0){
+			for( int i=0;i<locationIdsArr.length();i++){
+				locationList.add(Long.valueOf(locationIdsArr.getString(i))); 
+			}
+		}
+		cadreDtlsList = coreDashboardCadreRegistrationService.getMandalMuncipalityStatedAndNotStatedDetails(stateId,locationList);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getMndlMncpalityTodayStatedNotStartedDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
 }

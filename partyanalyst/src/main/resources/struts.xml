@@ -14512,6 +14512,11 @@
 		<result type="json" name="success">
 			<param name="root">listOfListOfCadreDashboardVO</param>  
 		</result>
-	</action> 
+	</action>   
+	<action name="getMndlMncpalityTodayStatedNotStartedDetailsAction" class="coreDashboardAction"  method="getMndlMncpalityTodayStatedNotStartedDetails">
+			<result type="json" name="success">
+			<param name="root">cadreDtlsList</param>
+		</result>
+	</action>
 </package>
 </struts>

@@ -791,18 +791,15 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 							str1+='<td>';
 							str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5></a>';
 							 str1+='<h5> Started Constituencies</h5>';
-								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
-									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
-								//}
-								
+							 
+							 str1+='<a style="cursor:pointer;"><h5 attr_state_id="36"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5></a>';
+							 str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
 							str1+='</td>';
 							str1+='<td>';
 							str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5></a>';
 							  str1+='<h5> Yet to start Constituencies</h5>';
-								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
-									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
-								//}
-								
+							str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls ">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5></a>';
+								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
 							str1+='</td>'
 						str1+='</tr>';
 					str1+='</table>';
@@ -870,17 +867,15 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 							str1+='</td>'; */
 							str1+='<td>';
 								str1+='<a style="cursor:pointer;"><h5 attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5></a>';
-								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
-									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
-								//}
 								str1+='<h5>Started<br> Constituencies</h5>';
+								str1+='<a style="cursor:pointer;"><h5 attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5></a>';
+								str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<a style="cursor:pointer;"><h5 attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5></a>';
-								//if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
-									//str1+='- <small class="text-muted">'+result.constStartedCountPer+'%</small></h5>';
-								//}
+								str1+='<a style="cursor:pointer;"><h5 attr_state_id="1" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls ">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5></a>';
 								str1+='<h5>Yet To Start<br> Constituencies</h5>';
+								str1+='<a style="cursor:pointer;"><h5 attr_state_id="1" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls ">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5></a>';
+								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
 							str1+='</td>';
 						str1+='</tr>';
 					str1+='</table>';
@@ -990,7 +985,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 			   str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
 			   str+='<td>'+result.responseData[i].renewalCount+'</td>';
 			   if(result.responseData[i].cadreCount2014 > 0){
-				   var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);
+				   var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);//santosh
 				   str+='<td>'+precent+'</td>';
 			   }else{
 				   str+='<td>0</td>';
@@ -3761,9 +3756,12 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			locationIdsArr = constituencyIds.split(",");
 			reportType="NotStarted";
 		} 
-		 getLocationWiseCadreInfoTodayDetails(stateId,locationIdsArr,reportType);
+		var locationType="Constituency";
+		 getLocationWiseCadreInfoTodayDetails(stateId,locationIdsArr,reportType,locationType);
 	});
-	function getLocationWiseCadreInfoTodayDetails(stateId,locationIdsArr,reportType){
+
+	function getLocationWiseCadreInfoTodayDetails(stateId,locationIdsArr,reportType,locationType){
+		$("#locationWiseCadreReportHeadingId").html("CONSTITUENCY WISE REPORT");
 		$("#locationWiseCadreReportModalId").modal("show");
 		$("#locationWiseCadreReportDivId").html(' ');
 		$("#locationWiseProcessImgReport").show();
@@ -3773,28 +3771,69 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			
 		};
 		$.ajax({          
-			type : 'GET',       
+			type : 'POST',       
 			url : 'getLocationWiseCadreInfoTodayDetailsAction.action',  
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
 			$("#locationWiseProcessImgReport").hide();
 			if(result != null && result.length > 0){
-				buildLocationWiseReport(result,reportType);
+				buildLocationWiseReport(result,reportType,locationType);
 			}else{
 			   $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE.");	
 			}
 		});
 	} 
-	function buildLocationWiseReport(result,reportType){
+$(document).on("click",".getManalMuncipalityCls",function(){
+		var stateId = $(this).attr("attr_state_id");
+		var mandalMuncipalityIds = $(this).attr("attr_location_ids");
+		var reportType="Started";
+		var mandalMuncipalityIdsArr=[];
+		 if(mandalMuncipalityIds != null && mandalMuncipalityIds != 0){
+			mandalMuncipalityIdsArr = mandalMuncipalityIds.split(",");
+			reportType="NotStarted";
+		} 
+		var locationType = "mandalMuncipality";
+		 getMndlMncpalityTodayStatedNotStartedDetails(stateId,mandalMuncipalityIdsArr,reportType,locationType);
+	});
+ 	function getMndlMncpalityTodayStatedNotStartedDetails(stateId,mandalMuncipalityIdsArr,reportType,locationType){
+		$("#locationWiseCadreReportHeadingId").html("MANDAL/MUNCIPALITY WISE REPORT");
+		$("#locationWiseCadreReportModalId").modal("show");
+		$("#locationWiseCadreReportDivId").html(' ');
+		$("#locationWiseProcessImgReport").show();
+	
+		var jsObj={  
+			stateId : stateId,
+			locationIdsArr : mandalMuncipalityIdsArr
+		};
+		$.ajax({          
+			type : 'POST',       
+			url : 'getMndlMncpalityTodayStatedNotStartedDetailsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#locationWiseProcessImgReport").hide();
+		  if(result != null && result.length > 0){
+			 buildLocationWiseReport(result,reportType,locationType);  
+		  }else{
+			 $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE."); 
+		  }
+		});
+	} 
+	function buildLocationWiseReport(result,reportType,locationType){
 	   var str='';
 	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-responsive" id="constituencyDtlsDataTblId">';   
 	   str+='<thead>';
              str+='<th>District Name</th>';
+			 str+='<th>Constituency Id</th>';
 			 str+='<th>Constituency Name</th>'	 
+			 if(locationType == "mandalMuncipality"){
+			 str+='<th>Manal/Muncipality</th>';
+			 }
 			 if(reportType=="Started"){
 			  str+='<th>Total Registrations </th>';	 
 			 }
+			 
 		 str+='</thead>';
 		 str+='<tbody>';
 		  for(var i in result){
@@ -3804,11 +3843,23 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 				  }else{
 					str+='<td> - </td>';  
 				  }
+				  if(result[i].locationId != null && result[i].locationId > 0){
+					str+='<td>'+result[i].locationId+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
 				  if(result[i].locationName != null && result[i].locationName.length > 0){
 					str+='<td>'+result[i].locationName+'</td>';  
 				  }else{
 				  str+='<td> - </td>';  
 				  }
+				  if(locationType == "mandalMuncipality"){
+					  if(result[i].locationName2 != null && result[i].locationName2.length > 0){
+							str+='<td>'+result[i].locationName2+'</td>';  
+						  }else{
+						  str+='<td> - </td>';  
+						  }
+			          }
 				   if(reportType=="Started"){
 			 	 if(result[i].total2016CadreCnt != null && result[i].total2016CadreCnt > 0){
 						 str+='<td>'+result[i].total2016CadreCnt+'</td>';       
@@ -3816,26 +3867,39 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 						str+='<td> - </td>';  
 					  }			  
 			        }
-				 
 				str+='</tr>';
 			}
 			 str+='</tbody>';
 			 str+='</table>';
 		 $("#locationWiseCadreReportDivId").html(str);
-		  if(reportType=="Started"){
-			 $("#constituencyDtlsDataTblId").dataTable({
-			 "aaSorting": [[ 2, "desc" ]], 
-			"iDisplayLength" : 10	
-		 }); 
-		  }else{
-			$("#constituencyDtlsDataTblId").dataTable({
-			 "aaSorting": [[ 1, "desc" ]], 
-			"iDisplayLength" : 10	
-		 });  
+		if(locationType =="mandalMuncipality" || locationType=="Constituency"){
+			 if(locationType == "mandalMuncipality"){
+				if(reportType=="Started"){
+					 $("#constituencyDtlsDataTblId").dataTable({
+					 "aaSorting": [[ 4, "desc" ]], 
+					"iDisplayLength" : 10	
+				 }); 
+			  }else{
+			  $("#constituencyDtlsDataTblId").dataTable({
+			    "aaSorting": [[ 2, "asc" ]], 
+			    "iDisplayLength" : 10	
+		      });    
+			 }
+		  }else if(locationType == "Constituency"){
+			   if(reportType=="Started"){
+				  $("#constituencyDtlsDataTblId").dataTable({
+					 "aaSorting": [[ 3, "desc" ]], 
+					"iDisplayLength" : 10	
+				 });   
+		      }else{
+				$("#constituencyDtlsDataTblId").dataTable({
+			    "aaSorting": [[ 2, "asc" ]], 
+			    "iDisplayLength" : 10	
+		        });    
+			 }
 		  }
-		
-	  }
-   
+		}
+		 }
   $(document).on("click","#statewiseoverview",function(){
 	  
 	  if($(this).data("hidden")== "false"){
@@ -3858,3 +3922,4 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	  $("#totalperc").html("<span style='font-size:12px;'>"+((globalTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");
 	  $("#todayperc1").html("<span style='font-size:12px;'>"+((globalTodayTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");	
  }
+ 	
