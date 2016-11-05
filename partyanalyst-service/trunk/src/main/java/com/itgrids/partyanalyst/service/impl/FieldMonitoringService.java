@@ -1456,6 +1456,7 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 					vo.setIssueType(obj[12] != null ? obj[12].toString():"");
 					vo.setIssueStatus(obj[14] != null ? obj[14].toString():"");
 					vo.setDescription(obj[15] != null ? obj[15].toString():"");
+					vo.setIssueTime(obj[16] != null ? obj[16].toString():"");
 					
 					returnList.add(vo);
 				}
