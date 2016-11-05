@@ -58,6 +58,11 @@
 							<div id="errorDivId"></div>
 							<div id="fieldUserDetailsId"></div>
 						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="dataCollectorsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+							<div id="errorDivId"></div>
+							<div id="dataCollectorsDivId"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -145,6 +150,118 @@ function buildFieldMonitoringReport(result){
 	$("#fieldUserDetailsImgId").hide();
 	$("#fieldUserDetailsId").html(str);
 	$("#tabWiseDtlsId").dataTable();
+}
+getDataCollectorsDistrictWiseCount();
+function getDataCollectorsDistrictWiseCount(){
+	 $("#dataCollectorsDivId").html('');
+	$("#dataCollectorsImgId").show();
+		var jsObj = { 
+				districtId : 1,
+				stateId : 0,
+				constituencyId : 0,
+				cadreSurveyUserId : 0,
+				startDate : "",
+				endDate :""
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getDataCollectorsDistrictWiseCountAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			
+			buildDataCollectorsPerformanceDetails(result);
+		});
+	}
+function buildDataCollectorsPerformanceDetails(result){
+
+	if(result != null && result.length > 0){
+		var str = '';
+		
+        //str+='<h4 class="text-capital">total data collectors - <span id="totalDataCollectorsId">'+result.length+'</span></h4>';
+       // $("#totalDataCollectorsId span").text("-"  +result.length);
+		//str+='<span class="btn btn-info excelId form-inline pull-right btn-sm btn-xs" style="float:left;margin-top: 10px" onclick="exportToExcel(\'detailsTable\')"><b> Export To Excel </b></span>';
+		str+='<table class="table b_1 m_top10 " id="detailsTable">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>district</th>';
+				str+='<th>constituency</th>';
+				str+='<th>FM User</th>';
+				str+='<th>Total Users</th>';
+				str+='<th>Registered</th>';
+				str+='<th>Not Yet Started</th>';
+				str+='<th>Not Started Issues</th>';
+				str+='<th>Started Issues</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					
+						if(result[i].districtName != null)
+							str+='<td class="issueCmpltd">'+result[i].districtName+'</td>';
+						else
+							str+='<td> - </td>';
+					
+					if(result[i].constituencyName != null)
+						str+='<td>'+result[i].constituencyName+'</td>';
+					else
+						str+='<td> - </td>';
+					/*if(result[i].lastHourCount != null && result[i].lastHourCount > 0)
+						str+='<td class="issueCmpltd" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
+					else
+						str+='<td class="issuePending" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
+						//str+='<td class="issuePending">'+result[i].userName+'</td>';*/
+					if(result[i].name != null)
+						str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+					else
+						str+='<td> - </td>';
+						
+					if(result[i].totalCount != null)
+						str+='<td>'+result[i].totalCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].todayRegCount != null)
+						str+='<td>'+result[i].todayRegCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].notYetStartedUsers != null)
+						str+='<td>'+result[i].notYetStartedUsers+'</td>';
+					else
+						str+='<td> - </td>';
+					/*if(result[i].districtName != null)
+						str+='<td>'+result[i].districtName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].constituencyName != null)
+						str+='<td>'+result[i].constituencyName+'</td>';
+					else
+						str+='<td> - </td>';*/
+					if(result[i].notYetStartedIssues != null)
+						str+='<td>'+result[i].notYetStartedIssues+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].startedIssues != null)
+						str+='<td>'+result[i].startedIssues+'</td>';
+					else
+						str+='<td> - </td>';
+					
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+		
+		$("#dataCollectorsDivId").html(str);
+		$("#dataCollectorsImgId").hide();
+		$('#detailsTable').dataTable({
+	         "aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 20,
+	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	    });
+		//$('html,body').animate({scrollTop: $("#dataCollectorsDivId").offset().top}, 'slow');
+	}
+	else{
+			$("#dataCollectorsImgId").hide();
+			$("#dataCollectorsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+	}
 }
 </script>
 </body>
