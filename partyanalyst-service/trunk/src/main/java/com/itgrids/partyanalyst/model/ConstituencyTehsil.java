@@ -24,6 +24,7 @@ public class ConstituencyTehsil  extends BaseModel implements java.io.Serializab
 	private Long constituencyTehsilId;
 	private Constituency constituency;
 	private Tehsil tehsil;
+	private String isDeleted;
 	
 	public ConstituencyTehsil()
 	{
@@ -57,6 +58,13 @@ public class ConstituencyTehsil  extends BaseModel implements java.io.Serializab
 	}
 	public void setTehsil(Tehsil tehsil) {
 		this.tehsil = tehsil;
+	}
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	

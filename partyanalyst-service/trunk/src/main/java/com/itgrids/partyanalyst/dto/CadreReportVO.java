@@ -36,6 +36,9 @@ public class CadreReportVO implements Serializable {
 	
 	private List<CadreReportVO> subList1;
 	private List<CadreReportVO> subList2;
+	
+	private Long locationId2;
+	private String locationName2;
 	public Integer getSno() {
 		return sno;
 	}
@@ -199,4 +202,17 @@ public class CadreReportVO implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Long getLocationId2() {
+		return locationId2;
+	}
+	public void setLocationId2(Long locationId2) {
+		this.locationId2 = locationId2;
+	}
+	public String getLocationName2() {
+		return locationName2;
+	}
+	public void setLocationName2(String locationName2) {
+		this.locationName2 = locationName2;
+	}
+	
 }

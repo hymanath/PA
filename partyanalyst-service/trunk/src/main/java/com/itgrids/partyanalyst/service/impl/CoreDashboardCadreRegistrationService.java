@@ -19,10 +19,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
 import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
@@ -106,6 +108,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IDistrictConstituenciesDAO districtConstituenciesDAO;
     private IConstituencyDAO constituencyDAO;
     private ITdpCadreOnlineDAO tdpCadreOnlineDAO;
+    private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+    private IConstituencyTehsilDAO constituencyTehsilDAO;
+    
     
     
 	public ITdpCadreOnlineDAO getTdpCadreOnlineDAO() {
@@ -261,6 +266,14 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	public void setConstituencyTehsilDAO(
+			IConstituencyTehsilDAO constituencyTehsilDAO) {
+		this.constituencyTehsilDAO = constituencyTehsilDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -2074,7 +2087,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
 			 
-			  List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(1l);
+			
+			/* showing stated constituency,mandal and MUNCIPALITY  */
+			  List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(stateId);
 			  if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
 				  cadreRegistratedCountVO.setTodayStartedConsttuncyCnt(Long.valueOf(todayStaredConstituencyCntList.size()));
 			  }
@@ -2088,6 +2103,32 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			   apCnsttuncesIds.removeAll(todayStaredConstituencyCntList);
 			   cadreRegistratedCountVO.setTodayNotStartedConsttuncyCnt(Long.valueOf(apCnsttuncesIds.size()));
 			   cadreRegistratedCountVO.setLocationIdsList(apCnsttuncesIds);
+			   
+			   List<Long> mandalIdsList = new ArrayList<Long>(0);
+			   List<Long> muncipalityIdsList = new ArrayList<Long>(0);
+			   List<Long> mandalTodayStartedIdsList = new ArrayList<Long>(0);
+			   List<Long> muncipalityTodayStartedIdsList = new ArrayList<Long>(0);
+			   
+			   
+			   List<Long> rtrnTodayStatedMandalIdsLst = tdpCadreLocationInfoDAO.getTodayMandalStartedStateWise(stateId);
+			   setRequiredDIdsToList(rtrnTodayStatedMandalIdsLst,mandalTodayStartedIdsList,"Mandal");
+			   
+			   List<Long> rtrnTodayStatedMuncipalityIdsLst = tdpCadreLocationInfoDAO.getTodayLocalElectionBodyStartedStateWise(stateId);
+			   setRequiredDIdsToList(rtrnTodayStatedMuncipalityIdsLst,muncipalityTodayStartedIdsList,"Muncipality");
+			   
+			   cadreRegistratedCountVO.setTodayStartedMandalMuncipalityCnt(Long.valueOf(rtrnTodayStatedMandalIdsLst.size()+rtrnTodayStatedMuncipalityIdsLst.size()));
+			   
+			   List<Long> rtrnAllMandalIds = constituencyTehsilDAO.getAllStateWiseTehsilIds(stateId);
+			   setRequiredDIdsToList(rtrnAllMandalIds,mandalIdsList,"Mandal");
+			   mandalIdsList.removeAll(mandalTodayStartedIdsList);
+			   
+			   List<Long> rtrnAllMuncipalityIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdsStateWise(stateId);
+			   setRequiredDIdsToList(rtrnAllMuncipalityIdsList,muncipalityIdsList,"Muncipality");
+			   muncipalityIdsList.removeAll(muncipalityTodayStartedIdsList);
+			   
+			   cadreRegistratedCountVO.setTodayNotStartedMandalMuncipalityCnt(Long.valueOf(mandalIdsList.size()+muncipalityIdsList.size()));
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(mandalIdsList);
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(muncipalityIdsList);
 			   
 			return cadreRegistratedCountVO;           
 		}catch(Exception e){
@@ -2270,6 +2311,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
 			
+			 /* showing stated constituency,mandal and MUNCIPALITY  */
 			
 			  List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(36l);
 			  if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
@@ -2286,12 +2328,54 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			   cadreRegistratedCountVO.setTodayNotStartedConsttuncyCnt(Long.valueOf(tsCnsttuncesIds.size()));
 			   cadreRegistratedCountVO.setLocationIdsList(tsCnsttuncesIds);
 			   
+			   List<Long> mandalIdsList = new ArrayList<Long>(0);
+			   List<Long> muncipalityIdsList = new ArrayList<Long>(0);
+			   List<Long> mandalTodayStartedIdsList = new ArrayList<Long>(0);
+			   List<Long> muncipalityTodayStartedIdsList = new ArrayList<Long>(0);
+			   
+			   
+			   List<Long> rtrnTodayStatedMandalIdsLst = tdpCadreLocationInfoDAO.getTodayMandalStartedStateWise(stateId);
+			   setRequiredDIdsToList(rtrnTodayStatedMandalIdsLst,mandalTodayStartedIdsList,"Mandal");
+			   
+			   List<Long> rtrnTodayStatedMuncipalityIdsLst = tdpCadreLocationInfoDAO.getTodayLocalElectionBodyStartedStateWise(stateId);
+			   setRequiredDIdsToList(rtrnTodayStatedMuncipalityIdsLst,muncipalityTodayStartedIdsList,"Muncipality");
+			   
+			   cadreRegistratedCountVO.setTodayStartedMandalMuncipalityCnt(Long.valueOf(rtrnTodayStatedMandalIdsLst.size()+rtrnTodayStatedMuncipalityIdsLst.size()));
+			   
+			   List<Long> rtrnAllMandalIds = constituencyTehsilDAO.getAllStateWiseTehsilIds(stateId);
+			   setRequiredDIdsToList(rtrnAllMandalIds,mandalIdsList,"Mandal");
+			   mandalIdsList.removeAll(mandalTodayStartedIdsList);
+			   
+			   List<Long> rtrnAllMuncipalityIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdsStateWise(stateId);
+			   setRequiredDIdsToList(rtrnAllMuncipalityIdsList,muncipalityIdsList,"Muncipality");
+			   muncipalityIdsList.removeAll(muncipalityTodayStartedIdsList);
+			   
+			   cadreRegistratedCountVO.setTodayNotStartedMandalMuncipalityCnt(Long.valueOf(mandalIdsList.size()+muncipalityIdsList.size()));
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(mandalIdsList);
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(muncipalityIdsList);
+			   
 			return cadreRegistratedCountVO;          
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Exception raised in getStateDtls in CoreDashboardCadreRegistrationService service", e);
+			LOG.error("Exception raised in getStateDtlsTS in CoreDashboardCadreRegistrationService service", e);
 		}
 		return null;  
+	}
+	public void setRequiredDIdsToList(List<Long> idsList,List<Long> requiredList,String type){
+		try{
+			if(idsList != null && idsList.size() > 0){
+				for(Long id:idsList){
+					if(type.equalsIgnoreCase("Mandal")){
+						requiredList.add(Long.valueOf("1"+id));
+					}else if(type.equalsIgnoreCase("Muncipality")){
+						requiredList.add(Long.valueOf("2"+id));
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in setRequiredDIdsToList() in CoreDashboardCadreRegistrationService service", e);	
+		}
 	}
 	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWise(Long activityMemberId,Long stateId,String startDate, String endDate){
 		try{
@@ -3150,23 +3234,22 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,CadreReportVO> cnsttncsDstrctMap = new HashMap<Long, CadreReportVO>();
 	 try{
-		 
 		 List<Object[]> rtrnDistObjList = districtConstituenciesDAO.getConstituenciesOfDistrictStateWise(stateId);
 		 setDistrictToMap(rtrnDistObjList,cnsttncsDstrctMap);
 		 List<Object[]> rtrnObjList = null;
 		 if(locationIdsList != null && locationIdsList.size() > 0){
 			    rtrnObjList = constituencyDAO.getDistAndConDtslByConstituenciesIds(locationIdsList);
-			 	setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"False");
+			 	setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"False","Constituency");
 		 }else{
 			    rtrnObjList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyDetailsStateWise(stateId); 
-			    setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"True");
+			    setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"True","Constituency");
 		 }
 	 }catch(Exception e){
 		 LOG.error("Exception raised in getLocationWiseCadreInfo() in CoreDashboardCadreRegistrationService service", e); 
 	 }
 	 return resultList;
  }
- public void setLocationDtlsToList(List<Object[]> objList, List<CadreReportVO> resultList, Map<Long,CadreReportVO> cnsttncsDstrctMap,String isStartedCon){
+ public void setLocationDtlsToList(List<Object[]> objList, List<CadreReportVO> resultList, Map<Long,CadreReportVO> cnsttncsDstrctMap,String isStartedCon,String locationType){
 	 try{
 		  if(objList != null && !objList.isEmpty()){
 			  for(Object[] param:objList){
@@ -3179,8 +3262,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				   locationVO.setName(cnsttncsDstrctMap.get(locationVO.getLocationId()).getName());
 				  }
 				  locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
-				  if(isStartedCon.equalsIgnoreCase("True")){
-					  locationVO.setTotal2016CadreCnt(commonMethodsUtilService.getLongValueForObject(param[4]));	  
+				  if(locationType != null && locationType.equalsIgnoreCase("Mandal") || locationType.equalsIgnoreCase("MUNCIPALITY")){
+					  locationVO.setLocationId2(commonMethodsUtilService.getLongValueForObject(param[4]));
+					  locationVO.setLocationName2(commonMethodsUtilService.getStringValueForObject(param[5]));
+				  }
+				  if(locationType != null && locationType.equalsIgnoreCase("Mandal") || locationType.equalsIgnoreCase("MUNCIPALITY")){
+					 if(isStartedCon.equalsIgnoreCase("True")){
+						  locationVO.setTotal2016CadreCnt(commonMethodsUtilService.getLongValueForObject(param[6]));	  
+					 }
+				  }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+					  if(isStartedCon.equalsIgnoreCase("True")){
+						  locationVO.setTotal2016CadreCnt(commonMethodsUtilService.getLongValueForObject(param[4]));	  
+					  }
 				  }
 				  resultList.add(locationVO);
 			  }
@@ -3198,5 +3291,40 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			 cnsttncsDstrctMap.put(commonMethodsUtilService.getLongValueForObject(param[2]),cnsttuncyDistVO);
 		 }
 	 }
+ }
+ public List<CadreReportVO> getMandalMuncipalityStatedAndNotStatedDetails(Long stateId,List<Long> locationIdsList){
+	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
+	 Map<Long,CadreReportVO> cnsttncsDstrctMap = new HashMap<Long, CadreReportVO>();
+	 try{
+		 List<Object[]> rtrnDistObjList = districtConstituenciesDAO.getConstituenciesOfDistrictStateWise(stateId);
+		 setDistrictToMap(rtrnDistObjList,cnsttncsDstrctMap);
+		 
+		 List<Object[]> rtrnObjList = null;
+		 if(locationIdsList != null && locationIdsList.size() > 0){
+			  List<Long> mandalIdsList = new ArrayList<Long>();
+			  List<Long> muncipalityIdsList = new ArrayList<Long>();
+			 for(Long id:locationIdsList){
+				 	String strLocationId = id.toString();
+				 	Long firstDigit = Long.valueOf(strLocationId.substring(0, 1));
+				 		if(firstDigit.longValue() == 1l){ //mandal
+				 			mandalIdsList.add(Long.valueOf(strLocationId.substring(1,strLocationId.length()))); 
+				 		}else if(firstDigit.longValue() == 2l){//MUNCIPALITY
+				 			muncipalityIdsList.add(Long.valueOf(strLocationId.substring(1,strLocationId.length())));
+				 		}
+			 }
+				 rtrnObjList = constituencyTehsilDAO.getTehsilDtlsStateWise(stateId, mandalIdsList);
+			 	 setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"False","Mandal");
+			 	 rtrnObjList = assemblyLocalElectionBodyDAO.getLocalElectionBodyStateWise(stateId, muncipalityIdsList);
+			 	 setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"False","MUNCIPALITY");
+		 }else{
+			    rtrnObjList = tdpCadreLocationInfoDAO.getTodayMandalStartedDtlsStateWise(stateId); 
+			    setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"True","Mandal");
+			    rtrnObjList = tdpCadreLocationInfoDAO.getTodayLocalElectionBodyStartedDtlsStateWise(stateId); 
+			    setLocationDtlsToList(rtrnObjList,resultList,cnsttncsDstrctMap,"True","MUNCIPALITY");
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in getMandalMuncipalityStatedAndNotStatedDetails() in CoreDashboardCadreRegistrationService service", e); 
+	 }
+	 return resultList;
  }
 }

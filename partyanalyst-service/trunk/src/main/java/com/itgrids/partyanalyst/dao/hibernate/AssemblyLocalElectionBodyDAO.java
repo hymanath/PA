@@ -3,7 +3,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
@@ -336,6 +339,59 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		return query.list();
 	
 	}
-	 
+	
+  public List<Long> getLocalElectionBodyIdsStateWise(Long stateId){
+	  StringBuilder queryStr = new StringBuilder();
+	    queryStr.append(" select distinct model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model " +
+	    				"  where model.localElectionBody.electionType.electionTypeId=5 ");
+	    if(stateId != null && stateId.longValue() == 1l){
+		  	 queryStr.append(" and model.constituency.district.districtId > 10 and model.constituency.state.stateId=1");
+		}else if(stateId != null && stateId.longValue() == 36l){
+		  	 queryStr.append(" and model.constituency.district.districtId < 11 "); 
+	   }
+	    Query query = getSession().createQuery(queryStr.toString());
+	    return query.list();
+  }
+  public List<Object[]> getLocalElectionBodyStateWise(Long stateId,List<Long> localElectionBodyIds){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct " +
+			 		   " d.district_id as districtId," +
+			 		   " d.district_name as districtName," +
+			 		   " c.constituency_id as constituencyId," +
+			 		   " c.name as name," +
+			 		   " leb.local_election_body_id as localElectionBodyId," +
+			 		   " leb.name as localElectionName " +
+			 		   " from assembly_local_election_body aleb," +
+			 		   " constituency c," +
+			 		   " local_election_body leb," +
+			 		   " district d " +
+			 		   " where " +
+			 		   " aleb.constituency_id=c.constituency_id " +
+			 		   " and leb.local_election_body_id=aleb.local_election_body_id " +
+			 		   " and c.district_id=d.district_id " +
+			 		   " and leb.election_type_id=5  ");
+			 if(stateId != null && stateId.longValue() == 1l){
+				 queryStr.append(" and d.district_id > 10 and d.state_id=1 "); 
+			 }else if(stateId != null && stateId.longValue() == 36l){
+				queryStr.append(" and d.district_id<11 "); 
+			 }
+			 if(localElectionBodyIds != null && localElectionBodyIds.size() > 0){
+			queryStr.append(" and aleb.local_election_body_id in (:localElectionBodyIds)");	
+			 }
+			 queryStr.append(" group by leb.local_election_body_id ");
+		   Session session = getSession();
+	       SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+	     	 sqlQuery.addScalar("districtId",Hibernate.LONG); 
+	    	 sqlQuery.addScalar("districtName",Hibernate.STRING); 
+	         sqlQuery.addScalar("constituencyId",Hibernate.LONG); 
+		     sqlQuery.addScalar("name",Hibernate.STRING); 
+		     sqlQuery.addScalar("localElectionBodyId",Hibernate.LONG); 
+			 sqlQuery.addScalar("localElectionName",Hibernate.STRING); 
+		 if(localElectionBodyIds != null && localElectionBodyIds.size() >0){
+		 	sqlQuery.setParameterList("localElectionBodyIds", localElectionBodyIds);	
+		 }
+		 return sqlQuery.list();
+	} 
 	
 }

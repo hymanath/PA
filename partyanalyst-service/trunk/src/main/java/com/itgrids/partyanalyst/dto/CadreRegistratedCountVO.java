@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadreRegistratedCountVO implements Serializable {
@@ -46,8 +47,11 @@ public class CadreRegistratedCountVO implements Serializable {
 	private Double cadreCountPer2014 ;
 	private Long todayStartedConsttuncyCnt=0l;
 	private Long todayNotStartedConsttuncyCnt=0l;
+	private Long todayStartedMandalMuncipalityCnt;
+	private Long todayNotStartedMandalMuncipalityCnt;
 	private List<Long> locationIdsList;
-	
+	private List<Long> locationIdsList1;
+	//MUNCIPALITY
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -365,5 +369,31 @@ public class CadreRegistratedCountVO implements Serializable {
 
 	public void setLocationIdsList(List<Long> locationIdsList) {
 		this.locationIdsList = locationIdsList;
+	}
+
+	public Long getTodayStartedMandalMuncipalityCnt() {
+		return todayStartedMandalMuncipalityCnt;
+	}
+
+	public void setTodayStartedMandalMuncipalityCnt(
+			Long todayStartedMandalMuncipalityCnt) {
+		this.todayStartedMandalMuncipalityCnt = todayStartedMandalMuncipalityCnt;
+	}
+
+	public Long getTodayNotStartedMandalMuncipalityCnt() {
+		return todayNotStartedMandalMuncipalityCnt;
+	}
+
+	public void setTodayNotStartedMandalMuncipalityCnt(
+			Long todayNotStartedMandalMuncipalityCnt) {
+		this.todayNotStartedMandalMuncipalityCnt = todayNotStartedMandalMuncipalityCnt;
+	}
+
+	public List<Long> getLocationIdsList1() {
+		if(locationIdsList1 == null ){
+			locationIdsList1 = new ArrayList<Long>(0);
+		}
+		return locationIdsList1;
 	}	
+	
 }
