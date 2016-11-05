@@ -26,6 +26,8 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoTemp1DAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoTemp1DAO;
@@ -40,7 +42,8 @@ import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
-import com.itgrids.partyanalyst.model.TdpCadreHourRegInfo;
+import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp;
+import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp1;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreLocationInfoTemp1;
 import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp;
@@ -76,7 +79,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	private ITdpCadreUserHourRegInfoTempDAO tdpCadreUserHourRegInfoTempDAO;
 	private ITdpCadreUserHourRegInfoTemp1DAO tdpCadreUserHourRegInfoTemp1DAO;
-	
+	private ITdpCadreHourRegInfoTemp1DAO tdpCadreHourRegInfoTemp1DAO;
+	private ITdpCadreHourRegInfoTempDAO tdpCadreHourRegInfoTempDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -160,6 +164,16 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreUserHourRegInfoTemp1DAO(
 			ITdpCadreUserHourRegInfoTemp1DAO tdpCadreUserHourRegInfoTemp1DAO) {
 		this.tdpCadreUserHourRegInfoTemp1DAO = tdpCadreUserHourRegInfoTemp1DAO;
+	}
+	
+	public void setTdpCadreHourRegInfoTemp1DAO(
+			ITdpCadreHourRegInfoTemp1DAO tdpCadreHourRegInfoTemp1DAO) {
+		this.tdpCadreHourRegInfoTemp1DAO = tdpCadreHourRegInfoTemp1DAO;
+	}
+	
+	public void setTdpCadreHourRegInfoTempDAO(
+			ITdpCadreHourRegInfoTempDAO tdpCadreHourRegInfoTempDAO) {
+		this.tdpCadreHourRegInfoTempDAO = tdpCadreHourRegInfoTempDAO;
 	}
 	//Business methods
 	/**
@@ -313,7 +327,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   
 			   long tempStartTime = System.currentTimeMillis();
 			   rs =  saveTotalTodayTdpCadreDataToIntermediateTemp(finalList);
-			   LOG.error("totaltoday const level temp : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
+			   Double tempSeconds = (System.currentTimeMillis() - tempStartTime)/1000.0;
 			   
 			   List<Long> locationScopeIds = new ArrayList<Long>(0);
 			   locationScopeIds.add(4L);//assembly
@@ -324,7 +338,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			   long intermediateStartTime = System.currentTimeMillis();
 			    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
 			    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToConstituencyLevel();
-			   LOG.error(" totaltoday const level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+			    Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+			   LOG.error(" totaltoday const level temp insert time is : " + tempSeconds  + " seconds &&  totaltoday const level intermediate insert time is :" +interSeconds +" seconds ");
 			   
 		  }catch(Exception e){
 			  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -563,37 +578,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
 			        			
 						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){
-						    		
-						    		//LOG.error("NO OF Records, assembly wise "+dateTypeVO.getDateType() +":"+dateTypeVO.getAssemblyList().size());
-						    		//long intermediateStartTime = System.currentTimeMillis();
 						    		savingService(dateTypeVO.getAssemblyList(),currentTime);
-						    		//LOG.error("NO OF Records, assembly wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){
-				        			
-				        			//LOG.error("NO OF Records, parliament wise :"+dateTypeVO.getParliamentList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingService(dateTypeVO.getParliamentList(),currentTime);
-				        			//LOG.error("NO OF Records, parliament wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		
 				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){
-				        			
-				        			//LOG.error("NO OF Records, district wise  :"+dateTypeVO.getDistrictList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingService(dateTypeVO.getDistrictList(),currentTime);
-				        			//LOG.error("NO OF Records, district wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){
-				        			
-				        			//LOG.error("NO OF Records, state wise  :"+dateTypeVO.getStateList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
-				        			
 				        			savingService(dateTypeVO.getStateList(),currentTime);
-				        			//LOG.error("NO OF Records, state wise time for saving  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        	}
@@ -668,7 +666,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	   		
 			}catch(Exception e){
 				LOG.error("Exception raised at savingService", e);
-				//throw new RuntimeException("Exception At savingService..");
 			}
 	   }
 	   
@@ -701,7 +698,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				   
 				   long tempStartTime = System.currentTimeMillis();
 				   rs =  saveTotalTodayTdpCadreDataToIntermediateTempByLowLevel(finalList);
-				   LOG.error(" totaltoday low level temp  : " + (System.currentTimeMillis() - tempStartTime)/1000.0  + " seconds");
+				   Double tempSeconds = (System.currentTimeMillis() - tempStartTime)/1000.0;
+				   
 				   
 				   List<Long> locationScopeIds = new ArrayList<Long>();
 				   locationScopeIds.add(5L);
@@ -713,7 +711,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    long intermediateStartTime = System.currentTimeMillis();
 				    int deletedRecords =  tdpCadreLocationInfoDAO.deleteAllRecords(locationScopeIds);
 				    int insertedRecordsCount = tdpCadreLocationInfoDAO.insertTdpCadreLocationInfoUpToLowLevel();
-				   LOG.error("totaltoday low level intermediate : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				    Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+				    LOG.error("totaltoday low level temp insert time is : " + tempSeconds  + " seconds && totaltoday low level intermediate insert time is :"+interSeconds + " seconds" );
 				   
 			  }catch(Exception e){
 				  LOG.error("Exception raised in pushTotalTodayTdpCadreDataToIntermediate() in CadreRegistrationServiceNew class", e);
@@ -880,37 +879,22 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 						    for(TdpCadreLocationInfoVO dateTypeVO : finalList){
 				        		
 						    	if(dateTypeVO.getTehsilList() != null && dateTypeVO.getTehsilList().size() > 0){//tehsil
-						    		//LOG.error("NO OF Records, tehsil wise :"+dateTypeVO.getTehsilList().size());
-									//long intermediateStartTime = System.currentTimeMillis();
 						    		savingServiceLowLevel(dateTypeVO.getTehsilList(),currentTime);
-						    		//LOG.error("NO OF Records, tehsil wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 						    	if(dateTypeVO.getAssemblyList() != null && dateTypeVO.getAssemblyList().size() > 0){//leb
-						    		//LOG.error("NO OF Records, leb wise :"+dateTypeVO.getAssemblyList().size());
-						    		//long intermediateStartTime = System.currentTimeMillis();
 						    		savingServiceLowLevel(dateTypeVO.getAssemblyList(),currentTime);
-						    		//LOG.error("NO OF Records, leb wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 						    	}
 						    	
 				        		if(dateTypeVO.getParliamentList() != null && dateTypeVO.getParliamentList().size() > 0){//panchayat
-				        			//LOG.error("NO OF Records, panchayat wise :"+dateTypeVO.getParliamentList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingServiceLowLevel(dateTypeVO.getParliamentList(),currentTime);
-				        			//LOG.error("NO OF Records, panchayat wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(dateTypeVO.getDistrictList() != null && dateTypeVO.getDistrictList().size() > 0){//ward
-				        			//LOG.error("NO OF Records, ward wise :"+dateTypeVO.getDistrictList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
 				        			savingServiceLowLevel(dateTypeVO.getDistrictList(),currentTime);
-				        			//LOG.error("NO OF Records, ward wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		if(dateTypeVO.getStateList() != null && dateTypeVO.getStateList().size() > 0){//booth
-				        			//long intermediateStartTime = System.currentTimeMillis();
-				        			//LOG.error("NO OF Records, booth wise :"+dateTypeVO.getStateList().size());
 				        			savingServiceLowLevel(dateTypeVO.getStateList(),currentTime);
-				        			//LOG.error("NO OF Records, booth wise time for saving: " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        	}
@@ -985,7 +969,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   		
 				}catch(Exception e){
 					LOG.error("Exception raised at savingService", e);
-					//throw new RuntimeException("Exception At savingService..");
 				}
 		   }
 		
@@ -1022,12 +1005,14 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				    
 				   long startTime = System.currentTimeMillis();
 				   rs =  saveTdpCadreDataToIntermediateTempDateWise(finalVO,fromDate);
-				   LOG.error("date wise const level temp : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
+				   Double tempSeconds = (System.currentTimeMillis() - startTime)/1000.0;
 				   
 				   long intermediateStartTime = System.currentTimeMillis();
 				    int deletedRecords =  tdpCadreDateWiseInfoDAO.deleteAllRecords(fromDate);
 				    int insertedRecordsCount = tdpCadreDateWiseInfoDAO.insertTdpCadreLocInfoDateWiseUpToConstituencyLevel();
-				    LOG.error("date wise const level intermediate  : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
+				    Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+				    
+				    LOG.error("datewise const level temp inserted time is : " + tempSeconds  + " seconds && datewise const level intermediate inserted time is :" +interSeconds + " seconds" );
 				   
 			  }catch(Exception e){
 				  LOG.error("Exception raised in pushTdpCadreDataToIntermediateDateWise() in CadreRegistrationServiceNew class", e);
@@ -1283,41 +1268,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 							    Date currentTime = dateUtilService.getCurrentDateAndTime();
 					    		
 					    		if( finalVO.getAssemblyList() != null && finalVO.getAssemblyList().size() > 0){
-					    			
-					    			//LOG.error("NO OF Records, date wise assembly  :"+finalVO.getAssemblyList().size());
-					    			//long intermediateStartTime = System.currentTimeMillis();
-					    			
 					    			savingServiceDateWise(finalVO.getAssemblyList(),currentTime);
-					    			//LOG.error("NO OF Records, date wise assembly  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 					    		}
 				        		
 				        		if(finalVO.getParliamentList() != null && finalVO.getParliamentList().size() > 0){
-				        			
-				        			//LOG.error("NO OF Records, date wise parliament  :"+finalVO.getParliamentList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
-				        			
 				        			savingServiceDateWise(finalVO.getParliamentList(),currentTime);
-				        			//LOG.error("NO OF Records, date wise parliament  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if( finalVO.getDistrictList() != null && finalVO.getDistrictList().size() > 0){
-				        			
-				        			//LOG.error("NO OF Records, date wise district  :"+finalVO.getParliamentList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
-				        			
 				        			savingServiceDateWise(finalVO.getDistrictList(),currentTime);
-				        			//LOG.error("NO OF Records, date wise district  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
 				        		
 				        		if(finalVO.getStateList() != null && finalVO.getStateList().size() > 0){
-				        			
-				        			//LOG.error("NO OF Records, date wise state  :"+finalVO.getParliamentList().size());
-				        			//long intermediateStartTime = System.currentTimeMillis();
-				        			
 				        			savingServiceDateWise(finalVO.getStateList(),currentTime);
-				        			//LOG.error("NO OF Records, date wise state  time for saving : " + (System.currentTimeMillis() - intermediateStartTime)/1000.0  + " seconds");
 				        		}
-				        		
 				        		
 				        	}
 				        	   
@@ -1386,7 +1350,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   		
 				}catch(Exception e){
 					LOG.error("Exception raised at savingServiceDateWise", e);
-					//throw new RuntimeException("Exception At savingServiceDateWise..");
 				}
 		   }
 		   
@@ -1623,169 +1586,289 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		}
 		return rs;    
 	}
-
+	
+	 //HOUR WISE INTERMEDIATE PUSHING.
 	/** 4)
 	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-	 *  Pushing tdpcadre data to intermediate tables
+	 *  Pushing tdpcadre data to intermediate tables hour wise for Today.
 	 *  @since 03-NOVEMBER-2016 
-	 */
-
-		  public ResultStatus pushHourWiseTdpCadreDetailsByToday(){
-			   
-				final ResultStatus rs = new ResultStatus();
-				final Date currentDate = new DateUtilService().getCurrentDateAndTime();
-				try {
-					
-					final CadreDateVO finalVO = getHourWiseTdpCadreDetails(currentDate);
-					
-					
+	 */ 
+       
+	public ResultStatus pushHourWiseTdpCadreDetailsByToday(){
+		   
+		 ResultStatus rs = null;
+		 
+		try {
+			  List<CadreDateVO> list = getHourWiseTdpCadreDetailsByToday();
+			  if(list != null && list.size() > 0){
+				  
+				 long startTime = System.currentTimeMillis();
+				 rs = saveInToHourRegInfoTempByToday(list);
+				 Double tempSeconds = (System.currentTimeMillis() - startTime)/1000.0;
+				 
+		         if(rs != null){
+		        	Date currentDate = new DateUtilService().getCurrentDateAndTime();
+		        	
+		        	long intermediateStartTime = System.currentTimeMillis();
+		        	int deletedRecords =  tdpCadreHourRegInfoDAO.deleteAllRecords(currentDate);
+		        	int insertedRecordsCount = tdpCadreHourRegInfoDAO.insertCadreDataHourWiseToday();
+		        	Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+		        	
+		        	LOG.error("Today hour wise tdpcadre temp insert time is : " + tempSeconds  + " seconds && Today hour wise tdpcadre intermediate insert time is :" +interSeconds + " seconds" );
+		         }
+			  }
+		} catch (Exception e) {
+			LOG.error("Exception raised at pushHourWiseTdpCadreDetailsByToday", e);
+		}
+		return rs;
+	}
+	public List<CadreDateVO> getHourWiseTdpCadreDetailsByToday(){
+ 	   
+ 	   List<CadreDateVO> finalList = new ArrayList<CadreDateVO>(0);
+ 	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+ 	 try{
+		     
+ 		 Date todayDate = new DateUtilService().getCurrentDateAndTime();
+ 		 
+ 		 List<Object[]> apList = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(todayDate,1L);
+ 		 if(apList != null && apList.size() > 0){
+ 			 for(Object[] obj : apList){
+ 				CadreDateVO hourVO = new CadreDateVO();
+		   		    	
+	   		    	hourVO.setStateId(1L);
+	   		    	if(obj[0]!=null){
+	   		    		hourVO.setDateStr(sdf.format((Date)obj[0]));
+	   		    	}
+	   		    	hourVO.setDayHour(obj[1]!=null ? (Integer)obj[1] : 0);
+	   		    	hourVO.setRegCount(obj[2]!=null ? (Long)obj[2] : 0l);
+	   		    	hourVO.setUsersCount(obj[3]!=null ? (Long)obj[3] : 0l);
+	   		    	
+	   		    	finalList.add(hourVO);
+ 			 }
+ 		 }
+ 		 
+ 		 
+ 		 List<Object[]> tsList = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(todayDate,36L);
+ 		 if(tsList != null && tsList.size() > 0){
+ 			 for(Object[] obj : tsList){
+ 				CadreDateVO hourVO = new CadreDateVO();
+		   		    	
+	   		    	hourVO.setStateId(36L);
+	   		    	if(obj[0]!=null){
+	   		    		hourVO.setDateStr(sdf.format((Date)obj[0]));
+	   		    	}
+	   		    	hourVO.setDayHour(obj[1]!=null ? (Integer)obj[1] : 0);
+	   		    	hourVO.setRegCount(obj[2]!=null ? (Long)obj[2] : 0l);
+	   		    	hourVO.setUsersCount(obj[3]!=null ? (Long)obj[3] : 0l);
+	   		    	
+	   		    	finalList.add(hourVO);
+ 			 }
+ 		 }
+ 		 
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getHourWiseTdpCadreDetailsByToday", e);
+		 } 
+ 	 return finalList;
+    }
+	public ResultStatus saveInToHourRegInfoTempByToday(final List<CadreDateVO> finalList){
+	    final  ResultStatus rs = new ResultStatus();
+	   	try{
+				if( finalList != null && finalList.size() > 0)
+				{
 					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-				        	
-				        	if(finalVO != null){
-				        		
-				        		int deletedRecords = tdpCadreHourRegInfoDAO.deleteAllRecords(currentDate);
-							    
-							    Date currentTime = new DateUtilService().getCurrentDateAndTime();
-							    
-							    if(finalVO.getSubMap() != null && finalVO.getSubMap().size() > 0){
-							    	saveInToHourRegInfo(finalVO.getSubMap(),currentTime);
-							    }
-							    if(finalVO.getSubMap1() != null && finalVO.getSubMap1().size() > 0){
-							    	saveInToHourRegInfo(finalVO.getSubMap1(),currentTime);
-							    }
-				        	}
-				        	   
-					          rs.setResultCode(1);
-					          rs.setMessage("success");
-				         }
-				    });
 					
-				} catch (Exception e) {
-					LOG.error("Exception raised at CadreRegistrationServiceNew", e);
-					rs.setResultCode(0);
-					rs.setMessage("failure");
+							int deletedRecords = tdpCadreHourRegInfoTempDAO.deleteAllRecords();
+							int count = tdpCadreHourRegInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+							
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+							Date currentTime = new DateUtilService().getCurrentDateAndTime();
+							
+							int i= 0;
+							for (CadreDateVO dataVO : finalList )
+							{
+					    		  i = i +1;
+					    		  if(dataVO != null){
+					    			  TdpCadreHourRegInfoTemp info = new TdpCadreHourRegInfoTemp();
+					    			  info.setStateId(dataVO.getStateId());
+					    			  if(dataVO.getDateStr() != null){
+					    				  try {
+											info.setSurveyDate(sdf.parse(dataVO.getDateStr()));
+										} catch (ParseException e) {
+											e.printStackTrace();
+										}
+					    			  }
+					    			  info.setHour(dataVO.getDayHour().longValue());
+					    			  if(dataVO.getRegCount() != null && dataVO.getRegCount() > 0l){
+					    				  info.setTotalRegistrations(dataVO.getRegCount());
+					    			  }
+					    			  if(dataVO.getUsersCount() != null && dataVO.getUsersCount() > 0){
+					    				  info.setCadreSurveyUsers(dataVO.getUsersCount());
+					    			  }
+					    			  info.setInsertedTime(currentTime);
+					    			  
+					    			  tdpCadreHourRegInfoTempDAO.save(info);
+					    		  }
+				    			  if( i % 100 == 0 ) { 
+				    			       //flush a batch of inserts and release memory:
+				    				  tdpCadreDAO.flushAndclearSession();
+				    			  }
+					    	 }
+							 rs.setResultCode(1);
+					         rs.setMessage("success");
+				        }
+				    });
 				}
-				return rs;
+	   		
+			}catch(Exception e){
+				LOG.error("Exception raised at saveInToHourRegInfoTempByToday", e);
+				 rs.setResultCode(0);
+			     rs.setMessage("failure");
 			}
+	   	  return rs;
+	   }
+     /** 5)
+   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+   	 *  Pushing tdpcadre data hour wise overall(For All Dates)
+   	 *  @since 03-NOVEMBER-2016 
+   	 */
+       public ResultStatus pushHourWiseTdpCadreDetailsByOverall(){
 		   
-		   
-       public CadreDateVO getHourWiseTdpCadreDetails(Date currentDate){
+			ResultStatus rs = null;
+			try {
+				
+				List<CadreDateVO> list = getHourWiseTdpCadreDetailsByOverall();
+				if(list != null && list.size() > 0){
+					
+					long startTime = System.currentTimeMillis();
+					rs = saveInToHourRegInfoTempByOverall(list);
+					Double tempSeconds = (System.currentTimeMillis() - startTime)/1000.0;
+					
+			        if(rs != null){
+			        	
+			        	long intermediateStartTime = System.currentTimeMillis();
+			        	int deletedRecords =  tdpCadreHourRegInfoDAO.deleteAllRecords(null);
+			        	int insertedRecordsCount = tdpCadreHourRegInfoDAO.insertCadreDataHourWiseOverall();
+			        	Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+			        	
+			        	LOG.error("All Dates hour wise tdpcadre temp insert time is : " + tempSeconds  + " seconds && All Dates hour wise tdpcadre temp insert time is :" +interSeconds + " seconds" );
+			        }
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised at pushHourWiseTdpCadreDetailsByOverall", e);
+			}
+			return rs;
+		}
+       
+       public List<CadreDateVO> getHourWiseTdpCadreDetailsByOverall(){
     	   
-    	   CadreDateVO finalVO = new CadreDateVO();
-    	   try{
-			    
-    		    Map<Integer,CadreDateVO> apMap = getStateVOList(1L);
-    		    Map<Integer,CadreDateVO> tsMap = getStateVOList(36L);
-    		    
-    		    List<Object[]> list = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(currentDate,1L);
-    		    if(list != null && list.size() > 0){
-    		    	for(Object[] obj : list){
-    		    		
-    		    		if(obj[3] != null && (Long)obj[3] > 0l && obj[1]!=null){
-    		    			
-    		    			CadreDateVO hourVO = apMap.get((Integer)obj[1]);
-    		    			if(hourVO != null){
-    		    				hourVO.setRegCount(obj[2]!=null ? (Long)obj[2]:0l);
-    		    				hourVO.setUsersCount((Long)obj[3]);
-    		    			}
-    		    		}
-    		    	}
-    		    }
-    		    
-    		    List<Object[]> list1 = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(currentDate,36L);
-    		    if(list1 != null && list1.size() > 0){
-    		    	for(Object[] obj : list1){
-    		    		
-    		    		if(obj[3] != null && (Long)obj[3] > 0l && obj[1]!=null){
-    		    			
-    		    			CadreDateVO hourVO = tsMap.get((Integer)obj[1]);
-    		    			if(hourVO != null){
-    		    				hourVO.setRegCount(obj[2]!=null ? (Long)obj[2]:0l);
-    		    				hourVO.setUsersCount((Long)obj[3]);
-    		    			}
-    		    		}
-    		    	}
-    		    }
-    		  
-    		    finalVO.setSubMap(apMap);
-    		    finalVO.setSubMap1(tsMap);
-    		    
-		   }catch(Exception e){
-			  LOG.error("Exception occured in getHourWiseTdpCadreDetails() Method - ",e);
-		   }
-    	   return finalVO;
+    	   List<CadreDateVO> finalList = new ArrayList<CadreDateVO>(0);
+    	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	 try{
+ 		     
+    		 List<Object[]> apList = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(null,1L);
+    		 if(apList != null && apList.size() > 0){
+    			 for(Object[] obj : apList){
+    				CadreDateVO hourVO = new CadreDateVO();
+		   		    	
+	   		    	hourVO.setStateId(1L);
+	   		    	if(obj[0]!=null){
+	   		    		hourVO.setDateStr(sdf.format((Date)obj[0]));
+	   		    	}
+	   		    	hourVO.setDayHour(obj[1]!=null ? (Integer)obj[1] : 0);
+	   		    	hourVO.setRegCount(obj[2]!=null ? (Long)obj[2] : 0l);
+	   		    	hourVO.setUsersCount(obj[3]!=null ? (Long)obj[3] : 0l);
+	   		    	
+	   		    	finalList.add(hourVO);
+    			 }
+    		 }
+    		 
+    		 
+    		 List<Object[]> tsList = tdpCadreHourRegInfoDAO.getDateHourWiseTdpCadreCount(null,36L);
+    		 if(tsList != null && tsList.size() > 0){
+    			 for(Object[] obj : tsList){
+    				CadreDateVO hourVO = new CadreDateVO();
+		   		    	
+	   		    	hourVO.setStateId(36L);
+	   		    	if(obj[0]!=null){
+	   		    		hourVO.setDateStr(sdf.format((Date)obj[0]));
+	   		    	}
+	   		    	hourVO.setDayHour(obj[1]!=null ? (Integer)obj[1] : 0);
+	   		    	hourVO.setRegCount(obj[2]!=null ? (Long)obj[2] : 0l);
+	   		    	hourVO.setUsersCount(obj[3]!=null ? (Long)obj[3] : 0l);
+	   		    	
+	   		    	finalList.add(hourVO);
+    			 }
+    		 }
+    		 
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getHourWiseTdpCadreDetailsByOverall", e);
+		 } 
+    	 return finalList;
        }
-       public void saveInToHourRegInfo(Map<Integer,CadreDateVO> dataMap, Date currentTime){
-		   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       
+       public ResultStatus saveInToHourRegInfoTempByOverall(final List<CadreDateVO> finalList){
+    	    final  ResultStatus rs = new ResultStatus();
 		   	try{
-					if( dataMap != null && dataMap.size() > 0)
-					{	
-						int i= 0;
+					if( finalList != null && finalList.size() > 0)
+					{
+						transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 						
-						for (Map.Entry<Integer, CadreDateVO> entry : dataMap.entrySet())
-						{
-				    		  i = i +1;
-				    		  CadreDateVO dataVO = entry.getValue();
-				    		  if(dataVO != null){
-				    			  TdpCadreHourRegInfo info = new TdpCadreHourRegInfo();
-				    			  info.setStateId(dataVO.getStateId());
-				    			  if(dataVO.getDateStr() != null){
-				    				  info.setSurveyDate(sdf.parse(dataVO.getDateStr()));
-				    			  }
-				    			  info.setHour(dataVO.getDayHour().longValue());
-				    			  if(dataVO.getRegCount() != null && dataVO.getRegCount() > 0l){
-				    				  info.setTotalRegistrations(dataVO.getRegCount());
-				    			  }
-				    			  if(dataVO.getUsersCount() != null && dataVO.getUsersCount() > 0){
-				    				  info.setCadreSurveyUsers(dataVO.getUsersCount());
-				    			  }
-				    			  info.setCadreSurveyUsers(dataVO.getUsersCount());
-				    			  info.setInsertedTime(currentTime);
-				    			  
-				    			  tdpCadreHourRegInfoDAO.save(info);
-				    		  }
-			    			  if( i % 100 == 0 ) { 
-			    			       //flush a batch of inserts and release memory:
-			    				  tdpCadreDAO.flushAndclearSession();
-			    			  }
-				    	 }
+								int deletedRecords = tdpCadreHourRegInfoTemp1DAO.deleteAllRecords();
+								int count = tdpCadreHourRegInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
+								
+								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+								Date currentTime = new DateUtilService().getCurrentDateAndTime();
+								
+								int i= 0;
+								for (CadreDateVO dataVO : finalList )
+								{
+						    		  i = i +1;
+						    		  if(dataVO != null){
+						    			  TdpCadreHourRegInfoTemp1 info = new TdpCadreHourRegInfoTemp1();
+						    			  info.setStateId(dataVO.getStateId());
+						    			  if(dataVO.getDateStr() != null){
+						    				  try {
+												info.setSurveyDate(sdf.parse(dataVO.getDateStr()));
+											} catch (ParseException e) {
+												e.printStackTrace();
+											}
+						    			  }
+						    			  info.setHour(dataVO.getDayHour().longValue());
+						    			  if(dataVO.getRegCount() != null && dataVO.getRegCount() > 0l){
+						    				  info.setTotalRegistrations(dataVO.getRegCount());
+						    			  }
+						    			  if(dataVO.getUsersCount() != null && dataVO.getUsersCount() > 0){
+						    				  info.setCadreSurveyUsers(dataVO.getUsersCount());
+						    			  }
+						    			  info.setInsertedTime(currentTime);
+						    			  
+						    			  tdpCadreHourRegInfoTemp1DAO.save(info);
+						    		  }
+					    			  if( i % 100 == 0 ) { 
+					    			       //flush a batch of inserts and release memory:
+					    				  tdpCadreDAO.flushAndclearSession();
+					    			  }
+						    	 }
+								 rs.setResultCode(1);
+						         rs.setMessage("success");
+					        }
+					    });
 					}
 		   		
 				}catch(Exception e){
-					LOG.error("Exception raised at savingService", e);
-					//throw new RuntimeException("Exception At savingService..");
+					LOG.error("Exception raised at saveInToHourRegInfoTempByOverall", e);
+					 rs.setResultCode(0);
+				     rs.setMessage("failure");
 				}
+		   	  return rs;
 		   }
-       public  Map<Integer,CadreDateVO> getStateVOList(Long stateId){
-    	   
-    	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    	   Date currentDate = new DateUtilService().getCurrentDateAndTime();
-    	   Map<Integer,CadreDateVO> stateMap = new HashMap<Integer, CadreDateVO>(0);
-    	   try{
-    		   
-	    		   for(int i=0;i<24;i++){
-		   		    	CadreDateVO hourVO = new CadreDateVO();
-		   		    	
-		   		    	hourVO.setStateId(stateId);
-		   		    	hourVO.setDateStr(sdf.format(currentDate));
-		   		    	hourVO.setDayHour(i);
-		   		    	hourVO.setRegCount(0l);
-		   		    	hourVO.setUsersCount(0l);
-		   		    	
-		   		    	stateMap.put(hourVO.getDayHour(),hourVO);
-	   		       }
-    		   
-		   }catch(Exception e){
-			   LOG.error("Exception occured in getHourWiseTdpCadreDetails() Method - ",e);
-		   }
-    	   return stateMap;
-       }
-       
-       
-     /** 5)
+      
+       //USER WISE HOUR WISE INTERMEDIATE PUSHING.
+     /** 6)
    	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-   	 *  Pushing tdpcadre data hour wise for Tab Users.
+   	 *  Pushing tdpcadre data hour wise for Tab Users For Today.
    	 *  @since 03-NOVEMBER-2016 
    	 */ 
        
@@ -1801,12 +1884,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
  		       Integer hour = calendar.get(Calendar.HOUR_OF_DAY);
  		    
  			  final List<CadreDateVO> finalList = getTdpCadreDataHourWiseForTabUsersByToday(currentTime,hour);
-    		  
- 			  rs = pushUserWiseHoursDataToTempTable(finalList);
  			  
- 			 int deletedRecords =  tdpCadreUserHourRegInfoDAO.deleteAllRecords(currentTime);
-			 int insertedRecordsCount = tdpCadreUserHourRegInfoDAO.insertCadreDataByUserWiseHourWise();
- 		
+ 			  long startTime = System.currentTimeMillis();
+ 			  rs = pushUserWiseHoursDataToTempTable(finalList);
+ 			  Double tempSeconds = (System.currentTimeMillis() - startTime)/1000.0;
+ 			 
+ 			  if(rs != null){
+ 				 long intermediateStartTime = System.currentTimeMillis();
+ 				  
+ 				 int deletedRecords =  tdpCadreUserHourRegInfoDAO.deleteAllRecords(currentTime);
+ 				 int insertedRecordsCount = tdpCadreUserHourRegInfoDAO.insertCadreDataByUserWiseHourWise();
+ 				 
+ 				 Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+ 				 LOG.error("Today User Wise hour wise tdpcadre temp insert time is : " + tempSeconds  + " seconds && Today User Wise hour wise tdpcadre intermediate insert time is :" +interSeconds + " seconds" );
+ 			  }
     		 
 		}catch(Exception e){
 			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByToday() Method - ",e);
@@ -1899,9 +1990,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     	   return finalList;
        }
        
-       /** 6)
+       /** 7)
       	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-      	 *  Pushing tdpcadre data hour wise for Tab Users overall.
+      	 *  Pushing tdpcadre data hour wise for Tab Users overall (For All Dates)
       	 *  @since 03-NOVEMBER-2016 //tdpCadreUserHourRegInfoTemp1DAO
       	 */
        
@@ -1911,10 +2002,17 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   		    
   			  List<CadreDateVO> finalList = getTdpCadreDataHourWiseForTabUsersByOverall();
   			  
+  			  long startTime = System.currentTimeMillis();
   			  rs = pushUserWiseHoursDataToTempTableOverall(finalList);
-     	
-  			 int deletedRecords =  tdpCadreUserHourRegInfoDAO.deleteAllRecords(null);
-			 int insertedRecordsCount = tdpCadreUserHourRegInfoDAO.insertCadreDataByUserWiseHourWiseOverall();
+  			  Double tempSeconds = (System.currentTimeMillis() - startTime)/1000.0;
+  			  
+  			  if(rs != null){
+  				 long intermediateStartTime = System.currentTimeMillis();
+  	  			 int deletedRecords =  tdpCadreUserHourRegInfoDAO.deleteAllRecords(null);
+  				 int insertedRecordsCount = tdpCadreUserHourRegInfoDAO.insertCadreDataByUserWiseHourWiseOverall();
+  				 Double interSeconds = (System.currentTimeMillis() - intermediateStartTime)/1000.0;
+  				 LOG.error("All Dates User Wise hour wise tdpcadre temp insert time is : " + tempSeconds  + " seconds && All Dates User Wise hour wise tdpcadre intermediate insert time is :" +interSeconds + " seconds" );
+  			  }
 			 
  		}catch(Exception e){
  			 LOG.error("Exception occured in pushTdpCadreDataHourWiseForTabUsersByOverall() Method - ",e);
