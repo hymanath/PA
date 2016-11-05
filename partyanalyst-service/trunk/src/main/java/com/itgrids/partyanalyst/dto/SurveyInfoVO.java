@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class SurveyInfoVO implements Serializable{
@@ -39,6 +41,16 @@ public class SurveyInfoVO implements Serializable{
 	private Long teamleadId;
 	private String surveyorName;
 	private String teamleadName;
+
+	
+	private Long targetCount;
+	private Long todayCount;
+	private Long totalCount;
+	
+	private String message;
+	
+	private List<SurveyInfoVO> surveyInfoVOList = new ArrayList<SurveyInfoVO>(0);
+	
 	public Long getContryId() {
 		return contryId;
 	}
@@ -243,5 +255,36 @@ public class SurveyInfoVO implements Serializable{
 	public void setTeamleadName(String teamleadName) {
 		this.teamleadName = teamleadName;
 	}
+	public Long getTargetCount() {
+		return targetCount;
+	}
+	public void setTargetCount(Long targetCount) {
+		this.targetCount = targetCount;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getTodayCount() {
+		return todayCount;
+	}
+	public void setTodayCount(Long todayCount) {
+		this.todayCount = todayCount;
+	}
+	public List<SurveyInfoVO> getSurveyInfoVOList() {
+		return surveyInfoVOList;
+	}
+	public void setSurveyInfoVOList(List<SurveyInfoVO> surveyInfoVOList) {
+		this.surveyInfoVOList = surveyInfoVOList;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 	
 }
