@@ -505,14 +505,7 @@ public class Scheduler {
 		}
 		
 		try{ 
-			
-			long startTime = System.currentTimeMillis();
-			log.error("user wise hour wise today insert..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
-			
 			rs = cadreRegistrationServiceNew.pushTdpCadreDataHourWiseForTabUsersByToday();
-			
-			log.error("user wise hour wise today insert..  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
-			
 		}
 		catch(Exception e)
 		{
@@ -529,14 +522,7 @@ public class Scheduler {
 		}
 		
 		try{ 
-			
-			long startTime = System.currentTimeMillis();
-			log.error("user wise hour wise overall insert..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
-			
 			rs = cadreRegistrationServiceNew.pushTdpCadreDataHourWiseForTabUsersByOverall();
-			
-			log.error("user wise hour wise overall insert..  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
-			
 		}
 		catch(Exception e)
 		{
@@ -553,19 +539,29 @@ public class Scheduler {
 			return rs;
 		}
 		
-		try{ 
-			
-			long startTime = System.currentTimeMillis();
-			log.error("hour wise today insert..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
-			
+		try{
 			rs = cadreRegistrationServiceNew.pushHourWiseTdpCadreDetailsByToday();
-			
-			log.error("hour wise today insert..  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");
-			
 		}
 		catch(Exception e)
 		{
 			log.info("\n\n pushTdpCadreDataHourWiseForTabUsersByToday "); 
+		}
+		return rs;
+	}
+	
+	public ResultStatus pushTdpCadreDataHourWiseByOverall()
+	{	
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{ 
+			rs = cadreRegistrationServiceNew.pushHourWiseTdpCadreDetailsByOverall();
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushTdpCadreDataHourWiseByOverall "); 
 		}
 		return rs;
 	}
