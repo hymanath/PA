@@ -13263,23 +13263,27 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						
 						PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
 						paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
-						paymentTransactionVO.setPaymentGatewayId(1L);
+						paymentTransactionVO.setPaymentGatewayId(2L);
 						paymentTransactionVO.setPaymentMethodId(1L);
 						//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
-						paymentTransactionVO.setTransactionId("2016-2018"+memberShipNo);
-						paymentTransactionVO.setTransactionStatusId(2L);
+						paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo);
+						
 						paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
 						paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
-						paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
+						//paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
 						paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
-						if(AuthDesc.equalsIgnoreCase("Y"))
+						if(AuthDesc.equalsIgnoreCase("Y")){
 							paymentTransactionVO.setStatusCode("SUCCESS");
-						else
+							paymentTransactionVO.setTransactionStatusId(2L);
+						}else{
 							paymentTransactionVO.setStatusCode("FAILURE");
+							paymentTransactionVO.setTransactionStatusId(1L);
+						}
+						
 					//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
 					//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
 						paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
-						paymentTransactionVO.setReferenceUserId("2016-2018"+tdpCadreId);
+						paymentTransactionVO.setReferenceUserId("2016-2018_"+tdpCadreId);
 						paymentTransactionVO.setPaymentModuleId(1L);
 						paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 					}
