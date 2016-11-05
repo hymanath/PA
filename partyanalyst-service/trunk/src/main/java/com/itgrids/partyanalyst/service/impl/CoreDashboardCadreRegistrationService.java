@@ -2321,13 +2321,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					accessLvlValue.add(param[1] != null ? (Long)param[1] : 0l);
 				}
 			}
-			
+			String type = "Total";
 			//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt,4l);
-			Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			//later open this query 
+			//Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			Long totalRegCadre2016 = tdpCadreLocationInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,type);
+			//select * from tdp_cadre_location_info TCLI where TCLI.location_scope_id = 2 and TCLI.location_value = 1 and TCLI.type = 'Total';
 			//List<Object[]> totalRegCadreRenewalList = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
-			Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			//later open this query
+			//Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
+			Long totalRegCadreRenewal2016 = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,type);
 			//get total reg cadre
-			if(totalRegCadre2016 != null){
+			if(totalRegCadre2016 != null){  
 				totalCadre = totalRegCadre2016;
 			}
 			/*if(totalRegCadreList != null && totalRegCadreList.size() > 0){ 
@@ -2355,9 +2360,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			if(accessLvlId.longValue() == 4l){// user level 4 means parliament constituency
 				accessLevelValue = 10l; //region scope 10  means parliament constituency 
 			}else if(accessLvlId.longValue()==5l){
-				accessLevelValue = 4l;  
+				accessLevelValue = 4l;    
 			}else{
-				accessLevelValue = accessLvlId;     
+				accessLevelValue = accessLvlId;       
 			}
 			
 			//List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
@@ -2369,15 +2374,17 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			}
 			cadreRegistratedCountVO.setTotalCount(totalCadre);
-			cadreRegistratedCountVO.setRenewalCount(totalRenewal);
+			cadreRegistratedCountVO.setRenewalCount(totalRenewal); 
 			cadreRegistratedCountVO.setNewCount(totalNew);  
 			cadreRegistratedCountVO.setTarget(totalTarget);    
 			cadreRegistratedCountVO.setTotalPercent(calculatePercantage(cadreRegistratedCountVO.getTotalCount(),totalTarget));
-			
+			type = "Today";
 			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
-			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,toDt, toDt);
+			//Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,toDt, toDt);
+			Long totalRegCadreForToday = tdpCadreLocationInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,type);
 			//List<Object[]> totalRegCadreRenewalListForToday = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,today, today);
-			Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,toDt, toDt);
+			//Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,toDt, toDt);
+			Long totalRegCadreRenewalForToday = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,type);
 			//get total reg cadre for today
 			totalCadreToday = 0l;
 			if(totalRegCadreForToday != null){
@@ -2386,7 +2393,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			/*if(totalRegCadreListForToday != null && totalRegCadreListForToday.size() > 0){  
 				for(Object[] param : totalRegCadreListForToday){
 					if(accessLvlValue.contains((Long)param[0]))
-					totalCadreToday += param[1] != null ? (Long)param[1] : 0l;
+					totalCadreToday += param[1] != null ? (Long)param[1] : 0l;  
 				}
 			}*/
 			//get total renewal cadre 
@@ -2434,13 +2441,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			Long totalCadreTodayNew = 0l;
 			Long totalCadreTodayRenewal = 0l;
 			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO();
-			Long accessLvlId = null;
+			Long accessLvlId = 2l;
 			List<Long> accessLvlValue = new ArrayList<Long>();
-			accessLvlValue.add(36l);  
+			accessLvlValue.add(36l);
+			String type = "Total";
 			//Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
-			Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);    
+			//Long totalRegCadre2016 = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,frmDt, toDt);
+			Long totalRegCadre2016 = tdpCadreLocationInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,type);
 			//Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,frmDt, toDt);
-			Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,frmDt, toDt);
+			//Long totalRegCadreRenewal2016 = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,frmDt, toDt);
+			Long totalRegCadreRenewal2016 = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,type);
 			//get total reg cadre
 			if(totalRegCadre2016 != null){
 				totalCadre = totalRegCadre2016;
@@ -2457,31 +2467,33 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			
 			Long totalTarget = 0l;
 			//List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTotalCadreTargetCountLocationWise(accessLvlId,new HashSet<Long>(accessLvlValue),stateId, 4l,null);
-			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( 2l,new HashSet<Long>(){{add(36l);}}, 4l);  
-			if(totalTargetList != null && totalTargetList.size() > 0){       
+			List<Object[]> totalTargetList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWiseCount( 2l,new HashSet<Long>(accessLvlValue), 4l);  
+			if(totalTargetList != null && totalTargetList.size() > 0){         
 				for(Object[] param : totalTargetList){
 					if(accessLvlValue.contains((Long)param[0]))        
 						totalTarget += ((Long)param[1]);
 				}
 			}
-			cadreRegistratedCountVO.setTotalCount(totalCadre);
+			cadreRegistratedCountVO.setTotalCount(totalCadre);  
 			cadreRegistratedCountVO.setRenewalCount(totalRenewal);
 			cadreRegistratedCountVO.setNewCount(totalNew);  
 			cadreRegistratedCountVO.setTarget(totalTarget);    
 			cadreRegistratedCountVO.setTotalPercent(calculatePercantage(cadreRegistratedCountVO.getTotalCount(),totalTarget));
-			
+			type = "Today";
 			//List<Object[]> totalRegCadreListForToday = tdpCadreDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,stateId,today, today,4l);
-			Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,toDt, toDt); 
+			//Long totalRegCadreForToday = tdpCadreDateWiseInfoDAO.getTotalCadreCountLocationWiseTS(stateId,toDt, toDt); 
+			Long totalRegCadreForToday = tdpCadreLocationInfoDAO.getTotalCadreCountLocationWise(accessLvlId,accessLvlValue,type);
 			//List<Object[]> totalRegCadreRenewalListForToday = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,stateId,today, today);
-			Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,toDt, toDt);     
+			//Long totalRegCadreRenewalForToday = tdpCadreDateWiseInfoDAO.getTotalRenewlCadreLocationWiseTS(stateId,toDt, toDt);     
+			Long totalRegCadreRenewalForToday = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWise(accessLvlId,accessLvlValue,type);
 			//get total reg cadre for today
 			totalCadreToday = 0l;
 			if(totalRegCadreForToday != null){
-				totalCadreToday = totalRegCadreForToday;  
+				totalCadreToday = totalRegCadreForToday;    
 			}
 			
 			//get total renewal cadre 
-			totalCadreTodayRenewal = 0l;
+			totalCadreTodayRenewal = 0l;  
 			if(totalRegCadreRenewalForToday != null){
 				totalCadreTodayRenewal = totalRegCadreRenewalForToday;  
 			}
@@ -2499,7 +2511,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			e.printStackTrace();  
 			LOG.error("Exception raised in getTotalNewRenewalCadreStateWise in CoreDashboardCadreRegistrationService service", e);
 		}
-		return null;
+		return null;   
 	}
 	/**
 	* @param  Long parentActivityMemberId  
