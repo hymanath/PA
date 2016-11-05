@@ -13,4 +13,5 @@ public interface ICadreRegistrationServiceNew {
 	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByToday();
 	public ResultStatus pushHourWiseTdpCadreDetailsByToday();
 	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByOverall();
+	public ResultStatus pushHourWiseTdpCadreDetailsByOverall();
 }
