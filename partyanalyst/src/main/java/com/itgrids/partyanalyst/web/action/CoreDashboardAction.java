@@ -2888,7 +2888,9 @@ public String registrationsSuccess(){
 			//membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
 			membershipNo = mn.toString().trim();
 			resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"2016 CADRE REGISTRATION","NORMAL REGISTRATION",enrollMentNO);
-			if(resultStatus != null && resultStatus.getResultCode()==0)
+			if(!AuthDesc.trim().equalsIgnoreCase("Y"))
+				status="failure";
+			else if(resultStatus != null && resultStatus.getResultCode()==0)
 				status="success";
 			else
 				status="failure";
