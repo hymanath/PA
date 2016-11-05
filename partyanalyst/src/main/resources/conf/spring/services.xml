@@ -1358,6 +1358,8 @@
 		<property name="mailService" ref="mailService"></property>
 		<property name="mahaNaduService" ref="mahaNaduService"/>
 		<property name="cadreRegistrationServiceNew" ref="cadreRegistrationServiceNew"/>
+		<property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService"/>
+		
 	</bean>
 	
 	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1664,7 +1666,7 @@
 	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseByToday" />
     </bean>
     
-     <bean name="tdpCadreDataHourWiseByOverall" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <bean name="tdpCadreDataHourWiseByOverall" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="triggerHourWiseCadreDataOverall" />
     	<property name="cronExpression" value="0 05 19 * * ?" />
 	</bean>
@@ -1673,6 +1675,14 @@
 	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseByOverall" />
     </bean>
     
+    <bean name="locationWiseRegistrationSMSTracking" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="locationWiseMobileRegistration" />
+    	<property name="cronExpression" value="0 30 0,3,6,9,12 * * ?" />
+	</bean>
+	 <bean name="locationWiseMobileRegistration" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="locationWiseRegistrationSMSTracking" />
+	</bean>
     
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
@@ -1717,6 +1727,7 @@
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseByOverall" />
+		    <ref bean="locationWiseRegistrationSMSTracking"/>
         </list>
     	</property>
 	</bean>
@@ -3628,6 +3639,8 @@
 		 <property name="constituencyTehsilDAO" ref="constituencyTehsilDAO" />
 		 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		  <property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
+		   <property name="tdpCadreSmsLeaderLocationDAO" ref="tdpCadreSmsLeaderLocationDAO" />
+		  
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
