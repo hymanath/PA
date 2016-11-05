@@ -1364,6 +1364,7 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 					vo.setDistrictName(obj[7] != null ? obj[7].toString():"");
 					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
 					vo.setConstituencyName(obj[9] != null ? obj[9].toString():"");
+					vo.setFieldMonitrngName(obj[10] != null ? obj[10].toString():"");
 					//vo.setVendorId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
 					//vo.setVendorName(obj[11] != null ? obj[11].toString():"");
 					
@@ -1420,6 +1421,113 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 	}
 	   return returnList;
    }
+   
+   public List<FieldMonitoringVO> getConstituencyIssueWiseOverAllDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId,Long stateId){
+	   List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
+	   try {
+		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			//Date today = new Date();
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> list = fieldVendorTabUserDAO.getConstituencyIssueWiseOverAllDetails(issueTypeId, statusTypeId, startDate, endDate,stateId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					FieldMonitoringVO vo = new FieldMonitoringVO();
+					Long cadreSurveyUserId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setCadreSurveyUserId(cadreSurveyUserId);
+					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setStateId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setDistrictId(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
+					if(vo.getDistrictId() > 10l)
+						vo.setStateName("AP");
+					else if(vo.getDistrictId() < 11l)
+						vo.setStateName("TS");
+					vo.setDistrictName(obj[7] != null ? obj[7].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[8] != null ? obj[8].toString():"0"));
+					vo.setConstituencyName(obj[9] != null ? obj[9].toString():"");
+					vo.setFieldMonitrngName(obj[10] != null ? obj[10].toString():"");
+					vo.setIssueType(obj[12] != null ? obj[12].toString():"");
+					vo.setIssueStatus(obj[14] != null ? obj[14].toString():"");
+					vo.setDescription(obj[15] != null ? obj[15].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+			List<Object[]> list1 = fieldVendorTabUserDAO.getDistrictWiseIssuesCount(issueTypeId, statusTypeId, stateId, startDate, endDate);
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					Long count = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByDistrict(districtId, returnList);
+					if(vo != null)
+						vo.setDistrictCount(count);
+				}
+			}
+			
+			List<Object[]> list2 = fieldVendorTabUserDAO.getConstituencyWiseIssuesCount(issueTypeId, statusTypeId, stateId, startDate, endDate);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					Long count = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long constituencyId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long districtId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByConstituencyIdAndDistrict(constituencyId, districtId, returnList);
+					if(vo != null)
+						vo.setConstituencyCount(count);
+				}
+			}
+			
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getConstituencyIssueWiseOverAllDetails() of FieldMonitoringService", e);
+	}
+	   return returnList;
+   }
+   
+   public FieldMonitoringVO getMatchedVOByConstituencyIdAndDistrict(Long constituencyId,Long districtId,List<FieldMonitoringVO> list){
+   	FieldMonitoringVO returnvo = null;
+   	try {
+			if(list != null && !list.isEmpty()){
+				for (FieldMonitoringVO vo : list) {
+					if(vo.getDistrictId().longValue() == districtId.longValue()){
+						if(vo.getConstituencyId().longValue() == constituencyId.longValue()){
+							return vo;
+						}
+					}
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getMatchedVOByUserIdAndDistrict() of FieldMonitoringService", e);
+		}
+   	return returnvo;
+   }
+   
+   public FieldMonitoringVO getMatchedVOByDistrict(Long districtId,List<FieldMonitoringVO> list){
+	   	FieldMonitoringVO returnvo = null;
+	   	try {
+				if(list != null && !list.isEmpty()){
+					for (FieldMonitoringVO vo : list) {
+						if(vo.getDistrictId().longValue() == districtId.longValue()){
+							return vo;
+						}
+					}
+				}
+				return null;
+			} catch (Exception e) {
+				LOG.error("Exception occurred at getMatchedVOByUserIdAndDistrict() of FieldMonitoringService", e);
+			}
+	   	return returnvo;
+	   }
+   
    public List<IdAndNameVO> getCadreRegIssueStatusType() {
 		List<IdAndNameVO> regIssueStatusType = new ArrayList<IdAndNameVO>();
 		try {
@@ -2009,6 +2117,23 @@ public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId){
 	return returnList;
 }
 
+public FieldMonitoringVO getMatchedFieldMonitrnVOById(Long cadreSurveyUserId,List<FieldMonitoringVO> list){
+	FieldMonitoringVO returnvo = null;
+	try {
+		if(list != null && !list.isEmpty()){
+			for (FieldMonitoringVO vo : list) {
+				if(vo.getCadreSurveyUserId().longValue() == cadreSurveyUserId.longValue()){
+					return vo;
+				}
+			}
+		}
+		return null;
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getMatchedFieldMonitrnVOById() of FieldMonitoringService", e);
+	}
+	return returnvo;
+}
+
 /**
 * @param  Long loginUserId  
 * @param  Long districtId
@@ -2047,21 +2172,28 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			if(templist != null && !templist.isEmpty()){
 				for (Object[] obj : templist) {
 					Long userId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					FieldMonitoringVO vo = new FieldMonitoringVO();
-					vo.setCadreSurveyUserId(userId);
-					vo.setUserName(obj[1] != null ? obj[1].toString():"");
-					vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
-					vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
-					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-					vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
-					vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
-					vo.setConstituencyId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
-					vo.setConstituencyName(obj[8] != null ? obj[8].toString():"");
-					vo.setImagePath(obj[9] != null ? obj[9].toString():"");
-					vo.setTodayTarget(todayTarget.toString());
-					vo.setFieldMonitrngName(obj[11] != null ? obj[11].toString():"");
-					tabUserInfoIds.add(vo.getTabUserId());
-					returnList.add(vo);
+					//Long tabUserId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedFieldMonitrnVOById(userId, returnList);
+					if(vo == null){
+						vo = new FieldMonitoringVO();
+						vo.setCadreSurveyUserId(userId);
+						vo.setUserName(obj[1] != null ? obj[1].toString():"");
+						vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+						vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+						vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
+						vo.setConstituencyId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						vo.setConstituencyName(obj[8] != null ? obj[8].toString():"");
+						vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+						vo.setTodayTarget(todayTarget.toString());
+						vo.setFieldMonitrngName(obj[11] != null ? obj[11].toString():"");
+						//tabUserInfoIds.add(vo.getTabUserId());
+						returnList.add(vo);
+					}
+					//FieldMonitoringVO vo = new FieldMonitoringVO();
+					
 				}
 			}
 			Calendar cal = Calendar.getInstance();
@@ -2074,15 +2206,19 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			}
 			Long  uptoTarget = eachHourTarget*workingHrs;
 			
-			List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecord(tabUserInfoIds);
+			//List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecord(tabUserInfoIds);
+			List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecordNew(cadreRegUserId, constituencyId, cadreSurveyUserId, districtId, stateId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					
 					Long cadreUserId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					Long tabUserId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					
-					FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+					//FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+					FieldMonitoringVO vo = getMatchedFieldMonitrnVOById(cadreUserId, returnList);
 					if(vo != null){
+							vo.setTabUserId(tabUserId);
+							vo.setTabUserName(obj[5] != null ? obj[5].toString():"");
 							if(obj[0]!=null){
 	    	    					Date date = (Date)obj[0];
 	    	    					vo.setFirstRecord(returnTime.format(date));
@@ -2096,7 +2232,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 	    					vo.setCountPerc(String.format("%.2f", totalPerc));
 	    					
 					}
-					
+					tabUserInfoIds.add(tabUserId);
 				}
 			}
 			

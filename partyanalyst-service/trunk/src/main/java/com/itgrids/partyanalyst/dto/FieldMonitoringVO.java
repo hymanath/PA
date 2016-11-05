@@ -52,12 +52,47 @@ public class FieldMonitoringVO {
 	private Long lastOneHrActUsers;
 	private String countPerc;
 	private String fieldMonitrngName;
+	private String issueStatus;
+	private String issueType;
+	private String description;
 	private Long veryGoodCnt;
 	private Long goodCnt;
 	private Long poorCnt;
 	private Long veryPoorCnt;
+	private Long districtCount;
+	private Long constituencyCount;
 	
 	
+	public Long getDistrictCount() {
+		return districtCount;
+	}
+	public void setDistrictCount(Long districtCount) {
+		this.districtCount = districtCount;
+	}
+	public Long getConstituencyCount() {
+		return constituencyCount;
+	}
+	public void setConstituencyCount(Long constituencyCount) {
+		this.constituencyCount = constituencyCount;
+	}
+	public String getIssueStatus() {
+		return issueStatus;
+	}
+	public void setIssueStatus(String issueStatus) {
+		this.issueStatus = issueStatus;
+	}
+	public String getIssueType() {
+		return issueType;
+	}
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Long getVeryGoodCnt() {
 		return veryGoodCnt;
 	}

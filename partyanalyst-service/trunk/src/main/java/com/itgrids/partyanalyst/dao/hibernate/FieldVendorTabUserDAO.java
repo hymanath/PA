@@ -153,9 +153,12 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.userAddress.district.districtId," +
 					" CRI.userAddress.district.districtName," +
 					" CRI.userAddress.constituency.constituencyId," +
-					" CRI.userAddress.constituency.name"+
-					" from CadreRegIssue CRI" +
-					" where CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId " );
+					" CRI.userAddress.constituency.name," +
+					" CRUTU.cadreRegUser.user.userName"+
+					" from CadreRegIssue CRI,CadreRegUserTabUser CRUTU" +
+					" where CRI.cadreSurveyUser.cadreSurveyUserId = CRUTU.cadreSurveyUser.cadreSurveyUserId" +
+					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId" +
+					" and CRUTU.isDeleted = 'N' and CRUTU.cadreRegUser.userType = 'FM' " );
 		
 		if(issueTypeId !=null && issueTypeId.longValue()>0l){
 			sb.append(" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId");
@@ -173,6 +176,60 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		}
 		
 		//sb.append(" and CRUTU.isDeleted = 'N'");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(issueTypeId !=null && issueTypeId>0l){
+			query.setParameter("issueTypeId", issueTypeId);
+		}
+		query.setParameter("statusTypeId", statusTypeId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyIssueWiseOverAllDetails(Long issueTypeId,Long statusTypeId,Date fromDate,Date toDate,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct CRI.cadreSurveyUser.cadreSurveyUserId," +
+					" CRI.cadreSurveyUser.userName," +
+					" CRI.tabUserInfo.tabUserInfoId," +
+					" CRI.tabUserInfo.name," +
+					" CRI.tabUserInfo.mobileNo," +
+					" CRI.userAddress.state.stateId," +
+					" CRI.userAddress.district.districtId," +
+					" CRI.userAddress.district.districtName," +
+					" CRI.userAddress.constituency.constituencyId," +
+					" CRI.userAddress.constituency.name," +
+					" CRUTU.cadreRegUser.user.userName," +
+					" CRI.cadreRegIssueType.cadreRegIssueTypeId," +
+					" CRI.cadreRegIssueType.issueType," +
+					" CRI.cadreRegIssueStatus.cadreRegIssueStatusId," +
+					" CRI.cadreRegIssueStatus.status," +
+					" CRI.description"+
+					" from CadreRegIssue CRI,CadreRegUserTabUser CRUTU" +
+					" where CRI.cadreSurveyUser.cadreSurveyUserId = CRUTU.cadreSurveyUser.cadreSurveyUserId" +
+					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId " );
+		
+		if(issueTypeId !=null && issueTypeId.longValue()>0l){
+			sb.append(" and CRI.cadreRegIssueType.cadreRegIssueTypeId = :issueTypeId");
+		}
+		
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(CRI.insertedTime) between :fromDate and :toDate");
+		
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and CRI.userAddress.district.districtId between 11 and 23 ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and  CRI.userAddress.district.districtId between 1 and 10 ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append(" and CRI.userAddress.state.stateId = 1 ");
+		}
+		
+		sb.append(" and CRUTU.isDeleted = 'N'" +
+				" and CRUTU.cadreRegUser.userType = 'FM'" +
+				" order by CRI.userAddress.state.stateId,CRI.userAddress.district.districtId,CRI.userAddress.constituency.constituencyId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null && toDate != null){
@@ -462,7 +519,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 				sb.append(" and model.userAddress.state.stateId = 1");
 			}
 	     if(fromDate !=null && toDate != null)
-	    	 sb.append(" and model.updatedTime between :fromDate and :toDate");
+	    	 sb.append(" and date(model.updatedTime) between :fromDate and :toDate");
 	     sb.append(" group by model.userAddress.district.districtId");
 	     
 	     Query query = getSession().createQuery(sb.toString());
@@ -470,8 +527,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 	    	query.setParameter("issueTypeId", issueTypeId);
 	     if(issueStatusId != null && issueStatusId.longValue() > 0l)
 	     	query.setParameter("issueStatusId", issueStatusId);
-	     if(stateId != null && stateId.longValue() > 0l)
-	    	 query.setParameter("stateId", stateId);
+	     
 	     if(fromDate !=null && toDate != null){
 	    	 query.setParameter("fromDate", fromDate);
 	    	 query.setParameter("toDate", toDate);
@@ -484,7 +540,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 	public List<Object[]> getConstituencyWiseIssuesCount(Long issueTypeId,Long issueStatusId,Long stateId,Date fromDate,Date toDate){
 		StringBuilder sb=new StringBuilder();
 	     	sb.append("select count(model.cadreRegIssueId)," +
-	     			" model.userAddress.constituency.constituencyId,model.userAddress.constituency.name" +
+	     			" model.userAddress.constituency.constituencyId,model.userAddress.constituency.name," +
+	     			" model.userAddress.district.districtId" +
 	     			" from CadreRegIssue model " +
 	     			" where model.locationScopeId = 4");
 	     if(issueTypeId != null && issueTypeId.longValue() > 0l)
@@ -499,7 +556,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 				sb.append(" and model.userAddress.state.stateId = 1");
 			}
 	     if(fromDate !=null && toDate != null)
-	    	 sb.append(" and model.updatedTime between :fromDate and :toDate");
+	    	 sb.append(" and date(model.updatedTime) between :fromDate and :toDate");
 	     sb.append(" group by model.userAddress.constituency.constituencyId");
 	     
 	     Query query = getSession().createQuery(sb.toString());
@@ -507,8 +564,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 	    	query.setParameter("issueTypeId", issueTypeId);
 	     if(issueStatusId != null && issueStatusId.longValue() > 0l)
 	     	query.setParameter("issueStatusId", issueStatusId);
-	     if(stateId != null && stateId.longValue() > 0l)
-	    	 query.setParameter("stateId", stateId);
+	    
 	     if(fromDate !=null && toDate != null){
 	    	 query.setParameter("fromDate", fromDate);
 	    	 query.setParameter("toDate", toDate);
