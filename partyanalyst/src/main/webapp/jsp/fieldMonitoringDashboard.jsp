@@ -108,6 +108,7 @@
 						<h3 class="panel-title text-capital" id="issueTypeHeadingId"></h3>
 						<div id="statusWiseDetailsImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 						<div id="statusWiseDetailsDivId"></div>
+						<div id="statusWiseDetailsOverAllDivId" style="display:none"></div>
                     </div>
 					<div class="block table-responsive" id="dataCollectorsDiv" style="display:none;">
 						<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 20px; font-weight: bold;">

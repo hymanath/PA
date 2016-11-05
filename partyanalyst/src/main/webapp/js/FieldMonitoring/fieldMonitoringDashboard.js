@@ -408,10 +408,27 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
 			$("#statusWiseDetailsDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
 		}
 	});
+	$.ajax({
+		type : 'GET',
+		url : 'getConstituencyIssueWiseOverAllDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildLocationWiseOverAllDetails(result);
+		}
+		else{
+			//$("#statusWiseDetailsImgId").hide();
+			$("#statusWiseDetailsOverAllDivId").html('<h4 class="text-danger">NO DATA AVAILABLE...</h4>');
+		}
+	});
 }
 
 function buildStatusWiseDetails(result){
 	var str = '';
+	
+	str+='<span class="btn btn-info excelId form-inline pull-right btn-sm btn-xs" style="float:left;margin-top: 10px" onclick="exportToExcel(\'issueStatusTableId\')"><b> Export To Excel </b></span>';
+	str+='<span class="btn btn-success excelId form-inline pull-right btn-sm btn-xs" style="float:left;margin-top: 10px;margin-right: 10px;" onclick="exportToExcel(\'locationWiseTableId\')"><b> Over All Export To Excel </b></span>';
 	
 	str+='<table class="table b_1" id="issueStatusTableId">';
 		str+='<thead class="text-capitalize">';
@@ -474,9 +491,126 @@ function buildStatusWiseDetails(result){
 	
 	$("#statusWiseDetailsImgId").hide();
 	$("#statusWiseDetailsDivId").html(str);
-	$("#issueStatusTableId").dataTable();
+	$("#issueStatusTableId").dataTable({
+			"aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 20,
+	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	});
 	$('html,body').animate({scrollTop: $("#statusWiseDetailsDivId").offset().top}, 'slow');
 }
+
+function buildLocationWiseOverAllDetails(result){
+	var str = '';
+	
+	str+='<table class="table b_1" id="locationWiseTableId">';
+		str+='<thead class="text-capitalize">';
+			str+='<th>state</th>';
+			str+='<th>district</th>';
+			str+='<th>No.Of Issues</th>';
+			str+='<th>constituency</th>';
+			str+='<th>No.Of Issues</th>';
+			str+='<th>FM user</th>';
+			str+='<th>User Id</th>';
+			str+='<th>user name</th>';
+			str+='<th>user contact number</th>';
+			str+='<th>Issue Type</th>';
+			str+='<th>Issue Status</th>';
+			str+='<th>Description</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			if(result[i].districtCount != null && result[i].districtCount > 0){
+				str+='<tr>';
+					if(result[i].stateName != null)
+						str+='<td>'+result[i].stateName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].districtName != null)
+						str+='<td>'+result[i].districtName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].districtCount != null)
+						str+='<td>'+result[i].districtCount+'</td>';
+					else
+						str+='<td> - </td>';
+				str+='</tr>';
+			}
+			if(result[i].constituencyCount != null && result[i].constituencyCount > 0){
+				str+='<tr>';
+					if(result[i].stateName != null)
+						str+='<td>'+result[i].stateName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].districtName != null)
+						str+='<td>'+result[i].districtName+'</td>';
+					else
+						str+='<td> - </td>';
+					/*if(result[i].districtCount != null)
+						str+='<td>'+result[i].districtCount+'</td>';
+					else*/
+						str+='<td> - </td>';
+					if(result[i].constituencyName != null)
+						str+='<td>'+result[i].constituencyName+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].constituencyCount != null)
+						str+='<td>'+result[i].constituencyCount+'</td>';
+					else
+						str+='<td> - </td>';
+				str+='</tr>';
+			}
+			str+='<tr>';
+				if(result[i].stateName != null)
+					str+='<td>'+result[i].stateName+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].districtName != null)
+					str+='<td>'+result[i].districtName+'</td>';
+				else
+					str+='<td> - </td>';
+				/*if(result[i].districtCount != null)
+					str+='<td>'+result[i].districtCount+'</td>';
+				else*/
+					str+='<td> - </td>';
+				if(result[i].constituencyName != null)
+					str+='<td>'+result[i].constituencyName+'</td>';
+				else
+					str+='<td> - </td>';
+				/*if(result[i].constituencyCount != null)
+					str+='<td>'+result[i].constituencyCount+'</td>';
+				else*/
+					str+='<td> - </td>';
+				str+='<td>'+result[i].fieldMonitrngName+'</td>';
+				str+='<td>'+result[i].userName+'</td>';
+				str+='<td>'+result[i].tabUserName+'</td>';
+				str+='<td>'+result[i].mobileNo+'</td>';
+				str+='<td>'+result[i].issueStatus+'</td>';
+				str+='<td>'+result[i].issueType+'</td>';
+				str+='<td>'+result[i].description+'</td>';
+				
+				/*if(result[i].openIssues != null)
+					str+='<td>'+result[i].openIssues+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].fixedIssues != null)
+					str+='<td>'+result[i].fixedIssues+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].closedIssues != null)
+					str+='<td>'+result[i].closedIssues+'</td>';
+				else
+					str+='<td> - </td>';*/
+				//str+='<td><i class="glyphicon glyphicon-cog issuesBtn" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result[i].tabUserId+'" attr_cadre_survey_userName="'+result[i].userName+'" attr_tab_userName="'+result[i].tabUserName+'" attr_vendor_Id ="'+result[i].vendorId+'" attr_constistuency_Id = "'+result[i].constituencyId+'" attr_mobileNo="'+result[i].mobileNo+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	
+	$("#statusWiseDetailsOverAllDivId").html(str);
+	//$("#issueStatusTableId").dataTable();
+	//$('html,body').animate({scrollTop: $("#statusWiseDetailsDivId").offset().top}, 'slow');
+}
+
 $(document).on("click",".issuesBtn",function(){
     clearErrorFields();	
     $("#issueTypeDivId").hide();

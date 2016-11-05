@@ -763,4 +763,20 @@ public String getConstituencyByVendor(){
 	    return Action.SUCCESS;
 	}
 	
+  public String getConstituencyIssueWiseOverAllDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			Long issueTypeId = jObj.getLong("issueType");
+			Long issueStatusId = jObj.getLong("issueStatus");
+			Long stateId = jObj.getLong("stateId");
+			
+			fieldMonitoringList = fieldMonitoringService.getConstituencyIssueWiseOverAllDetails(fromDateStr,toDateStr,issueTypeId,issueStatusId,stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituencyIssueWiseOverAllDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
