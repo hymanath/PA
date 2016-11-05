@@ -260,6 +260,8 @@ table.dataTable tr.odd {
 {
 	background-color:#fff;
 }
+.text-capitalize{text-transform:uppercase;}
+
 </style>
 <body>
 <div class="container">
@@ -269,7 +271,7 @@ table.dataTable tr.odd {
 		<!-- Title Row -->
 		<div class="row m_top10" id="fadeInDown">
 			<div class="col-md-12 col-xs-12 col-sm-12 well-small  border-radius-0 mb-10 " style="background:#ffffff;">
-				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
+				<h3 class="text-center text-uppercase"><b>2016 Cadre Admin Dashboard</b></h3>
 			</div>
 		</div><!-- Title Row End-->
 			<!-- Members Registered Previous Row -->
@@ -318,8 +320,9 @@ table.dataTable tr.odd {
 		<!-- Members Count Row -->
 		<div class="row fadeInUp">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small border-radius-0 mb-10">
+			<label class="pull-right text-muted" style="margin-top: -10px;">Note: R - Renewal &amp; N - New</label>
 				<div class="row">
-					<div class="col-md-6 col-xs-12 col-sm-6">
+					<div class="col-md-6 col-xs-12 col-sm-6 m_top15">
 						<div class="panel panel-default">
 							<div class="panel-heading" style="background-color:#EAEAEA;border-bottom:0px">
 								<h4 class="panel-title">TODAY</h4>
@@ -605,11 +608,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						$("#ts2016CountId").html(str1)
 						$("#ts2016PrecCountId").html('<h2>'+result[1].percentage+'</h2>');
 						var overalltotal = result[0].count2016+result[1].count2016;
-						$("#totalApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center"> TOTAL  </h4></strong><h3 class="text-center" style="margin:0px">'+overalltotal+'</h3><span class="text-skyblue"></span></div></div><div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center"> AP  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div></div><div  class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div></div>');
+						$("#totalApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center text-muted"> TOTAL  </h4></strong><h3 class="text-center" style="margin:0px">'+overalltotal+'</h3><span class="text-skyblue"></span></div></div><div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center text-muted"> ANDHRA PRADESH  </h4></strong><h3 class="text-center" style="margin:0px">'+result[0].count2016+'</h3><span class="text-skyblue"></span></div></div><div  class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: #DBF1E4"><strong><h4 class="panel-title text-center text-muted">TELANGANA </h4></strong> <h3 class="text-center" style="margin:0px">'+result[1].count2016+'</h3><span class="text-skyblue"> </span></div></div>');
 						
 					}else if(typeId == 'today'){
 						var todaytotal = result[0].count2016+result[1].count2016;
-						$("#todayApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center">  TOTAL </h4></strong><h3 class="text-center" style="margin:0px"> '+todaytotal+'</h3></div></div><div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center">  AP </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div></div><div  class="col-md-4 col-xs-12 col-sm-12 text-center mytooltip m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div></div>');
+						$("#todayApTgRegisCount").html('<div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center text-muted">  TOTAL </h4></strong><h3 class="text-center" style="margin:0px"> '+todaytotal+'</h3></div></div><div class="col-md-4 col-xs-12 col-sm-12 mytooltip text-center m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center text-muted">  ANDHRA PRADESH </h4></strong><h3 class="text-center" style="margin:0px"> '+result[0].count2016+'</h3></div></div><div  class="col-md-4 col-xs-12 col-sm-12 text-center mytooltip m_top10" ><div style="padding: 5px; background-color: rgb(234, 234, 234);"><strong><h4 class="panel-title text-center text-muted">TELANGANA </h4></strong><h3 class="text-center" style="margin:0px"> '+result[1].count2016+'</h3></div></div>');
 						
 					
 					}
@@ -632,6 +635,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					var str1='';
 					//today
 					var todayCount = result[0].tabTotal+result[0].webTotal+result[0].partyOfcHydTotal+result[0].partyOfcVijTotal+result[0].onlineTotal;
+					var partyOfficeceTotal = result[0].partyOfcHydTotal+result[0].partyOfcVijTotal;
+					var paryOfficeNew = result[0].partyOfcHydNew+result[0].partyOfcVijNew;
+					var partyOfficeRenewal = result[0].partyOfcHydRenewal+result[0].partyOfcVijRenewal;
 					str+='<div class="col-md-8 col-xs-12 col-sm-8">';
 					str+='<div class="table-responsive">';
 						
@@ -643,104 +649,89 @@ function get2016LocationWiseRegisteredCounts(typeId){
 							str+='<th>Renewal</th>';
 							str+='<th>Total</th>';
 						str+='</thead>'; */
-						str+='<tbody style="background:#fff;">';
+						str+='<tbody >';
 						str+='<tr>';
-							str+='<td>Tab :&nbsp;&nbsp;&nbsp;';
+							str+='<td><span class="text-capitalize" style="color:#d5d5d5">Tab:&nbsp;</span>';
 							if(result[0].tabTotal == null || result[0].tabTotal == 0){
 								str+='0';
 							}else{
 								str+=''+result[0].tabTotal+'';
-							}
-							if(result[0].tabNew == null || result[0].tabNew == 0){
-								str+='(N - 0)';
-							}else{
-								str+='(N - '+result[0].tabNew+')';
 							}
 							if(result[0].tabRenewal == null || result[0].tabRenewal == 0){
 								str+='(R - 0)';
 							}else{
 								str+='(R - '+result[0].tabRenewal+')';
 							}
+							if(result[0].tabNew == null || result[0].tabNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].tabNew+')';
+							}
+							
 							
 							str+='</td>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<td>Web :&nbsp;&nbsp;&nbsp;';
+							str+='<td><span class="text-capitalize" style="color:#d5d5d5">Web:&nbsp;</span>';
 							if(result[0].webTotal == null || result[0].webTotal == 0){
 								str+='0';
 							}else{
 								str+=''+result[0].webTotal+'';
-							}
-							if(result[0].webNew == null || result[0].webNew == 0){
-								str+='(N - 0)';
-							}else{
-								str+='(N - '+result[0].webNew+')';
 							}
 							if(result[0].webRenewal == null || result[0].webRenewal == 0){
 								str+='(R - 0)';
 							}else{
 								str+='(R - '+result[0].webRenewal+')';
 							}
-							
-							str+='</td>';
-						str+='</tr>';
-						str+='<tr>';
-							str+='<td>Party Office(Hyd) :&nbsp;&nbsp;&nbsp;';
-							if(result[0].partyOfcHydTotal == null || result[0].partyOfcHydTotal == 0){
-								str+='-';
-							}else{
-								str+=''+result[0].partyOfcHydTotal+'';
-							}
-							if(result[0].partyOfcHydNew == null || result[0].partyOfcHydNew == 0){
-								str+='(N - )';
-							}else{
-								str+='(N - '+result[0].partyOfcHydNew+')';
-							}
-							if(result[0].partyOfcHydRenewal == null || result[0].partyOfcHydRenewal == 0){
-								str+='(R - )';
-							}else{
-								str+='(R - '+result[0].partyOfcHydRenewal+')';
-							}
-							
-							str+='</td>';
-						str+='</tr>';
-						str+='<tr>';
-							str+='<td>Partyoffice(Vij) : &nbsp;&nbsp;&nbsp;';
-							if(result[0].partyOfcVijTotal == null || result[0].partyOfcVijTotal == 0){
-								str+='0';
-							}else{
-								str+=''+result[0].partyOfcVijTotal+'';
-							}
-							if(result[0].partyOfcVijNew == null || result[0].partyOfcVijNew == 0){
+							if(result[0].webNew == null || result[0].webNew == 0){
 								str+='(N - 0)';
 							}else{
-								str+='(N - '+result[0].partyOfcVijNew+')';
+								str+='(N - '+result[0].webNew+')';
 							}
-							if(result[0].partyOfcVijRenewal == null || result[0].partyOfcVijRenewal == 0){
+							
+							
+							str+='</td>';
+						str+='</tr>';
+						
+						str+='<tr>';
+							str+='<td><span class="text-capitalize" style="color:#d5d5d5">Party Office:&nbsp;</span>';
+							if(result[0].partyOfficeceTotal == null || result[0].partyOfficeceTotal == 0){
+								str+='0';
+							}else{
+								str+=''+result[0].partyOfficeceTotal+'';
+							}
+							if(result[0].partyOfficeRenewal == null || result[0].partyOfficeRenewal == 0){
 								str+='(R - 0)';
 							}else{
-								str+='(R - '+result[0].partyOfcVijRenewal+')';
+								str+='(R - '+result[0].partyOfficeRenewal+')';
 							}
+							if(result[0].paryOfficeNew == null || result[0].paryOfficeNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].paryOfficeNew+')';
+							}
+							
 							
 							str+='</td>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<td>Online : &nbsp;&nbsp;&nbsp;';
+							str+='<td><span class="text-capitalize" style="color:#d5d5d5">Online:&nbsp;</span>';
 							if(result[0].onlineTotal == null || result[0].onlineTotal == 0){
 								str+='0';
 							}else{
 								str+=''+result[0].onlineTotal+'';
-							}
-							if(result[0].onlineNew == null || result[0].onlineNew == 0){
-								str+='(N - 0)';
-							}else{
-								str+='(N - '+result[0].onlineNew+')';
 							}
 							if(result[0].onlineRenewal == null || result[0].onlineRenewal == 0){
 								str+='(R - 0)';
 							}else{
 								str+='(R - '+result[0].onlineRenewal+')';
 							}
+							if(result[0].onlineNew == null || result[0].onlineNew == 0){
+								str+='(N - 0)';
+							}else{
+								str+='(N - '+result[0].onlineNew+')';
+							}
+							
 							
 							str+='</td>';
 						str+='</tr>';
@@ -749,7 +740,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='</div>';
 					str+='</div>';
 					   str+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
-					   str+='<img src="images/icons/arrowBrace.png" class="img-responsive" style="margin-top: 10px;">';
+					   str+='<img src="images/icons/arrowBrace.png" class="img-responsive" >';
 					   str+='</div>';
 					   str+='<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top: 10px;padding-left:0px;padding-right:0px">';
 					   str+='<h2 class="f_26">'+todayCount+'</h2>';
@@ -760,6 +751,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					
 					//total
 					var totalCount = result[1].tabTotal+result[1].webTotal+result[1].partyOfcHydTotal+result[1].partyOfcVijTotal+result[1].onlineTotal;
+					var partyOfficeceTotal = result[1].partyOfcHydTotal+result[1].partyOfcVijTotal;
+					var paryOfficeNew = result[1].partyOfcHydNew+result[1].partyOfcVijNew;
+					var partyOfficeRenewal = result[1].partyOfcHydRenewal+result[1].partyOfcVijRenewal;
 					str1+='<div class="col-md-8 col-xs-12 col-sm-8">';
 					str1+='<div class="">';
 					str1+='<table class="table tableCadreDash">';
@@ -769,104 +763,89 @@ function get2016LocationWiseRegisteredCounts(typeId){
 							str1+='<th>Renewal</th>';
 							str1+='<th>Total</th>';
 						str1+='</thead>'; */
-						str1+='<tbody style="background:#fff;">';
+						str1+='<tbody >';
 						str1+='<tr>';
-							str1+='<td>Tab :&nbsp;&nbsp;&nbsp;';
+							str1+='<td><span class="text-capitalize" style="color:#d5d5d5">Tab:&nbsp;</span>';
 							if(result[1].tabTotal == null || result[1].tabTotal == 0){
 								str1+='0';
 							}else{
 								str1+=''+result[1].tabTotal+'';
-							}
-							if(result[1].tabNew == null || result[1].tabNew == 0){
-								str1+='(N - 0)';
-							}else{
-								str1+='(N - '+result[1].tabNew+')';
 							}
 							if(result[1].tabRenewal == null || result[1].tabRenewal == 0){
 								str1+='(R - 0)';
 							}else{
 								str1+='(R - '+result[1].tabRenewal+')';
 							}
+							if(result[1].tabNew == null || result[1].tabNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].tabNew+')';
+							}
+							
 							
 							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
-							str1+='<td>Web :&nbsp;&nbsp;&nbsp;';
+							str1+='<td><span class="text-capitalize" style="color:#d5d5d5">Web:&nbsp;</span>';
 							if(result[1].webTotal == null || result[1].webTotal == 0){
 								str1+='0';
 							}else{
 								str1+=''+result[1].webTotal+'';
-							}
-							if(result[1].webNew == null || result[1].webNew == 0){
-								str1+='(N - 0)';
-							}else{
-								str1+='(N - '+result[1].webNew+')';
 							}
 							if(result[1].webRenewal == null || result[1].webRenewal == 0){
 								str1+='(R - 0)';
 							}else{
 								str1+='(R - '+result[1].webRenewal+')';
 							}
-							
-							str1+='</td>';
-						str1+='</tr>';
-						str1+='<tr>';
-							str1+='<td>Party Office(Hyd) :&nbsp;&nbsp;&nbsp;';
-							if(result[1].partyOfcHydTotal == null || result[1].partyOfcHydTotal == 0){
-								str1+='-';
-							}else{
-								str1+=''+result[1].partyOfcHydTotal+'';
-							}
-							if(result[1].partyOfcHydNew == null || result[1].partyOfcHydNew == 0){
-								str1+='(N - )';
-							}else{
-								str1+='(N - '+result[1].partyOfcHydNew+')';
-							}
-							if(result[1].partyOfcHydRenewal == null || result[1].partyOfcHydRenewal == 0){
-								str1+='(R - )';
-							}else{
-								str1+='(R - '+result[1].partyOfcHydRenewal+')';
-							}
-							
-							str1+='</td>';
-						str1+='</tr>';
-						str1+='<tr>';
-							str1+='<td>Partyoffice(Vij) : &nbsp;&nbsp;&nbsp;';
-							if(result[1].partyOfcVijTotal == null || result[1].partyOfcVijTotal == 0){
-								str1+='0';
-							}else{
-								str1+=''+result[1].partyOfcVijTotal+'';
-							}
-							if(result[1].partyOfcVijNew == null || result[1].partyOfcVijNew == 0){
+							if(result[1].webNew == null || result[1].webNew == 0){
 								str1+='(N - 0)';
 							}else{
-								str1+='(N - '+result[1].partyOfcVijNew+')';
+								str1+='(N - '+result[1].webNew+')';
 							}
-							if(result[1].partyOfcVijRenewal == null || result[1].partyOfcVijRenewal == 0){
+							
+							
+							str1+='</td>';
+						str1+='</tr>';
+						
+						str1+='<tr>';
+							str1+='<td><span class="text-capitalize" style="color:#d5d5d5">Party Office:&nbsp;</span>';
+							if(result[1].partyOfficeceTotal == null || result[1].partyOfficeceTotal == 0){
+								str1+='0';
+							}else{
+								str1+=''+result[1].partyOfficeceTotal+'';
+							}
+							if(result[1].partyOfficeRenewal == null || result[1].partyOfficeRenewal == 0){
 								str1+='(R - 0)';
 							}else{
-								str1+='(R - '+result[1].partyOfcVijRenewal+')';
+								str1+='(R - '+result[1].partyOfficeRenewal+')';
 							}
+							if(result[1].paryOfficeNew == null || result[1].paryOfficeNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].paryOfficeNew+')';
+							}
+							
 							
 							str1+='</td>';
 						str1+='</tr>';
 						str1+='<tr>';
-							str1+='<td>Online : &nbsp;&nbsp;&nbsp;';
+							str1+='<td><span class="text-capitalize" style="color:#d5d5d5">Online:&nbsp;</span>';
 							if(result[1].onlineTotal == null || result[1].onlineTotal == 0){
 								str1+='0';
 							}else{
 								str1+=''+result[1].onlineTotal+'';
-							}
-							if(result[1].onlineNew == null || result[1].onlineNew == 0){
-								str1+='(N - 0)';
-							}else{
-								str1+='(N - '+result[1].onlineNew+')';
 							}
 							if(result[1].onlineRenewal == null || result[1].onlineRenewal == 0){
 								str1+='(R - 0)';
 							}else{
 								str1+='(R - '+result[1].onlineRenewal+')';
 							}
+							if(result[1].onlineNew == null || result[1].onlineNew == 0){
+								str1+='(N - 0)';
+							}else{
+								str1+='(N - '+result[1].onlineNew+')';
+							}
+							
 							
 							str1+='</td>';
 						str1+='</tr>';
@@ -876,7 +855,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str1+='</div>';
 
 					str1+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
-					str1+='<img src="images/icons/arrowBrace.png" style="margin-top: 10px;" class="img-responsive">';
+					str1+='<img src="images/icons/arrowBrace.png"  class="img-responsive">';
 					str1+='</div>';
 					str1+='<div class="col-md-3 col-xs-12 col-ms-3" style="margin-top: 10px;padding-left:0px;padding-right:0px">';
 					str1+='<h2 class="f_26">'+totalCount+'</h2>';
@@ -946,7 +925,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="table-responsive" style="margin-top:20px;">';
-			str+='<table class="table table-bordered" >';
+			str+='<table class="table table-bordered " >';
 				str+='<thead>';
 					str+='<th>VERY GOOD</th>';
 					str+='<th>GOOD</th>';
@@ -970,7 +949,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				str+='<div class="table-responsive">';
 			}
 			
-			str+='<table class="table table-bordered" id="districtWise2016DataTableId">';
+			str+='<table class="table table-bordered " id="districtWise2016DataTableId">';
 				str+='<thead>';
 					str+='<th>District</th>';
 					str+='<th>Target Cadres</th>';
@@ -1062,7 +1041,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			{
 				str+='<div class="table-responsive">';
 			}
-			str+='<table class="table table-bordered" id="constituencyWise2016DataTableId">';
+			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
 				str+='<thead>';
 					str+='<th>Constituency</th>';
 					str+='<th>Target Cadres</th>';
