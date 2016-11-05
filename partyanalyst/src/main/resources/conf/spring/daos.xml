@@ -3359,5 +3359,18 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreSmsLeaderDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreSmsLeaderDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreSmsLeaderLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreSmsLeaderLocationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreAchievedSmsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreAchievedSmsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	
 </beans>		

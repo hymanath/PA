@@ -1035,6 +1035,10 @@
 				 	  <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp</value>
 				 	  <value>com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp1</value>
 				 	  
+				 	  <value>com.itgrids.partyanalyst.model.TdpCadreSmsLeader</value>
+				 	  <value>com.itgrids.partyanalyst.model.TdpCadreSmsLeaderLocation</value>
+				 	  <value>com.itgrids.partyanalyst.model.TdpCadreAchievedSms</value>
+				 	  
 				 </list>
 			
 		</property>
