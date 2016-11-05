@@ -40,6 +40,8 @@ import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
@@ -1971,10 +1973,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 	public CadreRegistratedCountVO getStateDtls(Long activityMemberId,Long stateId,String startDate, String endDate){
 		try{
+			DateUtilService dateUtilService = new DateUtilService();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date today = new Date();
-			Date frmDt = null;
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Date frmDt = null;  
 			Date toDt = null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 				frmDt = sdf.parse(startDate);
@@ -2178,8 +2181,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date today = new Date();
-			Date frmDt = null;
+			DateUtilService dateUtilService = new DateUtilService();
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Date frmDt = null;  
 			Date toDt = null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 				frmDt = sdf.parse(startDate);
@@ -3180,5 +3184,4 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		 }
 	 }
  }
-
 }
