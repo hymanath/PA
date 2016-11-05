@@ -10,15 +10,232 @@
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 </head>
+	<style>
+		body{background:#e5e5e5 }
+		table.dataTable thead .sorting , table.dataTable thead .sorting_desc , table.dataTable thead .sorting_asc
+		{
+			background-image:none      
+		}
+		/* Loader */
+		.spinner {
+			margin: 30px auto;
+			width: 40px;
+			height: 40px;
+			position: relative;
+			text-align: center;
+  
+			-webkit-animation: sk-rotate 2.0s infinite linear;
+			animation: sk-rotate 2.0s infinite linear;
+		}
+
+		.dot1, .dot2 {
+			width: 60%;
+			height: 60%;
+			display: inline-block;
+			position: absolute;
+			top: 0;
+			background-color: #1ABC9C;
+			border-radius: 100%;
+  
+			-webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+			animation: sk-bounce 2.0s infinite ease-in-out;
+		}
+
+		.dot2 {
+			top: auto;
+			bottom: 0;
+			-webkit-animation-delay: -1.0s;
+			animation-delay: -1.0s;
+		}
+
+		@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+		@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+		@-webkit-keyframes sk-bounce {
+			0%, 100% { -webkit-transform: scale(0.0) }
+			50% { -webkit-transform: scale(1.0) }
+		}
+
+		@keyframes sk-bounce {
+			0%, 100% { 
+				transform: scale(0.0);
+				-webkit-transform: scale(0.0);
+			} 50% { 
+				transform: scale(1.0);
+				-webkit-transform: scale(1.0);
+			}
+		}
+
+		p{margin:0px}
+		.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
+		.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
+		.border-none{border:none;}
+		.text-lowercase{text-transform:lowercase;}
+		.text-uppercase{text-transform:uppercase;}
+		.text-capitalize{text-transform:capitalize;}
+		.text-center{text-align: center;}
+		.text-red{color:#dc504a;}
+		.text-green{color:#4dbd74;}
+		.text-orange{color:#f9a834;}
+		.text-skyblue{color:#46acca;}
+		.mb-0{margin-bottom:0px}
+		.mb-10{margin-bottom:10px}
+		.Previousmembercount td:first-child{width:13%;}
+		.Previousmembercount td:nth-child(2){width:13%;vertical-align:middle}
+		.Previousmembercount td:nth-child(3){width:13%;vertical-align:middle}
+		.Previousmembercount td:last-child{width:13%;vertical-align:middle;text-align:center}
+		.Previousmembercount td{width:22%;}
+		.Previousmembercount td:last-child{width:10%;}
+		.membercount td{width:25%;}
+		.membercount td h2, .Previousmembercount td h2{margin:0px;}
+		.progress{height:10px;}
+		.height-300{height: 300px; overflow: auto;}
+		.height-500{height: 500px; overflow: auto;}
+		.height-320{height: 300px; overflow: auto;width: 440px;}
+		.f-16{font-size: 16px;}
+		body {
+			color: #333333;
+			font-size: 14px;
+			line-height: 20px;
+			margin: 0;
+		}
+		p {
+			color: #333;
+			font-size: 14px;
+		}
+		.background {
+			background: none repeat scroll 0 0 #e5e5e5;
+		}
+		.text-right {
+			text-align: right;
+		}
+		.imgStyle{
+			margin-left: 75px;
+			margin-top: 30px;
+		}
+	
+		.ajaxImgStyle {
+			margin-bottom: 30px;
+			margin-left: 94px;
+			margin-top: 30px;
+		}
+		.dataTables_length, .dataTables_filter , .dataTables_info {
+			color : #666666 !important;
+		}
+	
+		table.dataTable tr.odd td.sorting_1 {
+			background-color: #d3d3d3;
+		}
+		table.dataTable tr.even td.sorting_1 {
+			background-color: #fafafa;
+		}
+		table.dataTable tr.odd {
+			background-color: #f3f3f3;
+		}
+		#inActiveUsersId  thead th{
+			background-color: #dff0d8  !important;
+			color : #468847 !important;
+			line-height: 20px !important;
+		}
+			
+		#leaderDataDiv1,#leaderDataDiv2 {font-size:10px !important;font-family:verdana;font-weight:bold;}
+	
+	
+		.summary td {
+			//color: #666699;
+			padding: 7px 17px;
+			cursor:pointer;
+			border-bottom:1px solid lightblue;
+			border-left:1px solid lightblue;
+			border-right:1px solid lightblue;
+		}
+		.summary th {
+			border:1px solid lightblue;
+			color: #003399;
+			font-size: 14px;
+			font-weight: normal;
+			padding: 12px;
+		}
+	
+		.summary{
+			margin-left:25px;margin-bottom:10px;
+		}
+	
+		.info td {
+			color: #666699;
+			padding: 7px 17px;
+			cursor:pointer;
+			border-left:    1px solid #6699CC;
+			border-right:  1px solid #6699CC; 
+			border-bottom: 1px solid #6699CC;
+		}
+		.info th {
+			border-left:    1px solid #6699CC;
+			border-right:  1px solid #6699CC; 
+			border-top: 1px solid #6699CC;
+			color: #003399;
+			font-size: 14px;
+			font-weight: normal;
+			padding: 12px;
+		}	
+	
+		.typeRd{margin:5px;}
+		.cCodeDiv{height:8px;width:8px;margin:6px;float:left;}
+	
+	
+		.progress {
+			height: 3px !important;
+		}	
+		.tableCadreDash
+		{
+			border-collapse:unset;
+			border-spacing:0px 10px ;
+			text-align:center;
+		}
+		.tableCadreDash thead th
+		{
+			border-bottom:0px !important;
+			text-align:center;
+		}
+
+		.tableCadreDash tr td
+		{
+			border:1px solid #ADD8E6 !important;
+	
+		}
+
+
+		.text-blue{color:#0044CC}
+		.text_color{color: #999999;}
+		.text-muted {
+			color: #777777;
+		}
+		.f_26{font-size: 26.5px !important;}
+		.well
+		{
+			background-color:#fff;
+		}
+	</style>
 	<div class="container">    
 		<!-- Title Row -->
 		<div class="row m_top10" id="fadeInDown">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
+				<div style="padding:5px;">
+					<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" checked="true" style="margin-top:0px;"/>
+					<span style="margin-right:10px;"> TODAY</span>
+					<input type="radio" class="radiobuttonSelectedWise" id="totalId" name="compareC" value="Total" style="margin-top:0px;"/>
+					<span style="margin-right:10px;"> OVER ALL </span>      
+				</div>  
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 " >
+				<div id="progressImgId"></div>
 			</div>
 		</div>
 		<!-- Title Row End-->
-		<!-- Members Count Row -->  
+		<!-- Members Count Row 
 		<div class="row fadeInUp">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small border-radius-0 mb-10">
 				<div class="row">
@@ -80,32 +297,19 @@
 				</div>
 			</div>
 		</div>
-		<!-- Members Count Row End -->
+		Members Count Row End -->  
 		<!----New code for constituency and district wise Start ----->
-		<div class="row">
+		<div class="row distCls" style="display:none;">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<h4> District  Target VS Registered Cadre</h4>
-				<div style="padding:5px;">
-					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="today" checked="true" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> TODAY</span>
-					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="total" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> OVER ALL </span>
-				</div>
 				<div id="districtWise2016Details"   class="m_top10"></div>
 				<div id="leaderDataDiv2" style="margin-top: -1px">
-					
 				</div>
 			</div>
 		</div>  
-		<div class="row">
+		<div class="row constCls" style="display:none;">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency  Target Vs Registered Cadre</h4>
-				<div style="padding:5px;">
-					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="todayconstituencyValue" name="compareD" value="today" checked="true" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> TODAY</span>
-					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> OVER ALL</span>
-				</div>
+				<h4> Constituency  Target Vs Registered Cadre</h4>    
 				<div id="constituencyWise2016Details"   class="m_top10"></div>
 				<div id="leaderDataDiv1" class="scrollable_div" style="margin-top: -1px">
 				</div>
@@ -113,6 +317,79 @@
 		</div>
 		<!----New code for constituency and district wise Start ----->
 	</div>
+	<input type="hidden" id="hideConstId" value=""></input>
+	<!-- Modal -->  
+<div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+  <div class="modal-dialog modal-lg" role="document" style="width:85%">
+    <div class="modal-content" style="border-radius:0px">
+      <div class="modal-header" style="background-color:#CCC">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel1">KUPPAM CONSTITUENCY DETAILED REPORT</h4>
+      </div>
+      <div class="modal-body">
+		<div class="row tabModal" style="display:none;">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="row m_top10">
+					<div class="col-md-3 col-xs-12 col-sm-3">
+						<select class="form-control" id="constituencySeletBoxId">
+						  <option value="${constId}">${constName}</option>
+						  <select>
+						  <span id="constituencyErrorId" style="color:red"></span>    
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-3">
+						<span class="input-group pull-right">
+							<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</span>
+					</div>
+					<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
+						<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+					</div>
+				</div>
+				<div class="row showTabUserWiseDetails" style="display:none">
+				  <div class="col-md-12 col-xs-12 col-sm-12 m_top20 mtop-20">
+				     <div id="notReceiveRegistrationFieldStaffDivId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div id="tabUserWiseReportDiv"></div>
+					</div>
+				</div>
+			 </div>
+		</div>
+        <div class="row webModal">
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+					<label class="radio-inline">
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="Total" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Over All</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio2" value="Today" style="margin-top: 0px;"><h5 style="margin-top:-1px">Today</h5>      
+					</label>  
+				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">     
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="boothRadio1" value="booth" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Booth Wise</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5 style="margin-top:-1px">Panchayat Wise</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5 style="margin-top:-1px">Mandal Wise</h5>
+					</label>
+				</div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<div id="kupamRegDtlsId"></div>
+		  </div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end-->  
 <body>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -121,12 +398,17 @@
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>  
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var userId = 6946;  
-	//var userId = 6726;                  
-	var type = "Total";
-	var locationType = "AP";    
-	get2016LocationWiseRegisteredCounts(userId,locationType,type);
+	var userId = ${userId};
+	var stateName = '${stateName}';
+	var globalUserId = userId;      
+	var type = "Today";     
+	var locationType = stateName;        
+	get2016LocationWiseRegisteredCounts(userId,locationType,type);            
 	function get2016LocationWiseRegisteredCounts(userId,locationType,type){
+		$("#districtWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#progressImgId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		setcolorsForStatus();
 		var jObj = {
 			type : type,
 			userId : userId,        
@@ -137,13 +419,18 @@
 			url: 'get2016LocationWiseRegisteredCounts.action',
 			data : {task:JSON.stringify(jObj)}
 		}).done(function(result){
+			$("#districtWise2016Details").html('');
+			$("#constituencyWise2016Details").html('');
+			$("#progressImgId").html('');  
 			if(result != null && result.length > 0){
-				buildGet2016LocationWiseRegisteredCounts(result);
+				buildGet2016LocationWiseRegisteredCounts(result,userId);  
 			}
 		});
 	}
 	function buildGet2016LocationWiseRegisteredCounts(result){
 		if(result.length == 2){
+			$(".distCls").show();
+			$(".constCls").show();
 			//table one starts
 			var str1='';
 			if(result[0] !=null && result[0].length > 0 ){
@@ -236,9 +523,97 @@
 				"order": [ 4, 'desc' ]
 			});
 			//table one ends
-			
+			//table two starts
+			var str='';
+			if(result[1] !=null && result[1].length >0){
+				str+='<div class="table-responsive" style="margin-top:20px;">';
+				str+='<table class="table table-bordered" >';
+				str+='<thead>';
+					str+='<th>VERY GOOD</th>';
+					str+='<th>GOOD</th>';
+					str+='<th>OK</th>';
+					str+='<th>POOR</th>';
+					str+='<th>VERY POOR</th>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';  
+						str+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[1][0].veryGood+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[1][0].good+'</td>';
+						str+='<td><div class="cCodeDiv" style="background-color:yellow;"/>'+result[1][0].ok+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[1][0].poor+'</td>';
+						str+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[1][0].veryPoor+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+				if($(window).width > 768)
+				{
+						str+='<div class="table-responsive">';
+				}
+				str+='<table class="table table-bordered" id="constituencyWise2016DataTableId">';
+				str+='<thead>';
+					str+='<th>Constituency</th>';
+					str+='<th>Target Cadres</th>';
+					str+='<th>Renewal</th>';
+					str+='<th>New</th>';
+					str+='<th>Total</th>';
+					str+='<th>% of Register cadres</th>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result[1]){
+					str+='<tr>';
+					str+='<td attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[1][i].name+'</td>';  
+					str+='<td>'+result[1][i].targetCount+'</td>';
+					if(result[1][i].renewalPerc == null || result[1][i].renewalPerc == 0){  
+						str+='<td> - </td>';  
+					}else{
+						if(result[1][i].renewalCount == null || result[1][i].renewalCount == 0){
+						str+='<td>'+result[1][i].renewalCount+'</td>';
+						}else{
+							str+='<td>'+result[1][i].renewalCount+'<small>('+result[1][i].renewalPerc+' %)</small></td>';
+						}
+					}
+					
+					
+					if(result[1][i].newPerc == null || result[1][i].newPerc == 0){
+						str+='<td> - </td>';
+					}else{
+						if(result[1][i].newCount == null || result[1][i].newCount == 0){
+							str+='<td>'+result[1][i].newCount+'</td>';
+						}else{
+							str+='<td>'+result[1][i].newCount+'<small>('+result[1][i].newPerc+' %)</small></td>';
+						}
+					}
+					if(result[1][i].count2016 == null || result[1][i].count2016 == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[1][i].count2016+'</td>';
+					}
+					if(result[1][i].perc2016 == null || result[1][i].perc2016 == 0 || result[1][i].perc2016 == ""){
+						str+='<td> - </td>';
+					}else{
+						var colorStatus = getColorCodeByStatus(result[1][i].levelPerformanceType)
+						str+='<td style="color:'+colorStatus+';">'+result[1][i].perc2016+'</td>';
+						
+					}
+					
+					str+='</tr>';
+				}
+				str+='</tbody>';
+				str+='</table>';
+				if($(window).width > 768)
+				{
+					str+='</div>';
+				}
+			}
+		
+			$("#constituencyWise2016Details").html(str);
+			$("#constituencyWise2016DataTableId").dataTable({    
+				"order": [ 4, 'desc' ]
+			});
+			//table two ends
 			
 		}else{
+			$(".constCls").show();    
 			var str='';
 			if(result !=null && result.length >0){
 				str+='<div class="table-responsive" style="margin-top:20px;">';
@@ -276,9 +651,9 @@
 				str+='<tbody>';
 				for(var i in result[0]){
 					str+='<tr>';
-					str+='<td>'+result[0][i].name+'</td>';
+					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';  
 					str+='<td>'+result[0][i].targetCount+'</td>';
-					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
+					if(result[0][i].renewalPerc == null || result[0][i].renewalPerc == 0){  
 						str+='<td> - </td>';
 					}else{
 						if(result[0][i].renewalCount == null || result[0][i].renewalCount == 0){
@@ -323,9 +698,174 @@
 		
 			$("#constituencyWise2016Details").html(str);
 			$("#constituencyWise2016DataTableId").dataTable({
-				"order": [ 4, 'desc' ]
+				"order": [ 4, 'desc' ]      
 			});
 		}
+	}
+	var statusColorArr = [];  
+	var statusarr = ['VeryGood','Good','Ok','Poor','VeryPoor'];
+	function getColorCodeByStatus(status){
+		if(typeof status != "undefined"  && status != null && status!='') {
+			if(statusColorArr != null && statusColorArr.length > 0){
+				for(var i in statusColorArr){
+					if(statusColorArr[i].status.toLowerCase() == status.toLowerCase())
+					return statusColorArr[i].color;
+				}
+			}
+		}
+	    else
+			return '#000';
+	}
+	function setcolorsForStatus(){
+		statusColorArr = new Array();
+		var colorStatic = new Array('#008000','#90EE90','#FFFF00','#FFA500','#C43C35');
+		var colorCount = 0;
+		for(var i in statusarr){
+			var obj = {
+				status : statusarr[i],
+				color : colorStatic[colorCount]
+			}
+			statusColorArr.push(obj)
+			  
+			if(colorCount == (colorStatic.length)-1)
+				colorCount = 0;
+				colorCount++;
+			}
+		return statusColorArr;  
+	}
+	$(document).on("click",".radiobuttonSelectedWise",function(){
+		$("#progressImgId").hide();      
+		var selectedRadioButton = $(this).val();
+		var userId = globalUserId;
+		var state = locationType;
+		get2016LocationWiseRegisteredCounts(userId,state,selectedRadioButton);                        
+	});
+	$(document).on("click",".getDtlsCls",function(){         
+		var constName = $(this).attr("attr_const_name");
+		$("#myModalLabel1").html(constName+" CONSTITUENCY DETAILED REPORT") 
+		$( "#boothRadio1" ).prop( "checked", true );         
+		$("#cadreModal").modal("show");
+		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var constituencyId = $(this).attr("attr_const_id");
+		$("#hideConstId").attr("value",constituencyId);
+		var selectionType = "booth";    
+		var scopeType = $("input:radio[name=compareC]:checked").val();
+		if(scopeType == "Today"){
+			$( "#inlineRadio2" ).prop( "checked", true );
+		}else{
+			$( "#inlineRadio1" ).prop( "checked", true );          
+			         
+		}
+		getRegistrationCountDtls(constituencyId,selectionType,scopeType);
+	});
+	//
+	$(document).on('click','.locationRadioCls',function(){
+		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var selectionType=$("input:radio[name=selectionType]:checked").val();
+		var scopeType=$("input:radio[name=scopeType]:checked").val();
+		var constituencyId = $("#hideConstId").val();
+		getRegistrationCountDtls(constituencyId,selectionType,scopeType);  
+	});
+	
+	$(document).on('click','.scopeRadioCls',function(){
+		var selectionType=$("input:radio[name=selectionType]:checked").val();
+		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var scopeType=$("input:radio[name=scopeType]:checked").val();
+		var constituencyId = $("#hideConstId").val();
+		getRegistrationCountDtls(constituencyId,selectionType,scopeType);    
+	});
+	
+	function getRegistrationCountDtls(constituencyId,selectionType,scopeType){
+		var jObj = {
+			constituencyId : constituencyId,
+			scope : scopeType,        
+			location : selectionType    
+		}
+		$.ajax({
+			type:'GET',
+			url: 'get2016LocationWiseRegisterationDtls.action',    
+			data : {task:JSON.stringify(jObj)}
+		}).done(function(result){ 
+			$("#kupamRegDtlsId").html("");
+			if(result != null && result.length > 0){
+				buildRegistrationCountDtls(result,selectionType,scopeType);
+			}      
+		});      
+	}
+	function buildRegistrationCountDtls(result,location,scope){    
+		var str = '';  
+		str+='<div class="table-responsive m_top20">';
+          str+='<table class="table table-bordered" id="regCadreCountTableId">';
+            str+='<thead class="text-capital text-center">';
+              str+='<tr>';
+                str+='<th rowspan="2">mandal</th>';
+				if(location == "panchayat"){
+					str+='<th rowspan="2">panchayat</th>';
+				}
+                if(location == "booth"){
+					str+='<th rowspan="2">panchayat</th>';
+					str+='<th rowspan="2">Booth No</th>'; 
+				}
+                str+='<th rowspan="2">total voters</th>';
+                str+='<th rowspan="2">2014 Total Cadre</th>';
+				if(scope == "today"){
+					str+='<th colspan="6" class="text-capital text-center">2016 Cadre</th>';
+				}else{
+					str+='<th colspan="5" class="text-capital text-center">2016 Cadre</th>';
+				}
+                    
+              str+='</tr>';
+              str+='<tr>';
+				str+='<th>renewal Cadre 2016</th>';
+                str+='<th>renewal cadre percent(%)</th>';
+                str+='<th>total Cadre 2016</th>';
+				if(scope == "today"){
+					str+='<th>total Cadre On Today</th>'; 
+				}
+                
+                str+='<th>new cadre</th>';
+                str+='<th>new cadre percent(%)</th>';
+              str+='</tr>';
+            str+='</thead>';
+			for(var i in result){  
+				str+='<tr>';
+				str+='<td>'+result[i].mandalName+'</td> ';  
+				if(location == "panchayat"){
+					str+='<td>'+result[i].panchayatName+'</td>';
+				}
+				if(location == "booth"){
+					str+='<td>'+result[i].panchayatName+'</td>';
+					str+='<td>'+result[i].boothName+'</td>'; 
+				}
+			   str+='<td>'+result[i].totalVoter+'</td>';  
+			   str+='<td>'+result[i].cadreCount2014+'</td>';
+			   str+='<td>'+result[i].renewalCount+'</td>';
+			   if(result[i].cadreCount2014 > 0){
+				   var precent = (result[i].renewalCount*(100/result[i].cadreCount2014)).toFixed(0);
+				   str+='<td>'+precent+'</td>';
+			   }else{
+				   str+='<td>0</td>';
+			   }
+			   str+='<td>'+result[i].cadreCount2016OverAll+'</td>';
+			   if(scope == "today"){
+					str+='<td>'+result[i].cadreCount2016Today+'</td>';  
+			   }			  
+            
+              
+              str+='<td>'+result[i].newCount+'</td>'; 
+			  if(result[i].cadreCount2016OverAll > 0){    
+				  var precent = (result[i].newCount*(100/result[i].cadreCount2016OverAll)).toFixed(0);   
+				  str+='<td>'+precent+'</td>';     
+			  }else{
+				  str+='<td>0</td>';    
+			  }
+              
+			  str+='</tr>';
+			}
+          str+='</table>';
+        str+='</div>';
+		$("#kupamRegDtlsId").html(str);  
+		$("#regCadreCountTableId").dataTable();
 	}
 </script>    
 </body>
