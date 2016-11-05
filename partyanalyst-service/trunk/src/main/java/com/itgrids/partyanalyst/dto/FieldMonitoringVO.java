@@ -63,9 +63,15 @@ public class FieldMonitoringVO {
 	private Long constituencyCount;
 	private Long notYetStartedIssues;
 	private Long startedIssues;
+	private String issueTime;
 	
 	
-	
+	public String getIssueTime() {
+		return issueTime;
+	}
+	public void setIssueTime(String issueTime) {
+		this.issueTime = issueTime;
+	}
 	public Long getStartedIssues() {
 		return startedIssues;
 	}
