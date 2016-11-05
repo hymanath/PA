@@ -394,7 +394,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 	public Long getOneHourActiveUsersCount(Long stateId,Long districtId,Long constituencyId,Long cadreRegUserId,Long userId,Date lastHourTime,Date today){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("select count(distinct model.cadreSurveyUserId)" +
+		sb.append("select count(distinct model.tabUserInfoId)" +
 						" from TabUserEnrollmentInfo model");
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(",CadreRegUserTabUser model1");
@@ -404,14 +404,14 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			sb.append(" and model.cadreSurveyUserId = model1.cadreSurveyUserId" +
 					" and model1.isDeleted = 'N' and model1.cadreRegUserId = :cadreRegUserId");
 		if(lastHourTime != null && today != null)
-			sb.append(" and model.endTime between :lastHourTime and :today");
+			sb.append(" and model.endTime > :lastHourTime ");
 		
 		if(stateId != null && stateId.longValue() == 1l){
-			sb.append("  and model.constituency.district.districtId between 11 and 23 ");
+			sb.append("  and model.stateId = 1 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
-			sb.append(" and  model.constituency.district.districtId between 1 and 10 ");
+			sb.append(" and  model.stateId = 36 ");
 		}else if(stateId != null && stateId.longValue() == 0l){
-			sb.append(" and model.stateId = 1");
+			sb.append(" and model.stateId in (1,36)");
 		}
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and  model.constituency.district.districtId = :districtId");
@@ -431,7 +431,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 			query.setParameter("userId", userId);
 		if(lastHourTime != null && today != null)
 			query.setParameter("lastHourTime", lastHourTime);
-			query.setParameter("today", today);
+			//query.setParameter("today", today);
 		
 		return (Long) query.uniqueResult();
 	}
