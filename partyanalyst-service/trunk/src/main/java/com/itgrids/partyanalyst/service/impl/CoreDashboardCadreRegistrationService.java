@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -40,10 +41,9 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreSmsLeaderLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
-import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
+import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TabUserOtpDetails;
@@ -109,10 +110,14 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IConstituencyDAO constituencyDAO;
     private ITdpCadreOnlineDAO tdpCadreOnlineDAO;
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-    private IConstituencyTehsilDAO constituencyTehsilDAO;
+    private IConstituencyTehsilDAO constituencyTehsilDAO;    
+    private ITdpCadreSmsLeaderLocationDAO tdpCadreSmsLeaderLocationDAO;
     
     
-    
+	public void setTdpCadreSmsLeaderLocationDAO(
+			ITdpCadreSmsLeaderLocationDAO tdpCadreSmsLeaderLocationDAO) {
+		this.tdpCadreSmsLeaderLocationDAO = tdpCadreSmsLeaderLocationDAO;
+	}
 	public ITdpCadreOnlineDAO getTdpCadreOnlineDAO() {
 		return tdpCadreOnlineDAO;
 	}
@@ -3292,6 +3297,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		 }
 	 }
  }
+ 
  public List<CadreReportVO> getMandalMuncipalityStatedAndNotStatedDetails(Long stateId,List<Long> locationIdsList){
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,CadreReportVO> cnsttncsDstrctMap = new HashMap<Long, CadreReportVO>();
@@ -3327,4 +3333,203 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	 }
 	 return resultList;
  }
+ 
+ 	public String getLocationWiseRegistrationSMSTracking()
+	{
+ 		String result="";
+		try{
+			
+			SimpleDateFormat remainingDateSdf = new SimpleDateFormat("dd/MM/yyyy");
+			
+			List<SurveyInfoVO> finalMobileList = new ArrayList<SurveyInfoVO>();
+			Map<String,Map<Long,Map<Long,SurveyInfoVO>>> mobileMap = new HashMap<String, Map<Long,Map<Long,SurveyInfoVO>>>();
+			//0.mobileNo,1.locationScopeId,2.locationValue,3.locationName,4.targetCount,5.type,6.cadreCount,7.personName,8.group
+			List<Object[]> listObj =  tdpCadreSmsLeaderLocationDAO.locationWiseRegistrationSMSTracking();			
+			
+			Map<String,String> mobileNameMap = new HashMap<String, String>();
+			Map<String,String> groupMap = new LinkedHashMap<String, String>();
+			
+			if(listObj !=null && listObj.size()>0){
+				for (Object[] objects : listObj) {
+					Map<Long,Map<Long,SurveyInfoVO>> locationScopeMap = mobileMap.get(objects[0] !=null ? objects[0].toString():"");					
+					if(locationScopeMap == null){
+						locationScopeMap = new HashMap<Long,Map<Long,SurveyInfoVO>>();
+						mobileMap.put(objects[0].toString(), locationScopeMap);
+					}
+					Map<Long,SurveyInfoVO> locationMap = locationScopeMap.get(objects[1] !=null ? (Long)objects[1]:0l);
+					
+					if(locationMap == null){
+						locationMap = new HashMap<Long, SurveyInfoVO>();
+						locationScopeMap.put(objects[1] !=null ? (Long)objects[1]:0l, locationMap);
+					}
+					SurveyInfoVO VO = locationMap.get(objects[2] !=null ? (Long)objects[2]:0l);
+					
+					if(VO == null){
+						VO = new SurveyInfoVO();						
+						locationMap.put(objects[2] !=null ? (Long)objects[2]:0l, VO);
+					}
+					
+					VO.setPhoneNo(objects[0] !=null ? objects[0].toString():"");					
+					VO.setLocationId(objects[1] !=null ? (Long)objects[1]:0l);
+					VO.setLocationValue(objects[2] !=null ? (Long)objects[2]:0l);
+					VO.setName(objects[3] !=null ? objects[3].toString():"");
+					VO.setTargetCount(objects[4] !=null ? (Long)objects[4]:0l);
+					if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && 
+							objects[5].toString().trim().equalsIgnoreCase("today")){						
+						VO.setTodayCount(objects[6] !=null ? (Long)objects[6]:0l);						
+					}else if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && 
+							objects[5].toString().trim().equalsIgnoreCase("total")){
+						VO.setTotalCount(objects[6] !=null ? (Long)objects[6]:0l);
+					}
+					VO.setEmailId(objects[7] !=null ? objects[7].toString():"");
+					VO.setVoterCardNo(objects[8] !=null ? objects[8].toString():"");
+					
+					mobileNameMap.put(VO.getPhoneNo(), VO.getEmailId());
+					groupMap.put(VO.getPhoneNo(), VO.getVoterCardNo());
+					
+				}
+				
+				if(mobileMap !=null && mobileMap.size()>0){
+					for (Entry<String, Map<Long, Map<Long, SurveyInfoVO>>> mobile : mobileMap.entrySet()) {
+						
+						SurveyInfoVO mainVo = new SurveyInfoVO();
+						
+						mainVo.setPhoneNo(mobile.getKey());						
+						Map<Long, Map<Long, SurveyInfoVO>> scopeMap = mobile.getValue();
+						
+						if(scopeMap !=null){							
+							List<SurveyInfoVO> scopeList = new ArrayList<SurveyInfoVO>();
+							for (Entry<Long, Map<Long, SurveyInfoVO>> scope : scopeMap.entrySet()) {
+								SurveyInfoVO scopeVo = new SurveyInfoVO();									
+								scopeVo.setLocationId(scope.getKey());									
+								Map<Long,SurveyInfoVO> locationMap = scope.getValue();
+								if(locationMap !=null){																		
+									scopeVo.setSurveyInfoVOList(new ArrayList<SurveyInfoVO>(locationMap.values()));
+									scopeList.add(scopeVo);
+								}																
+							}
+							mainVo.setSurveyInfoVOList(scopeList);
+						}	
+						
+						finalMobileList.add(mainVo);
+					}
+				}
+				
+				if(finalMobileList !=null && finalMobileList.size()>0){
+					for (SurveyInfoVO mainVo : finalMobileList) {	
+						
+						StringBuilder dearStr = new StringBuilder();
+						StringBuilder overallStr = new StringBuilder();
+						StringBuilder  messageStr= new StringBuilder();
+						StringBuilder  bottomStr= new StringBuilder();
+						
+						Long totalTarget=0l;
+						Long totalAchieved=0l;
+						Long totalToDay=0l;					
+						
+						if(mainVo !=null && mainVo.getSurveyInfoVOList() !=null && mainVo.getSurveyInfoVOList().size()>0){
+							
+							for (SurveyInfoVO scopeVo : mainVo.getSurveyInfoVOList()) {									
+																
+								if(scopeVo !=null && scopeVo.getSurveyInfoVOList() !=null &&
+										scopeVo.getSurveyInfoVOList().size()>0){
+									
+									for (SurveyInfoVO location : scopeVo.getSurveyInfoVOList()) {	
+										
+										Double achevedPerc= 0.0 ;
+										if(location.getTotalCount() !=null && location.getTotalCount()>0l){
+											achevedPerc=calcPercantage(location.getTotalCount(),location.getTargetCount());
+										}
+									
+										//mobileNameMap.put(location.getPhoneNo(), location.getEmailId());
+										//groupMap.put(location.getPhoneNo(), location.getVoterCardNo());
+										
+										if(achevedPerc !=null && achevedPerc>0.0){
+											messageStr.append(location.getName()+ " :\n Membership Target  : "
+													+location.getTargetCount()+" , Achieved : "+location.getTotalCount()+
+													" ("+achevedPerc+ " % ) Today : "+location.getTodayCount()+" ; \n");
+										}else{
+											messageStr.append(location.getName()+ " :\n Membership Target  : "
+													+location.getTargetCount()+" , Achieved : "+location.getTotalCount()+
+													" , Today : "+location.getTodayCount()+"  \n");
+										}
+										
+										totalTarget = totalTarget + location.getTargetCount();
+										totalAchieved = totalAchieved + location.getTotalCount();
+										totalToDay = totalToDay + location.getTodayCount();
+										
+									}
+								}
+																
+							}
+							
+							Double totalAchevedPerc= 0.0 ;
+							if(totalAchieved !=null && totalAchieved>0l){
+								totalAchevedPerc=calcPercantage(totalAchieved,totalTarget);
+							}
+							
+							if(groupMap.get(mainVo.getPhoneNo()) !=null && groupMap.get(mainVo.getPhoneNo()).trim().equalsIgnoreCase("Y")){
+								if(totalAchevedPerc !=null && totalAchevedPerc>0.0){
+									overallStr.append(" Membership Total Target :"+totalTarget+", Total Achieved : "+totalAchieved+" ("+totalAchevedPerc+" %) , Today :"+totalToDay+" \n");
+								}else{
+									overallStr.append(" Total Target :"+totalTarget+", Total Achieved : "+totalAchieved+" , Today :"+totalToDay+" \n");
+								}
+							}
+							
+							//overallStr.append(" ............................................ \n ");
+							
+							
+							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu \n" );
+							
+							
+							
+							String startDate = IConstants.CADRE_REGISTRATION_START_DATE;
+							Long totalDays = IConstants.CADRE_REGISTRATION_2016_DAYS;
+							String currentDate = dateUtilService.getCurrentDateInStringFormat();
+							
+							
+							//get nRemaining Days Of Registration
+							 	Date date1 = remainingDateSdf.parse(startDate);
+							    Date date2 = remainingDateSdf.parse(currentDate);
+							    long diff = date2.getTime() - date1.getTime();
+							    Long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+1;
+								
+							    Long remainingDays =0l;
+							    Long delayDays =0l;
+							    if(totalDays > days)
+							    	remainingDays = totalDays.longValue() - days.longValue();	
+							    else
+							    	delayDays = days.longValue() - totalDays.longValue();
+							
+							//bottomStr.append(" ................... \n\n ");
+							
+							 if(totalDays > days)
+								 bottomStr.append(" We have Only "+remainingDays+" Days left to reach our target \n ");
+							
+							
+							 dearStr.append(overallStr.toString()).append(messageStr.toString()).append(bottomStr.toString());
+							
+							if(dearStr !=null && !dearStr.toString().trim().isEmpty())
+							{
+								String[] mobile = new String[1];									
+								mobile[0] = mainVo.getPhoneNo();
+								smsCountrySmsService.sendOTPSmsFromAdmin(dearStr.toString(), true, mobile);																	
+							}
+						}	
+					}
+				}
+			}
+			result="success";
+		}catch(Exception e){
+			result="failure";
+			LOG.error("Exception raised in getLocationWiseRegistrationSMSTracking() in CoreDashboardCadreRegistrationService service", e); 
+		}
+		return result;
+	}
+ 
+ 	public Double calcPercantage(Long subCount,Long totalCount){
+		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return d;
+	}
+ 	
 }

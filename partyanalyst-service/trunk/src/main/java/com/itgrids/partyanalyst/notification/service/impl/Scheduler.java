@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
+import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -33,6 +34,14 @@ public class Scheduler {
     private IMahaNaduService mahaNaduService;
     private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
     
+    private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+    
+    
+	public void setCoreDashboardCadreRegistrationService(
+			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
+		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
+	}
+
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
 	}
@@ -562,6 +571,38 @@ public class Scheduler {
 		catch(Exception e)
 		{
 			log.info("\n\n pushTdpCadreDataHourWiseByOverall "); 
+		}
+		return rs;
+	}
+	
+	public ResultStatus locationWiseRegistrationSMSTracking()
+	{	
+		ResultStatus rs = new ResultStatus();
+		
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{ 
+			
+			long startTime = System.currentTimeMillis();
+			log.error("3 hour wise Membership registrations..."+ new DateUtilService().getCurrentDateAndTimeInStringFormat());
+			
+			String status = coreDashboardCadreRegistrationService.getLocationWiseRegistrationSMSTracking();
+			
+			if(status !=null && !status.trim().isEmpty() && status.trim().equalsIgnoreCase("success")){
+				rs.setResultCode(0);
+			}else{
+				rs.setResultCode(1);
+			}
+			
+			
+			log.error("3 hour wise Membership registrations.  : " + (System.currentTimeMillis() - startTime)/1000.0  + " seconds");			
+			
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n locationWiseRegistrationSMSTracking "); 
 		}
 		return rs;
 	}
