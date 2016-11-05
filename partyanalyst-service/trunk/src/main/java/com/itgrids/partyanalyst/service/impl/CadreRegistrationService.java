@@ -6766,19 +6766,22 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 															}
 														}
 														else
-														{
+														{	
+															VoterNames voterNames = null;
 															List model1 = voterNamesDAO.gerVoterNamesModelByVoterId(tdpCadre.getVoterId());
+															
 															if(model1 != null && model1.size() > 0)
-															{
-																VoterNames voterNames = voterNamesDAO.get((Long) model1.get(0));
-																voterNames.setFirstName(cardNFCDetailsVO.getVoterName());
-																voterNames.setLastName("");
-																voterNamesDAO.save(voterNames);
-															}
+																voterNames = voterNamesDAO.get((Long) model1.get(0));
+															else
+																voterNames = new VoterNames(); 
+																
+															voterNames.setFirstName(cardNFCDetailsVO.getVoterName());
+															voterNames.setVoterId(tdpCadre.getVoterId());
+															voterNames.setLastName("");
+															voterNamesDAO.save(voterNames);
 															
 														}
 													}
-								 
 							
 								 }
 							 }
