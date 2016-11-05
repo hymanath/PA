@@ -8257,8 +8257,9 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
-				",tc.latitude as latitude,tc.longititude as longititude,tc.survey_time as surveyTime " +
+		//str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
+		//		",tc.latitude as latitude,tc.longititude as longititude,tc.survey_time as surveyTime " +
+		str.append(" select distinct tc.tdp_cadre_id as tdpCadreId , '' as name "+
 				" FROM " +
 				" tdp_cadre_enrollment_year tcey,tdp_cadre tc,user_address ua,tab_user_info tui " +
 					"  join ( select tui.tab_user_info_id as tab_user_info_id,max(tc.survey_time) as survey_time " +
@@ -8293,12 +8294,12 @@ public Integer updateApprovedCadre(Long cadreId, Long statusId){
 			str.append(" group by tui.tab_user_info_id;");
 		
 		Query query = getSession().createSQLQuery(str.toString())
-				.addScalar("tabUserInfoId", Hibernate.LONG)
-				.addScalar("name", Hibernate.STRING)
-				.addScalar("mobileNo", Hibernate.STRING)
-				.addScalar("latitude", Hibernate.STRING)
-				.addScalar("longititude", Hibernate.STRING)
-				.addScalar("surveyTime", Hibernate.STRING);
+				.addScalar("tdpCadreId", Hibernate.LONG)
+				.addScalar("name", Hibernate.STRING);
+				//.addScalar("mobileNo", Hibernate.STRING)
+				//.addScalar("latitude", Hibernate.STRING)
+				//.addScalar("longititude", Hibernate.STRING)
+				//.addScalar("surveyTime", Hibernate.STRING);
 		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("enrollmentYearId", 4l);
@@ -8737,4 +8738,21 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			return (Date) query.uniqueResult();
 		}
 		
+		public List<Object[]> getTabUserInfoDetailsByTdpCadreIds(List<Long> tdpCadreIdsList ){
+			StringBuilder queryStr = new StringBuilder();
+			//str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
+			//		",tc.latitude as latitude,tc.longititude as longititude,tc.survey_time as surveyTime " +
+			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0){
+				queryStr.append("select tabUserInfo.tabUserInfoId, tabUserInfo.name,tabUserInfo.mobileNo,model.longititude,model.latitude,model.surveyTime from " +
+						" TdpCadre model " +
+						" left join model.tabUserInfo tabUserInfo" +
+						"  where model.isDeleted = 'N' and  model.enrollmentYear = 2014 and " +
+						" model.tdpCadreId in (:tdpCadreIdsList)");	
+				Query query = getSession().createQuery(queryStr.toString());
+				query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+				return query.list();
+			}
+			else
+				return null;
+		}
 	}
