@@ -1204,4 +1204,7 @@ public interface IConstants {
 	
 	public static final String COURIER_AMOUNT="30";
 	public static final Long CADRE_REGISTRATION_2016_DAYS=30L;
+	
+	public static final String CADRE_REGISTRATION_START_DATE = "01/11/2016";
+	
 }

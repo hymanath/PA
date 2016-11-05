@@ -28,6 +28,7 @@ public class TdpCadreSmsLeaderLocation  extends BaseModel implements Serializabl
 	private Long locationScopeId;
 	private Long locationValue;
 	private Long isDeleted;
+	private String locationName;
 	
 	private TdpCadreSmsLeader tdpCadreSmsLeader;
 	
@@ -80,6 +81,13 @@ public class TdpCadreSmsLeaderLocation  extends BaseModel implements Serializabl
 	}
 	public void setTdpCadreSmsLeader(TdpCadreSmsLeader tdpCadreSmsLeader){
 		this.tdpCadreSmsLeader = tdpCadreSmsLeader;
+	}
+	@Column(name = "location_name")
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 	
 }

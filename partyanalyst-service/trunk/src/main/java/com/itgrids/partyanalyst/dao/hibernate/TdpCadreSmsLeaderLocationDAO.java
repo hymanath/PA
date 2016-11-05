@@ -23,10 +23,14 @@ public class TdpCadreSmsLeaderLocationDAO extends GenericDaoHibernate<TdpCadreSm
 				"TCSLL.location_value as locationValue," +
 				"TCSLL.location_name as locationName," +
 				"TCTC.target_count as targetCount,TCLI.type as type," +
-				"TCLI.cadre_2016 as cadre " +
-				" from tdp_cadre_sms_leader_location TCSLL,tdp_cadre_sms_leader TCSL, " +
-				" tdp_cadre_date_wise_info TCDWI,tdp_cadre_target_count  TCTC,tdp_cadre_location_info TCLI " +
-				" where " +
+				" TCLI.cadre_2016 as cadre,TCSL.name as personName ,TCSL.is_group as isGroup " +
+				" " +
+				" FROM " +
+				" tdp_cadre_sms_leader_location TCSLL,tdp_cadre_sms_leader TCSL, " +
+				" tdp_cadre_target_count  TCTC,tdp_cadre_location_info TCLI " +
+				"" +
+				" WHERE" +
+				" " +
 				" TCSLL.tdp_cadre_sms_leader_id = TCSL.tdp_cadre_sms_leader_id " +
 				" and TCSLL.location_scope_id = TCTC.location_scope_id " +
 				" and TCSLL.location_value = TCTC.location_value " +
@@ -45,8 +49,10 @@ public class TdpCadreSmsLeaderLocationDAO extends GenericDaoHibernate<TdpCadreSm
 				.addScalar("locationName", Hibernate.STRING)				
 				.addScalar("targetCount", Hibernate.LONG)
 				.addScalar("type", Hibernate.STRING)
-				.addScalar("cadre", Hibernate.LONG);
-		
+				.addScalar("cadre", Hibernate.LONG)
+				.addScalar("personName", Hibernate.STRING)
+				.addScalar("isGroup", Hibernate.STRING);
+				
 		return query.list();
 		
 	}
