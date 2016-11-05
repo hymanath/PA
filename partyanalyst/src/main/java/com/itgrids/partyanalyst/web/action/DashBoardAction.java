@@ -584,6 +584,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				else
 					session.setAttribute("birthDayCount", 0L);
 			}
+			if(entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD".trim())){
+				return "accessUsersCadreDashboard";
+			}
 			if(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT".trim())){
 				return "nominatedPostProfileAction";
 			}
