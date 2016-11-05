@@ -40,5 +40,8 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId);
 	public Long getTotalCadreCountLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type);
 	public Long getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type);
+	public List<Object[]> get2014CadreBasedOnLocationIds(Long locationScopeId,List<Long> locationIdList);
+	public List<Object[]> getTotalCadreLocationWise(Long locationScopeId, List<Long> locationIdList,String scope);
+	public List<Object[]> getTotalRenewlCadreLocationWiseCount(Long accessLvlId,List<Long> accessLvlValue,String type);
 	 
 }
