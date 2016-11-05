@@ -306,8 +306,8 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     	return query.executeUpdate();
     }
     
-    public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType){
-    	StringBuilder sb = new StringBuilder();
+    public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType, List<Long> locationValue){ 
+    	StringBuilder sb = new StringBuilder();  
     	sb.append("select model.locationValue," +
     				" model.cadre2014,model.cadre2014Percent," +
     				" model.cadre2016,model.cadre2016Percent," +
@@ -339,13 +339,18 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     		sb.append(" and model.type = 'Total'");
     	else if(type != null && type.equalsIgnoreCase("Today"))
     		sb.append(" and model.type = 'Today'");
+    	if(locationValue != null){
+    		sb.append(" and model.locationValue in (:locationValue) ");
+    	}
     	
     	sb.append(" group by model.locationValue");
     	
     	Query query = getSession().createQuery(sb.toString());
     	if(locationScopeId != null && locationScopeId.longValue() > 0l)
     		query.setParameter("locationScopeId", locationScopeId);
-    	
+    	if(locationValue != null){
+    		query.setParameterList("locationValue", locationValue);
+    	}
     	return query.list();
     }
     
@@ -667,4 +672,29 @@ public List<Object[]> getTodayTotalStartedRegistrationConstituencyDetailsStateWi
    Query query = getSession().createQuery(queryStr.toString());
     return query.list();
 }
+public Long getTotalCadreCountLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("select sum(model.cadre2016) from TdpCadreLocationInfo model where " +
+			" model.locationScopeId = :accessLvlId and" +
+			" model.locationValue in (:accessLvlValue) and " +
+			" model.type = :type " );
+	Query query = getSession().createQuery(queryStr.toString());
+	query.setParameter("accessLvlId", accessLvlId);  
+	query.setParameter("type", type); 
+	query.setParameterList("accessLvlValue", accessLvlValue);
+	return (Long)query.uniqueResult();  
+}
+public Long getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("select sum(model.renewalCadre) from TdpCadreLocationInfo model where " +
+			" model.locationScopeId = :accessLvlId and" +
+			" model.locationValue in (:accessLvlValue) and " +  
+			" model.type = :type " );
+	Query query = getSession().createQuery(queryStr.toString()); 
+	query.setParameter("accessLvlId", accessLvlId); 
+	query.setParameter("type", type);   
+	query.setParameterList("accessLvlValue", accessLvlValue);
+	return (Long)query.uniqueResult();    
+}
+
 }
