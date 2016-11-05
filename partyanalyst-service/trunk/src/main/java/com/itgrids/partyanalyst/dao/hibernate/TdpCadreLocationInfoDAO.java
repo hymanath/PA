@@ -696,5 +696,93 @@ public Long getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLv
 	query.setParameterList("accessLvlValue", accessLvlValue);
 	return (Long)query.uniqueResult();    
 }
+public List<Long> getTodayMandalStartedStateWise(Long stateId){
+    
+    StringBuilder queryStr = new StringBuilder();
+
+    queryStr.append(" select " +
+    		       " distinct model.locationValue " +
+    		       " from TdpCadreLocationInfo model, ConstituencyTehsil model1" +
+    		       " where  model1.tehsil.tehsilId=model.locationValue " +
+    		       " and model.locationScopeId=5 and model1.isDeleted='N'  " +
+    		       " and model.type='Today' and model.cadre2016 > 0 ");
+      if(stateId != null && stateId.longValue() == 1l){
+	  	 queryStr.append(" and model1.constituency.district.districtId > 10 and model1.constituency.state.stateId=1");
+	   }else if(stateId != null && stateId.longValue() == 36l){
+	  	 queryStr.append(" and model1.constituency.district.districtId < 11 "); 
+	   }
+	   Query query = getSession().createQuery(queryStr.toString());
+   return query.list();
+}
+public List<Object[]> getTodayMandalStartedDtlsStateWise(Long stateId){
+    
+    StringBuilder queryStr = new StringBuilder();
+
+    queryStr.append("select distinct " +
+    		       " model1.constituency.district.districtId," +//0
+    		       " model1.constituency.district.districtName," +//1
+    		       " model1.constituency.constituencyId," +//2
+    		       " model1.constituency.name," +//3
+    		       " model1.tehsil.tehsilId," +//4
+    		       " model1.tehsil.tehsilName," +//5
+    		       " model.cadre2016 " +//6
+    		       " from TdpCadreLocationInfo model, ConstituencyTehsil model1 " +
+    		       " where  " +
+    		       " model1.tehsil.tehsilId=model.locationValue and model.locationScopeId=5 and model1.isDeleted='N' " +
+    		       " and model.type='Today' and model.cadre2016 > 0 ");
+      if(stateId != null && stateId.longValue() == 1l){
+	  	 queryStr.append(" and model1.constituency.district.districtId > 10 and model1.constituency.state.stateId=1");
+	   }else if(stateId != null && stateId.longValue() == 36l){
+	  	 queryStr.append(" and model1.constituency.district.districtId < 11 "); 
+	   }
+       queryStr.append(" group by model1.tehsil.tehsilId ");
+	   Query query = getSession().createQuery(queryStr.toString());
+   return query.list();
+}
+public List<Long> getTodayLocalElectionBodyStartedStateWise(Long stateId){
+    
+    StringBuilder queryStr = new StringBuilder();
+
+    queryStr.append(" select " +
+    		       " distinct model.locationValue " +
+    		       " from TdpCadreLocationInfo model, AssemblyLocalElectionBody model1 " +
+    		       " where  " +
+    		       " model1.localElectionBody.localElectionBodyId=model.locationValue and model.locationScopeId=7 " +
+    		       " and model1.localElectionBody.electionType=5 " +
+    		       " and model.type='Today' and model.cadre2016 > 0 ");
+      if(stateId != null && stateId.longValue() == 1l){
+	  	 queryStr.append(" and model1.constituency.district.districtId > 10 and model1.constituency.state.stateId=1");
+	   }else if(stateId != null && stateId.longValue() == 36l){
+	  	 queryStr.append(" and model1.constituency.district.districtId < 11 "); 
+	   }
+	   Query query = getSession().createQuery(queryStr.toString());
+      return query.list();
+}
+public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId){
+    
+    StringBuilder queryStr = new StringBuilder();
+
+    queryStr.append(" select distinct " +
+    		       "  model1.constituency.district.districtId," +//0
+    		       "  model1.constituency.district.districtName," +//1
+    		       "  model1.constituency.constituencyId," +//2
+    		       "  model1.constituency.name," +//3
+    		       "  model1.localElectionBody.localElectionBodyId," +//4
+    		       "  model1.localElectionBody.name," +//5
+    		       "  model.cadre2016 " +//6
+    		       "  from TdpCadreLocationInfo model, AssemblyLocalElectionBody model1 " +
+    		       "  where  " +
+    		       "  model1.localElectionBody.localElectionBodyId=model.locationValue and model.locationScopeId=7 " +
+    		       "  and model1.localElectionBody.electionType=5 " +
+    		       "  and model.type='Today' and model.cadre2016 > 0 ");
+      if(stateId != null && stateId.longValue() == 1l){
+	  	 queryStr.append(" and model1.constituency.district.districtId > 10 and model1.constituency.state.stateId=1");
+	   }else if(stateId != null && stateId.longValue() == 36l){
+	  	 queryStr.append(" and model1.constituency.district.districtId < 11 "); 
+	   }
+      queryStr.append(" group by model1.localElectionBody.localElectionBodyId ");
+	   Query query = getSession().createQuery(queryStr.toString());
+      return query.list();
+}
 
 }

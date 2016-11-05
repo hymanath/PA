@@ -47,4 +47,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public IdAndNameVO getInFieldCount(String fromDateStr, String toDateStr);
 	public List<CadreReportVO> getLocationWiseCadreInfoTodayDetails(Long stateId,List<Long> locationIdsList);
+	public List<CadreReportVO> getMandalMuncipalityStatedAndNotStatedDetails(Long stateId,List<Long> locationIdsList);
 }

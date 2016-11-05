@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import java.util.List;
-
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
@@ -35,6 +33,11 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public Long getTotalConstituencyForCdrRegStarted(Long stateId);
 	public List<Long> getTodayTotalStartedRegistrationConstituencyStateWise(Long stateId);
 	public List<Object[]> getTodayTotalStartedRegistrationConstituencyDetailsStateWise(Long stateId);
+	
+	public List<Long> getTodayMandalStartedStateWise(Long stateId);
+	public List<Object[]> getTodayMandalStartedDtlsStateWise(Long stateId);
+	public List<Long> getTodayLocalElectionBodyStartedStateWise(Long stateId);
+	public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId);
 	public Long getTotalCadreCountLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type);
 	public Long getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type);
 	 
