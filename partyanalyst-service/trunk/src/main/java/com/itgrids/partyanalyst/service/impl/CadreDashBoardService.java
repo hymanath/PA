@@ -12,9 +12,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -42,6 +44,8 @@ import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
@@ -63,6 +67,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -95,6 +100,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreGhmcDriveUsersDAO cadreGhmcDriveUsersDAO;
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
 	private IStateDAO stateDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+    private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	
 	
 	public IStateDAO getStateDAO() {
@@ -277,6 +284,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 	}
 
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(String accessType,Long accessValue){
@@ -6189,131 +6205,132 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType){
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
-			 Long veryGood =0l ;
-			 Long good = 0l ;
-			 Long ok = 0l ;
-			 Long poor = 0l ;
-			 Long veryPoor = 0l ;
-			 
-			 Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
-			 Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
-			 List<Long> locationIds = new ArrayList<Long>();
-			 
-		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId,locationType);
-		 	if(list != null && !list.isEmpty()){
-		 		for (Object[] obj : list) {
-		 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					CadreDashboardVO vo = new CadreDashboardVO();
-					vo.setId(id);
-					vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-					vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
-					vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-					vo.setPerc2016(obj[4] != null ? obj[4].toString():"0.00");
-					vo.setNewCount(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
-					vo.setNewPerc(obj[6] != null ? obj[6].toString():"");
-					vo.setRenewalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
-					vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
-					vo.setLocationScopeId(locationScopeId);
-					vo.setType(type);
-					locationIds.add(id);
-					returnList.add(vo);
-				}
-		 	}
-		 	
-		 	List<Object[]> list1 = null;
-		 	if(locationScopeId != null && locationScopeId.longValue() == 2l)
-		 		list1 = stateDAO.getStatesForList(locationIds);
-		 	else if(locationScopeId != null && locationScopeId.longValue() == 3l)
-		 		list1 = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
-		 	else if(locationScopeId != null && locationScopeId.longValue() == 4l)
-		 		list1 = constituencyDAO.getConstituenctNamesByIds(locationIds);
-		 	
-		 	if(list1 != null && !list1.isEmpty()){
-		 		for (Object[] obj : list1) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					String name = obj[1] != null ? obj[1].toString():"";
-					locationNameMap.put(id, name);
-				}
-		 	}
-		 	
-		 	if(returnList != null && !returnList.isEmpty()){
-		 		for (CadreDashboardVO vo : returnList) {
-					vo.setName(locationNameMap.get(vo.getId()));
-				}
-		 	}
-		 	
-		 	List<Object[]> targrtLst = tdpCadreLocationInfoDAO.getLocationWiseTargets(locationScopeId);
-		 			if(targrtLst != null && !targrtLst.isEmpty()){
-		 				for (Object[] obj : targrtLst) {
-		 					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-		 					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-		 					targetMap.put(locaId, count);
-		 				}
-		 			}
-		 		
-		 		if(returnList != null && !returnList.isEmpty()){
-		 			for (CadreDashboardVO vo : returnList) {
-					vo.setTargetCount(targetMap.get(vo.getId()));
-		 				}
-		 			}
-		 		
-		 if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
-			 if(returnList != null && !returnList.isEmpty()){
-		 			for (CadreDashboardVO vo : returnList) {
-		 				vo.setTargetCount(vo.getTargetCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);
-		 			}
-			 	}
-		 	}
-		 
-		 if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
-			 if(returnList != null && !returnList.isEmpty()){
-		 			for (CadreDashboardVO vo : returnList) {
-		 				vo.setPerc2016(new BigDecimal(vo.getCount2016()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		 			}
-			 	}
-		 	}
-		 if(returnList != null && !returnList.isEmpty()){
-			 for(CadreDashboardVO vo : returnList){
-				 Double perCount2016=Double.parseDouble(vo.getPerc2016());
-				 	if(perCount2016 == 100){
-				 		vo.setLevelPerformanceType("VeryGood");
-				 		veryGood++;
-				 	}else if(perCount2016 >= 90 && perCount2016 < 100){
-				 		vo.setLevelPerformanceType("Good");
-				 		good ++;
-				 	}else if(perCount2016 >= 80 && perCount2016 < 90){
-				 		vo.setLevelPerformanceType("Ok");
-				 		ok++;
-				 	}else if(perCount2016 >= 60 && perCount2016 < 80){
-				 		vo.setLevelPerformanceType("Poor");
-				 		poor++;
-				 	}else{
-				 		vo.setLevelPerformanceType("VeryPoor");
-				 		veryPoor++;
-				 	}
-			 }
-		 }
-		 	if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
-		 		if(returnList != null && !returnList.isEmpty()){
-			 		for (CadreDashboardVO vo : returnList) {
-						vo.setPercentage(new BigDecimal(vo.getCount2016()*(100.0)/vo.getCount2014()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-					}
-			 	}
-		 	}
-			
-		 	if(returnList !=null && !returnList.isEmpty()){
-		 		CadreDashboardVO countList=returnList.get(0);
-		 			countList.setVeryGood(veryGood);
-		 			countList.setGood(good);
-		 			countList.setOk(ok);
-		 			countList.setPoor(poor);
-		 			countList.setVeryPoor(veryPoor);
-				}
-		 		
+		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId,locationType, null);
+		 	prepairReturnList(returnList,list,type,locationScopeId);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
 		 return returnList;
+	}
+	public void prepairReturnList(List<CadreDashboardVO> returnList, List<Object[]> list,String type,Long locationScopeId){
+		Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
+		Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
+		List<Long> locationIds = new ArrayList<Long>();
+		
+		Long veryGood =0l ;
+		Long good = 0l ;
+		Long ok = 0l ;
+		Long poor = 0l ;
+		Long veryPoor = 0l ;
+		if(list != null && !list.isEmpty()){
+	 		for (Object[] obj : list) {
+	 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				CadreDashboardVO vo = new CadreDashboardVO();
+				vo.setId(id);
+				vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+				vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
+				vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+				vo.setPerc2016(obj[4] != null ? obj[4].toString():"0.00");
+				vo.setNewCount(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+				vo.setNewPerc(obj[6] != null ? obj[6].toString():"");
+				vo.setRenewalCount(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+				vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
+				vo.setLocationScopeId(locationScopeId);
+				vo.setType(type);
+				locationIds.add(id);
+				returnList.add(vo);
+			}
+	 	}
+	 	
+	 	List<Object[]> list1 = null;
+	 	if(locationScopeId != null && locationScopeId.longValue() == 2l)
+	 		list1 = stateDAO.getStatesForList(locationIds);
+	 	else if(locationScopeId != null && locationScopeId.longValue() == 3l)
+	 		list1 = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
+	 	else if(locationScopeId != null && locationScopeId.longValue() == 4l)
+	 		list1 = constituencyDAO.getConstituenctNamesByIds(locationIds);
+	 	
+	 	if(list1 != null && !list1.isEmpty()){
+	 		for (Object[] obj : list1) {
+				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				String name = obj[1] != null ? obj[1].toString():"";
+				locationNameMap.put(id, name);
+			}
+	 	}
+	 	
+	 	if(returnList != null && !returnList.isEmpty()){
+	 		for (CadreDashboardVO vo : returnList) {
+	 			vo.setName(locationNameMap.get(vo.getId()));
+	 		}
+	 	}
+	 	
+	 	List<Object[]> targrtLst = tdpCadreLocationInfoDAO.getLocationWiseTargets(locationScopeId);
+		if(targrtLst != null && !targrtLst.isEmpty()){
+			for (Object[] obj : targrtLst) {
+				Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				targetMap.put(locaId, count);
+			}
+		}
+	 		
+		if(returnList != null && !returnList.isEmpty()){
+			for (CadreDashboardVO vo : returnList) {
+				vo.setTargetCount(targetMap.get(vo.getId()));
+			}
+		}
+	 		
+		if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
+			if(returnList != null && !returnList.isEmpty()){
+				for (CadreDashboardVO vo : returnList) {
+					vo.setTargetCount(vo.getTargetCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);
+				}
+			}
+		}
+	 
+		if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
+			if(returnList != null && !returnList.isEmpty()){
+				for (CadreDashboardVO vo : returnList) {
+					vo.setPerc2016(new BigDecimal(vo.getCount2016()*(100.0)/vo.getTargetCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+		}
+		if(returnList != null && !returnList.isEmpty()){
+			for(CadreDashboardVO vo : returnList){
+				Double perCount2016=Double.parseDouble(vo.getPerc2016());
+				if(perCount2016 > 100){
+					vo.setLevelPerformanceType("VeryGood");
+					veryGood++;
+				}else if(perCount2016 >= 90 && perCount2016 < 100){
+					vo.setLevelPerformanceType("Good");
+					good ++;
+				}else if(perCount2016 >= 80 && perCount2016 < 90){
+					vo.setLevelPerformanceType("Ok");
+					ok++;
+				}else if(perCount2016 >= 60 && perCount2016 < 80){
+					vo.setLevelPerformanceType("Poor");  
+					poor++;
+				}else{
+					vo.setLevelPerformanceType("VeryPoor");
+					veryPoor++;
+				}
+			}
+		}
+		if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
+			if(returnList != null && !returnList.isEmpty()){
+				for (CadreDashboardVO vo : returnList) {
+					vo.setPercentage(new BigDecimal(vo.getCount2016()*(100.0)/vo.getCount2014()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+		}
+		
+		if(returnList !=null && !returnList.isEmpty()){
+			CadreDashboardVO countList=returnList.get(0);
+			countList.setVeryGood(veryGood);
+			countList.setGood(good);
+			countList.setOk(ok);
+			countList.setPoor(poor);
+			countList.setVeryPoor(veryPoor);
+		}
 	}
 	
 	public List<CadreDataSourceTypeVO> getDataSourceTypeWiseRegisteredDetails(){
@@ -6590,4 +6607,59 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		return returnList;
 	}
+	public List<List<CadreDashboardVO>> get2016LocationWiseRegisteredCountsForPreviligedUser(Long userId, String locationType, String type){
+		 LOG.info("Entered into get2016LocationWiseRegisteredCounts() in CoreDashboardCadreRegistrationService service");
+		 try{
+			 //for dist
+			 List<CadreDashboardVO> cadreDashboardVOList1 = new ArrayList<CadreDashboardVO>();
+			 //for const
+			 List<CadreDashboardVO> cadreDashboardVOList2 = new ArrayList<CadreDashboardVO>();
+			 //for all
+			 List<List<CadreDashboardVO>> returnList = new ArrayList<List<CadreDashboardVO>>();
+			 CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			 Map<Long,String> distIdAndNameMap = new HashMap<Long,String>();
+			 Set<Long> distIdList = new HashSet<Long>();
+			 
+			 Map<Long,String> constIdAndNameMap = new HashMap<Long,String>();
+			 Set<Long> constIdList = new HashSet<Long>();
+			 List<Object[]> distList = userDistrictAccessInfoDAO.getLocationIdList(userId);
+			 if(distList != null && distList.size() > 0){
+				 for(Object[] param : distList){
+					 distIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+					 distIdList.add(commonMethodsUtilService.getLongValueForObject(param[0])); 
+				 }
+			 }else{ 
+				 List<Object[]> constList = userConstituencyAccessInfoDAO.getLocationIdList(userId);
+				 for(Object[] param : constList){
+					 constIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+					 constIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));  
+				 }   
+			 }
+			 if(distIdList.size() > 0){
+				 List<Object[]> distResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,3l,locationType,new ArrayList<Long>(distIdList));
+				 prepairReturnList(cadreDashboardVOList1,distResultList,type,3l);
+				 returnList.add(cadreDashboardVOList1);
+				 //get all the const belongs to above dist  
+				 List<Object[]> constList = constituencyDAO.getConstituenciesList(new ArrayList<Long>(distIdList));
+				 for(Object[] param : constList){
+					 constIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]),commonMethodsUtilService.getStringValueForObject(param[3]));
+					 constIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				 }
+				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,locationType,new ArrayList<Long>(constIdList));
+				 prepairReturnList(cadreDashboardVOList2,constResultList,type,4l);
+				 returnList.add(cadreDashboardVOList2);
+				 return returnList;
+			 } 
+			 if(constIdList.size() > 0){    
+				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,locationType,new ArrayList<Long>(constIdList));
+				 prepairReturnList(cadreDashboardVOList1,constResultList,type,4l);  
+				 returnList.add(cadreDashboardVOList1);
+				 return returnList;    
+			 }    
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 LOG.error("Exception raised in get2016LocationWiseRegisteredCounts() in CoreDashboardCadreRegistrationService service", e); 
+		 }
+		 return null;  
+	 }
 }
