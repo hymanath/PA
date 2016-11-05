@@ -14507,6 +14507,11 @@
 	</action>
 	<action name="privilegedUserCadreRegAction" class="privilegedUserCadreRegAction">
 		<result name="success">/jsp/privilegedUserCadreReg.jsp</result>
-	</action>   
+	</action>
+	<action name="get2016LocationWiseRegisteredCounts" class="privilegedUserCadreRegAction" method="get2016LocationWiseRegisteredCountsForPreviligedUser">
+		<result type="json" name="success">
+			<param name="root">listOfListOfCadreDashboardVO</param>  
+		</result>
+	</action> 
 </package>
 </struts>
