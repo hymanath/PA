@@ -14028,8 +14028,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		
 		try{
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-			
+			//SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(cadreTabRecordsStatusList !=null && cadreTabRecordsStatusList.size()>0){
 				for (CadreTabRecordsStatusVO tabVO : cadreTabRecordsStatusList) {	
 					cadreTabRecordsStatusDAO.deleteExstngCadreTdpRecords(tabVO.getCadreSurveyUserId(),tabVO.getTabUserInfoId(),sdf.parse(tabVO.getSurveyDate()));
