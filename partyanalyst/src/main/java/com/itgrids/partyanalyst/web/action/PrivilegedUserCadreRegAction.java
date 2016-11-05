@@ -10,8 +10,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreDashboardVO;
+import com.itgrids.partyanalyst.dto.RegistrationCountVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -20,7 +23,7 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 	private HttpServletRequest request;
 	private HttpSession session;
 	private JSONObject jObj;
-	private String task;
+	private String task;  
 	
 	
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
@@ -28,6 +31,10 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 	
 	
 	private List<List<CadreDashboardVO>> listOfListOfCadreDashboardVO;
+	private List<RegistrationCountVO> registrationCountVOs;
+	
+	private Long userId;
+	private String stateName;
 	
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -71,22 +78,65 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 			List<List<CadreDashboardVO>> listOfListOfCadreDashboardVO) {
 		this.listOfListOfCadreDashboardVO = listOfListOfCadreDashboardVO;
 	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public List<RegistrationCountVO> getRegistrationCountVOs() {
+		return registrationCountVOs;
+	}
+	public void setRegistrationCountVOs(
+			List<RegistrationCountVO> registrationCountVOs) {
+		this.registrationCountVOs = registrationCountVOs;
+	}
+	
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
 	//Business method
 	public String execute(){
-		return Action.SUCCESS;
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		List<String> entitlements = null;
+		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			userId = user.getRegistrationID();
+			stateName = user.getStateName();
+			if(!(entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD") || entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_ADMIN_DASHBOARD_ENTITLEMENT"))){
+				return Action.ERROR;    
+			}   
+		}
+		return Action.SUCCESS;        
 	}
 	public String get2016LocationWiseRegisteredCountsForPreviligedUser(){
 		try{
 			LOG.info("Entered into get2016LocationWiseRegisteredCounts() of PrivilegedUserCadreRegAction{}");
 			jObj = new JSONObject(getTask()); 
 			Long userId = jObj.getLong("userId");
-			String locationType = jObj.getString("locationType");   
+			String locationType = jObj.getString("locationType");     
 			String type = jObj.getString("type");
 			listOfListOfCadreDashboardVO = cadreDashBoardService.get2016LocationWiseRegisteredCountsForPreviligedUser(userId, locationType, type);  
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return Action.SUCCESS;
+		return Action.SUCCESS;       
 	}
-
-}
+	public String getRegistrationCountDtls(){      
+		try{
+			LOG.info("Entered into get2016LocationWiseRegisteredCounts() of getRegistrationCountDtls{}");
+			jObj = new JSONObject(getTask()); 
+			String scope = jObj.getString("scope");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String location = jObj.getString("location");
+			registrationCountVOs = cadreDashBoardService.getRegistrationCountDtls(location,constituencyId,scope);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;       
+	}
+}  
