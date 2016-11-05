@@ -7379,10 +7379,9 @@ public List<Object[]> getLocationsUserTrackingDetails(GISVisualizationParameterV
 				" model.tdpCadre.nomineeGender," +
 				" model.tdpCadre.nomineeAge," +//16
 				" model.tdpCadre.relativeType " );//17
-		if(voterId != null && voterId.longValue() >0l)
-		str.append(" ,model.tdpCadre.voter.voterIDCardNo,model.tdpCadre.voter.voterId " );//19
-		
-		if(familyVoterId != null && familyVoterId.longValue() >0l)
+		if((familyVoterId == null || familyVoterId.longValue() <=0) && (voterId != null && voterId.longValue() >0l))
+			str.append(" ,model.tdpCadre.voter.voterIDCardNo,model.tdpCadre.voter.voterId " );//19
+		else if(familyVoterId != null && familyVoterId.longValue() >0l)
 			str.append(",model.tdpCadre.familyVoter.voterIDCardNo,model.tdpCadre.familyVoter.voterId ");//19
 		 
 		str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.voterRelationId, " +//20,21
