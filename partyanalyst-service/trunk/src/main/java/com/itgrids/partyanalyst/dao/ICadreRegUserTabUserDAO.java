@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -19,4 +20,10 @@ public interface ICadreRegUserTabUserDAO extends GenericDao<CadreRegUserTabUser,
 	public List<Object[]> getFieldMonitoringUserWiseDetails();
 	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers();
 	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers();
+	public List<Object[]> getConstituencyWiseFMUsersDetails();
+	public List<Object[]> getTotalUsersCountForFMUsers();
+	public List<Object[]> getTotalRegisteredUsers();
+	public List<Object[]> getTodayStartedUsersOfFMUser(Date today);
+	public List<Object[]> getTodayTotalIssues(Date today);
+	public List<Object[]> getTodayTotalStartedIssues(Date today);
 }

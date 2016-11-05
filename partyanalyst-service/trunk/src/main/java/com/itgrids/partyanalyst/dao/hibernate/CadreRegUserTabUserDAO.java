@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -188,5 +189,93 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 											" group by model2.cadreRegIssueStatus.cadreRegIssueStatusId,model1.constituency.district.districtId,model.cadreRegUser.user.userId" +
 											" order by model2.cadreRegIssueStatus.cadreRegIssueStatusId,model.cadreRegUser.user.userName");
 		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyWiseFMUsersDetails(){
+		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model.cadreRegUser.user.userName," +
+											" model1.constituency.district.districtId,model1.constituency.district.districtName," +
+											" model1.constituency.constituencyId,model1.constituency.name " +
+											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1" +
+											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+											" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+											" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+											" and model.cadreRegUser.userType = 'FM'" +
+											" group by model1.constituency.district.districtId,model1.constituency.constituencyId,model.cadreRegUser.user.userId" +
+											" order by model.cadreRegUser.user.userName");
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalUsersCountForFMUsers(){
+		Query query = getSession().createQuery("select "+
+				" model1.constituency.constituencyId,count(distinct model.cadreSurveyUser.cadreSurveyUserId)" +
+				" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1" +
+				" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+				" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+				" and model.cadreRegUser.userType = 'FM' " +
+				" group by model1.constituency.district.districtId,model1.constituency.constituencyId,model.cadreRegUser.user.userId" +
+				" order by model.cadreRegUser.user.userName");
+		
+return query.list();
+		
+	}
+	
+	public List<Object[]> getTotalRegisteredUsers(){
+		Query query = getSession().createQuery("select " +
+				" model1.constituency.constituencyId,count(distinct model.cadreSurveyUser.cadreSurveyUserId) " +
+				" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1,TabUserInfo model2" +
+				" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+				" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+				" and model2.cadreSurveyUser.cadreSurveyUserId = model.cadreSurveyUser.cadreSurveyUserId" +
+				" and model2.isEnabled = 'Y' " +
+				" and model.cadreRegUser.userType = 'FM' " +
+				" group by model1.constituency.district.districtId,model1.constituency.constituencyId,model.cadreRegUser.user.userId" +
+				" order by model.cadreRegUser.user.userName");
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getTodayStartedUsersOfFMUser(Date today){
+		Query query = getSession().createQuery("select " +
+				" model2.constituency.constituencyId,count(distinct model2.cadreSurveyUserId) " +
+				" from TabUserEnrollmentInfo model2" +
+				" where "+
+				//"  model2.isEnabled = 'Y' and model2.isOtpVerified = 'Y'   " +
+				"   model2.surveyTime = :today " +
+				" group by model2.constituency.constituencyId ");
+		
+		query.setDate("today", today);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getTodayTotalIssues(Date today){
+		Query query = getSession().createQuery("select " +
+				" model2.userAddress.constituency.constituencyId,count(distinct model2.cadreSurveyUser.cadreSurveyUserId) " +
+				" from CadreRegIssue model2" +
+				" where "+
+				"  model2.cadreRegIssueStatus.cadreRegIssueStatusId = 1  " +
+				"  and date(model2.updatedTime) = :today " +
+				" group by model2.userAddress.constituency.constituencyId ");
+		
+		query.setDate("today", today);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getTodayTotalStartedIssues(Date today){
+		Query query = getSession().createQuery("select  " +
+				" model.constituency.constituencyId,count(distinct model.cadreSurveyUserId) " +
+				" from CadreRegIssue model2,TabUserEnrollmentInfo model" +
+				" where model2.cadreSurveyUser.cadreSurveyUserId = model.cadreSurveyUserId "+
+				"  and model2.cadreRegIssueStatus.cadreRegIssueStatusId = 1  " +
+				"  and date(model2.updatedTime) = :today " +
+				" group by model.constituency.constituencyId ");
+		
+		query.setDate("today", today);
+		return query.list();
+		
 	}
 }
