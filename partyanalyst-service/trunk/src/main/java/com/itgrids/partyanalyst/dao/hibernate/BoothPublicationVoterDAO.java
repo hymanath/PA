@@ -8614,5 +8614,39 @@ public Voter getVoterByVoterIDCardNo(String voterCardNo){
 	
 	return (Voter)query.uniqueResult();
 }
+public List<Object[]> getTotalVoterGroupByLocation(String location, Long constId ){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" select ");
+	if(location.equalsIgnoreCase("mandal")){
+		queryStr.append(" BPV.booth.panchayat.tehsil.tehsilId,BPV.booth.panchayat.tehsil.tehsilName, count(distinct BPV.voter.voterId)  ");
+	}
+	if(location.equalsIgnoreCase("panchayat")){
+		queryStr.append(" BPV.booth.panchayat.tehsil.tehsilId,BPV.booth.panchayat.tehsil.tehsilName,BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName, count(distinct BPV.voter.voterId)  ");
+	}
+	if(location.equalsIgnoreCase("booth")){  
+		queryStr.append(" BPV.booth.panchayat.tehsil.tehsilId,BPV.booth.panchayat.tehsil.tehsilName,BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName,BPV.booth.boothId,BPV.booth.partNo, count(distinct BPV.voter.voterId)  ");
+	}
+	queryStr.append(" from  BoothPublicationVoter BPV where " +
+					" BPV.booth.constituency.constituencyId = :constId and " +
+					" BPV.booth.publicationDate.publicationDateId = :publicationDateId ");    
+	  
+	if(location.equalsIgnoreCase("mandal") || location.equalsIgnoreCase("panchayat"))  
+		queryStr.append(" and BPV.booth.panchayat is not null "); 
+	
+	if(location.equalsIgnoreCase("mandal")){
+		queryStr.append(" group by BPV.booth.panchayat.tehsil.tehsilId order by BPV.booth.panchayat.tehsil.tehsilId ");
+	}	
+	else if(location.equalsIgnoreCase("panchayat")){
+		queryStr.append(" group by BPV.booth.panchayat.panchayatId order by BPV.booth.panchayat.panchayatId ");
+	}	
+	else if(location.equalsIgnoreCase("booth")){
+		queryStr.append(" group by BPV.booth.boothId order by BPV.booth.boothId "); 
+	}	
+	Query query = getSession().createQuery(queryStr.toString());  
+	query.setParameter("constId", constId);
+	query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID); 
+	
+	return query.list();
+}
 
 }

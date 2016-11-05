@@ -696,6 +696,41 @@ public Long getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLv
 	query.setParameterList("accessLvlValue", accessLvlValue);
 	return (Long)query.uniqueResult();    
 }
+public List<Object[]> get2014CadreBasedOnLocationIds(Long locationScopeId,List<Long> locationIdList){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("select model.locationValue,model.cadre2014 from TdpCadreLocationInfo model where " +
+			" model.locationScopeId = :accessLvlId and" +
+			" model.locationValue in (:accessLvlValue) and " +  
+			" model.type = 'Total' " ); 
+	Query query = getSession().createQuery(queryStr.toString()); 
+	query.setParameter("accessLvlId", locationScopeId);
+	query.setParameterList("accessLvlValue", locationIdList);
+	return query.list();
+}
+public List<Object[]> getTotalCadreLocationWise(Long locationScopeId, List<Long> locationIdList,String scope){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("select model.locationValue,model.cadre2016 from TdpCadreLocationInfo model where " +
+			" model.locationScopeId = :accessLvlId and" +
+			" model.locationValue in (:accessLvlValue) and " +  
+			" model.type = :scope " ); 
+	Query query = getSession().createQuery(queryStr.toString()); 
+	query.setParameter("accessLvlId", locationScopeId);
+	query.setParameterList("accessLvlValue", locationIdList);
+	query.setParameter("scope", scope);   
+	return query.list();
+}
+public List<Object[]> getTotalRenewlCadreLocationWiseCount(Long accessLvlId,List<Long> accessLvlValue,String type){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append("select model.locationValue,model.renewalCadre from TdpCadreLocationInfo model where " +
+			" model.locationScopeId = :accessLvlId and" +
+			" model.locationValue in (:accessLvlValue) and " +  
+			" model.type = :type ");  
+	Query query = getSession().createQuery(queryStr.toString()); 
+	query.setParameter("accessLvlId", accessLvlId); 
+	query.setParameter("type", type);   
+	query.setParameterList("accessLvlValue", accessLvlValue);  
+	return query.list();    
+}
 public List<Long> getTodayMandalStartedStateWise(Long stateId){
     
     StringBuilder queryStr = new StringBuilder();
