@@ -22,7 +22,7 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	
 	public int insertTdpCadreLocationInfoUpToConstituencyLevel();
 	public int insertTdpCadreLocationInfoUpToLowLevel();
-	public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType);
+	public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType, List<Long> locationValue);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails(Date fromDate,Date toDate);
 	public List<Object[]> getDataSourceTypeWiseRegisteredDetails1(Date fromDate,Date toDate);
 	public List<Object[]> getTdpCadreRecordsCountLocWise(Date fromDate,Date toDate);
@@ -35,5 +35,7 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public Long getTotalConstituencyForCdrRegStarted(Long stateId);
 	public List<Long> getTodayTotalStartedRegistrationConstituencyStateWise(Long stateId);
 	public List<Object[]> getTodayTotalStartedRegistrationConstituencyDetailsStateWise(Long stateId);
+	public Long getTotalCadreCountLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type);
+	public Long getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLvlValue,String type);
 	 
 }
