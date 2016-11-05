@@ -6755,7 +6755,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 															{
 																TdpCadreTeluguNames tdpCadreTeluguNames = tdpCadreTeluguNamesDAO.get((Long) model.get(0));
 																tdpCadreTeluguNames.setTeluguName(cardNFCDetailsVO.getVoterName() );
-															  tdpCadreTeluguNamesDAO.save(tdpCadreTeluguNames);
+																tdpCadreTeluguNamesDAO.save(tdpCadreTeluguNames);
+															}
+															else
+															{
+																TdpCadreTeluguNames tdpCadreTeluguNames = new TdpCadreTeluguNames();
+																tdpCadreTeluguNames.setTeluguName(cardNFCDetailsVO.getVoterName());
+																tdpCadreTeluguNames.setTdpCadreId(cardNFCDetailsVO.getTdpCadreId());
+																tdpCadreTeluguNamesDAO.save(tdpCadreTeluguNames);
 															}
 														}
 														else
@@ -6764,7 +6771,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 															if(model1 != null && model1.size() > 0)
 															{
 																VoterNames voterNames = voterNamesDAO.get((Long) model1.get(0));
-																voterNames.setFirstName(cardNFCDetailsVO.getVoterName() );
+																voterNames.setFirstName(cardNFCDetailsVO.getVoterName());
+																voterNames.setLastName("");
 																voterNamesDAO.save(voterNames);
 															}
 															
