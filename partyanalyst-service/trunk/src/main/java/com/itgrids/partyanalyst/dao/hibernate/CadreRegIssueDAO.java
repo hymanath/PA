@@ -152,7 +152,7 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.isDeleted = 'N'");
 					//" and model1.cadreRegUser.userType = 'FM'");
 		if(fromDate != null && toDate != null){  
-			sb.append(" and  model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId ");
+			sb.append(" and  model.tdpCadre.insertedBy.cadreSurveyUserId = model1.cadreSurveyUserId ");
 		}
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(" and model4.cadreRegUser.cadreRegUserId = :cadreRegUserId");
