@@ -1664,6 +1664,16 @@
 	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseByToday" />
     </bean>
     
+     <bean name="tdpCadreDataHourWiseByOverall" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="triggerHourWiseCadreDataOverall" />
+    	<property name="cronExpression" value="0 05 19 * * ?" />
+	</bean>
+    <bean name="triggerHourWiseCadreDataOverall" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushTdpCadreDataHourWiseByOverall" />
+    </bean>
+    
+    
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1706,6 +1716,7 @@
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
+		    <ref bean="tdpCadreDataHourWiseByOverall" />
         </list>
     	</property>
 	</bean>
@@ -3699,6 +3710,8 @@
 	   <property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO" />
 	   <property name="tdpCadreUserHourRegInfoTempDAO" ref="tdpCadreUserHourRegInfoTempDAO" />
 	   <property name="tdpCadreUserHourRegInfoTemp1DAO" ref="tdpCadreUserHourRegInfoTemp1DAO" />
+	   <property name="tdpCadreHourRegInfoTemp1DAO" ref="tdpCadreHourRegInfoTemp1DAO" />
+	   <property name="tdpCadreHourRegInfoTempDAO" ref="tdpCadreHourRegInfoTempDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
