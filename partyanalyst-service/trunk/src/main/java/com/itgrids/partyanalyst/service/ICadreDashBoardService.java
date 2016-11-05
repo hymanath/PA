@@ -111,4 +111,5 @@ public interface ICadreDashBoardService {
 	 public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr,Long memberTypeId);
 	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType);
 	 public List<CadreDataSourceTypeVO> getDataSourceTypeWiseRegisteredDetails();
+	 public List<List<CadreDashboardVO>> get2016LocationWiseRegisteredCountsForPreviligedUser(Long userId, String locationType, String type);
 }
