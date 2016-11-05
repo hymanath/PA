@@ -27,5 +27,7 @@ public interface IUserConstituencyAccessInfoDAO extends GenericDao<UserConstitue
 	public void deleteAllAssemblyAccessByScopeStateIdUserIdDistrictId(Long electionScope,Long userId,Long stateId,Long districtId);
 	
 	public List<Object[]> getAllUserAccessConstituencies(Long userId);
+	
+	public List<Object[]> getLocationIdList(Long userId);
 
 }
