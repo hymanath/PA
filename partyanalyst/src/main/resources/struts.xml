@@ -228,6 +228,7 @@
 			<result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
 			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
 			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
+			<result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5680,7 +5681,8 @@
       <result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
       <result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
       <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
-      <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>       
+      <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>    
+      <result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>   
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -14507,6 +14509,8 @@
 	</action>
 	<action name="privilegedUserCadreRegAction" class="privilegedUserCadreRegAction">
 		<result name="success">/jsp/privilegedUserCadreReg.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=privilegedUserCadreRegAction</result>
+		<result name="error" type="redirect">login.action</result>
 	</action>
 	<action name="get2016LocationWiseRegisteredCounts" class="privilegedUserCadreRegAction" method="get2016LocationWiseRegisteredCountsForPreviligedUser">
 		<result type="json" name="success">
@@ -14518,6 +14522,11 @@
 			<param name="root">fieldMonitoringList</param>
 		</result>
 	</action> 
+	<action name="get2016LocationWiseRegisterationDtls" class="privilegedUserCadreRegAction" method="getRegistrationCountDtls">
+		<result type="json" name="success">
+			<param name="root">registrationCountVOs</param>  
+		</result>
+	</action>
 	<action name="getMndlMncpalityTodayStatedNotStartedDetailsAction" class="coreDashboardAction"  method="getMndlMncpalityTodayStatedNotStartedDetails">
 			<result type="json" name="success">
 			<param name="root">cadreDtlsList</param>
