@@ -179,7 +179,8 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 					" and model1.isEnabled = 'Y'" +
 					" and model3.isEnabled = 'Y'" +
 					//" and model3.isOtpVerified = 'Y' " +
-					" group by model1.cadreSurveyUserId ");
+					" group by model1.cadreSurveyUserId,model3.tabUserInfoId" +
+					" order by model3.insertedTime desc ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)

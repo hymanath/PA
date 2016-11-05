@@ -40,6 +40,7 @@ public class TabUserEnrollmentInfo implements Serializable {
 	private Date   startTime;
 	private Date   endTime;
 	private Constituency constituency;
+	private Long districtId;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -164,6 +165,14 @@ public class TabUserEnrollmentInfo implements Serializable {
 	}
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+	
+	@Column(name = "district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 	
 	
