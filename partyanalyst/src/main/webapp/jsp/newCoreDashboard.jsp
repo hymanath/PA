@@ -177,8 +177,12 @@
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12">
 										<div class="bg_ED pad_15 m_top10">
-											<h5 class="text-capital" >TOTAL-<span id="totalperc"></span><h5><h4  class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0 </h4>
-										</div>
+											<i style="cursor:pointer;" class="glyphicon glyphicon-comment compCls" attr_state_id="0" attr_option="total" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday comparision"></i>
+											<h5 class="text-capital" >TOTAL-<span id="totalperc"></span>  
+											</h5>  
+											<h4  data-toggle="tooltip" class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0</h4>
+											
+										</div>  
 									</div>
 									<div class="col-md-6 col-xs-12 col-sm-12">
 										<div class="bg_ED pad_15 m_top10">
@@ -2912,6 +2916,24 @@
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<!--end-->
+<!-- Model for Debate Start-->
+		<div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
+		  <div class="modal-dialog modal-lg" style="width:45%">        
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Cadre Registration Details</h4>  
+			  </div>
+			  <div class="modal-body">
+				  <div id="cdrModelId" class="row"></div>				 
+			  </div>
+			  <div class="modal-footer">     
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
