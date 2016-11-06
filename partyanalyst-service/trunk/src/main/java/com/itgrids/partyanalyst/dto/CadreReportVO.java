@@ -8,7 +8,7 @@ public class CadreReportVO implements Serializable {
 	private static final long serialVersionUID = 3609401538796873903L;
 	
 	private String reportType;
-	List<ReportVO> reportVOList;
+	private List<ReportVO> reportVOList;
 	private String reportPath;
 	private String reportDate;
 	private Integer sno;
@@ -39,6 +39,14 @@ public class CadreReportVO implements Serializable {
 	
 	private Long locationId2;
 	private String locationName2;
+	private String mobileNo;
+	private String isActive;
+	private String imagePath;
+	private String yesPersent;
+	private String todayPersent;
+	private Long yesRegCount;
+	private Long todayRegCount;
+	
 	public Integer getSno() {
 		return sno;
 	}
@@ -214,5 +222,48 @@ public class CadreReportVO implements Serializable {
 	public void setLocationName2(String locationName2) {
 		this.locationName2 = locationName2;
 	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	public String getYesPersent() {
+		return yesPersent;
+	}
+	public void setYesPersent(String yesPersent) {
+		this.yesPersent = yesPersent;
+	}
+	public String getTodayPersent() {
+		return todayPersent;
+	}
+	public void setTodayPersent(String todayPersent) {
+		this.todayPersent = todayPersent;
+	}
+	public Long getYesRegCount() {
+		return yesRegCount;
+	}
+	public void setYesRegCount(Long yesRegCount) {
+		this.yesRegCount = yesRegCount;
+	}
+	public Long getTodayRegCount() {
+		return todayRegCount;
+	}
+	public void setTodayRegCount(Long todayRegCount) {
+		this.todayRegCount = todayRegCount;
+	}
+	
 	
 }

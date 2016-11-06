@@ -115,5 +115,34 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		return query.list();
 		
 	}
-}
+   public List<Object[]> getTabUserWiseTotalRegistrationDetails(Long stateId,Date date){
+	     StringBuilder queryStr = new StringBuilder();
+	     queryStr.append(" select distinct " +
+	     		         " model.tabUserInfoId," +//0
+	     		         " model.tabUserName," +//1
+	     		         " model.mobileNo," +//2
+	     		         " model.imagePath," +//3
+	     		         " sum(model.totalRecords) " + //4
+	     		         " from TabUserEnrollmentInfo model " +
+	     		         " where model.enrollmentYearId=4 " +
+	     		         " and model.stateId=:stateId " +
+	     		         " and date(model.surveyTime)=:date " +
+	      		         " group by model.tabUserInfoId order by sum(model.totalRecords) desc ");
+	      Query query = getSession().createQuery(queryStr.toString());
+	       query.setParameter("stateId", stateId);
+	       query.setParameter("date", date);
+	      return query.list();
+   }
+  public List<Object[]> getActiveTabUserDtls(Long stateId,Date lastOneHourTime){
+	 		StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select distinct model.tabUserInfoId,sum(model.totalRecords) from TabUserEnrollmentInfo model where model.endTime > (:lastOneHourTime) and " +
+							" model.stateId = :stateId group by model.tabUserInfoId ");
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("lastOneHourTime", lastOneHourTime);
+			query.setParameter("stateId", stateId);
+			return query.list();
+	
+    }
+  }
+
 

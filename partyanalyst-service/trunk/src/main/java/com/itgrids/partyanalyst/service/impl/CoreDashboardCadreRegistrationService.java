@@ -14,8 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -3531,5 +3531,97 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
- 	
+ 	public List<CadreReportVO> getTodayAndYesterdayTabUserRgstrtnComparisonDetails(Long stateId){
+ 		List<CadreReportVO> resultList = new ArrayList<CadreReportVO>(0);
+ 		Map<Long,Long> activeUserMap = new HashMap<Long, Long>();
+ 		Map<Long,CadreReportVO> tabUserDetailsMap = new HashMap<Long, CadreReportVO>();
+ 		Date today = dateUtilService.getCurrentDateAndTime();
+ 		try{
+ 			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
+			Date lastOneHourTime = cal.getTime();
+			
+			Calendar cal1 = Calendar.getInstance();
+			cal1.setTime(today);
+			cal1.set(Calendar.DATE, cal.get(Calendar.DATE) - 1);  
+			Date yesterdayDate = cal1.getTime();
+			
+ 		   List<Object[]> rtrnActiveUserList = tabUserEnrollmentInfoDAO.getActiveTabUserDtls(stateId, lastOneHourTime);
+ 		   List<Object[]> todayTabUserDtlsObjLst = tabUserEnrollmentInfoDAO.getTabUserWiseTotalRegistrationDetails(stateId, today);
+ 		   List<Object[]> yesTabUserDtlsObjLst = tabUserEnrollmentInfoDAO.getTabUserWiseTotalRegistrationDetails(stateId, yesterdayDate);
+	 	   setActiveUserDtls(rtrnActiveUserList,activeUserMap);
+	 	   setYesterDayTabUserDetails(yesTabUserDtlsObjLst,tabUserDetailsMap);
+	 	   setTodayTabUserDetails(todayTabUserDtlsObjLst,tabUserDetailsMap,activeUserMap);
+ 		   
+		   if(tabUserDetailsMap != null && tabUserDetailsMap.size() > 0){
+			   resultList.addAll(new ArrayList<CadreReportVO>(tabUserDetailsMap.values()));
+			   tabUserDetailsMap.clear();
+		   }
+	 	}catch(Exception e){
+ 			LOG.error("Exception raised in getTodayAndYesterdayTabUserComparisonDetails() in CoreDashboardCadreRegistrationService service", e);	
+ 		}
+ 		return resultList;
+ 	}
+ 	public void setActiveUserDtls(List<Object[]> objList,Map<Long,Long> activeUserMap){
+ 		try{
+ 			if(objList != null && objList.size() > 0){
+ 	 			for(Object[] param:objList){
+ 	 				activeUserMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+ 	 			}
+ 	 		}
+ 		}catch(Exception e){
+			LOG.error("Exception raised in setActiveUserDtls() in CoreDashboardCadreRegistrationService service", e);	
+ 		}
+ 	}
+  public void setTodayTabUserDetails(List<Object[]> objList,Map<Long,CadreReportVO> tabUserMap,Map<Long,Long> activeUserMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  CadreReportVO tabUserVO = tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   if(tabUserVO == null){
+					    tabUserVO = new CadreReportVO();
+		 				tabUserVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		 				tabUserVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+		 				tabUserVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+		 				tabUserVO.setImagePath(commonMethodsUtilService.getStringValueForObject(param[3]));
+		 				tabUserVO.setTodayRegCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+		 				if(activeUserMap.get(tabUserVO.getId()) != null && activeUserMap.get(tabUserVO.getId()) > 0l){
+		 					tabUserVO.setIsActive("Yes");	
+		 				}
+		 				tabUserVO.setTodayPersent("Present");
+		 				tabUserVO.setYesPersent("Absent");
+		 				tabUserMap.put(tabUserVO.getId(), tabUserVO);   
+				   }else{
+					    tabUserVO.setTodayRegCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					    tabUserVO.setTodayPersent("Present");
+						if(activeUserMap.get(tabUserVO.getId()) != null && activeUserMap.get(tabUserVO.getId()) > 0l){
+		 					tabUserVO.setIsActive("Yes");	
+		 				}
+		 		   }
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception raised in setTodayTabUserDetails() in CoreDashboardCadreRegistrationService service", e);  
+	  }
+  }
+  public void setYesterDayTabUserDetails(List<Object[]> objList,Map<Long,CadreReportVO> tabUserDtlsMap){
+ 	try{
+ 		if(objList != null && objList.size() > 0){
+ 			for(Object[] param:objList){
+ 				CadreReportVO tabUserVO = new CadreReportVO();
+ 				tabUserVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+ 				tabUserVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+ 				tabUserVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+ 				tabUserVO.setImagePath(commonMethodsUtilService.getStringValueForObject(param[3]));
+ 				tabUserVO.setYesRegCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+ 				tabUserVO.setYesPersent("Present");
+ 				tabUserVO.setTodayPersent("Absent");
+ 				tabUserDtlsMap.put(tabUserVO.getId(), tabUserVO);
+ 			}
+ 		}
+ 	}catch(Exception e){
+ 		LOG.error("Exception raised in setActiveUserDtls() in CoreDashboardCadreRegistrationService service", e);	
+ 	}
+ }
 }
