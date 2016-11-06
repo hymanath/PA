@@ -238,8 +238,9 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-comment compCls"  attr_state_id="36" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday comparision"></i>';
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
-							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
+							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';  
 						str+='</div>';
 						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
 							str+='<h4 class="f_14 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
@@ -487,6 +488,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-comment compCls" attr_state_id="1" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday comparision"></i>';
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
 						str+='</div>';
@@ -757,7 +759,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
 				if(result != null){
-					buildEnumeratorsInfoTS(result);
+					buildEnumeratorsInfoTS(result);  
 				}else{
 					$("#enumeratorsInfoDivTSId").html('NO DATA AVAILABLE');
 				}	
@@ -3972,6 +3974,73 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	  $("#totalTodayId").html(""+globalTodayTotalCnt+"");
 	  $("#totalperc").html("<span style='font-size:12px;'>"+((globalTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");
 	  $("#todayperc1").html("<span style='font-size:12px;'>"+((globalTodayTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");	
+ }
+ $(document).on('click','.compCls',function(){ 
+	 $("#cdrModelDivId").modal("show");
+	 $("#cdrModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+	 var stateId = $(this).attr("attr_state_id");
+	 var oprion = $(this).attr("attr_option");
+	 getHourWiseRegDtls(stateId,oprion);
+ });
+ function getHourWiseRegDtls(stateId,oprion){  
+	 var jObj = {
+			  stateId : stateId,      
+			  option : oprion    
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getHourWiseRegDtlsAction.action',    
+			data : {task:JSON.stringify(jObj)}
+		}).done(function(result){ 
+			$("#cdrModelId").html("");
+			if(result != null && result.length > 0){
+				buildHourWiseRegDtls(result);
+			}      
+		});                     
+ }
+ function buildHourWiseRegDtls(result){  
+	 var str='';
+			str+='<table class="table table-bordered table-condensed"> ';
+				str+='<thead> ';
+					str+='<tr>';
+						str+='<th>Hour</th>';
+						str+='<th>Today Total Reg</th>';
+						str+='<th>Yesterday Total Reg</th>';
+						str+='<th>Today Total Tab User</th>';
+						str+='<th>Yesterday Total Tab User</th>';
+					str+='</tr>'; 
+				str+='</thead>'; 
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr> ';
+						str+='<td>'+result[i].label+'</td> ';
+						if(result[i].todayTotalReg == 0){
+							str+='<td>-</td> ';
+						}else{
+							str+='<td>'+result[i].todayTotalReg+'</td> ';
+						}
+						if(result[i].lastDayTotalReg == 0){
+							str+='<td>-</td> ';
+						}else{
+							str+='<td>'+result[i].lastDayTotalReg+'</td> ';
+						}
+						if(result[i].todayTotalUsers == 0){
+							str+='<td>-</td> ';
+						}else{
+							str+='<td>'+result[i].todayTotalUsers+'</td> ';
+						}
+						if(result[i].lastDayTotalUsers == 0){
+							str+='<td>-</td> ';
+						}else{
+							str+='<td>'+result[i].lastDayTotalUsers+'</td> ';
+						}
+						
+				   str+='</tr>';
+				
+				}
+			str+='</tbody>'; 
+		str+='</table>';
+		$("#cdrModelId").html(str);
  }
  $(document).on("click","#cadreExcelExpBtnId",function(){
 	 generateExcelReportForCadre();	
