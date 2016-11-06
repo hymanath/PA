@@ -13268,32 +13268,17 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					}
 					
 					PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
-					paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
-					paymentTransactionVO.setPaymentGatewayId(1L);
-					paymentTransactionVO.setPaymentMethodId(1L);
-					//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
-					paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo);
-					
+					//paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
+					//paymentTransactionVO.setPaymentGatewayId(1L);
+					//paymentTransactionVO.setPaymentMethodId(1L);
+					paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo+"_TDPCADREID_"+tdpCadreId);
 					paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
 					paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
-					//paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
 					paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
-					/*if(AuthDesc.equalsIgnoreCase("Y")){
-						paymentTransactionVO.setStatusCode("SUCCESS");
-						paymentTransactionVO.setTransactionStatusId(2L);
-					}else{
-						paymentTransactionVO.setStatusCode("FAILURE");
-						paymentTransactionVO.setTransactionStatusId(1L);
-					}*/
-					
-					paymentTransactionVO.setStatusCode(AuthDesc);// ccavvenue payment status 'Y', 'N' or null
-					
-					
-				//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-				//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+					paymentTransactionVO.setStatusCode(AuthDesc);// ccavvenue payment status 'Y', 'N' or null	
 					paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
 					paymentTransactionVO.setReferenceUserId("2016-2018_"+tdpCadreId);
-					paymentTransactionVO.setPaymentModuleId(1L);
+				//	paymentTransactionVO.setPaymentModuleId(1L);
 					paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 					
 				}				
