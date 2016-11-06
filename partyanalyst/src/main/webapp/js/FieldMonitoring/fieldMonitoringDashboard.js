@@ -439,7 +439,10 @@ function buildStatusWiseDetails(result){
 			str+='<th>User Id</th>';
 			str+='<th>user name</th>';
 			str+='<th>user contact number</th>';
-			str+='<th>vendor name</th>';
+			str+='<th>First Record</th>';
+			str+='<th>Last Record</th>';
+			str+='<th>Last Hour</th>';
+			str+='<th>Total Registrations</th>';
 			//str+='<th>leader name</th>';
 			str+='<th>open issues</th>';
 			str+='<th>fixed issues</th>';
@@ -466,8 +469,20 @@ function buildStatusWiseDetails(result){
 				str+='<td>'+result[i].tabUserName+'</td>';
 				str+='<td>'+result[i].mobileNo+'</td>';
 				
-				if(result[i].vendorName != null)
-					str+='<td>'+result[i].vendorName+'</td>';
+				if(result[i].firstRecord != null)
+					str+='<td>'+result[i].firstRecord+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].recentRecord != null)
+					str+='<td>'+result[i].recentRecord+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].lastHourCount != null)
+					str+='<td>'+result[i].lastHourCount+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].totalCount != null)
+					str+='<td>'+result[i].totalCount+'</td>';
 				else
 					str+='<td> - </td>';
 				//str+='<td> - </td>';
