@@ -263,7 +263,7 @@
 	}
 				var jsObj ={					
 					mandalId:mandal,
-					typeId:id
+					typeId:1
 				};
 				 $.ajax({
 					type : "GET",
@@ -1043,13 +1043,13 @@ function getCadreDetailsForCadre(tdpCadreId,voterId,status,relativeVoter){
 
 				if(registrationType=="new"){
 					str+='<div class="panel-heading new animated fadeIn">';
-					str+='	<h3 class="text-left text-muted">కొత్త సభ్యత్వం</h3>';
+					str+='	<h3 class="text-left text-muted">à°•à±Šà°¤à±�à°¤ à°¸à°­à±�à°¯à°¤à±�à°µà°‚</h3>';
 					str+='    <h3 class="text-left text-capital text-muted m_top10">New Membership <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
 					str+='</div>';
 				}
 				if(registrationType=="renewal"){
 					str+='<div class="panel-heading renewal">';
-					str+='	<h3 class="text-left text-muted">సభ్యత్వం  పునరుద్ధరణ</h3>';
+					str+='	<h3 class="text-left text-muted">à°¸à°­à±�à°¯à°¤à±�à°µà°‚  à°ªà±�à°¨à°°à±�à°¦à±�à°§à°°à°£</h3>';
 					str+='    <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>';
 					str+='</div>';
 				} 
