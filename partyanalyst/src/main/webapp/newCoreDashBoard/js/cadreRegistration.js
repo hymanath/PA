@@ -768,8 +768,27 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 		//Enumerators block	
 			var str1='';
 			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str1+='<div class="bg_ED pad_15">';
-					str1+='<table class="table text-capital">';
+				str1+='<div class="bg_ED pad_15 table-responsive">';
+					str1+='<div class="row">';
+						str1+='<div class="col-md-2 col-xs-12 col-sm-2">';
+							str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/><h5>Today</h5>';
+						str1+='</div>';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
+							str1+='<h5> Started Constituencies</h5>';
+							 
+							 str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
+							 str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
+							 
+						str1+='</div>';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
+							str1+='<h5> Yet to start Constituencies</h5>';
+							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
+							str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
+						str1+='</div>';
+					str1+='</div>';
+					/* str1+='<table class="table text-capital table-condensed">';
 						str1+='<tr>';
 							str1+='<td>';
 								str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/><h5>Today</h5>';
@@ -788,7 +807,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 								//}
 								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
 							str1+='</td>'; */
-							str1+='<td>';
+							/*str1+='<td>';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
 							 str1+='<h5> Started Constituencies</h5>';
 							 
@@ -802,7 +821,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
 							str1+='</td>'
 						str1+='</tr>';
-					str1+='</table>';
+					str1+='</table>'; */
 					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
@@ -845,8 +864,27 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 		
 			var str1='';
 			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str1+='<div class="bg_ED pad_15">';
-					str1+='<table class="table text-capital">';
+				str1+='<div class="bg_ED pad_15 table-responsive">';
+				str1+='<div class="row">';
+						str1+='<div class="col-md-2 col-xs-12 col-sm-2">';
+							str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/><h5>Today</h5>';
+						str1+='</div>';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
+								str1+='<h5>Started<br> Constituencies</h5>';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
+								str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
+							 
+						str1+='</div>';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
+								str1+='<h5>Yet To Start<br> Constituencies</h5>';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
+								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
+						str1+='</div>';
+					str1+='</div>';
+					
+					/* str1+='<table class="table text-capital table-condensed">';
 						str1+='<tr>';
 							str1+='<td>';
 								str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/><h5>Today</h5>';
@@ -865,7 +903,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 								//}
 								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
 							str1+='</td>'; */
-							str1+='<td>';
+							/*str1+='<td>';
 								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
 								str1+='<h5>Started<br> Constituencies</h5>';
 								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
@@ -878,7 +916,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
 							str1+='</td>';
 						str1+='</tr>';
-					str1+='</table>';
+					str1+='</table>'; */
 					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
@@ -3825,7 +3863,8 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	function buildLocationWiseReport(result,reportType,locationType){
 		$("#cadreExcelExpBtnId").show();
 	   var str='';
-	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-responsive" id="constituencyDtlsDataTblId">';   
+	   str+='<div class="table-responsive">';
+	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed" id="constituencyDtlsDataTblId">';   
 	   str+='<thead>';
              str+='<th>District Name</th>';
 			 str+='<th>Constituency Id</th>';
@@ -3874,6 +3913,7 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 			}
 			 str+='</tbody>';
 			 str+='</table>';
+			 str+='</div>';
 		 $("#locationWiseCadreReportDivId").html(str);
 		if(locationType =="mandalMuncipality" || locationType=="Constituency"){
 			 if(locationType == "mandalMuncipality"){
