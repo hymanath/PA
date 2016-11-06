@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -64,12 +65,14 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceCountInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceCountInfoTempDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.IUserEmailDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
+import com.itgrids.partyanalyst.dto.DataSourceVO;
 import com.itgrids.partyanalyst.dto.DepartmentVO;
 import com.itgrids.partyanalyst.dto.EmailAttributesVO;
 import com.itgrids.partyanalyst.dto.OfficeMemberVO;
@@ -123,8 +126,9 @@ public class SchedulerService implements ISchedulerService{
 	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private ITdpCadreDataSourceCountInfoDAO tdpCadreDataSourceCountInfoDAO;
 	private ITdpCadreDataSourceCountInfoTempDAO tdpCadreDataSourceCountInfoTempDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	
-	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
+	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {  
 		return trainingCampBatchDAO;
 	}
 
@@ -303,6 +307,10 @@ public class SchedulerService implements ISchedulerService{
 	public void setTdpCadreDataSourceCountInfoTempDAO(
 			ITdpCadreDataSourceCountInfoTempDAO tdpCadreDataSourceCountInfoTempDAO) {
 		this.tdpCadreDataSourceCountInfoTempDAO = tdpCadreDataSourceCountInfoTempDAO;
+	}
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -1799,11 +1807,16 @@ public class SchedulerService implements ISchedulerService{
 					
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-					
+					List<DataSourceVO> dataSourceVOs = new ArrayList<DataSourceVO>();
+					getSourceOfRegDtls(dataSourceVOs);
 					int deletedRecords = tdpCadreDataSourceCountInfoTempDAO.deleteAllRecords();
 				    int count = tdpCadreDataSourceCountInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 				    
-				    Date currentTime = dateUtilService.getCurrentDateAndTime();  
+				    
+				    Date currentTime = dateUtilService.getCurrentDateAndTime();
+				    
+				    
+				    
 				    
 					rs.setResultCode(1);
 					rs.setMessage("success");
@@ -1816,5 +1829,92 @@ public class SchedulerService implements ISchedulerService{
 			rs.setMessage("failure");
 		}
 		return rs;  
+	}
+	public void getSourceOfRegDtls(List<DataSourceVO> cadreRegistratedCountVOs){
+		try{
+			DataSourceVO dataSourceVO = null;  
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			Map<Long,Map<String,Long>> locIdAndSourceTypeAndCountMap = new HashMap<Long,Map<String,Long>>();
+			Map<String,Long> sourceTypeAndCountMap = new HashMap<String,Long>();
+			//get dist wise total count
+			List<Object[]> distWiseCountList = tdpCadreEnrollmentYearDAO.getDistWiseCountList();
+			if(distWiseCountList != null && distWiseCountList.size() > 0){
+				for(Object[] param : distWiseCountList){
+					sourceTypeAndCountMap = locIdAndSourceTypeAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(sourceTypeAndCountMap != null){
+						sourceTypeAndCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else{
+						sourceTypeAndCountMap = new HashMap<String,Long>();
+						sourceTypeAndCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+						locIdAndSourceTypeAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), sourceTypeAndCountMap);
+					} 
+				}
+			}
+			
+			//get dist wise renewal count
+			List<Object[]> distWiseRenewCountList = tdpCadreEnrollmentYearDAO.getDistWiseRenewCountList();
+			Map<Long,Map<String,Long>> locIdAndSourceTypeAndRenewCountMap = new HashMap<Long,Map<String,Long>>();
+			Map<String,Long> sourceTypeAndRenewCountMap = new HashMap<String,Long>();
+			if(distWiseRenewCountList != null && distWiseRenewCountList.size() > 0){
+				for(Object[] param : distWiseRenewCountList){
+					sourceTypeAndRenewCountMap = locIdAndSourceTypeAndRenewCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(sourceTypeAndRenewCountMap != null){
+						sourceTypeAndRenewCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else{
+						sourceTypeAndRenewCountMap = new HashMap<String,Long>();
+						sourceTypeAndRenewCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+						locIdAndSourceTypeAndRenewCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), sourceTypeAndRenewCountMap);
+					} 
+				}
+			} 
+			
+			if(locIdAndSourceTypeAndCountMap.size() > 0){
+				for(Entry<Long, Map<String, Long>> enter1 : locIdAndSourceTypeAndCountMap.entrySet()){
+					
+					sourceTypeAndCountMap = enter1.getValue();
+					for(Entry<String,Long> entry2 : sourceTypeAndCountMap.entrySet()){
+						dataSourceVO = new DataSourceVO();
+						dataSourceVO.setRegionScopeId(3l);
+						dataSourceVO.setLocationValue(enter1.getKey());
+						dataSourceVO.setTotalCount(entry2.getValue());
+						dataSourceVO.setRenewalCount(locIdAndSourceTypeAndRenewCountMap.get(enter1.getKey()) != null ? locIdAndSourceTypeAndRenewCountMap.get(enter1.getKey()).get(entry2.getKey()) != null ? locIdAndSourceTypeAndRenewCountMap.get(entry2.getKey()).get(enter1.getKey()) : 0l  : 0l);
+						dataSourceVO.setNewCount(dataSourceVO.getTotalCount() - dataSourceVO.getRenewalCount());
+					}  
+					
+				}
+			}
+			//get const wise total count
+			List<Object[]> constWiseCountList = tdpCadreEnrollmentYearDAO.getConstWiseCountList();
+			Map<Long,Map<String,Long>> constIdAndSourceTypeAndCountMap = new HashMap<Long,Map<String,Long>>();
+			if(constWiseCountList != null && constWiseCountList.size() > 0){
+				for(Object[] param : constWiseCountList){
+					sourceTypeAndRenewCountMap = constIdAndSourceTypeAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(sourceTypeAndRenewCountMap != null){
+						sourceTypeAndRenewCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else{
+						sourceTypeAndRenewCountMap = new HashMap<String,Long>();
+						sourceTypeAndRenewCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+						constIdAndSourceTypeAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), sourceTypeAndRenewCountMap);
+					}
+				}
+			}
+			//get const wise renew count
+			List<Object[]> constWiseRenewCountList = tdpCadreEnrollmentYearDAO.getConstWiseRenewCountList();
+			Map<Long,Map<String,Long>> constIdAndSourceTypeAndRenewCountMap = new HashMap<Long,Map<String,Long>>();
+			if(constWiseRenewCountList != null && constWiseRenewCountList.size() > 0){
+				for(Object[] param : constWiseRenewCountList){
+					sourceTypeAndRenewCountMap = constIdAndSourceTypeAndRenewCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(sourceTypeAndRenewCountMap != null){
+						sourceTypeAndRenewCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else{
+						sourceTypeAndRenewCountMap = new HashMap<String,Long>();
+						sourceTypeAndRenewCountMap.put(commonMethodsUtilService.getStringValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+						constIdAndSourceTypeAndRenewCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), sourceTypeAndRenewCountMap);
+					}  
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getSourceOfRegDtls in SchedulerService{}", e);
+		}
 	}
 }
