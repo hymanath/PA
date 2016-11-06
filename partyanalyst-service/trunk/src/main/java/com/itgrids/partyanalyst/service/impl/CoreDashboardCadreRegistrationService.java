@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CadreResponseVO;
+import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -112,6 +114,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     private IConstituencyTehsilDAO constituencyTehsilDAO;    
     private ITdpCadreSmsLeaderLocationDAO tdpCadreSmsLeaderLocationDAO;
+    private ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO;
     
     
 	public void setTdpCadreSmsLeaderLocationDAO(
@@ -279,6 +282,10 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setConstituencyTehsilDAO(
 			IConstituencyTehsilDAO constituencyTehsilDAO) {
 		this.constituencyTehsilDAO = constituencyTehsilDAO;
+	}
+	public void setTdpCadreHourRegInfoDAO(
+			ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO) {
+		this.tdpCadreHourRegInfoDAO = tdpCadreHourRegInfoDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -3531,6 +3538,115 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
+ 	public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option){
+ 		try{
+ 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+ 			DateUtilService dateUtilService = new DateUtilService();
+ 			Date dt = dateUtilService.getCurrentDateAndTime();
+ 			Calendar calendar = Calendar.getInstance();
+ 			calendar.setTime(dt);
+ 			calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);  
+			Date lastOneDayTime = calendar.getTime(); 
+ 			
+ 			Date surveyDate = dateUtilService.getCurrentDateAndTime();
+ 			List<Long> hourList = new ArrayList<Long>(){{add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
+ 			//put("Upto 8 AM",8l);
+ 			Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{
+ 				put("8-9",8l);put("9-10",9l);put("10-11",10l);put("11-12",11l);put("12-13 PM",12l);put("13-14",13l);put("14-15",14l);put("15-16",15l);
+ 				put("16-17",16l);put("17-18",17l);put("18-19",18l);put("19-20",19l);put("20-21",20l);put("21-22",21l);put("22-23",22l);put("23-24",23l);
+ 			}};
+ 			List<FieldReportVO> fieldReportVOs = new ArrayList<FieldReportVO>();
+ 			FieldReportVO fieldReportVO = null;
+ 			List<Object[]> regDtlsListForToday = null;
+ 			List<Object[]> regDtlsListForYesterDay = null;
+ 			if(option.equalsIgnoreCase("total")){
+ 				regDtlsListForToday = tdpCadreHourRegInfoDAO.getHourWiseCombineReport(surveyDate);  
+ 	 			regDtlsListForYesterDay = tdpCadreHourRegInfoDAO.getHourWiseCombineReport(lastOneDayTime);
+ 			}else{
+ 				regDtlsListForToday = tdpCadreHourRegInfoDAO.getHourWiseReport(stateId,surveyDate);
+ 	 			regDtlsListForYesterDay = tdpCadreHourRegInfoDAO.getHourWiseReport(stateId,lastOneDayTime);
+ 			}
+ 			
+ 			Map<Long,Long> hourAndRegCountMap = new HashMap<Long,Long>();
+ 			Map<Long,Long> hourAndUserCountMap = new HashMap<Long,Long>();
+ 			if(regDtlsListForToday != null && regDtlsListForToday.size() > 0){
+ 				for(Object[] param : regDtlsListForToday){
+ 					hourAndRegCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+ 					hourAndUserCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+ 				}
+ 			}
+ 			Long totalCadreUpto8amToday = 0l;
+ 			Long totalSurveyUserUpto8amToday = 0l;
+ 			
+ 			for(Long param : hourList){
+ 				if( hourAndRegCountMap.get(param) != null)
+ 					totalCadreUpto8amToday = totalCadreUpto8amToday + hourAndRegCountMap.get(param);
+ 				if( hourAndUserCountMap.get(param) != null)
+ 					totalSurveyUserUpto8amToday = totalSurveyUserUpto8amToday + hourAndUserCountMap.get(param);
+ 			}
+ 			//for yesterday
+ 			Map<Long,Long> hourAndRegCountYestMap = new HashMap<Long,Long>();
+ 			Map<Long,Long> hourAndUserCountYestMap = new HashMap<Long,Long>();
+ 			if(regDtlsListForYesterDay != null && regDtlsListForYesterDay.size() > 0){
+ 				for(Object[] param : regDtlsListForYesterDay){
+ 					hourAndRegCountYestMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+ 					hourAndUserCountYestMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+ 				}
+ 			}
+ 			Long totalCadreUpto8amYesterDay = 0l;
+ 			Long totalSurveyUserUpto8amYesterDay = 0l;
+ 			for(Long param : hourList){
+ 				if( hourAndRegCountYestMap.get(param) != null)
+ 					totalCadreUpto8amYesterDay = totalCadreUpto8amYesterDay + hourAndRegCountYestMap.get(param);
+ 				if( hourAndUserCountYestMap.get(param) != null)
+ 					totalSurveyUserUpto8amYesterDay = totalSurveyUserUpto8amYesterDay + hourAndUserCountYestMap.get(param);
+ 			}
+ 			//special for upto 8am
+ 			fieldReportVO = new FieldReportVO();
+ 			fieldReportVO.setLabel("Upto 8 AM");
+ 			fieldReportVO.setOrder(7l);
+ 			fieldReportVO.setTodayTotalReg(totalCadreUpto8amToday);
+ 			fieldReportVO.setTodayTotalUsers(totalSurveyUserUpto8amToday);
+ 			fieldReportVO.setLastDayTotalReg(totalCadreUpto8amYesterDay);
+ 			fieldReportVO.setLastDayTotalUsers(totalSurveyUserUpto8amYesterDay);
+ 			
+ 			//add first
+ 			fieldReportVOs.add(fieldReportVO);
+ 			//now add all
+ 			for(Entry<String,Long> entry : labelAndPositionMap.entrySet()){
+ 				fieldReportVO = new FieldReportVO();
+ 				fieldReportVO.setLabel(entry.getKey());
+ 				fieldReportVO.setOrder(entry.getValue());
+ 				if(hourAndRegCountMap.get(entry.getValue()) != null)
+ 					fieldReportVO.setTodayTotalReg(hourAndRegCountMap.get(entry.getValue()));
+ 				if(hourAndUserCountMap.get(entry.getValue()) != null)
+ 					fieldReportVO.setTodayTotalUsers(hourAndUserCountMap.get(entry.getValue()));
+ 				if(hourAndRegCountYestMap.get(entry.getValue()) != null)
+ 					fieldReportVO.setLastDayTotalReg(hourAndRegCountYestMap.get(entry.getValue()));
+ 				if(hourAndUserCountYestMap.get(entry.getValue()) != null)
+ 					fieldReportVO.setLastDayTotalUsers(hourAndUserCountYestMap.get(entry.getValue()));
+ 				fieldReportVOs.add(fieldReportVO);
+ 			}
+ 			if(fieldReportVOs != null && fieldReportVOs.size() > 0){
+				Collections.sort(fieldReportVOs, showTimeAsc);
+			}
+ 			return fieldReportVOs;  
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 			LOG.error("Exception raised in getHourWiseRegDtls() in CoreDashboardCadreRegistrationService service", e);
+ 		}
+ 		return null;  
+ 		
+ 	}
+ 	public static Comparator<FieldReportVO> showTimeAsc = new Comparator<FieldReportVO>() {
+		public int compare(FieldReportVO member2, FieldReportVO member1) {
+
+			Long perc2 = member2.getOrder();  
+			Long perc1 = member1.getOrder();      
+			//ascending order of percantages.
+			 return perc2.compareTo(perc1);      
+		}
+	}; 
  	public List<CadreReportVO> getTodayAndYesterdayTabUserRgstrtnComparisonDetails(Long stateId){
  		List<CadreReportVO> resultList = new ArrayList<CadreReportVO>(0);
  		Map<Long,Long> activeUserMap = new HashMap<Long, Long>();
