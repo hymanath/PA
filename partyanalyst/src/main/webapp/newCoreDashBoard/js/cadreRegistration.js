@@ -3748,6 +3748,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
    });	
    
   $(document).on("click",".getConstituencyCls",function(){
+	  $("#cadreExcelExpBtnId").hide();
 		var stateId = $(this).attr("attr_state_id");
 		var constituencyIds = $(this).attr("attr_location_ids");
 		var reportType="Started";
@@ -3785,6 +3786,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		});
 	} 
 $(document).on("click",".getManalMuncipalityCls",function(){
+	    $("#cadreExcelExpBtnId").hide();
 		var stateId = $(this).attr("attr_state_id");
 		var mandalMuncipalityIds = $(this).attr("attr_location_ids");
 		var reportType="Started";
@@ -3821,6 +3823,7 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 		});
 	} 
 	function buildLocationWiseReport(result,reportType,locationType){
+		$("#cadreExcelExpBtnId").show();
 	   var str='';
 	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-responsive" id="constituencyDtlsDataTblId">';   
 	   str+='<thead>';
@@ -3877,24 +3880,28 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 				if(reportType=="Started"){
 					 $("#constituencyDtlsDataTblId").dataTable({
 					 "aaSorting": [[ 4, "desc" ]], 
-					"iDisplayLength" : 10	
+					"iDisplayLength" : 10,
+					"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 				 }); 
 			  }else{
 			  $("#constituencyDtlsDataTblId").dataTable({
 			    "aaSorting": [[ 2, "asc" ]], 
-			    "iDisplayLength" : 10	
+			    "iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 		      });    
 			 }
 		  }else if(locationType == "Constituency"){
 			   if(reportType=="Started"){
 				  $("#constituencyDtlsDataTblId").dataTable({
 					 "aaSorting": [[ 3, "desc" ]], 
-					"iDisplayLength" : 10	
+					"iDisplayLength" : 10,
+					"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 				 });   
 		      }else{
 				$("#constituencyDtlsDataTblId").dataTable({
 			    "aaSorting": [[ 2, "asc" ]], 
-			    "iDisplayLength" : 10	
+			    "iDisplayLength" : 10,
+                "aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]				
 		        });    
 			 }
 		  }
@@ -3922,4 +3929,21 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	  $("#totalperc").html("<span style='font-size:12px;'>"+((globalTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");
 	  $("#todayperc1").html("<span style='font-size:12px;'>"+((globalTodayTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");	
  }
- 	
+ $(document).on("click","#cadreExcelExpBtnId",function(){
+	generateExcelReportForCadre();
+ });
+ function generateExcelReportForCadre(){
+	tableToExcel(constituencyDtlsDataTblId, 'Location Wise Registrations Report');
+}
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()	
+	
