@@ -14,19 +14,10 @@ public class TdpCadreUserHourRegInfoTempDAO extends GenericDaoHibernate<TdpCadre
 		super(TdpCadreUserHourRegInfoTemp.class);
 	}
 	
-	public int deleteAllRecords(Date fromDate){
-	    
-		 StringBuilder sb = new StringBuilder();
+	public int deleteAllRecords(){
 		 
-		 sb.append(" delete from tdp_cadre_user_hour_reg_info_temp  ");
-		 if(fromDate != null){
-			sb.append(" where survey_date = :fromDate "); 
-		 }
-		   Query query = getSession().createSQLQuery(sb.toString());
-		   if(fromDate != null){
-			  query.setDate("fromDate",fromDate );
-		   }
-		   return query.executeUpdate();
+		 Query query = getSession().createSQLQuery(" delete from tdp_cadre_user_hour_reg_info_temp ");
+		 return query.executeUpdate();
 	}
 	
 	public int setPrimaryKeyAutoIncrementToOne(){
