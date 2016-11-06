@@ -211,8 +211,15 @@ public class CadreRegistrationVO implements Serializable{
 	private String isNomineeChanged;
 	private Long newVoterId;
 	private String deliveryLocation;
+	private String nomineeAadharNo;
+	private String newNomineeRelationType;
 	
-	
+	public String getNomineeAadharNo() {
+		return nomineeAadharNo;
+	}
+	public void setNomineeAadharNo(String nomineeAadharNo) {
+		this.nomineeAadharNo = nomineeAadharNo;
+	}
 	public String getDeliveryLocation() {
 		return deliveryLocation;
 	}
@@ -1286,6 +1293,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setPrevNomineeAadharNo(String prevNomineeAadharNo) {
 		this.prevNomineeAadharNo = prevNomineeAadharNo;
+	}
+	public String getNewNomineeRelationType() {
+		return newNomineeRelationType;
+	}
+	public void setNewNomineeRelationType(String newNomineeRelationType) {
+		this.newNomineeRelationType = newNomineeRelationType;
 	}
 	
 	
