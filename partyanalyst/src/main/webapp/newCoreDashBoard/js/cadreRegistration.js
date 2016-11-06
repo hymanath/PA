@@ -773,7 +773,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 						str1+='<div class="col-md-2 col-xs-12 col-sm-2">';
 							str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/><h5>Today</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
 							str1+='<h5> Started Constituencies</h5>';
 							 
@@ -781,7 +781,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 							 str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
 							 
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
 							str1+='<h5> Yet to start Constituencies</h5>';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
@@ -827,7 +827,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldTS">'+result.inField+'</h3>'; 
+							str1+='<h3 class="EnumCadreCount cadreCount"  id="inFieldTS">'+result.inField+'</h3>'; 
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
@@ -843,6 +843,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				str1+='</div>';
 			str1+='</div>';
 			$("#enumeratorsInfoDivTSId").html(str1);  
+			//$('[data-toggle="tooltip"]').tooltip();
 			/* $('.EnumCadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
@@ -869,14 +870,14 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 						str1+='<div class="col-md-2 col-xs-12 col-sm-2">';
 							str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/><h5>Today</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
 								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
 								str1+='<h5>Started<br> Constituencies</h5>';
 								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
 								str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
 							 
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
 								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
 								str1+='<h5>Yet To Start<br> Constituencies</h5>';
 								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
@@ -922,11 +923,11 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="inFieldAP">'+result.inField+'</h3>';       
+							str1+='<h3 class="EnumCadreCount cadreCount  id="inFieldAP">'+result.inField+'</h3>';       
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
 						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldAP">'+result.todayFieldMembersCount+'</h3>';
+							str1+='<h3 class="EnumCadreCount cadreCount"  id="totalInFieldAP">'+result.todayFieldMembersCount+'</h3>';
 							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
 						//str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';      
@@ -938,6 +939,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				str1+='</div>';
 			str1+='</div>';
 			$("#enumeratorsInfoDivId").html(str1);  
+			//$('[data-toggle="tooltip"]').tooltip();
 			/* $('.EnumCadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
@@ -3787,6 +3789,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
    
   $(document).on("click",".getConstituencyCls",function(){
 	  $("#cadreExcelExpBtnId").hide();
+	  //$("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
 		var stateId = $(this).attr("attr_state_id");
 		var constituencyIds = $(this).attr("attr_location_ids");
 		var reportType="Started";
@@ -3825,6 +3828,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	} 
 $(document).on("click",".getManalMuncipalityCls",function(){
 	    $("#cadreExcelExpBtnId").hide();
+		//$("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
 		var stateId = $(this).attr("attr_state_id");
 		var mandalMuncipalityIds = $(this).attr("attr_location_ids");
 		var reportType="Started";
@@ -3970,10 +3974,19 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	  $("#todayperc1").html("<span style='font-size:12px;'>"+((globalTodayTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");	
  }
  $(document).on("click","#cadreExcelExpBtnId",function(){
-	generateExcelReportForCadre();
+	 generateExcelReportForCadre();	
+/* 	var type=$(this).attr("attr_tab_user_type");
+	if(type=="Tab"){
+	 generateExcelReportForTabUser();	
+	}else{
+	generateExcelReportForCadre();	
+	} */
  });
  function generateExcelReportForCadre(){
 	tableToExcel(constituencyDtlsDataTblId, 'Location Wise Registrations Report');
+}
+ function generateExcelReportForTabUser(){
+	tableToExcel(tabUserComparisonDtlsTabId, 'Tab User Wise Registrations Report');
 }
 var tableToExcel = (function() {
    var uri = 'data:application/vnd.ms-excel;base64,'
@@ -3986,4 +3999,102 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()	
+/* $(document).on("click",".tabUserDtlsCls",function(){
+	    $("#cadreExcelExpBtnId").hide();
+		$("#cadreExcelExpBtnId").attr("attr_tab_user_type","Tab");
+		var stateId = $(this).attr("attr_state_id");
+		 getTodayAndYesterdayTabUserRgstrtnComparisonDetails(stateId);
+	}); */
+function getTodayAndYesterdayTabUserRgstrtnComparisonDetails(stateId){
+		$("#locationWiseCadreReportHeadingId").html("TAB USER WISE COMPARISON REPORT");
+		$("#locationWiseCadreReportModalId").modal("show");
+		$("#locationWiseCadreReportDivId").html(' ');
+		$("#locationWiseProcessImgReport").show();
 	
+		var jsObj={  
+			stateId : stateId
+		};
+		$.ajax({          
+			type : 'POST',       
+			url : 'getTodayAndYesterdayTabUserRgstrtnComparisonDetailsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+		 $("#locationWiseProcessImgReport").hide();
+	 	  if(result != null && result.length > 0){
+			 buildTabUserComparisonRslt(result); 
+		  }else{
+			$("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE.");  
+		  }
+		});
+	} 	
+function buildTabUserComparisonRslt(result){
+	 $("#cadreExcelExpBtnId").show();
+	 var str='';
+	 str+='<div class="table-responsive">';
+	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed " id="tabUserComparisonDtlsTabId">';   
+	   str+='<thead>';
+             str+='<th>Tab UserName</th>';
+			 str+='<th>MobileNo</th>';
+			 str+='<th>Image</th>'	 
+			 str+='<th>Yesterday Status</th>';
+			 str+='<th>Total Registrations</th>';
+			 str+='<th>Today Status</th>';
+			 str+='<th>Total Registrations </th>';	 
+			 str+='<th>today(IsActive)</th>';	 
+		 str+='</thead>';
+		 str+='<tbody>';
+		  for(var i in result){
+				str+='<tr>';
+				 if(result[i].name != null && result[i].name.length > 0){
+					str+='<td>'+result[i].name+'</td>';      
+				  }else{
+					str+='<td> - </td>';  
+				  }
+				  if(result[i].mobileNo != null && result[i].mobileNo > 0){
+					str+='<td>'+result[i].mobileNo+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
+				  if(result[i].imagePath != null && result[i].imagePath.length > 0){
+					str+='<td><img src="http://mytdp.in/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';  
+				  }else{
+					 str+='<td> - </td>';   
+				  }
+				  if(result[i].yesPersent != null && result[i].yesPersent.length > 0){
+					str+='<td>'+result[i].yesPersent+'</td>';  
+				  }else{
+				    str+='<td> - </td>';  
+				  }
+				  if(result[i].yesRegCount != null && result[i].yesRegCount > 0){
+						str+='<td>'+result[i].yesRegCount+'</td>';  
+				  }else{
+					  str+='<td> - </td>';  
+				  }
+				if(result[i].todayPersent != null && result[i].todayPersent.length > 0){
+					str+='<td>'+result[i].todayPersent+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
+			     if(result[i].todayRegCount != null && result[i].todayRegCount > 0){
+						 str+='<td>'+result[i].todayRegCount+'</td>';       
+				 }else{
+						str+='<td> - </td>';  
+				 }			
+                 if(result[i].isActive != null && result[i].isActive.length > 0){
+						 str+='<td>'+result[i].isActive+'</td>';       
+				 }else{
+						str+='<td> - </td>';  
+				 }							 
+				str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+			  str+='</div>';
+		 $("#locationWiseCadreReportDivId").html(str);
+		  $("#tabUserComparisonDtlsTabId").dataTable({
+				 "aaSorting": [[ 4, "desc" ]], 
+				"iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+			 }); 
+	}	
