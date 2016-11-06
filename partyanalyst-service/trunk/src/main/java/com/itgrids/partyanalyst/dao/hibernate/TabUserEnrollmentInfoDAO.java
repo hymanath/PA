@@ -94,7 +94,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 			}
 		}
 		if(constituencyId != null && constituencyId.longValue() > 0l)
-			queryStr.append(" and model.constituencyId = : constituencyId");
+			queryStr.append(" and model.constituencyId = :constituencyId");
 		if(userId != null && userId.longValue() > 0l)
 			queryStr.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 		
