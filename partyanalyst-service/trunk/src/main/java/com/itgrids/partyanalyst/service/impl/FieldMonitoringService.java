@@ -1336,6 +1336,8 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 	   List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
 	   try {
 		   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		   SimpleDateFormat returnTime = new SimpleDateFormat("yyyy-MM-dd h:mm a");
+		   Date today = dateUtilService.getCurrentDateAndTime();
 			Date startDate = null;
 			Date endDate = null;
 			//Date today = new Date();
@@ -1343,6 +1345,11 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			int presentHour = cal.get(Calendar.HOUR_OF_DAY);
+			Long lastOneHour = Long.valueOf(presentHour-1);
 			
 			List<Long> cadreSurveyUserIds = new ArrayList<Long>();
 			List<Object[]> list = fieldVendorTabUserDAO.getStatusWiseIssuesDetailsNew(issueTypeId, statusTypeId, startDate, endDate,stateId);
@@ -1391,6 +1398,48 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 					String name = nameMap.get(objects.getCadreSurveyUserId());
 					if(name !=null){
 						objects.setVendorName(name);
+					}
+				}
+			}
+			List<Long> tabUserInfoIds = new ArrayList<Long>();
+			List<Object[]> list3 = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecordNew(null, null, null, null, stateId);
+			if(list3 != null && !list3.isEmpty()){
+				for (Object[] obj : list3) {
+					
+					Long cadreUserId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long tabUserId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					//FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+					FieldMonitoringVO vo = getMatchedFieldMonitrnVOById(cadreUserId, returnList);
+					if(vo != null){
+							vo.setTabUserId(tabUserId);
+							vo.setTabUserName(obj[5] != null ? obj[5].toString():"");
+							if(obj[0]!=null){
+	    	    					Date date = (Date)obj[0];
+	    	    					vo.setFirstRecord(returnTime.format(date));
+	    	    				}
+	    					 if(obj[1]!=null){
+	    	    					Date date = (Date)obj[1];
+	    	    					vo.setRecentRecord(returnTime.format(date));
+	    	    				}
+	    					vo.setTotalCount(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+	    					//Float totalPerc = (float) (vo.getTotalCount()*100.0/uptoTarget);
+	    					//vo.setCountPerc(String.format("%.2f", totalPerc));
+	    					
+					}
+					tabUserInfoIds.add(tabUserId);
+				}
+			}
+			
+			
+			List<Object[]> list2 = tdpCadreUserHourRegInfoDAO.getTabUserLastOneHourData(lastOneHour,tabUserInfoIds);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long tabUserId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByList(userId, tabUserId, returnList);
+					if(vo != null){
+						vo.setLastHourCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					}
 				}
 			}
@@ -2169,6 +2218,19 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			Long todayTarget = 200l;
 			Long totalWorkingHours = 10l;
 			Long eachHourTarget = todayTarget/totalWorkingHours;
+			
+			List<Object[]> overAllTempList = cadreRegIssueDAO.getTotalCadreSurveyUsersTemplate(cadreRegUserId, constituencyId, cadreSurveyUserId, districtId, stateId);
+			if(overAllTempList != null && !overAllTempList.isEmpty()){
+				for (Object[] obj : overAllTempList) {
+					FieldMonitoringVO vo = new FieldMonitoringVO();
+					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setUserName(obj[1] != null ? obj[1].toString():"");
+					vo.setFieldMonitrngName(obj[2] != null ? obj[2].toString():"");
+					vo.setTabUserId(0l);
+					returnList.add(vo);
+				}
+			}
+			
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
 				for (Object[] obj : templist) {
@@ -2176,25 +2238,24 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 					//Long tabUserId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					
 					FieldMonitoringVO vo = getMatchedFieldMonitrnVOById(userId, returnList);
-					if(vo == null){
-						vo = new FieldMonitoringVO();
-						vo.setCadreSurveyUserId(userId);
-						vo.setUserName(obj[1] != null ? obj[1].toString():"");
-						vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
-						vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
-						vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-						vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
-						vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
-						vo.setConstituencyId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
-						vo.setConstituencyName(obj[8] != null ? obj[8].toString():"");
-						vo.setImagePath(obj[9] != null ? obj[9].toString():"");
-						vo.setTodayTarget(todayTarget.toString());
-						vo.setFieldMonitrngName(obj[11] != null ? obj[11].toString():"");
-						//tabUserInfoIds.add(vo.getTabUserId());
-						returnList.add(vo);
+					if(vo != null){
+						if(vo.getTabUserId() == 0l){
+							vo.setCadreSurveyUserId(userId);
+							vo.setUserName(obj[1] != null ? obj[1].toString():"");
+							vo.setTabUserId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+							vo.setTabUserName(obj[3] != null ? obj[3].toString():"");
+							vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+							vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+							vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
+							vo.setConstituencyId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+							vo.setConstituencyName(obj[8] != null ? obj[8].toString():"");
+							vo.setImagePath(obj[9] != null ? obj[9].toString():"");
+							vo.setTodayTarget(todayTarget.toString());
+							vo.setFieldMonitrngName(obj[11] != null ? obj[11].toString():"");
+							//tabUserInfoIds.add(vo.getTabUserId());
+							//returnList.add(vo);
+						}
 					}
-					//FieldMonitoringVO vo = new FieldMonitoringVO();
-					
 				}
 			}
 			Calendar cal = Calendar.getInstance();

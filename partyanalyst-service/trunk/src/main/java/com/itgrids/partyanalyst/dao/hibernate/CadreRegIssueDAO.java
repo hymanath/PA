@@ -4,13 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> implements ICadreRegIssueDAO {
 
@@ -196,6 +194,55 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalCadreSurveyUsersTemplate(Long cadreRegUserId,Long constituencyId,Long userId,Long districtId,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model1.cadreSurveyUser.cadreSurveyUserId," +
+					" model1.cadreSurveyUser.userName," +
+					"  model1.cadreRegUser.user.userName" +
+					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" );
+		
+		sb.append(" where model1.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+					" and model1.cadreSurveyUser.isEnabled = 'Y'" +
+					" and model1.cadreRegUser.userType = 'FM'");
+					//" and model1.cadreRegUser.userType = 'FM'");
+		
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			sb.append(" and model1.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+		if(districtId != null && districtId.longValue() > 0l){
+			sb.append(" and model2.constituency.district.districtId = :districtId");
+		}else{
+			if(stateId != null && stateId.longValue() == 1l){
+				sb.append("  and  model2.constituency.district.districtId between 11 and 23 ");
+			}else if(stateId != null && stateId.longValue() == 36l){
+				sb.append(" and  model2.constituency.district.districtId between 1 and 10 ");
+			}
+		}
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			sb.append(" and model2.constituency.constituencyId = :constituencyId");
+		if(userId != null && userId.longValue() > 0l)
+			sb.append(" and model1.cadreSurveyUser.cadreSurveyUserId = :userId");
+				
+		sb.append(" " +
+					" and model2.isDeleted = 'N'" +
+					" and model1.cadreSurveyUser.isDeleted = 'N'" +
+					" and model1.isDeleted = 'N'" +
+					//" and model3.isEnabled = 'Y'" +
+					//" and model3.isOtpVerified = 'Y' " +
+					" group by model1.cadreSurveyUserId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
+			query.setParameter("cadreRegUserId", cadreRegUserId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			query.setParameter("constituencyId", constituencyId);;
+		if(userId != null && userId.longValue() > 0l)
+			query.setParameter("userId", userId);
 		
 		return query.list();
 	}

@@ -98,6 +98,8 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		if(userId != null && userId.longValue() > 0l)
 			queryStr.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 		
+		queryStr.append(" order by model.endTime");
+		
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		query.setDate("today",new DateUtilService().getCurrentDateAndTime());
