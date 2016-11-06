@@ -2533,26 +2533,28 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		try {
 			//enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
 			enrollMentNO = en.toString().trim();
-			if(AuthDesc != null){
 				//membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
 				membershipNo = mn.toString().trim();
-				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION",enrollMentNO);
-				if(!AuthDesc.trim().equalsIgnoreCase("Y"))
+				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"2016 CADRE REGISTRATION","NORMAL REGISTRATION",enrollMentNO);
+				
+				if(AuthDesc != null){
+					if(!AuthDesc.trim().equalsIgnoreCase("Y"))
+						status="failure";
+					else if(AuthDesc.trim().equalsIgnoreCase("Y") && resultStatus != null && resultStatus.getResultCode()==0)
+						status="success";
+					else
+						status="failure";
+				}
+				else{
 					status="failure";
-				else if(resultStatus != null && resultStatus.getResultCode()==0)
-					status="success";
-				else
-					status="failure";
-			}
-			else{
-				status="failure";
-			}
+				}
+		
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
 		}
 		return Action.SUCCESS;
-	}
+}
 	
 	public String getVotersBySearch(){
 		try {
