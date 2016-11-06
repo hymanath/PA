@@ -123,6 +123,7 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 			listOfListOfCadreDashboardVO = cadreDashBoardService.get2016LocationWiseRegisteredCountsForPreviligedUser(userId, locationType, type);  
 		}catch(Exception e){
 			e.printStackTrace();
+			LOG.info("Entered into get2016LocationWiseRegisteredCounts() of PrivilegedUserCadreRegAction{}");
 		}
 		return Action.SUCCESS;       
 	}

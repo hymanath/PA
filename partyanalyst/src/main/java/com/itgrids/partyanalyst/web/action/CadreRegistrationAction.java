@@ -29,9 +29,9 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
+import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -54,7 +54,6 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
-import com.itgrids.partyanalyst.service.impl.CoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -155,6 +154,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<CadreRegistratedCountVO> cadreRegistratedCountVOs;
 	private IdAndNameVO nameVO;
 	private List<CadreReportVO> cadreCnsttuncyList;
+	private List<FieldReportVO> fieldReportVOs;
 	public List<VoterSearchVO> getVoterVoList() {
 		return voterVoList;
 	}
@@ -803,6 +803,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public void setCadreCnsttuncyList(List<CadreReportVO> cadreCnsttuncyList) {
 		this.cadreCnsttuncyList = cadreCnsttuncyList;
+	}
+	public List<FieldReportVO> getFieldReportVOs() {
+		return fieldReportVOs;
+	}
+	public void setFieldReportVOs(List<FieldReportVO> fieldReportVOs) {
+		this.fieldReportVOs = fieldReportVOs;
 	}
 	public String execute()
 	{
@@ -2983,7 +2989,19 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }catch(Exception e){ 
 		  e.printStackTrace();      
 	  }
+	  return Action.SUCCESS;  
+  }
+  public String getHourWiseRegDtls(){  
+	  try{
+		  jobj = new JSONObject(getTask());
+		
+		  String option = jobj.getString("option");
+		  Long stateId = jobj.getLong("stateId");   
+		  fieldReportVOs = coreDashboardCadreRegistrationService.getHourWiseRegDtls(stateId, option);  
+	  }catch(Exception e){   
+		  e.printStackTrace();       
+	  }
 	  return Action.SUCCESS;
   }
-}//public IdNameVO getInFieldCount(Long stateId, String fromDateStr, String toDateStr)
+}//public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option)
 
