@@ -3045,7 +3045,7 @@
       <div class="modal-header">
 	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
-	    <button class="btn btn-success btn-xs pull-right" id="cadreExcelExpBtnId"  style="display:none;margin-right:20px;">Export To Excel</button>
+	    <button class="btn btn-success btn-xs pull-right" id="cadreExcelExpBtnId" attr_tab_user_type="Tab"  style="display:none;margin-right:20px;">Export To Excel</button>
 	    <h4 class="modal-title" id="locationWiseCadreReportHeadingId"></h4>
 	  <div class="modal-body">
 	    <div class="row">

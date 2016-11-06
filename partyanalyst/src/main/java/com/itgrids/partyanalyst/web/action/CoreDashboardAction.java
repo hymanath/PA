@@ -97,7 +97,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private INewsCoreDashBoardService newsCoreDashBoardService;
 	private IdNameVO idNameVO; 
 	private List<CadreReportVO> cadreDtlsList;
-	
+
 	private List<List<IdNameVO>> idNameVOsList;
     private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
     private ICoreDashboardEventsActivitiesService coreDashboardEventsActivitiesService;
@@ -569,8 +569,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCadreDtlsList(List<CadreReportVO> cadreDtlsList) {
 		this.cadreDtlsList = cadreDtlsList;
 	}
-
-	//Implementation method
+ 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -3048,5 +3047,15 @@ public String getMndlMncpalityTodayStatedNotStartedDetails(){
 	}
 	return Action.SUCCESS;
 }
-
+public String getTodayAndYesterdayTabUserRgstrtnComparisonDetails(){
+	try {
+		LOG.info("Entered into getTodayAndYesterdayTabUserRgstrtnComparisonDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long stateId = jObj.getLong("stateId");
+		cadreDtlsList = coreDashboardCadreRegistrationService.getTodayAndYesterdayTabUserRgstrtnComparisonDetails(stateId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getTodayAndYesterdayTabUserRgstrtnComparisonDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
