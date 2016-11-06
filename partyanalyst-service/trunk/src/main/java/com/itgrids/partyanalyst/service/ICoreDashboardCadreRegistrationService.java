@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CadreResponseVO;
+import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -49,5 +50,6 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<CadreReportVO> getLocationWiseCadreInfoTodayDetails(Long stateId,List<Long> locationIdsList);
 	public List<CadreReportVO> getMandalMuncipalityStatedAndNotStatedDetails(Long stateId,List<Long> locationIdsList);
 	public String getLocationWiseRegistrationSMSTracking();
+ 	public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option);
 	public List<CadreReportVO> getTodayAndYesterdayTabUserRgstrtnComparisonDetails(Long stateId);
 }
