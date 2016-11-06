@@ -593,7 +593,7 @@ public class RegistrationService implements IRegistrationService{
 			Row row = rowIterator.next();
 	
 			String usname = row.getCell(3).toString().trim();
-			String pasword = RegistrationService.randomGenerator(7)+"";
+			String pasword = row.getCell(4).toString().trim().replace(".0", "");
 			String firstName = row.getCell(1).toString().trim();
 			String lastName = row.getCell(2).toString().trim();
 			String accessType = row.getCell(7).toString().trim();
@@ -625,13 +625,13 @@ public class RegistrationService implements IRegistrationService{
 			if(mobile.length() == 0){
 				mobile="999999999";
 			}
-			
+			usname = mobile;
 			String address = row.getCell(0).toString().trim();
 			String accessValue = row.getCell(6).toString().trim().replace(".0", "");
 			String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
 			String md5Key = encrypt.MD5(enKey);
 			regVO.setParty(872l);
-			regVO.setUserName(usname);
+			regVO.setUserName(mobileNo);
 			regVO.setFirstName(firstName);
 			regVO.setLastName(lastName);
 			regVO.setPassword(md5Key);
