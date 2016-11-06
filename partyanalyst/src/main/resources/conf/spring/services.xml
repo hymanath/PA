@@ -3638,9 +3638,9 @@
 	     <property name="constituencyDAO" ref="constituencyDAO" />
 		 <property name="constituencyTehsilDAO" ref="constituencyTehsilDAO" />
 		 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
-		  <property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
-		   <property name="tdpCadreSmsLeaderLocationDAO" ref="tdpCadreSmsLeaderLocationDAO" />
-		  
+		 <property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
+		 <property name="tdpCadreSmsLeaderLocationDAO" ref="tdpCadreSmsLeaderLocationDAO" />
+		 <property name="tdpCadreHourRegInfoDAO" ref="tdpCadreHourRegInfoDAO" />  
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
