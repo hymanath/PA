@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfoTemp;
 
 public interface ITdpCadreUserHourRegInfoTempDAO extends GenericDao<TdpCadreUserHourRegInfoTemp,Long>{
 	
-	public int deleteAllRecords(Date fromDate);
+	public int deleteAllRecords();
 	public int setPrimaryKeyAutoIncrementToOne();
 }
