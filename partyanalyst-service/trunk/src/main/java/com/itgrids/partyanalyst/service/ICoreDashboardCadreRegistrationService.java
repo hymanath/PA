@@ -49,4 +49,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<CadreReportVO> getLocationWiseCadreInfoTodayDetails(Long stateId,List<Long> locationIdsList);
 	public List<CadreReportVO> getMandalMuncipalityStatedAndNotStatedDetails(Long stateId,List<Long> locationIdsList);
 	public String getLocationWiseRegistrationSMSTracking();
+	public List<CadreReportVO> getTodayAndYesterdayTabUserRgstrtnComparisonDetails(Long stateId);
 }
