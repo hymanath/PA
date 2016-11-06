@@ -79,5 +79,22 @@ public class TdpCadreHourRegInfoDAO extends GenericDaoHibernate<TdpCadreHourRegI
 	    "         FROM   tdp_cadre_hour_reg_info_temp1 TEMP " );
 		return query.executeUpdate();
 	}
+	public List<Object[]> getHourWiseReport(Long stateId, Date surveyDate){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select model.hour,model.totalRegistrations,model.cadreSurveyUsers from TdpCadreHourRegInfo model where " +
+		 		  " model.stateId = :stateId and date(model.surveyDate) = :surveyDate order by model.hour ");
+		 Query query = getSession().createQuery(sb.toString());  
+		 query.setParameter("stateId", stateId);
+		 query.setDate("surveyDate", surveyDate);
+		 return query.list();
+	}
+	public List<Object[]> getHourWiseCombineReport(Date surveyDate){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select model.hour,sum(model.totalRegistrations),sum(model.cadreSurveyUsers) from TdpCadreHourRegInfo model where " +
+		 		  " date(model.surveyDate) = :surveyDate group by model.hour order by model.hour");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setDate("surveyDate", surveyDate);
+		 return query.list();
+	}
 	
-}
+}//SELECT hour,sum(total_registrations),sum(cadre_survey_users) FROM tdp_cadre_hour_reg_info WHERE survey_date = '2016-11-06' group by hour;
