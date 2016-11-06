@@ -13243,8 +13243,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
 							if(tdpCadre != null){
 								
-								TdpCadreEnrollmentYear tdpCadreEnrollmentYear = tdpCadreEnrollmentYearDAO.getOnlineTdpCadreEnrollmentYearDetailsByTdpCadreId(tdpCadreId,"ONLINE");
-								if(tdpCadreEnrollmentYear != null && tdpCadreEnrollmentYear.getTdpCadreEnrollmentYearId() > 0){
+								List<TdpCadreEnrollmentYear> tdpCadreEnrollmentYearList = tdpCadreEnrollmentYearDAO.getOnlineTdpCadreEnrollmentYearDetailsByTdpCadreId(tdpCadreId,"ONLINE");
+								if(tdpCadreEnrollmentYearList != null && tdpCadreEnrollmentYearList.size() > 0){
+									TdpCadreEnrollmentYear tdpCadreEnrollmentYear = tdpCadreEnrollmentYearList.get(0);
 									tdpCadreEnrollmentYear.setIsDeleted("N");
 									tdpCadreEnrollmentYear.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 									tdpCadreEnrollmentYearDAO.save(tdpCadreEnrollmentYear);
@@ -13264,33 +13265,37 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 								sendSMSInTelugu(mobileNo.trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C38\u0C2D\u0C4D\u0C2F\u0C24\u0C4D\u0C35\u0C02 \u0C24\u0C40\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C2E\u0C32\u0C41. ")+"Ref. No: "+enrollmentNumber));
 							}
 						}
-						
-						PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
-						paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
-						paymentTransactionVO.setPaymentGatewayId(2L);
-						paymentTransactionVO.setPaymentMethodId(1L);
-						//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
-						paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo);
-						
-						paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
-						paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
-						//paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
-						paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
-						if(AuthDesc.equalsIgnoreCase("Y")){
-							paymentTransactionVO.setStatusCode("SUCCESS");
-							paymentTransactionVO.setTransactionStatusId(2L);
-						}else{
-							paymentTransactionVO.setStatusCode("FAILURE");
-							paymentTransactionVO.setTransactionStatusId(1L);
-						}
-						
-					//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-					//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
-						paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
-						paymentTransactionVO.setReferenceUserId("2016-2018_"+tdpCadreId);
-						paymentTransactionVO.setPaymentModuleId(1L);
-						paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 					}
+					
+					PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
+					paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
+					paymentTransactionVO.setPaymentGatewayId(1L);
+					paymentTransactionVO.setPaymentMethodId(1L);
+					//paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
+					paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo);
+					
+					paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
+					paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
+					//paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
+					paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
+					/*if(AuthDesc.equalsIgnoreCase("Y")){
+						paymentTransactionVO.setStatusCode("SUCCESS");
+						paymentTransactionVO.setTransactionStatusId(2L);
+					}else{
+						paymentTransactionVO.setStatusCode("FAILURE");
+						paymentTransactionVO.setTransactionStatusId(1L);
+					}*/
+					
+					paymentTransactionVO.setStatusCode(AuthDesc);// ccavvenue payment status 'Y', 'N' or null
+					
+					
+				//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+				//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+					paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
+					paymentTransactionVO.setReferenceUserId("2016-2018_"+tdpCadreId);
+					paymentTransactionVO.setPaymentModuleId(1L);
+					paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
+					
 				}				
 			});
 			
