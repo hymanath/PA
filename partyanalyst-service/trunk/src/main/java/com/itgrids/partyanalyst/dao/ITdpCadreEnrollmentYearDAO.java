@@ -26,4 +26,8 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getInFieldCount(Date today);
 	public List<Object[]> getTodayFieldCount(Date today);
 	public List<Object[]> getHourWiseUserPerformanceInfo(Long cadreSurveyUserId,Long tabUserId,Date dayBfrYes,Date today);
+	public List<Object[]> getDistWiseCountList();
+	public List<Object[]> getDistWiseRenewCountList();
+	public List<Object[]> getConstWiseCountList();
+	public List<Object[]> getConstWiseRenewCountList();
 }

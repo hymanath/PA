@@ -13,4 +13,6 @@ public interface ITdpCadreHourRegInfoDAO extends GenericDao<TdpCadreHourRegInfo,
 	public int deleteAllRecords(Date fromDate);
 	public int insertCadreDataHourWiseToday();
 	public int insertCadreDataHourWiseOverall();
+	public List<Object[]> getHourWiseReport(Long stateId, Date surveyDate);
+	public List<Object[]> getHourWiseCombineReport(Date surveyDate);
 }
