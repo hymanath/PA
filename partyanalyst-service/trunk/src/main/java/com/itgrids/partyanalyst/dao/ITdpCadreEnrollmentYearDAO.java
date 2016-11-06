@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.TdpCadreEnrollmentYear;
 
 public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmentYear, Long>{
 
-	public TdpCadreEnrollmentYear getOnlineTdpCadreEnrollmentYearDetailsByTdpCadreId(Long tdpCadreId,String dataSourceType);
+	public List<TdpCadreEnrollmentYear> getOnlineTdpCadreEnrollmentYearDetailsByTdpCadreId(Long tdpCadreId,String dataSourceType);
 	public List<Long> getPreviousElectionYearsOfCadre(Long tdpCadreId);
 	public Long getMaxRecordFromEnrollmentYear(Long tdpCadreId);
 	public List<Object[]> getTotalRenewlCadreLocationWise(Long accessLvlId,List<Long> accessLvlValue,Long stateId,Date frmDt, Date toDt);
