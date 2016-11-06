@@ -1916,7 +1916,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				        		
 				         Date time = new DateUtilService().getCurrentDateAndTime();
 				         
-				         int deletedRecords = tdpCadreUserHourRegInfoTempDAO.deleteAllRecords(time);
+				         int deletedRecords = tdpCadreUserHourRegInfoTempDAO.deleteAllRecords();
 				         int count = tdpCadreUserHourRegInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 				         
 				         int i= 0;	    
