@@ -614,4 +614,76 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		  query.setParameter("tabUserId", tabUserId);
 		  return query.list();
 	  }
+	  public List<Object[]> getDistWiseCountList(){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select TCEY.tdpCadre.userAddress.district.districtId, TCEY.tdpCadre.dataSourceType, count(istinct TCEY.tdpCadre.tdpCadreId) from " +
+		  		" TdpCadreEnrollmentYear TCEY where " +
+		  		" TCEY.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.enrollmentYear = 2014 " +
+	      		" and TCEY.enrollmentYearId = 4 " +
+	      		" and TCEY.tdpCadre.userAddress.district.districtId between 1 and 23 " +
+	      		" group by TCEY.tdpCadre.userAddress.district.districtId, TCEY.tdpCadre.dataSourceType " +
+	      		" order by TCEY.tdpCadre.userAddress.district.districtId ");
+		  Query query = getSession().createQuery(sb.toString());
+		  return query.list();
+	  }
+	  public List<Object[]> getDistWiseRenewCountList(){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select TC.userAddress.district.districtId, TC.dataSourceType, count(istinct TC.tdpCadreId) from " +
+		  		" TdpCadreEnrollmentYear TCEY1, TdpCadreEnrollmentYear TCEY2, TdpCadre TC where " +
+		  		" TCEY1.tdpCadreId = TC.tdpCadreId " +
+		  		" and TCEY1.isDeleted = 'N' " +
+	      		" and TC.isDeleted = 'N' " +
+	      		" and TC.enrollmentYear = 2014 " +
+	      		" and TCEY1.enrollmentYearId = 4 " +
+	      		" and TCEY2.tdpCadreId = TC.tdpCadreId " +
+		  		" and TCEY2.isDeleted = 'N' " +
+	      		" and TCEY2.enrollmentYearId = 3 " +
+	      		" and TCEY1.tdpCadreId = TCEY2.tdpCadreId " +  
+	      		" and TC.userAddress.district.districtId between 1 and 23 " +
+	      		" group by TC.userAddress.district.districtId, TC.dataSourceType " +
+	      		" order by TC.userAddress.district.districtId ");
+		  Query query = getSession().createQuery(sb.toString());
+		  return query.list();
+	  }
+	 
+	  public List<Object[]> getConstWiseCountList(){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select TCEY.tdpCadre.userAddress.constituency.constituencyId, TCEY.tdpCadre.dataSourceType, count(istinct TCEY.tdpCadre.tdpCadreId) from " +
+		  		" TdpCadreEnrollmentYear TCEY where " +
+		  		" TCEY.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.isDeleted = 'N' " +
+	      		" and TCEY.tdpCadre.enrollmentYear = 2014 " +
+	      		" and TCEY.enrollmentYearId = 4 " +
+	      		" and TCEY.tdpCadre.userAddress.district.districtId between 1 and 23 " +
+	      		" and TCEY.tdpCadre.userAddress.constituency.deformDate is null " +
+	      		" and TCEY.tdpCadre.userAddress.constituency.electionScope.electionScopeId = 2 " +
+	      		" group by TCEY.tdpCadre.userAddress.constituency.constituencyId, TCEY.tdpCadre.dataSourceType " +
+	      		" order by TCEY.tdpCadre.userAddress.constituency.constituencyId ");
+		  Query query = getSession().createQuery(sb.toString());
+		  return query.list();
+	  }
+	  public List<Object[]> getConstWiseRenewCountList(){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("select TC.userAddress.constituency.constituencyId, TC.dataSourceType, count(istinct TC.tdpCadreId) from " +
+		  		" TdpCadreEnrollmentYear TCEY1, TdpCadreEnrollmentYear TCEY1, TdpCadre TC where " +
+		  		" TCEY1.tdpCadreId = TC.tdpCadreId " +
+		  		" and TCEY1.isDeleted = 'N' " +
+	      		" and TC.isDeleted = 'N' " +
+	      		" and TC.enrollmentYear = 2014 " +
+	      		" and TCEY1.enrollmentYearId = 4 " +
+	      		" and TCEY2.tdpCadreId = TC.tdpCadreId " +
+		  		" and TCEY2.isDeleted = 'N' " +
+	      		" and TCEY2.enrollmentYearId = 3 " +
+	      		" and TCEY1.tdpCadreId = TCEY2.tdpCadreId " +  
+	      		" and TC.userAddress.district.districtId between 1 and 23 " +
+	      		" and TC.userAddress.constituency.deformDate is null " +
+	      		" and TC.userAddress.constituency.electionScope.electionScopeId = 2 " +
+	      		" group by TC.userAddress.constituency.constituencyId, TC.dataSourceType " +
+	      		" order by TC.userAddress.constituency.constituencyId ");
+		  Query query = getSession().createQuery(sb.toString());
+		  return query.list();
+	  }
+	
 }
