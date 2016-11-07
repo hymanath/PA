@@ -569,6 +569,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			/*if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim())){
 				return "cadreWebMonitoring";   
 			}*/
+			if(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD"))
+			{
+				return "cadre2016dashboard";
+			}
 			if(entitlements.contains("MEMBERSHIP_DRIVE_CONSTITUENCY_OVERVIEW_ENTITLEMENT".trim())){
 				return "membershipDriveConstituencyOverviewEntitlement";
 			}
