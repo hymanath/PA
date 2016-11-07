@@ -3641,6 +3641,7 @@
 		 <property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
 		 <property name="tdpCadreSmsLeaderLocationDAO" ref="tdpCadreSmsLeaderLocationDAO" />
 		 <property name="tdpCadreHourRegInfoDAO" ref="tdpCadreHourRegInfoDAO" />  
+		  <property name="cadreRegistrationService" ref="cadreRegistrationService" />
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
