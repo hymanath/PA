@@ -8736,7 +8736,14 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			query.setDate("today", today);
 			return (Date) query.uniqueResult();
 		}
-		
+		public String getCadreMobileNumber(Long tdpCadreId){
+			Query query=getSession().createQuery("select model.tdpCadre.mobileNo" +
+          " from TdpCadreEnrollmentYear model" +
+          " where model.tdpCadre.tdpCadreId = :tdpCadreId" +
+          " and model.tdpCadre.enrollmentYear =  2014l and  model.tdpCadre.isDeleted='N' and model.isDeleted ='N' and model.enrollmentYearId =3");
+			query.setParameter("tdpCadreId", tdpCadreId);
+			return (String) query.uniqueResult();
+		}
 		public List<Object[]> getTabUserInfoDetailsByTdpCadreIds(List<Long> tdpCadreIdsList ){
 			StringBuilder queryStr = new StringBuilder();
 			//str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
