@@ -3060,4 +3060,14 @@ public String getTodayAndYesterdayTabUserRgstrtnComparisonDetails(){
 	}
 	return Action.SUCCESS;
 }
+/*public String getLocationWiseRegistrationSMSTracking(){
+	try{
+		
+		status = coreDashboardCadreRegistrationService.getLocationWiseRegistrationSMSTracking();
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
+}*/
 }
