@@ -2226,6 +2226,10 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 					vo.setCadreSurveyUserId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setUserName(obj[1] != null ? obj[1].toString():"");
 					vo.setFieldMonitrngName(obj[2] != null ? obj[2].toString():"");
+					vo.setDistrictId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					vo.setDistrictName(obj[4] != null ? obj[4].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setConstituencyName(obj[6] != null ? obj[6].toString():"");
 					vo.setTabUserId(0l);
 					returnList.add(vo);
 				}
