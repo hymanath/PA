@@ -180,16 +180,30 @@
        
         <div class="block m_top20" id="issueTypeDivId" style="display:none;">
 		<div id="submitButId"></div>
-        	<div class="row">
+        	<div class="row" id="showIssueTypeDivId">
             	<div class="col-md-3 col-xs-12 col-sm-4">
                 	<label>Select IssueType</label><span style="color:red"> *</span>
-                    <select class="select" id="issueTypeId">
+                    <select class="select" id="issueTypeId" onchange="getIssues()">
                     </select>
                 </div>
                 <div class="col-md-7 col-xs-12 col-sm-8">
                 	<label>Issue Description</label><span style="color:red"> *</span>
                     <input type="text" class="form-control" id="descriptionId"/>
                 </div>
+				<div id="leaderIssueDivId" style="display:none;">
+					<div class="col-md-3 col-xs-12 col-sm-4">
+						<label>Mandal/Muncipality</label>
+						<input type="text" class="form-control" id="mndlOrmunpltyId"/>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-4">
+						<label>Name</label>
+						<input type="text" class="form-control" id="fmNameId"/>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-4">
+						<label>Mobile Number</label>
+						<input type="text" class="form-control" id="fmMbNoId"/>
+					</div>
+				</div>
 				<!--<div class="col-md-4 col-xs-12 col-sm-4">
                 	<label>Select Constituency</label><span style="color:red"> *</span>
                     <select class="select" id="issueConstituencyId">
