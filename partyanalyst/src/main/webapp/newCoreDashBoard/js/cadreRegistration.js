@@ -242,7 +242,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';  
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0" style="margin-top: 22px;">';
 							str+='<h4 class="f_14 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
 							str+='<h4 class="f_14" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
