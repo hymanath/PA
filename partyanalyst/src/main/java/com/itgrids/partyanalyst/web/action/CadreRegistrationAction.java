@@ -2794,7 +2794,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   public String getSendOtpDetails(){
 	  try{
 		  jobj = new JSONObject(getTask());
-		  status=coreDashboardCadreRegistrationService.generatingAndSavingOTPDetails(jobj.getString("mobileNumber"));
+		  status=coreDashboardCadreRegistrationService.generatingAndSavingOTPDetails(jobj.getLong("tdpCadreId"),jobj.getString("mobileNumber"));
 	  }catch(Exception e){
 		  e.printStackTrace();
 		  LOG.error("Error occured at getSendOtpDetails() in CadreRegistrationAction class",e);
