@@ -308,17 +308,24 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     
     public List<Object[]> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType, List<Long> locationValue){ 
     	StringBuilder sb = new StringBuilder();  
-    	sb.append("select model.locationValue," +
-    				" model.cadre2014,model.cadre2014Percent," +
-    				" model.cadre2016,model.cadre2016Percent," +
-    				" model.newCadre,model.newCadrePercent," +
-    				" model.renewalCadre,model.renewalCadrePercent," +
-    				" model.locationScopeId,model.type" +
-					" from TdpCadreLocationInfo model");
+    	sb.append("	  select " +
+    				" model.locationValue," +//0
+    				" model.cadre2014," +//1
+    				" model.cadre2014Percent," +//2
+    				" model.cadre2016," +//3 
+    				" model.cadre2016Percent," +//4
+    				" model.newCadre," +//5
+    				" model.newCadrePercent," +//6
+    				" model.renewalCadre," +//7
+    				" model.renewalCadrePercent," +//8
+    				" model.locationScopeId," +//9
+    				" model.type" +//10
+					" from " +
+					" TdpCadreLocationInfo model");
     	if(locationScopeId != null && (locationScopeId.longValue() == 3l || locationScopeId.longValue() == 4l))
     		sb.append(" ,Constituency C");
 					
-    	sb.append(" where");
+    	sb.append(" where");  
     	
     	if(locationScopeId != null && locationScopeId.longValue() > 0l)
     		sb.append(" model.locationScopeId = :locationScopeId");
@@ -333,6 +340,9 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     			sb.append(" and C.district.districtId between 11 and 23");
     		else if(locationType != null && locationType.equalsIgnoreCase("TS"))
     			sb.append(" and C.district.districtId between 1 and 10");
+    	}
+    	if(locationScopeId != null && (locationScopeId.longValue() == 3l || locationScopeId.longValue() == 4l)){
+    		sb.append(" and C.deformDate is null and C.electionScope.electionScopeId = 2");
     	}
     		
     	if(type != null && type.equalsIgnoreCase("Total"))
