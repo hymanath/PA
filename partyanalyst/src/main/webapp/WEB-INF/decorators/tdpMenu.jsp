@@ -791,6 +791,11 @@
 													<a href="fieldMonitoringDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Field Monitoring DashBoard</span></a>
 												</li>
 											</c:if>
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_FIELD_MONITORING_DASHBOARD')}">
+												<li>
+													<a href="fieldMonitoringReportAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Field Monitoring Report</span></a>
+												</li>
+											</c:if>
 											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING')}">
 												<li>
 													<a href="dataMonitoringAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Data Monitoring</span></a>

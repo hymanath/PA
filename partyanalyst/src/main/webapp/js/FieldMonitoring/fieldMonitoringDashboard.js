@@ -532,6 +532,9 @@ function buildLocationWiseOverAllDetails(result){
 			str+='<th>Issue Status</th>';
 			str+='<th>Description</th>';
 			str+='<th>Inserted Time</th>';
+			str+='<th>Leader Name</th>';
+			str+='<th>Mobile</th>';
+			str+='<th>Location</th>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -604,6 +607,18 @@ function buildLocationWiseOverAllDetails(result){
 				str+='<td>'+result[i].issueStatus+'</td>';
 				str+='<td>'+result[i].description+'</td>';
 				str+='<td>'+result[i].issueTime+'</td>';
+				if(result[i].leaderName != null)
+					str+='<td>'+result[i].leaderName+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].leadreMobile != null)
+					str+='<td>'+result[i].leadreMobile+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].leaderMandal != null)
+					str+='<td>'+result[i].leaderMandal+'</td>';
+				else
+					str+='<td> - </td>';
 				
 				/*if(result[i].openIssues != null)
 					str+='<td>'+result[i].openIssues+'</td>';

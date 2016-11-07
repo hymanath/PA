@@ -721,10 +721,20 @@ public String getConstituencyByVendor(){
 	  try {
 		  session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			
+			List<String> entitlements = null;
+			boolean noaccess = false;
 			if(regVO == null)
 				return Action.INPUT;
-		  
+			
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(!(entitlements.contains("CADRE_FIELD_MONITORING_DASHBOARD".trim())))
+				 {
+				        noaccess = true ;  
+				 }
+			}
+			
 	} catch (Exception e) {
 		LOG.error("Exception raised at fieldMonitoringReport()  of FieldMonitoringAction", e);
 	}
