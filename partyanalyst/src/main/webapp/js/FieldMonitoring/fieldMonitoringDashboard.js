@@ -712,6 +712,7 @@ $(document).on("click",".issueTypeCls",function(){
 
    $(document).on("click","#addNewIssueId",function(){ 
 	 $("#issueTypeDivId").show();
+	 $("#leaderIssueDivId").hide();
    });
    function getCadreRegIssueType(){
 	 
@@ -865,6 +866,9 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
       var description =$("#descriptionId").val();
       var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
 	  var tabUserInfoId= $("#submitId").attr("attr_tab_user_info_id");
+	   var mandalId = $("#mndlOrmunpltyId").val();
+	  var nameId = $("#fmNameId").val();
+	  var mobileNumber = $("#fmMbNoId").val();
 	  //var issueStsId = $("#hiddenIssueStatusId").val();
 	  if(issueTypeId == 0)
 	   {
@@ -887,6 +891,15 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 	   }else{
 		    $("#submitButId").html("");
 	   }
+	   if(mandalId == ""){
+		   mandalId =="";
+	   }
+	   if(nameId == ""){
+		   nameId == "";
+	   }
+	   if(mobileNumber == ""){
+		   mobileNumber == "";
+	   }
 	  $("#savingDivIdImg").show();
 	 var jsObj=
      {				
@@ -894,7 +907,10 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		cadreSurveyUserId : cadreSurveyUserId,
 		tabUserInfoId :tabUserInfoId,
 		description :description,
-		constituencyId : constituencyId
+		constituencyId : constituencyId,
+		mandal : mandalId,
+		name : nameId,
+		mobileNumber : mobileNumber
 	 }
     $.ajax({
           type:'GET',
@@ -1359,4 +1375,12 @@ if(result != null){
 		}
 	}
 }
+}
+function getIssues(){
+	if($("#issueTypeId").val() == 1){
+		 $("#leaderIssueDivId").show();
+	}else{
+		$("#showIssueTypeDivId").show();
+		 $("#leaderIssueDivId").hide();
+	} 
 }
