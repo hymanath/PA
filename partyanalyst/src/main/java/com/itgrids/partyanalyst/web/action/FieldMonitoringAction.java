@@ -366,6 +366,9 @@ public class FieldMonitoringAction extends ActionSupport implements ServletReque
      		inputVO.setDescription(jObj.getString("description"));
      		inputVO.setLoginUserId(userId);       
      		inputVO.setConstituencyId(jObj.getLong("constituencyId"));
+     		inputVO.setMandalId(jObj.getString("mandal"));
+     		inputVO.setFirstname(jObj.getString("name"));
+     		inputVO.setMobileNo(jObj.getString("mobileNumber"));
      	    resultStatus = fieldMonitoringService.saveFieldIssue(inputVO);
      	}catch(Exception e)
      	{
