@@ -494,4 +494,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type);
 	  public Date getLastUpdatedTime(Date today);
 	  public List<Object[]> getTabUserInfoDetailsByTdpCadreIds(List<Long> tdpCadreIdsList );
+	  public String getCadreMobileNumber(Long tdpCadreId);
 } 
