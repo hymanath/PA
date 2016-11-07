@@ -3,10 +3,12 @@ package com.itgrids.partyanalyst.dto;
 public class CadreDashboardVO {
 
 	private Long id;
+	private Long no;
 	private String name;
 	
 	private Long count2014;
 	private Long count2016;
+	private Long count2016Today;
 	private Long newCount;
 	private Long renewalCount;
 	private String perc2014;
@@ -23,6 +25,7 @@ public class CadreDashboardVO {
 	private Long poor;
 	private Long veryPoor;
 	private String levelPerformanceType;
+	private Long mapPowerCount;
 	
 	
 	public Long getId() {
@@ -145,5 +148,24 @@ public class CadreDashboardVO {
 	public void setLevelPerformanceType(String levelPerformanceType) {
 		this.levelPerformanceType = levelPerformanceType;
 	}
+	public Long getCount2016Today() {
+		return count2016Today;
+	}
+	public void setCount2016Today(Long count2016Today) {
+		this.count2016Today = count2016Today;
+	}
+	public Long getMapPowerCount() {
+		return mapPowerCount;
+	}
+	public void setMapPowerCount(Long mapPowerCount) {
+		this.mapPowerCount = mapPowerCount;
+	}
+	public Long getNo() {
+		return no;
+	}
+	public void setNo(Long no) {
+		this.no = no;
+	}
+	
 	
 }
