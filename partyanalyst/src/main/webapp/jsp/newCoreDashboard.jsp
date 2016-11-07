@@ -177,7 +177,7 @@
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12">
 										<div class="bg_ED pad_15 m_top10">
-											<i style="cursor:pointer;" class="glyphicon glyphicon-comment compCls" attr_state_id="0" attr_option="total" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday comparision"></i>
+											<i style="cursor:pointer;margin-left:70px;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="0" attr_option="total" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>
 											<h5 class="text-capital" >TOTAL-<span id="totalperc"></span>  
 											</h5>  
 											<h4  data-toggle="tooltip" class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0</h4>
@@ -2928,7 +2928,7 @@
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Cadre Registration Details</h4>  
+				<h4 class="modal-title">Cadre Registration Comparison Details</h4>  
 			  </div>
 			  <div class="modal-body">
 				  <div id="cdrModelId" class="row"></div>				 
