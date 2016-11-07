@@ -1040,6 +1040,7 @@
 				 	  <value>com.itgrids.partyanalyst.model.TdpCadreAchievedSms</value>
 				 	  <value>com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp1</value>
+	                  <value>com.itgrids.partyanalyst.model.CadreRegIssuePerson</value>
 				 </list>
 			
 		</property>
