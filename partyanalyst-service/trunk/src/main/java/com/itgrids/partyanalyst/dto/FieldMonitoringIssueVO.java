@@ -23,6 +23,8 @@ public class FieldMonitoringIssueVO implements Serializable{
 	private Long count;
 	private String userName;
 	private String updatedTime;
+	private String mandalId;
+	private String mobileNo;
 	
 	public Long getIssueTypeId() {
 		return issueTypeId;
@@ -120,6 +122,18 @@ public class FieldMonitoringIssueVO implements Serializable{
 	}
 	public void setUpdatedTime(String updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	public String getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(String mandalId) {
+		this.mandalId = mandalId;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 	
 	
