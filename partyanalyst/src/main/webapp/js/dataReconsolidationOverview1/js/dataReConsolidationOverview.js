@@ -183,6 +183,10 @@ $(document).on("click","#submitId",function(){
  $(document).on('change','#stateOverViewId',function(){
     $("#errorDivId").html(' ');
 	 $("#stateDivIdImg").show();
+	    $('#districtOverViewId').html(' ');
+		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
+	    $('#constituencyOverViewId').html(' ');
+	    $('#constituencyOverViewId').append('<option value="0">Please Select constistuency</option>');
 	var jsObj = {
 			stateId : $("#stateOverViewId option:selected").val()
 	}
@@ -194,10 +198,6 @@ $(document).on("click","#submitId",function(){
 			
 	}).done(function(result){
 	    $("#stateDivIdImg").hide();
-	    $('#constituencyOverViewId').html(' ');
-	    $('#constituencyOverViewId').append('<option value="0">Please Select constistuency</option>');
-		$('#districtOverViewId').html(' ');
-		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
 		if(result !=null && result.length>0){
 			for(var i in result){
 				$('#districtOverViewId').append('<option value="'+result[i].id+'">'+result[i].name.toUpperCase()+'</option>');
