@@ -239,7 +239,9 @@ textarea {
                     </div>
                 	<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 m_top50">
                     	<button class="btn btn-success btn-block btn-lg text-capital registerNew">new registration</button>
+						<!--<button class="btn btn-success btn-block btn-sm text-capital" onclick="clickFun()">Click</button>-->
                     </div>
+					
                 </div>
             </div>
 			<div class="row" style="margin-top:20px;">
@@ -2005,6 +2007,17 @@ $(".registerSubBlock").each(function(){
    if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 });
 $(".registerSubBlock").height(maxHeight);
+
+/* function clickFun(){
+	 $.ajax({          
+			type : 'GET',    
+			url : 'getLocationWiseRegistrationSMSTrackingAction.action',  
+			data : {} 
+		}).done(function(result){
+			console.log(result);
+		});
+} */
+
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script> 
 
