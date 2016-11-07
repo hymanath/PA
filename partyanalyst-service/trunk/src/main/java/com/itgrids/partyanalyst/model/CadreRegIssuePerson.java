@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,8 @@ public class CadreRegIssuePerson extends BaseModel implements Serializable{
 	private String mandal;
 	private String name;
 	private String mobileNo;
+	private Date insetedTime;
+	private String isDeleted;
 	private CadreRegIssue cadreRegIssue;
 	
 	@Id
@@ -71,7 +74,20 @@ public class CadreRegIssuePerson extends BaseModel implements Serializable{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	
+	@Column(name="inserted_time")
+	public Date getInsetedTime() {
+		return insetedTime;
+	}
+	public void setInsetedTime(Date insetedTime) {
+		this.insetedTime = insetedTime;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "cadre_reg_issue_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -82,4 +98,5 @@ public class CadreRegIssuePerson extends BaseModel implements Serializable{
 	public void setCadreRegIssue(CadreRegIssue cadreRegIssue) {
 		this.cadreRegIssue = cadreRegIssue;
 	}
+	
 }
