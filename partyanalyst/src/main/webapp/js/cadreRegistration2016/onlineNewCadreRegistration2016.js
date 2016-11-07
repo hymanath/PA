@@ -1248,10 +1248,12 @@ function buildRelatVoterDetails(familyVoterCardNo){
 function sendOtpToMble(){
 	
 	//var mobileNo=$("#checkMblNoId").val();
-	var mobileNo=$("#hiddenMblNo").val();
+	var mobileNo=0;
+	var tdpCadreId=$("#tdpCadreId").val();
 	
 	var jsObj={
-		mobileNumber:mobileNo
+		tdpCadreId : tdpCadreId,
+		mobileNumber : mobileNo 
 	}
 	$.ajax({
 		  type:'GET',
@@ -1529,7 +1531,8 @@ $(document).on("click",".searchChkboxClsR",function(){
 	  RStatus = status;
 	  
 	  $("#checkMblNoId").val(actualMobileNumber);
-	  $("#hiddenMblNo").val(mobileNumber);	  
+	  $("#hiddenMblNo").val(mobileNumber);	
+	   $("#hiddenCadreIdFrRewl").val(tdpCadreId);
 	
 		$('.validateROTPCls').attr("attr_voterId",voterId);
 		$('.validateROTPCls').attr("attr_tdpCadre_id",tdpCadreId);
@@ -2156,3 +2159,37 @@ function addressFieldsValidation()
 		//browser1 = window.open("tdpAgentAreaMapAction.action?constitunecyId="+constitunecyId+"&startDate="+"10/20/2016"+"&endDate="+"10/20/2016"+"");
 		browser1.focus();
   }); 
+function sendOtpToNewMbleNumbr(){
+	var mobileNo=$("#changeCheckMblNoId").val();
+	var tdpCadreIdR=$("#hiddenCadreIdFrRewl").val();
+	
+	
+	var jsObj={
+		tdpCadreId : tdpCadreIdR,
+		mobileNumber : mobileNo
+		}
+	$.ajax({
+		  type:'GET',
+		  url:'getSendOtpDetailsAction.action',
+		 dataType:'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result == "failure" && result == "null")
+	   {
+		$("#otpMsgDivId").html("<span style='color:red;'>Check once OTP.</span>");  
+	   }else
+	   {
+		 $("#otpMsgDivId").html("<span style='color:green;'>Enter OTP of Reference #" +result+ "</span>")
+	   }
+   });
+}
+
+$(document).on("click","#changeMblNubrId",function(){
+	if($("#changeMblNubrId").is(':checked')){
+    $(".btnCls").hide();
+	$("#chageMblDivId").show(); 
+	}else{
+    $(".btnCls").show();
+    $("#chageMblDivId").hide(); 
+	}
+});
