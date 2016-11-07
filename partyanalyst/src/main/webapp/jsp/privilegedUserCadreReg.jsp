@@ -302,6 +302,7 @@
 		<div class="row distCls" style="display:none;">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<h4> District  Target VS Registered Cadre</h4>
+				<button class="btn btn-success btn-xs" id="distExcelExpBtnId" attr_tab_user_type="Tab" style="margin-left:1030px">Export To Excel</button>
 				<div id="districtWise2016Details"   class="m_top10"></div>
 				<div id="leaderDataDiv2" style="margin-top: -1px">
 				</div>
@@ -309,7 +310,8 @@
 		</div>  
 		<div class="row constCls" style="display:none;">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency  Target Vs Registered Cadre</h4>    
+				<h4> Constituency  Target Vs Registered Cadre</h4> 
+				<button class="btn btn-success btn-xs" id="constExcelExpBtnId" attr_tab_user_type="Tab" style="margin-left:1030px">Export To Excel</button>
 				<div id="constituencyWise2016Details"   class="m_top10"></div>
 				<div id="leaderDataDiv1" class="scrollable_div" style="margin-top: -1px">
 				</div>
@@ -401,7 +403,7 @@
 	var userId = ${userId};
 	var stateName = '${stateName}';
 	var globalUserId = userId;      
-	var type = "Today";     
+	var type = "Today";       
 	var locationType = stateName;        
 	get2016LocationWiseRegisteredCounts(userId,locationType,type);            
 	function get2016LocationWiseRegisteredCounts(userId,locationType,type){
@@ -423,17 +425,18 @@
 			$("#constituencyWise2016Details").html('');
 			$("#progressImgId").html('');  
 			if(result != null && result.length > 0){
-				buildGet2016LocationWiseRegisteredCounts(result,userId);  
+				buildGet2016LocationWiseRegisteredCounts(result,type);  
 			}
 		});
 	}
-	function buildGet2016LocationWiseRegisteredCounts(result){
+	function buildGet2016LocationWiseRegisteredCounts(result,type){
 		if(result.length == 2){
 			$(".distCls").show();
 			$(".constCls").show();
 			//table one starts
 			var str1='';
 			if(result[0] !=null && result[0].length > 0 ){
+				//debugger;
 				str1+='<div class="table-responsive" style="margin-top:20px;">';
 				str1+='<table class="table table-bordered" >';
 				str1+='<thead>';
@@ -461,16 +464,22 @@
 			
 				str1+='<table class="table table-bordered" id="districtWise2016DataTableId">';
 				str1+='<thead>';
+					str1+='<th>District Id</th>';
 					str1+='<th>District</th>';
 					str1+='<th>Target Cadres</th>';
 					str1+='<th>Renewal</th>';
 					str1+='<th>New</th>';
-					str1+='<th>Total</th>';
+					str1+='<th>Man Power</th>';
+					str1+='<th>Total Count</th>';
+					if(type.trim() == "Total"){
+						str1+='<th>Today Count</th>';
+					}
 					str1+='<th>% of Register cadres</th>';
 				str1+='</thead>';
 				str1+='<tbody>';
 				for(var i in result[0]){
 					str1+='<tr>';
+					str1+='<td>'+result[0][i].id+'</td>';
 					str1+='<td>'+result[0][i].name+'</td>';
 					str1+='<td>'+result[0][i].targetCount+'</td>';
 					
@@ -494,12 +503,25 @@
 							str1+='<td>'+result[0][i].newCount+'<small>('+result[0][i].newPerc+' %)</small></td>';
 						}
 					}
+					if(result[0][i].mapPowerCount == null || result[0][i].mapPowerCount == 0){
+						str1+='<td> - </td>';  
+					}else{
+						str1+='<td>'+result[0][i].mapPowerCount+'</td>';
+					}
 					
 					
 					if(result[0][i].count2016 == null || result[0][i].count2016 == 0){
 						str1+='<td> - </td>';
 					}else{
 						str1+='<td>'+result[0][i].count2016+'</td>';
+					}  
+					
+					if(type.trim() == "Total"){
+						if(result[0][i].count2016Today == null || result[0][i].count2016Today == 0){
+							str1+='<td> - </td>';
+						}else{
+							str1+='<td>'+result[0][i].count2016Today+'</td>';
+						}
 					}
 					
 					if(result[0][i].perc2016 == null || result[0][i].perc2016 == 0 || result[0][i].perc2016 == ""){
@@ -519,8 +541,11 @@
 			}
 		
 			$("#districtWise2016Details").html(str1);
+			
 			$("#districtWise2016DataTableId").dataTable({
-				"order": [ 4, 'desc' ]
+				"aaSorting": [[ 4, "desc" ]], 
+				"iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]	
 			});
 			//table one ends
 			//table two starts
@@ -551,16 +576,22 @@
 				}
 				str+='<table class="table table-bordered" id="constituencyWise2016DataTableId">';
 				str+='<thead>';
+					str+='<th>Constituency No</th>';
 					str+='<th>Constituency</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
-					str+='<th>Total</th>';
+					str+='<th>Man Power</th>';   
+					str+='<th>Total Count</th>';
+					if(type.trim() == "Total"){  
+						str+='<th>Today Count</th>';    
+					}  
 					str+='<th>% of Register cadres</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result[1]){
 					str+='<tr>';
+					str+='<td>'+result[1][i].no+'</td>';
 					str+='<td attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[1][i].name+'</td>';  
 					str+='<td>'+result[1][i].targetCount+'</td>';
 					if(result[1][i].renewalPerc == null || result[1][i].renewalPerc == 0){  
@@ -583,10 +614,23 @@
 							str+='<td>'+result[1][i].newCount+'<small>('+result[1][i].newPerc+' %)</small></td>';
 						}
 					}
+					if(result[1][i].mapPowerCount == null || result[1][i].mapPowerCount == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[1][i].mapPowerCount+'</td>';
+					}
+					
 					if(result[1][i].count2016 == null || result[1][i].count2016 == 0){
 						str+='<td> - </td>';
 					}else{
 						str+='<td>'+result[1][i].count2016+'</td>';
+					}
+					if(type.trim() == "Total"){  
+						if(result[1][i].count2016Today == null || result[1][i].count2016Today == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[1][i].count2016Today+'</td>';
+						}
 					}
 					if(result[1][i].perc2016 == null || result[1][i].perc2016 == 0 || result[1][i].perc2016 == ""){
 						str+='<td> - </td>';
@@ -607,8 +651,11 @@
 			}
 		
 			$("#constituencyWise2016Details").html(str);
-			$("#constituencyWise2016DataTableId").dataTable({    
-				"order": [ 4, 'desc' ]
+			
+			$("#constituencyWise2016DataTableId").dataTable({
+				"aaSorting": [[ 4, "desc" ]], 
+				"iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 			});
 			//table two ends
 			
@@ -625,7 +672,7 @@
 					str+='<th>POOR</th>';
 					str+='<th>VERY POOR</th>';
 				str+='</thead>';
-				str+='<tbody>';
+				str+='<tbody>';  
 					str+='<tr>';
 						str+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[0][0].veryGood+'</td>';
 						str+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[0][0].good+'</td>';
@@ -641,16 +688,22 @@
 				}
 				str+='<table class="table table-bordered" id="constituencyWise2016DataTableId">';
 				str+='<thead>';
+					str+='<th>Constituency No</th>';    
 					str+='<th>Constituency</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
-					str+='<th>Total</th>';
+					str+='<th>Map Power</th>';
+					str+='<th>Total Count</th>';
+					if(type == "Total"){
+						str+='<th>Today Count</th>';    
+					}
 					str+='<th>% of Register cadres</th>';
 				str+='</thead>';
 				str+='<tbody>';
-				for(var i in result[0]){
+				for(var i in result[0]){  
 					str+='<tr>';
+					str+='<td>'+result[0][i].no+'</td>';
 					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';  
 					str+='<td>'+result[0][i].targetCount+'</td>';
 					if(result[0][i].renewalPerc == null || result[0][i].renewalPerc == 0){  
@@ -661,7 +714,7 @@
 						}else{
 							str+='<td>'+result[0][i].renewalCount+'<small>('+result[0][i].renewalPerc+' %)</small></td>';
 						}
-					}
+					}  
 					
 					
 					if(result[0][i].newPerc == null || result[0][i].newPerc == 0){
@@ -673,11 +726,23 @@
 							str+='<td>'+result[0][i].newCount+'<small>('+result[0][i].newPerc+' %)</small></td>';
 						}
 					}
+					if(result[0][i].mapPowerCount == null || result[0][i].mapPowerCount == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[0][i].mapPowerCount+'</td>';
+					}
 					if(result[0][i].count2016 == null || result[0][i].count2016 == 0){
 						str+='<td> - </td>';
 					}else{
 						str+='<td>'+result[0][i].count2016+'</td>';
 					}
+					if(type == "Total"){       
+						if(result[0][i].count2016Today == null || result[0][i].count2016Today == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[0][i].count2016Today+'</td>';
+						}
+					}           
 					if(result[0][i].perc2016 == null || result[0][i].perc2016 == 0 || result[0][i].perc2016 == ""){
 						str+='<td> - </td>';
 					}else{
@@ -697,8 +762,11 @@
 			}
 		
 			$("#constituencyWise2016Details").html(str);
+			
 			$("#constituencyWise2016DataTableId").dataTable({
-				"order": [ 4, 'desc' ]      
+				"aaSorting": [[ 4, "desc" ]], 
+				"iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 			});
 		}
 	}
@@ -798,33 +866,33 @@
           str+='<table class="table table-bordered" id="regCadreCountTableId">';
             str+='<thead class="text-capital text-center">';
               str+='<tr>';
-                str+='<th rowspan="2">mandal</th>';
+                str+='<th rowspan="2">MANDAL</th>';
 				if(location == "panchayat"){
-					str+='<th rowspan="2">panchayat</th>';
+					str+='<th rowspan="2">PANCHAYAT</th>';
 				}
                 if(location == "booth"){
-					str+='<th rowspan="2">panchayat</th>';
-					str+='<th rowspan="2">Booth No</th>'; 
+					str+='<th rowspan="2">PANCHAYAT</th>';
+					str+='<th rowspan="2">BOOTH NO</th>'; 
 				}
-                str+='<th rowspan="2">total voters</th>';
-                str+='<th rowspan="2">2014 Total Cadre</th>';
+                str+='<th rowspan="2">TOTAL VOTERS</th>';
+                str+='<th rowspan="2">2014 TOTAL CADRE</th>';
 				if(scope == "today"){
-					str+='<th colspan="6" class="text-capital text-center">2016 Cadre</th>';
+					str+='<th colspan="6" class="text-capital text-center">2016 CADRE</th>';
 				}else{
-					str+='<th colspan="5" class="text-capital text-center">2016 Cadre</th>';
+					str+='<th colspan="5" class="text-capital text-center">2016 CADRE</th>';
 				}
                     
-              str+='</tr>';
+              str+='</tr>';   
               str+='<tr>';
-				str+='<th>renewal Cadre 2016</th>';
-                str+='<th>renewal cadre percent(%)</th>';
-                str+='<th>total Cadre 2016</th>';
+				str+='<th>RENEWAL CADRE 2016</th>';
+                str+='<th>RENEWAL CADRE PERCENT(%)</th>';
+                str+='<th>TOTAL CADRE 2016</th>';
 				if(scope == "today"){
-					str+='<th>total Cadre On Today</th>'; 
+					str+='<th>TOTAL CADRE ON TODAY</th>'; 
 				}
                 
-                str+='<th>new cadre</th>';
-                str+='<th>new cadre percent(%)</th>';
+                str+='<th>NEW CADRE</th>';
+                str+='<th>NEW CADRE PERCENT(%)</th>';
               str+='</tr>';
             str+='</thead>';
 			for(var i in result){  
@@ -867,6 +935,31 @@
 		$("#kupamRegDtlsId").html(str);  
 		$("#regCadreCountTableId").dataTable();
 	}
-</script>    
+</script>
+<script>
+	$(document).on("click","#constExcelExpBtnId",function(){
+		generateExcelReportForCadreConst();	
+	});
+	$(document).on("click","#distExcelExpBtnId",function(){
+		generateExcelReportForCadreDist();	
+	});
+	function generateExcelReportForCadreConst(){
+		tableToExcel(constituencyWise2016DataTableId, 'Location Wise Registrations Report');
+	}
+	function generateExcelReportForCadreDist(){
+		tableToExcel(districtWise2016DataTableId, 'Location Wise Registrations Report');        
+	}
+	var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()	
+</script>               
 </body>
 </html>

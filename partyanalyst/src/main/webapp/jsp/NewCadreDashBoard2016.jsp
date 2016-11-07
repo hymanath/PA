@@ -1062,18 +1062,18 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			}
 			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
 				str+='<thead>';
-					str+='<th>Constituency Id</th>';
+					str+='<th>Constituency No</th>';
 					str+='<th>Constituency</th>';  
 					
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
-					str+='<th>Map Power</th>';
+					str+='<th>Man Power</th>';    
 					str+='<th>Total Count</th>';
 					if(type == "total"){
 						str+='<th>Today Count</th>';    
 					}
-					str+='<th>% of Register cadres</th>';
+					str+='<th>% of Register cadres</th>';    
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
