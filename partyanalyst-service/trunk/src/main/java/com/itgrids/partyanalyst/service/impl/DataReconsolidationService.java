@@ -88,6 +88,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     				cadreTabRecordsStatusVO.setKafkaSync(obj[6]!=null ? (Long)obj[6]:0l);
     				    				
     				cadreSurveyUsers.add(obj[7]!= null ? Long.valueOf(obj[7].toString()) : 0l);
+    				cadreTabRecordsStatusVO.setSync(obj[8]!= null ? (Long)obj[8] : 0l);
     				
     				returnList.add(cadreTabRecordsStatusVO);
     			}
