@@ -202,7 +202,9 @@ public class CadreRegIssueDAO extends GenericDaoHibernate<CadreRegIssue, Long> i
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model1.cadreSurveyUser.cadreSurveyUserId," +
 					" model1.cadreSurveyUser.userName," +
-					"  model1.cadreRegUser.user.userName" +
+					"  model1.cadreRegUser.user.userName," +
+					" model2.constituency.district.districtId,model2.constituency.district.districtName" +
+					" ,model2.constituency.constituencyId,model2.constituency.name" +
 					" from CadreRegUserTabUser model1,CadreSurveyUserAssignDetails model2" );
 		
 		sb.append(" where model1.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
