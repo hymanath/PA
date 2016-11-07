@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 
 public interface ICadreRegistrationService {
@@ -215,5 +216,7 @@ public interface ICadreRegistrationService {
 	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUser(GISUserTrackingVO VO);
 	 public ResultStatus syncCadreTabRecordsStatus(List<CadreTabRecordsStatusVO> cadreTabRecordsStatusList);
 	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUserAgentDetails(Long constituencyId,String startDate,String endDate);
+	 public void saveDataToHistoryTable(TdpCadre tdpCadre);
+	 //public List<IdAndNameVO> getAllDistricts();
 }
 
