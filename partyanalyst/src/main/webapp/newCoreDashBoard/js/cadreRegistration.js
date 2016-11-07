@@ -238,7 +238,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
-							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-comment compCls"  attr_state_id="36" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday comparision"></i>';
+							str+='<i style="cursor:pointer;margin-left:70px;" class="glyphicon glyphicon-info-sign compCls"  attr_state_id="36" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>';
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';  
 						str+='</div>';
@@ -275,6 +275,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 		str+='</div>';
 		
 		$("#totalTodayCadreRegistrationBlockDivTSId").html(str);
+		$('[data-toggle="tooltip"]').tooltip();
 		/* $('.cadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
@@ -488,7 +489,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 				str+='<div class="bg_ED pad_15 m_top10" style="height:200px;">';    
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
-							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-comment compCls" attr_state_id="1" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday comparision"></i>';
+							str+='<i style="cursor:pointer;margin-left:70px;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="1" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>';
 							str+='<h5 class="text-capital">total-'+emptyCheck(result.totalPercent)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
 						str+='</div>';
@@ -525,6 +526,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 		str+='</div>';
 		
 		$("#totalTodayCadreRegistrationBlockDivAPId").html(str);
+		$('[data-toggle="tooltip"]').tooltip();
 		/* $('.cadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
@@ -4000,14 +4002,15 @@ $(document).on("click",".getManalMuncipalityCls",function(){
  }
  function buildHourWiseRegDtls(result){  
 	 var str='';
-			str+='<table class="table table-bordered table-condensed"> ';
+	        str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered table-condensed table-responsive"> ';
 				str+='<thead> ';
 					str+='<tr>';
 						str+='<th>Hour</th>';
 						str+='<th>Today Total Reg</th>';
 						str+='<th>Yesterday Total Reg</th>';
-						str+='<th>Today Total Tab User</th>';
-						str+='<th>Yesterday Total Tab User</th>';
+						str+='<th>Today Total Active Users</th>';
+						str+='<th>Yesterday Total Active Users</th>';
 					str+='</tr>'; 
 				str+='</thead>'; 
 				str+='<tbody>';
@@ -4040,6 +4043,7 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 				}
 			str+='</tbody>'; 
 		str+='</table>';
+		str+='</div>';
 		$("#cdrModelId").html(str);
  }
  $(document).on("click","#cadreExcelExpBtnId",function(){
