@@ -105,7 +105,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
     private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	
-	
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -6208,15 +6207,30 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
 		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId,locationType, null);
-		 	prepairReturnList(returnList,list,type,locationScopeId);
+		 	List<Object[]> list2 = null;
+		 	if(type.equalsIgnoreCase("total")){
+		 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",locationScopeId,locationType, null);            
+		 	}
+		 	List<Object[]> list3 = null;
+		 	List<Object[]> list4 = null;
+		 	if(locationScopeId.longValue() != 2l){
+		 		list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(locationScopeId,locationType); 
+		 	}
+		 	if(locationScopeId.longValue() == 4l){
+		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
+		 	}
+		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
-		 return returnList;
+		 return returnList;    
 	}
-	public void prepairReturnList(List<CadreDashboardVO> returnList, List<Object[]> list,String type,Long locationScopeId){
+	public void prepairReturnList(List<CadreDashboardVO> returnList, List<Object[]> list, List<Object[]> list2, List<Object[]> list3, List<Object[]> list4, String type,Long locationScopeId){
 		Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
+		Map<Long,Long> locationIdAndTodayCountMap = new LinkedHashMap<Long,Long>();
+		Map<Long,Long> locationIdAndManPowerCountMap = new LinkedHashMap<Long,Long>();
+		Map<Long,Long> locIdAndLocNoMap = new LinkedHashMap<Long,Long>();
 		List<Long> locationIds = new ArrayList<Long>();
 		
 		Long veryGood =0l ;
@@ -6224,6 +6238,25 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Long ok = 0l ;
 		Long poor = 0l ;
 		Long veryPoor = 0l ;
+		//collect locaionId and today count
+		if(list2 != null && list2.size() > 0){
+			for(Object[] param : list2){
+				locationIdAndTodayCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[3] != null ? param[3].toString():"0"));
+			}
+		}
+		//create a map for locationId and man power count
+		if(list3 != null && list3.size() > 0){
+			for(Object[] param : list3){
+				locationIdAndManPowerCountMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
+			}
+		}
+		//create a map for constid and const name
+		if(list4 != null  && list.size() > 0){
+			for(Object[] param : list4){
+				locIdAndLocNoMap.put(Long.valueOf(param[0] != null ? param[0].toString():"0"),Long.valueOf(param[1] != null ? param[1].toString():"0"));
+			}
+		}
+		
 		if(list != null && !list.isEmpty()){
 	 		for (Object[] obj : list) {
 	 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -6243,7 +6276,37 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				returnList.add(vo);
 			}
 	 	}
-	 	
+		//push today count to vo
+		if(list2 != null && list2.size() > 0 && returnList != null && returnList.size() > 0){
+			for(CadreDashboardVO param : returnList){
+				Long locId = param.getId();
+				if(locationIdAndTodayCountMap.get(locId) != null){
+					param.setCount2016Today(locationIdAndTodayCountMap.get(locId));
+				}
+			}
+			
+		}
+	 	//push manpower count
+		if(list3 != null && list3.size() > 0 && returnList != null && returnList.size() > 0){
+			for(CadreDashboardVO param : returnList){
+				Long locId = param.getId();
+				if(locationIdAndManPowerCountMap.get(locId) != null){
+					param.setMapPowerCount(locationIdAndManPowerCountMap.get(locId));
+				}  
+			}
+			
+		}
+		//push constituency no into vo
+		if(locationScopeId != null && locationScopeId.longValue() == 4l){
+			if(returnList != null && returnList.size() > 0){
+				for(CadreDashboardVO param : returnList){
+					Long locId = param.getId();
+					if(locIdAndLocNoMap.get(locId) != null){
+						param.setNo(locIdAndLocNoMap.get(locId));        
+					}  
+				}
+			}
+		}
 	 	List<Object[]> list1 = null;
 	 	if(locationScopeId != null && locationScopeId.longValue() == 2l)
 	 		list1 = stateDAO.getStatesForList(locationIds);
@@ -6288,7 +6351,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 			}
 		}
-	 
+	   
 		if(type.trim().equalsIgnoreCase("today") &&  (locationScopeId == 3l || locationScopeId == 4l)){
 			if(returnList != null && !returnList.isEmpty()){
 				for (CadreDashboardVO vo : returnList) {
@@ -6622,7 +6685,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 Map<Long,String> distIdAndNameMap = new HashMap<Long,String>();
 			 Set<Long> distIdList = new HashSet<Long>();
 			 
-			 Map<Long,String> constIdAndNameMap = new HashMap<Long,String>();
+			 Map<Long,String> constIdAndNameMap = new HashMap<Long,String>(); 
 			 Set<Long> constIdList = new HashSet<Long>();
 			 List<Object[]> distList = userDistrictAccessInfoDAO.getLocationIdList(userId);
 			 if(distList != null && distList.size() > 0){
@@ -6639,7 +6702,19 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 }
 			 if(distIdList.size() > 0){
 				 List<Object[]> distResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,3l,locationType,new ArrayList<Long>(distIdList));
-				 prepairReturnList(cadreDashboardVOList1,distResultList,type,3l);
+				 //
+				 List<Object[]> list2 = null;
+			 	 if(type.equalsIgnoreCase("total")){
+			 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",3l,locationType, new ArrayList<Long>(distIdList));            
+			 	 }
+			 	
+			 	 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(3l,locationType); 
+			 
+			 	
+			 	 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
+			
+				 //
+				 prepairReturnList(cadreDashboardVOList1,distResultList,list2,list3,null,type,3l);
 				 returnList.add(cadreDashboardVOList1);
 				 //get all the const belongs to above dist  
 				 List<Object[]> constList = constituencyDAO.getConstituenciesList(new ArrayList<Long>(distIdList));
@@ -6648,15 +6723,26 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 constIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
 				 }
 				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,locationType,new ArrayList<Long>(constIdList));
-				 prepairReturnList(cadreDashboardVOList2,constResultList,type,4l);
-				 returnList.add(cadreDashboardVOList2);
-				 return returnList;
+				 if(type.equalsIgnoreCase("total")){
+				 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,locationType, new ArrayList<Long>(constIdList));            
+				 }
+				 list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType);
+				 list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
+				 prepairReturnList(cadreDashboardVOList2,constResultList,list2,list3,list4,type,4l);
+				 returnList.add(cadreDashboardVOList2);    
+				 return returnList;  
 			 } 
-			 if(constIdList.size() > 0){    
+			 if(constIdList.size() > 0){                
 				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,locationType,new ArrayList<Long>(constIdList));
-				 prepairReturnList(cadreDashboardVOList1,constResultList,type,4l);  
-				 returnList.add(cadreDashboardVOList1);
-				 return returnList;    
+				 List<Object[]> list2 = null;
+				 if(type.equalsIgnoreCase("total")){
+				 	list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,locationType, new ArrayList<Long>(constIdList));            
+				 }
+				 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(3l,locationType); 
+				 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
+				 prepairReturnList(cadreDashboardVOList1,constResultList,list2,list3,list4,type,4l);     
+				 returnList.add(cadreDashboardVOList1);    
+				 return returnList;      
 			 }    
 		 }catch(Exception e){
 			 e.printStackTrace();
