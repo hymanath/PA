@@ -41,6 +41,7 @@ public class TabUserEnrollmentInfo implements Serializable {
 	private Date   endTime;
 	private Constituency constituency;
 	private Long districtId;
+	private TabUserInfo tabUserInfo;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -173,6 +174,17 @@ public class TabUserEnrollmentInfo implements Serializable {
 	}
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tab_user_info_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TabUserInfo getTabUserInfo() {
+		return tabUserInfo;
+	}
+	public void setTabUserInfo(TabUserInfo tabUserInfo) {
+		this.tabUserInfo = tabUserInfo;
 	}
 	
 	

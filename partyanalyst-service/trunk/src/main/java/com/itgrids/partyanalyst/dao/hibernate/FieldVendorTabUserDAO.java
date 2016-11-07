@@ -208,7 +208,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.cadreRegIssueStatus.cadreRegIssueStatusId," +
 					" CRI.cadreRegIssueStatus.status," +
 					" CRI.description," +
-					" CRI.insertedTime"+
+					" CRI.insertedTime," +
+					" CRI.cadreRegIssueId"+
 					" from CadreRegIssue CRI,CadreRegUserTabUser CRUTU" +
 					" where CRI.cadreSurveyUser.cadreSurveyUserId = CRUTU.cadreSurveyUser.cadreSurveyUserId" +
 					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId " );

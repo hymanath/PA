@@ -75,7 +75,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 	public List<Object[]> getTabUserFirstLastRecordNew(Long cadreRegUserId,Long constituencyId,Long userId,Long districtId,Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.startTime ,model.endTime ,model.cadreSurveyUserId,model.tabUserInfoId,model.totalRecords,model.tabUserName from " +
+		queryStr.append(" select model.startTime ,model.endTime ,model.cadreSurveyUserId,model.tabUserInfoId,model.totalRecords,model.tabUserName,model.tabUserInfo.mobileNo from " +
 				" TabUserEnrollmentInfo model,CadreRegUserTabUser model1 where model.cadreSurveyUserId = model1.cadreSurveyUserId" +
 				" and date(model.surveyTime) = :today and model1.cadreRegUser.userType = 'FM' and model.enrollmentYearId = 4" );
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)

@@ -31,7 +31,7 @@ public class FieldMonitoringVO {
 	private Long openIssues = 0l;
 	private Long fixedIssues = 0l;
 	private Long closedIssues = 0l;
-	private Long TotalDataCollectors;
+	private Long TotalDataCollectors = 0l;
 	private Long activeUsers;
 	private Long passiveUsers;
 	private List<FieldMonitoringVO> subList;
@@ -46,8 +46,9 @@ public class FieldMonitoringVO {
 	private List<IdAndNameVO> idnameList;
 	private List<IdAndNameVO> idnameList1;
 	private String imagePath;
-	private Long notYetStartedUsers;
-	private Long todayRegCount;
+	private Long notYetStartedUsers = 0l;
+	private Long startedUsers = 0l;
+	private Long todayRegCount = 0l;
 	private Long todayActiveUsers;
 	private Long lastOneHrActUsers;
 	private String countPerc;
@@ -61,11 +62,38 @@ public class FieldMonitoringVO {
 	private Long veryPoorCnt;
 	private Long districtCount;
 	private Long constituencyCount;
-	private Long notYetStartedIssues;
-	private Long startedIssues;
+	private Long notYetStartedIssues = 0l;
+	private Long startedIssues = 0l;
 	private String issueTime;
+	private String leaderMandal;
+	private String leaderName;
+	private String leadreMobile;
 	
 	
+	public Long getStartedUsers() {
+		return startedUsers;
+	}
+	public void setStartedUsers(Long startedUsers) {
+		this.startedUsers = startedUsers;
+	}
+	public String getLeaderMandal() {
+		return leaderMandal;
+	}
+	public void setLeaderMandal(String leaderMandal) {
+		this.leaderMandal = leaderMandal;
+	}
+	public String getLeaderName() {
+		return leaderName;
+	}
+	public void setLeaderName(String leaderName) {
+		this.leaderName = leaderName;
+	}
+	public String getLeadreMobile() {
+		return leadreMobile;
+	}
+	public void setLeadreMobile(String leadreMobile) {
+		this.leadreMobile = leadreMobile;
+	}
 	public String getIssueTime() {
 		return issueTime;
 	}
