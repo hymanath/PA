@@ -80,7 +80,7 @@ $(document).on("click",".impactCheckClsEmn",function(){
 var currentFromDateEmn = moment().format("DD-MM-YYYY");
 var currentToDateEmn = moment().format("DD-MM-YYYY");
 //$("#emnHeadDate").html("("currentFromDateEmn "-" currentToDateEmn")");
-$("#emnHeadDate").html("Today ( "+currentFromDate+" to "+currentToDate+" )");
+$("#emnHeadDate").html("Today("+moment().format("DD/MM/YY")+" to "+moment().format("DD/MM/YY")+")");
 $("#dateRangeIdForEmn").daterangepicker({
 	opens: 'left',
 	startDate: moment(),
@@ -102,6 +102,12 @@ $("#dateRangeIdForEmn").daterangepicker({
 $('.dateRangePickerClsForEmn').on('apply.daterangepicker', function(ev, picker) {
 	currentFromDateEmn = picker.startDate.format('DD-MM-YYYY');
 	currentToDateEmn = picker.endDate.format('DD-MM-YYYY');
+	var searchType = $(".emnMediaPrograms .active").attr("attr_searchType");
+	var type = $('input[name=emnSearchTypeName]:checked').val();
+	getEMMDetailedPartyDistrictWiseProgramsOverview();
+	getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type)
+	var activeUlId = $(".viewsLiClassEmn.active").attr('id')
+	$( "#"+activeUlId).trigger("click");
 });
 
 function getAllTvChannels()
@@ -220,6 +226,128 @@ function getpartyWiseChannelCounts(result){
 		}else{
 			str+='<h4 class="panel-title m_top20">NO DATA AVAILABLE</h4>';
 		}
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>';
+		for(var i=1;i<(result.length-1);i++)
+		{
+			str+='<p class="m_top10"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>'+result[i].organization+'</p>';
+			str+='<table class="table tableEMN m_top10">';
+				str+='<tr>';
+					str+='<td>';
+						str+='<h5 class="text-capitalize">Total Program</h5>';
+						str+='<h4>'+((result[i].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length)+(result[0].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length))+'</h4>';
+						str+='<h5 class="text-capitalize m_top20">total time</h5>';
+						str+='<h4>'+result[i].tvNewsDetailsVOList[0].description != ""?result[0].tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[0].organization+'</h5>';
+						str+='<h5>'+result[i].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length+'</h5>';
+						
+						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+						if(result[i].tvNewsDetailsVOList[0].description != ""){
+							str+='<h4>'+result[i].tvNewsDetailsVOList[0].description+'</h4>';
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+						
+					str+='</td>';
+					str+='<td>';
+						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[1].organization+'</h5>';
+						str+='<h5>'+result[i].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length+'</h5>';
+						
+						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+						if(result[i].tvNewsDetailsVOList[1].description != ""){
+							str+='<h4>'+result[i].tvNewsDetailsVOList[1].description+'</h4>';
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+						
+					str+='</td>';
+					str+='<td>';
+						str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList1[0].organization+'</h4>';
+						str+='<h4>'+result[i].tvNewsDetailsVOList1[0].tvNewsDetailsVOList1.length+'</h4>';
+						str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
+						if(result[i].tvNewsDetailsVOList1[0].description!= ""){
+							str+='<h4>'+result[i].tvNewsDetailsVOList1[0].description+'</h4>';
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+						
+					str+='</td>';
+					str+='<td>';
+						str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList1[1].organization+'</h4>';
+						str+='<h4>'+result[i].tvNewsDetailsVOList1[1].tvNewsDetailsVOList1.length+'</h4>';
+						str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
+						if(result[i].tvNewsDetailsVOList1[1].description!=""){
+							str+='<h4>'+result[i].tvNewsDetailsVOList1[1].description+'</h4>';
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+						
+					str+='</td>';
+				str+='</tr>';
+			str+='</table>';
+		}
+		//Govt block building
+		var EmnG = result.length-1;
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
+		
+		str+='<table class="table tableEMN m_top20">';
+			str+='<tr>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">Total Program</h5>';
+					str+='<h4>'+((result[EmnG].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length)+(result[EmnG].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length))+'</h4>';
+					str+='<h5 class="text-capitalize m_top20">total time</h5>';
+					str+='<h4>'+result[EmnG].tvNewsDetailsVOList[0].description != ""?result[EmnG].tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[0].organization+'</h5>';
+					str+='<h5>'+result[EmnG].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length+'</h5>';
+					
+					str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+					if(result[EmnG].tvNewsDetailsVOList[0].description != ""){
+						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[0].description+'</h4>';
+					}else{
+						str+='<h4>00:00</h4>';
+					}
+					
+				str+='</td>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[1].organization+'</h5>';
+					str+='<h5>'+result[EmnG].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length+'</h5>';
+					
+					str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+					if(result[EmnG].tvNewsDetailsVOList[1].description != ""){
+						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[1].description+'</h4>';
+					}else{
+						str+='<h4>00:00</h4>';
+					}
+					
+				str+='</td>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList1[0].organization+'</h4>';
+					str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[0].tvNewsDetailsVOList1.length+'</h4>';
+					str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
+					if(result[EmnG].tvNewsDetailsVOList1[0].description!= ""){
+						str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[0].description+'</h4>';
+					}else{
+						str+='<h4>00:00</h4>';
+					}
+					
+				str+='</td>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList1[1].organization+'</h4>';
+					str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[1].tvNewsDetailsVOList1.length+'</h4>';
+					str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
+					if(result[EmnG].tvNewsDetailsVOList1[1].description!=""){
+						str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[1].description+'</h4>';
+					}else{
+						str+='<h4>00:00</h4>';
+					}
+					
+				str+='</td>';
+			str+='</tr>';
+		str+='</table>';
+		
 	}else{
 		str+='<h4 class="panel-title m_top20">NO DATA AVAILABLE</h4>';
 	}
