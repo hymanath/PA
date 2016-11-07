@@ -34,9 +34,9 @@
 						</select>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6 ">
-					<label>CONSTITUENCY<span style="color:red"> * </span></label>
+					<label>CONSTITUENCY</label>
 						<span id="constituencyDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>
-						<select  class="form-control" id ="constituencyOverViewId" >
+						<select  class="form-control" id ="constituencyOverViewId">
 							<option value="0">Select Constituency</option>
 						</select>
 				   </div>
@@ -64,9 +64,6 @@
 				<div  id="userWiseTotalViewId">
 			   </div>
 		 </div>  
-
-	
-
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
    <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
 	  <div class="modal-content">
@@ -125,6 +122,5 @@ var tableToExcel = (function() {
   }
 })()
 </script>
-
 </body>
 </html>
