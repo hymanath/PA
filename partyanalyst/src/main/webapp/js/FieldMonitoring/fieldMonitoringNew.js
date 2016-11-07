@@ -609,6 +609,7 @@ function getIssuesCountsForATabUser(cadreSurveyUserId,tabUserInfoId){
 
 $(document).on("click","#addNewIssueId",function(){ 
 	 $("#issueTypeDivId").show();
+	  $("#leaderIssueDivId").hide();
    });
    
  function getCadreRegIssueType(){
@@ -637,6 +638,9 @@ $(document).on("click","#submitId",function(){
       var description =$("#descriptionId").val();
       var cadreSurveyUserId= $("#submitId").attr("attr_cadre_survey_user_id");
 	  var tabUserInfoId= $("#submitId").attr("attr_tab_user_info_id");
+	  var mandalId = $("#mndlOrmunpltyId").val();
+	  var nameId = $("#fmNameId").val();
+	  var mobileNumber = $("#fmMbNoId").val();
 	   if(issueTypeId == 0)
 	   {
 		   $("#submitButId").html("<span style='color: red;font-size:13px;'>Select Issue Type</span>");
@@ -654,6 +658,15 @@ $(document).on("click","#submitId",function(){
 	   }else{
 		    $("#submitButId").html("");
 	   }*/
+	   if(mandalId == ""){
+		   mandalId =="";
+	   }
+	   if(nameId == ""){
+		   nameId == "";
+	   }
+	   if(mobileNumber == ""){
+		   mobileNumber == "";
+	   }
 	  $("#savingDivIdImg").show();
 	 var jsObj=
      {				
@@ -661,7 +674,10 @@ $(document).on("click","#submitId",function(){
 		cadreSurveyUserId : cadreSurveyUserId,
 		tabUserInfoId :tabUserInfoId,
 		description :description,
-		constituencyId : constituencyId
+		constituencyId : constituencyId,
+		mandal : mandalId,
+		name : nameId,
+		mobileNumber : mobileNumber
 	 }
     $.ajax({
           type:'GET',
@@ -915,3 +931,11 @@ function getOverAllDataCollectorsCountsForFieldMontoring(){
 			}	
 		});
 	}
+function getIssues(){
+	if($("#issueTypeId").val() == 1){
+		 $("#leaderIssueDivId").show();
+	}else{
+		$("#showIssueTypeDivId").show();
+		 $("#leaderIssueDivId").hide();
+	} 
+}
