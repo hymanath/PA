@@ -124,14 +124,7 @@ $(document).on("click","#submitId",function(){
 		  $("#errorDivId").html('Please Select District');
 		  return ;
 	  }
-	   $("#errorDivId").html(' ');
-	   
-	   if(constId==0){
-		  $("#errorDivId").html('Please Select Constituency');
-		  return ;
-	  }
-	   $("#errorDivId").html(' ');
-	     
+	   $("#errorDivId").html(' ');  
 	getdataReConsalationTotalOverView();
 	getDataReConsalationOverView();
 });
@@ -200,7 +193,9 @@ $(document).on("click","#submitId",function(){
 		data : {task:JSON.stringify(jsObj)}
 			
 	}).done(function(result){
-	$("#stateDivIdImg").hide();
+	    $("#stateDivIdImg").hide();
+	    $('#constituencyOverViewId').html(' ');
+	    $('#constituencyOverViewId').append('<option value="0">Please Select constistuency</option>');
 		$('#districtOverViewId').html(' ');
 		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
 		if(result !=null && result.length>0){
