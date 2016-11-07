@@ -779,22 +779,14 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
-  public String getDataCollectorsDistrictWiseCount(){
+  public String getDataCollectorsConstituencyWiseCount(){
 		try {
-			session = request.getSession();
+			/*session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			
-			Long loginUserId = regVO.getRegistrationID();
-			jObj = new JSONObject(getTask());
+			Long loginUserId = regVO.getRegistrationID();*/
 			
-			Long districtId = jObj.getLong("districtId");
-			Long stateId = jObj.getLong("stateId");
-			Long constituencyId = jObj.getLong("constituencyId");
-			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
-			String startDate = jObj.getString("startDate");
-			String endDate = jObj.getString("endDate");
-			
-			fieldMonitoringList = fieldMonitoringService.getDataCollectorsConstituencyWiseCountAction();
+			fieldMonitoringList = fieldMonitoringService.getDataCollectorsConstituencyWiseCount();
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDataCollectorsDistrictWiseCountAction()  of FieldMonitoringAction", e);
