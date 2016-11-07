@@ -2484,7 +2484,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 	* @Description : 
 	*  @since 05-Nov-2016
 	*/
-	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCountAction(){
+	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCount(){
 		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
 		
 		List<Long> cadreSurveyuserIds = new ArrayList<Long>();
