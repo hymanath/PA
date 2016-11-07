@@ -20,6 +20,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreRegIssueDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegIssuePersonDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueStatusDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTrackDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
@@ -43,6 +44,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserPerformanceVO;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
+import com.itgrids.partyanalyst.model.CadreRegIssuePerson;
 import com.itgrids.partyanalyst.model.CadreRegIssueStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssueTrack;
 import com.itgrids.partyanalyst.model.CadreRegIssueType;
@@ -77,6 +79,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
 	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
+	private ICadreRegIssuePersonDAO cadreRegIssuePersonDAO;
 	
 	
 	//Setters
@@ -169,6 +172,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	public void setCadreRegIssueTrackDAO(
 			ICadreRegIssueTrackDAO cadreRegIssueTrackDAO) {
 		this.cadreRegIssueTrackDAO = cadreRegIssueTrackDAO;
+	}
+	
+	public ICadreRegIssuePersonDAO getCadreRegIssuePersonDAO() {
+		return cadreRegIssuePersonDAO;
+	}
+	public void setCadreRegIssuePersonDAO(ICadreRegIssuePersonDAO cadreRegIssuePersonDAO) {
+		this.cadreRegIssuePersonDAO = cadreRegIssuePersonDAO;
 	}
 	//business method.
 	public List<IdAndNameVO> getVendors(Long stateId){
@@ -692,6 +702,16 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 		        	   
 		        	   cadreRegIssue = cadreRegIssueDAO.save(cadreRegIssue);
 		        	   
+		        	   if(inputVO.getIssueTypeId() == 1L){
+		        	   CadreRegIssuePerson  cadreRegIssuePerson = new CadreRegIssuePerson();
+		        	   cadreRegIssuePerson.setCadreRegIssueId(cadreRegIssue.getCadreRegIssueId());
+		        	   cadreRegIssuePerson.setMandal(inputVO.getMandalId());
+		        	   cadreRegIssuePerson.setName(inputVO.getFirstname());
+		        	   cadreRegIssuePerson.setMobileNo(inputVO.getMobileNo());
+		        	   cadreRegIssuePerson.setInsetedTime(dateUtilService.getCurrentDateAndTime());
+		        	   cadreRegIssuePerson.setIsDeleted("N");
+		        	   cadreRegIssuePerson = cadreRegIssuePersonDAO.save(cadreRegIssuePerson);
+		        	   }
 		        	   //tracking 
 		        	   CadreRegIssueTrack cadreRegIssueTrack = new CadreRegIssueTrack();
 		        	   cadreRegIssueTrack.setCadreRegIssueId(cadreRegIssue.getCadreRegIssueId());
@@ -1506,6 +1526,7 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 					vo.setIssueStatus(obj[14] != null ? obj[14].toString():"");
 					vo.setDescription(obj[15] != null ? obj[15].toString():"");
 					vo.setIssueTime(obj[16] != null ? obj[16].toString():"");
+					vo.setId(Long.valueOf(obj[17] != null ? obj[17].toString():"0"));//cadreRegIssueId
 					
 					returnList.add(vo);
 				}
@@ -1536,6 +1557,10 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 				}
 			}
 			
+		/*if(issueTypeId == 0l || issueTypeId == 1l){
+		List<Object[]> cadreIssueList = cadreRegIssuePersonDAO.getCadreRegIssuePersonDetails(startDate, endDate);
+			
+			}	*/
 	} catch (Exception e) {
 		LOG.error("Exception occurred at getConstituencyIssueWiseOverAllDetails() of FieldMonitoringService", e);
 	}
