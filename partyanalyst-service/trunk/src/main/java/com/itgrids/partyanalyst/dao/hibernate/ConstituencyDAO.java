@@ -2008,6 +2008,14 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  query.setParameterList("distIds",distIds);
 	  return query.list();
   }
+  public Long getDistId(Long locationId){
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select distinct model.district.districtId from Constituency model where model.constituencyId = :locationId " +
+	  		" and model.deformDate is null and model.electionScope.electionScopeId = 2");
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("locationId", locationId);
+	  return (Long)query.uniqueResult();
+  }
 }
 
 
