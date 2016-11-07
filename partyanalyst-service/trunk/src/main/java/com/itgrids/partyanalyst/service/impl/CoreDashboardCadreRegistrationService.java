@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.model.TabUserOtpDetails;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
@@ -115,6 +116,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private IConstituencyTehsilDAO constituencyTehsilDAO;    
     private ITdpCadreSmsLeaderLocationDAO tdpCadreSmsLeaderLocationDAO;
     private ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO;
+    private ICadreRegistrationService cadreRegistrationService;
     
     
 	public void setTdpCadreSmsLeaderLocationDAO(
@@ -286,6 +288,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setTdpCadreHourRegInfoDAO(
 			ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO) {
 		this.tdpCadreHourRegInfoDAO = tdpCadreHourRegInfoDAO;
+	}
+	
+	public ICadreRegistrationService getCadreRegistrationService() {
+		return cadreRegistrationService;
+	}
+	public void setCadreRegistrationService(ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -2771,14 +2780,23 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return null;
 	}
 
-	public String generatingAndSavingOTPDetails(String mobileNoStr){
+	public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr){
 		
 		String status = null;
 		try {
 			String mobileNo=mobileNoStr.trim();
 			if(mobileNoStr.length()>10)
 				mobileNo = mobileNoStr.substring(mobileNoStr.length() - 10,mobileNoStr.length());
-			
+			//mobileNo=mobileNoStr;
+			if(mobileNo.trim().equalsIgnoreCase("0")){
+				mobileNo = tdpCadreDAO.getCadreMobileNumber(tdpCadreId);
+			}else{
+				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+				cadreRegistrationService.saveDataToHistoryTable(tdpCadre);
+				tdpCadre.setMobileNo(mobileNoStr);
+				tdpCadreDAO.save(tdpCadre);
+			}
+
 			List<Object[]> existingOTPDtls = tabUserOtpDetailsDAO.isExistOTPDetails(mobileNo,new DateUtilService().getCurrentDateAndTime());
 			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
 				Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
