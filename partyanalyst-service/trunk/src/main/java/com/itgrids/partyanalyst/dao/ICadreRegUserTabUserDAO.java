@@ -18,12 +18,13 @@ public interface ICadreRegUserTabUserDAO extends GenericDao<CadreRegUserTabUser,
 	public Long getAssignedUsersCountForRegUser(Long cadreRegUserId);
 	
 	public List<Object[]> getFieldMonitoringUserWiseDetails();
-	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers();
-	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers();
+	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers(Date today);
+	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers(Date today);
 	public List<Object[]> getConstituencyWiseFMUsersDetails();
 	public List<Object[]> getTotalUsersCountForFMUsers();
 	public List<Object[]> getTotalRegisteredUsers();
 	public List<Object[]> getTodayStartedUsersOfFMUser(Date today);
 	public List<Object[]> getTodayTotalIssues(Date today);
 	public List<Object[]> getTodayTotalStartedIssues(Date today);
+	public List<Object[]> getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(Date today);
 }

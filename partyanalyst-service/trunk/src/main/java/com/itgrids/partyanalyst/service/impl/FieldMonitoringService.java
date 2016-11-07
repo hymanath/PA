@@ -1557,10 +1557,34 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 				}
 			}
 			
-		/*if(issueTypeId == 0l || issueTypeId == 1l){
-		List<Object[]> cadreIssueList = cadreRegIssuePersonDAO.getCadreRegIssuePersonDetails(startDate, endDate);
 			
-			}	*/
+		if(issueTypeId == 0l || issueTypeId == 1l){
+			Map<Long,IdAndNameVO> leaderMap = new LinkedHashMap<Long, IdAndNameVO>();
+			List<Object[]> cadreIssueList = cadreRegIssuePersonDAO.getCadreRegIssuePersonDetails(startDate, endDate);
+				if(cadreIssueList != null && !cadreIssueList.isEmpty()){
+					for (Object[] obj : cadreIssueList) {
+						IdAndNameVO vo = new IdAndNameVO();
+						Long id = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						vo.setId(id);
+						vo.setActualMobNumber(obj[2] != null ? obj[2].toString():"");
+						vo.setName(obj[3] != null ? obj[3].toString():"");
+						vo.setMobileNumber(obj[4] != null ? obj[4].toString():"");
+						leaderMap.put(id, vo);
+					}
+				}
+			
+				if(returnList != null && !returnList.isEmpty()){
+					for (FieldMonitoringVO vo : returnList) {
+						Long id = vo.getId();
+						IdAndNameVO leadervo = leaderMap.get(id);
+						if(leadervo != null){
+							vo.setLeaderMandal(leadervo.getActualMobNumber());
+							vo.setLeaderName(leadervo.getName());
+							vo.setLeadreMobile(leadervo.getMobileNumber());
+						}
+					}
+				}
+		}	
 	} catch (Exception e) {
 		LOG.error("Exception occurred at getConstituencyIssueWiseOverAllDetails() of FieldMonitoringService", e);
 	}
@@ -2310,6 +2334,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 					if(vo != null){
 							vo.setTabUserId(tabUserId);
 							vo.setTabUserName(obj[5] != null ? obj[5].toString():"");
+							vo.setMobileNo(obj[6] != null ? obj[6].toString():"");
 							if(obj[0]!=null){
 	    	    					Date date = (Date)obj[0];
 	    	    					vo.setFirstRecord(returnTime.format(date));
@@ -2383,8 +2408,8 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 	public List<FieldMonitoringVO> getFieldMonitoringUserWiseDetails(){
 		List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>();
 		try {
-			List<IdAndNameVO> issueTypeList = new ArrayList<IdAndNameVO>();
-			List<IdAndNameVO> issueStatusList = new ArrayList<IdAndNameVO>();
+			//List<IdAndNameVO> issueTypeList = new ArrayList<IdAndNameVO>();
+			//List<IdAndNameVO> issueStatusList = new ArrayList<IdAndNameVO>();
 			List<CadreRegIssueType> typesList = cadreRegIssueTypeDAO.getAll();
 			List<CadreRegIssueStatus> statusList = cadreRegIssueStatusDAO.getAll();
 			
@@ -2416,40 +2441,124 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setDistrictId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					vo.setDistrictName(obj[3] != null ? obj[3].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+					vo.setConstituencyName(obj[5] != null ? obj[5].toString():"");
 					vo.setIdnameList(getAllIssueTypesTemplate(typesList));
 					vo.setIdnameList1(getAllIssueStatusTemplate(statusList));
+					vo.setTotalDataCollectors(Long.valueOf(obj[6] != null ? obj[6].toString():"0"));
 					
 					returnList.add(vo);
 				}
 			}
 			
-			List<Object[]> list1 = cadreRegUserTabUserDAO.getIssueTypeWiseCountsForFieldMonrUsers();
+			List<Object[]> registeredList = cadreRegUserTabUserDAO.getTotalRegisteredUsers();
+			if(registeredList != null && !registeredList.isEmpty()){
+				for (Object[] obj : registeredList) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(userId, constId, returnList);
+					if(vo != null)
+						vo.setTodayRegCount(count);							// Total Registered.
+				}
+			}
+			
+			List<Object[]> totalStarted = cadreRegUserTabUserDAO.getTodayStartedUsersOfFMUser(dateUtilService.getCurrentDateAndTime());
+			if(totalStarted != null && !totalStarted.isEmpty()){
+				for (Object[] obj : totalStarted) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(userId, constId, returnList);
+					if(vo != null){
+						Long notStartedCnt = vo.getTotalDataCollectors()-count;
+						vo.setNotYetStartedUsers(notStartedCnt);//Not Started Users Of FM User
+						vo.setStartedUsers(count);
+					}
+				}
+			}
+			
+			List<Object[]> totalIssues = cadreRegUserTabUserDAO.getTodayTotalIssues(dateUtilService.getCurrentDateAndTime());
+			if(totalIssues != null && !totalIssues.isEmpty()){
+				for (Object[] obj : totalIssues) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(userId, constId, returnList);
+					if(vo != null){
+						vo.setOpenIssues(count);//Today Total Open Issues
+					}
+				}
+			}
+			
+			List<Object[]> todayTotalStartedIssues = cadreRegUserTabUserDAO.getTodayTotalStartedIssues(dateUtilService.getCurrentDateAndTime());
+			if(todayTotalStartedIssues != null && !todayTotalStartedIssues.isEmpty()){
+				for (Object[] obj : todayTotalStartedIssues) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(userId, constId, returnList);
+					if(vo != null){
+						Long notStartedIssuesCnt = vo.getOpenIssues()-count;
+						vo.setNotYetStartedIssues(notStartedIssuesCnt);//Today Total Not Started Issues
+						vo.setStartedIssues(count);//Today Total Started Issues
+					}
+				}
+			}
+			
+			List<Object[]> list1 = cadreRegUserTabUserDAO.getIssueTypeWiseCountsForFieldMonrUsers(dateUtilService.getCurrentDateAndTime());
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 					Long typeId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long constId = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
 					
-					FieldMonitoringVO vo = getMatchedVOByUserIdAndDistrict(id, districtId, returnList);
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(id, constId, returnList);
 					if(vo != null){
 						List<IdAndNameVO> typsList = vo.getIdnameList();
 						IdAndNameVO typeVO = getMatchedVOById(typeId, typsList);
 						if(typeVO != null)
-							typeVO.setAttenteeCount(count);
+							typeVO.setAttenteeCount(count);  //totalOpen Issues
 					}
 				}
 			}
 			
-			List<Object[]> list2 = cadreRegUserTabUserDAO.getIssueStatusWiseCountsForFieldMonrUsers();
+			List<Object[]> startedUsersIssues = cadreRegUserTabUserDAO.getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(dateUtilService.getCurrentDateAndTime());
+			if(startedUsersIssues != null && !startedUsersIssues.isEmpty()){
+				for (Object[] obj : list1) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long typeId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long constId = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(id, constId, returnList);
+					if(vo != null){
+						List<IdAndNameVO> typsList = vo.getIdnameList();
+						IdAndNameVO typeVO = getMatchedVOById(typeId, typsList);
+						if(typeVO != null){
+							typeVO.setInviteeAttendeeCnt(count);  //StartedUsers Issues
+							typeVO.setInviteeCount(typeVO.getAttenteeCount() - typeVO.getInviteeAttendeeCnt());  //NotStartedUsers Issues
+						}
+					}
+				}
+			}
+			
+			List<Object[]> list2 = cadreRegUserTabUserDAO.getIssueStatusWiseCountsForFieldMonrUsers(dateUtilService.getCurrentDateAndTime());
 			if(list2 != null && !list2.isEmpty()){
 				for (Object[] obj : list2) {
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long constId = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
 					
-					FieldMonitoringVO vo = getMatchedVOByUserIdAndDistrict(id, districtId, returnList);
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(id, constId, returnList);
 					if(vo != null){
 						List<IdAndNameVO> statsList = vo.getIdnameList1();
 						IdAndNameVO stutsVO = getMatchedVOById(statusId, statsList);
@@ -2464,13 +2573,13 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		return returnList;
 	}
 	
-	public FieldMonitoringVO getMatchedVOByUserIdAndDistrict(Long userId,Long districtId,List<FieldMonitoringVO> list){
+	public FieldMonitoringVO getMatchedVOByUserIdAndConstituency(Long userId,Long constituencyId,List<FieldMonitoringVO> list){
     	FieldMonitoringVO returnvo = null;
     	try {
 			if(list != null && !list.isEmpty()){
 				for (FieldMonitoringVO vo : list) {
 					if(vo.getId().longValue() == userId.longValue()){
-						if(vo.getDistrictId().longValue() == districtId.longValue()){
+						if(vo.getConstituencyId().longValue() == constituencyId.longValue()){
 							return vo;
 						}
 					}
@@ -2478,7 +2587,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			}
 			return null;
 		} catch (Exception e) {
-			LOG.error("Exception occurred at getMatchedVOByUserIdAndDistrict() of FieldMonitoringService", e);
+			LOG.error("Exception occurred at getMatchedVOByUserIdAndConstituency() of FieldMonitoringService", e);
 		}
     	return returnvo;
     }
