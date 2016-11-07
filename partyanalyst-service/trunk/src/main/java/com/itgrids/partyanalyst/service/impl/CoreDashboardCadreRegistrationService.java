@@ -3454,7 +3454,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 										if(achevedPerc !=null && achevedPerc>0.0){
 											messageStr.append(location.getName()+ " :\n Membership Target  : "
 													+location.getTargetCount()+" , Achieved : "+location.getTotalCount()+
-													" ("+achevedPerc+ " % ) Today : "+location.getTodayCount()+" ; \n");
+													" ("+achevedPerc+ " % ) Today : "+location.getTodayCount()+"  \n");
 										}else{
 											messageStr.append(location.getName()+ " :\n Membership Target  : "
 													+location.getTargetCount()+" , Achieved : "+location.getTotalCount()+
