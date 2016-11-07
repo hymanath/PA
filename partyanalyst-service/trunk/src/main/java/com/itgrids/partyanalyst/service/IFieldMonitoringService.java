@@ -46,5 +46,5 @@ public interface IFieldMonitoringService {
 	public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId);
 	public List<FieldMonitoringVO> getConstituencyIssueWiseOverAllDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId,Long stateId);
-	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCountAction();
+	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCount();
 }
