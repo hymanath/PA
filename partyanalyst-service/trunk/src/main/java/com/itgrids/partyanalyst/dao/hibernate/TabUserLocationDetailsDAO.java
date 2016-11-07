@@ -17,7 +17,7 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		super(TabUserLocationDetails.class);
 	}
 	
-	public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
+	/*public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -39,9 +39,9 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 				str.append("  and c.constituency_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
 				str.append(" and c.tehsil_id = :locationId ");
-			}/*else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+			}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
 				str.append("  and booth.panchayat_id = :locationId ");
-			}*/else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				str.append(" and c.local_election_body_id = :locationId ");
 			}
 		}
@@ -67,7 +67,7 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 				str.append(" and  c.tehsil_id = :locationId ");
 			}/*else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
 				str.append("  and c.panchayat_id = :locationId ");
-			}*/else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				str.append(" and c.local_election_body = :locationId ");
 			}
 		}
@@ -95,8 +95,8 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		
 		return query.list();
 		
-	}
-/*public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
+	}*/
+public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -125,7 +125,7 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 				str.append("  and ua.panchayat_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				str.append(" and c.local_election_body_id = :locationId ");
-			}
+			}*/
 		}
 			
 			
@@ -149,7 +149,7 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		
 		return query.list();
 		
-	}*/
+	}
 	/*public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type){
 		
 		try {

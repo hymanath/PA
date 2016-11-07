@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationBasicVO;
@@ -71,10 +72,19 @@ public class GISVisualizationService implements IGISVisualizationService{
 	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
 	private ITabUserLocationDetailsDAO tabUserLocationDetailsDAO;
+	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	
 	
 	
 	
+	
+	public ITdpCadreUserHourRegInfo getTdpCadreUserHourRegInfoDAO() {
+		return tdpCadreUserHourRegInfoDAO;
+	}
+	public void setTdpCadreUserHourRegInfoDAO(
+			ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO) {
+		this.tdpCadreUserHourRegInfoDAO = tdpCadreUserHourRegInfoDAO;
+	}
 	public ITabUserLocationDetailsDAO getTabUserLocationDetailsDAO() {
 		return tabUserLocationDetailsDAO;
 	}
@@ -814,13 +824,15 @@ public class GISVisualizationService implements IGISVisualizationService{
 		try{
 			List<GISUserTrackingVO> tabUserList = new ArrayList<GISUserTrackingVO>();
 			Map<Long,GISUserTrackingVO> tabUserMap = new HashMap<Long,GISUserTrackingVO>();
-			List<Object[]> totalTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			//List<Object[]> totalTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
 			//List<Object[]> totalTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			List<Object[]> totalTabUsersData = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
 			setLocationWiseTabUserTrackingDetails(totalTabUsersData,"total",returnVO,tabUserMap);
 			
 			
-			List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			//List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
 			//List<Object[]> todayTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			List<Object[]> todayTabUsersData = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
 			setLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap);
 			
 			Date fromDate=null;
@@ -848,32 +860,39 @@ public class GISVisualizationService implements IGISVisualizationService{
 			
 			if(commonMethodsUtilService.isListOrSetValid(assignedUsersList)){
 				for (Object[] param : assignedUsersList) { 
-					if(returnVO.getLocationId().longValue() == commonMethodsUtilService.getLongValueForObject(param[0]))
+					//if(returnVO.getLocationId().longValue() == commonMethodsUtilService.getLongValueForObject(param[0]))
 						returnVO.setAllocatedCount(commonMethodsUtilService.getLongValueForObject(param[2]));//total Allocated count
 				   }
 				}
 			
-			List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			//List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			//List<Object[]> lastOneHrTrackingList = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			List<Object[]> lastOneHrTrackingList = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			if(commonMethodsUtilService.isListOrSetValid(lastOneHrTrackingList)){
 				returnVO.setRegisteredCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
 				for (Object[] param : lastOneHrTrackingList) {
-						returnVO.setLastOneHrCount(returnVO.getLastOneHrCount()+commonMethodsUtilService.getLongValueForObject(param[6]));//last one hour Output
-				    }
-				if(returnVO.getRegisteredCount() != null && returnVO.getRegisteredCount().longValue() > 0l)
-					returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getRegisteredCount());
+					GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+						if(tabVO != null){
+							tabVO.setLastOneHrCount(tabVO.getLastOneHrCount()+commonMethodsUtilService.getLongValueForObject(param[6]));//last one hour Output Of Each tab User
+						}
+					}
 				}
 			
 			returnVO.setActiveCount(Long.valueOf(tabUserMap.size()));//total active members
 			if(commonMethodsUtilService.isMapValid(tabUserMap)){
 				for(GISUserTrackingVO tabUser :tabUserMap.values()){
 					returnVO.setOverAllOutput(returnVO.getOverAllOutput()+tabUser.getTotalCount());//total output
+					returnVO.setLastOneHrCount(returnVO.getLastOneHrCount()+tabUser.getLastOneHrCount());//last one hour Output Of All tab Users
 					tabUserList.add(tabUser);
 				}
 			}
 			
 			if(returnVO.getActiveCount() != null && returnVO.getActiveCount().longValue() > 0l)
-			returnVO.setAvgOutput(returnVO.getOverAllOutput()/returnVO.getActiveCount());
+				returnVO.setAvgOutput(returnVO.getOverAllOutput()/returnVO.getActiveCount());
+			
+			if(returnVO.getRegisteredCount() != null && returnVO.getRegisteredCount().longValue() > 0l)
+				returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getRegisteredCount());
+			
 			returnVO.setUsersList(tabUserList);
 			
 		}catch (Exception e) {
@@ -886,14 +905,16 @@ public class GISVisualizationService implements IGISVisualizationService{
 		try{
 			if(commonMethodsUtilService.isListOrSetValid(tabusersData)){
 				for (Object[] param : tabusersData) {
-					returnVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					//returnVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					//returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					
 					GISUserTrackingVO tabUser =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
 					if(tabUser == null){
 						tabUser = new GISUserTrackingVO();
 						tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
 					}
+					tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					tabUser.setImagePath("https://mytdp.com/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));

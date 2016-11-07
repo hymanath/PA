@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo;
 
 /**
@@ -22,4 +23,5 @@ public interface ITdpCadreUserHourRegInfo extends GenericDao<TdpCadreUserHourReg
 	public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall();
 	public int insertCadreDataByUserWiseHourWise();
 	public int insertCadreDataByUserWiseHourWiseOverall();
+	public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type);
 }

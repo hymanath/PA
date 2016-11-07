@@ -3,6 +3,8 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.TdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -114,5 +117,88 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 	    "         SELECT TEMP.cadre_survey_user_id,TEMP.tab_user_info_id,TEMP.survey_date,TEMP.hour,TEMP.reg_count,TEMP.inserted_time" +
 	    "         FROM   tdp_cadre_user_hour_reg_info_temp1 TEMP " );
 		return query.executeUpdate();
+	}
+	public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type){
+		
+		try {
+			StringBuilder queryStr = new StringBuilder();
+			
+			queryStr.append(" select  model1.constituency.constituencyId,model1.constituency.name,model.tabUserInfo.tabUserInfoId,model.tabUserInfo.name,model.tabUserInfo.imgPath,model.tabUserInfo.mobileNo ");
+				
+			 if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				 if(type.equalsIgnoreCase("LastOneHr")){
+					 queryStr.append(" , model.regCount ");
+				 }else{
+					 queryStr.append(" , sum(model.regCount) ");
+				 }
+			}
+			 
+			queryStr.append(" from ");
+			
+			queryStr.append(" TdpCadreUserHourRegInfo model,CadreSurveyUserAssignDetails model1 where model1.cadreSurveyUser.cadreSurveyUserId = model.cadreSurveyUserId ");
+			
+			if(!type.trim().equalsIgnoreCase("LastOneHr")){
+				 if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+					queryStr.append(" and (date(model.surveyDate) between :startDate and :endDate) ");
+				}else{
+					queryStr.append(" and (date(model.surveyDate) between :startDate and :endDate) ");
+				}
+			}else{
+				queryStr.append(" and model.hour = :lastOneHour and (date(model.surveyDate) between :startDate and :endDate) ");
+			}
+			
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+			{
+				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+					queryStr.append(" and model1.constituency.district.districtId = :parentLocationTypeId ");
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+						queryStr.append("  and model1.constituency.constituencyId = :parentLocationTypeId ");
+				}
+			}
+			
+			
+				queryStr.append(" group by model.cadreSurveyUserId ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			if(!inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getParentLocationTypeId().longValue()>0L)
+				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			if(!type.trim().equalsIgnoreCase("LastOneHr")){
+			if(type.equalsIgnoreCase("total")){
+				if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+					query.setDate("startDate", format.parse(inputVO.getStartDate()));
+					query.setDate("endDate", format.parse(inputVO.getEndDate()));
+				}else{
+					query.setDate("startDate", new DateUtilService().getCurrentDateAndTime());
+					query.setDate("endDate", new DateUtilService().getCurrentDateAndTime());
+				}
+			}else if(type.equalsIgnoreCase("today")){
+				query.setDate("startDate", new DateUtilService().getCurrentDateAndTime());
+				query.setDate("endDate", new DateUtilService().getCurrentDateAndTime());
+			}
+			}else{
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(new DateUtilService().getCurrentDateAndTime());
+				int presentHour = cal.get(Calendar.HOUR_OF_DAY);
+				Long lastOneHour = Long.valueOf(presentHour-1);
+				/*Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.HOUR_OF_DAY, 1);// last one hour
+				query.setCalendarDate("startDate",cal);*/
+				if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+					query.setDate("startDate", format.parse(inputVO.getStartDate()));
+					query.setDate("endDate", format.parse(inputVO.getEndDate()));
+				}else{
+					query.setDate("startDate", new DateUtilService().getCurrentDateAndTime());
+					query.setDate("endDate", new DateUtilService().getCurrentDateAndTime());
+				}
+				query.setParameter("lastOneHour", lastOneHour);
+			}
+			
+			return query.list();
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+		return null;
 	}
 }
