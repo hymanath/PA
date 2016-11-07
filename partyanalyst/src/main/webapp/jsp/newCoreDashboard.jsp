@@ -2400,7 +2400,7 @@
             </div>
        </div>
 	 </div>
-	<!--<div class="row">
+	<!-- <div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2408,7 +2408,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-12 emnHead">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
-								electronic media news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
+								electronic news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
 							</h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1">
@@ -2639,7 +2639,7 @@
 				</div>
 			</div>
 		</div>
-	</div>-->
+	</div> -->
 	 <!-- TOURS START -->
 	<!--<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
@@ -3256,10 +3256,9 @@
 		//getDesigWiseMemberDtls();  
         //getToursBasicOverviewCountDetails();
 		/*Electronic Media Calls*/
-       // getEMMDetailedPartyDistrictWiseProgramsOverview();
+      // getEMMDetailedPartyDistrictWiseProgramsOverview();
 		//getAllTvChannels();
 	}
-	
 	
 	$(document).on("click",".userStructureClass",function(){
 		
