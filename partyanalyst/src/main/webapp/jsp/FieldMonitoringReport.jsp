@@ -151,21 +151,14 @@ function buildFieldMonitoringReport(result){
 	$("#fieldUserDetailsId").html(str);
 	$("#tabWiseDtlsId").dataTable();
 }
-getDataCollectorsDistrictWiseCount();
-function getDataCollectorsDistrictWiseCount(){
+getDataCollectorsConstituencyWiseCount();
+function getDataCollectorsConstituencyWiseCount(){
 	 $("#dataCollectorsDivId").html('');
 	$("#dataCollectorsImgId").show();
-		var jsObj = { 
-				districtId : 1,
-				stateId : 0,
-				constituencyId : 0,
-				cadreSurveyUserId : 0,
-				startDate : "",
-				endDate :""
-		}
+		var jsObj = {}
 		$.ajax({
 			type : 'GET',
-			url : 'getDataCollectorsDistrictWiseCountAction.action',
+			url : 'getDataCollectorsConstituencyWiseCountAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
@@ -197,12 +190,12 @@ function buildDataCollectorsPerformanceDetails(result){
 				str+='<tr>';
 					
 						if(result[i].districtName != null)
-							str+='<td class="issueCmpltd">'+result[i].districtName+'</td>';
+							str+='<td class="issueCmpltd" id="'+result[i].districtId+'">'+result[i].districtName+'</td>';
 						else
 							str+='<td> - </td>';
 					
 					if(result[i].constituencyName != null)
-						str+='<td>'+result[i].constituencyName+'</td>';
+						str+='<td id="'+result[i].constituencyId+'">'+result[i].constituencyName+'</td>';
 					else
 						str+='<td> - </td>';
 					/*if(result[i].lastHourCount != null && result[i].lastHourCount > 0)
