@@ -1237,14 +1237,20 @@ textarea {
 	  <div>
 		<label>OTP Send To:</label>
 		 <input type="text" id="checkMblNoId" disabled/>
-		  <button type="button" class="btn btn-success btnCls" style="margin-left:9px;" onclick="sendOtpToMble();">Genarate OTP</button>
+		  <button type="button" class="btn btn-success btnCls btn-sm btn-xs" style="margin-left:9px;" onclick="sendOtpToMble();">Genarate OTP</button>
+		  <input type="checkbox" id="changeMblNubrId"/>Change Mobile Number
+		  <div id="chageMblDivId" style="display:none;">
+			<label>Alternate Mobile No:</label>
+			<input type="text" id="changeCheckMblNoId"/>
+			<button type="button" class="btn btn-success  btn-sm btn-xs" id="genrateChagMblId" style="margin-left:9px;" onclick="sendOtpToNewMbleNumbr();">Genarate OTP</button>
+		  </div>
 		</div>
 		<div id="otpMsgDivId"></div>
 		<div style="padding-top:6px;margin-left:18px;">
 		   <label>Enter OTP:</label>
 			<input type="text" id="otpInputId" placeholder="sent to your Mobile No"/><span id="otpErrDivId" style="color:red;"></span>
-			   <button id="newRegOKDivId" type="button" class="btn btn-success" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
-			   <button id="renwalOKDivId" type="button" class="btn btn-success validateROTPCls" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
+			   <button id="newRegOKDivId" type="button" class="btn btn-success  btn-sm btn-xs" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
+			   <button id="renwalOKDivId" type="button" class="btn btn-success validateROTPCls  btn-sm btn-xs" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
 		</div>	
 		<div><span id="otpStusErrDivId"></span><span id="otpStusErrImgId" style="display:none;"><img src="images/search.gif"/></span></div>
       </div>
@@ -1268,6 +1274,7 @@ textarea {
 <input type="hidden" id="votrIdR"/>
 <input type="hidden" id="hidnFamlyVoterId"/>
 <input type="hidden" id="hiddenMblNo"/>
+<input type="hidden"  id="hiddenCadreIdFrRewl"/>
 
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
@@ -1868,9 +1875,46 @@ $(document).on("click","#deliveryAbrodCheckBox",function(){
 		$('#deliveryAddrId').hide();
 	}else{
 			$(this).trigger('click');
+		$(this).trigger('click');
+		//$('#prmaryAddrsId').trigger('click');
 	}	
 });
 
+$(document).on("click","#deliveryPOCheckBox",function(){
+	$("#deliveryStatsId").val("PO");
+	$("#workStateList").val(0);
+	$("#workStateList").trigger("chosen:updated");
+	$('#prmaryAddrsId').attr('checked', false);
+	$('#deliveryCheckBox').attr('checked', false);
+	$('#deliveryAbrodCheckBox').attr('checked', false);
+	$("#wrkShippingErrId").html("");
+	$("#shipAddress").val("");
+	
+	if($(this).is(":checked")){
+		$('.shipAddressCls').addClass('hide');		
+		$('#deliveryAddrId').hide();
+	}else{
+		$(this).trigger('click');
+	}	
+});
+$(document).on("click","#deliveryAbrodCheckBox",function(){
+	$("#deliveryStatsId").val("ACR");
+	$("#workStateList").val(0);
+	$("#workStateList").trigger("chosen:updated");
+	$('#prmaryAddrsId').attr('checked', false);
+	$('#deliveryCheckBox').attr('checked', false);
+	$('#deliveryPOCheckBox').attr('checked', false);
+	$("#wrkShippingErrId").html("");
+	$("#shipAddress").val("");
+	if($(this).is(":checked")){
+		$('.shipAddressCls').removeClass('hide');		
+		$('#deliveryAddrId').hide();
+	}else{
+			$(this).trigger('click');
+	}	
+});
+
+/*
 $(document).on("click","#deliveryPOCheckBox",function(){
 	$("#deliveryStatsId").val("PO");
 	$("#workStateList").val(0);
