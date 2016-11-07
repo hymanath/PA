@@ -225,6 +225,7 @@
 			<result type="redirect" name="cadreWebMonitoring">webMonitoringDashboardAction.action</result>
 			<result type="redirect" name="cadreWebMonitoringDashboard">webMonitoringDashboardAction.action</result>
 			<result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
+			<result type="redirect" name="cadreFiledMonitoringReport">fieldMonitoringReportAction.action</result>
 			<result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
 			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
 			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
@@ -5680,6 +5681,7 @@
        <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>
        <result type="redirect" name="cadreWebMonitoringDashboard">webMonitoringDashboardAction.action</result>
       <result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
+      <result type="redirect" name="cadreFiledMonitoringReport">fieldMonitoringReportAction.action</result>
       <result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
       <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
       <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>    
@@ -14487,7 +14489,7 @@
 	<action name="fieldMonitoringReportAction" class="fieldMonitoringAction" method="fieldMonitoringReport">
 		<result name="success">/jsp/FieldMonitoringReport.jsp</result> 
 		<result name="input">/jsp/loginForm.jsp?src=fieldMonitoringReportAction</result>
-		<!-- <result name="error" type="redirect">login.action</result> -->
+		<result name="error" type="redirect">login.action</result>
 	</action>
 	<action name="getFieldMonitoringUserWiseDetailsAction" class="fieldMonitoringAction"  method="getFieldMonitoringUserWiseDetails">
 			<result type="json" name="success">
