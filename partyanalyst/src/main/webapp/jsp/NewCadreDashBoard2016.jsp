@@ -395,8 +395,8 @@ table.dataTable tr.odd {
 					<span style="margin-right:10px;"> AS OF TODAY </span>-->
 					<input type="radio" class="radiobuttonSelectedWise" id="" name="compareC" value="total" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> OVER ALL </span>
-					
-					<div class="btn-group pull-right">
+					<button class="btn btn-success btn-xs" id="distExcelExpBtnId" attr_tab_user_type="Tab">Export To Excel</button>
+					<div class="btn-group pull-right">     
 					<button type="button" class="btn btn-mini btn-success  aptsclass " value="AP" name="constTargetBtn" id="apDistTargetComp" checked="checked">AP</button>
 					<button type="button" class="btn btn-mini aptsclass " value="TS" name="constTargetBtn" id="tgDistTargetComp" >TS</button>
 				</div>
@@ -420,12 +420,12 @@ table.dataTable tr.odd {
 					<!--<input type="radio" class="typeRd" id="" name="compareD" value="asoftoday" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> AS OF TODAY</span>-->
 					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> OVER ALL</span>
-					
-					<div class="btn-group pull-right">
-					<button type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</inpbuttonut>
-					<button type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</button>
-				</div>
+					<span style="margin-right:10px;"> OVER ALL</span>      
+					<button class="btn btn-success btn-xs" id="constExcelExpBtnId" attr_tab_user_type="Tab" >Export To Excel</button>
+					<div class="btn-group pull-right">  
+						<button type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</inpbuttonut>
+						<button type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</button>
+					</div>
 				</div>
 				<div id="constituencyWise2016Details"   class="m_top10"></div>
 				<div id="leaderDataDiv1" class="scrollable_div" style="margin-top: -1px">
@@ -891,7 +891,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
 				$("#constituencyWise2016Details").html('');
-			build2016LocationWiseRegisteredCountsConstituencyWise(result);
+			build2016LocationWiseRegisteredCountsConstituencyWise(result,type);
 					
 		 });
 	}
@@ -915,13 +915,12 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
 				$("#districtWise2016Details").html('');
-			build2016LocationWiseRegisteredCountsDistrictWise(result);
+			build2016LocationWiseRegisteredCountsDistrictWise(result,type);
 			
 					
 		 });
 	}
-	function build2016LocationWiseRegisteredCountsDistrictWise(result){
-		
+	function build2016LocationWiseRegisteredCountsDistrictWise(result,type){              
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="table-responsive" style="margin-top:20px;">';
@@ -951,17 +950,24 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			
 			str+='<table class="table table-bordered " id="districtWise2016DataTableId">';
 				str+='<thead>';
+					str+='<th>District Id</th>';   
 					str+='<th>District</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
-					str+='<th>Total</th>';
+					str+='<th>Man Power</th>';  
+					str+='<th>Total Count</th>';
+					if(type == "total"){
+						str+='<th>Today Count</th>';
+					}
 					str+='<th>% of Register cadres</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].id+'</td>';
+					str+='<td>'+result[i].name+'</td>';    
+					
 					str+='<td>'+result[i].targetCount+'</td>';
 					
 					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
@@ -984,13 +990,25 @@ function get2016LocationWiseRegisteredCounts(typeId){
 							str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
 						}
 					}
-					
+					if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
+						str+='<td> - </td>';  
+					}else{
+						str+='<td>'+result[i].mapPowerCount+'</td>';
+					}
 					
 					if(result[i].count2016 == null || result[i].count2016 == 0){
 						str+='<td> - </td>';
 					}else{
 						str+='<td>'+result[i].count2016+'</td>';
+					}    
+					if(type == "total"){
+						if(result[i].count2016Today == null || result[i].count2016Today == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016Today+'</td>';
+						}
 					}
+					
 					
 					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
 						str+='<td> - </td>';
@@ -1010,12 +1028,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		
 		$("#districtWise2016Details").html(str);
 		$("#districtWise2016DataTableId").dataTable({
-			"order": [ 4, 'desc' ]
+			"aaSorting": [[ 4, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]	
 		});
 	}
-	   
-	function build2016LocationWiseRegisteredCountsConstituencyWise(result){
-		
+	        
+	function build2016LocationWiseRegisteredCountsConstituencyWise(result,type){
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="table-responsive" style="margin-top:20px;">';
@@ -1043,17 +1062,25 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			}
 			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
 				str+='<thead>';
-					str+='<th>Constituency</th>';
+					str+='<th>Constituency Id</th>';
+					str+='<th>Constituency</th>';  
+					
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
-					str+='<th>Total</th>';
+					str+='<th>Map Power</th>';
+					str+='<th>Total Count</th>';
+					if(type == "total"){
+						str+='<th>Today Count</th>';    
+					}
 					str+='<th>% of Register cadres</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
+					str+='<td>'+result[i].no+'</td>';           
 					str+='<td>'+result[i].name+'</td>';
+					
 					str+='<td>'+result[i].targetCount+'</td>';
 					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
 						str+='<td> - </td>';
@@ -1075,11 +1102,25 @@ function get2016LocationWiseRegisteredCounts(typeId){
 							str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
 						}
 					}
+					if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].mapPowerCount+'</td>';
+					}
+					
 					if(result[i].count2016 == null || result[i].count2016 == 0){
 						str+='<td> - </td>';
 					}else{
 						str+='<td>'+result[i].count2016+'</td>';
 					}
+					if(type == "total"){
+						if(result[i].count2016Today == null || result[i].count2016Today == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016Today+'</td>';
+						}
+					}  
+					
 					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
 						str+='<td> - </td>';
 					}else{
@@ -1100,11 +1141,37 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		
 		$("#constituencyWise2016Details").html(str);
 		$("#constituencyWise2016DataTableId").dataTable({
-			"order": [ 4, 'desc' ]
+			"aaSorting": [[ 4, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 		});
 	}
 	
-
+</script>
+<script>
+	$(document).on("click","#constExcelExpBtnId",function(){
+		generateExcelReportForCadreConst();	
+	});
+	$(document).on("click","#distExcelExpBtnId",function(){
+		generateExcelReportForCadreDist();	
+	});
+	function generateExcelReportForCadreConst(){
+		tableToExcel(constituencyWise2016DataTableId, 'Location Wise Registrations Report');
+	}
+	function generateExcelReportForCadreDist(){
+		tableToExcel(districtWise2016DataTableId, 'Location Wise Registrations Report');        
+	}
+	var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()	
 </script>
 </body>
 </html>
