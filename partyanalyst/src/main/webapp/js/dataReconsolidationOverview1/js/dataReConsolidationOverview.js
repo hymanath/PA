@@ -151,9 +151,10 @@ $(document).on("click","#submitId",function(){
 				str+='<th>IMEI NUMBER</th>';
 				str+='<th>VENDOR NAME</th>'; 
 				str+='<th>TOTAL REGISTRATION</th>'; 
-				str+='<th>SYNC PENDING</th>';
-				str+='<th>KAFKA PENDING</th>'; 
+				str+='<th>TAB SUBMITTED</th>'; 
+				str+='<th>TAB PENDING</th>';
 				str+='<th>KAFKA SYNC</th>'; 
+				str+='<th>KAFKA PENDING</th>'; 
 				str+='<th>ACTUAL SERVER SYNC</th>';
 				str+='<th></th>';
 				str+='</tr>';
@@ -166,9 +167,10 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].imeiNo+'</td>';      
 				str+='<td>'+result[i].name+'</td>';
 				str+='<td>'+result[i].totalRecords+'</td>';  
+				str+='<td>'+result[i].sync+'</td>';
                 str+='<td>'+result[i].pending+'</td>'; 
-				str+='<td>'+result[i].kafkaPending+'</td>'; 
                 str+='<td>'+result[i].kafkaSync+'</td>';
+				str+='<td>'+result[i].kafkaPending+'</td>'; 
              if(result[i].actualCount != null){				
 				str+='<td>'+result[i].actualCount+'</td>';
               }else{
@@ -288,10 +290,10 @@ function buildPopUpModelDetails(result){
 		str+='<th>First Record Received</th>'; 
 		str+='<th>Last Record Received</th>'; 
 		str+='<th>Total Registrations</th>'; 
-		str+='<th>Synced</th>';
-		str+='<th>Tab Sync Pending</th>';
+		str+='<th>Tab Submitted</th>';
+		str+='<th>Tab Pending</th>';
+		str+='<th>Kafka Sync</th>';
 		str+='<th>kafka Pending</th>';
-		str+='<th>Server Sync</th>';
 		str+='<th>Total Amount</th>';
       str+='</tr>';
 	str+='</thead>';
@@ -301,8 +303,8 @@ function buildPopUpModelDetails(result){
 		var totRecrds = result[i].totalRecords;
 		var totalSync = result[i].sync;
 		var totPending = result[i].pending;
-		var kafkaPending = result[i].kafkaPending;
 		var  kafkaSync =result[i].kafkaSync;
+		var kafkaPending = result[i].kafkaPending;
 		var totAmount = result[i].totalAmount;
 		str +='<td class ="text-center">'+result[i].surveyDate+'</td>';
 		str+='<td><img src="https://www.mytdp.com/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
@@ -325,16 +327,16 @@ function buildPopUpModelDetails(result){
 		}else {
 			str +='<td >'+0+'</td>';
 		}
-       if(kafkaPending != null)	{
+		if(kafkaSync != null){
+			  str +='<td >'+kafkaSync+'</td>';
+		 }else {
+			  str +='<td >'+0+'</td>';
+		 }
+        if(kafkaPending != null)	{
 		   str +='<td >'+kafkaPending+'</td>';
-	   }else {
+	    }else {
 		   str +='<td >'+0+'</td>';
-	   }
-	   if(kafkaSync != null){
-		  str +='<td >'+kafkaSync+'</td>';
-	   }else {
-		    str +='<td >'+0+'</td>';
-	   }
+	    }
 	   if(totAmount != null){
 		 str +='<td >'+totAmount+'</td>';
 	  }else {
@@ -357,10 +359,10 @@ function buildPopUpModelDetails(result){
 		str1+='<th>First Record Received</th>'; 
 		str1+='<th>Last Record Received</th>'; 
 		str1+='<th>Total Registrations</th>'; 
-		str1+='<th>Synced</th>';
-		str1+='<th>Tab Sync Pending</th>';
+		str1+='<th>Tab Synced</th>';
+		str1+='<th>Tab Pending</th>';
+		str1+='<th>Kafka Sync</th>';
 		str1+='<th>kafka Pending</th>';
-		str1+='<th>Server Sync</th>';
 		str1+='<th>Total Amount</th>';
       str1+='</tr>';
 	str1+='</thead>';
@@ -370,8 +372,8 @@ function buildPopUpModelDetails(result){
 		var totRecrds = result[i].totalRecords;
 		var totalSync = result[i].sync;
 		var totPending = result[i].pending;
+		var  kafkaSync = result[i].kafkaSync;
 		var kafkaPending = result[i].kafkaPending;
-		var  kafkaSync =result[i].kafkaSync;
 		var totAmount = result[i].totalAmount;
 		str1 +='<td class ="text-center">'+result[i].surveyDate+'</td>';
 		str1 +='<td class ="text-center">'+result[i].name+'</td>';
@@ -393,16 +395,16 @@ function buildPopUpModelDetails(result){
 		}else {
 			str1 +='<td >'+0+'</td>';
 		}
-       if(kafkaPending != null)	{
+		if(kafkaSync != null){
+			  str1 +='<td >'+kafkaSync+'</td>';
+		}else {
+			  str1 +='<td >'+0+'</td>';
+		}
+        if(kafkaPending != null)	{
 		   str1 +='<td >'+kafkaPending+'</td>';
-	   }else {
+	    }else {
 		   str1 +='<td >'+0+'</td>';
-	   }
-	   if(kafkaSync != null){
-		  str1 +='<td >'+kafkaSync+'</td>';
-	   }else {
-		  str1 +='<td >'+0+'</td>';
-	   }
+	    }
 	   if(totAmount != null){
 		 str1 +='<td >'+totAmount+'</td>';
 	  }else {
