@@ -755,6 +755,8 @@ public List<Long> getTodayMandalStartedStateWise(Long stateId){
 	  	 queryStr.append(" and model1.constituency.district.districtId > 10 and model1.constituency.state.stateId=1");
 	   }else if(stateId != null && stateId.longValue() == 36l){
 	  	 queryStr.append(" and model1.constituency.district.districtId < 11 "); 
+	   }else if(stateId != null && stateId.longValue() == 0l){
+		   queryStr.append(" and model1.constituency.district.districtId <= 23 ");
 	   }
 	   Query query = getSession().createQuery(queryStr.toString());
    return query.list();
@@ -799,6 +801,8 @@ public List<Long> getTodayLocalElectionBodyStartedStateWise(Long stateId){
 	  	 queryStr.append(" and model1.constituency.district.districtId > 10 and model1.constituency.state.stateId=1");
 	   }else if(stateId != null && stateId.longValue() == 36l){
 	  	 queryStr.append(" and model1.constituency.district.districtId < 11 "); 
+	   }else if(stateId != null && stateId.longValue() == 0l){
+		   queryStr.append(" and model1.constituency.district.districtId <= 23 ");
 	   }
 	   Query query = getSession().createQuery(queryStr.toString());
       return query.list();
