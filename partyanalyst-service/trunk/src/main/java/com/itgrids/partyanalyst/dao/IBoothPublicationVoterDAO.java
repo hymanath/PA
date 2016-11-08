@@ -748,4 +748,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Long> getLocalElectionBodyByVoterId(Long voterId);
 	  public Voter getVoterByVoterIDCardNo(String voterCardNo);
 	  public List<Object[]> getTotalVoterGroupByLocation(String location, Long constId );
+	  public List<Object[]> getVoterIdDetailsByPublicationIdAndCardNo(String voterCardNo,Long publicationId);
 }
