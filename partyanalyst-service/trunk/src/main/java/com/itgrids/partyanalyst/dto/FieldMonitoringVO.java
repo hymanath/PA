@@ -50,7 +50,7 @@ public class FieldMonitoringVO {
 	private Long startedUsers = 0l;
 	private Long todayRegCount = 0l;
 	private Long todayActiveUsers;
-	private Long lastOneHrActUsers;
+	private Long lastOneHrActUsers = 0l;
 	private String countPerc;
 	private String fieldMonitrngName;
 	private String issueStatus;
