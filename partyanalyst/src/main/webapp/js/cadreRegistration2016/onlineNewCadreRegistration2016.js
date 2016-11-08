@@ -1298,7 +1298,7 @@ function getVoterDetails(){
 	  searchCadreVoterDetails(result);
 	   }else
 	   {
-		   $("#searchVoterDetailsId").html("NO DATA AVAILABLE.....")
+		   $("#searchVoterDetailsId").html("May be your voter id card Not Available in present Voter list .Please check once Election Website then try again.If not available in Election Website ,you can register with your family voter id card also.")
 	   }
    });
 }
