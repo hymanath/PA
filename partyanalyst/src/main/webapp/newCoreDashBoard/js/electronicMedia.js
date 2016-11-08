@@ -38,8 +38,9 @@ $(document).on("click",".moreEmnBlocksIcon",function(){
 $(document).on("click","#detailedPartyLiIdEmn",function(){
 	$(".newEmnHideCls").hide();
 	$(".detailedPartyEmn").show();
-	getMediaProgramsOnParty();
+	getEMMDetailedPartyStateWiseProgramsOverview();
 	getEMMDetailedPartiesVsChannelsPartiesDistrictWise("party");
+	getEMMDetailedPartyDistrictWiseProgramsOverview();
 });
 $(document).on("click","#detailedGovernmentLiIdEmn",function(){
 	$(".newEmnHideCls").hide();
@@ -148,7 +149,7 @@ $('.dateRangePickerClsForEmn').on('apply.daterangepicker', function(ev, picker) 
 	var searchType = $(".emnMediaPrograms .active").attr("attr_searchType");
 	var type = $('input[name=emnSearchTypeName]:checked').val();
 	getMediaProgramsOnParty();
-	getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type)
+	getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type);
 	var activeUlId = $(".viewsLiClassEmn.active").attr('id')
 	$( "#"+activeUlId).trigger("click");
 });
@@ -757,7 +758,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 			{
 				positivePercArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc)
 				negativePercArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].negativePerc)
-				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].groupTitle)
+				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].organization)
 			}
 			$('#partyVsChannelGraph'+i+''+j+'').highcharts({
 				 colors: ['#64C664','#D33E39'],
@@ -1537,7 +1538,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 				str+='<h4 class="panel-title">Total Programs - '+result[i].categoryCount+'</h4>';
 				for(var j in result[i].tvNewsDetailsVOList)
 				{
-					str+='<div id="newsChannels'+j+'" style="height:100px;"></div>';
+					str+='<div id="newsChannels'+i+''+j+'" style="height:100px;"></div>';
 					str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</p>';
 					str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</p>';
 					str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'</p>';
@@ -1549,19 +1550,33 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 					{
 						str+='<h4 style="background-color:#ddd;padding:5px;"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].channelName+'.png" class="newsIcon"/>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].channelName+'</h4>';
 						str+='<div class="row">';
+						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+							str+='<h4 class="panel-title">Total Programs - '+result[i].tvNewsDetailsVOList1[k].categoryCount+'</h4>';
+							str+='<div class="row">';
+								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+									str+='<div id="newsChannelsPrograms'+k+'" style="height:100px;"></div>';
+								str+='</div>';
+								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+									str+='<p class="text-muted">Positive Time</p>';
+									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small>'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'</small></p>';
+									str+='<p class="text-muted">Negative Time</p>';
+									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small>'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'</small></p>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
 						for(var l in result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList)
 						{
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName+' - '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].	categoryCount+'</h4>';
 								str+='<div class="row">';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-										str+='<div id="newsChannelsPrograms'+l+'" style="height:100px;"></div>';
+										str+='<div id="newsChannelsPrograms'+k+l+'" style="height:100px;"></div>';
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeTime+'</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</p>';
 										str+='<p class="text-muted">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveTime+'</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</p>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -1578,17 +1593,18 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 	$("#stateWiseProgramsOvrViewEMN").html(str);
 	for(var i in result)
 	{
-		var partyProgramsArr = []
+		
 		for(var j in result[i].tvNewsDetailsVOList)
 		{
 			
+			var partyProgramsArr = []	
 			str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCount+'</p>';
 			str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCount+'</p>';
 			var partyProgramsSubArr = [];
-			partyProgramsSubArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#222'});
-			partyProgramsSubArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#555'});
+			partyProgramsSubArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#64C664'});
+			partyProgramsSubArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#D33E39'});
 		
-			$("#newsChannels"+j).highcharts({
+			$("#newsChannels"+i+j).highcharts({
 				chart: {
 					type: 'column',
 					backgroundColor:'transparent'
@@ -1647,10 +1663,10 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 			{
 				
 				var resultSubArr = [];
-				resultSubArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime,"color":'#222'});
-				resultSubArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime,"color":'#555'});
+				resultSubArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime,"color":'#64C664'});
+				resultSubArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime,"color":'#D33E39'});
 				resultArr.push({"data":resultSubArr})
-				$("#newsChannelsPrograms"+l).highcharts({
+				$("#newsChannelsPrograms"+k+l).highcharts({
 					chart: {
 						type: 'column',
 						backgroundColor:'transparent'
