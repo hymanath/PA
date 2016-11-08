@@ -8763,7 +8763,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		}
 	   public List<Object[]> getUserTrackingDetails(Long cadreSurveyUserId,Date fromDate,Date toDate){
 		   StringBuilder queryStr = new StringBuilder();
-		     queryStr.append(" select " +
+		     queryStr.append(" select distinct " +
 		     		         " model.surveyTime," +//0
 		     		         " model.longititude," +//1
 		     		         " model.latitude " +//2
