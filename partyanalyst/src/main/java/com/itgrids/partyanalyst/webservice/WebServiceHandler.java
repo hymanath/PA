@@ -2097,14 +2097,14 @@ public class WebServiceHandler {
 			//return cadreRegistrationService.getDistrictWiseConstituency(district);
 		}
 		@POST
-		@Path("/getLocationWiseTabUserTrackingDetails")
+		@Path("/Secure/getLocationWiseTabUserTrackingDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
 			return webServiceHandlerService.getLocationWiseTabUserTrackingDetails(inputVO);
 		}
 		@POST
-	    @Path("/getUserTrackinDetailsBySurveyUserId")
+	    @Path("/Secure/getUserTrackinDetailsBySurveyUserId")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public CadreBasicVO getUserTrackingDetailsBySurveyUserId(CadreBasicVO inputVO)
