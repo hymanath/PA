@@ -25,6 +25,7 @@ public class ToursBasicVO {
     private String comment ;
     private String filePath;
 	private List<ToursBasicVO> subList = null;
+	private List<ToursBasicVO> subList2 = null;
 	
 	private String designation;
 	private Long noOfLeaderCnt=0l;
@@ -240,6 +241,14 @@ public class ToursBasicVO {
 		}else{
 			subList = new ArrayList<ToursBasicVO>();
 			return subList;   
+		}
+	}
+	public List<ToursBasicVO> getSubList2() {   
+		if(subList2 != null){
+			return subList2;
+		}else{
+			subList2 = new ArrayList<ToursBasicVO>();
+			return subList2;   
 		}
 	}
 	public Set<Long> getLocationSet() {

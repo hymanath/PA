@@ -166,7 +166,8 @@ public class TdpCadre {
 	private String simSerialNo;
 	
 	private String isNomineeChanged;
-	
+	private CadreVerificationStatus cadreVerificationStatus;
+	private Long cadreVerificationStatusId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -1195,6 +1196,23 @@ public class TdpCadre {
 	public void setIsNomineeChanged(String isNomineeChanged) {
 		this.isNomineeChanged = isNomineeChanged;
 	}
-	
+   @Column(name="cadre_verification_status_id")
+	public Long getCadreVerificationStatusId() {
+		return cadreVerificationStatusId;
+	}
+	public void setCadreVerificationStatusId(Long cadreVerificationStatusId) {
+		this.cadreVerificationStatusId = cadreVerificationStatusId;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "cadre_verification_status_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreVerificationStatus getCadreVerificationStatus() {
+		return cadreVerificationStatus;
+	}
+	public void setCadreVerificationStatus(
+			CadreVerificationStatus cadreVerificationStatus) {
+		this.cadreVerificationStatus = cadreVerificationStatus;
+	}
 	
 }

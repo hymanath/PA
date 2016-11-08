@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -325,7 +328,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    				resultVO = entry1.getValue();
 		    				candidateId = resultVO.getId();
 		    				locValLst = resultVO.getLocationValueList();
-		    				tourCount = selfAppraisalCandidateDetailsDAO.getTourCount(candidateId,locValLst);
+		    				//tourCount = selfAppraisalCandidateDetailsDAO.getTourCount(candidateId,locValLst);
 		    				if(tourCount != null){
 		    					resultVO.setTotalTour(tourCount);  
 		    				}
@@ -502,4 +505,85 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		}
 		
 	}
+	public ToursBasicVO getTopPoorToursLocationDetails(Long activityMemberId,Long userTypeId,Long stateId,String fromDateStr,String toDateStr){
+		ToursBasicVO resultVO = new ToursBasicVO();
+		Set<Long> locationValues = new HashSet<Long>();
+		Map<Long,ToursBasicVO> toursDtslMap = new HashMap<Long, ToursBasicVO>();
+		Long locationAccessLevelId =0l;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date fromDate=null;
+	    Date toDate=null;
+	  try{
+			if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 fromDate = sdf.parse(fromDateStr);
+				 toDate = sdf.parse(toDateStr);
+			 }
+			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+		    if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID 
+		    || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+			  List<Object[]> rtrnDistObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"District");
+			  setToursDtlsToList(rtrnDistObJLst,toursDtslMap);
+			  resultVO.getSubList().addAll(toursDtslMap.values());
+			  toursDtslMap.clear();
+		    }
+		    if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+		    	  List<Object[]> rtrnParliamentObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"ParliamentConstituency");
+				  setToursDtlsToList(rtrnParliamentObJLst,toursDtslMap);
+				  resultVO.getSubList().addAll(toursDtslMap.values());
+				  toursDtslMap.clear();
+		    }
+		   if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID 
+		    || userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
+			|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID 
+			|| userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+				  List<Object[]> rtrnCnsttncyObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"Constituency");
+				  setToursDtlsToList(rtrnCnsttncyObJLst,toursDtslMap);
+				  resultVO.getSubList2().addAll(toursDtslMap.values());
+				  toursDtslMap.clear();
+			}
+		    if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
+		    	Collections.sort(resultVO.getSubList(), toursPoorPerformanceAscendingPer);
+		    }
+		    if(resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0){
+		    	Collections.sort(resultVO.getSubList2(), toursPoorPerformanceAscendingPer);
+		    }
+		}catch(Exception e){
+			LOG.error("Error occured at getPoorToursLocationDetails() in CoreDashboardToursService ",e);	
+		}
+		return resultVO;
+	}
+	public void setToursDtlsToList(List<Object[]> objList,Map<Long,ToursBasicVO> toursDtslMap){
+		try{
+			if(objList != null && !objList.isEmpty()){
+				for(Object[] param:objList){
+					ToursBasicVO locationVO = new ToursBasicVO();
+					locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					locationVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+					locationVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
+					locationVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[4]));
+					locationVO.setTotalSubmittedToursCnt(locationVO.getOwnToursCnt()+locationVO.getInchargerToursCnt());
+					Double averageTours = locationVO.getTotalSubmittedToursCnt().doubleValue()/locationVO.getSubmitedLeaderCnt().doubleValue();
+					locationVO.setAverageTours(averageTours);
+					toursDtslMap.put(locationVO.getId(),locationVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured at setToursDtlsToList() in CoreDashboardToursService ",e);	
+		}
+	}
+	public static Comparator<ToursBasicVO> toursPoorPerformanceAscendingPer = new Comparator<ToursBasicVO>() {
+	public int compare(ToursBasicVO member2, ToursBasicVO member1) {
+	Double perc2 = member2.getAverageTours();
+	Double perc1 = member2.getAverageTours();
+	//ascending order of percantages.
+	 return perc2.compareTo(perc1);
+	}
+	}; 
 }
