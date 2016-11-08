@@ -399,4 +399,35 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		}
 		return null;
 	}*/
+	public List<Object[]> getCadreSurveyUserDtlsLocationWise(String locationType,List<Long> locationValues,Date fromDate,Date toDate){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select distinct " +
+		  						" model.cadreSurveyUser.cadreSurveyUserId," +
+		  						" model.cadreSurveyUser.userName," +
+		  						" model.constituency.constituencyId," +
+		  						" model.constituency.name ");
+			  if(locationType != null && locationType.equalsIgnoreCase("District") && locationValues != null && locationValues.size() > 0){
+				 queryStr.append(" ,model.constituency.district.districtId " +
+				  		         " ,model.constituency.district.districtName ");
+			  }
+		  	  queryStr.append("  from CadreSurveyUserAssignDetails model where model.cadreSurveyUser.isEnabled='Y' " +
+		  				      "  and model.constituency.deformDate is null and model.constituency.electionScope.electionScopeId=2 ");
+		  if(locationType != null && locationType.equalsIgnoreCase("District") && locationValues != null && locationValues.size() > 0){
+			  queryStr.append(" and model.constituency.district.districtId in (:locationValues)");
+		  }else if(locationType != null && locationType.equalsIgnoreCase("Constituency") && locationValues != null && locationValues.size() > 0 ){
+			  queryStr.append(" and model.constituency.constituencyId in(:locationValues)");
+		  }
+		  if(fromDate != null && toDate != null){
+		    	 queryStr.append(" and date(model.insertedTime) between :fromDate and :toDate");
+		   }
+		  Query query = getSession().createQuery(queryStr.toString());
+		  if(fromDate != null && toDate != null){
+		    	 query.setParameter("fromDate", fromDate);
+		    	 query.setParameter("toDate", toDate);
+		  }
+		  if(locationValues != null && locationValues.size() > 0){
+			  query.setParameterList("locationValues", locationValues);
+		  }
+		  return query.list();
+	}
 }
