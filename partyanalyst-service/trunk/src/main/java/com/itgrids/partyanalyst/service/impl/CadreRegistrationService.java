@@ -13225,6 +13225,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 	
 	public ResultStatus updatePaymenntStatus(final Long userId,final String memberShipNo,final String AuthDesc, final String moduleStr,final String subTypeStr,final String enrollmentNumber){
 		ResultStatus status = new ResultStatus();
+		LOG.error("entered into  CCAVVENUE with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
 		try {
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -13249,22 +13250,31 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 									tdpCadreEnrollmentYear.setIsDeleted("N");
 									tdpCadreEnrollmentYear.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 									tdpCadreEnrollmentYearDAO.save(tdpCadreEnrollmentYear);
+									
+									saveDataToHistoryTable(tdpCadre);
+									tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
+									tdpCadre.setIsDeleted("N");
+									tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									tdpCadre.setUpdatedUserId(userId);
+									tdpCadreDAO.save(tdpCadre);
+									//sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+									//System.out.println("TNGF Registration sms sent status :"+smsSentStatus);
+									String mobileNoStr = tdpCadre.getMobileNo().trim();
+									String mobileNo = mobileNoStr;
+									if(mobileNoStr != null && mobileNoStr.length()>10)
+										mobileNo = mobileNoStr.substring(mobileNoStr.length()-10, mobileNoStr.length());
+									sendSMSInTelugu(mobileNo.trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C38\u0C2D\u0C4D\u0C2F\u0C24\u0C4D\u0C35\u0C02 \u0C24\u0C40\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C2E\u0C32\u0C41. ")+"Ref. No: "+enrollmentNumber));
+									
+									LOG.error(" Successfully SMS Sent  to TDPCADREID : "+tdpCadreId+" mobileno: "+tdpCadre.getMobileNo()+" with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
 								}
-								saveDataToHistoryTable(tdpCadre);
-								tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
-								tdpCadre.setIsDeleted("N");
-								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-								tdpCadre.setUpdatedUserId(userId);
-								tdpCadreDAO.save(tdpCadre);
-								//sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
-								//System.out.println("TNGF Registration sms sent status :"+smsSentStatus);
-								String mobileNoStr = tdpCadre.getMobileNo().trim();
-								String mobileNo = mobileNoStr;
-								if(mobileNoStr != null && mobileNoStr.length()>10)
-									mobileNo = mobileNoStr.substring(mobileNoStr.length()-10, mobileNoStr.length());
-								sendSMSInTelugu(mobileNo.trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C38\u0C2D\u0C4D\u0C2F\u0C24\u0C4D\u0C35\u0C02 \u0C24\u0C40\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C2E\u0C32\u0C41. ")+"Ref. No: "+enrollmentNumber));
 							}
 						}
+						else{
+							LOG.error(" CCAVVENUE Payment Failed SMS NOT Sent   with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
+						}
+					}
+					else{
+						LOG.error("No Cadre Details Found  with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
 					}
 					
 					PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
@@ -13287,7 +13297,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			status.setResultCode(0);
 			status.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {
-			LOG.error("error occured while generating payment gateway basic details in updatePaymenntStatus() .");
+			LOG.error(" CCAVVENUE Exception occuredin  generating payment gateway basic details  with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
 			status.setResultCode(1);
 			status.setMessage(IConstants.FAILURE);
 		}
@@ -13770,8 +13780,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			Map<Long,IdAndNameVO> voterCadreMap = new LinkedHashMap<Long, IdAndNameVO>();
 			List<Long> voterIds = new ArrayList<Long>();
 			
-			List<Object[]> list1 = voterDAO.getOnlineCadreRegistrationVoterDetails(voterCardNo);
-			if(commonMethodsUtilService.isListOrSetValid(list1)){
+			/*List<Object[]> list1 = voterDAO.getOnlineCadreRegistrationVoterDetails(voterCardNo);
+			 if(commonMethodsUtilService.isListOrSetValid(list1)){
 				for (Object[] obj : list1) {
 					VoterSearchVO vo = new VoterSearchVO();
 					Long voterId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -13786,6 +13796,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					returnList.add(vo);
 					voterIds.add(voterId);
 				}
+			 */
+			
+			List<Object[]> list1 = boothPublicationVoterDAO.getVoterIdDetailsByPublicationIdAndCardNo(voterCardNo,IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+			if(commonMethodsUtilService.isListOrSetValid(list1)){
+				for (Object[] obj : list1) {
+					VoterSearchVO vo = new VoterSearchVO();
+					Long voterId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					vo.setVoterId(voterId.toString());
+					vo.setName(obj[4] != null ? obj[4].toString():"");
+					vo.setAge(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setGender(obj[6] != null ? obj[6].toString():"");
+					vo.setRelativeName(obj[8] != null ? obj[8].toString():"");
+					vo.setHouseNo(obj[9] != null ? obj[9].toString():"");
+					vo.setRelationshipType(obj[10] != null ? obj[10].toString():"");
+					vo.setVoterIDCardNo(voterCardNo);					
+					returnList.add(vo);
+					voterIds.add(voterId);
+				}
+				
 				
 				List<Object[]> list = voterDAO.getRegisteredCadresForVoterIds(voterIds);
 				if(commonMethodsUtilService.isListOrSetValid(list)){
