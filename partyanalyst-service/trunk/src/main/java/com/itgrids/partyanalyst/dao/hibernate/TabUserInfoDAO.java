@@ -20,4 +20,16 @@ public class TabUserInfoDAO extends GenericDaoHibernate<TabUserInfo, Long> imple
 								" from TabUserInfo model");
 		return query.list();
 	}
+	public List<Object[]> getSurveyUserBasicDetailsBySurveyUserIds(List<Long> cadreSurveyUserIds){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.cadreSurveyUserId,model.mobileNo,model.name from TabUserInfo model ");
+		 if(cadreSurveyUserIds != null && cadreSurveyUserIds.size() > 0){
+			 queryStr.append(" where model.cadreSurveyUserId in (:cadreSurveyUserIds)");
+		 }
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(cadreSurveyUserIds != null && cadreSurveyUserIds.size() > 0){
+		  query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
+		 }
+		 return query.list();
+	}
 }

@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.TabUserInfo;
 public interface ITabUserInfoDAO extends GenericDao<TabUserInfo, Long> {
 	
 	public List<Object[]> getTotalTabUserImages();
+	public List<Object[]> getSurveyUserBasicDetailsBySurveyUserIds(List<Long> cadreSurveyUserIds);
 }

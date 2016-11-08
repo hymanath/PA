@@ -8761,4 +8761,24 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			else
 				return null;
 		}
+	   public List<Object[]> getUserTrackingDetails(Long cadreSurveyUserId,Date fromDate,Date toDate){
+		   StringBuilder queryStr = new StringBuilder();
+		     queryStr.append(" select " +
+		     		         " model.surveyTime," +//0
+		     		         " model.longititude," +//1
+		     		         " model.latitude " +//2
+		     		         " from TdpCadre model " +
+		     		         " where model.isDeleted = 'N' and  model.enrollmentYear = 2014 and model.insertedUserId=:cadreSurveyUserId ");
+		     if(fromDate != null && toDate != null){
+		    	 queryStr.append(" and date(model.surveyTime) between :fromDate and :toDate");
+		     }
+		     queryStr.append("  order by date(model.surveyTime)  ");
+		     Query query = getSession().createQuery(queryStr.toString());
+		     query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		     if(fromDate != null && toDate != null){
+		    	 query.setParameter("fromDate", fromDate);
+		    	 query.setParameter("toDate", toDate);
+		     }
+		     return query.list();
+	   }
 	}

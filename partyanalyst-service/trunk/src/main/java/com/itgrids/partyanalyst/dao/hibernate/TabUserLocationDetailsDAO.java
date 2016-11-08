@@ -6,6 +6,8 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITabUserLocationDetailsDAO;
 import com.itgrids.partyanalyst.model.TabUserLocationDetails;
@@ -242,4 +244,64 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		}
 		return null;
 	}*/
+	public List<Object[]> getSurveyUserTrackingDtls(Long cadreSurveyUserId,Date fromDate,Date toDate){
+		   StringBuilder queryStr = new StringBuilder();
+		     queryStr.append("select " +
+		     		         " model.surveyTime," +//0
+		     		         " model.longititude," +//1
+		     		         " model.latitude " +//2
+		     		         " from TabUserLocationDetails model " +
+		     		         " where model.cadreSurveyUserId=:cadreSurveyUserId ");
+		     if(fromDate != null && toDate != null){
+		    	 queryStr.append(" and date(model.surveyTime) between :fromDate and :toDate ");
+		     }
+		     queryStr.append("  order by date(model.surveyTime) ");
+		     Query query = getSession().createQuery(queryStr.toString());
+		     query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		     if(fromDate != null && toDate != null){
+		    	 query.setParameter("fromDate", fromDate);
+		    	 query.setParameter("toDate", toDate);
+		     }
+		     
+		     return query.list();
+	}
+  public List<Object[]> getSurveyUserLatestTimeLongitudeAndLatituedeLocationWise(String locationType,List<Long> locationValues,Date fromDate,Date toDate){
+	  
+	  StringBuilder queryStr = new StringBuilder();
+	   queryStr.append(" select distinct " +
+	   		          " tul1.cadre_survey_user_id as surveyUserId," +//0
+	   		          " tul1.survey_time as surveryTime," +//1
+	   		          " tul1.latitude as latitude," +//2
+	   		          " tul1.longititude as longititude " +//3
+	   		          " from tab_user_location_details tul1,"+
+					  " ( select max(tul.survey_time) as survey_time,tul.cadre_survey_user_id " +
+					  " from tab_user_location_details tul "+  
+					  " group by tul.cadre_survey_user_id) as tul2,constituency c "+
+					  " where tul1.cadre_survey_user_id = tul2.cadre_survey_user_id and "+
+					  " tul1.survey_time = tul2.survey_time and tul1.constituency_id = c.constituency_id and c.deform_date is null and c.election_scope_id=2 ");
+			  
+		   	  if(locationType != null && locationType.equalsIgnoreCase("District") && locationValues != null && locationValues.size() > 0){
+				  queryStr.append(" and c.district_id in  (:locationValues)");
+			  }else if(locationType != null && locationType.equalsIgnoreCase("Constituency") && locationValues != null && locationValues.size() > 0 ){
+				  queryStr.append(" and c.constituency_id in(:locationValues)");
+			  }
+			  if(fromDate != null && toDate != null){
+			    	 queryStr.append(" and date(tul1.survey_time) between :fromDate and :toDate");
+			  }
+		     
+		     Session session = getSession();
+	         SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+	     	 sqlQuery.addScalar("surveyUserId",Hibernate.LONG); 
+	    	 sqlQuery.addScalar("surveryTime",Hibernate.STRING); 
+	         sqlQuery.addScalar("latitude",Hibernate.STRING); 
+		 	 sqlQuery.addScalar("longititude",Hibernate.STRING); 
+			 if(fromDate != null && toDate != null){
+				 sqlQuery.setParameter("fromDate", fromDate);
+				 sqlQuery.setParameter("toDate", toDate);
+		     }
+			 if(locationValues != null && locationValues.size() >0){
+		 	sqlQuery.setParameterList("locationValues", locationValues);	
+		 }
+		 return sqlQuery.list();
+  }
 }
