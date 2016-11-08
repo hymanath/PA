@@ -82,6 +82,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-xs-12 col-sm-6 b_right1" id="statusCountDivId"></div>
+									<div  class="col-md-6 col-xs-12 col-sm-6 b_right1" id="mandalMuncipltyCountId"></div>
                                 </div>
                             </div>
                         </div>
@@ -246,6 +247,33 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- Model for notStartedCount for mandal/Muncipality -->
+<div class="modal fade" id="locationWiseCadreReportModalId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document" style="margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+	    <button class="btn btn-success btn-xs pull-right" id="cadreExcelExpBtnId" attr_tab_user_type="Tab"  style="display:none;margin-right:20px;">Export To Excel</button>
+	    <h4 class="modal-title" id="locationWiseCadreReportHeadingId"></h4>
+	  <div class="modal-body">
+	    <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="locationWiseProcessImgReport"></center></div>
+			
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div id="locationWiseCadreReportDivId"> </div>    
+			</div>      
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
 <input type="hidden" id="hiddenCadreSurveyUserId"></input>
 <input type="hidden" id="hiddenTabUserInfoId"></input>
