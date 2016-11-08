@@ -180,7 +180,7 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 		 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 SimpleDateFormat outputFormat = new SimpleDateFormat("KK:mm a");
 		 SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy");
-	
+		 
 		   Date fromDate = null;
 		   Date toDate = null;
 		
@@ -197,8 +197,10 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 				tabStatsVO.setSurveyDate(param[0] != null ? format1.format((Date)param[0]) : "");
 				tabStatsVO.setName(param[1] != null ? param[1].toString() : "");
 				tabStatsVO.setMobileNo(param[2] != null ? param[2].toString() : "");
-				tabStatsVO.setFirstRecord(param[3] != null ? outputFormat.format(inputFormat.parse(param[3].toString())) : "");
-				tabStatsVO.setLastRecord(param[4] != null ?  outputFormat.format(inputFormat.parse(param[4].toString())) : "");
+				String t[] = param[3].toString().split(" ")[1].split(":");
+				String t1[] = param[3].toString().split(" ")[1].split(":");
+			    tabStatsVO.setFirstRecord(param[3] != null ?  new SimpleDateFormat("hh:mm a").format(new SimpleDateFormat("HH:mm").parse(t[0]+":"+t[1])):"");
+				tabStatsVO.setLastRecord(param[4] != null ?  new SimpleDateFormat("hh:mm a").format(new SimpleDateFormat("HH:mm").parse(t1[0]+":"+t1[1])):"");
 				tabStatsVO.setTotalRecords(param[5]!=null?(Long.valueOf(param[5].toString())) :0l);				
 				tabStatsVO.setSync(param[6] != null ? (Long)param[6] : 0l);
 				tabStatsVO.setPending(param[7] != null ? (Long)param[7] : 0l);
@@ -219,8 +221,5 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 	}
 	return finalList;
 }
-
-
-
 
 }
