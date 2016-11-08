@@ -1394,7 +1394,7 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 					vo.setFieldMonitrngName(obj[10] != null ? obj[10].toString():"");
 					//vo.setVendorId(Long.valueOf(obj[10] != null ? obj[10].toString():"0"));
 					//vo.setVendorName(obj[11] != null ? obj[11].toString():"");
-					
+					vo.setId(Long.valueOf(obj[11] != null ? obj[11].toString():"0"));//cadreRegIssueId
 					cadreSurveyUserIds.add(cadreSurveyUserId);
 					
 					//String vendorName = fieldVendorTabUserDAO.getVendorNameByCadreSurveyUserId(cadreSurveyUserId);
@@ -1483,6 +1483,34 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 							vo.setClosedIssues(count);
 					}
 				}
+			}
+			
+			if(issueTypeId == 0l || issueTypeId == 1l){
+				Map<Long,IdAndNameVO> leaderMap = new LinkedHashMap<Long, IdAndNameVO>();
+				List<Object[]> cadreIssueList = cadreRegIssuePersonDAO.getCadreRegIssuePersonDetails(startDate, endDate);
+					if(cadreIssueList != null && !cadreIssueList.isEmpty()){
+						for (Object[] obj : cadreIssueList) {
+							IdAndNameVO vo = new IdAndNameVO();
+							Long id = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+							vo.setId(id);
+							vo.setActualMobNumber(obj[2] != null ? obj[2].toString():"");
+							vo.setName(obj[3] != null ? obj[3].toString():"");
+							vo.setMobileNumber(obj[4] != null ? obj[4].toString():"");
+							leaderMap.put(id, vo);
+						}
+					}
+				
+					if(returnList != null && !returnList.isEmpty()){
+						for (FieldMonitoringVO vo : returnList) {
+							Long id = vo.getId();
+							IdAndNameVO leadervo = leaderMap.get(id);
+							if(leadervo != null){
+								vo.setLeaderMandal(leadervo.getActualMobNumber());
+								vo.setLeaderName(leadervo.getName());
+								vo.setLeadreMobile(leadervo.getMobileNumber());
+							}
+						}
+					}
 			}
 			
 	} catch (Exception e) {
