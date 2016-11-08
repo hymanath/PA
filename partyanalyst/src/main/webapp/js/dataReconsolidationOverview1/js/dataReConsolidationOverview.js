@@ -68,7 +68,7 @@ function getDataReConsalationOverView(){
 				var totPending  = result.totalPending;
 				if(result != null){
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">Total Smart Devices</p>';
+				str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
 				if(totImeiNo != null){
 						str+='<p class="text_bold">'+totImeiNo+'</p>';
 				}else{
@@ -76,7 +76,7 @@ function getDataReConsalationOverView(){
 				}
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">Total Registration</p>';
+				str+='<p class="text_bold">TOTAL TAB REGISTRATIONS</p>';
 				if(totRecords != null){
 					str+='<p class="text_bold">'+result.totalRecords+'</p>';
 				}else {
@@ -84,7 +84,7 @@ function getDataReConsalationOverView(){
 				}
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">Data Synced Records</p>';
+				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
 				if(totSynRec != null){
 					str+='<p class="text_bold">'+totSynRec+'</p>';
 				}else {
@@ -92,7 +92,7 @@ function getDataReConsalationOverView(){
 				}
 				str+='</div>';
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 ">';
-				str+='<p class="text_bold">Data Synced Pending Records</p>';
+				str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
 				 if(totPending !=null){
 					 str+='<p class="text_bold">'+totPending+'</p>';
 				 }else{
@@ -142,13 +142,13 @@ $(document).on("click","#submitId",function(){
 				str+='<th>USER NAME</th>'; 
 				//str+='<th>Device Number</th>';
 				str+='<th>IMEI NUMBER</th>';
-				str+='<th>VENDOR NAME</th>'; 
-				str+='<th>TOTAL REGISTRATION</th>'; 
+				str+='<th>TAB USER NAME</th>'; 
+				str+='<th>TOTAL TAB REGISTRATIONS</th>'; 
 				str+='<th>TAB SUBMITTED</th>'; 
 				str+='<th>TAB PENDING</th>';
-				str+='<th>KAFKA SYNC</th>'; 
-				str+='<th>KAFKA PENDING</th>'; 
-				str+='<th>ACTUAL SERVER SYNC</th>';
+				str+='<th>TAB KAFKA COMPLETED</th>'; 
+				str+='<th>TAB KAFKA PENDING</th>'; 
+				str+='<th>ACTUAL SERVER REGISTRATIONS</th>';
 				str+='<th></th>';
 				str+='</tr>';
 				str+='</thead>'; 
@@ -278,18 +278,18 @@ function buildPopUpModelDetails(result){
 	str+='<table class="table table-condensed " id="tabUserDetailsId">';
 	str+='<thead>';
 	    str+='<tr>';
-		str+='<th>Date</th>';
-		str +='<th>ImagePath</th>';
-		str+='<th>Name</th>';
-		str+='<th>Mobile No</th>';
-		str+='<th>First Record Received</th>'; 
-		str+='<th>Last Record Received</th>'; 
-		str+='<th>Total Registrations</th>'; 
-		str+='<th>Tab Submitted</th>';
-		str+='<th>Tab Pending</th>';
-		str+='<th>Kafka Sync</th>';
-		str+='<th>kafka Pending</th>';
-		str+='<th>Total Amount</th>';
+		str+='<th>DATE</th>';
+		str +='<th>IMAGE PATH</th>';
+		str+='<th>NAME</th>';
+		str+='<th>MOBILE NO</th>';
+		str+='<th>FIRST RECORD RECEIVED</th>'; 
+		str+='<th>LAST  RECORD RECEIVED</th>'; 
+		str+='<th>TOTAL TAB REGISTRATIONS</th>'; 
+		str+='<th>TAB SUBMITTED</th>';
+		str+='<th>TAB PENDING</th>';
+		str+='<th>TAB KAFKA COMPLETED</th>';
+		str+='<th>TAB KAFKA PENDING</th>';
+		str+='<th>TOTAL AMOUNT</th>';
       str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -302,7 +302,7 @@ function buildPopUpModelDetails(result){
 		var kafkaPending = result[i].kafkaPending;
 		var totAmount = result[i].totalAmount;
 		str +='<td class ="text-center">'+result[i].surveyDate+'</td>';
-		str+='<td><img src="https://www.mytdp.com/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+		str+='<td><img src="http://www.mytdp.in/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 		str +='<td class ="text-center">'+result[i].name+'</td>';
 		str +='<td class ="text-center">'+result[i].mobileNo+'</td>';
 		str +='<td class ="text-center">'+result[i].firstRecord+'</td>';
@@ -348,17 +348,17 @@ function buildPopUpModelDetails(result){
 	str1+='<table class="table table-condensed " id="tabUserExportExcelId">';
 	str1+='<thead>';
 	    str1+='<tr>';
-		str1+='<th>Date</th>';
-		str1+='<th>Name</th>';
-		str1+='<th>Mobile No</th>';
-		str1+='<th>First Record Received</th>'; 
-		str1+='<th>Last Record Received</th>'; 
-		str1+='<th>Total Registrations</th>'; 
-		str1+='<th>Tab Synced</th>';
-		str1+='<th>Tab Pending</th>';
-		str1+='<th>Kafka Sync</th>';
-		str1+='<th>kafka Pending</th>';
-		str1+='<th>Total Amount</th>';
+		str1+='<th>DATE</th>';
+		str1+='<th>NAME</th>';
+		str1+='<th>MOBILE NO</th>';
+		str1+='<th>FIRST RECORD RECEIVED</th>'; 
+		str1+='<th>LAST RECORD RECEIVED</th>'; 
+		str1+='<th>TOTAL TAB REGISTRATIONS</th>'; 
+		str1+='<th>TAB SUBMITTED</th>';
+		str1+='<th>TAB PENDING</th>';
+		str1+='<th>TAB KAFKA COMPLETED</th>';
+		str1+='<th>TAB KAFKA PENDING</th>';
+		str1+='<th>TOTAL AMOUNT</th>';
       str1+='</tr>';
 	str1+='</thead>';
 	str1+='<tbody>';
