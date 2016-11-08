@@ -156,13 +156,16 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 					startDate = sdf.parse(fromDateStr);
 					endDate = sdf.parse(toDateStr);
 				}
-				
+				Set<Long> cadreSurveyUsers = new HashSet<Long>();
 				List<Object[]> dataReConsalationObjs = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(stateId,constistuencyId,startDate,endDate,districtId);
 		
 				Long totalSmartDevics = 0l;
 				Long totalRecords = 0l;
 				Long totalSync = 0l;
 				Long totalPending = 0l;
+				Long tabSync = 0l;
+				Long tabPending =0l;
+				Long cadreSurveyUserId =0l;
 				if( dataReConsalationObjs != null && dataReConsalationObjs.size() >0)
 				{
 					
@@ -172,14 +175,40 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 			      totalRecords = dataReConsalationObj[1] != null ? totalRecords+(Long)dataReConsalationObj[1] : 0l;
 			      totalSync = dataReConsalationObj[2]!=null ?totalSync+(Long)dataReConsalationObj[2] : 0l;
 			      totalPending = dataReConsalationObj[3] != null ? totalPending+(Long)dataReConsalationObj[3] : 0l;
+			      tabSync = dataReConsalationObj[4] != null ? tabSync+(Long)dataReConsalationObj[4] : 0l;
+			      tabPending = dataReConsalationObj[5] != null ? tabPending+(Long)dataReConsalationObj[5] : 0l;
+			      cadreSurveyUserId = dataReConsalationObj[6] != null ? cadreSurveyUserId+(Long)dataReConsalationObj[6] : 0l;
+			      cadreSurveyUsers.add(cadreSurveyUserId);
 					}
 				  }
 				statusvo = new CadreTabRecordsStatusVO();
-				statusvo.setActualCount(totalSmartDevics);
+				statusvo.setTotalImeiNo(totalSmartDevics);
 			    statusvo.setTotalRecords(totalRecords);
 			    statusvo.setTotalSyn(totalSync);
 			    statusvo.setTotalPending(totalPending);
-		
+			    statusvo.setSync(tabSync);
+			    statusvo.setPending(tabPending);
+			    statusvo.setCadreSurveyUserId(cadreSurveyUserId);
+
+			Map<Long, Long> actualMap = new HashMap<Long, Long>();
+			List<Object[]> cadreSurveyCountObj = tdpCadreDAO
+					.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+
+			if (cadreSurveyCountObj != null && cadreSurveyCountObj.size() > 0) {
+				for (Object[] objects : cadreSurveyCountObj) {
+					actualMap.put((Long) objects[0],
+							objects[1] != null ? (Long) objects[1] : 0l);
+				}
+			}
+			if (cadreSurveyUsers != null && cadreSurveyUsers.size() > 0) {
+				for (Long vo : cadreSurveyUsers) {
+					Long count = actualMap.get(vo);
+					if (count != null)
+						statusvo.setActualCount(count
+								+ statusvo.getActualCount());
+				}
+			}
+
 	   }catch(Exception e){
 		 e.printStackTrace();
 		   LOG.error("Exception raised at dataReConsalationOverView", e);

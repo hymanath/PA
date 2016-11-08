@@ -44,7 +44,7 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				  " sum(model.kafkaPending)," +
 				  " sum(model.kafkaSync)," +
 				  " model.cadreSurveyUserId," +
-				  " sum(model.sync),model.maxRecordTime " +
+				  " sum(model.sync),model.insertedTime " +
 				  " from CadreTabRecordsStatus model," +
 				  " CadreRegUserTabUser model1," +
 				  " CadreSurveyUserAssignDetails model2 " +
@@ -95,8 +95,11 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				  " sum(model.totalRecords)," +
 				  " sum(model.kafkaSync)," +
 				  " sum(model.kafkaPending) " +
-				 " from CadreTabRecordsStatus model,CadreSurveyUserAssignDetails model1" +
-				 " where model.cadreSurveyUserId = model1.cadreSurveyUserId");
+				  " sum(model.sync)" +
+				  " sum(model.pending) " +
+				  " model.cadreSurveyUserId" +
+				  " from CadreTabRecordsStatus model,CadreSurveyUserAssignDetails model1" +
+				  " where model.cadreSurveyUserId = model1.cadreSurveyUserId");
 		 if(districtId != null && districtId.longValue()>0l)
 		 {
 			 sb.append(" and model1.constituency.district.districtId =:districtId");
