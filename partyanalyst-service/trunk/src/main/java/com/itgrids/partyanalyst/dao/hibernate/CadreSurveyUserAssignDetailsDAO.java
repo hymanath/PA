@@ -267,9 +267,17 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			queryStr.append(" and model.levelId = 4 ");
 			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
 			{
-				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+					if(inputVO.getParentLocationTypeId().longValue()==36L && inputVO.getParentLocationTypeId().longValue()==2L)
+						queryStr.append(" and constituency.district.districtId  between 1 and 10 ");
+					else if(inputVO.getParentLocationTypeId().longValue()==1L)
+						queryStr.append(" and constituency.district.districtId  between 11 and 23 ");
+					else
+						queryStr.append(" and constituency.district.state.stateId =1 ");
+				}
+				else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
 					queryStr.append(" and constituency.district.districtId = :parentLocationTypeId ");
-					if(inputVO.getChildLocationTypeId().longValue()>0L){
+					if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append("  and constituency.constituencyId = :childLocationTypeId ");
 					}
 				}else{
@@ -293,9 +301,9 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			}
 			
 			query = getSession().createQuery(queryStr.toString());
-			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getParentLocationTypeId().longValue()>0L)
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
-			if(!inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getChildLocationTypeId().longValue()>0L)
+			if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
 			
 			return query.list();
