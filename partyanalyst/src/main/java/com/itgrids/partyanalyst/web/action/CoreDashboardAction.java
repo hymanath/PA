@@ -3092,4 +3092,19 @@ public String getUserTrackingDtslBySurveyUserId(){
 	}
 	return Action.SUCCESS;
 }
+public String getTopPoorToursLocationDetails(){
+	try {
+		LOG.info("Entered into getTopPoorToursLocationDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long userTypeId = jObj.getLong("userTypeId");
+		toursBasicVO = coreDashboardToursService.getTopPoorToursLocationDetails(activityMemberId,userTypeId,stateId,fromDate,toDate);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getTopPoorToursLocationDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
