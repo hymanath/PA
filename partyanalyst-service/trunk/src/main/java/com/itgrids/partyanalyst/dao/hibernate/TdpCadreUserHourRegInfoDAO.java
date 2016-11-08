@@ -53,7 +53,7 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsers(Date date,Integer hour)
 		sbS.append(" and date(model.tdpCadre.surveyTime) =:date ");
 	}
 	if(hour != null){
-		sbS.append(" and hour(model.tdpCadre.surveyTime) < :hour ");
+		sbS.append(" and hour(model.tdpCadre.surveyTime) <= :hour ");
 	}
 	sbS.append(" group by hour(model.tdpCadre.surveyTime),model.tdpCadre.insertedUserId,model.tdpCadre.tabUserInfoId  ");
 	
