@@ -117,7 +117,15 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 				
 		if(type != null &&  locationId.longValue()>0L)
 		{
-			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
+			if(type.equalsIgnoreCase(IConstants.STATE)){
+				if(locationId == 36L || locationId == 2L)
+					str.append(" and c.district_id between 1 and 10 ");
+				else if( locationId == 1L)
+					str.append(" and c.district_id between 11 and 23 ");
+				else
+					str.append(" and c.state_id =1 ");
+			}
+			else if(type.equalsIgnoreCase(IConstants.DISTRICT)){
 				str.append(" and c.district_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 				str.append("  and c.constituency_id = :locationId ");
@@ -140,8 +148,8 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 				.addScalar("latitude", Hibernate.STRING)
 				.addScalar("longititude", Hibernate.STRING)
 				.addScalar("surveyTime", Hibernate.STRING);
-		
-		query.setParameter("locationId", locationId);
+		if(type != null && !type.equalsIgnoreCase(IConstants.STATE))
+				query.setParameter("locationId", locationId);
 		
 		if(startDate !=null && endDate !=null){
 			query.setParameter("startDate", startDate);
