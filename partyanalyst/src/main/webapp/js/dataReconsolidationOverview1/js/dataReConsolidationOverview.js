@@ -507,6 +507,8 @@ function setDefaultImage(img){
 	str+='</div>';
 	str+='</div>';
 	$("#locWiseSmartDivCount").html(str);
-	
-  
-  }
+}
+
+$( document ).ready(function() {
+  $("#stateOverViewId").val(0); 
+});
