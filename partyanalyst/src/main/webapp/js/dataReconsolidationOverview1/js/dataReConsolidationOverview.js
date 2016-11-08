@@ -94,7 +94,7 @@ function getDataReConsalationOverView(){
 					 str+='<p class="text_bold">'+0+'</p>';
 				}
 				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 ">';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TAB SUBMITTED</p>';
 				if(totTabSyn !=null){
 					 str+='<p class="text_bold">'+result.sync+'</p>';
@@ -103,7 +103,7 @@ function getDataReConsalationOverView(){
 				 }
 				str+='</div>';
 				}
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 ">';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TAB PENDING</p>';
 				if(totTabPending !=null){
 					 str+='<p class="text_bold">'+result.pending+'</p>';
@@ -111,8 +111,8 @@ function getDataReConsalationOverView(){
 					 str+='<p class="text_bold">'+0+'</p>';
 				 }
 				str+='</div>';
-				}
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right ">';
 				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
 				if(totSynRec != null){
 					str+='<p class="text_bold">'+totSynRec+'</p>';
@@ -120,7 +120,7 @@ function getDataReConsalationOverView(){
 					str+='<p class="text_bold" text-center>'+0+'</p>';
 				}
 				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 ">';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
 				 if(totPending !=null){
 					 str+='<p class="text_bold">'+totPending+'</p>';
@@ -128,7 +128,7 @@ function getDataReConsalationOverView(){
 					 str+='<p class="text_bold">'+0+'</p>';
 				 }
 				str+='</div>';
-				}
+				
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
 				if(actualServerCount != null){
@@ -473,7 +473,7 @@ function setDefaultImage(img){
   }
   
   function getLocationWiseSmartDevicesCount(){
- 	 $("#locWiseSmartDivCount").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+  $("#locWiseSmartDivCount").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 
 	  var constId = $("#constituencyOverViewId").val();
 	  var districtId = $("#districtOverViewId").val();
@@ -522,12 +522,24 @@ function setDefaultImage(img){
 		str+='<th>DISTRICT NAME</th>';
 	}
 	str+='<th>SMART DEVICES COUNT</th>';
+	str+='<th>TOTAL REGISTRATIONS</th>';
+	str+='<th>Tab Kafka Completed</th>';
+	str+='<th>Tab Kafka Pending</th>';
+	str+='<th>Tab Submitted</th>';
+	str+='<th>Tab Pending</th>';
+	str+='<th>ACTUAL SERVER REGISTRATIONS</th>';
 	str+='</thead>';
 	//str+='<tbody>';
 	for(var i in result){
 	str+='<tbody>';
 		str+='<td>'+result[i].name+'</td>';
-		str+='<td>'+result[i].apTotal+'</td>';
+		str+='<td class ="text-center">'+result[i].totalAmount+'</td>';
+		str+='<td class ="text-center">'+result[i].totalRecords+'</td>';
+		str+='<td class ="text-center">'+result[i].kafkaSync+'</td>';
+		str+='<td class ="text-center">'+result[i].kafkaPending+'</td>';
+		str+='<td class ="text-center">'+result[i].totalSyn+'</td>';
+		str+='<td class ="text-center">'+result[i].totalPending+'</td>';
+		str+='<td class ="text-center">'+result[i].actualCount+'</td>';
 		str+='</tbody>';
 	}
 	//str+='</tbody>';
