@@ -14338,7 +14338,6 @@
 	<action name="tdpAgentAreaMapAction" class="cadreCommitteeAction" method="tdpAgentAreaMap">
  			 <result name="success">jsp/tdpAgentAreaMap.jsp</result>
  	</action>
- 	
  	<action name="dataReconsolidationOverViewAction" class="dataReconsolidationOverViewAction">
 		<result name="input">/jsp/loginForm.jsp?src=dataReConsolidationOverViewAction</result>
 		<result name="success">/jsp/dataReConsolidationOverview.jsp</result>  
@@ -14460,7 +14459,7 @@
 			<result type="json" name="success">
 			<param name="root">cadreCnsttuncyList</param>
 		</result>
-	</action>
+	</action> 
 	<action name="getTotalNewRenewalCadreStateWiseTSAction" class="cadreRegistrationAction"  method="getTotalNewRenewalCadreStateWiseTS">
 			<result type="json" name="success">
 			<param name="root">cadreRegistratedCountVO</param>
@@ -14496,6 +14495,26 @@
 			<param name="root">fieldMonitoringList</param>
 		</result>
 	</action>
+	<!--<action name="getStateDistrConstusListAction" class="trainingCampAction"  method="getStateDistrConstusList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getStateToMandalListAction" class="trainingCampAction"  method="getStateToMandalList">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getStateDistrictListFrCnstencyAction" class="trainingCampAction"  method="getStateDistrictListFrCnstency">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getStateListFrDistrictAction" class="trainingCampAction"  method="getStateListFrDistrict">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>-->
 	<action name="getDataCollectorsPerformanceDetailsAction" class="fieldMonitoringAction"  method="getDataCollectorsPerformanceDetails">
 			<result type="json" name="success">
 			<param name="root">fieldMonitoringVO</param>
@@ -14565,6 +14584,11 @@
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
-	</action>	   
+	</action>
+	<action name="getStateWiseMandalMuncipalityNotStartedCountAction" class="cadreRegistrationAction"  method="getStateWiseMandalMuncipalityNotStartedCount">    
+			<result type="json" name="success">
+			<param name="root">cadreRegistratedCountVO</param>
+		</result>
+	</action> 	   
 </package>
 </struts>
