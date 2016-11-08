@@ -77,8 +77,8 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct model.imeiNo)," +
 				  " sum(model.totalRecords)," +
-				  " sum(model.sync)," +
-				  " sum(model.pending) " +
+				  " sum(model.kafkaSync)," +
+				  " sum(model.kafkaPending) " +
 				 " from CadreTabRecordsStatus model,CadreSurveyUserAssignDetails model1" +
 				 " where model.cadreSurveyUserId = model1.cadreSurveyUserId");
 				
