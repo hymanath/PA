@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -440,8 +441,9 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			queryStr.append(" distinct CSUAD.constituency.district.districtId,CSUAD.constituency.district.districtName ");
 		}
 		
-		queryStr.append(" ,count(distinct CTRS.imeiNo) from CadreSurveyUserAssignDetails CSUAD,CadreTabRecordsStatus CTRS " +
-						" where CSUAD.isDeleted = 'N' and CTRS.cadreSurveyUserId = CSUAD.cadreSurveyUserId " +
+		queryStr.append(" ,count(distinct model.imeiNo),sum(model.totalRecords),sum(model.kafkaSync),sum(model.kafkaPending),sum(model.pending),sum(model.sync)," +
+				" model.cadreSurveyUserId from CadreSurveyUserAssignDetails CSUAD,CadreTabRecordsStatus model " +
+						" where CSUAD.isDeleted = 'N' and model.cadreSurveyUserId = CSUAD.cadreSurveyUserId " +
 						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
 		
 		/*if(constituencyId != null && constituencyId.longValue()>0l){
@@ -483,5 +485,41 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			query.setDate("endDate", endDate);
 		}
 		return query.list();
+	}
+	
+	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> locationIds,Long districtId){
+		
+		StringBuilder str = new StringBuilder();				
+		str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId) " +
+				" from TdpCadreEnrollmentYear model,CadreSurveyUserAssignDetails CSUAD  " +
+				" where " +
+				" model.tdpCadre.isDeleted ='N' " +
+				" and model.isDeleted = 'N' " +
+				" and model.tdpCadre.enrollmentYear = :enrollmentYear " +
+				" and model.enrollmentYearId = :enrollmentYearId and CSUAD.cadreSurveyUserId = model.tdpCadre.insertedUserId " +
+				" and CSUAD.isDeleted = 'N' and CSUAD.cadreSurveyUser.isEnabled = 'Y' ");					
+		
+		if(locationIds !=null && locationIds.size()>0){
+			if(districtId != null && districtId.longValue()>0l){
+				str.append( " and CSUAD.constituency.constituencyId in (:locationIds)  " );
+			}else{
+				str.append( " and CSUAD.constituency.district.districtId in (:locationIds)  " );
+			}
+		}
+		
+		str.append(" group by model.tdpCadre.insertedUserId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		//CADRE_ENROLLMENT_NUMBER
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		query.setParameter("enrollmentYearId", 4l);
+		if(locationIds !=null && locationIds.size()>0){
+			query.setParameterList("locationIds", locationIds);
+		}
+		
+		return query.list();
+		
 	}
 }

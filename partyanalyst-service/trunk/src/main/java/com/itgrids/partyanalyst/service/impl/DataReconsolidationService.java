@@ -285,14 +285,14 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 * @Description : 
 *  @since 08-Nov-2016
 */
-public List<IdAndNameVO> getLocationWiseSmartDevicesCount(Long stateId,Long districtId,Long constituencyId,String startDate,String endDate){
+public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long stateId,Long districtId,Long constituencyId,String startDate,String endDate){
 	
 	
-	  List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);	 
+	  List<CadreTabRecordsStatusVO> finalList = new ArrayList<CadreTabRecordsStatusVO>();	 
 	try{
 	
 		LOG.info("Entered into DataReconsolidationService of getLocationWiseSmartDevicesCount");
-		
+		Set<Long> locationIds = new HashSet<Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
 		   Date fromDate = null;
@@ -307,13 +307,36 @@ public List<IdAndNameVO> getLocationWiseSmartDevicesCount(Long stateId,Long dist
 		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
 			
 			for(Object[] param : cadreRegDetils){
-				IdAndNameVO locationVO = new IdAndNameVO();
-				locationVO.setId(param[0] != null ? (Long)param[0] : 0l);
-				locationVO.setName(param[1] != null ?param[1].toString():"");
-				locationVO.setApTotal(param[2] != null ? (Long)param[2] : 0l);
-				finalList.add(locationVO);
+				CadreTabRecordsStatusVO statusvo = new CadreTabRecordsStatusVO();
+				statusvo.setTabUserInfoId(param[0] != null ? (Long)param[0] : 0l);//location Id
+				statusvo.setName(param[1] != null ?param[1].toString():"");//location Name
+				statusvo.setTotalAmount(param[2] != null ? (Long)param[2] : 0l);//total Smart devices
+				statusvo.setTotalRecords(param[3] != null ? (Long)param[3] : 0l);//Total Registrations
+			    statusvo.setKafkaSync(param[4] != null ? (Long)param[4] : 0l);//Total Kafka Sync Records
+			    statusvo.setKafkaPending(param[5] != null ? (Long)param[5] : 0l);//Total Kafka Pending Records
+			    statusvo.setTotalPending(param[6] != null ? (Long)param[6] : 0l);//Total Tab Pending Records;
+			    statusvo.setTotalSyn(param[7] != null ? (Long)param[7] : 0l);//Total Tab Sync Records;
+			    statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
+			    locationIds.add(param[0] != null ? (Long)param[0] : 0l);//locationIds
+				finalList.add(statusvo);
 			}
 		
+		}
+		
+		Map<Long,Long> actualMap = new HashMap<Long, Long>();
+		List<Object[]> cadreSurveyCountObj =  cadreSurveyUserAssignDetailsDAO.getActualCountOfCadreSurveyUser(locationIds,districtId);
+		
+		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
+			for (Object[] objects : cadreSurveyCountObj) {
+				actualMap.put((Long)objects[0],objects[1] !=null ? (Long)objects[1]:0l);
+			}
+		}
+		if(finalList != null && finalList.size() > 0){
+		for(CadreTabRecordsStatusVO vo : finalList){
+		  Long count = actualMap.get(vo.getTabUserInfoId());
+		  if(count !=null)
+			  vo.setActualCount(count);// Actual server Registrations
+		}
 		}
 	}catch(Exception e){
 		LOG.error("Exception Occured into DataReconsolidationService of getCadreSurveyUserWiseRegistrations",e);

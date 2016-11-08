@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -36,4 +37,5 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	//public Long getTabUserTrackingDetails(GISVisualizationParameterVO inputVO);
 	public List<Object[]> getCadreSurveyUserDtlsLocationWise(String locationType,List<Long> locationValues,Date fromDate,Date toDate);
 	public List<Object[]> getLocationWiseSmartDevicesCount(Long stateId,Long districtId,Long constituencyId,Date startDate,Date endDate);
+	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> constituencyIds,Long districtId);
 }
