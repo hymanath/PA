@@ -49,7 +49,7 @@ public ITdpCadreDAO getTdpCadreDAO() {
 	* @Description : This Service is total tab user wise total Registration count and sync pending   details
 	*  @since 27th-October-2016
 	*/
-public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuencyId,String fromDateStr,String toDateStr){
+public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuencyId,String fromDateStr,String toDateStr,Long districtId){
     	
     	List<CadreTabRecordsStatusVO> returnList = null;
     	
@@ -64,7 +64,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     			endDate = sdf.parse(toDateStr);
     		}
     		
-    		List<Object[]> dataReConsalation = cadreTabRecordsStatusDAO.dataReConsalationOverView(constistuencyId,startDate,endDate);
+    		List<Object[]> dataReConsalation = cadreTabRecordsStatusDAO.dataReConsalationOverView(constistuencyId,startDate,endDate,districtId);
     		
     		Set<Long> cadreSurveyUsers = new HashSet<Long>();
     		if( dataReConsalation != null && dataReConsalation.size() > 0)
@@ -126,7 +126,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
 	* @Description : This Service is user to get the day wise total Registration and sum of pending counts
 	*  @since 27th-October-2016
 	*/
-public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuencyId,String fromDateStr,String toDateStr){
+public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuencyId,String fromDateStr,String toDateStr,Long districtId){
 	
 	  CadreTabRecordsStatusVO statusvo = null;
 	
@@ -141,7 +141,7 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuency
 					endDate = sdf.parse(toDateStr);
 				}
 				
-		  Object[] dataReConsalationObj = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(constistuencyId,startDate,endDate);
+		  Object[] dataReConsalationObj = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(constistuencyId,startDate,endDate,districtId);
 		
 				if( dataReConsalationObj != null)
 				{
