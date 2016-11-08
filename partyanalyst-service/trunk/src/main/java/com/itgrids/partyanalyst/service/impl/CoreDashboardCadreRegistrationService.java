@@ -3914,4 +3914,42 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		 LOG.error("Exception raised in setDUserTrackingDtlsToList() in CoreDashboardCadreRegistrationService service", e); 
 	 }
  }
+  
+  public CadreRegistratedCountVO getStateWiseMandalMuncipalityNotStartedCount(Long stateId){
+	  try{
+		  CadreRegistratedCountVO cadreRegistratedCountVO = new CadreRegistratedCountVO(); 
+		  
+		  List<Long> mandalIdsList = new ArrayList<Long>(0);
+		   List<Long> muncipalityIdsList = new ArrayList<Long>(0);
+		   List<Long> mandalTodayStartedIdsList = new ArrayList<Long>(0);
+		   List<Long> muncipalityTodayStartedIdsList = new ArrayList<Long>(0);
+		   
+		   
+		   List<Long> rtrnTodayStatedMandalIdsLst = tdpCadreLocationInfoDAO.getTodayMandalStartedStateWise(stateId);
+		   setRequiredDIdsToList(rtrnTodayStatedMandalIdsLst,mandalTodayStartedIdsList,"Mandal");
+		   
+		   List<Long> rtrnTodayStatedMuncipalityIdsLst = tdpCadreLocationInfoDAO.getTodayLocalElectionBodyStartedStateWise(stateId);
+		   setRequiredDIdsToList(rtrnTodayStatedMuncipalityIdsLst,muncipalityTodayStartedIdsList,"Muncipality");
+		   
+		   cadreRegistratedCountVO.setTodayStartedMandalMuncipalityCnt(Long.valueOf(rtrnTodayStatedMandalIdsLst.size()+rtrnTodayStatedMuncipalityIdsLst.size()));
+		   
+		   List<Long> rtrnAllMandalIds = constituencyTehsilDAO.getAllStateWiseTehsilIds(stateId);
+		   setRequiredDIdsToList(rtrnAllMandalIds,mandalIdsList,"Mandal");
+		   mandalIdsList.removeAll(mandalTodayStartedIdsList);
+		   
+		   List<Long> rtrnAllMuncipalityIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdsStateWise(stateId);
+		   setRequiredDIdsToList(rtrnAllMuncipalityIdsList,muncipalityIdsList,"Muncipality");
+		   muncipalityIdsList.removeAll(muncipalityTodayStartedIdsList);
+		   
+		   cadreRegistratedCountVO.setTodayNotStartedMandalMuncipalityCnt(Long.valueOf(mandalIdsList.size()+muncipalityIdsList.size()));
+		   cadreRegistratedCountVO.getLocationIdsList1().addAll(mandalIdsList);
+		   cadreRegistratedCountVO.getLocationIdsList1().addAll(muncipalityIdsList);
+		   
+		return cadreRegistratedCountVO;  
+	  }catch(Exception e){
+		  LOG.error("Exception raised in getStateWiseMandalMuncipalityCount() in CoreDashboardCadreRegistrationService service", e);	
+	  }
+	  return null;
+  }
+  
 }
