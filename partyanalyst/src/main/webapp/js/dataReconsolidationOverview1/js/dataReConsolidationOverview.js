@@ -153,6 +153,7 @@ $(document).on("click","#submitId",function(){
 				str+='<th>TAB KAFKA COMPLETED</th>'; 
 				str+='<th>TAB KAFKA PENDING</th>'; 
 				str+='<th>ACTUAL SERVER REGISTRATIONS</th>';
+				str+='<th>UPDATED TIME</th>';
 				str+='<th></th>';
 				str+='</tr>';
 				str+='</thead>'; 
@@ -173,6 +174,11 @@ $(document).on("click","#submitId",function(){
               }else{
 	            str+='<td>0</td>';
                  }
+			 if(result[i].maxRecordTime !=null){
+				str+='<td>'+result[i].maxRecordTime+'</td>';
+				 }else{
+					 str+='<td>-</td>';
+				 }				
 				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
