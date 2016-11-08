@@ -4,6 +4,7 @@
 		getIssueStatusWiseCounts(1);
 		getIssueTypeWiseCounts(1);
 		getDistricts();
+		getApMandalMuncipalityNotStartedCount(1);
 	}
 	var totalDataCollectors = 0;
 	function getOverAllDataCollectorsCounts(state){
@@ -401,7 +402,7 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildStatusWiseDetails(result);
+			buildStatusWiseDetails(result,issueType);
 		}
 		else{
 			$("#statusWiseDetailsImgId").hide();
@@ -415,7 +416,7 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildLocationWiseOverAllDetails(result);
+			buildLocationWiseOverAllDetails(result,issueType);
 		}
 		else{
 			//$("#statusWiseDetailsImgId").hide();
@@ -424,7 +425,7 @@ function getStatusWiseIssuesDetails(issueTypeStr,issueStatus,count,type){
 	});
 }
 
-function buildStatusWiseDetails(result){
+function buildStatusWiseDetails(result,issueTypeId){
 	var str = '';
 	
 	str+='<span class="btn btn-info excelId form-inline pull-right btn-sm btn-xs" style="float:left;margin-top: 10px" onclick="exportToExcel(\'issueStatusTableId\')"><b> Export To Excel </b></span>';
@@ -447,6 +448,11 @@ function buildStatusWiseDetails(result){
 			str+='<th>open issues</th>';
 			str+='<th>fixed issues</th>';
 			str+='<th>closed issues</th>';
+			if(issueTypeId == 1){
+			str+='<th>Leader Name</th>';
+			str+='<th>Mobile</th>';
+			str+='<th>Location</th>';
+			}
 			str+='<th></th>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -498,6 +504,20 @@ function buildStatusWiseDetails(result){
 					str+='<td>'+result[i].closedIssues+'</td>';
 				else
 					str+='<td> - </td>';
+				if(issueTypeId == 1){
+				if(result[i].leaderName != "" && result[i].leaderName != null)
+					str+='<td>'+result[i].leaderName+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].leadreMobile != "" && result[i].leadreMobile != null)
+					str+='<td>'+result[i].leadreMobile+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].leaderMandal != "" && result[i].leaderMandal != null)
+					str+='<td>'+result[i].leaderMandal+'</td>';
+				else
+					str+='<td> - </td>';
+				}
 				str+='<td><i class="glyphicon glyphicon-cog issuesBtn" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result[i].tabUserId+'" attr_cadre_survey_userName="'+result[i].userName+'" attr_tab_userName="'+result[i].tabUserName+'" attr_vendor_Id ="'+result[i].vendorId+'" attr_constistuency_Id = "'+result[i].constituencyId+'" attr_mobileNo="'+result[i].mobileNo+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
 			str+='</tr>';
 		}
@@ -514,7 +534,7 @@ function buildStatusWiseDetails(result){
 	$('html,body').animate({scrollTop: $("#statusWiseDetailsDivId").offset().top}, 'slow');
 }
 
-function buildLocationWiseOverAllDetails(result){
+function buildLocationWiseOverAllDetails(result,issueTypeId){
 	var str = '';
 	
 	str+='<table class="table b_1" id="locationWiseTableId">';
@@ -532,9 +552,11 @@ function buildLocationWiseOverAllDetails(result){
 			str+='<th>Issue Status</th>';
 			str+='<th>Description</th>';
 			str+='<th>Inserted Time</th>';
+			if(issueTypeId == 1){
 			str+='<th>Leader Name</th>';
 			str+='<th>Mobile</th>';
 			str+='<th>Location</th>';
+			}
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -607,6 +629,7 @@ function buildLocationWiseOverAllDetails(result){
 				str+='<td>'+result[i].issueStatus+'</td>';
 				str+='<td>'+result[i].description+'</td>';
 				str+='<td>'+result[i].issueTime+'</td>';
+				if(issueTypeId == 1){
 				if(result[i].leaderName != null)
 					str+='<td>'+result[i].leaderName+'</td>';
 				else
@@ -619,7 +642,7 @@ function buildLocationWiseOverAllDetails(result){
 					str+='<td>'+result[i].leaderMandal+'</td>';
 				else
 					str+='<td> - </td>';
-				
+				}
 				/*if(result[i].openIssues != null)
 					str+='<td>'+result[i].openIssues+'</td>';
 				else
@@ -1097,7 +1120,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
     $(this).closest("td").find(".trackingIssueCls").show();	
 	getCadreRegIssueStatusType(value,issueStatus);
 	var desc = $(".issueDesc"+value).text();          
-	$(".issueDescEdit"+value).val(desc);
+	//$(".issueDescEdit"+value).val(desc);
 	$("#updateStatusId"+value).html('');
 
 });
@@ -1235,7 +1258,7 @@ function buildDataCollectorsPerformanceDetails(result){
 				str+='<th>recent record</th>';
 				str+='<th>last hour</th>';
 				str+='<th>Completed Registrations</th>';
-				str+='<th>today target</th>';
+				//str+='<th>today target</th>';
 				str+='<th>open issues</th>';
 				str+='<th>fixed issues</th>';
 				str+='<th>closed issues</th>';
@@ -1305,10 +1328,10 @@ function buildDataCollectorsPerformanceDetails(result){
 						str+='<td>'+result[i].totalCount+'</td>';
 					else
 						str+='<td> - </td>';
-					if(result[i].todayTarget != null)
+					/*if(result[i].todayTarget != null)
 						str+='<td>'+result[i].todayTarget+'</td>';
 					else
-						str+='<td> - </td>';
+						str+='<td> - </td>';*/
 					if(result[i].openIssues != null && result[i].openIssues > 0)
 						str+='<td>'+result[i].openIssues+'</td>';
 					else
@@ -1399,3 +1422,187 @@ function getIssues(){
 		 $("#leaderIssueDivId").hide();
 	} 
 }
+
+//getApMandalMuncipalityNotStartedCount();
+function getApMandalMuncipalityNotStartedCount(state){
+	
+/*var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});*/
+	var stateId = state;
+	var jsObj={
+		stateId : stateId
+	}
+	$.ajax({          
+			type : 'GET',       
+			url : 'getStateWiseMandalMuncipalityNotStartedCountAction.action',       
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+				if(result != null){
+					buildMandalMuncipaltyCount(result,stateId);  
+				}
+		});
+}
+
+function buildMandalMuncipaltyCount(result,stateId){
+	var str1='';
+		str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+			str1+='<div class="row">';
+				str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id='+stateId+' attr_location_ids='+result.locationIdsList1+' class="getManalMuncipalityCls m_top10">'+result.todayNotStartedMandalMuncipalityCnt+'</h5>';
+				str1+='<h5>YET TO START<br>MANDALS/MUNCIPALITIES</h5>';
+			str1+='</div>';
+          str1+='</div>';
+	$("#mandalMuncipltyCountId").html(str1);  
+}
+$(document).on("click",".getManalMuncipalityCls",function(){
+	    $("#cadreExcelExpBtnId").hide();
+		//$("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
+		var stateId = $(this).attr("attr_state_id");
+		var mandalMuncipalityIds = $(this).attr("attr_location_ids");
+		//var reportType="Started";
+		var mandalMuncipalityIdsArr=[];
+		 if(mandalMuncipalityIds != null && mandalMuncipalityIds != 0){
+			mandalMuncipalityIdsArr = mandalMuncipalityIds.split(",");
+			//reportType="NotStarted";
+		} 
+		//var locationType = "mandalMuncipality";
+		 getMndlMncpalityNotStartedDetails(stateId,mandalMuncipalityIdsArr);
+	});
+function getMndlMncpalityNotStartedDetails(stateId,mandalMuncipalityIdsArr){
+		$("#locationWiseCadreReportHeadingId").html("MANDAL/MUNCIPALITY WISE REPORT");
+		$("#locationWiseCadreReportModalId").modal("show");
+		$("#locationWiseCadreReportDivId").html(' ');
+		$("#locationWiseProcessImgReport").show();
+	
+		var jsObj={  
+			stateId : stateId,
+			locationIdsArr : mandalMuncipalityIdsArr
+		};
+		$.ajax({          
+			type : 'POST',       
+			url : 'getMndlMncpalityTodayStatedNotStartedDetailsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#locationWiseProcessImgReport").hide();
+		  if(result != null && result.length > 0){
+			 buildLocationWiseReport(result);  
+		  }else{
+			 $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE."); 
+		  }
+		});
+	} 	
+	
+function buildLocationWiseReport(result){
+		$("#cadreExcelExpBtnId").show();
+	   var str='';
+	   str+='<div class="table-responsive">';
+	 	str+='<table style="border:1px solid #ddd" class="table table-bordered" id="constituencyDtlsDataTblId">';   
+	   str+='<thead>';
+             str+='<th>District Name</th>';
+			 str+='<th>Constituency Id</th>';
+			 str+='<th>Constituency Name</th>'	 
+			// if(locationType == "mandalMuncipality"){
+			 str+='<th>Mandal/Muncipality</th>';
+			 //}
+			 /*if(reportType=="Started"){
+			  str+='<th>Total Registrations </th>';	 
+			 }
+			 */
+		 str+='</thead>';
+		 str+='<tbody>';
+		  for(var i in result){
+				str+='<tr>';
+				 if(result[i].name != null && result[i].name.length > 0){
+					str+='<td>'+result[i].name+'</td>';      
+				  }else{
+					str+='<td> - </td>';  
+				  }
+				  if(result[i].locationId != null && result[i].locationId > 0){
+					str+='<td>'+result[i].locationId+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
+				  if(result[i].locationName != null && result[i].locationName.length > 0){
+					str+='<td>'+result[i].locationName+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
+				  //if(locationType == "mandalMuncipality"){
+					  if(result[i].locationName2 != null && result[i].locationName2.length > 0){
+							str+='<td>'+result[i].locationName2+'</td>';  
+						  }else{
+						  str+='<td> - </td>';  
+						  }
+			          //}
+				   /*if(reportType=="Started"){
+			 	 if(result[i].total2016CadreCnt != null && result[i].total2016CadreCnt > 0){
+						 str+='<td>'+result[i].total2016CadreCnt+'</td>';       
+					  }else{
+						str+='<td> - </td>';  
+					  }			  
+			        }*/
+				str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+			 str+='</div>';
+		 $("#locationWiseCadreReportDivId").html(str);
+		//if(locationType =="mandalMuncipality"){
+			 //if(locationType == "mandalMuncipality"){
+				//if(reportType=="Started"){
+					 /*$("#constituencyDtlsDataTblId").dataTable({
+					 "aaSorting": [[ 4, "asc" ]], 
+					"iDisplayLength" : 10,
+					"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+				 }); */
+				 $('#constituencyDtlsDataTblId').dataTable({
+	         "aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 20,
+	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	    });
+			  //}
+			 /* else{
+			  $("#constituencyDtlsDataTblId").dataTable({
+			    "aaSorting": [[ 2, "asc" ]], 
+			    "iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
+		      });    
+			 }*/
+		  //}
+		  /*else if(locationType == "Constituency"){
+			   if(reportType=="Started"){
+				  $("#constituencyDtlsDataTblId").dataTable({
+					 "aaSorting": [[ 3, "desc" ]], 
+					"iDisplayLength" : 10,
+					"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+				 });   
+		      }else{
+				$("#constituencyDtlsDataTblId").dataTable({
+			    "aaSorting": [[ 2, "asc" ]], 
+			    "iDisplayLength" : 10,
+                "aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]				
+		        });    
+			 }
+		  }*/
+		//}
+	}
+	
+	
+	
+ $(document).on("click","#cadreExcelExpBtnId",function(){
+	 generateExcelReportForCadre();	
+ });
+ 
+ function generateExcelReportForCadre(){
+	tableToExcel("constituencyDtlsDataTblId", 'Location Wise Registrations Report');
+}
+
+
+$(document).on("click",".stateWiseCls",function(){
+	$("#mandalMuncipltyCountId").html('');
+		stateId = $(":radio:checked").val();
+		getApMandalMuncipalityNotStartedCount(stateId);
+	});
