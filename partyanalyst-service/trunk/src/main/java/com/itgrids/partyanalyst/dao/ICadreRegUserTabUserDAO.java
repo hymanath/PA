@@ -27,4 +27,5 @@ public interface ICadreRegUserTabUserDAO extends GenericDao<CadreRegUserTabUser,
 	public List<Object[]> getTodayTotalIssues(Date today);
 	public List<Object[]> getTodayTotalStartedIssues(Date today);
 	public List<Object[]> getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(Date today);
+	public List<Object[]> getLastOneHourUsersOfFMUser(Date lastHourTime,Date today);
 }

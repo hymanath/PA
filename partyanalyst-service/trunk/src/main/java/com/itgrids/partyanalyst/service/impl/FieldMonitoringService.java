@@ -2507,6 +2507,25 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 				}
 			}
 			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(dateUtilService.getCurrentDateAndTime());
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);
+			Date lastOneHourTime = cal.getTime();
+			
+			List<Object[]> lastHourUsers = cadreRegUserTabUserDAO.getLastOneHourUsersOfFMUser(lastOneHourTime, dateUtilService.getCurrentDateAndTime());
+			if(lastHourUsers != null && !lastHourUsers.isEmpty()){
+				for (Object[] obj : lastHourUsers) {
+					Long constId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long userId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					FieldMonitoringVO vo = getMatchedVOByUserIdAndConstituency(userId, constId, returnList);
+					if(vo != null){
+						vo.setLastOneHrActUsers(count);
+					}
+				}
+			}
+			
 			List<Object[]> totalIssues = cadreRegUserTabUserDAO.getTodayTotalIssues(dateUtilService.getCurrentDateAndTime());
 			if(totalIssues != null && !totalIssues.isEmpty()){
 				for (Object[] obj : totalIssues) {
@@ -2541,7 +2560,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			if(list1 != null && !list1.isEmpty()){
 				for (Object[] obj : list1) {
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					//Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 					Long typeId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					Long constId = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
@@ -2558,9 +2577,9 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			
 			List<Object[]> startedUsersIssues = cadreRegUserTabUserDAO.getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(dateUtilService.getCurrentDateAndTime());
 			if(startedUsersIssues != null && !startedUsersIssues.isEmpty()){
-				for (Object[] obj : list1) {
+				for (Object[] obj : startedUsersIssues) {
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					//Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 					Long typeId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					Long constId = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
@@ -2571,7 +2590,18 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 						IdAndNameVO typeVO = getMatchedVOById(typeId, typsList);
 						if(typeVO != null){
 							typeVO.setInviteeAttendeeCnt(count);  //StartedUsers Issues
-							typeVO.setInviteeCount(typeVO.getAttenteeCount() - typeVO.getInviteeAttendeeCnt());  //NotStartedUsers Issues
+							//typeVO.setInviteeCount(typeVO.getAttenteeCount() - count);  //NotStartedUsers Issues
+						}
+					}
+				}
+			}
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (FieldMonitoringVO vo : returnList) {
+					List<IdAndNameVO> voList = vo.getIdnameList();
+					if(voList != null && !voList.isEmpty()){
+						for (IdAndNameVO vo1 : voList) {
+							vo1.setInviteeCount(vo1.getAttenteeCount() - vo1.getInviteeAttendeeCnt());
 						}
 					}
 				}

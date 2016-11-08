@@ -166,37 +166,44 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 	}
 	
 	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers(Date today){
-		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model1.constituency.district.districtId," +
-											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(model2.cadreRegIssueId)," +
-											" model1.constituency.constituencyId" +
-											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1,CadreRegIssue model2" +
-											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-											" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,''," +
+											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(distinct model2.cadreRegIssueId)," +
+											" model2.locationValue" +
+											" from CadreRegUserTabUser model,CadreRegIssue model2" +
+											" where model.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+											//" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 											" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
-											" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+											" and model.cadreSurveyUser.isEnabled = 'Y'" +
+											" and model2.locationScopeId = 4" +
+											//" and model1.isDeleted = 'N'" +
 											" and model.cadreRegUser.userType = 'FM' and model2.cadreRegIssueStatus.cadreRegIssueStatusId = 1" +
 											" and date(model2.insertedTime) = :today" +
-											" group by model2.cadreRegIssueType.cadreRegIssueTypeId,model1.constituency.constituencyId," +
-											" 		model1.constituency.district.districtId,model.cadreRegUser.user.userId" +
+											//" and model2.locationValue = 311" +
+											" group by model2.cadreRegIssueType.cadreRegIssueTypeId,model2.locationValue," +
+											" 		model.cadreRegUser.user.userId" +
 											" order by model2.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegUser.user.userName");
 		query.setDate("today", today);
 		return query.list();
 	}
 	
 	public List<Object[]> getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(Date today){
-		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model1.constituency.district.districtId," +
-											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(model2.cadreRegIssueId)," +
-											" model1.constituency.constituencyId" +
-											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1,CadreRegIssue model2,TabUserEnrollmentInfo model3" +
-											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-											" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,''," +
+											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(distinct model2.cadreRegIssueId)," +
+											" model2.locationValue" +
+											" from CadreRegUserTabUser model,CadreRegIssue model2,TabUserEnrollmentInfo model3" +
+											" where model.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+											//" and model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
 											" and model2.cadreSurveyUser.cadreSurveyUserId = model3.cadreSurveyUserId" +
 											" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
-											" and model.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+											" and model.cadreSurveyUser.isEnabled = 'Y'" +
+											" and model2.locationScopeId = 4" +
+											" and model3.enrollmentYearId = 4" +
+											//" and model1.isDeleted = 'N'" +
 											" and model.cadreRegUser.userType = 'FM' and model2.cadreRegIssueStatus.cadreRegIssueStatusId = 1" +
-											" and date(model2.insertedTime) = :today" +
-											" group by model2.cadreRegIssueType.cadreRegIssueTypeId,model1.constituency.constituencyId," +
-											" 		model1.constituency.district.districtId,model.cadreRegUser.user.userId" +
+											" and date(model2.insertedTime) = :today and date(model3.surveyTime) = :today" +
+											//" and model2.locationValue = 311" +
+											" group by model2.cadreRegIssueType.cadreRegIssueTypeId,model2.locationValue," +
+											" 		model.cadreRegUser.user.userId" +
 											" order by model2.cadreRegIssueType.cadreRegIssueTypeId,model.cadreRegUser.user.userName");
 		query.setDate("today", today);
 		return query.list();
@@ -204,7 +211,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 	
 	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers(Date today){
 		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model1.constituency.district.districtId," +
-											" model2.cadreRegIssueStatus.cadreRegIssueStatusId,count(model2.cadreRegIssueId)," +
+											" model2.cadreRegIssueStatus.cadreRegIssueStatusId,count(distinct model2.cadreRegIssueId)," +
 											" model1.constituency.constituencyId" +
 											" from CadreRegUserTabUser model,CadreSurveyUserAssignDetails model1,CadreRegIssue model2" +
 											" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
@@ -275,11 +282,32 @@ return query.list();
 				" where model.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUserId"+
 				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
 				" and model.cadreSurveyUser.isEnabled = 'Y'" +
-				" and model2.surveyTime = :today " +
+				" and model2.enrollmentYearId = 4" +
+				" and date(model2.surveyTime) = :today " +
 				" and model.cadreRegUser.userType = 'FM' " +
 				" group by model2.constituency.constituencyId,model.cadreRegUser.user.userId ");
 		
 		query.setDate("today", today);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getLastOneHourUsersOfFMUser(Date lastHourTime,Date today){
+		Query query = getSession().createQuery("select " +
+				" model2.constituency.constituencyId,count(distinct model2.cadreSurveyUserId)," +
+				" model.cadreRegUser.user.userId " +
+				" from CadreRegUserTabUser model,TabUserEnrollmentInfo model2" +
+				" where model.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUserId"+
+				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
+				" and model.cadreSurveyUser.isEnabled = 'Y'" +
+				" and date(model2.surveyTime) = :today" +
+				" and model2.endTime between :today and :lastHourTime" +
+				" and model2.enrollmentYearId = 4" +
+				" and model.cadreRegUser.userType = 'FM' " +
+				" group by model2.constituency.constituencyId,model.cadreRegUser.user.userId ");
+		
+		query.setParameter("today", today);
+		query.setParameter("lastHourTime", lastHourTime);
 		return query.list();
 		
 	}
@@ -311,6 +339,7 @@ return query.list();
 				" and model1.cadreSurveyUser.isEnabled = 'Y' "+
 				"  and model2.cadreRegIssueStatus.cadreRegIssueStatusId = 1  " +
 				"  and date(model2.updatedTime) = :today" +
+				" and model.enrollmentYearId = 4" +
 				" and model1.cadreRegUser.userType = 'FM' " +
 				" group by model.constituency.constituencyId,model1.cadreRegUser.user.userId ");
 		
