@@ -10,7 +10,7 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private String imeiNo;
 	private String lattitude;
 	private String longittude;
-	private Long totalRecords;
+	private Long totalRecords =0l;
 	private Long sync;
 	private Long pending;
 	private String surveyDate;
@@ -25,10 +25,10 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private Long kafkaSync;
 	private String totalImeiNo;
 	private Long sumRecords;
-	private Long totalSyn;
-	private Long totalPending;
+	private Long totalSyn =0l;
+	private Long totalPending = 0l;
 	private String userName;
-	private Long actualCount;
+	private Long actualCount =0l;
 	private String imagePath;
 
 	
