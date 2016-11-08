@@ -15,6 +15,9 @@
 	<div class="container m_top20">
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
+				<h4 class="panel-title">HEASIND</h4>
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="row">
 				<div class="col-md-3 col-xs-12 col-sm-6 pull-left">
 					 <label>STATE<span style="color:red"> * </span></label>
@@ -52,17 +55,45 @@
 					</div>
 					<div class="col-md-1 col-xs-12 col-sm-1">
 					<label></label>
-					<input type="button" class ="btn btn-success" value ="submit" id="submitId" style="margin: 13px 10px 0px 0px; padding-right: 27px;">
+					<button type="button" class ="btn btn-success m_top20" value ="submit" id="submitId">SUBMIT</button>
 					<!--<span id="submitDivIdImg"  style="display:none;"><img src="images/search.gif"/></span>-->
 					</div>
 					</div>
 					<div id = "errorDivId" style = "color:red"></div>
 				</div>
 			</div>
-				<div  id="dataReconsalationOverviewId">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+					<div id="dataReconsalationOverviewId"></div>
 				</div>
-				<div  id="userWiseTotalViewId">
-			   </div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="locWiseSmartDivCount" style="display:none;">
+					<!--<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">Data Reconsolidation</h4>
+						</div>
+						<div class="panel-body">
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+										<th>District</th>
+										<th>Count</th>
+									</thead>
+									<tbody>
+										<td>District</td>
+										<td>Count</td>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>-->
+				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+					<div id="userWiseTotalViewId"></div>
+				</div>
+				
+			</div>
+				
+				
 		 </div>  
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
    <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
