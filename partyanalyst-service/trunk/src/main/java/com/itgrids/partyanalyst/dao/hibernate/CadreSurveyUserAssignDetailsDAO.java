@@ -430,7 +430,7 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		  }
 		  return query.list();
 	}
-	public List<Object[]> getLocationWiseSmartDevicesCount(Long districtId,Long constituencyId,Date startDate,Date endDate){  
+	public List<Object[]> getLocationWiseSmartDevicesCount(Long stateId,Long districtId,Long constituencyId,Date startDate,Date endDate){  
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
 		
@@ -447,9 +447,17 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		/*if(constituencyId != null && constituencyId.longValue()>0l){
 			queryStr.append(" and CSUAD.constituency.constituencyId = :constituencyId ");
 		}*/
+		
 		if(districtId != null && districtId.longValue()>0l){
 			queryStr.append(" and CSUAD.constituency.district.districtId = :districtId ");
+		}else{
+			if(stateId != null && stateId.longValue() == 1l){
+				queryStr.append(" and CSUAD.constituency.district.districtId between 11 and 23 ");
+			}else if(stateId != null && stateId.longValue() == 36l){
+				queryStr.append(" and CSUAD.constituency.district.districtId between 1 and 10 ");
+			}
 		}
+		
 		if(startDate != null && endDate != null){
 			queryStr.append(" and date(CSUAD.insertedTime) between :startDate and :endDate");
 		 }

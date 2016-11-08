@@ -64,7 +64,7 @@ public ITdpCadreDAO getTdpCadreDAO() {
 	* @Description : This Service is total tab user wise total Registration count and sync pending   details
 	*  @since 27th-October-2016
 	*/
-public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuencyId,String fromDateStr,String toDateStr,Long districtId){
+public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long stateId,Long constistuencyId,String fromDateStr,String toDateStr,Long districtId){
     	
     	List<CadreTabRecordsStatusVO> returnList = null;
     	
@@ -79,7 +79,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     			endDate = sdf.parse(toDateStr);
     		}
     		
-    		List<Object[]> dataReConsalation = cadreTabRecordsStatusDAO.dataReConsalationOverView(constistuencyId,startDate,endDate,districtId);
+    		List<Object[]> dataReConsalation = cadreTabRecordsStatusDAO.dataReConsalationOverView(stateId,constistuencyId,startDate,endDate,districtId);
     		
     		Set<Long> cadreSurveyUsers = new HashSet<Long>();
     		if( dataReConsalation != null && dataReConsalation.size() > 0)
@@ -142,7 +142,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
 	* @Description : This Service is user to get the day wise total Registration and sum of pending counts
 	*  @since 27th-October-2016
 	*/
-public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuencyId,String fromDateStr,String toDateStr,Long districtId){
+public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long constistuencyId,String fromDateStr,String toDateStr,Long districtId){
 	
 	  CadreTabRecordsStatusVO statusvo = null;
 	
@@ -157,17 +157,28 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long constistuency
 					endDate = sdf.parse(toDateStr);
 				}
 				
-		  Object[] dataReConsalationObj = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(constistuencyId,startDate,endDate,districtId);
+				List<Object[]> dataReConsalationObjs = cadreTabRecordsStatusDAO.dataReConsalationTotalOverView(stateId,constistuencyId,startDate,endDate,districtId);
 		
-				if( dataReConsalationObj != null)
+				Long totalSmartDevics = 0l;
+				Long totalRecords = 0l;
+				Long totalSync = 0l;
+				Long totalPending = 0l;
+				if( dataReConsalationObjs != null && dataReConsalationObjs.size() >0)
 				{
-			      statusvo = new CadreTabRecordsStatusVO();
-	
-					statusvo.setTotalImeiNo(dataReConsalationObj[0] != null ? dataReConsalationObj[0].toString() :"");
-				    statusvo.setTotalRecords(dataReConsalationObj[1] != null ? (Long)dataReConsalationObj[1] : 0l);
-				    statusvo.setTotalSyn(dataReConsalationObj[2]!=null ? (Long)dataReConsalationObj[2] : 0l);
-				    statusvo.setTotalPending(dataReConsalationObj[3] != null ? (Long)dataReConsalationObj[3] : 0l);
+					
+					for(Object[] dataReConsalationObj : dataReConsalationObjs){
+			      
+			      totalSmartDevics = dataReConsalationObj[0] != null ? totalSmartDevics+(Long)dataReConsalationObj[0] :0l;
+			      totalRecords = dataReConsalationObj[1] != null ? totalRecords+(Long)dataReConsalationObj[1] : 0l;
+			      totalSync = dataReConsalationObj[2]!=null ?totalSync+(Long)dataReConsalationObj[2] : 0l;
+			      totalPending = dataReConsalationObj[3] != null ? totalPending+(Long)dataReConsalationObj[3] : 0l;
+					}
 				  }
+				statusvo = new CadreTabRecordsStatusVO();
+				statusvo.setActualCount(totalSmartDevics);
+			    statusvo.setTotalRecords(totalRecords);
+			    statusvo.setTotalSyn(totalSync);
+			    statusvo.setTotalPending(totalPending);
 		
 	   }catch(Exception e){
 		 e.printStackTrace();
@@ -245,7 +256,7 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 * @Description : 
 *  @since 08-Nov-2016
 */
-public List<IdAndNameVO> getLocationWiseSmartDevicesCount(Long districtId,Long constituencyId,String startDate,String endDate){
+public List<IdAndNameVO> getLocationWiseSmartDevicesCount(Long stateId,Long districtId,Long constituencyId,String startDate,String endDate){
 	
 	
 	  List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);	 
@@ -263,7 +274,7 @@ public List<IdAndNameVO> getLocationWiseSmartDevicesCount(Long districtId,Long c
 			   toDate = sdf.parse(endDate);
 		   }*/
 		 
-		List<Object[]> cadreRegDetils = cadreSurveyUserAssignDetailsDAO.getLocationWiseSmartDevicesCount(districtId,constituencyId,fromDate,toDate);
+		List<Object[]> cadreRegDetils = cadreSurveyUserAssignDetailsDAO.getLocationWiseSmartDevicesCount(stateId,districtId,constituencyId,fromDate,toDate);
 		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
 			
 			for(Object[] param : cadreRegDetils){
