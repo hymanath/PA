@@ -3641,7 +3641,12 @@
 		 <property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
 		 <property name="tdpCadreSmsLeaderLocationDAO" ref="tdpCadreSmsLeaderLocationDAO" />
 		 <property name="tdpCadreHourRegInfoDAO" ref="tdpCadreHourRegInfoDAO" />  
-		  <property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		 <property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		 
+		  <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />  
+		  <property name="tabUserLocationDetailsDAO" ref="tabUserLocationDetailsDAO" />
+		  <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
+		
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">

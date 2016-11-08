@@ -18,6 +18,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
@@ -97,6 +98,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private INewsCoreDashBoardService newsCoreDashBoardService;
 	private IdNameVO idNameVO; 
 	private List<CadreReportVO> cadreDtlsList;
+	private CadreBasicVO cadreVO;
 
 	private List<List<IdNameVO>> idNameVOsList;
     private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
@@ -732,6 +734,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setToursDtlsList(List<ToursBasicVO> toursDtlsList) {
 		this.toursDtlsList = toursDtlsList;
+	}
+ 	public CadreBasicVO getCadreVO() {
+		return cadreVO;
+	}
+
+	public void setCadreVO(CadreBasicVO cadreVO) {
+		this.cadreVO = cadreVO;
 	}
 
 	//business methods
@@ -3070,4 +3079,17 @@ public String getTodayAndYesterdayTabUserRgstrtnComparisonDetails(){
 	}
 	return Action.SUCCESS;
 }*/
+public String getUserTrackingDtslBySurveyUserId(){
+	try {
+		LOG.info("Entered into getUserTrackingDtslBySurveyUserId()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long surveyUserId = jObj.getLong("surveyUserId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getUserTrackingDtslBySurveyUserId() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }

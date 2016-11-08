@@ -4173,3 +4173,20 @@ function buildTabUserComparisonRslt(result){
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 			 }); 
 	}	
+	
+/* 	getUserTrackingDtslBySurveyUserId();
+	function getUserTrackingDtslBySurveyUserId(){
+		var jsObj={  
+			surveyUserId :7792,
+			fromDate :'07-11-2016',
+			toDate :'07-11-2016'
+		};
+		$.ajax({          
+			type : 'POST',       
+			url : 'getUserTrackingDtslBySurveyUserIdAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+            console.log(result);
+		});
+	} */
