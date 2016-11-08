@@ -154,7 +154,8 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 					" CRI.userAddress.district.districtName," +
 					" CRI.userAddress.constituency.constituencyId," +
 					" CRI.userAddress.constituency.name," +
-					" CRUTU.cadreRegUser.user.userName"+
+					" CRUTU.cadreRegUser.user.userName," +
+					" CRI.cadreRegIssueId"+
 					" from CadreRegIssue CRI,CadreRegUserTabUser CRUTU" +
 					" where CRI.cadreSurveyUser.cadreSurveyUserId = CRUTU.cadreSurveyUser.cadreSurveyUserId" +
 					" and CRI.cadreRegIssueStatus.cadreRegIssueStatusId = :statusTypeId" +
