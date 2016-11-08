@@ -9,6 +9,7 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private String name;
 	private Long allocatedCount=0L;
 	private Long activeCount=0L;
+	private Long lastOneHrActiveCount=0L;
 	private Long lastOneHrCount=0L;
 	private Long lastOneHrAvgCount=0L;
 	private Long avgOutput=0L;
@@ -32,7 +33,12 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private List<GISUserTrackingVO> lastOneHrusersList = new ArrayList<GISUserTrackingVO>(0);
 	
 	
-	
+	public Long getLastOneHrActiveCount() {
+		return lastOneHrActiveCount;
+	}
+	public void setLastOneHrActiveCount(Long lastOneHrActiveCount) {
+		this.lastOneHrActiveCount = lastOneHrActiveCount;
+	}
 	public String getImagePath() {
 		return imagePath;
 	}
