@@ -23,7 +23,7 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private String maxRecordTime;
 	private Long kafkaPending;
 	private Long kafkaSync;
-	private String totalImeiNo;
+	private Long totalImeiNo;
 	private Long sumRecords;
 	private Long totalSyn =0l;
 	private Long totalPending = 0l;
@@ -141,10 +141,11 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	public void setKafkaSync(Long kafkaSync) {
 		this.kafkaSync = kafkaSync;
 	}
-	public String getTotalImeiNo() {
+	
+	public Long getTotalImeiNo() {
 		return totalImeiNo;
 	}
-	public void setTotalImeiNo(String totalImeiNo) {
+	public void setTotalImeiNo(Long totalImeiNo) {
 		this.totalImeiNo = totalImeiNo;
 	}
 	public Long getSumRecords() {
