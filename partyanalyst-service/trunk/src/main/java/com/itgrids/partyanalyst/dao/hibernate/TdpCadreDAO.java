@@ -8766,8 +8766,11 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		     queryStr.append(" select distinct " +
 		     		         " model.surveyTime," +//0
 		     		         " model.longititude," +//1
-		     		         " model.latitude " +//2
-		     		         " from TdpCadre model " +
+		     		         " model.latitude,  " +//2
+		     		         " model.tabUserInfo.name ," +//3
+		     		         " model.tabUserInfo.mobileNo," +//4
+		     		         " model.insertedBy.userName " +//5 
+		     		         "from TdpCadre model " +
 		     		         " where model.isDeleted = 'N' and  model.enrollmentYear = 2014 and model.insertedUserId=:cadreSurveyUserId ");
 		     if(fromDate != null && toDate != null){
 		    	 queryStr.append(" and date(model.surveyTime) between :fromDate and :toDate");
