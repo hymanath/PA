@@ -97,13 +97,13 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 		  try {
 			
 			jObj = new JSONObject(getTask());
-			
+			Long stateId = jObj.getLong("stateId");
 			Long constistuencyId = jObj.getLong("constistuencyId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			Long districtId = jObj.getLong("districtId");
 			
-			cadreTabRecordsStatusVOList = dataReconsolidationService.dataReConsalationOverView(constistuencyId,fromDateStr,toDateStr,districtId);
+			cadreTabRecordsStatusVOList = dataReconsolidationService.dataReConsalationOverView(stateId,constistuencyId,fromDateStr,toDateStr,districtId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at dataReConsalationOverView()  of DataReconsolidationOverViewAction", e);
@@ -114,13 +114,13 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 		try {
 			
 			jObj = new JSONObject(getTask());
-			
+			Long stateId = jObj.getLong("stateId");
 			Long constistuencyId = jObj.getLong("constistuencyId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
 			Long districtId = jObj.getLong("districtId");
 			
-			finalvo = dataReconsolidationService.dataReConsalationTotalOverView(constistuencyId,fromDateStr,toDateStr,districtId);
+			finalvo = dataReconsolidationService.dataReConsalationTotalOverView(stateId,constistuencyId,fromDateStr,toDateStr,districtId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at dataReConsalationTotalOverView()  of DataReconsolidationOverViewAction", e);
@@ -148,11 +148,12 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 		try{
 			LOG.info("Entered into DataReconsolidationOverViewAction of getCadreSurveyUserWiseRegistrations ()");
 			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
 			Long districtId = jObj.getLong("districtId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String startDate = jObj.getString("strtDate");
 			String toDate =jObj.getString("endDate");
-			idAndNameVOList = dataReconsolidationService.getLocationWiseSmartDevicesCount(districtId,constituencyId,startDate,toDate);
+			idAndNameVOList = dataReconsolidationService.getLocationWiseSmartDevicesCount(stateId,districtId,constituencyId,startDate,toDate);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured into DataReconsolidationOverViewAction of getLocationWiseSmartDevicesCount ()",e);

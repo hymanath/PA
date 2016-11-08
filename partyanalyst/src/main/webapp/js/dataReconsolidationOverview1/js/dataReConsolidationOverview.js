@@ -1,13 +1,15 @@
 function getDataReConsalationOverView(){
 	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	  var constId = $("#constituencyOverViewId").val(); 
+	  var constId = $("#constituencyOverViewId").val();
+	  var stateId = $("#stateOverViewId").val();	  
       var districtId = $("#districtOverViewId").val();	  
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
 	  dateVal = dateArr.split("-")
 	  var strtDate = dateVal[0];
 	  var endDate = dateVal[1];
-	  var jsObj = { 
+	  var jsObj = {
+		  stateId:stateId,	  
 	      constistuencyId : constId,
           fromDate : strtDate,
           toDate : endDate,
@@ -30,6 +32,7 @@ function getDataReConsalationOverView(){
   function getdataReConsalationTotalOverView(){
 	  $("#dataReconsalationOverviewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var constId = $("#constituencyOverViewId").val();
+	  var stateId = $("#stateOverViewId").val();
 	  var districtId = $("#districtOverViewId").val();	
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
@@ -37,6 +40,7 @@ function getDataReConsalationOverView(){
 	  var strtDate = dateVal[0];
 	  var endDate = dateVal[1];
 	  var jsObj = { 
+		  stateId:stateId,
 	      constistuencyId : constId,
           fromDate : strtDate,
           toDate : endDate,
@@ -66,7 +70,7 @@ function getDataReConsalationOverView(){
 		str+='<div class="panel-body" style="padding: 25px;">';
 			str+='<div class="row">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
-				var totImeiNo = result.totalImeiNo;
+				var totImeiNo = result.actualCount;
 				var totRecords = result.totalRecords;
 				var totSynRec =result.totalSyn;
 				var totPending  = result.totalPending;
@@ -141,6 +145,7 @@ $(document).on("click","#submitId",function(){
 			str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>USER WISE TOTAL REGISTRATIONS & SYNC PENDING DETAILS</b></h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
+			str+='<div class="table-responsive">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
 				str+='<thead>';
 				str+='<tr>'; 
@@ -176,7 +181,7 @@ $(document).on("click","#submitId",function(){
 	            str+='<td>0</td>';
                  }
 			 if(result[i].maxRecordTime !=null){
-				str+='<td>'+result[i].maxRecordTime+'</td>';
+				str+='<td>'+result[i].maxRecordTime.substring(0,19)+'</td>';
 				 }else{
 					 str+='<td>-</td>';
 				 }				
@@ -185,10 +190,17 @@ $(document).on("click","#submitId",function(){
 		   }				
 				str+='</tbody>';
 			str+='</table>';
+			str+='</div>';
 		str+='</div>';
     str+='</div>';
 	$("#userWiseTotalViewId").html(str);
-	$("#userWiseTotalRegstSyncId").dataTable();
+	//$("#userWiseTotalRegstSyncId").dataTable();
+	$("#userWiseTotalRegstSyncId").dataTable({
+			"aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 50,
+	         "aLengthMenu": [[ 50, 100, -1], [ 50, 100, "All"]]
+	});
+	$("#userWiseTotalRegstSyncId").removeClass("dataTable");
  }
  
  $(document).on('change','#stateOverViewId',function(){
@@ -436,12 +448,14 @@ function setDefaultImage(img){
 	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var constId = $("#constituencyOverViewId").val();
 	  var districtId = $("#districtOverViewId").val();
+	  var stateId = $("#stateOverViewId").val();
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
 	  dateVal = dateArr.split("-")
 	  var strtDate = dateVal[0];
 	  var endDate = dateVal[1];
-	  var jsObj = { 
+	  var jsObj = {
+		  stateId : stateId,
 		  districtId : districtId,
 	      constituencyId : constId,
           strtDate : strtDate,
@@ -455,26 +469,30 @@ function setDefaultImage(img){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	    if(result != null){
-			buildLocationWiseSmartDevicesCount(result);
+			buildLocationWiseSmartDevicesCount(result,districtId);
 		}else {
 			$("#locWiseSmartDivCount").html('No Data Available');
 		}
    });
   }
-  function buildLocationWiseSmartDevicesCount(result){
+  function buildLocationWiseSmartDevicesCount(result,districtId){
   $("#locWiseSmartDivCount").show();
   var str = "";
   
   str+='<div class="panel panel-default">';
   str+='<div class="panel-heading">';
-  str+='<h4 class="panel-title">Data Reconsolidation</h4>';
+  str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>LOCATION WISE SMART DEVICES</b></h4>';
 	str+='</div>';
 	str+='<div class="panel-body">';
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
-	str+='<th>District</th>';
-	str+='<th>Count</th>';
+	if(districtId > 0){
+		str+='<th>CONSTITUENCY NAME</th>';
+	}else{
+		str+='<th>DISTRICT NAME</th>';
+	}
+	str+='<th>SMART DEVICES COUNT</th>';
 	str+='</thead>';
 	//str+='<tbody>';
 	for(var i in result){

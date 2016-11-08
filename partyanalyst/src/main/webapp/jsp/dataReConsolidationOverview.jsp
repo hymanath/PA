@@ -15,7 +15,7 @@
 	<div class="container m_top20">
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
-				<h4 class="panel-title">HEASIND</h4>
+				<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>
 			</div>
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="row">
@@ -67,25 +67,7 @@
 					<div id="dataReconsalationOverviewId"></div>
 				</div>
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="locWiseSmartDivCount" style="display:none;">
-					<!--<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">Data Reconsolidation</h4>
-						</div>
-						<div class="panel-body">
-							<div class="table-responsive">
-								<table class="table table-bordered">
-									<thead>
-										<th>District</th>
-										<th>Count</th>
-									</thead>
-									<tbody>
-										<td>District</td>
-										<td>Count</td>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>-->
+					
 				</div>
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 					<div id="userWiseTotalViewId"></div>
