@@ -14555,6 +14555,12 @@
 			<result type="json" name="success">
 			<param name="root">cadreDtlsList</param>
 		</result>
+	</action>
+	  <action name="getUserTrackingDtslBySurveyUserIdAction" class="coreDashboardAction"  method="getUserTrackingDtslBySurveyUserId">
+			<result type="json" name="success">
+			<param name="root">cadreVO</param>
+		</result>
 	</action>	   
+		   
 </package>
 </struts>

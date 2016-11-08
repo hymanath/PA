@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -68,7 +69,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
-import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -101,6 +102,9 @@ public class WebServiceHandler {
 	private IAttendanceService attendanceService;
 	@Autowired
 	private INotificationService notificationService;
+	
+	@Autowired
+	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
 	
 	
@@ -177,8 +181,8 @@ public class WebServiceHandler {
 			IWebServiceHandlerService webServiceHandlerService) {
 		this.webServiceHandlerService = webServiceHandlerService;
 	}
-
-
+     
+    
 
 	/*@GET
     @Path("{userName}/{passWord}")
@@ -187,7 +191,6 @@ public class WebServiceHandler {
     {
 		return webServiceHandlerService.checkForUserAuthentication(userName , passWord);
     }*/
-	
 	
 	@GET
     @Path("/getMobileAppAuthorizationURL")
@@ -2100,4 +2103,13 @@ public class WebServiceHandler {
 		public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
 			return webServiceHandlerService.getLocationWiseTabUserTrackingDetails(inputVO);
 		}
+		@POST
+	    @Path("/getUserTrackinDetailsBySurveyUserId")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public CadreBasicVO getUserTrackingDetailsBySurveyUserId(CadreBasicVO inputVO)
+	    {
+			return coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(inputVO.getSurveyUserId(),inputVO.getFromDate(),inputVO.getToDate());
+		 }
+		
 }
