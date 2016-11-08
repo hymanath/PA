@@ -22,9 +22,12 @@ $(document).on("click",".emnIconExpand",function(){
 $(document).on("click",".moreEmnBlocksIcon",function(){
 	$(".newEmnHideCls").hide();
 	$(".detailedPartyEmn,.selectEmnCate").show();
-	getMediaProgramsOnParty();
+	getEMMDetailedPartyDistrictWiseProgramsOverview();
 	getEMMDetailedPartiesVsChannelsPartiesDistrictWise("party");
+	getEMMDetailedPartyStateWiseProgramsOverview();
+	$("#detailedPartyLiIdEmn").addClass("active");
 });
+
 $(document).on("click","#detailedPartyLiIdEmn",function(){
 	$(".newEmnHideCls").hide();
 	$(".detailedPartyEmn").show();
@@ -76,8 +79,8 @@ $(document).on("click",".impactCheckClsEmn",function(){
 	}
 	
 });
-
-var currentFromDateEmn = moment().format("DD-MM-YYYY");
+var impactScopeIds = '1,2,3,4,5,6,7,8,9';
+var currentFromDateEmn = moment().startOf("year").format("DD-MM-YYYY");
 var currentToDateEmn = moment().format("DD-MM-YYYY");
 //$("#emnHeadDate").html("("currentFromDateEmn "-" currentToDateEmn")");
 $("#emnHeadDate").html("Today("+moment().format("DD/MM/YY")+" to "+moment().format("DD/MM/YY")+")");
@@ -146,14 +149,14 @@ function getAllTvChannels()
 		}
   });
 }
-
-function getEMMDetailedPartyDistrictWiseProgramsOverview()
+getMediaProgramsOnParty();
+function getMediaProgramsOnParty()
 {
 	$("#electronicMediaChannelCountId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/2/1/01-01-2016/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N"
 	}).then(function(result){
 		getpartyWiseChannelCounts(result);
 	});
@@ -165,200 +168,89 @@ function getpartyWiseChannelCounts(result){
 	if(result != null && result.length > 0)
 	{
 		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>';
-		if(result[0].tvNewsDetailsVOList != null && result[0].tvNewsDetailsVOList.length > 0)
-		{
-			str+='<table class="table tableEMN m_top20">';
-				str+='<tr>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">Total Program</h5>';
-						str+='<h4>'+((result[0].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length)+(result[0].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length))+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">total time</h5>';
-						str+='<h4>'+result[0].tvNewsDetailsVOList[0].description != ""?result[0].tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[0].organization+'</h5>';
-						str+='<h5>'+result[0].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length+'</h5>';
-						
-						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-						if(result[0].tvNewsDetailsVOList[0].description != ""){
-							str+='<h4>'+result[0].tvNewsDetailsVOList[0].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[1].organization+'</h5>';
-						str+='<h5>'+result[0].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length+'</h5>';
-						
-						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-						if(result[0].tvNewsDetailsVOList[1].description != ""){
-							str+='<h4>'+result[0].tvNewsDetailsVOList[1].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList1[0].organization+'</h4>';
-						str+='<h4>'+result[0].tvNewsDetailsVOList1[0].tvNewsDetailsVOList1.length+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
-						if(result[0].tvNewsDetailsVOList1[0].description!= ""){
-							str+='<h4>'+result[0].tvNewsDetailsVOList1[0].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList1[1].organization+'</h4>';
-						str+='<h4>'+result[0].tvNewsDetailsVOList1[1].tvNewsDetailsVOList1.length+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
-						if(result[0].tvNewsDetailsVOList1[1].description!=""){
-							str+='<h4>'+result[0].tvNewsDetailsVOList1[1].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-				str+='</tr>';
-			str+='</table>';
-		}else{
-			str+='<h4 class="panel-title m_top20">NO DATA AVAILABLE</h4>';
-		}
-		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>';
-		for(var i=1;i<(result.length-1);i++)
-		{
-			str+='<p class="m_top10"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>'+result[i].organization+'</p>';
-			str+='<table class="table tableEMN m_top10">';
-				str+='<tr>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">Total Program</h5>';
-						str+='<h4>'+((result[i].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length)+(result[0].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length))+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">total time</h5>';
-						str+='<h4>'+result[i].tvNewsDetailsVOList[0].description != ""?result[0].tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[0].organization+'</h5>';
-						str+='<h5>'+result[i].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length+'</h5>';
-						
-						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-						if(result[i].tvNewsDetailsVOList[0].description != ""){
-							str+='<h4>'+result[i].tvNewsDetailsVOList[0].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[1].organization+'</h5>';
-						str+='<h5>'+result[i].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length+'</h5>';
-						
-						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-						if(result[i].tvNewsDetailsVOList[1].description != ""){
-							str+='<h4>'+result[i].tvNewsDetailsVOList[1].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList1[0].organization+'</h4>';
-						str+='<h4>'+result[i].tvNewsDetailsVOList1[0].tvNewsDetailsVOList1.length+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
-						if(result[i].tvNewsDetailsVOList1[0].description!= ""){
-							str+='<h4>'+result[i].tvNewsDetailsVOList1[0].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList1[1].organization+'</h4>';
-						str+='<h4>'+result[i].tvNewsDetailsVOList1[1].tvNewsDetailsVOList1.length+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
-						if(result[i].tvNewsDetailsVOList1[1].description!=""){
-							str+='<h4>'+result[i].tvNewsDetailsVOList1[1].description+'</h4>';
-						}else{
-							str+='<h4>00:00</h4>';
-						}
-						
-					str+='</td>';
-				str+='</tr>';
-			str+='</table>';
-		}
-		//Govt block building
-		var EmnG = result.length-1;
-		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
-		
+	
 		str+='<table class="table tableEMN m_top20">';
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total Program</h5>';
-					str+='<h4>'+((result[EmnG].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length)+(result[EmnG].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length))+'</h4>';
+					str+='<h4	>'+result[0].categoryCount != ""?result[0].categoryCount:"00:00"+'</h4>';
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
-					str+='<h4>'+result[EmnG].tvNewsDetailsVOList[0].description != ""?result[EmnG].tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+					str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
 				str+='</td>';
-				str+='<td>';
-					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[0].organization+'</h5>';
-					str+='<h5>'+result[EmnG].tvNewsDetailsVOList[0].tvNewsDetailsVOList.length+'</h5>';
-					
-					str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-					if(result[EmnG].tvNewsDetailsVOList[0].description != ""){
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[0].description+'</h4>';
-					}else{
-						str+='<h4>00:00</h4>';
-					}
-					
-				str+='</td>';
-				str+='<td>';
-					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[1].organization+'</h5>';
-					str+='<h5>'+result[EmnG].tvNewsDetailsVOList[1].tvNewsDetailsVOList.length+'</h5>';
-					
-					str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-					if(result[EmnG].tvNewsDetailsVOList[1].description != ""){
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[1].description+'</h4>';
-					}else{
-						str+='<h4>00:00</h4>';
-					}
-					
-				str+='</td>';
-				str+='<td>';
-					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList1[0].organization+'</h4>';
-					str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[0].tvNewsDetailsVOList1.length+'</h4>';
-					str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
-					if(result[EmnG].tvNewsDetailsVOList1[0].description!= ""){
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[0].description+'</h4>';
-					}else{
-						str+='<h4>00:00</h4>';
-					}
-					
-				str+='</td>';
-				str+='<td>';
-					str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList1[1].organization+'</h4>';
-					str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[1].tvNewsDetailsVOList1.length+'</h4>';
-					str+='<h5 class="text-capitalize m_top20">Positive Time</h5>';
-					if(result[EmnG].tvNewsDetailsVOList1[1].description!=""){
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList1[1].description+'</h4>';
-					}else{
-						str+='<h4>00:00</h4>';
-					}
-					
-				str+='</td>';
+				for(var j in result[0].tvNewsDetailsVOList)
+				{
+					str+='<td>';
+						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[j].organization+'</h5>';
+						str+='<h4>'+result[0].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+						//str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
+						if(result[0].tvNewsDetailsVOList[j].description!= ""){
+							str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+					str+='</td>';
+				}
 			str+='</tr>';
 		str+='</table>';
 		
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>';
+		for(var i=1;i<(result.length-1);i++)
+		{
+			str+='<h4 class="panel-title m_top20"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" class="debatesPartyIcon"/>'+result[i].organization+'</h4>';
+			str+='<table class="table tableEMN">';
+				str+='<tr>';
+					str+='<td>';
+						str+='<h5 class="text-capitalize">Total Program</h5>';
+						str+='<h4>'+result[i].categoryCount != ""?result[i].categoryCount:"00:00"+'</h4>';
+						str+='<h5 class="text-capitalize m_top20">total time</h5>';
+						str+='<h4>'+result[i].description != ""?result[i].description:"00:00"+'</h4>';
+					str+='</td>';
+					for(var j in result[i].tvNewsDetailsVOList)
+					{
+						str+='<td>';
+							str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList[j].organization+'</h5>';
+							str+='<h4>'+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+							str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+							str+='<h4>'+result[i].tvNewsDetailsVOList[j].description != ""?result[i].tvNewsDetailsVOList[j].description:"00:00"+'</h4>';
+						str+='</td>';
+					}
+				str+='</tr>';
+			str+='</table>';
+		}
+		
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
+		var EmnG = result.length-1;
+		str+='<table class="table tableEMN m_top20">';
+			str+='<tr>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">Total Program</h5>';
+					str+='<h4>'+result[EmnG].categoryCount != ""?result[EmnG].categoryCount:"00:00"+'</h4>';
+					str+='<h5 class="text-capitalize m_top20">total time</h5>';
+					str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
+				str+='</td>';
+				for(var j in result[EmnG].tvNewsDetailsVOList)
+				{
+					str+='<td>';
+						str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[j].organization+'</h5>';
+						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].description+'</h4>';
+					str+='</td>';
+				}
+			str+='</tr>';
+		str+='</table>';
 	}else{
 		str+='<h4 class="panel-title m_top20">NO DATA AVAILABLE</h4>';
 	}
 	$("#electronicMediaChannelCountId").html(str);
 }
-function getMediaProgramsOnParty()
+function getEMMDetailedPartyDistrictWiseProgramsOverview()
 {
 	$("#districtWiseProgramsOvrViewEMN").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N"
 	}).then(function(result){
 		mediaProgramsOnParty(result);
 	});
@@ -495,22 +387,21 @@ function mediaProgramsOnParty(result)
 
 function getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type)
 {
-	
 	$("#electronicMediaPrograms").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	if(type == 'program')
 	{
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyProgramsWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyProgramsWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N/"+searchType+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyProgramsWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N/"+searchType+""
 		}).then(function(result){
 			buildEmmDetailedPartyMediaProgramsOnParty(result);
 		});
 	}else{
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyTimeWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N/"+searchType+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyTimeWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N/"+searchType+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyTimeWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N/"+searchType+""
 		}).then(function(result){
-			buildEmmDetailedPartyMediaProgramsOnParty(result);
+			buildEmmDetailedPartyMediaProgramsOnPartyTimeWise(result);
 		});
 	}
 	
@@ -538,6 +429,7 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 		for(var j in result[i].tvNewsDetailsVOList1){
 			candidateNameArray.push(result[i].tvNewsDetailsVOList1[j].channelName)
 			PositiveCountArray.push(result[i].tvNewsDetailsVOList1[j].count)
+			
 				
 			countVar =countVar+1;
 			if (countVar === 5) {
@@ -563,11 +455,11 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 				categories: candidateNameArray,
 				type: 'category',
 				labels: {
-							formatter: function() {
-								return this.value.toString().substring(0, 10)+'...';
-							},
-							
-						}
+						formatter: function() {
+							return this.value;
+						},
+						
+					}
 				
 			},
 			yAxis: {
@@ -588,14 +480,14 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 					
 			plotOptions: {
 				column: {
-					stacking: 'percent',
+					stacking: 'normal',
 					dataLabels: {
 						enabled: true,
 						 formatter: function() {
 							if (this.y === 0) {
 								return null;
 							} else {
-								return Highcharts.numberFormat(this.percentage,1) + '%';
+								return (this.y);
 							}
 						}
 					  
@@ -608,9 +500,7 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 					var s = '<b>' + this.x + '</b>';
 
 					$.each(this.points, function () {
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
-							(this.y);
+						s += '<br/>'+(this.y);
 					});
 
 					return s;
@@ -628,7 +518,117 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 	}
 	
 }
+function buildEmmDetailedPartyMediaProgramsOnPartyTimeWise(result)
+{
+	var str='';
+	str+='<div class="row">';
+	for(var i in result){
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<h5 class="text-capital">'+result[i].organization+'</h5>';
+			str+='<div id="emNewsBlockGenSecStrong'+i+'" style="height:130px;"></div>';
+		str+='</div>'
+	}
+	str+='</div>'
+	$("#electronicMediaPrograms").html(str);
+	for(var i in result){
+		var PositiveCountArray = [];
+		var NegativeCountArray = [];
+		var candidateNameArray=[];
+		var timeCounts=[];
+		var countVar =0;
+		
+		
+		for(var j in result[i].tvNewsDetailsVOList1){
+			candidateNameArray.push(result[i].tvNewsDetailsVOList1[j].channelName);
+			PositiveCountArray.push(result[i].tvNewsDetailsVOList1[j].coveredTime);
+			timeCounts.push(result[i].tvNewsDetailsVOList1[j].description);
+			countVar =countVar+1;
+			if (countVar === 5) {
+				break;
+			}
+		}
+		
+		$("#emNewsBlockGenSecStrong"+i).highcharts({
+			colors: ['#339A99'],
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: candidateNameArray,
+				type: 'category',
+				labels: {
+						formatter: function() {
+							return this.value;
+						},
+						
+					}
+				
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled:false
+				}
+			},
+			legend: {
+				enabled: false
+			},
+			
+					
+			plotOptions: {
+				column: {
+					stacking: 'normal',
+					dataLabels: {
+						enabled: false,
+						 formatter: function() {
+							var k = '<b>' + this.x + '</b>';
+							var i = 0;
+							$.each(this.points, function () {
+								k += '<br/>'+timeCounts;
+							});
+						}
+					  
+					}
+				}
+			},
 
+			 tooltip: {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+					$.each(this.points, function () {
+						s += '<br/>'+(this.y);
+					});
+
+					return s;
+				},
+				shared: true
+			},
+
+			series: [{
+				name: 'Negative',
+				data: PositiveCountArray,
+				
+			}],
+		 
+		});
+	}
+	
+}
 $(document).on("click",".emnMediaPrograms li",function(){
 	var searchType = $(this).attr("attr_searchType");
 	var type = $('input[name=emnSearchTypeName]:checked').val();
@@ -665,14 +665,14 @@ function getEMMDetailedPartiesVsChannelsPartiesDistrictWise(type)
 	{
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N/"
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N/"
 		}).then(function(result){
 			buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result);
 		});
 	}else{
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N/"
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWise/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N/"
 		}).then(function(result){
 			buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result);
 		});
@@ -998,7 +998,7 @@ function getProblemsDetailedOverView()
 	$("#stateWiseEMNRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getProblemsDetailedOverView/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getProblemsDetailedOverView/2/1/01-01-2016/03-11-2016/1,2,3,4/1,2,3,4,5,6,7,8/ /Y/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getProblemsDetailedOverView/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/ /Y/"
 	}).then(function(result){
 		buildProblemsDetailedOverView(result);
 		buildDistrictWiseEMNRelatedToProblem(result);
@@ -1010,7 +1010,7 @@ function getEMMDetailedGovtProblemsDetailedOverview()
 	$("#emmDetailedGovtDistDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4/1,2,3,4,5,6,7,8/ /Y/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/ /Y/"
 	}).then(function(result){
 		buildEMMDetailedGovtDistDetailedOverview(result);
 		buildEMMDetailedGovtProblemsDetailedOverview(result);
@@ -1467,3 +1467,198 @@ function buildDistrictWiseEMNRelatedToProblem(result){
 		});
 	
 	}
+	
+
+function getEMMDetailedPartyStateWiseProgramsOverview()
+{
+	$("#stateWiseProgramsOvrViewEMN").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/2/1/"+currentToDateEmn+"/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/2/1/01-01-2016/"+currentToDateEmn+"/1,2,3,4,5,6,7/"+impactScopeIds+"/872,1117,163,362/N/party"
+	}).then(function(result){
+		//console.log(result)
+		buildEMMDetailedPartyStateWiseProgramsOverview(result)
+	});
+}
+
+function buildEMMDetailedPartyStateWiseProgramsOverview(result)
+{
+	var str='';
+	for(var i in result)
+	{
+		str+='<div class="row">';
+			str+='<div class="col-md-3 col-xs-12 col-sm-3" style="border-right:1px solid #333">';
+				
+				str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+				str+=''+result[i].positivePerc+'';
+				str+=''+result[i].negativePerc+'';
+				str+='<h4 class="panel-title">Total Programs - '+result[i].categoryCount+'</h4>';
+				for(var j in result[i].tvNewsDetailsVOList)
+				{
+					str+='<div id="newsChannels'+j+'" style="height:100px;"></div>';
+					str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</p>';
+					str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</p>';
+					str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'</p>';
+					str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'</p>';
+				}
+			str+='</div>';
+			str+='<div class="col-md-9 col-xs-12 col-sm-9">';
+					for(var k in result[i].tvNewsDetailsVOList1)
+					{
+						str+='<h4 style="background-color:#ddd;padding:5px;"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].channelName+'.png" class="newsIcon"/>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].channelName+'</h4>';
+						str+='<div class="row">';
+						for(var l in result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList)
+						{
+							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName+' - '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].	categoryCount+'</h4>';
+								str+='<div class="row">';
+									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+										str+='<div id="newsChannelsPrograms'+l+'" style="height:100px;"></div>';
+									str+='</div>';
+									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+										str+='<p class="text-muted">Positive Time</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeTime+'</p>';
+										str+='<p class="text-muted">Negative Time</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveTime+'</p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						}
+						str+='</div>';
+						
+					}
+				
+			str+='</div>';
+		str+='</div>';
+		str+='<hr style="border-color:#555"/>';
+	}
+	
+	$("#stateWiseProgramsOvrViewEMN").html(str);
+	for(var i in result)
+	{
+		var partyProgramsArr = []
+		for(var j in result[i].tvNewsDetailsVOList)
+		{
+			
+			str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCount+'</p>';
+			str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCount+'</p>';
+			var partyProgramsSubArr = [];
+			partyProgramsSubArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#222'});
+			partyProgramsSubArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#555'});
+		
+			$("#newsChannels"+j).highcharts({
+				chart: {
+					type: 'column',
+					backgroundColor:'transparent'
+				},
+
+				title: {
+					text: null
+				},
+
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Positive', 'Negative']
+				},
+
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					allowDecimals: false,
+					min: 0,
+					title: {
+						text: null
+					}
+				},
+						legend:{
+					enabled:false
+				},
+				tooltip: {
+					formatter: function () {
+						return '<b>' + this.x + '</b><br/>' +
+							this.series.name + ': ' + this.y + '<br/>' +
+							'Total: ' + this.point.stackTotal;
+					}
+				},
+
+				plotOptions: {
+					column: {
+						stacking: 'normal'
+					}
+				},
+
+				series: [{
+					name: 'John',
+					data: partyProgramsSubArr
+				}]
+			});
+		}
+	
+		for(var k in result[i].tvNewsDetailsVOList1)
+		{
+			var resultArr = [];
+			var resultArrColors = ['#333','#555']
+			for(var l in result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList)
+			{
+				
+				var resultSubArr = [];
+				resultSubArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime,"color":'#222'});
+				resultSubArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime,"color":'#555'});
+				resultArr.push({"data":resultSubArr})
+				$("#newsChannelsPrograms"+l).highcharts({
+					chart: {
+						type: 'column',
+						backgroundColor:'transparent'
+					},
+
+					title: {
+						text: null
+					},
+
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: ['Positive', 'Negative']
+					},
+
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						allowDecimals: false,
+						min: 0,
+						title: {
+							text: null
+						}
+					},
+							legend:{
+						enabled:false
+					},
+					tooltip: {
+						formatter: function () {
+							return '<b>' + this.x + '</b><br/>' +
+								this.series.name + ': ' + this.y + '<br/>' +
+								'Total: ' + this.point.stackTotal;
+						}
+					},
+
+					plotOptions: {
+						column: {
+							stacking: 'normal'
+						}
+					},
+
+					series: [{
+						name: 'John',
+						data: resultSubArr
+					}]
+				});
+			}
+		}
+	}
+}
+

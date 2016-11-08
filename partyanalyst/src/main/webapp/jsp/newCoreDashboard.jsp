@@ -2400,7 +2400,7 @@
             </div>
        </div>
 	 </div>
-	<!-- <div class="row">
+	<!--<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2537,7 +2537,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<div class="pull-right">
 										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="program" checked />Program Wise</label>
-										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>
+										<!--<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>
 									</div>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -2559,12 +2559,22 @@
 							
 							<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
 								<li class="text-capital newsComparisonHeading">Detailed</li>
-								<li class="active text-capital a viewsLiClassEmn" id="detailedPartyLiIdEmn" attr_div_id="detailedPartyMainDivId">Party</li>
+								<li class="text-capital a viewsLiClassEmn" id="detailedPartyLiIdEmn" attr_div_id="detailedPartyMainDivId">Party</li>
 								<li class="text-capital a viewsLiClassEmn" id="detailedGovernmentLiIdEmn" attr_div_id="detailedGovernamentMainDivId">Government</li>
 							</ul>
 						</div>
 					</div>
 					<div class="row m_top20 detailedPartyEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">State Wise - Programs Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="stateWiseProgramsOvrViewEMN"></div>
+								</div>
+							</div>
+						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
@@ -2639,7 +2649,7 @@
 				</div>
 			</div>
 		</div>
-	</div> -->
+	</div>-->
 	 <!-- TOURS START -->
 	<!--<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
@@ -2931,7 +2941,7 @@
 <!--end-->
 <!-- Model for Debate Start-->
 		<div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
-		  <div class="modal-dialog modal-lg">        
+		  <div class="modal-dialog modal-lg">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -3258,7 +3268,6 @@
 		//getDesigWiseMemberDtls();  
         //getToursBasicOverviewCountDetails();
 		/*Electronic Media Calls*/
-      // getEMMDetailedPartyDistrictWiseProgramsOverview();
 		//getAllTvChannels();
 	}
 	
