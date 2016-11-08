@@ -861,7 +861,11 @@ public class GISVisualizationService implements IGISVisualizationService{
 			if(commonMethodsUtilService.isListOrSetValid(assignedUsersList)){
 				for (Object[] param : assignedUsersList) { 
 					//if(returnVO.getLocationId().longValue() == commonMethodsUtilService.getLongValueForObject(param[0]))
-						returnVO.setAllocatedCount(commonMethodsUtilService.getLongValueForObject(param[2]));//total Allocated count
+					Long count=commonMethodsUtilService.getLongValueForObject(param[2]);
+					if(returnVO.getAllocatedCount() != null && returnVO.getAllocatedCount().longValue()>0L)
+						returnVO.setAllocatedCount(returnVO.getAllocatedCount()+count);
+					else
+						returnVO.setAllocatedCount(count);//total Allocated count
 				   }
 				}
 			
@@ -869,7 +873,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			//List<Object[]> lastOneHrTrackingList = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			List<Object[]> lastOneHrTrackingList = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			if(commonMethodsUtilService.isListOrSetValid(lastOneHrTrackingList)){
-				returnVO.setRegisteredCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
+				returnVO.setLastOneHrActiveCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
 				for (Object[] param : lastOneHrTrackingList) {
 					GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
 						if(tabVO != null){
@@ -890,8 +894,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 			if(returnVO.getActiveCount() != null && returnVO.getActiveCount().longValue() > 0l)
 				returnVO.setAvgOutput(returnVO.getOverAllOutput()/returnVO.getActiveCount());
 			
-			if(returnVO.getRegisteredCount() != null && returnVO.getRegisteredCount().longValue() > 0l)
-				returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getRegisteredCount());
+			if(returnVO.getLastOneHrActiveCount() != null && returnVO.getLastOneHrActiveCount().longValue() > 0l)
+				returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getLastOneHrActiveCount());
 			
 			returnVO.setUsersList(tabUserList);
 			
