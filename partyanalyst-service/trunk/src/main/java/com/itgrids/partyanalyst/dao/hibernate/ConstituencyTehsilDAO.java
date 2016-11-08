@@ -26,6 +26,8 @@ public class ConstituencyTehsilDAO extends GenericDaoHibernate<ConstituencyTehsi
 			  	 queryStr.append(" and model.constituency.district.districtId > 10 and model.constituency.state.stateId=1");
 			}else if(stateId != null && stateId.longValue() == 36l){
 			  	 queryStr.append(" and model.constituency.district.districtId < 11 "); 
+			}else if(stateId != null && stateId.longValue() == 0l){
+				 queryStr.append(" and model.constituency.district.districtId <= 23 ");
 			}
 		    Query query = getSession().createQuery(queryStr.toString());
 		    return query.list();
