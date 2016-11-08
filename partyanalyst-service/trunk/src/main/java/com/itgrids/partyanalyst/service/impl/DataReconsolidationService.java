@@ -11,18 +11,33 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTabRecordsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.service.IDataReconsolidationService;
 
 public class DataReconsolidationService implements IDataReconsolidationService {
 	private static final Logger LOG = Logger.getLogger(FieldMonitoringService.class);
 	private ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO;
 	private ITdpCadreDAO tdpCadreDAO;
+	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
 	
 	
-  public ICadreTabRecordsStatusDAO getCadreTabRecordsStatusDAO() {
+	
+  public ICadreSurveyUserAssignDetailsDAO getCadreSurveyUserAssignDetailsDAO() {
+		return cadreSurveyUserAssignDetailsDAO;
+	}
+
+
+	public void setCadreSurveyUserAssignDetailsDAO(
+			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
+		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
+	}
+
+
+public ICadreTabRecordsStatusDAO getCadreTabRecordsStatusDAO() {
 		return cadreTabRecordsStatusDAO;
 	}
 
@@ -102,11 +117,12 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long constistuenc
     				actualMap.put((Long)objects[0],objects[1] !=null ? (Long)objects[1]:0l);
 				}
     		}
-    		
+    		if(returnList != null && returnList.size() > 0){
     		for(CadreTabRecordsStatusVO vo : returnList){
     		  Long count = actualMap.get(vo.getCadreSurveyUserId());
     		  if(count !=null)
     			  vo.setActualCount(count);
+    		}
     		}
 
     		return returnList;
@@ -221,5 +237,49 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 	}
 	return finalList;
 }
+
+/**
+* @param  Long districtId,constituencyId,fromDateStr, toDateStr
+* @return  List<IdAndNameVO>
+* @author Hymavathi 
+* @Description : 
+*  @since 08-Nov-2016
+*/
+public List<IdAndNameVO> getLocationWiseSmartDevicesCount(Long districtId,Long constituencyId,String startDate,String endDate){
+	
+	
+	  List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);	 
+	try{
+	
+		LOG.info("Entered into DataReconsolidationService of getLocationWiseSmartDevicesCount");
+		
+		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	
+		   Date fromDate = null;
+		   Date toDate = null;
+		
+		   /*if(startDate !=null && endDate != null){			   
+			   fromDate = sdf.parse(startDate);
+			   toDate = sdf.parse(endDate);
+		   }*/
+		 
+		List<Object[]> cadreRegDetils = cadreSurveyUserAssignDetailsDAO.getLocationWiseSmartDevicesCount(districtId,constituencyId,fromDate,toDate);
+		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
+			
+			for(Object[] param : cadreRegDetils){
+				IdAndNameVO locationVO = new IdAndNameVO();
+				locationVO.setId(param[0] != null ? (Long)param[0] : 0l);
+				locationVO.setName(param[1] != null ?param[1].toString():"");
+				locationVO.setApTotal(param[2] != null ? (Long)param[2] : 0l);
+				finalList.add(locationVO);
+			}
+		
+		}
+	}catch(Exception e){
+		LOG.error("Exception Occured into DataReconsolidationService of getCadreSurveyUserWiseRegistrations",e);
+	}
+	return finalList;
+}
+
 
 }
