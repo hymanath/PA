@@ -1,6 +1,7 @@
 function getDataReConsalationOverView(){
 	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	  var constId = $("#constituencyOverViewId").val();
+	  var constId = $("#constituencyOverViewId").val(); 
+      var districtId = $("#districtOverViewId").val();	  
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
 	  dateVal = dateArr.split("-")
@@ -9,7 +10,8 @@ function getDataReConsalationOverView(){
 	  var jsObj = { 
 	      constistuencyId : constId,
           fromDate : strtDate,
-          toDate : endDate
+          toDate : endDate,
+		  districtId : districtId
 	 }
 	 
     $.ajax({
@@ -28,6 +30,7 @@ function getDataReConsalationOverView(){
   function getdataReConsalationTotalOverView(){
 	  $("#dataReconsalationOverviewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var constId = $("#constituencyOverViewId").val();
+	  var districtId = $("#districtOverViewId").val();	
 	  var dateArr = $(".datePicker").val();
 	  var dateVal = [];
 	  dateVal = dateArr.split("-")
@@ -36,7 +39,8 @@ function getDataReConsalationOverView(){
 	  var jsObj = { 
 	      constistuencyId : constId,
           fromDate : strtDate,
-          toDate : endDate
+          toDate : endDate,
+		  districtId : districtId
 				  }
 	 
     $.ajax({
@@ -120,10 +124,10 @@ $(document).on("click","#submitId",function(){
 	  }
 	   $("#errorDivId").html(' ');
 	   
-	   if(districtId == 0){
+	   /* if(districtId == 0){
 		  $("#errorDivId").html('Please Select District');
 		  return ;
-	  }
+	  } */
 	   $("#errorDivId").html(' ');  
 	getdataReConsalationTotalOverView();
 	getDataReConsalationOverView();
@@ -184,9 +188,9 @@ $(document).on("click","#submitId",function(){
     $("#errorDivId").html(' ');
 	 $("#stateDivIdImg").show();
 	    $('#districtOverViewId').html(' ');
-		$('#districtOverViewId').append('<option value="0">Please Select District</option>');
+		$('#districtOverViewId').append('<option value="0">All</option>');
 	    $('#constituencyOverViewId').html(' ');
-	    $('#constituencyOverViewId').append('<option value="0">Please Select constistuency</option>');
+	    $('#constituencyOverViewId').append('<option value="0">All</option>');
 	var jsObj = {
 			stateId : $("#stateOverViewId option:selected").val()
 	}
