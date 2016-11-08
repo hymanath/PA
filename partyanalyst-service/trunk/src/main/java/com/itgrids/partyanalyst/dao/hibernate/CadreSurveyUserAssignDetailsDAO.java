@@ -430,4 +430,50 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		  }
 		  return query.list();
 	}
+	public List<Object[]> getLocationWiseSmartDevicesCount(Long districtId,Long constituencyId,Date startDate,Date endDate){  
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		
+		if(districtId != null && districtId.longValue()>0l){
+			queryStr.append(" distinct CSUAD.constituency.constituencyId,CSUAD.constituency.name ");
+		}else{
+			queryStr.append(" distinct CSUAD.constituency.district.districtId,CSUAD.constituency.district.districtName ");
+		}
+		
+		queryStr.append(" ,count(distinct CSUAD.cadreSurveyUser.cadreSurveyUserId) from CadreSurveyUserAssignDetails CSUAD " +
+						" where CSUAD.isDeleted = 'N' " +
+						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
+		
+		/*if(constituencyId != null && constituencyId.longValue()>0l){
+			queryStr.append(" and CSUAD.constituency.constituencyId = :constituencyId ");
+		}*/
+		if(districtId != null && districtId.longValue()>0l){
+			queryStr.append(" and CSUAD.constituency.district.districtId = :districtId ");
+		}
+		if(startDate != null && endDate != null){
+			queryStr.append(" and date(CSUAD.insertedTime) between :startDate and :endDate");
+		 }
+		
+		if(districtId != null && districtId.longValue()>0l){   
+			queryStr.append(" group by CSUAD.constituency.constituencyId ");
+		}else {
+			queryStr.append(" group by CSUAD.constituency.district.districtId");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(districtId != null && districtId.longValue()>0l){
+			query.setParameter("districtId", districtId);
+		}
+		
+		/*if(constituencyId != null && constituencyId.longValue()>0l){
+			query.setParameter("constituencyId", constituencyId);	
+		}*/
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+	}
 }
