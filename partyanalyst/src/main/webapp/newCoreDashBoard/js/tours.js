@@ -73,7 +73,6 @@ function getToursBasicOverviewCountDetails()
 		  }
 		 if(designationWiseRlst != null && designationWiseRlst.length > 0){
 		   for(var i in designationWiseRlst){
-				 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
 				  str+='<h4>'+designationWiseRlst[i].designation+'</h4>';
 				  str+='<table class="table tableTraining bg_ED">';
 				  str+='<tbody><tr>';
@@ -105,7 +104,6 @@ function getToursBasicOverviewCountDetails()
 		  }else{
 		  str+='No Data Available';	  
 		  }
-		str+='</div>';
 	  $("#tourOverviewDivId").html(str);  
 	 }
 	 
@@ -232,3 +230,22 @@ function getToursBasicOverviewCountDetails()
 		$("#districtWiseLeaderDiv").html("No Data Available.")
 	}	
   }
+  //getTopPoorToursLocationDetails();
+  function getTopPoorToursLocationDetails()
+	{    
+		var jsObj ={ 
+					 activityMemberId : 2,
+					 stateId : globalStateIdForTour,
+					 userTypeId:3,
+					 fromDate : "27/10/2016",
+					 toDate : "29/10/2016"
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getTopPoorToursLocationDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+ 		});
+	}
