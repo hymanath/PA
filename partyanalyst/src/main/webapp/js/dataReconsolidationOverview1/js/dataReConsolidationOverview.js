@@ -74,6 +74,9 @@ function getDataReConsalationOverView(){
 				var totRecords = result.totalRecords;
 				var totSynRec =result.totalSyn;
 				var totPending  = result.totalPending;
+				var totTabSyn = result.sync;
+				var totTabPending = result.pending;
+				var actualServerCount =result.actualCount;
 				if(result != null){
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
@@ -91,6 +94,24 @@ function getDataReConsalationOverView(){
 					 str+='<p class="text_bold">'+0+'</p>';
 				}
 				str+='</div>';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 ">';
+				str+='<p class="text_bold">TAB SUBMITTED</p>';
+				if(totTabSyn !=null){
+					 str+='<p class="text_bold">'+result.sync+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
+				str+='</div>';
+				}
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 ">';
+				str+='<p class="text_bold">TAB PENDING</p>';
+				if(totTabPending !=null){
+					 str+='<p class="text_bold">'+result.pending+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
+				str+='</div>';
+				}
 				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
 				if(totSynRec != null){
@@ -108,6 +129,14 @@ function getDataReConsalationOverView(){
 				 }
 				str+='</div>';
 				}
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
+				if(actualServerCount != null){
+					str+='<p class="text_bold">'+result.actualCount+'</p>';
+				}else {
+					 str+='<p class="text_bold">'+0+'</p>';
+				}
+				str+='</div>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
