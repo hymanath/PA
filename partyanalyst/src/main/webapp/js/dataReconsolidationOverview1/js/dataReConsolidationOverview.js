@@ -124,13 +124,14 @@ $(document).on("click","#submitId",function(){
 	  }
 	   $("#errorDivId").html(' ');
 	   
-	   /* if(districtId == 0){
+	  /* if(districtId == 0){
 		  $("#errorDivId").html('Please Select District');
 		  return ;
-	  } */
+	  }*/
 	   $("#errorDivId").html(' ');  
 	getdataReConsalationTotalOverView();
 	getDataReConsalationOverView();
+	getLocationWiseSmartDevicesCount();
 });
  function buildDataReConsalationOverView(result)
  {                                                        
@@ -139,7 +140,7 @@ $(document).on("click","#submitId",function(){
 		str+='<div class="panel-heading">';
 			str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>USER WISE TOTAL REGISTRATIONS & SYNC PENDING DETAILS</b></h4>';
 		str+='</div>';
-		str+='<div class="panel-body" style="padding: 25px;">';
+		str+='<div class="panel-body">';
 				str+='<table class="table table-condensed" id="userWiseTotalRegstSyncId">';
 				str+='<thead>';
 				str+='<tr>'; 
@@ -179,7 +180,7 @@ $(document).on("click","#submitId",function(){
 				 }else{
 					 str+='<td>-</td>';
 				 }				
-				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls" style="margin-right: 0px; margin-left: 100px;">VIEW DAY WISE</button></td>';
+				str+='<td><button attr_cdr_srv_usr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" class="btn btn-sm btn-success openPopUpModel tabUserDtlsCls">VIEW DAY WISE</button></td>';
 				str+='</tr>';	
 		   }				
 				str+='</tbody>';
@@ -285,6 +286,7 @@ function getCadreSurveyUserWiseRegistrations(cdrSurveyUserId,constId,strtDate,en
 
 function buildPopUpModelDetails(result){
 	var str = '';
+	str+='<div class="table-responsive">';
 	str+='<table class="table table-condensed " id="tabUserDetailsId">';
 	str+='<thead>';
 	    str+='<tr>';
@@ -351,6 +353,7 @@ function buildPopUpModelDetails(result){
 	}
 	str +='</tbody>';
 	str +='</table>';
+	str +='</div>';
 	$("#tabUserWiseRegistionDetilsId").html(str);	
 	$("#tabUserDetailsId").dataTable();	
 	
@@ -426,4 +429,66 @@ function setDefaultImage(img){
     img.onerror = "";
     img.src = "images/cadre_images/human.jpg";
     return true;
+  }
+  
+  function getLocationWiseSmartDevicesCount(){
+  $("#tabUserWiseRegistionDetilsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#userWiseTotalViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  var constId = $("#constituencyOverViewId").val();
+	  var districtId = $("#districtOverViewId").val();
+	  var dateArr = $(".datePicker").val();
+	  var dateVal = [];
+	  dateVal = dateArr.split("-")
+	  var strtDate = dateVal[0];
+	  var endDate = dateVal[1];
+	  var jsObj = { 
+		  districtId : districtId,
+	      constituencyId : constId,
+          strtDate : strtDate,
+          endDate : endDate
+	 }
+	 
+    $.ajax({
+          type:'GET',
+          url: 'getLocationWiseSmartDevicesCountAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result != null){
+			buildLocationWiseSmartDevicesCount(result);
+		}else {
+			$("#locWiseSmartDivCount").html('No Data Available');
+		}
+   });
+  }
+  function buildLocationWiseSmartDevicesCount(result){
+  $("#locWiseSmartDivCount").show();
+  var str = "";
+  
+  str+='<div class="panel panel-default">';
+  str+='<div class="panel-heading">';
+  str+='<h4 class="panel-title">Data Reconsolidation</h4>';
+	str+='</div>';
+	str+='<div class="panel-body">';
+	str+='<div class="table-responsive">';
+	str+='<table class="table table-bordered">';
+	str+='<thead>';
+	str+='<th>District</th>';
+	str+='<th>Count</th>';
+	str+='</thead>';
+	//str+='<tbody>';
+	for(var i in result){
+	str+='<tbody>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].apTotal+'</td>';
+		str+='</tbody>';
+	}
+	//str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	$("#locWiseSmartDivCount").html(str);
+	
+  
   }

@@ -3743,6 +3743,7 @@
 	<bean name="dataReconsolidationService" class="com.itgrids.partyanalyst.service.impl.DataReconsolidationService" >
 	 <property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
 	  <property name="tdpCadreDAO" ref="tdpCadreDAO" />	
+	  <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />	
 	</bean>
 	
 	<bean name="toursService" class="com.itgrids.partyanalyst.service.impl.ToursService" >

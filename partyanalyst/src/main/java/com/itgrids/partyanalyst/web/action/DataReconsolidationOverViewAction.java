@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.service.IDataReconsolidationService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,10 +24,21 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 	  
 	  private IDataReconsolidationService dataReconsolidationService;
 	  private List<CadreTabRecordsStatusVO>  cadreTabRecordsStatusVOList;
+	  private List<IdAndNameVO>  idAndNameVOList;
 	  private  CadreTabRecordsStatusVO finalvo;
 	  
 	  
-	  public List<CadreTabRecordsStatusVO> getCadreTabRecordsStatusVOList() {
+	  
+	 
+	public List<IdAndNameVO> getIdAndNameVOList() {
+		return idAndNameVOList;
+	}
+
+	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
+		idAndNameVOList = idAndNameVOList;
+	}
+
+	public List<CadreTabRecordsStatusVO> getCadreTabRecordsStatusVOList() {
 		return cadreTabRecordsStatusVOList;
 	}
 
@@ -128,6 +140,22 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured into DataReconsolidationOverViewAction of getCadreSurveyUserWiseRegistrations ()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWiseSmartDevicesCount(){
+		try{
+			LOG.info("Entered into DataReconsolidationOverViewAction of getCadreSurveyUserWiseRegistrations ()");
+			jObj = new JSONObject(getTask());
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String startDate = jObj.getString("strtDate");
+			String toDate =jObj.getString("endDate");
+			idAndNameVOList = dataReconsolidationService.getLocationWiseSmartDevicesCount(districtId,constituencyId,startDate,toDate);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured into DataReconsolidationOverViewAction of getLocationWiseSmartDevicesCount ()",e);
 		}
 		return Action.SUCCESS;
 	}

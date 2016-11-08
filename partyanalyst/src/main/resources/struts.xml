@@ -14560,7 +14560,11 @@
 			<result type="json" name="success">
 			<param name="root">cadreVO</param>
 		</result>
+	</action>
+	<action name="getLocationWiseSmartDevicesCountAction" class="dataReconsolidationOverViewAction"  method="getLocationWiseSmartDevicesCount">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
 	</action>	   
-		   
 </package>
 </struts>
