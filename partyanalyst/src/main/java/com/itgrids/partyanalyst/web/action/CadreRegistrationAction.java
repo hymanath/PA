@@ -3003,5 +3003,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
+  
+  public String getStateWiseMandalMuncipalityNotStartedCount(){
+	  try{
+		  jobj = new JSONObject(getTask());
+		  Long stateId = jobj.getLong("stateId");
+		  cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getStateWiseMandalMuncipalityNotStartedCount(stateId);
+	  }catch(Exception e){
+		  e.printStackTrace();   
+	  }
+	  return Action.SUCCESS;
+  }
 }//public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option)
+
 
