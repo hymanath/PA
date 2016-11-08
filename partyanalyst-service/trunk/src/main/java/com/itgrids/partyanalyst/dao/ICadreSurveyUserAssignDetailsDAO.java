@@ -34,4 +34,5 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	public List<Object[]> getUserTrackingDetails(GISVisualizationParameterVO inputVO);
 	public List<Object[]> getMapPowerLocationWise(Long locationScopeId, String locationType);
 	//public Long getTabUserTrackingDetails(GISVisualizationParameterVO inputVO);
+	public List<Object[]> getCadreSurveyUserDtlsLocationWise(String locationType,List<Long> locationValues,Date fromDate,Date toDate);
 }

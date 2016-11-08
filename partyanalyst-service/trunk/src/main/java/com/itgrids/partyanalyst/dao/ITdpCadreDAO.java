@@ -495,4 +495,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Date getLastUpdatedTime(Date today);
 	  public List<Object[]> getTabUserInfoDetailsByTdpCadreIds(List<Long> tdpCadreIdsList );
 	  public String getCadreMobileNumber(Long tdpCadreId);
+	  public List<Object[]> getUserTrackingDetails(Long cadreSurveyUserId,Date fromDate,Date toDate);
+	  
 } 

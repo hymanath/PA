@@ -28,4 +28,6 @@ public interface ICadreSurveyUserDAO extends GenericDao<CadreSurveyUser, Long>{
 	public List<Long> getCadreSurveyUserDetailsByType();
 	
 	public List<Object[]> getCadreSurveyUserList(List<Long> assignedCadreSurveyUsers);
+	
+	public Object[] getCadreSurveyUserBasicDetails(Long cadreSurveyUserId);
 }

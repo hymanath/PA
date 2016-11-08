@@ -23,6 +23,8 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
@@ -33,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoSourceDAO;
 import com.itgrids.partyanalyst.dao.ITabUserInfoDAO;
+import com.itgrids.partyanalyst.dao.ITabUserLocationDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITabUserOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
@@ -48,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -117,6 +121,9 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITdpCadreSmsLeaderLocationDAO tdpCadreSmsLeaderLocationDAO;
     private ITdpCadreHourRegInfoDAO tdpCadreHourRegInfoDAO;
     private ICadreRegistrationService cadreRegistrationService;
+    private ICadreSurveyUserDAO cadreSurveyUserDAO;
+    private ITabUserLocationDetailsDAO tabUserLocationDetailsDAO;
+    private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
     
     
 	public void setTdpCadreSmsLeaderLocationDAO(
@@ -295,6 +302,17 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	}
 	public void setCadreRegistrationService(ICadreRegistrationService cadreRegistrationService) {
 		this.cadreRegistrationService = cadreRegistrationService;
+	}
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+	public void setTabUserLocationDetailsDAO(
+			ITabUserLocationDetailsDAO tabUserLocationDetailsDAO) {
+		this.tabUserLocationDetailsDAO = tabUserLocationDetailsDAO;
+	}
+	public void setCadreSurveyUserAssignDetailsDAO(
+			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
+		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -3757,5 +3775,132 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
  	}catch(Exception e){
  		LOG.error("Exception raised in setActiveUserDtls() in CoreDashboardCadreRegistrationService service", e);	
  	}
+ }
+  public List<CadreBasicVO> getCadreSurveyUserDetailsByLocationIds(String locationType,List<Long> locationValues,String fromDateStr,String toDateStr){
+	  List<CadreBasicVO> resultList = new ArrayList<CadreBasicVO>(0);
+	  Map<Long,CadreBasicVO> sryUsrTackngDtlsMap = new LinkedHashMap<Long, CadreBasicVO>(0);
+	  Map<Long,CadreBasicVO> surveyUserMap = new HashMap<Long, CadreBasicVO>(0);
+ 	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	  Date toDate=null;
+	  Date fromDate=null;
+	  try{
+		  if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 toDate = sdf.parse(toDateStr);
+				 fromDate = sdf.parse(fromDateStr);
+		 }
+		List<Object[]> rtrnUserTrackingObjList = tabUserLocationDetailsDAO.getSurveyUserLatestTimeLongitudeAndLatituedeLocationWise(locationType, locationValues, fromDate, toDate); 
+		setSurveyTrackingDtlsToMap(rtrnUserTrackingObjList,sryUsrTackngDtlsMap);
+		List<Object[]> rtrnSurveyUserLst = cadreSurveyUserAssignDetailsDAO.getCadreSurveyUserDtlsLocationWise(locationType, locationValues, fromDate, toDate);
+		setSurveyUserDtls(rtrnSurveyUserLst,surveyUserMap,sryUsrTackngDtlsMap,locationType);
+		List<Object[]> rtrnUserBasicInfoObjLst = tabUserInfoDAO.getSurveyUserBasicDetailsBySurveyUserIds(new ArrayList<Long>(surveyUserMap.keySet()));
+		if(rtrnUserBasicInfoObjLst != null && rtrnUserBasicInfoObjLst.size() > 0){
+			for(Object[] param:rtrnUserBasicInfoObjLst){
+				Long surveyUserId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				if(surveyUserMap.get(surveyUserId) != null ){
+					surveyUserMap.get(surveyUserId).setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					surveyUserMap.get(surveyUserId).setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+				}
+			}
+		}
+	  }catch (Exception e){
+		 LOG.error("Exception raised in setActiveUserDtls() in CoreDashboardCadreRegistrationService service", e);
+	  }
+	  return resultList;
+  }
+  public void setSurveyUserDtls(List<Object[]> objList,Map<Long,CadreBasicVO> surveyUserMap,Map<Long,CadreBasicVO> sryUsrTackngDtlsMap,String locationType){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  CadreBasicVO surveyUserVO = new CadreBasicVO();
+				  surveyUserVO.setSurveyUserId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  surveyUserVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				//  surveyUserVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[2]));
+			//	  surveyUserVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				  if(locationType != null && locationType.equalsIgnoreCase("District")){
+				//	surveyUserVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					//surveyUserVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[5]));
+				  }
+				  if(sryUsrTackngDtlsMap != null && sryUsrTackngDtlsMap.size() > 0 && sryUsrTackngDtlsMap.get(surveyUserVO.getSurveyUserId()) != null){
+					  surveyUserVO.setSurveyTime(sryUsrTackngDtlsMap.get(surveyUserVO.getSurveyUserId()).getSurveyTime());
+					  surveyUserVO.setLatitude(sryUsrTackngDtlsMap.get(surveyUserVO.getSurveyUserId()).getLatitude());
+					  surveyUserVO.setLatitude(sryUsrTackngDtlsMap.get(surveyUserVO.getSurveyUserId()).getLongititude());
+				  }
+			  }
+		  }
+		  
+	  }catch(Exception e){
+		  LOG.error("Exception raised in setSurveyUserDtls() in CoreDashboardCadreRegistrationService service", e); 
+	  }
+  }
+  public void setSurveyTrackingDtlsToMap(List<Object[]> objList, Map<Long,CadreBasicVO> sryUsrTackngDtlsMap){
+	  try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  CadreBasicVO suveyUserVO = new CadreBasicVO();
+				   suveyUserVO.setSurveyUserId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   suveyUserVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   suveyUserVO.setLatitude(commonMethodsUtilService.getStringValueForObject(param[2]));
+				   suveyUserVO.setLongititude(commonMethodsUtilService.getStringValueForObject(param[3]));
+				   suveyUserVO.setName(" ");
+				   suveyUserVO.setMobileNo(" ");
+				   sryUsrTackngDtlsMap.put(suveyUserVO.getSurveyUserId(), suveyUserVO);
+			  }
+		  }
+	  }catch(Exception e){
+		  LOG.error("Exception raised in setSurveyTrackingDtlsToMap() in CoreDashboardCadreRegistrationService service", e);  
+	  }
+  }
+ 
+ public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr){
+	  CadreBasicVO resultVO = new CadreBasicVO();
+	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	  Date toDate=null;
+	  Date fromDate=null;
+	 try{
+		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+			 toDate = sdf.parse(toDateStr);
+			 fromDate = sdf.parse(fromDateStr);
+		 }
+		 Object[] cadreSurveyUserObj = cadreSurveyUserDAO.getCadreSurveyUserBasicDetails(cadreSurveyUserId);
+		 if(cadreSurveyUserObj != null && cadreSurveyUserObj.length > 0){
+			 resultVO.setSurveyUserId(commonMethodsUtilService.getLongValueForObject(cadreSurveyUserObj[0]));
+			 resultVO.setUserName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[1]));
+			 resultVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[2]));
+			 resultVO.setName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[3]));
+		 }
+		 List<CadreBasicVO> userTrackingDtlList = new ArrayList<CadreBasicVO>(0);
+		 List<CadreBasicVO> eryFveMntsDtlsLstUsrTrckngLst = new ArrayList<CadreBasicVO>(0);
+		 
+		 List<Object[]> rtrnTrackingDtlsLst = tdpCadreDAO.getUserTrackingDetails(cadreSurveyUserId, fromDate, toDate);
+		 List<Object[]> rtrnEvry5MinutesUsrTrkngDtlList = tabUserLocationDetailsDAO.getSurveyUserTrackingDtls(cadreSurveyUserId, fromDate, toDate);
+		 
+		 setDUserTrackingDtlsToList(rtrnTrackingDtlsLst,userTrackingDtlList);
+		 setDUserTrackingDtlsToList(rtrnEvry5MinutesUsrTrkngDtlList,eryFveMntsDtlsLstUsrTrckngLst);
+		 
+ 		 if(userTrackingDtlList != null && userTrackingDtlList.size() > 0){
+ 			 resultVO.setSubList1(userTrackingDtlList);
+ 		 }
+ 		 if(eryFveMntsDtlsLstUsrTrckngLst != null && eryFveMntsDtlsLstUsrTrckngLst.size() > 0){
+ 			 resultVO.setSubList2(eryFveMntsDtlsLstUsrTrckngLst);
+ 		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in getUserTrackingDtslBySurveyUserId() in CoreDashboardCadreRegistrationService service", e);	 
+	 }
+	 return resultVO;
+ }
+ public void setDUserTrackingDtlsToList(List<Object[]> objList,List<CadreBasicVO> resultList){
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 CadreBasicVO regDtlsVO = new CadreBasicVO();
+				 regDtlsVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[0]));
+				 regDtlsVO.setLongititude(commonMethodsUtilService.getStringValueForObject(param[1]));
+				 regDtlsVO.setLatitude(commonMethodsUtilService.getStringValueForObject(param[2]));
+				 resultList.add(regDtlsVO);
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception raised in setDUserTrackingDtlsToList() in CoreDashboardCadreRegistrationService service", e); 
+	 }
  }
 }

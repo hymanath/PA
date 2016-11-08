@@ -158,5 +158,11 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		return query.list();
 		
 	}
+	public Object[] getCadreSurveyUserBasicDetails(Long cadreSurveyUserId){
+		Query query = getSession().createQuery(" select model.cadreSurveyUserId,model.userName,model.mobileNo,model.name from CadreSurveyUser model " +
+											 "   where model.isDeleted='N' and model.cadreSurveyUserId=:cadreSurveyUserId ");
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		return (Object[])query.uniqueResult();
+	}
 	
 }
