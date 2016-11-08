@@ -91,12 +91,12 @@
 <script src="js/dataReconsolidationOverview1/js/dataReConsolidationOverview.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
-var defaultDate = moment().format("MM/DD/YYYY")+' -'+moment().format("MM/DD/YYYY")
+var defaultDate = moment().startOf('month').format("MM/DD/YYYY")+' -'+moment().startOf('month').format("MM/DD/YYYY")
 $(".datePicker").val(defaultDate)
 $(".datePicker").daterangepicker({
 	opens :'left',
-	startDate:moment(),
-	endDaste:moment(),
+	startDate:moment().startOf('month'),
+	endDate:moment().startOf('month'),
 	maxDate:moment()
 });
 
