@@ -440,8 +440,8 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			queryStr.append(" distinct CSUAD.constituency.district.districtId,CSUAD.constituency.district.districtName ");
 		}
 		
-		queryStr.append(" ,count(distinct CSUAD.cadreSurveyUser.cadreSurveyUserId) from CadreSurveyUserAssignDetails CSUAD " +
-						" where CSUAD.isDeleted = 'N' " +
+		queryStr.append(" ,count(distinct CTRS.imeiNo) from CadreSurveyUserAssignDetails CSUAD,CadreTabRecordsStatus CTRS " +
+						" where CSUAD.isDeleted = 'N' and CTRS.cadreSurveyUserId = CSUAD.cadreSurveyUserId " +
 						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
 		
 		/*if(constituencyId != null && constituencyId.longValue()>0l){
