@@ -153,7 +153,7 @@ public class DataReconsolidationOverViewAction extends ActionSupport implements 
 			Long constituencyId = jObj.getLong("constituencyId");
 			String startDate = jObj.getString("strtDate");
 			String toDate =jObj.getString("endDate");
-			idAndNameVOList = dataReconsolidationService.getLocationWiseSmartDevicesCount(stateId,districtId,constituencyId,startDate,toDate);
+			cadreTabRecordsStatusVOList = dataReconsolidationService.getLocationWiseSmartDevicesCount(stateId,districtId,constituencyId,startDate,toDate);
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured into DataReconsolidationOverViewAction of getLocationWiseSmartDevicesCount ()",e);
