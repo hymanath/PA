@@ -112,7 +112,7 @@ function getDataReConsalationOverView(){
 				 }
 				str+='</div>';
 				
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right ">';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right " style="margin-top:10px;border-top:1px solid #ddd">';
 				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
 				if(totSynRec != null){
 					str+='<p class="text_bold">'+totSynRec+'</p>';
@@ -120,7 +120,7 @@ function getDataReConsalationOverView(){
 					str+='<p class="text_bold" text-center>'+0+'</p>';
 				}
 				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right " style="margin-top:10px;border-top:1px solid #ddd">';
 				str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
 				 if(totPending !=null){
 					 str+='<p class="text_bold">'+totPending+'</p>';
@@ -129,7 +129,7 @@ function getDataReConsalationOverView(){
 				 }
 				str+='</div>';
 				
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right " style="margin-top:10px;border-top:1px solid #ddd">';
 				str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
 				if(actualServerCount != null){
 					str+='<p class="text_bold">'+result.actualCount+'</p>';
