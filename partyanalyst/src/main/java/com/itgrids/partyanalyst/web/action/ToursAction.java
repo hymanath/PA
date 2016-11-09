@@ -40,6 +40,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private ToursBasicVO resultVO;
 	   private List<ToursBasicVO> resultList;
 	   private String successMsg;
+	   private List<List<ToursBasicVO>> listOfTourBasicVoList;
 	
 	   public JSONObject getjObj() {
 		   return jObj;
@@ -117,6 +118,13 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   public void setCoreDashboardToursService(
 			   ICoreDashboardToursService coreDashboardToursService) {
 		   this.coreDashboardToursService = coreDashboardToursService;
+	   }
+	   public List<List<ToursBasicVO>> getListOfTourBasicVoList() {
+		   return listOfTourBasicVoList;
+	   }
+	   public void setListOfTourBasicVoList(
+			List<List<ToursBasicVO>> listOfTourBasicVoList) {
+		   this.listOfTourBasicVoList = listOfTourBasicVoList;
 	   }
 	public static Logger getLog() {
 		return LOG;
@@ -315,7 +323,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		
 		return Action.SUCCESS;
 	}
-	public String getDesigWiseMemberDtls(){
+	public String getDesigWiseMemberDtls(){  
 		try {
 			LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
@@ -323,9 +331,9 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			Long stateId = jObj.getLong("stateId");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
-			successMsg = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId); 
+			listOfTourBasicVoList = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId); 
 			
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
