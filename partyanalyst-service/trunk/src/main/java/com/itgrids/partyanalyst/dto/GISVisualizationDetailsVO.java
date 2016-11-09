@@ -29,11 +29,15 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	private Long todayRenewalCount=0L;
 	private String todayRenewalPerc;
 	private Long targetCount=0L;
+	private Long todayTarget=0L;
 	private String achievedPerc;
 	
 	private String earnedVotesIn2014;
 	private String earnedVotesPercIn2014;
 	private String validVotes;
+	private String marginVotes;
+	private String marginVotesPerc;
+	private String rank;
 	private String isYCPArea;
 	
 	
@@ -48,7 +52,30 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 		this.locationName = locationName;
 	}
 	
-	
+	public Long getTodayTarget() {
+		return todayTarget;
+	}
+	public void setTodayTarget(Long todayTarget) {
+		this.todayTarget = todayTarget;
+	}
+	public String getMarginVotes() {
+		return marginVotes;
+	}
+	public void setMarginVotes(String marginVotes) {
+		this.marginVotes = marginVotes;
+	}
+	public String getMarginVotesPerc() {
+		return marginVotesPerc;
+	}
+	public void setMarginVotesPerc(String marginVotesPerc) {
+		this.marginVotesPerc = marginVotesPerc;
+	}
+	public String getRank() {
+		return rank;
+	}
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
 	public String getIsYCPArea() {
 		return isYCPArea;
 	}
