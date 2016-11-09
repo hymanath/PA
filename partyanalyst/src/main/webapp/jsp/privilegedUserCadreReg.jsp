@@ -9,6 +9,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 </head>
 	<style>
 		body{background:#e5e5e5 }
@@ -150,7 +151,7 @@
 			border-right:1px solid lightblue;
 		}
 		.summary th {
-			border:1px solid lightblue;
+			border:1px solid lightblue;     
 			color: #003399;
 			font-size: 14px;
 			font-weight: normal;
@@ -329,37 +330,6 @@
         <h4 class="modal-title" id="myModalLabel1">KUPPAM CONSTITUENCY DETAILED REPORT</h4>
       </div>
       <div class="modal-body">
-		<div class="row tabModal" style="display:none;">
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-				<div class="row m_top10">
-					<div class="col-md-3 col-xs-12 col-sm-3">
-						<select class="form-control" id="constituencySeletBoxId">
-						  <option value="${constId}">${constName}</option>
-						  <select>
-						  <span id="constituencyErrorId" style="color:red"></span>    
-					</div>
-					<div class="col-md-3 col-xs-12 col-sm-3">
-						<span class="input-group pull-right">
-							<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
-							<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-						</span>
-					</div>
-					<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
-						<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
-					</div>
-				</div>
-				<div class="row showTabUserWiseDetails" style="display:none">
-				  <div class="col-md-12 col-xs-12 col-sm-12 m_top20 mtop-20">
-				     <div id="notReceiveRegistrationFieldStaffDivId"></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-							<div id="tabUserWiseReportDiv"></div>
-					</div>
-				</div>
-			 </div>
-		</div>
         <div class="row webModal">
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 					<label class="radio-inline">
@@ -391,7 +361,49 @@
     </div>
   </div>
 </div>
-<!-- end-->  
+<!-- end--> 
+<!-- Modal -->
+<div class="modal fade" id="tabUserDtlsId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+  <div class="modal-dialog modal-lg" role="document" style="width:85%">
+    <div class="modal-content" style="border-radius:0px">
+      <div class="modal-header" style="background-color:#CCC">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="constNameId">KUPPAM CONSTITUENCY DETAILED REPORT</h4>
+      </div>
+      <div class="modal-body">
+		<div class="row tabModal">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">  
+				<div class="row m_top10">
+					<div class="col-md-3 col-xs-12 col-sm-3">
+						<span class="input-group pull-right">
+							<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>  
+						</span>
+					</div>
+					<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
+						<button class="btn btn-success pull-right m_top10" id="tabUserWiseDetailsId" type="submit" style="margin-right: 16px;">Submit</button>
+					</div>
+				</div>  
+				<div class="row showTabUserWiseDetails">
+				  <div class="col-md-12 col-xs-12 col-sm-12 m_top20 mtop-20">
+				     <div id="notReceiveRegistrationFieldStaffDivId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div id="tabUserWiseReportDiv"></div>
+					</div>
+				</div>
+			 </div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button glyphicon glyphicon-comment" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end-->   
 <body>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -404,7 +416,22 @@
 	var stateName = '${stateName}';
 	var globalUserId = userId;      
 	var type = "Today";       
-	var locationType = stateName;        
+	var locationType = stateName;
+	$(document).ready(function() {
+		initialiseDatePickerForCadreRegistration();
+	});
+
+	function initialiseDatePickerForCadreRegistration(){
+		$("#dateRangeIdForCadre").daterangepicker({
+			opens: 'right',
+			parentEl:'#tabUserDtlsId',
+			startDate: moment(),    
+			endDate: moment(),
+			locale: {
+			  format: 'DD/MM/YYYY'     
+			},  
+		})
+	}  
 	get2016LocationWiseRegisteredCounts(userId,locationType,type);            
 	function get2016LocationWiseRegisteredCounts(userId,locationType,type){
 		$("#districtWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -589,12 +616,12 @@
 					str+='<th>% of Register cadres</th>';
 				str+='</thead>';
 				str+='<tbody>';
-				for(var i in result[1]){
+				for(var i in result[1]){       
 					str+='<tr>';
-					str+='<td>'+result[1][i].no+'</td>';
+					str+='<td>'+result[1][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls" attr_const_id="'+result[1][i].id+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
 					str+='<td attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[1][i].name+'</td>';  
 					str+='<td>'+result[1][i].targetCount+'</td>';
-					if(result[1][i].renewalPerc == null || result[1][i].renewalPerc == 0){  
+					if(result[1][i].renewalPerc == null || result[1][i].renewalPerc == 0){       
 						str+='<td> - </td>';  
 					}else{
 						if(result[1][i].renewalCount == null || result[1][i].renewalCount == 0){
@@ -658,6 +685,7 @@
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 			});
 			//table two ends
+			$('[data-toggle="tooltip"]').tooltip();
 			
 		}else{
 			$(".constCls").show();    
@@ -703,8 +731,8 @@
 				str+='<tbody>';
 				for(var i in result[0]){  
 					str+='<tr>';
-					str+='<td>'+result[0][i].no+'</td>';
-					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';  
+					str+='<td>'+result[0][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls"  attr_const_id="'+result[0][i].id+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
+					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';   
 					str+='<td>'+result[0][i].targetCount+'</td>';
 					if(result[0][i].renewalPerc == null || result[0][i].renewalPerc == 0){  
 						str+='<td> - </td>';
@@ -715,7 +743,7 @@
 							str+='<td>'+result[0][i].renewalCount+'<small>('+result[0][i].renewalPerc+' %)</small></td>';
 						}
 					}  
-					
+					  
 					
 					if(result[0][i].newPerc == null || result[0][i].newPerc == 0){
 						str+='<td> - </td>';
@@ -729,14 +757,14 @@
 					if(result[0][i].mapPowerCount == null || result[0][i].mapPowerCount == 0){
 						str+='<td> - </td>';
 					}else{
-						str+='<td>'+result[0][i].mapPowerCount+'</td>';
+						str+='<td>'+result[0][i].mapPowerCount+'</td>';  
 					}
 					if(result[0][i].count2016 == null || result[0][i].count2016 == 0){
 						str+='<td> - </td>';
 					}else{
 						str+='<td>'+result[0][i].count2016+'</td>';
 					}
-					if(type == "Total"){       
+					if(type == "Total"){         
 						if(result[0][i].count2016Today == null || result[0][i].count2016Today == 0){
 							str+='<td> - </td>';
 						}else{
@@ -769,6 +797,7 @@
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 			});
 		}
+		$('[data-toggle="tooltip"]').tooltip();    
 	}
 	var statusColorArr = [];  
 	var statusarr = ['VeryGood','Good','Ok','Poor','VeryPoor'];
@@ -872,7 +901,8 @@
 				}
                 if(location == "booth"){
 					str+='<th rowspan="2">PANCHAYAT</th>';
-					str+='<th rowspan="2">BOOTH NO</th>'; 
+					str+='<th rowspan="2">MUNICIPALITY</th>';
+					str+='<th rowspan="2">BOOTH NO</th>';
 				}
                 str+='<th rowspan="2">TOTAL VOTERS</th>';
                 str+='<th rowspan="2">2014 TOTAL CADRE</th>';
@@ -882,7 +912,7 @@
 					str+='<th colspan="5" class="text-capital text-center">2016 CADRE</th>';
 				}
                     
-              str+='</tr>';   
+              str+='</tr>';     
               str+='<tr>';
 				str+='<th>RENEWAL CADRE 2016</th>';
                 str+='<th>RENEWAL CADRE PERCENT(%)</th>';
@@ -897,14 +927,33 @@
             str+='</thead>';
 			for(var i in result){  
 				str+='<tr>';
-				str+='<td>'+result[i].mandalName+'</td> ';  
+				if(result[i].mandalName == null || result[i].mandalName.trim().length < 1){
+					str+='<td>-</td> ';
+				}else{
+					str+='<td>'+result[i].mandalName+'</td> ';
+				}
+				
+				
 				if(location == "panchayat"){
 					str+='<td>'+result[i].panchayatName+'</td>';
 				}
+				
 				if(location == "booth"){
-					str+='<td>'+result[i].panchayatName+'</td>';
-					str+='<td>'+result[i].boothName+'</td>'; 
+					if(result[i].panchayatName == null || result[i].panchayatName.trim().length < 1){
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[i].panchayatName+'</td> ';
+					}
+					
+					if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[i].localElectionBody+'</td> ';
+					}
+					
+					str+='<td>'+result[i].boothName+'</td>';   
 				}
+				
 			   str+='<td>'+result[i].totalVoter+'</td>';  
 			   str+='<td>'+result[i].cadreCount2014+'</td>';
 			   str+='<td>'+result[i].renewalCount+'</td>';
@@ -935,6 +984,119 @@
 		$("#kupamRegDtlsId").html(str);  
 		$("#regCadreCountTableId").dataTable();
 	}
+	$(document).on('click','#tabUserWiseDetailsId',function(){
+		var constId = $(this).attr("attr_const_id");
+		var dates = $("#dateRangeIdForCadre").val();
+		var fromDate;
+		var toDate;
+		if(dates != null ){
+			var datesArr = dates.split("-");
+			fromDate=datesArr[0];
+			toDate=datesArr[1];    
+		}      
+		getCadreRegistrationCountByConstituency(constId,fromDate,toDate);
+	});
+	$(document).on('click','.tabUserDtlsCls',function(){
+		initialiseDatePickerForCadreRegistration();  
+		var constId = $(this).attr("attr_const_id");
+		$("#tabUserWiseDetailsId").attr("attr_const_id",constId);    
+		
+		$("#tabUserDtlsId").modal("show");     
+		var dates = $("#dateRangeIdForCadre").val();
+		var fromDate;
+		var toDate;
+		if(dates != null ){
+			var datesArr = dates.split("-");
+			fromDate=datesArr[0];
+			toDate=datesArr[1];    
+		}
+		getCadreRegistrationCountByConstituency(constId,fromDate,toDate);
+	});
+	function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate){
+		$("#tabUserWiseReportDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj={  
+			constituencyId : constituencyId,          
+			fromDate : fromDate,
+			toDate : toDate
+		};  
+		$.ajax({          
+			type : 'GET',    
+			url : 'getCadreRegistrationCountByConstituency.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#tabUserWiseReportDiv").html('');
+			if(result != null && result.length > 0){
+				buildCadreRegistrationOverViewResult(result);    
+			}else{
+				$("#tabUserWiseReportDiv").html("NO DATA AVAILABLE.");
+			}
+		});
+	}  
+	function buildCadreRegistrationOverViewResult(tabUserInfoList){
+		var str='';
+			str+='<h4>FIELD USER REGISTRATION DETAILS</h4>';
+			str+='<table class="table table-bordered table-condensed m_top10" id="tabUserWiseReportDataTableId"> ';
+				str+='<thead> ';
+					str+='<tr>';
+						str+='<th>Field Staff Name </th>';
+						str+='<th>Image</th>';
+						str+='<th>MobileNo</th>';
+						str+='<th>No.Of Samples</th>';
+						str+='<th>First Record Time</th>';
+						str+='<th>Last Record Time</th>';
+					str+='</tr>'; 
+				str+='</thead>'; 
+				str+='<tbody>';   
+				for(var j in tabUserInfoList){
+					
+						str+='<tr> ';
+						
+						  
+							if(tabUserInfoList[j].name != null){
+								str+='<td>'+tabUserInfoList[j].name+'</td>';
+							}else{
+								str+='<td> - </td>';	
+							}  
+						 
+							str+='<td><img src="http://mytdp.in/tab_user_images/'+tabUserInfoList[j].imagePathStr+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+							if(tabUserInfoList[j].mobileNumber != null && tabUserInfoList[j].mobileNumber.length > 0){
+								str+='<td>'+tabUserInfoList[j].mobileNumber+'</td> ';	 	 
+							}else{
+								str+='<td> - </td> ';	 
+							}
+							
+							 if(tabUserInfoList[j].apTotal != null && tabUserInfoList[j].apTotal> 0){
+								//str+='<td><a style="cursor:pointer;" class="noOfSamplesDetailsPopUpView" attr_tab_user_info_id='+tabUserInfoList[j].id+'>'+tabUserInfoList[j].apTotal+'</a></td> ';
+								str+='<td>'+tabUserInfoList[j].apTotal+'</td> ';      	 	 
+							 }else{
+								str+='<td> - </td> ';	 
+							 }
+							  
+							 if(tabUserInfoList[j].startTime != null && tabUserInfoList[j].startTime.length> 0){
+								str+='<td>'+tabUserInfoList[j].startTime.substring(0,19)+'</td> ';	 	 
+							 }else{
+								str+='<td> - </td> ';	 
+							 }
+							 
+							 if(tabUserInfoList[j].endTime != null && tabUserInfoList[j].endTime.length> 0){
+								str+='<td>'+tabUserInfoList[j].endTime.substring(0,19)+'</td> ';	 	 
+							 }else{
+								str+='<td> - </td> ';	 
+							 }
+								str+='</tr>';
+					}
+			str+='</tbody>'; 
+		str+='</table>';
+		
+		$("#tabUserWiseReportDiv").html(str);  
+		$("#tabUserWiseReportDataTableId").dataTable();  
+	}
+	function setDefaultImage(img){
+		img.onerror = "";
+		img.src = "images/cadre_images/human.jpg";
+		return true;
+	}  
 </script>
 <script>
 	$(document).on("click","#constExcelExpBtnId",function(){
