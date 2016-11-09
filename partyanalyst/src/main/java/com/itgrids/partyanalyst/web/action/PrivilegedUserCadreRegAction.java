@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreDashboardVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -32,6 +33,7 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 	
 	private List<List<CadreDashboardVO>> listOfListOfCadreDashboardVO;
 	private List<RegistrationCountVO> registrationCountVOs;
+	private List<IdAndNameVO> idAndNameVOs;
 	
 	private Long userId;
 	private String stateName;
@@ -98,6 +100,12 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
+	public List<IdAndNameVO> getIdAndNameVOs() {
+		return idAndNameVOs;
+	}
+	public void setIdAndNameVOs(List<IdAndNameVO> idAndNameVOs) {
+		this.idAndNameVOs = idAndNameVOs;
+	}
 	//Business method
 	public String execute(){
 		session = request.getSession();
@@ -140,4 +148,17 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 		}
 		return Action.SUCCESS;       
 	}
+	public String getCadreRegistrationCountByConstituency(){  
+	    try{
+	    	jObj = new JSONObject(getTask()); 
+	    	String fromDate = jObj.getString("fromDate");
+	    	String toDate = jObj.getString("toDate");
+	    	Long constituencyId = jObj.getLong("constituencyId");
+	    	idAndNameVOs = cadreDashBoardService.getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate);  
+	      
+	    }catch(Exception e){  
+	      LOG.error("Exception raised at getCadreRegistrationCountByConstituency() method of CoreDashBoard", e);
+	    }
+	    return Action.SUCCESS;
+	  }
 }  
