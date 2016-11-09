@@ -723,7 +723,7 @@ $(document).on("click",".editBtn",function(){
     $(this).closest("td").find(".trackingIssueCls").show();	
 	getCadreRegIssueStatusType(value,issueStatus);
 	var desc = $(".issueDesc"+value).text();          
-	$(".issueDescEdit"+value).val(desc);
+	//$(".issueDescEdit"+value).val(desc);
 	$("#updateStatusId"+value).html('');
 
 });
