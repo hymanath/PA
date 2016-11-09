@@ -618,7 +618,7 @@
 				str+='<tbody>';
 				for(var i in result[1]){       
 					str+='<tr>';
-					str+='<td>'+result[1][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls" attr_const_id="'+result[1][i].id+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
+					str+='<td>'+result[1][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls" attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
 					str+='<td attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[1][i].name+'</td>';  
 					str+='<td>'+result[1][i].targetCount+'</td>';
 					if(result[1][i].renewalPerc == null || result[1][i].renewalPerc == 0){       
@@ -731,8 +731,8 @@
 				str+='<tbody>';
 				for(var i in result[0]){  
 					str+='<tr>';
-					str+='<td>'+result[0][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls"  attr_const_id="'+result[0][i].id+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
-					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';   
+					str+='<td>'+result[0][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls"  attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
+					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';     
 					str+='<td>'+result[0][i].targetCount+'</td>';
 					if(result[0][i].renewalPerc == null || result[0][i].renewalPerc == 0){  
 						str+='<td> - </td>';
@@ -743,7 +743,7 @@
 							str+='<td>'+result[0][i].renewalCount+'<small>('+result[0][i].renewalPerc+' %)</small></td>';
 						}
 					}  
-					  
+					
 					
 					if(result[0][i].newPerc == null || result[0][i].newPerc == 0){
 						str+='<td> - </td>';
@@ -757,14 +757,14 @@
 					if(result[0][i].mapPowerCount == null || result[0][i].mapPowerCount == 0){
 						str+='<td> - </td>';
 					}else{
-						str+='<td>'+result[0][i].mapPowerCount+'</td>';  
+						str+='<td>'+result[0][i].mapPowerCount+'</td>';
 					}
 					if(result[0][i].count2016 == null || result[0][i].count2016 == 0){
 						str+='<td> - </td>';
 					}else{
 						str+='<td>'+result[0][i].count2016+'</td>';
 					}
-					if(type == "Total"){         
+					if(type == "Total"){       
 						if(result[0][i].count2016Today == null || result[0][i].count2016Today == 0){
 							str+='<td> - </td>';
 						}else{
@@ -999,8 +999,9 @@
 	$(document).on('click','.tabUserDtlsCls',function(){
 		initialiseDatePickerForCadreRegistration();  
 		var constId = $(this).attr("attr_const_id");
-		$("#tabUserWiseDetailsId").attr("attr_const_id",constId);    
-		
+		var constName = $(this).attr("attr_const_name");
+		$("#constNameId").html(constName +" CONSTITUENCY DETAILED REPORT");    
+		$("#tabUserWiseDetailsId").attr("attr_const_id",constId);  
 		$("#tabUserDtlsId").modal("show");     
 		var dates = $("#dateRangeIdForCadre").val();
 		var fromDate;
@@ -1032,7 +1033,7 @@
 				$("#tabUserWiseReportDiv").html("NO DATA AVAILABLE.");
 			}
 		});
-	}  
+	}
 	function buildCadreRegistrationOverViewResult(tabUserInfoList){
 		var str='';
 			str+='<h4>FIELD USER REGISTRATION DETAILS</h4>';
