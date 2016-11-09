@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
+import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.dto.CadreDashboardVO;
 import com.itgrids.partyanalyst.dto.CadreDataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -104,6 +106,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IStateDAO stateDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
     private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+    private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
 	
 	public IStateDAO getStateDAO() {
 		return stateDAO;
@@ -294,6 +297,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public void setUserConstituencyAccessInfoDAO(
 			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
 		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
+	public void setTabUserEnrollmentInfoDAO(
+			ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO) {
+		this.tabUserEnrollmentInfoDAO = tabUserEnrollmentInfoDAO;
 	}
 
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(String accessType,Long accessValue){
@@ -6807,12 +6814,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}else{
 					locationScopeId = 9l;//for booth
 					for(Object[] param : getTotalVtrList){
-						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[6]));
 					}
 				}
 				
 			}
-			List<Object[]> getTotalEnrledCadreCnt2014 = null;
+			List<Object[]> getTotalEnrledCadreCnt2014 = null;  
 			Long year = 3l;//for 2014
 			/*if(location.equalsIgnoreCase("booth")){
 				getTotalEnrledCadreCnt2014 =  boothPublicationVoterDAO.getTotalCadreLocationWiseForBooth2014(location, constId, year,"all");
@@ -6856,14 +6863,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				if(getTotalVtrList != null && getTotalVtrList.size() > 0){
 					for(Object[] param : getTotalVtrList){  
 						registrationCountVO = new RegistrationCountVO();
-						registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
-						registrationCountVO.setMandalName(param[1] != null ? param[1].toString() : "");
-						registrationCountVO.setPanchayatId(param[2] != null ? (Long)param[2] : 0l);
-						registrationCountVO.setPanchayatName(param[3] != null ? param[3].toString() : "");
-						registrationCountVO.setBoothId(param[4] != null ? (Long)param[4] : 0l);
-						registrationCountVO.setBoothName(param[5] != null ? param[5].toString() : "");
-						registrationCountVO.setTotalVoter(param[6] != null ? (Long)param[6] : 0l);
-						locationIdAndLocationDtlsMap.put(param[4] != null ? (Long)param[4] : 0l, registrationCountVO);  
+						if(((Long)param[4]) != null){
+							registrationCountVO.setLocalElectionBodyId(param[4] != null ? (Long)param[4] : 0l);
+							registrationCountVO.setLocalElectionBody(param[5] != null ? param[5].toString() : "");
+						}else{
+							registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
+							registrationCountVO.setMandalName(param[1] != null ? param[1].toString() : "");
+							registrationCountVO.setPanchayatId(param[2] != null ? (Long)param[2] : 0l);
+							registrationCountVO.setPanchayatName(param[3] != null ? param[3].toString() : "");
+						}
+						
+						registrationCountVO.setBoothId(param[6] != null ? (Long)param[6] : 0l);
+						registrationCountVO.setBoothName(param[7] != null ? param[7].toString() : "");
+						registrationCountVO.setTotalVoter(param[8] != null ? (Long)param[8] : 0l);
+						locationIdAndLocationDtlsMap.put(param[6] != null ? (Long)param[6] : 0l, registrationCountVO);  
 					}
 				}
 			}
@@ -6930,4 +6943,38 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		return null;  
 	}	
+	public List<IdAndNameVO> getCadreRegistrationCountByConstituency(Long constituencyId,String fromDateStr,String toDateStr){
+		try{
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			List<IdAndNameVO> idAndNameVOs = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
+			Date fromDate = null;
+			Date toDate = null;
+			if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && toDateStr.length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> tabUserDtlsList = tabUserEnrollmentInfoDAO.getTabUserDtlsList(constituencyId,fromDate,toDate);
+			if(tabUserDtlsList != null && tabUserDtlsList.size() > 0){
+				for(Object[] param : tabUserDtlsList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					idAndNameVO.setImagePathStr(commonMethodsUtilService.getStringValueForObject(param[2]));
+					idAndNameVO.setMobileNumber(commonMethodsUtilService.getStringValueForObject(param[3]));
+					idAndNameVO.setApTotal(commonMethodsUtilService.getLongValueForObject(param[4]));
+					idAndNameVO.setStartTime(commonMethodsUtilService.getStringValueForObject(param[5]));
+					idAndNameVO.setEndTime(commonMethodsUtilService.getStringValueForObject(param[6]));
+					idAndNameVOs.add(idAndNameVO);
+				}
+			}
+			return idAndNameVOs;
+			
+		}catch(Exception e){
+			e.printStackTrace();     
+		}
+		return null;  
+		
+	}
 }
