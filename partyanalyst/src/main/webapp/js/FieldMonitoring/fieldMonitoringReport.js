@@ -76,13 +76,13 @@ function buildFieldMonitoringReport(result){
 					//str+='<td>'+result[i].startedIssues+'</td>';
 					if(result[i].idnameList != null && result[i].idnameList.length > 0){
 						for(var j in result[i].idnameList){
-							str+='<td>'+result[i].idnameList[j].inviteeAttendeeCnt+'</td>'
-							str+='<td>'+result[i].idnameList[j].inviteeCount+'</td>'
+							str+='<td>'+result[i].idnameList[j].inviteeAttendeeCnt+'</td>';
+							str+='<td>'+result[i].idnameList[j].inviteeCount+'</td>';
 						}
 					}
 					if(result[i].idnameList1 != null && result[i].idnameList1.length > 0){
 						for(var j in result[i].idnameList1){
-							str+='<td>'+result[i].idnameList1[j].attenteeCount+'</td>'
+							str+='<td>'+result[i].idnameList1[j].attenteeCount+'</td>';
 						}
 					}
 				str+='</tr>';  
