@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.utils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -618,8 +619,17 @@ public class CommonMethodsUtilService {
 				   else
 					   return false;
 			    }catch(Exception e){
-			      LOG.error("Exception raised in copyFile ", e);
+			      LOG.error("Exception raised in copyFile in CommonMethodsUtilService", e);
 			      return false;
 			    }
 		}  
+		  
+		public String percentageMergeintoTwoDecimalPlaces(Double perc){
+			try {
+				 return new BigDecimal(perc).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			} catch (Exception e) {
+				LOG.error("Exception raised in percentageMergeintoTwoDecimalPlaces in CommonMethodsUtilService ", e);
+			}
+			return perc.toString();
+		}
 }
