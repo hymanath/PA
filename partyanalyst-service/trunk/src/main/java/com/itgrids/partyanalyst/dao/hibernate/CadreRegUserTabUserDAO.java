@@ -54,8 +54,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 			sb.append(",CadreSurveyUserAssignDetails model1");
 		  sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId ");
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
-			sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
-			" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
+			sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId");
+			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 				sb.append("and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
 		Query query = getSession().createQuery(sb.toString());
