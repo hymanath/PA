@@ -70,7 +70,8 @@ function buildFieldMonitoringReport(result){
 					str+='<td>'+result[i].todayRegCount+'</td>';
 					str+='<td>'+result[i].startedUsers+'</td>';
 					str+='<td>'+result[i].notYetStartedUsers+'</td>';
-					str+='<td>'+result[i].lastHourInActive+'</td>';
+					var lastHourInActive = parseInt(result[i].totalDataCollectors) - parseInt(result[i].lastOneHrActUsers);
+					str+='<td>'+lastHourInActive+'</td>';
 					//str+='<td>'+result[i].notYetStartedIssues+'</td>';
 					//str+='<td>'+result[i].startedIssues+'</td>';
 					if(result[i].idnameList != null && result[i].idnameList.length > 0){
