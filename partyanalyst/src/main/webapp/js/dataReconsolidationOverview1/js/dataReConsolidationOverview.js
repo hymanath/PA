@@ -62,87 +62,87 @@ function getDataReConsalationOverView(){
   }
   function  buildDataReConsalationTotalOverView(result)
   {
- 	 var str ='';  
-	str+='<div class="panel panel-default m_top10">';    
-		str+='<div class="panel-heading">';
-			str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
-		str+='</div>';
-		str+='<div class="panel-body" style="padding: 25px;">';
-			str+='<div class="row">';
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
-				var totImeiNo = result.totalImeiNo;
-				var totRecords = result.totalRecords;
-				var totSynRec =result.totalSyn;
-				var totPending  = result.totalPending;
-				var totTabSyn = result.sync;
-				var totTabPending = result.pending;
-				var actualServerCount =result.actualCount;
-				if(result != null){
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
-				if(totImeiNo != null){
-						str+='<p class="text_bold">'+totImeiNo+'</p>';
-				}else{
-					 str+='<p class="text_bold">'+0+'</p>';
-				}
-				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">TOTAL TAB REGISTRATIONS</p>';
-				if(totRecords != null){
-					str+='<p class="text_bold">'+result.totalRecords+'</p>';
-				}else {
-					 str+='<p class="text_bold">'+0+'</p>';
-				}
-				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">TAB SUBMITTED</p>';
-				if(totTabSyn !=null){
-					 str+='<p class="text_bold">'+result.sync+'</p>';
-				 }else{
-					 str+='<p class="text_bold">'+0+'</p>';
-				 }
-				str+='</div>';
-				}
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right">';
-				str+='<p class="text_bold">TAB PENDING</p>';
-				if(totTabPending !=null){
-					 str+='<p class="text_bold">'+result.pending+'</p>';
-				 }else{
-					 str+='<p class="text_bold">'+0+'</p>';
-				 }
-				str+='</div>';
-				
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right " style="margin-top:10px;border-top:1px solid #ddd">';
-				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
-				if(totSynRec != null){
-					str+='<p class="text_bold">'+totSynRec+'</p>';
-				}else {
-					str+='<p class="text_bold" text-center>'+0+'</p>';
-				}
-				str+='</div>';
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right " style="margin-top:10px;border-top:1px solid #ddd">';
-				str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
-				 if(totPending !=null){
-					 str+='<p class="text_bold">'+totPending+'</p>';
-				 }else{
-					 str+='<p class="text_bold">'+0+'</p>';
-				 }
-				str+='</div>';
-				
-				str+='<div class="col-md-3 col-xs-12 col-sm-6 border_right " style="margin-top:10px;border-top:1px solid #ddd">';
-				str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
-				if(actualServerCount != null){
-					str+='<p class="text_bold">'+result.actualCount+'</p>';
-				}else {
-					 str+='<p class="text_bold">'+0+'</p>';
-				}
-				str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-	$("#dataReconsalationOverviewId").html(str);
-	      }
+    var str ='';  
+  str+='<div class="panel panel-default m_top10">';    
+    str+='<div class="panel-heading">';
+      str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
+    str+='</div>';
+    str+='<div class="panel-body" style="padding: 25px;">';
+      str+='<div class="row">';
+        str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+        var totImeiNo = result.totalImeiNo;
+        var totRecords = result.totalRecords;
+        var totSynRec =result.totalSyn;
+        var totPending  = result.totalPending;
+        var totTabSyn = result.sync;
+        var totTabPending = result.pending;
+        var actualServerCount =result.actualCount;
+        if(result != null){
+        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
+        str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
+        if(totImeiNo != null){
+            str+='<p class="text_bold">'+totImeiNo+'</p>';
+        }else{
+           str+='<p class="text_bold">'+0+'</p>';
+        }
+        str+='</div>';
+        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
+        str+='<p class="text_bold">TOTAL TAB REGISTRATIONS</p>';
+        if(totRecords != null){
+          str+='<p class="text_bold">'+result.totalRecords+'</p>';
+        }else {
+           str+='<p class="text_bold">'+0+'</p>';
+        }
+        str+='</div>';
+        str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
+        str+='<p class="text_bold">TAB SUBMITTED</p>';
+        if(totTabSyn !=null){
+           str+='<p class="text_bold">'+result.sync+'</p>';
+         }else{
+           str+='<p class="text_bold">'+0+'</p>';
+         }
+        str+='</div>';
+        }
+        str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
+        str+='<p class="text_bold">TAB PENDING</p>';
+        if(totTabPending !=null){
+           str+='<p class="text_bold">'+result.pending+'</p>';
+         }else{
+           str+='<p class="text_bold">'+0+'</p>';
+         }
+        str+='</div>';
+        
+        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
+        str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
+        if(totSynRec != null){
+          str+='<p class="text_bold">'+totSynRec+'</p>';
+        }else {
+          str+='<p class="text_bold" text-center>'+0+'</p>';
+        }
+        str+='</div>';
+        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
+        str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
+         if(totPending !=null){
+           str+='<p class="text_bold">'+totPending+'</p>';
+         }else{
+           str+='<p class="text_bold">'+0+'</p>';
+         }
+        str+='</div>';
+        
+        str+='<div class="col-md-2 col-xs-12 col-sm-6 ">';
+        str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
+        if(actualServerCount != null){
+          str+='<p class="text_bold">'+result.actualCount+'</p>';
+        }else {
+           str+='<p class="text_bold">'+0+'</p>';
+        }
+        str+='</div>';
+        str+='</div>';
+      str+='</div>';
+    str+='</div>';
+  str+='</div>';
+  $("#dataReconsalationOverviewId").html(str);
+        }
  
 $(document).on("click","#submitId",function(){
 	 $("#errorDivId").html(' ');
@@ -182,6 +182,7 @@ $(document).on("click","#submitId",function(){
 				//str+='<th>Device Number</th>';
 				str+='<th>IMEI NUMBER</th>';
 				str+='<th>TAB USER NAME</th>'; 
+				str+='<th>USER SYNC TYPE</th>';
 				str+='<th>TOTAL TAB REGISTRATIONS</th>'; 
 				str+='<th>TAB SUBMITTED</th>'; 
 				str+='<th>TAB PENDING</th>';
@@ -199,6 +200,7 @@ $(document).on("click","#submitId",function(){
 				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>'+result[i].imeiNo+'</td>';      
 				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].userSyncType+'</td>';
 				str+='<td>'+result[i].totalRecords+'</td>';  
 				str+='<td>'+result[i].sync+'</td>';
                 str+='<td>'+result[i].pending+'</td>'; 
@@ -522,11 +524,11 @@ function setDefaultImage(img){
 		str+='<th>DISTRICT NAME</th>';
 	}
 	str+='<th>SMART DEVICES COUNT</th>';
-	str+='<th>TOTAL REGISTRATIONS</th>';
-	str+='<th>Tab Kafka Completed</th>';
-	str+='<th>Tab Kafka Pending</th>';
-	str+='<th>Tab Submitted</th>';
-	str+='<th>Tab Pending</th>';
+	str+='<th>TOTAL TAB REGISTRATIONS</th>';
+	str+='<th>TAB SUBMITTED</th>';
+	str+='<th>TAB PENDING</th>';
+	str+='<th>TAB KAFKA COMPLETED</th>';
+	str+='<th>TAB KAFKA PENDING</th>';
 	str+='<th>ACTUAL SERVER REGISTRATIONS</th>';
 	str+='</thead>';
 	//str+='<tbody>';
@@ -535,10 +537,10 @@ function setDefaultImage(img){
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td class ="text-center">'+result[i].totalAmount+'</td>';
 		str+='<td class ="text-center">'+result[i].totalRecords+'</td>';
-		str+='<td class ="text-center">'+result[i].kafkaSync+'</td>';
-		str+='<td class ="text-center">'+result[i].kafkaPending+'</td>';
 		str+='<td class ="text-center">'+result[i].totalSyn+'</td>';
 		str+='<td class ="text-center">'+result[i].totalPending+'</td>';
+		str+='<td class ="text-center">'+result[i].kafkaSync+'</td>';
+		str+='<td class ="text-center">'+result[i].kafkaPending+'</td>';
 		str+='<td class ="text-center">'+result[i].actualCount+'</td>';
 		str+='</tbody>';
 	}
