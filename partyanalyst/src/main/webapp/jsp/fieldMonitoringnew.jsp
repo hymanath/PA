@@ -85,7 +85,7 @@
 							<span class="input-group-addon">
 								<i class="glyphicon glyphicon-calendar"></i>
 							</span>
-							<input type="text" class="form-control singleDate"/>
+							<input type="text" class="form-control singleDate" disabled/>
 						</div>
                     </div>
 					<div class="col-md-3 col-xs-12 col-sm-6">
