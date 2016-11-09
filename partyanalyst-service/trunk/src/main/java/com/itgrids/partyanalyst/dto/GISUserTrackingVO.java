@@ -30,9 +30,39 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private String imagePath;
 	
 	private List<GISUserTrackingVO> usersList = new ArrayList<GISUserTrackingVO>(0);
-	private List<GISUserTrackingVO> lastOneHrusersList = new ArrayList<GISUserTrackingVO>(0);
+	private List<GISUserTrackingVO> todayActiveUsersList = new ArrayList<GISUserTrackingVO>(0);
+	private List<GISUserTrackingVO> todayInActiveUsersList = new ArrayList<GISUserTrackingVO>(0);
+	private List<GISUserTrackingVO> lastOneHrActiveusersList = new ArrayList<GISUserTrackingVO>(0);
+	private List<GISUserTrackingVO> lastOneHrInActiveusersList = new ArrayList<GISUserTrackingVO>(0);
 	
 	
+	public List<GISUserTrackingVO> getTodayActiveUsersList() {
+		return todayActiveUsersList;
+	}
+	public void setTodayActiveUsersList(List<GISUserTrackingVO> todayActiveUsersList) {
+		this.todayActiveUsersList = todayActiveUsersList;
+	}
+	public List<GISUserTrackingVO> getTodayInActiveUsersList() {
+		return todayInActiveUsersList;
+	}
+	public void setTodayInActiveUsersList(
+			List<GISUserTrackingVO> todayInActiveUsersList) {
+		this.todayInActiveUsersList = todayInActiveUsersList;
+	}
+	public List<GISUserTrackingVO> getLastOneHrActiveusersList() {
+		return lastOneHrActiveusersList;
+	}
+	public void setLastOneHrActiveusersList(
+			List<GISUserTrackingVO> lastOneHrActiveusersList) {
+		this.lastOneHrActiveusersList = lastOneHrActiveusersList;
+	}
+	public List<GISUserTrackingVO> getLastOneHrInActiveusersList() {
+		return lastOneHrInActiveusersList;
+	}
+	public void setLastOneHrInActiveusersList(
+			List<GISUserTrackingVO> lastOneHrInActiveusersList) {
+		this.lastOneHrInActiveusersList = lastOneHrInActiveusersList;
+	}
 	public Long getLastOneHrActiveCount() {
 		return lastOneHrActiveCount;
 	}
@@ -69,12 +99,7 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	public void setTodayCount(Long todayCount) {
 		this.todayCount = todayCount;
 	}
-	public List<GISUserTrackingVO> getLastOneHrusersList() {
-		return lastOneHrusersList;
-	}
-	public void setLastOneHrusersList(List<GISUserTrackingVO> lastOneHrusersList) {
-		this.lastOneHrusersList = lastOneHrusersList;
-	}
+	
 	public Long getLastOneHrAvgCount() {
 		return lastOneHrAvgCount;
 	}
