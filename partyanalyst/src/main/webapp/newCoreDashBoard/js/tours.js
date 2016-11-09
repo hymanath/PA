@@ -2,7 +2,8 @@ $(document).on("click",".tourExpand",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	//$(".cadreBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	
+	$(".tourExpandCls").show();
+	getDesigWiseMemberDtls();  
 	setTimeout(function(){
 		$(".toursHiddenBlock").toggle();      
 	},800);
@@ -350,9 +351,9 @@ function getToursBasicOverviewCountDetails()
 	 $("#topPoorLocationsToursDivId").html(str);	
 	 $('.progressCustom').tooltip();	
 	}
-		
-  	getDesigWiseMemberDtls()  
+	var globalUserTypeWiseTourCountRslt;
 	function getDesigWiseMemberDtls(){ 
+	$("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 			activityMemberId : 44,        
 			stateId : globalStateIdForTour,
@@ -365,6 +366,276 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}         
 			}).done(function(result){
-				console.log(result);
+				$("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html(' ');
+				buildgUserTypeWiseToursTopFiveStrongRslt(result);
+				globalUserTypeWiseTourCountRslt = result;
 			});
 	}  
+	
+  $(document).on("click",".toursCls",function(){
+	var resultType=$(this).attr("attr_value");
+	 if(resultType != null && resultType == "strong"){
+	  buildgUserTypeWiseToursTopFiveStrongRslt(globalUserTypeWiseTourCountRslt); 
+	 }else if(resultType == "poor"){
+	  buildgUserTypeWiseToursTopFivePoorRslt(globalUserTypeWiseTourCountRslt);
+	 }
+  });
+	 
+	function buildgUserTypeWiseToursTopFiveStrongRslt(result){
+		var str='';
+		if(result != null && result.length > 0){
+		  var str='';
+		  for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].designationId==4 || result[i][0].designationId==11){
+				  if(result[i][0].designationId==4){
+				  if(result[i][0].totalTour!=0){
+					  str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY </h5>';      
+				  }
+				  }
+				  if(result[i][0].designationId==11){
+				   if(result[i][0].totalTour!=0){
+					 str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
+				   }
+			     }
+			   }else{
+				 if(result[i][0].totalTour!=0){
+					str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
+				 }
+		      }
+			  str+='<div id="genSecTour'+i+'" style="width:100%;height:80px;"></div>';
+			str+='</div>'
+		  }
+		}
+		$("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html(str);
+	   if(result != null && result.length > 0){
+			for(var i in result){
+				var candidateNameArray = [];
+				var totalTourArr = [];
+				var countVar =0;
+			  if(result[i] !=null && result[i].length>0){
+					for(var j in result[i]){
+						countVar =countVar+1;
+						candidateNameArray.push(result[i][j].name);
+						totalTourArr.push(result[i][j].totalTour);
+						if (countVar === 5) {
+							break;
+						}
+					}
+				}
+		if(result[i][0].totalTour!=0){
+				var getWidth = $("#genSecTour"+i).parent().width()+'px';
+				$("#genSecTour"+i).width(getWidth);
+		     $(function () {
+			$('#genSecTour'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: candidateNameArray,
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y) +"";
+								}
+							}
+						  
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series: [{
+					name: 'Number Of Tours',
+					data: totalTourArr
+				}]
+			});
+		});
+		}else{
+		$("#genSecTour"+i).html("No Data Available");
+		$("#genSecTour"+i).css("height","35px");
+		$("#genSecTour"+i).hide();
+		} 
+	}
+	}else{
+    $("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('NO DATA AVAILABLE.');
+	}
+	}
+	
+	function buildgUserTypeWiseToursTopFivePoorRslt(result){
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].designationId==4 || result[i][0].designationId==11){
+				  if(result[i][0].designationId==4){
+				   str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY </h5>';      
+				  }
+				  if(result[i][0].designationId==11){
+				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
+				  }
+			   }else{
+				str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
+			   }
+				str+='<div id="genSecTour'+i+'" style="width:100%;height:100px;"></div>';
+				str+='</div>'
+			}
+		}
+		$("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html(str);
+	if(result != null && result.length > 0){
+		for(var i in result){
+				var candidateNameArray = [];
+				var totalTourArr = [];
+				var countVar = 0;
+				if(result[i] != null && result[i].length > 0){
+					var length = result[i].length - 1;
+					for(var j = length; j >= 0; j--){
+						candidateNameArray.push(result[i][j].name);
+						  totalTourArr.push(result[i][j].totalTour);
+						countVar =countVar+1;
+						if (countVar === 5) {
+							break;
+						}
+					}	
+				}
+			//if( result[i][j].totalTour!=0){
+		//if(totalTourArr.length > 0){	
+			var getWidth = $("#genSecTour"+i).parent().width()+'px';
+				$("#genSecTour"+i).width(getWidth);
+				$(function () {
+			   $('#genSecTour'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					categories: candidateNameArray,
+					title: {
+						text: null
+					}
+				},
+				yAxis: {
+					min: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
+				},
+
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2) +"%";
+								}
+							}
+						  
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				series: [{
+					name: 'Number Of Tours',
+					data: totalTourArr
+				}]
+			});
+		});
+		//}
+		/* }else{
+		$("#genSecTour"+i).html("No Data Available");
+		$("#genSecTour"+i).css("height","35px");	
+		} */
+		}
+	}else{
+	 $("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('NO DATA AVAILABLE.');
+	}
+	} 
