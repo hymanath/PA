@@ -2685,7 +2685,7 @@
 					<div class="col-md-12 col-xs-12 col-sm-12 toursBlock">
 						<div id="tourOverviewDivId"></div>
 					</div>
-					<div class="col-md-6 col-xs-12 col-sm-12" style="display:none;">
+					<div class="col-md-6 col-xs-12 col-sm-12 tourExpandCls" style="display:none;">
 						<div class="row">
 							<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 								<ul class="activeUlCls list-inline ">
@@ -2752,8 +2752,7 @@
 				</div>
 			</div>
 		</div>
-	</div>  -->
-	
+	</div> --> 
 	<!-- TOURS END -->
 	</div>
 </div> 
@@ -3297,8 +3296,7 @@
         /* Tours Default Call */
        // getToursBasicOverviewCountDetails();
 		//getDesigWiseMemberDtls();  
-        //getToursBasicOverviewCountDetails();
-		/*Electronic Media Calls*/
+     	/*Electronic Media Calls*/
 		getMediaProgramsOnParty();
 		getAllTvChannels();
 	}
