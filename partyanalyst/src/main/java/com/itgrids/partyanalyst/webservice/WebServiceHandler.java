@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
@@ -2046,13 +2047,6 @@ public class WebServiceHandler {
 		}
 		
 		@POST
-		@Path("/getMembershipDriveVisualizationDetails")
-		@Produces(MediaType.APPLICATION_JSON)
-		@Consumes(MediaType.APPLICATION_JSON)
-		public List<GISVisualizationDetailsVO> getMembershipDriveVisualizationDetails(GISVisualizationParameterVO inputVO){
-		 return webServiceHandlerService.getMembershipDriveVisualizationDetails(inputVO);
-		}
-		@POST
 		@Path("/getMembershipDriveDayWiseVisualizationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -2111,5 +2105,14 @@ public class WebServiceHandler {
 	    {
 			return coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(inputVO.getSurveyUserId(),inputVO.getFromDate(),inputVO.getToDate());
 		 }
+		
+		@POST
+	    @Path("/Secure/getCadreRegistrationIssuesStatusDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public FieldMonitoringVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO)
+	    {
+			return webServiceHandlerService.getCadreRegistrationIssuesStatusDetails(inputVO);
+		}
 		
 }
