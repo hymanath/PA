@@ -150,7 +150,7 @@ function buildTabUserDetails(result){
 				str+='<th>User Id</th>';
 				str+='<th>user name</th>';
 				str+='<th>user contact number</th>';
-				str+='<th>today target</th>';
+				//str+='<th>today target</th>';
 				str+='<th>first record</th>';
 				str+='<th>recent record</th>';
 				str+='<th>last hour</th>';
@@ -176,10 +176,10 @@ function buildTabUserDetails(result){
 						str+='<td>'+result.subList[i].mobileNo+'</td>';
 					else
 						str+='<td> - </td>';
-					if(result.subList[i].todayTarget != null)
+					/*if(result.subList[i].todayTarget != null)
 						str+='<td>'+result.subList[i].todayTarget+'</td>';
 					else
-						str+='<td> - </td>';
+						str+='<td> - </td>';*/
 					if(result.subList[i].firstRecord != null)
 						str+='<td>'+result.subList[i].firstRecord+'</td>';
 					else
