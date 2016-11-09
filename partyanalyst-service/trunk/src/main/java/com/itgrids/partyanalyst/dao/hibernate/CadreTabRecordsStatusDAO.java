@@ -39,17 +39,17 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.cadreSurveyUser.userName," +
 				  "  model.imeiNo,"  +
-				  " model1.cadreRegUser.user.userName," +
+				  " model1.name," +
 				  " sum(model.totalRecords),sum(model.pending)," +
 				  " sum(model.kafkaPending)," +
 				  " sum(model.kafkaSync)," +
 				  " model.cadreSurveyUserId," +
 				  " sum(model.sync),model.insertedTime " +
 				  " from CadreTabRecordsStatus model," +
-				  " CadreRegUserTabUser model1," +
+				  " TabUserInfo model1," +
 				  " CadreSurveyUserAssignDetails model2 " +
 				  " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
-				  " model.cadreSurveyUserId = model1.cadreSurveyUserId   ");
+				  " model.cadreSurveyUserId = model1.cadreSurveyUserId  and model1.isEnabled = 'Y' ");
 		 if(districtId != null && districtId.longValue()>0l)
 		 {
 			 sb.append(" and model2.constituency.district.districtId =:districtId");
@@ -96,10 +96,10 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	          " sum(model.kafkaSync),sum(model.kafkaPending)," +
 	          " model.cadreSurveyUserId " +
 	          " from CadreTabRecordsStatus model," +
-	          " CadreRegUserTabUser model1," +
+	          " TabUserInfo model1," +
 	          " CadreSurveyUserAssignDetails model2 " +
 	          " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
-	          " model.cadreSurveyUserId = model1.cadreSurveyUserId   ");
+	          " model.cadreSurveyUserId = model1.cadreSurveyUserId and  model1.isEnabled = 'Y'  ");
 	     if(districtId != null && districtId.longValue()>0l)
 	     {
 	       sb.append(" and model2.constituency.district.districtId =:districtId");

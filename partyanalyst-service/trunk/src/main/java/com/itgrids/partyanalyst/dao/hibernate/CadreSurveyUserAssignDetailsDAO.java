@@ -495,27 +495,37 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		return query.list();
 	}
 	
-	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> locationIds,Long districtId){
+	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> locationIds,Long districtId,Date startDate,Date endDate){
 		
-		StringBuilder str = new StringBuilder();				
-		str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId) " +
-				" from TdpCadreEnrollmentYear model,CadreSurveyUserAssignDetails CSUAD  " +
+		StringBuilder str = new StringBuilder();
+		
+		if(locationIds !=null && locationIds.size()>0){
+			if(districtId != null && districtId.longValue()>0l){
+				str.append(" select  model.tdpCadre.userAddress.constituency.constituencyId " );
+			}else{
+				str.append(" select  model.tdpCadre.userAddress.district.districtId " );
+			}
+		}
+		str.append(" ,count(distinct model.tdpCadre.tdpCadreId) " +
+				" from TdpCadreEnrollmentYear model  " +
 				" where " +
 				" model.tdpCadre.isDeleted ='N' " +
 				" and model.isDeleted = 'N' " +
 				" and model.tdpCadre.enrollmentYear = :enrollmentYear " +
-				" and model.enrollmentYearId = :enrollmentYearId and CSUAD.cadreSurveyUserId = model.tdpCadre.insertedUserId " +
-				" and CSUAD.isDeleted = 'N' and CSUAD.cadreSurveyUser.isEnabled = 'Y' ");					
+				" and model.enrollmentYearId = :enrollmentYearId   ");					
+		
+		if(startDate != null && endDate != null){
+			str.append(" and model.tdpCadre.surveyTime between :startDate and :endDate");
+		 }
 		
 		if(locationIds !=null && locationIds.size()>0){
 			if(districtId != null && districtId.longValue()>0l){
-				str.append( " and CSUAD.constituency.constituencyId in (:locationIds)  " );
+				str.append( " and model.tdpCadre.userAddress.constituency.constituencyId in (:locationIds) group by model.tdpCadre.userAddress.constituency.constituencyId " );
 			}else{
-				str.append( " and CSUAD.constituency.district.districtId in (:locationIds)  " );
+				str.append( " and  model.tdpCadre.userAddress.district.districtId in (:locationIds) group by model.tdpCadre.userAddress.district.districtId " );
 			}
 		}
 		
-		str.append(" group by model.tdpCadre.insertedUserId ");
 		
 		Query query = getSession().createQuery(str.toString());
 		
@@ -527,7 +537,70 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			query.setParameterList("locationIds", locationIds);
 		}
 		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
 		return query.list();
 		
 	}
+	
+public List<Object[]> getLocationWiseCadreSurveyUserIds(Long districtId,Long stateId,Date startDate,Date endDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		
+		if(districtId != null && districtId.longValue()>0l){
+			queryStr.append(" distinct CSUAD.constituency.constituencyId,CSUAD.constituency.name ");
+		}else{
+			queryStr.append(" distinct CSUAD.constituency.district.districtId,CSUAD.constituency.district.districtName ");
+		}
+		
+		queryStr.append(" ,distinct model.cadreSurveyUserId " +
+				" from CadreSurveyUserAssignDetails CSUAD " +
+						" where CSUAD.isDeleted = 'N' " +
+						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
+		
+		/*if(constituencyId != null && constituencyId.longValue()>0l){
+			queryStr.append(" and CSUAD.constituency.constituencyId = :constituencyId ");
+		}*/
+		
+		if(districtId != null && districtId.longValue()>0l){
+			queryStr.append(" and CSUAD.constituency.district.districtId = :districtId ");
+		}else{
+			if(stateId != null && stateId.longValue() == 1l){
+				queryStr.append(" and CSUAD.constituency.district.districtId between 11 and 23 ");
+			}else if(stateId != null && stateId.longValue() == 36l){
+				queryStr.append(" and CSUAD.constituency.district.districtId between 1 and 10 ");
+			}
+		}
+		
+		if(startDate != null && endDate != null){
+			queryStr.append(" and date(CSUAD.insertedTime) between :startDate and :endDate");
+		 }
+		
+		if(districtId != null && districtId.longValue()>0l){   
+			queryStr.append(" group by CSUAD.constituency.constituencyId ");
+		}else {
+			queryStr.append(" group by CSUAD.constituency.district.districtId");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(districtId != null && districtId.longValue()>0l){
+			query.setParameter("districtId", districtId);
+		}
+		
+		/*if(constituencyId != null && constituencyId.longValue()>0l){
+			query.setParameter("constituencyId", constituencyId);	
+		}*/
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+		
+	}
+	
 }

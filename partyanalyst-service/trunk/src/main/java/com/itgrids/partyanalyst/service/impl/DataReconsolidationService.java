@@ -122,7 +122,7 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long stateId,Long
     		if(returnList != null && returnList.size() > 0){
     		for(CadreTabRecordsStatusVO vo : returnList){
     		  Long count = actualMap.get(vo.getCadreSurveyUserId());
-    		  	if(count !=null)
+    		  if(count !=null)
     			  vo.setActualCount(count);
     		  String syncType = syncMap.get(vo.getCadreSurveyUserId());
     		  	if(syncType != "")
@@ -298,7 +298,7 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 	try{
 	
 		LOG.info("Entered into DataReconsolidationService of getLocationWiseSmartDevicesCount");
-		Set<Long> cadreSurveyUsers = new HashSet<Long>();
+		Set<Long> locationIds = new HashSet<Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
 		   Date fromDate = null;
@@ -322,15 +322,16 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 			    statusvo.setKafkaPending(param[5] != null ? (Long)param[5] : 0l);//Total Kafka Pending Records
 			    statusvo.setTotalPending(param[6] != null ? (Long)param[6] : 0l);//Total Tab Pending Records;
 			    statusvo.setTotalSyn(param[7] != null ? (Long)param[7] : 0l);//Total Tab Sync Records;
-			    statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
-			    cadreSurveyUsers.add(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);//cadreSurveyUserIds
+			   // statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
+			    if(statusvo.getTabUserInfoId().longValue()  > 0l)
+			    locationIds.add(statusvo.getTabUserInfoId());//cadreSurveyUserIds
 				finalList.add(statusvo);
 			}
 		
 		}
 		
 		Map<Long,Long> actualMap = new HashMap<Long, Long>();
-		List<Object[]> cadreSurveyCountObj =  tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+		List<Object[]> cadreSurveyCountObj =  cadreSurveyUserAssignDetailsDAO.getActualCountOfCadreSurveyUser(locationIds,districtId,fromDate,toDate);
 		
 		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
 			for (Object[] objects : cadreSurveyCountObj) {
@@ -339,9 +340,9 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 		}
 		if(finalList != null && finalList.size() > 0){
 		for(CadreTabRecordsStatusVO vo : finalList){
-		  Long count = actualMap.get(vo.getCadreSurveyUserId());
+		  Long count = actualMap.get(vo.getTabUserInfoId());
 		  if(count !=null)
-			  vo.setActualCount(count);// Actual server Registrations
+			  vo.setActualCount(count+vo.getActualCount());// Actual server Registrations
 		}
 		}
 	}catch(Exception e){
