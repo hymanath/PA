@@ -1314,12 +1314,19 @@ function buildProblemsDetailedOverView(result)
 		str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<table class="table tableEMN m_top20">';
 				str+='<tr>';
+				str+='<td>';
+					str+='<h5 class="text-capitalize">Total Program</h5>';
+					str+='<h4	>'+result.tvNewsDetailsVOList[0].categoryCount != ""?result.tvNewsDetailsVOList[0].categoryCount:"00:00"+'</h4>';
+					str+='<h5 class="text-capitalize m_top20">Total Time</h5>';
+					str+='<h4>'+result.tvNewsDetailsVOList[0].description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+				str+='</td>';
 				for(var i in result.tvNewsDetailsVOList[0].tvNewsDetailsVOList)
 				{
 					str+='<td>';
 						str+='<h5 class="text-capitalize">'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].organization+'</h5>';
-						str+='<h4>'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].tvNewsDetailsProgramVOList.length+'</h4>';
-						str+='<h5 class="text-capitalize m_top20">'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].title+'</h5>';
+						str+='<h4>'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].categoryCount+'</h4>';
+						//str+='<h5 class="text-capitalize m_top20">'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].title+'</h5>';
+						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 						if(result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].description != ""){
 							str+='<h4>'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].description+'</h4>';
 						}else{
@@ -1328,10 +1335,10 @@ function buildProblemsDetailedOverView(result)
 					str+='</td>';
 				}
 				str+='</tr>';
-			str+='</table>';
+			str+='</table>'; 
 		str+='</div>';
 	str+='</div>';
-	$("#problemsDetailedOvrViewEMN").html(str)
+	$("#problemsDetailedOvrViewEMN").html(str);
 }
 
 function buildDistrictWiseEMNRelatedToProblem(result){
