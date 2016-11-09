@@ -907,7 +907,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	public List<Object[]> getDistrictLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
 
-		queryStr.append(" SELECT c.district_id,sum(votes_earned),sum(BR.valid_votes)  FROM ");
+		queryStr.append(" SELECT c.district_id,sum(votes_earned),sum(BR.valid_votes),0,0,0  FROM ");
 		queryStr.append(" candidate_booth_result CBR, ");
 		queryStr.append(" nomination N, ");
 		queryStr.append(" booth_constituency_election BCE, ");
@@ -938,15 +938,16 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getAssemblyLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" SELECT B.constituency_id,sum(votes_earned),sum(BR.valid_votes)  FROM ");
+		queryStr.append(" SELECT B.constituency_id,sum(CBR.votes_earned),sum(BR.valid_votes),CR.margin_votes,CR.margin_votes_percentage,CR.rank  FROM ");
 		queryStr.append(" candidate_booth_result CBR, ");
 		queryStr.append(" nomination N, ");
 		queryStr.append(" booth_constituency_election BCE, ");
 		queryStr.append(" constituency_election CE, ");
 		queryStr.append(" booth B, ");
 		queryStr.append(" booth_result BR, ");
-		queryStr.append(" constituency c ");
+		queryStr.append(" constituency c, candidate_result CR ");
 		queryStr.append(" WHERE ");
+		queryStr.append(" CR.nomination_id = N.nomination_id AND ");
 		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
 		queryStr.append(" N.party_id = 872 AND ");
 		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
@@ -965,7 +966,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getMandalLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" SELECT B.tehsil_id,SUM(votes_earned),SUM(BR.valid_votes)  FROM ");
+		queryStr.append(" SELECT B.tehsil_id,SUM(votes_earned),SUM(BR.valid_votes),0,0,0  FROM ");
 		queryStr.append(" candidate_booth_result CBR, ");
 		queryStr.append(" nomination N, ");
 		queryStr.append(" booth_constituency_election BCE, ");
@@ -991,7 +992,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getMunciORUrbanLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" SELECT B.local_election_body_id,SUM(votes_earned),SUM(BR.valid_votes)  FROM ");
+		queryStr.append(" SELECT B.local_election_body_id,SUM(votes_earned),SUM(BR.valid_votes),0,0,0  FROM ");
 		queryStr.append(" candidate_booth_result CBR, ");
 		queryStr.append(" nomination N, ");
 		queryStr.append(" booth_constituency_election BCE, ");
@@ -1018,7 +1019,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getPanchayatLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder quertStr = new StringBuilder();
-		quertStr.append(" SELECT B.panchayat_id,SUM(votes_earned),SUM(BR.valid_votes)  FROM ");
+		quertStr.append(" SELECT B.panchayat_id,SUM(votes_earned),SUM(BR.valid_votes),0,0,0  FROM ");
 		quertStr.append(" candidate_booth_result CBR, ");
 		quertStr.append(" nomination N, ");
 		quertStr.append(" booth_constituency_election BCE, ");
@@ -1044,7 +1045,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getPanchayatBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" SELECT B.booth_id,votes_earned,BR.valid_votes  FROM ");
+		queryStr.append(" SELECT B.booth_id,votes_earned,BR.valid_votes ,0,0,0 FROM ");
 		queryStr.append(" candidate_booth_result CBR, ");
 		queryStr.append(" nomination N, ");
 		queryStr.append(" booth_constituency_election BCE, ");
@@ -1070,7 +1071,7 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getLocalBodyBoothLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" SELECT B.booth_id,votes_earned,BR.valid_votes  FROM ");
+		queryStr.append(" SELECT B.booth_id,votes_earned,BR.valid_votes ,0,0,0 FROM ");
 		queryStr.append(" candidate_booth_result CBR, ");
 		queryStr.append(" nomination N, ");
 		queryStr.append(" booth_constituency_election BCE, ");
