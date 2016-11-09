@@ -756,7 +756,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].organization)
 			}
 			$('#partyVsChannelGraph'+i+''+j+'').highcharts({
-				 colors: ['#D33E39','#64C664'],
+				 colors: ['#64C664','#D33E39'],
 				chart: {
 					type: 'column'
 				},
