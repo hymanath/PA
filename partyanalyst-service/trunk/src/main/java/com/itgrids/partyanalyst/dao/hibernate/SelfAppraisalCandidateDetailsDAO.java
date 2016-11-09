@@ -11,8 +11,7 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAppraisalCandidateDetails, Long> implements
-		ISelfAppraisalCandidateDetailsDAO {
+public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAppraisalCandidateDetails, Long> implements ISelfAppraisalCandidateDetailsDAO {
 	  public SelfAppraisalCandidateDetailsDAO() {
 			super(SelfAppraisalCandidateDetails.class);
 	  }
@@ -234,7 +233,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 		 return query.list();
 	   }
 	  
-	  public List<Object[]> getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String locationType){
+	  public List<Object[]> getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String locationType,Long userTypeId){
 		     StringBuilder queryStr = new StringBuilder();
 		     		queryStr.append(" select distinct " );
      		 		if(locationType != null && locationType.equalsIgnoreCase("District")){
@@ -278,6 +277,9 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 				    queryStr.append(" and model1.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 				 }
+			     if(userTypeId != null && userTypeId.longValue() > 0){
+			    	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId=:userTypeId");
+			     }
 			      queryStr.append(" group by ");
 			      if(locationType != null && locationType.equalsIgnoreCase("District")){
    		 		     queryStr.append(" model1.userAddress.district.districtId " +
@@ -299,6 +301,9 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 		 if(fromDate!= null && toDate!=null){
 		 			   query.setDate("fromDate", fromDate);
 		 			   query.setDate("toDate", toDate);
+		 		 }
+		 		 if(userTypeId != null && userTypeId.longValue() > 0){
+		 			   query.setParameter("userTypeId", userTypeId);
 		 		 }
 		 		 return query.list();
 	   }
