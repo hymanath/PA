@@ -2693,7 +2693,7 @@
 									<li class="toursCls" attr_value="poor">last 5 poor</li>
 								</ul>
 							</div>
-							<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
+							<div id="userTypeWiseTopFiveStrongAndPoorToursMemsDivId"></div>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12 toursHiddenBlock" style="display:none;">
@@ -2719,10 +2719,41 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockTours m_top10" style="display:none">
+						<div class="panel panel-default panelNew">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12">
+									  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForTours"></div>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										 <div id="childToursMemberDivId"> </div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="bg_ED pad_15 m_top20">
+										   <div id="directChildMemberForToursDivId"></div>
+										   <div class="row">
+												 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+													<div class="row m_top20">
+													 <div id="topPoorLocationsToursDivId"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div> -->
+	</div>  -->
+	
 	<!-- TOURS END -->
 	</div>
 </div> 
