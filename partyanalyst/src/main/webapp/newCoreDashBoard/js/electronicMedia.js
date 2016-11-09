@@ -320,8 +320,8 @@ function mediaProgramsOnParty(result)
 		
 		for(var j in result[i].tvNewsDetailsVOList1){
 			locationNameArr.push(result[i].tvNewsDetailsVOList1[j].organization)
-			PositiveCntArr.push(result[i].tvNewsDetailsVOList1[j].positiveCount)
-			NegativeCntArr.push(result[i].tvNewsDetailsVOList1[j].negativeCount)
+			PositiveCntArr.push(result[i].tvNewsDetailsVOList1[j].positiveTime)
+			NegativeCntArr.push(result[i].tvNewsDetailsVOList1[j].negativeTime)
 				
 			countVar =countVar+1;
 			if (countVar === 5) {
@@ -1519,7 +1519,6 @@ function getEMMDetailedPartyStateWiseProgramsOverview()
 		//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/2/1/"+currentToDateEmn+"/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/2/1/01-01-2016/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/872,1117,163,362/N/party"
 	}).then(function(result){
-		//console.log(result)
 		buildEMMDetailedPartyStateWiseProgramsOverview(result)
 	});
 }
