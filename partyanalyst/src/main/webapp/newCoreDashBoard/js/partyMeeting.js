@@ -2677,6 +2677,8 @@ window.setInterval(function(){
   getMeetingRecentTime(); 
 },10*60*1000);/*every 10 minutes .this method will update time  */
 function getMeetingRecentTime(){
+	
+	return;
  	$.ajax({
 		type : 'POST',
 		url : 'getMeetingRecentTimeAction.action',
