@@ -18,4 +18,5 @@ public interface ITabUserEnrollmentInfoDAO extends GenericDao<TabUserEnrollmentI
 	public List<Object[]> getTabUserFirstLastRecordNew(Long cadreRegUserId,Long constituencyId,Long userId,Long districtId,Long stateId);
 	public List<Object[]> getTabUserWiseTotalRegistrationDetails(Long stateId,Date date);
 	public List<Object[]> getActiveTabUserDtls(Long stateId,Date lastOneHourTime);
+	public List<Object[]> getTabUserDtlsList(Long constituencyId,Date fromDate,Date toDate);
 }
