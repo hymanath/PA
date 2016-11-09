@@ -90,15 +90,15 @@
                     <div class="row m_top20">
                     	<div class="col-md-4 col-xs-12 col-sm-4">
                         	<h4 class="panel-title text-capital" id="openIssuesCountId">open issues <span></span></h4>
-                            <div id="openIssues" style="height:600px"></div>
+                            <div id="openIssues"></div>
                         </div>
                         <div class="col-md-4 col-xs-12 col-sm-4">
                         	<h4 class="panel-title text-capital" id="fixedIsuuesCountId">fixed issues <span></span></h4>
-                            <div id="fixedIssues" style="height:600px" ></div>
+                            <div id="fixedIssues"></div>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
                         	<h4 class="panel-title text-capital" id="closedIssuesCountId">Closed issues <span></span></h4>
-                            <div id="closedIssues" style="height:600px"></div>
+                            <div id="closedIssues"></div>
                         </div>
 					</div>
                 </div>
