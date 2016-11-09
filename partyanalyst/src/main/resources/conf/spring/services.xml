@@ -1600,7 +1600,7 @@
 	<bean name="partyMeetingStatusUpdation" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForPartyMeetingStatus" />
     	<!-- <property name="cronExpression" value="0 0/30 * * * ?" /> -->
-    	<property name="cronExpression" value="0 35 0,7,12 * * ?" />
+    	<property name="cronExpression" value="0 30 22 * * ?" />
 	</bean>
 	<bean name="insertTriggerForPartyMeetingStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
