@@ -2526,6 +2526,12 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 				}
 			}
 			
+			if(returnList != null && !returnList.isEmpty()){
+				for (FieldMonitoringVO vo : returnList) {
+					vo.setLastHourInActive(vo.getTotalDataCollectors() - vo.getLastOneHrActUsers());
+				}
+			}
+			
 			List<Object[]> totalIssues = cadreRegUserTabUserDAO.getTodayTotalIssues(dateUtilService.getCurrentDateAndTime());
 			if(totalIssues != null && !totalIssues.isEmpty()){
 				for (Object[] obj : totalIssues) {

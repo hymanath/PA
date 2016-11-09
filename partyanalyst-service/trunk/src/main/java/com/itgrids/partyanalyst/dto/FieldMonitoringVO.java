@@ -51,6 +51,7 @@ public class FieldMonitoringVO {
 	private Long todayRegCount = 0l;
 	private Long todayActiveUsers;
 	private Long lastOneHrActUsers = 0l;
+	private Long lastHourInActive = 0l;
 	private String countPerc;
 	private String fieldMonitrngName;
 	private String issueStatus;
@@ -70,6 +71,12 @@ public class FieldMonitoringVO {
 	private String leadreMobile;
 	
 	
+	public Long getLastHourInActive() {
+		return lastHourInActive;
+	}
+	public void setLastHourInActive(Long lastHourInActive) {
+		this.lastHourInActive = lastHourInActive;
+	}
 	public Long getStartedUsers() {
 		return startedUsers;
 	}
