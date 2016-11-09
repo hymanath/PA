@@ -74,6 +74,7 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
+import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
@@ -136,6 +137,7 @@ import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -240,9 +242,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IDelimitationConstituencyMandalDetailsDAO delimitationConstituencyMandalDetailsDAO; 
     private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
     private IPanchayatDAO panchayatDAO;
-  
+    private IFieldMonitoringService fieldMonitoringService;
     
     
+	public IFieldMonitoringService getFieldMonitoringService() {
+		return fieldMonitoringService;
+	}
+
+	public void setFieldMonitoringService(
+			IFieldMonitoringService fieldMonitoringService) {
+		this.fieldMonitoringService = fieldMonitoringService;
+	}
+
 	public IGISVisualizationService getGisVisualizationService() {
 		return gisVisualizationService;
 	}
@@ -4314,10 +4325,28 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  returnVO =  gisVisualizationService.getLocationWiseTabUserTrackingDetails(inputVO);
 			 
 		} catch (Exception e) {
-			log.debug("Entered into the getLocationWiseTabUserTrackingDetails  method in WebServiceHandlerService");
+			log.error("exception occured in  the getLocationWiseTabUserTrackingDetails  method in WebServiceHandlerService");
 		}
 		  return returnVO; 
 	  }
 	 
+	  public FieldMonitoringVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO){
+		  log.error("Entered into the getCadreRegistrationIssuesStatusDetails  method in WebServiceHandlerService");
+		  FieldMonitoringVO returnVO = new FieldMonitoringVO();
+		  try {
+			  List<FieldMonitoringVO> returnList = fieldMonitoringService.getFieldMonitoringUserWiseDetails(inputVO);
+			  if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				  for (FieldMonitoringVO fieldMonitoringVO : returnList) {
+					
+					  
+				}
+			  }
+			} catch (Exception e) {
+				log.error("exception occured in  the getCadreRegistrationIssuesStatusDetails  method in WebServiceHandlerService");
+			}
+		  
+		 return returnVO;
+	  }
+	  
 }
 
