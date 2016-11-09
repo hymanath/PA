@@ -255,7 +255,7 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#topPoorLocationsToursDivId").html(' ');
+		$("#topPoorLocationsToursDivId").html(' ');
 			buildToursPoorPerformanceLocationRslt(result,userTypeId,selectedUserName,userType);	
  		}); 
 	}
@@ -350,4 +350,21 @@ function getToursBasicOverviewCountDetails()
 	 $("#topPoorLocationsToursDivId").html(str);	
 	 $('.progressCustom').tooltip();	
 	}
-	
+		
+  	getDesigWiseMemberDtls()  
+	function getDesigWiseMemberDtls(){ 
+		var jsObj ={ 
+			activityMemberId : 44,        
+			stateId : globalStateIdForTour,
+			fromDate : "27/10/2016",              
+			toDate : "29/10/2016"  
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getDesigWiseMemberDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}         
+			}).done(function(result){
+				console.log(result);
+			});
+	}  
