@@ -79,7 +79,8 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		   				" SAC.selfAppraisalDesignation.designation, " +
 		   				" SAC.selfAppraisalCandidateId, " +
 		   				" SACL.selfAppraisalLocationScopeId, " +
-		   				" SAC.tdpCadre.firstname " +
+		   				" SAC.tdpCadre.firstname, " + 
+		   				" SAC.activityMemberId " +
 				   		" from " +
 				   		" SelfAppraisalCandidateLocation SACL, SelfAppraisalCandidate SAC " +
 				   		" where " +
