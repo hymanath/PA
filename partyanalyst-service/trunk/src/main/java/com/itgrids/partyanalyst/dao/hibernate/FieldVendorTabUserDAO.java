@@ -428,7 +428,7 @@ public class FieldVendorTabUserDAO extends GenericDaoHibernate<FieldVendorTabUse
 		}else if(stateId != null && stateId.longValue() == 36l){
 			sb.append(" and  model.constituency.district.districtId between 1 and 10 ");
 		}else if(stateId != null && stateId.longValue() == 0l){
-			sb.append(" and model.stateId = 1");
+			sb.append(" and model.stateId in (1,36)");
 		}
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and  model.constituency.district.districtId = :districtId");

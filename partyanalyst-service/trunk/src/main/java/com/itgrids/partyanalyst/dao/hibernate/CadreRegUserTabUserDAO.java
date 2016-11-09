@@ -301,7 +301,8 @@ return query.list();
 				" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
 				" and model.cadreSurveyUser.isEnabled = 'Y'" +
 				" and date(model2.surveyTime) = :today" +
-				" and model2.endTime between :today and :lastHourTime" +
+				//" and model2.endTime between :today and :lastHourTime" +
+				" and model2.endTime > :lastHourTime" +
 				" and model2.enrollmentYearId = 4" +
 				" and model.cadreRegUser.userType = 'FM' " +
 				" group by model2.constituency.constituencyId,model.cadreRegUser.user.userId ");
