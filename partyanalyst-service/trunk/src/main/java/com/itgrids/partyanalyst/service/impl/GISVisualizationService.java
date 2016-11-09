@@ -367,7 +367,17 @@ public class GISVisualizationService implements IGISVisualizationService{
 				 setDateWiseMembershipDriveVisualizationDetails(locationDetails2,parentLocationVO,locationsMap,loctnsTargetCntMap);
 			}
 		   
-		 
+		 if(parentLocationVO != null){
+			 Long todayTarget = parentLocationVO.getTargetCount()/IConstants.CADRE_REGISTRATION_2016_DAYS;
+			 Double perc  = parentLocationVO.getTodayNewRegCount()*100.0/ todayTarget;
+			 parentLocationVO.setTodayRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(perc));
+			 
+			 Double newPerc = parentLocationVO.getTodayNewRegCount()*100.0/parentLocationVO.getTodayRegCount();
+			 Double renPerc = parentLocationVO.getTodayRenewalCount()*100.0/parentLocationVO.getTodayRegCount();
+			 parentLocationVO.setTodayNewRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(newPerc));
+			 parentLocationVO.setTodayRenewalPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(renPerc));
+			 
+		 }
 		 	
 	} catch (Exception e) {
 		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
@@ -381,6 +391,10 @@ public class GISVisualizationService implements IGISVisualizationService{
 			Map<Long,String> YCPMLAMap = new HashMap<Long, String>();
 				if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 					resultList = boothConstituencyElectionDAO.getDistrictLevelElectionResultsForGISVisualization(inputVO);
+					for (int i = 11; i <= 23; i++) { // YCP candidates joined in tdp districts list
+							if(i != 15)// except 15 West Godavari distict
+								YCPMLAMap.put(Long.valueOf(String.valueOf(i)), "YES");
+					}
 					setDataToMap( resultList,locationsMap, YCPMLAMap);
 				}else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
 					resultList = boothConstituencyElectionDAO.getAssemblyLevelElectionResultsForGISVisualization(inputVO);
@@ -416,6 +430,16 @@ public class GISVisualizationService implements IGISVisualizationService{
 					setDataToMap( resultList,locationsMap, YCPMLAMap);
 				}
 				
+				if(parentLocationVO != null && locationsMap != null && locationsMap.size()>0){
+					for ( Long locationId: locationsMap.keySet()) {
+						GISVisualizationDetailsVO vo = locationsMap.get(locationId);
+						if(vo.getIsYCPArea() != null && vo.getIsYCPArea().equalsIgnoreCase("true")){
+							parentLocationVO.setIsYCPArea("true");
+							break;
+						}
+					}
+				}
+				
 		} catch (Exception e) {
 			LOG.error("Exception Occured in upateElectionResulstsForVisualization Method in GISVisualizationService Class",e);
 		}
@@ -428,16 +452,25 @@ public class GISVisualizationService implements IGISVisualizationService{
 					Long locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
 					Long votersEarned = commonMethodsUtilService.getLongValueForObject(param[1]);
 					Long validVotes = commonMethodsUtilService.getLongValueForObject(param[2]);
+					
+					String marginVotes = commonMethodsUtilService.getStringValueForObject(param[3]);
+					String marginVotesPerc = commonMethodsUtilService.getStringValueForObject(param[4]);
+					String rank = commonMethodsUtilService.getStringValueForObject(param[5]);
+					
 					GISVisualizationDetailsVO vo = locationsMap.get(locationId);
 					if(vo != null){
 						String perc = (new BigDecimal(votersEarned*(100.0)/validVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						vo.setIsYCPArea("false");
-						vo.setValidVotes(validVotes.toString());
+						//vo.setValidVotes(validVotes.toString());
 						vo.setEarnedVotesIn2014(votersEarned.toString());
 						vo.setEarnedVotesPercIn2014(perc.toString());
-						if(YCPMLAMap.get(locationId) != null){
+						vo.setMarginVotes(marginVotes);
+						vo.setMarginVotesPerc(marginVotesPerc);
+						//vo.setRank("LOSS");
+						if(rank != null && rank.trim().equalsIgnoreCase("1"))
+							vo.setRank("WON");
+						if(YCPMLAMap.get(locationId) != null)
 							vo.setIsYCPArea("true");
-						}
 					}
 				}
 			}
@@ -449,26 +482,26 @@ public class GISVisualizationService implements IGISVisualizationService{
 		
 		 Map<Long,String> YCPCandidatesMap = new HashMap<Long, String>(0);
 		try {
-			YCPCandidatesMap.put(271L,"Chand Basha");						//kadiri
-			YCPCandidatesMap.put(149L,"Jyothula Nehru");					//jaggampeta
-			YCPCandidatesMap.put(212L,"Varapula Subbarao");					//prathipadu
-			YCPCandidatesMap.put(244L,"Adi narayana Reddy");				//jammalamadugu
-			YCPCandidatesMap.put(242L,"Jayaramulu");						//badvel
-			YCPCandidatesMap.put(196L,"Jaleel Khan");						//vijayawada west
-			YCPCandidatesMap.put(258L,"M.Mani Gandhi");						//kodumuru
-			YCPCandidatesMap.put(262L,"Bhuma Nagi Reddy");					//nandyal
-			YCPCandidatesMap.put(254L,"Bhuma Akhila Priya");				//allagadda
-			YCPCandidatesMap.put(332L,"Budda Rajashekar Reddy");			//Srisailam
-			YCPCandidatesMap.put(260L,"SV Mohan Reddy");					//Kurnool
-			YCPCandidatesMap.put(231L,"Pasim Sunil Kumar");					//gudur
-			YCPCandidatesMap.put(344L,"David Raju");						//yerragondapalem
-			YCPCandidatesMap.put(218L,"Gottipati Ravi Kumar");				//Addanki
-			YCPCandidatesMap.put(222L,"Muthamula Ashok Reddy");				//Giddalur
-			YCPCandidatesMap.put(223L,"Pothula Rama Rao");					//Kandukur
-			YCPCandidatesMap.put(114L,"Kalamatta Venkata Ramana"); 			//Pathapatnam
+			YCPCandidatesMap.put(271L,"Chand Basha");							//kadiri
+			YCPCandidatesMap.put(149L,"Jyothula Nehru");						//jaggampeta
+			YCPCandidatesMap.put(212L,"Varapula Subbarao");						//prathipadu
+			YCPCandidatesMap.put(244L,"Adi narayana Reddy");					//jammalamadugu
+			YCPCandidatesMap.put(242L,"Jayaramulu");							//badvel
+			YCPCandidatesMap.put(196L,"Jaleel Khan");							//vijayawada west
+			YCPCandidatesMap.put(258L,"M.Mani Gandhi");							//kodumuru
+			YCPCandidatesMap.put(262L,"Bhuma Nagi Reddy");						//nandyal
+			YCPCandidatesMap.put(254L,"Bhuma Akhila Priya");					//allagadda
+			YCPCandidatesMap.put(332L,"Budda Rajashekar Reddy");				//Srisailam
+			YCPCandidatesMap.put(260L,"SV Mohan Reddy");						//Kurnool
+			YCPCandidatesMap.put(231L,"Pasim Sunil Kumar");						//gudur
+			YCPCandidatesMap.put(344L,"David Raju");							//yerragondapalem
+			YCPCandidatesMap.put(218L,"Gottipati Ravi Kumar");					//Addanki
+			YCPCandidatesMap.put(222L,"Muthamula Ashok Reddy");					//Giddalur
+			YCPCandidatesMap.put(223L,"Pothula Rama Rao");						//Kandukur
+			YCPCandidatesMap.put(114L,"Kalamatta Venkata Ramana"); 				//Pathapatnam
 			YCPCandidatesMap.put(122L,"Ravu Venkata Sujaya Krishna Ranga Rao");//bobbili
-			YCPCandidatesMap.put(359L,"Kidari Sarveswar Rao");				//Araku
-			YCPCandidatesMap.put(284L,"N.Amarnath Reddy"); 					//Palamaner
+			YCPCandidatesMap.put(359L,"Kidari Sarveswar Rao");					//Araku
+			YCPCandidatesMap.put(284L,"N.Amarnath Reddy"); 						//Palamaner
 
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getYcpCandidatesJoinedIntoTDPParty Method in GISVisualizationService Class",e);
@@ -628,9 +661,9 @@ public class GISVisualizationService implements IGISVisualizationService{
 									//LOG.error("101 : Exception Occured While updating percentage ranges in updateUserTrackingDetasil method of GISVisualizationService ",e);
 								}
 							}
-							if(commonMethodsUtilService.isListOrSetValid(trackingVO.getLastOneHrusersList())){
+							if(commonMethodsUtilService.isListOrSetValid(trackingVO.getLastOneHrActiveusersList())){
 								try{
-									Float avg = (float)(trackingVO.getLastOneHrCount()/trackingVO.getLastOneHrusersList().size());
+									Float avg = (float)(trackingVO.getLastOneHrCount()/trackingVO.getLastOneHrActiveusersList().size());
 									Double avgPerc = Math.floor(Double.valueOf(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(avg)));
 									trackingVO.setLastOneHrAvgCount(avgPerc.longValue());
 								} catch (Exception e) {
@@ -830,11 +863,6 @@ public class GISVisualizationService implements IGISVisualizationService{
 			setLocationWiseTabUserTrackingDetails(totalTabUsersData,"total",returnVO,tabUserMap);
 			
 			
-			//List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
-			//List<Object[]> todayTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
-			List<Object[]> todayTabUsersData = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
-			setLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap);
-			
 			Date fromDate=null;
 			Date toDate=null;
 			
@@ -856,6 +884,13 @@ public class GISVisualizationService implements IGISVisualizationService{
 				   }
 				}
 			
+			
+			//List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			//List<Object[]> todayTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			List<Object[]> todayTabUsersData = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			setLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap);
+			
+			
 			List<Object[]>  assignedUsersList = cadreSurveyUserAssignDetailsDAO.getUserTrackingDetails(inputVO);
 			
 			if(commonMethodsUtilService.isListOrSetValid(assignedUsersList)){
@@ -872,6 +907,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			//List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			//List<Object[]> lastOneHrTrackingList = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			List<Object[]> lastOneHrTrackingList = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			setLocationWiseTabUserTrackingDetails(lastOneHrTrackingList,"LastOneHr",returnVO,tabUserMap);
 			if(commonMethodsUtilService.isListOrSetValid(lastOneHrTrackingList)){
 				returnVO.setLastOneHrActiveCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
 				for (Object[] param : lastOneHrTrackingList) {
@@ -887,7 +923,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 				for(GISUserTrackingVO tabUser :tabUserMap.values()){
 					returnVO.setOverAllOutput(returnVO.getOverAllOutput()+tabUser.getTotalCount());//total output
 					returnVO.setLastOneHrCount(returnVO.getLastOneHrCount()+tabUser.getLastOneHrCount());//last one hour Output Of All tab Users
-					tabUserList.add(tabUser);
+					//tabUserList.add(tabUser);
 				}
 			}
 			
@@ -897,7 +933,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			if(returnVO.getLastOneHrActiveCount() != null && returnVO.getLastOneHrActiveCount().longValue() > 0l)
 				returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getLastOneHrActiveCount());
 			
-			returnVO.setUsersList(tabUserList);
+			//returnVO.setUsersList(tabUserList);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
@@ -907,32 +943,89 @@ public class GISVisualizationService implements IGISVisualizationService{
 	public void setLocationWiseTabUserTrackingDetails(List<Object[]> tabusersData , String type,GISUserTrackingVO returnVO,Map<Long,GISUserTrackingVO> tabUserMap){
 		
 		try{
+			Map<Long,GISUserTrackingVO> tempMap = new HashMap<Long, GISUserTrackingVO>(0);
 			if(commonMethodsUtilService.isListOrSetValid(tabusersData)){
-				for (Object[] param : tabusersData) {
+				
 					//returnVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					//returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					
-					GISUserTrackingVO tabUser =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
-					if(tabUser == null){
-						tabUser = new GISUserTrackingVO();
-						tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
-					}
-					tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
-					tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-					tabUser.setImagePath("https://mytdp.com/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
-					tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
-					
 					if(type.equalsIgnoreCase("total")){
-						tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));	
-					}else if(type.equalsIgnoreCase("today")){
-						tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+						for (Object[] param : tabusersData) {
+							GISUserTrackingVO tabUser =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabUser == null){
+								tabUser = new GISUserTrackingVO();
+								tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+							}
+							tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+							
+							if(type.equalsIgnoreCase("total")){
+								tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));	
+							}else if(type.equalsIgnoreCase("today")){
+								tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+							}else if(type.equalsIgnoreCase("LastOneHr")){
+								tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+							}
+						}
 					}
-					
+					else if(type.equalsIgnoreCase("today")){
+						for (Object[] param : tabusersData) {
+							GISUserTrackingVO tabUser =  tempMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabUser == null){
+								tabUser = new GISUserTrackingVO();
+								tempMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+							}
+							tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+							tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+						}
+						
+						if(commonMethodsUtilService.isMapValid(tempMap)){
+							returnVO.getTodayActiveUsersList().addAll(tempMap.values());
+							if(commonMethodsUtilService.isMapValid(tabUserMap)){
+								for (Long userId : tabUserMap.keySet()) {
+									if(!tempMap.keySet().contains(userId)){
+										returnVO.getTodayInActiveUsersList().add(tabUserMap.get(userId));
+									}
+								}
+							}
+						}
+					}
+					else if(type.equalsIgnoreCase("LastOneHr")){
+						for (Object[] param : tabusersData) {
+							GISUserTrackingVO tabUser =  tempMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabUser == null){
+								tabUser = new GISUserTrackingVO();
+								tempMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+							}
+							tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+							tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+						}
+						
+						if(commonMethodsUtilService.isMapValid(tempMap)){
+							returnVO.getLastOneHrActiveusersList().addAll(tempMap.values());
+							if(commonMethodsUtilService.isListOrSetValid(returnVO.getTodayActiveUsersList())){
+								for (GISUserTrackingVO vo : returnVO.getTodayActiveUsersList()) {
+									if(!tempMap.keySet().contains(vo.getId())){
+										returnVO.getLastOneHrInActiveusersList().add(vo);
+									}
+								}
+							}
+						}
+					}
 				}
-			}
-			
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in setLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
