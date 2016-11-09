@@ -4008,7 +4008,7 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	var yesterDaySummation = 0;
 	//var todayUserSummation = 0;
 	//var yesterDayUserSummation = 0;
-	var hour = getTodayHour();
+	//var hour = getTodayHour();
 	todaySummation = parseInt(result[0].todayTotalReg);
 	yesterDaySummation = parseInt(result[0].lastDayTotalReg);
 	//todayUserSummation = parseInt(result[0].todayTotalUsers);
