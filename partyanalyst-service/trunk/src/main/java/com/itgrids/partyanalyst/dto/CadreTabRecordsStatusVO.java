@@ -30,8 +30,16 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private String userName;
 	private Long actualCount =0l;
 	private String imagePath;
+	private String userSyncType;
 
 	
+	
+	public String getUserSyncType() {
+		return userSyncType;
+	}
+	public void setUserSyncType(String userSyncType) {
+		this.userSyncType = userSyncType;
+	}
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
 	}
