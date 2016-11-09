@@ -17,6 +17,8 @@ public class IdAndNameVO {
 	private Long tsTotal = 0l;
 	private Long apNow = 0l;
 	private Long tsNow = 0l;
+	private String startTime;
+	private String endTime;
 	
 	
 	
@@ -106,5 +108,18 @@ public class IdAndNameVO {
 	public void setTsNow(Long tsNow) {
 		this.tsNow = tsNow;
 	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	
 
 }

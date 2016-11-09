@@ -13,6 +13,8 @@ public class RegistrationCountVO implements Serializable {
 	private String panchayatName;
 	private Long boothId;
 	private String boothName;
+	private String localElectionBody;
+	private Long localElectionBodyId = 0l;
 	private Long totalVoter;
 	private Long cadreCount2014 = 0l;
 	private Long cadreCount2016OverAll = 0l;
@@ -91,4 +93,17 @@ public class RegistrationCountVO implements Serializable {
 	public void setNewCount(Long newCount) {
 		this.newCount = newCount;
 	}
+	public String getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(String localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	
 }
