@@ -344,7 +344,8 @@ function buildPopUpModelDetails(result){
 		str+='<th>TAB PENDING</th>';
 		str+='<th>TAB KAFKA COMPLETED</th>';
 		str+='<th>TAB KAFKA PENDING</th>';
-		str+='<th>TOTAL AMOUNT</th>';
+		str+='<th>ACTUAL SERVER REGISTRATIONS</th>';
+		//str+='<th>TOTAL AMOUNT</th>';
       str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -355,7 +356,8 @@ function buildPopUpModelDetails(result){
 		var totPending = result[i].pending;
 		var  kafkaSync =result[i].kafkaSync;
 		var kafkaPending = result[i].kafkaPending;
-		var totAmount = result[i].totalAmount;
+		var actualCount = result[i].actualCount;
+		//var totAmount = result[i].totalAmount;
 		str +='<td class ="text-center">'+result[i].surveyDate+'</td>';
 		str+='<td><img src="http://www.mytdp.in/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 		str +='<td class ="text-center">'+result[i].name+'</td>';
@@ -387,11 +389,16 @@ function buildPopUpModelDetails(result){
 	    }else {
 		   str +='<td >'+0+'</td>';
 	    }
-	   if(totAmount != null){
+		if(actualCount != null){
+			str +='<td >'+actualCount+'</td>';
+		}else {
+			str +='<td >'+0+'</td>';
+		}
+	   /* if(totAmount != null){
 		 str +='<td >'+totAmount+'</td>';
 	  }else {
 		 str +='<td >'+0+'</td>';
-		}
+		} */
 		str +='</tr>';
 	}
 	str +='</tbody>';
@@ -414,7 +421,8 @@ function buildPopUpModelDetails(result){
 		str1+='<th>TAB PENDING</th>';
 		str1+='<th>TAB KAFKA COMPLETED</th>';
 		str1+='<th>TAB KAFKA PENDING</th>';
-		str1+='<th>TOTAL AMOUNT</th>';
+		str1+='<th>ACTUAL SERVER REGISTRATIONS</th>';
+		//str1+='<th>TOTAL AMOUNT</th>';
       str1+='</tr>';
 	str1+='</thead>';
 	str1+='<tbody>';
@@ -425,6 +433,7 @@ function buildPopUpModelDetails(result){
 		var totPending = result[i].pending;
 		var  kafkaSync = result[i].kafkaSync;
 		var kafkaPending = result[i].kafkaPending;
+		var actualCount = result[i].actualCount;
 		var totAmount = result[i].totalAmount;
 		str1 +='<td class ="text-center">'+result[i].surveyDate+'</td>';
 		str1 +='<td class ="text-center">'+result[i].name+'</td>';
@@ -456,11 +465,16 @@ function buildPopUpModelDetails(result){
 	    }else {
 		   str1 +='<td >'+0+'</td>';
 	    }
-	   if(totAmount != null){
+		if(actualCount != null){
+			str1 +='<td >'+actualCount+'</td>';
+		}else {
+			str1 +='<td >'+0+'</td>';
+		}
+	   /* if(totAmount != null){
 		 str1 +='<td >'+totAmount+'</td>';
 	  }else {
 		 str +='<td >'+0+'</td>';
-		}
+		} */
 		str1 +='</tr>';
 	}
 	str +='</tbody>';
