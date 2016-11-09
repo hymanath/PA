@@ -8617,7 +8617,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			return query.list();
 			
 		}
-		
+			
 		public String getCadreImagePathByTdpCadreId(Long tdpCadreId)
 	    {
 	      Query query = getSession().createQuery("SELECT model.image FROM TdpCadre model where model.tdpCadreId = :tdpCadreId");
@@ -8784,4 +8784,44 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		     }
 		     return query.list();
 	   }
+	   
+	   public List<Object[]> getActualCountOfCadreSurveyUserWiseCount(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate){
+			
+			StringBuilder str = new StringBuilder();				
+			str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId),date(model.tdpCadre.insertedTime) " +
+					" from TdpCadreEnrollmentYear model  " +
+					" where " +
+					" model.tdpCadre.isDeleted ='N' " +
+					" and model.isDeleted = 'N' " +
+					" and model.tdpCadre.enrollmentYear = :enrollmentYear " +
+					" and model.enrollmentYearId = :enrollmentYearId " +
+					" and date(model.tdpCadre.insertedTime) between :fromDate and :toDate ");					
+			
+			if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+				str.append( " and model.tdpCadre.insertedUserId in (:cadreSurveyUsers)  " );
+			}
+			if(fromDate != null && toDate != null){
+				str.append(" and date(model.insertedTime) between :fromDate and  :toDate ");
+			}
+			
+			str.append(" group by date(model.tdpCadre.insertedTime) ");
+			
+			Query query = getSession().createQuery(str.toString());
+			
+			
+			//CADRE_ENROLLMENT_NUMBER
+			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			query.setParameter("enrollmentYearId", 4l);
+			if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+				query.setParameterList("cadreSurveyUsers", cadreSurveyUsers);
+			}
+			
+			if(fromDate !=null && toDate !=null){
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+			}
+			
+			return query.list();
+			
+		}
 	}
