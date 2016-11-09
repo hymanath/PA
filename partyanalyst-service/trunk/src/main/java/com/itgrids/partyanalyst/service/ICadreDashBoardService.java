@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.CadreDashboardVO;
 import com.itgrids.partyanalyst.dto.CadreDataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -114,4 +115,5 @@ public interface ICadreDashBoardService {
 	 public List<CadreDataSourceTypeVO> getDataSourceTypeWiseRegisteredDetails();
 	 public List<List<CadreDashboardVO>> get2016LocationWiseRegisteredCountsForPreviligedUser(Long userId, String locationType, String type);
 	 public List<RegistrationCountVO> getRegistrationCountDtls(String location, Long constId, String scope);
+	 public List<IdAndNameVO> getCadreRegistrationCountByConstituency(Long constituencyId,String fromDateStr,String toDateStr);
 }
