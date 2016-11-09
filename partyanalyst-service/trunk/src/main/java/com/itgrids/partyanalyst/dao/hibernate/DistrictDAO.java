@@ -205,7 +205,7 @@ public List<Object[]> getDistrictIdAndNameByStateForStateTypeId(Long stateId,Lon
 	{
 		str.append(" and model.districtId between 11 and 23 ");
 	}
-	else if(stateTypeId.longValue() == 2L)
+	else if(stateTypeId.longValue() == 36L)
 	{
 		str.append(" and model.districtId between 1 and 10 ");
 	}
@@ -410,4 +410,5 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		  Query query = getSession().createQuery(queryStr.toString());
 		  return query.list();
 	 }
+	 
 }
