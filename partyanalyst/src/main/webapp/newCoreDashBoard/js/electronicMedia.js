@@ -316,17 +316,11 @@ function mediaProgramsOnParty(result)
 		var locationNameArr = [];
 		var PositiveCntArr = [];
 		var NegativeCntArr = [];
-		var countVar =0;
 		
 		for(var j in result[i].tvNewsDetailsVOList1){
 			locationNameArr.push(result[i].tvNewsDetailsVOList1[j].organization)
 			PositiveCntArr.push(result[i].tvNewsDetailsVOList1[j].positiveTime)
 			NegativeCntArr.push(result[i].tvNewsDetailsVOList1[j].negativeTime)
-				
-			countVar =countVar+1;
-			if (countVar === 5) {
-				break;
-			}
 		}
 		
 		$("#EMNDistrictWiseGraph"+i).highcharts({
@@ -335,7 +329,7 @@ function mediaProgramsOnParty(result)
 				type: 'column'
 			},
 			title: {
-				text: ''
+				text: null
 			},
 			xAxis: {
 				min: 0,
@@ -355,7 +349,7 @@ function mediaProgramsOnParty(result)
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
 				title: {
-					text: ''
+					text: null
 				},
 				stackLabels: {
 					enabled: false,
@@ -418,10 +412,12 @@ function mediaProgramsOnParty(result)
 			},
 			series: [{
 				name: 'Positive',
-				data: PositiveCntArr
+				data: PositiveCntArr,
+				stack: 'programs'
 			}, {
 				name: 'Negative',
-				data: NegativeCntArr
+				data: NegativeCntArr,
+				stack: 'programs'
 			}]
 		});
 
@@ -735,7 +731,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 					str+='<ul class="partyVsChannelSlickApplyEmn" style="padding:0px;">';
 					for(var j in result[i].tvNewsDetailsVOList)
 					{
-						str+='<li><div id="partyVsChannelGraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
+						str+='<li><h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].organization+'</h4><div id="partyVsChannelGraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
 					}
 					str+='</ul>';
 				str+='</div>';
@@ -745,15 +741,14 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 		str+='<h4>NO DATA AVAILABLE</h4>';
 	}
 	$("#partiesVsChannelsEMN").html(str);
-	var districtNameEmn = []
-	var positivePercArrayEmn = []
-	var negativePercArrayEmn = []
-	var paperNamesArrayEmn = []
+	
 	for(var i in result)
 	{
 		for(var j in result[i].tvNewsDetailsVOList)
 		{
-			districtNameEmn.push(result[i].tvNewsDetailsVOList[j].groupTitle)
+			var positivePercArrayEmn = []
+			var negativePercArrayEmn = []
+			var paperNamesArrayEmn = []
 			for(var k in result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList)
 			{
 				positivePercArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc)
@@ -761,19 +756,19 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].organization)
 			}
 			$('#partyVsChannelGraph'+i+''+j+'').highcharts({
-				 colors: ['#64C664','#D33E39'],
+				 colors: ['#D33E39','#64C664'],
 				chart: {
 					type: 'column'
 				},
 				title: {
-					text: districtNameEmn
+					text: null
 				},
 			   
 				xAxis: {
-					 min: 0,
-						 gridLineWidth: 0,
-						 minorGridLineWidth: 0,
-						 categories: paperNamesArrayEmn,
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: paperNamesArrayEmn,
 					labels: {
 							rotation: -45,
 							style: {
@@ -827,10 +822,12 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 				},
 				series: [{
 					name: 'Positive',
-					data: positivePercArrayEmn
+					data: positivePercArrayEmn,
+					stack: 'TvNews'
 				}, {
 					name: 'Negative',
-					data: negativePercArrayEmn
+					data: negativePercArrayEmn,
+					stack: 'TvNews'
 				}]
 			});
 		}
@@ -982,10 +979,12 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 				},
 				series: [{
 					name: 'Positive',
-					data: positivePercArrayEmn
+					data: positivePercArrayEmn,
+					stack: 'male'
 				}, {
-					name: 'Negative',
-					data: negativePercArrayEmn
+					name: 'TvNewsPrograms',
+					data: negativePercArrayEmn,
+					stack: 'TvNewsPrograms'
 				}]
 			});
 		}
@@ -1715,4 +1714,3 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 		}
 	}
 }
-
