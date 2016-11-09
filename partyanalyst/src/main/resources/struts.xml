@@ -14575,6 +14575,11 @@
 			<param name="root">cadreDtlsList</param>
 		</result>
 	</action>
+	<action name="getCadreRegistrationCountByConstituency" class="privilegedUserCadreRegAction" method="getCadreRegistrationCountByConstituency">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOs</param>  
+		</result>
+	</action>
 	  <action name="getUserTrackingDtslBySurveyUserIdAction" class="coreDashboardAction"  method="getUserTrackingDtslBySurveyUserId">
 			<result type="json" name="success">
 			<param name="root">cadreVO</param>
