@@ -29,6 +29,7 @@ public class ToursBasicVO {
 	private List<ToursBasicVO> subList2 = null;
 	
 	private String designation;
+	private Long designationId;
 	private Long noOfLeaderCnt=0l;
 	private Long submitedLeaderCnt=0l;
 	private Long notSubmitedLeaserCnt=0l;
@@ -264,4 +265,10 @@ public class ToursBasicVO {
 	public void setActivityMemberId(Long activityMemberId) {
 		this.activityMemberId = activityMemberId;
 	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}	
 }

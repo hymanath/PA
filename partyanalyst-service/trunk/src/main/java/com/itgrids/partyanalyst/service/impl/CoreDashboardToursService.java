@@ -306,6 +306,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    				resultVO.setActivityMemberId(candIdAndActivityMemIdMap.get(cndId));
 			    				resultVO.setName(candidateIdAndNameMap.get(cndId));
 			    				resultVO.setDesignation(desigIdAndDesigMap.get(entry.getKey()));
+			    				resultVO.setDesignationId(entry.getKey());
 			    				resultVO.setLocationScopeId(selfAppLocationScpId);
 			    				//add all the location value based on candidate id.
 			    				resultVO.getLocationValueList().addAll(new ArrayList<Long>(candIdAndSetOfLocValMap.get(cndId)));
