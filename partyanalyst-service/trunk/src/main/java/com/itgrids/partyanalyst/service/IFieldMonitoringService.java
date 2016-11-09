@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserPerformanceVO;
@@ -41,7 +42,7 @@ public interface IFieldMonitoringService {
 	public List<CadreRegUserVO> getCadreRegUserAssignedDistricts(Long userId,String userType);
 	public List<UserPerformanceVO> getUserPerformanceDetailsByUser(Long cadreSurveyUserId,Long tabUserId);
 	
-	public List<FieldMonitoringVO> getFieldMonitoringUserWiseDetails();
+	public List<FieldMonitoringVO> getFieldMonitoringUserWiseDetails(GISVisualizationParameterVO inputVO);
 	public FieldMonitoringVO getAllDataCollectorsDetails(Long loginUserId,Long stateId,Long districtId,Long constituencyId,Long userId, String fromDateStr,String toDateStr);
 	public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Long districtId,Long stateId,Long constituencyId,Long cadreSurveyUserId,String fromDateStr,String toDateStr);
 	public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId);
