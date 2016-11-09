@@ -3581,16 +3581,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
  			Date dt = dateUtilService.getCurrentDateAndTime();
  			Calendar calendar = Calendar.getInstance();
  			calendar.setTime(dt);
- 			calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);  
+ 			calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);    
 			Date lastOneDayTime = calendar.getTime(); 
  			
  			Date surveyDate = dateUtilService.getCurrentDateAndTime();
  			List<Long> hourList = new ArrayList<Long>(){{add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
  			//put("Upto 8 AM",8l);
- 			Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{
- 				put("8-9",8l);put("9-10",9l);put("10-11",10l);put("11-12",11l);put("12-13 PM",12l);put("13-14",13l);put("14-15",14l);put("15-16",15l);
+ 			Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{  
+ 				put("08-09",8l);put("09-10",9l);put("10-11",10l);put("11-12",11l);put("12-13 PM",12l);put("13-14",13l);put("14-15",14l);put("15-16",15l);
  				put("16-17",16l);put("17-18",17l);put("18-19",18l);put("19-20",19l);put("20-21",20l);put("21-22",21l);put("22-23",22l);put("23-24",23l);
- 			}};
+ 			}};  
  			List<FieldReportVO> fieldReportVOs = new ArrayList<FieldReportVO>();
  			FieldReportVO fieldReportVO = null;
  			List<Object[]> regDtlsListForToday = null;
@@ -3664,7 +3664,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
  				fieldReportVOs.add(fieldReportVO);
  			}
  			if(fieldReportVOs != null && fieldReportVOs.size() > 0){
-				Collections.sort(fieldReportVOs, showTimeAsc);
+				Collections.sort(fieldReportVOs, shortTimeAsc);
 			}
  			return fieldReportVOs;  
  		}catch(Exception e){
@@ -3674,7 +3674,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
  		return null;  
  		
  	}
- 	public static Comparator<FieldReportVO> showTimeAsc = new Comparator<FieldReportVO>() {
+ 	public static Comparator<FieldReportVO> shortTimeAsc = new Comparator<FieldReportVO>() {
 		public int compare(FieldReportVO member2, FieldReportVO member1) {
 
 			Long perc2 = member2.getOrder();  
