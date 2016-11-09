@@ -496,5 +496,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTabUserInfoDetailsByTdpCadreIds(List<Long> tdpCadreIdsList );
 	  public String getCadreMobileNumber(Long tdpCadreId);
 	  public List<Object[]> getUserTrackingDetails(Long cadreSurveyUserId,Date fromDate,Date toDate);
+	  public List<Object[]> getActualCountOfCadreSurveyUserWiseCount(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate);
 	  
 } 

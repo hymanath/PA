@@ -237,7 +237,7 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 	try{
 	
 		LOG.info("Entered into DataReconsolidationService of getCadreSurveyUserWiseRegistrations");
-		
+		Set<Long> cadreSurveyUsers = new HashSet<Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 SimpleDateFormat outputFormat = new SimpleDateFormat("KK:mm a");
@@ -270,7 +270,8 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 				tabStatsVO.setKafkaSync(param[9] != null ? (Long)param[9] : 0l);
 				tabStatsVO.setTabUserInfoId(param[10] != null ? (Long)param[10] : 0l);
 				tabStatsVO.setImagePath(param[11] != null ?param[11].toString():"");
-
+				tabStatsVO.setCadreSurveyUserId(param[12] != null ?(Long)param[12]:0l);
+				cadreSurveyUsers.add(tabStatsVO.getCadreSurveyUserId());
                  if(tabStatsVO.getTotalRecords() !=null && tabStatsVO.getTotalRecords().longValue()>0l) {
               	   	 tabStatsVO.setTotalAmount(tabStatsVO.getTotalRecords() * 100);
                  }
@@ -278,6 +279,28 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 			}
 		
 		}
+		Map<String,Long> actualCadreMap = new HashMap<String, Long>();
+		
+		List<Object[]> cadreSurveyCountObjs =  tdpCadreDAO.getActualCountOfCadreSurveyUserWiseCount(cadreSurveyUsers, fromDate, toDate);
+		
+		if(cadreSurveyCountObjs !=null && cadreSurveyCountObjs.size()>0){
+			 SimpleDateFormat tempFormat = new SimpleDateFormat("yyyy-MM-dd");
+			for (Object[] objects : cadreSurveyCountObjs) {
+				String tempDate = objects[2]!=null ? objects[2].toString():"";
+				if(tempDate != null && !tempDate.isEmpty()){
+					String dateStr = format1.format(tempFormat.parse(tempDate));
+					actualCadreMap.put(dateStr,objects[1] !=null ? (Long)objects[1]:0l);
+				}
+			}
+		}
+		if(finalList != null && finalList.size() > 0){
+		for(CadreTabRecordsStatusVO vo : finalList){
+		  Long count = actualCadreMap.get(vo.getSurveyDate());
+		  	if(count !=null)
+			  vo.setActualCount(count);
+		 
+		}
+	}
 	}catch(Exception e){
 		LOG.error("Exception Occured into DataReconsolidationService of getCadreSurveyUserWiseRegistrations",e);
 	}
