@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.CadreRegUserTabUser;
 
 public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabUser, Long> implements ICadreRegUserTabUserDAO{
@@ -150,7 +151,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getFieldMonitoringUserWiseDetails(){
+	public List<Object[]> getFieldMonitoringUserWiseDetails( GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model.cadreRegUser.user.userName," +
 											" model1.constituency.district.districtId,model1.constituency.district.districtName," +
 											" model1.constituency.constituencyId,model1.constituency.name," +
@@ -165,7 +166,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		return query.list();
 	}
 	
-	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers(Date today){
+	public List<Object[]> getIssueTypeWiseCountsForFieldMonrUsers(Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,''," +
 											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(distinct model2.cadreRegIssueId)," +
 											" model2.locationValue" +
@@ -186,7 +187,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		return query.list();
 	}
 	
-	public List<Object[]> getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(Date today){
+	public List<Object[]> getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,''," +
 											" model2.cadreRegIssueType.cadreRegIssueTypeId,count(distinct model2.cadreRegIssueId)," +
 											" model2.locationValue" +
@@ -209,7 +210,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		return query.list();
 	}
 	
-	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers(Date today){
+	public List<Object[]> getIssueStatusWiseCountsForFieldMonrUsers(Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select model.cadreRegUser.user.userId,model1.constituency.district.districtId," +
 											" model2.cadreRegIssueStatus.cadreRegIssueStatusId,count(distinct model2.cadreRegIssueId)," +
 											" model1.constituency.constituencyId" +
@@ -256,7 +257,7 @@ return query.list();
 		
 	}
 	
-	public List<Object[]> getTotalRegisteredUsers(){
+	public List<Object[]> getTotalRegisteredUsers(GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select " +
 				" model1.constituency.constituencyId,count(distinct model.cadreSurveyUser.cadreSurveyUserId)," +
 				" model.cadreRegUser.user.userId " +
@@ -274,7 +275,7 @@ return query.list();
 		
 	}
 	
-	public List<Object[]> getTodayStartedUsersOfFMUser(Date today){
+	public List<Object[]> getTodayStartedUsersOfFMUser(Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select " +
 				" model2.constituency.constituencyId,count(distinct model2.cadreSurveyUserId)," +
 				" model.cadreRegUser.user.userId " +
@@ -292,7 +293,7 @@ return query.list();
 		
 	}
 	
-	public List<Object[]> getLastOneHourUsersOfFMUser(Date lastHourTime,Date today){
+	public List<Object[]> getLastOneHourUsersOfFMUser(Date lastHourTime,Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select " +
 				" model2.constituency.constituencyId,count(distinct model2.cadreSurveyUserId)," +
 				" model.cadreRegUser.user.userId " +
@@ -313,7 +314,7 @@ return query.list();
 		
 	}
 	
-	public List<Object[]> getTodayTotalIssues(Date today){
+	public List<Object[]> getTodayTotalIssues(Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select " +
 				" model2.userAddress.constituency.constituencyId,count(distinct model2.cadreRegIssueId),model.cadreRegUser.user.userId " +
 				" from CadreRegUserTabUser model,CadreRegIssue model2" +
@@ -330,7 +331,7 @@ return query.list();
 		
 	}
 	
-	public List<Object[]> getTodayTotalStartedIssues(Date today){
+	public List<Object[]> getTodayTotalStartedIssues(Date today, GISVisualizationParameterVO inputVO){
 		Query query = getSession().createQuery("select  " +
 				" model.constituency.constituencyId,count(distinct model2.cadreRegIssueId),model1.cadreRegUser.user.userId " +
 				" from CadreRegIssue model2,TabUserEnrollmentInfo model,CadreRegUserTabUser model1" +
