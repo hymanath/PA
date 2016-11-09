@@ -4002,7 +4002,17 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 			}      
 		});                     
  }
- function buildHourWiseRegDtls(result){  
+ function buildHourWiseRegDtls(result){ 
+	
+	var todaySummation = 0;
+	var yesterDaySummation = 0;
+	//var todayUserSummation = 0;
+	//var yesterDayUserSummation = 0;
+	var hour = getTodayHour();
+	todaySummation = parseInt(result[0].todayTotalReg);
+	yesterDaySummation = parseInt(result[0].lastDayTotalReg);
+	//todayUserSummation = parseInt(result[0].todayTotalUsers);
+	//yesterDayUserSummation = parseInt(result[0].lastDayTotalUsers);
 	 var str='';
 	        str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered table-condensed "> ';
@@ -4012,42 +4022,87 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 						str+='<th>Today Total Reg</th>';
 						str+='<th>Yesterday Total Reg</th>';
 						str+='<th>Today Total Active Users</th>';
-						str+='<th>Yesterday Total Active Users</th>';
+						str+='<th>Yesterday Total Active Users</th>';  
 					str+='</tr>'; 
 				str+='</thead>'; 
 				str+='<tbody>';
+				str+='<tr> ';
+					str+='<td>'+result[0].label+'</td> ';
+					
+					if(result[0].todayTotalReg == 0){
+							str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[0].todayTotalReg+'-('+todaySummation+')</td> ';
+					}
+					if(result[0].lastDayTotalReg == 0){
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[0].lastDayTotalReg+'-('+yesterDaySummation+')</td> ';
+					}
+					
+					if(result[0].todayTotalUsers == 0){
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[0].todayTotalUsers+'</td> ';
+					}
+					if(result[0].lastDayTotalUsers == 0){  
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[0].lastDayTotalUsers+'</td> ';  
+					}
+				str+='<tr> ';   	
 				for(var i in result){
-					str+='<tr> ';
+					if((parseInt(i)+parseInt(1)) == result.length){    
+						break;
+					}  
+						i = parseInt(i) + parseInt(1);   
+					str+='<tr> ';	
 						str+='<td>'+result[i].label+'</td> ';
 						if(result[i].todayTotalReg == 0){
 							str+='<td>-</td> ';
 						}else{
-							str+='<td>'+result[i].todayTotalReg+'</td> ';
+							todaySummation = parseInt(todaySummation) + parseInt(result[i].todayTotalReg);
+							str+='<td>'+result[i].todayTotalReg+'-('+todaySummation+')</td> ';
 						}
+						
+						
 						if(result[i].lastDayTotalReg == 0){
 							str+='<td>-</td> ';
 						}else{
-							str+='<td>'+result[i].lastDayTotalReg+'</td> ';
+							yesterDaySummation = parseInt(yesterDaySummation) + parseInt(result[i].lastDayTotalReg);
+							str+='<td>'+result[i].lastDayTotalReg+'-('+yesterDaySummation+')</td> ';
+							
 						}
 						if(result[i].todayTotalUsers == 0){
 							str+='<td>-</td> ';
 						}else{
+							//todayUserSummation = parseInt(todayUserSummation) + parseInt(result[i].todayTotalUsers);
 							str+='<td>'+result[i].todayTotalUsers+'</td> ';
+							
 						}
 						if(result[i].lastDayTotalUsers == 0){
 							str+='<td>-</td> ';
 						}else{
+							//yesterDayUserSummation = parseInt(yesterDayUserSummation) + parseInt(result[i].lastDayTotalUsers);
 							str+='<td>'+result[i].lastDayTotalUsers+'</td> ';
-						}
-						
-				   str+='</tr>';
+							
+						}  
+				   str+='</tr>';   
 				
 				}
-			str+='</tbody>'; 
+				str+='<tr>';
+					str+='<td>Total</td>';
+					str+='<td>'+todaySummation+'</td>';
+					str+='<td>'+yesterDaySummation+'</td>';
+					str+='<td></td>';
+					str+='<td></td>';
+				str+='</tr>';
+			str+='</tbody>';   
 		str+='</table>';
 		str+='</div>';
 		$("#cdrModelId").html(str);
  }
+ 
  $(document).on("click","#cadreExcelExpBtnId",function(){
 	 generateExcelReportForCadre();	
 /* 	var type=$(this).attr("attr_tab_user_type");
