@@ -8590,7 +8590,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers){
 		
 			StringBuilder str = new StringBuilder();				
-			str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId) " +
+			str.append(" select model.tdpCadre.insertedUserId,count(distinct model.tdpCadreId),model.tdpCadre.synkType " +
 					" from TdpCadreEnrollmentYear model  " +
 					" where " +
 					" model.tdpCadre.isDeleted ='N' " +

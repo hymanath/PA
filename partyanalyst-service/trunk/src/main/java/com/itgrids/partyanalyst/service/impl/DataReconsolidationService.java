@@ -110,18 +110,23 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long stateId,Long
     		}
     		
     		Map<Long,Long> actualMap = new HashMap<Long, Long>();
+    		Map<Long,String> syncMap = new HashMap<Long, String>();
     		List<Object[]> cadreSurveyCountObj =  tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
     		
     		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
     			for (Object[] objects : cadreSurveyCountObj) {
     				actualMap.put((Long)objects[0],objects[1] !=null ? (Long)objects[1]:0l);
+    				syncMap.put((Long)objects[0],objects[2] !=null ? objects[2].toString():"");
 				}
     		}
     		if(returnList != null && returnList.size() > 0){
     		for(CadreTabRecordsStatusVO vo : returnList){
     		  Long count = actualMap.get(vo.getCadreSurveyUserId());
-    		  if(count !=null)
+    		  	if(count !=null)
     			  vo.setActualCount(count);
+    		  String syncType = syncMap.get(vo.getCadreSurveyUserId());
+    		  	if(syncType != "")
+    		  		vo.setUserSyncType(syncType);
     		}
     		}
 
@@ -165,20 +170,21 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 				Long totalPending = 0l;
 				Long tabSync = 0l;
 				Long tabPending =0l;
-				Long cadreSurveyUserId =0l;
+				
 				if( dataReConsalationObjs != null && dataReConsalationObjs.size() >0)
 				{
 					
 					for(Object[] dataReConsalationObj : dataReConsalationObjs){
-			      
-			      totalSmartDevics = dataReConsalationObj[0] != null ? totalSmartDevics+(Long)dataReConsalationObj[0] :0l;
-			      totalRecords = dataReConsalationObj[1] != null ? totalRecords+(Long)dataReConsalationObj[1] : 0l;
-			      totalSync = dataReConsalationObj[2]!=null ?totalSync+(Long)dataReConsalationObj[2] : 0l;
-			      totalPending = dataReConsalationObj[3] != null ? totalPending+(Long)dataReConsalationObj[3] : 0l;
-			      tabSync = dataReConsalationObj[4] != null ? tabSync+(Long)dataReConsalationObj[4] : 0l;
-			      tabPending = dataReConsalationObj[5] != null ? tabPending+(Long)dataReConsalationObj[5] : 0l;
-			      cadreSurveyUserId = dataReConsalationObj[6] != null ? cadreSurveyUserId+(Long)dataReConsalationObj[6] : 0l;
-			      cadreSurveyUsers.add(cadreSurveyUserId);
+						Long cadreSurveyUserId =0l;
+					  totalSmartDevics++;
+				      totalRecords = dataReConsalationObj[1] != null ? totalRecords+(Long)dataReConsalationObj[1] : 0l;
+				      totalSync = dataReConsalationObj[2]!=null ?totalSync+(Long)dataReConsalationObj[2] : 0l;
+				      totalPending = dataReConsalationObj[3] != null ? totalPending+(Long)dataReConsalationObj[3] : 0l;
+				      tabSync = dataReConsalationObj[4] != null ? tabSync+(Long)dataReConsalationObj[4] : 0l;
+				      tabPending = dataReConsalationObj[5] != null ? tabPending+(Long)dataReConsalationObj[5] : 0l;
+				      cadreSurveyUserId = dataReConsalationObj[6] != null ? (Long)dataReConsalationObj[6] : 0l;
+				      if(cadreSurveyUserId.longValue() >0l)
+				      cadreSurveyUsers.add(cadreSurveyUserId);
 					}
 				  }
 				statusvo = new CadreTabRecordsStatusVO();
@@ -188,7 +194,7 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 			    statusvo.setTotalPending(totalPending);
 			    statusvo.setSync(tabSync);
 			    statusvo.setPending(tabPending);
-			    statusvo.setCadreSurveyUserId(cadreSurveyUserId);
+			    //statusvo.setCadreSurveyUserId(cadreSurveyUserId);
 
 			Map<Long, Long> actualMap = new HashMap<Long, Long>();
 			List<Object[]> cadreSurveyCountObj = tdpCadreDAO
@@ -201,8 +207,8 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 				}
 			}
 			if (cadreSurveyUsers != null && cadreSurveyUsers.size() > 0) {
-				for (Long vo : cadreSurveyUsers) {
-					Long count = actualMap.get(vo);
+				for (Long cadreSurveyUser : cadreSurveyUsers) {
+					Long count = actualMap.get(cadreSurveyUser);
 					if (count != null)
 						statusvo.setActualCount(count
 								+ statusvo.getActualCount());
@@ -292,7 +298,7 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 	try{
 	
 		LOG.info("Entered into DataReconsolidationService of getLocationWiseSmartDevicesCount");
-		Set<Long> locationIds = new HashSet<Long>();
+		Set<Long> cadreSurveyUsers = new HashSet<Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
 		   Date fromDate = null;
@@ -317,14 +323,14 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 			    statusvo.setTotalPending(param[6] != null ? (Long)param[6] : 0l);//Total Tab Pending Records;
 			    statusvo.setTotalSyn(param[7] != null ? (Long)param[7] : 0l);//Total Tab Sync Records;
 			    statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
-			    locationIds.add(param[0] != null ? (Long)param[0] : 0l);//locationIds
+			    cadreSurveyUsers.add(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);//cadreSurveyUserIds
 				finalList.add(statusvo);
 			}
 		
 		}
 		
 		Map<Long,Long> actualMap = new HashMap<Long, Long>();
-		List<Object[]> cadreSurveyCountObj =  cadreSurveyUserAssignDetailsDAO.getActualCountOfCadreSurveyUser(locationIds,districtId);
+		List<Object[]> cadreSurveyCountObj =  tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
 		
 		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
 			for (Object[] objects : cadreSurveyCountObj) {
@@ -333,7 +339,7 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 		}
 		if(finalList != null && finalList.size() > 0){
 		for(CadreTabRecordsStatusVO vo : finalList){
-		  Long count = actualMap.get(vo.getTabUserInfoId());
+		  Long count = actualMap.get(vo.getCadreSurveyUserId());
 		  if(count !=null)
 			  vo.setActualCount(count);// Actual server Registrations
 		}
