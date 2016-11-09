@@ -10,6 +10,7 @@ public class ToursBasicVO {
 	private Long id;
 	private String name;
 	private Long tdpCadreId;
+	private Long activityMemberId;
 	private String memberShipNo;
 	private Long voaterId;
 	private String mobileNo;
@@ -256,5 +257,11 @@ public class ToursBasicVO {
 	}
 	public void setLocationSet(Set<Long> locationSet) {
 		this.locationSet = locationSet;
-	} 	
+	}
+	public Long getActivityMemberId() {
+		return activityMemberId;
+	}
+	public void setActivityMemberId(Long activityMemberId) {
+		this.activityMemberId = activityMemberId;
+	}
 }
