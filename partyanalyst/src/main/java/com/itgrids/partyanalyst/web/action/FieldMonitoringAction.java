@@ -709,7 +709,7 @@ public String getConstituencyByVendor(){
 			Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
 			Long tabUserId = jObj.getLong("tabUserInfoId");*/
 			
-			fieldMonitoringList = fieldMonitoringService.getFieldMonitoringUserWiseDetails();
+			fieldMonitoringList = fieldMonitoringService.getFieldMonitoringUserWiseDetails(null);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getFieldMonitoringUserWiseDetails()  of FieldMonitoringAction", e);
