@@ -101,6 +101,7 @@
 		var openIssuesArr = [];
 		var fixedIssuesArr = [];
 		var closedIssuesArr  = [];
+		
 			var dates = $(".singleDate").val();
 	        var dateArr = dates.split("-");
 	        var fromDate;
@@ -121,6 +122,7 @@
 				data : {task:JSON.stringify(jsObj)}  
 			}).done(function(result){
 				if(result != null && result.length >0){
+					var totalIssuesCount = result.length;
 					for(var i in result){
 						if(result[i].issueTypes != null && result[i].issueTypes.length > 0){
 							var openIssueCount =0;
@@ -131,7 +133,8 @@
 									var dataArr = [];
 									dataArr.push(result[i].issueTypes[j].name+"-"+parseInt(result[i].issueTypes[j].id));
 									dataArr.push(parseInt(result[i].issueTypes[j].inviteeCount));
-									openIssuesArr.push(dataArr);								}
+									openIssuesArr.push(dataArr);
+								}
 							}
 							var fixedIssuecount= 0;
 							if(result[i].id == 2){
@@ -157,6 +160,7 @@
 							}
 						}
 					}
+					$("#openIssues").css("height","(totalIssuesCount*40)px");
 					 $('#openIssues').highcharts({
 						chart: {
 							type: 'pie',
@@ -164,7 +168,7 @@
 								enabled: true,
 								alpha: 45
 							},
-							spacingTop: -370,
+							spacingTop: -(totalIssuesCount*50),
 						},
 						title: {
 							text: null
@@ -220,6 +224,7 @@
 							},
 						}]
 					});
+				    $("#fixedIssues").css("height","(totalIssuesCount*40)px");
 					$('#fixedIssues').highcharts({
 						chart: {
 							type: 'pie',
@@ -227,7 +232,7 @@
 								enabled: true,
 								alpha: 45
 							},
-							spacingTop: -370,
+							spacingTop: -(totalIssuesCount*50),
 						},
 						title: {
 							text: null
@@ -284,6 +289,7 @@
 							},
 						}]
 					});
+					$("#closedIssues").css("height","(totalIssuesCount*40)px");
 					$('#closedIssues').highcharts({
 						chart: {
 							type: 'pie',
@@ -291,7 +297,7 @@
 								enabled: true,
 								alpha: 45
 							},
-							spacingTop: -370,
+							spacingTop: -(totalIssuesCount*50),
 						},
 						title: {
 							text: null
