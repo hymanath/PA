@@ -70,7 +70,7 @@ function getDataReConsalationOverView(){
 		str+='<div class="panel-body" style="padding: 25px;">';
 			str+='<div class="row">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
-				var totImeiNo = result.actualCount;
+				var totImeiNo = result.totalImeiNo;
 				var totRecords = result.totalRecords;
 				var totSynRec =result.totalSyn;
 				var totPending  = result.totalPending;
