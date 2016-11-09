@@ -8618,33 +8618,51 @@ public List<Object[]> getTotalVoterGroupByLocation(String location, Long constId
 	StringBuilder queryStr = new StringBuilder();
 	queryStr.append(" select ");
 	if(location.equalsIgnoreCase("mandal")){
-		queryStr.append(" BPV.booth.panchayat.tehsil.tehsilId,BPV.booth.panchayat.tehsil.tehsilName, count(distinct BPV.voter.voterId)  ");
+		queryStr.append(" tehsil.tehsilId,tehsil.tehsilName, count(distinct voter.voterId)  ");
 	}
 	if(location.equalsIgnoreCase("panchayat")){
-		queryStr.append(" BPV.booth.panchayat.tehsil.tehsilId,BPV.booth.panchayat.tehsil.tehsilName,BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName, count(distinct BPV.voter.voterId)  ");
+		queryStr.append(" tehsil.tehsilId,tehsil.tehsilName,panchayat.panchayatId,panchayat.panchayatName, count(distinct voter.voterId)  ");
 	}
 	if(location.equalsIgnoreCase("booth")){  
-		queryStr.append(" BPV.booth.panchayat.tehsil.tehsilId,BPV.booth.panchayat.tehsil.tehsilName,BPV.booth.panchayat.panchayatId,BPV.booth.panchayat.panchayatName,BPV.booth.boothId,BPV.booth.partNo, count(distinct BPV.voter.voterId)  ");
+		queryStr.append(" tehsil.tehsilId," +//0
+						" tehsil.tehsilName," +//1
+						" panchayat.panchayatId," +//2
+						" panchayat.panchayatName," +//3
+						" localBody.localElectionBodyId," +//4
+						" localBody.name," +//5
+						" booth.boothId," +//6
+						" booth.partNo, " +//7
+						" count(distinct voter.voterId)  ");//8 
 	}
-	queryStr.append(" from  BoothPublicationVoter BPV where " +
-					" BPV.booth.constituency.constituencyId = :constId and " +
-					" BPV.booth.publicationDate.publicationDateId = :publicationDateId ");    
+	queryStr.append(" from  BoothPublicationVoter BPV " +
+					" left join BPV.voter voter " +
+					" left join BPV.booth booth " +
+					" left join booth.panchayat panchayat " +
+					" left join panchayat.tehsil tehsil " +
+					" left join booth.localBody localBody " +
+					" left join booth.constituency constituency " +
+					" where " +
+					" constituency.constituencyId = :constId and " +
+					" constituency.electionScope.electionScopeId = :electionScopeId and " +
+					" constituency.deformDate is null and " +
+					" booth.publicationDate.publicationDateId = :publicationDateId ");    
 	  
 	if(location.equalsIgnoreCase("mandal") || location.equalsIgnoreCase("panchayat"))  
-		queryStr.append(" and BPV.booth.panchayat is not null "); 
+		queryStr.append(" and booth.localBody is null "); 
 	
 	if(location.equalsIgnoreCase("mandal")){
-		queryStr.append(" group by BPV.booth.panchayat.tehsil.tehsilId order by BPV.booth.panchayat.tehsil.tehsilId ");
+		queryStr.append(" group by tehsil.tehsilId order by tehsil.tehsilId ");
 	}	
 	else if(location.equalsIgnoreCase("panchayat")){
-		queryStr.append(" group by BPV.booth.panchayat.panchayatId order by BPV.booth.panchayat.panchayatId ");
+		queryStr.append(" group by panchayat.panchayatId order by panchayat.panchayatId ");
 	}	
 	else if(location.equalsIgnoreCase("booth")){
-		queryStr.append(" group by BPV.booth.boothId order by BPV.booth.boothId "); 
+		queryStr.append(" group by booth.boothId order by tehsil.tehsilId,panchayat.panchayatId,localBody.localElectionBodyId,booth.boothId "); 
 	}	
 	Query query = getSession().createQuery(queryStr.toString());  
 	query.setParameter("constId", constId);
 	query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID); 
+	query.setParameter("electionScopeId", IConstants.ELECTION_SCOPE_ID); 
 	
 	return query.list();
 }

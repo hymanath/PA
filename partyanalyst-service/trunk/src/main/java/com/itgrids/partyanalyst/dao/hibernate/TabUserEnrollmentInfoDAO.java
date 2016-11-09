@@ -115,7 +115,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		return query.list();
 		
 	}
-   public List<Object[]> getTabUserWiseTotalRegistrationDetails(Long stateId,Date date){
+	public List<Object[]> getTabUserWiseTotalRegistrationDetails(Long stateId,Date date){
 	     StringBuilder queryStr = new StringBuilder();
 	     queryStr.append(" select distinct " +
 	     		         " model.tabUserInfoId," +//0
@@ -133,7 +133,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 	       query.setParameter("date", date);
 	      return query.list();
    }
-  public List<Object[]> getActiveTabUserDtls(Long stateId,Date lastOneHourTime){
+   public List<Object[]> getActiveTabUserDtls(Long stateId,Date lastOneHourTime){
 	 		StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select distinct model.tabUserInfoId,sum(model.totalRecords) from TabUserEnrollmentInfo model where model.endTime > (:lastOneHourTime) and " +
 							" model.stateId = :stateId group by model.tabUserInfoId ");
@@ -143,6 +143,25 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 			return query.list();
 	
     }
-  }
+   	public List<Object[]> getTabUserDtlsList(Long constituencyId,Date fromDate,Date toDate){
+   		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.tabUserInfoId, " +//0
+						" model.tabUserName," +//1
+						" model.imagePath," +//2
+						" model.mobileNo," +//3
+						" sum(model.totalRecords), " +//4
+						" min(model.startTime), " +//5
+						" max(model.endTime) " +//6
+						" from TabUserEnrollmentInfo model where " +
+						" date(model.surveyTime) between :fromDate and :toDate " +
+						" and model.constituencyId = :constituencyId " +
+						" group by model.tabUserInfoId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+   		return query.list();    
+   	}
+}
 
 
