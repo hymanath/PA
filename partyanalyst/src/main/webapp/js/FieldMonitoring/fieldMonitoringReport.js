@@ -36,7 +36,7 @@ function buildFieldMonitoringReport(result){
 				str+='<td rowspan="2">REGISTERED</td>';
 				str+='<td rowspan="2">STARTED</td>';
 				str+='<td rowspan="2">NOT YET STARTED</td>';
-				str+='<td rowspan="2">LAST HOUR ACTIVE</td>';
+				str+='<td rowspan="2">LAST HOUR INACTIVE</td>';
 				//str+='<td rowspan="2">ISSUES IN STARTED</td>';
 				//str+='<td rowspan="2">ISSUES IN NOT STARTED</td>';
 				if(result[0].idnameList != null && result[0].idnameList.length > 0){
@@ -70,7 +70,7 @@ function buildFieldMonitoringReport(result){
 					str+='<td>'+result[i].todayRegCount+'</td>';
 					str+='<td>'+result[i].startedUsers+'</td>';
 					str+='<td>'+result[i].notYetStartedUsers+'</td>';
-					str+='<td>'+result[i].lastOneHrActUsers+'</td>';
+					str+='<td>'+result[i].lastHourInActive+'</td>';
 					//str+='<td>'+result[i].notYetStartedIssues+'</td>';
 					//str+='<td>'+result[i].startedIssues+'</td>';
 					if(result[i].idnameList != null && result[i].idnameList.length > 0){
