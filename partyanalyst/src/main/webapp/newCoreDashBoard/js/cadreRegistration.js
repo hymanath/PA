@@ -1378,8 +1378,10 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 	}
 	
 	
-	function getCadreRecentTime(){
-		$.ajax({
+	function getCadreRecentTime()
+	{
+		var dateTimeStr = moment().format('DD/MM/YYYY HH:mm');
+	/*	$.ajax({
 			type : 'GET',
 			url : 'getCadreLastUpdatedTimeAction.action',  
 			dataType : 'json'
@@ -1387,17 +1389,18 @@ function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserI
 			if(result != null){
 			setLastUpdatedTime(result);      	
 			}
-		});
-		
+		}); */
+		setLastUpdatedTime(dateTimeStr);
 	}
-setInterval(function() {
+	
+	setInterval(function() {
 	statusCall = 0;           
     cadreRegistrationBasicCall();  
   }, 60 * 1000000);  
   
 
-function setLastUpdatedTime(lastUpdatedTime){ 
-	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+lastUpdatedTime+"");  
+function setLastUpdatedTime(dateTimeStr){ 
+	$("#lastUpdatedTimeCadreId").html(" Last Updated : "+dateTimeStr+"");  
 }
 
 function getNotReceiveRegistrationPerson(constituencyId,currentDate){
