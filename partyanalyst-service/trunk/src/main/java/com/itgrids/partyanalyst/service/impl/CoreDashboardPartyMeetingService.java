@@ -1761,7 +1761,7 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		    	  
 		    	 int deletedRecords = partyMeetingStatusDAO.deleteAllRecords();
 		 		 
-		    	 int count = partyMeetingStatusDAO.setPrimaryKeyAutoIncrementToOne();
+		    	 //int count = partyMeetingStatusDAO.setPrimaryKeyAutoIncrementToOne();
 		    	 
 		 		 int insertedRecordsCount = partyMeetingStatusDAO.insertPartyofficeAndIvrStatus();
 		 		 
