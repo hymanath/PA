@@ -132,6 +132,7 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 					 queryStr.append(" , sum(model.regCount) ");
 				 }
 			}
+			 queryStr.append(" ,model1.constituency.district.districtId,model1.constituency.district.districtName,model.cadreSurveyUserId ");
 			 
 			queryStr.append(" from ");
 			
