@@ -14599,11 +14599,15 @@
 			<result type="json" name="success">
 			<param name="root">toursBasicVO</param>
 		</result>
-	</action>	
+	</action>
 	<action name="getConstituencyWiseTodayAndOverAllCountsAction" class="fieldMonitoringAction"  method="getConstituencyWiseTodayAndOverAllCounts">
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
-	</action>     
+	</action> 	
+	<action name="mediaScreenPartyAction" class="fieldMonitoringAction" method="mediaScreenParty">
+			<result>/jsp/mediaScreenParty.jsp</result>
+		</action>
+	     
 </package>
 </struts>
