@@ -1,6 +1,10 @@
-var newsChannelsIdsGlbl = [1,2,3];
+var newsChannelsIdsGlbl = [1,2,3,4,5,6,7];
 var impactScopeIds = [1,2,3,4,5,6,7,8,9];
-var currentFromDateEmn = moment().format("DD-MM-YYYY");
+var currentFromDateEmn = moment().startOf("year").format("DD-MM-YYYY");
+
+var locationLevelIdGlb = 2;
+var locationValueArr=[1];
+
 var currentToDateEmn = moment().format("DD-MM-YYYY");
 
 	var url = window.location.href;
@@ -29,23 +33,45 @@ $(document).on("click",".emnIconExpand",function(){
 $(document).on("click",".moreEmnBlocksIcon",function(){
 	$(".newEmnHideCls").hide();
 	$(".detailedPartyEmn,.selectEmnCate").show();
-	getEMMDetailedPartyDistrictWiseProgramsOverview();
+	getEMMDetailedPartyDistrictWiseProgramsOverview("","");
 	getEMMDetailedPartiesVsChannelsPartiesDistrictWise("party");
 	getEMMDetailedPartyStateWiseProgramsOverview();
-	$("#detailedPartyLiIdEmn").addClass("active");
+	$("#detailedPartyLiIdEmn").addClass("active");	
 });
 
 $(document).on("click","#detailedPartyLiIdEmn",function(){
+	$(this).closest(".selectEmnCate").find(".viewsLiClassEmn").removeClass("active");
+	$(this).addClass("active")
 	$(".newEmnHideCls").hide();
 	$(".detailedPartyEmn").show();
 	getEMMDetailedPartyStateWiseProgramsOverview();
 	getEMMDetailedPartiesVsChannelsPartiesDistrictWise("party");
-	getEMMDetailedPartyDistrictWiseProgramsOverview();
+	getEMMDetailedPartyDistrictWiseProgramsOverview("","");
 });
+$(document).on("click","#comparisonPartyLiIdEmn",function(){
+	$(this).closest(".selectEmnCate").find(".viewsLiClassEmn").removeClass("active");
+	$(this).addClass("active")
+	$(".newEmnHideCls").hide();
+	$(".compPartyEmn").show();
+	comparisonPartyRankWiseDetailsOfChannel();
+});
+$(document).on("click","#comparisonGovernmentLiIdEmn",function(){
+	$(this).closest(".selectEmnCate").find(".viewsLiClassEmn").removeClass("active");
+	$(this).addClass("active")
+	$(".newEmnHideCls").hide();
+	$(".compGovtEmn").show();
+	comparisonGovtRankWiseDetailsOfChannel();
+});
+
 $(document).on("click","#detailedGovernmentLiIdEmn",function(){
+	$(this).closest(".selectEmnCate").find(".viewsLiClassEmn").removeClass("active");
+	$(this).addClass("active")
 	$(".newEmnHideCls").hide();
 	$(".detailedGovtEmn").show();
-	getProblemsDetailedOverView();
+	
+	if(locationLevelIdGlb ==2){
+		getProblemsDetailedOverView();
+	}	
 	getEMMDetailedGovtProblemsDetailedOverview();
 });
 
@@ -88,7 +114,7 @@ $(document).on("click",".impactCheckClsEmn",function(){
 	
 });
 $(document).on("click",".filtersSubmitDivIdEmn",function(){
-
+	$(this).closest(".emnBlockDropDown").hide();
 	newsChannelsIdsGlbl=[];
 	$(".newsChannelSelectAllClsEmn").each(function(){
 		if($(this).is(":checked")){
@@ -146,6 +172,7 @@ $("#dateRangeIdForEmn").daterangepicker({
 $('.dateRangePickerClsForEmn').on('apply.daterangepicker', function(ev, picker) {
 	currentFromDateEmn = picker.startDate.format('DD-MM-YYYY');
 	currentToDateEmn = picker.endDate.format('DD-MM-YYYY');
+	$("#emnHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");
 	var searchType = $(".emnMediaPrograms .active").attr("attr_searchType");
 	var type = $('input[name=emnSearchTypeName]:checked').val();
 	getMediaProgramsOnParty();
@@ -291,17 +318,29 @@ function getpartyWiseChannelCounts(result){
 	}
 	$("#electronicMediaChannelCountId").html(str);
 }
-function getEMMDetailedPartyDistrictWiseProgramsOverview()
+function getEMMDetailedPartyDistrictWiseProgramsOverview(channelArr,type)
 {
-	$("#districtWiseProgramsOvrViewEMN").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/872,1117,163,362/N"
-	}).then(function(result){
-		mediaProgramsOnParty(result);
-	});
+	if(type== "comparison")
+	{
+		$("#partyRankWiseCompDistWiseOvervw").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelArr+"/"+impactScopeIds+"/872,1117,163,362/N"
+		}).then(function(result){
+			buildEMMComparisonPartyDistrictWiseProgramsOverview(result);
+		});
+	}else{
+		$("#districtWiseProgramsOvrViewEMN").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/872,1117,163,362/N"
+		}).then(function(result){
+			buildEMMDetailedPartyDistrictWiseProgramsOverview(result);
+		});
+	}
+	
 }
-function mediaProgramsOnParty(result)
+function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 {
 	var str='';
 				
@@ -367,12 +406,12 @@ function mediaProgramsOnParty(result)
 				shadow: false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
 					var s = '<b>' + this.x + '</b>';
 
 					$.each(this.points, function () {
 						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
 							(this.y);
 					});
 
@@ -382,9 +421,6 @@ function mediaProgramsOnParty(result)
 			},
 			
 			plotOptions: {
-				pointPadding: 0.2,
-				borderWidth: 2,
-				groupPadding: 0.2,
 				column: {
 					stacking: 'percent',
 					dataLabels: {
@@ -398,16 +434,6 @@ function mediaProgramsOnParty(result)
 						}
 					  
 					},
-				},
-				series: {
-					cursor: 'pointer',
-					point: {
-						events: {
-							click: function () {
-								getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(this.extra);
-							}
-						}
-					}
 				}
 			},
 			series: [{
@@ -756,6 +782,92 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].organization)
 			}
 			$('#partyVsChannelGraph'+i+''+j+'').highcharts({
+				colors: ['#64C664','#D33E39'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: paperNamesArrayEmn,
+					labels: {
+							rotation: -45,
+							style: {
+								fontSize: '13px',
+								fontFamily: 'Verdana, sans-serif'
+							}
+						}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								(this.y)+' %';
+						});
+
+						return s;
+					},
+					shared: true
+				},
+				
+				plotOptions: {
+					pointPadding: 0.2,
+					borderWidth: 2,
+					groupPadding: 0.2,
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							}
+						  
+						},
+					}
+				},
+				series: [{
+					name: 'Positive',
+					data: positivePercArrayEmn,
+					stack: 'programs'
+				}, {
+					name: 'Negative',
+					data: negativePercArrayEmn,
+					stack: 'programs'
+				}]
+			});
+			/* $('#partyVsChannelGraph'+i+''+j+'').highcharts({
 				 colors: ['#64C664','#D33E39'],
 				chart: {
 					type: 'column'
@@ -791,8 +903,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 
 						$.each(this.points, function () {
 							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
-								(this.y);
+								(this.y)+' %';
 						});
 
 						return s;
@@ -805,6 +916,9 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 										
 					},				
 				plotOptions: {
+					pointPadding: 0.2,
+					borderWidth: 2,
+					groupPadding: 0.2,
 					column: {
 						stacking: 'percent',
 						dataLabels:{
@@ -829,7 +943,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 					data: negativePercArrayEmn,
 					stack: 'TvNews'
 				}]
-			});
+			}); */
 		}
 	}
 	$(".partyVsChannelSlickApplyEmn").slick({
@@ -1720,4 +1834,1181 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 			}
 		}
 	}
+}
+
+function comparisonPartyRankWiseDetailsOfChannel()
+{
+	$("#partyRankWiseDetailsOfChannel").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/01-01-2016/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/872,1117,163,362/N/channel"
+	}).then(function(result){
+		buildComparisonPartyRankWiseDetailsOfChannel(result)
+	});
+}
+function buildComparisonPartyRankWiseDetailsOfChannel(result)
+{
+	var str='';
+	var rankVar =0;
+	str+='<ul class="list-inline NewsSlickPanelSliderEmn">';
+	for(var i in result)
+	{
+		rankVar =rankVar+1;
+		str+='<li class="NewsSlickPanelSliderLiEmnCls" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+'>';
+			str+='<div class="panel panel-default panelSlick">';
+				str+='<div class="panel-heading" style="padding:8px;background-color: #ededed !important;">';
+					str+='<h4 class="panel-title"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList[0].organization+'.png" class="debatesPartyIcon"/>'+result[i].tvNewsDetailsVOList[0].organization+'';
+					str+='<span class="count">'+rankVar+'</span></h4>';
+				str+='</div>';
+				str+='<div class="panel-body" style="background-color:#fff;">';
+					str+='<div class="row">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+							str+='<div class="bg_ED">';
+								str+='<table class="table">';
+									str+='<tr>';
+										str+='<td><p class="text-muted">Total Programs</p>';
+											str+=''+result[i].categoryCount+'';
+										str+='</td>';
+										str+='<td><p class="text-muted">Total Time</p>';
+											str+=''+result[i].totalCoveredTime+'';
+										str+='</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+						for(var j in result[i].tvNewsDetailsVOList)
+						{
+							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+							str+='</div>';
+							
+							str+='<div class="col-md-8 col-xs-12 col-sm-8">';
+								str+='<div id="rankWiseDetailsOfChannel'+i+''+j+'" style="height:100px;"></div>';
+							str+='</div>';
+							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+								str+='<p class="text-muted">Positive Time</p>';
+								str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+								str+='<p class="text-muted">Negative Time</p>';
+								str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+							str+='</div>';
+						}
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</li>';
+	}
+	str+='</ul>';
+	$("#partyRankWiseDetailsOfChannel").html(str);
+	for(var i in result)
+	{
+		for(var j in result[i].tvNewsDetailsVOList)
+		{
+			var rankWiseDetailsOfChannelArr = [];
+			rankWiseDetailsOfChannelArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#64C664'});
+			rankWiseDetailsOfChannelArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#D33E39'});
+			$("#rankWiseDetailsOfChannel"+i+j).highcharts({
+				chart: {
+					type: 'column',
+					backgroundColor:'transparent'
+				},
+
+				title: {
+					text: null
+				},
+
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Positive', 'Negative']
+				},
+
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					allowDecimals: false,
+					min: 0,
+					title: {
+						text: null
+					}
+				},
+						legend:{
+					enabled:false
+				},
+				tooltip: {
+					formatter: function () {
+						return '<b>' + this.x + '</b>' +
+							this.series.name + ': ' + this.y + '<br/>'
+					}
+				},
+
+				plotOptions: {
+					pointPadding: 0.2,
+					borderWidth: 2,
+					groupPadding: 0.2,
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							}
+						  
+						},
+					}
+				},
+
+				series: [{
+					name: ' ',
+					data: rankWiseDetailsOfChannelArr
+				}]
+			});
+		}
+	}
+	$(".NewsSlickPanelSliderEmn").slick({
+		 slide: 'li',
+		 slidesToShow: 2,
+		 slidesToScroll: 2,
+		 infinite: false,
+		 responsive: [
+			{
+			  breakpoint: 1024,
+			  settings: {
+				slidesToShow: 3,
+				slidesToScroll: 3
+			  }
+			},
+			{
+			  breakpoint: 768,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			},
+			{
+			  breakpoint: 600,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			},
+			{
+			  breakpoint: 480,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			}
+			// You can unslick at a given breakpoint now by adding:
+			// settings: "unslick"
+			// instead of a settings object
+		  ]
+		});
+}
+$(document).on("click",".NewsSlickPanelSliderLiEmnCls",function(){
+	$(".NewsSlickPanelSliderLiEmnCls").removeClass("active");
+	$(this).addClass("active");
+	var channelIdArr = [];
+	var channelId = $(this).attr("attr_newsChannel");
+	channelIdArr.push(channelId);
+	comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr);
+	getEMMDetailedPartyDistrictWiseProgramsOverview(channelIdArr,"comparison")
+});
+function comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr)
+{
+	$("#partyRankWiseDetailsOfChannelSub").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/01-01-2016/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/872,1117,163,362/N/party"
+	}).then(function(result){
+		buildComparisonPartyRankWiseDetailsOfChannelSub(result)
+	});
+}
+function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
+{
+	var str='';
+	str+='<div class="pad_15 bg_ED">';
+		str+='<div class="row">';
+			var graphId = 0;
+			var totGraphId = 0;
+			var categoriesCompParty = [];
+			for(var i in result)
+			{
+				totGraphId = totGraphId+1;
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h4 class="pad_5 bg_CC"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList[0].organization+'.png"/>'+result[i].tvNewsDetailsVOList[0].organization+'</h4>';
+					str+='<div class="row">';
+						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+							str+='<div class="row">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<h4 class="panel-title text-capital">Total programs - '+result[i].categoryCount+'</h4>';
+								str+='</div>';
+								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+									str+='<div id="RankWiseDetailsOfChannelSub'+i+'A'+totGraphId+'" style="height:100px"></div>';
+								str+='</div>';
+								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+									str+='<p class="text-muted">Positive Time</p>';
+									str+='<p>'+result[i].positiveCoveredTime+'<small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									str+='<p class="text-muted m_top10">Negative Time</p>';
+									str+='<p>'+result[i].negativeCoveredTime+'<small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						for(var j in result[i].tvNewsDetailsVOList)
+						{
+							graphId = graphId+1;
+							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+								str+='<div class="row">';
+									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+										str+='<h4 class="panel-title text-capital"> '+result[i].tvNewsDetailsVOList[j].categoryName+'- '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+									str+='</div>';
+									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+										str+='<div id="RankWiseDetailsOfChannelSub'+i+''+graphId+'" style="height:100px"></div>';
+									str+='</div>';
+									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+										str+='<p class="text-muted">Positive Time</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										str+='<p class="text-muted m_top10">Negative Time</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							categoriesCompParty.push(result[i].tvNewsDetailsVOList[j].categoryName)
+						}
+					str+='</div>';
+				str+='</div>';
+				
+			}
+		str+='</div>';
+	str+='</div>';
+	$("#partyRankWiseDetailsOfChannelSub").html(str);
+	var graphId = 0;
+	var totGraphId = 0;
+	for(var i in result)
+	{
+		totGraphId = totGraphId+1;
+		
+		var RankWiseDetailsOfChannelSubArrMain = [];
+		
+		//categoriesCompParty.push()
+		
+		RankWiseDetailsOfChannelSubArrMain.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#64C664'});
+		RankWiseDetailsOfChannelSubArrMain.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#D33E39'});
+		$("#RankWiseDetailsOfChannelSub"+i+'A'+totGraphId).highcharts({
+			chart: {
+				type: 'column',
+				backgroundColor:'transparent'
+			},
+
+			title: {
+				text: null
+			},
+
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: categoriesCompParty,
+			},
+
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			legend:{
+				enabled:false
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b>' +
+						this.series.name + ': ' + this.y + '<br/>'
+				}
+			},
+
+			plotOptions: {
+				column: {
+					stacking: 'normal',
+					dataLabels: {
+						enabled: true,
+						 formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return (this.y);
+							}
+						}
+					  
+					},
+				}
+			},
+
+			series: [{
+				name: ' ',
+				data: RankWiseDetailsOfChannelSubArrMain
+			}]
+		});
+		for(var j in result[i].tvNewsDetailsVOList)
+		{
+			graphId = graphId+1;
+			var locationNameArr = [];
+			var PositiveCntArr = [];
+			var NegativeCntArr = [];
+			
+			var RankWiseDetailsOfChannelSubArr = [];
+			RankWiseDetailsOfChannelSubArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#64C664'});
+			RankWiseDetailsOfChannelSubArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#D33E39'});
+			$("#RankWiseDetailsOfChannelSub"+i+graphId).highcharts({
+				chart: {
+					type: 'column',
+					backgroundColor:'transparent'
+				},
+
+				title: {
+					text: null
+				},
+
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Positive', 'Negative']
+				},
+
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					allowDecimals: false,
+					min: 0,
+					title: {
+						text: null
+					}
+				},
+				legend:{
+					enabled:false
+				},
+				tooltip: {
+					formatter: function () {
+						return '<b>' + this.x + '</b>' +
+							this.series.name + ': ' + this.y + '<br/>'
+					}
+				},
+
+				plotOptions: {
+					pointPadding: 0.2,
+					borderWidth: 2,
+					groupPadding: 0.2,
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							}
+						  
+						},
+					}
+				},
+
+				series: [{
+					name: ' ',
+					data: RankWiseDetailsOfChannelSubArr
+				}]
+			});
+		}
+		
+	}
+}
+function buildEMMComparisonPartyDistrictWiseProgramsOverview(result)
+{
+	var str='';
+	str+='<div class="pad_15 bg_ED">';
+		str+='<div class="row">';
+		for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="'+result[i].organization+' icon" class="debatesPartyIcon">'+result[i].organization+'</h4>';
+			str+='<div id="partyRankWiseCompDistWise'+i+'" style="height:300px"></div>';
+			str+='</div>'
+		}
+		str+='</div>'
+	str+='</div>'
+	$("#partyRankWiseCompDistWiseOvervw").html(str);
+	for(var i in result){
+		var locationNameArr = [];
+		var PositiveCntArr = [];
+		var NegativeCntArr = [];
+		
+		for(var j in result[i].tvNewsDetailsVOList1){
+			locationNameArr.push(result[i].tvNewsDetailsVOList1[j].organization)
+			PositiveCntArr.push(result[i].tvNewsDetailsVOList1[j].positiveTime)
+			NegativeCntArr.push(result[i].tvNewsDetailsVOList1[j].negativeTime)
+		}
+		
+		$("#partyRankWiseCompDistWise"+i).highcharts({
+			colors: ['#64C664','#D33E39'],
+			chart: {
+				type: 'column',
+				backgroundColor:'transparent'
+			},
+			title: {
+				text: null
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: locationNameArr,
+				labels: {
+						rotation: -45,
+						style: {
+							fontSize: '13px',
+							fontFamily: 'Verdana, sans-serif'
+						}
+					}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					enabled: false,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					}
+				}
+			},
+			legend: {
+				enabled: true,
+				backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+				borderColor: '#CCC',
+				borderWidth: 1,
+				shadow: false
+			},
+			tooltip: {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+					$.each(this.points, function () {
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+							(this.y);
+					});
+
+					return s;
+				},
+				shared: true
+			},
+			
+			plotOptions: {
+				column: {
+					stacking: 'percent',
+					dataLabels: {
+						enabled: true,
+						 formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return (this.y);
+							}
+						}
+					  
+					},
+				}
+			},
+			series: [{
+				name: 'Positive',
+				data: PositiveCntArr,
+				stack: 'programs'
+			}, {
+				name: 'Negative',
+				data: NegativeCntArr,
+				stack: 'programs'
+			}]
+		});
+
+	}
+}
+
+function comparisonGovtRankWiseDetailsOfChannel()
+{
+	$("#govtRankWiseDetailsOfChannel").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/01-01-2016/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/channel"
+	}).then(function(result){
+		buildComparisonGovtRankWiseDetailsOfChannel(result)
+	});
+}
+function buildComparisonGovtRankWiseDetailsOfChannel(result)
+{
+	var str='';
+	var rankVar =0;
+	str+='<ul class="list-inline NewsSlickPanelSliderGovtEmn">';
+	for(var i in result)
+	{
+		rankVar =rankVar+1;
+		str+='<li class="NewsSlickPanelSliderLiEmnClsGovt" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+'>';
+			str+='<div class="panel panel-default panelSlick">';
+				str+='<div class="panel-heading" style="padding:8px;background-color: #ededed !important;">';
+					str+='<h4 class="panel-title"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList[0].organization+'.png" class="debatesPartyIcon"/>'+result[i].tvNewsDetailsVOList[0].organization+'';
+					str+='<span class="count">'+rankVar+'</span></h4>';
+				str+='</div>';
+				str+='<div class="panel-body" style="background-color:#fff;">';
+					str+='<div class="row">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+							str+='<div class="bg_ED">';
+								str+='<table class="table">';
+									str+='<tr>';
+										str+='<td><p class="text-muted">Total Programs</p>';
+											str+=''+result[i].categoryCount+'';
+										str+='</td>';
+										str+='<td><p class="text-muted">Total Time</p>';
+											str+=''+result[i].totalCoveredTime+'';
+										str+='</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+						for(var j in result[i].tvNewsDetailsVOList)
+						{
+							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+							str+='</div>';
+							
+							str+='<div class="col-md-8 col-xs-12 col-sm-8">';
+								str+='<div id="rankWiseDetailsOfChannelGovt'+i+''+j+'" style="height:100px;"></div>';
+							str+='</div>';
+							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+								str+='<p class="text-muted">Positive Time</p>';
+								str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+								str+='<p class="text-muted">Negative Time</p>';
+								str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+							str+='</div>';
+						}
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</li>';
+	}
+	str+='</ul>';
+	$("#govtRankWiseDetailsOfChannel").html(str);
+	for(var i in result)
+	{
+		for(var j in result[i].tvNewsDetailsVOList)
+		{
+			var rankWiseDetailsOfChannelGovtArr = [];
+			rankWiseDetailsOfChannelGovtArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#64C664'});
+			rankWiseDetailsOfChannelGovtArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#D33E39'});
+			$("#rankWiseDetailsOfChannelGovt"+i+j).highcharts({
+				chart: {
+					type: 'column',
+					backgroundColor:'transparent'
+				},
+
+				title: {
+					text: null
+				},
+
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Positive', 'Negative']
+				},
+
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					allowDecimals: false,
+					min: 0,
+					title: {
+						text: null
+					}
+				},
+						legend:{
+					enabled:false
+				},
+				tooltip: {
+					formatter: function () {
+						return '<b>' + this.x + '</b>' +
+							this.series.name + ': ' + this.y + '<br/>'
+					}
+				},
+
+				plotOptions: {
+					pointPadding: 0.2,
+					borderWidth: 2,
+					groupPadding: 0.2,
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							}
+						  
+						},
+					}
+				},
+
+				series: [{
+					name: ' ',
+					data: rankWiseDetailsOfChannelGovtArr
+				}]
+			});
+		}
+	}
+	$(".NewsSlickPanelSliderGovtEmn").slick({
+		 slide: 'li',
+		 slidesToShow: 2,
+		 slidesToScroll: 2,
+		 infinite: false,
+		 responsive: [
+			{
+			  breakpoint: 1024,
+			  settings: {
+				slidesToShow: 3,
+				slidesToScroll: 3
+			  }
+			},
+			{
+			  breakpoint: 768,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			},
+			{
+			  breakpoint: 600,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			},
+			{
+			  breakpoint: 480,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			}
+			// You can unslick at a given breakpoint now by adding:
+			// settings: "unslick"
+			// instead of a settings object
+		  ]
+		});
+}
+$(document).on("click",".NewsSlickPanelSliderLiEmnClsGovt",function(){
+	$(".NewsSlickPanelSliderLiEmnClsGovt").removeClass("active");
+	$(this).addClass("active");
+	var channelIdArr = [];
+	var channelId = $(this).attr("attr_newsChannel");
+	channelIdArr.push(channelId);
+	comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr);
+	getEMMCompGovtProblemsDetailedOverview(channelIdArr);
+});
+
+function comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr)
+{
+	$("#govtRankWiseDetailsOfChannelSub").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/01-01-2016/"+currentFromDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
+	}).then(function(result){
+		buildComparisonGovtRankWiseDetailsOfChannelSub(result)
+	});
+}
+function buildComparisonGovtRankWiseDetailsOfChannelSub(result)
+{
+	var str='';
+	str+='<div class="pad_15 bg_ED">';
+		str+='<div class="row">';
+			var graphId = 0;
+			var totGraphId = 0;
+			var categoriesCompParty = [];
+			for(var i in result)
+			{
+				totGraphId = totGraphId+1;
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h4 class="pad_5 bg_CC"><span class="count">'+totGraphId+'</span>'+result[i].tvNewsDetailsVOList[0].organization+'</h4>';
+					str+='<div class="row">';
+						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+							str+='<div class="row">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<h4 class="panel-title text-capital">Total programs - '+result[i].categoryCount+'</h4>';
+								str+='</div>';
+								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+									str+='<div id="RankWiseDetailsOfChannelSubGovt'+i+'A'+totGraphId+'" style="height:100px"></div>';
+								str+='</div>';
+								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+									str+='<p class="text-muted">Positive Time</p>';
+									str+='<p>'+result[i].positiveCoveredTime+'<small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									str+='<p class="text-muted m_top10">Negative Time</p>';
+									str+='<p>'+result[i].negativeCoveredTime+'<small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						for(var j in result[i].tvNewsDetailsVOList)
+						{
+							graphId = graphId+1;
+							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+								str+='<div class="row">';
+									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+										str+='<h4 class="panel-title text-capital"> '+result[i].tvNewsDetailsVOList[j].categoryName+'- '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+									str+='</div>';
+									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+										str+='<div id="RankWiseDetailsOfChannelSubGovt'+i+''+graphId+'" style="height:100px"></div>';
+									str+='</div>';
+									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+										str+='<p class="text-muted">Positive Time</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										str+='<p class="text-muted m_top10">Negative Time</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							categoriesCompParty.push(result[i].tvNewsDetailsVOList[j].categoryName)
+						}
+					str+='</div>';
+				str+='</div>';
+				
+			}
+		str+='</div>';
+	str+='</div>';
+	$("#govtRankWiseDetailsOfChannelSub").html(str);
+	var graphId = 0;
+	var totGraphId = 0;
+	for(var i in result)
+	{
+		totGraphId = totGraphId+1;
+		
+		var govtRankWiseDetailsOfChannelSubMainArr = [];
+		
+		//categoriesCompParty.push()
+		
+		govtRankWiseDetailsOfChannelSubMainArr.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#64C664'});
+		govtRankWiseDetailsOfChannelSubMainArr.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#D33E39'});
+		$("#RankWiseDetailsOfChannelSubGovt"+i+'A'+totGraphId).highcharts({
+			chart: {
+				type: 'column',
+				backgroundColor:'transparent'
+			},
+
+			title: {
+				text: null
+			},
+
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: categoriesCompParty,
+			},
+
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			legend:{
+				enabled:false
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b>' +
+						this.series.name + ': ' + this.y + '<br/>'
+				}
+			},
+
+			plotOptions: {
+				column: {
+					stacking: 'normal',
+					dataLabels: {
+						enabled: true,
+						 formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return (this.y);
+							}
+						}
+					  
+					},
+				}
+			},
+
+			series: [{
+				name: ' ',
+				data: govtRankWiseDetailsOfChannelSubMainArr
+			}]
+		});
+		for(var j in result[i].tvNewsDetailsVOList)
+		{
+			graphId = graphId+1;
+			var locationNameArr = [];
+			var PositiveCntArr = [];
+			var NegativeCntArr = [];
+			
+			var govtRankWiseDetailsOfChannelSubArr = [];
+			govtRankWiseDetailsOfChannelSubArr.push({"y":result[i].tvNewsDetailsVOList[j].positiveCount,"color":'#64C664'});
+			govtRankWiseDetailsOfChannelSubArr.push({"y":result[i].tvNewsDetailsVOList[j].negativeCount,"color":'#D33E39'});
+			$("#RankWiseDetailsOfChannelSubGovt"+i+graphId).highcharts({
+				chart: {
+					type: 'column',
+					backgroundColor:'transparent'
+				},
+
+				title: {
+					text: null
+				},
+
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: ['Positive', 'Negative']
+				},
+
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					allowDecimals: false,
+					min: 0,
+					title: {
+						text: null
+					}
+				},
+				legend:{
+					enabled:false
+				},
+				tooltip: {
+					formatter: function () {
+						return '<b>' + this.x + '</b>' +
+							this.series.name + ': ' + this.y + '<br/>'
+					}
+				},
+
+				plotOptions: {
+					pointPadding: 0.2,
+					borderWidth: 2,
+					groupPadding: 0.2,
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return (this.y);
+								}
+							}
+						  
+						},
+					}
+				},
+
+				series: [{
+					name: ' ',
+					data: govtRankWiseDetailsOfChannelSubArr
+				}]
+			});
+		}
+		
+	}
+}
+function getEMMCompGovtProblemsDetailedOverview(channelIdArr)
+{
+	$("#districtWiseEMNRelatedToProblemGovt").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#emmCompGovtDistDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		//url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/1,2,3/2/872,1117,163,362/N"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverview/2/1/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/"
+	}).then(function(result){
+		buildEMMCompGovtDistDetailedOverview(result);
+		buildEMMCompGovtProblemsDetailedOverview(result);
+	});
+}
+function buildEMMCompGovtProblemsDetailedOverview(result)
+{
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<h4 class="m_top20">DISTRICT WISE</h4>';
+				str+='<div id="comaprisonDistrictWiseArticleEmnGovt" class="m_top20" style="height:150px;"></div>';
+			str+='</div>';
+		str+='</div>';
+		
+		var distWiseArticlesRelated = [];
+		for(var i in result.tvNewsDetailsVOList1){
+			var obj1 = {
+				name: result.tvNewsDetailsVOList1[i].organization,
+				y: result.tvNewsDetailsVOList1[i].positivePerc,
+				extra:result.tvNewsDetailsVOList1[i].count
+			};
+			distWiseArticlesRelated.push(obj1);
+		}
+		$("#emmCompGovtDistDetailedOverview").html(str)
+		$(function () {
+			 $("#comaprisonDistrictWiseArticleEmnGovt").highcharts({
+				colors: ['#AA3732'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					
+					type: 'category',
+					labels: {
+								formatter: function() {
+									return this.value.toString().substring(0, 10)+'...';
+								},
+								
+							}
+					
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					labels: {
+						enabled:false
+					}
+				},
+				legend: {
+					enabled: false
+				},
+				
+						
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1) + '%';
+								}
+							}
+						  
+						}
+					}
+				},
+
+				tooltip: {
+					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}% - {point.extra}</b>'
+				},
+
+				series: [{
+					name: 'Completed',
+					data: distWiseArticlesRelated
+				}],
+			 
+			});
+		});
+		
+}
+function buildEMMCompGovtDistDetailedOverview(result)
+{
+	var str='';
+		var deptWiseEMNRelatedGraph = [];
+		str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+				str+='<h4>DEPARTMENTS WISE</h4>';
+					str+='<div class="col-md-7 col-xs-12 col-sm-6 m_top10">';
+					str+='<ul style="list-style:none;padding-left:0px;" id="getLiLengthGovt" class="textAlignDepartment">';
+						for(var i in result.tvNewsDetailsDeptVOList)
+						{
+							str+='<li>'+result.tvNewsDetailsDeptVOList[i].organization+'</li>';
+						}
+					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-md-5 col-xs-12 col-sm-6">';
+					str+='<div id="districtWiseEMNRelatedToProblemGraphGovt" class="dynHeight"></div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		var problemRelatedPieChartArray =[];
+			for(var i in result.tvNewsDetailsDeptVOList){
+				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].organization);
+				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].count);
+				deptWiseEMNRelatedGraph.push(problemRelatedPieChartArray);
+			}
+		var getLiLengthGovt = result.tvNewsDetailsDeptVOList.length;
+		$("#districtWiseEMNRelatedToProblemGovt").html(str);
+		
+		getLiLengthGovt = (getLiLengthGovt*36)+"px";
+		$("#districtWiseEMNRelatedToProblemGovt").css("height",getLiLengthGovt)
+		$(".emnChannelWiseSlickDistGovt").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+			  ]
+		}); 
+		if(result.tvNewsDetailsDeptVOList.length > 0)
+		{
+			$('#districtWiseEMNRelatedToProblemGraphGovt').highcharts({
+				chart: {
+					type: 'bar'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+				 min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: '',
+					labels: {
+					enabled: false,
+						
+					}
+			},
+			yAxis: {
+				min: 0,
+					   gridLineWidth: 0,
+						minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled: false,
+						
+					},
+				stackLabels: {
+					enabled: false,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					}
+				}
+			},
+				tooltip: {
+					valueSuffix: '%'
+				},
+				plotOptions: {
+					bar: {
+						dataLabels: {
+							enabled: true
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				
+				series: [{
+					name: '',
+					colorByPoint: true,
+					data: deptWiseEMNRelatedGraph,
+					dataLabels:{
+							enabled: true,
+							 distance: -20,
+							  formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.y,1)+ '%';
+									}
+								} 
+						},
+				}]
+			});
+		}else{
+			str+='<h4>NO DATA AVAILABLE</h4>';
+		}
 }
