@@ -2624,12 +2624,14 @@
 					<div class="row m_top20 compPartyEmn newEmnHideCls">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
-								</div>
 								<div class="panel-body">
-									
-									
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="partyRankWiseDetailsOfChannel"></div>
+											<div id="partyRankWiseDetailsOfChannelSub" class="m_top20"></div>
+											<div id="partyRankWiseCompDistWiseOvervw"></div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -2637,11 +2639,15 @@
 					<div class="row m_top20 compGovtEmn newEmnHideCls" >
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
-								</div>
 								<div class="panel-body">
-									
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="govtRankWiseDetailsOfChannel"></div>
+											<div id="govtRankWiseDetailsOfChannelSub" class="m_top20"></div>
+											<div id="emmCompGovtDistDetailedOverview"></div>
+											<div id="districtWiseEMNRelatedToProblemGovt"></div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -3297,8 +3303,8 @@
        // getToursBasicOverviewCountDetails();
 		//getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
-		getMediaProgramsOnParty();
-		getAllTvChannels();
+		//getMediaProgramsOnParty();
+		//getAllTvChannels();
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
