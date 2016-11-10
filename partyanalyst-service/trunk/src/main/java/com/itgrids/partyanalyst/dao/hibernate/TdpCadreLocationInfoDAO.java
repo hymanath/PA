@@ -834,4 +834,23 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
       return query.list();
 }
 
+	public List<Object[]> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct C.constituencyId," +
+					" C.name,model.cadre2016 as count" +
+					" from TdpCadreLocationInfo model,Constituency C" +
+					" where model.locationScopeId = 4" +
+					" and model.locationValue = C.constituencyId");
+		if(type != null && !type.trim().isEmpty())
+			sb.append(" and model.type = :type");
+		if(stateId != null && stateId.longValue() == 1l)
+			sb.append(" and C.district.districtId between 11 and 23");
+		else if(stateId != null && stateId.longValue() == 36l)
+			sb.append(" and C.district.districtId between 1 and 10");
+		sb.append(" order by count desc");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("type", type);
+		return query.list();
+	}
 }
