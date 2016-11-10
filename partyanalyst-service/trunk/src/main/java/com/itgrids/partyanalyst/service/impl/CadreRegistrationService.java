@@ -4074,45 +4074,50 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 	private  String sendSMSInTelugu1(String mobileNo,String message){
-		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
-        	return "error"; 
-        }
-		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
-		client.getHttpConnectionManager().getParams().setConnectionTimeout(
-			Integer.parseInt("30000"));
-	
-		boolean isEnglish = false;
 		
-		PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+		try {
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+	        	return "error"; 
+	        }
+			HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+			client.getHttpConnectionManager().getParams().setConnectionTimeout(
+				Integer.parseInt("30000"));
 		
-		post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
-		post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
-		post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
-	    post.addParameter("mobilenumber", mobileNo);
-		post.addParameter("message", message);
-		post.addParameter("mtype", isEnglish ? "N" : "OL");
-		post.addParameter("DR", "Y");
-		
-		/* PUSH the URL */
-		try 
-		{
-			int statusCode = client.executeMethod(post);
+			boolean isEnglish = false;
 			
-			if (statusCode != HttpStatus.SC_OK) {
-				LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
-				return "error";
-			}
-			else{
-				return "success";
-			}
+			PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+			
+			post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+			post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+			post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+		    post.addParameter("mobilenumber", mobileNo);
+			post.addParameter("message", message);
+			post.addParameter("mtype", isEnglish ? "N" : "OL");
+			post.addParameter("DR", "Y");
+			
+			/* PUSH the URL */
+			try 
+			{
+				int statusCode = client.executeMethod(post);
+				
+				if (statusCode != HttpStatus.SC_OK) {
+					LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+					return "error";
+				}
+				else{
+					return "success";
+				}
 
-		}catch (Exception e) {
-				LOG.error("Exception rised in sending sms while cadre registration",e);
-				return "exception";
-		} finally {
-				post.releaseConnection();
+			}catch (Exception e) {
+					LOG.error("Exception rised in sendSMSInTelugu1 sms while cadre registration for "+mobileNo+"",e);
+					return "exception";
+			} finally {
+					post.releaseConnection();
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised while Getting JobCode of SMS" + e);
 		}
-		
+		return null;
 	}
 	
 	
