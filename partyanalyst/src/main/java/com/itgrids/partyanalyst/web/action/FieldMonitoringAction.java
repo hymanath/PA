@@ -806,4 +806,18 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  
+  public String getConstituencyWiseTodayAndOverAllCounts(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String type = jObj.getString("type");
+			Long stateId = jObj.getLong("stateId");
+			
+			idAndNameVOList = fieldMonitoringService.getConstituencyWiseTodayAndOverAllCounts(type,stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituencyWiseTodayAndOverAllCounts()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
