@@ -1042,6 +1042,13 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
 							tabUser.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
 							
+							GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabVO != null){
+								tabUser.setLattitude(tabVO.getLattitude());
+								tabUser.setLongitude(tabVO.getLongitude());
+								tabUser.setSurveyTime(tabVO.getSurveyTime());
+							 }
+							
 							cadreSurveyUserIdsLsit.add(commonMethodsUtilService.getLongValueForObject(param[9]));
 						}
 						
@@ -1073,6 +1080,13 @@ public class GISVisualizationService implements IGISVisualizationService{
 							
 							tabUser.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
 							tabUser.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+							
+							GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabVO != null){
+								tabUser.setLattitude(tabVO.getLattitude());
+								tabUser.setLongitude(tabVO.getLongitude());
+								tabUser.setSurveyTime(tabVO.getSurveyTime());
+							 }
 							
 							cadreSurveyUserIdsLsit.add(commonMethodsUtilService.getLongValueForObject(param[9]));
 						}
