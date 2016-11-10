@@ -48,4 +48,5 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId);
 	public List<FieldMonitoringVO> getConstituencyIssueWiseOverAllDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId,Long stateId);
 	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCount();
+	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId);
 }

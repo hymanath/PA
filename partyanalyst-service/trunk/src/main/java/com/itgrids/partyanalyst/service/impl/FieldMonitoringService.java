@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
@@ -42,6 +43,7 @@ import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserPerformanceVO;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
@@ -81,10 +83,17 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
 	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	private ICadreRegIssuePersonDAO cadreRegIssuePersonDAO;
-	
+	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
 	
 	//Setters
 	
+	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
+		return tdpCadreLocationInfoDAO;
+	}
+	public void setTdpCadreLocationInfoDAO(
+			ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO) {
+		this.tdpCadreLocationInfoDAO = tdpCadreLocationInfoDAO;
+	}
 	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
 		return tdpCadreEnrollmentYearDAO;
 	}
@@ -2780,4 +2789,22 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
     	return returnvo;
     }
 	
+	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = tdpCadreLocationInfoDAO.getConstituencyWiseTodayAndOverAllCounts(type, stateId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getConstituencyWiseTodayAndOverAllCounts() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
 }
