@@ -2334,7 +2334,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 							vo.setImagePath(obj[9] != null ? obj[9].toString():"");
 							vo.setTodayTarget(todayTarget.toString());
 							vo.setFieldMonitrngName(obj[11] != null ? obj[11].toString():"");
-							//tabUserInfoIds.add(vo.getTabUserId());
+							tabUserInfoIds.add(vo.getTabUserId());
 							//returnList.add(vo);
 						}
 					}
@@ -2377,7 +2377,8 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 	    					vo.setCountPerc(String.format("%.2f", totalPerc));
 	    					
 					}
-					tabUserInfoIds.add(tabUserId);
+					if(!tabUserInfoIds.contains(tabUserId))
+						tabUserInfoIds.add(tabUserId);
 				}
 			}
 			
