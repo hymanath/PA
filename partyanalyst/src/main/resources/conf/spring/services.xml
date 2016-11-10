@@ -3700,7 +3700,8 @@
 	   <property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO"/>
 	   <property name="tabUserEnrollmentInfoDAO" ref="tabUserEnrollmentInfoDAO"/>
 	   <property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO"/>
-	    <property name="cadreRegIssuePersonDAO" ref="cadreRegIssuePersonDAO"/>
+	   <property name="cadreRegIssuePersonDAO" ref="cadreRegIssuePersonDAO"/>
+	   <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO"/>
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >
