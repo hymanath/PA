@@ -806,7 +806,6 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
-  
   public String getConstituencyWiseTodayAndOverAllCounts(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -820,4 +819,8 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  
+  public String mediaScreenParty(){
+	  return Action.SUCCESS;
+  }
 }
