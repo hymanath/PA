@@ -10,6 +10,10 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private Long allocatedCount=0L;
 	private Long activeCount=0L;
 	private Long lastOneHrActiveCount=0L;
+	private Long inActiveCount=0L;
+	private Long todayActiveCount=0L;
+	private Long todayInActiveCount=0L;
+	private Long lastOneHrInActiveCount=0L;
 	private Long lastOneHrCount=0L;
 	private Long lastOneHrAvgCount=0L;
 	private Long avgOutput=0L;
@@ -25,6 +29,8 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private String endDate;
 	private Long locationId;
 	private String locationName;
+	private Long districtId;
+	private String districtName; 
 	private Long totalCount = 0l;
 	private Long todayCount = 0l;
 	private String imagePath;
@@ -36,6 +42,42 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private List<GISUserTrackingVO> lastOneHrInActiveusersList = new ArrayList<GISUserTrackingVO>(0);
 	
 	
+	public Long getTodayActiveCount() {
+		return todayActiveCount;
+	}
+	public void setTodayActiveCount(Long todayActiveCount) {
+		this.todayActiveCount = todayActiveCount;
+	}
+	public Long getTodayInActiveCount() {
+		return todayInActiveCount;
+	}
+	public void setTodayInActiveCount(Long todayInActiveCount) {
+		this.todayInActiveCount = todayInActiveCount;
+	}
+	public Long getInActiveCount() {
+		return inActiveCount;
+	}
+	public void setInActiveCount(Long inActiveCount) {
+		this.inActiveCount = inActiveCount;
+	}
+	public Long getLastOneHrInActiveCount() {
+		return lastOneHrInActiveCount;
+	}
+	public void setLastOneHrInActiveCount(Long lastOneHrInActiveCount) {
+		this.lastOneHrInActiveCount = lastOneHrInActiveCount;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
 	public List<GISUserTrackingVO> getTodayActiveUsersList() {
 		return todayActiveUsersList;
 	}
