@@ -4,6 +4,7 @@
 		getIssueStatusWiseCounts(1);
 		getIssueTypeWiseCounts(1);
 		getDistricts();
+		getConstituencies(0);
 		getApMandalMuncipalityNotStartedCount(1);
 	}
 	var totalDataCollectors = 0;
@@ -1178,6 +1179,34 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
 		$("#districtId").trigger("chosen:updated");		
 	});
 }
+
+function getConstituencies(districtId){
+  $(".districtDiv").show();
+  var stateId = '';
+	$('.stateWiseCls').each(function (index, value){
+		stateId = $(":radio:checked").val();
+	});
+	$('#constituencyId').find('option').remove();
+	var jsObj = { 
+	stateId : 1,
+	stateTypeId : stateId,
+	districtId : districtId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getConstituenciesByStateForStateTypeIdAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		$("#constituencyId").append('<option value="0">All</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#constituencyId").trigger("chosen:updated");		
+	});
+}
   var globalDataCollectorsAscendingArr;
   var globalDataCollectorsDecendingArr;
   function getDataCollectorsPerformanceDetails(){
@@ -1208,7 +1237,7 @@ function getIssuesForATabUserByStatus(cadreSurveyUserId,tabUserInfoId,issueStatu
      {				
 		stateId : stateId,
 		districtId : $("#districtId").val(),
-		constituencyId : 0,
+		constituencyId : $("#constituencyId").val(),
 		cadreSurveyUserId : 0,
 		startDate :fromDate,
 		endDate :toDate

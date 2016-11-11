@@ -776,6 +776,21 @@ public String getConstituencyByVendor(){
 	    return Action.SUCCESS;
 	}
   
+  public String getConstituenciesByStateForStateTypeId(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			Long stateTypeId = jObj.getLong("stateTypeId");
+			Long districtId = jObj.getLong("districtId");
+			idAndNameVOList =fieldMonitoringService.getConstituenciesByStateForStateTypeId(stateId, stateTypeId, districtId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituenciesByStateForStateTypeId()  of FieldMonitoringAction", e);
+		}
+	
+	    return Action.SUCCESS;
+	}
+  
   public String getConstituencyIssueWiseOverAllDetails(){
 		try {
 			jObj = new JSONObject(getTask());
