@@ -53,6 +53,7 @@ $(document).on("click","#comparisonPartyLiIdEmn",function(){
 	$(this).addClass("active")
 	$(".newEmnHideCls").hide();
 	$(".compPartyEmn").show();
+	$("#partyRankWiseDetailsOfChannelSub,#partyRankWiseCompDistWiseOvervw").html(' ');
 	comparisonPartyRankWiseDetailsOfChannel();
 });
 $(document).on("click","#comparisonGovernmentLiIdEmn",function(){
@@ -60,6 +61,7 @@ $(document).on("click","#comparisonGovernmentLiIdEmn",function(){
 	$(this).addClass("active")
 	$(".newEmnHideCls").hide();
 	$(".compGovtEmn").show();
+	$("#districtWiseEMNRelatedToProblemGovt,#emmCompGovtDistDetailedOverview,#govtRankWiseDetailsOfChannelSub").html(" ")
 	comparisonGovtRankWiseDetailsOfChannel();
 });
 
@@ -561,6 +563,7 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 			},
 
 			 tooltip: {
+				enabled:false,
 				formatter: function () {
 					var s = '<b>' + this.x + '</b>';
 
@@ -825,6 +828,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 					shadow: false
 				},
 				tooltip: {
+					enabled:false,
 					formatter: function () {
 						var s = '<b>' + this.x + '</b>';
 
@@ -850,7 +854,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 								if (this.y === 0) {
 									return null;
 								} else {
-									return (this.y);
+									return (this.y)+'%';
 								}
 							}
 						  
@@ -1013,15 +1017,16 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 		str+='<h4>NO DATA AVAILABLE</h4>';
 	}
 	$("#partiesVsChannelsEMN").html(str);
-	var channelNameEmn =[]
-	var positivePercArrayEmn = []
-	var negativePercArrayEmn = []
-	var paperNamesArrayEmn = []
+	
 	for(var i in result)
 	{
 		//channelNameEmn.push(result[i].channelName	)
 		for(var j in result[i].tvNewsDetailsVOList1)
 		{
+			var channelNameEmn =[]
+			var positivePercArrayEmn = []
+			var negativePercArrayEmn = []
+			var paperNamesArrayEmn = []
 				positivePercArrayEmn.push(result[i].tvNewsDetailsVOList1[j].positivePerc)
 				negativePercArrayEmn.push(result[i].tvNewsDetailsVOList1[j].negativePerc)
 				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList1[j].organization)
@@ -1057,6 +1062,7 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 					}
 				},
 				tooltip: {
+					enabled:false,
 					formatter: function () {
 						var s = '<b>' + this.x + '</b>';
 
@@ -1078,25 +1084,25 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 				plotOptions: {
 					column: {
 						stacking: 'percent',
-						dataLabels:{
-							enabled: false,
-							formatter: function() {
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.percentage,1) + '%';
+									return (this.y)+'%';
 								}
 							}
+						  
 						},
-						
-					},
+					}
 				},
 				series: [{
 					name: 'Positive',
 					data: positivePercArrayEmn,
-					stack: 'male'
+					stack: 'TvNewsPrograms'
 				}, {
-					name: 'TvNewsPrograms',
+					name: 'Negative',
 					data: negativePercArrayEmn,
 					stack: 'TvNewsPrograms'
 				}]
@@ -1286,8 +1292,9 @@ function buildEMMDetailedGovtProblemsDetailedOverview(result)
 			str+='</div>';
 		str+='</div>';
 		
-		var problemRelatedPieChartArray =[];
+		
 			for(var i in result.tvNewsDetailsDeptVOList){
+				var problemRelatedPieChartArray =[];
 				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].organization);
 				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].count);
 				deptWiseEMNRelatedGraph.push(problemRelatedPieChartArray);
@@ -1430,9 +1437,9 @@ function buildProblemsDetailedOverView(result)
 				str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total Program</h5>';
-					str+='<h4	>'+result.tvNewsDetailsVOList[0].categoryCount != ""?result.tvNewsDetailsVOList[0].categoryCount:"00:00"+'</h4>';
+					//str+='<h4>'+result[i].categoryCount != ""?result.tvNewsDetailsVOList[0].categoryCount:"00:00"+'</h4>';
 					str+='<h5 class="text-capitalize m_top20">Total Time</h5>';
-					str+='<h4>'+result.tvNewsDetailsVOList[0].description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+					//str+='<h4>'+result.description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
 				str+='</td>';
 				for(var i in result.tvNewsDetailsVOList[0].tvNewsDetailsVOList)
 				{
@@ -1476,7 +1483,7 @@ function buildDistrictWiseEMNRelatedToProblem(result){
 			str+='</div>';
 		str+='</div>';
 		
-		var deptWiseEMNRelated = [];
+		
 		str+='<div class="row">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 				str+='<h4>DEPARTMENTS WISE</h4>';
@@ -1494,8 +1501,9 @@ function buildDistrictWiseEMNRelatedToProblem(result){
 			str+='</div>';
 		str+='</div>';
 		
-		var problemRelatedPieChartArray =[];
+			var deptWiseEMNRelated = [];
 			for(var i in result.tvNewsDetailsDeptVOList){
+				var problemRelatedPieChartArray =[];
 				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].organization);
 				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].positivePerc);
 				deptWiseEMNRelated.push(problemRelatedPieChartArray);
@@ -1646,6 +1654,7 @@ function getEMMDetailedPartyStateWiseProgramsOverview()
 function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 {
 	var str='';
+	
 	var graphIdMainA = 0;
 	for(var i in result)
 	{
@@ -1653,7 +1662,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 		str+='<div class="row">';
 			str+='<div class="col-md-3 col-xs-12 col-sm-3" style="border-right:1px solid #333">';
 				var graphIdSub = 0;
-				str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+				str+='<h4 class="panel-title"><img src="newCoreDashBoard/img/'+result[i].name+'.png"/>'+result[i].name+'</h4>';
 				str+='<div class="pad_5 bg_ED">';
 					str+='<div id="stateWiseMainGraph'+i+'" style="height:150px"></div>';
 				str+='</div>';
@@ -1664,9 +1673,9 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 					str+='</div>';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p class="text-muted">Positive Time</p>';
-						str+='<p>'+result[i].positiveCoveredTime+'</p>';
+						str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
 						str+='<p class="text-muted">Negative Time</p>';
-						str+='<p>'+result[i].negativeCoveredTime+'</p>';
+						str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
 					str+='</div>';
 				str+='</div>';
 				var newsChannelCatArr = []
@@ -1681,12 +1690,13 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<p class="text-muted">Positive Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</p>';
+							str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
 							str+='<p class="text-muted">Negative Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</p>';
+							str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
 						str+='</div>';
 					str+='</div>';
-					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName);
+					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName.split(" ")[1]);
+					
 					//newsChannelCatCountArr.push(result[i].tvNewsDetailsVOList[j].categoryCount);
 					
 				}
@@ -1707,9 +1717,9 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small>'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'</small></p>';
+									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
 									str+='<p class="text-muted">Negative Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small>'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'</small></p>';
+									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -1726,13 +1736,13 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
 										str+='<p class="text-muted">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							catSubTotArr.push(result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName);
+							catSubTotArr.push(result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName.split(" ")[1]);
 							
 						}
 						str+='</div>';
@@ -1783,10 +1793,10 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 				enabled:false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
-					return '<b>' + this.x + '</b><br/>' +
-						this.series.name + ': ' + this.y + '<br/>' +
-						'Total: ' + this.point.stackTotal;
+					return '<b>' + this.x + '</b>' +
+						this.series.name + ': ' + this.y + '<br/>'
 				}
 			},
 
@@ -1851,6 +1861,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 				enabled:false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
 					return '<b>' + this.x + '</b><br/>' +
 						this.series.name + ': ' + this.y + '<br/>' +
@@ -1924,10 +1935,10 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 					enabled:false
 				},
 				tooltip: {
+					enabled:false,
 					formatter: function () {
-						return '<b>' + this.x + '</b><br/>' +
-							this.series.name + ': ' + this.y + '<br/>' +
-							'Total: ' + this.point.stackTotal;
+						return '<b>' + this.x + '</b>' +
+							this.series.name + ': ' + this.y + '<br/>'
 					}
 				},
 
@@ -2071,6 +2082,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						enabled:false
 					},
 					tooltip: {
+						enabled:false,
 						formatter: function () {
 							return '<b>' + this.x + '</b><br/>' +
 								this.series.name + ': ' + this.y + '<br/>' +
@@ -2249,6 +2261,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 					enabled:false
 				},
 				tooltip: {
+					enabled:false,
 					formatter: function () {
 						return '<b>' + this.x + '</b>' +
 							this.series.name + ': ' + this.y + '<br/>'
@@ -2328,9 +2341,9 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].positiveCoveredTime+'<small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
 									str+='<p class="text-muted m_top10">Negative Time</p>';
-									str+='<p>'+result[i].negativeCoveredTime+'<small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+									str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -2347,13 +2360,13 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
 										str+='<p class="text-muted m_top10">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							categoriesCompParty.push(result[i].tvNewsDetailsVOList[j].categoryName)
+							categoriesCompParty.push(result[i].tvNewsDetailsVOList[j].categoryName.split(" ")[1])
 						}
 					str+='</div>';
 				str+='</div>';
@@ -2405,6 +2418,7 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
 				enabled:false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
 					return '<b>' + this.x + '</b>' +
 						this.series.name + ': ' + this.y + '<br/>'
@@ -2474,6 +2488,7 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
 					enabled:false
 				},
 				tooltip: {
+					enabled:false,
 					formatter: function () {
 						return '<b>' + this.x + '</b>' +
 							this.series.name + ': ' + this.y + '<br/>'
@@ -2514,6 +2529,9 @@ function buildEMMComparisonPartyDistrictWiseProgramsOverview(result)
 	var str='';
 	str+='<div class="pad_15 bg_ED">';
 		str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<h4 class="text-capital"><span class="pad_5 bg_CC">distict wise - program overview</span></h4>'
+		str+='</div>'
 		for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="'+result[i].organization+' icon" class="debatesPartyIcon">'+result[i].organization+'</h4>';
@@ -2579,6 +2597,7 @@ function buildEMMComparisonPartyDistrictWiseProgramsOverview(result)
 				shadow: false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
 					var s = '<b>' + this.x + '</b>';
 
@@ -2687,6 +2706,45 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 	}
 	str+='</ul>';
 	$("#govtRankWiseDetailsOfChannel").html(str);
+	$(".NewsSlickPanelSliderGovtEmn").slick({
+	 slide: 'li',
+	 slidesToShow: 2,
+	 slidesToScroll: 2,
+	 infinite: false,
+	 responsive: [
+		{
+		  breakpoint: 1024,
+		  settings: {
+			slidesToShow: 3,
+			slidesToScroll: 3
+		  }
+		},
+		{
+		  breakpoint: 768,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		},
+		{
+		  breakpoint: 600,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		},
+		{
+		  breakpoint: 480,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		}
+		// You can unslick at a given breakpoint now by adding:
+		// settings: "unslick"
+		// instead of a settings object
+	  ]
+	});
 	for(var i in result)
 	{
 		for(var j in result[i].tvNewsDetailsVOList)
@@ -2758,45 +2816,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 			});
 		}
 	}
-	$(".NewsSlickPanelSliderGovtEmn").slick({
-		 slide: 'li',
-		 slidesToShow: 2,
-		 slidesToScroll: 2,
-		 infinite: false,
-		 responsive: [
-			{
-			  breakpoint: 1024,
-			  settings: {
-				slidesToShow: 3,
-				slidesToScroll: 3
-			  }
-			},
-			{
-			  breakpoint: 768,
-			  settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1
-			  }
-			},
-			{
-			  breakpoint: 600,
-			  settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1
-			  }
-			},
-			{
-			  breakpoint: 480,
-			  settings: {
-				slidesToShow: 1,
-				slidesToScroll: 1
-			  }
-			}
-			// You can unslick at a given breakpoint now by adding:
-			// settings: "unslick"
-			// instead of a settings object
-		  ]
-		});
+	
 }
 $(document).on("click",".NewsSlickPanelSliderLiEmnClsGovt",function(){
 	$(".NewsSlickPanelSliderLiEmnClsGovt").removeClass("active");
@@ -2831,7 +2851,7 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result)
 			{
 				totGraphId = totGraphId+1;
 				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-					str+='<h4 class="pad_5 bg_CC"><span class="count">'+totGraphId+'</span>'+result[i].tvNewsDetailsVOList[0].organization+'</h4>';
+					str+='<h4 class="pad_5 bg_CC"><span class="govtCount">'+totGraphId+'</span>'+result[i].tvNewsDetailsVOList[0].organization+'</h4>';
 					str+='<div class="row">';
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 							str+='<div class="row">';
@@ -3320,9 +3340,9 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 					str+='</div>';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p class="text-muted">Positive Time</p>';
-						str+='<p>'+result[i].positiveCoveredTime+'</p>';
+						str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
 						str+='<p class="text-muted">Negative Time</p>';
-						str+='<p>'+result[i].negativeCoveredTime+'</p>';
+						str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
 					str+='</div>';
 				str+='</div>';
 				var newsChannelCatArr = []
@@ -3337,12 +3357,12 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<p class="text-muted">Positive Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</p>';
+							str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
 							str+='<p class="text-muted">Negative Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</p>';
+							str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
 						str+='</div>';
 					str+='</div>';
-					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName);
+					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName.split(" ")[1]);
 					//newsChannelCatCountArr.push(result[i].tvNewsDetailsVOList[j].categoryCount);
 					
 				}
@@ -3363,9 +3383,9 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small>'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'</small></p>';
+									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small class="text-success"> '+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
 									str+='<p class="text-muted">Negative Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small>'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'</small></p>';
+									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small class="text-danger"> '+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -3382,13 +3402,13 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
 										str+='<p class="text-muted">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</p>';
+										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							catSubTotArr.push(result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName);
+							catSubTotArr.push(result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName.split(" ")[1]);
 							
 						}
 						str+='</div>';
@@ -3439,6 +3459,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 				enabled:false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
 					return '<b>' + this.x + '</b>' +
 						this.series.name + ': ' + this.y + '<br/>'
@@ -3506,6 +3527,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 				enabled:false
 			},
 			tooltip: {
+				enabled:false,
 				formatter: function () {
 					return '<b>' + this.x + '</b>' +
 						this.series.name + ': ' + this.y + '<br/>'
@@ -3650,10 +3672,11 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 						text: null
 					}
 				},
-						legend:{
+				legend:{
 					enabled:false
 				},
 				tooltip: {
+					enabled:false,
 					formatter: function () {
 						return '<b>' + this.x + '</b><br/>' +
 							this.series.name + ': ' + this.y + '<br/>' +
@@ -3720,10 +3743,11 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 							text: null
 						}
 					},
-							legend:{
+					legend:{
 						enabled:false
 					},
 					tooltip: {
+						enabled:false,
 						formatter: function () {
 							return '<b>' + this.x + '</b><br/>' +
 								this.series.name + ': ' + this.y + '<br/>' +
