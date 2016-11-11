@@ -3702,6 +3702,7 @@
 	   <property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO"/>
 	   <property name="cadreRegIssuePersonDAO" ref="cadreRegIssuePersonDAO"/>
 	   <property name="tdpCadreLocationInfoDAO" ref="tdpCadreLocationInfoDAO"/>
+	   <property name="cadreSurveyUserPerformanceDAO" ref="cadreSurveyUserPerformanceDAO"/>
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >

@@ -118,9 +118,22 @@
 						<div class="col-md-3 col-xs-12 col-sm-6">
 							<div class="districtDiv" style="dispaly:none;">
 								<label>Select District</label><span style="color:red"> *</span>
-								<select class="select" id="districtId" onchange="getDataCollectorsPerformanceDetails();">
+								<select class="select" id="districtId" onchange="getConstituencies(this.value);">
 									<option value="0">Select District</option>
 								</select>
+							</div>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6">
+							<div class="districtDiv" style="dispaly:none;">
+								<label>Select Constituency</label><span style="color:red"> *</span>
+								<select class="select" id="constituencyId">
+									<option value="0">Select Constituency</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6">
+							<div class="districtDiv" style="dispaly:none;">
+								<button class="btn btn-sm btn-success btn-xs pull-right" type="button" onclick="getDataCollectorsPerformanceDetails();">Get Details</button>
 							</div>
 						</div>
 						<div class="col-md-5 col-xs-12 col-sm-6 districtDiv" style="margin-top: 25px;" style="dispaly:none;">
@@ -335,7 +348,7 @@ $(document).on("click",".ranges li",function(){
 		getIssueStatusWiseCounts(stateId);
 		getIssueTypeWiseCounts(stateId);
 		getCadreRegIssueType();
-		getDistricts();
+		//getDistricts();
 		$("#dtatusDivId").hide();
 	});
 	
@@ -353,6 +366,7 @@ function stateWisePopulateData(state)
 	getIssueStatusWiseCounts(state);
 	getIssueTypeWiseCounts(state);
 	getDistricts();	
+	getConstituencies(0);
     $("#dtatusDivId").hide();	
 	$("#dataCollectorsDivId").html('');
 	$("#statusWiseDetailsDivId").html('');
