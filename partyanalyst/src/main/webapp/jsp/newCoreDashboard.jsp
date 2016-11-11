@@ -440,7 +440,7 @@
                             </div>
                         </div>                   
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocksCadre compareCls">                
-							<div class="panel panel-default panelNew">   
+							<div class="panel panel-default panelNew">   <!--swadhin-->
 								<div class="panel-heading">
 									<div id="designationListId"></div>
 								</div>
@@ -2667,7 +2667,7 @@
 		</div>
 	</div>-->
 	 <!-- TOURS START -->
-	<!--<div class="row">
+	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2736,22 +2736,28 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockTours m_top10" style="display:none">
-						<div class="panel panel-default panelNew">
+						<div class="panel panel-default panelNew"><!--swadhin-->
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-12 col-sm-12 col-md-12">
-									  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForTours"></div>
+									  <div id="designationListForTourId"></div>
 									</div>
 								</div>
 							</div>
 							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">    
+										 <div id="totalOverviewOfDesigId"> </div>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12">
 										 <div id="childToursMemberDivId"> </div>
 									</div>
 									<div class="col-md-12 col-xs-12 col-sm-12">
 										<div class="bg_ED pad_15 m_top20">
-										   <div id="directChildMemberForToursDivId"></div>
+										   <div id="directChildMemberForToursDivId">
+										   </div>
 										   <div class="row">
 												 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
 													<div class="row m_top20">
@@ -2768,7 +2774,7 @@
 				</div>
 			</div>
 		</div>
-	</div> --> 
+	</div>  
 	<!-- TOURS END -->
 	</div>
 </div> 
@@ -3310,7 +3316,7 @@
 		cadreRegistrationBasicCall(globalActivityMemberId);
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
-       // getToursBasicOverviewCountDetails();
+        getToursBasicOverviewCountDetails();     
 		//getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
 		//getMediaProgramsOnParty();
