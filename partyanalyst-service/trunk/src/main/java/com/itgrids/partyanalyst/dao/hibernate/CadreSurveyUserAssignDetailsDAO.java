@@ -317,7 +317,7 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		queryStr.append(" select ");
 		
 		if(locationScopeId.longValue() == 4l){
-			queryStr.append(" CSUAD.constituency.constituencyId,");
+			queryStr.append(" CSUAD.constituency.constituencyId,");  
 		}else if(locationScopeId.longValue() == 3l){
 			queryStr.append(" CSUAD.constituency.district.districtId,");
 		}
@@ -325,18 +325,18 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		queryStr.append(" count(distinct CSUAD.cadreSurveyUser.cadreSurveyUserId) from CadreSurveyUserAssignDetails CSUAD " +
 						" where CSUAD.isDeleted = 'N' " +
 						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
-		
-		if(locationType.equalsIgnoreCase("AP")){
+		queryStr.append(" and CSUAD.constituency.district.districtId between 1 and 23 ");
+		/*if(locationType.equalsIgnoreCase("AP")){
 			queryStr.append(" and CSUAD.constituency.district.districtId between 11 and 23 ");
 		}else if(locationType.equalsIgnoreCase("TS")){
 			queryStr.append(" and CSUAD.constituency.district.districtId between 1 and 10 ");
-		}
+		}*/
 		
 		if(locationScopeId.longValue() == 4l){   
 			queryStr.append(" group by CSUAD.constituency.constituencyId ");
 		}else if(locationScopeId.longValue() == 3l){
 			queryStr.append(" group by CSUAD.constituency.district.districtId");
-		}
+		}  
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		return query.list();
