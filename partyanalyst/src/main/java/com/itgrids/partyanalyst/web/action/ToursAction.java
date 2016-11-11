@@ -382,7 +382,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 					disigList.add(Long.valueOf(designationIdArray.getString(i)));
 				}   
 			}   
-			//resultVO = coreDashboardToursService.getDesignationDtls(activityMemberId,disigList,startDateStr,endDateStr);
+			resultVO = coreDashboardToursService.getDesignationDtls(activityMemberId,disigList,startDateStr,endDateStr);
 		}catch(Exception e){  
 			e.printStackTrace();  
 			LOG.error("Exception raised at getDesignationDtlsOfCandidate()  of ToursAction", e);
@@ -405,4 +405,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String getDesignationLabelList(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			
+			listOfTourBasicVo = coreDashboardToursService.getDesignationLabelList(activityMemberId);
+		}catch(Exception e){  
+			e.printStackTrace();    
+			LOG.error("Exception raised at getDesignationDtlsOfCandidate()  of ToursAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
