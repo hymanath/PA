@@ -49,8 +49,9 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				  " TabUserInfo model1," +
 				  " CadreSurveyUserAssignDetails model2 " +
 				  " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
-				  " model.cadreSurveyUserId = model1.cadreSurveyUserId  and " +
-				  " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y' ");
+				  //" model.cadreSurveyUserId = model1.cadreSurveyUserId  and " +
+				  " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y' "+
+				  "  and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  ");
 		 if(districtId != null && districtId.longValue()>0l)
 		 {
 			 sb.append(" and model2.constituency.district.districtId =:districtId");
@@ -100,9 +101,9 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	          " TabUserInfo model1," +
 	          " CadreSurveyUserAssignDetails model2 " +
 	          " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
-	          " model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
-	          " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y'");
-	          //" and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  ");
+	         // " model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
+	          " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y'" +
+	          " and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  ");
 	     if(districtId != null && districtId.longValue()>0l)
 	     {
 	       sb.append(" and model2.constituency.district.districtId =:districtId");

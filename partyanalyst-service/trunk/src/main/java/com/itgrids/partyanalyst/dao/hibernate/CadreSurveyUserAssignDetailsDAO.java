@@ -454,9 +454,9 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 						" where CSUAD.isDeleted = 'N' and model.cadreSurveyUserId = CSUAD.cadreSurveyUserId " +
 						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
 		
-		/*if(constituencyId != null && constituencyId.longValue()>0l){
+		if(constituencyId != null && constituencyId.longValue()>0l){
 			queryStr.append(" and CSUAD.constituency.constituencyId = :constituencyId ");
-		}*/
+		}
 		
 		if(districtId != null && districtId.longValue()>0l){
 			queryStr.append(" and CSUAD.constituency.district.districtId = :districtId ");
@@ -484,9 +484,9 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 			query.setParameter("districtId", districtId);
 		}
 		
-		/*if(constituencyId != null && constituencyId.longValue()>0l){
+		if(constituencyId != null && constituencyId.longValue()>0l){
 			query.setParameter("constituencyId", constituencyId);	
-		}*/
+		}
 		
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
