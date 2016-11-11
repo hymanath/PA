@@ -39,7 +39,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 	}
 	public Long getTodayInFieldList(Long stateId,Date lastOneHourTime){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select count(distinct model.tabUserInfoId) from TabUserEnrollmentInfo model where model.endTime > (:lastOneHourTime) and " +
+		queryStr.append("select count(distinct model.tabUserInfoId) from TabUserEnrollmentInfo model where model.endTime >= (:lastOneHourTime) and " +
 						" model.stateId = :stateId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("lastOneHourTime", lastOneHourTime);
@@ -48,7 +48,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 	}
 	public Long getTodayPresentList(Long stateId,Date surveyTime){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select count(distinct model.tabUserInfoId) from TabUserEnrollmentInfo model where date(model.surveyTime) = (:surveyTime) " +
+		queryStr.append("select count(distinct model.tabUserInfoId) from TabUserEnrollmentInfo model where date(model.surveyTime) = :surveyTime " +
 						" and  model.stateId = :stateId ");
 		Query query = getSession().createQuery(queryStr.toString());  
 		query.setDate("surveyTime", surveyTime);
