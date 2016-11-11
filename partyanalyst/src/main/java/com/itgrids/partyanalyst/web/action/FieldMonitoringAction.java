@@ -838,4 +838,20 @@ public String getConstituencyByVendor(){
   public String mediaScreenParty(){
 	  return Action.SUCCESS;
   }
+  
+  public String saveUserPerformanceDetails(){
+	  try{
+		  	session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			Long loginUserId = regVO.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			
+			resultStatus = fieldMonitoringService.saveCaderSurveyUserPerformanceDetails(loginUserId,jObj.getLong("cadreSurveyUserId"),jObj.getLong("performanceTypeId"));
+		  
+	  }catch(Exception e){
+		  LOG.error("Exception raised at saveUserPerformanceDetails()  of FieldMonitoringAction", e);
+	  }
+	  return Action.SUCCESS;
+  }
 }
