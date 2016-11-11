@@ -3386,4 +3386,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="cadreSurveyUserPerformanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.cadreSurveyUserPerformanceTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreSurveyUserPerformanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.cadreSurveyUserPerformanceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		
