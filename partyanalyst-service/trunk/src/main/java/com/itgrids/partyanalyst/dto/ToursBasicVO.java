@@ -43,7 +43,9 @@ public class ToursBasicVO {
 	private Double notsubmitedCandidateTourPer=0.0d;
 	private ToursBasicVO overAllDetailsVO;
 	private List<Long> locationValueList = null;
-	private Set<Long> locationSet = new HashSet<Long>(0); 
+	private Set<Long> locationSet = new HashSet<Long>(0);
+	private List<String> remarkList = null;
+	private List<String> filePathList = null;
 	public ToursBasicVO() {
 		super();
 	}
@@ -264,6 +266,22 @@ public class ToursBasicVO {
 	}
 	public void setActivityMemberId(Long activityMemberId) {
 		this.activityMemberId = activityMemberId;
+	}
+	public List<String> getRemarkList() {
+		if(remarkList != null){
+			return remarkList;
+		}else{
+			remarkList = new ArrayList<String>();
+			return remarkList;
+		}
+	}
+	public List<String> getFilePathList() {
+		if(filePathList != null){
+			return filePathList;
+		}else{
+			filePathList = new ArrayList<String>();
+			return filePathList;
+		}
 	}
 	public Long getDesignationId() {
 		return designationId;
