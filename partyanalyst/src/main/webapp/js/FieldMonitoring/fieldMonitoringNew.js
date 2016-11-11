@@ -158,12 +158,16 @@ function buildTabUserDetails(result){
 				str+='<th>open issues</th>';
 				str+='<th>fixed issues</th>';
 				str+='<th>closed issues</th>';
+				str+='<th>Is Slower Performer?</th>';
 				str+='<th></th>';
 				//str+='<th></th>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result.subList){
-				str+='<tr>';
+				if(result.subList[i].performanceType != null && result.subList[i].performanceType == 'SLOW')
+					str+='<tr style="background: lightgray;">';
+				else
+					str+='<tr>';
 					if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0)
 						str+='<td class="issueCmpltd">'+result.subList[i].userName+'</td>';
 					else
@@ -208,9 +212,16 @@ function buildTabUserDetails(result){
 						str+='<td>'+result.subList[i].closedIssues+'</td>';
 					else
 						str+='<td> - </td>';
+					str+='<td><select class="performanceId" id="prfmceSelectId'+i+'" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'"><option value="2">No</option>';
+					if(result.subList[i].performanceType != null && result.subList[i].performanceType == 'SLOW')
+						str+='<option value="1" selected>Yes</option>';
+					else
+						str+='<option value="1">Yes</option>';
+					str+='</select></td>';
 					str+='<td><i class="glyphicon glyphicon-cog manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'" attr_constituency_id="'+result.subList[i].constituencyId+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
 					//str+='<td><i class="glyphicon glyphicon-eye-open userPerformanceCls" title="Click Here to View User Performance" style="cursor:pointer;" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'"></i></td>'
 				str+='</tr>';
+				
 			}
 			str+='</tbody>';
 		str+='</table>';
@@ -938,4 +949,31 @@ function getIssues(){
 		$("#showIssueTypeDivId").show();
 		 $("#leaderIssueDivId").hide();
 	} 
+}
+
+$(document).on("change",".performanceId",function(){
+	var cadreSurveyuserId=$(this).attr("attr_cadre_survey_user_id");
+	var perfrmTypeValue = $(this).val();
+	saveUserPerformanceDetails(cadreSurveyuserId,perfrmTypeValue);
+	
+});
+
+
+function saveUserPerformanceDetails(cadreSurveyUserId,performanceId){
+	var jsObj = { 
+		  cadreSurveyUserId : cadreSurveyUserId,
+		  performanceTypeId : performanceId
+		 
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'saveUserPerformanceDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			if(result != null && result.message == "success"){
+				getTabUsersDetailsByVendorAndLocation();
+			}
+		});
+	
 }
