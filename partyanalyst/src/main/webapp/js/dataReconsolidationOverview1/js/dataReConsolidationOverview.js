@@ -212,13 +212,18 @@ $(document).on("click","#submitId",function(){
 				}else{
 					str+='<td>-</td>';
 				}
+				if(result[i].userSyncType != null){
+				str+='<td>'+result[i].userSyncType+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
 				if(result[i].totalRecords !=null){
 				str+='<td>'+result[i].totalRecords+'</td>';
 				}else{
 					str+='<td>0</td>';
 				}
-                if(result[i].sync !=null){				
-				str+='<td>'+result[i].sync+'</td>';
+				if(result[i].sync != null){
+                str+='<td>'+result[i].sync+'</td>'; 
 				}else{
 					str+='<td>0</td>';
 				}
@@ -227,11 +232,7 @@ $(document).on("click","#submitId",function(){
 				}else{
 					str+='<td>0</td>';
 				}
-				if(result[i].userSyncType != null){
-				str+='<td>'+result[i].userSyncType+'</td>';
-				}else{
-					str+='<td>-</td>';
-				}
+				
                 if(result[i].kafkaSync != null){				
                 str+='<td>'+result[i].kafkaSync+'</td>';
 				}else{
