@@ -532,7 +532,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		}
 		
 	}
-	public ToursBasicVO getTopPoorToursLocationDetails(Long activityMemberId,Long userTypeId,Long stateId,String fromDateStr,String toDateStr){
+	public ToursBasicVO getTopPoorToursLocationDetails(Long candidateId,Long userTypeId,Long stateId,String fromDateStr,String toDateStr){
 		ToursBasicVO resultVO = new ToursBasicVO();
 		Set<Long> locationValues = new HashSet<Long>();
 		Map<Long,ToursBasicVO> toursDtslMap = new HashMap<Long, ToursBasicVO>();
@@ -545,43 +545,39 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 fromDate = sdf.parse(fromDateStr);
 				 toDate = sdf.parse(toDateStr);
 			 }
-			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			// List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst = selfAppraisalCandidateLocationDAO.getCandiateLocationScopeIdAndValues(candidateId);
 			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
 				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-		    if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID 
-		    || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ||
-		       userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID 
-			|| userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID ){
-			  List<Object[]> rtrnDistObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"District",userTypeId);
+		    if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID 
+			|| userTypeId.longValue() ==5l || userTypeId.longValue() ==2l || userTypeId.longValue()==1l ){ // 2 -DISTRICT PRESIDENTS , 5-SECRETARIES, 1-MINISTERS
+		     List<Object[]> rtrnDistObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"District",candidateId);
 			  setToursDtlsToList(rtrnDistObJLst,toursDtslMap);
 			  resultVO.getSubList().addAll(toursDtslMap.values());
 			  toursDtslMap.clear();
 		    }
 		    if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-		    	  List<Object[]> rtrnParliamentObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"ParliamentConstituency",userTypeId);
+		    	  List<Object[]> rtrnParliamentObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"ParliamentConstituency",candidateId);
 				  setToursDtlsToList(rtrnParliamentObJLst,toursDtslMap);
 				  resultVO.getSubList().addAll(toursDtslMap.values());
 				  toursDtslMap.clear();
 		    }
-		   if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID 
-		    || userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID 
-			|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID 
-			|| userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-				  List<Object[]> rtrnCnsttncyObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"Constituency",userTypeId);
+		   if(userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID){
+				  List<Object[]> rtrnCnsttncyObJLst = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"Constituency",candidateId);
 				  setToursDtlsToList(rtrnCnsttncyObJLst,toursDtslMap);
-				  resultVO.getSubList2().addAll(toursDtslMap.values());
+				  resultVO.getSubList().addAll(toursDtslMap.values());
 				  toursDtslMap.clear();
 			}
 		    if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
 		    	Collections.sort(resultVO.getSubList(), toursPoorPerformanceAscendingPer);
 		    }
-		    if(resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0){
+		  /*  if(resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0){
 		    	Collections.sort(resultVO.getSubList2(), toursPoorPerformanceAscendingPer);
-		    }
+		    }*/
 		}catch(Exception e){
 			LOG.error("Error occured at getPoorToursLocationDetails() in CoreDashboardToursService ",e);	
 		}
