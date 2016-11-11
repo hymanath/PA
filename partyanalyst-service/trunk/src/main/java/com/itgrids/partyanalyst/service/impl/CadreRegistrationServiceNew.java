@@ -571,7 +571,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			        	if(finalList != null && finalList.size() > 0){
 			        		
 			        		int deletedRecords = tdpCadreLocationInfoTempDAO.deleteAllRecords();
-						    int count = tdpCadreLocationInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+						    //int count = tdpCadreLocationInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 						    
 						    Date currentTime = dateUtilService.getCurrentDateAndTime();
 						    
@@ -872,7 +872,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			        		List<Long> locationScopeIds = new ArrayList<Long>();
 			        		
 			        		int deletedRecords = tdpCadreLocationInfoTemp1DAO.deleteAllRecords();
-						    int count = tdpCadreLocationInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
+						    //int count = tdpCadreLocationInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
 						    
 						    Date currentTime = dateUtilService.getCurrentDateAndTime();
 						    
@@ -1263,7 +1263,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				        	{
 				        		
 				        		int deletedRecords = tdpCadreDateWiseInfoTempDAO.deleteAllRecords();
-							    int count = tdpCadreDateWiseInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+							    //int count = tdpCadreDateWiseInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 							    
 							    Date currentTime = dateUtilService.getCurrentDateAndTime();
 					    		
@@ -1679,7 +1679,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 					
 							int deletedRecords = tdpCadreHourRegInfoTempDAO.deleteAllRecords();
-							int count = tdpCadreHourRegInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+							//int count = tdpCadreHourRegInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 							
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 							Date currentTime = new DateUtilService().getCurrentDateAndTime();
@@ -1816,7 +1816,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 						
 								int deletedRecords = tdpCadreHourRegInfoTemp1DAO.deleteAllRecords();
-								int count = tdpCadreHourRegInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
+								//int count = tdpCadreHourRegInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
 								
 								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 								Date currentTime = new DateUtilService().getCurrentDateAndTime();
@@ -1917,7 +1917,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				         Date time = new DateUtilService().getCurrentDateAndTime();
 				         
 				         int deletedRecords = tdpCadreUserHourRegInfoTempDAO.deleteAllRecords();
-				         int count = tdpCadreUserHourRegInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
+				         //int count = tdpCadreUserHourRegInfoTempDAO.setPrimaryKeyAutoIncrementToOne();
 				         
 				         int i= 0;	    
 					     for(CadreDateVO VO  : finalList ){
@@ -2065,7 +2065,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				         Date time = new DateUtilService().getCurrentDateAndTime();
 				         
 				         int deletedRecords = tdpCadreUserHourRegInfoTemp1DAO.deleteAllRecords();
- 				         int count = tdpCadreUserHourRegInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
+ 				         //int count = tdpCadreUserHourRegInfoTemp1DAO.setPrimaryKeyAutoIncrementToOne();
  				         
 				         int i= 0;
 					     for(CadreDateVO VO  : finalList ){
