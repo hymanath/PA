@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -204,20 +205,33 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    //take all the tour counts first..
 		    /*
  			S_A_C_I		L_V		own_tour_count   
+			1			504		30				
+			1			505		20				
+			1			506		40				
+			3			464		10				
+			16			14		2				
+			17			14		3				
+			18			16		1				
+			19			16		11				
+			
+			//second query
+			S_A_C_I		L_V		incharge_tour_count
 			1			504		30
-			1			505		20
-			1			506		40	
-			3			464		10
-			16			14		2
-			17			14		3
-			18			16		1
-			19			16		11
+			1			505		40
+			1			506		40				
+			3			464		10				
+			16			14		2				
+			17			14		3				
+			18			16		1				
+			19			16		11				
+			
+			
 			*/
-		    List<Object[]> cndWiseAndLocValWiseCountList = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountList(fromDate,toDate);
+		    List<Object[]> cndWiseAndLocValWiseCountListForOwn = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountListForOwn(fromDate,toDate);
 		    Map<Long,Map<Long,Long>> candIdAndLocValAndCountMap = new HashMap<Long,Map<Long,Long>>();
 		    Map<Long,Long> locValAndTourCountMap = new HashMap<Long,Long>();
-			if(cndWiseAndLocValWiseCountList != null && cndWiseAndLocValWiseCountList.size() > 0){
-				for(Object[] param : cndWiseAndLocValWiseCountList){
+			if(cndWiseAndLocValWiseCountListForOwn != null && cndWiseAndLocValWiseCountListForOwn.size() > 0){
+				for(Object[] param : cndWiseAndLocValWiseCountListForOwn){  
 					locValAndTourCountMap = candIdAndLocValAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(locValAndTourCountMap != null){
 						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -225,8 +239,22 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						locValAndTourCountMap = new HashMap<Long,Long>();
 						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
 						candIdAndLocValAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locValAndTourCountMap);
-					}
-				}
+					}  
+				}    
+			}
+		    List<Object[]> cndWiseAndLocValWiseCountListForIncharge = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountListForIncharge(fromDate,toDate);
+
+			if(cndWiseAndLocValWiseCountListForIncharge != null && cndWiseAndLocValWiseCountListForIncharge.size() > 0){
+				for(Object[] param : cndWiseAndLocValWiseCountListForIncharge){
+					locValAndTourCountMap = candIdAndLocValAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locValAndTourCountMap != null){
+						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else{
+						locValAndTourCountMap = new HashMap<Long,Long>();
+						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+						candIdAndLocValAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locValAndTourCountMap);
+					}  
+				}    
 			}
     	/*  
     	 * S_A_D_I[0]		designation[1]				S_A_C_I[2]		S_A_L_S_I[3]	name[4]							A_M_I[5]
@@ -263,7 +291,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    				tourCount = 0l;
 		    				resultVO = entry1.getValue();
 		    				candidateId = resultVO.getId();  
-		    				locValLstOfCandidate = resultVO.getLocationValueList();
+		    				locValLstOfCandidate = resultVO.getLocationValueList();  
 		    				if(candidateId != null && locValLstOfCandidate != null && locValLstOfCandidate.size() > 0){
 		    					locValAndTourCountMap = candIdAndLocValAndCountMap.get(candidateId);
 		    					if(locValAndTourCountMap != null){
@@ -318,23 +346,24 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    		locationValueSet.add(param[1] != null ? (Long)param[1] : 0l); 
 		    	}
 		    }
-		    //take all the tour counts first..
+		    //take all the tour counts first..  
 		    /*
- 			S_A_C_I		L_V		own_tour_count   
-			1			504		30
-			1			505		20
-			1			506		40	
-			3			464		10
-			16			14		2
-			17			14		3
-			18			16		1
-			19			16		11
+ 			S_A_C_I		L_V		own_tour_count  own_tour_count 
+			1			504		30				10
+			1			505		20				20			
+			1			506		40				30
+			3			464		10				40
+			16			14		2				20
+			17			14		3				20
+			18			16		1				10
+			19			16		11				1
 			*/
-		    List<Object[]> cndWiseAndLocValWiseCountList = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountList(fromDate,toDate);
+		    //List<Object[]> cndWiseAndLocValWiseCountList = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountList(fromDate,toDate);
+		    List<Object[]> cndWiseAndLocValWiseCountListForOwn = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountListForOwn(fromDate,toDate);
 		    Map<Long,Map<Long,Long>> candIdAndLocValAndCountMap = new HashMap<Long,Map<Long,Long>>();
 		    Map<Long,Long> locValAndTourCountMap = new HashMap<Long,Long>();
-			if(cndWiseAndLocValWiseCountList != null && cndWiseAndLocValWiseCountList.size() > 0){
-				for(Object[] param : cndWiseAndLocValWiseCountList){
+			if(cndWiseAndLocValWiseCountListForOwn != null && cndWiseAndLocValWiseCountListForOwn.size() > 0){
+				for(Object[] param : cndWiseAndLocValWiseCountListForOwn){
 					locValAndTourCountMap = candIdAndLocValAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(locValAndTourCountMap != null){
 						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -345,10 +374,26 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					}
 				}
 			}
+			
+			List<Object[]> cndWiseAndLocValWiseCountListForIncharge = selfAppraisalCandidateDetailsDAO.getCndWiseAndLocValWiseCountListForIncharge(fromDate,toDate);
+
+			if(cndWiseAndLocValWiseCountListForIncharge != null && cndWiseAndLocValWiseCountListForIncharge.size() > 0){
+				for(Object[] param : cndWiseAndLocValWiseCountListForIncharge){    
+					locValAndTourCountMap = candIdAndLocValAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locValAndTourCountMap != null){
+						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}else{
+						locValAndTourCountMap = new HashMap<Long,Long>();
+						locValAndTourCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[2]));
+						candIdAndLocValAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), locValAndTourCountMap);
+					}  
+				}    
+			}  
     	/*  
     	 * S_A_D_I[0]		designation[1]				S_A_C_I[2]		S_A_L_S_I[3]	name[4]							A_M_I[5]
     	    ========================================================================================================================
     	    3			GENERAL SECRETARIES				239					1			RAMMANAIDU NIMMALA				60
+    	    3			GENERAL SECRETARIES				239					3			RAMMANAIDU NIMMALA				60
 			3			GENERAL SECRETARIES				240					1			BUCHAYYA CHOWDARI GORANTLA		61
 			3			GENERAL SECRETARIES				241					1			SUBRAHMANYAM REDDY				62
 			3			GENERAL SECRETARIES				242					1			B JAYANAGESWARA REDDY			63
@@ -482,7 +527,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    			candidateIdSet.add(candidateId);
 	    			desigIdAndCandidateIdSetMap.put(designationId, candidateIdSet);
 	    		}else{
-	    			candidateIdSet = new HashSet<Long>();
+	    			candidateIdSet = new HashSet<Long>();  
 	    			candidateIdSet.add(candidateId);
 	    			desigIdAndCandidateIdSetMap.put(designationId, candidateIdSet);
 	    		}
@@ -491,7 +536,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    		desigIdAndDesigMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 	    		candidateIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
 	    		candIdAndActivityMemIdMap.put(candidateId, commonMethodsUtilService.getLongValueForObject(param[5]));
-	    		locationScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    		locationScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[3]));  
 	    	}
 	    }
 	    /*  
@@ -554,7 +599,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	}
 	public ToursBasicVO getDesignationDtls(Long activityMemberId, List<Long> desigIdList, String startDateStr, String endDateStr){
 	    	LOG.info("Entered into getDesignationDtls() of ToursService{}");
-	    	try{
+	    	try{  
 	    		ToursBasicVO toursBasicVO = new ToursBasicVO();
 	    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	    		Date startDate = null;
@@ -578,19 +623,19 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    		Long cndCount = 0l;    
 	    		if(desigDtls != null && desigDtls.size() > 0){ 
 	    			for(Object[] param : desigDtls){
-	    				cndCount = cndCount + (param[2] != null ? (Long)param[2] : 0l);
+	    				cndCount = cndCount + (param[1] != null ? (Long)param[1] : 0l);
 	    			}
-	    			toursBasicVO.setCandidateCount(cndCount);
+	    			toursBasicVO.setCandidateCount(cndCount);      
 	    		}
 	    		//List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(startDate,endDate,desigIdList);
 	    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursDetails(startDate,endDate,desigIdList,locationScopeId,locationValueSet);
-	    		Long selectedCandCount = 0l;  
+	    		Long selectedCandCount = 0l;    
 	    		Long totalTours = 0l;
 	    		if(memDtlsList != null && memDtlsList.size() > 0){  
 	    			for(Object[] param : memDtlsList){
 	    				selectedCandCount = selectedCandCount + (param[1] != null ? (Long)param[1] : 0l);
 	    				totalTours = totalTours + ((param[2] != null ? (Long)param[2] : 0l) + (param[3] != null ? (Long)param[3] : 0l));
-	    			}
+	    			}      
 	    			toursBasicVO.setSelectedCandCount(selectedCandCount);
 	    			toursBasicVO.setTotalTour(totalTours);
 	    		}    
@@ -602,7 +647,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    	}
 	    	return null;  
 	    }
-	public ToursBasicVO getDesignationLabelList(Long activityMemberId){
+	public List<ToursBasicVO> getDesignationLabelList(Long activityMemberId){
 		try{
 			Long locationScopeId = 0l;
 			Set<Long> locationValueSet = new HashSet<Long>(0);
@@ -614,8 +659,43 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    		locationValueSet.add(param[1] != null ? (Long)param[1] : 0l); 
 		    	}
 		    }
-		    //List<Object[]> designationList = selfAppraisalCandidateLocationDAO.getDesignationListDtls(locationScopeId,locationValueSet);
-			
+		    List<ToursBasicVO> basicVOs = new ArrayList<ToursBasicVO>();
+		    ToursBasicVO toursBasicVO = null; 
+		    List<Object[]> designationList = selfAppraisalCandidateLocationDAO.getDesignationListDtls(locationScopeId,locationValueSet);	
+		    
+		    ToursBasicVO orgAndSecVO = null;
+			if(designationList != null && designationList.size() > 0){
+				for(Object[] param : designationList){
+					toursBasicVO = new ToursBasicVO();
+					if(commonMethodsUtilService.getLongValueForObject(param[0])==4l || commonMethodsUtilService.getLongValueForObject(param[0])==5l){
+					   if(orgAndSecVO.getComment() == null){
+						   orgAndSecVO = new ToursBasicVO();
+						   orgAndSecVO.setComment(commonMethodsUtilService.getStringValueForObject(param[0]));
+						   orgAndSecVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					   }else{
+						   orgAndSecVO.setComment(orgAndSecVO.getComment()+","+commonMethodsUtilService.getLongValueForObject(param[0]));
+						   orgAndSecVO.setName(orgAndSecVO.getName()+"/"+commonMethodsUtilService.getStringValueForObject(param[1]));
+					   }
+					}else{
+						toursBasicVO.setComment(commonMethodsUtilService.getLongValueForObject(param[0]).toString());//id
+						toursBasicVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						toursBasicVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(param[2]));//order
+						basicVOs.add(toursBasicVO);
+					}
+				}
+			}
+			if(basicVOs != null){
+				if(basicVOs.get(0).getComment().trim().equalsIgnoreCase("3")){
+					if(orgAndSecVO != null){
+						basicVOs.add(1, orgAndSecVO);  
+					}
+				}else{
+					if(orgAndSecVO != null){
+						basicVOs.add(0, orgAndSecVO);  
+					}
+				}
+			}
+			return basicVOs;  
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Error Occured at getDesignationLabelList() in ToursService class",e);
@@ -870,14 +950,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	}
 	};
 
-
-
-	@Override
-	public ToursBasicVO getDesignationDtls(List<Long> desigIdList,
-			String startDateStr, String endDateStr) {
-		// TODO Auto-generated method stub
-		return null;  
-	} 
    public ToursBasicVO getLeaderAverageToursBasedOnAccessLevel(Long candidateId,Long stateId,String fromDateStr,String toDateStr){
 	   ToursBasicVO resultVO = new ToursBasicVO();
 	   Set<Long> locationValues = new HashSet<Long>();
