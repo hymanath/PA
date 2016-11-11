@@ -14600,6 +14600,16 @@
 			<param name="root">toursBasicVO</param>
 		</result>
 	</action>
+	<action name="getMemberDtlsForADesignationAction" class="toursAction"  method="getMemberDtlsForADesignation">
+		<result type="json" name="success">
+			<param name="root">listOfTourBasicVo</param>    
+		</result>  
+	</action>
+	<action name="getDesignationDtlsOfCandidateAction" class="toursAction" method="getDesignationDtlsOfCandidate">  
+		<result type="json" name="success">
+   			<param name="root">resultVO</param>  
+   		</result>  
+	</action>
 	<action name="getConstituencyWiseTodayAndOverAllCountsAction" class="fieldMonitoringAction"  method="getConstituencyWiseTodayAndOverAllCounts">
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
