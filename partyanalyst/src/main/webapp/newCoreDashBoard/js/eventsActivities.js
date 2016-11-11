@@ -194,6 +194,8 @@ $('#dateRangeIdForEvents').on('apply.daterangepicker', function(ev, picker) {
 
 function getEventBasicCntDtls(){
 	$("#mainEventsList").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	buildEventBasicCntDtls();
+	return;
 	var eventIds=[];
 	eventIds.push(7);
 	eventIds.push(30);
@@ -217,12 +219,12 @@ function getEventBasicCntDtls(){
 		}
 	});
 }
-function buildEventBasicCntDtls(result)
-{
+function buildEventBasicCntDtls()
+{ 
 	var eventIdsString;
 	var str=' ';
 	//str+='<div class="panel-group m_top10" id="accordionEvents" role="tablist" aria-multiselectable="true">';
-		for(var i in result)
+	/*	for(var i in result)
 		{
 			if(i== 0){
 			eventIdsString = result[i].id;	
@@ -234,6 +236,8 @@ function buildEventBasicCntDtls(result)
 					str+='<h4 class="panel-title">'+result[i].name+'';
 						str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 					str+='</h4>';
+					
+				
 					/* if(i == 0)
 					{
 						str+='<h4 class="panel-title">';
@@ -249,14 +253,14 @@ function buildEventBasicCntDtls(result)
 						str+='</h4>';
 					} */
 					
-				str+='</div>';
+			//	str+='</div>';
 				/* if(i == 0)
 				{
 					str+='<div id="collapseEvents'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEvents'+i+'">';
 				}else{
 					str+='<div id="collapseEvents'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEvents'+i+'">';
 				} */
-					str+='<div class="panel-body pad_5">';
+					/*str+='<div class="panel-body pad_5">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 								str+='<table class="table tableTraining bg_ED">';
@@ -285,8 +289,72 @@ function buildEventBasicCntDtls(result)
 			str+='</div>';
 		}
 	//str+='</div>';
+	//$("#eventIds").attr("attr_event_idsString",eventIdsString);*/
+	
+	
+	     str+='<div class="panel panel-default panelNewEvents">';
+				str+='<div class="panel-heading" role="tab"">';
+					str+='<h4 class="panel-title">Mahanadu 2016';
+						str+='<span attr_event_idsString="30" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div class="panel-body pad_5">';
+						str+='<div class="row">';
+							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								str+='<table class="table tableTraining bg_ED">';
+									str+='<tr>';
+										str+='<td>';
+											str+='<h4>16796</h4>';
+											str+='<p class="text-capital text-muted">invited</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<h4>4618';
+											str+=' <small class="text-danger responsiveFont">27.49%</small></h4>';
+											str+='<p class="text-capital text-muted">invitees attended</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<h4>21332';
+											str+=' <small class="text-danger responsiveFont">82.2%</small></h4>';
+											str+='<p class="text-capital text-muted">non invitees attended</p>';
+										str+='</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="panel-heading" role="tab"">';
+					str+='<h4 class="panel-title">Mahanadu 2015';
+						str+='<span attr_event_idsString="7" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div class="panel-body pad_5">';
+						str+='<div class="row">';
+							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								str+='<table class="table tableTraining bg_ED">';
+									str+='<tr>';
+										str+='<td>';
+											str+='<h4>12185</h4>';
+											str+='<p class="text-capital text-muted">invited</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<h4>2660';
+											str+=' <small class="text-danger responsiveFont">21.83%</small></h4>';
+											str+='<p class="text-capital text-muted">invitees attended</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<h4>7948';
+											str+=' <small class="text-danger responsiveFont">74.92%</small></h4>';
+											str+='<p class="text-capital text-muted">non invitees attended</p>';
+										str+='</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+				str+='</div>';
+			str+='</div>';
 	str+='';
-	$("#eventIds").attr("attr_event_idsString",eventIdsString); 
+	$("#eventIds").attr("attr_event_idsString","7,30"); 
 	$("#mainEventsList").html(str)
 }
 
