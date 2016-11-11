@@ -2016,6 +2016,33 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  query.setParameter("locationId", locationId);
 	  return (Long)query.uniqueResult();
   }
+  
+  public List<Object[]> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.constituencyId,model.name from Constituency model where model.state.stateId = :stateId" +
+				" and model.deformDate is null and model.electionScope.electionScopeId = 2 ");
+		if(stateTypeId.longValue() == 0L)
+		{
+			str.append(" and model.district.districtId between 1 and 23 ");
+		}
+		else if(stateTypeId.longValue() == 1L)
+		{
+			str.append(" and model.district.districtId between 11 and 23 ");
+		}
+		else if(stateTypeId.longValue() == 36L)
+		{
+			str.append(" and model.district.districtId between 1 and 10 ");
+		}
+		if(districtId != null && districtId.longValue() > 0l)
+			str.append(" and model.district.districtId = :districtId");
+		str.append(" order by model.name asc"); 
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("stateId", stateId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
+		return query.list();
+	}
 }
 
 
