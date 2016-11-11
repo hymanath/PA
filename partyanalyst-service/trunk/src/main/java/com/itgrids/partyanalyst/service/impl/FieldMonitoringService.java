@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.model.CadreRegIssuePerson;
 import com.itgrids.partyanalyst.model.CadreRegIssueStatus;
 import com.itgrids.partyanalyst.model.CadreRegIssueTrack;
 import com.itgrids.partyanalyst.model.CadreRegIssueType;
+import com.itgrids.partyanalyst.model.CadreSurveyUserPerformance;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
@@ -88,13 +89,6 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	
 	//Setters
 	
-	public ICadreSurveyUserPerformanceDAO getCadreSurveyUserPerformanceDAO() {
-		return cadreSurveyUserPerformanceDAO;
-	}
-	public void setCadreSurveyUserPerformanceDAO(
-			ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO) {
-		this.cadreSurveyUserPerformanceDAO = cadreSurveyUserPerformanceDAO;
-	}
 	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
 		return tdpCadreLocationInfoDAO;
 	}
@@ -197,6 +191,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	}
 	public void setCadreRegIssuePersonDAO(ICadreRegIssuePersonDAO cadreRegIssuePersonDAO) {
 		this.cadreRegIssuePersonDAO = cadreRegIssuePersonDAO;
+	}
+	
+	public ICadreSurveyUserPerformanceDAO getCadreSurveyUserPerformanceDAO() {
+		return cadreSurveyUserPerformanceDAO;
+	}
+	public void setCadreSurveyUserPerformanceDAO(ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO) {
+		this.cadreSurveyUserPerformanceDAO = cadreSurveyUserPerformanceDAO;
 	}
 	//business method.
 	public List<IdAndNameVO> getVendors(Long stateId){
@@ -2831,7 +2832,6 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		}
 		return returnList;
 	}
-	
 	public List<IdAndNameVO> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try{
@@ -2844,4 +2844,36 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		}
 		return returnList;
 	}
+	
+	 public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId){
+		 ResultStatus status = new ResultStatus();
+		 try{
+			 Date currentDate = dateUtilService.getCurrentDateAndTime();
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			 List<CadreSurveyUserPerformance> existingUserPerformance = cadreSurveyUserPerformanceDAO.getCadreSurveyUserPerformanceDetails(cadreSurveyUserId,currentDate);
+			 if(existingUserPerformance != null && existingUserPerformance.size() > 0){
+				 	CadreSurveyUserPerformance cadreSurveyUserPerformance = existingUserPerformance.get(0);
+				 	cadreSurveyUserPerformance.setCadreSurveyUserPerformanceTypeId(performanceTypeId);
+				 	cadreSurveyUserPerformance.setUpdatedBy(loginUserId);
+				 	cadreSurveyUserPerformance.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				 	cadreSurveyUserPerformanceDAO.save(cadreSurveyUserPerformance);
+			 	}else{
+			 		CadreSurveyUserPerformance cadreSurveyUserPerformance = new CadreSurveyUserPerformance();
+			 		cadreSurveyUserPerformance.setCadreSurveyUserId(cadreSurveyUserId);
+			 		cadreSurveyUserPerformance.setSurveyTime(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+			 		cadreSurveyUserPerformance.setCadreSurveyUserPerformanceTypeId(performanceTypeId);
+			 		cadreSurveyUserPerformance.setIsDeleted("false");
+			 		cadreSurveyUserPerformance.setCreatedBy(loginUserId);
+			 		cadreSurveyUserPerformance.setUpdatedBy(loginUserId);
+			 		cadreSurveyUserPerformance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			 		cadreSurveyUserPerformance.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			 		cadreSurveyUserPerformanceDAO.save(cadreSurveyUserPerformance);
+			 	}
+			 	status.setMessage("success");
+		 	}catch(Exception e){
+			 LOG.error("Exception occurred at saveCaderSurveyUserPerformanceDetails() of FieldMonitoringService", e); 
+			 status.setMessage("failure");
+		 }
+		 return status;
+	 }
 }
