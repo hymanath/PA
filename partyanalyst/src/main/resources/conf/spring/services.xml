@@ -3758,7 +3758,7 @@
 	 <property name="constituencyDAO" ref="constituencyDAO"></property>
 	 <property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
 	 <property name="transactionTemplate" ref="transactionTemplate"></property>
-	</bean>
+	</bean>  
 	
 	
 	<bean name="coreDashboardToursService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardToursService" >
@@ -3769,6 +3769,7 @@
 	 <property name="selfAppraisalCandidateDAO" ref="selfAppraisalCandidateDAO"></property>
 	 <property name="constituencyDAO" ref="constituencyDAO"></property>
 	 <property name="districtDAO" ref="districtDAO"></property>
+	 <property name="selfAppraisalDesignationDAO" ref="selfAppraisalDesignationDAO"></property>
 	</bean>
 	
 </beans>			
