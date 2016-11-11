@@ -3385,6 +3385,9 @@
 	<bean id="trainingCampDetailsInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampDetailsInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="selfAppraisalCandidateTourLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateTourLocationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="cadreSurveyUserPerformanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserPerformanceTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
