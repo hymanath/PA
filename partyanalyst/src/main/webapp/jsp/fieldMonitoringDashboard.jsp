@@ -115,6 +115,19 @@
 						<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 20px; font-weight: bold;">
 							<h4 class="text-capital" id="totalDataCollectorsId" style="margin-top: 0px; font-weight: bold;">total data collectors <span></span></h4>
 						</div>
+						
+						<div class="col-md-8 col-xs-12 col-sm-6 districtDiv" style="margin-top: 25px;" style="dispaly:none;">
+							<ul class="activeUlCls list-inline pull-right">
+								<li class="completedRegistrationsSorting active" attr_value="All">
+									All</li>
+								<li class="completedRegistrationsSorting" attr_value="verygood">&nbsp;Very Good</li>
+								<li class="completedRegistrationsSorting" attr_value="good">&nbsp;Good</li>
+								<li class="completedRegistrationsSorting" attr_value="poor">&nbsp;Poor</li>
+								<li class="completedRegistrationsSorting" attr_value="verypoor">&nbsp;Very Poor</li>
+								<li class="completedRegistrationsSorting" attr_value="notstarted">&nbsp;Not At Started</li>
+								
+							</ul>
+						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
 							<div class="districtDiv" style="dispaly:none;">
 								<label>Select District</label><span style="color:red"> *</span>
@@ -133,20 +146,8 @@
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
 							<div class="districtDiv" style="dispaly:none;">
-								<button class="btn btn-sm btn-success btn-xs pull-right" type="button" onclick="getDataCollectorsPerformanceDetails();">Get Details</button>
+								<button class="btn btn-success m_top25" type="button" onclick="getDataCollectorsPerformanceDetails();">Get Details</button>
 							</div>
-						</div>
-						<div class="col-md-5 col-xs-12 col-sm-6 districtDiv" style="margin-top: 25px;" style="dispaly:none;">
-							<ul class="activeUlCls list-inline pull-right">
-								<li class="completedRegistrationsSorting active" attr_value="All">
-									All</li>
-								<li class="completedRegistrationsSorting" attr_value="verygood">&nbsp;Very Good</li>
-								<li class="completedRegistrationsSorting" attr_value="good">&nbsp;Good</li>
-								<li class="completedRegistrationsSorting" attr_value="poor">&nbsp;Poor</li>
-								<li class="completedRegistrationsSorting" attr_value="verypoor">&nbsp;Very Poor</li>
-								<li class="completedRegistrationsSorting" attr_value="notstarted">&nbsp;Not At Started</li>
-								
-							</ul>
 						</div>
 						<div id="dataCollectorsImgId" class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 						<div id="dataCollectorsDivId" class="col-md-12 col-xs-12 col-sm-12"></div>
