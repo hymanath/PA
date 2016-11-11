@@ -99,7 +99,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
 		     		        " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +//1
 		     		        " sum(model.ownTours)," +//2
-		     		        " sum(model.inchargeTours)" +//3
+		     		        " sum(model.inchargeTours)," +//3
+		     		        " count(distinct model.selfAppraisalCandidateDetailsId)" +//4
 		     		        " from SelfAppraisalCandidateDetails model,SelfAppraisalCandidateLocation model1 " +
 		     		        " where model.selfAppraisalCandidate.selfAppraisalCandidateId=model1.selfAppraisalCandidate.selfAppraisalCandidateId " +
 		     		        " and " +
@@ -189,7 +190,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		     		 		queryStr.append("model.selfAppraisalCandidate.selfAppraisalCandidateId," +//5
 		     		        " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +//6
 		     		        " sum(model.ownTours)," +//7
-		     		        " sum(model.inchargeTours)" +//8
+		     		        " sum(model.inchargeTours)," +//8
+		     		        " count(distinct model.selfAppraisalCandidateDetailsId)" +//9
 		     		        " from SelfAppraisalCandidateDetails model,SelfAppraisalCandidateLocation model1 " +
 		     		        " where model.selfAppraisalCandidate.selfAppraisalCandidateId=model1.selfAppraisalCandidate.selfAppraisalCandidateId " +
 		     		        " and " +
@@ -388,4 +390,60 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		     		    }    
 		                return query.list();
 	  }*/
+	  public List<Object[]> getToursVisitedDetailsByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+		     StringBuilder queryStr = new StringBuilder();
+		          queryStr.append(" select " );
+					     if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){//district 
+					 		  queryStr.append(" model1.userAddress.district.districtId," +//0
+			   		 				  		 "  model1.userAddress.district.districtName,");//1	
+					     }else if(userAccessLevelId != null && userAccessLevelId.longValue()==2l){//parliamentConstituency
+					    	  queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId," +//0
+			   		 				           " model1.userAddress.parliamentConstituency.name,");//1		
+					     }else if(userAccessLevelId != null && userAccessLevelId.longValue()==3){//constituency
+					    	  queryStr.append(" model1.userAddress.constituency.constituencyId," +////0
+					  				          " model1.userAddress.constituency.name,");//1
+					     }
+		              	queryStr.append(" count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +//2
+		     		        " sum(model.ownTours)," +//3
+		     		        " sum(model.inchargeTours)," +//4
+		     		        " count(distinct model.selfAppraisalCandidateDetailsId)" +//5
+		     		        " from SelfAppraisalCandidateDetails model,SelfAppraisalCandidateLocation model1 " +
+		     		        " where model.selfAppraisalCandidate.selfAppraisalCandidateId=model1.selfAppraisalCandidate.selfAppraisalCandidateId " +
+		     		        " and " +
+		     		        " model.selfAppraisalCandidate.isActive='Y' " +
+		     		        " and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive='Y' ");
+			      if(stateId != null && stateId.longValue() > 0){
+							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
+				  }
+			      if(fromDate != null && toDate != null ){
+                     queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+                  }
+			    if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){
+				   queryStr.append(" and model1.userAddress.district.districtId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==2l){
+			        queryStr.append(" and model1.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==3l){
+			        queryStr.append(" and model1.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+				 }
+			    if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){
+			 		  queryStr.append(" group by model1.userAddress.district.districtId "); 
+	 		     }else if(userAccessLevelId != null && userAccessLevelId.longValue()==2l){
+			    	  queryStr.append("  group by model1.userAddress.parliamentConstituency.constituencyId " );
+	 		     }else if(userAccessLevelId != null && userAccessLevelId.longValue()==3l){
+			    	  queryStr.append(" group by model1.userAddress.constituency.constituencyId ");
+			     }
+		     	  Query query = getSession().createQuery(queryStr.toString());
+		     		
+		 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 		 }
+		 		if(stateId != null && stateId.longValue() > 0){
+		 			 query.setParameter("stateId", stateId);
+		 		}
+		 		 if(fromDate!= null && toDate!=null){
+		 			   query.setDate("fromDate", fromDate);
+		 			   query.setDate("toDate", toDate);
+		 		 }
+		 		 return query.list();
+	   }
 }
