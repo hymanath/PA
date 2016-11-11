@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.ICadreRegIssueTrackDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserPerformanceDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -43,7 +44,6 @@ import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserPerformanceVO;
 import com.itgrids.partyanalyst.model.CadreRegIssue;
@@ -84,9 +84,17 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
 	private ICadreRegIssuePersonDAO cadreRegIssuePersonDAO;
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
+	private ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO;
 	
 	//Setters
 	
+	public ICadreSurveyUserPerformanceDAO getCadreSurveyUserPerformanceDAO() {
+		return cadreSurveyUserPerformanceDAO;
+	}
+	public void setCadreSurveyUserPerformanceDAO(
+			ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO) {
+		this.cadreSurveyUserPerformanceDAO = cadreSurveyUserPerformanceDAO;
+	}
 	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
 		return tdpCadreLocationInfoDAO;
 	}
@@ -2322,6 +2330,22 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 				}
 			}
 			
+			Map<Long,String> perfMap = new LinkedHashMap<Long, String>();
+			List<Object[]> perfomList = cadreSurveyUserPerformanceDAO.getUserWisePerformanceByDate(today);
+			if(perfomList != null && !perfomList.isEmpty()){
+				for (Object[] obj : perfomList) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String type = obj[1] != null ? obj[1].toString():"";
+					perfMap.put(id, type);
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (FieldMonitoringVO vo : returnList) {
+					Long id = vo.getCadreSurveyUserId();
+					vo.setPerformanceType(perfMap.get(id));
+				}
+			}
+			
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
 				for (Object[] obj : templist) {
@@ -2804,6 +2828,19 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			}
 		} catch (Exception e) {
 			LOG.error("Exception occurred at getConstituencyWiseTodayAndOverAllCounts() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdAndNameVO> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try{
+			List<Object[]> constitList = constituencyDAO.getConstituenciesByStateForStateTypeId(stateId, stateTypeId, districtId);
+		
+			returnList = setDataToIdNameVOList(constitList);
+
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getConstituenciesByStateForStateTypeId() of FieldMonitoringService", e);
 		}
 		return returnList;
 	}

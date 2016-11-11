@@ -69,8 +69,15 @@ public class FieldMonitoringVO {
 	private String leaderMandal;
 	private String leaderName;
 	private String leadreMobile;
+	private String performanceType;
 	
 	
+	public String getPerformanceType() {
+		return performanceType;
+	}
+	public void setPerformanceType(String performanceType) {
+		this.performanceType = performanceType;
+	}
 	public Long getLastHourInActive() {
 		return lastHourInActive;
 	}
