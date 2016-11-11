@@ -17,6 +17,7 @@ $(document).on("click",".toursDetailedBlock",function(){
 		$(".comparisonBlockTours").hide();
 	   getDistrictWiseToursSubmitedDetails();		
 });
+//swadhin
 $(document).on("click",".toursComparisionBlock",function(){
 	$(".moreToursBlocksDetailed").hide();
 	$(".comparisonBlockTours").show();
@@ -25,6 +26,7 @@ $(document).on("click",".toursComparisionBlock",function(){
 	 //var userTypeId = 3;
 	  getLeaderAverageToursBasedOnAccessLevel();
 	// getTopPoorToursLocationDetails(userTypeId,selectedUserName,userType);
+	 getDesigListForTour();
 });
 	function getTodayDate(){
 		var today = new Date();
@@ -377,7 +379,7 @@ function getToursBasicOverviewCountDetails()
 			activityMemberId : 44,        
 			stateId : globalStateIdForTour,
 			fromDate : "27/10/2016",              
-			toDate :  getTodayDate()  
+			toDate :  getTodayDate()      
 		}
 		$.ajax({
 			type : 'POST',
@@ -538,6 +540,7 @@ function getToursBasicOverviewCountDetails()
 	}
 	
 	function buildgUserTypeWiseToursTopFivePoorRslt(result){
+		
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
@@ -658,32 +661,52 @@ function getToursBasicOverviewCountDetails()
 	 $("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('NO DATA AVAILABLE.');
 	}
 	} 
-	getMemberDtlsForADesignation()  
-	function getMemberDtlsForADesignation(){ 
+	
+	function getDesigListForTour(){
 		var jsObj ={ 
 			activityMemberId : 44,
-			designationIds : [4,5],      
-			stateId : globalStateIdForTour,
-			fromDate : "27/10/2016",              
-			toDate :  getTodayDate() 
 		}
 		$.ajax({
 			type : 'POST',
-			url : 'getMemberDtlsForADesignationAction.action',
+			url : 'getDesignationLabelListAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}         
 			}).done(function(result){
-				console.log(result);        
-			});
-	}  
-	getDesignationDtls();
-	function getDesignationDtls(){ 
-		var jsObj = { 
-			 desigIds : [3],  
-			 startDateStr : "27/10/2016",
-			 endDateStr : "29/10/2016"  
+				if(result != null && result.length > 0){
+					buildDesignationLabel(result);
+				}       
+			}); 
+	}
+	function buildDesignationLabel(result){  
+		var str = '';
+		if(result != null && result.length > 0){
+			str += '<ul class="comparisonSelect">';
+			for(var i in result){
+				str += '<li class="" id="singleDesigTourId'+i+'" attr_desig_ids="'+result[i].comment+'">'+result[i].name+'<span class="closeIconComparison"></span></li>';
 			}
-		$.ajax({
+			str += '</ul>';    
+		}
+		$("#designationListForTourId").html(str);       
+		$("#singleDesigTourId0").trigger("click"); 
+	}
+	$(document).on('click','#singleDesigTourId0',function(){
+		alert(1);  
+		var desigIs = $(this).attr("attr_desig_ids");
+		var desigIdArr = [];
+		desigIdArr = desigIs.split(",");
+		getDesignationDtls(desigIdArr);
+		getMemberDtlsForADesignation(desigIdArr);
+		
+	});  
+	function getDesignationDtls(desigIdArr){  
+		alert(desigIdArr);
+		var jsObj = { 
+			 desigIds : desigIdArr,    
+			 activityMemberId : 44,  
+			 startDateStr : "11/11/2016",
+			 endDateStr : "11/11/2016"  
+			}
+		$.ajax({  
 			type : 'POST',
 			url : 'getDesignationDtlsOfCandidateAction.action',  
 			dataType : 'json',      
@@ -691,10 +714,116 @@ function getToursBasicOverviewCountDetails()
 		}).done(function(result){
 			//$("#desigDtlsProcessImgId").hide();
 			if(result != null){
-				//buildDesignationDtls(result);
-				console.log(result);  
+				buildDesignationDtls(result);  
 			}
 		});
+	}
+	function buildDesignationDtls(result){
+		var str = '';
+		str+='<table class="table tableTraining bg_ED">';
+			str+='<tbody>';
+				str+='<tr>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
+						str+='<h4>'+result.candidateCount+'</h4>';
+					str+='</td>';
+					str+='<td>';
+					var submitPercent = parseInt(result.selectedCandCount)*(100/parseInt(result.candidateCount));
+						str+='<p class="text-muted text-capital">Submited<br>Leaders</p>';
+						str+='<h4>'+result.selectedCandCount+'<span class="font-10 text-success">'+submitPercent.toFixed(2)+'%</span></h4>';
+					str+='</td>';
+					str+='<td>';
+					var notSelect = parseInt(result.candidateCount) - parseInt(result.selectedCandCount);
+					var notSelectPer = parseFloat(100.00)-parseFloat(submitPercent)
+						str+='<p class="text-muted text-capital">Not Submited<br>Leaders</p>';
+						str+='<h4>'+notSelect+'<span class="font-10 text-danger"> '+notSelectPer.toFixed(2)+'%</span></h4>';
+					str+='</td>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">Total<br>Tours</p>';      
+						str+='<h4>'+result.totalTour+'</h4>';  
+					str+='</td>';
+					str+='<td>';
+					var average = result.totalTour / result.selectedCandCount;
+						str+='<p class="text-muted text-capital">Average<br>Tours</p>';
+						str+='<h4>'+average+'</h4>';
+					str+='</td>';
+				str+='</tr>';
+			str+='</tbody>';
+		str+='</table>';
+		$("#totalOverviewOfDesigId").html(str);
+	}
+	function getMemberDtlsForADesignation(desigIdArr){  
+		alert(desigIdArr);
+		var jsObj ={ 
+			activityMemberId : 44,
+			designationIds : desigIdArr,                  
+			stateId : globalStateIdForTour,      
+			fromDate : "11/11/2016",                
+			toDate : "11/11/2016"  
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getMemberDtlsForADesignationAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}         
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildMemberDtlsForADesignation(result);
+				}        
+			});
+	}    
+	function buildMemberDtlsForADesignation(result){
+		var str = '';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			if($(window).width < 768)
+			{
+				str+='<div class="table-responsive">';
+			}
+			
+				str+='<table class="table table-condensed tableHoverLevels m_top20">';
+					str+='<thead>';
+						str+='<th>%RANK</th>';
+						str+='<th>DESIGNATION</th>';
+						str+='<th class="text-capital">NAME</th>';      
+						str+='<th>TOTAL</th>';
+						str+='<th>COMMENT</th>';
+					str+='</thead>';
+					str+='<tbody>';
+						var comment  = "";
+						var k = 0;
+						for(var i in result){
+							if(result[i].totalTour > 0){         
+								str+='<tr>'; 
+									k = parseInt(k) + 1;      
+									str+='<td>';
+										str+='<span class="tableCount">'+k+'</span>';
+									str+='</td>';
+									str+='<td>'+result[i].designation+'</td>';    
+									str+='<td>'+result[i].name+'</td>';
+									str+='<td>'+result[i].totalTour+'</td>';
+									for(var i in result[i].remarkList){
+										if(result[i].remarkList[i].length > 1){
+											comment+=result[i].remarkList[i];
+											comment+="/"
+										}
+									}
+									if(comment.length > 1){
+										str+='<td>'+result[i].comment+'</td>';
+									}else{
+										str+='<td>-</td>';
+									}  
+								str+='</tr>';   
+							}
+						}  
+						
+					str+='</tbody>';  
+				str+='</table>';  
+			if($(window).width < 768)
+			{
+				str+='</div>';
+			}
+		str+='</div>';
+		$("#directChildMemberForToursDivId").html(str);
 	}	  
 	  function getLeaderAverageToursBasedOnAccessLevel()
 	{   $("#topPoorLocationsToursDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
