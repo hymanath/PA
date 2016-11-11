@@ -2610,6 +2610,16 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
+									<h4><span class="headingColor">State Wise - Programs Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="stateWiseProgramsOvrViewGovtEMN"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
 									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
 								</div>
 								<div class="panel-body">
