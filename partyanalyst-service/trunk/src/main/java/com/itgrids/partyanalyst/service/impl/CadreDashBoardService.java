@@ -6301,7 +6301,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					param.setMapPowerCount(locationIdAndManPowerCountMap.get(locId));
 				}  
 			}
-			
+			      
 		}
 		//push constituency no into vo
 		if(locationScopeId != null && locationScopeId.longValue() == 4l){
@@ -6704,7 +6704,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 locationType = "TS";  
 				 }
 			 }
-			 
+			 //get location info
 			 if(distList != null && distList.size() > 0){
 				 for(Object[] param : distList){
 					 distIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
@@ -6724,15 +6724,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 constIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));  
 				 }   
 			 }
+			 
+			 //get data
 			 if(distIdList.size() > 0){
-				 List<Object[]> distResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,3l,locationType,new ArrayList<Long>(distIdList));
+				 List<Object[]> distResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,3l,null,new ArrayList<Long>(distIdList));
 				 //
 				 List<Object[]> list2 = null;
 			 	 if(type.equalsIgnoreCase("total")){
-			 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",3l,locationType, new ArrayList<Long>(distIdList));            
-			 	 }
+			 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",3l,null, new ArrayList<Long>(distIdList));            
+			 	 } 
 			 	
-			 	 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(3l,locationType); 
+			 	 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(3l,locationType);   
 			 
 			 	
 			 	 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
@@ -6755,9 +6757,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 }   
 				 }  
 				 
-				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,locationType,new ArrayList<Long>(constIdList));
+				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,null,new ArrayList<Long>(constIdList));
 				 if(type.equalsIgnoreCase("total")){
-				 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,locationType, new ArrayList<Long>(constIdList));            
+				 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,null, new ArrayList<Long>(constIdList));            
 				 }
 				 list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType);
 				 list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
@@ -6766,10 +6768,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 return returnList;  
 			 } 
 			 if(constIdList.size() > 0){                
-				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,locationType,new ArrayList<Long>(constIdList));
+				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,null,new ArrayList<Long>(constIdList));
 				 List<Object[]> list2 = null; 
 				 if(type.equalsIgnoreCase("total")){
-				 	list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,locationType, new ArrayList<Long>(constIdList));            
+				 	list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,null, new ArrayList<Long>(constIdList));            
 				 }
 				 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType); 
 				 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);    

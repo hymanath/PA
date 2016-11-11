@@ -377,17 +377,19 @@ public class ToursService implements IToursService {
     			startDate = sdf.parse(startDateStr);
     			endDate = sdf.parse(endDateStr);  
     		}
-    		List<Object[]> desigDtls = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(desigId);
+    		List<Long> desigIdList = new ArrayList<Long>();
+    		desigIdList.add(desigId);
+    		List<Object[]> desigDtls = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(desigIdList);
     		
     		if(desigDtls != null && desigDtls.size() > 0){
     			toursBasicVO.setCandidateCount(desigDtls.get(0)[2] != null ? (Long)desigDtls.get(0)[2] : 0l);
     		}
-    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(startDate,endDate,desigId);
+    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(startDate,endDate,desigIdList);
     		if(memDtlsList != null && memDtlsList.size() > 0){
     			toursBasicVO.setSelectedCandCount(memDtlsList.get(0)[1] != null ? (Long)memDtlsList.get(0)[1] : 0l);
     			toursBasicVO.setTotalTour((memDtlsList.get(0)[2] != null ? (Long)memDtlsList.get(0)[2] : 0l) + (memDtlsList.get(0)[3] != null ? (Long)memDtlsList.get(0)[3] : 0l));
-    		}  
-    		return toursBasicVO;
+    		}    
+    		return toursBasicVO; 
     		
     	}catch(Exception e){  
     		e.printStackTrace();
