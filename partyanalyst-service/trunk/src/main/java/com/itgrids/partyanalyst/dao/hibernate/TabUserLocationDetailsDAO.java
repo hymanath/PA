@@ -98,10 +98,82 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		return query.list();
 		
 	}*/
+	
+	public List<Object[]> getLattitudeLangitudeOfTabbUserByIds(List<Long> locationIsdList){
+		StringBuilder str = new StringBuilder();
+		str.append(" SELECT "
+				+" distinct tuld.tab_user_info_id , "
+				+"'', "
+				+"'', "
+				+"tuld.latitude, "
+				+"tuld.longititude , "
+				+"tuld.survey_time  "
+				+"FROM  "
+				+"	tab_user_location_details tuld "
+				+" WHERE   "
+				+"  tuld.tab_user_info_id is not null and tuld.tab_user_location_details_id in (:locationIsdList) ");
+		
+		Query query = getSession().createSQLQuery(str.toString());
+		query.setParameterList("locationIsdList", locationIsdList);
+		
+		return query.list();
+	}
+	
 public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
+		str.append(" SELECT "
+				+"	tuld1.tab_user_info_id as tabUserInfoId, max(tuld1.tab_user_location_details_id) as pkid"
+				+" FROM  "
+				+"	tab_user_location_details tuld1 " );
+		if(type.equalsIgnoreCase(IConstants.STATE) || type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" , constituency c ");
+		
+		str.append(" WHERE    "
+				+"	(date(tuld1.survey_time) between :startDate and :endDate )  and   tuld1.tab_user_info_id is not null ");
+		if(type.equalsIgnoreCase(IConstants.STATE) || type.equalsIgnoreCase(IConstants.DISTRICT) ){
+			str.append(" and  tuld1.constituency_id = c.constituency_id ");
+		}
+		if(type != null &&  locationId.longValue()>0L)
+		{
+			if(type.equalsIgnoreCase(IConstants.STATE)){
+				if(locationId == 36L || locationId == 2L)
+					str.append(" and (c.district_id  between 1 and 10 ) ");
+				else if( locationId == 1L)
+					str.append(" and (c.district_id between 11 and 23 ) ");
+
+			}
+			else if(type.equalsIgnoreCase(IConstants.DISTRICT)){
+				str.append(" and c.district_id = :locationId and c.state_id =1 and c.election_scope_id = 2 and c.deform_date is null ");
+			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				str.append("  and tuld1.constituency_id = :locationId ");
+			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
+				str.append(" and  c.tehsil_id = :locationId ");
+			}
+		}
+		
+		str.append("  group by tuld1.tab_user_info_id  ");
+				
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("tabUserInfoId", Hibernate.LONG)
+				.addScalar("pkid", Hibernate.LONG);
+			//	.addScalar("mobileNo", Hibernate.STRING)
+			//	.addScalar("latitude", Hibernate.STRING)
+			//	.addScalar("longititude", Hibernate.STRING)
+			//	.addScalar("surveyTime", Hibernate.STRING);
+		if(type != null && !type.equalsIgnoreCase(IConstants.STATE))
+				query.setParameter("locationId", locationId);
+		
+		if(startDate !=null && endDate !=null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		
+		return query.list();
+		
+		/*
 		str.append("SELECT tui.tab_user_info_id as tabUserInfoId,tui.name as name,tui.mobile_no as mobileNo" +
 				",tuld.latitude as latitude,tuld.longititude as longititude,max(tuld.survey_time) as surveyTime " +
 				" FROM " +
@@ -131,33 +203,17 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 				str.append("  and c.constituency_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
 				str.append(" and  c.tehsil_id = :locationId ");
-			}/*else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+			}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
 				str.append("  and ua.panchayat_id = :locationId ");
 			}else if(type.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 				str.append(" and c.local_election_body_id = :locationId ");
-			}*/
+			}
 		}
+			*/
 			
-			
-			str.append(" group by tui.tab_user_info_id ");
-		
-		Query query = getSession().createSQLQuery(str.toString())
-				.addScalar("tabUserInfoId", Hibernate.LONG)
-				.addScalar("name", Hibernate.STRING)
-				.addScalar("mobileNo", Hibernate.STRING)
-				.addScalar("latitude", Hibernate.STRING)
-				.addScalar("longititude", Hibernate.STRING)
-				.addScalar("surveyTime", Hibernate.STRING);
-		if(type != null && !type.equalsIgnoreCase(IConstants.STATE))
-				query.setParameter("locationId", locationId);
-		
-		if(startDate !=null && endDate !=null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
-		}
+			//str.append(" group by tui.tab_user_info_id ");
 		
 		
-		return query.list();
 		
 	}
 	/*public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type){
