@@ -2023,8 +2023,165 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			}
 		}
 	}
+	
+	
 	public CadreRegistratedCountVO getStateDtls(Long activityMemberId,Long stateId,String startDate, String endDate){
+		
 		try{
+			
+			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO();
+			
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
+			Date lastOneHourTime = cal.getTime();
+			
+			//LAST ONE HOUR IN FIELD
+			Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTodayInFieldList(stateId,lastOneHourTime);
+			//TODAY TOTAL IN FIELD
+			Long ttlTabUserInFieldToday = tabUserEnrollmentInfoDAO.getTodayPresentList(stateId,today);
+			
+			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l); 
+			cadreRegistratedCountVO.setTodayFieldMembersCount(ttlTabUserInFieldToday != null ? ttlTabUserInFieldToday : 0l);  
+			
+			//LOCATIONS RELATED
+			
+			//CONSTITUENCIES STARTED AND NOT STARTED.
+			 List<Object[]> allStateConstituencies = constituencyDAO.getStateWiseAssemblyConstituency(stateId);
+			 List<Long> apCnsttuncesIds = new ArrayList<Long>();
+			   if(allStateConstituencies != null && allStateConstituencies.size() > 0 ){
+				   for(Object [] param:allStateConstituencies){
+					   apCnsttuncesIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));  
+				   }
+			   }
+			   
+			List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(stateId);
+			if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
+				  cadreRegistratedCountVO.setTodayStartedConsttuncyCnt(Long.valueOf(todayStaredConstituencyCntList.size()));
+			 }
+			 
+			 apCnsttuncesIds.removeAll(todayStaredConstituencyCntList);
+			 cadreRegistratedCountVO.setTodayNotStartedConsttuncyCnt(Long.valueOf(apCnsttuncesIds.size()));
+			 cadreRegistratedCountVO.setLocationIdsList(apCnsttuncesIds);
+			   
+			//TEHSILS
+			 List<Long> mandalIdsList = new ArrayList<Long>(0); 
+			 List<Long> rtrnAllMandalIds = constituencyTehsilDAO.getAllStateWiseTehsilIds(stateId);
+			 setRequiredDIdsToList(rtrnAllMandalIds,mandalIdsList,"Mandal");
+			 
+			 List<Long> mandalTodayStartedIdsList = new ArrayList<Long>(0);
+			 List<Long> rtrnTodayStatedMandalIdsLst = tdpCadreLocationInfoDAO.getTodayMandalStartedStateWise(stateId);
+			 setRequiredDIdsToList(rtrnTodayStatedMandalIdsLst,mandalTodayStartedIdsList,"Mandal");
+			
+			 mandalIdsList.removeAll(mandalTodayStartedIdsList);
+			 
+			
+			 //LEB
+			   List<Long> muncipalityIdsList = new ArrayList<Long>(0);
+			   List<Long> rtrnAllMuncipalityIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdsStateWise(stateId);
+			   setRequiredDIdsToList(rtrnAllMuncipalityIdsList,muncipalityIdsList,"Muncipality");
+			   
+			   List<Long> muncipalityTodayStartedIdsList = new ArrayList<Long>(0);
+			   List<Long> rtrnTodayStatedMuncipalityIdsLst = tdpCadreLocationInfoDAO.getTodayLocalElectionBodyStartedStateWise(stateId);
+			   setRequiredDIdsToList(rtrnTodayStatedMuncipalityIdsLst,muncipalityTodayStartedIdsList,"Muncipality");
+			   
+			   muncipalityIdsList.removeAll(muncipalityTodayStartedIdsList);
+			   
+			   cadreRegistratedCountVO.setTodayStartedMandalMuncipalityCnt(Long.valueOf(rtrnTodayStatedMandalIdsLst.size()+rtrnTodayStatedMuncipalityIdsLst.size()));
+			   cadreRegistratedCountVO.setTodayNotStartedMandalMuncipalityCnt(Long.valueOf(mandalIdsList.size()+muncipalityIdsList.size()));
+			   
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(mandalIdsList);
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(muncipalityIdsList);
+			   
+			   return cadreRegistratedCountVO;
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getStateDtls() in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;    
+	}
+	
+	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate){
+try{
+			
+			CadreRegistratedCountVO  cadreRegistratedCountVO = new CadreRegistratedCountVO();
+			
+			Date today = dateUtilService.getCurrentDateAndTime();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 1);  
+			Date lastOneHourTime = cal.getTime();
+			
+			//LAST ONE HOUR IN FIELD
+			Long ttlTabUserInField = tabUserEnrollmentInfoDAO.getTodayInFieldList(stateId,lastOneHourTime);
+			//TODAY TOTAL IN FIELD
+			Long ttlTabUserInFieldToday = tabUserEnrollmentInfoDAO.getTodayPresentList(stateId,today);
+			
+			cadreRegistratedCountVO.setInField(ttlTabUserInField != null ? ttlTabUserInField : 0l); 
+			cadreRegistratedCountVO.setTodayFieldMembersCount(ttlTabUserInFieldToday != null ? ttlTabUserInFieldToday : 0l);  
+			
+			//LOCATIONS RELATED
+			
+			//CONSTITUENCIES STARTED AND NOT STARTED.
+			 List<Object[]> allStateConstituencies = constituencyDAO.getStateWiseAssemblyConstituency(stateId);
+			 List<Long> apCnsttuncesIds = new ArrayList<Long>();
+			   if(allStateConstituencies != null && allStateConstituencies.size() > 0 ){
+				   for(Object [] param:allStateConstituencies){
+					   apCnsttuncesIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));  
+				   }
+			   }
+			   
+			List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(stateId);
+			if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
+				  cadreRegistratedCountVO.setTodayStartedConsttuncyCnt(Long.valueOf(todayStaredConstituencyCntList.size()));
+			 }
+			 
+			 apCnsttuncesIds.removeAll(todayStaredConstituencyCntList);
+			 cadreRegistratedCountVO.setTodayNotStartedConsttuncyCnt(Long.valueOf(apCnsttuncesIds.size()));
+			 cadreRegistratedCountVO.setLocationIdsList(apCnsttuncesIds);
+			   
+			//TEHSILS
+			 List<Long> mandalIdsList = new ArrayList<Long>(0); 
+			 List<Long> rtrnAllMandalIds = constituencyTehsilDAO.getAllStateWiseTehsilIds(stateId);
+			 setRequiredDIdsToList(rtrnAllMandalIds,mandalIdsList,"Mandal");
+			 
+			 List<Long> mandalTodayStartedIdsList = new ArrayList<Long>(0);
+			 List<Long> rtrnTodayStatedMandalIdsLst = tdpCadreLocationInfoDAO.getTodayMandalStartedStateWise(stateId);
+			 setRequiredDIdsToList(rtrnTodayStatedMandalIdsLst,mandalTodayStartedIdsList,"Mandal");
+			
+			 mandalIdsList.removeAll(mandalTodayStartedIdsList);
+			 
+			
+			 //LEB
+			   List<Long> muncipalityIdsList = new ArrayList<Long>(0);
+			   List<Long> rtrnAllMuncipalityIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdsStateWise(stateId);
+			   setRequiredDIdsToList(rtrnAllMuncipalityIdsList,muncipalityIdsList,"Muncipality");
+			   
+			   List<Long> muncipalityTodayStartedIdsList = new ArrayList<Long>(0);
+			   List<Long> rtrnTodayStatedMuncipalityIdsLst = tdpCadreLocationInfoDAO.getTodayLocalElectionBodyStartedStateWise(stateId);
+			   setRequiredDIdsToList(rtrnTodayStatedMuncipalityIdsLst,muncipalityTodayStartedIdsList,"Muncipality");
+			   
+			   muncipalityIdsList.removeAll(muncipalityTodayStartedIdsList);
+			   
+			   cadreRegistratedCountVO.setTodayStartedMandalMuncipalityCnt(Long.valueOf(rtrnTodayStatedMandalIdsLst.size()+rtrnTodayStatedMuncipalityIdsLst.size()));
+			   cadreRegistratedCountVO.setTodayNotStartedMandalMuncipalityCnt(Long.valueOf(mandalIdsList.size()+muncipalityIdsList.size()));
+			   
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(mandalIdsList);
+			   cadreRegistratedCountVO.getLocationIdsList1().addAll(muncipalityIdsList);
+			   
+			   return cadreRegistratedCountVO;
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getStateDtlsTS() in CoreDashboardCadreRegistrationService service", e);
+		}
+		return null;
+	}
+	
+	public CadreRegistratedCountVO getStateDtlsOld(Long activityMemberId,Long stateId,String startDate, String endDate){
+		try{
+			
+			//SWADHIN
 			DateUtilService dateUtilService = new DateUtilService();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -2126,7 +2283,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			//Long ttlSubmittedDataToday = tabUserEnrollmentInfoDAO.getTotalRecordSubmitedByTabUser(today, 1l);
 			cadreRegistratedCountVO.setTotalSubmittedToday(totalCadreToday != null ? totalCadreToday : 0l);  
 			 
-			
+			//SANTOSH
 			/* showing stated constituency,mandal and MUNCIPALITY  */
 			  List<Long> todayStaredConstituencyCntList = tdpCadreLocationInfoDAO.getTodayTotalStartedRegistrationConstituencyStateWise(stateId);
 			  if(todayStaredConstituencyCntList != null && todayStaredConstituencyCntList.size() > 0){
@@ -2257,7 +2414,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		return null;
 	}
 	
-	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate){
+	public CadreRegistratedCountVO getStateDtlsTSOld(Long activityMemberId,Long stateId,String startDate, String endDate){
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
