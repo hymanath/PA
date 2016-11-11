@@ -1293,6 +1293,7 @@ function buildDataCollectorsPerformanceDetails(result){
 				str+='<th>recent record</th>';
 				str+='<th>last hour</th>';
 				str+='<th>Completed Registrations</th>';
+				str+='<th>Is Slow Performer?</th>';
 				//str+='<th>today target</th>';
 				str+='<th>open issues</th>';
 				str+='<th>fixed issues</th>';
@@ -1300,7 +1301,13 @@ function buildDataCollectorsPerformanceDetails(result){
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
-				str+='<tr>';
+				if(result[i].performanceType != null && result[i].performanceType == 'SLOW')
+					str+='<tr style="background: lightgray;">';
+				/*else if(result[i].performanceType != null && result[i].performanceType == 'BETTER')
+					str+='<tr style="background: lightgreen;">';*/
+				else
+					str+='<tr>';
+				
 					if(result[i].lastHourCount != null && result[i].lastHourCount > 0){
 						if(result[i].districtName != null)
 							str+='<td class="issueCmpltd">'+result[i].districtName+'</td>';
@@ -1361,6 +1368,12 @@ function buildDataCollectorsPerformanceDetails(result){
 						str+='<td> - </td>';
 					if(result[i].totalCount != null)
 						str+='<td>'+result[i].totalCount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].performanceType != null && result[i].performanceType == 'SLOW')
+						str+='<td> YES </td>';
+					else if(result[i].performanceType != null && result[i].performanceType == 'BETTER')
+						str+='<td> NO </td>';
 					else
 						str+='<td> - </td>';
 					/*if(result[i].todayTarget != null)
