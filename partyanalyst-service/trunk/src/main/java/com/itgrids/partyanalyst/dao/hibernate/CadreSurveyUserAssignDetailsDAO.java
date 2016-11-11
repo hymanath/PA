@@ -469,7 +469,7 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		}
 		
 		if(startDate != null && endDate != null){
-			queryStr.append(" and date(CSUAD.insertedTime) between :startDate and :endDate");
+			queryStr.append(" and date(model.surveyDate) between :startDate and :endDate");
 		 }
 		
 		if(districtId != null && districtId.longValue()>0l){   
