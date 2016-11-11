@@ -14623,6 +14623,11 @@
 	<action name="mediaScreenPartyAction" class="fieldMonitoringAction" method="mediaScreenParty">
 			<result>/jsp/mediaScreenParty.jsp</result>
 		</action>
-	     
+	  
+	  <action name="saveUserPerformanceDetailsAction" class="fieldMonitoringAction"  method="saveUserPerformanceDetails">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>   
 </package>
 </struts>
