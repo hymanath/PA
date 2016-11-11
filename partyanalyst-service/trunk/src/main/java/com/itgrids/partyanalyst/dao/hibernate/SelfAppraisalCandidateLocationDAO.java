@@ -86,7 +86,7 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 				   		" SelfAppraisalCandidateLocation SACL, SelfAppraisalCandidate SAC " +
 				   		" where " +
 				   		" SACL.selfAppraisalCandidateId = SAC.selfAppraisalCandidateId and" +
-				   		" SAC.isActive = 'Y' and " +
+				   		" SAC.isActive = 'Y' and " +  
 				   		" SAC.selfAppraisalDesignation.selfAppraisalDesignationId in (:desigList) and " +
 				   		" SAC.selfAppraisalDesignation.isActive = 'Y' and " +
 				   		" SACL.userAddress.state.stateId = :stateId ");
@@ -108,7 +108,8 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 			   queryStr.append(" and SACL.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		   }
 		   queryStr.append(" group by SAC.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		   				" SAC.selfAppraisalCandidateId");   
+		   				" SAC.selfAppraisalCandidateId, " +
+		   				" SACL.selfAppraisalLocationScopeId");   
 		   Query query = getSession().createQuery(queryStr.toString());	
 		   
 		   if(locationValueSet != null && locationValueSet.size() > 0){
@@ -176,12 +177,36 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		   }
 		   return query.list();   
 	   }
-	   List<Object[]> getDesignationListDtls(List locationScopeId, Set<Long> locationValueSet){
+	   public List<Object[]> getDesignationListDtls(Long userAccessLevelId, Set<Long> locationValueSet){
 		   StringBuilder queryStr = new StringBuilder();
-		   queryStr.append(" select SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
-		   				   " SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation " +
+		   queryStr.append(" select distinct SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		   				   " SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation," +
+		   				   " SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo " +
 		   				   " from SelfAppraisalCandidateLocation SACL where " +
-		   				   " ");
-		   return null;
+		   				   " SACL.selfAppraisalCandidate.isActive = 'Y' " +  
+		   				   " and SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' ");
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			   queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			   queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues) ");  
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			   queryStr.append(" and SACL.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues) "); 
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			   queryStr.append(" and SACL.userAddress.panchayat.panchayatId in (:userAccessLevelValues) "); 
+		   }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			   queryStr.append(" and SACL.userAddress.ward.constituencyId in (:userAccessLevelValues) "); 
+		   }
+		   queryStr.append(" order by  SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+		   Query query = getSession().createQuery(queryStr.toString());	  
+		   if(locationValueSet != null && locationValueSet.size() > 0){
+			   query.setParameterList("userAccessLevelValues", locationValueSet);
+		   }
+		   return query.list();    
 	   }
 }

@@ -157,17 +157,34 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  query.setParameterList("locValLst", locValLst);
 		  return (Long) query.uniqueResult();
 	  }
-	  public List<Object[]> getCndWiseAndLocValWiseCountList(Date fromDate, Date toDate){
+	  public List<Object[]> getCndWiseAndLocValWiseCountListForOwn(Date fromDate, Date toDate){
 		  StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select SACD.selfAppraisalCandidateId, SACD.ownLocationValue, sum(SACD.ownTours) " +
 		  		" from " +
 		  		" SelfAppraisalCandidateDetails SACD  ");
 		  if(fromDate != null && toDate != null){
-			  queryStr.append(" where date(SACD.updatedTime) between (:fromDate) and (:toDate) ");
+			  queryStr.append(" where date(SACD.updatedTime) between (:fromDate) and (:toDate) ");  
 		  }
 		  queryStr.append(" group by " +
-		  		" SACD.selfAppraisalCandidateId, SACD.ownLocationValue "); 
+		  		" SACD.selfAppraisalCandidateId, SACD.ownLocationValue ");        
 		  Query query = getSession().createQuery(queryStr.toString());
+		  if(fromDate != null && toDate != null){
+			  query.setDate("fromDate", fromDate);
+			  query.setDate("toDate",toDate);
+		  }
+		  return query.list();  
+	  }
+	  public List<Object[]> getCndWiseAndLocValWiseCountListForIncharge(Date fromDate, Date toDate){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select SACD.selfAppraisalCandidateId, SACD.inchargeLocationValue, sum(SACD.inchargeTours) " +
+		  		" from " +
+		  		" SelfAppraisalCandidateDetails SACD  ");  
+		  if(fromDate != null && toDate != null){
+			  queryStr.append(" where date(SACD.updatedTime) between (:fromDate) and (:toDate) ");      
+		  }
+		  queryStr.append(" group by " +
+		  		" SACD.selfAppraisalCandidateId, SACD.inchargeLocationValue "); 
+		  Query query = getSession().createQuery(queryStr.toString());  
 		  if(fromDate != null && toDate != null){
 			  query.setDate("fromDate", fromDate);
 			  query.setDate("toDate",toDate);
@@ -335,7 +352,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 						" and SACD.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIdList) " +
 						" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId = SACL.selfAppraisalCandidate.selfAppraisalCandidateId ");
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");  
+			queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");    
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 			queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues)");  
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
@@ -351,7 +368,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 			queryStr.append(" and SACL.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		}
-		Query query = getSession().createQuery(queryStr.toString());
+		queryStr.append(" group by SACD.selfAppraisalCandidate.selfAppraisalDesignationId");   
+		Query query = getSession().createQuery(queryStr.toString());  
         if(startDate != null && endDate != null ){
         	query.setDate("fromDate", startDate);
         	query.setDate("toDate", endDate);
