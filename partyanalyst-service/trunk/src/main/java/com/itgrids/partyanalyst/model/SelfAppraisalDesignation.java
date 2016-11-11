@@ -18,6 +18,7 @@ public class SelfAppraisalDesignation {
 	private Long selfAppraisalDesignationId;
 	private String designation;
 	private String isActive;
+	private Long orderNo;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="self_appraisal_designation_id", unique=true, nullable=false)
@@ -41,5 +42,13 @@ public class SelfAppraisalDesignation {
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
+	@Column(name="order_no")  
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	
 	
 }
