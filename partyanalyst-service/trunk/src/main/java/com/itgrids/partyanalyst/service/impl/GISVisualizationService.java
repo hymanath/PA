@@ -856,7 +856,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 	public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
 		GISUserTrackingVO returnVO = new GISUserTrackingVO();
 		try{
-			System.out.println(inputVO.getParentLocationType() +" starting @ : "+new Date());
+			//System.out.println(inputVO.getParentLocationType() +" starting @ : "+new Date());
 			Set<Long> cadreSurveyUserIdsLsit = new HashSet<Long>(0);
 			Map<Long,GISUserTrackingVO> tabUserMap = new HashMap<Long,GISUserTrackingVO>();
 			//List<Object[]> totalTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
@@ -877,16 +877,24 @@ public class GISVisualizationService implements IGISVisualizationService{
 			}
 			
 			List<Object[]> latestObj = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabUser(inputVO.getParentLocationTypeId(),fromDate,toDate,inputVO.getParentLocationType());
+			List<Long> locationIdsList = new ArrayList<Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(latestObj)){
-				for (Object[] param : latestObj) {
-					GISUserTrackingVO tabVO =  tabUserMap.get(param[0] !=null ? (Long)param[0]:0l);
-					if(tabVO != null){
-						tabVO.setLattitude(param[3] !=null ? param[3].toString():"");
-						tabVO.setLongitude(param[4] !=null ? param[4].toString():"");
-						tabVO.setSurveyTime(param[5] !=null ? param[5].toString():"");
-					 }
-				   }
+				for (Object[] param : latestObj) 
+					locationIdsList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+			}
+			if(commonMethodsUtilService.isListOrSetValid(locationIdsList)){
+				List<Object[]> latestLatLongitudeDtls = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabbUserByIds(locationIdsList);
+				if(commonMethodsUtilService.isListOrSetValid(latestLatLongitudeDtls)){
+					for (Object[] param : latestLatLongitudeDtls) {
+						GISUserTrackingVO tabVO =  tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(tabVO != null){
+							tabVO.setLattitude(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabVO.setLongitude(commonMethodsUtilService.getStringValueForObject(param[4]));
+							tabVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[5]));
+						 }
+					}
 				}
+			}
 			
 			
 			//List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
@@ -897,7 +905,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			returnVO.setTodayActiveCount(Long.valueOf(String.valueOf(cadreSurveyUserIdsLsit.size())));
 			returnVO.setTodayInActiveCount(returnVO.getActiveCount()-returnVO.getTodayActiveCount());
 			cadreSurveyUserIdsLsit.clear();
-			
+		
 			List<Object[]>  assignedUsersList = cadreSurveyUserAssignDetailsDAO.getUserTrackingDetails(inputVO);
 			Map<Long,Long> locationWiseAllocatedCoutnMap = new HashMap<Long, Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(assignedUsersList)){
@@ -915,6 +923,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			
 			//List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			//List<Object[]> lastOneHrTrackingList = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			
 			List<Object[]> lastOneHrTrackingList = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
 			setLocationWiseTabUserTrackingDetails(lastOneHrTrackingList,"LastOneHr",returnVO,tabUserMap,cadreSurveyUserIdsLsit);
 			
@@ -950,39 +959,19 @@ public class GISVisualizationService implements IGISVisualizationService{
 			//returnVO.setUsersList(tabUserList);
 			Map<Long,GISUserTrackingVO> locationWiseUsersMap = segriteLocationdetials(returnVO,inputVO,locationWiseAllocatedCoutnMap);
 			
-			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) || inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-				returnVO.getTodayActiveUsersList().clear();
-				returnVO.getTodayInActiveUsersList().clear();
-				returnVO.getLastOneHrActiveusersList().clear();
-				returnVO.getLastOneHrInActiveusersList().clear();
-			}
+			returnVO.getTodayActiveUsersList().clear();
+			returnVO.getTodayInActiveUsersList().clear();
+			returnVO.getLastOneHrActiveusersList().clear();
+			returnVO.getLastOneHrInActiveusersList().clear();
+			
 			if(commonMethodsUtilService.isMapValid(locationWiseUsersMap)){
 				returnVO.getUsersList().addAll(locationWiseUsersMap.values());
 			}
 			
 			
 			returnVO.setInActiveCount(returnVO.getAllocatedCount()-returnVO.getActiveCount());
-			/*
-			Gson gson = new Gson();
-			String json = gson.toJson(returnVO);
-			Type type = new TypeToken<Map<String, Object>>() {}.getType();
-			Map<String, Object> data = new Gson().fromJson(json, type);
-
-			for (Iterator<Map.Entry<String, Object>> it = data.entrySet().iterator(); it.hasNext();) {
-			    Map.Entry<String, Object> entry = it.next();
-			    if (entry.getValue() == null) {
-			        it.remove();
-			    } else if (entry.getValue() instanceof ArrayList) {
-			        if (((ArrayList<?>) entry.getValue()).isEmpty()) {
-			            it.remove();
-			        }
-			    }
-			}
-
-			json = new GsonBuilder().setPrettyPrinting().create().toJson(data);
-			System.out.println(json);
-			*/
-			System.out.println(inputVO.getParentLocationType() +" compelted @ : "+new Date());			
+			
+			//System.out.println(inputVO.getParentLocationType() +" compelted @ : "+new Date());			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
 		}
