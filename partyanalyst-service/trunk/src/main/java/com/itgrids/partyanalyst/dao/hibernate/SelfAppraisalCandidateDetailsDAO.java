@@ -233,7 +233,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 		 return query.list();
 	   }
 	  
-	  public List<Object[]> getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String locationType,Long userTypeId){
+	  public List<Object[]> getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String locationType,Long candiateId){
 		     StringBuilder queryStr = new StringBuilder();
 		     		queryStr.append(" select distinct " );
      		 		if(locationType != null && locationType.equalsIgnoreCase("District")){
@@ -260,25 +260,15 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 			      if(fromDate != null && toDate != null ){
 			    	  queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
                  }
-			     if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-				   queryStr.append(" and model1.userAddress.state.stateId in (:userAccessLevelValues)");  
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			    if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){//district
 				   queryStr.append(" and model1.userAddress.district.districtId in (:userAccessLevelValues)");  
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==2l){//parliamentConstituency
 			        queryStr.append(" and model1.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==3l){//Assembly
 			        queryStr.append(" and model1.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-				    queryStr.append(" and model1.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-				    queryStr.append(" and model1.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-				    queryStr.append(" and model1.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
-				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-				    queryStr.append(" and model1.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 				 }
-			     if(userTypeId != null && userTypeId.longValue() > 0){
-			    	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId=:userTypeId");
+			     if(candiateId != null && candiateId.longValue() > 0){
+			    	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalCandidateId=:candiateId");
 			     }
 			      queryStr.append(" group by ");
 			      if(locationType != null && locationType.equalsIgnoreCase("District")){
@@ -302,8 +292,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 			   query.setDate("fromDate", fromDate);
 		 			   query.setDate("toDate", toDate);
 		 		 }
-		 		 if(userTypeId != null && userTypeId.longValue() > 0){
-		 			   query.setParameter("userTypeId", userTypeId);
+		 		 if(candiateId != null && candiateId.longValue() > 0){
+		 			   query.setParameter("candiateId", candiateId);
 		 		 }
 		 		 return query.list();
 	   }
