@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -11,6 +12,7 @@ import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.model.TabUserEnrollmentInfo;
 import com.itgrids.partyanalyst.model.VoterFamilyCount;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollmentInfo, Long> implements ITabUserEnrollmentInfoDAO {
 	public TabUserEnrollmentInfoDAO() {
@@ -162,6 +164,70 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		query.setDate("toDate", toDate);
    		return query.list();    
    	}
+   	
+   	public List<Object[]> getActualCountOfCadreSurveyUserWiseCount(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate){
+		
+		StringBuilder str = new StringBuilder();				
+		str.append(" select model.cadreSurveyUserId,model.totalRecords,date(model.startTime) " +
+				" from TabUserEnrollmentInfo model  " +
+				" where " +
+				"  date(model.surveyTime) between :fromDate and :toDate ");					
+		
+		if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+			str.append( " and model.cadreSurveyUserId in (:cadreSurveyUsers)  " );
+		}
+		if(fromDate != null && toDate != null){
+			str.append(" and date(model.surveyTime) between :fromDate and  :toDate ");
+		}
+		
+		str.append(" group by date(model.surveyTime) ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		//CADRE_ENROLLMENT_NUMBER
+		if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+			query.setParameterList("cadreSurveyUsers", cadreSurveyUsers);
+		}
+		
+		if(fromDate !=null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+		
+	}
+   	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate){
+		
+		StringBuilder str = new StringBuilder();				
+		str.append(" select model.cadreSurveyUserId,sum(model.totalRecords) " +
+				" from TabUserEnrollmentInfo model  " +
+				" where ");					
+		
+		if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+			str.append( "  model.cadreSurveyUserId in (:cadreSurveyUsers)  " );
+		}
+		if(fromDate != null && toDate != null){
+			str.append(" and date(model.surveyTime) between :fromDate and  :toDate ");
+		}
+		str.append(" group by model.cadreSurveyUserId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		//CADRE_ENROLLMENT_NUMBER
+		if(fromDate !=null && toDate !=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+			query.setParameterList("cadreSurveyUsers", cadreSurveyUsers);
+		}
+		
+		return query.list();
+		
+	}
 }
 
 

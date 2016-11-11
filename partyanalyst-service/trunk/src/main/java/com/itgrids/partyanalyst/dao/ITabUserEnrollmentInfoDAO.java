@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -19,4 +20,6 @@ public interface ITabUserEnrollmentInfoDAO extends GenericDao<TabUserEnrollmentI
 	public List<Object[]> getTabUserWiseTotalRegistrationDetails(Long stateId,Date date);
 	public List<Object[]> getActiveTabUserDtls(Long stateId,Date lastOneHourTime);
 	public List<Object[]> getTabUserDtlsList(Long constituencyId,Date fromDate,Date toDate);
+	public List<Object[]> getActualCountOfCadreSurveyUserWiseCount(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate);
+	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate);
 }

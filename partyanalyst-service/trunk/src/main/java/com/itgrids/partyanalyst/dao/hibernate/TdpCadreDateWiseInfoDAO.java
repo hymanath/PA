@@ -761,4 +761,68 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			}
 			return (Long) query.uniqueResult();
 		} 
+	 	
+	 	public List<Object[]> getActualCountOfCadreSurveyUser(Long districtId,Long stateId,Date startDate,Date endDate,Long constituencyId){
+	 		
+	 		StringBuilder queryStr = new StringBuilder();
+	 		queryStr.append(" select ");
+	 		
+	 		if(districtId != null && districtId.longValue()>0l){
+	 			queryStr.append(" distinct c.constituencyId,c.name ");
+	 		}else{
+	 			queryStr.append(" distinct d.districtId,d.districtName ");
+	 		}
+	 		
+	 		queryStr.append(" ,sum(TCDWI.cadre2016) " +
+	 				" from TdpCadreDateWiseInfo TCDWI "); 
+	 		if(constituencyId != null && constituencyId.longValue()>0l){
+	 			queryStr.append(" ,Constituency c  where c.constituencyId = :constituencyId " );
+	 		}else if(districtId != null && districtId.longValue()>0l){
+	 			queryStr.append(" ,Constituency c where c.district.districtId = :districtId  " );
+	 		}else{
+	 			queryStr.append(" ,District d where d.districtId = TCDWI.locationValue " );
+	 		}
+	 		
+	 		if(constituencyId != null && constituencyId.longValue()>0l){
+	 			queryStr.append(" and TCDWI.locationScopeId = 4 and  TCDWI.locationValue= c.constituencyId ");
+	 		}else if(districtId != null && districtId.longValue()>0l){
+	 			queryStr.append(" and TCDWI.locationScopeId = 4 and  c.constituencyId = TCDWI.locationValue");
+	 		}else{
+	 			if(stateId != null && stateId.longValue() == 1l){
+	 				queryStr.append(" and TCDWI.locationScopeId = 3 and (TCDWI.locationValue between 11 and 23) ");
+	 			}else if(stateId != null && stateId.longValue() == 36l && stateId.longValue() == 2l ){
+					queryStr.append(" and TCDWI.locationScopeId = 3 and (TCDWI.locationValue between  1 and 10 ) ");
+				}
+	 		}
+	 		
+	 		if(startDate != null && endDate != null){
+	 			queryStr.append(" and (date(TCDWI.surveyDate) between :startDate and :endDate) ");
+	 		 }
+	 		if(constituencyId != null && constituencyId.longValue()>0l){
+	 			//queryStr.append(" group by c.constituencyId ");
+	 		}else if(districtId != null && districtId.longValue()>0l){   
+	 			queryStr.append(" group by c.constituencyId ");
+	 		}else {
+	 			queryStr.append(" group by d.districtId ");
+	 		}
+	 		
+	 		Query query = getSession().createQuery(queryStr.toString());
+	 		
+	 		
+	 	    if(constituencyId != null && constituencyId.longValue()>0l){
+	 			query.setParameter("constituencyId", constituencyId);	
+	 		}else if(districtId != null && districtId.longValue()>0l){
+	 			query.setParameter("districtId", districtId);
+	 		}
+	 		/*if(stateId != null && stateId.longValue() > 0l){
+	 			query.setParameter("stateId", stateId);
+	 		}*/
+	 		
+	 		if(startDate != null && endDate != null){
+	 			query.setDate("startDate", startDate);
+	 			query.setDate("endDate", endDate);
+	 		}
+	 		return query.list();
+	 		
+	 	}
 }

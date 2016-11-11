@@ -30,4 +30,5 @@ public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInf
 	public List<Object[]> getConstitiuencyWise2016RenewalCadreCountBasedOnUserType(Long userAccessLevelId,Set<Long> locationValue,Date fromDate,Date toDate);
 	public Long getTotalCadreCountLocationWiseTS(Long stateId, Date frmDt, Date toDt);
 	public Long getTotalRenewlCadreLocationWiseTS(Long stateId, Date frmDt, Date toDt);
+	public List<Object[]> getActualCountOfCadreSurveyUser(Long districtId,Long stateId,Date startDate,Date endDate,Long constituencyId);
 }

@@ -13,9 +13,10 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTabRecordsStatusDAO;
+import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dto.CadreTabRecordsStatusVO;
-import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.service.IDataReconsolidationService;
 
 public class DataReconsolidationService implements IDataReconsolidationService {
@@ -23,10 +24,34 @@ public class DataReconsolidationService implements IDataReconsolidationService {
 	private ICadreTabRecordsStatusDAO cadreTabRecordsStatusDAO;
 	private ITdpCadreDAO tdpCadreDAO;
 	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
+	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
+	private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
 	
 	
 	
-  public ICadreSurveyUserAssignDetailsDAO getCadreSurveyUserAssignDetailsDAO() {
+  public ITabUserEnrollmentInfoDAO getTabUserEnrollmentInfoDAO() {
+		return tabUserEnrollmentInfoDAO;
+	}
+
+
+	public void setTabUserEnrollmentInfoDAO(
+			ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO) {
+		this.tabUserEnrollmentInfoDAO = tabUserEnrollmentInfoDAO;
+	}
+
+
+public ITdpCadreDateWiseInfoDAO getTdpCadreDateWiseInfoDAO() {
+		return tdpCadreDateWiseInfoDAO;
+	}
+
+
+	public void setTdpCadreDateWiseInfoDAO(
+			ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO) {
+		this.tdpCadreDateWiseInfoDAO = tdpCadreDateWiseInfoDAO;
+	}
+
+
+public ICadreSurveyUserAssignDetailsDAO getCadreSurveyUserAssignDetailsDAO() {
 		return cadreSurveyUserAssignDetailsDAO;
 	}
 
@@ -111,11 +136,16 @@ public List<CadreTabRecordsStatusVO> dataReConsalationOverView(Long stateId,Long
     		
     		Map<Long,Long> actualMap = new HashMap<Long, Long>();
     		Map<Long,String> syncMap = new HashMap<Long, String>();
-    		List<Object[]> cadreSurveyCountObj =  tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+    		List<Object[]> cadreSurveySyncTypes =  tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+    		List<Object[]> cadreSurveyCountObj = tabUserEnrollmentInfoDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers,startDate,endDate);
     		
     		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
     			for (Object[] objects : cadreSurveyCountObj) {
     				actualMap.put((Long)objects[0],objects[1] !=null ? (Long)objects[1]:0l);
+				}
+    		}
+    		if(cadreSurveySyncTypes !=null && cadreSurveySyncTypes.size()>0){
+    			for (Object[] objects : cadreSurveySyncTypes) {
     				syncMap.put((Long)objects[0],objects[2] !=null ? objects[2].toString():"");
 				}
     		}
@@ -197,8 +227,8 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 			    //statusvo.setCadreSurveyUserId(cadreSurveyUserId);
 
 			Map<Long, Long> actualMap = new HashMap<Long, Long>();
-			List<Object[]> cadreSurveyCountObj = tdpCadreDAO
-					.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+			//List<Object[]> cadreSurveyCountObj = tdpCadreDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers);
+			List<Object[]> cadreSurveyCountObj = tabUserEnrollmentInfoDAO.getActualCountOfCadreSurveyUser(cadreSurveyUsers,startDate,endDate);
 
 			if (cadreSurveyCountObj != null && cadreSurveyCountObj.size() > 0) {
 				for (Object[] objects : cadreSurveyCountObj) {
@@ -281,7 +311,8 @@ public List<CadreTabRecordsStatusVO> getCadreSurveyUserWiseRegistrations(Long ca
 		}
 		Map<String,Long> actualCadreMap = new HashMap<String, Long>();
 		
-		List<Object[]> cadreSurveyCountObjs =  tdpCadreDAO.getActualCountOfCadreSurveyUserWiseCount(cadreSurveyUsers, fromDate, toDate);
+		//List<Object[]> cadreSurveyCountObjs =  tdpCadreDAO.getActualCountOfCadreSurveyUserWiseCount(cadreSurveyUsers, fromDate, toDate);
+		List<Object[]> cadreSurveyCountObjs =  tabUserEnrollmentInfoDAO.getActualCountOfCadreSurveyUserWiseCount(cadreSurveyUsers, fromDate, toDate);
 		
 		if(cadreSurveyCountObjs !=null && cadreSurveyCountObjs.size()>0){
 			 SimpleDateFormat tempFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -327,10 +358,10 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 		   Date fromDate = null;
 		   Date toDate = null;
 		
-		   /*if(startDate !=null && endDate != null){			   
+		   if(startDate !=null && endDate != null){			   
 			   fromDate = sdf.parse(startDate);
 			   toDate = sdf.parse(endDate);
-		   }*/
+		   }
 		 
 		List<Object[]> cadreRegDetils = cadreSurveyUserAssignDetailsDAO.getLocationWiseSmartDevicesCount(stateId,districtId,constituencyId,fromDate,toDate);
 		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
@@ -354,11 +385,11 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 		}
 		
 		Map<Long,Long> actualMap = new HashMap<Long, Long>();
-		List<Object[]> cadreSurveyCountObj =  cadreSurveyUserAssignDetailsDAO.getActualCountOfCadreSurveyUser(locationIds,districtId,fromDate,toDate);
+		List<Object[]> cadreSurveyCountObj =  tdpCadreDateWiseInfoDAO.getActualCountOfCadreSurveyUser(districtId,stateId,fromDate,toDate,constituencyId);
 		
 		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
 			for (Object[] objects : cadreSurveyCountObj) {
-				actualMap.put((Long)objects[0],objects[1] !=null ? (Long)objects[1]:0l);
+				actualMap.put((Long)objects[0],objects[2] !=null ? (Long)objects[2]:0l);
 			}
 		}
 		if(finalList != null && finalList.size() > 0){
