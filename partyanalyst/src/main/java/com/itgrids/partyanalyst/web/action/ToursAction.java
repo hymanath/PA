@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -41,6 +42,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   private List<ToursBasicVO> resultList;
 	   private String successMsg;
 	   private List<List<ToursBasicVO>> listOfTourBasicVoList;
+	   private List<ToursBasicVO> listOfTourBasicVo;
 	
 	   public JSONObject getjObj() {
 		   return jObj;
@@ -126,9 +128,16 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			List<List<ToursBasicVO>> listOfTourBasicVoList) {
 		   this.listOfTourBasicVoList = listOfTourBasicVoList;
 	   }
-	public static Logger getLog() {
-		return LOG;
-	}
+	   
+	   public List<ToursBasicVO> getListOfTourBasicVo() {
+		   return listOfTourBasicVo;
+	   }
+	   public void setListOfTourBasicVo(List<ToursBasicVO> listOfTourBasicVo) {
+		   this.listOfTourBasicVo = listOfTourBasicVo;
+	   }
+	   public static Logger getLog() {
+		   return LOG;
+	   }
 	//Business method
 	   public String execute(){
 		   return Action.SUCCESS;
@@ -335,6 +344,48 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			
 		} catch (Exception e) { 
 			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getMemberDtlsForADesignation(){    
+		try {
+			LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			List<Long> disigList = new ArrayList<Long>();
+			JSONArray designationIdArray=jObj.getJSONArray("designationIds");
+			if(designationIdArray!=null &&  designationIdArray.length()>0){
+				for( int i=0;i<designationIdArray.length();i++){
+					disigList.add(Long.valueOf(designationIdArray.getString(i)));
+				}   
+			}   
+			listOfTourBasicVo = coreDashboardToursService.getMemberDtlsForADesignation(disigList,stateId,fromDate,toDate,activityMemberId); 
+			
+		} catch (Exception e) { 
+			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDesignationDtlsOfCandidate(){  
+		try{
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			List<Long> disigList = new ArrayList<Long>();
+			JSONArray designationIdArray=jObj.getJSONArray("desigIds");
+			if(designationIdArray!=null &&  designationIdArray.length()>0){
+				for( int i=0;i<designationIdArray.length();i++){
+					disigList.add(Long.valueOf(designationIdArray.getString(i)));
+				}   
+			}   
+			//resultVO = coreDashboardToursService.getDesignationDtls(activityMemberId,disigList,startDateStr,endDateStr);
+		}catch(Exception e){  
+			e.printStackTrace();  
+			LOG.error("Exception raised at getDesignationDtlsOfCandidate()  of ToursAction", e);
 		}
 		return Action.SUCCESS;
 	}
