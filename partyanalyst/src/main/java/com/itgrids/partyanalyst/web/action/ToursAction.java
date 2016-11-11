@@ -389,4 +389,20 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getLeaderAverageToursBasedOnAccessLevel(){  
+		try {
+			LOG.info("Entered into getLeaderAverageToursBasedOnAccessLevel()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long candidateId = jObj.getLong("candidateId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			resultVO = coreDashboardToursService.getLeaderAverageToursBasedOnAccessLevel(candidateId,stateId,fromDate,toDate); 
+		} catch (Exception e) { 
+			LOG.error("Exception raised at getLeaderAverageToursBasedOnAccessLevel() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

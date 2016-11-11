@@ -1042,8 +1042,9 @@
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp1</value>
 	                  <value>com.itgrids.partyanalyst.model.CadreRegIssuePerson</value>
 	                  <value>com.itgrids.partyanalyst.model.TrainingCampDetailsInfo</value>
-	                  <value>com.itgrids.partyanalyst.model.CadreSurveyUserPerformance</value>
+	                   <value>com.itgrids.partyanalyst.model.CadreSurveyUserPerformance</value>
 	                  <value>com.itgrids.partyanalyst.model.CadreSurveyUserPerformanceType</value>
+	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateTourLocation</value>
 	                  
 				 </list>
 			
