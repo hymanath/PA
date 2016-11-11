@@ -244,7 +244,7 @@ function getToursBasicOverviewCountDetails()
   function getTopPoorToursLocationDetails(userTypeId,selectedUserName,userType)
 	{   $("#topPoorLocationsToursDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
-					 activityMemberId : 2,
+					 activityMemberId : 241, 
 					 stateId : globalStateIdForTour,
 					 userTypeId:userTypeId,
 					 fromDate : "27/10/2016",
@@ -269,21 +269,20 @@ function getToursBasicOverviewCountDetails()
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">TOP POOR </span> TOUR LOCATIONS &nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
 		str+='</div>';
 	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
-	  if(userTypeId!= null && userTypeId==3 || userTypeId==2 || userTypeId==5 ||  userTypeId==11 || userTypeId==4){
+	  if(userTypeId!= null && userTypeId==1 || userTypeId==2 || userTypeId==3 ||  userTypeId==4 || userTypeId==5){
 		str+='<p class="text-capital">districts<span style="margin-left:320px">Average Tours</span></p>';  
 		resultListFirst = result.subList;
-		resultListSecond = result.subList2;
+		//resultListSecond = result.subList2;
 	  }
 	  if(userTypeId!= null &&  userTypeId==6){
 		 str+='<p class="text-capital">Parliament Constituency <span style="margin-left:320px">Average Tours</span></p>';  
 		resultListFirst = result.subList;
-		resultListSecond = result.subList2;  
+		//resultListSecond = result.subList2;  
 	  }
-	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
+	   if(userTypeId!= null && userTypeId==7){
 		 str+='<p class="text-capital">Constituencies<span style="margin-left:320px">Average Tours</span></p>';  
-		resultListFirst = result.subList2;
+		resultListFirst = result.subList;
 	  }
-	  
       str+='<table class="table tableCumulative">';
       if(resultListFirst != null && resultListFirst.length > 0){
 		  var order=1;
