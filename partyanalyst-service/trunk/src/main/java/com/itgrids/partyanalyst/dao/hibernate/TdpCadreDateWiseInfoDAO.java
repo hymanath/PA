@@ -784,7 +784,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	 		}
 	 		
 	 		if(constituencyId != null && constituencyId.longValue()>0l){
-	 			queryStr.append(" and TCDWI.locationScopeId = 4 and  TCDWI.locationValue= c.constituencyId ");
+	 			queryStr.append(" and TCDWI.locationScopeId = 4  and TCDWI.locationValue = :constituencyId ");
 	 		}else if(districtId != null && districtId.longValue()>0l){
 	 			queryStr.append(" and TCDWI.locationScopeId = 4 and  c.constituencyId = TCDWI.locationValue");
 	 		}else{
@@ -799,7 +799,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	 			queryStr.append(" and (date(TCDWI.surveyDate) between :startDate and :endDate) ");
 	 		 }
 	 		if(constituencyId != null && constituencyId.longValue()>0l){
-	 			//queryStr.append(" group by c.constituencyId ");
+	 			queryStr.append(" group by c.constituencyId ");
 	 		}else if(districtId != null && districtId.longValue()>0l){   
 	 			queryStr.append(" group by c.constituencyId ");
 	 		}else {
