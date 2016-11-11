@@ -3316,6 +3316,7 @@
 		//getMediaProgramsOnParty();
 		//getAllTvChannels();
 	}
+	
 	$(document).on("click",".userStructureClass",function(){
 		
 		$("#directChildActivityMemberDiv").html('');
