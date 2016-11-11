@@ -1639,7 +1639,7 @@
     
      <bean name="tdpCadreDataHourWiseForTabUsersByToday" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="triggerUserWiseHourWiseCadreData" />
-    	<property name="cronExpression" value="0 0/15 * * * ?" />
+    	<property name="cronExpression" value="0 10,30,50 * * * ?" />
 	</bean>
     <bean name="triggerUserWiseHourWiseCadreData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1660,7 +1660,7 @@
     
     <bean name="tdpCadreDataHourWiseByToday" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="triggerHourWiseCadreData" />
-    	<property name="cronExpression" value="0 0/15 * * * ?" />
+    	<property name="cronExpression" value="0 15,35,55 * * * ?" />
 	</bean>
     <bean name="triggerHourWiseCadreData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
