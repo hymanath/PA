@@ -3386,10 +3386,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="cadreSurveyUserPerformanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.cadreSurveyUserPerformanceTypeDAO">
+	<bean id="cadreSurveyUserPerformanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserPerformanceTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="cadreSurveyUserPerformanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.cadreSurveyUserPerformanceDAO">
+	<bean id="cadreSurveyUserPerformanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserPerformanceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
