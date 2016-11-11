@@ -52,23 +52,23 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		 query.setParameter("designationId", designationId);
 		 return (Long) query.uniqueResult();
 	 }
-	 public List<Object[]> getTotalLeadersDesignationBy(Long desigId){
+	 public List<Object[]> getTotalLeadersDesignationBy(List<Long> desigIds){
 		 StringBuilder queryStr = new StringBuilder();
 		   queryStr.append(" select " +
 		   		          " model.selfAppraisalDesignation.selfAppraisalDesignationId, " +
 		   		          " model.selfAppraisalDesignation.designation," +
 		   		          " count(distinct model.selfAppraisalCandidateId) " +
 		   		          " from SelfAppraisalCandidate model where model.isActive='Y' and model.selfAppraisalDesignation.isActive='Y' ");
-		   if(desigId != null){
-			   queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId = :desigId ");
+		   if(desigIds != null){
+			   queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in  (:desigIds) ");  
 		   }
 		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId " +  
 		   				  " order by model.selfAppraisalDesignation.selfAppraisalDesignationId ");
 		   Query query = getSession().createQuery(queryStr.toString());
-		   if(desigId != null){
-			   query.setParameter("desigId",desigId);
+		   if(desigIds != null){
+			   query.setParameterList("desigIds",desigIds);
 		   }  
-		   return query.list();
+		   return query.list();  
 	 }
 	 public List<Long> getCandidateList(Long desigId){
 		 StringBuilder queryStr = new StringBuilder();

@@ -425,7 +425,7 @@ IDelimitationConstituencyDAO {
 		Query query = getSession().createQuery(" select model.delimitationConstituencyID, model.constituency.constituencyId from DelimitationConstituency model" +
 				" where model.constituency.constituencyId in(:constituencyIDs) and model.year = :year");
 			query.setParameter("year", year);
-			query.setParameterList("constituencyIDs", constituencyIDs);
+			query.setParameterList("constituencyIDs", constituencyIDs);    
 		
 		return query.list();
 	}
@@ -445,13 +445,8 @@ IDelimitationConstituencyDAO {
 	public List<Object[]> getConstituencyNo(String stateName){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.constituency.constituencyId, model.constituencyNO from DelimitationConstituency model " +
-				  " where ");
-		if(stateName.equalsIgnoreCase("AP")){
-			sb.append(" model.constituency.district.districtId between 11 and 23 and model.year = 2009 "); 
-		}else{
-			sb.append(" model.constituency.district.districtId between 1 and 10 and model.year = 2009 ");
-		}
-		Query query = getSession().createQuery(sb.toString());
+				  " where model.constituency.district.districtId between 1 and 23 and model.year = 2009 ");  
+		Query query = getSession().createQuery(sb.toString());  
 		return query.list(); 
 	}
 	

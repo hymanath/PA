@@ -16,7 +16,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 			super(SelfAppraisalCandidateDetails.class);
 	  }
 
-	  public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,Long desigId){
+	  public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigIds){
 		  StringBuilder queryStr = new StringBuilder();
 		  queryStr.append( " select " +
 		    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
@@ -28,8 +28,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		                if(fromDate != null && toDate != null ){
 		                	queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
 		                }
-		                if(desigId != null){
-		                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId = :desigId ");
+		                if(desigIds != null){
+		                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIds) ");
 		                }
 		                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId ");
 		                Query query = getSession().createQuery(queryStr.toString());
@@ -37,8 +37,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		                	query.setDate("fromDate", fromDate);
 		                	query.setDate("toDate", toDate);
 		                }
-		                if(desigId != null){
-		     			   query.setParameter("desigId",desigId); 
+		                if(desigIds != null){  
+		     			   query.setParameterList("desigIds",desigIds); 
 		     		    }    
 		                return query.list();
 	  }
@@ -156,14 +156,21 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  query.setParameterList("locValLst", locValLst);
 		  return (Long) query.uniqueResult();
 	  }
-	  public List<Object[]> getCndWiseAndLocValWiseCountList(){
+	  public List<Object[]> getCndWiseAndLocValWiseCountList(Date fromDate, Date toDate){
 		  StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select SACD.selfAppraisalCandidateId, SACD.ownLocationValue, sum(SACD.ownTours) " +
 		  		" from " +
-		  		" SelfAppraisalCandidateDetails SACD " +
-		  		" group by " +
-		  		" SACD.selfAppraisalCandidateId, SACD.ownLocationValue ");
+		  		" SelfAppraisalCandidateDetails SACD  ");
+		  if(fromDate != null && toDate != null){
+			  queryStr.append(" where date(SACD.updatedTime) between (:fromDate) and (:toDate) ");
+		  }
+		  queryStr.append(" group by " +
+		  		" SACD.selfAppraisalCandidateId, SACD.ownLocationValue "); 
 		  Query query = getSession().createQuery(queryStr.toString());
+		  if(fromDate != null && toDate != null){
+			  query.setDate("fromDate", fromDate);
+			  query.setDate("toDate",toDate);
+		  }
 		  return query.list();
 	  }
 	  public List<Object[]> getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
@@ -296,5 +303,89 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 			   query.setParameter("candiateId", candiateId);
 		 		 }
 		 		 return query.list();
-	   }
+	}
+	public List<Object[]> getCommendAndFilePathDtls(List<Long> cndIdListForCmtAndFile, Date fromDate, Date toDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.selfAppraisalCandidate.selfAppraisalCandidateId, " +//0
+						" model.month, " +//1    
+						" model.year, " +//2
+						" model.remarks, " +//3
+						" model.reportPath " +//4
+						" from SelfAppraisalCandidateDetails model where " +
+						" model.selfAppraisalCandidate.selfAppraisalCandidateId in (:cndIdListForCmtAndFile) " +
+						" and date(model.updatedTime) between (:fromDate) and (:toDate) " );
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("cndIdListForCmtAndFile", cndIdListForCmtAndFile);  
+		query.setDate("fromDate",fromDate);
+		query.setDate("toDate",toDate);  
+		return query.list();
+	}
+	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> desigIdList,Long userAccessLevelId, Set<Long> locationValueSet){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" SACD.selfAppraisalCandidate.selfAppraisalDesignationId, " +
+						" count(distinct SACD.selfAppraisalCandidate.selfAppraisalCandidateId), " +
+						" sum(SACD.ownTours), " +
+						" sum(SACD.inchargeTours) " +
+						" from SelfAppraisalCandidateDetails SACD, SelfAppraisalCandidateLocation SACL where " +
+						" SACD.selfAppraisalCandidate.isActive='Y' " +
+						" and date(SACD.updatedTime) between :fromDate and :toDate " +
+						" and SACD.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIdList) " +
+						" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId = SACL.selfAppraisalCandidate.selfAppraisalCandidateId ");
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			queryStr.append(" and SACL.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			queryStr.append(" and SACL.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			queryStr.append(" and SACL.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+        if(startDate != null && endDate != null ){
+        	query.setDate("fromDate", startDate);
+        	query.setDate("toDate", endDate);
+        }
+        if(desigIdList != null){  
+			   query.setParameterList("desigIdList",desigIdList); 
+		} 
+        if(locationValueSet != null){    
+			   query.setParameterList("userAccessLevelValues",locationValueSet); 
+		}
+        return query.list();
+	}
+	/* public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigIds){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append( " select " +
+		    		       " model.selfAppraisalCandidate.selfAppraisalDesignationId," +
+		    		       " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +
+		    		       " sum(model.ownTours)," +
+		    		       " sum(model.inchargeTours) " +
+		    		       " from SelfAppraisalCandidateDetails model " +
+		    		       " where model.selfAppraisalCandidate.isActive='Y' "); 
+		                if(fromDate != null && toDate != null ){
+		                	queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+		                }
+		                if(desigIds != null){
+		                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIds) ");
+		                }
+		                queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignationId ");
+		                Query query = getSession().createQuery(queryStr.toString());
+		                if(fromDate != null && toDate != null ){
+		                	query.setDate("fromDate", fromDate);
+		                	query.setDate("toDate", toDate);
+		                }
+		                if(desigIds != null){  
+		     			   query.setParameterList("desigIds",desigIds); 
+		     		    }    
+		                return query.list();
+	  }*/
 }

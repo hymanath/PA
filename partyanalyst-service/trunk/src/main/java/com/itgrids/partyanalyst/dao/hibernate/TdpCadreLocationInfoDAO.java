@@ -328,7 +328,7 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     	sb.append(" where");  
     	
     	if(locationScopeId != null && locationScopeId.longValue() > 0l)
-    		sb.append(" model.locationScopeId = :locationScopeId");
+    		sb.append(" model.locationScopeId = :locationScopeId");  
     	
     	if(locationScopeId != null && locationScopeId.longValue() == 3l)
     		sb.append(" and model.locationValue = C.district.districtId");
@@ -341,6 +341,11 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     		else if(locationType != null && locationType.equalsIgnoreCase("TS"))
     			sb.append(" and C.district.districtId between 1 and 10");
     	}
+    	
+    	if(!(locationType != null)){
+    		sb.append(" and C.district.districtId between 1 and 23");    
+    	}  
+    	
     	if(locationScopeId != null && (locationScopeId.longValue() == 3l || locationScopeId.longValue() == 4l)){
     		sb.append(" and C.deformDate is null and C.electionScope.electionScopeId = 2");
     	}
@@ -833,7 +838,6 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 	   Query query = getSession().createQuery(queryStr.toString());
       return query.list();
 }
-
 	public List<Object[]> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct C.constituencyId," +
