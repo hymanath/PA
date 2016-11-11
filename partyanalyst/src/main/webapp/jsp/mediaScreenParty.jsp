@@ -373,7 +373,7 @@ function getConstituencyWiseDisrictList4(type,stateId){
 
 function buildingConstituencyList(result,divId,type){
 	var str='';
-	str+='<div class="'+divId+'">';
+	str+='<div class="'+divId+'" style="height:300px;overflow-y:scroll;">';
 		str+='<table class="table table-condensed" style="margin-bottom:0px;">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
@@ -391,7 +391,15 @@ function buildingConstituencyList(result,divId,type){
 		str+='</table>';
 	str+='</div>';
 	$("#"+divId).html(str);
-	$("."+divId).mCustomScrollbar({setHeight:'200px'})
+	//$("."+divId).mCustomScrollbar({setHeight:'200px'})
+	
+	var div = $("."+divId);
+	
+	setInterval(function(){
+		var pos = div.scrollTop();
+		div.scrollTop(pos + 2);
+	}, 100)
+	
 }	
 </script>		
 </body>
