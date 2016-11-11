@@ -255,12 +255,21 @@ function getpartyWiseChannelCounts(result){
 				for(var j in result[0].tvNewsDetailsVOList)
 				{
 					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[j].organization+'</h5>';
-						str+='<h4>'+result[0].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+						if(result[0].tvNewsDetailsVOList[j].title == 'benefit')
+						{
+							str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[j].organization+'</h5>';
+							str+='<h4>'+result[0].tvNewsDetailsVOList[j].categoryCount+' <small class="text-success">'+result[0].tvNewsDetailsVOList[j].positivePerc+'</small></h4>';
+							
+						}else{
+							str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[j].organization+'</h5>';
+							str+='<h4>'+result[0].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+						}
+						//str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[j].organization+'</h5>';
+						//str+='<h4>'+result[0].tvNewsDetailsVOList[j].categoryCount+'</h4>';
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 						//str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
 						if(result[0].tvNewsDetailsVOList[j].description!= ""){
-							str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
+							str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4><small class="text-success">'+result[0].tvNewsDetailsVOList[j].negativePerc+'</small>';
 						}else{
 							str+='<h4>00:00</h4>';
 						}
@@ -284,10 +293,22 @@ function getpartyWiseChannelCounts(result){
 					for(var j in result[i].tvNewsDetailsVOList)
 					{
 						str+='<td>';
+						if(result[0].tvNewsDetailsVOList[j].title == 'benefit')
+						{
+							str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList[j].organization+'</h5>';
+							str+='<h4>'+result[i].tvNewsDetailsVOList[j].categoryCount+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positivePerc+'</small></h4>';
+						}else{
 							str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList[j].organization+'</h5>';
 							str+='<h4>'+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+						}
+							
 							str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-							str+='<h4>'+result[i].tvNewsDetailsVOList[j].description != ""?result[i].tvNewsDetailsVOList[j].description:"00:00"+'</h4>';
+							
+							if(result[i].tvNewsDetailsVOList[j].description!= ""){
+								str+='<h4>'+result[i].tvNewsDetailsVOList[j].description+'</h4><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativePerc+'</small>';
+							}else{
+								str+='<h4>00:00</h4>';
+							}
 						str+='</td>';
 					}
 				str+='</tr>';
@@ -307,10 +328,23 @@ function getpartyWiseChannelCounts(result){
 				for(var j in result[EmnG].tvNewsDetailsVOList)
 				{
 					str+='<td>';
-						str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[j].organization+'</h5>';
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+						if(result[EmnG].tvNewsDetailsVOList[j].title == 'benefit'){
+							str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[j].organization+'</h5>';
+							str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+ '</h4><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positivePerc+'</small>';
+						}else{
+							str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[j].organization+'</h5>';
+							str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+ '</h4>';
+						}
+						
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].description+'</h4>';
+						if(result[EmnG].tvNewsDetailsVOList[j].description != null && result[EmnG].tvNewsDetailsVOList[j].description != ""){
+							str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].description+'</h4><small class="text-success">'+result[EmnG].tvNewsDetailsVOList[j].negativePerc+'</small>';
+							
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+						
+						
 					str+='</td>';
 				}
 			str+='</tr>';
