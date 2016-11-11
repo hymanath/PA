@@ -62,87 +62,87 @@ function getDataReConsalationOverView(){
   }
   function  buildDataReConsalationTotalOverView(result)
   {
-    var str ='';  
-  str+='<div class="panel panel-default m_top10">';    
-    str+='<div class="panel-heading">';
-      str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
-    str+='</div>';
-    str+='<div class="panel-body" style="padding: 25px;">';
-      str+='<div class="row">';
-        str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
-        var totImeiNo = result.totalImeiNo;
-        var totRecords = result.totalRecords;
-        var totSynRec =result.totalSyn;
-        var totPending  = result.totalPending;
-        var totTabSyn = result.sync;
-        var totTabPending = result.pending;
-        var actualServerCount =result.actualCount;
-        if(result != null){
-        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
-        str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
-        if(totImeiNo != null){
-            str+='<p class="text_bold">'+totImeiNo+'</p>';
-        }else{
-           str+='<p class="text_bold">'+0+'</p>';
-        }
-        str+='</div>';
-        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
-        str+='<p class="text_bold">TOTAL TAB REGISTRATIONS</p>';
-        if(totRecords != null){
-          str+='<p class="text_bold">'+result.totalRecords+'</p>';
-        }else {
-           str+='<p class="text_bold">'+0+'</p>';
-        }
-        str+='</div>';
-        str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
-        str+='<p class="text_bold">TAB SUBMITTED</p>';
-        if(totTabSyn !=null){
-           str+='<p class="text_bold">'+result.sync+'</p>';
-         }else{
-           str+='<p class="text_bold">'+0+'</p>';
-         }
-        str+='</div>';
-        }
-        str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
-        str+='<p class="text_bold">TAB PENDING</p>';
-        if(totTabPending !=null){
-           str+='<p class="text_bold">'+result.pending+'</p>';
-         }else{
-           str+='<p class="text_bold">'+0+'</p>';
-         }
-        str+='</div>';
-        
-        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
-        str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
-        if(totSynRec != null){
-          str+='<p class="text_bold">'+totSynRec+'</p>';
-        }else {
-          str+='<p class="text_bold" text-center>'+0+'</p>';
-        }
-        str+='</div>';
-        str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
-        str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
-         if(totPending !=null){
-           str+='<p class="text_bold">'+totPending+'</p>';
-         }else{
-           str+='<p class="text_bold">'+0+'</p>';
-         }
-        str+='</div>';
-        
-        str+='<div class="col-md-2 col-xs-12 col-sm-6 ">';
-        str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
-        if(actualServerCount != null){
-          str+='<p class="text_bold">'+result.actualCount+'</p>';
-        }else {
-           str+='<p class="text_bold">'+0+'</p>';
-        }
-        str+='</div>';
-        str+='</div>';
-      str+='</div>';
-    str+='</div>';
-  str+='</div>';
-  $("#dataReconsalationOverviewId").html(str);
-        }
+ 	 var str ='';  
+	str+='<div class="panel panel-default m_top10">';    
+		str+='<div class="panel-heading">';
+			str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>DATA RECONSOLIDATION OVERVIEW</b></h4>';
+		str+='</div>';
+		str+='<div class="panel-body" style="padding: 25px;">';
+			str+='<div class="row">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+				var totImeiNo = result.totalImeiNo;
+				var totRecords = result.totalRecords;
+				var totSynRec =result.totalSyn;
+				var totPending  = result.totalPending;
+				var totTabSyn = result.sync;
+				var totTabPending = result.pending;
+				var actualServerCount =result.actualCount;
+				if(result != null){
+				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
+				if(totImeiNo != null){
+						str+='<p class="text_bold">'+totImeiNo+'</p>';
+				}else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				}
+				str+='</div>';
+				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">TOTAL TAB REGISTRATIONS</p>';
+				if(totRecords != null){
+					str+='<p class="text_bold">'+result.totalRecords+'</p>';
+				}else {
+					 str+='<p class="text_bold">'+0+'</p>';
+				}
+				str+='</div>';
+				str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">TAB SUBMITTED</p>';
+				if(totTabSyn !=null){
+					 str+='<p class="text_bold">'+result.sync+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
+				str+='</div>';
+				}
+				str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
+				str+='<p class="text_bold">TAB PENDING</p>';
+				if(totTabPending !=null){
+					 str+='<p class="text_bold">'+result.pending+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
+				str+='</div>';
+				
+				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
+				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
+				if(totSynRec != null){
+					str+='<p class="text_bold">'+totSynRec+'</p>';
+				}else {
+					str+='<p class="text_bold" text-center>'+0+'</p>';
+				}
+				str+='</div>';
+				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
+				str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
+				 if(totPending !=null){
+					 str+='<p class="text_bold">'+totPending+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
+				str+='</div>';
+				
+				str+='<div class="col-md-2 col-xs-12 col-sm-6 ">';
+				str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
+				if(actualServerCount != null){
+					str+='<p class="text_bold">'+result.actualCount+'</p>';
+				}else {
+					 str+='<p class="text_bold">'+0+'</p>';
+				}
+				str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#dataReconsalationOverviewId").html(str);
+	      }
  
 $(document).on("click","#submitId",function(){
 	 $("#errorDivId").html(' ');
@@ -197,16 +197,52 @@ $(document).on("click","#submitId",function(){
            for(var i in result )
 		   {			   
 				str+='<tr>'; 
+				if(result[i].userName != null ){
 				str+='<td>'+result[i].userName+'</td>';
-				str+='<td>'+result[i].imeiNo+'</td>';      
+				}else{
+					 str+='<td>-</td>';
+				}
+				if(result[i].imeiNo != null ){
+				str+='<td>'+result[i].imeiNo+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
+                if(result[i].name != null){				
 				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].userSyncType+'</td>';
-				str+='<td>'+result[i].totalRecords+'</td>';  
+				}else{
+					str+='<td>-</td>';
+				}
+				if(result[i].totalRecords !=null){
+				str+='<td>'+result[i].totalRecords+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+                if(result[i].sync !=null){				
 				str+='<td>'+result[i].sync+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				if(result[i].pending){
                 str+='<td>'+result[i].pending+'</td>'; 
+				}else{
+					str+='<td>0</td>';
+				}
+				if(result[i].userSyncType != null){
+				str+='<td>'+result[i].userSyncType+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
+                if(result[i].kafkaSync != null){				
                 str+='<td>'+result[i].kafkaSync+'</td>';
+				}else{
+					str+='<td>0</td>';
+				}
+				if(result[i].kafkaPending != null){
 				str+='<td>'+result[i].kafkaPending+'</td>'; 
-             if(result[i].actualCount != null){				
+				}else{
+					str+='<td>0</td>';
+				}
+              if(result[i].actualCount != null){				
 				str+='<td>'+result[i].actualCount+'</td>';
               }else{
 	            str+='<td>0</td>';
@@ -265,6 +301,8 @@ $(document).on("click","#submitId",function(){
   $("#errorDivId").html(' ');
 	 $("#districtDivIdImg").show();
 	var districtId = $("#districtOverViewId").val();
+	$('#constituencyOverViewId').html(' ');
+	 $('#constituencyOverViewId').append('<option value="0">All</option>');
 	 var jsObj = {
 			districtId : districtId
 			
@@ -277,8 +315,8 @@ $(document).on("click","#submitId",function(){
 			
 	}).done(function(result){
 	 $("#districtDivIdImg").hide();
-		$('#constituencyOverViewId').html(' ');
-		$('#constituencyOverViewId').append('<option value="0">Please Select Constituency </option>');
+		//$('#constituencyOverViewId').html(' ');
+		//$('#constituencyOverViewId').append('<option value="0">Please Select Constituency </option>');
 		if(result !=null && result.length>0){
 			for(var i in result){
 				$('#constituencyOverViewId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
@@ -389,7 +427,7 @@ function buildPopUpModelDetails(result){
 	    }else {
 		   str +='<td >'+0+'</td>';
 	    }
-		if(actualCount != null){
+	  if(actualCount != null){
 			str +='<td >'+actualCount+'</td>';
 		}else {
 			str +='<td >'+0+'</td>';
@@ -465,7 +503,7 @@ function buildPopUpModelDetails(result){
 	    }else {
 		   str1 +='<td >'+0+'</td>';
 	    }
-		if(actualCount != null){
+	   if(actualCount != null){
 			str1 +='<td >'+actualCount+'</td>';
 		}else {
 			str1 +='<td >'+0+'</td>';
@@ -523,12 +561,11 @@ function setDefaultImage(img){
   function buildLocationWiseSmartDevicesCount(result,districtId){
   $("#locWiseSmartDivCount").show();
   var str = "";
-  
   str+='<div class="panel panel-default">';
-  str+='<div class="panel-heading">';
-  str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>LOCATION WISE SMART DEVICES</b></h4>';
+  str+='<div class="panel-heading" id="locationId" style="cursor: pointer;">';
+  str+='<h4 class=" headingStyle text-capital"><span style="font-size:14px;"><b>LOCATION WISE SMART DEVICES</b><i class="glyphicon glyphicon-chevron-down pull-right"></i></h4>';
 	str+='</div>';
-	str+='<div class="panel-body">';
+	str+='<div class="panel-body collapse" id="locationBodyId">';
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
@@ -568,4 +605,8 @@ function setDefaultImage(img){
 
 $( document ).ready(function() {
   $("#stateOverViewId").val(0); 
+});
+$(document).on("click","#locationId",function(){
+$('#locationBodyId').collapse('toggle');
+$(this).find(".glyphicon").toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up")
 });
