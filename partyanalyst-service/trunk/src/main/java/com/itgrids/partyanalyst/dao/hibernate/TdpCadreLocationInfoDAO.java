@@ -631,7 +631,7 @@ public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long use
 }
 public Long getTotalConstituencyForCdrRegStarted(Long stateId){
 	StringBuilder queryStr = new StringBuilder();
-	queryStr.append("SELECT count( DISTINCT location_value) as count FROM tdp_cadre_location_info I,constituency C,state S WHERE "+
+	queryStr.append("SELECT count( DISTINCT location_value) as count FROM tdp_cadre_location_info I,constituency C WHERE "+
 			" I.location_value = C.constituency_id AND "+
 			" type = 'Total' AND "+
 			" location_scope_id = 4 AND "+
