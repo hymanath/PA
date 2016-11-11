@@ -886,12 +886,16 @@ public class GISVisualizationService implements IGISVisualizationService{
 				List<Object[]> latestLatLongitudeDtls = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabbUserByIds(locationIdsList);
 				if(commonMethodsUtilService.isListOrSetValid(latestLatLongitudeDtls)){
 					for (Object[] param : latestLatLongitudeDtls) {
-						GISUserTrackingVO tabVO =  tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-						if(tabVO != null){
-							tabVO.setLattitude(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabVO.setLongitude(commonMethodsUtilService.getStringValueForObject(param[4]));
-							tabVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[5]));
-						 }
+						try {
+							GISUserTrackingVO tabVO =  tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(tabVO != null){
+								tabVO.setLattitude(commonMethodsUtilService.getStringValueForObject(param[3]));
+								tabVO.setLongitude(commonMethodsUtilService.getStringValueForObject(param[4]));
+								tabVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[5]));
+							 }
+						} catch (Exception e) {
+							LOG.error("Error occured while updating langitude and lattitude for tab user for GIS Service ",e);
+						}
 					}
 				}
 			}
