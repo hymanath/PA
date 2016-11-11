@@ -22,11 +22,11 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
+import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateTourLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CoreDashboardToursService implements ICoreDashboardToursService {
@@ -39,6 +39,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	private ISelfAppraisalCandidateDAO selfAppraisalCandidateDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDistrictDAO districtDAO;
+	private ISelfAppraisalCandidateTourLocationDAO selfAppraisalCandidateTourLocationDAO;
 	private ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO;
 	private CommonMethodsUtilService commonMethodsUtilService ;
 	
@@ -76,6 +77,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
+	public void setSelfAppraisalCandidateTourLocationDAO(
+			ISelfAppraisalCandidateTourLocationDAO selfAppraisalCandidateTourLocationDAO) {
+		this.selfAppraisalCandidateTourLocationDAO = selfAppraisalCandidateTourLocationDAO;
+	}
 	public void setSelfAppraisalDesignationDAO(
 			ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO) {
 		this.selfAppraisalDesignationDAO = selfAppraisalDesignationDAO;
@@ -108,6 +113,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					   
 				   		for(Object[] param:rtrnLeaderCntObjLst){
 				   			
+				   			
 				   			ToursBasicVO leaderVO = new ToursBasicVO();
 				   			leaderVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				   			leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
@@ -135,7 +141,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				    					   leaderVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
 				    					   leaderVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
 				    					   leaderVO.setTotalSubmittedToursCnt(leaderVO.getOwnToursCnt()+leaderVO.getInchargerToursCnt());
-				    					   Double averageTours = leaderVO.getTotalSubmittedToursCnt().doubleValue()/leaderVO.getSubmitedLeaderCnt().doubleValue();
+				    					   leaderVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[4]));
+				    					   Double averageTours = leaderVO.getTotalSubmittedToursCnt().doubleValue()/leaderVO.getNoOfDistinctTours().doubleValue();
 				    					   leaderVO.setAverageTours(averageTours);
 				    					   //Calculating overAll 
 				    					   overAllDtlsVO.setSubmitedLeaderCnt(overAllDtlsVO.getSubmitedLeaderCnt()+leaderVO.getSubmitedLeaderCnt());
@@ -143,7 +150,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				    					   overAllDtlsVO.setOwnToursCnt(overAllDtlsVO.getOwnToursCnt()+leaderVO.getOwnToursCnt());
 				    					   overAllDtlsVO.setInchargerToursCnt(overAllDtlsVO.getInchargerToursCnt()+leaderVO.getInchargerToursCnt());
 				    					   overAllDtlsVO.setTotalSubmittedToursCnt(overAllDtlsVO.getTotalSubmittedToursCnt()+leaderVO.getTotalSubmittedToursCnt());
-				    					   overAllDtlsVO.setAverageTours(overAllDtlsVO.getAverageTours()+leaderVO.getAverageTours());
+				    					   overAllDtlsVO.setNoOfDistinctTours(overAllDtlsVO.getNoOfDistinctTours()+leaderVO.getNoOfDistinctTours());
 				    					   
 					   					}
 					   			}
@@ -152,6 +159,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			  //calculation overAll percentage
 			   overAllDtlsVO.setSubmitedCandidateTourPer(calculatePercantage(overAllDtlsVO.getSubmitedLeaderCnt(), overAllDtlsVO.getNoOfLeaderCnt()));
 			   overAllDtlsVO.setNotsubmitedCandidateTourPer(calculatePercantage(overAllDtlsVO.getNotSubmitedLeaserCnt(), overAllDtlsVO.getNoOfLeaderCnt())); 
+			   Double averageTours = overAllDtlsVO.getTotalSubmittedToursCnt().doubleValue()/overAllDtlsVO.getNoOfDistinctTours().doubleValue();
+			   overAllDtlsVO.setAverageTours(averageTours);
 			   //setting result to final result VO
 			   resultVO.setOverAllDetailsVO(overAllDtlsVO);
 			   if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
@@ -664,7 +673,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  
 					  for(Entry<Long,Map<Long,Set<Long>>> entry:candiateAccessLevelMap.entrySet()){
 						  
-						  if(entry.getKey().longValue()==243l || entry.getKey().longValue()==242l){
+						  if(entry.getKey().longValue()==36l || entry.getKey().longValue()==37l){
 							  
 							  Map<Long,Set<Long>> accessLevelMap = entry.getValue();
 							  
@@ -701,20 +710,20 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  for(Entry<Long,ToursBasicVO> entry:gsMap.entrySet()){
 						
 						  ToursBasicVO VO = entry.getValue();
-						  
-							  Map<Long,Set<Long>> locationMap = candiateAccessLevelMap.get(VO.getId());
-							  
-							  for(Entry<Long,Set<Long>> locationEntry:locationMap.entrySet()){
-								  
-								  for(Long id:locationEntry.getValue()){
+						 	  Map<Long,Set<Long>> locationMap = candiateAccessLevelMap.get(VO.getId());
+							  if(locationMap != null && locationMap.size() > 0){
+								  for(Entry<Long,Set<Long>> locationEntry:locationMap.entrySet()){
 									  
-									  if(!VO.getLocationSet().contains(id)){
+									  for(Long id:locationEntry.getValue()){
 										  
-										  VO.getLocationSet().add(id);
-										  VO.setName(VO.getName()+","+districtMap.get(id)); // setting all district access of GS
+										  if(!VO.getLocationSet().contains(id)){
+											  
+											  VO.getLocationSet().add(id);
+											  VO.setName(VO.getName()+","+districtMap.get(id)); // setting all district access of GS
+										   }
 									   }
-								   }
-						  }
+							    } 
+							  }
 					  }
 				  } 
 			 }
@@ -768,8 +777,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 candidateVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
 						 candidateVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[7]));
 						 candidateVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[8]));
+						 candidateVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[9]));
 						 candidateVO.setTotalSubmittedToursCnt(candidateVO.getOwnToursCnt()+candidateVO.getInchargerToursCnt());
-						 Double averageTours = candidateVO.getTotalSubmittedToursCnt().doubleValue()/candidateVO.getSubmitedLeaderCnt().doubleValue();
+						 Double averageTours = candidateVO.getTotalSubmittedToursCnt().doubleValue()/candidateVO.getNoOfDistinctTours().doubleValue();
 						 candidateVO.setAverageTours(averageTours);
 						 memberMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), candidateVO);
 					 }
@@ -868,4 +878,66 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		// TODO Auto-generated method stub
 		return null;  
 	} 
+   public ToursBasicVO getLeaderAverageToursBasedOnAccessLevel(Long candidateId,Long stateId,String fromDateStr,String toDateStr){
+	   ToursBasicVO resultVO = new ToursBasicVO();
+	   Set<Long> locationValues = new HashSet<Long>();
+	   Long locationAccessLevelId =0l;
+	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   Date fromDate=null;
+	   Date toDate=null;
+	   try{
+		   if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 fromDate = sdf.parse(fromDateStr);
+				 toDate = sdf.parse(toDateStr);
+			 }
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst = selfAppraisalCandidateLocationDAO.getCandiateLocationScopeIdAndValues(candidateId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+			List<Object[]> rtrnObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+			List<ToursBasicVO> locationDtlsLst = new ArrayList<ToursBasicVO>();
+			setToursDtlsToVO(rtrnObjList,locationDtlsLst);
+			if(locationAccessLevelId.longValue()==1l){////district 
+				resultVO.setId(locationAccessLevelId);
+				resultVO.setName("DISTRICT WISE AVERAGE TOURS REPORT ");
+			}else if(locationAccessLevelId.longValue()==2l){//parliamentConstituency
+				resultVO.setId(locationAccessLevelId);
+				resultVO.setName("PARLIAMENT CONSTITUENCY WISE AVERAGE TOURS REPORT");
+			}else if(locationAccessLevelId.longValue()==3l){//constituency
+				resultVO.setId(locationAccessLevelId);
+				resultVO.setName("CONSTITUENCY WISE AVERAGE TOURS REPORT");
+			}
+			   resultVO.getSubList().addAll(locationDtlsLst);
+		    if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
+		    	Collections.sort(resultVO.getSubList(), toursPoorPerformanceAscendingPer);
+		    }
+	   }catch(Exception e){
+		    LOG.error("Error occured at setToursDtlsToList() in CoreDashboardToursService ",e);	 
+	   }
+	   return resultVO;
+   }
+   public void setToursDtlsToVO(List<Object[]> objList,List<ToursBasicVO> locationVOList){
+		try{
+			if(objList != null && !objList.isEmpty()){
+				for(Object[] param:objList){
+					ToursBasicVO locationVO = new ToursBasicVO();
+					locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					locationVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+					locationVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
+					locationVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[4]));
+					locationVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[5]));
+					locationVO.setTotalSubmittedToursCnt(locationVO.getOwnToursCnt()+locationVO.getInchargerToursCnt());
+					Double averageTours = locationVO.getTotalSubmittedToursCnt().doubleValue()/locationVO.getNoOfDistinctTours().doubleValue();
+					locationVO.setAverageTours(averageTours);
+					locationVOList.add(locationVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured at setToursDtlsToList() in CoreDashboardToursService ",e);	
+		}
+	}
 }

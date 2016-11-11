@@ -469,6 +469,7 @@ public class ToursService implements IToursService {
     				  leaderVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
     				  leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
     				  leaderVO.setNoOfLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+    				  leaderVO.setNotSubmitedLeaserCnt(leaderVO.getNoOfLeaderCnt());
     				  leadersDetailsMap.put(leaderVO.getId(), leaderVO);
     		 		}
     		 }

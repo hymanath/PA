@@ -46,6 +46,7 @@ public class ToursBasicVO {
 	private Set<Long> locationSet = new HashSet<Long>(0);
 	private List<String> remarkList = null;
 	private List<String> filePathList = null;
+	private Long noOfDistinctTours=0l;
 	public ToursBasicVO() {
 		super();
 	}
@@ -288,5 +289,11 @@ public class ToursBasicVO {
 	}
 	public void setDesignationId(Long designationId) {
 		this.designationId = designationId;
+	}
+	public Long getNoOfDistinctTours() {
+		return noOfDistinctTours;
+	}
+	public void setNoOfDistinctTours(Long noOfDistinctTours) {
+		this.noOfDistinctTours = noOfDistinctTours;
 	}	
 }
