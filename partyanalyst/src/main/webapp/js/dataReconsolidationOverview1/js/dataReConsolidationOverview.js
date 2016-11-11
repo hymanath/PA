@@ -181,7 +181,7 @@ $(document).on("click","#submitId",function(){
 				str+='<th>USER NAME</th>'; 
 				//str+='<th>Device Number</th>';
 				str+='<th>IMEI NUMBER</th>';
-				str+='<th>TAB USER NAME</th>'; 
+				str+='<th>TAB USER ID</th>'; 
 				str+='<th>USER SYNC TYPE</th>';
 				str+='<th>TOTAL TAB REGISTRATIONS</th>'; 
 				str+='<th>TAB SUBMITTED</th>'; 
@@ -222,7 +222,7 @@ $(document).on("click","#submitId",function(){
 				}else{
 					str+='<td>0</td>';
 				}
-				if(result[i].sync != null){
+				if(result[i].sync  != null){
                 str+='<td>'+result[i].sync+'</td>'; 
 				}else{
 					str+='<td>0</td>';
