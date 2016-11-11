@@ -39,7 +39,7 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.cadreSurveyUser.userName," +
 				  "  model.imeiNo,"  +
-				  " model1.name," +
+				  " model.cadreSurveyUser.cadreSurveyUserId," +
 				  " sum(model.totalRecords),sum(model.pending)," +
 				  " sum(model.kafkaPending)," +
 				  " sum(model.kafkaSync)," +
@@ -49,7 +49,8 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				  " TabUserInfo model1," +
 				  " CadreSurveyUserAssignDetails model2 " +
 				  " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
-				  " model.cadreSurveyUserId = model1.cadreSurveyUserId  and model1.isEnabled = 'Y' ");
+				  " model.cadreSurveyUserId = model1.cadreSurveyUserId  and " +
+				  " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y' ");
 		 if(districtId != null && districtId.longValue()>0l)
 		 {
 			 sb.append(" and model2.constituency.district.districtId =:districtId");
@@ -61,7 +62,7 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				}
 		}
 		 if(constistuencyId != null && constistuencyId.longValue()>0l){
-			 sb.append(" and model2.constituencyId =:constistuencyId ");
+			 sb.append(" and model2.constituency.constituencyId =:constistuencyId ");
 		 }
 		 if(fromDate != null && toDate != null){
 			sb.append(" and date(model.surveyDate) between :fromDate and :toDate");
@@ -69,7 +70,7 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 		
 		 sb.append(" group by model.cadreSurveyUserId ");
 		 if (districtId != null && districtId.longValue() > 0l) {
-				sb.append(", model2.constituencyId ");
+				sb.append(", model2.constituency.constituencyId ");
 			} else {
 				sb.append(" ,model2.constituency.district.districtId");
 			}
@@ -99,7 +100,9 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	          " TabUserInfo model1," +
 	          " CadreSurveyUserAssignDetails model2 " +
 	          " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
-	          " model.cadreSurveyUserId = model1.cadreSurveyUserId and  model1.isEnabled = 'Y'  ");
+	          " model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
+	          " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y'");
+	          //" and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  ");
 	     if(districtId != null && districtId.longValue()>0l)
 	     {
 	       sb.append(" and model2.constituency.district.districtId =:districtId");
@@ -111,17 +114,17 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	        }
 	    }
 	     if(constistuencyId != null && constistuencyId.longValue()>0l){
-	       sb.append(" and model2.constituencyId =:constistuencyId ");
+	       sb.append(" and model2.constituency.constituencyId =:constistuencyId ");
 	     }
 	     if(fromDate != null && toDate != null){
 	      sb.append(" and date(model.surveyDate) between :fromDate and :toDate");
 	     }
 	    
-	     sb.append(" group by model.cadreSurveyUserId ");
+	     sb.append(" group by model.cadreSurveyUserId,");
 	     if (districtId != null && districtId.longValue() > 0l) {
-	        sb.append(", model2.constituencyId ");
+	        sb.append(" model2.constituency.constituencyId ");
 	      } else {
-	        sb.append(" ,model2.constituency.district.districtId");
+	        sb.append(" model2.constituency.district.districtId");
 	      }
 	    Query query = getSession().createQuery(sb.toString());
 	    if(fromDate != null && toDate != null){
