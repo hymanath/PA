@@ -16,6 +16,10 @@ body
 {
 	background-image:url("dist/mediaScreenParty/background.png");
 }
+.mCSB_inside > .mCSB_container
+{
+	margin-right:10px;
+}
 .text-capital
 {
 	text-transform:uppercase;
@@ -29,8 +33,9 @@ body
 	display:block;
 	text-align:center;
 	font-size:16px;
+	color:#fff;
 }
-h1,h2,h3,h4,h5,h6
+h1,h2,h3,h4,h5,h6,.table
 {
 	margin:0px;
 }
@@ -119,7 +124,7 @@ h1,h2,h3,h4,h5,h6
 									<img style="display:inline-block;width:110px;" class="pull-right" src="images/AP.png">
 								</td>
 								<td><div id="apConstiCountId"><h3>175</h3></div></td>
-								<td style="width:190px"><div id="ap2014NewCountId"><h3>4716975</h3><br><span style="color:red;">2014-2016</span></div></td>
+								<td style="width:190px"><div id="ap2014NewCountId"><h3>4716975</h3><span style="color:red;">2014-2016</span></div></td>
 								<td style="width:190px"><div id="ap2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 								<td style="width:190px"><p><span class="text-orange">Total - [%] </span></p><div id="ap2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							</tr>
@@ -128,7 +133,7 @@ h1,h2,h3,h4,h5,h6
 									<h3>TOTAL  <small>AP & TS</small></h3>
 								</td>
 								<td><div><h3>294</h3></div></td>
-								<td><div><h3>5511402</h3></div></td>
+								<td><div><h3>5511402</h3><span style="color:red;">2014-2016</span></div></td>
 								<td style="width:190px"><div id="totalCountId"></div><div id="totalCountImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 								<td><div id="totalPencentageId"></div><div id="totalPerceId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 						</tbody>
@@ -147,8 +152,8 @@ h1,h2,h3,h4,h5,h6
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#3A98DE">Today TOp 20</span></h5>
-							<h3 class="text-capital">Constituencies in ap</h3>
-							<h5 style="margin-left: 318px;">Memberships</h5>
+							<h4 class="text-capital">Constituencies in ap</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
 						</div>
 					</div>
 				</div>
@@ -167,8 +172,8 @@ h1,h2,h3,h4,h5,h6
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#3A98DE">Today TOp 20</span></h5>
-							<h3 class="text-capital">Constituencies in ts</h3>
-							<h5 style="margin-left: 318px;">Memberships</h5>
+							<h4 class="text-capital">Constituencies in ts</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
 						</div>
 					</div>
 				</div>
@@ -190,8 +195,8 @@ h1,h2,h3,h4,h5,h6
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h3 class="text-capital">Constituencies in ap</h3>
-							<h5 style="margin-left: 318px;">Memberships</h5>
+							<h4 class="text-capital">Constituencies in ap</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
 						</div>
 					</div>
 				</div>
@@ -210,8 +215,8 @@ h1,h2,h3,h4,h5,h6
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h3 class="text-capital">Constituencies in ts</h3>
-							<h5 style="margin-left: 318px;">Memberships</h5>
+							<h4 class="text-capital">Constituencies in ts</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
 						</div>
 					</div>
 				</div>
@@ -275,13 +280,13 @@ $("#totalPerceId").show();
 						str1+='<span style="color:green;">2016-2018</span></p>';
 						
 						$("#ap2016CountId").html(str)
-						$("#ap2016PrecCountId").html('<h3>'+result[0].percentage+'</h3>');
+						$("#ap2016PrecCountId").html('<h3>'+result[0].percentage+'</h3><span class="text-warning">Total</span>');
 					
 						$("#ts2016CountId").html(str1)
-						$("#ts2016PrecCountId").html('<h3>'+result[1].percentage+'</h3>');
+						$("#ts2016PrecCountId").html('<h3>'+result[1].percentage+'</h3><span class="text-warning">Total</span>');
 						totalRegCount=result[0].count2016+result[1].count2016;
-						$("#totalCountId").html('<h3>'+totalRegCount+'<h3>');
-						$('#totalPencentageId').html('<h3>'+((totalRegCount * 100) / 5511402).toFixed(2)+'</h3>');
+						$("#totalCountId").html('<h3>'+totalRegCount+'</h3><span style="color:green;">2016-2018</span>');
+						$('#totalPencentageId').html('<h3>'+((totalRegCount * 100) / 5511402).toFixed(2)+'</h3><span class="text-warning">Total</span>');
 						//$("#ts2016CountId").hide();
 //$("#ts2016PrecCountId").hide();
 //$("#ap2016CountId").hide();
