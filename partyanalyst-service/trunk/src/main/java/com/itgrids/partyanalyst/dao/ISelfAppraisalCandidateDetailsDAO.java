@@ -21,4 +21,5 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getCommendAndFilePathDtls(List<Long> cndIdListForCmtAndFile, Date fromDate, Date toDate);
 	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> desigIdList,Long userAccessLevelId, Set<Long> locationValueSet);
 	public List<Object[]> getCndWiseAndLocValWiseCountListForIncharge(Date fromDate, Date toDate);
+	public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 }
