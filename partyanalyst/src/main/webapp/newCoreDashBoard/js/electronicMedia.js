@@ -28,7 +28,7 @@ $(document).on("click",".emnIconExpand",function(){
 	}else{
 		//after expand	
 		$(".dateRangePickerClsForEmn").addClass("hide");
-		$(".moreBlockEMN").hide();
+		$(".moreBlockEMN,.selectEmnCate,.newEmnHideCls").hide();
 	}
 });
 $(document).on("click",".moreEmnBlocksIcon",function(){
