@@ -50,5 +50,7 @@ public interface IFieldMonitoringService {
 	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCount();
 	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId);
 	public List<IdAndNameVO> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId);
-	public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId);
+	public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId,String comment);
+	 public List<IdAndNameVO> getcadrePerformnanceTypeList();
+	 public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId);
 }
