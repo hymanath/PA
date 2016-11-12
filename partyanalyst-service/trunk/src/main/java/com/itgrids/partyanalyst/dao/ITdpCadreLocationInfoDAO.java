@@ -44,4 +44,5 @@ public interface ITdpCadreLocationInfoDAO extends GenericDao<TdpCadreLocationInf
 	public List<Object[]> getTotalCadreLocationWise(Long locationScopeId, List<Long> locationIdList,String scope);
 	public List<Object[]> getTotalRenewlCadreLocationWiseCount(Long accessLvlId,List<Long> accessLvlValue,String type);
 	public List<Object[]> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId);
+	public List<Object[]> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId);
 }
