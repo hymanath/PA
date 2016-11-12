@@ -410,7 +410,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 	  }*/
 	  public List<Object[]> getToursVisitedDetailsByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
 		     StringBuilder queryStr = new StringBuilder();
-		          queryStr.append(" select " );
+		     queryStr.append(" select " );
 					     if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){//district 
 					 		  queryStr.append(" model1.userAddress.district.districtId," +//0
 			   		 				  		 "  model1.userAddress.district.districtName,");//1	
@@ -464,4 +464,21 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 		 }
 		 		 return query.list();
 	   }
+	  public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate,Long userAccessLevelId,Set<Long> userAccessLevelValues){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select count(distinct model.selfAppraisalCandidateDetailsId) from SelfAppraisalCandidateDetails model where" +
+		  				  " model.selfAppraisalCandidate.selfAppraisalCandidateId in (:candidateIds) " +  
+		  				  " and date(model.updatedTime) between :fromDate and :toDate ");
+		  	
+		  	Query query = getSession().createQuery(queryStr.toString());
+		  	
+		  	if(candidateIds != null && candidateIds.size() > 0){
+	 			   query.setParameterList("candidateIds", candidateIds);
+	 		}
+	 		 if(fromDate!= null && toDate!=null){
+	 			   query.setDate("fromDate", fromDate);
+	 			   query.setDate("toDate", toDate);
+	 		 }
+		  return (Long)query.uniqueResult();   
+	  }
 }

@@ -100,4 +100,16 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	     Query query = getSession().createQuery(queryStr.toString());
 	      return query.list();
    }
+   public List<Long> getCandiateIdList(List<Long> desigIdList){
+	   StringBuilder queryStr = new StringBuilder();
+	   queryStr.append(" select " +
+		           " distinct model.selfAppraisalCandidateId " +
+		           " from SelfAppraisalCandidate model " +
+		           " where " +
+		           " model.isActive='Y' " +
+		           " and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:desigIdList) ");
+	   Query query = getSession().createQuery(queryStr.toString());
+	   query.setParameterList("desigIdList", desigIdList);  
+	   return query.list();
+   }
 }
