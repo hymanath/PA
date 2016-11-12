@@ -1293,7 +1293,7 @@ function buildDataCollectorsPerformanceDetails(result){
 				str+='<th>recent record</th>';
 				str+='<th>last hour</th>';
 				str+='<th>Completed Registrations</th>';
-				str+='<th>Is Slow Performer?</th>';
+				//str+='<th>Is Slow Performer?</th>';
 				//str+='<th>today target</th>';
 				str+='<th>open issues</th>';
 				str+='<th>fixed issues</th>';
@@ -1370,12 +1370,12 @@ function buildDataCollectorsPerformanceDetails(result){
 						str+='<td>'+result[i].totalCount+'</td>';
 					else
 						str+='<td> - </td>';
-					if(result[i].performanceType != null && result[i].performanceType == 'SLOW')
+					/*if(result[i].performanceType != null && result[i].performanceType == 'SLOW')
 						str+='<td> YES </td>';
 					else if(result[i].performanceType != null && result[i].performanceType == 'BETTER')
 						str+='<td> NO </td>';
 					else
-						str+='<td> - </td>';
+						str+='<td> - </td>';*/
 					/*if(result[i].todayTarget != null)
 						str+='<td>'+result[i].todayTarget+'</td>';
 					else
