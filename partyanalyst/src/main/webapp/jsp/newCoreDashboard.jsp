@@ -2514,6 +2514,9 @@
                 </div>
 				<div class="panel-body">
 					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h6 id="lastUpdatedTimeElecId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
+						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
@@ -3280,7 +3283,7 @@
 	function onLoadCalls(){
 		
 		getRescentArticleTime();
-		
+		getRescentNewsBulletinTime();
 		committeeBasicCall();
 		
 		//training program call
@@ -3317,10 +3320,10 @@
         getToursBasicOverviewCountDetails();     
 		//getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
-		getMediaProgramsOnParty();
-		getAllTvChannels();
+     	getMediaProgramsOnParty();
+		getEMMDetailedPartyDistrictWiseProgramsOverview();
+		//getAllTvChannels();
 	}
-	
 	$(document).on("click",".userStructureClass",function(){
 		
 		$("#directChildActivityMemberDiv").html('');

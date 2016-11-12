@@ -1434,13 +1434,13 @@ function buildProblemsDetailedOverView(result)
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 					str+='<table class="table tableEMN m_top20">';
 						str+='<tr>';
-						str+='<td>';
-							str+='<h5 class="text-capitalize">Total Program</h5>';
-							//str+='<h4>'+result[i].categoryCount != ""?result.tvNewsDetailsVOList[0].categoryCount:"00:00"+'</h4>';
-							str+='<h5 class="text-capitalize m_top20">Total Time</h5>';
-							//str+='<h4>'+result.description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
-						str+='</td>';
 						if(result.tvNewsDetailsVOList !=null && result.tvNewsDetailsVOList.length>0){
+							str+='<td>';
+							str+='<h5 class="text-capitalize">Total Program</h5>';
+							str+='<h4>'+result.tvNewsDetailsVOList[0].categoryCount != ""?result.tvNewsDetailsVOList[0].categoryCount:"00:00"+'</h4>';
+							str+='<h5 class="text-capitalize m_top20">Total Time</h5>';
+							str+='<h4>'+result.tvNewsDetailsVOList[0].description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+						str+='</td>';
 							for(var i in result.tvNewsDetailsVOList[0].tvNewsDetailsVOList)
 							{
 								str+='<td>';
@@ -3793,3 +3793,16 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		}
 	}
 }
+    function getRescentNewsBulletinTime(){
+		$.ajax({
+			//   url: wurl+"CommunityNewsPortal/webservice/getRescentNewsBulletinTime"
+    url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentNewsBulletinTime"
+		}).then(function(result){
+			if(result != null){
+				$("#lastUpdatedTimeElecId").html("Last Updated : "+ result[0].categoryName);
+			}
+		});
+	}    
+	setInterval(function() {
+		getRescentNewsBulletinTime();
+	}, 60 * 1000);
