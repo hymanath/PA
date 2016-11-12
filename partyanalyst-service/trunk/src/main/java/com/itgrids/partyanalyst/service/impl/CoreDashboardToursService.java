@@ -78,8 +78,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
-	public void setSelfAppraisalCandidateTourLocationDAO(
-			ISelfAppraisalCandidateTourLocationDAO selfAppraisalCandidateTourLocationDAO) {
+	public void setSelfAppraisalCandidateTourLocationDAO(ISelfAppraisalCandidateTourLocationDAO selfAppraisalCandidateTourLocationDAO) {
 		this.selfAppraisalCandidateTourLocationDAO = selfAppraisalCandidateTourLocationDAO;
 	}
 	public void setSelfAppraisalDesignationDAO(
@@ -970,7 +969,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 fromDate = sdf.parse(fromDateStr);
 				 toDate = sdf.parse(toDateStr);
 			 }
-			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst = selfAppraisalCandidateLocationDAO.getCandiateLocationScopeIdAndValues(candidateId);
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst = selfAppraisalCandidateTourLocationDAO.getCandiateLocationScopeIdAndValues(candidateId);
 			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
 				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
 				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
