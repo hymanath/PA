@@ -8,8 +8,8 @@ $("#toursDateRangePicker").daterangepicker({
 		ranges: {
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment().endOf('month')],
            'This Year': [moment().startOf('Year'), moment()],
@@ -19,6 +19,11 @@ $("#toursDateRangePicker").daterangepicker({
 	 $('#toursDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	  getToursDetailsOverview();
 	});
+	function getDay(){
+		var date = new Date();
+		var dd = date.getDate(); 
+		return dd;
+	}    
 	getToursDetailsOverview(); //default call 
 	function getToursDetailsOverview(){ 
 	$("#overAllLeaderDivId").html(' ');
@@ -49,7 +54,7 @@ $("#toursDateRangePicker").daterangepicker({
 		 }
 		});
 	}
-	function buildLeadersOverviewRslt(result){
+	function buildLeadersOverviewRslt(result){  
 	 var str='';
 	 str+='<table class="table table-condensed tableOverview">';
 		str+='<thead>';
