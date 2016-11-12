@@ -11,5 +11,5 @@ import com.itgrids.partyanalyst.model.CadreSurveyUserPerformance;
 public interface ICadreSurveyUserPerformanceDAO extends GenericDao<CadreSurveyUserPerformance, Long> {
 
 	public List<CadreSurveyUserPerformance> getCadreSurveyUserPerformanceDetails(Long cadreSurveyUserId,Date currentDate);
-	public List<Object[]> getUserWisePerformanceByDate(Date today);
+	public List<Object[]> getUserWisePerformanceByDate(Long cadreSurveyUserId,Date today);
 }
