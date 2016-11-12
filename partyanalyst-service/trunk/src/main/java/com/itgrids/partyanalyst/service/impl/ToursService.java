@@ -86,6 +86,38 @@ public class ToursService implements IToursService {
 			selfAppraisalCandidateDetails.setSelfAppraisalCandidateId(toursInputVO.getCandidateId());
 			selfAppraisalCandidateDetails.setMonth(toursInputVO.getMonth());
 			selfAppraisalCandidateDetails.setYear(toursInputVO.getYear());
+			String yr = toursInputVO.getYear().toString();
+			String mnth = "";
+			if(toursInputVO.getMonth().equalsIgnoreCase("January")){
+				mnth = "01";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("February")){
+				mnth = "02";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("March")){
+				mnth = "03";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("April")){
+				mnth = "04";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("May")){
+				mnth = "05";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("June")){
+				mnth = "06";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("July")){
+				mnth = "07";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("August")){
+				mnth = "08";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("September")){
+				mnth = "09";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("October")){
+				mnth = "10";
+			}else if(toursInputVO.getMonth().equalsIgnoreCase("November")){
+				mnth = "11";
+			}else{
+				mnth = "12";
+			}
+			String day = "01";
+			String dt = yr+"-"+mnth+"-"+day;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = sdf.parse(dt);
+			selfAppraisalCandidateDetails.setTourDate(today);  
 			if(toursInputVO.getOwnLocationScopeId() != null){
 				selfAppraisalCandidateDetails.setOwnLocationScopeId(toursInputVO.getOwnLocationScopeId());
 			}
