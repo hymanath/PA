@@ -3829,7 +3829,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		}).done(function(result){
 			$("#locationWiseProcessImgReport").hide();
 			if(result != null && result.length > 0){
-				buildLocationWiseReport(result,reportType,locationType);
+				buildLocationWiseReports(result,reportType,locationType);
 			}else{
 			   $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE.");	
 			}
@@ -3867,13 +3867,13 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 		}).done(function(result){
 			$("#locationWiseProcessImgReport").hide();
 		  if(result != null && result.length > 0){
-			 buildLocationWiseReport(result,reportType,locationType);  
+			 buildLocationWiseReports(result,reportType,locationType);  
 		  }else{
 			 $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE."); 
 		  }
 		});
 	} 
-	function buildLocationWiseReport(result,reportType,locationType){
+	function buildLocationWiseReports(result,reportType,locationType){
 		$("#cadreExcelExpBtnId").show();
 	   var str='';
 	   str+='<div class="table-responsive">';
