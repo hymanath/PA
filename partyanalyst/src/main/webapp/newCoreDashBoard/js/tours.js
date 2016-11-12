@@ -896,10 +896,10 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		   buildLocationWiseReport(result);
+		   buildTourDtlsLocationWiseReport(result);
  		}); 
 	}
-	function buildLocationWiseReport(result){
+	function buildTourDtlsLocationWiseReport(result){
 	 var str='';
 	if(result != null){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';  
