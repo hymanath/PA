@@ -855,6 +855,30 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("type", type);
+		query.setFirstResult(1);
+		query.setMaxResults(20);
+		return query.list();
+	}
+	
+	public List<Object[]> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct D.districtId," +
+					" D.districtName,model.cadre2016" +
+					" from TdpCadreLocationInfo model,District D" +
+					" where model.locationScopeId = 3" +
+					" and model.locationValue = D.districtId");
+		if(type != null && !type.trim().isEmpty())
+			sb.append(" and model.type = :type");
+		if(stateId != null && stateId.longValue() == 1l)
+			sb.append(" and C.district.districtId between 11 and 23");
+		else if(stateId != null && stateId.longValue() == 36l)
+			sb.append(" and C.district.districtId between 1 and 10");
+		sb.append(" order by model.cadre2016 desc");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("type", type);
+		query.setFirstResult(1);
+		query.setMaxResults(20);
 		return query.list();
 	}
 }

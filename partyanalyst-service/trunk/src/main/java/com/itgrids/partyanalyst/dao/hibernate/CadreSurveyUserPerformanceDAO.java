@@ -29,7 +29,7 @@ public class CadreSurveyUserPerformanceDAO extends  GenericDaoHibernate<CadreSur
 	}
 
 	public List<Object[]> getUserWisePerformanceByDate(Date today){
-		Query query = getSession().createQuery("select distinct model.cadreSurveyUser.cadreSurveyUserId," +
+		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId," +
 								" model.cadreSurveyUserPerformanceType.type" +
 								" from CadreSurveyUserPerformance model" +
 								" where date(model.surveyTime) = :today" +

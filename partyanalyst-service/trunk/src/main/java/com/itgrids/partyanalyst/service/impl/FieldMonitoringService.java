@@ -2331,7 +2331,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 				}
 			}
 			
-			Map<Long,String> perfMap = new LinkedHashMap<Long, String>();
+			/*Map<Long,String> perfMap = new LinkedHashMap<Long, String>();
 			List<Object[]> perfomList = cadreSurveyUserPerformanceDAO.getUserWisePerformanceByDate(today);
 			if(perfomList != null && !perfomList.isEmpty()){
 				for (Object[] obj : perfomList) {
@@ -2345,7 +2345,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 					Long id = vo.getCadreSurveyUserId();
 					vo.setPerformanceType(perfMap.get(id));
 				}
-			}
+			}*/
 			
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
