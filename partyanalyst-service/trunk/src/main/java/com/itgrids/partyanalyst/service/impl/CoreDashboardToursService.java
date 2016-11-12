@@ -978,7 +978,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-			List<Object[]> rtrnObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+			 List<Object[]> rtrnObjList = null;
+			 if(locationAccessLevelId > 0l && locationValues != null && locationValues.size() > 0){
+				 rtrnObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);	 
+			 }
 			List<ToursBasicVO> locationDtlsLst = new ArrayList<ToursBasicVO>();
 			setToursDtlsToVO(rtrnObjList,locationDtlsLst);
 			if(locationAccessLevelId.longValue()==1l){////district 
