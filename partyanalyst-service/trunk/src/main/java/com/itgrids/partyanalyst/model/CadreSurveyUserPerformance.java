@@ -34,6 +34,7 @@ public class CadreSurveyUserPerformance extends BaseModel implements Serializabl
 	private Long   surveyHourNo;
 	private  Long createdBy;
 	private Long updatedBy;
+	private String comment;
 	
 	private CadreSurveyUser cadreSurveyUser;
 	private CadreSurveyUserPerformanceType cadreSurveyUserPerformanceType;
@@ -140,6 +141,14 @@ public class CadreSurveyUserPerformance extends BaseModel implements Serializabl
 	}
 	public void setCadreSurveyUserPerformanceType(CadreSurveyUserPerformanceType cadreSurveyUserPerformanceType) {
 		this.cadreSurveyUserPerformanceType = cadreSurveyUserPerformanceType;
+	}
+	
+	@Column(name = "comment" , length = 70)
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	
