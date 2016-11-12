@@ -3,6 +3,7 @@ function onLoadCalls(){
 	getConstituencies(0);
 	getUsers(0);
 	getCadreRegIssueType();
+	getPerformanceTypeList();
 }
 
 function getDistricts(){
@@ -168,10 +169,14 @@ function buildTabUserDetails(result){
 					str+='<tr style="background: lightgray;">';
 				else
 					str+='<tr>';
-					if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0)
+					if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0){
 						str+='<td class="issueCmpltd">'+result.subList[i].userName+'</td>';
-					else
+						/*str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to View Performance Details" style="cursor:pointer;"></i></td>';*/
+					}
+					else{
 						str+='<td class="issuePending">'+result.subList[i].userName+'</td>';
+						/*str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to View Performance Details" style="cursor:pointer;"></i></td>';*/
+					}
 					if(result.subList[i].tabUserName != null)
 						str+='<td title="UserId : '+result.subList[i].userName+'">'+result.subList[i].tabUserName+'</td>';
 					else
@@ -218,8 +223,11 @@ function buildTabUserDetails(result){
 					else
 						str+='<option value="1">Yes</option>';
 					str+='</select></td>';*/
+					/*str+='<td style="width: 45px;"><i class="glyphicon glyphicon-edit perfomanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to Update Performance" style="cursor:pointer;"></i>&nbsp&nbsp';*/
+					
 					str+='<td><i class="glyphicon glyphicon-cog manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'" attr_constituency_id="'+result.subList[i].constituencyId+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
 					//str+='<td><i class="glyphicon glyphicon-eye-open userPerformanceCls" title="Click Here to View User Performance" style="cursor:pointer;" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'"></i></td>'
+					
 				str+='</tr>';
 				
 			}
@@ -951,19 +959,30 @@ function getIssues(){
 	} 
 }
 
-$(document).on("change",".performanceId",function(){
+/*$(document).on("change",".performanceId",function(){
 	var cadreSurveyuserId=$(this).attr("attr_cadre_survey_user_id");
 	var perfrmTypeValue = $(this).val();
 	saveUserPerformanceDetails(cadreSurveyuserId,perfrmTypeValue);
 	
+});*/
+$(document).on("click",".perfomanceCls",function(){
+	$("#performanceModalDivId").modal("show");
+	$("#porfmanceListId").val(0).trigger("chosen:updated");
+	$("#commentId").val("");
+	$("#savingErrMsgDivId").html("");
+	var cadreUserId=$(this).attr("attr_cadre_survey_user_id");
+	$("#hiddenCadreSurveyUserId").val(cadreUserId);
 });
 
-
-function saveUserPerformanceDetails(cadreSurveyUserId,performanceId){
+function saveUserPerformanceDetails(){
+	
+	var cadreSurveyUserId =$("#hiddenCadreSurveyUserId").val();
+	var performanceId =$("#porfmanceListId").val();
+	var comment = $("#commentId").val();
 	var jsObj = { 
 		  cadreSurveyUserId : cadreSurveyUserId,
-		  performanceTypeId : performanceId
-		 
+		  performanceTypeId : performanceId,
+		  comment : comment
 		}
 		$.ajax({
 			type : 'GET',
@@ -972,8 +991,58 @@ function saveUserPerformanceDetails(cadreSurveyUserId,performanceId){
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
 			if(result != null && result.message == "success"){
-				getTabUsersDetailsByVendorAndLocation();
+				$("#savingErrMsgDivId").html('<span style="color:green;font-size:25px;">Saved Successfully</span>');
+			}else{
+				$("#savingErrMsgDivId").html('<span style="color:red;font-size:25px;"">Failed to save...Please Try again.</span>');
 			}
 		});
 	
 }
+
+function getPerformanceTypeList(){
+	$('#porfmanceListId').find('option').remove();
+	var jsObj = {
+	}
+	$.ajax({
+			type : 'GET',
+			url : 'getPerformanceTypeListAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			$("#porfmanceListId").append('<option value="0">Select Performance Type</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$("#porfmanceListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#porfmanceListId").trigger("chosen:updated");	
+		});
+}
+
+$(document).on("click",".viewPerformanceCls",function(){
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	getPerfomanceDetialsList(cadreSurveyUserId);
+	$("#performanceDetailsModalDivId").modal("show");
+});
+
+function getPerfomanceDetialsList(cadreSurveyUserId){
+	var jsObj ={
+		cadreSurveyId : cadreSurveyUserId
+	}
+	$.ajax({
+			type : 'GET',
+			url : 'getcadrePerfrmanceDetailsListAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildingPerformanceType(result);
+				
+			}
+		});
+}
+
+/*function buildingPerformanceType(result){
+	var str='';
+	
+}*/
