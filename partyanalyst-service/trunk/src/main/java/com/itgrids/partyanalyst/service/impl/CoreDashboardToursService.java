@@ -672,13 +672,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    ToursBasicVO toursBasicVO = null; 
 		    List<Object[]> designationList = selfAppraisalCandidateLocationDAO.getDesignationListDtls(locationScopeId,locationValueSet);	
 		    
-		    ToursBasicVO orgAndSecVO = null;
+		    ToursBasicVO orgAndSecVO = new ToursBasicVO();
 			if(designationList != null && designationList.size() > 0){
 				for(Object[] param : designationList){
 					toursBasicVO = new ToursBasicVO();
 					if(commonMethodsUtilService.getLongValueForObject(param[0])==4l || commonMethodsUtilService.getLongValueForObject(param[0])==5l){
 					   if(orgAndSecVO.getComment() == null){
-						   orgAndSecVO = new ToursBasicVO();
 						   orgAndSecVO.setComment(commonMethodsUtilService.getStringValueForObject(param[0]));
 						   orgAndSecVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					   }else{
