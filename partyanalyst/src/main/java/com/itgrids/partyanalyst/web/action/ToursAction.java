@@ -316,9 +316,9 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 						}
 			}  
 		     
-			resultStatus = toursService.saveTourDtls(toursInputVO,1l,mapfiles);
+			resultStatus = toursService.updateTourDtls(toursInputVO,1l,mapfiles);
 			if(resultStatus!=null){
-				if(resultStatus.getResultCode() == 0){
+				if(resultStatus.getResultCode() == 0){  
 					successMsg = resultStatus.getMessage();
 				}else if(resultStatus.getResultCode() == 1){
 					successMsg = resultStatus.getMessage();  
