@@ -95,7 +95,7 @@ h1,h2,h3,h4,h5,h6,.table
 </head>
 <body>
 <div class="container">
- <div class="row " id="PreviousmembersCount">
+ <!--<div class="row " id="PreviousmembersCount">
 			
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
 				<div class="table-responsive">
@@ -140,7 +140,7 @@ h1,h2,h3,h4,h5,h6,.table
 					</table>
 				</div>
 			</div>
-		</div>
+		</div>-->
   <div class="row">		
 	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6">
@@ -240,7 +240,7 @@ h1,h2,h3,h4,h5,h6,.table
 <script type="text/javascript">
 
 
-get2016LocationWiseRegisteredCounts("total");
+//get2016LocationWiseRegisteredCounts("total");
 function get2016LocationWiseRegisteredCounts(typeId){
 $("#ts2016CountId").show();
 $("#ts2016PrecCountId").show();
