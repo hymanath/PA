@@ -443,12 +443,12 @@ function getToursBasicOverviewCountDetails()
 				 if(result[i][0].designationId==4 || result[i][0].designationId==11){
 				  if(result[i][0].designationId==4){
 				  if(result[i][0].totalTour!=0){
-					  str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY </h5>';      
+					  str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>';      
 				  }
 				  }
 				  if(result[i][0].designationId==11){
 				   if(result[i][0].totalTour!=0){
-					 str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
+					 str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>';      
 				   }
 			     }
 			   }else{
@@ -826,7 +826,7 @@ function getToursBasicOverviewCountDetails()
 				str+='<div class="table-responsive">';
 			}
 			
-				str+='<table class="table table-condensed tableHoverLevels m_top20 bg_ED">';
+				str+='<table id="tourLeaderDtlsId" class="table table-condensed tableHoverLevels m_top20 bg_ED">';
 					str+='<thead>';
 						str+='<th>%RANK</th>';
 						str+='<th>DESIGNATION</th>';
@@ -874,6 +874,7 @@ function getToursBasicOverviewCountDetails()
 			}
 		str+='</div>';
 		$("#directChildMemberForToursDivId").html(str);
+		$("#tourLeaderDtlsId").dataTable();              
 		getLeaderAverageToursBasedOnAccessLevel(candidateId);
 	}	 
   	$(document).on("click",".candidateCls",function(){
@@ -911,7 +912,7 @@ function getToursBasicOverviewCountDetails()
       if(result.subList != null && result.subList.length > 0){
 		  var order=1;
 		  var BGColor = 1;
-		   var resultListFirst = result.subList;
+		   var resultListFirst = result.subList;  
 		  for(var i in resultListFirst){
 			str+='<tr>';
 			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
