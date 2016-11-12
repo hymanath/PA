@@ -1,7 +1,48 @@
+var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
+var customEndDateTours = moment().format('DD/MM/YYYY');
+	$("#tourDateRangePickerId").daterangepicker({
+		opens: 'left',
+	     startDate: moment().startOf('month'),
+         endDate: moment(),   //moment().endOf('month'),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	});
+	   var globalTourFormDate;
+	   var glovalTourToDate;
+	   var dates=$("#tourDateRangePickerId").val();
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			globalTourFormDate = datesArr[0]; 
+			glovalTourToDate = datesArr[1]; 
+		}
+     $("#toursHeadingId").html(" THIS MONTH ( "+dates+" )");
+     $('#tourDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+	   var dates= $("#tourDateRangePickerId").val();
+	   $("#toursHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
+	   	if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			globalTourFormDate = datesArr[0]; 
+			glovalTourToDate = datesArr[1]; 
+		}
+	    getToursBasicOverviewCountDetails();
+		getDesigWiseMemberDtls();
+	 });
+	
 $(document).on("click",".tourExpand",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	//$(".cadreBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+    $(".hideShowToursDateRangeCls").show();	
 	$(".tourExpandCls").show();
 	getDesigWiseMemberDtls();  
 	setTimeout(function(){
@@ -13,7 +54,8 @@ $(document).on("click",".tourExpand",function(){
 		$(".moreToursBlocks1").hide();     
 		$(".tourExpandCls").hide();     
 		$(".moreToursBlocksDetailed").hide();     
-		$(".comparisonBlockTours").hide();      
+		$(".comparisonBlockTours").hide();  
+		$(".hideShowToursDateRangeCls").hide();	
 	}    
 });
 $(document).on("click",".moreToursBlocksIcon",function(){
@@ -29,28 +71,9 @@ $(document).on("click",".toursDetailedBlock",function(){
 $(document).on("click",".toursComparisionBlock",function(){
 	$(".moreToursBlocksDetailed").hide();
 	$(".comparisonBlockTours").show();
-	 //var selectedUserName = "RAMMANAIDU NIMMALA";
-	 //var userType = "GENERAL SECRETARY";
-	 //var userTypeId = 3;
 	// getTopPoorToursLocationDetails(userTypeId,selectedUserName,userType);
 	   getDesigListForTour();
 });
-	function getTodayDate(){
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth()+1; //January is 0!
-
-		var yyyy = today.getFullYear();  
-		if(dd<10){
-			dd='0'+dd
-		} 
-		if(mm<10){
-			mm='0'+mm
-		} 
-		var today = dd+'/'+mm+'/'+yyyy;
-		return today;
-	}
-
 var globalStateIdForTour=1; //for 
 function getToursBasicOverviewCountDetails()
 	{    
@@ -58,8 +81,8 @@ function getToursBasicOverviewCountDetails()
 		var jsObj ={ 
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
-					 fromDate : "10/11/2016",
-					 toDate : getTodayDate(),
+					 fromDate : globalTourFormDate,
+					 toDate : glovalTourToDate                      
 				  }
 		$.ajax({
 			type : 'POST',
@@ -155,8 +178,8 @@ function getToursBasicOverviewCountDetails()
 			var jsObj ={ 
 						 activityMemberId : globalActivityMemberId,
 						 stateId : globalStateIdForTour,
-						 fromDate : "10/11/2016",
-					     toDate :  getTodayDate(),
+						 fromDate : globalTourFormDate,
+					     toDate :  glovalTourToDate,
 						 userTypeId : globalUserTypeId
 					  }
 			$.ajax({
@@ -275,11 +298,11 @@ function getToursBasicOverviewCountDetails()
   function getTopPoorToursLocationDetails(userTypeId,selectedUserName,userType)
 	{   $("#topPoorLocationsToursDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
-					 activityMemberId : 241, 
+					 activityMemberId : globalActivityMemberId, 
 					 stateId : globalStateIdForTour,
 					 userTypeId:userTypeId,
-					 fromDate : "11/11/2016",
-					 toDate :  getTodayDate()
+					 fromDate : globalTourFormDate,
+					 toDate :  glovalTourToDate
 				  }
 		$.ajax({
 			type : 'POST',
@@ -387,8 +410,8 @@ function getToursBasicOverviewCountDetails()
 		var jsObj ={ 
 			activityMemberId : globalActivityMemberId,        
 			stateId : globalStateIdForTour,
-			fromDate : "27/10/2016",              
-			toDate :  getTodayDate()      
+			fromDate : globalTourFormDate,              
+			toDate :  glovalTourToDate      
 		}
 		$.ajax({
 			type : 'POST',
@@ -724,8 +747,8 @@ function getToursBasicOverviewCountDetails()
 		var jsObj = { 
 			 desigIds : desigIdArr,    
 			 activityMemberId : globalActivityMemberId,  
-			 startDateStr : "27/10/2016",
-			 endDateStr : getTodayDate()  
+			 startDateStr : globalTourFormDate,
+			 endDateStr : glovalTourToDate  
 			}
 		$.ajax({  
 			type : 'POST',
@@ -780,8 +803,8 @@ function getToursBasicOverviewCountDetails()
 			activityMemberId : globalActivityMemberId,
 			designationIds : desigIdArr,                  
 			stateId : globalStateIdForTour,      
-			fromDate : "27/10/2016",                
-			toDate : getTodayDate() 
+			fromDate : globalTourFormDate,                
+			toDate : glovalTourToDate 
 		}
 		$.ajax({
 			type : 'POST',
@@ -863,8 +886,8 @@ function getToursBasicOverviewCountDetails()
 		var jsObj ={ 
 					 candidateId : candidateId, 
 					 stateId : globalStateIdForTour,
-					 fromDate : "27/10/2016",
-					 toDate :  getTodayDate()
+					 fromDate : globalTourFormDate,
+					 toDate :  glovalTourToDate
 				  }
 		$.ajax({
 			type : 'POST',
