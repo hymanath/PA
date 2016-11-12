@@ -2713,7 +2713,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12 toursHiddenBlock" style="display:none;">
-						<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreToursBlocksIcon" title="Click here for more"></i>
+						<i data-placement="top" data-toggle="tooltip" style="cursor:pointer;" class="glyphicon glyphicon-option-horizontal pull-right moreToursBlocksIcon" title="Click here for more"></i>
 					</div>	
 					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreToursBlocks1" style="display:none;">
 						<ul class="list-inline pull-right activeUlCls">
@@ -2751,22 +2751,19 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="col-md-12 col-xs-12 col-sm-12">    
 										 <div id="childToursMemberDivId"> </div>
 									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<div class="bg_ED pad_15 m_top20">
-										   <div id="directChildMemberForToursDivId">
-										   </div>
-										   <div class="row">
-												 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-													<div class="row m_top20">
-													 <div id="topPoorLocationsToursDivId"></div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">    
+										 <div id="directChildMemberForToursDivId"> </div>
+									</div>  
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">    
+										 <div id="topPoorLocationsToursDivId"> </div>
+									</div>     
 								</div>
 							</div>
 						</div>

@@ -79,7 +79,7 @@ function getToursBasicOverviewCountDetails()
 		  if(overAllResult != null){
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10 row" >';
 			 str+='<div class="table-responsive">';
-			 str+='<h4>LEADERS</h4>';
+			 str+='<h4>OVERALL</h4>';
 		      str+='<table class="table tableTraining bg_ED">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
@@ -262,7 +262,7 @@ function getToursBasicOverviewCountDetails()
 									}
 								},
 								series: [{
-									name: 'Average',
+									name: 'Average Tours',
 									data: averageToursArr
 								}]
 							});
@@ -773,7 +773,8 @@ function getToursBasicOverviewCountDetails()
 		str+='</table>';
 		$("#totalOverviewOfDesigId").html(str);
 	}
-	function getMemberDtlsForADesignation(desigIdArr){  
+	function getMemberDtlsForADesignation(desigIdArr){ 
+		$("#topPoorLocationsToursDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');  
 		$("#directChildMemberForToursDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 			activityMemberId : globalActivityMemberId,
@@ -802,7 +803,7 @@ function getToursBasicOverviewCountDetails()
 				str+='<div class="table-responsive">';
 			}
 			
-				str+='<table class="table table-condensed tableHoverLevels m_top20">';
+				str+='<table class="table table-condensed tableHoverLevels m_top20 bg_ED">';
 					str+='<thead>';
 						str+='<th>%RANK</th>';
 						str+='<th>DESIGNATION</th>';
@@ -877,11 +878,13 @@ function getToursBasicOverviewCountDetails()
 	function buildLocationWiseReport(result){
 	 var str='';
 	if(result != null){
-		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-			str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">'+result.name+'</span></span></b>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';  
+			if(result.name != null){
+				str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">'+result.name+'</span></span></b>';
+			}
 		str+='</div>';
 	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
-	  str+='<table class="table tableCumulative">';
+	  str+='<table class="table tableCumulative bg_ED">';
       if(result.subList != null && result.subList.length > 0){
 		  var order=1;
 		  var BGColor = 1;
