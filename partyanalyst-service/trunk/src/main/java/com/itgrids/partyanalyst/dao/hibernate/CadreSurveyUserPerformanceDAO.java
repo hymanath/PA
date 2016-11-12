@@ -28,12 +28,16 @@ public class CadreSurveyUserPerformanceDAO extends  GenericDaoHibernate<CadreSur
 		return  query.list();
 	}
 
-	public List<Object[]> getUserWisePerformanceByDate(Date today){
-		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId," +
+	public List<Object[]> getUserWisePerformanceByDate(Long cadreSurveyUserId,Date today){
+		Query query = getSession().createQuery("select " +
+								" model.cadreSurveyUserPerformanceType.cadreSurveyUserPerformanceTypeId," +
+								" model.comment," +
 								" model.cadreSurveyUserPerformanceType.type" +
 								" from CadreSurveyUserPerformance model" +
 								" where date(model.surveyTime) = :today" +
+								" and model.cadreSurveyUser.cadreSurveyUserId = :cadreSurveyUserId" +
 								" and model.isDeleted = 'false'");
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
 		query.setDate("today", today);
 		return query.list();
 	}
