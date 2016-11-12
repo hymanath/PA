@@ -47,7 +47,7 @@ public class ToursService implements IToursService {
 	private CommonMethodsUtilService commonMethodsUtilService ;
 	private TransactionTemplate transactionTemplate;
 	
-	public void setSelfAppraisalDesignationDAO(
+	public void setSelfAppraisalDesignationDAO( 
 			ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO) {
 		this.selfAppraisalDesignationDAO = selfAppraisalDesignationDAO;
 	}
@@ -120,6 +120,56 @@ public class ToursService implements IToursService {
 			resultStatus.setMessage("Failed");
 			return resultStatus;
 		}
+	}
+	public ResultStatus updateTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles){  
+		LOG.info("Entered into saveTourDtls() of ToursService{}"); 
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			DateUtilService dateUtilService = new DateUtilService();
+			String destPath = saveUploadFile(mapfiles);  
+			SelfAppraisalCandidateDetails selfAppraisalCandidateDetails = new SelfAppraisalCandidateDetails();
+			selfAppraisalCandidateDetails = selfAppraisalCandidateDetailsDAO.get(toursInputVO.getCandidateDtlsId());
+			if(selfAppraisalCandidateDetails != null ){
+				selfAppraisalCandidateDetails.setMonth(toursInputVO.getMonth());
+				selfAppraisalCandidateDetails.setYear(toursInputVO.getYear());
+				selfAppraisalCandidateDetails.setUpdatedBy(userId);
+				selfAppraisalCandidateDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());      
+				if(toursInputVO.getOwnTours() != null){ 
+					selfAppraisalCandidateDetails.setOwnTours(toursInputVO.getOwnTours());
+				}
+				if(toursInputVO.getInchargeTours() != null){
+					selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());  
+				}
+				if(toursInputVO.getRemarks() != null && toursInputVO.getRemarks().trim().length() > 0){
+					selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());
+				}
+				if(toursInputVO.getOldFileStatus().longValue() == 1){
+					String oldPath = selfAppraisalCandidateDetails.getReportPath();
+					if(oldPath.trim().length() > 0){
+						selfAppraisalCandidateDetails.setReportPath(oldPath+","+destPath);      
+					}else{
+						selfAppraisalCandidateDetails.setReportPath(destPath);
+					}
+				}else{
+					selfAppraisalCandidateDetails.setReportPath(destPath);
+				}
+			}else{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("Failed");
+				return resultStatus;
+			}
+			selfAppraisalCandidateDetailsDAO.save(selfAppraisalCandidateDetails); 
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("Updated");  
+			return resultStatus;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception raised in saveTourDtls() of ToursService{}", e);
+			resultStatus.setResultCode(0);
+			resultStatus.setMessage("Failed");
+			return resultStatus;
+		}    
 	}
 	public String saveUploadFile(Map<File,String> mapfiles){
 		try{
@@ -506,6 +556,7 @@ public class ToursService implements IToursService {
     		if(memberDtls != null && memberDtls.size() > 0){
     			for(Object[] param : memberDtls){
     				basicVO.setId(param[0] != null ? (Long)param[0] : 0l);
+    				basicVO.setCandDtlsId(candidateDtlsId);  
     				basicVO.setMonth(param[1] != null ? param[1].toString() : "");
     				basicVO.setYear(param[2] != null ? (Long)param[2] : 0l);
     				basicVO.setOwnToursCnt(param[5] != null ? (Long)param[5] : 0l);
