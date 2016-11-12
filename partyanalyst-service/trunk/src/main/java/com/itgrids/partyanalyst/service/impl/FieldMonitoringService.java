@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ICadreRegIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserPerformanceDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserPerformanceTypeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -86,6 +87,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ICadreRegIssuePersonDAO cadreRegIssuePersonDAO;
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
 	private ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO;
+	private ICadreSurveyUserPerformanceTypeDAO cadreSurveyUserPerformanceTypeDAO;
 	
 	//Setters
 	
@@ -198,6 +200,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	}
 	public void setCadreSurveyUserPerformanceDAO(ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO) {
 		this.cadreSurveyUserPerformanceDAO = cadreSurveyUserPerformanceDAO;
+	}
+	
+	public ICadreSurveyUserPerformanceTypeDAO getCadreSurveyUserPerformanceTypeDAO() {
+		return cadreSurveyUserPerformanceTypeDAO;
+	}
+	public void setCadreSurveyUserPerformanceTypeDAO(ICadreSurveyUserPerformanceTypeDAO cadreSurveyUserPerformanceTypeDAO) {
+		this.cadreSurveyUserPerformanceTypeDAO = cadreSurveyUserPerformanceTypeDAO;
 	}
 	//business method.
 	public List<IdAndNameVO> getVendors(Long stateId){
@@ -2331,21 +2340,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 				}
 			}
 			
-			/*Map<Long,String> perfMap = new LinkedHashMap<Long, String>();
-			List<Object[]> perfomList = cadreSurveyUserPerformanceDAO.getUserWisePerformanceByDate(today);
-			if(perfomList != null && !perfomList.isEmpty()){
-				for (Object[] obj : perfomList) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					String type = obj[1] != null ? obj[1].toString():"";
-					perfMap.put(id, type);
-				}
-			}
-			if(returnList != null && !returnList.isEmpty()){
-				for (FieldMonitoringVO vo : returnList) {
-					Long id = vo.getCadreSurveyUserId();
-					vo.setPerformanceType(perfMap.get(id));
-				}
-			}*/
+			
 			
 			List<Object[]> templist = cadreRegIssueDAO.getTotalTabUsersDetailsByVendorAndLocationNew(cadreRegUserId, null, null, constituencyId, cadreSurveyUserId, districtId,stateId);
 			if(templist != null && !templist.isEmpty()){
@@ -2845,19 +2840,20 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		return returnList;
 	}
 	
-	 public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId){
+	 public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId,String comment){
 		 ResultStatus status = new ResultStatus();
 		 try{
 			 Date currentDate = dateUtilService.getCurrentDateAndTime();
 			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			 List<CadreSurveyUserPerformance> existingUserPerformance = cadreSurveyUserPerformanceDAO.getCadreSurveyUserPerformanceDetails(cadreSurveyUserId,currentDate);
+			 /*List<CadreSurveyUserPerformance> existingUserPerformance = cadreSurveyUserPerformanceDAO.getCadreSurveyUserPerformanceDetails(cadreSurveyUserId,currentDate);
 			 if(existingUserPerformance != null && existingUserPerformance.size() > 0){
 				 	CadreSurveyUserPerformance cadreSurveyUserPerformance = existingUserPerformance.get(0);
-				 	cadreSurveyUserPerformance.setCadreSurveyUserPerformanceTypeId(performanceTypeId);
-				 	cadreSurveyUserPerformance.setUpdatedBy(loginUserId);
-				 	cadreSurveyUserPerformance.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				 	//cadreSurveyUserPerformance.setCadreSurveyUserPerformanceTypeId(performanceTypeId);
+				 	//cadreSurveyUserPerformance.setUpdatedBy(loginUserId);
+				 	//cadreSurveyUserPerformance.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				 	cadreSurveyUserPerformance.setIsDeleted("true");
 				 	cadreSurveyUserPerformanceDAO.save(cadreSurveyUserPerformance);
-			 	}else{
+			 	}*/
 			 		CadreSurveyUserPerformance cadreSurveyUserPerformance = new CadreSurveyUserPerformance();
 			 		cadreSurveyUserPerformance.setCadreSurveyUserId(cadreSurveyUserId);
 			 		cadreSurveyUserPerformance.setSurveyTime(sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
@@ -2865,10 +2861,11 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			 		cadreSurveyUserPerformance.setIsDeleted("false");
 			 		cadreSurveyUserPerformance.setCreatedBy(loginUserId);
 			 		cadreSurveyUserPerformance.setUpdatedBy(loginUserId);
+			 		cadreSurveyUserPerformance.setComment(comment);
 			 		cadreSurveyUserPerformance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			 		cadreSurveyUserPerformance.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			 		cadreSurveyUserPerformanceDAO.save(cadreSurveyUserPerformance);
-			 	}
+			 	
 			 	status.setMessage("success");
 		 	}catch(Exception e){
 			 LOG.error("Exception occurred at saveCaderSurveyUserPerformanceDetails() of FieldMonitoringService", e); 
@@ -2876,4 +2873,53 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		 }
 		 return status;
 	 }
+   public List<IdAndNameVO> getcadrePerformnanceTypeList(){
+	   List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	   try{
+		   IdAndNameVO vo = null;
+		   List<Object[]> perfrmnaceList=cadreSurveyUserPerformanceTypeDAO.getCadrePerformanceTypeList();
+		   for (Object[] objects : perfrmnaceList) {
+			   vo = new IdAndNameVO();
+			   vo.setId(Long.valueOf(objects[1]!= null ? objects[1].toString():""));
+			   vo.setName(objects[0] != null ? objects[0].toString():"");
+			   returnList.add(vo);
+		   }
+	   }catch(Exception e){
+		   LOG.error("Exception occurred at getcadrePerformnanceTypeList() of FieldMonitoringService", e);  
+	   }
+	   return returnList;
+   }
+  public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId){
+       List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+	  try{
+		  Date today = dateUtilService.getCurrentDateAndTime();
+		  Map<Long,IdAndNameVO> perfMap = new LinkedHashMap<Long, IdAndNameVO>();
+		  List<Object[]> perfomList = cadreSurveyUserPerformanceDAO.getUserWisePerformanceByDate(cadreSurveyUserId,today);
+		  if(perfomList != null && !perfomList.isEmpty()){
+			for (Object[] obj : perfomList) {
+				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				String comment = obj[1] != null ? obj[1].toString():"";
+				IdAndNameVO vo = perfMap.get(id);
+				if(vo == null){
+					vo = new IdAndNameVO();
+					vo.setId(id);
+					vo.setName(obj[2] != null ? obj[2].toString():"");
+					vo.setMobileNumber(comment);//comment
+					perfMap.put(id, vo);
+				}
+				else{
+					vo.setMobileNumber(vo.getName()+"<br>"+comment);//comment
+				}
+				//returnList.add(vo);
+			}
+		}
+		  if(perfMap!= null){
+			  returnList = new ArrayList<IdAndNameVO>(perfMap.values());
+		  }
+  }
+  catch(Exception e){
+	  LOG.error("Exception occurred at getcadrePerfrmanceList() of FieldMonitoringService", e);  
+  }
+	return returnList;  
+}
 }
