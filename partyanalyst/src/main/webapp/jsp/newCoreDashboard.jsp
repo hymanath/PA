@@ -2675,7 +2675,7 @@
                     	<div class="col-md-8 col-sm-8 col-xs-8">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
-								Tours <small class="text-muted"></small>
+								Tours <small class="text-muted" id="toursHeadingId"> This Month() </small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4">
@@ -2688,8 +2688,8 @@
 							 <span class="tourExpand pull-right">  
 								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
-							<span class="input-group pull-right  m_XsTop10 hide">
-								<input type="text" id="tourDateRange"	 class="form-control" />
+						    <span class="input-group pull-right toursDateRangePickerCls hideShowToursDateRangeCls" style="width:200px;display:none;">
+								<input type="text" id="tourDateRangePickerId" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
