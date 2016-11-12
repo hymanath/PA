@@ -377,7 +377,7 @@ function getToursBasicOverviewCountDetails()
 	function getDesigWiseMemberDtls(){ 
 	$("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
-			activityMemberId : 44,        
+			activityMemberId : globalActivityMemberId,        
 			stateId : globalStateIdForTour,
 			fromDate : "27/10/2016",              
 			toDate :  getTodayDate()      
@@ -664,8 +664,12 @@ function getToursBasicOverviewCountDetails()
 	} 
 	
 	function getDesigListForTour(){
+		$("#designationListForTourId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#totalOverviewOfDesigId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#directChildMemberForToursDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
 		var jsObj ={ 
-			activityMemberId : 44,
+			activityMemberId : globalActivityMemberId,
 		}
 		$.ajax({
 			type : 'POST',
@@ -673,6 +677,7 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}         
 			}).done(function(result){
+				$("#designationListForTourId").html('');     
 				if(result != null && result.length > 0){
 					buildDesignationLabel(result);
 				}       
@@ -683,7 +688,7 @@ function getToursBasicOverviewCountDetails()
 		if(result != null && result.length > 0){
 			str += '<ul class="comparisonSelect">';
 			for(var i in result){
-				str += '<li class="" id="singleDesigTourId'+i+'" attr_desig_ids="'+result[i].comment+'">'+result[i].name+'<span class="closeIconComparison"></span></li>';
+				str += '<li class="singleDesigTourCls" id="singleDesigTourId'+i+'" attr_desig_ids="'+result[i].comment+'">'+result[i].name+'<span class="closeIconComparison"></span></li>';
 			}
 			str += '</ul>';    
 		}
@@ -698,10 +703,19 @@ function getToursBasicOverviewCountDetails()
 		getMemberDtlsForADesignation(desigIdArr);
 		
 	});  
+	$(document).on('click','.singleDesigTourCls',function(){
+		var desigIs = $(this).attr("attr_desig_ids");
+		var desigIdArr = [];
+		desigIdArr = desigIs.split(",");
+		getDesignationDtls(desigIdArr);
+		getMemberDtlsForADesignation(desigIdArr);
+	});
 	function getDesignationDtls(desigIdArr){  
+		$("#totalOverviewOfDesigId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#directChildMemberForToursDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj = { 
 			 desigIds : desigIdArr,    
-			 activityMemberId : 44,  
+			 activityMemberId : globalActivityMemberId,  
 			 startDateStr : "11/11/2016",
 			 endDateStr : "11/11/2016"  
 			}
@@ -711,7 +725,7 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			//$("#desigDtlsProcessImgId").hide();
+			$("#totalOverviewOfDesigId").html('');
 			if(result != null){
 				buildDesignationDtls(result);  
 			}
@@ -742,9 +756,9 @@ function getToursBasicOverviewCountDetails()
 						str+='<h4>'+result.totalTour+'</h4>';  
 					str+='</td>';
 					str+='<td>';
-					var average = result.totalTour / result.selectedCandCount;
+					var average = result.totalTour / result.inchargerToursCnt;         
 						str+='<p class="text-muted text-capital">Average<br>Tours</p>';
-						str+='<h4>'+average+'</h4>';
+						str+='<h4>'+average.toFixed(2)+'</h4>';  
 					str+='</td>';
 				str+='</tr>';
 			str+='</tbody>';
@@ -752,8 +766,9 @@ function getToursBasicOverviewCountDetails()
 		$("#totalOverviewOfDesigId").html(str);
 	}
 	function getMemberDtlsForADesignation(desigIdArr){  
+		$("#directChildMemberForToursDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
-			activityMemberId : 44,
+			activityMemberId : globalActivityMemberId,
 			designationIds : desigIdArr,                  
 			stateId : globalStateIdForTour,      
 			fromDate : "11/11/2016",                
@@ -765,6 +780,7 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}         
 			}).done(function(result){
+				$("#directChildMemberForToursDivId").html('');
 				if(result != null && result.length > 0){
 					buildMemberDtlsForADesignation(result);
 				}        
@@ -791,6 +807,7 @@ function getToursBasicOverviewCountDetails()
 						var k = 0;
 						var candidateId = result[0].id;
 						for(var i in result){
+							comment  = "";
 							if(result[i].totalTour > 0){         
 								str+='<tr class="candidateCls" attr_candiate_id='+result[i].id+'>'; 
 									k = parseInt(k) + 1;      
@@ -800,14 +817,16 @@ function getToursBasicOverviewCountDetails()
 									str+='<td>'+result[i].designation+'</td>';    
 									str+='<td>'+result[i].name+'</td>';
 									str+='<td>'+result[i].totalTour+'</td>';
-									for(var i in result[i].remarkList){
-										if(result[i].remarkList[i].length > 1){
-											comment+=result[i].remarkList[i];
-											comment+="/"
+									if(result[i].remarkList.length > 0 && result[i].remarkList != null){  
+										for(var j in result[i].remarkList){
+											if(result[i].remarkList[j] != null && result[i].remarkList[j].length > 2){ 
+												comment = comment + result[i].remarkList[j];            
+												comment = comment + "</br>"
+											}
 										}
-									}
-									if(comment.length > 1){
-										str+='<td>'+result[i].comment+'</td>';
+									} 
+									if(comment.length > 2 && comment != null){       
+										str+='<td>'+comment+'</td>';  
 									}else{
 										str+='<td>-</td>';
 									}  
@@ -879,7 +898,7 @@ function getToursBasicOverviewCountDetails()
 			}
 			str+='</table>';
 	  }else{
-		  str+='No Data Available';
+		  str+='No Data Available';        
 	  }	  
 	str+='</div>';
 	}else{
