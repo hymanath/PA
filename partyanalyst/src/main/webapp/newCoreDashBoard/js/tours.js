@@ -24,9 +24,8 @@ $(document).on("click",".toursComparisionBlock",function(){
 	 //var selectedUserName = "RAMMANAIDU NIMMALA";
 	 //var userType = "GENERAL SECRETARY";
 	 //var userTypeId = 3;
-	  getLeaderAverageToursBasedOnAccessLevel();
 	// getTopPoorToursLocationDetails(userTypeId,selectedUserName,userType);
-	 getDesigListForTour();
+	   getDesigListForTour();
 });
 	function getTodayDate(){
 		var today = new Date();
@@ -44,7 +43,7 @@ $(document).on("click",".toursComparisionBlock",function(){
 		return today;
 	}
 
-var globalStateIdForTour=1; //for ap
+var globalStateIdForTour=1; //for 
 function getToursBasicOverviewCountDetails()
 	{    
 		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -52,7 +51,7 @@ function getToursBasicOverviewCountDetails()
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
 					 fromDate : "10/11/2016",
-					 toDate : getTodayDate()
+					 toDate : getTodayDate(),
 				  }
 		$.ajax({
 			type : 'POST',
@@ -100,6 +99,8 @@ function getToursBasicOverviewCountDetails()
 		   str+='</div>';
 		  str+='<hr class="m_0">';
 		  str+='</div>';  
+		  }else{
+			    str+='No Data Available';	 
 		  }
 		 if(designationWiseRlst != null && designationWiseRlst.length > 0){
 		   for(var i in designationWiseRlst){
@@ -690,7 +691,6 @@ function getToursBasicOverviewCountDetails()
 		$("#singleDesigTourId0").trigger("click"); 
 	}
 	$(document).on('click','#singleDesigTourId0',function(){
-		alert(1);  
 		var desigIs = $(this).attr("attr_desig_ids");
 		var desigIdArr = [];
 		desigIdArr = desigIs.split(",");
@@ -699,7 +699,6 @@ function getToursBasicOverviewCountDetails()
 		
 	});  
 	function getDesignationDtls(desigIdArr){  
-		alert(desigIdArr);
 		var jsObj = { 
 			 desigIds : desigIdArr,    
 			 activityMemberId : 44,  
@@ -753,7 +752,6 @@ function getToursBasicOverviewCountDetails()
 		$("#totalOverviewOfDesigId").html(str);
 	}
 	function getMemberDtlsForADesignation(desigIdArr){  
-		alert(desigIdArr);
 		var jsObj ={ 
 			activityMemberId : 44,
 			designationIds : desigIdArr,                  
@@ -791,9 +789,10 @@ function getToursBasicOverviewCountDetails()
 					str+='<tbody>';
 						var comment  = "";
 						var k = 0;
+						var candidateId = result[0].id;
 						for(var i in result){
 							if(result[i].totalTour > 0){         
-								str+='<tr>'; 
+								str+='<tr class="candidateCls" attr_candiate_id='+result[i].id+'>'; 
 									k = parseInt(k) + 1;      
 									str+='<td>';
 										str+='<span class="tableCount">'+k+'</span>';
@@ -824,11 +823,17 @@ function getToursBasicOverviewCountDetails()
 			}
 		str+='</div>';
 		$("#directChildMemberForToursDivId").html(str);
-	}	  
-	  function getLeaderAverageToursBasedOnAccessLevel()
+		getLeaderAverageToursBasedOnAccessLevel(candidateId);
+	}	 
+  	$(document).on("click",".candidateCls",function(){
+		var candiateId = $(this).attr("attr_candiate_id");
+		getLeaderAverageToursBasedOnAccessLevel(candiateId);
+		
+	});
+	  function getLeaderAverageToursBasedOnAccessLevel(candidateId)
 	{   $("#topPoorLocationsToursDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
-					 candidateId : 1, 
+					 candidateId : candidateId, 
 					 stateId : globalStateIdForTour,
 					 fromDate : "10/11/2016",
 					 toDate :  getTodayDate()
