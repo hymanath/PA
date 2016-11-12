@@ -181,6 +181,8 @@ $("#toursDateRangePicker").daterangepicker({
 			//$(".otherMemberBlockCls").hide();
 			//$(".showDivCls").show();
 			//$(".hideProfileDivCls").show();
+			$(".ownDivCls").hide();
+			$(".inchageDivCls").hide();
 			 getCandiateSearchDetails(candidateId);
 		 }else if(candidateId == -1){
 			//$(".otherMemberBlockCls").show();
@@ -241,7 +243,7 @@ $("#toursDateRangePicker").daterangepicker({
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
 						 $(".ownDivCls").show();
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
-						$("#ownLabelId").html("Incharge DIstrict");
+						$("#inchargeLableId").html("Incharge DIstrict");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#inchageownLocationScopeValue").attr("value",locationList[i].locationValue);
 					    $(".inchageDivCls").show(); 
@@ -253,7 +255,7 @@ $("#toursDateRangePicker").daterangepicker({
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
 						 $(".ownDivCls").show();    
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
-						$("#ownLabelId").html("Incharge Parliament");
+						$("#inchargeLableId").html("Incharge Parliament");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#inchageownLocationScopeValue").attr("value",locationList[i].locationValue);
 					   $(".inchageDivCls").show(); 
@@ -265,7 +267,7 @@ $("#toursDateRangePicker").daterangepicker({
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
 						 $(".ownDivCls").show();
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
-						$("#ownLabelId").html("Incharge Assembly");
+						$("#inchargeLableId").html("Incharge Assembly");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#inchageownLocationScopeValue").attr("value",locationList[i].locationValue);
 					   $(".inchageDivCls").show(); 
