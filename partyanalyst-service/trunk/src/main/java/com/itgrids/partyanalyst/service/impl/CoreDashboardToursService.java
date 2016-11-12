@@ -89,7 +89,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	public ToursBasicVO getToursBasicOverviewCountDetails(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId){
 		
 		ToursBasicVO resultVO = new ToursBasicVO();
-		ToursBasicVO overAllDtlsVO = new ToursBasicVO();
 		Map<Long,ToursBasicVO> LeaderMemebersMap = new HashMap<Long, ToursBasicVO>(0);
 		Long locationAccessLevelId=0l;
 		Set<Long> locationValues = new HashSet<Long>(0);
@@ -119,10 +118,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				   			leaderVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				   			leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
 				   			leaderVO.setNoOfLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+				   			leaderVO.setNotSubmitedLeaserCnt(leaderVO.getNoOfLeaderCnt());//default all leader has not submitted tours.if it is submitted then this value will be replace;
+				   		    leaderVO.setNotsubmitedCandidateTourPer(calculatePercantage(leaderVO.getNotSubmitedLeaserCnt(), leaderVO.getNoOfLeaderCnt()));
 				   			LeaderMemebersMap.put(leaderVO.getId(), leaderVO);
-				   			//Calculating overAll 
-				   			overAllDtlsVO.setNoOfLeaderCnt(overAllDtlsVO.getNoOfLeaderCnt()+leaderVO.getNoOfLeaderCnt());
-				   			
 				   		}
 				   	}
 					 
@@ -144,26 +142,36 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				    					   leaderVO.setTotalSubmittedToursCnt(leaderVO.getOwnToursCnt()+leaderVO.getInchargerToursCnt());
 				    					   leaderVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[4]));
 				    					   Double averageTours = leaderVO.getTotalSubmittedToursCnt().doubleValue()/leaderVO.getNoOfDistinctTours().doubleValue();
-				    					   leaderVO.setAverageTours(averageTours);
-				    					   //Calculating overAll 
-				    					   overAllDtlsVO.setSubmitedLeaderCnt(overAllDtlsVO.getSubmitedLeaderCnt()+leaderVO.getSubmitedLeaderCnt());
-				    					   overAllDtlsVO.setNotSubmitedLeaserCnt(overAllDtlsVO.getNotSubmitedLeaserCnt()+leaderVO.getNotSubmitedLeaserCnt());
-				    					   overAllDtlsVO.setOwnToursCnt(overAllDtlsVO.getOwnToursCnt()+leaderVO.getOwnToursCnt());
-				    					   overAllDtlsVO.setInchargerToursCnt(overAllDtlsVO.getInchargerToursCnt()+leaderVO.getInchargerToursCnt());
-				    					   overAllDtlsVO.setTotalSubmittedToursCnt(overAllDtlsVO.getTotalSubmittedToursCnt()+leaderVO.getTotalSubmittedToursCnt());
-				    					   overAllDtlsVO.setNoOfDistinctTours(overAllDtlsVO.getNoOfDistinctTours()+leaderVO.getNoOfDistinctTours());
-				    					   
-					   					}
+				    					   if(!(averageTours.isNaN())){
+				    						   leaderVO.setAverageTours(averageTours);   
+				    					   }
+				    					}
 					   			}
 					   		}
 			
-			  //calculation overAll percentage
-			   overAllDtlsVO.setSubmitedCandidateTourPer(calculatePercantage(overAllDtlsVO.getSubmitedLeaderCnt(), overAllDtlsVO.getNoOfLeaderCnt()));
-			   overAllDtlsVO.setNotsubmitedCandidateTourPer(calculatePercantage(overAllDtlsVO.getNotSubmitedLeaserCnt(), overAllDtlsVO.getNoOfLeaderCnt())); 
-			   Double averageTours = overAllDtlsVO.getTotalSubmittedToursCnt().doubleValue()/overAllDtlsVO.getNoOfDistinctTours().doubleValue();
-			   overAllDtlsVO.setAverageTours(averageTours);
-			   //setting result to final result VO
-			   resultVO.setOverAllDetailsVO(overAllDtlsVO);
+			    //calculation overAll percentage
+					if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
+					     ToursBasicVO overAllDtlsVO = new ToursBasicVO();
+						for(Entry<Long,ToursBasicVO> entry:LeaderMemebersMap.entrySet()){
+							    if(entry.getValue() != null){
+							    	   overAllDtlsVO.setNoOfLeaderCnt(overAllDtlsVO.getNoOfLeaderCnt()+entry.getValue().getNoOfLeaderCnt());
+							           overAllDtlsVO.setSubmitedLeaderCnt(overAllDtlsVO.getSubmitedLeaderCnt()+entry.getValue().getSubmitedLeaderCnt());
+			    					   overAllDtlsVO.setNotSubmitedLeaserCnt(overAllDtlsVO.getNotSubmitedLeaserCnt()+entry.getValue().getNotSubmitedLeaserCnt());
+			    					   overAllDtlsVO.setOwnToursCnt(overAllDtlsVO.getOwnToursCnt()+entry.getValue().getOwnToursCnt());
+			    					   overAllDtlsVO.setInchargerToursCnt(overAllDtlsVO.getInchargerToursCnt()+entry.getValue().getInchargerToursCnt());
+			    					   overAllDtlsVO.setTotalSubmittedToursCnt(overAllDtlsVO.getTotalSubmittedToursCnt()+entry.getValue().getTotalSubmittedToursCnt());
+			    					   overAllDtlsVO.setNoOfDistinctTours(overAllDtlsVO.getNoOfDistinctTours()+entry.getValue().getNoOfDistinctTours()); 	
+							    }
+						}
+						   overAllDtlsVO.setSubmitedCandidateTourPer(calculatePercantage(overAllDtlsVO.getSubmitedLeaderCnt(), overAllDtlsVO.getNoOfLeaderCnt()));
+						   overAllDtlsVO.setNotsubmitedCandidateTourPer(calculatePercantage(overAllDtlsVO.getNotSubmitedLeaserCnt(), overAllDtlsVO.getNoOfLeaderCnt())); 
+						   Double averageTours = overAllDtlsVO.getTotalSubmittedToursCnt().doubleValue()/overAllDtlsVO.getNoOfDistinctTours().doubleValue();
+						   if(!(averageTours.isNaN())){
+							   overAllDtlsVO.setAverageTours(averageTours);
+						   }
+						   //setting result to final result VO
+						   resultVO.setOverAllDetailsVO(overAllDtlsVO);
+					}
 			   if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
 				   resultVO.getSubList().addAll(new ArrayList<ToursBasicVO>(LeaderMemebersMap.values()));   
 				   LeaderMemebersMap.clear();  
