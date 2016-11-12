@@ -2686,7 +2686,7 @@
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
 							</span>
 							 <span class="tourExpand pull-right">  
-								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
 							<span class="input-group pull-right  m_XsTop10 hide">
 								<input type="text" id="tourDateRange"	 class="form-control" />
