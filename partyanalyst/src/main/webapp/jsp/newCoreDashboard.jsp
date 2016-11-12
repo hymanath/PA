@@ -2400,7 +2400,9 @@
             </div>
        </div>
 	 </div>
-	<div class="row">
+	 <!-- Electronic Media Start -->
+	 
+	<!--<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2540,7 +2542,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<div class="pull-right">
 										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="program" checked />Program Wise</label>
-										<!--<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>-->
+										<!--<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>
 									</div>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -2668,7 +2670,8 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
+	<!-- Electronic Media End -->
 	 <!-- TOURS START -->
 	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
@@ -2774,7 +2777,7 @@
 				</div>
 			</div>
 		</div>
-	</div>    
+	</div>
 	<!-- TOURS END -->  
 	</div>
 </div> 
@@ -3194,7 +3197,7 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
+<!--<script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>-->
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
@@ -3282,8 +3285,7 @@
 	
 	function onLoadCalls(){
 		
-		getRescentArticleTime();
-		getRescentNewsBulletinTime();
+		getRescentArticleTime();		
 		committeeBasicCall();
 		
 		//training program call
@@ -3320,9 +3322,9 @@
         getToursBasicOverviewCountDetails();     
 		//getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
-     	getMediaProgramsOnParty();
-		getEMMDetailedPartyDistrictWiseProgramsOverview();
-		//getAllTvChannels();
+		/* getMediaProgramsOnParty();		
+		getAllTvChannels();
+		getRescentNewsBulletinTime(); */
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
@@ -3379,7 +3381,6 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 		$("#switchButtonId").addClass("showCls");
 	}
 });    
-
 </script> 
 </body>
 </html>
