@@ -1700,7 +1700,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
 							<div class="row">
-							 <div id="programsDtlsCntTableId"></div>
+							   <div id="programsDtlsCntTableId"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									 <div id="villageWardTblId"></div>
 								</div>
@@ -3295,6 +3295,7 @@
 		stateLevelCampDetailsRepresentativeWise(programIdArr);
 		getStateLevelCampCount(programIdArr); */   
 		getTrainingCampBasicDetailsCntOverview();   
+		getTrainingCampProgramOverviewDtls();   
 		//Meeting
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
