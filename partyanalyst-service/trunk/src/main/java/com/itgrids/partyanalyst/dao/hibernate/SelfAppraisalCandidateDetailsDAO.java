@@ -58,7 +58,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  				  " SelfAppraisalCandidateDetails SACD " +  
 		  				  " where " +
 		  				  " SACD.selfAppraisalCandidate.selfAppraisalCandidateId in (:candidateList) and " +
-		  				  " date(SACD.updatedTime) between :fromDate and :toDate ");
+		  				  " date(SACD.tourDate) between :fromDate and :toDate ");
 		  Query query = getSession().createQuery(queryStr.toString());
 		  if(startDate != null && endDate != null ){
 			  query.setDate("fromDate", startDate);
