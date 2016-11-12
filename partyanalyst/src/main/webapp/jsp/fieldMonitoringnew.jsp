@@ -298,6 +298,49 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="performanceModalDivId">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close closeIconCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+       <!-- <h4 class="modal-title" id="myModalLabel">VALIDATING CADRE DETAILS WITH MOBILE NUMBER</h4>-->
+      </div>
+      <div class="modal-body">
+	  <div class="row">
+		<div class="col-md-4 col-xs-12 col-sm-4">
+			<label>Performance Type</label>
+				<select class="select" id="porfmanceListId">
+				</select>
+		</div>
+		  <label>Description:</label><br>
+				<textarea class="col-md-7 col-xs-12 col-sm-8" id="commentId" style="padding-left:5px;"></textarea>
+		</div>
+      </div>
+      <div class="modal-footer">
+	   <button type="button" class="btn btn-success" style="margin-left:9px;" onclick="saveUserPerformanceDetails();">Save</button>
+        <button type="button" class="btn btn-default closeIconCls" data-dismiss="modal">Close</button>
+		<div id="savingErrMsgDivId"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="performanceDetailsModalDivId">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close closeIconCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">USER PERFORMANCE DETAILS</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default closeIconCls" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <input type="hidden" id="hiddenCadreSurveyUserId"></input>
 <input type="hidden" id="hiddenTabUserInfoId"></input>
 <input type="hidden" id="hiddenIssueStatusId"></input>
