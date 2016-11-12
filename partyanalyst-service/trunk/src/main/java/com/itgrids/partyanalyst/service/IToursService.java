@@ -11,7 +11,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 
 public interface IToursService {
-	public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
+	 public ResultStatus saveTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
 	 public List<ToursBasicVO> getDesigationList();
 	 public List<ToursBasicVO> getConstituenciesList(Long stateId);
 	 public List<ToursBasicVO> getCandidateList(Long designationId);
@@ -21,4 +21,5 @@ public interface IToursService {
 	 public ToursBasicVO getUniqueMemDtls(Long candidateDtlsId);
 	 public ToursBasicVO getDesignationDtls(Long desigId, String startDateStr, String endDateStr);
 	 public List<ToursBasicVO> getMemDtls(Long desigId, String startDateStr, String endDateStr);
+	 public ResultStatus updateTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles);
 }
