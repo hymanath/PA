@@ -876,25 +876,27 @@ public class GISVisualizationService implements IGISVisualizationService{
 				 toDate  =sdf.parse(inputVO.getEndDate());
 			}
 			
-			List<Object[]> latestObj = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabUser(inputVO.getParentLocationTypeId(),fromDate,toDate,inputVO.getParentLocationType());
-			List<Long> locationIdsList = new ArrayList<Long>(0);
-			if(commonMethodsUtilService.isListOrSetValid(latestObj)){
-				for (Object[] param : latestObj) 
-					locationIdsList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-			}
-			if(commonMethodsUtilService.isListOrSetValid(locationIdsList)){
-				List<Object[]> latestLatLongitudeDtls = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabbUserByIds(locationIdsList);
-				if(commonMethodsUtilService.isListOrSetValid(latestLatLongitudeDtls)){
-					for (Object[] param : latestLatLongitudeDtls) {
-						try {
-							GISUserTrackingVO tabVO =  tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-							if(tabVO != null){
-								tabVO.setLattitude(commonMethodsUtilService.getStringValueForObject(param[3]));
-								tabVO.setLongitude(commonMethodsUtilService.getStringValueForObject(param[4]));
-								tabVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[5]));
-							 }
-						} catch (Exception e) {
-							LOG.error("Error occured while updating langitude and lattitude for tab user for GIS Service ",e);
+			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				List<Object[]> latestObj = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabUser(inputVO.getParentLocationTypeId(),fromDate,toDate,inputVO.getParentLocationType());
+				List<Long> locationIdsList = new ArrayList<Long>(0);
+				if(commonMethodsUtilService.isListOrSetValid(latestObj)){
+					for (Object[] param : latestObj) 
+						locationIdsList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+				if(commonMethodsUtilService.isListOrSetValid(locationIdsList)){
+					List<Object[]> latestLatLongitudeDtls = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabbUserByIds(locationIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(latestLatLongitudeDtls)){
+						for (Object[] param : latestLatLongitudeDtls) {
+							try {
+								GISUserTrackingVO tabVO =  tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+								if(tabVO != null){
+									tabVO.setLattitude(commonMethodsUtilService.getStringValueForObject(param[3]));
+									tabVO.setLongitude(commonMethodsUtilService.getStringValueForObject(param[4]));
+									tabVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[5]));
+								 }
+							} catch (Exception e) {
+								LOG.error("Error occured while updating langitude and lattitude for tab user for GIS Service ",e);
+							}
 						}
 					}
 				}
@@ -1273,6 +1275,22 @@ public class GISVisualizationService implements IGISVisualizationService{
 								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
 							}
 							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
+						}
+					}
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(locationWiseUsersMap)){
+				for (Long locationId : locationWiseUsersMap.keySet()) {
+					GISUserTrackingVO vo = locationWiseUsersMap.get(locationId);
+					if(vo != null){
+						vo.setTodayActiveCount(Long.valueOf(vo.getTodayActiveUsersList() != null?String.valueOf(vo.getTodayActiveUsersList().size()):"0"));
+						vo.setTodayInActiveCount(Long.valueOf(vo.getTodayInActiveUsersList() != null?String.valueOf(vo.getTodayInActiveUsersList().size()):"0"));
+						if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+							vo.getLastOneHrActiveusersList().clear();
+							vo.getLastOneHrInActiveusersList().clear();
+							vo.getTodayActiveUsersList().clear();
+							vo.getTodayActiveUsersList().clear();
 						}
 					}
 				}
