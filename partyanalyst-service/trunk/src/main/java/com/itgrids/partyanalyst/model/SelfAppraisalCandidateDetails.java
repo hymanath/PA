@@ -40,6 +40,7 @@ public class SelfAppraisalCandidateDetails {
 	private Date updatedTime;
 	private Long insertedBy;
 	private Long updatedBy;
+	private Date tourDate;
 	
 	private SelfAppraisalCandidate selfAppraisalCandidate;
 	private User insertedUser;
@@ -191,7 +192,12 @@ public class SelfAppraisalCandidateDetails {
 	}
 	public void setInchargeLocationValue(Long inchargeLocationValue) {
 		this.inchargeLocationValue = inchargeLocationValue;
-	} 
-	
-	
+	}
+	@Column(name="tour_date")
+	public Date getTourDate() {
+		return tourDate;
+	}
+	public void setTourDate(Date tourDate) {
+		this.tourDate = tourDate;
+	}       
 }
