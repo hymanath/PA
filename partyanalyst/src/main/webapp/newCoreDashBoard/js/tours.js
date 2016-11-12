@@ -724,8 +724,8 @@ function getToursBasicOverviewCountDetails()
 		var jsObj = { 
 			 desigIds : desigIdArr,    
 			 activityMemberId : globalActivityMemberId,  
-			 startDateStr : "11/11/2016",
-			 endDateStr : "11/11/2016"  
+			 startDateStr : "27/10/2016",
+			 endDateStr : getTodayDate()  
 			}
 		$.ajax({  
 			type : 'POST',
@@ -780,8 +780,8 @@ function getToursBasicOverviewCountDetails()
 			activityMemberId : globalActivityMemberId,
 			designationIds : desigIdArr,                  
 			stateId : globalStateIdForTour,      
-			fromDate : "11/11/2016",                
-			toDate : "11/11/2016"  
+			fromDate : "27/10/2016",                
+			toDate : getTodayDate() 
 		}
 		$.ajax({
 			type : 'POST',
@@ -863,7 +863,7 @@ function getToursBasicOverviewCountDetails()
 		var jsObj ={ 
 					 candidateId : candidateId, 
 					 stateId : globalStateIdForTour,
-					 fromDate : "10/11/2016",
+					 fromDate : "27/10/2016",
 					 toDate :  getTodayDate()
 				  }
 		$.ajax({
@@ -905,7 +905,7 @@ function getToursBasicOverviewCountDetails()
 			order=order+1;
 			if(order==6)
 				break;
-			BGColor = BGColor - 0.2;
+			BGColor = BGColor - 0.2;  
 			}
 			str+='</table>';
 	  }else{
