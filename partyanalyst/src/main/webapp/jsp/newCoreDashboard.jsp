@@ -2667,7 +2667,7 @@
 		</div>
 	</div>
 	 <!-- TOURS START -->
-	<!--<div class="row">
+	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2736,7 +2736,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockTours m_top10" style="display:none">
-						<div class="panel panel-default panelNew"><!--swadhin
+						<div class="panel panel-default panelNew">
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-12 col-sm-12 col-md-12">
@@ -2774,7 +2774,7 @@
 				</div>
 			</div>
 		</div>
-	</div>   -->
+	</div>    
 	<!-- TOURS END -->  
 	</div>
 </div> 
