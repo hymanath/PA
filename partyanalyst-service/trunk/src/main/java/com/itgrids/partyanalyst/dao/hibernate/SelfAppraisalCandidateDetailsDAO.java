@@ -26,7 +26,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		    		       " from SelfAppraisalCandidateDetails model " +
 		    		       " where model.selfAppraisalCandidate.isActive='Y' "); 
 		                if(fromDate != null && toDate != null ){
-		                	queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+		                	queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
 		                }
 		                if(desigIds != null){
 		                	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIds) ");
@@ -110,7 +110,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
 				  }
 			      if(fromDate != null && toDate != null ){
-                     queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+                     queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
                   }
 			    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 				   queryStr.append(" and model1.userAddress.state.stateId in (:userAccessLevelValues)");  
@@ -163,7 +163,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  		" from " +
 		  		" SelfAppraisalCandidateDetails SACD  ");
 		  if(fromDate != null && toDate != null){
-			  queryStr.append(" where date(SACD.updatedTime) between (:fromDate) and (:toDate) ");  
+			  queryStr.append(" where date(SACD.tourDate) between (:fromDate) and (:toDate) ");  
 		  }
 		  queryStr.append(" group by " +
 		  		" SACD.selfAppraisalCandidateId, SACD.ownLocationValue ");        
@@ -180,7 +180,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  		" from " +
 		  		" SelfAppraisalCandidateDetails SACD  ");  
 		  if(fromDate != null && toDate != null){
-			  queryStr.append(" where date(SACD.updatedTime) between (:fromDate) and (:toDate) ");      
+			  queryStr.append(" where date(SACD.tourDate) between (:fromDate) and (:toDate) ");      
 		  }
 		  queryStr.append(" group by " +
 		  		" SACD.selfAppraisalCandidateId, SACD.inchargeLocationValue "); 
@@ -218,7 +218,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
 				  }
 			      if(fromDate != null && toDate != null ){
-                  queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+                  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
                }
 			    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 				   queryStr.append(" and model1.userAddress.state.stateId in (:userAccessLevelValues)");  
@@ -284,7 +284,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
 				  }
 			      if(fromDate != null && toDate != null ){
-			    	  queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+			    	  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
                  }
 			    if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){//district
 				   queryStr.append(" and model1.userAddress.district.districtId in (:userAccessLevelValues)");  
@@ -332,7 +332,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 						" model.reportPath " +//4
 						" from SelfAppraisalCandidateDetails model where " +
 						" model.selfAppraisalCandidate.selfAppraisalCandidateId in (:cndIdListForCmtAndFile) " +
-						" and date(model.updatedTime) between (:fromDate) and (:toDate) " );
+						" and date(model.tourDate) between (:fromDate) and (:toDate) " );
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("cndIdListForCmtAndFile", cndIdListForCmtAndFile);  
 		query.setDate("fromDate",fromDate);
@@ -348,7 +348,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 						" sum(SACD.inchargeTours) " +
 						" from SelfAppraisalCandidateDetails SACD, SelfAppraisalCandidateLocation SACL where " +
 						" SACD.selfAppraisalCandidate.isActive='Y' " +
-						" and date(SACD.updatedTime) between :fromDate and :toDate " +
+						" and date(SACD.tourDate) between :fromDate and :toDate " +
 						" and SACD.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIdList) " +
 						" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId = SACL.selfAppraisalCandidate.selfAppraisalCandidateId ");
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -434,7 +434,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
 				  }
 			      if(fromDate != null && toDate != null ){
-                     queryStr.append(" and date(model.updatedTime) between :fromDate and :toDate ");
+                     queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
                   }
 			    if(userAccessLevelId != null && userAccessLevelId.longValue()==1l){
 				   queryStr.append(" and model1.userAddress.district.districtId in (:userAccessLevelValues)");  
@@ -468,7 +468,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select count(distinct model.selfAppraisalCandidateDetailsId) from SelfAppraisalCandidateDetails model where" +
 		  				  " model.selfAppraisalCandidate.selfAppraisalCandidateId in (:candidateIds) " +  
-		  				  " and date(model.updatedTime) between :fromDate and :toDate ");
+		  				  " and date(model.tourDate) between :fromDate and :toDate ");
 		  	
 		  	Query query = getSession().createQuery(queryStr.toString());
 		  	
