@@ -109,19 +109,19 @@
 												<option value="December">December</option>
 											</select>
 										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
+										<div class="col-md-3 col-xs-12 col-sm-6">  
 											<label>Insert Year</label>
 											<input type="text" length="4"  placeholder="Type Year Here" id="yearId" class="form-control clearFieldCls" name="toursInputVO.year"></input>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6 ownDivCls"  style="display:none">
 											<label Id="ownLabelId">Own DIstrict</label>
-											<input type="text" length="2" placeholder="Type No of Tour Here" id="ownSelectBoxId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>
+											<input type="" length="2" placeholder="Type No of Tour Here" id="ownSelectBoxId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>
 											<input type="hidden" id="ownLocationScopeId" name="toursInputVO.ownLocationScopeId">
 											<input type="hidden" id="ownLocationScopeValue" name="toursInputVO.ownLocationId">
 										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6 inchageDivCls" style="display:none">
+										<div class="col-md-3 col-xs-12 col-sm-6 inchageDivCls" style="display:none">  
 											<label id="inchargeLableId">Incharge DIstrict</label>
-											<input type="text" length="2" placeholder="Type No of Tour Here" id="inchargeSelectBoxId" class="form-control clearFieldCls" name="toursInputVO.inchargeTours"></input>
+											<input type="" length="2" placeholder="Type No of Tour Here" id="inchargeSelectBoxId" class="form-control clearFieldCls" name="toursInputVO.inchargeTours"></input>
 											<input type="hidden" id="inchageLocationScopeId" name=" toursInputVO.inchargeLocationScopeId">
 											<input type="hidden" id="inchageownLocationScopeValue" name="toursInputVO.inchargeLocationId">
 										</div>    
