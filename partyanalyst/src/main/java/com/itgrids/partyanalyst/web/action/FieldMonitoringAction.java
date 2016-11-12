@@ -847,11 +847,31 @@ public String getConstituencyByVendor(){
 			
 			jObj = new JSONObject(getTask());
 			
-			resultStatus = fieldMonitoringService.saveCaderSurveyUserPerformanceDetails(loginUserId,jObj.getLong("cadreSurveyUserId"),jObj.getLong("performanceTypeId"));
+			resultStatus = fieldMonitoringService.saveCaderSurveyUserPerformanceDetails(loginUserId,jObj.getLong("cadreSurveyUserId"),jObj.getLong("performanceTypeId"),jObj.getString("comment"));
 		  
 	  }catch(Exception e){
 		  LOG.error("Exception raised at saveUserPerformanceDetails()  of FieldMonitoringAction", e);
 	  }
 	  return Action.SUCCESS;
+  }
+  
+  public String getPerformnanceTypeList(){
+	   try{
+		   idAndNameVOList=fieldMonitoringService.getcadrePerformnanceTypeList();
+	   }catch(Exception e){
+		   LOG.error("Exception raised at getcadrePerformnanceTypeList()  of FieldMonitoringAction", e);
+	   }
+	   return Action.SUCCESS;
+   }
+  
+  public String getcadrePerfrmanceList(){
+	   try{
+		   jObj = new JSONObject(getTask());
+		   
+		   idAndNameVOList=fieldMonitoringService.getcadrePerfrmanceList(jObj.getLong("cadreSurveyId"));
+	   }catch(Exception e){
+		   LOG.error("Exception raised at getcadrePerfrmanceList()  of FieldMonitoringAction", e);
+	   }
+	   return Action.SUCCESS;
   }
 }
