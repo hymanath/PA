@@ -1,23 +1,29 @@
 var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
+
 var customEndDateTours = moment().format('DD/MM/YYYY');
 	$("#tourDateRangePickerId").daterangepicker({
 		opens: 'left',
-	     startDate: moment().startOf('month'),
-         endDate: moment(),   //moment().endOf('month'),
+	     startDate: moment().subtract(parseInt(91)+parseInt(getDay()), 'days'),
+         endDate: moment().subtract(parseInt(getDay()), 'days'),   //moment().endOf('month'),
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
 		ranges: {
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
            'This Year': [moment().startOf('Year'), moment()],
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
+	function getDay(){
+		var date = new Date();
+		var dd = date.getDate(); 
+		return dd;
+	}
 	   var globalTourFormDate;
 	   var glovalTourToDate;
 	   var dates=$("#tourDateRangePickerId").val();
@@ -26,7 +32,7 @@ var customEndDateTours = moment().format('DD/MM/YYYY');
 			globalTourFormDate = datesArr[0]; 
 			glovalTourToDate = datesArr[1]; 
 		}
-     $("#toursHeadingId").html(" THIS MONTH ( "+dates+" )");
+     $("#toursHeadingId").html("Last 3 Months( "+dates+" )");
      $('#tourDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   var dates= $("#tourDateRangePickerId").val();
 	   $("#toursHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
@@ -912,7 +918,7 @@ function getToursBasicOverviewCountDetails()
       if(result.subList != null && result.subList.length > 0){
 		  var order=1;
 		  var BGColor = 1;
-		   var resultListFirst = result.subList;  
+		   var resultListFirst = result.subList;
 		  for(var i in resultListFirst){
 			str+='<tr>';
 			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
