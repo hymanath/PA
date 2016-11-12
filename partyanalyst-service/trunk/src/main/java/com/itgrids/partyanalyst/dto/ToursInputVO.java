@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class ToursInputVO {
 	private Long candidateId; 
+	private Long candidateDtlsId;
 	private String month; 
 	private Long year;   
 	private Long ownLocationScopeId; 
@@ -25,6 +26,8 @@ public class ToursInputVO {
 	private Date updatedTime;
 	private String fileExtension;
 	private File file;
+	private Long oldFileStatus;
+	
 	private Map<File,String> files = new HashMap<File,String>();
 	public Long getCandidateId() {
 		return candidateId;
@@ -143,7 +146,20 @@ public class ToursInputVO {
 	public Map<File, String> getFiles() {
 		return files;
 	}
-	public void setFiles(Map<File, String> files) {
+	public void setFiles(Map<File, String> files) {    
 		this.files = files;
 	}
+	public Long getCandidateDtlsId() {
+		return candidateDtlsId;
+	}
+	public void setCandidateDtlsId(Long candidateDtlsId) {
+		this.candidateDtlsId = candidateDtlsId;
+	}
+	public Long getOldFileStatus() {
+		return oldFileStatus;
+	}
+	public void setOldFileStatus(Long oldFileStatus) {
+		this.oldFileStatus = oldFileStatus;  
+	}
+	
 };

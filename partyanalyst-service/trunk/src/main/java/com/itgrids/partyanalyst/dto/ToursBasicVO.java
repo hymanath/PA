@@ -8,6 +8,7 @@ import java.util.Set;
 public class ToursBasicVO {
 
 	private Long id;
+	private Long candDtlsId;
 	private String name;
 	private Long tdpCadreId;
 	private Long activityMemberId;
@@ -295,5 +296,12 @@ public class ToursBasicVO {
 	}
 	public void setNoOfDistinctTours(Long noOfDistinctTours) {
 		this.noOfDistinctTours = noOfDistinctTours;
+	}
+	public Long getCandDtlsId() {
+		return candDtlsId;
+	}
+	public void setCandDtlsId(Long candDtlsId) {
+		this.candDtlsId = candDtlsId;
 	}	
+	
 }
