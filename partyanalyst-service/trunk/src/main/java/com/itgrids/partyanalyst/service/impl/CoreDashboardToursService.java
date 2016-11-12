@@ -638,15 +638,18 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursDetails(startDate,endDate,desigIdList,locationScopeId,locationValueSet);
 	    		Long selectedCandCount = 0l;    
 	    		Long totalTours = 0l;
-	    		if(memDtlsList != null && memDtlsList.size() > 0){  
+	    		if(memDtlsList != null && memDtlsList.size() > 0){   
 	    			for(Object[] param : memDtlsList){
 	    				selectedCandCount = selectedCandCount + (param[1] != null ? (Long)param[1] : 0l);
 	    				totalTours = totalTours + ((param[2] != null ? (Long)param[2] : 0l) + (param[3] != null ? (Long)param[3] : 0l));
 	    			}      
 	    			toursBasicVO.setSelectedCandCount(selectedCandCount);
 	    			toursBasicVO.setTotalTour(totalTours);
-	    		}    
-	    		return toursBasicVO;  
+	    		}
+	    		List<Long> CandidateIds = selfAppraisalCandidateDAO.getCandiateIdList(desigIdList);
+	    		Long totalUniqueTour = selfAppraisalCandidateDetailsDAO.geTtotalUniqueTour(CandidateIds,startDate,endDate,locationScopeId,locationValueSet);
+	    		toursBasicVO.setInchargerToursCnt(totalUniqueTour);//total unique tours
+	    		return toursBasicVO;      
 	    		
 	    	}catch(Exception e){  
 	    		e.printStackTrace();
