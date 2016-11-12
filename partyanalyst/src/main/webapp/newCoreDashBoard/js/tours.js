@@ -43,6 +43,7 @@ var customEndDateTours = moment().format('DD/MM/YYYY');
 		}
 	    getToursBasicOverviewCountDetails();
 		getDesigWiseMemberDtls();
+		getDesigListForTour();    
 	 });
 	
 $(document).on("click",".tourExpand",function(){
@@ -725,7 +726,7 @@ function getToursBasicOverviewCountDetails()
 		if(result != null && result.length > 0){
 			str += '<ul class="comparisonSelect">';
 			for(var i in result){
-				str += '<li class="singleDesigTourCls" id="singleDesigTourId'+i+'" attr_desig_ids="'+result[i].comment+'">'+result[i].name+'<span class="closeIconComparison"></span></li>';
+				str += '<li class="singleDesigTourCls " id="singleDesigTourId'+i+'" attr_desig_ids="'+result[i].comment+'">'+result[i].name+'<span class="closeIconComparison"></span></li>';
 			}
 			str += '</ul>';    
 		}
@@ -826,7 +827,7 @@ function getToursBasicOverviewCountDetails()
 	}    
 	function buildMemberDtlsForADesignation(result){
 		var str = '';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 			if($(window).width < 768)
 			{
 				str+='<div class="table-responsive">';
@@ -844,10 +845,12 @@ function getToursBasicOverviewCountDetails()
 						var comment  = "";
 						var k = 0;
 						var candidateId = result[0].id;
+						var candidateName = result[0].name;
+						var gesignation = result[0].designation;
 						for(var i in result){
 							comment  = "";
 							if(result[i].totalTour > 0){         
-								str+='<tr class="candidateCls" attr_candiate_id='+result[i].id+'>'; 
+								str+='<tr class="candidateCls" attr_candiate_id="'+result[i].id+'" attr_cand_name="'+result[i].name+'" attr_cand_desig="'+result[i].designation+'">'; 
 									k = parseInt(k) + 1;      
 									str+='<td>';
 										str+='<span class="tableCount">'+k+'</span>';
@@ -881,14 +884,17 @@ function getToursBasicOverviewCountDetails()
 		str+='</div>';
 		$("#directChildMemberForToursDivId").html(str);
 		$("#tourLeaderDtlsId").dataTable();              
-		getLeaderAverageToursBasedOnAccessLevel(candidateId);
+		getLeaderAverageToursBasedOnAccessLevel(candidateId,candidateName,gesignation);
 	}	 
   	$(document).on("click",".candidateCls",function(){
 		var candiateId = $(this).attr("attr_candiate_id");
-		getLeaderAverageToursBasedOnAccessLevel(candiateId);
+		var candidateName = $(this).attr("attr_cand_name");
+		var gesignation = $(this).attr("attr_cand_desig");
+		
+		getLeaderAverageToursBasedOnAccessLevel(candiateId,candidateName,gesignation);
 		
 	});
-	  function getLeaderAverageToursBasedOnAccessLevel(candidateId)
+	  function getLeaderAverageToursBasedOnAccessLevel(candidateId,candidateName,gesignation)
 	{   $("#topPoorLocationsToursDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
 					 candidateId : candidateId, 
@@ -902,18 +908,18 @@ function getToursBasicOverviewCountDetails()
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		   buildTourDtlsLocationWiseReport(result);
+		   buildTourDtlsLocationWiseReport(result,candidateName,gesignation);
  		}); 
 	}
-	function buildTourDtlsLocationWiseReport(result){
+	function buildTourDtlsLocationWiseReport(result,candidateName,gesignation){
 	 var str='';
 	if(result != null){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';  
 			if(result.name != null){
-				str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">'+result.name+'</span></span></b>';
+				str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">'+result.name+'['+candidateName+'-'+gesignation+']</span></span></b>';
 			}
 		str+='</div>';
-	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';      
 	  str+='<table class="table tableCumulative bg_ED">';
       if(result.subList != null && result.subList.length > 0){
 		  var order=1;
