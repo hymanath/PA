@@ -13233,9 +13233,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		LOG.error("entered into  CCAVVENUE with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
 		try {
 			
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {
-					Long tdpCadreId = 0L;
+			Long GlobalTdpCadreId = (Long) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					Long  tdpCadreId = 0L;
 					//List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,IConstants.TGNF_REGISTRATION_CADRE_TYPE_ID,IConstants.UNIONS_REGISTRATION_YEAR);
 					List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,0L,IConstants.CADRE_ENROLLMENT_YEAR);
 					if(tdpCadreList != null && tdpCadreList.size()>0){
@@ -13281,28 +13281,28 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					else{
 						LOG.error("No Cadre Details Found  with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
 					}
-					
-					PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
-					//paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
-					//paymentTransactionVO.setPaymentGatewayId(1L);
-					//paymentTransactionVO.setPaymentMethodId(1L);
-					paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo+"_TDPCADREID_"+tdpCadreId);
-					paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
-					paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
-					paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
-					paymentTransactionVO.setStatusCode(AuthDesc);// ccavvenue payment status 'Y', 'N' or null	
-					paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
-					paymentTransactionVO.setReferenceUserId("2016-2018_"+tdpCadreId);
-				//	paymentTransactionVO.setPaymentModuleId(1L);
-					paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
-					
-				}				
-			});
+					return tdpCadreId;
+				}
+			} );
+			
+			PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
+			//paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
+			//paymentTransactionVO.setPaymentGatewayId(1L);
+			//paymentTransactionVO.setPaymentMethodId(1L);
+			paymentTransactionVO.setTransactionId("2016-2018_"+memberShipNo+"_TDPCADREID_"+GlobalTdpCadreId);
+			paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
+			paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
+			paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
+			paymentTransactionVO.setStatusCode(AuthDesc);// ccavvenue payment status 'Y', 'N' or null	
+			paymentTransactionVO.setRedirectUrl(IConstants.CADRE_ONLINE_REGISTRATION_REDIRECTURL);
+			paymentTransactionVO.setReferenceUserId("2016-2018_"+GlobalTdpCadreId);
+		//	paymentTransactionVO.setPaymentModuleId(1L);
+			paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
 			
 			status.setResultCode(0);
 			status.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {
-			LOG.error(" CCAVVENUE Exception occuredin  generating payment gateway basic details  with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .");
+			LOG.error(" CCAVVENUE Exception occuredin  generating payment gateway basic details  with \n time: "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+", memberShipNo :"+memberShipNo+" ,enrollmentNumber:"+enrollmentNumber+",Payment AuthDesc: "+AuthDesc+" in updatePaymenntStatus() .",e);
 			status.setResultCode(1);
 			status.setMessage(IConstants.FAILURE);
 		}
