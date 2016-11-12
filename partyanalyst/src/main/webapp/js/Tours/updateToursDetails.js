@@ -556,7 +556,7 @@ $("#toursDateRangePicker").daterangepicker({
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				//str+='<h4 class="panel-title text-capital">update your details</h4>';
 				str+='<div class="block">';
-					str+='<div class="row">';  
+					str+='<div class="row">';    
 						str+='<div class="col-md-3 col-xs-12 col-sm-6">';
 							str+='<label>Select Month</label>';
 							str+='<select id="updateMonthId" class="selectChosen" name="toursInputVO.month">';
@@ -579,14 +579,26 @@ $("#toursDateRangePicker").daterangepicker({
 							str+='<label>Insert Year</label>';
 							str+='<input type="text" value="'+result.year+'" length="4"  placeholder="Type Year Here" id="updateYearId" class="form-control clearFieldCls" name="toursInputVO.year"></input>';
 						str+='</div>';
-						str+='<div class="col-md-3 col-xs-12 col-sm-6 ownDivCls">';
-							str+='<label Id="ownLabelId">Tours</label>';
-							var total = result.ownToursCnt + result.inchargerToursCnt;
-							str+='<input type="text" value="'+total+'" length="2" placeholder="Type No of Tour Here" id="updateOwnLocationId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>';
-							str+='<input type="hidden" id="" name="toursInputVO.ownLocationScopeId">';
-							str+='<input type="hidden" id="" name="toursInputVO.ownLocationId">';
-						str+='</div>'; 
-					str+='</div>';
+						if(result.ownToursCnt != null){
+							str+='<div class="col-md-3 col-xs-12 col-sm-6 ownDivCls">';
+								str+='<label Id="ownLabelId">Own Tours</label>';
+								var total = result.ownToursCnt;
+								str+='<input type="text" value="'+total+'" length="2" placeholder="Type No of Tour Here" id="updateOwnLocationId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>';
+								str+='<input type="hidden" id="" name="toursInputVO.ownLocationScopeId">';
+								str+='<input type="hidden" id="" name="toursInputVO.ownLocationId">';
+							str+='</div>';
+						}  
+						if(result.inchargerToursCnt != null){
+							str+='<div class="col-md-3 col-xs-12 col-sm-6 inchargeDivCls">';
+								str+='<label Id="inchargeLabelId">Incharge Tours</label>';
+								var total = result.inchargerToursCnt;
+								str+='<input type="text" value="'+total+'" length="2" placeholder="Type No of Tour Here" id="updateInchargeLocationId" class="form-control clearFieldCls" name="toursInputVO.inchargeTours"></input>';
+								str+='<input type="hidden" id="" name="toursInputVO.inchargeLocationScopeId">';
+								str+='<input type="hidden" id="" name="toursInputVO.inchargeLocationId">';
+							str+='</div>';
+						}
+						
+					str+='</div>';  
 					str+='<div class="row m_top10">';  
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<label>Add Comment</label>';
@@ -596,9 +608,10 @@ $("#toursDateRangePicker").daterangepicker({
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="row m_top20">';    
+		if(result.type != null && result.filePath != null){
+			str+='<div class="row m_top20">';      
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<label>UPLOAD ATTACHMENTS:</label>';    
+				str+='<label>UPLOADED ATTACHMENTS:</label>';    
 			str+='</div>';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div style="padding:10px;border:1px solid #ddd">';  
@@ -625,18 +638,20 @@ $("#toursDateRangePicker").daterangepicker({
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<button type="button" style="margin-left:5px;" class="btn btn-default btn-sm pull-right btn-success">VIEW</button>';
-							str+='<button type="button" class="btn btn-default btn-sm pull-right btn-danger">DELETE</button>';  
+							str+='<button type="button" class="btn btn-default btn-sm pull-right btn-danger" id="deleteFileId">DELETE</button>';  
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-		str+='</div>';      
+		str+='</div>'; 
+		}
+		
 		str+='<div class="row showDivCls" id="">'; 
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str+='<p class="m_0 text-success font_16 font_weight">UPLOAD SCAN COPY</p>';
 				str+='<input type="file" id="" multiple="multiple"  name="fileImage" class="m_top20"/>';
 			str+='</div>';
-		str+='</div>';
+		str+='</div>';      
 		
 		str+='<div class="row showDivCls">';
 			str+='<div class="col-md-4 col-md-offset-4">';
@@ -645,6 +660,8 @@ $("#toursDateRangePicker").daterangepicker({
 			str+='</div>';
 			  str+='<div class="col-md-12 col-sm-12 col-xs-12" id=""></div>';  
 		str+='</div>';
+		str+='<input type="hidden" id="" value="'+result.candDtlsId+'"name="toursInputVO.candidateDtlsId">';          
+		str+='<input type="hidden" id="fileStatusId" value="1" name="toursInputVO.oldFileStatus">';          
 		str+='</form>';
 		$("#memDtlsUpdateId").html(str);      
 		$("#updateMonthId").val(result.month);
@@ -666,6 +683,10 @@ $("#toursDateRangePicker").daterangepicker({
 	$(document).on('click','.closeButtonCls',function(){  
 		setTimeout(function(){
 			$('body').addClass("modal-open");  
-		}, 500);    
+		}, 500);      
+	});
+	$(document).on('click','#deleteFileId',function(){
+		$(".media").html('');
+		$("#fileStatusId").attr("value","2");         
 	});
 	
