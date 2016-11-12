@@ -8,6 +8,14 @@ $(document).on("click",".tourExpand",function(){
 		$(".toursHiddenBlock").toggle();      
 	},800);
 });
+$(document).on("click",".tourExpand",function(){
+	if( $(this).find("i").hasClass( "glyphicon glyphicon-fullscreen" )){
+		$(".moreToursBlocks1").hide();     
+		$(".tourExpandCls").hide();     
+		$(".moreToursBlocksDetailed").hide();     
+		$(".comparisonBlockTours").hide();      
+	}    
+});
 $(document).on("click",".moreToursBlocksIcon",function(){
 	$(".moreToursBlocks1,.moreToursBlocksDetailed").toggle(); 
 	   getDistrictWiseToursSubmitedDetails();		
