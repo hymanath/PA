@@ -14637,6 +14637,16 @@
 			<result type="json" name="success">
 			<param name="root">resultVO</param>
 		</result>
-	</action>    
+	</action> 
+	<action name="getPerformanceTypeListAction" class="fieldMonitoringAction" method="getPerformnanceTypeList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>   
+	<action name="getcadrePerfrmanceDetailsListAction" class="fieldMonitoringAction" method="getcadrePerfrmanceList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>
