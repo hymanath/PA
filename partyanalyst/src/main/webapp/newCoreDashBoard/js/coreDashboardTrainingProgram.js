@@ -8,6 +8,7 @@ $(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
 	$(".trainingDate").html("( "+customStartDate+" )");
 	stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
+	getTrainingCampProgramOverviewDtls();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 });
  function initialiseDatePickerForTrainingProgram(){
@@ -23,41 +24,33 @@ $(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
 }
 var getDocumentWidth = $(document).width();
 
-	function getTrainingCampBasicDetailsCntOverview()
-	{
+
+   function getTrainingCampProgramOverviewDtls(){
 	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 $("#villageWardTblId").html(' ');
-	 $("#mdlTwnDvsnTabId").html(' ');
 	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
-		var jsObj ={ 
-		             userAccessLevelId : globalUserAccessLevelId,
-					 userAccessLevelValuesArray : globalUserAccessLevelValues,
-					 stateId : globalStateId,
-					 dateStr : dateStr
-				  }
-		$.ajax({
+ 	  var jsObj ={ 
+	               userAccessLevelId : globalUserAccessLevelId,
+				   userAccessLevelValuesArray : globalUserAccessLevelValues,
+				    stateId : globalStateId,
+					dateStr : dateStr
+				 }
+	  $.ajax({
 			type : 'POST',
-			url : 'getTrainingCampBasicDetailsCntOverviewAction.action',
+			url : 'getTrainingProgramBasicCntAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		  $("#programsDtlsCntTableId").html(' ');
-		 if(result != null){
-			 buildTrainingProgramBasicDetails(result);
-		 }else{
-			$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
-			$("#villageWardTblId").html("NO DATA AVAILABLE");
-			$("#mdlTwnDvsnTabId").html("NO DATA AVAILABLE");
-		 }
-		});
-	}
-  function buildTrainingProgramBasicDetails(result){
+			$("#programsDtlsCntTableId").html(' ');
+		  if(result != null && result.length > 0){
+			  buildTrainingCampProgramDtlsOverview(result);
+		  }else{
+			  $("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
+		  }
+		});	
+  }
+  function buildTrainingCampProgramDtlsOverview(programList){
 	  var str='';
-	  var programList = result.trainingProgramList;
-	  var lastUPdatedTime;
-	if(programList != null && programList.length > 0){
 		  for(var i in programList){
-			 lastUPdatedTime= programList[0].lastUpdatedTime;
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
 			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
@@ -82,13 +75,38 @@ var getDocumentWidth = $(document).width();
 			str+='<hr class="m_0"/>';
 		 str+='</div>';	
 	  }
-	  //setLastUpdatedTimeForTrainingCamp(lastUPdatedTime);
-	}else{
-		str+='NO DATA AVAILABLE';
-	}
-	
 	 $("#programsDtlsCntTableId").html(str);
-	 
+  }	   
+   
+	function getTrainingCampBasicDetailsCntOverview()
+	{
+	 $("#mdlTwnDvsnTabId").html(' ');
+	 $("#villageWardTblId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
+		var jsObj ={ 
+		             userAccessLevelId : globalUserAccessLevelId,
+					 userAccessLevelValuesArray : globalUserAccessLevelValues,
+					 stateId : globalStateId,
+					 dateStr : dateStr
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getTrainingCampBasicDetailsCntOverviewAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		  $("#villageWardTblId").html(' ');
+		  $("#mdlTwnDvsnTabId").html(' ');
+		 if(result != null){
+			 buildTrainingProgramBasicDetails(result);
+		 }else{
+			$("#villageWardTblId").html("NO DATA AVAILABLE");
+			$("#mdlTwnDvsnTabId").html("NO DATA AVAILABLE");
+		 }
+		});
+	}
+  function buildTrainingProgramBasicDetails(result){
+	  var str='';
 	var villageWardRslt = result.villageWardVO;
  	var str1='';
 	str1='<h4 class="text-capitalize m_top10">village / ward</h4>';
@@ -146,54 +164,6 @@ var getDocumentWidth = $(document).width();
 	 str2+='NO DATA AVAILABLE';	
 	}
     $("#mdlTwnDvsnTabId").html(str2);  
-	/* var str3='';
-	var districtRslt = result.districtVO;
-	str3+='<h4 class="text-capitalize m_top20">District</h4>';
-	if(districtRslt != null){
-	  str3+='<table class="table tableTraining bg_ED">';
-		str3+='<tr>';
-			str3+='<td>';
-				str3+='<p class="text-muted text-capitalize">total eligible</p>';
-				str3+='<h4>'+districtRslt.totalEligibleCount+'</h4>';
-			str3+='</td>';
-			str3+='<td>';
-				str3+='<p class="text-muted text-capitalize">attended</p>';
-				str3+='<h4>'+districtRslt.totalAttenedCount+'<span class="font-10 text-success">'+districtRslt.totalAttenedCountPer+'%</span></h4>'
-			str3+='</td>';
-			str3+='<td>';
-				str3+='<p class="text-muted text-capitalize">yet to train</p>';
-				str3+='<h4>'+districtRslt.totalNotAttenedCount+'<span class="font-10 text-success">'+districtRslt.totalNotAttenedCountPer+'%</span></h4>';
-			str3+='</td>';
-		str3+='</tr>';
-	 str3+='</table>';	
-	}else{
-	 str3+='NO DATA AVAILABLE';	
-	}
-	$("#districtTblId").html(str3);  
-	var str4='';
-	var stateRslt = result.stateVO;
-	str4+='<h4 class="text-capitalize m_top20">State</h4>';
-	if(stateRslt != null){
-	  str4+='<table class="table tableTraining bg_ED">';
-		str4+='<tr>';
-			str4+='<td>';
-				str4+='<p class="text-muted text-capitalize">total eligible</p>';
-				str4+='<h4>'+stateRslt.totalEligibleCount+'</h4>';
-			str4+='</td>';
-			str4+='<td>';
-				str4+='<p class="text-muted text-capitalize">attended</p>';
-				str4+='<h4>'+stateRslt.totalAttenedCount+'<span class="font-10 text-success">'+stateRslt.totalAttenedCountPer+'%</span></h4>'
-			str4+='</td>';
-			str4+='<td>';
-				str4+='<p class="text-muted text-capitalize">yet to train</p>';
-				str3+='<h4>'+stateRslt.totalNotAttenedCount+'<span class="font-10 text-success">'+stateRslt.totalNotAttenedCountPer+'%</span></h4>';
-			str4+='</td>';
-		str4+='</tr>';
-	 str4+='</table>';	
-	}else{
-	 str4+='NO DATA AVAILABLE';	
-	}
-	$("#stateTblDivId").html(str4);   */
   }
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
