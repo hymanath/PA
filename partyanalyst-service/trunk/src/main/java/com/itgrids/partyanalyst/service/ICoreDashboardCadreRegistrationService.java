@@ -27,11 +27,11 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<IdAndNameVO> getStatewisesCastNames(Long stateId) ;
 	public List<IdAndNameVO> getEducationalQualifications( ) ;
 	public List<IdAndNameVO> getAllRelationDetails();
-	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDate,String toDate);
+	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDate,String toDate,String sortingType);
 	public CadreResponseVO savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
 	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr);
-	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr);
-	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded);
+	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr,String sortingType);
+	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded,String sortingType);
 	public CadreReportVO getApAndTsDistrictList();
 	public List<IdAndNameVO> getOccupationList();
 	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate);
@@ -43,7 +43,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public String getOtpStatus(Long cadreId,String otp);
 	public NewCadreRegistrationVO validateUpdateVoterDetails(String voterCardNo);
 	public IdAndNameVO getVoterInfo(Long activityMemberId,Long stateId,String startDate, String endDate); 
-	public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate);
+	public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate,String sortingType);
 	public CadreRegistratedCountVO getTotalNewRenewalCadreStateWiseTS(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public CadreRegistratedCountVO getStateDtlsTS(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public IdAndNameVO getInFieldCount(String fromDateStr, String toDateStr);

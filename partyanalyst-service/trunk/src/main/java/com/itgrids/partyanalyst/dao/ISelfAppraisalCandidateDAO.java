@@ -14,4 +14,5 @@ public interface ISelfAppraisalCandidateDAO extends GenericDao<SelfAppraisalCand
 	public List<Long> getCandidateList(Long desigId);
 	public List<Object[]> getMemberAccessLevelIdsAndValue();
 	public List<Long> getCandiateIdList(List<Long> desigIdList);
+	public List<Object[]> getTotalLeaderDesignationWise(List<Long> designationIds);
 }

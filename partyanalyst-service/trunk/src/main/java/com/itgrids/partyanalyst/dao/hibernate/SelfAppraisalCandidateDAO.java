@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -8,8 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidate;
 
-public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisalCandidate, Long> implements
-		ISelfAppraisalCandidateDAO {
+public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisalCandidate, Long> implements ISelfAppraisalCandidateDAO {
 	 public SelfAppraisalCandidateDAO() {
 		super(SelfAppraisalCandidate.class);
 	 }
@@ -112,4 +112,22 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	   query.setParameterList("desigIdList", desigIdList);  
 	   return query.list();
    }
+   public List<Object[]> getTotalLeaderDesignationWise(List<Long> designationIds){
+		StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select distinct model.selfAppraisalCandidateId," +//0
+		 		         " model.tdpCadre.firstname," +//1
+		 		         " model.tdpCadre.mobileNo," +//2
+		 		         " model.selfAppraisalDesignation.selfAppraisalDesignationId," +//3
+		 		         " model.selfAppraisalDesignation.designation," +//4
+		 		         " model.tdpCadre.tdpCadreId" +//5
+		 		         " from SelfAppraisalCandidate model where model.isActive='Y' ");
+		 if(designationIds != null && designationIds.size() > 0){
+			 queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");
+		 }
+	     queryStr.append(" order by model.selfAppraisalCandidate.selfAppraisalCandidateId");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(designationIds != null && designationIds.size() > 0){
+		  query.setParameterList("designationIds", designationIds);
+		 }	 return query.list();
+	}
 }

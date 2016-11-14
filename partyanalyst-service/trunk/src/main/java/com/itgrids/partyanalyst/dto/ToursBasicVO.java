@@ -48,6 +48,7 @@ public class ToursBasicVO {
 	private List<String> remarkList = null;
 	private List<String> filePathList = null;
 	private Long noOfDistinctTours=0l;
+	private String isTourSubmitted;
 	public ToursBasicVO() {
 		super();
 	}
@@ -302,6 +303,11 @@ public class ToursBasicVO {
 	}
 	public void setCandDtlsId(Long candDtlsId) {
 		this.candDtlsId = candDtlsId;
+	}
+	public String getIsTourSubmitted() {
+		return isTourSubmitted;
+	}
+	public void setIsTourSubmitted(String isTourSubmitted) {
+		this.isTourSubmitted = isTourSubmitted;
 	}	
-	
 }

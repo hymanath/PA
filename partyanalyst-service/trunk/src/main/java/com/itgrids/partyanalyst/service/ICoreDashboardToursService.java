@@ -13,4 +13,5 @@ public interface ICoreDashboardToursService {
 	public List<ToursBasicVO> getDesignationLabelList(Long activityMemberId);
 	public ToursBasicVO getDesignationDtls(Long activityMemberId, List<Long> desigIdList, String startDateStr, String endDateStr);
 	public ToursBasicVO getLeaderAverageToursBasedOnAccessLevel(Long candidateId,Long stateId,String fromDateStr,String toDateStr);
+	public List<ToursBasicVO> getTourSubmittedLeadersDetails(List<Long> designationIds,String isSubmitted,String fromDateStr,String toDateStr);
 }
