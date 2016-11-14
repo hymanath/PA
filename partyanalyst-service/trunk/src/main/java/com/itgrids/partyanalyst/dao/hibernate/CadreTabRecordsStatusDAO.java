@@ -51,7 +51,7 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 				  " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
 				  //" model.cadreSurveyUserId = model1.cadreSurveyUserId  and " +
 				  " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y' "+
-				  "  and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  ");
+				  "  and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y' and model2.cadreSurveyUser.isEnabled = 'Y' ");
 		 if(districtId != null && districtId.longValue()>0l)
 		 {
 			 sb.append(" and model2.constituency.district.districtId =:districtId");
@@ -103,7 +103,8 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 	          " where model.cadreSurveyUserId = model2.cadreSurveyUserId and " +
 	         // " model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
 	          " model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y'" +
-	          " and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  ");
+	          " and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y' " +
+	          " and model2.cadreSurveyUser.isEnabled = 'Y'  ");
 	     if(districtId != null && districtId.longValue()>0l)
 	     {
 	       sb.append(" and model2.constituency.district.districtId =:districtId");
@@ -159,9 +160,11 @@ public class CadreTabRecordsStatusDAO extends GenericDaoHibernate<CadreTabRecord
 					  " model.cadreSurveyUserId " +
 				  " FROM " +
 					  " CadreTabRecordsStatus model," +
-					  " CadreSurveyUserAssignDetails model1 " +
+					  " CadreSurveyUserAssignDetails model1,TabUserInfo model2  " +
 				  " WHERE model.cadreSurveyUserId = model1.cadreSurveyUserId and " +
-					  " model.cadreSurveyUserId =:cadreSrveyUserId " );
+				  " model.tabUserInfoId = model2.tabUserInfoId and model2.isEnabled = 'Y'" + 
+				  " and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y' " +
+					  "and  model.cadreSurveyUserId =:cadreSrveyUserId  and model1.cadreSurveyUser.isEnabled = 'Y'  " );
 				 if(constituencyId != null && constituencyId.longValue()>0l){
 					 sb.append(" and model1.constituencyId =:constituencyId ") ;
 				 }
