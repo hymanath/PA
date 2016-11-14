@@ -3286,7 +3286,7 @@
         getToursBasicOverviewCountDetails();     
 		//getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
-		getMediaProgramsOnParty();		
+		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
 	}
