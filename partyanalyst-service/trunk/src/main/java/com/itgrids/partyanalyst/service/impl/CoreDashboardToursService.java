@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -243,9 +244,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	}
 	public List<List<ToursBasicVO>> getDesigWiseMemberDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId){
 		try{
-			Map<Long,Map<Long,ToursBasicVO>> desigIdAndMapOfCandIdAndCandDtlsMap = new HashMap<Long,Map<Long,ToursBasicVO>>();
+			Map<Long,Map<Long,ToursBasicVO>> desigIdAndMapOfCandIdAndCandDtlsMap = new LinkedHashMap<Long,Map<Long,ToursBasicVO>>();
 			Long locationScopeId = 0l;
-			Set<Long> locationValueSet = new HashSet<Long>(0);
+			Set<Long> locationValueSet = new HashSet<Long>(0);  
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date fromDate=null;
 		    Date toDate=null;
@@ -367,17 +368,32 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    }
 		    List<List<ToursBasicVO>> finalList = new ArrayList<List<ToursBasicVO>>();
 		    List<ToursBasicVO> subList = null;
+		    List<ToursBasicVO> subList1 = new ArrayList<ToursBasicVO>();
 		    if(desigIdAndMapOfCandIdAndCandDtlsMap != null && desigIdAndMapOfCandIdAndCandDtlsMap.size() > 0){
 		    	for(Entry<Long,Map<Long,ToursBasicVO>> entry : desigIdAndMapOfCandIdAndCandDtlsMap.entrySet()){
 		    		candIdAndCandDtlsMap = desigIdAndMapOfCandIdAndCandDtlsMap.get(entry.getKey());
+		    		//collect the value of Sec/OS
+		    		if(candIdAndCandDtlsMap != null && (entry.getKey().longValue()==4 || entry.getKey().longValue()==5)){
+		    			subList1.addAll(candIdAndCandDtlsMap.values());
+		    			continue;
+		    		}
+		    		//add Sec/os in the final list;
+		    		if(entry.getKey().longValue() >= 6){
+		    			if(subList1 != null && subList1.size() > 0){
+		    		    	Collections.sort(subList1, sortCandidateDesc);
+		    		    	finalList.add(subList1);
+		    		    	subList1 = new ArrayList<ToursBasicVO>();
+		    		    }
+		    		}
 		    		subList = new ArrayList<ToursBasicVO>();
 		    		if(candIdAndCandDtlsMap != null){
 		    			subList.addAll(candIdAndCandDtlsMap.values());
 		    			Collections.sort(subList, sortCandidateDesc);
-		    			finalList.add(subList);
+		    			finalList.add(subList);  
 		    		} 
 		    	}
 		    }
+		      
 			return finalList;
 		}catch(Exception e){ 
 			e.printStackTrace();
@@ -736,7 +752,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   orgAndSecVO.setComment(orgAndSecVO.getComment()+","+commonMethodsUtilService.getLongValueForObject(param[0]));
 						   orgAndSecVO.setName(orgAndSecVO.getName()+"/"+commonMethodsUtilService.getStringValueForObject(param[1]));
 					   }
-					}else{
+					}else{ 
 						toursBasicVO.setComment(commonMethodsUtilService.getLongValueForObject(param[0]).toString());//id
 						toursBasicVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						toursBasicVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(param[2]));//order
