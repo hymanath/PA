@@ -169,14 +169,24 @@ function buildTabUserDetails(result){
 					str+='<tr style="background: lightgray;">';
 				else
 					str+='<tr>';
-					if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0){
-						str+='<td class="issueCmpltd">'+result.subList[i].userName+'</td>';
-						/*str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to View Performance Details" style="cursor:pointer;"></i></td>';*/
+				if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0){
+						str+='<td class="issueCmpltd">'+result.subList[i].userName+'';
+					if(result.subList[i].description == "true"){
+					str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_user_name="'+result.subList[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;" data-placement="right"></i></td>';
+						}
+					else{
+						str+='</td>';
+						}
+					}
+				else{
+						str+='<td class="issuePending">'+result.subList[i].userName+'';
+					if(result.subList[i].description == "true"){
+						str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'"  attr_user_name="'+result.subList[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;" data-placement="right"></i></td>';
 					}
 					else{
-						str+='<td class="issuePending">'+result.subList[i].userName+'</td>';
-						/*str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to View Performance Details" style="cursor:pointer;"></i></td>';*/
-					}
+						str+='</td>';
+						}
+				}
 					if(result.subList[i].tabUserName != null)
 						str+='<td title="UserId : '+result.subList[i].userName+'">'+result.subList[i].tabUserName+'</td>';
 					else
@@ -223,9 +233,10 @@ function buildTabUserDetails(result){
 					else
 						str+='<option value="1">Yes</option>';
 					str+='</select></td>';*/
-					/*str+='<td style="width: 45px;"><i class="glyphicon glyphicon-edit perfomanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to Update Performance" style="cursor:pointer;"></i>&nbsp&nbsp';*/
 					
-					str+='<td><i class="glyphicon glyphicon-cog manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'" attr_constituency_id="'+result.subList[i].constituencyId+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
+					str+='<td style="width: 45px;"><i class="glyphicon glyphicon-edit perfomanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" title="Click Here to Update Performance" style="cursor:pointer;"></i>&nbsp&nbsp';
+					
+					str+='<i class="glyphicon glyphicon-cog manageIssues" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'" attr_constituency_id="'+result.subList[i].constituencyId+'" title="Click Here to Manage Issues" style="cursor:pointer;"></i></td>';
 					//str+='<td><i class="glyphicon glyphicon-eye-open userPerformanceCls" title="Click Here to View User Performance" style="cursor:pointer;" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_tab_user_info_id="'+result.subList[i].tabUserId+'" attr_cadre_survey_userName="'+result.subList[i].userName+'" attr_tab_userName="'+result.subList[i].tabUserName+'" attr_mobileNo="'+result.subList[i].mobileNo+'"></i></td>'
 					
 				str+='</tr>';
@@ -236,6 +247,7 @@ function buildTabUserDetails(result){
 		
 		$("#tabUserDetailsImgId").hide();
 		$("#tabUserDetailsDivId").html(str);
+		$(".viewPerformanceCls").tooltip();
 	 $('#detailsTable').dataTable({
         "aaSorting": []
     }); 
@@ -1021,11 +1033,17 @@ function getPerformanceTypeList(){
 
 $(document).on("click",".viewPerformanceCls",function(){
 	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	var userName= $(this).attr("attr_user_name");
 	getPerfomanceDetialsList(cadreSurveyUserId);
 	$("#performanceDetailsModalDivId").modal("show");
+	
+	$("#hiddenUserId").val(userName);
 });
 
 function getPerfomanceDetialsList(cadreSurveyUserId){
+	$("#pefromanceTableDivId").html('');
+	$("#userNameDivId").html('');
+	$("#performnaceErrDivId").html('');
 	var jsObj ={
 		cadreSurveyId : cadreSurveyUserId
 	}
@@ -1037,12 +1055,43 @@ function getPerfomanceDetialsList(cadreSurveyUserId){
 		}).done(function(result){
 			if(result != null && result.length > 0){
 				buildingPerformanceType(result);
-				
+			}else{
+				$("#userNameDivId").html('<b>'+$("#hiddenUserId").val()+'</b>'+' - <span>USER PERFORMANCE DETAILS</span>');
+				$("#performnaceErrDivId").html('<span style="color:red;">NO DATA AVAILABLE</span>');
 			}
 		});
 }
 
-/*function buildingPerformanceType(result){
+function buildingPerformanceType(result){
 	var str='';
-	
-}*/
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered" id="pefromanceTableDataDivId">';   
+				str+='<thead>';
+					str+='<th>CATEGORY TYPE</th>';
+					str+='<th>COMMENTS</th>';
+				str+='</thead>';
+		 str+='<tbody>';
+		 for(var i in result){
+			 str+='<tr>';
+		 if(result[i].name != null && result[i].name.length > 0)
+				str+='<td>'+result[i].name+'</td>';
+			else
+				str+='<td> - </td>';
+		 if(result[i].mobileNumber != null && result[i].mobileNumber.length > 0)
+			  str+='<td>'+result[i].mobileNumber+'</td>';
+		  else
+			  str+='<td> - </td>';
+		  
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+$("#userNameDivId").html('<b>'+$("#hiddenUserId").val()+'</b>'+' - <span>USER PERFORMANCE DETAILS</span>');
+$("#pefromanceTableDivId").html(str);
+$('#pefromanceTableDataDivId').dataTable({
+	         "aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 20,
+	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	    });
+}
