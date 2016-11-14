@@ -1150,7 +1150,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description :This Service Method is used to get top5 positive or top5 negative members tdp cadre count. 
 	* @since 13-OCT-2016
 	*/
-   public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDateStr,String toDateStr){
+   public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDateStr,String toDateStr,String sortingType){
 		 
 		  List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>();
 		  Map<Long,Set<Long>> locationLevelMap = null;
@@ -1356,7 +1356,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			 	if(resultList != null && resultList.size() > 0){
 					for(List<UserTypeVO> memberList:resultList){
-						Collections.sort(memberList, cadreRegistrationCountPercDesc);
+						if(sortingType != null && sortingType.equalsIgnoreCase("TargetWise")){
+							Collections.sort(memberList, cadreRegistrationCountPercDesc);	
+						}else if(sortingType != null && sortingType.equalsIgnoreCase("2016CadreWise")){
+							Collections.sort(memberList, cadreRegistrationCountDesc);
+						}
 					}
 				}
 				
@@ -1366,13 +1370,21 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		   }
 		   return resultList;
 	   }
-	   public static Comparator<UserTypeVO> cadreRegistrationCountPercDesc = new Comparator<UserTypeVO>() {
+   	  public static Comparator<UserTypeVO> cadreRegistrationCountPercDesc = new Comparator<UserTypeVO>() {
 			public int compare(UserTypeVO member2, UserTypeVO member1) {
 			Double perc2 = member2.getTotalCadreCountPer();
 			Double perc1 = member1.getTotalCadreCountPer();
 			//descending order of percantages.
 			 return perc1.compareTo(perc2);
 			}
+   		}; 
+	   public static Comparator<UserTypeVO> cadreRegistrationCountDesc = new Comparator<UserTypeVO>() {
+		public int compare(UserTypeVO member2, UserTypeVO member1) {
+		Long count2 = member2.getTotalCadreCount();
+		Long count1 = member1.getTotalCadreCount();
+		//descending order of percantages.
+		 return count1.compareTo(count2);
+		}
 	  }; 
 	   public Double calculatePercantage(Long subCount,Long totalCount){
 			Double d=0.0d;
@@ -1395,7 +1407,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description :This Service Method is used get cadre details based on user type. 
 	* @since 14-OCT-2016
 	*/
- public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr){
+ public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr,String sortingType){
 	 
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
@@ -1447,10 +1459,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 					     }else{
 					    	 locationValue = new ArrayList<Long>(entry.getValue());	
 					     }
-					  //List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, null, null, 3l, userTypeId); //2014 total cadre
 						List<Object[]> rtrn2014CadreDtlsObjLst = tdpCadreLocationInfoDAO.get2014TotalCadreCountBasedOnUserType(locationValue, userTypeId,activityMemberId);
 						set2014CadreCountToMap(rtrn2014CadreDtlsObjLst, locationWiseCadreDetaislMap,locationIdAndNameMap);
-						//List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDAO.getTotalCadreCountBasedOnUserType(entry.getKey(),entry.getValue(), stateId, fromDate, toDate, 4l, userTypeId); //2016 total cadre
 						List<Object[]> rtrnCadreDtlsObjLst = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountBasedOnUserType(locationValue, fromDate, toDate, userTypeId,activityMemberId);
 						set2016CadreCountToMap(rtrnCadreDtlsObjLst,locationWiseCadreDetaislMap);
 						List<Object[]> rtrnRenewalObjList = tdpCadreDateWiseInfoDAO.get2016TotalRenewalCadreCountBasedOnUserType(locationValue, fromDate, toDate, userTypeId,activityMemberId);
@@ -1462,7 +1472,12 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		 //sorting list
 		 if(locationWiseCadreDetaislMap != null && locationWiseCadreDetaislMap.size() > 0){
 			  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
-			 Collections.sort(resultList, cadreRegistrationCountDeccAsc);
+			   if(sortingType != null && sortingType.equalsIgnoreCase("TargetWise")){
+				   Collections.sort(resultList, cadreRegistrationCountPerDeccAsc);	
+				}else if(sortingType != null && sortingType.equalsIgnoreCase("2016CadreWise")){
+				   Collections.sort(resultList, cadreRegistrationCountDecc);
+				}
+			 
 		 }
 	 }catch (Exception e) {
 		 LOG.error("Exception raised in getCadreDetailsBasedOnUserType() in CadreRegistrationService service", e);	
@@ -1551,13 +1566,21 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 		 LOG.error("Exception raised in setRenewalCountToMap() in CadreRegistrationService service", e);	 
 	 }
  }
- public static Comparator<CadreReportVO> cadreRegistrationCountDeccAsc = new Comparator<CadreReportVO>() {
+ public static Comparator<CadreReportVO> cadreRegistrationCountPerDeccAsc = new Comparator<CadreReportVO>() {
 		public int compare(CadreReportVO location2, CadreReportVO location1) {
 		Double perc2 = location2.getTotal2016CadrePer();
 		Double perc1 = location1.getTotal2016CadrePer();
 		//dcending order of percantages.
 		 return perc1.compareTo(perc2);  
 		}
+}; 
+public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Comparator<CadreReportVO>() {
+	public int compare(CadreReportVO location2, CadreReportVO location1) {
+	Long count2 = location2.getTotal2016CadreCnt();
+	Long  count1 = location1.getTotal2016CadreCnt();
+	//dcending order of percantages.
+	 return count1.compareTo(count2);  
+	}
 }; 
  public void setCadreTargetCntToMap(List<Object[]> returnObjList,Map<Long,Long> targetMap){
 	 try{
@@ -1580,7 +1603,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	* @Description :This Service Method is used get cadre details Location wise. 
 	* @since 14-OCT-2016
 	*/
- public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded){
+ public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded,String sortingType){
 	
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
@@ -1635,8 +1658,13 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 			  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
 		 }
 		 if(resultList != null && resultList.size() > 0){
-			  Collections.sort(resultList, cadreRegistrationCountDeccAsc);
+			  if(sortingType != null && sortingType.equalsIgnoreCase("TargetWise")){
+				   Collections.sort(resultList, cadreRegistrationCountPerDeccAsc);	
+				}else if(sortingType != null && sortingType.equalsIgnoreCase("2016CadreWise")){
+					Collections.sort(resultList, cadreRegistrationCountDecc);
+				}
 		 }
+		
 		 Long veryGoodCnt=0l;
 		 Long goodCnt=0l;
 		 Long okCnt=0l;
@@ -3380,7 +3408,7 @@ try{
 		}
 		return null;
 	}
- public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate){
+ public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate,String sortingType){
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
 	 Map<Long,Long> cadreTarget2016Map = new HashMap<Long, Long>();
@@ -3428,7 +3456,11 @@ try{
 				  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
 			 }
 			 if(resultList != null && resultList.size() > 0){
-				  Collections.sort(resultList, cadreRegistrationCountDeccAsc);
+				   if(sortingType != null && sortingType.equalsIgnoreCase("TargetWise")){
+					   Collections.sort(resultList, cadreRegistrationCountPerDeccAsc);	
+					}else if(sortingType != null && sortingType.equalsIgnoreCase("2016CadreWise")){
+						Collections.sort(resultList, cadreRegistrationCountDecc);
+					}
 			 }
 	 }catch(Exception e){
 		 LOG.error("Exception raised in getConstituencyWiseReportBasedOnUserType() in CoreDashboardCadreRegistrationService service", e); 

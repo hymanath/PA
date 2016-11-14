@@ -481,4 +481,32 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 	 		 }
 		  return (Long)query.uniqueResult();   
 	  }
+public List<Object[]> getToursSubmittedLeaderDtlsDesignationWise(List<Long> designationIds,Date fromDate,Date toDate){
+	StringBuilder queryStr = new StringBuilder();
+	 queryStr.append(" select distinct model.selfAppraisalCandidate.selfAppraisalCandidateId," +//0
+	 		         " model.selfAppraisalCandidate.tdpCadre.firstname," +//1
+	 		         " model.selfAppraisalCandidate.tdpCadre.mobileNo," +//2
+	 		         " model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//3
+	 		         " model.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//4
+	 		         " model.selfAppraisalCandidate.tdpCadre.tdpCadreId," +//5
+	 		         " model.ownTours," +//6
+	 		         " model.inchargeTours " +//7
+	 		         " from SelfAppraisalCandidateDetails model where model.selfAppraisalCandidate.isActive='Y' ");
+	 if(designationIds != null && designationIds.size() > 0){
+		 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");
+	 }
+	 if(fromDate != null && toDate != null ){
+      queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+	 }
+	 queryStr.append(" order by model.selfAppraisalCandidate.selfAppraisalCandidateId");
+	 Query query = getSession().createQuery(queryStr.toString());
+	 if(designationIds != null && designationIds.size() > 0){
+	  query.setParameterList("designationIds", designationIds);
+	 }
+	 if(fromDate!= null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+	 }
+	 return query.list();
+}
 }
