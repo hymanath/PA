@@ -987,10 +987,18 @@ $(document).on("click",".perfomanceCls",function(){
 });
 
 function saveUserPerformanceDetails(){
-	
+	$("#modalErrDiv").html("");
 	var cadreSurveyUserId =$("#hiddenCadreSurveyUserId").val();
 	var performanceId =$("#porfmanceListId").val();
 	var comment = $("#commentId").val();
+	if(performanceId == 0){
+		$("#modalErrDiv").html("Please Select Category.");
+		return;
+	}
+	if(comment.trim().length == 0){
+		$("#modalErrDiv").html("Please Enter Comment.");
+		return;
+	}
 	var jsObj = { 
 		  cadreSurveyUserId : cadreSurveyUserId,
 		  performanceTypeId : performanceId,
@@ -1021,7 +1029,7 @@ function getPerformanceTypeList(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			$("#porfmanceListId").append('<option value="0">Select Performance Type</option>');
+			$("#porfmanceListId").append('<option value="0">Select Category Type</option>');
 		if(result != null && result.length > 0){
 			for(var i in result){
 				$("#porfmanceListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
