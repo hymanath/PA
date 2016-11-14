@@ -263,7 +263,7 @@
 	}
 				var jsObj ={					
 					mandalId:mandal,
-					typeId:1
+					typeId:id
 				};
 				 $.ajax({
 					type : "GET",
