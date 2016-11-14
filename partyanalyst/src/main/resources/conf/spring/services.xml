@@ -3749,6 +3749,8 @@
 	 <property name="cadreTabRecordsStatusDAO" ref="cadreTabRecordsStatusDAO" />
 	  <property name="tdpCadreDAO" ref="tdpCadreDAO" />	
 	  <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />	
+	  <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO" />	
+	  <property name="tabUserEnrollmentInfoDAO" ref="tabUserEnrollmentInfoDAO" />	
 	</bean>
 	
 	<bean name="toursService" class="com.itgrids.partyanalyst.service.impl.ToursService" >
