@@ -594,7 +594,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-weight: bold;
     text-transform: uppercase;
 }
-.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand {
+.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand{
     background-color: rgb(254, 203, 0);
     border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
@@ -605,10 +605,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
     top: -3px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i {
+.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand i{
     transition: all 0.2s ease-in-out 0s;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover {
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover{
     transform: scale(1.4);
 }
 .text-capital {
@@ -908,7 +908,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     background: rgb(74, 87, 98) none repeat scroll 0 0;
     border-radius: 50%;
     color: rgb(255, 255, 255);
-    content: "";
+    content: "\e014";
     cursor: pointer;
     display: none;
     font-family: "Glyphicons Halflings";
@@ -1118,13 +1118,13 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     height: 25px;
     width: 25px;
 }
-.dateRangePickerCls, .dateRangePickerClsForTraining, .dateRangePickerClsForDebates, .dateRangePickerClsForNews, .dateRangePickerClsForMeetings, .dateRangePickerClsForEvents, .dateRangePickerClsForAttendance  , .dateRangePickerClsForEmn{
+.dateRangePickerCls, .dateRangePickerClsForTraining, .dateRangePickerClsForDebates, .dateRangePickerClsForNews, .dateRangePickerClsForMeetings, .dateRangePickerClsForEvents, .dateRangePickerClsForAttendance  , .dateRangePickerClsForEmn , .toursDateRangePickerCls{
     margin-right: 5px;
     position: relative;
     top: -3px;
     width: 100px;
 }
-.dateRangePickerCls .form-control, .dateRangePickerClsForTraining .form-control, .dateRangePickerClsForDebates .form-control, .dateRangePickerClsForNews .form-control, .dateRangePickerClsForMeetings .form-control, .dateRangePickerClsForEvents .form-control, .dateRangePickerClsForAttendance .form-control , .dateRangePickerClsForEmn .form-control{
+.dateRangePickerCls .form-control, .dateRangePickerClsForTraining .form-control, .dateRangePickerClsForDebates .form-control, .dateRangePickerClsForNews .form-control, .dateRangePickerClsForMeetings .form-control, .dateRangePickerClsForEvents .form-control, .dateRangePickerClsForAttendance .form-control , .dateRangePickerClsForEmn .form-control , .toursDateRangePickerCls .form-control{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -1137,7 +1137,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 6px;
     width: 100px;
 }
-.dateRangePickerCls .input-group-addon, .dateRangePickerClsForTraining .input-group-addon, .dateRangePickerClsForDebates .input-group-addon, .dateRangePickerClsForNews .input-group-addon, .dateRangePickerClsForMeetings .input-group-addon, .dateRangePickerClsForEvents .input-group-addon, .dateRangePickerClsForAttendance .input-group-addon , .dateRangePickerClsForEmn .input-group-addon{
+.dateRangePickerCls .input-group-addon, .dateRangePickerClsForTraining .input-group-addon, .dateRangePickerClsForDebates .input-group-addon, .dateRangePickerClsForNews .input-group-addon, .dateRangePickerClsForMeetings .input-group-addon, .dateRangePickerClsForEvents .input-group-addon, .dateRangePickerClsForAttendance .input-group-addon , .dateRangePickerClsForEmn .input-group-addon , .toursDateRangePickerCls .input-group-addon{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -1159,54 +1159,58 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-top: 0 none !important;
 }
 .spinner {
-    animation: 2s linear 0s normal none infinite running sk-rotate;
-    height: 40px;
-    margin: 30px auto;
-    position: relative;
-    text-align: center;
-    width: 40px;
+	margin:auto;
+	width: 40px;
+	height: 40px;
+	position: relative;
+	text-align: center;
+	-webkit-animation: sk-chasingDotsRotate 2s infinite linear;
+    animation: sk-chasingDotsRotate 2s infinite linear; 
 }
-.dot1, .dot2 {
-    animation: 2s ease-in-out 0s normal none infinite running sk-bounce;
-    background-color: rgb(26, 188, 156);
-    border-radius: 100%;
-    display: inline-block;
+.spinner .dot1 , .spinner .dot2 {
+    width: 60%;
     height: 60%;
+    display: inline-block;
     position: absolute;
     top: 0;
-    width: 60%;
+    background-color: #1ABC9C;
+    border-radius: 100%;
+    -webkit-animation: sk-chasingDotsBounce 2s infinite ease-in-out;
+    animation: sk-chasingDotsBounce 2s infinite ease-in-out; 
 }
-.dot2 {
-    animation-delay: -1s;
-    bottom: 0;
+.spinner .dot2 {
     top: auto;
+    bottom: 0;
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s; 
 }
-@keyframes sk-rotate {
-100% {
-    transform: rotate(360deg);
-}
-}
-@keyframes sk-rotate {
-100% {
-    transform: rotate(360deg);
-}
-}
-@keyframes sk-bounce {
-0%, 100% {
-    transform: scale(0);
-}
-50% {
-    transform: scale(1);
-}
-}
-@keyframes sk-bounce {
-0%, 100% {
-    transform: scale(0);
-}
-50% {
-    transform: scale(1);
-}
-}
+
+@-webkit-keyframes sk-chasingDotsRotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes sk-chasingDotsRotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@-webkit-keyframes sk-chasingDotsBounce {
+  0%, 100% {
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  50% {
+    -webkit-transform: scale(1);
+            transform: scale(1); } }
+
+@keyframes sk-chasingDotsBounce {
+  0%, 100% {
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  50% {
+    -webkit-transform: scale(1);
+            transform: scale(1); } }
+
 .calenarUl li {
     cursor: pointer;
     padding: 5px 0 5px 15px;
@@ -1694,7 +1698,6 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-top: 0 none;
 }
 .tableEMN tr td h5 {
-    color: rgb(190, 191, 195) !important;
     font-size: 12px !important;
 }
 .tableEMN tr td h4 {
@@ -1717,4 +1720,19 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     display: inline-block;
     margin: 0 5px;
     padding: 8px;
+}
+.newsComparisonUl
+{
+	margin-right:12px !important;
+}
+.govtCount
+{
+	background: #4a5864 none repeat scroll 0 0;
+    border-radius: 50%;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 15px;
+    margin-right: 5px;
+    text-align: center;
+    width: 20px;
 }
