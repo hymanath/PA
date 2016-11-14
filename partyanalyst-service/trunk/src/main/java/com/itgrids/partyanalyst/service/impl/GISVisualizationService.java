@@ -909,7 +909,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 			setLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap,cadreSurveyUserIdsLsit);
 			
 			returnVO.setTodayActiveCount(Long.valueOf(String.valueOf(cadreSurveyUserIdsLsit.size())));
-			returnVO.setTodayInActiveCount(returnVO.getActiveCount()-returnVO.getTodayActiveCount());
+			returnVO.setTodayInActiveCount(returnVO.getAllocatedCount()-returnVO.getTodayActiveCount());
 			cadreSurveyUserIdsLsit.clear();
 		
 			List<Object[]>  assignedUsersList = cadreSurveyUserAssignDetailsDAO.getUserTrackingDetails(inputVO);
@@ -1285,7 +1285,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 					GISUserTrackingVO vo = locationWiseUsersMap.get(locationId);
 					if(vo != null){
 						vo.setTodayActiveCount(Long.valueOf(vo.getTodayActiveUsersList() != null?String.valueOf(vo.getTodayActiveUsersList().size()):"0"));
-						vo.setTodayInActiveCount(Long.valueOf(vo.getTodayInActiveUsersList() != null?String.valueOf(vo.getTodayInActiveUsersList().size()):"0"));
+						//vo.setTodayInActiveCount(Long.valueOf(vo.getTodayInActiveUsersList() != null?String.valueOf(vo.getTodayInActiveUsersList().size()):"0"));
+						vo.setTodayInActiveCount(vo.getAllocatedCount()-vo.getTodayActiveCount());
 						if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 							vo.getLastOneHrActiveusersList().clear();
 							vo.getLastOneHrInActiveusersList().clear();
