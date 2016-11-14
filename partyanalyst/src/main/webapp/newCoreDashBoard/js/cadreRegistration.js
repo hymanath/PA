@@ -4693,11 +4693,11 @@ function buildTabUserComparisonRslt(result){
 		  }
 	   });
 	   if(count == 2){
-		   $("#checkErrId").html("please select one option")
+		   $("#checkErrId").html("Please Select Only One Option")
 		   return;      
 	   }
-	   if(count == 0){
-		   $("#checkErrId").html("please select one option")  
+	   if(count == 0){  
+		   $("#checkErrId").html("Please Select Only One Option")  
 		   return;  
 	   }            
 		$(".specialCadreDropDown").toggle();          
@@ -4720,11 +4720,11 @@ function buildTabUserComparisonRslt(result){
 		  }
 	   });
 	   if(count == 2){
-		   $("#checkErrId").html("please select one option")
+		   $("#checkErrId").html("Please Select Only One Option")
 		   return;      
 	   }
 	   if(count == 0){
-		   $("#checkErrId").html("please select one option")  
+		   $("#checkErrId").html("Please Select Only One Option")    
 		   return;  
 	   }      
 	   //call here.....   
@@ -4752,7 +4752,9 @@ function buildTabUserComparisonRslt(result){
 	   
 	  $(".specialCadreDropDown").toggle();    
 	});
-	
+	$(document).on("click",".settingCloseCls",function(){  
+		$(".specialCadreDropDown").toggle();    
+	});
 
 /* 	getUserTrackingDtslBySurveyUserId();targetWiseId,2016CadreWiseId
 	function getUserTrackingDtslBySurveyUserId(){
