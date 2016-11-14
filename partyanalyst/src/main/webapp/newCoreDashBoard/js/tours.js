@@ -916,7 +916,7 @@ function getToursBasicOverviewCountDetails()
 	if(result != null){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';  
 			if(result.name != null){
-				str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">'+result.name+'['+candidateName+'-'+gesignation+']</span></span></b>';
+				str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">'+result.name+'</span></span></b>';//'['+candidateName+'-'+gesignation+']
 			}
 		str+='</div>';
 	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';      
