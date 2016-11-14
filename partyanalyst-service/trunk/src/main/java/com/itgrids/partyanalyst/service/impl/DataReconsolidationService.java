@@ -218,12 +218,12 @@ public CadreTabRecordsStatusVO dataReConsalationTotalOverView(Long stateId,Long 
 					}
 				  }
 				statusvo = new CadreTabRecordsStatusVO();
-				statusvo.setTotalImeiNo(totalSmartDevics);
-			    statusvo.setTotalRecords(totalRecords);
-			    statusvo.setTotalSyn(totalSync);
-			    statusvo.setTotalPending(totalPending);
-			    statusvo.setSync(tabSync);
-			    statusvo.setPending(tabPending);
+				statusvo.setTotalImeiNo(totalSmartDevics);//samrtDevices Count
+			    statusvo.setTotalRecords(totalRecords);//total Registrations
+			    statusvo.setTotalSyn(totalSync);//tab Completed
+			    statusvo.setTotalPending(totalPending);//tab Pending
+			    statusvo.setKafkaSync(tabSync);//kafka Synced
+			    statusvo.setKafkaPending(tabPending);//kafka Pending
 			    //statusvo.setCadreSurveyUserId(cadreSurveyUserId);
 
 			Map<Long, Long> actualMap = new HashMap<Long, Long>();

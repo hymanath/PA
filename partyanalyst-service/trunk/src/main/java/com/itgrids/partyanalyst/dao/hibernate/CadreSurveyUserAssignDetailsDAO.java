@@ -450,8 +450,10 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		}
 		
 		queryStr.append(" ,count(distinct model.imeiNo),sum(model.totalRecords),sum(model.kafkaSync),sum(model.kafkaPending),sum(model.pending),sum(model.sync)," +
-				" model.cadreSurveyUserId from CadreSurveyUserAssignDetails CSUAD,CadreTabRecordsStatus model " +
+				" model.cadreSurveyUserId from CadreSurveyUserAssignDetails CSUAD,CadreTabRecordsStatus model,TabUserInfo model1 " +
 						" where CSUAD.isDeleted = 'N' and model.cadreSurveyUserId = CSUAD.cadreSurveyUserId " +
+						 " and model.tabUserInfoId = model1.tabUserInfoId and model1.isEnabled = 'Y' " +
+						 " and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'  " +
 						" and CSUAD.cadreSurveyUser.isEnabled = 'Y' "); 
 		
 		if(constituencyId != null && constituencyId.longValue()>0l){
