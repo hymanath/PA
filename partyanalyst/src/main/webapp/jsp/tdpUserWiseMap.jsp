@@ -83,6 +83,8 @@ var markersArr = [];
 var pathArr = [];
   var markers = new Array();
   var map;
+var glblLat = 17.3700;
+var glblLon = 78.4800;
   
   getUserTrackingDetails();
 	function getUserTrackingDetails(){
@@ -106,13 +108,17 @@ var pathArr = [];
 					for(var i in result.subList1){
 						//var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
 						//pathArr.push(obj);
-						if((result.subList1.length-1)==i){
+						if(i == 0){
+							glblLat = parseFloat(result.subList1[i].latitude).toFixed(2);
+							glblLon = parseFloat(result.subList1[i].longititude).toFixed(2)
+						}
+						/*if((result.subList1.length-1)==i){
 							displayLocation(result.subList1[i],"last");
 						}else{
 							displayLocation(result.subList1[i],"");
-						}
+						}*/
 						var temparr=[];
-						temparr.push(result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
+						temparr.push("S.No:"+(parseInt(i)+1)+"<br/>"+result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
 						temparr.push(result.subList1[i].latitude);
 						temparr.push(result.subList1[i].longititude);
 						temparr.push(result.subList1[i].surveyTime);
@@ -148,10 +154,13 @@ var pathArr = [];
 	}
 	
 	function initMap(markersArr) {
-		//console.log(markersArr);
+		glblLat = parseFloat(glblLat+"00");
+		glblLon = parseFloat(glblLon+"00");
+		//console.log(glblLat);
+	//	console.log(glblLon);
   var map1 = new google.maps.Map(document.getElementById('map1'), {
-    zoom: 6,
-    center: {lat: 17.3700, lng: 78.4800},
+    zoom: 12,
+    center: {lat: glblLat, lng: glblLon},
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
 

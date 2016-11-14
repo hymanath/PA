@@ -1332,7 +1332,7 @@ function buildDataCollectorsPerformanceDetails(result){
 					if(result[i].userName != null){
 						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'<span class="glyphicon glyphicon-map-marker mapClass"  attr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" title="Click here For User Tracking" style="cursor:pointer;"></span>&nbsp&nbsp';
 						if(result[i].description == "true"){
-							str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_user_name="'+result[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;color:red"></i></td>';
+							str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_user_name="'+result[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;"></i></td>';
 						}else{
 							str+='</td>';
 						}
@@ -1405,6 +1405,7 @@ function buildDataCollectorsPerformanceDetails(result){
 		
 		$("#dataCollectorsDivId").html(str);
 		$(".viewPerformanceCls").tooltip();
+		$(".mapClass").tooltip();
 		$("#dataCollectorsImgId").hide();
 		$('#detailsTable').dataTable({
 	         "aaSorting": [[ 0, "asc" ]],
@@ -1726,11 +1727,6 @@ $('#pefromanceTableDataDivId').dataTable({
 	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 	    });
 }
-	
-	
-	
-	
-	});
 	
 $(document).on("click",".mapClass",function(){
 	var cadreUserId = $(this).attr("attr_id");

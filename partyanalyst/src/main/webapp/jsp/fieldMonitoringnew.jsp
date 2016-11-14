@@ -303,12 +303,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close closeIconCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-       <!-- <h4 class="modal-title" id="myModalLabel">VALIDATING CADRE DETAILS WITH MOBILE NUMBER</h4>-->
+       <h4 class="modal-title">UPDATE USER PERFORMANCE</h4>
       </div>
       <div class="modal-body">
+	  <div class="text-danger" id="modalErrDiv"></div>
 	  <div class="row">
 		<div class="col-md-4 col-xs-12 col-sm-4">
-			<label>Performance Type</label>
+			<label>Category Type</label>
 				<select class="select" id="porfmanceListId">
 				</select>
 		</div>
