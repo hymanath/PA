@@ -641,7 +641,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .text-pink {
     color: rgb(194, 134, 188);
 }
-.committeesHiddenBlock, .moreBlocks, .moreBlocksIcon, .trainingsHiddenBlock, .moreTrainingBlocksIcon, .moreTrainingBlocks, .meetingsHiddenBlock, .moreMeetingsBlocksIcon, .moreMeetingsBlocks, .debatesHiddenBlock, .debatesMoreHiddenBlock, .newsHiddenBlock, .morenewsBlocksIcon, .newsHiddenMoreBlock, .eventsHiddenBlock, .moreEventsBlocks, .moreAttBlocksIcon, .attendanceBlockMore, .moreAttBlocks, .moreCadreBlock, .moreBlocksCadre, .moreBlocksCadreIcon, .moreBlockEMN, .moreEmnBlocks, .detailedPartyEmn, .detailedGovtEmn, .compGovtEmn, .compPartyEmn, .selectEmnCate {
+.committeesHiddenBlock, .moreBlocks, .moreBlocksIcon, .trainingsHiddenBlock, .moreTrainingBlocksIcon, .moreTrainingBlocks, .meetingsHiddenBlock, .moreMeetingsBlocksIcon, .moreMeetingsBlocks, .debatesHiddenBlock, .debatesMoreHiddenBlock, .newsHiddenBlock, .morenewsBlocksIcon, .newsHiddenMoreBlock, .eventsHiddenBlock, .moreEventsBlocks, .moreAttBlocksIcon, .attendanceBlockMore, .moreAttBlocks, .moreCadreBlock, .moreBlocksCadre, .moreBlocksCadreIcon, .moreBlockEMN, .moreEmnBlocks, .detailedPartyEmn, .detailedGovtEmn, .compGovtEmn, .compPartyEmn, .selectEmnCate , .toursHiddenBlock{
     display: none;
 }
 .panelNewCustom .panel-heading {
@@ -800,7 +800,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: auto;
     width: 100%;
 }
-.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon {
+.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon{
     cursor: pointer;
     font-size: 22px;
 }
@@ -1006,7 +1006,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     display: block;
 }
 .tableHoverLevels tr::after {
-    content: "";
+    content: "\e080";
     cursor: pointer;
     display: none;
     font-family: "Glyphicons Halflings";
@@ -1222,7 +1222,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
 }
 .calenarUl li.active::before {
-    content: "";
+    content: "\e109";
     display: block;
     font-family: "Glyphicons Halflings";
     left: 0;
