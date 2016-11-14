@@ -444,8 +444,13 @@ function buildPopUpModelDetails(result){
 	str +='</table>';
 	str +='</div>';
 	$("#tabUserWiseRegistionDetilsId").html(str);	
-	$("#tabUserDetailsId").dataTable();	
-	
+	//$("#tabUserDetailsId").dataTable();	
+	$("#tabUserDetailsId").dataTable({
+			"aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 50,
+	         "aLengthMenu": [[ 50, 100, -1], [ 50, 100, "All"]]
+	});
+	$("#tabUserDetailsId").removeClass("dataTable");
 	var str1 = '';
 	str1+='<table class="table table-condensed " id="tabUserExportExcelId">';
 	str1+='<thead>';
