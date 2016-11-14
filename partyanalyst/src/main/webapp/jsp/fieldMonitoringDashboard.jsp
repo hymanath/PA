@@ -289,11 +289,31 @@
 </div>
 </div>
 
+<div class="modal fade" id="performanceDetailsModalDivId">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="userNameDivId"></h4>
+      </div>
+      <div class="modal-body">
+		
+	    <div id="pefromanceTableDivId"></div>
+		<div id="performnaceErrDivId"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <input type="hidden" id="hiddenCadreSurveyUserId"></input>
 <input type="hidden" id="hiddenTabUserInfoId"></input>
 <input type="hidden" id="hiddenVendorId"></input>
 <input type="hidden" id="hiddenConstituencyId"></input>
 <input type="hidden" id="hiddenIssueStatusId"></input>
+<input type="hidden" id="hiddenUserId"></input>
 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
