@@ -2711,7 +2711,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long userTypeId = jobj.getLong("userTypeId");
 			String fromDate = jobj.getString("fromDate");
 			String todate = jobj.getString("todate");  
-			userTypeVOList = coreDashboardCadreRegistrationService.getUserTypeWiseTotalCadreRegistrationCount(activityMemberId,stateId,userTypeId,userId,fromDate,todate);
+			String sortingType = jobj.getString("sortingType");
+			userTypeVOList = coreDashboardCadreRegistrationService.getUserTypeWiseTotalCadreRegistrationCount(activityMemberId,stateId,userTypeId,userId,fromDate,todate,sortingType);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
 	  }
@@ -2725,7 +2726,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long userTypeId = jobj.getLong("userTypeId");
 			String fromDate = jobj.getString("fromDate");
 			String todate = jobj.getString("todate");
-			cadreDtlsResultList = coreDashboardCadreRegistrationService.getCadreDetailsBasedOnUserType(activityMemberId,stateId,userTypeId,fromDate,todate);
+			String sortingType = jobj.getString("sortingType");
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getCadreDetailsBasedOnUserType(activityMemberId,stateId,userTypeId,fromDate,todate,sortingType);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getCadreDetailsBasedOnUserType() in CadreRegistrationAction class",e);  
 	  }
@@ -2747,9 +2749,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				}
 			}
 			String isKuppamExcluded = jobj.getString("isKuppamExcluded");
-			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues,isKuppamExcluded);
+			String sortingType = jobj.getString("sortingType");
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues,isKuppamExcluded,sortingType);
 	  }catch(Exception e){
-		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);  
+		  LOG.error("Error occured at getLocationWiseCadreDetails() in CadreRegistrationAction class",e);  
 	  }
 	  return Action.SUCCESS;
   }
@@ -2787,7 +2790,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 		  }catch(Exception e){
 			  e.printStackTrace();
-		  LOG.error("Error occured at getUserTypeWiseTotalCadreRegistrationCount() in CadreRegistrationAction class",e);
+		  LOG.error("Error occured at getSelectedChildTypeMembersForCadreRegistration() in CadreRegistrationAction class",e);
 		  }
 		  return Action.SUCCESS;
 	  }
@@ -2946,7 +2949,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  String endDate = jobj.getString("endDate");
 		  Long activityMemberId = jobj.getLong("activityMemberId");  
 		  Long stateId = jobj.getLong("stateId"); 
-		  cadreCnsttuncyList = coreDashboardCadreRegistrationService.getConstituencyWiseReportBasedOnUserType(activityMemberId,stateId,startDate, endDate);
+		  String sortingType = jobj.getString("sortingType");
+		  cadreCnsttuncyList = coreDashboardCadreRegistrationService.getConstituencyWiseReportBasedOnUserType(activityMemberId,stateId,startDate, endDate,sortingType);
 	  }catch(Exception e){  
 		  e.printStackTrace();  
 		  LOG.error("Error occured at getConstituencyWiseReportBasedOnUserType() in CadreRegistrationAction class",e);
