@@ -4229,6 +4229,46 @@ function buildTabUserComparisonRslt(result){
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 			 }); 
 	}	
+	$(document).on('click','#cadreSettingsId',function(){  
+		$(".specialCadreDropDown").toggle();          
+	});
+	$(document).on('click','.cadreExpand',function(){
+		if($(this).find("i").hasClass("glyphicon glyphicon-fullscreen")){
+			$(".specialCadreDropDown").addClass("left270");
+			$(".specialCadreDropDown").removeClass("left850"); 
+		}else{
+			$(".specialCadreDropDown").addClass("left850");     
+			$(".specialCadreDropDown").removeClass("left270");	  
+		}  
+	});
+	$(document).on("click",".specialCadreBtncls",function(){
+		$("#checkErrId").html("");
+		var count = 0;
+		$(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			count += 1;
+		  }
+	   });
+	   if(count == 2){
+		   $("#checkErrId").html("please select one option")
+		   return;      
+	   }
+	   if(count == 0){
+		   $("#checkErrId").html("please select one option")  
+		   return;  
+	   }      
+	   //call here.....   
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
+		  alert(sortingType);
+	   
+	  $(".specialCadreDropDown").toggle();    
+	});
+	
 	
 /* 	getUserTrackingDtslBySurveyUserId();
 	function getUserTrackingDtslBySurveyUserId(){
