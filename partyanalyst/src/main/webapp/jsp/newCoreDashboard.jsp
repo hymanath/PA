@@ -142,7 +142,7 @@
 						<div class="col-md-4 col-sm-4 col-xs-4">
 							   
 							<span class="cadreSettings pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								<i class="fa fa-gears" id="cadreSettingsId" data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="cadreNotes pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
@@ -161,7 +161,15 @@
 							</span>
 						</div>
                     </div>      
-                </div>
+                </div>       
+				<div class="specialCadreDropDown left270" style="left:0px;">         
+					<ul class="list-inline">
+						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="targetWiseId" attr_sort_type="TargetWise" checked/>&nbsp&nbsp2016 Target Wise</label></li><br> 
+						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="2016CadreWiseId" attr_sort_type="2016CadreWise" />&nbsp&nbsp2016 Cadre Wise</label></li>
+					</ul>  
+					<button type="button" class="btn btn-success specialCadreBtncls">Get Details</button>
+					<span id="checkErrId" style="color:red;"></span>
+				</div>    
                 <div class="panel-body">
 			    	<div class="row">
 						  
