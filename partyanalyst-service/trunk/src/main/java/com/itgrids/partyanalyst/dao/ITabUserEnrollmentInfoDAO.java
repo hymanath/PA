@@ -22,4 +22,5 @@ public interface ITabUserEnrollmentInfoDAO extends GenericDao<TabUserEnrollmentI
 	public List<Object[]> getTabUserDtlsList(Long constituencyId,Date fromDate,Date toDate);
 	public List<Object[]> getActualCountOfCadreSurveyUserWiseCount(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate);
 	public List<Object[]> getActualCountOfCadreSurveyUser(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate);
+	public List<Object[]> getActualCountOfCadreSurveyUser(Long districtId,Long stateId,Date startDate,Date endDate,Long constituencyId,Set<Long> cadreSurveyUsers);
 }

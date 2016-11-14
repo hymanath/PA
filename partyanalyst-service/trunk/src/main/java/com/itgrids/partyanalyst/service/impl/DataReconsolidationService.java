@@ -353,6 +353,7 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 	
 		LOG.info("Entered into DataReconsolidationService of getLocationWiseSmartDevicesCount");
 		Set<Long> locationIds = new HashSet<Long>();
+		Set<Long> cadreSurveyUserIds = new HashSet<Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 	
 		   Date fromDate = null;
@@ -376,7 +377,10 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 			    statusvo.setKafkaPending(param[5] != null ? (Long)param[5] : 0l);//Total Kafka Pending Records
 			    statusvo.setTotalPending(param[6] != null ? (Long)param[6] : 0l);//Total Tab Pending Records;
 			    statusvo.setTotalSyn(param[7] != null ? (Long)param[7] : 0l);//Total Tab Sync Records;
-			   // statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
+			    statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
+			    
+			    if(statusvo.getCadreSurveyUserId().longValue() > 0l)
+			    cadreSurveyUserIds.add(statusvo.getCadreSurveyUserId());
 			    if(statusvo.getTabUserInfoId().longValue()  > 0l)
 			    locationIds.add(statusvo.getTabUserInfoId());//cadreSurveyUserIds
 				finalList.add(statusvo);
@@ -385,7 +389,8 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 		}
 		
 		Map<Long,Long> actualMap = new HashMap<Long, Long>();
-		List<Object[]> cadreSurveyCountObj =  tdpCadreDateWiseInfoDAO.getActualCountOfCadreSurveyUser(districtId,stateId,fromDate,toDate,constituencyId);
+		List<Object[]> cadreSurveyCountObj = tabUserEnrollmentInfoDAO.getActualCountOfCadreSurveyUser(districtId,stateId,fromDate,toDate,constituencyId,cadreSurveyUserIds);
+		//List<Object[]> cadreSurveyCountObj =  tdpCadreDateWiseInfoDAO.getActualCountOfCadreSurveyUser(districtId,stateId,fromDate,toDate,constituencyId);
 		
 		if(cadreSurveyCountObj !=null && cadreSurveyCountObj.size()>0){
 			for (Object[] objects : cadreSurveyCountObj) {
