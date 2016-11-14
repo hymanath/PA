@@ -8769,7 +8769,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		     		         " model.latitude,  " +//2
 		     		         " model.tabUserInfo.name ," +//3
 		     		         " model.tabUserInfo.mobileNo," +//4
-		     		         " model.insertedBy.userName " +//5 
+		     		         " model.insertedBy.userName," +//5 
+		     		         " model.firstname," +
+		     		         " model.mobileNo " +
 		     		         "from TdpCadre model " +
 		     		         " where model.isDeleted = 'N' and  model.enrollmentYear = 2014 and model.insertedUserId=:cadreSurveyUserId ");
 		     if(fromDate != null && toDate != null){
