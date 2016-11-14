@@ -1330,7 +1330,7 @@ function buildDataCollectorsPerformanceDetails(result){
 						str+='<td class="issuePending" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
 						//str+='<td class="issuePending">'+result[i].userName+'</td>';*/
 					if(result[i].userName != null)
-						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'</td>';
+						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'<span class="glyphicon glyphicon-map-marker mapClass"  attr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" title="Click here For User Tracking" style="cursor:pointer;"></span></td>';
 					else
 						str+='<td> - </td>';
 						
@@ -1654,3 +1654,10 @@ $(document).on("click",".stateWiseCls",function(){
 		stateId = $(":radio:checked").val();
 		getApMandalMuncipalityNotStartedCount(stateId);
 	});
+	
+$(document).on("click",".mapClass",function(){
+	var cadreUserId = $(this).attr("attr_id");
+	var userName = $(this).attr("attr_userName");
+	var urlStr = "tdpUserWiseMapAction.action?userId="+cadreUserId+"&username="+userName;
+	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
+});

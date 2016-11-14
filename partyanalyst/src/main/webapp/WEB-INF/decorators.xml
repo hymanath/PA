@@ -708,5 +708,6 @@
 		<pattern>/fieldMonitoringReportAction*</pattern>
 		<pattern>/privilegedUserCadreRegAction*</pattern> 
 		<pattern>/mediaScreenPartyAction*</pattern>
+		<pattern>/tdpUserWiseMapAction*</pattern>
 	</decorator> 
 </decorators>

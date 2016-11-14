@@ -2291,5 +2291,7 @@ public String getSummaryDetails(){
 	public String tdpAgentAreaMap(){
 		return Action.SUCCESS;
 	}
-	
+	public String tdpUserWiseMap(){
+		return Action.SUCCESS;
+	}
 }

@@ -14338,6 +14338,9 @@
 	<action name="tdpAgentAreaMapAction" class="cadreCommitteeAction" method="tdpAgentAreaMap">
  			 <result name="success">jsp/tdpAgentAreaMap.jsp</result>
  	</action>
+ 	<action name="tdpUserWiseMapAction" class="cadreCommitteeAction" method="tdpUserWiseMap">
+ 			 <result name="success">jsp/tdpUserWiseMap.jsp</result>
+ 	</action>
  	<action name="dataReconsolidationOverViewAction" class="dataReconsolidationOverViewAction">
 		<result name="input">/jsp/loginForm.jsp?src=dataReConsolidationOverViewAction</result>
 		<result name="success">/jsp/dataReConsolidationOverview.jsp</result>  
