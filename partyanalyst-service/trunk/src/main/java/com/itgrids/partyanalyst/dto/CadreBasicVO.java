@@ -13,11 +13,25 @@ public class CadreBasicVO {
 	private String toDate;
 	private String mobileNo;
 	private String name;
+	private String tdpCadreName;
+	private String tdpCadreMbl;
 
 	private List<CadreBasicVO> subList1;
 	private List<CadreBasicVO> subList2;
 	
 	
+	public String getTdpCadreName() {
+		return tdpCadreName;
+	}
+	public void setTdpCadreName(String tdpCadreName) {
+		this.tdpCadreName = tdpCadreName;
+	}
+	public String getTdpCadreMbl() {
+		return tdpCadreMbl;
+	}
+	public void setTdpCadreMbl(String tdpCadreMbl) {
+		this.tdpCadreMbl = tdpCadreMbl;
+	}
 	public Long getSurveyUserId() {
 		return surveyUserId;
 	}

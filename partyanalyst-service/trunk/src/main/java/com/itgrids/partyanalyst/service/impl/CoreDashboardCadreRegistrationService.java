@@ -4062,6 +4062,8 @@ try{
 					 regDtlsVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					 regDtlsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[4]));
 					 regDtlsVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					 regDtlsVO.setTdpCadreName(commonMethodsUtilService.getStringValueForObject(param[6]));
+					 regDtlsVO.setTdpCadreMbl(commonMethodsUtilService.getStringValueForObject(param[7]));
 				 }
 				 
 				 resultList.add(regDtlsVO);
