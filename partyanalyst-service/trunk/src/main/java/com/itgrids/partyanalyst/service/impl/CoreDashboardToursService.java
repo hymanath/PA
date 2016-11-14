@@ -170,15 +170,67 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   //setting result to final result VO
 						   resultVO.setOverAllDetailsVO(overAllDtlsVO);
 					}
+					/* Merge Sec And Org Sec Data */
+				 if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
+					     ToursBasicVO orgSecAndSecVO = new ToursBasicVO();
+					     orgSecAndSecVO.setDesignation("ORGANIZING SECRETARIES/SECRETARIES"); 
+					     orgSecAndSecVO.setId(4l);
+					     
+						 ToursBasicVO orgSecVO = LeaderMemebersMap.get(4l);
+						 ToursBasicVO secVO = LeaderMemebersMap.get(5l);
+						 
+						 if(orgSecVO != null){
+							orgSecAndSecVO.setNoOfLeaderCnt(orgSecVO.getNoOfLeaderCnt());
+							orgSecAndSecVO.setNotSubmitedLeaserCnt(orgSecVO.getNotSubmitedLeaserCnt());
+							orgSecAndSecVO.setSubmitedLeaderCnt(orgSecVO.getSubmitedLeaderCnt());
+							orgSecAndSecVO.setNoOfDistinctTours(orgSecVO.getNoOfDistinctTours());
+							orgSecAndSecVO.setOwnToursCnt(orgSecVO.getOwnToursCnt());
+							orgSecAndSecVO.setInchargerToursCnt(orgSecVO.getInchargerToursCnt());
+							orgSecAndSecVO.setTotalSubmittedToursCnt(orgSecAndSecVO.getOwnToursCnt()+orgSecAndSecVO.getInchargerToursCnt());
+						 }
+					     if(secVO != null){
+							orgSecAndSecVO.setNoOfLeaderCnt(orgSecAndSecVO.getNoOfLeaderCnt()+secVO.getNoOfLeaderCnt());
+							orgSecAndSecVO.setNotSubmitedLeaserCnt(orgSecAndSecVO.getNotSubmitedLeaserCnt()+secVO.getNotSubmitedLeaserCnt());
+							orgSecAndSecVO.setSubmitedLeaderCnt(orgSecAndSecVO.getSubmitedLeaderCnt()+secVO.getSubmitedLeaderCnt());
+							orgSecAndSecVO.setNoOfDistinctTours(orgSecAndSecVO.getNoOfDistinctTours()+secVO.getNoOfDistinctTours());
+							orgSecAndSecVO.setOwnToursCnt(orgSecAndSecVO.getOwnToursCnt()+secVO.getOwnToursCnt());
+							orgSecAndSecVO.setInchargerToursCnt(orgSecAndSecVO.getInchargerToursCnt()+secVO.getInchargerToursCnt());
+							orgSecAndSecVO.setTotalSubmittedToursCnt(orgSecAndSecVO.getOwnToursCnt()+orgSecAndSecVO.getInchargerToursCnt());
+						 }
+					     orgSecAndSecVO.setSubmitedCandidateTourPer(calculatePercantage(orgSecAndSecVO.getSubmitedLeaderCnt(),orgSecAndSecVO.getNoOfLeaderCnt()));
+					     orgSecAndSecVO.setNotsubmitedCandidateTourPer(calculatePercantage(orgSecAndSecVO.getNotSubmitedLeaserCnt(), orgSecAndSecVO.getNoOfLeaderCnt()));
+					     Double averageTours = orgSecAndSecVO.getTotalSubmittedToursCnt().doubleValue()/orgSecAndSecVO.getNoOfDistinctTours().doubleValue();
+	  					 if(!(averageTours.isNaN())){
+	  						 orgSecAndSecVO.setAverageTours(averageTours);   
+	  					 }
+	  					 if(orgSecVO == null && secVO == null){
+	  					 }else{
+	  						 LeaderMemebersMap.remove(5l);//removing Sec
+						     LeaderMemebersMap.put(4l, orgSecAndSecVO); 
+	  					 }
+	  				    
+				 }
+			   	
 			   if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
 				   resultVO.getSubList().addAll(new ArrayList<ToursBasicVO>(LeaderMemebersMap.values()));   
 				   LeaderMemebersMap.clear();  
+			   }
+			   if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
+				   Collections.sort(resultVO.getSubList(), toursLeaderSorting);
 			   }
 		}catch(Exception e){
 			LOG.error("Error occured at getToursBasicOverviewCountDetails() in CoreDashboardToursService ",e);	
 		}
 		return resultVO;
 	}
+	public static Comparator<ToursBasicVO> toursLeaderSorting = new Comparator<ToursBasicVO>() {
+		public int compare(ToursBasicVO member2, ToursBasicVO member1) {
+		Long id = member2.getId();
+		Long  id1 = member1.getId();
+		//ascending order of percantages.
+		 return id.compareTo(id1);
+		}
+		};
 	public Double calculatePercantage(Long subCount,Long totalCount){
 	Double d=0.0d;
 	if(subCount.longValue()>0l && totalCount.longValue()==0l)
