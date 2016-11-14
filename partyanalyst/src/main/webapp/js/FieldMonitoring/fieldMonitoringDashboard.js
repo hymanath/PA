@@ -1329,8 +1329,14 @@ function buildDataCollectorsPerformanceDetails(result){
 					else
 						str+='<td class="issuePending" title="UserId : '+result[i].userName+'" id="'+result[i].tabUserId+'">'+result[i].tabUserName+'</td>';
 						//str+='<td class="issuePending">'+result[i].userName+'</td>';*/
-					if(result[i].userName != null)
-						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'<span class="glyphicon glyphicon-map-marker mapClass"  attr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" title="Click here For User Tracking" style="cursor:pointer;"></span></td>';
+					if(result[i].userName != null){
+						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'<span class="glyphicon glyphicon-map-marker mapClass"  attr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" title="Click here For User Tracking" style="cursor:pointer;"></span>&nbsp&nbsp';
+						if(result[i].description == "true"){
+							str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_user_name="'+result[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;color:red"></i></td>';
+						}else{
+							str+='</td>';
+						}
+					}
 					else
 						str+='<td> - </td>';
 						
@@ -1398,6 +1404,7 @@ function buildDataCollectorsPerformanceDetails(result){
 		str+='</table>';
 		
 		$("#dataCollectorsDivId").html(str);
+		$(".viewPerformanceCls").tooltip();
 		$("#dataCollectorsImgId").hide();
 		$('#detailsTable').dataTable({
 	         "aaSorting": [[ 0, "asc" ]],
@@ -1653,6 +1660,76 @@ $(document).on("click",".stateWiseCls",function(){
 	$("#mandalMuncipltyCountId").html('');
 		stateId = $(":radio:checked").val();
 		getApMandalMuncipalityNotStartedCount(stateId);
+});
+
+$(document).on("click",".viewPerformanceCls",function(){
+	var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+	var userName= $(this).attr("attr_user_name");
+	getPerfomanceDetialsList(cadreSurveyUserId);
+	$("#performanceDetailsModalDivId").modal("show");
+	
+	$("#hiddenUserId").val(userName);
+});
+
+function getPerfomanceDetialsList(cadreSurveyUserId){
+	$("#pefromanceTableDivId").html('');
+	$("#userNameDivId").html('');
+	$("#performnaceErrDivId").html('');
+	var jsObj ={
+		cadreSurveyId : cadreSurveyUserId
+	}
+	$.ajax({
+			type : 'GET',
+			url : 'getcadrePerfrmanceDetailsListAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildingPerformanceType(result);
+			}else{
+				$("#userNameDivId").html('<b>'+$("#hiddenUserId").val()+'</b>'+' - <span>USER PERFORMANCE DETAILS</span>');
+				$("#performnaceErrDivId").html('<span style="color:red;">NO DATA AVAILABLE</span>');
+			}
+		});
+}
+
+function buildingPerformanceType(result){
+	var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered" id="pefromanceTableDataDivId">';   
+				str+='<thead>';
+					str+='<th>CATEGORY TYPE</th>';
+					str+='<th>COMMENTS</th>';
+				str+='</thead>';
+		 str+='<tbody>';
+		 for(var i in result){
+			 str+='<tr>';
+		 if(result[i].name != null && result[i].name.length > 0)
+				str+='<td>'+result[i].name+'</td>';
+			else
+				str+='<td> - </td>';
+		 if(result[i].mobileNumber != null && result[i].mobileNumber.length > 0)
+			  str+='<td>'+result[i].mobileNumber+'</td>';
+		  else
+			  str+='<td> - </td>';
+		  
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+$("#userNameDivId").html('<b>'+$("#hiddenUserId").val()+'</b>'+' - <span>USER PERFORMANCE DETAILS</span>');
+$("#pefromanceTableDivId").html(str);
+$('#pefromanceTableDataDivId').dataTable({
+	         "aaSorting": [[ 0, "asc" ]],
+	         "iDisplayLength": 20,
+	         "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+	    });
+}
+	
+	
+	
+	
 	});
 	
 $(document).on("click",".mapClass",function(){
