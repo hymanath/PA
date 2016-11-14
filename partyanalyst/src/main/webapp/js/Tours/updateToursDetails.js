@@ -105,7 +105,33 @@ $("#toursDateRangePicker").daterangepicker({
 
 
 	function savingApplication(){
+		$("#errMnthId").html("");
+		$("#errYearId").html("");
+		$(".textErrCls").html("");
 		var flag = true;
+		var monthValue = $("#monthSelectBoxId").val();
+		if(monthValue == 0){
+			$("#errMnthId").html("Please Select Month.");
+			return;
+		}
+		var yearValue = $("#yearId").val();
+		if(yearValue == 0){  
+			$("#errYearId").html("Please Select Year.");
+			return;  
+		}
+		$(".isActive").each(function(){
+			var value = $(this).val();
+			var bool = $.isNumeric(value);
+			if(bool == false){
+				var errId = $(this).attr("attr_err_id");
+				$("#"+errId).html("Please Enter Numbers.");
+				flag = false;
+				return false;      
+			}  
+		});
+		if(flag == false){
+			return;  
+		}
 		var uploadHandler = { 
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
@@ -115,21 +141,30 @@ $("#toursDateRangePicker").daterangepicker({
 		};
 		YAHOO.util.Connect.setForm('submitApplication',true);  
 		YAHOO.util.Connect.asyncRequest('POST','savingTourDtlsApplicationAction.action',uploadHandler);
-	}  
+	}
 	function showSbmitStatus(uploadResult){
 			console.log(uploadResult);
-			 $(".clearFieldCls").val(' ');
-			 $("#monthSelectBoxId").val(0);
-			 $(".selectChosen").trigger("chosen:updated");
-        /*  if(uploadResult != null && uploadResult.resultCode==1){
-			$(".updateTourStatusCls").html("<p style='color:green'>"+uploadResult.message+"</p>");
-			 $(".clearFieldCls").val(' ');
-			 $("#monthSelectBoxId").val(0);
-			 $(".selectChosen").trigger("chosen:updated");
-		 }else{
-		   $(".updateTourStatusCls").html("<p style='color:red'>"+uploadResult.message+"</p>"); 
-		 }
-		 setTimeout(function(){ $(".updateTourStatusCls").modal("hide"); }, 3000); */
+			$(".clearFieldCls").val(' ');
+			$("#monthSelectBoxId").val(0);
+			$("#yearId").val(0);    
+			$("#filer_input3").val('');      
+			$(".selectChosen").trigger("chosen:updated");
+			var filerKit = $("#filer_input3").prop("jFiler");
+			if(uploadResult != null && uploadResult == '<pre>"Saved"</pre>'){
+					setTimeout(function () {
+					$("#successSpanId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+					}, 500);  
+					$("#successSpanId").show();
+					$("#successSpanId").html(""); 
+					filerKit.reset();
+			}else{
+				setTimeout(function () {      
+					$("#successSpanId").html("<center style='color: red; font-size: 16px;'>Failed</center>").fadeOut(3000);
+					}, 500);  
+					$("#successSpanId").show();
+					$("#successSpanId").html("");          
+			}
+				
 	}
 	
 	getDesigationList(); //default call 
@@ -233,6 +268,7 @@ $("#toursDateRangePicker").daterangepicker({
 							str+='<input id="profileCheckboxId" type="checkbox"/>Select Profile';
 						str+='</label>';
 					str+='</div>';
+					
 				str+='</div>';
 			str+='</li>';
             str+='</ul>';
@@ -240,42 +276,90 @@ $("#toursDateRangePicker").daterangepicker({
 		
 		var locationList = result.subList;
 	     if(locationList != null && locationList.length > 0){
+			 $("#inchargeSelectBoxId").removeAttr("name");
+			 $("#inchageLocationScopeId").removeAttr("name");
+			 $("#inchageownLocationScopeValue").removeAttr("name");
+			 
+			 $("#ownSelectBoxId").removeAttr("name");
+			 $("#ownLocationScopeId").removeAttr("name");
+			 $("#ownLocationScopeValue").removeAttr("name");
+			 
+			 $("#ownLocationScopeId").removeAttr("value");
+			 $("#ownLocationScopeValue").removeAttr("value");
+			 
+			 $("#inchageLocationScopeId").removeAttr("value");
+			 $("#inchageownLocationScopeValue").removeAttr("value");
+ 
 			 for(var i in locationList){
 				 if(locationList[i].locationScopeId != null && locationList[i].locationScopeId==1){
 					 if(locationList[i].type != null && locationList[i].type=="Own"){
 						 $("#ownLabelId").html("Own DIstrict");
 						 $("#ownLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
+						 
+						 $("#ownSelectBoxId").attr("name","toursInputVO.ownTours");
+						 $("#ownLocationScopeId").attr("name","toursInputVO.ownLocationScopeId");
+						 $("#ownLocationScopeValue").attr("name","toursInputVO.ownLocationId");
+						 $("#ownSelectBoxId").addClass("isActive");
+						 
 						 $(".ownDivCls").show();
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
 						$("#inchargeLableId").html("Incharge DIstrict");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#inchageownLocationScopeValue").attr("value",locationList[i].locationValue);
-					    $(".inchageDivCls").show(); 
+						 
+						 $("#inchargeSelectBoxId").attr("name","toursInputVO.inchargeTours");
+						 $("#inchageLocationScopeId").attr("name","toursInputVO.inchargeLocationScopeId");
+						 $("#inchageownLocationScopeValue").attr("name","toursInputVO.inchargeLocationId");
+						 $("#inchargeSelectBoxId").addClass("isActive");
+					    $(".inchageDivCls").show();   
 					 }
 				 }else if(locationList[i].locationScopeId != null && locationList[i].locationScopeId==2){
-					 if(locationList[i].type != null && locationList[i].type=="Own"){
+					 if(locationList[i].type != null && locationList[i].type=="Own"){  
 						 $("#ownLabelId").html("Own Parliament");
 						 $("#ownLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
+						 
+						 $("#ownSelectBoxId").attr("name","toursInputVO.ownTours");
+						 $("#ownLocationScopeId").attr("name","toursInputVO.ownLocationScopeId");
+						 $("#ownLocationScopeValue").attr("name","toursInputVO.ownLocationId");
+						 $("#ownSelectBoxId").addClass("isActive");
 						 $(".ownDivCls").show();    
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
 						$("#inchargeLableId").html("Incharge Parliament");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#inchageownLocationScopeValue").attr("value",locationList[i].locationValue);
-					   $(".inchageDivCls").show(); 
+						 
+						 $("#inchargeSelectBoxId").attr("name","toursInputVO.inchargeTours");
+						 $("#inchageLocationScopeId").attr("name","toursInputVO.inchargeLocationScopeId");
+						 $("#inchageownLocationScopeValue").attr("name","toursInputVO.inchargeLocationId");
+						 $("#inchargeSelectBoxId").addClass("isActive");
+						 
+						$(".inchageDivCls").show(); 
 					 }
 				 }else if(locationList[i].locationScopeId != null && locationList[i].locationScopeId==3){
 					  if(locationList[i].type != null && locationList[i].type=="Own"){
 						 $("#ownLabelId").html("Own Assembly");
 						 $("#ownLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#ownLocationScopeValue").attr("value",locationList[i].locationValue);
+						 
+						 $("#ownSelectBoxId").attr("name","toursInputVO.ownTours");
+						 $("#ownLocationScopeId").attr("name","toursInputVO.ownLocationScopeId");
+						 $("#ownLocationScopeValue").attr("name","toursInputVO.ownLocationId");
+						 $("#ownSelectBoxId").addClass("isActive");
+						 
 						 $(".ownDivCls").show();
 					 }else if(locationList[i].type != null && locationList[i].type=="Incharge"){
 						$("#inchargeLableId").html("Incharge Assembly");
 						 $("#inchageLocationScopeId").attr("value",locationList[i].locationScopeId);
 						 $("#inchageownLocationScopeValue").attr("value",locationList[i].locationValue);
-					   $(".inchageDivCls").show(); 
+						 
+						 $("#inchargeSelectBoxId").attr("name","toursInputVO.inchargeTours");
+						 $("#inchageLocationScopeId").attr("name","toursInputVO.inchargeLocationScopeId");
+						 $("#inchageownLocationScopeValue").attr("name","toursInputVO.inchargeLocationId");
+						 $("#inchargeSelectBoxId").addClass("isActive");
+						 
+						$(".inchageDivCls").show();     
 					 }
 				 }
 			 }
