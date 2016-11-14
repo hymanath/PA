@@ -1046,6 +1046,12 @@
 	                  <value>com.itgrids.partyanalyst.model.CadreSurveyUserPerformanceType</value>
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateTourLocation</value>
 	                  
+	                  
+	                  <value>com.itgrids.partyanalyst.model.TdpCadreCardPrint</value>
+	                  <value>com.itgrids.partyanalyst.model.CardPrintVendor</value>
+	                  <value>com.itgrids.partyanalyst.model.CardPrintValidation</value>
+	                  <value>com.itgrids.partyanalyst.model.CardPrintValidationUser</value>
+	                  <value>com.itgrids.partyanalyst.model.PrintRejectReason</value>
 				 </list>
 			
 		</property>
