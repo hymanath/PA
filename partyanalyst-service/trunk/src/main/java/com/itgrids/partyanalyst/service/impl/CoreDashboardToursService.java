@@ -1141,4 +1141,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			LOG.error("Error occured at setToursDtlsToList() in CoreDashboardToursService ",e);	
 		}
 	}
+   public void getSubLevelDtls(Long activityMemberId){
+	   try{
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   LOG.error("Error occured at getSubLevelDtls() in CoreDashboardToursService ",e);	
+	   }
+   }
 }
