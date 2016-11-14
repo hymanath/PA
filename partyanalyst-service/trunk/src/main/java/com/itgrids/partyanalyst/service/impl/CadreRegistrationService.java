@@ -13488,41 +13488,46 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						}
 					}
 				}else if(typeId.equalsIgnoreCase("2") || typeId.equalsIgnoreCase("3")){
-					 List<Object[]> wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(Long.valueOf(mandalOrMunpaId.toString().substring(1)),IConstants.DELIMITATION_YEAR.toString());
-					 if(commonMethodsUtilService.isListOrSetValid(wardsList)){
-						 List<PaymentGatewayVO> wardsListDtls = new ArrayList<PaymentGatewayVO>(0);
-						 //PaymentGatewayVO vo1 = new PaymentGatewayVO();
-						 for (Object[] param : wardsList) {
-							 IdAndNameVO  vo=new IdAndNameVO();
-							 vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-							 vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String subStrId=mandalOrMunpaId.toString().substring(0,1);
+					
+					 List<Object[]> wardsList = null;
+					 if(subStrId.trim().equalsIgnoreCase("2")){
+						 wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(Long.valueOf(mandalOrMunpaId.toString().substring(1)),IConstants.DELIMITATION_YEAR.toString());
+						 if(commonMethodsUtilService.isListOrSetValid(wardsList)){
+							 List<PaymentGatewayVO> wardsListDtls = new ArrayList<PaymentGatewayVO>(0);
+							 //PaymentGatewayVO vo1 = new PaymentGatewayVO();
+							 for (Object[] param : wardsList) {
+								 IdAndNameVO  vo=new IdAndNameVO();
+								 vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								 vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								 
+								 String[] strArr = vo.getName().split("-");
+								 String wardName = "WARD-";
+								 if(strArr != null && strArr.length>0){
+									 int length = strArr[1].toString().length();
+									 if(length ==1)
+										 wardName = wardName+"00"+strArr[1].toString();
+									 else if(length ==2)
+										 wardName = wardName+"0"+strArr[1].toString();
+									 vo.setMobileNumber(wardName);
+								 }
+								 if(!commonMethodsUtilService.getStringValueForObject(param[2]).isEmpty())
+									 vo.setName(vo.getName()+"- ("+commonMethodsUtilService.getStringValueForObject(param[2])+")");
+								 retunList.add(vo);
+							}
 							 
-							 String[] strArr = vo.getName().split("-");
-							 String wardName = "WARD-";
-							 if(strArr != null && strArr.length>0){
-								 int length = strArr[1].toString().length();
-								 if(length ==1)
-									 wardName = wardName+"00"+strArr[1].toString();
-								 else if(length ==2)
-									 wardName = wardName+"0"+strArr[1].toString();
-								 vo.setMobileNumber(wardName);
+							 	if(commonMethodsUtilService.isListOrSetValid(retunList)){
+								 
+								 Collections.sort(retunList, new Comparator<IdAndNameVO>() {
+									public int compare(IdAndNameVO o1,IdAndNameVO o2) {
+										return o1.getMobileNumber().compareTo(o2.getMobileNumber());
+									}
+								});
 							 }
-							 if(!commonMethodsUtilService.getStringValueForObject(param[2]).isEmpty())
-								 vo.setName(vo.getName()+"- ("+commonMethodsUtilService.getStringValueForObject(param[2])+")");
-							 retunList.add(vo);
-						}
-						 
-						 	if(commonMethodsUtilService.isListOrSetValid(retunList)){
-							 
-							 Collections.sort(retunList, new Comparator<IdAndNameVO>() {
-								public int compare(IdAndNameVO o1,IdAndNameVO o2) {
-									return o1.getMobileNumber().compareTo(o2.getMobileNumber());
-								}
-							});
 						 }
 					 }
-					 else {
-							String subStrId=mandalOrMunpaId.toString().substring(0,1);
+					 else if(wardsList == null || wardsList.size()==0) {
+						 
 							if(subStrId.trim().equalsIgnoreCase("1")){
 								List<Object[]> panchList=panchayatDAO.getPanchayatList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
 								for (Object[] objects : panchList) {
@@ -13532,8 +13537,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 									idAndNameVO.setName(objects[1]!=null?objects[1].toString():"");
 									retunList.add(idAndNameVO);
 								}
+							}else{
+								retunList.add(new IdAndNameVO(9999l,"OTHER WARD"));
 							}
-							if(subStrId.trim().equalsIgnoreCase("2")){
+							/*if(subStrId.trim().equalsIgnoreCase("2")){
 								List<Object[]> consiList=boothDAO.getboothList(Long.valueOf(mandalOrMunpaId.toString().substring(1)));
 								for (Object[] objects : consiList) {
 									IdAndNameVO  idAndNameVO=new IdAndNameVO();
@@ -13543,6 +13550,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 									retunList.add(idAndNameVO);
 								}
 							}
+							*/
 					 }
 				}
 			}catch(Exception e){
