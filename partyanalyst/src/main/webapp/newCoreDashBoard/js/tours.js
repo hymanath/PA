@@ -107,7 +107,7 @@ function getToursBasicOverviewCountDetails()
 		 var str='';
 		  str+'<div class="row">';
 		  if(overAllResult != null){
-			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10 row" >';
+			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
 			 str+='<div class="table-responsive">';
 			 str+='<h4>OVERALL</h4>';
 		      str+='<table class="table tableTraining bg_ED">';
@@ -138,11 +138,11 @@ function getToursBasicOverviewCountDetails()
 		  str+='<hr class="m_0">';
 		  str+='</div>';  
 		  }else{
-			    str+='No Data Available';	 
+			    str+='<h4>No Data Available</h4>';	 
 		  }
 		 if(designationWiseRlst != null && designationWiseRlst.length > 0){
 		   for(var i in designationWiseRlst){
-			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10 row" >';
+			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
 				  str+='<div class="table-responsive">';
 				  str+='<h4>'+designationWiseRlst[i].designation+'</h4>';
 				  str+='<table class="table tableTraining bg_ED">';
@@ -463,7 +463,7 @@ function getToursBasicOverviewCountDetails()
 					str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
 				 }
 		      }
-			  str+='<div id="genSecTour'+i+'" style="width:100%;height:80px;"></div>';
+			  str+='<div id="genSecTour'+i+'" style="height:80px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -771,6 +771,10 @@ function getToursBasicOverviewCountDetails()
 	}
 	function buildDesignationDtls(result){
 		var str = '';
+		if($(window).width() < 500)
+		{
+			str+='<div class="table-responsive">';
+		}
 		str+='<table class="table tableTraining bg_ED">';
 			str+='<tbody>';
 				str+='<tr>';
@@ -801,6 +805,10 @@ function getToursBasicOverviewCountDetails()
 				str+='</tr>';
 			str+='</tbody>';
 		str+='</table>';
+		if($(window).width() < 500)
+		{
+			str+='</div>';
+		}
 		$("#totalOverviewOfDesigId").html(str);
 	}
 	function getMemberDtlsForADesignation(desigIdArr){ 
@@ -827,8 +835,8 @@ function getToursBasicOverviewCountDetails()
 	}    
 	function buildMemberDtlsForADesignation(result){
 		var str = '';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-			if($(window).width < 768)
+		
+			if($(window).width() < 768)
 			{
 				str+='<div class="table-responsive">';
 			}
@@ -877,11 +885,11 @@ function getToursBasicOverviewCountDetails()
 						
 					str+='</tbody>';  
 				str+='</table>';  
-			if($(window).width < 768)
+			if($(window).width() < 768)
 			{
 				str+='</div>';
 			}
-		str+='</div>';
+		
 		$("#directChildMemberForToursDivId").html(str);
 		$("#tourLeaderDtlsId").dataTable();              
 		getLeaderAverageToursBasedOnAccessLevel(candidateId,candidateName,gesignation);

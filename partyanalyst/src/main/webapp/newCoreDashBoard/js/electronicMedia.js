@@ -1,4 +1,3 @@
-
 var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
@@ -59,7 +58,9 @@ $(document).on("click",".moreEmnBlocksIcon",function(){
 	}else{
 		$(".newEmnHideCls").hide();
 		$(".detailedPartyEmn,.selectEmnCate").hide();
-		$(this).addClass("showHideEmn");
+		setTimeout(function(){
+			$(".moreEmnBlocksIcon").addClass("showHideEmn");
+		},200);
 	}
 });
 
@@ -270,13 +271,16 @@ function getpartyWiseChannelCounts(result){
 	if(result != null && result.length > 0)
 	{
 		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>';
-	
+		if($(window).width() < 500)
+		{
+			str+='<div class="table-responsive">';
+		}
 		str+='<table class="table tableEMN m_top20">';
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total Program</h5>';
-					str+='<h4	>'+result[0].categoryCount != ""?result[0].categoryCount:"00:00"+'</h4>';
-					str+='<h5 class="text-capitalize m_top20">total time</h5>';
+					str+='<h4>'+result[0].categoryCount != ""?result[0].categoryCount:"00:00"+'</h4>';
+					str+='<h5	 class="text-capitalize m_top20">total time</h5>';
 					str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
 				str+='</td>';
 				for(var j in result[0].tvNewsDetailsVOList)
@@ -295,11 +299,18 @@ function getpartyWiseChannelCounts(result){
 				}
 			str+='</tr>';
 		str+='</table>';
-		
+		if($(window).width() < 500)
+		{
+			str+='</div>';
+		}
 		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>';
 		for(var i=1;i<(result.length-1);i++)
 		{
 			str+='<h4 class="panel-title m_top20"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" class="debatesPartyIcon"/>'+result[i].organization+'</h4>';
+			if($(window).width() < 500)
+			{
+				str+='<div class="table-responsive">';
+			}
 			str+='<table class="table tableEMN">';
 				str+='<tr>';
 					str+='<td>';
@@ -319,10 +330,18 @@ function getpartyWiseChannelCounts(result){
 					}
 				str+='</tr>';
 			str+='</table>';
+			if($(window).width() < 500)
+			{
+				str+='</div>';
+			}
 		}
 		
 		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
 		var EmnG = result.length-1;
+		if($(window).width() < 500)
+		{
+			str+='<div class="table-responsive">';
+		}
 		str+='<table class="table tableEMN m_top20">';
 			str+='<tr>';
 				str+='<td>';
@@ -342,6 +361,10 @@ function getpartyWiseChannelCounts(result){
 				}
 			str+='</tr>';
 		str+='</table>';
+		if($(window).width() < 500)
+		{
+			str+='</div>';
+		}
 	}else{
 		str+='<h4 class="panel-title m_top20">NO DATA AVAILABLE</h4>';
 	}
@@ -2247,6 +2270,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 	}
 	str+='</ul>';
 	$("#partyRankWiseDetailsOfChannel").html(str);
+	$("#partyRankWiseDetailsOfChannel li:first-child").trigger("click");
 	$(".NewsSlickPanelSliderEmn").slick({
 	 slide: 'li',
 	 slidesToShow: 2,
@@ -2726,7 +2750,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 	for(var i in result)
 	{
 		rankVar =rankVar+1;
-		str+='<li class="NewsSlickPanelSliderLiEmnClsGovt" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+' style="cursor:pointer;">';
+		str+='<li class="NewsSlickPanelSliderLiEmnClsGovt" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+' attr_channelName='+result[i].tvNewsDetailsVOList[0].organization+' style="cursor:pointer;">';
 			str+='<div class="panel panel-default panelSlick">';
 				str+='<div class="panel-heading" style="padding:8px;background-color: #ededed !important;">';
 					str+='<h4 class="panel-title"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList[0].organization+'.png" class="debatesPartyIcon"/>'+result[i].tvNewsDetailsVOList[0].organization+'';
@@ -2771,6 +2795,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 	}
 	str+='</ul>';
 	$("#govtRankWiseDetailsOfChannel").html(str);
+	$("#govtRankWiseDetailsOfChannel li:first-child").trigger("click")
 	$(".NewsSlickPanelSliderGovtEmn").slick({
 	 slide: 'li',
 	 slidesToShow: 2,
@@ -2888,12 +2913,13 @@ $(document).on("click",".NewsSlickPanelSliderLiEmnClsGovt",function(){
 	$(this).addClass("active");
 	var channelIdArr = [];
 	var channelId = $(this).attr("attr_newsChannel");
+	var channelName = $(this).attr("attr_channelName");
 	channelIdArr.push(channelId);
-	comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr);
+	comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr,channelName);
 	getEMMCompGovtProblemsDetailedOverview(channelIdArr);
 });
 
-function comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr)
+function comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr,channelName)
 {
 	$("#govtRankWiseDetailsOfChannelSub").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
@@ -2901,14 +2927,15 @@ function comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr)
 		//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
 	}).then(function(result){
-		buildComparisonGovtRankWiseDetailsOfChannelSub(result)
+		buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 	});
 }
-function buildComparisonGovtRankWiseDetailsOfChannelSub(result)
+function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 {
 	var str='';
 	str+='<div class="pad_15 bg_ED">';
 		str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">'+channelName+'<div>';
 			var graphId = 0;
 			var totGraphId = 0;
 			var categoriesCompParty = [];

@@ -117,7 +117,7 @@
 	{
 		padding-right:15px;
 	}
-	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings , .basicCommitteesBlockDiv
+	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings , .basicCommitteesBlockDiv , .tourExpand , .cadreNotes , .cadreSettings , .cadreExpand , .cadreSettings , .cadreNotes , .emnIconExpand  , .notesIconEmn,.emnSetIcon , .attendaceIconExpand , .attendanceSetIcon , .notesIconattendance
 	{
 		font-size:10px;
 		padding:2px;
@@ -199,6 +199,14 @@
 }
 /* Ipad Only STYLES START*/
 @media only screen and (device-width: 768px) {
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
 	.committesBlockUl li
 	{
 		width:47%;
