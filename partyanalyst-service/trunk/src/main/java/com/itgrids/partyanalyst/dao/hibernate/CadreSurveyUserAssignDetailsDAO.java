@@ -475,9 +475,9 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		 }
 		
 		if(districtId != null && districtId.longValue()>0l){   
-			queryStr.append(" group by CSUAD.constituency.constituencyId ");
+			queryStr.append(" group by CSUAD.constituency.constituencyId, model.cadreSurveyUserId ");
 		}else {
-			queryStr.append(" group by CSUAD.constituency.district.districtId");
+			queryStr.append(" group by CSUAD.constituency.district.districtId , model.cadreSurveyUserId ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());

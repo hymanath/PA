@@ -243,7 +243,7 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
  		queryStr.append(" ,sum(TUEI.totalRecords) " +
  				" from TabUserEnrollmentInfo TUEI "); 
  		if(constituencyId != null && constituencyId.longValue()>0l){
- 			queryStr.append(" ,Constituency c  where c.constituencyId = :constituencyId " );
+ 			queryStr.append(" ,Constituency c  where c.constituencyId = TUEI.constituency.constituencyId " );
  		}else if(districtId != null && districtId.longValue()>0l){
  			queryStr.append(" ,Constituency c where c.district.districtId = :districtId  " );
  		}else{
@@ -261,7 +261,9 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 				queryStr.append(" and  (TUEI.districtId between  1 and 10 ) ");
 			}
  		}
- 		
+ 		 if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+ 			queryStr.append("  and TUEI.cadreSurveyUserId in (:cadreSurveyUsers) " );
+ 		 }
  		if(startDate != null && endDate != null){
  			queryStr.append(" and (date(TUEI.surveyTime) between :startDate and :endDate) ");
  		 }
@@ -284,7 +286,9 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
  		/*if(stateId != null && stateId.longValue() > 0l){
  			query.setParameter("stateId", stateId);
  		}*/
- 		
+ 	   if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
+			query.setParameterList("cadreSurveyUsers", cadreSurveyUsers);
+		}
  		if(startDate != null && endDate != null){
  			query.setDate("startDate", startDate);
  			query.setDate("endDate", endDate);
