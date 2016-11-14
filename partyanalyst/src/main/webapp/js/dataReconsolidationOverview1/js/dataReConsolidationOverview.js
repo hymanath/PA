@@ -74,9 +74,10 @@ function getDataReConsalationOverView(){
 				var totRecords = result.totalRecords;
 				var totSynRec =result.totalSyn;
 				var totPending  = result.totalPending;
-				var totTabSyn = result.sync;
-				var totTabPending = result.pending;
+				var totTabSyn = result.kafkaSync;
+				var totTabPending = result.kafkaPending;
 				var actualServerCount =result.actualCount;
+				
 				if(result != null){
 				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TOTAL SMART DEVICES</p>';
@@ -89,24 +90,24 @@ function getDataReConsalationOverView(){
 				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TOTAL TAB REGISTRATIONS</p>';
 				if(totRecords != null){
-					str+='<p class="text_bold">'+result.totalRecords+'</p>';
+					str+='<p class="text_bold">'+totRecords+'</p>';
 				}else {
 					 str+='<p class="text_bold">'+0+'</p>';
 				}
 				str+='</div>';
 				str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TAB SUBMITTED</p>';
-				if(totTabSyn !=null){
-					 str+='<p class="text_bold">'+result.sync+'</p>';
-				 }else{
-					 str+='<p class="text_bold">'+0+'</p>';
-				 }
+				if(totSynRec != null){
+					str+='<p class="text_bold">'+totSynRec+'</p>';
+				}else {
+					str+='<p class="text_bold" text-center>'+0+'</p>';
+				}
 				str+='</div>';
 				}
 				str+='<div class="col-md-1 col-xs-12 col-sm-6 border_right">';
 				str+='<p class="text_bold">TAB PENDING</p>';
-				if(totTabPending !=null){
-					 str+='<p class="text_bold">'+result.pending+'</p>';
+				if(totPending !=null){
+					 str+='<p class="text_bold">'+totPending+'</p>';
 				 }else{
 					 str+='<p class="text_bold">'+0+'</p>';
 				 }
@@ -114,16 +115,16 @@ function getDataReConsalationOverView(){
 				
 				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
 				str+='<p class="text_bold">KAFKA SYNCED RECORDS</p>';
-				if(totSynRec != null){
-					str+='<p class="text_bold">'+totSynRec+'</p>';
-				}else {
-					str+='<p class="text_bold" text-center>'+0+'</p>';
-				}
+				if(totTabSyn !=null){
+					 str+='<p class="text_bold">'+totTabSyn+'</p>';
+				 }else{
+					 str+='<p class="text_bold">'+0+'</p>';
+				 }
 				str+='</div>';
 				str+='<div class="col-md-2 col-xs-12 col-sm-6 border_right " >';
 				str+='<p class="text_bold">KAFKA PENDING RECORDS</p>';
-				 if(totPending !=null){
-					 str+='<p class="text_bold">'+totPending+'</p>';
+				 if(totTabPending !=null){
+					 str+='<p class="text_bold">'+totTabPending+'</p>';
 				 }else{
 					 str+='<p class="text_bold">'+0+'</p>';
 				 }
@@ -132,7 +133,7 @@ function getDataReConsalationOverView(){
 				str+='<div class="col-md-2 col-xs-12 col-sm-6 ">';
 				str+='<p class="text_bold">ACTUAL SERVER REGISTRATIONS</p>';
 				if(actualServerCount != null){
-					str+='<p class="text_bold">'+result.actualCount+'</p>';
+					str+='<p class="text_bold">'+actualServerCount+'</p>';
 				}else {
 					 str+='<p class="text_bold">'+0+'</p>';
 				}
