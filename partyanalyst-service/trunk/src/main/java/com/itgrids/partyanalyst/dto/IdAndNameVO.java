@@ -21,7 +21,11 @@ public class IdAndNameVO {
 	private String endTime;
 	
 	
-	
+	public IdAndNameVO(){}
+	public IdAndNameVO(Long id,String name){
+		this.id=id;
+		this.name =name;
+	}
 	public List<IdAndNameVO> getDistList() {
 		return distList;
 	}
