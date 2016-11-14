@@ -14,6 +14,17 @@ var currentToDateEmn = moment().format("DD-MM-YYYY");
 var locationLevelIdGlb = 2;
 var locationValueArrGlb=[1];
 
+$(document).ready(function(){
+	locationLevelIdGlb = globalUserAccessLevelId;
+	
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				locationValueArrGlb=i==0?globalUserAccessLevelValues[i]:locationValueArrGlb+","+globalUserAccessLevelValues[i];
+			}
+		}
+});
+
+
 $(document).on("click",".emnIconExpand",function(){
 	$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".electronicMediaBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
@@ -155,7 +166,7 @@ $(document).on("click",".filtersSubmitDivIdEmn",function(){
 		//commonNewsBasicCalls();
 	}
 	
-	getMediaProgramsOnParty();
+	getMediaProgramsOnParty(locationLevelIdGlb,locationValueArrGlb);
 	if($(".emnIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		getEMMDetailedPartyMediaProgramsOnPartyProgramsWise("party");
 	}
@@ -187,14 +198,20 @@ $("#dateRangeIdForEmn").daterangepicker({
 $('.dateRangePickerClsForEmn').on('apply.daterangepicker', function(ev, picker) {
 	currentFromDateEmn = picker.startDate.format('DD-MM-YYYY');
 	currentToDateEmn = picker.endDate.format('DD-MM-YYYY');
-	$("#emnHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");
-	var searchType = $(".emnMediaPrograms .active").attr("attr_searchType");
-	var type = $('input[name=emnSearchTypeName]:checked').val();
-	getMediaProgramsOnParty();
-	getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type);
+	$("#emnHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");	
+	
 	var activeUlId = $(".viewsLiClassEmn.active").attr('id')
 	$( "#"+activeUlId).trigger("click");
+	commoncalls();
 });
+
+function commoncalls(){
+	var searchType = $(".emnMediaPrograms .active").attr("attr_searchType");
+	var type = $('input[name=emnSearchTypeName]:checked').val();
+	
+	getMediaProgramsOnParty(locationLevelIdGlb,locationValueArrGlb);
+	getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type);
+}
 
 function getAllTvChannels()
 {
@@ -236,10 +253,9 @@ function getAllTvChannels()
   });
 }
 
-function getMediaProgramsOnParty()
+function getMediaProgramsOnParty(locationLevelIdGlb,locationValueArrGlb)
 {
 	$("#electronicMediaChannelCountId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	
 	$.ajax({
 		//url: wurl+"/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
