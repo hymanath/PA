@@ -663,7 +663,7 @@ function getToursBasicOverviewCountDetails()
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2) +"%";
+									return Highcharts.numberFormat(this.y,0);
 								}
 							}
 						  
