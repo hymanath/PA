@@ -2170,7 +2170,6 @@ function getTabUserInfoDetails(tabUserIdStr){
 					var series = this.point.series.chart.series, // get all series 
 					index = this.point.series.xData.indexOf(this.point.x); // get index	
 					var _locationName = this.x;
-					alert(_locationName);
 					var obj = result.filter(function ( obj ) {
 						var objLocation = obj.locationName;
 						return objLocation.toUpperCase() === _locationName.toUpperCase();
