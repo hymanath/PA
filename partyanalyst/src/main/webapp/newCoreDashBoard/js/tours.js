@@ -447,18 +447,18 @@ function getToursBasicOverviewCountDetails()
 		  var str='';
 		  for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				 if(result[i][0].designationId==4 || result[i][0].designationId==11){
+				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
 				  if(result[i][0].designationId==4){
 				  if(result[i][0].totalTour!=0){
-					  str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>';      
+					  str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY</h5>';      
 				  }
 				  }
-				  if(result[i][0].designationId==11){
+				  if(result[i][0].designationId==5){
 				   if(result[i][0].totalTour!=0){
-					 str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>';      
+					 str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
 				   }
 			     }
-			   }else{
+			   }else{ 
 				 if(result[i][0].totalTour!=0){
 					str+='<h5 class="text-capital">'+result[i][0].designation+'</h5>'; 
 				 }
@@ -539,7 +539,7 @@ function getToursBasicOverviewCountDetails()
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y) +"";
+									return Highcharts.numberFormat(this.y, 0) +""; 
 								}
 							}
 						  
@@ -585,11 +585,11 @@ function getToursBasicOverviewCountDetails()
 			var str='';
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				 if(result[i][0].designationId==4 || result[i][0].designationId==11){
+				 if(result[i][0].designationId==4 || result[i][0].designationId==5){
 				  if(result[i][0].designationId==4){
 				   str+='<h5 class="text-capital">'+result[i][0].designation+' / SECRETARY </h5>';      
 				  }
-				  if(result[i][0].designationId==11){
+				  if(result[i][0].designationId==5){
 				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].designation+'</h5>';      
 				  }
 			   }else{
