@@ -3396,5 +3396,21 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreCardPrintDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCardPrintDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="cardPrintVendorDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintVendorDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cardPrintValidationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintValidationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cardPrintValidationUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintValidationUserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="printRejectReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.PrintRejectReasonDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
