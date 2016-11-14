@@ -2411,6 +2411,16 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 				}
 			}
 			
+			List<Long> cadreIds = cadreSurveyUserPerformanceDAO.getCadreSurveyUserId(today);
+			if(returnList != null && !returnList.isEmpty()){
+				for (FieldMonitoringVO vo : returnList) {
+					Long existcadreId= vo.getCadreSurveyUserId();
+					if(cadreIds.contains(existcadreId)){
+						vo.setDescription("true");
+					}
+					
+				}
+			}
 			
 			List<Object[]> list1 = tdpCadreUserHourRegInfoDAO.getTabUserLastOneHourData(lastOneHour,tabUserInfoIds);
 			if(list1 != null && !list1.isEmpty()){
@@ -2908,7 +2918,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 					perfMap.put(id, vo);
 				}
 				else{
-					vo.setMobileNumber(vo.getName()+"<br>"+comment);//comment
+					vo.setMobileNumber(vo.getMobileNumber()+"<br>"+comment);//comment
 				}
 				//returnList.add(vo);
 			}
