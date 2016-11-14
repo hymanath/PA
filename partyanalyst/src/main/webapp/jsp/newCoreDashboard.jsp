@@ -63,7 +63,7 @@
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
-            	<div class="col-md-7 col-xs-12 col-sm-7">
+            	<div class="col-md-7 col-xs-12 col-sm-6">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
                         <li class="dropdown profileDropDown toggleViewIcon">
                           <a style="cursor:pointer;">KALA VENKATA RAO 
@@ -77,7 +77,7 @@
                         </li>
                     </ul>
                 </div>
-				<div class="col-md-4 col-xs-12 col-sm-3 pull-right" style="margin-top: -10px;">
+				<div class="col-md-5 col-xs-12 col-sm-6 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
 						<li>
 							<!--<img src="today" id="thisMonthRadionBtnId" class="datesClass" attr_type="today" title="today"/>-->
@@ -174,23 +174,24 @@
 						    <div class="row">
 							 <div class="col-md-12 col-xs-12 col-sm-12  showCadrecls" style="display:none;">
 								<h4 class="text-capital m_top10"><span class="headingColor">OVERALL REGISTRATIONS</span></h4>
-								<div class="">
-									<div class="col-md-6 col-xs-12 col-sm-12 bg_ED pad_15 m_top10">
-										
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12">
+										<div class=" bg_ED pad_5 m_top10">
+											<div class="row">
 										<div class=" col-md-6 col-xs-12 col-sm-4">
 											
-											<h5 class="text-capital" >TOTAL-<span id="totalperc"></span>  
-											</h5>  
-											<h4  data-toggle="tooltip" class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0</h4>
-											
-										</div> 
+												<h5 class="text-capital" >TOTAL-<span id="totalperc"></span></h5>  
+												<h4  data-toggle="tooltip" class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0</h4>
+											</div>
+										
 										<div class="col-md-2 col-xs-12 col-sm-4">
 											<i style="cursor: pointer; font-size: 16px; margin-top: 10px;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="0" attr_option="total" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>
 										</div>
-										
+										</div> 
+										</div> 
 									</div>
 									<div class="col-md-6 col-xs-12 col-sm-12">
-										<div class="bg_ED pad_15 m_top10">
+										<div class="bg_ED pad_5 m_top10">
 											<h5 class="text-capital">TODAY-<span id="todayperc1"></span></h5><h4  class ="cadreCount" id="totalTodayId" attr_today="0" attr_today_per ="0">0</h4>
 										</div>
 									</div>
@@ -1199,6 +1200,275 @@
 				</div>
 			</div>
 			<!-- NEWS BLOCK END-->
+			<!-- Electronic Media Start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12 emnHead">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
+								electronic news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1">
+							<span class="emnSetIcon pull-right">
+								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+							</span>
+							<span class="notesIconEmn pull-right">
+								<i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" data-placement="top" title="" onclick="displayDashboardCommentsForAttendance(7);" data-original-title="Notes"></i>
+							</span>
+							<span class="emnIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:200px;">
+								<input id="dateRangeIdForEmn" style="width:180px" class="form-control" type="text">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					<div class="emnBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
+						<i class="glyphicon glyphicon-remove emnSetClose pull-right"></i>
+						<div class="row">
+							<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+								<ul class="nav nav-tabs navTabsSettings" role="tablist">
+									<li role="presentation" class="active text-capital"><a href="#EditionsEmn" aria-controls="EditionsEmn" role="tab" data-toggle="tab">News Channels</a></li>
+									<li role="presentation" class="text-capital"><a href="#impactScopeEmn" aria-controls="impactScopeEmn" role="tab" data-toggle="tab">Impact Scope</a></li>
+								</ul>
+							</div>
+							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+								<div class="tab-content navTabsSettingsContent">
+									<div role="tabpanel" class="tab-pane active" id="EditionsEmn">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
+										<hr style ="margin-bottom:0px;" />
+										<div class="">
+											<ul class="settingsUlEmn" id="emnNewsChannelsUlId"></ul>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="impactScopeEmn">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
+										<hr style ="margin-bottom:0px;" />
+										<div class="">
+											<ul class="settingsUlEmn">
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="0" id="impactSelectAllIdEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="1" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
+													</label>
+												</li>
+												<li>												
+													<label class="checkbox-inline">
+														<input type="checkbox" value="2" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
+													</label>	
+												</li>	
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="3" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+													<input type="checkbox" value="4" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
+													</label>
+												</li>	
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="5" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="6" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Panchayat</h5></div>
+													</label>
+												</li>
+												<li>
+													<label class="checkbox-inline">
+														<input type="checkbox" value="8" class="impactCheckClsEmn" checked>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Municipality/Corporation</h5></div>
+													</label>	
+												</li>	
+											</ul>
+										</div>
+									</div>
+								</div>
+							  
+							</div>
+							<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+								<button type="button" class="btn btn-success filtersSubmitDivIdEmn">Get Details</button>
+							</div>
+						</div>
+					</div>
+                </div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h6 id="lastUpdatedTimeElecId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="electronicMediaChannelCountId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 moreBlockEMN" style="display:none;">
+							<div class="row">
+								<div class="col-md-7 col-xs-12 col-sm-7">
+									<h4 class="panel-title">
+										<span class="headingColor text-capital">media programs on party</span>
+									</h4>
+								</div>
+								<div class="col-md-5 col-xs-12 col-sm-5">
+									<ul class="activeUlCls list-inline emnMediaPrograms pull-right">
+										<li attr_searchType="top" class="active">Top</li>
+										<li attr_searchType="poor">Poor</li>
+									</ul>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="pull-right">
+										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="program" checked />Program Wise</label>
+										<!--<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>-->
+									</div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div id="electronicMediaPrograms"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 moreBlockEMN">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreEmnBlocksIcon showHideEmn" title="Click here for more" style="display: inline;"></i>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 selectEmnCate">
+							<ul class="newsComparisonUl list-inline">
+								<li class="text-capital newsComparisonHeading">Comparison</li>
+								<li class="text-capital a viewsLiClassEmn" id="comparisonPartyLiIdEmn" attr_div_id="comparisonPartyMainDivId">Party</li>
+								<li class="text-capital a viewsLiClassEmn" id="comparisonGovernmentLiIdEmn" attr_div_id="comparisonGovernamentMainDivId">Government</li>
+							</ul>
+							
+							<ul class="newsComparisonUl list-inline">
+								<li class="text-capital newsComparisonHeading">Detailed</li>
+								<li class="text-capital a viewsLiClassEmn" id="detailedPartyLiIdEmn" attr_div_id="detailedPartyMainDivId">Party</li>
+								<li class="text-capital a viewsLiClassEmn" id="detailedGovernmentLiIdEmn" attr_div_id="detailedGovernamentMainDivId">Government</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row m_top20 detailedPartyEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">State Wise - Programs Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="stateWiseProgramsOvrViewEMN"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">District Wise - Programs Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="districtWiseProgramsOvrViewEMN"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<h4><span class="headingColor text-capitalize">Parties Vs Channels</span></h4>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6">
+											<ul class="list-inline activeUlCls distWiseProgramOvrView pull-right">
+												<li class="active" attr_type="party">Parties District Wise</li>
+												<li attr_type="channel">Tv Channels Wise</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div id="partiesVsChannelsEMN"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row m_top20 detailedGovtEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">State Wise - Programs Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="stateWiseProgramsOvrViewGovtEMN"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
+								</div>
+								<div class="panel-body">
+									<div id="problemsDetailedOvrViewEMN"></div>
+									<div id="stateWiseEMNRelatedToProblem" class="m_top20"></div>
+									<div id="emmDetailedGovtDistDetailedOverview"></div>
+									<div id="districtWiseEMNRelatedToProblem"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row m_top20 compPartyEmn newEmnHideCls">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="partyRankWiseDetailsOfChannel"></div>
+											<div id="partyRankWiseDetailsOfChannelSub" class="m_top20"></div>
+											<div id="partyRankWiseCompDistWiseOvervw"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row m_top20 compGovtEmn newEmnHideCls" >
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="govtRankWiseDetailsOfChannel"></div>
+											<div id="govtRankWiseDetailsOfChannelSub" class="m_top20"></div>
+											<div id="emmCompGovtDistDetailedOverview"></div>
+											<div id="districtWiseEMNRelatedToProblemGovt"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- Electronic Media End -->
 		</div>
 		<div class="row">
 			<!-- DEBATES PROGRAM BLOCK -->
@@ -1801,46 +2071,6 @@
 											<div class="col-xs-12 col-sm-7 col-md-12">
 											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
 											</div>
-											<div class="col-xs-12 col-sm-5 col-md-4">
-												<!--<ul class="list-inline">
-													<li>
-														<div class="dropdown">
-														  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														  <span class="changeDate">
-															This Week <span class="text-muted">Sunday - Today</span>
-														   </span>
-															<span class="caret"></span>
-														  </button>
-														  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
-															<li>LifeTime</li>
-															<li role="separator" class="divider"></li>
-															<li class="thisWeek">This Week <span class="text-muted">Sunday - Today</span></li>
-															<li>Last Week <span class="text-muted lastWeekDate"></span></li>
-															<li>Last 7 Days <span class="text-muted last7Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>This Month <span class="text-muted thisMonth"></span></li>
-															<li>Last Month <span class="text-muted lastMonth"></span></li>
-															<li>Last 28 Days <span class="text-muted last28Days"></span></li>
-															<li>Last 30 Days <span class="text-muted last30Days"></span></li>
-															<li>First 28 Days<span class="text-muted first28Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>This Quarter <span class="text-muted thisQuarter"></span></li>
-															<li>Last Quarter <span class="text-muted lastQuarter"></span></li>
-															<li>Last 90 Days <span class="text-muted Last90Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>This Year<span class="text-muted thisYear"></span></li>
-															<li>Last Year <span class="text-muted lastYear"></span></li>
-															<li>Last 365 Days <span class="text-muted last365Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>Custom Range <span class="customRange"></span></li>
-														  </ul>
-														</div>
-													</li>
-													<li>
-														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
-													</li>
-												</ul>-->
-											</div>
 										</div>
 									</div>
 									<div class="panel-body">
@@ -1870,116 +2100,106 @@
 				</div>
 			</div>
 			<!-- Training End-->
-		<!--Events Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
+			<!-- TOURS START -->
+			<div class="col-md-6 col-xs-12 col-sm-12 toursBlock">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-7">
+							<div class="col-md-8 col-sm-8 col-xs-8">
 								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  </span></small>
+									<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
+									Tours <small class="text-muted" id="toursHeadingId"> This Month() </small>
 								</h4>
 							</div>
-							<div class="col-md-4 col-sm-4 col-xs-5">
-								<span class="notesIconEvents pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+							<div class="col-md-4 col-sm-4 col-xs-4">
+								<span class="cadreSettings pull-right">
+									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
-								<span class="eventsIconExpand pull-right">
-									<i class="glyphicon glyphicon-fullscreen"></i>
+								<span class="cadreNotes pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
 								</span>
-								<!--<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
-									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+								 <span class="tourExpand pull-right">  
+									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+								</span>
+								<span class="input-group pull-right toursDateRangePickerCls hideShowToursDateRangeCls" style="width:200px;display:none;">
+									<input type="text" id="tourDateRangePickerId" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
-								</span>-->
-							</div>
-						</div>
-						<div class="notesDropDown notesArrow" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
 								</span>
-							</h4>
-							<div id="notesEventsId"></div>
-							<hr/>
-							<div id="eventsUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaEvents"></textarea>
-							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-						</div>
+							</div>  
+						</div>        
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
-								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
-								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
-								<div id="mainEventsList" class="m_top20"></div>
+							<div class="col-md-12 col-xs-12 col-sm-12 toursBlock">
+								<div class="row">
+									<div id="tourOverviewDivId"></div>
+								</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
-								<h4><span class="headingColor text-capital">events </span></h4>
-								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline hideCls">
-											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+							<div class="col-md-6 col-xs-12 col-sm-12 tourExpandCls" style="display:none;">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline ">
+											<li class="toursCls active" attr_value="strong">top 5 strong</li>
+											<li class="toursCls" attr_value="poor">last 5 poor</li>
 										</ul>
-								</div> 
-								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
+									</div>
+									<div id="userTypeWiseTopFiveStrongAndPoorToursMemsDivId"></div>
+								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
-								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks">
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
-									<li class="text-capital detailedEvent">Detailed</li>
-									<li class="text-capital comparisonEvent">Comparison</li>
+							<div class="col-xs-12 col-sm-12 col-md-12 toursHiddenBlock">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreToursBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreToursBlocks1" style="display:none;">
+								<ul class="list-inline pull-right activeUlCls">
+									<li class="active toursDetailedBlock">Detailed</li>
+									<li class="toursComparisionBlock">Comparison</li>
 								</ul>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreToursBlocksDetailed" style="display:none">
 								<div class="panel panel-default panelNew">
-									<div class="panel-body">
-										<div id="eventsGraphBlock"></div>
-									</div>
-								</div>
-								<div class="panel panel-default panelNew m_top20">
 									<div class="panel-heading">
-										<h4 class="panel-title">
-											<span class="headingColor text-capitalize">Mahanadu - Event Cohort</span>
-										</h4>
+										<div class="row">
+											<div class="col-md-8 col-xs-12 col-sm-6">
+												<span class="headingColor text-capitalize">District Wise Average Tours Performers</span>
+											</div>
+										</div>
 									</div>
 									<div class="panel-body">
-										<div id="eventsDistWiseCohort"></div>
+										<div id="districtWiseLeaderDiv"></div>
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none">
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockTours m_top10" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+											  <div id="designationListForTourId"></div>
 											</div>
 										</div>
 									</div>
 									<div class="panel-body">
 										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childEvnetMemberDivId"> </div>
+											<div class="col-md-12 col-xs-12 col-sm-12">    
+												 <div id="totalOverviewOfDesigId"> </div>
 											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForEventDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsEventDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">    
+												 <div id="childToursMemberDivId"> </div>
 											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">    
+												 <div id="directChildMemberForToursDivId"> </div>
+											</div>  
+										</div>
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">    
+												 <div id="topPoorLocationsToursDivId"> </div>
+											</div>     
 										</div>
 									</div>
 								</div>
@@ -1987,9 +2207,8 @@
 						</div>
 					</div>
 				</div>
-			</div>	
-	
-		<!--Events End -->
+			</div>
+			<!-- TOURS END -->  
 		</div>
 		<div class="row">
 		<!-- Committees Start-->
@@ -2400,385 +2619,130 @@
             </div>
        </div>
 	 </div>
-	 <!-- Electronic Media Start -->
 	 
-	<!--<div class="row">
-		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12 emnHead">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
-								electronic news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1">
-							<span class="emnSetIcon pull-right">
-								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-							</span>
-							<span class="notesIconEmn pull-right">
-								<i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" data-placement="top" title="" onclick="displayDashboardCommentsForAttendance(7);" data-original-title="Notes"></i>
-							</span>
-							<span class="emnIconExpand pull-right">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:200px;">
-								<input id="dateRangeIdForEmn" style="width:180px" class="form-control" type="text">
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>
-					</div>
-					<div class="emnBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
-						<i class="glyphicon glyphicon-remove emnSetClose pull-right"></i>
-						<div class="row">
-							<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-								<ul class="nav nav-tabs navTabsSettings" role="tablist">
-									<li role="presentation" class="active text-capital"><a href="#EditionsEmn" aria-controls="EditionsEmn" role="tab" data-toggle="tab">News Channels</a></li>
-									<li role="presentation" class="text-capital"><a href="#impactScopeEmn" aria-controls="impactScopeEmn" role="tab" data-toggle="tab">Impact Scope</a></li>
-								</ul>
-							</div>
-							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-								<div class="tab-content navTabsSettingsContent">
-									<div role="tabpanel" class="tab-pane active" id="EditionsEmn">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
-										<hr style ="margin-bottom:0px;" />
-										<div class="">
-											<ul class="settingsUlEmn" id="emnNewsChannelsUlId"></ul>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="impactScopeEmn">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
-										<hr style ="margin-bottom:0px;" />
-										<div class="">
-											<ul class="settingsUlEmn">
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="0" id="impactSelectAllIdEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="1" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
-													</label>
-												</li>
-												<li>												
-													<label class="checkbox-inline">
-														<input type="checkbox" value="2" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
-													</label>	
-												</li>	
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="3" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-													<input type="checkbox" value="4" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
-													</label>
-												</li>	
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="5" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="6" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Panchayat</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="8" class="impactCheckClsEmn" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Municipality/Corporation</h5></div>
-													</label>	
-												</li>	
-											</ul>
-										</div>
-									</div>
-								</div>
-							  
-							</div>
-							<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-								<button type="button" class="btn btn-success filtersSubmitDivIdEmn">Get Details</button>
-							</div>
-						</div>
-					</div>
-                </div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h6 id="lastUpdatedTimeElecId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock">
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div id="electronicMediaChannelCountId"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 moreBlockEMN" style="display:none;">
-							<div class="row">
-								<div class="col-md-7 col-xs-12 col-sm-7">
-									<h4 class="panel-title">
-										<span class="headingColor text-capital">media programs on party</span>
-									</h4>
-								</div>
-								<div class="col-md-5 col-xs-12 col-sm-5">
-									<ul class="activeUlCls list-inline emnMediaPrograms pull-right">
-										<li attr_searchType="top" class="active">Top</li>
-										<li attr_searchType="poor">Poor</li>
-									</ul>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<div class="pull-right">
-										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="program" checked />Program Wise</label>
-										<!--<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>
-									</div>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<div id="electronicMediaPrograms"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 moreBlockEMN">
-							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreEmnBlocksIcon" title="Click here for more" style="display: inline;"></i>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 selectEmnCate">
-							<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
-								<li class="text-capital newsComparisonHeading">Comparison</li>
-								<li class="text-capital a viewsLiClassEmn" id="comparisonPartyLiIdEmn" attr_div_id="comparisonPartyMainDivId">Party</li>
-								<li class="text-capital a viewsLiClassEmn" id="comparisonGovernmentLiIdEmn" attr_div_id="comparisonGovernamentMainDivId">Government</li>
-							</ul>
-							
-							<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
-								<li class="text-capital newsComparisonHeading">Detailed</li>
-								<li class="text-capital a viewsLiClassEmn" id="detailedPartyLiIdEmn" attr_div_id="detailedPartyMainDivId">Party</li>
-								<li class="text-capital a viewsLiClassEmn" id="detailedGovernmentLiIdEmn" attr_div_id="detailedGovernamentMainDivId">Government</li>
-							</ul>
-						</div>
-					</div>
-					<div class="row m_top20 detailedPartyEmn newEmnHideCls">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<h4><span class="headingColor">State Wise - Programs Overview</span></h4>
-								</div>
-								<div class="panel-body">
-									<div id="stateWiseProgramsOvrViewEMN"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<h4><span class="headingColor">District Wise - Programs Overview</span></h4>
-								</div>
-								<div class="panel-body">
-									<div id="districtWiseProgramsOvrViewEMN"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<h4><span class="headingColor text-capitalize">Parties Vs Channels</span></h4>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<ul class="list-inline activeUlCls distWiseProgramOvrView pull-right">
-												<li class="active" attr_type="party">Parties District Wise</li>
-												<li attr_type="channel">Tv Channels Wise</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div id="partiesVsChannelsEMN"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row m_top20 detailedGovtEmn newEmnHideCls">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<h4><span class="headingColor">State Wise - Programs Overview</span></h4>
-								</div>
-								<div class="panel-body">
-									<div id="stateWiseProgramsOvrViewGovtEMN"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<h4><span class="headingColor">Problems Detailed Overview</span></h4>
-								</div>
-								<div class="panel-body">
-									<div id="problemsDetailedOvrViewEMN"></div>
-									<div id="stateWiseEMNRelatedToProblem" class="m_top20"></div>
-									<div id="emmDetailedGovtDistDetailedOverview"></div>
-									<div id="districtWiseEMNRelatedToProblem"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row m_top20 compPartyEmn newEmnHideCls">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="partyRankWiseDetailsOfChannel"></div>
-											<div id="partyRankWiseDetailsOfChannelSub" class="m_top20"></div>
-											<div id="partyRankWiseCompDistWiseOvervw"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row m_top20 compGovtEmn newEmnHideCls" >
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default panelNew">
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="govtRankWiseDetailsOfChannel"></div>
-											<div id="govtRankWiseDetailsOfChannelSub" class="m_top20"></div>
-											<div id="emmCompGovtDistDetailedOverview"></div>
-											<div id="districtWiseEMNRelatedToProblemGovt"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>-->
-	<!-- Electronic Media End -->
-	 <!-- TOURS START -->
+	 
 	<div class="row">
-		<div class="col-md-6 col-xs-12 col-sm-6 toursBlock">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-                    	<div class="col-md-8 col-sm-8 col-xs-8">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
-								Tours <small class="text-muted" id="toursHeadingId"> This Month() </small>
-							</h4>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4">
-							<span class="cadreSettings pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="cadreNotes pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
-							</span>
-							 <span class="tourExpand pull-right">  
-								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>
-						    <span class="input-group pull-right toursDateRangePickerCls hideShowToursDateRangeCls" style="width:200px;display:none;">
-								<input type="text" id="tourDateRangePickerId" style="width:180px" class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>  
-                    </div>        
-                </div>
-				<div class="panel-body">
-					<div class="col-md-12 col-xs-12 col-sm-12 toursBlock">
-						<div id="tourOverviewDivId"></div>
-					</div>
-					<div class="col-md-6 col-xs-12 col-sm-12 tourExpandCls" style="display:none;">
+		<!--Events Start -->
+			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-								<ul class="activeUlCls list-inline ">
-									<li class="toursCls active" attr_value="strong">top 5 strong</li>
-									<li class="toursCls" attr_value="poor">last 5 poor</li>
+							<div class="col-md-8 col-sm-8 col-xs-7">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  </span></small>
+								</h4>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-5">
+								<span class="notesIconEvents pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+								</span>
+								<span class="eventsIconExpand pull-right">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<!--<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>-->
+							</div>
+						</div>
+						<div class="notesDropDown notesArrow" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesEventsId"></div>
+							<hr/>
+							<div id="eventsUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaEvents"></textarea>
+							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
+								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
+								<h4><span class="headingColor text-capital">events</span>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
+								<div id="mainEventsList" class="m_top20"></div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
+								<h4><span class="headingColor text-capital">events </span></h4>
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										</ul>
+								</div> 
+								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
+								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks">
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+									<li class="text-capital detailedEvent">Detailed</li>
+									<li class="text-capital comparisonEvent">Comparison</li>
 								</ul>
 							</div>
-							<div id="userTypeWiseTopFiveStrongAndPoorToursMemsDivId"></div>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-12 toursHiddenBlock" style="display:none;">
-						<i data-placement="top" data-toggle="tooltip" style="cursor:pointer;" class="glyphicon glyphicon-option-horizontal pull-right moreToursBlocksIcon" title="Click here for more"></i>
-					</div>	
-					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreToursBlocks1" style="display:none;">
-						<ul class="list-inline pull-right activeUlCls">
-							<li class="active toursDetailedBlock">Detailed</li>
-							<li class="toursComparisionBlock">Comparison</li>
-						</ul>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreToursBlocksDetailed" style="display:none">
-						<div class="panel panel-default panelNew">
-							<div class="panel-heading">
-								<div class="row">
-									<div class="col-md-8 col-xs-12 col-sm-6">
-										<span class="headingColor text-capitalize">District Wise Average Tours Performers</span>
+							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10">
+								<div class="panel panel-default panelNew">
+									<div class="panel-body">
+										<div id="eventsGraphBlock"></div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew m_top20">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<span class="headingColor text-capitalize">Mahanadu - Event Cohort</span>
+										</h4>
+									</div>
+									<div class="panel-body">
+										<div id="eventsDistWiseCohort"></div>
 									</div>
 								</div>
 							</div>
-							<div class="panel-body">
-								<div id="districtWiseLeaderDiv"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockTours m_top10" style="display:none">
-						<div class="panel panel-default panelNew">
-							<div class="panel-heading">
-								<div class="row">
-									<div class="col-xs-12 col-sm-12 col-md-12">
-									  <div id="designationListForTourId"></div>
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">    
-										 <div id="totalOverviewOfDesigId"> </div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childEvnetMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForEventDivId"></div>
+												   <div class="row">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsEventDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">    
-										 <div id="childToursMemberDivId"> </div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">    
-										 <div id="directChildMemberForToursDivId"> </div>
-									</div>  
-								</div>
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">    
-										 <div id="topPoorLocationsToursDivId"> </div>
-									</div>     
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-	<!-- TOURS END -->  
+			</div>	
+	
+		<!--Events End -->
+	 
 	</div>
 </div> 
 <!--model start -->
@@ -3197,7 +3161,7 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
-<!--<script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>-->
+<script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
@@ -3322,9 +3286,9 @@
         getToursBasicOverviewCountDetails();     
 		//getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
-		/* getMediaProgramsOnParty();		
+		getMediaProgramsOnParty();		
 		getAllTvChannels();
-		getRescentNewsBulletinTime(); */
+		getRescentNewsBulletinTime();
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
