@@ -1029,7 +1029,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 			   str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
 			   str+='<td>'+result.responseData[i].renewalCount+'</td>';
 			   if(result.responseData[i].cadreCount2014 > 0){
-				   var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);//santosh
+				   var precent = (result.responseData[i].renewalCount*(100/result.responseData[i].cadreCount2014)).toFixed(0);
 				   str+='<td>'+precent+'</td>';
 			   }else{
 				   str+='<td>0</td>';
@@ -1842,17 +1842,23 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		       buildUserTypeWiseHighchartsRslt(result,"userTypeWiseHighChartDivId",filterApplyType);
+		       buildUserTypeWiseHighchartsRslt(result,"userTypeWiseHighChartDivId",filterApplyType,sortingType);
 			   globalUserTypeBySubLevelRslt = result;
 		  });
 	}
 
  $(document).on("click",".districtFilterCls",function(){
      var filterApplyType = $(this).attr("attr_filter_value");
-     buildUserTypeWiseHighchartsRslt(globalUserTypeBySubLevelRslt,"userTypeWiseHighChartDivId",filterApplyType);
-	 buildUserTypeWiseHighchartsRslt(globalTsDistrictRslt,"tsDistrictWiseRegistrationDivId",filterApplyType);
+	     var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
+     buildUserTypeWiseHighchartsRslt(globalUserTypeBySubLevelRslt,"userTypeWiseHighChartDivId",filterApplyType,sortingType);
+	 buildUserTypeWiseHighchartsRslt(globalTsDistrictRslt,"tsDistrictWiseRegistrationDivId",filterApplyType,sortingType);
   });
-   function getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType){
+   function getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType,sortingType){
 	   $("#tsDistrictWiseRegistrationDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   	 var sortingType = '';
 	   $(".selectOneSpecialCadre").each(function() {
@@ -1877,124 +1883,229 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		   buildUserTypeWiseHighchartsRslt(result,"tsDistrictWiseRegistrationDivId",filterApplyType);
+		   buildUserTypeWiseHighchartsRslt(result,"tsDistrictWiseRegistrationDivId",filterApplyType,sortingType);
            globalTsDistrictRslt	= result;	   
 	     });
  }			
-  function buildUserTypeWiseHighchartsRslt(result,divId,filterApplyType){
+  function buildUserTypeWiseHighchartsRslt(result,divId,filterApplyType,sortingType){
 	   $("#"+divId).html(' ');
 	    var locationNameArr =[];
 		var newCadreArr = [];
 		var cadre2014ArrPer = [];
 		var renewalArr=[];
+		var newCadre2016CntArr = [];
+		var renewalCadre2016CntArr = [];
+		var cadre2014CntArr = [];
 	if(result != null && result.length > 0){
 			for(var i in result){
 			    if(filterApplyType != null && filterApplyType=="All" || filterApplyType =="No"){
 						locationNameArr.push(result[i].locationName);
-						if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+						if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 				 }else if(filterApplyType=="verygood"){
 				 if(result[i].total2016CadrePer > 100){
 					  locationNameArr.push(result[i].locationName);
-					   if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+					  if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 				 }	
 				}else if(filterApplyType=="good"){
 				  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 					   locationNameArr.push(result[i].locationName);
-					   if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
-						}
+					  if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+					  }else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
+					  }
 				  }
 				}else if(filterApplyType=="ok"){
-					  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
+					if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 					   locationNameArr.push(result[i].locationName);
-				       if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+				       if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
-						}
-				      }
+				    }
 				}else if(filterApplyType=="poor"){
 				  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 					 locationNameArr.push(result[i].locationName);
-					   if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+					   if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 				  }
 				}else if(filterApplyType == "verypoor"){
 					if(result[i].total2016CadrePer < 60){
 				      locationNameArr.push(result[i].locationName);
-				      if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+				      if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 					}
 				}
 			}
 		 var jsonDataArr=[];	
 		 var colorArr=[];
-		 if(renewalArr.length > 0){
-		  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
-          colorArr.push('#30AA74');		  
-		  }
-		  if(newCadreArr.length > 0){
-		  jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
-          colorArr.push('#F36800');		  
-		  }
-		  if(cadre2014ArrPer.length > 0){
-		  jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
-          colorArr.push('#FFCA00');		  
-		  }
+			if(sortingType == "2016CadreWise"){
+				 if(renewalCadre2016CntArr.length > 0){
+				  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalCadre2016CntArr,stack: '2016'});
+				  colorArr.push('#30AA74');		  
+				  }
+				  if(newCadre2016CntArr.length > 0){
+				  jsonDataArr.push({name: '2016 New Cadre',data: newCadre2016CntArr,stack: '2016'});
+				  colorArr.push('#F36800');		  
+				  }
+				  if(cadre2014CntArr.length > 0){
+				  jsonDataArr.push({name: '2014 Cadre',data: cadre2014CntArr,stack: '2014'});
+				  colorArr.push('#FFCA00');		  
+				  }
+			}else if(sortingType == "TargetWise"){ 
+				 if(renewalArr.length > 0){
+				  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+				  colorArr.push('#30AA74');		  
+				  }
+				  if(newCadreArr.length > 0){
+				  jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+				  colorArr.push('#F36800');		  
+				  }
+				  if(cadre2014ArrPer.length > 0){
+				  jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+				  colorArr.push('#FFCA00');		  
+				  }
+			}
 		  if(divId=="tsDistrictWiseRegistrationDivId"){
-			  if(cadre2014ArrPer.length == 0 && newCadreArr.length == 0 && renewalArr.length==0){
-				  return;
-			  }else{
-				  $("#tsDistrictHeadingId").show();
-			  }  
+			  if(sortingType == "2016CadreWise"){
+				  if(renewalCadre2016CntArr.length == 0 && newCadre2016CntArr.length == 0 && cadre2014CntArr.length==0){
+					  return;
+				  }else{
+					  $("#tsDistrictHeadingId").show();
+				  }  
+			  }else if(sortingType == "TargetWise"){
+				  if(cadre2014ArrPer.length == 0 && newCadreArr.length == 0 && renewalArr.length==0){
+					  return;
+				  }else{
+					  $("#tsDistrictHeadingId").show();
+				  }  
+			  }
 		  }else if(divId=="userTypeWiseHighChartDivId"){
-			 if(cadre2014ArrPer.length == 0 && newCadreArr.length == 0 && renewalArr.length==0){
-			    return;
-		  }else{
-			  $("#apDistrictHeadingId").show();
+			   if(sortingType == "2016CadreWise"){
+				  if(renewalCadre2016CntArr.length == 0 && newCadre2016CntArr.length == 0 && cadre2014CntArr.length==0){
+					  return;
+				  }else{
+					  $("#apDistrictHeadingId").show();
+				  }  
+			  }else if(sortingType == "TargetWise"){
+				  if(cadre2014ArrPer.length == 0 && newCadreArr.length == 0 && renewalArr.length==0){
+					  return;
+				  }else{
+					  $("#apDistrictHeadingId").show();
+				  }  
+			  }
 		  }
-		  }
-		
 		  $("#"+divId).highcharts({
 			 colors: colorArr,
 			chart: {
@@ -2013,7 +2124,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			},
 
 			yAxis: {
-				allowDecimals: false,
+				allowDecimals: true,
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
@@ -2080,7 +2191,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			  buildConstituecnyWiseCadreResult(result,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+			  buildConstituecnyWiseCadreResult(result,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
 			  buildDropDown(result,"apConstituencySelectBoxId",filterApplyType);
 			  globalApConstituencyRslt=result;
 		      globalApConstituencyWithDefaultSorting=result;
@@ -2134,7 +2245,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-	    	  buildConstituecnyWiseCadreResult(result,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+	    	  buildConstituecnyWiseCadreResult(result,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
 			  globalTsConstituencyRslt=result; 
 			  globalTsConstituencyWithDefaultSorting=result;
 			  buildDropDown(result,"tsConstituencySelectBoxId",filterApplyType);
@@ -2214,7 +2325,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
 	  }
-	 buildConstituecnyWiseCadreResult(searchFilterArr,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
+	 buildConstituecnyWiseCadreResult(searchFilterArr,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
   });
     $(document).on("change","#tsConstituencySelectBoxId",function(){
 	  var constituencyId = $(this).val();
@@ -2243,7 +2360,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
-	   buildConstituecnyWiseCadreResult(searchFilterArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
+	   buildConstituecnyWiseCadreResult(searchFilterArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
   });
   
   $(document).on("click",".ascendingApSorting",function(){
@@ -2263,8 +2386,14 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 		    is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
 	  }
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
 	  $("#apConstituencySelectBoxId").val(0);
-		buildConstituecnyWiseCadreResult(globalApConstituencyWithAscendingArr,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+		buildConstituecnyWiseCadreResult(globalApConstituencyWithAscendingArr,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
 	   globalApConstituencyRslt = globalApConstituencyWithAscendingArr;
  	
  });
@@ -2284,8 +2413,14 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
 	  }
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
 	  $("#apConstituencySelectBoxId").val(0);
-      buildConstituecnyWiseCadreResult(globalApConstituencyWithDefaultSorting,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+      buildConstituecnyWiseCadreResult(globalApConstituencyWithDefaultSorting,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
       globalApConstituencyRslt = globalApConstituencyWithDefaultSorting;
  }); 
  
@@ -2307,7 +2442,13 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
-     buildConstituecnyWiseCadreResult(globalTsConstituencyWithAscendingArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
+     buildConstituecnyWiseCadreResult(globalTsConstituencyWithAscendingArr,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
 	 globalTsConstituencyRslt = globalTsConstituencyWithAscendingArr;
  });
   $(document).on("click",".decendingTsSorting",function(){
@@ -2326,8 +2467,14 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
 	$("#tsConstituencySelectBoxId").val(0);
-	buildConstituecnyWiseCadreResult(globalTsConstituencyWithDefaultSorting,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+	buildConstituecnyWiseCadreResult(globalTsConstituencyWithDefaultSorting,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
 	globalTsConstituencyRslt = globalTsConstituencyWithDefaultSorting;
  }); 
   $(document).on("click",".constituencyFilterCls",function(){
@@ -2349,8 +2496,14 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014CadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014CadreCheckBoxId").attr("attr_2014_active");
 	  }
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
 	 buildDropDown(globalApConstituencyRslt,"apConstituencySelectBoxId",filterApplyType);
-     buildConstituecnyWiseCadreResult(globalApConstituencyRslt,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+     buildConstituecnyWiseCadreResult(globalApConstituencyRslt,"apConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
   });
     $(document).on("click",".tsConstituencyFilterCls",function(){
        var filterApplyType = $(this).attr("attr_filter_value");
@@ -2371,294 +2524,522 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  cadre2014CheckboxIsChecked=$("#2014TsCadreCheckBoxId").attr("attr_cadre_search_type");
 		  is2014Active=$("#2014TsCadreCheckBoxId").attr("attr_2014_active");
 	  }
+	   var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
 	 buildDropDown(globalTsConstituencyRslt,"tsConstituencySelectBoxId",filterApplyType);
-	 buildConstituecnyWiseCadreResult(globalTsConstituencyRslt,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active);
+	 buildConstituecnyWiseCadreResult(globalTsConstituencyRslt,"tsConstituencyRegistrationReportDivId",renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType);
   });
   
- function buildConstituecnyWiseCadreResult(result,divId,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active){
+ function buildConstituecnyWiseCadreResult(result,divId,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,filterApplyType,is2014Active,sortingType){
 	   $("#"+divId).html(' ');
     	var locationNameArr =[];
 		var newCadreArr = [];
 		var cadre2014ArrPer = [];
 		var renewalArr=[];
-		var jsonDataArr=[];
+		
+		
+		var newCadre2016CntArr = [];
+		var renewalCadre2016CntArr = [];
+		var cadre2014CntArr = [];
 		if(result != null && result.length > 0){
 			for(var i in result){
 			   if((renewal2016CheckboxIsChecked=="Y" && new2016CheckboxIsChecked=="Y" && cadre2014CheckboxIsChecked=="Y")||(renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre")){
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
-					 locationNameArr.push(result[i].locationName);
-					 renewalArr.push(result[i].total2016RenewalCadrePer);
-					 newCadreArr.push(result[i].total2016NewCadrePer);
-					 cadre2014ArrPer.push(result[i].total2014CadrePer);
+					locationNameArr.push(result[i].locationName);
+					  if(sortingType == "2016CadreWise"){
+						  cadre2014CntArr.push(result[i].total2014CadreCnt);
+						  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+						  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+					 }else if(sortingType == "TargetWise"){
+						 renewalArr.push(result[i].total2016RenewalCadrePer);
+						 newCadreArr.push(result[i].total2016NewCadrePer);
+						 cadre2014ArrPer.push(result[i].total2014CadrePer);	
+					 }	 
 					}else{
 						if(filterApplyType=="verygood"){
-							 if(result[i].total2016CadrePer > 100){
-								  locationNameArr.push(result[i].locationName);
-								  cadre2014ArrPer.push(result[i].total2014CadrePer);
-								  renewalArr.push(result[i].total2016RenewalCadrePer);
-								  newCadreArr.push(result[i].total2016NewCadrePer);
-							 }	
+							if(result[i].total2016CadrePer > 100){
+								locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  cadre2014CntArr.push(result[i].total2014CadreCnt);
+									  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									 renewalArr.push(result[i].total2016RenewalCadrePer);
+									 newCadreArr.push(result[i].total2016NewCadrePer);
+									 cadre2014ArrPer.push(result[i].total2014CadrePer);	
+								 }	 
+							}	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
-						   locationNameArr.push(result[i].locationName);
-						   cadre2014ArrPer.push(result[i].total2014CadrePer);
-						   renewalArr.push(result[i].total2016RenewalCadrePer);
-						   newCadreArr.push(result[i].total2016NewCadrePer);
+								locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  cadre2014CntArr.push(result[i].total2014CadreCnt);
+									  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									 renewalArr.push(result[i].total2016RenewalCadrePer);
+									 newCadreArr.push(result[i].total2016NewCadrePer);
+									 cadre2014ArrPer.push(result[i].total2014CadrePer);	
+								 }	 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
-							   locationNameArr.push(result[i].locationName);
-							   cadre2014ArrPer.push(result[i].total2014CadrePer);
-							   renewalArr.push(result[i].total2016RenewalCadrePer);
-							   newCadreArr.push(result[i].total2016NewCadrePer);
+							      locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  cadre2014CntArr.push(result[i].total2014CadreCnt);
+									  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									 renewalArr.push(result[i].total2016RenewalCadrePer);
+									 newCadreArr.push(result[i].total2016NewCadrePer);
+									 cadre2014ArrPer.push(result[i].total2014CadrePer);	
+								 }	 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
-							 locationNameArr.push(result[i].locationName);
-							 cadre2014ArrPer.push(result[i].total2014CadrePer);
-							 renewalArr.push(result[i].total2016RenewalCadrePer);
-							 newCadreArr.push(result[i].total2016NewCadrePer);
+							    locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  cadre2014CntArr.push(result[i].total2014CadreCnt);
+									  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									 renewalArr.push(result[i].total2016RenewalCadrePer);
+									 newCadreArr.push(result[i].total2016NewCadrePer);
+									 cadre2014ArrPer.push(result[i].total2014CadrePer);	
+								 }	 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
-							   locationNameArr.push(result[i].locationName);
-							   cadre2014ArrPer.push(result[i].total2014CadrePer);
-							   renewalArr.push(result[i].total2016RenewalCadrePer);
-							   newCadreArr.push(result[i].total2016NewCadrePer);
+							     locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  cadre2014CntArr.push(result[i].total2014CadreCnt);
+									  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									 renewalArr.push(result[i].total2016RenewalCadrePer);
+									 newCadreArr.push(result[i].total2016NewCadrePer);
+									 cadre2014ArrPer.push(result[i].total2014CadrePer);	
+								 }	 
 							}
 						}	
 					}
 				}else if(renewal2016CheckboxIsChecked=="2016Renewal" && new2016CheckboxIsChecked=="2016New"){
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
-					 locationNameArr.push(result[i].locationName);
-					 renewalArr.push(result[i].total2016RenewalCadrePer);
-					 newCadreArr.push(result[i].total2016NewCadrePer);
+							 locationNameArr.push(result[i].locationName);
+							if(sortingType == "2016CadreWise"){
+								  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								 newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 					}else{
 				        if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
-								   locationNameArr.push(result[i].locationName);
-								   renewalArr.push(result[i].total2016RenewalCadrePer);
-					               newCadreArr.push(result[i].total2016NewCadrePer);
+								locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									 renewalArr.push(result[i].total2016RenewalCadrePer);
+									 newCadreArr.push(result[i].total2016NewCadrePer);
+								 }	 
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
-						         locationNameArr.push(result[i].locationName);
-						 	     renewalArr.push(result[i].total2016RenewalCadrePer);
-					             newCadreArr.push(result[i].total2016NewCadrePer);
+						       locationNameArr.push(result[i].locationName);
+							if(sortingType == "2016CadreWise"){
+								  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								 newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							    locationNameArr.push(result[i].locationName);
-								renewalArr.push(result[i].total2016RenewalCadrePer);
-					            newCadreArr.push(result[i].total2016NewCadrePer);
+							if(sortingType == "2016CadreWise"){
+								  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								 newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
-							    locationNameArr.push(result[i].locationName);
-								renewalArr.push(result[i].total2016RenewalCadrePer);
-					            newCadreArr.push(result[i].total2016NewCadrePer);
+							     locationNameArr.push(result[i].locationName);
+							if(sortingType == "2016CadreWise"){
+								  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								 newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
 							    locationNameArr.push(result[i].locationName);
-							 	renewalArr.push(result[i].total2016RenewalCadrePer);
-					            newCadreArr.push(result[i].total2016NewCadrePer);
+							if(sortingType == "2016CadreWise"){
+								  newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								 newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 							}
 						}	
 					}
 				}else if(renewal2016CheckboxIsChecked=="2016Renewal" && cadre2014CheckboxIsChecked=="2014Cadre"){
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All" ){
-					          locationNameArr.push(result[i].locationName);
-					          renewalArr.push(result[i].total2016RenewalCadrePer);
-					          cadre2014ArrPer.push(result[i].total2014CadrePer);
+					           locationNameArr.push(result[i].locationName);
+							if(sortingType == "2016CadreWise"){
+								   cadre2014CntArr.push(result[i].total2014CadreCnt);
+								   renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								  renewalArr.push(result[i].total2016RenewalCadrePer);
+					              cadre2014ArrPer.push(result[i].total2014CadrePer);
+							 }	 
 					}else{
 				        if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
-								 locationNameArr.push(result[i].locationName);
-								 renewalArr.push(result[i].total2016RenewalCadrePer);
-								 cadre2014ArrPer.push(result[i].total2014CadrePer);
+								locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+									  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
-						     locationNameArr.push(result[i].locationName);
-							 renewalArr.push(result[i].total2016RenewalCadrePer);
-							 cadre2014ArrPer.push(result[i].total2014CadrePer);
+						         locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+									  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
-							   locationNameArr.push(result[i].locationName);
-					           renewalArr.push(result[i].total2016RenewalCadrePer);
-					           cadre2014ArrPer.push(result[i].total2014CadrePer);
+							       locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+									  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
-							    locationNameArr.push(result[i].locationName);
-					            renewalArr.push(result[i].total2016RenewalCadrePer);
-					            cadre2014ArrPer.push(result[i].total2014CadrePer);
+							      locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+									  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
-							   locationNameArr.push(result[i].locationName);
-					           renewalArr.push(result[i].total2016RenewalCadrePer);
-					           cadre2014ArrPer.push(result[i].total2014CadrePer);
+							 locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+									  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 							}
 						}	
 					}
 				}else if(new2016CheckboxIsChecked=="2016New" && cadre2014CheckboxIsChecked=="2014Cadre"){
 				
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All" ){
-					      locationNameArr.push(result[i].locationName);
-						  newCadreArr.push(result[i].total2016NewCadrePer);
-					      cadre2014ArrPer.push(result[i].total2014CadrePer);
+					             locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									   newCadreArr.push(result[i].total2016NewCadrePer);
+					                   cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 					}else{
 						if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
 								  locationNameArr.push(result[i].locationName);
-								  newCadreArr.push(result[i].total2016NewCadrePer);
-					              cadre2014ArrPer.push(result[i].total2014CadrePer);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									   newCadreArr.push(result[i].total2016NewCadrePer);
+					                   cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
-						     locationNameArr.push(result[i].locationName);
-							 newCadreArr.push(result[i].total2016NewCadrePer);
-					         cadre2014ArrPer.push(result[i].total2014CadrePer);
+						      locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									   newCadreArr.push(result[i].total2016NewCadrePer);
+					                   cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
-					           newCadreArr.push(result[i].total2016NewCadrePer);
-					           cadre2014ArrPer.push(result[i].total2014CadrePer);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									   newCadreArr.push(result[i].total2016NewCadrePer);
+					                   cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							    locationNameArr.push(result[i].locationName);
-					          	newCadreArr.push(result[i].total2016NewCadrePer);
-					            cadre2014ArrPer.push(result[i].total2014CadrePer);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									   newCadreArr.push(result[i].total2016NewCadrePer);
+					                   cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
-							    locationNameArr.push(result[i].locationName);
-					         	newCadreArr.push(result[i].total2016NewCadrePer);
-					            cadre2014ArrPer.push(result[i].total2014CadrePer);
+							     locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									   cadre2014CntArr.push(result[i].total2014CadreCnt);
+									   newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									   newCadreArr.push(result[i].total2016NewCadrePer);
+					                   cadre2014ArrPer.push(result[i].total2014CadrePer);
+								 }	 
 							}
 						}	
 					}
 				}else if(renewal2016CheckboxIsChecked=="2016Renewal"){
 					if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
-					    locationNameArr.push(result[i].locationName);
-						renewalArr.push(result[i].total2016RenewalCadrePer);
+						 locationNameArr.push(result[i].locationName);
+						if(sortingType == "2016CadreWise"){
+							  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+						 }else if(sortingType == "TargetWise"){
+							  renewalArr.push(result[i].total2016RenewalCadrePer);
+						 }	 
 					}else{
 						 if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
 								 locationNameArr.push(result[i].locationName);
-								 renewalArr.push(result[i].total2016RenewalCadrePer);
+								if(sortingType == "2016CadreWise"){
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+								 }	 
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
-						     locationNameArr.push(result[i].locationName);
-							 renewalArr.push(result[i].total2016RenewalCadrePer);
+						        locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+								 }	 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
-							   locationNameArr.push(result[i].locationName);
-					         	renewalArr.push(result[i].total2016RenewalCadrePer);
+							          locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+								 }	 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
-							    locationNameArr.push(result[i].locationName);
-					           	renewalArr.push(result[i].total2016RenewalCadrePer);
+							     locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+								 }	 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
-							  locationNameArr.push(result[i].locationName);
-					          renewalArr.push(result[i].total2016RenewalCadrePer);
+							   locationNameArr.push(result[i].locationName);
+								if(sortingType == "2016CadreWise"){
+									  renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+								 }else if(sortingType == "TargetWise"){
+									  renewalArr.push(result[i].total2016RenewalCadrePer);
+								 }	 
 							}
 						}	
 					}
 				}else if(new2016CheckboxIsChecked=="2016New"){
 					 if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
-					 locationNameArr.push(result[i].locationName);
-					 newCadreArr.push(result[i].total2016NewCadrePer);
+							locationNameArr.push(result[i].locationName);
+							if(sortingType == "2016CadreWise"){
+								    newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								   newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 					}else{
 						 if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
 								 locationNameArr.push(result[i].locationName);
-								 newCadreArr.push(result[i].total2016NewCadrePer);
+							if(sortingType == "2016CadreWise"){
+								    newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								   newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 						     locationNameArr.push(result[i].locationName);
-							 newCadreArr.push(result[i].total2016NewCadrePer);
+							if(sortingType == "2016CadreWise"){
+								    newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								   newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
+					 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 							   locationNameArr.push(result[i].locationName);
-					           newCadreArr.push(result[i].total2016NewCadrePer);
+							if(sortingType == "2016CadreWise"){
+								    newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								   newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
+					 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 							     locationNameArr.push(result[i].locationName);
-					             newCadreArr.push(result[i].total2016NewCadrePer);
+							if(sortingType == "2016CadreWise"){
+								    newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							 }else if(sortingType == "TargetWise"){
+								   newCadreArr.push(result[i].total2016NewCadrePer);
+							 }	 
+					 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
-							    locationNameArr.push(result[i].locationName);
-					            newCadreArr.push(result[i].total2016NewCadrePer);
+							  locationNameArr.push(result[i].locationName);
+							  if(sortingType == "2016CadreWise"){
+								    newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							  }else if(sortingType == "TargetWise"){
+								   newCadreArr.push(result[i].total2016NewCadrePer);
+							  }	 
+					 
 							}
 						}	
 					}
 				}else if(cadre2014CheckboxIsChecked=="2014Cadre"){
 					 if(filterApplyType != null && filterApplyType=="No" || filterApplyType=="All"){
-					 locationNameArr.push(result[i].locationName);
-					 cadre2014ArrPer.push(result[i].total2014CadrePer);
+					          locationNameArr.push(result[i].locationName);
+							  if(sortingType == "2016CadreWise"){
+								    cadre2014CntArr.push(result[i].total2014CadreCnt);
+							  }else if(sortingType == "TargetWise"){
+								   cadre2014ArrPer.push(result[i].total2014CadrePer);
+							  }	 
 					}else{
 					   if(filterApplyType=="verygood"){
 							 if(result[i].total2016CadrePer > 100){
-								  locationNameArr.push(result[i].locationName);
-								  cadre2014ArrPer.push(result[i].total2014CadrePer);
+								    locationNameArr.push(result[i].locationName);
+								    if(sortingType == "2016CadreWise"){
+								    cadre2014CntArr.push(result[i].total2014CadreCnt);
+							       }else if(sortingType == "TargetWise"){
+								   cadre2014ArrPer.push(result[i].total2014CadrePer);
+							       }	 
 							 }	
 						}else if(filterApplyType=="good"){
 						  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
-						     locationNameArr.push(result[i].locationName);
-							 cadre2014ArrPer.push(result[i].total2014CadrePer);
+						            locationNameArr.push(result[i].locationName);
+								    if(sortingType == "2016CadreWise"){
+								    cadre2014CntArr.push(result[i].total2014CadreCnt);
+							       }else if(sortingType == "TargetWise"){
+								   cadre2014ArrPer.push(result[i].total2014CadrePer);
+							       }	 
 						  }
 						}else if(filterApplyType=="ok"){
 							  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
-							   locationNameArr.push(result[i].locationName);
-					           cadre2014ArrPer.push(result[i].total2014CadrePer);
+							     locationNameArr.push(result[i].locationName);
+								    if(sortingType == "2016CadreWise"){
+								    cadre2014CntArr.push(result[i].total2014CadreCnt);
+							       }else if(sortingType == "TargetWise"){
+								   cadre2014ArrPer.push(result[i].total2014CadrePer);
+							       }	 
 							  }
 						}else if(filterApplyType=="poor"){
 						  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
-							    locationNameArr.push(result[i].locationName);
-					        	 cadre2014ArrPer.push(result[i].total2014CadrePer);
+							      locationNameArr.push(result[i].locationName);
+								    if(sortingType == "2016CadreWise"){
+								    cadre2014CntArr.push(result[i].total2014CadreCnt);
+							       }else if(sortingType == "TargetWise"){
+								   cadre2014ArrPer.push(result[i].total2014CadrePer);
+							       }	 
 						  }
 						}else if(filterApplyType == "verypoor"){
 							if(result[i].total2016CadrePer < 60){
-							   locationNameArr.push(result[i].locationName);
-					           cadre2014ArrPer.push(result[i].total2014CadrePer);
+							    locationNameArr.push(result[i].locationName);
+								    if(sortingType == "2016CadreWise"){
+								    cadre2014CntArr.push(result[i].total2014CadreCnt);
+							       }else if(sortingType == "TargetWise"){
+								   cadre2014ArrPer.push(result[i].total2014CadrePer);
+							       }	 
 							}
 						}	
 					}
 				}
 			}
-			
+			 var jsonDataArr=[];
 			 var colorArr=[];
-			 if(renewalArr.length > 0){
-			  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
-			  colorArr.push('#30AA74');		  
-			  }
-			  if(newCadreArr.length > 0){
-			  jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
-			  colorArr.push('#F36800');		  
-			  }
-			  if(is2014Active=="Yes"){
-			   if(cadre2014ArrPer.length > 0){
-			   jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
-			   colorArr.push('#FFCA00');		  
-			   } 
-			  }
-			  
-		     /*Setting Dynamic height for highChart */
+			 if(sortingType == "2016CadreWise"){
+				 if(renewalCadre2016CntArr.length > 0){
+				  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalCadre2016CntArr,stack: '2016'});
+				  colorArr.push('#30AA74');		  
+				  }
+				  if(newCadre2016CntArr.length > 0){
+				  jsonDataArr.push({name: '2016 New Cadre',data: newCadre2016CntArr,stack: '2016'});
+				  colorArr.push('#F36800');		  
+				  }
+				 if(is2014Active=="Yes"){
+					  if(cadre2014CntArr.length > 0){
+					  jsonDataArr.push({name: '2014 Cadre',data: cadre2014CntArr,stack: '2014'});
+					  colorArr.push('#FFCA00');		  
+				 }
+				 }
+			}else if(sortingType == "TargetWise"){ 
+				 if(renewalArr.length > 0){
+				  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+				  colorArr.push('#30AA74');		  
+				  }
+				  if(newCadreArr.length > 0){
+				  jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+				  colorArr.push('#F36800');		  
+				  }
+				  if(is2014Active=="Yes"){
+				   if(cadre2014ArrPer.length > 0){
+				   jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+				   colorArr.push('#FFCA00');		  
+				   } 
+				  }
+			}
+			 /*Setting Dynamic height for highChart */
 			 if(locationNameArr!= null && locationNameArr.length > 10){
 			  var highChartDivHight = locationNameArr.length*25;
 			  $("#"+divId).height(highChartDivHight); 
@@ -2873,7 +3254,6 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		  $("#cadreTsRegSearchErrorId").html("Please Select Search Type");
 		  return;
 	  }
-	 
 	   var tsDistrictArr=[];
 	    $("#tsDistrictULId li").each(function() {
 		  if($(this).find("input").is(":checked")){
@@ -2893,7 +3273,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	   if(tsDistrictArr.length > 0){
 		  getTsConstituencyCadreRegistrationDetails(3,tsDistrictArr,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);
 	   }else{
-		   $("#tsConstituencyRegistrationReportDivId").html(' ');
+		    $("#tsConstituencyRegistrationReportDivId").html(' ');
 		    globalTsConstituencyRslt=""; 
 	   }
 	   $(".cadreRDD").hide();
@@ -4328,3 +4708,6 @@ function buildTabUserComparisonRslt(result){
             console.log(result);
 		});
 	} */
+	
+	
+			
