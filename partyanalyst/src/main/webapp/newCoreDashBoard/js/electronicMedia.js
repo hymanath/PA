@@ -1914,8 +1914,8 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 		var graphIdSub = 0;
 		graphIdMainA = graphIdMainA + 1;
 		
-		newsChannelCatCountArr.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#64C664'});
-		newsChannelCatCountArr.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#D33E39'});
+		newsChannelCatCountArr.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#9A00FD'});
+		newsChannelCatCountArr.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#340097'});
 		$("#newsChannels"+i).highcharts({
 			chart: {
 				type: 'column',
@@ -2065,8 +2065,8 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 			graphIdMain = graphIdMain + 1;
 			//resultSubTotArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCount,"color":'#64C664'});
 			var resultSubTotArr = [];
-			resultSubTotArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].categoryCount,"color":'#64C664'});
-			resultSubTotArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[1].categoryCount,"color":'#D33E39'});
+			resultSubTotArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].categoryCount,"color":'#9A01F9'});
+			resultSubTotArr.push({"y":result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[1].categoryCount,"color":'#30009B'});
 			$("#newsChannelsProgramsTot"+i+k+graphIdMain).highcharts({
 				chart: {
 					type: 'column',
@@ -2472,8 +2472,8 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
 		
 		//categoriesCompParty.push()
 		
-		RankWiseDetailsOfChannelSubArrMain.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#64C664'});
-		RankWiseDetailsOfChannelSubArrMain.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#D33E39'});
+		RankWiseDetailsOfChannelSubArrMain.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#9A01F9'});
+		RankWiseDetailsOfChannelSubArrMain.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#30009B'});
 		$("#RankWiseDetailsOfChannelSub"+i+'A'+totGraphId).highcharts({
 			chart: {
 				type: 'column',
@@ -2999,8 +2999,8 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 		
 		//categoriesCompParty.push()
 		
-		govtRankWiseDetailsOfChannelSubMainArr.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#64C664'});
-		govtRankWiseDetailsOfChannelSubMainArr.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#D33E39'});
+		govtRankWiseDetailsOfChannelSubMainArr.push({"y":result[i].tvNewsDetailsVOList[0].categoryCount,"color":'#9A01F9'});
+		govtRankWiseDetailsOfChannelSubMainArr.push({"y":result[i].tvNewsDetailsVOList[1].categoryCount,"color":'#30009B'});
 		$("#RankWiseDetailsOfChannelSubGovt"+i+'A'+totGraphId).highcharts({
 			chart: {
 				type: 'column',
