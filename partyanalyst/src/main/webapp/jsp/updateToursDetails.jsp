@@ -10,8 +10,11 @@
 <link href="tourDetails/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css">
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>  
-
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<!-- for file uploader -->
+<link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
+<!-- for file uploader -->
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/animation-min.js"></script> 	
@@ -108,22 +111,30 @@
 												<option value="November">November</option>
 												<option value="December">December</option>
 											</select>
+											<span id="errMnthId" style="color:red;"></span>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">  
-											<label>Insert Year</label>
-											<input type="text" length="4"  placeholder="Type Year Here" id="yearId" class="form-control clearFieldCls" name="toursInputVO.year"></input>
-										</div>
+											<label>Insert Year</label>  
+											<select id="yearId" class="selectChosen" name="toursInputVO.year">
+											    <option value="0">Select Year</option>
+												<option value="2016">2016</option>
+												<option value="2015">2015</option>     
+											</select>
+											<span id="errYearId" style="color:red;"></span>   
+										</div>  
 										<div class="col-md-3 col-xs-12 col-sm-6 ownDivCls"  style="display:none">
 											<label Id="ownLabelId">Own DIstrict</label>
-											<input type="" length="2" placeholder="Type No of Tour Here" id="ownSelectBoxId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>
+											<input type="text" length="2" placeholder="Type No of Tour Here" id="ownSelectBoxId" attr_err_id="ownSelectBoxerrId" class="form-control clearFieldCls" name="toursInputVO.ownTours"></input>
 											<input type="hidden" id="ownLocationScopeId" name="toursInputVO.ownLocationScopeId">
 											<input type="hidden" id="ownLocationScopeValue" name="toursInputVO.ownLocationId">
-										</div>
+											<span id="ownSelectBoxerrId" class="textErrCls" style="color:red;"></span>
+										</div>  
 										<div class="col-md-3 col-xs-12 col-sm-6 inchageDivCls" style="display:none">  
 											<label id="inchargeLableId">Incharge DIstrict</label>
-											<input type="" length="2" placeholder="Type No of Tour Here" id="inchargeSelectBoxId" class="form-control clearFieldCls" name="toursInputVO.inchargeTours"></input>
-											<input type="hidden" id="inchageLocationScopeId" name=" toursInputVO.inchargeLocationScopeId">
+											<input type="text" length="2" placeholder="Type No of Tour Here" id="inchargeSelectBoxId" attr_err_id="inSelectBoxerrId" class="form-control clearFieldCls" name="toursInputVO.inchargeTours"></input>
+											<input type="hidden" id="inchageLocationScopeId" name=" toursInputVO.inchargeLocationScopeId">  
 											<input type="hidden" id="inchageownLocationScopeValue" name="toursInputVO.inchargeLocationId">
+											<span id="inSelectBoxerrId" class="textErrCls" style="color:red;"></span>
 										</div>    
 									</div>
 									<div class="row m_top10">  
@@ -140,13 +151,14 @@
 								<p class="m_0 text-success font_16 font_weight">UPLOAD SCAN COPY</p>
 								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage" class="m_top20"/>
 							</div>
-						</div>
+						</div>            
 						
 						<div class="row showDivCls" style="display:none;">
 							<div class="col-md-4 col-md-offset-4">
-							   <span class="updateTourStatusCls"></span>
+								<span class="updateTourStatusCls"></span>
 								<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
-							</div>
+								<span id="successSpanId"></span>  
+							</div>   
 							  <div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
 						</div>  
 					</form>  
@@ -254,7 +266,11 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>
+<!-- for file uploader -->
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>  
+<!-- for file uploader -->
+<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>  
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>    
 <script type="text/javascript">
 //$("#uploadFile").dropzone({ url: "/file/post" });
