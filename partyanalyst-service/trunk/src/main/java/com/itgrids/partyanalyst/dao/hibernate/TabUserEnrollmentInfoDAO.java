@@ -228,6 +228,71 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 		return query.list();
 		
 	}
+   	
+   	public List<Object[]> getActualCountOfCadreSurveyUser(Long districtId,Long stateId,Date startDate,Date endDate,Long constituencyId,Set<Long> cadreSurveyUsers){
+ 		
+ 		StringBuilder queryStr = new StringBuilder();
+ 		queryStr.append(" select ");
+ 		
+ 		if(districtId != null && districtId.longValue()>0l){
+ 			queryStr.append(" distinct c.constituencyId,c.name ");
+ 		}else{
+ 			queryStr.append(" distinct d.districtId,d.districtName ");
+ 		}
+ 		
+ 		queryStr.append(" ,sum(TUEI.totalRecords) " +
+ 				" from TabUserEnrollmentInfo TUEI "); 
+ 		if(constituencyId != null && constituencyId.longValue()>0l){
+ 			queryStr.append(" ,Constituency c  where c.constituencyId = :constituencyId " );
+ 		}else if(districtId != null && districtId.longValue()>0l){
+ 			queryStr.append(" ,Constituency c where c.district.districtId = :districtId  " );
+ 		}else{
+ 			queryStr.append(" ,District d where d.districtId = TUEI.districtId " );
+ 		}
+ 		
+ 		if(constituencyId != null && constituencyId.longValue()>0l){
+ 			queryStr.append(" and TUEI.constituency.constituencyId = :constituencyId ");
+ 		}else if(districtId != null && districtId.longValue()>0l){
+ 			queryStr.append(" and  c.constituencyId = TUEI.constituency.constituencyId");
+ 		}else{
+ 			if(stateId != null && stateId.longValue() == 1l){
+ 				queryStr.append(" and  (TUEI.districtId between 11 and 23) ");
+ 			}else if(stateId != null && stateId.longValue() == 36l && stateId.longValue() == 2l ){
+				queryStr.append(" and  (TUEI.districtId between  1 and 10 ) ");
+			}
+ 		}
+ 		
+ 		if(startDate != null && endDate != null){
+ 			queryStr.append(" and (date(TUEI.surveyTime) between :startDate and :endDate) ");
+ 		 }
+ 		if(constituencyId != null && constituencyId.longValue()>0l){
+ 			queryStr.append(" group by c.constituencyId ");
+ 		}else if(districtId != null && districtId.longValue()>0l){   
+ 			queryStr.append(" group by c.constituencyId ");
+ 		}else {
+ 			queryStr.append(" group by d.districtId ");
+ 		}
+ 		
+ 		Query query = getSession().createQuery(queryStr.toString());
+ 		
+ 		
+ 	    if(constituencyId != null && constituencyId.longValue()>0l){
+ 			query.setParameter("constituencyId", constituencyId);	
+ 		}else if(districtId != null && districtId.longValue()>0l){
+ 			query.setParameter("districtId", districtId);
+ 		}
+ 		/*if(stateId != null && stateId.longValue() > 0l){
+ 			query.setParameter("stateId", stateId);
+ 		}*/
+ 		
+ 		if(startDate != null && endDate != null){
+ 			query.setDate("startDate", startDate);
+ 			query.setDate("endDate", endDate);
+ 		}
+ 		return query.list();
+ 		
+ 	}
+
 }
 
 
