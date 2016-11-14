@@ -195,13 +195,13 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		     StringBuilder queryStr = new StringBuilder();
 		     queryStr.append(" select " +
 		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
-		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.designation," +
-		     		 		" model1.selfAppraisalLocationScopeId, ");//1
+		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
+		     		 		" model1.selfAppraisalLocationScopeId, ");//2
 		     		 		if(reportType != null && reportType.equalsIgnoreCase("MP")){
-		     		 		queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId," +//2
+		     		 		queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId," +//
 	  		     		 				    " model1.userAddress.parliamentConstituency.name,");		
 		     		 		}else{
-		     		 		  queryStr.append(" model1.userAddress.district.districtId," +//2
+		     		 		  queryStr.append(" model1.userAddress.district.districtId," +//
 		  		     		 				  " model1.userAddress.district.districtName,");	
 		     		 		}
 		     		 		queryStr.append("model.selfAppraisalCandidate.selfAppraisalCandidateId," +//5
