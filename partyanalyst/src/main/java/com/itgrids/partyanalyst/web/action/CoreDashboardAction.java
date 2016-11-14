@@ -3107,4 +3107,24 @@ public String getTopPoorToursLocationDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getTourSubmittedLeadersDetails(){
+	try {
+		LOG.info("Entered into getTourSubmittedLeadersDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String isTourSubmitted = jObj.getString("isTourSubmitted");
+		List<Long> desgnatnIdsLst = new ArrayList<Long>();
+		JSONArray designationIdsArr=jObj.getJSONArray("designationIds");
+		if(designationIdsArr!=null &&  designationIdsArr.length()>0){
+			for( int i=0;i<designationIdsArr.length();i++){
+				desgnatnIdsLst.add(Long.valueOf(designationIdsArr.getString(i))); 
+			}
+		}
+		toursDtlsList = coreDashboardToursService.getTourSubmittedLeadersDetails(desgnatnIdsLst,isTourSubmitted,fromDate,toDate);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getTourSubmittedLeadersDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }

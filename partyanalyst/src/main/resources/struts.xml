@@ -14651,5 +14651,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getTourSubmittedLeadersDetailsAction" class="coreDashboardAction"  method="getTourSubmittedLeadersDetails">
+			<result type="json" name="success">
+			<param name="root">toursDtlsList</param>
+		</result>
+	</action>
 </package>
 </struts>

@@ -963,3 +963,78 @@ function getToursBasicOverviewCountDetails()
 	 $('.progressCustom').tooltip();	
 	}
 	
+   // getTourSubmittedLeadersDetails();
+   function getTourSubmittedLeadersDetails()
+	{   
+		$("#locationWiseCadreReportHeadingId").html("Tours Submitted Details Report");
+		$("#locationWiseCadreReportModalId").modal("show");
+		$("#locationWiseCadreReportDivId").html(' ');
+		$("#locationWiseProcessImgReport").show();
+	    var designationIds=[];
+		designationIds.push(1);
+		var jsObj ={ 
+					 designationIds : designationIds, 
+					 isTourSubmitted : "Yes",
+					 fromDate : globalTourFormDate,
+					 toDate :  glovalTourToDate
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getTourSubmittedLeadersDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#locationWiseProcessImgReport").hide();
+		   if(result != null && result.length > 0){
+			   buildToursSubmittedDtls(result);
+		   }else{
+			 $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE.");  
+		   }
+ 		}); 
+	}
+	function buildToursSubmittedDtls(result){
+	 var str='';
+	 str+='<div class="table-responsive">';
+	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed " id="tourSubmittedDtlsDataTblid">';   
+	   str+='<thead>';
+             str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>IsTourSubmitted</th>'	 
+			 str+='<th>No Of Tours</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		  for(var i in result){
+				str+='<tr>';
+				 if(result[i].name != null && result[i].name.length > 0){
+					str+='<td>'+result[i].name+'</td>';      
+				  }else{
+					str+='<td> - </td>';  
+				  }
+				  if(result[i].designation != null && result[i].designation.length > 0){
+					str+='<td>'+result[i].designation+'</td>';  
+				  }else{
+				    str+='<td> - </td>';  
+				  }
+				  if(result[i].isTourSubmitted != null && result[i].isTourSubmitted.length > 0){
+						str+='<td>'+result[i].isTourSubmitted+'</td>';  
+				  }else{
+					  str+='<td> - </td>';  
+				  }
+				if(result[i].totalSubmittedToursCnt != null && result[i].totalSubmittedToursCnt > 0){
+					str+='<td>'+result[i].totalSubmittedToursCnt+'</td>';  
+				  }else{
+				  str+='<td> - </td>';  
+				  }
+				str+='</tr>';
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+			  str+='</div>';
+		 $("#locationWiseCadreReportDivId").html(str);
+		 $("#tourSubmittedDtlsDataTblid").dataTable({
+				 "aaSorting": [[ 4, "desc" ]], 
+				"iDisplayLength" : 10,
+				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+		 }); 
+	}
+		
