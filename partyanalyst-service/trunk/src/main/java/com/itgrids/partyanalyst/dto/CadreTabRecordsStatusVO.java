@@ -18,11 +18,11 @@ public class CadreTabRecordsStatusVO implements java.io.Serializable{
 	private String mobileNo;
 	private String firstRecord;
 	private String lastRecord;
-	private Long totalAmount;
+	private Long totalAmount = 0l;
 	private String minRecordTime;
 	private String maxRecordTime;
-	private Long kafkaPending;
-	private Long kafkaSync;
+	private Long kafkaPending = 0l;
+	private Long kafkaSync = 0l;
 	private Long totalImeiNo;
 	private Long sumRecords;
 	private Long totalSyn =0l;

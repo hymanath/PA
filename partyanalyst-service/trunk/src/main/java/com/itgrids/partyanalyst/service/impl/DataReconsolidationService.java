@@ -355,6 +355,7 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 		Set<Long> locationIds = new HashSet<Long>();
 		Set<Long> cadreSurveyUserIds = new HashSet<Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		 Map<Long,CadreTabRecordsStatusVO> locationMap = new HashMap<Long,CadreTabRecordsStatusVO>();
 	
 		   Date fromDate = null;
 		   Date toDate = null;
@@ -363,27 +364,32 @@ public List<CadreTabRecordsStatusVO> getLocationWiseSmartDevicesCount(Long state
 			   fromDate = sdf.parse(startDate);
 			   toDate = sdf.parse(endDate);
 		   }
-		 
+		   
 		List<Object[]> cadreRegDetils = cadreSurveyUserAssignDetailsDAO.getLocationWiseSmartDevicesCount(stateId,districtId,constituencyId,fromDate,toDate);
 		if(cadreRegDetils != null && !cadreRegDetils.isEmpty()){
-			
+				
 			for(Object[] param : cadreRegDetils){
-				CadreTabRecordsStatusVO statusvo = new CadreTabRecordsStatusVO();
+				CadreTabRecordsStatusVO statusvo = locationMap.get((Long)param[0]);
+				if(statusvo == null){
+					 statusvo = new CadreTabRecordsStatusVO();
+					 locationMap.put((Long)param[0], statusvo);
+					 finalList.add(statusvo);
+				}
 				statusvo.setTabUserInfoId(param[0] != null ? (Long)param[0] : 0l);//location Id
 				statusvo.setName(param[1] != null ?param[1].toString():"");//location Name
-				statusvo.setTotalAmount(param[2] != null ? (Long)param[2] : 0l);//total Smart devices
-				statusvo.setTotalRecords(param[3] != null ? (Long)param[3] : 0l);//Total Registrations
-			    statusvo.setKafkaSync(param[4] != null ? (Long)param[4] : 0l);//Total Kafka Sync Records
-			    statusvo.setKafkaPending(param[5] != null ? (Long)param[5] : 0l);//Total Kafka Pending Records
-			    statusvo.setTotalPending(param[6] != null ? (Long)param[6] : 0l);//Total Tab Pending Records;
-			    statusvo.setTotalSyn(param[7] != null ? (Long)param[7] : 0l);//Total Tab Sync Records;
+				statusvo.setTotalAmount(param[2] != null ? (Long)param[2]+statusvo.getTotalAmount() : 0l);//total Smart devices
+				statusvo.setTotalRecords(param[3] != null ? (Long)param[3]+statusvo.getTotalRecords() : 0l);//Total Registrations
+			    statusvo.setKafkaSync(param[4] != null ? (Long)param[4]+statusvo.getKafkaSync() : 0l);//Total Kafka Sync Records
+			    statusvo.setKafkaPending(param[5] != null ? (Long)param[5]+statusvo.getKafkaPending() : 0l);//Total Kafka Pending Records
+			    statusvo.setTotalPending(param[6] != null ? (Long)param[6]+statusvo.getTotalPending() : 0l);//Total Tab Pending Records;
+			    statusvo.setTotalSyn(param[7] != null ? (Long)param[7]+statusvo.getTotalSyn() : 0l);//Total Tab Sync Records;
 			    statusvo.setCadreSurveyUserId(param[8]!= null ? Long.valueOf(param[8].toString()) : 0l);
 			    
 			    if(statusvo.getCadreSurveyUserId().longValue() > 0l)
 			    cadreSurveyUserIds.add(statusvo.getCadreSurveyUserId());
 			    if(statusvo.getTabUserInfoId().longValue()  > 0l)
 			    locationIds.add(statusvo.getTabUserInfoId());//cadreSurveyUserIds
-				finalList.add(statusvo);
+				
 			}
 		
 		}
