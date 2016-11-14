@@ -1523,6 +1523,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 	var globalTsConstituencyWithAscendingArr=[];
 	var globalApConstituencyWithAscendingArr=[];
 	var globalSubLevelRslt;
+	var globalSortingType = '';
 	 function getUserTypeWiseTotalCadreRegistrationCount(){
 		$("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		 var sortingType = '';
@@ -1530,7 +1531,8 @@ function getTabUserInfoDetails(tabUserIdStr){
 		  if($(this).is(":checked")){  
 			sortingType = $(this).attr("attr_sort_type");
 		  }
-		});  
+		});
+		globalSortingType = sortingType;  
 		var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
 				 stateId : globalStateId,
@@ -1545,12 +1547,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		  $("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html(' ');
-		  buildgUserTypeWiseCadreRegistrationTopPositiveRslt(result);
-		  globalUserTypeWiseCadreRegistrationCountRslt = result;
+			$("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html(' ');
+			buildgUserTypeWiseCadreRegistrationTopPositiveRslt(result,sortingType);
+			globalUserTypeWiseCadreRegistrationCountRslt = result;
 		});
  }
- function buildgUserTypeWiseCadreRegistrationTopPositiveRslt(result){
+ function buildgUserTypeWiseCadreRegistrationTopPositiveRslt(result,sortingType){
 		var str='';
 		if(result != null && result.length > 0){
 		  var str='';
@@ -1586,7 +1588,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 					for(var j in result[i]){
 						countVar =countVar+1;
 						candidateNameArray.push(result[i][j].name);
-						totalCadreCountPerArr.push(result[i][j].totalCadreCountPer);
+						if(sortingType == "TargetWise"){
+							totalCadreCountPerArr.push(result[i][j].totalCadreCountPer);//totalCadreCount
+						}else{
+							totalCadreCountPerArr.push(result[i][j].totalCadreCount);//totalCadreCount
+						}
+						
 						if (countVar === 5) {
 							break;
 						}
@@ -1636,8 +1643,16 @@ function getTabUserInfoDetails(tabUserIdStr){
 					}
 				},
 				tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
+				
+				formatter: function(){
+					if(sortingType == "TargetWise"){
+						return '<b>'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
+                    'Name: '+ this.x;
+					}else{
+						return '<b>'+ Highcharts.numberFormat(this.y, 0) +'</b><br/>'+
+                    'Name: '+ this.x;      
+					}  
+				}
 				},
 				plotOptions: {
 					column: {
@@ -1648,14 +1663,18 @@ function getTabUserInfoDetails(tabUserIdStr){
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2) +"%";
+									if(sortingType == "TargetWise"){
+										return Highcharts.numberFormat(this.y,2) +"%";
+									}else{
+										return Highcharts.numberFormat(this.y,0);
+									}
 								}
 							}
 						  
 						}
 					}
 				},
-				legend: {
+				legend: {  
 					layout: 'vertical',
 					align: 'right',
 					verticalAlign: 'top',
@@ -1690,12 +1709,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 	$(document).on("click",".cadrePositiveNegativeCls",function(){
 	var resultType=$(this).attr("attr_value");
 	 if(resultType != null && resultType == "positive"){
-	  buildgUserTypeWiseCadreRegistrationTopPositiveRslt(globalUserTypeWiseCadreRegistrationCountRslt); 
+	  buildgUserTypeWiseCadreRegistrationTopPositiveRslt(globalUserTypeWiseCadreRegistrationCountRslt,globalSortingType); 
 	 }else if(resultType == "negative"){
-	  buildgUserTypeWiseCadreRegistrationTopNegitiveRslt(globalUserTypeWiseCadreRegistrationCountRslt);
+	  buildgUserTypeWiseCadreRegistrationTopNegitiveRslt(globalUserTypeWiseCadreRegistrationCountRslt,globalSortingType);
 	 }
 });
-	function buildgUserTypeWiseCadreRegistrationTopNegitiveRslt(result){
+	function buildgUserTypeWiseCadreRegistrationTopNegitiveRslt(result,globalSortingType){
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
@@ -1715,7 +1734,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				str+='</div>'
 			}
 		}
-		$("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html(str);
+		$("#userTypeWiseTop5PositiveAndNegitiveCadreDivId").html(str);   
 	if(result != null && result.length > 0){
 		for(var i in result){
 				var candidateNameArray = [];
@@ -1725,9 +1744,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 					var length = result[i].length - 1;
 					for(var j = length; j >= 0; j--){
 						candidateNameArray.push(result[i][j].name);
-						//if(result[i][j].totalCadreCountPer > 0){
-						  totalCadreCountPerArr.push(result[i][j].totalCadreCountPer);
-						//}
+						if(globalSortingType == "TargetWise"){
+							totalCadreCountPerArr.push(result[i][j].totalCadreCountPer);//totalCadreCount
+						}else{
+							totalCadreCountPerArr.push(result[i][j].totalCadreCount);//totalCadreCount
+						}
+						//totalCadreCountPerArr.push(result[i][j].totalCadreCountPer);
 						countVar =countVar+1;
 						if (countVar === 5) {
 							break;
@@ -1768,8 +1790,15 @@ function getTabUserInfoDetails(tabUserIdStr){
 					}
 				},
 				tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
+				formatter: function(){  
+					if(globalSortingType == "TargetWise"){
+						return '<b>'+ Highcharts.numberFormat(this.y, 2) +'%</b><br/>'+
+						'Name: '+ this.x;
+					}else{
+						return '<b>'+ Highcharts.numberFormat(this.y, 0) +'</b><br/>'+
+						'Name: '+ this.x;        
+					}  
+				}
 				},
 
 				plotOptions: {
@@ -1781,7 +1810,11 @@ function getTabUserInfoDetails(tabUserIdStr){
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2) +"%";
+									if(globalSortingType == "TargetWise"){
+										return Highcharts.numberFormat(this.y,2) +"%";
+									}else{
+										return Highcharts.numberFormat(this.y,0);
+									}
 								}
 							}
 						  
@@ -2132,19 +2165,20 @@ function getTabUserInfoDetails(tabUserIdStr){
 					text: ' '
 				}
 			},
-			tooltip: {
+			tooltip: {//swadhin 
 			 formatter: function() {
 					var series = this.point.series.chart.series, // get all series 
 					index = this.point.series.xData.indexOf(this.point.x); // get index	
 					var _locationName = this.x;
-						var obj = result.filter(function ( obj ) {
-							var objLocation = obj.locationName;
-							return objLocation.toUpperCase() === _locationName.toUpperCase();
-						})[0];
-					     var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
-						  newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
-						  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
-						  
+					alert(_locationName);
+					var obj = result.filter(function ( obj ) {
+						var objLocation = obj.locationName;
+						return objLocation.toUpperCase() === _locationName.toUpperCase();
+					})[0];
+					var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
+					newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
+					cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+							  
 					return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+'%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%"+cadre2014; 
 				}
 			},
@@ -4651,7 +4685,22 @@ function buildTabUserComparisonRslt(result){
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 			 }); 
 	}	
-	$(document).on('click','#cadreSettingsId',function(){  
+	$(document).on('click','#cadreSettingsId',function(){ 
+		$("#checkErrId").html("");
+		var count = 0;
+		$(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			count += 1;
+		  }
+	   });
+	   if(count == 2){
+		   $("#checkErrId").html("please select one option")
+		   return;      
+	   }
+	   if(count == 0){
+		   $("#checkErrId").html("please select one option")  
+		   return;  
+	   }            
 		$(".specialCadreDropDown").toggle();          
 	});
 	$(document).on('click','.cadreExpand',function(){
@@ -4686,13 +4735,27 @@ function buildTabUserComparisonRslt(result){
 			sortingType = $(this).attr("attr_sort_type");
 		  }
 		});  
-		  getUserTypeWiseTotalCadreRegistrationCount();
+		$("#totalTodayCadreRegistrationBlockDivAPId").html('');
+		$("#totalTodayCadreRegistrationBlockDivTSId").html('');
+		$("#enumeratorsInfoDivId").html('');
+		$("#enumeratorsInfoDivTSId").html('');
+		$(".showCadrecls").hide();  
+		globalStatusCount=0;
+        globalTargetCount=0;
+        globalTotalCnt=0;
+        globalTodayTotalCnt=0;
+		
+		getUserTypeWiseTotalCadreRegistrationCount();//settingscall
+		showCadreRegistreredCount(globalActivityMemberId);
+		showCadreRegistreredCountTS(globalActivityMemberId,36);
+		getEnumeratorsInfo(globalActivityMemberId);
+		getEnumeratorsInfoTS(globalActivityMemberId,36);      
 	   
 	  $(".specialCadreDropDown").toggle();    
 	});
 	
-	
-/* 	getUserTrackingDtslBySurveyUserId();
+
+/* 	getUserTrackingDtslBySurveyUserId();targetWiseId,2016CadreWiseId
 	function getUserTrackingDtslBySurveyUserId(){
 		var jsObj={  
 			surveyUserId :7792,
