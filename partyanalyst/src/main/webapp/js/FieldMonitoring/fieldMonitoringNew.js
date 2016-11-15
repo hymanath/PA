@@ -165,13 +165,17 @@ function buildTabUserDetails(result){
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result.subList){
-				if(result.subList[i].performanceType != null && result.subList[i].performanceType == 'SLOW')
-					str+='<tr style="background: lightgray;">';
+				if(result.subList[i].slowPerformer != null && result.subList[i].slowPerformer == 'true' && result.subList[i].betterPerformer != null && result.subList[i].betterPerformer == 'true')
+					str+='<tr style="background: lightblue;">';
+				else if(result.subList[i].slowPerformer != null && result.subList[i].slowPerformer == 'true')
+					str+='<tr style="background: lightpink;">';
+				else if(result.subList[i].betterPerformer != null && result.subList[i].betterPerformer == 'true')
+					str+='<tr style="background: lightgreen;">';
 				else
 					str+='<tr>';
 				if(result.subList[i].lastHourCount != null && result.subList[i].lastHourCount > 0){
 						str+='<td class="issueCmpltd">'+result.subList[i].userName+'';
-					if(result.subList[i].description == "true"){
+					if((result.subList[i].slowPerformer != null && result.subList[i].slowPerformer == 'true') || (result.subList[i].betterPerformer != null && result.subList[i].betterPerformer == 'true')){
 					str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'" attr_user_name="'+result.subList[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;" data-placement="right"></i></td>';
 						}
 					else{
@@ -180,7 +184,7 @@ function buildTabUserDetails(result){
 					}
 				else{
 						str+='<td class="issuePending">'+result.subList[i].userName+'';
-					if(result.subList[i].description == "true"){
+					if((result.subList[i].slowPerformer != null && result.subList[i].slowPerformer == 'true') || (result.subList[i].betterPerformer != null && result.subList[i].betterPerformer == 'true')){
 						str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result.subList[i].cadreSurveyUserId+'"  attr_user_name="'+result.subList[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;" data-placement="right"></i></td>';
 					}
 					else{

@@ -1301,10 +1301,12 @@ function buildDataCollectorsPerformanceDetails(result){
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
-				if(result[i].performanceType != null && result[i].performanceType == 'SLOW')
-					str+='<tr style="background: lightgray;">';
-				/*else if(result[i].performanceType != null && result[i].performanceType == 'BETTER')
-					str+='<tr style="background: lightgreen;">';*/
+				if(result[i].slowPerformer != null && result[i].slowPerformer == 'true' && result[i].betterPerformer != null && result[i].betterPerformer == 'true')
+					str+='<tr style="background: lightblue;">';
+				else if(result[i].slowPerformer != null && result[i].slowPerformer == 'true')
+					str+='<tr style="background: lightpink;">';
+				else if(result[i].betterPerformer != null && result[i].betterPerformer == 'true')
+					str+='<tr style="background: lightgreen;">';
 				else
 					str+='<tr>';
 				
@@ -1331,7 +1333,7 @@ function buildDataCollectorsPerformanceDetails(result){
 						//str+='<td class="issuePending">'+result[i].userName+'</td>';*/
 					if(result[i].userName != null){
 						str+='<td id="'+result[i].cadreSurveyUserId+'">'+result[i].userName+'<span class="glyphicon glyphicon-map-marker mapClass"  attr_id="'+result[i].cadreSurveyUserId+'" attr_userName="'+result[i].userName+'" title="Click here For User Tracking" style="cursor:pointer;"></span>&nbsp&nbsp';
-						if(result[i].description == "true"){
+						if((result[i].slowPerformer != null && result[i].slowPerformer == 'true') || (result[i].betterPerformer != null && result[i].betterPerformer == 'true')){
 							str+='<i class="glyphicon glyphicon-eye-open viewPerformanceCls" attr_cadre_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_user_name="'+result[i].userName+'" title="Click Here to View Performance Details" style="cursor:pointer;"></i></td>';
 						}else{
 							str+='</td>';
