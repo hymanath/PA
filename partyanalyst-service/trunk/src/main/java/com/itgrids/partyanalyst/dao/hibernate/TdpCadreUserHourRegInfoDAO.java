@@ -148,13 +148,14 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 				queryStr.append(" and model.hour = :lastOneHour and (date(model.surveyDate) between :startDate and :endDate) ");
 			}
 			
-			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase("old") &&
+					 inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
 			{
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 					if(inputVO.getParentLocationTypeId().longValue() == 36L || inputVO.getParentLocationTypeId().longValue() == 2L)
-						queryStr.append(" and model1.constituency.district.districtId between 1 and 10 ");
+						queryStr.append(" and (model1.constituency.district.districtId between 1 and 10 ) ");
 					else if(inputVO.getParentLocationTypeId().longValue() == 1L)
-						queryStr.append(" and model1.constituency.district.districtId between 11 and 23 ");
+						queryStr.append(" and ( model1.constituency.district.districtId between 11 and 23)  ");
 					else
 						queryStr.append(" and model1.constituency.district.state.stateId = 1 ");
 				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -163,12 +164,23 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 						queryStr.append("  and model1.constituency.constituencyId = :parentLocationTypeId ");
 				}
 			}
-			
+			else{
+				if(inputVO.getParentLocationTypeId().longValue() == 36L || inputVO.getParentLocationTypeId().longValue() == 2L)
+					queryStr.append(" and (model1.constituency.district.districtId between 1 and 10 )");
+				else if(inputVO.getParentLocationTypeId().longValue() == 1L)
+					queryStr.append(" and (model1.constituency.district.districtId between 11 and 23) ");
+				else {
+					//queryStr.append(" and model1.constituency.district.state.stateId = 1 ");
+					queryStr.append(" and (model1.constituency.district.districtId between 11 and 23 ) ");
+				}
+			}
 			
 				queryStr.append(" group by model.cadreSurveyUserId ");
 			
 			Query query = getSession().createQuery(queryStr.toString());
-			if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase("old") && 
+					inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE) && 
+					 inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
 			
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
