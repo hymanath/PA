@@ -4074,6 +4074,9 @@ try{
  			 Object[] cadreSurveyUserObj = rtrnTrackingDtlsLst.get(0);
 			 resultVO.setSurveyUserId(cadreSurveyUserId);
 			 resultVO.setUserName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[5]));
+			 resultVO.setDeviceUserName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[8]));
+			 resultVO.setUserMobileNo(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[9]));
+			 resultVO.setImagePathStr("http://www.mytdp.in/tab_user_images/"+commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[10]));
 		 }
  		
 	 }catch(Exception e){
