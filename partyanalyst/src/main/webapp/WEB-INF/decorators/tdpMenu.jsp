@@ -820,7 +820,7 @@
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
 								</li>
 							</c:if>
-							
+						<!--	
 						<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 							  <li>
 								<a href="#"><i class="fa fa-envelope ico-white"></i><span>&nbsp;&nbsp;Media Dashboard</span></a>
@@ -835,7 +835,7 @@
 							   </ul>
 							</li>
 						</c:if>			
-						
+						-->
 						
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>

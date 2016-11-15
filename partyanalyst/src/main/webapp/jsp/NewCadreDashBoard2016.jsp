@@ -318,7 +318,7 @@ table.dataTable tr.odd {
 		  
 		</div><!-- Members Registered Previous Row -->
 		<!-- Members Count Row -->
-		<div class="row fadeInUp">
+		<!--<div class="row fadeInUp">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small border-radius-0 mb-10">
 			<label class="pull-right text-muted" style="margin-top: -10px;">Note: R - Renewal &amp; N - New</label>
 				<div class="row">
@@ -358,7 +358,7 @@ table.dataTable tr.odd {
 				
 			</div>
 			
-			
+			</div>-->
 			<!--<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
 				    <table class="table table-bordered border-radius-0 mb-0 membercount" style="background:#ffffff;">
 						<tbody>
@@ -380,7 +380,7 @@ table.dataTable tr.odd {
 						</tbody>
 					</table>
 			</div>-->
-		</div><!-- Members Count Row End -->
+		<!-- Members Count Row End -->
 		<!----New code for constituency and district wise Start ----->
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
@@ -535,7 +535,7 @@ $(document).on("click",".radiobuttonSelectedConsWise",function(){
 
  get2016LocationWiseRegisteredCounts("total");
  get2016LocationWiseRegisteredCounts("today");
- getDataSourceTypeWiseRegisteredDetails();
+ //getDataSourceTypeWiseRegisteredDetails();
  get2016LocationWiseRegisteredCountsDistrictWise("today",3,"AP");
  get2016LocationWiseRegisteredCountsConstituencyWise("today",4,"AP");
 
@@ -620,6 +620,34 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				}
 		 });
 	}
+	
+	/*function getDataSourceTypeWiseRegisteredDetails(){
+		var jObj = {
+			type : "Today"
+		}
+	
+		$.ajax({
+		  type:'GET',
+		  url: 'getDataSourceTypeWiseRegisteredDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			
+		});
+	}
+	
+	function getDataSourceTypeWiseRegisteredDetails(){
+		var jObj = {
+			type : "Total"
+		}
+	
+		$.ajax({
+		  type:'GET',
+		  url: 'getDataSourceTypeWiseRegisteredDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			
+		});
+	}*/
 	
 	function getDataSourceTypeWiseRegisteredDetails(){
 				var jObj = {}
