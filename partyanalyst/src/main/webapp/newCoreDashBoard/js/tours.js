@@ -3,8 +3,8 @@ var customStartDateTours = moment().startOf('month').format('DD/MM/YYYY')
 var customEndDateTours = moment().format('DD/MM/YYYY');
 	$("#tourDateRangePickerId").daterangepicker({
 		opens: 'left',
-	     startDate: moment().subtract(parseInt(91)+parseInt(getDay()), 'days'),
-         endDate: moment().subtract(parseInt(getDay()), 'days'),   //moment().endOf('month'),
+	     startDate: moment().startOf('month'),
+         endDate:moment,  
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -32,7 +32,7 @@ var customEndDateTours = moment().format('DD/MM/YYYY');
 			globalTourFormDate = datesArr[0]; 
 			glovalTourToDate = datesArr[1]; 
 		}
-     $("#toursHeadingId").html("Last 3 Months( "+dates+" )");
+     $("#toursHeadingId").html("This Month( "+dates+" )");
      $('#tourDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   var dates= $("#tourDateRangePickerId").val();
 	   $("#toursHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
