@@ -2225,7 +2225,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 	for(var i in result)
 	{
 		rankVar =rankVar+1;
-		str+='<li class="NewsSlickPanelSliderLiEmnCls" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+'  style="cursor:pointer;">';
+		str+='<li class="NewsSlickPanelSliderLiEmnCls" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+' attr_channelName='+result[i].tvNewsDetailsVOList[0].organization+'  style="cursor:pointer;">';
 			str+='<div class="panel panel-default panelSlick">';
 				str+='<div class="panel-heading" style="padding:8px;background-color: #ededed !important;">';
 					str+='<h4 class="panel-title"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList[0].organization+'.png" class="debatesPartyIcon"/>'+result[i].tvNewsDetailsVOList[0].organization+'';
@@ -2385,15 +2385,16 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 	
 }
 $(document).on("click",".NewsSlickPanelSliderLiEmnCls",function(){
-	$(".NewsSlickPanelSliderLiEmnCls").removeClass("active");
-	$(this).addClass("active");
+	$(".NewsSlickPanelSliderLiEmnCls").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+	$(this).find(".panelSlick").addClass("panelActiveSlick");
 	var channelIdArr = [];
 	var channelId = $(this).attr("attr_newsChannel");
+	var channelName = $(this).attr("attr_channelName");
 	channelIdArr.push(channelId);
-	comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr);
+	comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr,channelName);
 	getEMMDetailedPartyDistrictWiseProgramsOverview(channelIdArr,"comparison")
 });
-function comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr)
+function comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr,channelName)
 {
 	$("#partyRankWiseDetailsOfChannelSub").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
@@ -2401,14 +2402,15 @@ function comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr)
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
 	}).then(function(result){
-		buildComparisonPartyRankWiseDetailsOfChannelSub(result)
+		buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName)
 	});
 }
-function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
+function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName)
 {
 	var str='';
 	str+='<div class="pad_15 bg_ED">';
 		str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12"><h4><img src="newCoreDashBoard/img/'+channelName+'.png"/>'+channelName+'</h4></div>';
 			var graphId = 0;
 			var totGraphId = 0;
 			var categoriesCompParty = [];
@@ -2909,8 +2911,8 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 	
 }
 $(document).on("click",".NewsSlickPanelSliderLiEmnClsGovt",function(){
-	$(".NewsSlickPanelSliderLiEmnClsGovt").removeClass("active");
-	$(this).addClass("active");
+	$(".NewsSlickPanelSliderLiEmnClsGovt").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+	$(this).find(".panelSlick").addClass("panelActiveSlick");
 	var channelIdArr = [];
 	var channelId = $(this).attr("attr_newsChannel");
 	var channelName = $(this).attr("attr_channelName");
@@ -2935,7 +2937,7 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 	var str='';
 	str+='<div class="pad_15 bg_ED">';
 		str+='<div class="row">';
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">'+channelName+'<div>';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12"><h4>'+channelName+'</h4></div>';
 			var graphId = 0;
 			var totGraphId = 0;
 			var categoriesCompParty = [];
