@@ -408,4 +408,33 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 	  }
 	  return query.list();
 }
+
+  public List<Object[]> getDistrictsTargetCountForTodayAndOverAll(Long stateId){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.locationValue," +
+			" model.targetCount" +
+			" from TdpCadreTargetCount model" +
+			" where model.locationScopeId = 3 and model.isDeleted = 'N' ");
+	if(stateId != null && stateId.longValue() == 1l)
+		sb.append(" and model.locationValue between 11 and 23");
+	else if(stateId != null && stateId.longValue() == 36l)
+		sb.append(" and model.locationValue between 1 and 10");
+	Query query = getSession().createQuery(sb.toString());
+	return query.list();
+}
+
+   public List<Object[]> getConstitencysTargetCountForTodayAndOverAll(Long stateId){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.locationValue," +
+			" model.targetCount" +
+			" from TdpCadreTargetCount model,Constituency C" +
+			" where model.locationScopeId = 4 and model.isDeleted = 'N' " +
+			"and model.locationValue = C.constituencyId");
+	if(stateId != null && stateId.longValue() == 1l)
+		sb.append(" and C.district.districtId between 11 and 23");
+	else if(stateId != null && stateId.longValue() == 36l)
+		sb.append(" and C.district.districtId between 1 and 10");
+	Query query = getSession().createQuery(sb.toString());
+	return query.list();
+}
 }
