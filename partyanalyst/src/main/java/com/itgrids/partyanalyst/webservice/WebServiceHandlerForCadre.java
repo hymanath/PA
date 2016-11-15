@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -177,9 +178,32 @@ public class WebServiceHandlerForCadre {
 	}
 	
 	
+	//PRINTING APP CALLS
+	@GET
+	@Path("/validateCardPrintUserLogin/{username}/{password}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CardPrintValidationUserVO validateCardPrintUserLogin(@PathParam("username") String username,@PathParam("password") String password){
+		CardPrintValidationUserVO cardPrintValidationUserVO  = null;
+		try{
+			 
+			cardPrintValidationUserVO = webServiceHandlerServiceForCadre.validateCardPrintUserLogin(username,password);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in checkCardPrintValidationUserLogin() in WebServiceHandlerForCadre class",e);
+		}
+		return cardPrintValidationUserVO;
+	}
 	
-	
-	
-	
-	
+	@GET
+	@Path("/tdpCadrePrintDetails/{memberShipId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void tdpCadrePrintDetails(@PathParam("memberShipId") String memberShipId){
+		//TdpCadrePrintDetailsVO
+		try{
+			
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in tdpCadrePrintDetails() in WebServiceHandlerForCadre class",e);
+		}
+	}
 }
