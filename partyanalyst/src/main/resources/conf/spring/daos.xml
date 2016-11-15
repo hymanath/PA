@@ -3413,4 +3413,7 @@
 	<bean id="printRejectReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.PrintRejectReasonDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCadreDataSourceTypeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDataSourceTypeInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
