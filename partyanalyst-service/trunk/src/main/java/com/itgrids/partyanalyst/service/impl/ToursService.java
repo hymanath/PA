@@ -136,8 +136,10 @@ public class ToursService implements IToursService {
 			if(toursInputVO.getInchargeTours() != null){
 				selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());
 			}
-			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());      
-			selfAppraisalCandidateDetails.setReportPath(destPath);         
+			selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks()); 
+			if(destPath != null && destPath.trim().length() > 1){
+				selfAppraisalCandidateDetails.setReportPath(destPath);       
+			}
 			selfAppraisalCandidateDetails.setInsertedBy(userId);
 			selfAppraisalCandidateDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			selfAppraisalCandidateDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -173,18 +175,31 @@ public class ToursService implements IToursService {
 				if(toursInputVO.getInchargeTours() != null){
 					selfAppraisalCandidateDetails.setInchargeTours(toursInputVO.getInchargeTours());  
 				}
-				if(toursInputVO.getRemarks() != null && toursInputVO.getRemarks().trim().length() > 0){
-					selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks());
+				if(toursInputVO.getRemarks() != null){
+					selfAppraisalCandidateDetails.setRemarks(toursInputVO.getRemarks().trim());
 				}
 				if(toursInputVO.getOldFileStatus().longValue() == 1){
 					String oldPath = selfAppraisalCandidateDetails.getReportPath();
-					if(oldPath.trim().length() > 0){
-						selfAppraisalCandidateDetails.setReportPath(oldPath+","+destPath);      
+					if(oldPath != null){
+						if(oldPath.trim().length() > 2){
+							selfAppraisalCandidateDetails.setReportPath(oldPath+","+destPath);      
+						}else{
+							if(destPath != null && destPath.trim().length() > 1){    
+								selfAppraisalCandidateDetails.setReportPath(destPath);
+							}
+						}
 					}else{
-						selfAppraisalCandidateDetails.setReportPath(destPath);
+						if(destPath != null && destPath.trim().length() > 1){    
+							selfAppraisalCandidateDetails.setReportPath(destPath);
+						}   
 					}
 				}else{
-					selfAppraisalCandidateDetails.setReportPath(destPath);
+					if(destPath != null && destPath.trim().length() > 1){    
+						selfAppraisalCandidateDetails.setReportPath(destPath);
+					}  
+				}
+				if(toursInputVO.getOldFileStatus().longValue() == 2 && destPath != null && destPath.trim().length() < 2){     
+					selfAppraisalCandidateDetails.setReportPath("");  
 				}
 			}else{
 				resultStatus.setResultCode(0);
@@ -585,14 +600,18 @@ public class ToursService implements IToursService {
     		StringBuilder builder = new StringBuilder();  
     		ToursBasicVO basicVO = new ToursBasicVO();
     		List<Object[]> memberDtls = selfAppraisalCandidateDetailsDAO.getMemberDtls(candidateDtlsId);
-    		if(memberDtls != null && memberDtls.size() > 0){
-    			for(Object[] param : memberDtls){
+    		if(memberDtls != null && memberDtls.size() > 0){  
+    			for(Object[] param : memberDtls){  
     				basicVO.setId(param[0] != null ? (Long)param[0] : 0l);
     				basicVO.setCandDtlsId(candidateDtlsId);  
     				basicVO.setMonth(param[1] != null ? param[1].toString() : "");
     				basicVO.setYear(param[2] != null ? (Long)param[2] : 0l);
-    				basicVO.setOwnToursCnt(param[5] != null ? (Long)param[5] : 0l);
-    				basicVO.setInchargerToursCnt(param[8] != null ? (Long)param[8] : 0l);
+    				if(param[5] != null){
+    					basicVO.setOwnToursCnt((Long)param[5]);
+    				}
+    				if(param[8] != null){
+    					basicVO.setInchargerToursCnt((Long)param[8]);  
+    				}  
     				basicVO.setComment(param[9] != null ? param[9].toString() : "");
     				if(param[10] != null){    
 						if(param[10].toString().trim().length() > 0){
