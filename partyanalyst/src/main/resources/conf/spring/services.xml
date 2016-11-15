@@ -1684,6 +1684,15 @@
     	<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="locationWiseRegistrationSMSTracking" />
 	</bean>
+	
+	<bean name="pushDataSourceWisetdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="triggerDataSourceWisetdpCadreCounts" />
+    	<property name="cronExpression" value="0 3 0/1 * * ?"/>
+	</bean>
+    <bean name="triggerDataSourceWisetdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushDataSourceWisetdpCadreCounts" />
+    </bean>
     
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
@@ -1729,6 +1738,8 @@
 		    <ref bean="tdpCadreDataHourWiseByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseByOverall" />
 		    <ref bean="locationWiseRegistrationSMSTracking"/>
+		    <ref bean="pushDataSourceWisetdpCadreCounts" />
+		    
         </list>
     	</property>
 	</bean>
@@ -3741,6 +3752,9 @@
 	   <property name="tdpCadreUserHourRegInfoTemp1DAO" ref="tdpCadreUserHourRegInfoTemp1DAO" />
 	   <property name="tdpCadreHourRegInfoTemp1DAO" ref="tdpCadreHourRegInfoTemp1DAO" />
 	   <property name="tdpCadreHourRegInfoTempDAO" ref="tdpCadreHourRegInfoTempDAO" />
+	   <property name="cardPrintValidationUserDAO" ref="cardPrintValidationUserDAO" />
+	   <property name="dateUtilService" ref="dateUtilService" />
+	   <property name="tdpCadreDataSourceTypeInfoDAO" ref="tdpCadreDataSourceTypeInfoDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
