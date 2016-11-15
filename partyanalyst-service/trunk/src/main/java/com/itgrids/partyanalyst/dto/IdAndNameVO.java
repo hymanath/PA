@@ -19,6 +19,7 @@ public class IdAndNameVO {
 	private Long tsNow = 0l;
 	private String startTime;
 	private String endTime;
+	private String per2016;
 	
 	
 	public IdAndNameVO(){}
@@ -123,6 +124,12 @@ public class IdAndNameVO {
 	}
 	public void setStartTime(String startTime) {
 		this.startTime = startTime;
+	}
+	public String getPer2016() {
+		return per2016;
+	}
+	public void setPer2016(String per2016) {
+		this.per2016 = per2016;
 	}
 	
 
