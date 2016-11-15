@@ -607,4 +607,21 @@ public class Scheduler {
 		return rs;
 	}
 	
+	public ResultStatus pushDataSourceWisetdpCadreCounts()
+	{	
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+		
+		try{ 
+			rs = cadreRegistrationServiceNew.pushDataSourceWisetdpCadreCounts();
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushDataSourceWisetdpCadreCounts "); 
+		}
+		return rs;
+	}
+	
 }
