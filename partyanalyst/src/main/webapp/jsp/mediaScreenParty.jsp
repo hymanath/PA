@@ -152,17 +152,16 @@ h1,h2,h3,h4,h5,h6,.table
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#3A98DE">Today TOp 20</span></h5>
-							<h4 class="text-capital">Constituencies in ap</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
+							<h4 class="text-capital">Districts in ap</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
 						</div>
 					</div>
 				</div>
-				<div class="panel-body" style="padding:0px;" id="constituencyListPanel1">
-					<div id="todayapImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+				<div class="panel-body" style="padding:0px;" id="todayDistrictList">
+					<div id="todaytsImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				</div>
 			</div>
 		</div>
-	
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default">
 				<div class="panel-heading" style="background:#fff">
@@ -172,13 +171,13 @@ h1,h2,h3,h4,h5,h6,.table
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#3A98DE">Today TOp 20</span></h5>
-							<h4 class="text-capital">Constituencies in ts</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
+							<h4 class="text-capital">Constituencies in ap</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
 						</div>
 					</div>
 				</div>
-				<div class="panel-body" style="padding:0px;" id="constituencyListPanel2">
-					<div id="todaytsImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+				<div class="panel-body" style="padding:0px;" id="constituencyListPanel1">
+					<div id="todayapImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				</div>
 			</div>
 		</div>
@@ -195,17 +194,17 @@ h1,h2,h3,h4,h5,h6,.table
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h4 class="text-capital">Constituencies in ap</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
+							<h4 class="text-capital">District in ap</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
 						</div>
 					</div>
 				</div>
-				<div class="panel-body" style="padding:0px;" id="constituencyListPanel3">
-				<div id="totalapimgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+				<div class="panel-body" style="padding:0px;" id="overAllDistrictList">
+				<div id="totaltsimgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				</div>
 			</div>
 		</div>
-	
+		
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default">
 				<div class="panel-heading" style="background:#fff">
@@ -215,13 +214,13 @@ h1,h2,h3,h4,h5,h6,.table
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h4 class="text-capital">Constituencies in ts</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Memberships</h5>
+							<h4 class="text-capital">Constituencies in ap</h4>
+							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
 						</div>
 					</div>
 				</div>
-				<div class="panel-body" style="padding:0px;" id="constituencyListPanel4">
-				<div id="totaltsimgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
+				<div class="panel-body" style="padding:0px;" id="constituencyListPanel3">
+				<div id="totalapimgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				</div>
 			</div>
 		</div>
@@ -298,9 +297,11 @@ $("#totalPerceId").hide();
 	}
 	
 getConstituencyWiseDisrictList1("Today",1);
-getConstituencyWiseDisrictList2("Today",36);
+//getConstituencyWiseDisrictList2("Today",36);
 getConstituencyWiseDisrictList3("Total",1);
-getConstituencyWiseDisrictList4("Total",36);
+//getConstituencyWiseDisrictList4("Total",36);
+getTodayDistrictList("Today",1);
+getOverAllDistrictList("Total",1);
 function getConstituencyWiseDisrictList1(type,stateId){
 	$("#todayapImgId").show();
 	var jObj = {
@@ -384,7 +385,7 @@ function buildingConstituencyList(result,divId,type){
 					str+='<td><span class="count" style="background-color:#9D0D3E"><b>'+temp+'</b></span></td>';
 				}
 				str+='<td class="text-capital">'+result[i].name+'</td>';
-				str+='<td>'+result[i].attenteeCount+'</td>';
+				str+='<td>'+result[i].per2016+'</td>';
 			str+='</tr>';
 		}
 		
@@ -394,13 +395,58 @@ function buildingConstituencyList(result,divId,type){
 	//$("."+divId).mCustomScrollbar({setHeight:'200px'})
 	
 	var div = $("."+divId);
-	
+	var myVar;
+	myFunction()
+	function myFunction() {
+		myVar = setInterval(function(){	var pos = div.scrollTop();div.scrollTop(pos + 2);}, 100)
+	}
+
 	setInterval(function(){
-		var pos = div.scrollTop();
-		div.scrollTop(pos + 2);
-	}, 100)
-	
+		clearTimeout(myVar);
+		setInterval(function(){
+			var pos = div.scrollTop();
+			div.scrollTop(pos - 2);
+		}, 100)
+	}, 22000)
 }	
+
+setTimeout(function(){ location.reload(); }, 43000);
+
+function getTodayDistrictList(type,stateId){
+	$("#todaytsImgId").show();
+	var jObj = {
+		type:type,
+		stateId:stateId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getDistrictWiseTodayAndOverAllCountsAction.action',
+	  data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildingConstituencyList(result,"todayDistrictList",type);
+		}
+		$("#todaytsImgId").hide();
+	});
+}
+function getOverAllDistrictList(type,stateId){
+	$("#todaytsImgId").show();
+	var jObj = {
+		type:type,
+		stateId:stateId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getDistrictWiseTodayAndOverAllCountsAction.action',
+	  data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildingConstituencyList(result,"overAllDistrictList",type);
+		}
+		$("#todaytsImgId").hide();
+	});
+}
+
 </script>		
 </body>
 </html>
