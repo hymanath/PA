@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.CadreRegUserVO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FieldMonitoringService implements IFieldMonitoringService {
 	
@@ -88,7 +90,7 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ITdpCadreLocationInfoDAO tdpCadreLocationInfoDAO;
 	private ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO;
 	private ICadreSurveyUserPerformanceTypeDAO cadreSurveyUserPerformanceTypeDAO;
-	
+	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
 	//Setters
 	
 	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
@@ -207,6 +209,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	}
 	public void setCadreSurveyUserPerformanceTypeDAO(ICadreSurveyUserPerformanceTypeDAO cadreSurveyUserPerformanceTypeDAO) {
 		this.cadreSurveyUserPerformanceTypeDAO = cadreSurveyUserPerformanceTypeDAO;
+	}
+	
+	public ITdpCadreTargetCountDAO getTdpCadreTargetCountDAO() {
+		return tdpCadreTargetCountDAO;
+	}
+	public void setTdpCadreTargetCountDAO(ITdpCadreTargetCountDAO tdpCadreTargetCountDAO) {
+		this.tdpCadreTargetCountDAO = tdpCadreTargetCountDAO;
 	}
 	//business method.
 	public List<IdAndNameVO> getVendors(Long stateId){
@@ -2832,6 +2841,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
     }
 	
 	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId){
+		 Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
 			List<Object[]> list = tdpCadreLocationInfoDAO.getConstituencyWiseTodayAndOverAllCounts(type, stateId);
@@ -2844,11 +2854,39 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 					returnList.add(vo);
 				}
 			}
+			List<Object[]> cnstincyTrgetList = tdpCadreTargetCountDAO.getConstitencysTargetCountForTodayAndOverAll(stateId);
+			if(cnstincyTrgetList != null && !cnstincyTrgetList.isEmpty()){
+				for (Object[] obj : cnstincyTrgetList) {
+					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					targetMap.put(locaId, count);
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setInviteeCount(targetMap.get(vo.getId()));//TargetCoount
+					
+				}
+			}
+			if(type.trim().equalsIgnoreCase("Today")){
+				if(returnList != null && !returnList.isEmpty()){
+					for (IdAndNameVO vo : returnList) {
+						vo.setInviteeCount(vo.getInviteeCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);//TargetCoount
+						
+					}
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setPer2016(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception occurred at getConstituencyWiseTodayAndOverAllCounts() of FieldMonitoringService", e);
 		}
 		return returnList;
 	}
+	
 	public List<IdAndNameVO> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId){
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try{
@@ -2944,4 +2982,53 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
   }
 	return returnList;  
 }
+  public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId){
+	  Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = tdpCadreLocationInfoDAO.getDistrictWiseTodayAndOverAllCounts(type, stateId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					returnList.add(vo);
+				}
+			}
+			
+			List<Object[]> dstrictTrgetList = tdpCadreTargetCountDAO.getDistrictsTargetCountForTodayAndOverAll(stateId);
+			if(dstrictTrgetList != null && !dstrictTrgetList.isEmpty()){
+				for (Object[] obj : dstrictTrgetList) {
+					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					targetMap.put(locaId, count);
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setInviteeCount(targetMap.get(vo.getId()));//TargetCoount
+					
+				}
+			}
+			if(type.trim().equalsIgnoreCase("Today")){
+				if(returnList != null && !returnList.isEmpty()){
+					for (IdAndNameVO vo : returnList) {
+						vo.setInviteeCount(vo.getInviteeCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);//TargetCoount
+						
+					}
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setPer2016(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getDistrictWiseTodayAndOverAllCounts() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
+  
 }
