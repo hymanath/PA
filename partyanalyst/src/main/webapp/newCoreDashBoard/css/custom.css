@@ -2,7 +2,7 @@
     outline: 0 none !important;
 }
 body {
-    background: rgb(236, 240, 241) none repeat scroll 0 0;
+    background: rgb(236, 240, 241);
     color: rgb(74, 88, 99) !important;
     font-family: "Roboto",sans-serif;
     font-size: 13px;
@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: 0 !important;
 }
 .navbarHeader {
-    background: rgb(85, 85, 85) none repeat scroll 0 0;
+    background: rgb(85, 85, 85);
     margin-bottom: 0;
 }
 .navbarHeader .navbar-brand, .navbarHeader .navbar-brand:active, .navbarHeader .navbar-brand:hover, .navbarHeader .navbar-brand:focus {
@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-top: 5px;
 }
 .headerSearch .input-group-addon {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border-bottom-left-radius: 17px;
     border-top-left-radius: 17px;
 }
@@ -64,7 +64,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     color: rgb(241, 241, 241);
 }
 .headerProfileName .caretBackground {
-    background: rgb(85, 85, 85) none repeat scroll 0 0;
+    background: rgb(85, 85, 85);
     border-radius: 50%;
     display: inline-block;
     height: 20px;
@@ -77,7 +77,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: 0;
 }
 .dropDownView .caretBackground {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
     border-radius: 50%;
     display: inline-block;
     height: 20px;
@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     width: 20px;
 }
 .navbarProfile {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     height: 40px;
     margin-bottom: 0;
 }
@@ -104,7 +104,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 8px 12px;
 }
 .btnYellow, .btnYellow:active, .btnYellow:hover {
-    background: rgb(255, 204, 45) none repeat scroll 0 0 !important;
+    background: rgb(255, 204, 45) !important;
     border: 1px solid rgb(255, 204, 45) !important;
     border-radius: 0;
     color: rgb(85, 85, 85) !important;
@@ -129,7 +129,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
 }
 .settingsDropDownOptionsView {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 2px solid rgb(255, 204, 45) !important;
     display: none;
     min-width: 540px !important;
@@ -159,7 +159,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: -16px;
 }
 .settingsDropDownOptions {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 2px solid rgb(255, 204, 45) !important;
     display: none;
     min-width: 250px;
@@ -170,7 +170,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     z-index: 99;
 }
 .settingsDropDownOptions {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 1px solid rgb(194, 225, 245);
 }
 .settingsDropDownOptions::after, .settingsDropDownOptions::before {
@@ -194,7 +194,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: -11px;
 }
 .settingsDropDownOptions li:nth-child(1) {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
 }
 .settingsDropDownOptions li:nth-child(1) a {
     color: rgb(85, 85, 85);
@@ -233,12 +233,12 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-top: 0 !important;
 }
 .panelProfileView .panel-body {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border-top: 0 none !important;
     padding: 5px 5px 5px 20px;
 }
 .panelProfileView .panel-heading {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 0 none !important;
     padding-bottom: 5px;
     padding-left: 0;
@@ -266,7 +266,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border: 2px solid rgb(255, 204, 45);
 }
 .panelProfileView .panel-body .radioStyling li input[type="radio"]:checked ~ .check::before {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
 }
 .panelProfileView .panel-body .radioStyling li input[type="radio"]:checked ~ label {
     color: rgb(85, 85, 85);
@@ -286,11 +286,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     background-color: rgb(246, 245, 245);
 }
 .selectBoxStyle .dk-selected {
-    background: rgb(246, 245, 245) none repeat scroll 0 0;
+    background: rgb(246, 245, 245);
     font-weight: 400 !important;
 }
 .selectBoxStyle ul li:first-child {
-    background: rgb(255, 255, 255) none repeat scroll 0 0 !important;
+    background: rgb(255, 255, 255) !important;
     padding: 4px;
 }
 .selectBoxStyle ul li {
@@ -365,7 +365,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border: 2px solid rgb(255, 204, 45);
 }
 .radioStyling li input[type="radio"]:checked ~ .check::before {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
 }
 .radioStyling li input[type="radio"]:checked ~ label {
     color: rgb(85, 85, 85);
@@ -386,7 +386,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     width: 20px;
 }
 .squaredOne label::after {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
     color: rgb(255, 255, 255);
     content: "";
     font-family: "Glyphicons Halflings";
@@ -411,7 +411,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     transition: border 0.25s linear 0s;
 }
 .dropdownOpen .settingsIcon {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
     color: rgb(255, 255, 255);
     padding: 2px;
 }
@@ -447,7 +447,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-radius: 0;
 }
 .panelCustomBlock .panel-heading, .panelCustomBlock .panel-body {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
 }
 .panelCustomBlock .panel-heading .panel-title {
     color: rgb(85, 85, 85);
@@ -487,7 +487,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     color: rgb(102, 102, 102) !important;
 }
 .profieViewCollapse::before {
-    background: rgb(255, 204, 45) none repeat scroll 0 0;
+    background: rgb(255, 204, 45);
     border: 1px solid rgb(255, 204, 45);
     border-radius: 5px;
     color: rgb(255, 255, 255);
@@ -517,7 +517,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
 }
 .profileImageView {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border-radius: 50%;
     box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.4);
     display: none;
@@ -536,7 +536,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     display: block;
 }
 .profileImageView {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border-radius: 50%;
     box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.4);
     display: none;
@@ -555,7 +555,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     display: block;
 }
 .settingsDropDownOptionsSub {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 2px solid rgb(255, 204, 45);
 }
 .settingsDropDownOptionsSub::after, .settingsDropDownOptionsSub::before {
@@ -586,7 +586,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     border-radius: 0;
 }
 .panelNewCustom .panel-heading {
-    background: rgb(255, 194, 31) none repeat scroll 0 0;
+    background: rgb(255, 194, 31);
     border-radius: 0;
 }
 .panelNewCustom .panel-heading .panel-title {
@@ -648,7 +648,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
 }
 .notesDropDown, .settingsDropDown, .settingsStateLevelMeetingDropDown, .specialMeetingDropDown, .specialCadreDropDown {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 1px solid rgb(255, 194, 31);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
     display: none;
@@ -660,7 +660,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     z-index: 99;
 }
 .notesDropDownOptionsView {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 2px solid rgb(255, 204, 45) !important;
     display: none;
     min-width: 200px !important;
@@ -690,7 +690,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: -16px;
 }
 .basicCommitteesBlockDropDown, .newsBlockDropDown, .cadreRDD , .emnBlockDropDown{
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
     display: none;
     margin-top: 34px;
@@ -805,7 +805,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-size: 22px;
 }
 .activeUlCls li {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 1px solid rgb(221, 221, 221);
     border-radius: 4px;
     cursor: pointer;
@@ -905,7 +905,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     display: block;
 }
 .closeIconComparison::after {
-    background: rgb(74, 87, 98) none repeat scroll 0 0;
+    background: rgb(74, 87, 98);
     border-radius: 50%;
     color: rgb(255, 255, 255);
     content: "\e014";
@@ -979,7 +979,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     width: 25px;
 }
 .bg_CC {
-    background: rgb(204, 208, 211) none repeat scroll 0 0;
+    background: rgb(204, 208, 211);
 }
 .pad_5 {
     padding: 5px;
@@ -1064,7 +1064,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     color: rgb(228, 27, 35);
 }
 .remveSlcUsrType {
-    background: rgb(204, 204, 204) none repeat scroll 0 0;
+    background: rgb(204, 204, 204);
     border-radius: 50%;
     padding: 2px 4px;
 }
@@ -1367,7 +1367,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     float: right;
 }
 .newsComparisonUl li {
-    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    background: rgb(255, 255, 255);
     border: 1px solid rgb(221, 221, 221);
     cursor: pointer;
     margin-left: -4px;
@@ -1627,7 +1627,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     width: 10px;
 }
 .subBlock {
-    background: rgb(218, 231, 240) none repeat scroll 0 0;
+    background: rgb(218, 231, 240);
     padding-left: 0;
     padding-right: 0;
 }
@@ -1727,7 +1727,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .govtCount
 {
-	background: #4a5864 none repeat scroll 0 0;
+	background: #4a5864;
     border-radius: 50%;
     color: #ffffff;
     display: inline-block;
@@ -1735,10 +1735,4 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-right: 5px;
     text-align: center;
     width: 20px;
-}
-.left270{ 
-	margin-left: 270px;    
-}
-.left850{
-	margin-left: 850px;
 }

@@ -273,9 +273,9 @@ function getpartyWiseChannelCounts(result){
 		str+='<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>';
 		if($(window).width() < 500)
 		{
-			str+='<div class="table-responsive">';
+			str+='<div class="table-responsive m_XsTop10">';
 		}
-		str+='<table class="table tableEMN m_top20">';
+		str+='<table class="table tableEMN m_top10">';
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total Program</h5>';
@@ -309,9 +309,9 @@ function getpartyWiseChannelCounts(result){
 			str+='<h4 class="panel-title m_top20"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" class="debatesPartyIcon"/>'+result[i].organization+'</h4>';
 			if($(window).width() < 500)
 			{
-				str+='<div class="table-responsive">';
+				str+='<div class="table-responsive m_XsTop10">';
 			}
-			str+='<table class="table tableEMN">';
+			str+='<table class="table tableEMN m_top10">';
 				str+='<tr>';
 					str+='<td>';
 						str+='<h5 class="text-capitalize">Total Program</h5>';
@@ -340,9 +340,9 @@ function getpartyWiseChannelCounts(result){
 		var EmnG = result.length-1;
 		if($(window).width() < 500)
 		{
-			str+='<div class="table-responsive">';
+			str+='<div class="table-responsive m_XsTop10">';
 		}
-		str+='<table class="table tableEMN m_top20">';
+		str+='<table class="table tableEMN m_top10">';
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total Program</h5>';

@@ -1,4 +1,20 @@
+@media (min-width: 100px) and (max-width:250px) {
+	.radio-inline
+	{
+		margin:0px !important;
+	}
+	#lastUpdatedTimeCadreId , #lastUpdatedDebateId , #lastUpdatedTimeTrainingCampId
+	{
+		font-size:12px !important;
+		top:0px !important;
+	}
+}
 @media (min-width: 100px) and (max-width:500px) {
+	.img-responsive
+	{
+		margin:auto;
+		display:block;
+	}
 	.m_XsTop10
 	{
 		margin-top:10px;
