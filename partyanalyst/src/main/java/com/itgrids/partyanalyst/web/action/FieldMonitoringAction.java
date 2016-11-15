@@ -874,4 +874,21 @@ public String getConstituencyByVendor(){
 	   }
 	   return Action.SUCCESS;
   }
+  public String mediaScreenPartyForTS(){
+	  return Action.SUCCESS;
+  }
+  
+  public String getDistrictWiseTodayAndOverAllCounts(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String type = jObj.getString("type");
+			Long stateId = jObj.getLong("stateId");
+			
+			idAndNameVOList = fieldMonitoringService.getDistrictWiseTodayAndOverAllCounts(type,stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseTodayAndOverAllCounts()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
