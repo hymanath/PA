@@ -1052,6 +1052,7 @@
 	                  <value>com.itgrids.partyanalyst.model.CardPrintValidation</value>
 	                  <value>com.itgrids.partyanalyst.model.CardPrintValidationUser</value>
 	                  <value>com.itgrids.partyanalyst.model.PrintRejectReason</value>
+	                  <value>com.itgrids.partyanalyst.model.TdpCadreDataSourceTypeInfo</value>
 				 </list>
 			
 		</property>
