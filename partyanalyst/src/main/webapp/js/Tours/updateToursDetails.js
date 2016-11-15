@@ -108,6 +108,8 @@ $("#toursDateRangePicker").daterangepicker({
 		$("#errMnthId").html("");
 		$("#errYearId").html("");
 		$(".textErrCls").html("");
+		$("#errFileId").html("");
+		var filerKit = $("#filer_input3").prop("jFiler");
 		var flag = true;
 		var monthValue = $("#monthSelectBoxId").val();
 		if(monthValue == 0){
@@ -129,6 +131,14 @@ $("#toursDateRangePicker").daterangepicker({
 				return false;      
 			}  
 		});
+		
+		var childEleCount = $(".jFiler-items-list").children().length;
+		if(childEleCount > 1){
+			$("#errFileId").html("Please Select Only One Document."); 
+			filerKit.reset();
+			flag = false;         			
+		}
+		
 		if(flag == false){
 			return;  
 		}
