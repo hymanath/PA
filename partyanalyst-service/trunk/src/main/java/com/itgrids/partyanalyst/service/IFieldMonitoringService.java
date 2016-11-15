@@ -53,4 +53,5 @@ public interface IFieldMonitoringService {
 	public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId,String comment);
 	 public List<IdAndNameVO> getcadrePerformnanceTypeList();
 	 public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId);
+	 public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId);
 }
