@@ -109,8 +109,8 @@ $("#toursDateRangePicker").daterangepicker({
 		$("#errYearId").html("");
 		$(".textErrCls").html("");
 		$("#errFileId").html("");
-		var filerKit = $("#filer_input3").prop("jFiler");
 		var flag = true;
+		var filerKit = $("#filer_input3").prop("jFiler");
 		var monthValue = $("#monthSelectBoxId").val();
 		if(monthValue == 0){
 			$("#errMnthId").html("Please Select Month.");
@@ -298,6 +298,9 @@ $("#toursDateRangePicker").daterangepicker({
 			 
 			 $("#inchageLocationScopeId").removeAttr("value");
 			 $("#inchageownLocationScopeValue").removeAttr("value");
+			 
+			 $("#ownSelectBoxId").removeClass("isActive");
+			 $("#inchargeSelectBoxId").removeClass("isActive");             
  
 			 for(var i in locationList){
 				 if(locationList[i].locationScopeId != null && locationList[i].locationScopeId==1){
