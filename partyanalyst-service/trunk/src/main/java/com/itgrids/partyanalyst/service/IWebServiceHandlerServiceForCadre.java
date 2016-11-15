@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -22,4 +23,5 @@ public interface IWebServiceHandlerServiceForCadre {
 	public List<TdpCadreVO> getTdpCadresBySearch(WebServiceCadreVO inputVO);
 	
 	public void saveCadreImage(ImageCadreVO inputVO);
+	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password);
 }

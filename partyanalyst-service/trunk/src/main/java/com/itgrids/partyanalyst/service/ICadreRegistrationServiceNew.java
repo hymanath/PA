@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -14,4 +15,9 @@ public interface ICadreRegistrationServiceNew {
 	public ResultStatus pushHourWiseTdpCadreDetailsByToday();
 	public ResultStatus pushTdpCadreDataHourWiseForTabUsersByOverall();
 	public ResultStatus pushHourWiseTdpCadreDetailsByOverall();
+	
+	public ResultStatus pushDataSourceWisetdpCadreCounts();
+	
+	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password);
+	
 }
