@@ -54,9 +54,9 @@
 	$(window).resize(function(){
 		if($(document).width() < 500)
 		{
-			$("#officeAttendanceTdlsId").parent().addClass("table-responsive");
+			$("#officeAttendanceTdlsId,#officeAttendanceTdlsDeptWiseId").addClass("table-responsive");
 		}else{
-			$("#officeAttendanceTdlsId").parent().removeClass("table-responsive");	
+			$("#officeAttendanceTdlsId,#officeAttendanceTdlsDeptWiseId").removeClass("table-responsive");	
 		}
 	});
 

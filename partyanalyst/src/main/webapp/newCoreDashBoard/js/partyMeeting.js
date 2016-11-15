@@ -171,6 +171,10 @@ $(document).on("click",".selectAll",function(){
 		  if(overAllResult != null){
 			//  setLastUpdatedTime(overAllResult.updatedTime);
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="display:none;">';
+			 if($(window).width() < 300)
+			 {
+				 str+='<div class="table-responsive">';
+			 }
 		      str+='<table class="table tableTraining">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
@@ -212,6 +216,10 @@ $(document).on("click",".selectAll",function(){
 				str+='</td>';
 			  str+='</tr>';
 	       str+='</tbody></table>';
+			if($(window).width() < 300)
+			 {
+				 str+='</div>';
+			 }
 		  str+='<hr class="m_0">';
 		  str+='</div>';  
 		  }
@@ -229,7 +237,11 @@ $(document).on("click",".selectAll",function(){
 				 str+='<h4 class="text-capitalize">'+levelWiseResult[i].name+'<small style="margin-left:15px;">(Every month : 22nd/23rd/24th)</small><small class="meetingsInnerBlock"></small></h4>';
 			   }else{
 				 str+='<h4 class="text-capitalize">'+levelWiseResult[i].name+'<small style="margin-left:15px;">(Every month : 22nd/23rd/24th)</small><small class="meetingsInnerBlock"></small></h4>';
-			   }				
+			   }	
+				if($(document).width() < 300)
+				{
+					str+='<div class="table-responsive">';
+				}			   
 				str+='<table class="table tableTraining bg_ED">';
 					 str+='<tbody><tr>';
 						 str+='<td>';
@@ -292,6 +304,10 @@ $(document).on("click",".selectAll",function(){
 						 str+='</td>';
 					 str+='</tr>';
 				 str+='</tbody></table>';
+				 if($(document).width() < 300)
+				 {
+					 str+='</div>';
+				 }
 				 str+='<hr class="m_0">';
 			 str+='</div>';  
 			  }
@@ -357,7 +373,7 @@ $(document).on("click",".selectAll",function(){
 			   }else{
 				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
 			   }
-			  str+='<div id="genSecMeeting'+i+'" style="width:100%;height:80px;"></div>';
+			  str+='<div id="genSecMeeting'+i+'" style="height:80px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -487,7 +503,7 @@ $(document).on("click",".selectAll",function(){
 			   }else{
 				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
 			   }
-				str+='<div id="genSecMeeting'+i+'" style="width:100%;height:100px;"></div>';
+				str+='<div id="genSecMeeting'+i+'" style="height:100px;"></div>';
 				str+='</div>'
 			}
 		}
@@ -2064,6 +2080,10 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 			   
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 				 str+='<h4 attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+'  class="text-capital meetingTypeCls">'+result[i].name+'<span class="stateGeneralMeeting" attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+' style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
+				if($(window).width() < 300)
+				{
+					str+='<div class="table-responsive">';
+				}
 				str+='<table class="table tableTraining bg_ED">';
 					 str+='<tbody><tr>';
 						 str+='<td>';
@@ -2084,6 +2104,10 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='</td>';        
 					 str+='</tr>';
 				 str+='</tbody></table>';
+				if($(window).width() < 300)
+				{
+					str+='</div>';
+				}
 				 str+='<hr class="m_0">';
 			 str+='</div>';  
 			  }

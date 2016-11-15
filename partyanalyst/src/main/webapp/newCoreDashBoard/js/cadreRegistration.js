@@ -242,7 +242,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';  
 							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-info-sign compCls"  attr_state_id="36" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_XsTop10">';
 							str+='<h4 class="f_14 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
 							str+='<h4 class="f_14" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
@@ -259,7 +259,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 							str+='<h5 class="text-capital">today-'+emptyCheck(result.totalPercentToday)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h4>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_XsTop10">';
 							str+='<h4 class="f_14 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
 							str+='<h4 class="f_14" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
 						str+='</div>';  
@@ -493,7 +493,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 							str+='<h4 class="cadreCount">'+emptyCheck(result.totalCount)+'</h4>';
 							str+='<i style="cursor:pointer;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="1" attr_option="single" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_XsTop10">';
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
@@ -511,7 +511,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 							str+='<h5 class="text-capital">today-'+emptyCheck(result.totalPercentToday)+'%</h5>';
 							str+='<h4 class="cadreCount">'+emptyCheck(result.todayTotalCount)+'</h4>';
 						str+='</div>';
-						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0 m_XsTop10">';
 							str+='<h4 class="text-success" style="font-size:14px">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
 							str+='<h4 style="color:#F7A423;font-size:14px">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.todayNewCount)+'</span></h4>';
 						str+='</div>';  
@@ -775,9 +775,9 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				str1+='<div class="bg_ED pad_15 table-responsive">';
 					str1+='<div class="row">';
 						str1+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/><h5>Today</h5>';
+							str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/><h5 class="text-center">Today</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-5 text-center" style="text-transform:uppercase;">';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
 							str1+='<h5> Started Constituencies</h5>';
 							 
@@ -785,56 +785,21 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 							 str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
 							 
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-5 text-center" style="text-transform:uppercase;">';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
 							str1+='<h5> Yet to start Constituencies</h5>';
 							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
 							str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
 						str1+='</div>';
 					str1+='</div>';
-					/* str1+='<table class="table text-capital table-condensed">';
-						str1+='<tr>';
-							str1+='<td>';
-								str1+='<img src="newCoreDashBoard/img/TS.png" class="img-responsive" alt="Telangana States" style="width:65px"/><h5>Today</h5>';
-							str1+='</td>';  
-							//str1+='<td>';
-								//str1+='<h5>Today</h5>';            
-								/* if(result.totalCount != null && result.totalCount > 0){
-									str1+='- <span class="text-muted">'+result.totalPercent+'%</span></h5>';
-								}
-								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>'; */
-							//str1+='</td>';     
-							/* str1+='<td>';
-								str1+='<h5>Today'; 
-								//if(result.todayPercenCount != null && result.todayPercenCount > 0){
-									str1+='- <span class="text-muted">'+result.totalPercentToday+'%</span></h5>';
-								//}
-								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
-							str1+='</td>'; */
-							/*str1+='<td>';
-							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
-							 str1+='<h5> Started Constituencies</h5>';
-							 
-							 str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
-							 str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
-							str1+='</td>';
-							str1+='<td>';
-							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
-							  str1+='<h5> Yet to start Constituencies</h5>';
-							str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="36" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
-								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
-							str1+='</td>'
-						str1+='</tr>';
-					str1+='</table>'; */
-					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
-						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-5 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount"  id="inFieldTS">'+result.inField+'</h3>'; 
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-5 text-center">';
 							str1+='<h3 class="EnumCadreCount cadreCount" id="totalInFieldTS">'+result.todayFieldMembersCount+'</h3>';
 							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
@@ -847,8 +812,8 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 				str1+='</div>';
 			str1+='</div>';
 			$("#enumeratorsInfoDivTSId").html(str1);  
-			//$('[data-toggle="tooltip"]').tooltip();
-			/* $('.EnumCadreCount').each(function () {
+			$('[data-toggle="tooltip"]').tooltip();
+			$('.EnumCadreCount').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
 				}, {
@@ -859,7 +824,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 						$(this).text(Math.ceil(now));
 					}
 				});
-			}); */  
+			});
 			$("#memDtlsUpdateProcessImgTShourId").show();  
 			$("#memDtlsUpdateProcessImgTStotalId").show();
 			
@@ -874,69 +839,34 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 						str1+='<div class="col-md-2 col-xs-12 col-sm-2">';
 							str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/><h5>Today</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-5 text-center" style="text-transform:uppercase;">';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCountAP cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
 								str1+='<h5>Started<br> Constituencies</h5>';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCountAP cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
 								str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
 							 
 						str1+='</div>';
-						str1+='<div class="col-md-5 col-xs-12 col-sm-4 text-center" style="text-transform:uppercase;">';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
+						str1+='<div class="col-md-5 col-xs-12 col-sm-5 text-center" style="text-transform:uppercase;">';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList+' class="EnumCadreCountAP cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
 								str1+='<h5>Yet To Start<br> Constituencies</h5>';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
+								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCountAP cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
 								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
 						str1+='</div>';
 					str1+='</div>';
-					
-					/* str1+='<table class="table text-capital table-condensed">';
-						str1+='<tr>';
-							str1+='<td>';
-								str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/><h5>Today</h5>';
-							str1+='</td>';
-							//str1+='<td>';
-								//str1+='';
-								/* if(result.totalCount != null && result.totalCount > 0){
-									str1+='- <span class="text-muted">'+result.totalPercent+'%</span></h5>';
-								}
-								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>'; */
-							//str1+='</td>';
-							/* str1+='<td>';
-								str1+='<h5>Today'; 
-								//if(result.todayPercenCount != null && result.todayPercenCount > 0){
-									str1+='- <span class="text-muted">'+result.totalPercentToday+'%</span></h5>';
-								//}
-								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
-							str1+='</td>'; */
-							/*str1+='<td>';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayStartedConsttuncyCnt)+'</h5>';
-								str1+='<h5>Started<br> Constituencies</h5>';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1"  attr_location_ids="0" class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayStartedMandalMuncipalityCnt)+'</h5>';
-								str1+='<h5>Started<br> Mandals/MUNCIPALITIES</h5>';
-							str1+='</td>';
-							str1+='<td>';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList+' class="EnumCadreCount cadreCount getConstituencyCls m_top10">'+emptyCheck(result.todayNotStartedConsttuncyCnt)+'</h5>';
-								str1+='<h5>Yet To Start<br> Constituencies</h5>';
-								str1+='<h5 style="cursor:pointer;color:rgb(51, 122, 183)" attr_state_id="1" attr_location_ids='+result.locationIdsList1+' class="EnumCadreCount cadreCount getManalMuncipalityCls m_top10">'+emptyCheck(result.todayNotStartedMandalMuncipalityCnt)+'</h5>';
-								str1+='<h5>Yet To Start<br>  Mandals/MUNCIPALITIES</h5>';
-							str1+='</td>';
-						str1+='</tr>';
-					str1+='</table>'; */
-					
 					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
 					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Enumerators Info</span>';
 					str1+='<div class="row" style="margin-top:-10px">';
-						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount  id="inFieldAP">'+result.inField+'</h3>';       
+						str1+='<div class="col-md-6 col-xs-12 col-sm-5 text-center">';
+							str1+='<h3 class="EnumCadreCountAP cadreCount  id="inFieldAP">'+result.inField+'</h3>';       
 							str1+='<h5 class="text-capital">LAST ONE HOUR IN FIELD</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-6 col-xs-12 col-sm-4 text-center">';
-							str1+='<h3 class="EnumCadreCount cadreCount"  id="totalInFieldAP">'+result.todayFieldMembersCount+'</h3>';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-5 text-center">';
+							str1+='<h3 class="EnumCadreCountAP cadreCount"  id="totalInFieldAP">'+result.todayFieldMembersCount+'</h3>';
 							str1+='<h5 class="text-capital">TODAY-TOTAL IN FIELD</h5>';  
 						str1+='</div>';
 						//str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';      
-							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';     
-							//str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
+							//str1+='<h3 class="EnumCadreCountAP cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';     
+							//str1+='<h3 class="EnumCadreCountAP cadreCount">'+emptyCheck(result.totalSubmittedToday)+'</h3>';
 							//str1+='<h5 class="text-capital">today submitted data</h5>';    
 						//str1+='</div>';
 					str1+='</div>';
@@ -944,7 +874,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 			str1+='</div>';
 			$("#enumeratorsInfoDivId").html(str1);  
 			//$('[data-toggle="tooltip"]').tooltip();
-			/* $('.EnumCadreCount').each(function () {
+			$('.EnumCadreCountAP').each(function () {
 				$(this).prop('Counter',0).animate({
 					Counter: $(this).text()
 				}, {
@@ -955,7 +885,7 @@ function getEnumeratorsInfoTS(globalActivityMemberId,stateId){
 						$(this).text(Math.ceil(now));  
 					}
 				});
-			}); */ 
+			});
 			$("#memDtlsUpdateProcessImgAPhourId").show();
 			$("#memDtlsUpdateProcessImgAPtotalId").show();
 			
@@ -1574,7 +1504,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
 				 }
 		      }
-			  str+='<div id="genSecCadre'+i+'" style="width:100%;height:80px;"></div>';
+			  str+='<div id="genSecCadre'+i+'" style="height:80px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -1730,7 +1660,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			   }else{
 				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
 			   }
-				str+='<div id="genSecCadre'+i+'" style="width:100%;height:100px;"></div>';
+				str+='<div id="genSecCadre'+i+'" style="height:100px;"></div>';
 				str+='</div>'
 			}
 		}
@@ -4772,6 +4702,3 @@ function buildTabUserComparisonRslt(result){
             console.log(result);
 		});
 	} */
-	
-	
-			

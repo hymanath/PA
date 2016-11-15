@@ -301,6 +301,10 @@ function buildEventBasicCntDtls()
 					str+='<div class="panel-body pad_5">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								if($(window).width() < 300)
+								{
+									str+='<div class="table-responsive">';
+								}
 								str+='<table class="table tableTraining bg_ED">';
 									str+='<tr>';
 										str+='<td>';
@@ -319,6 +323,10 @@ function buildEventBasicCntDtls()
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
+								if($(window).width() < 300)
+								{
+									str+='</div>';
+								}
 							str+='</div>';
 						str+='</div>';
 				str+='</div>';
@@ -331,6 +339,10 @@ function buildEventBasicCntDtls()
 					str+='<div class="panel-body pad_5">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+								if($(window).width() < 300)
+								{
+									str+='<div class="table-responsive">';
+								}
 								str+='<table class="table tableTraining bg_ED">';
 									str+='<tr>';
 										str+='<td>';
@@ -349,6 +361,10 @@ function buildEventBasicCntDtls()
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
+								if($(window).width() < 300)
+								{
+									str+='</div>';
+								}
 							str+='</div>';
 						str+='</div>';
 				str+='</div>';

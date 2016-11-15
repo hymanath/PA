@@ -108,9 +108,9 @@ function getToursBasicOverviewCountDetails()
 		  str+'<div class="row">';
 		  if(overAllResult != null){
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
-			 str+='<div class="table-responsive">';
 			 str+='<h4>OVERALL</h4>';
-		      str+='<table class="table tableTraining bg_ED">';
+			 str+='<div class="table-responsive">';
+		      str+='<table class="table tableTraining bg_ED m_XsTop10">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
 					  str+='<h4>'+overAllResult.noOfLeaderCnt+'</h4>';
@@ -143,9 +143,9 @@ function getToursBasicOverviewCountDetails()
 		 if(designationWiseRlst != null && designationWiseRlst.length > 0){
 		   for(var i in designationWiseRlst){
 			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
+				str+='<h4>'+designationWiseRlst[i].designation+'</h4>';
 				  str+='<div class="table-responsive">';
-				  str+='<h4>'+designationWiseRlst[i].designation+'</h4>';
-				  str+='<table class="table tableTraining bg_ED">';
+				  str+='<table class="table tableTraining bg_ED m_XsTop10">';
 				  str+='<tbody><tr>';
 					  str+='<td>';
 					  	  str+='<p class="text-muted text-capital">Total<br>Leaders</p>';

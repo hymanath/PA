@@ -186,21 +186,19 @@
 								<h4 class="text-capital m_top10"><span class="headingColor">OVERALL REGISTRATIONS</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12">
-										<div class=" bg_ED pad_5 m_top10">
+										<div class="bg_ED pad_5 m_top10">
 											<div class="row">
-										<div class=" col-md-6 col-xs-12 col-sm-4">
-											
-												<h5 class="text-capital" >TOTAL-<span id="totalperc"></span></h5>  
-												<h4  data-toggle="tooltip" class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0</h4>
-											</div>
-										
-										<div class="col-md-2 col-xs-12 col-sm-4">
-											<i style="cursor: pointer; font-size: 16px; margin-top: 10px;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="0" attr_option="total" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>
-										</div>
-										</div> 
+												<div class="col-md-8 col-xs-12 col-sm-4">
+													<h5 class="text-capital" >TOTAL-<span id="totalperc"></span></h5>  
+													<h4  data-toggle="tooltip" class ="cadreCount" id="totalRegId" attr_total="0" attr_total_per="0">0</h4>
+												</div>
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<i style="cursor: pointer; font-size: 16px; margin-top: 10px;" class="glyphicon glyphicon-info-sign compCls" attr_state_id="0" attr_option="total" data-toggle="tooltip" data-placement="top" title="" data-original-title="Today And Yesterday Comparison"></i>
+												</div>
+											</div> 
 										</div> 
 									</div>
-									<div class="col-md-6 col-xs-12 col-sm-12">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_XsTop10">
 										<div class="bg_ED pad_5 m_top10">
 											<h5 class="text-capital">TODAY-<span id="todayperc1"></span></h5><h4  class ="cadreCount" id="totalTodayId" attr_today="0" attr_today_per ="0">0</h4>
 										</div>
@@ -228,20 +226,14 @@
                             </div>
                         </div>
 						
-						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+						<div class="col-md-6 col-xs-12 col-sm-12 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											
-											
-										</div>
-									</div>
-                                <div id="constituenctDetailedReport"></div>	     
+									<div id="constituenctDetailedReport"></div>	     
                                 </div>
                             </div>
 					     </div>
-					    <div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+					    <div class="col-md-6 col-xs-12 col-sm-12 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
@@ -506,14 +498,14 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-7 newsHead">
+							<div class="col-md-9 col-sm-9 col-xs-12 newsHead">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									news - <small class="text-muted" id="currentViewing"></small>
 								</h4>
 								
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-6 newsHead1">
+							<div class="col-md-3 col-sm-3 col-xs-12 newsHead1 m_XsTop10">
 								<span class="settingsIcon settingsIconNews pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
@@ -1221,7 +1213,7 @@
 								electronic news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
 							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1">
+						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1 m_XsTop10">
 							<span class="emnSetIcon pull-right">
 								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 							</span>
