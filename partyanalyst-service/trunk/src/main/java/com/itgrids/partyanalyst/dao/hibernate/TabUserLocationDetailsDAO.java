@@ -10,6 +10,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITabUserLocationDetailsDAO;
+import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.TabUserLocationDetails;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -119,6 +120,76 @@ public class TabUserLocationDetailsDAO extends GenericDaoHibernate<TabUserLocati
 		return query.list();
 	}
 	
+
+public List<Object[]> getLattitudLangitudeOfTabUser(GISVisualizationParameterVO inputVO,Date startDate,Date endDate){
+		
+		String type = inputVO.getParentLocationType();
+		Long locationId = inputVO.getParentLocationTypeId();
+	
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" SELECT "
+				+"	tuld1.tab_user_info_id as tabUserInfoId, max(tuld1.tab_user_location_details_id) as pkid"
+				+" FROM  "
+				+"	tab_user_location_details tuld1 " );
+		if(inputVO.getChildLocationType() != null && !inputVO.getChildLocationType().equalsIgnoreCase("old"))
+			str.append(" , constituency c ");
+		else if(type.equalsIgnoreCase(IConstants.STATE) || type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" , constituency c ");
+		
+		str.append(" WHERE    "
+				+"	(date(tuld1.survey_time) between :startDate and :endDate )  and   tuld1.tab_user_info_id is not null ");
+		if(type.equalsIgnoreCase(IConstants.STATE) || type.equalsIgnoreCase(IConstants.DISTRICT) ){
+			str.append(" and  tuld1.constituency_id = c.constituency_id ");
+		}
+		if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase("old") && type != null &&  locationId.longValue()>0L)
+		{
+			if(type.equalsIgnoreCase(IConstants.STATE)){
+				if(locationId == 36L || locationId == 2L)
+					str.append(" and (c.district_id  between 1 and 10 ) ");
+				else if( locationId == 1L)
+					str.append(" and (c.district_id between 11 and 23 ) ");
+				else 
+					str.append(" and (c.district_id between 1 and 23 ) ");
+			}
+			else if(type.equalsIgnoreCase(IConstants.DISTRICT)){
+				str.append(" and c.district_id = :locationId and c.state_id =1 and c.election_scope_id = 2 and c.deform_date is null ");
+			}else if(type.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				str.append("  and tuld1.constituency_id = :locationId ");
+			}else if(type.equalsIgnoreCase(IConstants.RURAL)){
+				str.append(" and  c.tehsil_id = :locationId ");
+			}
+		}
+		else{
+			if(locationId == 36L || locationId == 2L)
+				str.append(" and (c.district_id  between 1 and 10 ) ");
+			else if( locationId == 1L)
+				str.append(" and (c.district_id between 11 and 23 ) ");
+			else 
+				str.append(" and (c.district_id between 1 and 23 ) ");
+		}
+		
+		str.append("  group by tuld1.tab_user_info_id  ");
+				
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("tabUserInfoId", Hibernate.LONG)
+				.addScalar("pkid", Hibernate.LONG);
+			//	.addScalar("mobileNo", Hibernate.STRING)
+			//	.addScalar("latitude", Hibernate.STRING)
+			//	.addScalar("longititude", Hibernate.STRING)
+			//	.addScalar("surveyTime", Hibernate.STRING);
+		if(inputVO.getChildLocationType() != null && inputVO.getChildLocationType().equalsIgnoreCase("old") && 
+				 type != null && !type.equalsIgnoreCase(IConstants.STATE))
+				query.setParameter("locationId", locationId);
+		
+		if(startDate !=null && endDate !=null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		
+		return query.list();
+}
 public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startDate,Date endDate,String type){
 		
 		StringBuilder str = new StringBuilder();
