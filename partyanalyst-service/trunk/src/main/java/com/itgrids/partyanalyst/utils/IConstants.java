@@ -1209,4 +1209,6 @@ public interface IConstants {
 	
 	public static final String CADRE_REGISTRATION_START_DATE = "01/11/2016";
 	
+	public static final String HYDERABAD_PARY_OFFICE = "HYD PARTY OFFICE";
+	public static final String VIJAYAWADA_PARY_OFFICE = "VIJ PARTY OFFICE";
 }
