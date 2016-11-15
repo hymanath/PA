@@ -169,7 +169,7 @@ public List<Object[]> getLattitudLangitudeOfTabUser(GISVisualizationParameterVO 
 				str.append(" and (c.district_id between 1 and 23 ) ");
 		}
 		
-		str.append("  group by tuld1.tab_user_info_id  ");
+		str.append("  and tuld1.constituency_id = c.constituency_id group by tuld1.tab_user_info_id  ");
 				
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("tabUserInfoId", Hibernate.LONG)
