@@ -923,6 +923,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .panelActiveSlick {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    border:1px solid #ddd;
 }
 .panelActiveSlick .panel-heading, .panelActiveSlick .panel-body {
     background-color: rgb(255, 255, 255) !important;
