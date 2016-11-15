@@ -124,7 +124,7 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 		 if(designationIds != null && designationIds.size() > 0){
 			 queryStr.append(" and model.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");
 		 }
-	     queryStr.append(" order by model.selfAppraisalCandidate.selfAppraisalCandidateId");
+	     queryStr.append(" order by model.selfAppraisalCandidateId");
 		 Query query = getSession().createQuery(queryStr.toString());
 		 if(designationIds != null && designationIds.size() > 0){
 		  query.setParameterList("designationIds", designationIds);

@@ -29,7 +29,6 @@ import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.sun.org.apache.regexp.internal.REUtil;
 
 public class CoreDashboardToursService implements ICoreDashboardToursService {
 
@@ -108,12 +107,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 }
 				 }
 		 		   List<Object[]> rtrnLeaderCntObjLst = selfAppraisalCandidateLocationDAO.getNoOfLeadersCntDesignationByBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId);
-				   	
 				   if(rtrnLeaderCntObjLst != null &&  rtrnLeaderCntObjLst.size() > 0){
-					   
-				   		for(Object[] param:rtrnLeaderCntObjLst){
-				   			
-				   			
+					 	for(Object[] param:rtrnLeaderCntObjLst){
 				   			ToursBasicVO leaderVO = new ToursBasicVO();
 				   			leaderVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				   			leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));
@@ -123,32 +118,50 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				   			LeaderMemebersMap.put(leaderVO.getId(), leaderVO);
 				   		}
 				   	}
-					 
-				   List<Object[]> rtrnLeaderToursDtlsObjLst = selfAppraisalCandidateDetailsDAO.getToursDetailstDesignationByBasedOnUserAccessLevel(locationAccessLevelId,locationValues, stateId, fromDate, toDate);
-					   if(rtrnLeaderToursDtlsObjLst != null && !rtrnLeaderToursDtlsObjLst.isEmpty()){
-						   
-					   			for(Object[] param:rtrnLeaderToursDtlsObjLst){
-					   				
-					   				ToursBasicVO leaderVO = LeaderMemebersMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					   				
-					   					if(leaderVO != null){
-					   						
-					   					   leaderVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[1]));
-				    					   leaderVO.setNotSubmitedLeaserCnt(leaderVO.getNoOfLeaderCnt()-leaderVO.getSubmitedLeaderCnt());
-				    					   leaderVO.setSubmitedCandidateTourPer(calculatePercantage(leaderVO.getSubmitedLeaderCnt(),leaderVO.getNoOfLeaderCnt()));
-				    					   leaderVO.setNotsubmitedCandidateTourPer(calculatePercantage(leaderVO.getNotSubmitedLeaserCnt(), leaderVO.getNoOfLeaderCnt()));
-				    					   leaderVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
-				    					   leaderVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
-				    					   leaderVO.setTotalSubmittedToursCnt(leaderVO.getOwnToursCnt()+leaderVO.getInchargerToursCnt());
-				    					   leaderVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[4]));
-				    					   Double averageTours = leaderVO.getTotalSubmittedToursCnt().doubleValue()/leaderVO.getNoOfDistinctTours().doubleValue();
-				    					   if(!(averageTours.isNaN())){
-				    						   leaderVO.setAverageTours(averageTours);   
-				    					   }
-				    					}
-					   			}
-					   		}
-			
+				   
+				   List<Object[]> rtrnSubmittedToursObjLst = selfAppraisalCandidateDetailsDAO.getToursSubmittedAndNoOfToursCntDesignationByBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+				   if(rtrnSubmittedToursObjLst != null && !rtrnSubmittedToursObjLst.isEmpty()){
+					  	for(Object[] param:rtrnSubmittedToursObjLst){
+				   				ToursBasicVO leaderVO = LeaderMemebersMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   					if(leaderVO != null){
+				   					   leaderVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[1]));
+			    					   leaderVO.setNotSubmitedLeaserCnt(leaderVO.getNoOfLeaderCnt()-leaderVO.getSubmitedLeaderCnt());
+			    					   leaderVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[2]));
+			    					}
+				   			}
+				   		}
+			       List<Object[]> rtrnLdrOwnTursDtlsObjLst = selfAppraisalCandidateDetailsDAO.getOwnToursCntDetailstDesignationByBasedOnUserAccessLevel(locationAccessLevelId,locationValues, stateId, fromDate, toDate);
+				   if(rtrnLdrOwnTursDtlsObjLst != null && !rtrnLdrOwnTursDtlsObjLst.isEmpty()){
+					  	for(Object[] param:rtrnLdrOwnTursDtlsObjLst){
+				   				ToursBasicVO leaderVO = LeaderMemebersMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   					if(leaderVO != null){
+				   					   leaderVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[1]));
+			    					}
+				   			}
+				   		}
+				   List<Object[]> rtrnLdrInchargeTursDtlsObjLst = selfAppraisalCandidateDetailsDAO.getInchargeToursCntDetailstDesignationByBasedOnUserAccessLevel(locationAccessLevelId,locationValues, stateId, fromDate, toDate);
+				   if(rtrnLdrInchargeTursDtlsObjLst != null && !rtrnLdrInchargeTursDtlsObjLst.isEmpty()){
+					  	for(Object[] param:rtrnLdrInchargeTursDtlsObjLst){
+				   				ToursBasicVO leaderVO = LeaderMemebersMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   					if(leaderVO != null){
+				   					   leaderVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[1]));
+			    					}
+				   			}
+				   		}
+				   if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
+					   for(Entry<Long,ToursBasicVO> entry:LeaderMemebersMap.entrySet()){
+						    ToursBasicVO leaderVO = entry.getValue();
+						     if(leaderVO != null){
+						    	   leaderVO.setTotalSubmittedToursCnt(leaderVO.getOwnToursCnt()+leaderVO.getInchargerToursCnt());
+								   leaderVO.setSubmitedCandidateTourPer(calculatePercantage(leaderVO.getSubmitedLeaderCnt(),leaderVO.getNoOfLeaderCnt()));
+		    					   leaderVO.setNotsubmitedCandidateTourPer(calculatePercantage(leaderVO.getNotSubmitedLeaserCnt(), leaderVO.getNoOfLeaderCnt()));
+							       Double averageTours = leaderVO.getTotalSubmittedToursCnt().doubleValue()/leaderVO.getNoOfDistinctTours().doubleValue();
+	    					       if(!(averageTours.isNaN())){
+	    						   leaderVO.setAverageTours(averageTours);   
+	    					      } 
+						     }
+					   }
+				   }
 			    //calculation overAll percentage
 					if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
 					     ToursBasicVO overAllDtlsVO = new ToursBasicVO();
@@ -210,8 +223,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	  						 LeaderMemebersMap.remove(5l);//removing Sec
 						     LeaderMemebersMap.put(4l, orgSecAndSecVO); 
 	  					 }
-	  				    
-				 }
+	  			 }
 			   	
 			   if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
 				   resultVO.getSubList().addAll(new ArrayList<ToursBasicVO>(LeaderMemebersMap.values()));   

@@ -11,7 +11,6 @@ import com.itgrids.partyanalyst.model.SelfAppraisalCandidateDetails;
 public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfAppraisalCandidateDetails, Long> {
 	public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigId);
 	public List<Object[]> getCandidateDtlsList(Date startDate, Date endDate,List<Long> candidateList);
-	public List<Object[]> getToursDetailstDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getMemberDtls(Long candidateDtlsId);
 	public Long getTourCount(Long candidateId,List<Long> locValLst); 
 	public List<Object[]> getCndWiseAndLocValWiseCountListForOwn(Date fromDate,Date toDate);
@@ -23,5 +22,8 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getCndWiseAndLocValWiseCountListForIncharge(Date fromDate, Date toDate);
 	public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 	public List<Object[]> getToursSubmittedLeaderDtlsDesignationWise(List<Long> designationIds,Date fromDate,Date toDate);
+	public List<Object[]> getOwnToursCntDetailstDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
+	public List<Object[]> getInchargeToursCntDetailstDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
+	public List<Object[]> getToursSubmittedAndNoOfToursCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	
 }
