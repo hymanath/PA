@@ -278,7 +278,7 @@ function getpartyWiseChannelCounts(result){
 		str+='<table class="table tableEMN m_top10">';
 			str+='<tr>';
 				str+='<td>';
-					str+='<h5 class="text-capitalize">Total Program</h5>';
+					str+='<h5 class="text-capitalize">Total</h5>';
 					str+='<h4>'+result[0].categoryCount != ""?result[0].categoryCount:"00:00"+'</h4>';
 					str+='<h5	 class="text-capitalize m_top20">total time</h5>';
 					str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
@@ -314,7 +314,7 @@ function getpartyWiseChannelCounts(result){
 			str+='<table class="table tableEMN m_top10">';
 				str+='<tr>';
 					str+='<td>';
-						str+='<h5 class="text-capitalize">Total Program</h5>';
+						str+='<h5 class="text-capitalize">Total</h5>';
 						str+='<h4>'+result[i].categoryCount != ""?result[i].categoryCount:"00:00"+'</h4>';
 						str+='<h5 class="text-capitalize m_top20">total time</h5>';
 						str+='<h4>'+result[i].description != ""?result[i].description:"00:00"+'</h4>';
@@ -345,7 +345,7 @@ function getpartyWiseChannelCounts(result){
 		str+='<table class="table tableEMN m_top10">';
 			str+='<tr>';
 				str+='<td>';
-					str+='<h5 class="text-capitalize">Total Program</h5>';
+					str+='<h5 class="text-capitalize">Total</h5>';
 					str+='<h4>'+result[EmnG].categoryCount != ""?result[EmnG].categoryCount:"00:00"+'</h4>';
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
 					str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
@@ -1498,7 +1498,7 @@ function buildProblemsDetailedOverView(result)
 						str+='<tr>';
 						if(result.tvNewsDetailsVOList !=null && result.tvNewsDetailsVOList.length>0){
 							str+='<td>';
-							str+='<h5 class="text-capitalize">Total Program</h5>';
+							str+='<h5 class="text-capitalize">Total</h5>';
 							str+='<h4>'+result.tvNewsDetailsVOList[0].categoryCount != ""?result.tvNewsDetailsVOList[0].categoryCount:"00:00"+'</h4>';
 							str+='<h5 class="text-capitalize m_top20">Total Time</h5>';
 							str+='<h4>'+result.tvNewsDetailsVOList[0].description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
@@ -1541,7 +1541,7 @@ function buildDistrictWiseEMNRelatedToProblem(result){
 						{
 							str+='<li>';
 								str+='<img src="newCoreDashBoard/img/'+result.tvNewsDetailsChnlVOList[i].channelName+'.png" class="debatesPartyIcon"/>'+result.tvNewsDetailsChnlVOList[i].channelName+' News';
-								str+='<p class="m_top10 text-muted">Total Programs</p>';
+								str+='<p class="m_top10 text-muted">Total</p>';
 								str+='<p>'+result.tvNewsDetailsChnlVOList[i].count+'</p>';
 							str+='</li>';
 						}
@@ -1738,7 +1738,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 				str+='<div class="pad_5 bg_ED">';
 					str+='<div id="stateWiseMainGraph'+i+'" style="height:150px"></div>';
 				str+='</div>';
-				str+='<h4 class="panel-title">Total Programs - '+result[i].categoryCount+'</h4>';
+				str+='<h4 class="panel-title">Total - '+result[i].categoryCount+'</h4>';
 				str+='<div class="row">';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<div id="newsChannels'+i+'" style="height:100px;"></div>';
@@ -1795,7 +1795,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						
 						str+='<div class="row">';
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-							str+='<h4 class="panel-title">Total Programs - '+result[i].tvNewsDetailsVOList1[k].categoryCount+'</h4>';
+							str+='<h4 class="panel-title">Total - '+result[i].tvNewsDetailsVOList1[k].categoryCount+'</h4>';
 							str+='<div class="row">';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="newsChannelsProgramsTot'+i+k+graphIdMain+'" style="height:100px;"></div>';
@@ -2237,7 +2237,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 							str+='<div class="bg_ED">';
 								str+='<table class="table">';
 									str+='<tr>';
-										str+='<td><p class="text-muted">Total Programs</p>';
+										str+='<td><p class="text-muted">Total</p>';
 											str+=''+result[i].categoryCount+'';
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
@@ -2421,7 +2421,7 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result)
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 							str+='<div class="row">';
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-									str+='<h4 class="panel-title text-capital">Total programs - '+result[i].categoryCount+'</h4>';
+									str+='<h4 class="panel-title text-capital">Total - '+result[i].categoryCount+'</h4>';
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="RankWiseDetailsOfChannelSub'+i+'A'+totGraphId+'" style="height:100px"></div>';
@@ -2762,7 +2762,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 							str+='<div class="bg_ED">';
 								str+='<table class="table">';
 									str+='<tr>';
-										str+='<td><p class="text-muted">Total Programs</p>';
+										str+='<td><p class="text-muted">Total</p>';
 											str+=''+result[i].categoryCount+'';
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
@@ -2948,7 +2948,7 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 							str+='<div class="row">';
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-									str+='<h4 class="panel-title text-capital">Total programs - '+result[i].categoryCount+'</h4>';
+									str+='<h4 class="panel-title text-capital">Total - '+result[i].categoryCount+'</h4>';
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="RankWiseDetailsOfChannelSubGovt'+i+'A'+totGraphId+'" style="height:100px"></div>';
@@ -3425,7 +3425,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 				str+='<div class="pad_5 bg_ED">';
 					str+='<div id="stateWiseMainGraphGovt'+i+'" style="height:150px"></div>';
 				str+='</div>';
-				str+='<h4 class="panel-title">Total Programs - '+result[i].categoryCount+'</h4>';
+				str+='<h4 class="panel-title">Total - '+result[i].categoryCount+'</h4>';
 				str+='<div class="row">';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<div id="newsChannelsGovt'+i+'" style="height:100px;"></div>';
@@ -3478,7 +3478,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 						
 						str+='<div class="row">';
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-							str+='<h4 class="panel-title">Total Programs - '+result[i].tvNewsDetailsVOList1[k].categoryCount+'</h4>';
+							str+='<h4 class="panel-title">Total - '+result[i].tvNewsDetailsVOList1[k].categoryCount+'</h4>';
 							str+='<div class="row">';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="newsChannelsProgramsTotGovt'+i+k+graphIdMain+'" style="height:100px;"></div>';
