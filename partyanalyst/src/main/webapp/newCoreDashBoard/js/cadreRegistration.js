@@ -4181,7 +4181,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
    
   $(document).on("click",".getConstituencyCls",function(){
 	  $("#cadreExcelExpBtnId").hide();
-	  //$("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
+	  $("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
 		var stateId = $(this).attr("attr_state_id");
 		var constituencyIds = $(this).attr("attr_location_ids");
 		var reportType="Started";
@@ -4220,7 +4220,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	} 
 $(document).on("click",".getManalMuncipalityCls",function(){
 	    $("#cadreExcelExpBtnId").hide();
-		//$("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
+		$("#cadreExcelExpBtnId").attr("attr_tab_user_type","location");
 		var stateId = $(this).attr("attr_state_id");
 		var mandalMuncipalityIds = $(this).attr("attr_location_ids");
 		var reportType="Started";
@@ -4490,19 +4490,15 @@ $(document).on("click",".getManalMuncipalityCls",function(){
  }
  
  $(document).on("click","#cadreExcelExpBtnId",function(){
-	 generateExcelReportForCadre();	
-/* 	var type=$(this).attr("attr_tab_user_type");
-	if(type=="Tab"){
-	 generateExcelReportForTabUser();	
-	}else{
+  var type=$(this).attr("attr_tab_user_type");
+ 	if(type=="Tour"){
+	 generateExcelReportForToursDetails();	
+	}else if(type=="location"){
 	generateExcelReportForCadre();	
-	} */
+	} 
  });
  function generateExcelReportForCadre(){
 	tableToExcel(constituencyDtlsDataTblId, 'Location Wise Registrations Report');
-}
- function generateExcelReportForTabUser(){
-	tableToExcel(tabUserComparisonDtlsTabId, 'Tab User Wise Registrations Report');
 }
 var tableToExcel = (function() {
    var uri = 'data:application/vnd.ms-excel;base64,'
