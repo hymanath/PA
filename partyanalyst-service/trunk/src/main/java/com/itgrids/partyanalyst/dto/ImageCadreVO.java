@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public class ImageCadreVO implements Serializable{
 	
+	private static final long serialVersionUID = 2389557435175002120L;
+	
 	private String 	memberShipNo;
 	private Long    constituencyId;
 	private String	photoType;
