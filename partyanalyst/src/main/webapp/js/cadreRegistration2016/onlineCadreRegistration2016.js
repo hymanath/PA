@@ -679,7 +679,8 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		}
 		else
 		 {
-			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>"+resultArr[0]+" ,Application Submission Failed.Please try Again./span>"); 
+			/*$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>"+resultArr[0]+" ,Application Submission Failed.Please try Again./span>"); */
+			alert("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>");
 			$('#saveBtnId').show();
 		 }
 		/*else
@@ -770,7 +771,7 @@ $(document).on("click","#addNewNomineeId",function(){
 	$('#prevNomneReltvId').val(0).trigger('chosen:updated'); 
 });  
 */
-
+$("#hiddenNewImgExist").val("existImage");
 $(document).on("click",".isImageCheck",function(){
 	var value = $(this).val();
 	if(value == "existImage") {
