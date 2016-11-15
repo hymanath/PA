@@ -4322,6 +4322,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
 		  GISUserTrackingVO returnVO = new GISUserTrackingVO();
 		  try {
+			  if(inputVO.getChildLocationType() == null || inputVO.getChildLocationType().isEmpty())
+				  inputVO.setChildLocationType("old");
 			  returnVO =  gisVisualizationService.getLocationWiseTabUserTrackingDetails(inputVO);
 			 
 		} catch (Exception e) {
