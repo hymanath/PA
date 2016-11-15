@@ -2411,16 +2411,28 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 				}
 			}
 			
-			List<Long> cadreIds = cadreSurveyUserPerformanceDAO.getCadreSurveyUserId(today);
-			if(returnList != null && !returnList.isEmpty()){
+			List<Object[]> perfomanceList = cadreSurveyUserPerformanceDAO.getCadreSurveyUserId(today);
+			if(perfomanceList != null && !perfomanceList.isEmpty()){
+				for (Object[] obj : perfomanceList) {
+					Long cadreSurUserId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long typeId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					FieldMonitoringVO vo = getMatchedFieldMonitrnVOById(cadreSurUserId, returnList);
+					if(vo != null){
+						if(typeId != null && typeId.longValue() == 1l)
+							vo.setSlowPerformer("true");
+						else if(typeId != null && typeId.longValue() == 2l)
+							vo.setBetterPerformer("true");
+					}
+				}
+			}
+			/*if(returnList != null && !returnList.isEmpty()){
 				for (FieldMonitoringVO vo : returnList) {
 					Long existcadreId= vo.getCadreSurveyUserId();
 					if(cadreIds.contains(existcadreId)){
 						vo.setDescription("true");
 					}
-					
 				}
-			}
+			}*/
 			
 			List<Object[]> list1 = tdpCadreUserHourRegInfoDAO.getTabUserLastOneHourData(lastOneHour,tabUserInfoIds);
 			if(list1 != null && !list1.isEmpty()){
