@@ -815,63 +815,143 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 fromDate = sdf.parse(fromDateStr);
 				 toDate = sdf.parse(toDateStr);
 			 }
-			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
-			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
-				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
-				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
-					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+				 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+					 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+					 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 }
+				 }
+			 
+			    List<Object[]> rtrnObjLst = selfAppraisalCandidateTourLocationDAO.getCandiateLocationScopeIdAndValuesByDesignation(3l);//get gs access level and values
+			   	if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+				   for(Object[] param:rtrnObjLst){
+					   Map<Long,Set<Long>> userAccessLevelMap = candiateAccessLevelMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					   	if(userAccessLevelMap == null){
+					   		userAccessLevelMap = new HashMap<Long, Set<Long>>();
+					   		candiateAccessLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), userAccessLevelMap);
+					   	}
+					   	Set<Long> locationSet = userAccessLevelMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					   	if(locationSet == null){
+					   		locationSet = new HashSet<Long>();
+					   		userAccessLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), locationSet);
+					   	}
+					   	locationSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				   }
+			   }
+			   	
+			   List<Object[]> rtrnDistrictList = districtDAO.getDistrictListBystateId(stateId);
+			   if(rtrnDistrictList != null && rtrnDistrictList.size() > 0){
+				   for(Object[] param:rtrnDistrictList){
+					   districtMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])); 
+				   }
+			   }
+				   
+			 List<Object[]> rtrnSbmtedTurCanddateCntObjList = selfAppraisalCandidateDetailsDAO.getToursSubmittedCandidateCntAndNoOfToursDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,null);
+			 setMemberDetails(rtrnSbmtedTurCanddateCntObjList,memberDetaislMap,designationMap);
+			
+			 List<Object[]> rtrnOwnToursCntObjLst = selfAppraisalCandidateDetailsDAO.getOwnToursCntDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,null);
+			 if(rtrnOwnToursCntObjLst != null && rtrnOwnToursCntObjLst.size() > 0){
+				 
+				 for(Object[] param:rtrnOwnToursCntObjLst){
+					 
+					 Map<Long,ToursBasicVO> locationMap = memberDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//designationId
+					 
+					   if(locationMap != null ){
+						   
+						   ToursBasicVO locationVO =locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));//locationId 
+						   
+						    if(locationVO != null){
+						    	
+								  locationVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+							}
+					   }
 				 }
 			 }
-				 List<Object[]> rtrnObjLst = selfAppraisalCandidateDAO.getMemberAccessLevelIdsAndValue();
-				   if(rtrnObjLst != null && rtrnObjLst.size() > 0){
-					   for(Object[] param:rtrnObjLst){
-						   Map<Long,Set<Long>> userAccessLevelMap = candiateAccessLevelMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-						   	if(userAccessLevelMap == null){
-						   		userAccessLevelMap = new HashMap<Long, Set<Long>>();
-						   		candiateAccessLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), userAccessLevelMap);
-						   	}
-						   	Set<Long> locationSet = userAccessLevelMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
-						   	if(locationSet == null){
-						   		locationSet = new HashSet<Long>();
-						   		userAccessLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), locationSet);
-						   	}
-						   	locationSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));
-					   }
-				   }
-				  if(candiateAccessLevelMap != null && candiateAccessLevelMap.size() > 0){
-					  
-					  for(Entry<Long,Map<Long,Set<Long>>> entry:candiateAccessLevelMap.entrySet()){
+			 List<Object[]> rtrnInchargeToursCntObjLst = selfAppraisalCandidateDetailsDAO.getInchargeToursCntDistrictWiseBsdOnUsrAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,null);
+			 if(rtrnInchargeToursCntObjLst != null && rtrnInchargeToursCntObjLst.size() > 0){
+				 
+					 for(Object[] param:rtrnInchargeToursCntObjLst){
+						 
+						 Map<Long,ToursBasicVO> locationMap = memberDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//designationId
+						 
+						   if(locationMap != null ){
+							   
+							   ToursBasicVO locationVO =locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));//locationId 
+							   
+							    if(locationVO != null){
+							    	
+							    	locationVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+								}
+						   }
+					 }
+			 }
+			 if(locationAccessLevelId == 2l){//state access
+				
+				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursSubmittedCandidateCntAndNoOfToursDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
+				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
+				 
+				 List<Object[]> rtrnMpOwnToursCntObjLst = selfAppraisalCandidateDetailsDAO.getOwnToursCntDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
+				 if(rtrnMpOwnToursCntObjLst != null && rtrnMpOwnToursCntObjLst.size() > 0){
+					 
+					 for(Object[] param:rtrnMpOwnToursCntObjLst){
+						 
+						 Map<Long,ToursBasicVO> locationMap = memberDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//designationId
+						 
+						   if(locationMap != null ){
+							   
+							   ToursBasicVO locationVO =locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));//locationId 
+							   
+							    if(locationVO != null){
+							    	
+									  locationVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+								}
+						   }
+					 }
+				 }
+				 List<Object[]> rtrnMpInchargeToursCntObjLst = selfAppraisalCandidateDetailsDAO.getInchargeToursCntDistrictWiseBsdOnUsrAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
+				 if(rtrnMpInchargeToursCntObjLst != null && rtrnMpInchargeToursCntObjLst.size() > 0){
+					 
+						 for(Object[] param:rtrnMpInchargeToursCntObjLst){
+							 
+							 Map<Long,ToursBasicVO> locationMap = memberDetaislMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//designationId
+							 
+							   if(locationMap != null ){
+								   
+								   ToursBasicVO locationVO =locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));//locationId 
+								   
+								    if(locationVO != null){
+								    	
+								    	locationVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+									}
+							   }
+						 }
+				 }
+			 }
+			 //calculating average
+			 if(memberDetaislMap != null && memberDetaislMap.size() > 0){
+				 
+				 for(Entry<Long,Map<Long,ToursBasicVO>> entry:memberDetaislMap.entrySet()){
+					 
+					 Map<Long,ToursBasicVO> locationMap = entry.getValue();
+					 
+					  if(locationMap != null && locationMap.size() > 0){
 						  
-						  if(entry.getKey().longValue()==36l || entry.getKey().longValue()==37l){
+						  for(Entry<Long,ToursBasicVO> locationEntry:locationMap.entrySet()){
 							  
-							  Map<Long,Set<Long>> accessLevelMap = entry.getValue();
-							  
-							  for(Entry<Long,Set<Long>> locationEntry:accessLevelMap.entrySet()){
+							  if(locationEntry.getValue() != null){
 								  
-								  List<Object[]> objList = constituencyDAO.getDistrictBasedOnConstituenciesId(locationEntry.getValue());
-								  
-								  Map<Long,Set<Long>> districtsMap = new HashMap<Long, Set<Long>>();
-								  setDistrictsToMap(objList,locationEntry.getKey(),districtsMap);
-								  candiateAccessLevelMap.remove(entry.getKey().longValue());
-								  candiateAccessLevelMap.put(entry.getKey().longValue(), districtsMap);
+								  locationEntry.getValue().setTotalSubmittedToursCnt(locationEntry.getValue().getOwnToursCnt()+locationEntry.getValue().getInchargerToursCnt());
+								  Double averageTours = locationEntry.getValue().getTotalSubmittedToursCnt().doubleValue()/locationEntry.getValue().getNoOfDistinctTours().doubleValue();
+								  locationEntry.getValue().setAverageTours(averageTours);
 							  }
 						  }
 					  }
-				  }
-				   List<Object[]> rtrnDistrictList = districtDAO.getDistrictListBystateId(stateId);
-				   if(rtrnDistrictList != null && rtrnDistrictList.size() > 0){
-					   for(Object[] param:rtrnDistrictList){
-						   districtMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])); 
-					   }
-				   }
-				   
-			 List<Object[]> rtrnObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,null);
-			 setMemberDetails(rtrnObjList,memberDetaislMap,designationMap);
-			 if(locationAccessLevelId == 2l){//state access
-				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
-				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
+				 }
 			 }
+			 
 			 if(memberDetaislMap != null && memberDetaislMap.size() > 0){
+				 
 				 Map<Long,ToursBasicVO> gsMap = memberDetaislMap.get(3l);
 				 
 				  if(gsMap != null && gsMap.size() > 0){
@@ -879,8 +959,11 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  for(Entry<Long,ToursBasicVO> entry:gsMap.entrySet()){
 						
 						  ToursBasicVO VO = entry.getValue();
+						  
 						 	  Map<Long,Set<Long>> locationMap = candiateAccessLevelMap.get(VO.getId());
+						 	  
 							  if(locationMap != null && locationMap.size() > 0){
+								  
 								  for(Entry<Long,Set<Long>> locationEntry:locationMap.entrySet()){
 									  
 									  for(Long id:locationEntry.getValue()){
@@ -916,7 +999,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							    	secAndOrgSecMap.put(entry.getKey(), entry.getValue());
 							    	
 							    }else{
-							    	
 							    	orgSecVO.setSubmitedLeaderCnt(orgSecVO.getSubmitedLeaderCnt()+entry.getValue().getSubmitedLeaderCnt());
 							    	orgSecVO.setOwnToursCnt(orgSecVO.getOwnToursCnt()+entry.getValue().getOwnToursCnt());
 							    	orgSecVO.setInchargerToursCnt(orgSecVO.getInchargerToursCnt()+entry.getValue().getInchargerToursCnt());
@@ -960,22 +1042,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		}
 		return resultList;
 	}
-	public void setDistrictsToMap(List<Object[]> objList,Long accessLevelId, Map<Long,Set<Long>> districtsMap){
-		try{
-			if(objList != null && objList.size() > 0){
-				for(Object[] param:objList){
-					Set<Long> districtSet = districtsMap.get(accessLevelId);
-					if(districtSet == null ){
-						districtSet = new HashSet<Long>();
-						districtsMap.put(accessLevelId, districtSet);
-					}
-					districtSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-				}
-			}
-		}catch(Exception e){
-			LOG.error("Error occured at setDistrictsToMap() in CoreDashboardToursService ",e);
-		}
-	}
 	public void setMemberDetails(List<Object[]> objList,Map<Long,Map<Long,ToursBasicVO>> memberDetaislMap,Map<Long,String> designationMap){
 		try{
 			if(objList != null && objList.size() > 0){
@@ -994,12 +1060,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						 candidateVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
 						 candidateVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
 						 candidateVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
-						 candidateVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[7]));
-						 candidateVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[8]));
-						 candidateVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[9]));
-						 candidateVO.setTotalSubmittedToursCnt(candidateVO.getOwnToursCnt()+candidateVO.getInchargerToursCnt());
-						 Double averageTours = candidateVO.getTotalSubmittedToursCnt().doubleValue()/candidateVO.getNoOfDistinctTours().doubleValue();
-						 candidateVO.setAverageTours(averageTours);
+						 candidateVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[7]));
 						 memberMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), candidateVO);
 					 }
 				}

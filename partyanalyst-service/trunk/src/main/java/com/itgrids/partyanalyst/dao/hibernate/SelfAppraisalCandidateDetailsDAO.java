@@ -287,24 +287,140 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		  }
 		  return query.list();
 	  }
-	  public List<Object[]> getToursVisitedDetailsDistrictWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
+	  public List<Object[]> getOwnToursCntDistrictWiseBsdOnUserAccssLvl(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
+		     StringBuilder queryStr = new StringBuilder();
+		     queryStr.append(" select " +
+		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,");//0
+		     		 		if(reportType != null && reportType.equalsIgnoreCase("MP")){
+		     		 		queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId,");//1		
+		     		 		}else{
+		     		 		  queryStr.append(" model1.userAddress.district.districtId,");	
+		     		 		}
+		     		 		queryStr.append(" sum(model.ownTours) " +//2
+		     		        " from SelfAppraisalCandidateDetails model,SelfAppraisalCandidateLocation model1 " +
+		     		        " where model.selfAppraisalCandidate.selfAppraisalCandidateId=model1.selfAppraisalCandidate.selfAppraisalCandidateId " +
+		     		        " and " +
+		     		        " model.selfAppraisalCandidate.isActive='Y' " +
+		     		        " and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive='Y' and model1.type='Own'  ");
+			      if(stateId != null && stateId.longValue() > 0){
+							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
+				  }
+			      if(fromDate != null && toDate != null ){
+                  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+               }
+			    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+				   queryStr.append(" and model1.userAddress.state.stateId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+				   queryStr.append(" and model1.userAddress.district.districtId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			        queryStr.append(" and model1.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			        queryStr.append(" and model1.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+				    queryStr.append(" and model1.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+				    queryStr.append(" and model1.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+				    queryStr.append(" and model1.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+				    queryStr.append(" and model1.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+				 }
+				if(reportType != null && reportType.equalsIgnoreCase("MP")){
+					  queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+					  				  " model1.userAddress.parliamentConstituency.constituencyId ");
+				}else{
+					 queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+					 		         " model1.userAddress.district.districtId ");	
+				}
+		     	  Query query = getSession().createQuery(queryStr.toString());
+		     		
+		 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 		 }
+		 		if(stateId != null && stateId.longValue() > 0){
+		 			 query.setParameter("stateId", stateId);
+		 		}
+		 		 if(fromDate!= null && toDate!=null){
+		 			   query.setDate("fromDate", fromDate);
+		 			   query.setDate("toDate", toDate);
+		 		 }
+		 		 return query.list();
+	   }
+	  public List<Object[]> getInchargeToursCntDistrictWiseBsdOnUsrAccssLvl(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
+		     StringBuilder queryStr = new StringBuilder();
+		     queryStr.append(" select " +
+		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,");//0
+		     		 		if(reportType != null && reportType.equalsIgnoreCase("MP")){
+		     		 		queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId,");//1		
+		     		 		}else{
+		     		 		  queryStr.append(" model1.userAddress.district.districtId,");//2	
+		     		 		}
+		     		 		queryStr.append(" sum(model.inchargeTours) " +
+		     		        " from SelfAppraisalCandidateDetails model,SelfAppraisalCandidateLocation model1 " +
+		     		        " where model.selfAppraisalCandidate.selfAppraisalCandidateId=model1.selfAppraisalCandidate.selfAppraisalCandidateId " +
+		     		        " and " +
+		     		        " model.selfAppraisalCandidate.isActive='Y' " +
+		     		        " and model.selfAppraisalCandidate.selfAppraisalDesignation.isActive='Y' and model1.type='Incharge' ");
+			      if(stateId != null && stateId.longValue() > 0){
+							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
+				  }
+			      if(fromDate != null && toDate != null ){
+			    	  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+                  }
+			     if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+				   queryStr.append(" and model1.userAddress.state.stateId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+				   queryStr.append(" and model1.userAddress.district.districtId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			        queryStr.append(" and model1.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			        queryStr.append(" and model1.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+				    queryStr.append(" and model1.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+				    queryStr.append(" and model1.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+				    queryStr.append(" and model1.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+				    queryStr.append(" and model1.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+				 }
+				if(reportType != null && reportType.equalsIgnoreCase("MP")){
+					  queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+					  				  " model1.userAddress.parliamentConstituency.constituencyId ");
+				}else{
+					 queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+					 		         " model1.userAddress.district.districtId ");	
+				}
+		     	  Query query = getSession().createQuery(queryStr.toString());
+		     		
+		 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 		 }
+		 		if(stateId != null && stateId.longValue() > 0){
+		 			 query.setParameter("stateId", stateId);
+		 		}
+		 		 if(fromDate!= null && toDate!=null){
+		 			   query.setDate("fromDate", fromDate);
+		 			   query.setDate("toDate", toDate);
+		 		 }
+		 		 return query.list();
+	   }
+	  public List<Object[]> getToursSubmittedCandidateCntAndNoOfToursDistrictWiseBsdOnUserAccssLvl(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String reportType){
 		     StringBuilder queryStr = new StringBuilder();
 		     queryStr.append(" select " +
 		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
 		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
 		     		 		" model1.selfAppraisalLocationScopeId, ");//2
 		     		 		if(reportType != null && reportType.equalsIgnoreCase("MP")){
-		     		 		queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId," +//
-	  		     		 				    " model1.userAddress.parliamentConstituency.name,");		
+		     		 		queryStr.append(" model1.userAddress.parliamentConstituency.constituencyId," +//3
+	  		     		 				    " model1.userAddress.parliamentConstituency.name,");//4		
 		     		 		}else{
 		     		 		  queryStr.append(" model1.userAddress.district.districtId," +//
 		  		     		 				  " model1.userAddress.district.districtName,");	
 		     		 		}
-		     		 		queryStr.append("model.selfAppraisalCandidate.selfAppraisalCandidateId," +//5
-		     		        " count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +//6
-		     		        " sum(model.ownTours)," +//7
-		     		        " sum(model.inchargeTours)," +//8
-		     		        " count(distinct model.selfAppraisalCandidateDetailsId)" +//9
+		     		 		queryStr.append(" model.selfAppraisalCandidate.selfAppraisalCandidateId," +//5
+		     		 		" count(distinct model.selfAppraisalCandidate.selfAppraisalCandidateId)," +//6
+		     		        " count(distinct model.selfAppraisalCandidateDetailsId) " +//7
 		     		        " from SelfAppraisalCandidateDetails model,SelfAppraisalCandidateLocation model1 " +
 		     		        " where model.selfAppraisalCandidate.selfAppraisalCandidateId=model1.selfAppraisalCandidate.selfAppraisalCandidateId " +
 		     		        " and " +
@@ -314,8 +430,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 							queryStr.append(" and model1.userAddress.state.stateId =:stateId ");
 				  }
 			      if(fromDate != null && toDate != null ){
-                  queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
-               }
+                    queryStr.append(" and date(model.tourDate) between :fromDate and :toDate ");
+                  }
 			    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 				   queryStr.append(" and model1.userAddress.state.stateId in (:userAccessLevelValues)");  
 				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){

@@ -26,4 +26,16 @@ public class SelfAppraisalCandidateTourLocationDAO extends GenericDaoHibernate<S
 			      query.setParameter("candidateId", candidateId);
 			       return query.list();
 		   }
+	    public List<Object[]> getCandiateLocationScopeIdAndValuesByDesignation(Long designationId){
+			   StringBuilder queryStr = new StringBuilder();
+			    queryStr.append(" select model.selfAppraisalCandidateId, " +
+			    				" model.selfAppraisalLocationScopeId," +
+			    				" model.locationValue " +
+			    				" from SelfAppraisalCandidateTourLocation model " +
+			    				" where " +
+			    				" model.selfAppraisalCandidate.selfAppraisalDesignationId=:designationId ");
+			    Query query = getSession().createQuery(queryStr.toString());
+			      query.setParameter("designationId", designationId);
+			       return query.list();
+		   }
 }
