@@ -856,6 +856,11 @@ public class GISVisualizationService implements IGISVisualizationService{
 	public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
 		GISUserTrackingVO returnVO = new GISUserTrackingVO();
 		try{
+			
+			if(inputVO.getChildLocationType() == null || !inputVO.getChildLocationType().equalsIgnoreCase("old")){
+				return getNewLocationWiseTabUserTrackingDetails(inputVO);
+			}
+			
 			//System.out.println(inputVO.getParentLocationType() +" starting @ : "+new Date());
 			Set<Long> cadreSurveyUserIdsLsit = new HashSet<Long>(0);
 			Map<Long,GISUserTrackingVO> tabUserMap = new HashMap<Long,GISUserTrackingVO>();
@@ -1291,6 +1296,471 @@ public class GISVisualizationService implements IGISVisualizationService{
 							//vo.getLastOneHrInActiveusersList().clear();
 							//vo.getTodayActiveUsersList().clear();
 							//vo.getTodayActiveUsersList().clear();
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
+		}
+		
+		return locationWiseUsersMap;
+	}
+	
+	public GISUserTrackingVO getNewLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO){
+		GISUserTrackingVO returnVO = new GISUserTrackingVO();
+		try{
+			//System.out.println(inputVO.getParentLocationType() +" starting @ : "+new Date());
+			Set<Long> cadreSurveyUserIdsLsit = new HashSet<Long>(0);
+			Map<Long,GISUserTrackingVO> tabUserMap = new HashMap<Long,GISUserTrackingVO>();
+			//List<Object[]> totalTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			//List<Object[]> totalTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			List<Object[]> totalTabUsersData = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"total");
+			setNewLocationWiseTabUserTrackingDetails(totalTabUsersData,"total",returnVO,tabUserMap,cadreSurveyUserIdsLsit);
+			
+			returnVO.setActiveCount(Long.valueOf(String.valueOf(cadreSurveyUserIdsLsit.size())));
+			cadreSurveyUserIdsLsit.clear();
+			
+			Date fromDate=null;
+			Date toDate=null;
+			
+			if(inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				fromDate = sdf.parse(inputVO.getStartDate());
+				 toDate  =sdf.parse(inputVO.getEndDate());
+			}
+			
+			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				List<Object[]> latestObj = tabUserLocationDetailsDAO.getLattitudLangitudeOfTabUser(inputVO,fromDate,toDate);
+				List<Long> locationIdsList = new ArrayList<Long>(0);
+				if(commonMethodsUtilService.isListOrSetValid(latestObj)){
+					for (Object[] param : latestObj) 
+						locationIdsList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+				if(commonMethodsUtilService.isListOrSetValid(locationIdsList)){
+					List<Object[]> latestLatLongitudeDtls = tabUserLocationDetailsDAO.getLattitudeLangitudeOfTabbUserByIds(locationIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(latestLatLongitudeDtls)){
+						for (Object[] param : latestLatLongitudeDtls) {
+							try {
+								GISUserTrackingVO tabVO =  tabUserMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+								if(tabVO != null){
+									tabVO.setLattitude(commonMethodsUtilService.getStringValueForObject(param[3]));
+									tabVO.setLongitude(commonMethodsUtilService.getStringValueForObject(param[4]));
+									tabVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[5]));
+								 }
+							} catch (Exception e) {
+								LOG.error("Error occured while updating langitude and lattitude for tab user for GIS Service ",e);
+							}
+						}
+					}
+				}
+			}
+			
+			
+			//List<Object[]> todayTabUsersData = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			//List<Object[]> todayTabUsersData = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			List<Object[]> todayTabUsersData = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"today");
+			setNewLocationWiseTabUserTrackingDetails(todayTabUsersData,"today",returnVO,tabUserMap,cadreSurveyUserIdsLsit);
+			
+			returnVO.setTodayActiveCount(Long.valueOf(String.valueOf(cadreSurveyUserIdsLsit.size())));
+			cadreSurveyUserIdsLsit.clear();
+		
+			List<Object[]>  assignedUsersList = cadreSurveyUserAssignDetailsDAO.getNewUserTrackingDetails(inputVO);
+			Map<Long,Long> locationWiseAllocatedCoutnMap = new HashMap<Long, Long>(0);
+			if(commonMethodsUtilService.isListOrSetValid(assignedUsersList)){
+			for (Object[] param : assignedUsersList) { 
+				//if(returnVO.getLocationId().longValue() == commonMethodsUtilService.getLongValueForObject(param[0]))
+				locationWiseAllocatedCoutnMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				
+				Long count=commonMethodsUtilService.getLongValueForObject(param[2]);
+				if(returnVO.getAllocatedCount() != null && returnVO.getAllocatedCount().longValue()>0L)
+					returnVO.setAllocatedCount(returnVO.getAllocatedCount()+count);
+				else
+					returnVO.setAllocatedCount(count);//total Allocated count
+			   }
+			}
+			returnVO.setTodayInActiveCount(returnVO.getAllocatedCount()-returnVO.getTodayActiveCount());
+			
+			//List<Object[]> lastOneHrTrackingList = tdpCadreDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			//List<Object[]> lastOneHrTrackingList = tabUserLocationDetailsDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			
+			List<Object[]> lastOneHrTrackingList = tdpCadreUserHourRegInfoDAO.getLocationWiseTabUserTrackingDetails(inputVO,"LastOneHr");
+			setNewLocationWiseTabUserTrackingDetails(lastOneHrTrackingList,"LastOneHr",returnVO,tabUserMap,cadreSurveyUserIdsLsit);
+			
+			returnVO.setLastOneHrActiveCount(Long.valueOf(String.valueOf(cadreSurveyUserIdsLsit.size())));
+			returnVO.setLastOneHrInActiveCount(returnVO.getTodayActiveCount()-returnVO.getLastOneHrActiveCount());
+			cadreSurveyUserIdsLsit.clear();
+			
+			if(commonMethodsUtilService.isListOrSetValid(lastOneHrTrackingList)){
+			//returnVO.setLastOneHrActiveCount(Long.valueOf(lastOneHrTrackingList.size()));// last one hour active members
+			for (Object[] param : lastOneHrTrackingList) {
+				GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+					if(tabVO != null){
+						tabVO.setLastOneHrCount(tabVO.getLastOneHrCount()+commonMethodsUtilService.getLongValueForObject(param[6]));//last one hour Output Of Each tab User
+					}
+				}
+			}
+			
+			//returnVO.setActiveCount(Long.valueOf(tabUserMap.size()));//total active members
+			if(commonMethodsUtilService.isMapValid(tabUserMap)){
+				for(GISUserTrackingVO tabUser :tabUserMap.values()){
+					returnVO.setOverAllOutput(returnVO.getOverAllOutput()+tabUser.getTotalCount());//total output
+					returnVO.setLastOneHrCount(returnVO.getLastOneHrCount()+tabUser.getLastOneHrCount());//last one hour Output Of All tab Users
+					//tabUserList.add(tabUser);
+				}
+			}
+			
+			if(returnVO.getActiveCount() != null && returnVO.getActiveCount().longValue() > 0l)
+				returnVO.setAvgOutput(returnVO.getOverAllOutput()/returnVO.getActiveCount());
+			
+			if(returnVO.getLastOneHrActiveCount() != null && returnVO.getLastOneHrActiveCount().longValue() > 0l)
+				returnVO.setLastOneHrAvgCount(returnVO.getLastOneHrCount()/returnVO.getLastOneHrActiveCount());
+			
+			//returnVO.setUsersList(tabUserList);
+			Map<Long,GISUserTrackingVO> locationWiseUsersMap = segriteNewLocationdetials(returnVO,inputVO,locationWiseAllocatedCoutnMap);
+			
+			returnVO.getTodayActiveUsersList().clear();
+			returnVO.getTodayInActiveUsersList().clear();
+			returnVO.getLastOneHrActiveusersList().clear();
+			returnVO.getLastOneHrInActiveusersList().clear();
+			
+			if(commonMethodsUtilService.isMapValid(locationWiseUsersMap)){
+				returnVO.getUsersList().addAll(locationWiseUsersMap.values());
+			}
+			
+			
+			returnVO.setInActiveCount(returnVO.getAllocatedCount()-returnVO.getActiveCount());
+			
+			//System.out.println(inputVO.getParentLocationType() +" compelted @ : "+new Date());			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
+		}
+		return returnVO;
+	}
+	
+	
+	public void setNewLocationWiseTabUserTrackingDetails(List<Object[]> tabusersData , String type,GISUserTrackingVO returnVO,Map<Long,GISUserTrackingVO> tabUserMap,Set<Long> cadreSurveyUserIdsLsit){
+		try{
+			Map<Long,GISUserTrackingVO> tempMap = new HashMap<Long, GISUserTrackingVO>(0);
+			if(commonMethodsUtilService.isListOrSetValid(tabusersData)){
+				
+					//returnVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					//returnVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					if(type.equalsIgnoreCase("total")){
+						for (Object[] param : tabusersData) {
+							GISUserTrackingVO tabUser =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabUser == null){
+								tabUser = new GISUserTrackingVO();
+								tabUserMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+							}
+							tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+							
+							if(type.equalsIgnoreCase("total")){
+								tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));	
+							}else if(type.equalsIgnoreCase("today")){
+								tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+							}else if(type.equalsIgnoreCase("LastOneHr")){
+								tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+							}
+							tabUser.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
+							tabUser.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+							
+							cadreSurveyUserIdsLsit.add(commonMethodsUtilService.getLongValueForObject(param[9]));
+						}
+					}
+					else if(type.equalsIgnoreCase("today")){
+						for (Object[] param : tabusersData) {
+							GISUserTrackingVO tabUser =  tempMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabUser == null){
+								tabUser = new GISUserTrackingVO();
+								tempMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+							}
+							tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+							tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+							
+							tabUser.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
+							tabUser.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+							
+							GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabVO != null){
+								tabUser.setLattitude(tabVO.getLattitude());
+								tabUser.setLongitude(tabVO.getLongitude());
+								tabUser.setSurveyTime(tabVO.getSurveyTime());
+							 }
+							
+							cadreSurveyUserIdsLsit.add(commonMethodsUtilService.getLongValueForObject(param[9]));
+						}
+						
+						if(commonMethodsUtilService.isMapValid(tempMap)){
+							returnVO.getTodayActiveUsersList().addAll(tempMap.values());
+							if(commonMethodsUtilService.isMapValid(tabUserMap)){
+								for (Long userId : tabUserMap.keySet()) {
+									if(!tempMap.keySet().contains(userId)){
+										returnVO.getTodayInActiveUsersList().add(tabUserMap.get(userId));
+									}
+								}
+							}
+						}
+					}
+					else if(type.equalsIgnoreCase("LastOneHr")){
+						for (Object[] param : tabusersData) {
+							GISUserTrackingVO tabUser =  tempMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabUser == null){
+								tabUser = new GISUserTrackingVO();
+								tempMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), tabUser);
+							}
+							tabUser.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+							tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+							
+							tabUser.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
+							tabUser.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+							
+							GISUserTrackingVO tabVO =  tabUserMap.get(param[2] !=null ? (Long)param[2]:0l);
+							if(tabVO != null){
+								tabUser.setLattitude(tabVO.getLattitude());
+								tabUser.setLongitude(tabVO.getLongitude());
+								tabUser.setSurveyTime(tabVO.getSurveyTime());
+							 }
+							
+							cadreSurveyUserIdsLsit.add(commonMethodsUtilService.getLongValueForObject(param[9]));
+						}
+						
+						if(commonMethodsUtilService.isMapValid(tempMap)){
+							returnVO.getLastOneHrActiveusersList().addAll(tempMap.values());
+							if(commonMethodsUtilService.isListOrSetValid(returnVO.getTodayActiveUsersList())){
+								for (GISUserTrackingVO vo : returnVO.getTodayActiveUsersList()) {
+									if(!tempMap.keySet().contains(vo.getId())){
+										returnVO.getLastOneHrInActiveusersList().add(vo);
+									}
+								}
+							}
+						}
+					}
+				}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setLocationWiseTabUserTrackingDetails Method in GISVisualizationService Class",e);
+		}
+	}
+	
+	public Map<Long,GISUserTrackingVO> segriteNewLocationdetials(GISUserTrackingVO returnVO,GISVisualizationParameterVO inputVO,Map<Long,Long> locationWiseAllocatedCoutnMap){
+		Map<Long,GISUserTrackingVO> locationWiseUsersMap = new HashMap<Long, GISUserTrackingVO>(0);
+		try {
+			
+			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getTodayActiveUsersList())){
+						List<GISUserTrackingVO> activeUserLocationsList = returnVO.getTodayActiveUsersList();
+						if(commonMethodsUtilService.isListOrSetValid(activeUserLocationsList)){
+							for (GISUserTrackingVO tabUser : activeUserLocationsList) {
+								GISUserTrackingVO locationVO = new GISUserTrackingVO();
+								if(locationWiseUsersMap.get(tabUser.getDistrictId()) != null){
+									locationVO = locationWiseUsersMap.get(tabUser.getDistrictId());
+								}
+							
+								locationVO.getTodayActiveUsersList().add(tabUser);
+								locationVO.setActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayActiveUsersList().size())));
+								if(locationVO.getDistrictId() == null || locationVO.getDistrictId().longValue() == 0L){
+									locationVO.setDistrictId(tabUser.getDistrictId());
+									locationVO.setDistrictName(tabUser.getDistrictName());
+									locationVO.setLocationId(tabUser.getDistrictId());
+									locationVO.setLocationName(tabUser.getDistrictName());
+									locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getDistrictId()));
+								}
+								locationWiseUsersMap.put(tabUser.getDistrictId(), locationVO);
+							}
+						}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getTodayInActiveUsersList())){
+					List<GISUserTrackingVO> inActiveUserLocationsList = returnVO.getTodayInActiveUsersList();
+					if(commonMethodsUtilService.isListOrSetValid(inActiveUserLocationsList)){
+						for (GISUserTrackingVO tabUser : inActiveUserLocationsList) {
+							GISUserTrackingVO locationVO = new GISUserTrackingVO();
+							if(locationWiseUsersMap.get(tabUser.getDistrictId()) != null){
+								locationVO = locationWiseUsersMap.get(tabUser.getDistrictId());
+							}
+						
+							locationVO.getTodayInActiveUsersList().add(tabUser);
+							locationVO.setInActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayInActiveUsersList().size())));
+							if(locationVO.getDistrictId() == null || locationVO.getDistrictId().longValue() == 0L){
+								locationVO.setDistrictId(tabUser.getDistrictId());
+								locationVO.setDistrictName(tabUser.getDistrictName());
+								locationVO.setLocationId(tabUser.getDistrictId());
+								locationVO.setLocationName(tabUser.getDistrictName());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getDistrictId()));
+							}
+							locationWiseUsersMap.put(tabUser.getDistrictId(), locationVO);
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getLastOneHrActiveusersList())){
+					List<GISUserTrackingVO> lastOneHrActiveUserLocationsList = returnVO.getLastOneHrActiveusersList();
+					if(commonMethodsUtilService.isListOrSetValid(lastOneHrActiveUserLocationsList)){
+						for (GISUserTrackingVO tabUser : lastOneHrActiveUserLocationsList) {
+							GISUserTrackingVO locationVO = new GISUserTrackingVO();
+							if(locationWiseUsersMap.get(tabUser.getDistrictId()) != null){
+								locationVO = locationWiseUsersMap.get(tabUser.getDistrictId());
+							}
+						
+							locationVO.getLastOneHrActiveusersList().add(tabUser);
+							locationVO.setLastOneHrActiveCount(Long.valueOf(String.valueOf(locationVO.getLastOneHrActiveusersList().size())));
+							if(locationVO.getDistrictId() == null || locationVO.getDistrictId().longValue() == 0L){
+								locationVO.setDistrictId(tabUser.getDistrictId());
+								locationVO.setDistrictName(tabUser.getDistrictName());
+								locationVO.setLocationId(tabUser.getDistrictId());
+								locationVO.setLocationName(tabUser.getDistrictName());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getDistrictId()));
+							}
+							locationWiseUsersMap.put(tabUser.getDistrictId(), locationVO);
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getLastOneHrInActiveusersList())){
+					List<GISUserTrackingVO> lastOneHrInActiveUserLocationsList = returnVO.getLastOneHrInActiveusersList();
+					if(commonMethodsUtilService.isListOrSetValid(lastOneHrInActiveUserLocationsList)){
+						for (GISUserTrackingVO tabUser : lastOneHrInActiveUserLocationsList) {
+							GISUserTrackingVO locationVO = new GISUserTrackingVO();
+							if(locationWiseUsersMap.get(tabUser.getDistrictId()) != null){
+								locationVO = locationWiseUsersMap.get(tabUser.getDistrictId());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getDistrictId()));
+							}
+						
+							locationVO.getLastOneHrInActiveusersList().add(tabUser);
+							locationVO.setLastOneHrInActiveCount(Long.valueOf(String.valueOf(locationVO.getLastOneHrInActiveusersList().size())));
+							if(locationVO.getDistrictId() == null || locationVO.getDistrictId().longValue() == 0L){
+								locationVO.setDistrictId(tabUser.getDistrictId());
+								locationVO.setDistrictName(tabUser.getDistrictName());
+								locationVO.setLocationId(tabUser.getDistrictId());
+								locationVO.setLocationName(tabUser.getDistrictName());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getDistrictId()));
+							}
+							locationWiseUsersMap.put(tabUser.getDistrictId(), locationVO);
+						}
+					}
+				}
+			}
+			else{
+
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getTodayActiveUsersList())){
+						List<GISUserTrackingVO> activeUserLocationsList = returnVO.getTodayActiveUsersList();
+						
+						if(commonMethodsUtilService.isListOrSetValid(activeUserLocationsList)){
+							for (GISUserTrackingVO tabUser : activeUserLocationsList) {
+								GISUserTrackingVO locationVO = new GISUserTrackingVO();
+								if(locationWiseUsersMap.get(tabUser.getLocationId()) != null){
+									locationVO = locationWiseUsersMap.get(tabUser.getLocationId());
+								}
+							
+								locationVO.getTodayActiveUsersList().add(tabUser);
+								locationVO.setActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayActiveUsersList().size())));
+								if(locationVO.getLocationId() == null || locationVO.getLocationId().longValue() == 0L){
+									locationVO.setDistrictId(tabUser.getDistrictId());
+									locationVO.setDistrictName(tabUser.getDistrictName());
+									locationVO.setLocationId(tabUser.getLocationId());
+									locationVO.setLocationName(tabUser.getLocationName());
+									locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
+								}
+								locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
+							}
+						}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getTodayInActiveUsersList())){
+					List<GISUserTrackingVO> inActiveUserLocationsList = returnVO.getTodayInActiveUsersList();
+					if(commonMethodsUtilService.isListOrSetValid(inActiveUserLocationsList)){
+						for (GISUserTrackingVO tabUser : inActiveUserLocationsList) {
+							GISUserTrackingVO locationVO = new GISUserTrackingVO();
+							if(locationWiseUsersMap.get(tabUser.getLocationId()) != null){
+								locationVO = locationWiseUsersMap.get(tabUser.getLocationId());
+							}
+						
+							locationVO.getTodayInActiveUsersList().add(tabUser);
+							locationVO.setInActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayInActiveUsersList().size())));
+							if(locationVO.getLocationId() == null || locationVO.getLocationId().longValue() == 0L){
+								locationVO.setDistrictId(tabUser.getDistrictId());
+								locationVO.setDistrictName(tabUser.getDistrictName());
+								locationVO.setLocationId(tabUser.getLocationId());
+								locationVO.setLocationName(tabUser.getLocationName());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
+							}
+							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
+						}
+					}
+				}
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getLastOneHrActiveusersList())){
+					List<GISUserTrackingVO> lastOneHrActiveUserLocationsList = returnVO.getLastOneHrActiveusersList();
+					if(commonMethodsUtilService.isListOrSetValid(lastOneHrActiveUserLocationsList)){
+						for (GISUserTrackingVO tabUser : lastOneHrActiveUserLocationsList) {
+							GISUserTrackingVO locationVO = new GISUserTrackingVO();
+							if(locationWiseUsersMap.get(tabUser.getLocationId()) != null){
+								locationVO = locationWiseUsersMap.get(tabUser.getLocationId());
+							}
+						
+							locationVO.getLastOneHrActiveusersList().add(tabUser);
+							locationVO.setLastOneHrActiveCount(Long.valueOf(String.valueOf(locationVO.getLastOneHrActiveusersList().size())));
+							if(locationVO.getLocationId() == null || locationVO.getLocationId().longValue() == 0L){
+								locationVO.setDistrictId(tabUser.getDistrictId());
+								locationVO.setDistrictName(tabUser.getDistrictName());
+								locationVO.setLocationId(tabUser.getLocationId());
+								locationVO.setLocationName(tabUser.getLocationName());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
+							}
+							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
+						}
+					}
+				}
+				if(commonMethodsUtilService.isListOrSetValid(returnVO.getLastOneHrInActiveusersList())){
+					List<GISUserTrackingVO> lastOneHrInActiveUserLocationsList = returnVO.getLastOneHrInActiveusersList();
+					if(commonMethodsUtilService.isListOrSetValid(lastOneHrInActiveUserLocationsList)){
+						for (GISUserTrackingVO tabUser : lastOneHrInActiveUserLocationsList) {
+							GISUserTrackingVO locationVO = new GISUserTrackingVO();
+							if(locationWiseUsersMap.get(tabUser.getLocationId()) != null){
+								locationVO = locationWiseUsersMap.get(tabUser.getLocationId());
+							}
+						
+							locationVO.getLastOneHrInActiveusersList().add(tabUser);
+							locationVO.setLastOneHrInActiveCount(Long.valueOf(String.valueOf(locationVO.getLastOneHrInActiveusersList().size())));
+							if(locationVO.getLocationId() == null || locationVO.getLocationId().longValue() == 0L){
+								locationVO.setDistrictId(tabUser.getDistrictId());
+								locationVO.setDistrictName(tabUser.getDistrictName());
+								locationVO.setLocationId(tabUser.getLocationId());
+								locationVO.setLocationName(tabUser.getLocationName());
+								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
+							}
+							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
+						}
+					}
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(locationWiseUsersMap)){
+				for (Long locationId : locationWiseUsersMap.keySet()) {
+					GISUserTrackingVO vo = locationWiseUsersMap.get(locationId);
+					if(vo != null){
+						vo.setTodayActiveCount(Long.valueOf(vo.getTodayActiveUsersList() != null?String.valueOf(vo.getTodayActiveUsersList().size()):"0"));
+						vo.setTodayInActiveCount(vo.getAllocatedCount() - vo.getTodayActiveCount());
+						if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+							vo.getLastOneHrActiveusersList().clear();
+							vo.getLastOneHrInActiveusersList().clear();
+							vo.getTodayActiveUsersList().clear();
+							vo.getTodayInActiveUsersList().clear();
 						}
 					}
 				}
