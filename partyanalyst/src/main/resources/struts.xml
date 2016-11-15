@@ -14656,5 +14656,13 @@
 			<param name="root">toursDtlsList</param>
 		</result>
 	</action>
+	<action name="mediaScreenPartyForTSAction" class="fieldMonitoringAction" method="mediaScreenPartyForTS">
+			<result>/jsp/mediaScreenPartyForTS.jsp</result>
+	</action>
+	<action name="getDistrictWiseTodayAndOverAllCountsAction" class="fieldMonitoringAction"  method="getDistrictWiseTodayAndOverAllCounts">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>
