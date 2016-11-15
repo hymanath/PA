@@ -709,5 +709,6 @@
 		<pattern>/privilegedUserCadreRegAction*</pattern> 
 		<pattern>/mediaScreenPartyAction*</pattern>
 		<pattern>/tdpUserWiseMapAction*</pattern>
+		<pattern>/mediaScreenPartyForTSAction*</pattern>
 	</decorator> 
 </decorators>
