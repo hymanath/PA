@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -167,5 +168,19 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		}
 		
 	}
+	
+	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password){
+		
+		CardPrintValidationUserVO cardPrintValidationUserVO = null;
+		try{
+			cardPrintValidationUserVO = cadreRegistrationServiceNew.validateCardPrintUserLogin(username , password);
+			
+		}catch(Exception e) {
+			log.error("Entered into the validateCardPrintUserLogin() in WebServiceHandlerServiceForCadre class");
+		}
+		return cardPrintValidationUserVO;
+	}
+	
+	
 	
 }
