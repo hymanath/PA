@@ -15,11 +15,32 @@ public class CadreBasicVO {
 	private String name;
 	private String tdpCadreName;
 	private String tdpCadreMbl;
-
+	private String deviceUserName;
+	private String userMobileNo;
+	private String imagePathStr;
+	
 	private List<CadreBasicVO> subList1;
 	private List<CadreBasicVO> subList2;
 	
 	
+	public String getDeviceUserName() {
+		return deviceUserName;
+	}
+	public void setDeviceUserName(String deviceUserName) {
+		this.deviceUserName = deviceUserName;
+	}
+	public String getUserMobileNo() {
+		return userMobileNo;
+	}
+	public void setUserMobileNo(String userMobileNo) {
+		this.userMobileNo = userMobileNo;
+	}
+	public String getImagePathStr() {
+		return imagePathStr;
+	}
+	public void setImagePathStr(String imagePathStr) {
+		this.imagePathStr = imagePathStr;
+	}
 	public String getTdpCadreName() {
 		return tdpCadreName;
 	}
