@@ -136,7 +136,7 @@
 											<input type="hidden" id="inchageownLocationScopeValue" name="toursInputVO.inchargeLocationId">
 											<span id="inSelectBoxerrId" class="textErrCls" style="color:red;"></span>
 										</div>    
-									</div>
+									</div>  
 									<div class="row m_top10">  
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 											<label>Add Comment</label>
@@ -148,12 +148,12 @@
 						</div>
 						<div class="row showDivCls" id="uploadFlDivId" style="display:none;"> 
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<p class="m_0 text-success font_16 font_weight">UPLOAD SCAN COPY</p>
-								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage" class="m_top20"/>
+								<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
+								<input type="file" id="filer_input3" multiple="multiple"  name="files[]" class="m_top20"/>        
 							</div>
 						</div>            
 						
-						<div class="row showDivCls" style="display:none;">
+						<div class="row showDivCls" style="display:none;">  
 							<div class="col-md-4 col-md-offset-4">
 								<span class="updateTourStatusCls"></span>
 								<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
@@ -161,7 +161,7 @@
 							</div>   
 							  <div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>
 						</div>  
-					</form>  
+					</form>   
 					<div class="row m_top20 otherMemberBlockCls" style="display:none;">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<h4 class="panel-title text-capital">Search Member By</h4>
@@ -269,8 +269,9 @@
 <!-- for file uploader -->
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>  
+<script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>          
 <!-- for file uploader -->
-<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>  
+<script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>     
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>    
 <script type="text/javascript">
 //$("#uploadFile").dropzone({ url: "/file/post" });
