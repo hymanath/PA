@@ -18,11 +18,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICardPrintValidationUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceTypeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
@@ -38,9 +40,12 @@ import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreDateVO;
+import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
+import com.itgrids.partyanalyst.dto.DataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
+import com.itgrids.partyanalyst.model.TdpCadreDataSourceTypeInfo;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp1;
@@ -81,6 +86,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreUserHourRegInfoTemp1DAO tdpCadreUserHourRegInfoTemp1DAO;
 	private ITdpCadreHourRegInfoTemp1DAO tdpCadreHourRegInfoTemp1DAO;
 	private ITdpCadreHourRegInfoTempDAO tdpCadreHourRegInfoTempDAO;
+	private ICardPrintValidationUserDAO cardPrintValidationUserDAO;
+	private DateUtilService dateUtilService;
+	private ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -174,6 +182,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreHourRegInfoTempDAO(
 			ITdpCadreHourRegInfoTempDAO tdpCadreHourRegInfoTempDAO) {
 		this.tdpCadreHourRegInfoTempDAO = tdpCadreHourRegInfoTempDAO;
+	}
+	
+	public void setCardPrintValidationUserDAO(
+			ICardPrintValidationUserDAO cardPrintValidationUserDAO) {
+		this.cardPrintValidationUserDAO = cardPrintValidationUserDAO;
+	}
+	
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	
+	public void setTdpCadreDataSourceTypeInfoDAO(
+			ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO) {
+		this.tdpCadreDataSourceTypeInfoDAO = tdpCadreDataSourceTypeInfoDAO;
 	}
 	//Business methods
 	/**
@@ -2108,6 +2130,223 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
  		  }
      	  return rs;
        } 
+       
+       
+       /** 7)
+     	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+     	 *  pushing tdp cadre counts based on data source type.
+     	 *  @since 14-NOVEMBER-2016 
+     	 */
+       
+      
+       public ResultStatus pushDataSourceWisetdpCadreCounts(){
+		   
+			final ResultStatus rs = new ResultStatus();
+			try {
+				
+				  final Map<String,DataSourceTypeVO> todayMap = getDataSourceTypeCounts("Today");
+	    		  final Map<String,DataSourceTypeVO> totalMap = getDataSourceTypeCounts("Total");
+				
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        		
+			        		int deletedRecords = tdpCadreDataSourceTypeInfoDAO.deleteAllRecords();
+			        		Date currentTime = dateUtilService.getCurrentDateAndTime();
+				    		
+			        		insertDataInToTdpCadreDataSourceTypeInfo(todayMap,currentTime);
+			        		insertDataInToTdpCadreDataSourceTypeInfo(totalMap,currentTime);
+			        	   
+				          rs.setResultCode(1);
+				          rs.setMessage("success");
+			         }
+			    });
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at insertDataInToTdpCadreDataSourceTypeInfo() in CadreRegistrationServiceNew service", e);
+				rs.setResultCode(0);
+				rs.setMessage("failure");
+			}
+			return rs;
+		}
+       
+       public  Map<String,DataSourceTypeVO> getDataSourceTypeCounts(String type){
+     	  
+     	  Map<String,DataSourceTypeVO> finalMap = new HashMap<String, DataSourceTypeVO>(0);
+     	  try{
+     		   
+     		  	Date currentDate = null;
+     		  	if(type.equalsIgnoreCase("Today")){
+     		  		currentDate = dateUtilService.getCurrentDateAndTime();
+     		  	}
+     		  	
+     		    List<Object[]> data = tdpCadreDataSourceTypeInfoDAO.getTdpCadreCountsByDataDourceType(currentDate);
+     		    if(data != null && data.size() > 0){
+     		    	for(Object[] obj : data){
+     		    		if(obj[0] != null && obj[0].toString().trim().length() > 0){
+     		    			DataSourceTypeVO VO = new DataSourceTypeVO();
+     		    			VO.setDataSourceType(obj[0].toString());
+     		    			VO.setType(type);
+     		    			VO.setTotalCount(obj[1]!=null ? (Long)obj[1] : 0l);
+     		    			VO.setNewCount(VO.getTotalCount());
+     		    			finalMap.put(VO.getDataSourceType() , VO );
+     		    		}
+     		    	}
+     		    }
+     		    
+     		    List<Object[]> renewalData = tdpCadreDataSourceTypeInfoDAO.getRenewalTdpCadreCountsByDataDourceType(currentDate);  
+     		    if( renewalData != null && renewalData.size() > 0){
+     		    	for(Object[] obj : renewalData){
+     		    		if(obj[0] != null && obj[0].toString().trim().length() > 0){
+     		    			DataSourceTypeVO VO = finalMap.get(obj[0].toString());
+     		    			if(VO != null){
+     		    				VO.setRenewalCount(obj[1]!=null ? (Long)obj[1] : 0l);
+     		    				VO.setNewCount(VO.getTotalCount() - VO.getRenewalCount());
+     		    			}
+     		    		}
+     		    	}
+     		    }
+     		    
+     		    List<Object[]> partyOfficeTotalList = tdpCadreDataSourceTypeInfoDAO.getTdpCadreRecordsCountByPartyOffice(currentDate);
+     			if(partyOfficeTotalList != null && partyOfficeTotalList.size() > 0){
+     				for (Object[] obj : partyOfficeTotalList) {
+     					
+     					if( obj[0] != null && obj[1] != null){
+     						DataSourceTypeVO VO = new DataSourceTypeVO();
+     						String dataSourceType = null;
+     						if((Long)obj[0] == 3930l){
+     							dataSourceType = IConstants.HYDERABAD_PARY_OFFICE;
+     						}else if((Long)obj[0] == 7394l){
+     							dataSourceType = IConstants.VIJAYAWADA_PARY_OFFICE;	
+     						}
+     						VO.setDataSourceType(dataSourceType);
+     						VO.setType(type);
+     		    			VO.setTotalCount(obj[1]!=null ? (Long)obj[1] : 0l);
+     		    			VO.setNewCount(VO.getTotalCount());
+     		    			finalMap.put(VO.getDataSourceType() , VO );
+     					}
+     				}
+     			}
+     			
+     			List<Object[]> partyOfficeRenewalList = tdpCadreLocationInfoDAO.getRenewalTdpCadreRecordsCount(currentDate, currentDate);
+     			if(partyOfficeRenewalList != null && partyOfficeRenewalList.size() > 0){
+     				for (Object[] obj : partyOfficeRenewalList) {
+     					if(obj[0] != null && obj[0].toString().trim().length() > 0){
+     						String dataSourceType = null;
+     						if((Long)obj[0] == 3930l){
+     							dataSourceType = IConstants.HYDERABAD_PARY_OFFICE;
+     						}else if((Long)obj[0] == 7394l){
+     							dataSourceType = IConstants.VIJAYAWADA_PARY_OFFICE;	
+     						}
+     		    			DataSourceTypeVO VO = finalMap.get(dataSourceType);
+     		    			if(VO != null){
+     		    				VO.setRenewalCount(obj[1]!=null ? (Long)obj[1] : 0l);
+     		    				VO.setNewCount(VO.getTotalCount() - VO.getRenewalCount());
+     		    			}
+     		    		}
+     				}
+     			}
+     			
+     			if(finalMap != null && finalMap.size() > 0) {
+     				for (Map.Entry<String, DataSourceTypeVO> entry : finalMap.entrySet()){ 
+     					DataSourceTypeVO VO =  entry.getValue();
+		    			if(VO.getTotalCount() != null && VO.getTotalCount() > 0l){
+		    				  VO.setRenewalPercent( calcPercantage( VO.getRenewalCount() , VO.getTotalCount()) );
+		    				  VO.setNewPercent( calcPercantage( VO.getNewCount() , VO.getTotalCount()) );
+		    			  }
+		    		  }
+			      }
+     		    
+ 		  }catch(Exception e) {
+ 			  LOG.error("Exception occured in getDataSourceTypeCounts() Method - ",e);
+ 		  }
+     	  return finalMap;
+       }
+       
+       public void insertDataInToTdpCadreDataSourceTypeInfo(Map<String,DataSourceTypeVO> todayMap , Date currentTime){ 
+		   	
+		   	try{
+		   		
+		   		if(todayMap != null && todayMap.size() > 0){
+		   			int i= 0;
+        			for (Map.Entry<String, DataSourceTypeVO> entry : todayMap.entrySet())
+        			{
+        				i = i + 1;
+        				DataSourceTypeVO VO =  entry.getValue();
+        				
+        				if(VO != null){
+        					
+        					TdpCadreDataSourceTypeInfo info = new TdpCadreDataSourceTypeInfo();
+        					info.setType(VO.getType());
+        					info.setDataSourceType(VO.getDataSourceType());
+        					
+        					if(VO.getTotalCount() != null && VO.getTotalCount() > 0l){
+        						info.setCadre2016(VO.getTotalCount());
+        					}
+        					if(VO.getNewCount() != null && VO.getNewCount() > 0l){
+        						info.setNewCadre(VO.getNewCount());
+        					}
+        					
+        					if(VO.getRenewalCount() != null && VO.getRenewalCount() > 0l){
+        						info.setRenewalCadre(VO.getRenewalCount() );
+        					}
+        					
+        					info.setNewCadrePercent( VO.getNewPercent() > 0 ? VO.getNewPercent().toString() : null);
+        					info.setRenewalCadrePercent(VO.getRenewalPercent() > 0 ? VO.getRenewalPercent().toString() : null);
+        					
+        					info.setInsertedTime(currentTime);
+        					
+        					tdpCadreDataSourceTypeInfoDAO.save(info);
+        				}
+        				 if( i % 5 == 0 ) { 
+		    			       //flush a batch of inserts and release memory:
+		    				  tdpCadreDAO.flushAndclearSession();
+		    			  }
+        			}
+        		}
+		   		
+				}catch(Exception e){
+					LOG.error("Exception raised at savingDataSourceWiseRecords", e);
+				}
+		   }
+       
+      
+       
+       
+       
+       //PRINTING RELATED 
+       public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password){
+    	   
+    	   CardPrintValidationUserVO finalVO = null;
+    	   
+    	   try
+    	   {
+			    Object[] obj = cardPrintValidationUserDAO.getCardPrinterUserDetails(username, password);
+			    
+			    if( obj != null && obj.length > 0)
+			    {	
+			    	finalVO = new CardPrintValidationUserVO();
+			    	
+			    	finalVO.setCardPrintValidationUserId(obj[0] != null ? (Long)obj[0] : 0l);
+			    	finalVO.setName( obj[1] != null ? obj[1].toString() : "");
+			    	finalVO.setUsername(obj[2] != null ? obj[2].toString() : "");
+			    	finalVO.setPassword(obj[3] != null ? obj[3].toString() : "");
+			    	finalVO.setMobileno(obj[4] != null ? obj[4].toString() : "");
+			    	finalVO.setStatus("Success");
+			    }
+			    else
+			    {
+			    	finalVO = new CardPrintValidationUserVO(username,password,"Failure");
+			    }
+		   }catch(Exception e)
+		   {
+			    finalVO = new CardPrintValidationUserVO(username,password,"Failure");
+			     
+			    LOG.error("Exception occur in validateCardPrintUserLogin()  Of CadreRegistrationServiceNew class - ",e);
+		   }
+    	   return finalVO;
+       }
+       
+       
        
        
 }
