@@ -104,6 +104,7 @@ function getToursBasicOverviewCountDetails()
 	 function buildToursBasicOverviewRslt(result){
 		var overAllResult= result.overAllDetailsVO;
 		var designationWiseRlst = result.subList;
+		var toursDesignationIdsString;
 		 var str='';
 		  str+'<div class="row">';
 		  if(overAllResult != null){
@@ -113,15 +114,27 @@ function getToursBasicOverviewCountDetails()
 		      str+='<table class="table tableTraining bg_ED m_XsTop10">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
-					  str+='<h4>'+overAllResult.noOfLeaderCnt+'</h4>';
+				     if(overAllResult.noOfLeaderCnt > 0){
+						str+='<h4 id="overallTourLdrDsgntnId"  attr_tour_submitted_type="All" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.noOfLeaderCnt+'</h4>';
+				     }else{
+					   str+='<h4>0</h4>';
+					 }
 					  str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
 				  str+='</td>';
 				  str+='<td>';
-					  str+='<h4>'+overAllResult.submitedLeaderCnt+'<span class="font-10 text-success"> '+overAllResult.submitedCandidateTourPer+'%</span></h4>';
-						str+='<p class="text-muted text-capital">Submited<br>Leaders</p>';  
+				     if(overAllResult.submitedLeaderCnt > 0){
+						str+='<h4 id="submitedTourLdrDsgntnId" attr_tour_submitted_type="Yes" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.submitedLeaderCnt+'<span class="font-10 text-success"> '+overAllResult.submitedCandidateTourPer+'%</span></h4>';
+				      }else{
+						str+='<h4>0<span class="font-10 text-success">0.0%</span></h4>';
+					 }
+					  str+='<p class="text-muted text-capital">Submited<br>Leaders</p>';  
 				  str+='</td>';
 				  str+='<td>';
-					  str+='<h4>'+overAllResult.notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+overAllResult.notsubmitedCandidateTourPer+'%</span></h4>';
+				  if(overAllResult.notSubmitedLeaserCnt > 0){
+					str+='<h4 id="notSubmitedTourLdrDsgntnCntId" attr_tour_submitted_type="No" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+overAllResult.notsubmitedCandidateTourPer+'%</span></h4>';
+			        }else{
+					  str+='<h4>0<span class="font-10 text-danger">0.0%</span></h4>';
+				  }
 					str+='<p class="text-muted text-capital">Not Submited<br>Leaders</p>';  
 				  str+='</td>';
 				  str+='<td>';
@@ -141,24 +154,47 @@ function getToursBasicOverviewCountDetails()
 			    str+='<h4>No Data Available</h4>';	 
 		  }
 		 if(designationWiseRlst != null && designationWiseRlst.length > 0){
+			var strIds='';
 		   for(var i in designationWiseRlst){
+			   if(designationWiseRlst[i].id==4){
+				  strIds='4,5'; 
+			   }else{
+				strIds=designationWiseRlst[i].id;  
+			   }
+				if(i== 0){
+				 toursDesignationIdsString = strIds;	
+				 }else{
+				  toursDesignationIdsString = toursDesignationIdsString+','+strIds;	
+				}
 			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
 				str+='<h4>'+designationWiseRlst[i].designation+'</h4>';
 				  str+='<div class="table-responsive">';
 				  str+='<table class="table tableTraining bg_ED m_XsTop10">';
 				  str+='<tbody><tr>';
 					  str+='<td>';
-					  	  str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
-						  str+='<h4>'+designationWiseRlst[i].noOfLeaderCnt+'</h4>';
+					      str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
+					      if(designationWiseRlst[i].noOfLeaderCnt > 0){
+						    str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="All" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)" >'+designationWiseRlst[i].noOfLeaderCnt+'</h4>';
+			 			  }else{
+						    str+='<h4>0</h4>';
+			  		      }
 					  str+='</td>';
 					  str+='<td>';
 					  	  str+='<p class="text-muted text-capital">Submited<br>Leaders</p>';  
-						  str+='<h4>'+designationWiseRlst[i].submitedLeaderCnt+'<span class="font-10 text-success"> '+designationWiseRlst[i].submitedCandidateTourPer.toFixed(2)+'%</span></h4>';
+						  if(designationWiseRlst[i].submitedLeaderCnt > 0){
+								  str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="Yes" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseRlst[i].submitedLeaderCnt+'<span class="font-10 text-success"> '+designationWiseRlst[i].submitedCandidateTourPer.toFixed(2)+'%</span></h4>';
+					      }else{
+								 str+='<h4>0<span class="font-10 text-success">0.0%</span></h4>';
+				          }
 					  str+='</td>';
 					  str+='<td>';
 					  	  str+='<p class="text-muted text-capital">Not Submited<br>Leaders</p>';  
-						  str+='<h4>'+designationWiseRlst[i].notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+designationWiseRlst[i].notsubmitedCandidateTourPer.toFixed(2)+'%</span></h4>';
-					  str+='</td>';
+						  if(designationWiseRlst[i].notSubmitedLeaserCnt > 0){
+								  str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="No" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseRlst[i].notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+designationWiseRlst[i].notsubmitedCandidateTourPer.toFixed(2)+'%</span></h4>';
+					      }else{
+							    str+='<h4>0<span class="font-10 text-danger">0.0%</span></h4>';
+						   }
+						  str+='</td>';
 					  str+='<td>';
 					  	  str+='<p class="text-muted text-capital">Total<br>Tours</p>';
 						  str+='<h4>'+designationWiseRlst[i].totalSubmittedToursCnt+'</h4>';
@@ -177,7 +213,11 @@ function getToursBasicOverviewCountDetails()
 		  }else{
 		  str+='No Data Available';	  
 		  }
-	  $("#tourOverviewDivId").html(str);  
+	     $("#tourOverviewDivId").html(str);  
+		 $("#overallTourLdrDsgntnId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
+		 $("#submitedTourLdrDsgntnId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
+		 $("#notSubmitedTourLdrDsgntnCntId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
+
 	 } 
 	 function getDistrictWiseToursSubmitedDetails()
 		{   
@@ -962,19 +1002,26 @@ function getToursBasicOverviewCountDetails()
 	 $("#topPoorLocationsToursDivId").html(str);    
 	 $('.progressCustom').tooltip();	
 	}
-	
-   // getTourSubmittedLeadersDetails();
-   function getTourSubmittedLeadersDetails()
+	$(document).on("click",".overAllToursCls",function(){
+		var tourSubmittedType = $(this).attr("attr_tour_submitted_type");
+		var designationIdsStr = $(this).attr("attr_dsgntn_ids");
+		$("#cadreExcelExpBtnId").attr("attr_tab_user_type","Tour");
+		$("#cadreExcelExpBtnId").hide();
+		var designationIds;
+		if(designationIdsStr != null && designationIdsStr != undefined){
+		  designationIds=designationIdsStr.split(",");	
+		}
+		 getTourSubmittedLeadersDetails(tourSubmittedType,designationIds);
+	});
+   function getTourSubmittedLeadersDetails(tourSubmittedType,designationIds)
 	{   
 		$("#locationWiseCadreReportHeadingId").html("Tours Submitted Details Report");
 		$("#locationWiseCadreReportModalId").modal("show");
 		$("#locationWiseCadreReportDivId").html(' ');
 		$("#locationWiseProcessImgReport").show();
-	    var designationIds=[];
-		designationIds.push(1);
-		var jsObj ={ 
+	 	var jsObj ={ 
 					 designationIds : designationIds, 
-					 isTourSubmitted : "Yes",
+					 isTourSubmitted : tourSubmittedType,
 					 fromDate : globalTourFormDate,
 					 toDate :  glovalTourToDate
 				  }
@@ -986,21 +1033,24 @@ function getToursBasicOverviewCountDetails()
 		}).done(function(result){
 			$("#locationWiseProcessImgReport").hide();
 		   if(result != null && result.length > 0){
-			   buildToursSubmittedDtls(result);
+			   buildToursSubmittedDtls(result,tourSubmittedType);
 		   }else{
 			 $("#locationWiseCadreReportDivId").html("NO DATA AVAILABLE.");  
 		   }
  		}); 
 	}
-	function buildToursSubmittedDtls(result){
+	function buildToursSubmittedDtls(result,tourSubmittedType){
+		$("#cadreExcelExpBtnId").show();
 	 var str='';
 	 str+='<div class="table-responsive">';
 	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed " id="tourSubmittedDtlsDataTblid">';   
 	   str+='<thead>';
              str+='<th>Name</th>';
 			 str+='<th>Designation</th>';
-			 str+='<th>IsTourSubmitted</th>'	 
-			 str+='<th>No Of Tours</th>';
+			 str+='<th>TourSubmitted</th>'
+             if(tourSubmittedType!="No"){
+			  str+='<th>No Of Tours</th>';	 
+			 }			 
 		 str+='</thead>';
 		 str+='<tbody>';
 		  for(var i in result){
@@ -1016,25 +1066,30 @@ function getToursBasicOverviewCountDetails()
 				    str+='<td> - </td>';  
 				  }
 				  if(result[i].isTourSubmitted != null && result[i].isTourSubmitted.length > 0){
-						str+='<td>'+result[i].isTourSubmitted+'</td>';  
-				  }else{
+							str+='<td>'+result[i].isTourSubmitted+'</td>';  
+					  }else{
+						  str+='<td> - </td>';  
+					  }
+				if(tourSubmittedType!="No"){
+					if(result[i].totalSubmittedToursCnt != null && result[i].totalSubmittedToursCnt > 0){
+						str+='<td>'+result[i].totalSubmittedToursCnt+'</td>';  
+					  }else{
 					  str+='<td> - </td>';  
-				  }
-				if(result[i].totalSubmittedToursCnt != null && result[i].totalSubmittedToursCnt > 0){
-					str+='<td>'+result[i].totalSubmittedToursCnt+'</td>';  
-				  }else{
-				  str+='<td> - </td>';  
-				  }
-				str+='</tr>';
+					  }
+					str+='</tr>';
+				}
 			}
 			 str+='</tbody>';
 			 str+='</table>';
 			  str+='</div>';
 		 $("#locationWiseCadreReportDivId").html(str);
 		 $("#tourSubmittedDtlsDataTblid").dataTable({
-				 "aaSorting": [[ 4, "desc" ]], 
+				 "aaSorting": [[ 1, "desc" ]], 
 				"iDisplayLength" : 10,
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
 		 }); 
 	}
 		
+ function generateExcelReportForToursDetails(){
+	tableToExcel(tourSubmittedDtlsDataTblid, 'Tours Submitted Details Report');
+}		
