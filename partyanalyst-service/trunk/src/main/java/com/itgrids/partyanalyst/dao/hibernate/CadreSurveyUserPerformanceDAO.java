@@ -42,8 +42,9 @@ public class CadreSurveyUserPerformanceDAO extends  GenericDaoHibernate<CadreSur
 		return query.list();
 	}
 	
-	public List<Long> getCadreSurveyUserId(Date today){
-		Query query= getSession().createQuery("select distinct model.cadreSurveyUser.cadreSurveyUserId" +
+	public List<Object[]> getCadreSurveyUserId(Date today){
+		Query query= getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId," +
+				" model.cadreSurveyUserPerformanceType.cadreSurveyUserPerformanceTypeId" +
 				" from CadreSurveyUserPerformance model" +
 				" where date(model.surveyTime) = :today" +
 				" and  model.isDeleted = 'false'");

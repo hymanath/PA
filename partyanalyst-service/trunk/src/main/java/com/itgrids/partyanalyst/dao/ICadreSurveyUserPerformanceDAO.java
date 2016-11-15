@@ -12,5 +12,5 @@ public interface ICadreSurveyUserPerformanceDAO extends GenericDao<CadreSurveyUs
 
 	public List<CadreSurveyUserPerformance> getCadreSurveyUserPerformanceDetails(Long cadreSurveyUserId,Date currentDate);
 	public List<Object[]> getUserWisePerformanceByDate(Long cadreSurveyUserId,Date today);
-	public List<Long> getCadreSurveyUserId(Date today);
+	public List<Object[]> getCadreSurveyUserId(Date today);
 }

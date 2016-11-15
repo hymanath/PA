@@ -70,8 +70,22 @@ public class FieldMonitoringVO {
 	private String leaderName;
 	private String leadreMobile;
 	private String performanceType;
+	private String slowPerformer;
+	private String betterPerformer;
 	
 	
+	public String getSlowPerformer() {
+		return slowPerformer;
+	}
+	public void setSlowPerformer(String slowPerformer) {
+		this.slowPerformer = slowPerformer;
+	}
+	public String getBetterPerformer() {
+		return betterPerformer;
+	}
+	public void setBetterPerformer(String betterPerformer) {
+		this.betterPerformer = betterPerformer;
+	}
 	public String getPerformanceType() {
 		return performanceType;
 	}
