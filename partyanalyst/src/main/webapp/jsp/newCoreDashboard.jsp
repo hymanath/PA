@@ -141,8 +141,8 @@
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4"> 
 							   
-							<span class="cadreSettings pull-right">
-								<i class="fa fa-gears" id="cadreSettingsId" data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							<span class="cadreSettings pull-right" id="cadreSettingsId">
+								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="cadreNotes pull-right">  
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
@@ -162,7 +162,7 @@
 						</div>
                     </div>      
                 </div>       
-				<div class="specialCadreDropDown left270" style="left:0px;">         
+				<div class="specialCadreDropDown" style="right:13px;top:30px;">
 					<ul class="list-inline">
 						<li><h4>Sorting Type</h4></li><span class="glyphicon glyphicon-remove-circle pull-right settingCloseCls" style="cursor:pointer;"></span><br>     
 						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="2016CadreWiseId" attr_sort_type="2016CadreWise" checked/>&nbsp&nbsp2016 Cadre Registrations</label></li>
@@ -3108,7 +3108,7 @@
 	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
 	    <button class="btn btn-success btn-xs pull-right" id="cadreExcelExpBtnId" attr_tab_user_type="Tab"  style="display:none;margin-right:20px;">Export To Excel</button>
-	    <h4 class="modal-title" id="locationWiseCadreReportHeadingId"></h4>
+	    <h4 class="modal-title text-capital"  id="locationWiseCadreReportHeadingId"></h4>
 	  <div class="modal-body">
 	    <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
