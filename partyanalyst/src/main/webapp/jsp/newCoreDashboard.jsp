@@ -1339,12 +1339,12 @@
 										<li attr_searchType="poor">Poor</li>
 									</ul>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+								<!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<div class="pull-right">
 										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="program" checked />Program Wise</label>
-										<!--<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>-->
+										<label class="radio-inline"><input class="emnSearchTypeCls" type="radio" name="emnSearchTypeName" value="time"/>Time Wise</label>
 									</div>
-								</div>
+								</div> -->
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<div id="electronicMediaPrograms"></div>
 								</div>
