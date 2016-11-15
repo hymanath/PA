@@ -855,7 +855,7 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("type", type);
-		query.setFirstResult(1);
+		query.setFirstResult(0);
 		query.setMaxResults(20);
 		return query.list();
 	}
@@ -870,14 +870,14 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		if(type != null && !type.trim().isEmpty())
 			sb.append(" and model.type = :type");
 		if(stateId != null && stateId.longValue() == 1l)
-			sb.append(" and C.district.districtId between 11 and 23");
+			sb.append(" and D.districtId between 11 and 23");
 		else if(stateId != null && stateId.longValue() == 36l)
-			sb.append(" and C.district.districtId between 1 and 10");
+			sb.append(" and D.districtId between 1 and 10");
 		sb.append(" order by model.cadre2016 desc");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("type", type);
-		query.setFirstResult(1);
+		query.setFirstResult(0);
 		query.setMaxResults(20);
 		return query.list();
 	}
