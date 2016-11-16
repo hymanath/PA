@@ -731,7 +731,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    			toursBasicVO.setTotalTour(totalTours);
 	    		}
 	    		
-	    		Long totalUniqueTour = selfAppraisalCandidateDetailsDAO.geTtotalUniqueTour(CandidateIds,startDate,endDate,locationScopeId,locationValueSet);
+	    		Long totalUniqueTour = selfAppraisalCandidateDetailsDAO.geTtotalUniqueTour(CandidateIds,startDate,endDate);
 	    		toursBasicVO.setInchargerToursCnt(totalUniqueTour);//total unique tours
 	    		return toursBasicVO;      
 	    		
