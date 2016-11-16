@@ -789,7 +789,7 @@ $("#toursDateRangePicker").daterangepicker({
 		initializeFile();     
 	}
 	function updatingApplication(){ 
-	$("#updateProcessingImgId").show();
+	
 	$("#errUpMnthId").html("");
 	$("#errUpYearId").html("");	
 	$(".textErrCls").html(""); 
@@ -838,7 +838,8 @@ $("#toursDateRangePicker").daterangepicker({
 		}
 		if(flag == false){  
 			return;  
-		}          
+		}
+		$("#updateProcessingImgId").show();
 		var uploadHandler = { 
 			upload: function(o) {
 				$("#savingAjaxImg").css("display","none");
