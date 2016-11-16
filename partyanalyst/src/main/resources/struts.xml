@@ -14458,6 +14458,11 @@
 			<param name="root">cadreDataSourceTypeVOList</param>
 		</result>
 	</action>
+	<action name="getDataSourceTypeWiseCountsByTypeAction" class="cadreDashBoardAction"  method="getDataSourceTypeWiseCountsByType">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 	<action name="getConstituencyWiseReportBasedOnUserTypeAction" class="cadreRegistrationAction"  method="getConstituencyWiseReportBasedOnUserType">
 			<result type="json" name="success">
 			<param name="root">cadreCnsttuncyList</param>

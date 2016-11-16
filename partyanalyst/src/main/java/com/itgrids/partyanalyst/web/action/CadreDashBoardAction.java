@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CadreDashboardVO;
 import com.itgrids.partyanalyst.dto.CadreDataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -58,8 +59,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private IMahaNaduService mahaNaduService;
 	private List<CadreDashboardVO> cadreDashboardVOList;
 	private List<CadreDataSourceTypeVO> cadreDataSourceTypeVOList;
+	private List<IdAndNameVO> idAndNameVOList;
 	
 	
+	public List<IdAndNameVO> getIdAndNameVOList() {
+		return idAndNameVOList;
+	}
+
+	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
+		this.idAndNameVOList = idAndNameVOList;
+	}
+
 	public List<CadreDataSourceTypeVO> getCadreDataSourceTypeVOList() {
 		return cadreDataSourceTypeVOList;
 	}
@@ -1090,6 +1100,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			jObj = new JSONObject(getTask());
 			
 			cadreDataSourceTypeVOList = cadreDashBoardService.getDataSourceTypeWiseRegisteredDetails();
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDataSourceTypeWiseCountsByType()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			String type = jObj.getString("type");
+			idAndNameVOList = cadreDashBoardService.getDataSourceTypeWiseCountsByType(type);
 		}
 		catch(Exception e)
 		{

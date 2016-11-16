@@ -317,7 +317,7 @@ table.dataTable tr.odd {
 		  
 		</div><!-- Members Registered Previous Row -->
 		<!-- Members Count Row -->
-		<!--<div class="row fadeInUp">
+		<div class="row fadeInUp">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small border-radius-0 mb-10">
 			<label class="pull-right text-muted" style="margin-top: -10px;">Note: R - Renewal &amp; N - New</label>
 				<div class="row">
@@ -357,7 +357,7 @@ table.dataTable tr.odd {
 				
 			</div>
 			
-			</div>-->
+			</div>
 			<!--<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10">
 				    <table class="table table-bordered border-radius-0 mb-0 membercount" style="background:#ffffff;">
 						<tbody>
@@ -684,6 +684,75 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			
 		});
 	}*/
+	getDataSourceTypeCounts("Today");
+	getDataSourceTypeCounts("Total");
+	function getDataSourceTypeCounts(type){
+		var jObj = {
+			type:type
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getDataSourceTypeWiseCountsByTypeAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			if(result !=null && result.length >0){
+				var str='';
+				var todayCount = 0;
+				str+='<div class="col-md-8 col-xs-12 col-sm-8">';
+					str+='<div class="table-responsive">';
+						str+='<table class="table tableCadreDash">';
+							str+='<tbody >';
+							for(var i in result){
+								str+='<tr>';
+									str+='<td><span class="text-capitalize" style="color:#d5d5d5">'+result[i].name+':&nbsp;</span>';
+										if(result[i].inviteeCount != null){
+											str+=''+result[i].inviteeCount+'';
+										}else{
+											str+='0';
+										}
+										if(result[i].inviteeAttendeeCnt != null){
+											str+='(R - '+result[i].inviteeAttendeeCnt+')';
+										}else{
+											str+='(R - 0)';
+										}
+										if(result[i].attenteeCount != null){
+											str+='(N - '+result[i].attenteeCount+')';
+										}else{
+											str+='(N - 0)';
+										}
+									str+='</td>';
+								str+='</tr>';
+								if(result[i].inviteeCount != null){
+									todayCount = todayCount+parseInt(result[i].inviteeCount);
+								}
+							}
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="col-md-1  hidden-xs col-sm-1" style="padding-left:0px">';
+					str+='<img src="images/icons/arrowBrace.png" class="img-responsive" style="height: 150px; margin-top: 3px;">';
+			    str+='</div>';
+			    str+='<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top: 40px;padding-left:0px;padding-right:0px">';
+					str+='<h2 class="f_26" style="margin-bottom: 0px;">'+todayCount+'</h2>';
+					str+='<p>Members Registered <br>';
+						str+='<span style="font-weight:bold;">Today</span>';
+					str+='</p> </div>';
+					
+				if(type == 'Today')
+					$("#todayRegisCount").html(str);
+				else if(type == 'Total')
+					$("#totalRegisCount").html(str);
+			}
+			else{
+				if(type == 'Today')
+					$("#todayRegisCount").html('NO DATA AVAILABLE');
+				else if(type == 'Total')
+					$("#totalRegisCount").html('NO DATA AVAILABLE');
+			}
+		});
+	}
 	
 	function getDataSourceTypeWiseRegisteredDetails(){
 				var jObj = {}
@@ -1242,7 +1311,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 function getDistricts(locationType){
      var jsObj=
 		{				
-				stateid:locationType,			
+				stateid:locationType			
 		}
     $.ajax({
           type:'GET',
