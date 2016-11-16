@@ -3121,7 +3121,9 @@ public String getTourSubmittedLeadersDetails(){
 				desgnatnIdsLst.add(Long.valueOf(designationIdsArr.getString(i))); 
 			}
 		}
-		toursDtlsList = coreDashboardToursService.getTourSubmittedLeadersDetails(desgnatnIdsLst,isTourSubmitted,fromDate,toDate);
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		toursDtlsList = coreDashboardToursService.getTourSubmittedLeadersDetails(desgnatnIdsLst,isTourSubmitted,fromDate,toDate,activityMemberId,stateId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getTourSubmittedLeadersDetails() method of CoreDashBoard", e);
 	}
