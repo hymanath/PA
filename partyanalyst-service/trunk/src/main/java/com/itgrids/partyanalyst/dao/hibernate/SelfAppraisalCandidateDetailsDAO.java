@@ -551,48 +551,25 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		query.setDate("toDate",toDate);  
 		return query.list();
 	}
-	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> desigIdList,Long userAccessLevelId, Set<Long> locationValueSet){
+	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> CandidateIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
-						" SACD.selfAppraisalCandidate.selfAppraisalDesignationId, " +
-						" count(distinct SACD.selfAppraisalCandidate.selfAppraisalCandidateId), " +
+						" SACD.selfAppraisalCandidate.selfAppraisalCandidateId, " +  
 						" sum(SACD.ownTours), " +
 						" sum(SACD.inchargeTours) " +
-						" from SelfAppraisalCandidateDetails SACD, SelfAppraisalCandidateLocation SACL where " +
-						" SACD.selfAppraisalCandidate.isActive='Y' " +
-						" and date(SACD.tourDate) between :fromDate and :toDate " +
-						" and SACD.selfAppraisalCandidate.selfAppraisalDesignationId in (:desigIdList) " +
-						" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId = SACL.selfAppraisalCandidate.selfAppraisalCandidateId ");
-		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			queryStr.append(" and SACL.userAddress.state.stateId in (:userAccessLevelValues)");    
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			queryStr.append(" and SACL.userAddress.district.districtId in (:userAccessLevelValues)");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			queryStr.append(" and SACL.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			queryStr.append(" and SACL.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-			queryStr.append(" and SACL.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
-			queryStr.append(" and SACL.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
-			queryStr.append(" and SACL.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
-			queryStr.append(" and SACL.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-		}
+						" from SelfAppraisalCandidateDetails SACD where " +
+						" date(SACD.tourDate) between :fromDate and :toDate " +
+						" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId in (:CandidateIds) ");
 		queryStr.append(" group by SACD.selfAppraisalCandidate.selfAppraisalDesignationId");   
 		Query query = getSession().createQuery(queryStr.toString());  
         if(startDate != null && endDate != null ){
         	query.setDate("fromDate", startDate);
         	query.setDate("toDate", endDate);
         }
-        if(desigIdList != null){  
-			   query.setParameterList("desigIdList",desigIdList); 
-		} 
-        if(locationValueSet != null){    
-			   query.setParameterList("userAccessLevelValues",locationValueSet); 
+        if(CandidateIds != null){  
+			   query.setParameterList("CandidateIds",CandidateIds); 
 		}
-        return query.list();
+        return query.list();  
 	}
 	/* public List<Object[]> getSubmittedToursLeadersDetails(Date fromDate,Date toDate,List<Long> desigIds){
 		  StringBuilder queryStr = new StringBuilder();
