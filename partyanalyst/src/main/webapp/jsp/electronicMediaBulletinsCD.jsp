@@ -9,6 +9,7 @@
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/css/custom.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="newCoreDashBoard/css/simplePagination.css"/>
 <style type="text/css">
 .panelEMNPopup
 {
@@ -82,19 +83,25 @@
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div id="newsBulletinPointBasicDetailsBulletinsOfOrganization"></div>
+			<div class="row ">
+				<div class="col-md-10 col-md-offset-5 m_top20">
+					<div class="paginationId"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="newCoreDashBoard/js/simplePagination3.js" ></script>
 <script type="text/javascript">
 
 var globalBfIdStr =" ";
-var globalCategoryIds ="1,2";
+var globalCategoryIds =" ";
 
 var localBfIdStr = "${param.bfIds}";//benefitIds
-var localCategoryIds = "${param.catIds}";//categoryIds
+var localCategoryIds = "${param.ediDistIdsStr}";//categoryIds
 
 if(localBfIdStr != null && localBfIdStr.length>0){
 	globalBfIdStr = localBfIdStr;
@@ -104,20 +111,21 @@ if(localCategoryIds != null && localCategoryIds.length>0){
 	globalCategoryIds = localCategoryIds;
 }
 
-/* var globalOrgType = "${param.dept}";//isDepartment
-var globalOrgIdStr = "${param.ogIds}";//OrganizationIds
-var globalUserAccessLevelId = "${param.lid}";//LevelId
-var globalLevelValue = "${param.lvl}";//levelValue
+var globalUserAccessLevelId = "${param.levelId}";//LevelId
+var globalLevelValue = "${param.temp}";//levelValue
+var state="${param.state}";
 var globalStartDate = "${param.sdat}";//startDate
 var globalEndDate = "${param.edat}";//endDate
+var globalOrgIdStr = "${param.orgIdStr}";//OrganizationIds
+var globalOrgType = "${param.orgType}";//isDepartment
 var globalImpactScopeIdsStr = "${param.scops}";//impactScopeIds
-var globalNewsChannelIds = "${param.chnIds}";//News ChannelIds
+var globalSearchType = "${param.status}"; 
+
+var globalNewsChannelIds = "${param.npsStr}";//News ChannelIds
 var globalStIndex = "${param.stIdx}";//startIndex
 var globalEndIndex = "${param.edIdx}";//endIndex
-var globalSearchType = "${param.schType}"; */
 
-
- var globalOrgType = "N";//isDepartment
+/*  var globalOrgType = "N";//isDepartment
 var globalOrgIdStr = "872,1117,163,362";//OrganizationIds
 var globalUserAccessLevelId = "2";//LevelId
 var globalLevelValue = "1";//levelValue
@@ -127,29 +135,40 @@ var globalImpactScopeIdsStr = "1,2,3,4,5,6,7,8,9";//impactScopeIds
 var globalNewsChannelIds = "1,2,3,4,5,6,7";//News ChannelIds
 var globalStIndex = "0";//startIndex
 var globalEndIndex = "2";//endIndex
-var globalSearchType = "category";
+var globalSearchType = "category"; */
 
-
-	newsBulletinPointBasicDetailsBulletinsOfOrganization()
-	function newsBulletinPointBasicDetailsBulletinsOfOrganization(){
+$(document).ready(function(){
+	setTimeout(function(){ 
+	newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
+	}, 1000);
+	
+});
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	if(wurl.length == 3)
+		wurl = url.substr(0,(url.indexOf(".in")+3));
+	
+	function newsBulletinPointBasicDetailsBulletinsOfOrganization(globalStIndex){
 		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		//var jsObj = {parentUserTypeId : globalUserTypeId}
 		//{userAccessLevelId}/{userAccessLevelValuesArray}/{startDate}/{endDate}/{channelIdsStr}/{impactScopeIdsStr}" +
-			//"/{orgIdStr}/{isDept}/{searchType}/{bfIdsStr}/{catIdsStr}/{startIndex}/{endIndex}
-			
-			var searchType="category";
-
+			//"/{orgIdStr}/{isDept}/{searchType}/{bfIdsStr}/{catIdsStr}/{startIndex}/{endIndex}			
 		$.ajax({
 			type : 'GET',
 			//url: wurl+"/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetailsBulletinsOfOrganization/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalSearchType+"/"+globalBfIdStr+"/"+globalCategoryIds+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		}).then(function(result){
-			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result);
+			var countByDate=0;
+			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
 		});		
 	}
-	function buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result)
+	function buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate)
 	{
-		var str='';
+		var str='';		
+		if(result !=null && result.length>0){
+			if(globalStIndex == 0){
+					countByDate=result[0].totalBulletins;
+			}
 		for(var i in result)
 		{
 			if(i == 0 || i%3 == 0){
@@ -343,8 +362,21 @@ var globalSearchType = "category";
 				str+='</div>';
 			}
 		}
+		if(globalStIndex == 0 && countByDate > 6){
+				$(".paginationId").pagination({
+					items: countByDate,
+					itemsOnPage: 6,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*6;								
+						newsBulletinPointBasicDetailsBulletinsOfOrganization(num);						
+					}					
+				});
+			}
 		
 		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html(str);
+	 }
 	}
 				
 				
