@@ -571,7 +571,7 @@ function getToursBasicOverviewCountDetails()
 				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
 				},
 				plotOptions: {
-					column: {
+					column: {  
 						stacking: 'percent',
 						dataLabels: {
 							enabled: true,
@@ -691,7 +691,7 @@ function getToursBasicOverviewCountDetails()
 				},
 				tooltip: {
 				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
 				},
 
 				plotOptions: {
