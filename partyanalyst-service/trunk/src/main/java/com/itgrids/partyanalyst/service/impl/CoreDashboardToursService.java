@@ -706,27 +706,31 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    	}
 			    }
 	    		
-	    		List<Object[]> desigDtls = selfAppraisalCandidateLocationDAO.getTotalLeadersDesignationBy(desigIdList,locationScopeId,locationValueSet,startDate,endDate);
+	    		/*List<Object[]> desigDtls = selfAppraisalCandidateLocationDAO.getTotalLeadersDesignationBy(desigIdList,locationScopeId,locationValueSet,startDate,endDate);
 	    		Long cndCount = 0l;    
 	    		if(desigDtls != null && desigDtls.size() > 0){ 
 	    			for(Object[] param : desigDtls){
 	    				cndCount = cndCount + (param[1] != null ? (Long)param[1] : 0l);
 	    			}
-	    			toursBasicVO.setCandidateCount(cndCount);      
-	    		}
+	    			toursBasicVO.setCandidateCount(cndCount);       
+	    		}*/  
 	    		//List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(startDate,endDate,desigIdList);
-	    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursDetails(startDate,endDate,desigIdList,locationScopeId,locationValueSet);
+	    		List<Long> CandidateIds = selfAppraisalCandidateLocationDAO.getCandiateIdList(locationScopeId,locationValueSet,desigIdList);
+	    		if(CandidateIds != null && CandidateIds.size() > 0){
+	    			toursBasicVO.setCandidateCount(Long.parseLong(Integer.toString(CandidateIds.size())));
+	    		}
+	    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursDetails(startDate,endDate,CandidateIds);
 	    		Long selectedCandCount = 0l;    
 	    		Long totalTours = 0l;
 	    		if(memDtlsList != null && memDtlsList.size() > 0){   
 	    			for(Object[] param : memDtlsList){
-	    				selectedCandCount = selectedCandCount + (param[1] != null ? (Long)param[1] : 0l);
-	    				totalTours = totalTours + ((param[2] != null ? (Long)param[2] : 0l) + (param[3] != null ? (Long)param[3] : 0l));
-	    			}      
+	    				selectedCandCount = selectedCandCount + 1;
+	    				totalTours = totalTours + ((param[1] != null ? (Long)param[1] : 0l) + (param[2] != null ? (Long)param[2] : 0l));
+	    			}       
 	    			toursBasicVO.setSelectedCandCount(selectedCandCount);
 	    			toursBasicVO.setTotalTour(totalTours);
 	    		}
-	    		List<Long> CandidateIds = selfAppraisalCandidateDAO.getCandiateIdList(desigIdList);
+	    		
 	    		Long totalUniqueTour = selfAppraisalCandidateDetailsDAO.geTtotalUniqueTour(CandidateIds,startDate,endDate,locationScopeId,locationValueSet);
 	    		toursBasicVO.setInchargerToursCnt(totalUniqueTour);//total unique tours
 	    		return toursBasicVO;      
