@@ -15,4 +15,5 @@ public interface ITdpCadreDataSourceTypeInfoDAO extends GenericDao<TdpCadreDataS
 	public List<Object[]> getRenewalTdpCadreCountsByDataDourceType(Date date);
 	public List<Object[]> getTdpCadreRecordsCountByPartyOffice(Date date);
 	public List<Object[]> getRenewalTdpCadreRecordsCountByPartyOffice(Date date);
+	public List<Object[]> getDataSourceTypeWiseCountsByType(String type);
 }
