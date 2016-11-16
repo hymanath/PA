@@ -206,10 +206,10 @@ public class TabUserEnrollmentInfoDAO extends GenericDaoHibernate<TabUserEnrollm
 				" where ");					
 		
 		if(cadreSurveyUsers !=null && cadreSurveyUsers.size()>0){
-			str.append( "  model.cadreSurveyUserId in (:cadreSurveyUsers)  " );
+			str.append( "  model.cadreSurveyUserId in (:cadreSurveyUsers) and " );
 		}
 		if(fromDate != null && toDate != null){
-			str.append(" and date(model.surveyTime) between :fromDate and  :toDate ");
+			str.append("  date(model.surveyTime) between :fromDate and  :toDate ");
 		}
 		str.append(" group by model.cadreSurveyUserId ");
 		

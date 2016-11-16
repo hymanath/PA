@@ -247,7 +247,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 				locationsList = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L, inputVO.getStateId());
 				returnMap = buildLocationsDetails(locationsList);
 			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-				locationsList = constituencyDAO.getConstituenciesByDistrictId(inputVO.getParentLocationTypeId());
+				//locationsList = constituencyDAO.getConstituenciesByDistrictId(inputVO.getParentLocationTypeId());
+				locationsList = constituencyDAO.getConstituenciesByStatTypeId(inputVO.getStateId());
 				if(inputVO.getChildLocationTypeId().longValue()>0L)
 					locationsList = constituencyDAO.getConstituencyDetailsByCintiId(inputVO.getChildLocationTypeId().longValue());
 				returnMap = buildLocationsDetails(locationsList);

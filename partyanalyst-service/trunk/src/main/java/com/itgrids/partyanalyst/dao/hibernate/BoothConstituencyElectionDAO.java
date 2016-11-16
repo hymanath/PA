@@ -956,8 +956,12 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
 		queryStr.append(" BCE.booth_id = B.booth_id AND ");
 		queryStr.append(" B.local_election_body_id IS null  and B.constituency_id = c.constituency_id  ");
-		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
-			queryStr.append(" and   c.district_id = "+inputVO.getParentLocationTypeId().longValue()+"");
+		//if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+			//queryStr.append(" and   c.district_id = "+inputVO.getParentLocationTypeId().longValue()+"");
+		if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+			queryStr.append(" and (   c.district_id between 11 and 23) ");
+		else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
+			queryStr.append(" and (   c.district_id between 1 and 10) ");
 		queryStr.append(" group by  B.constituency_id ");
 		
 		Query query = getSession().createSQLQuery(queryStr.toString());
