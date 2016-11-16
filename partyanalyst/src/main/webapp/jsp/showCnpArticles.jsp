@@ -505,19 +505,19 @@ var globalPropIdsStr = "${param.propIdsStr}";
 							
 							str+='<i class="icon-article-group pull-right" style="cursor:default;padding-left:5px;color:#ccc;" data-toggle="group" data-placement="top" title="Grouped Article"></i>';
 						}else{
-							str+='<i class="icon-article-group pull-right" style="cursor:default;padding-left:5px;color:#FC5AB8;font-weight: bold;" data-toggle="group" data-placement="top" title="Grouped Articled"></i>';
+							str+='<i class="icon-article-group pull-right" style="cursor:default;padding-left:5px;color:#FC5AB8;font-weight: bold;" data-toggle="group" data-placement="top" title="Grouped Article"></i>';
 						}
 						if(results[i].lnkdArtcls=='N'){
 										
-							str+='<i class="icon-linked-articles pull-right" style="cursor:default;padding-left:5px;color:#ccc;" data-toggle="group" data-placement="top" title="Link Article"></i>';
+							str+='<i class="icon-linked-articles pull-right" style="cursor:default;padding-left:5px;color:#ccc;" data-toggle="group" data-placement="top" title="Linked Article"></i>';
 						}else{
-							str+='<i class="icon-linked-articles pull-right" style="cursor:default;padding-left:5px;color:red;" data-toggle="group" data-placement="top" title="Linked Articled"></i>';
+							str+='<i class="icon-linked-articles pull-right" style="cursor:default;padding-left:5px;color:red;" data-toggle="group" data-placement="top" title="Linked Article"></i>';
 						}
 						if(results[i].trackLabelName == null || results[i].trackLabelName == 0){
 										
-							str+='<i class="icon-track-articles pull-right" style="cursor:default;padding-left:5px;color:#ccc;" data-toggle="group" data-placement="top" title="Track Article"></i>';
+							str+='<i class="icon-track-articles pull-right" style="cursor:default;padding-left:5px;color:#ccc;" data-toggle="group" data-placement="top" title="Tracked Article"></i>';
 						}else{
-							str+='<i class="icon-track-articles pull-right" style="cursor:default;padding-left:5px;color:green;" data-toggle="group" data-placement="top" title="Track Articled"></i>';
+							str+='<i class="icon-track-articles pull-right" style="cursor:default;padding-left:5px;color:green;" data-toggle="group" data-placement="top" title="Tracked Article"></i>';
 						}
 						
 						 /* var artcTtl = results[i].articleTitle;
