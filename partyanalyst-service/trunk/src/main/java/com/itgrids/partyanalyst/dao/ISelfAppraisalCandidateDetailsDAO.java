@@ -16,7 +16,7 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getCndWiseAndLocValWiseCountListForOwn(Date fromDate,Date toDate);
 	public List<Object[]> getToursVisitedDetailsLocationWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String locationType,Long candiateId);
 	public List<Object[]> getCommendAndFilePathDtls(List<Long> cndIdListForCmtAndFile, Date fromDate, Date toDate);
-	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> desigIdList,Long userAccessLevelId, Set<Long> locationValueSet);
+	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> CandidateIds);
 	public List<Object[]> getCndWiseAndLocValWiseCountListForIncharge(Date fromDate, Date toDate);
 	public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate,Long userAccessLevelId,Set<Long> userAccessLevelValues);
 	public List<Object[]> getToursSubmittedLeaderDtlsDesignationWise(List<Long> designationIds,Date fromDate,Date toDate);
@@ -30,4 +30,5 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getToursSubmittedCnddteAndNoOfToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getOwnToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getInchargeToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
+	
 }
