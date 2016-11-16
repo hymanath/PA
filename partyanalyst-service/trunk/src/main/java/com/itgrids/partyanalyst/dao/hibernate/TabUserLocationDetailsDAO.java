@@ -224,7 +224,7 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 			}
 		}
 		
-		str.append("  group by tuld1.tab_user_info_id  ");
+		str.append("  and  tuld1.constituency_id = c.constituency_id group by tuld1.tab_user_info_id  ");
 				
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("tabUserInfoId", Hibernate.LONG)
