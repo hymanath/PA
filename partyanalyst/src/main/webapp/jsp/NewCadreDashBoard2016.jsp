@@ -1032,7 +1032,6 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	}
 	function get2016LocationWiseRegisteredCountsConstituencyWiseForOnChange(type,locationScope,locationType,districtId){
 		setcolorsForStatus();
-		getDistricts(locationType);
 		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
