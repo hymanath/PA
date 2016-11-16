@@ -14664,5 +14664,15 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getDistrictsForCadreAction" class="cadreRegistrationAction" method="getDistrictsByState" >
+			<result type="json" name="success">
+				<param name="root">cadreRegisterInfo</param>
+			</result>                          
+	</action>
+		<action name="get2016LocationWiseRegisteredCountsForConstitunencyAction" class="cadreDashBoardAction"  method="get2016LocationWiseRegisteredCountsForConstitunecy">
+			<result type="json" name="success">
+			<param name="root">cadreDashboardVOList</param>
+		</result>
+	</action>
 </package>
 </struts>
