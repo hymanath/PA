@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceTypeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -107,7 +108,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
     private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
     private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
+    private ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO;
+    
 	
+	public ITdpCadreDataSourceTypeInfoDAO getTdpCadreDataSourceTypeInfoDAO() {
+		return tdpCadreDataSourceTypeInfoDAO;
+	}
+
+	public void setTdpCadreDataSourceTypeInfoDAO(
+			ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO) {
+		this.tdpCadreDataSourceTypeInfoDAO = tdpCadreDataSourceTypeInfoDAO;
+	}
+
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -7015,5 +7027,72 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		return null;  
 		
+	}
+	
+	public List<IdAndNameVO> getDataSourceTypeWiseCountsByType(String type){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			IdAndNameVO tabvo = new IdAndNameVO();
+			tabvo.setName(IConstants.CADRE_DATA_SOURCE_TYPE_TAB);
+			returnList.add(tabvo);
+			IdAndNameVO webvo = new IdAndNameVO();
+			webvo.setName(IConstants.CADRE_DATA_SOURCE_TYPE_WEB);
+			returnList.add(webvo);
+			IdAndNameVO onlinevo = new IdAndNameVO();
+			onlinevo.setName(IConstants.CADRE_DATA_SOURCE_TYPE_ONLINE);
+			returnList.add(onlinevo);
+			IdAndNameVO hydPOvo = new IdAndNameVO();
+			hydPOvo.setName(IConstants.HYDERABAD_PARY_OFFICE);
+			returnList.add(hydPOvo);
+			IdAndNameVO vijPOvo = new IdAndNameVO();
+			vijPOvo.setName(IConstants.VIJAYAWADA_PARY_OFFICE);
+			returnList.add(vijPOvo);
+			
+			List<Object[]> list = tdpCadreDataSourceTypeInfoDAO.getDataSourceTypeWiseCountsByType(type);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					String name = obj[0] != null ? obj[0].toString():"";
+					IdAndNameVO vo = getMatchedVOForName(returnList, name);
+					if(vo != null){
+						//vo.setName(obj[0] != null ? obj[0].toString():"");
+						vo.setInviteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));    // 2016Count
+						vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));   // NewCount
+						vo.setMobileNumber(obj[3] != null ? obj[3].toString():"");   				 //New Percent
+						vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));//RenewalCount
+						vo.setActualMobNumber(obj[5] != null ? obj[5].toString():""); 					//RenewalPer
+					}
+					else{
+						vo = new IdAndNameVO();
+						vo.setName(obj[0] != null ? obj[0].toString():"");
+						vo.setInviteeCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));    // 2016Count
+						vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));   // NewCount
+						vo.setMobileNumber(obj[3] != null ? obj[3].toString():"");   				 //New Percent
+						vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));//RenewalCount
+						vo.setActualMobNumber(obj[5] != null ? obj[5].toString():""); 					//RenewalPer
+						returnList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDataSourceTypeWiseCountsByType() method in CadreDashBoardService().",e);
+		}
+		return returnList;
+	}
+	
+	private IdAndNameVO getMatchedVOForName(List<IdAndNameVO> list, String name)
+	{
+		IdAndNameVO returnVO = null;
+		try {
+			if(list != null && list.size()>0){
+				for (IdAndNameVO vo : list){
+					if(vo.getName().trim().equalsIgnoreCase(name.trim())){
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured at getMatchedVOForName() in CadreSurveyTransactionService service class. ", e);
+		}
+		return returnVO;
 	}
 }
