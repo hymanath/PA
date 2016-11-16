@@ -19,7 +19,6 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getSubmittedToursDetails(Date startDate, Date endDate, List<Long> CandidateIds);
 	public List<Object[]> getCndWiseAndLocValWiseCountListForIncharge(Date fromDate, Date toDate);
 	public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate,Long userAccessLevelId,Set<Long> userAccessLevelValues);
-	public List<Object[]> getToursSubmittedLeaderDtlsDesignationWise(List<Long> designationIds,Date fromDate,Date toDate);
 	public List<Object[]> getOwnToursCntDetailstDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getInchargeToursCntDetailstDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getToursSubmittedAndNoOfToursCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
@@ -30,5 +29,7 @@ public interface ISelfAppraisalCandidateDetailsDAO extends GenericDao<SelfApprai
 	public List<Object[]> getToursSubmittedCnddteAndNoOfToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getOwnToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getInchargeToursCntByUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
+	public List<Object[]> getOwnTourSubmittedCandiatesDesignationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> designationIds);
+	public List<Object[]> getInchargeTourSubmittedCandiatesDesignationWise(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> designationIds);
 	
 }

@@ -1244,10 +1244,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			LOG.error("Error occured at setToursDtlsToList() in CoreDashboardToursService ",e);	
 		}
 	}
-   public List<ToursBasicVO> getTourSubmittedLeadersDetails(List<Long> designationIds,String isSubmitted,String fromDateStr,String toDateStr){
+   public List<ToursBasicVO> getTourSubmittedLeadersDetails(List<Long> designationIds,String isSubmitted,String fromDateStr,String toDateStr,Long activityMemberId,Long stateId){
 	   List<ToursBasicVO> resultList = new ArrayList<ToursBasicVO>(0);
 	   Map<Long,ToursBasicVO> leaderDtlsMap = new LinkedHashMap<Long, ToursBasicVO>(0);
+	   Set<Long> locationValues = new HashSet<Long>();
 	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   Long locationAccessLevelId =0l;
 	   Date fromDate=null;
 	   Date toDate=null;
 	   try{
@@ -1255,62 +1257,66 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 fromDate = sdf.parse(fromDateStr);
 				 toDate = sdf.parse(toDateStr);
 			 }
-		   if(isSubmitted != null && isSubmitted.equalsIgnoreCase("Yes")){
+		     List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+			
+			List<Object[]> ownToursSubmittedCntObjLst = selfAppraisalCandidateDetailsDAO.getOwnTourSubmittedCandiatesDesignationWise(locationAccessLevelId, locationValues, stateId, fromDate, toDate, designationIds);
+			List<Object[]> inchargeToursSubmittedCntObjLst = selfAppraisalCandidateDetailsDAO.getInchargeTourSubmittedCandiatesDesignationWise(locationAccessLevelId, locationValues, stateId, fromDate, toDate, designationIds);
+	
+			if(isSubmitted != null && isSubmitted.equalsIgnoreCase("Yes")){
+			   setOWnToursSubmittedLeadersDtls(ownToursSubmittedCntObjLst,leaderDtlsMap,isSubmitted);
+			   setInchargeToursSubmittedLeadersDtls(inchargeToursSubmittedCntObjLst,leaderDtlsMap,isSubmitted);
 			   
-			   List<Object[]> objList = selfAppraisalCandidateDetailsDAO.getToursSubmittedLeaderDtlsDesignationWise(designationIds, fromDate, toDate); 
-			   setToursSubmittedLeadersDtls(objList,leaderDtlsMap,isSubmitted);
-			   resultList.addAll(leaderDtlsMap.values());
-			   leaderDtlsMap.clear();
-			   return resultList;
 		   }else if(isSubmitted.equalsIgnoreCase("No")){
-			   
-			  List<Object[]> rtrnAllLeadersObjLst = selfAppraisalCandidateDAO.getTotalLeaderDesignationWise(designationIds);
-			  List<Object[]> rtrnSubmittedObjLst = selfAppraisalCandidateDetailsDAO.getToursSubmittedLeaderDtlsDesignationWise(designationIds, fromDate, toDate);
-			  
-			  Set<Long> submittedTourIdsSet = new HashSet<Long>();
-			  
-			  setSumittedToursIdsToList(rtrnSubmittedObjLst,submittedTourIdsSet);
-			  
+			   setOWnToursSubmittedLeadersDtls(ownToursSubmittedCntObjLst,leaderDtlsMap,isSubmitted);
+			   setInchargeToursSubmittedLeadersDtls(inchargeToursSubmittedCntObjLst,leaderDtlsMap,isSubmitted);
+			 
+			  List<Object[]> rtrnAllLeadersObjLst = selfAppraisalCandidateLocationDAO.getTotalLeaderDesignationWise(designationIds,locationAccessLevelId,locationValues,stateId);
+			  Set<Long> submittedTourIdsSet = new HashSet<Long>(leaderDtlsMap.keySet());
+			  leaderDtlsMap.clear();
 			  if(rtrnAllLeadersObjLst != null && rtrnAllLeadersObjLst.size() > 0){
-				  
 				  for(Object[] param:rtrnAllLeadersObjLst){
-					  
 					  if(!submittedTourIdsSet.contains(commonMethodsUtilService.getLongValueForObject(param[0]))){
-						  
 						  setNotSubmittedToursDetails(param,leaderDtlsMap,isSubmitted);   
 					  }
 				  }
 			  }
 			  resultList.addAll(leaderDtlsMap.values());
 			  return resultList; 
-			  
 		   }else if(isSubmitted.equalsIgnoreCase("All")){
+			   
 			   //Submitted candidate details
-			   List<Object[]> rtrnSubmittedObjLst = selfAppraisalCandidateDetailsDAO.getToursSubmittedLeaderDtlsDesignationWise(designationIds, fromDate, toDate); 
-			   setToursSubmittedLeadersDtls(rtrnSubmittedObjLst,leaderDtlsMap,"Yes");  
-			   resultList.addAll(leaderDtlsMap.values());
-			   leaderDtlsMap.clear();
-			   
+			   List<Object[]> rtrnAllLeadersObjLst = selfAppraisalCandidateLocationDAO.getTotalLeaderDesignationWise(designationIds,locationAccessLevelId,locationValues,stateId);
+			   setOWnToursSubmittedLeadersDtls(ownToursSubmittedCntObjLst,leaderDtlsMap,"Yes");
+			   setInchargeToursSubmittedLeadersDtls(inchargeToursSubmittedCntObjLst,leaderDtlsMap,"Yes");
+			  
 			   // not Submitted candidate details 
-			   List<Object[]> rtrnAllLeadersObjLst = selfAppraisalCandidateDAO.getTotalLeaderDesignationWise(designationIds);
-			   
-			   Set<Long> submittedTourIdsSet = new HashSet<Long>();
-			   setSumittedToursIdsToList(rtrnSubmittedObjLst,submittedTourIdsSet);
-				  
+			   Set<Long> submittedTourIdsSet = new HashSet<Long>(leaderDtlsMap.keySet());
 				  if(rtrnAllLeadersObjLst != null && rtrnAllLeadersObjLst.size() > 0){
-					  
 					  for(Object[] param:rtrnAllLeadersObjLst){
-						  
 						  if(!submittedTourIdsSet.contains(commonMethodsUtilService.getLongValueForObject(param[0]))){
-							  
 							  setNotSubmittedToursDetails(param,leaderDtlsMap,"No");   
 						  }
 					  }
 				  }
-				  resultList.addAll(leaderDtlsMap.values());
-				  leaderDtlsMap.clear();
-				  return resultList;
 		   }
+		   if(leaderDtlsMap != null && leaderDtlsMap.size() > 0){
+			   for(Entry<Long,ToursBasicVO> entry:leaderDtlsMap.entrySet()){
+				   if(entry.getValue() != null){
+					   entry.getValue().setTotalSubmittedToursCnt(entry.getValue().getOwnToursCnt()+entry.getValue().getInchargerToursCnt());   
+				   }
+			   }
+		   }
+		   if(leaderDtlsMap != null && leaderDtlsMap.size() > 0){
+			   resultList.addAll(leaderDtlsMap.values());
+			   leaderDtlsMap.clear();
+		   }
+		   return resultList;
 	   }catch(Exception e){
 		   LOG.error("Error occured at getTourSubmittedLeadersDetails() in CoreDashboardToursService ",e);	
 	   }
@@ -1334,40 +1340,49 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   LOG.error("Error occured at setNotSubmittedToursDetails() in CoreDashboardToursService ",e);   
 	   }
    }
-   public void setSumittedToursIdsToList(List<Object[]> objList,Set<Long> submittedTourIdsSet){
-	   try{
-		   if(objList != null &&  objList.size() > 0){
-			   for(Object[] param:objList){
-				   submittedTourIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-			   }
-		   }
-	   }catch(Exception e){
-		   LOG.error("Error occured at setSumittedToursIdsToList() in CoreDashboardToursService ",e);   
-	   }
-   }
-   public void setToursSubmittedLeadersDtls(List<Object[]> objList,Map<Long,ToursBasicVO> leaderDtlsMap,String isSubmitted){
+   public void setOWnToursSubmittedLeadersDtls(List<Object[]> objList,Map<Long,ToursBasicVO> leaderDtlsMap,String isSubmitted){
 	   try{
 		   if(objList!= null && objList.size() > 0){
 			   for(Object[] param:objList){
-				   ToursBasicVO leaderVO = leaderDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-				    if(leaderVO == null){
-				    	leaderVO = new ToursBasicVO();
+				       ToursBasicVO leaderVO = new ToursBasicVO();
 				    	leaderVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[0]));
 				    	leaderVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 				    	leaderVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
 				    	leaderVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[3]));
 				    	leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
 				    	leaderVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[5]));
+				    	leaderVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
 				    	leaderVO.setIsTourSubmitted(isSubmitted);	
 				    	leaderDtlsMap.put(leaderVO.getCandDtlsId(), leaderVO);
 				    }
-				    leaderVO.setOwnToursCnt(leaderVO.getOwnToursCnt()+commonMethodsUtilService.getLongValueForObject(param[6]));
-				    leaderVO.setInchargerToursCnt(leaderVO.getInchargerToursCnt()+commonMethodsUtilService.getLongValueForObject(param[7]));
-				    leaderVO.setTotalSubmittedToursCnt(leaderVO.getOwnToursCnt()+leaderVO.getInchargerToursCnt());
-			   }
 		   }
 	   }catch(Exception e){
-		   LOG.error("Error occured at setToursSubmittedLeadersDtls() in CoreDashboardToursService ",e);	  
+		   LOG.error("Error occured at setOWnToursSubmittedLeadersDtls() in CoreDashboardToursService ",e);	  
+	   }
+   }
+   public void setInchargeToursSubmittedLeadersDtls(List<Object[]> objList,Map<Long,ToursBasicVO> leaderDtlsMap,String isSubmitted){
+	   try{
+		   if(objList!= null && objList.size() > 0){
+			   for(Object[] param:objList){
+				       ToursBasicVO leaderVO = leaderDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				       if(leaderVO == null){
+				    	    leaderVO = new ToursBasicVO();
+					    	leaderVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					    	leaderVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					    	leaderVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+					    	leaderVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					    	leaderVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+					    	leaderVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					    	leaderVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[6]));
+					    	leaderVO.setIsTourSubmitted(isSubmitted);	
+					    	leaderDtlsMap.put(leaderVO.getCandDtlsId(), leaderVO);  
+				       }else{
+				    	   leaderVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[6]));  
+				       }
+				    }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured at setInchargeToursSubmittedLeadersDtls() in CoreDashboardToursService ",e);	  
 	   }
    }
    public void getSubLevelDtls(Long activityMemberId){
