@@ -255,7 +255,7 @@ textarea {
 								<li>No charges applicable, if you collect at State Party Office [Hyderabad  or Guntur]</li>
 							  </ul> 
 					  <p><br/>    
-					   <i>For any Technical Support, please contact +91-7997950724</i></p>
+					   <i>For any Technical Support, please contact <b>+91-7997950724</b> / email : tdpmembership2016@gmail.com </i></p>
 				</div>
 			</div>
         </div>
