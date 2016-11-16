@@ -14682,5 +14682,10 @@
 			<param name="root">cadreDashboardVOList</param>
 		</result>
 	</action>
+ 	<action name="getFieldMonitoringReportMapDetailsAction" class="cadreCommitteeAction" method="getFieldMonitoringMapReportDetails">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeList</param>
+			</result>
+		</action>
 </package>
 </struts>

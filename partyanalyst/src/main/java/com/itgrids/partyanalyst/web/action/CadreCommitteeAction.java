@@ -107,8 +107,17 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private Long constitunecyId;
 	private String startDate;
 	private String endDate;
+	private List<CadreCommitteeVO>  cadreCommitteeList;
 	
 	
+	public List<CadreCommitteeVO> getCadreCommitteeList() {
+		return cadreCommitteeList;
+	}
+
+	public void setCadreCommitteeList(List<CadreCommitteeVO> cadreCommitteeList) {
+		this.cadreCommitteeList = cadreCommitteeList;
+	}
+
 	public Long getConstitunecyId() {
 		return constitunecyId;
 	}
@@ -2292,6 +2301,24 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 	public String tdpUserWiseMap(){
+		return Action.SUCCESS;
+	}
+	public String tdpUserWiseReportMap(){
+		return Action.SUCCESS;
+	}
+	public String getFieldMonitoringMapReportDetails()
+	{
+	try{ 
+          jObj = new JSONObject(getTask());
+			
+			Long constitunecyId = jObj.getLong("constitunecyId");
+			Long fieldUserId = jObj.getLong("fieldUserId");
+			cadreCommitteeList =  cadreCommitteeService.getFieldMonitoringMapReportDetails(constitunecyId,fieldUserId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception occured in getFieldMonitoringMapReportDetails() At CadreCommitteeAction",e);
+		}
 		return Action.SUCCESS;
 	}
 }
