@@ -607,10 +607,10 @@ public class ToursService implements IToursService {
     				basicVO.setMonth(param[1] != null ? param[1].toString() : "");
     				basicVO.setYear(param[2] != null ? (Long)param[2] : 0l);
     				if(param[5] != null){
-    					basicVO.setOwnToursCnt((Long)param[5]);
-    				}
-    				if(param[8] != null){
-    					basicVO.setInchargerToursCnt((Long)param[8]);  
+    					basicVO.setOwnTours((Long)param[5]);    
+    				}  
+    				if(param[8] != null){  
+    					basicVO.setInchargerTours((Long)param[8]);      
     				}  
     				basicVO.setComment(param[9] != null ? param[9].toString() : "");
     				if(param[10] != null){    
