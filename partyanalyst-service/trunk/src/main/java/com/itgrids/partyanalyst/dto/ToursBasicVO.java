@@ -34,6 +34,8 @@ public class ToursBasicVO {
 	private Long noOfLeaderCnt=0l;
 	private Long submitedLeaderCnt=0l;
 	private Long notSubmitedLeaserCnt=0l;
+	private Long ownTours;
+	private Long inchargerTours;
 	private Long ownToursCnt=0l;
 	private Long inchargerToursCnt=0l;
 	private Long totalSubmittedToursCnt=0l;
@@ -185,18 +187,7 @@ public class ToursBasicVO {
 	public void setNotSubmitedLeaserCnt(Long notSubmitedLeaserCnt) {
 		this.notSubmitedLeaserCnt = notSubmitedLeaserCnt;
 	}
-	public Long getOwnToursCnt() {
-		return ownToursCnt;
-	}
-	public void setOwnToursCnt(Long ownToursCnt) {
-		this.ownToursCnt = ownToursCnt;
-	}
-	public Long getInchargerToursCnt() {
-		return inchargerToursCnt;
-	}
-	public void setInchargerToursCnt(Long inchargerToursCnt) {
-		this.inchargerToursCnt = inchargerToursCnt;
-	}
+	
 	public Long getTotalSubmittedToursCnt() {
 		return totalSubmittedToursCnt;
 	}
@@ -309,5 +300,32 @@ public class ToursBasicVO {
 	}
 	public void setIsTourSubmitted(String isTourSubmitted) {
 		this.isTourSubmitted = isTourSubmitted;
-	}	
+	}
+	public Long getOwnTours() {
+		return ownTours;
+	}
+	public void setOwnTours(Long ownTours) {
+		this.ownTours = ownTours;
+	}
+	public Long getInchargerTours() {
+		return inchargerTours;
+	}
+	public void setInchargerTours(Long inchargerTours) {
+		this.inchargerTours = inchargerTours;
+	}
+	public Long getInchargerToursCnt() {
+		return inchargerToursCnt;
+	}
+	public void setInchargerToursCnt(Long inchargerToursCnt) {
+		this.inchargerToursCnt = inchargerToursCnt;
+	}
+	
+	public Long getOwnToursCnt() {
+		return ownToursCnt;
+	}
+	public void setOwnToursCnt(Long ownToursCnt) {
+		this.ownToursCnt = ownToursCnt;
+	}
+	
+	
 }
