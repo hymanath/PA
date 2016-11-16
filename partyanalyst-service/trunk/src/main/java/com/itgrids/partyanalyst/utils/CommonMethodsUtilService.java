@@ -11,10 +11,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Formatter;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.zip.Adler32;
 
@@ -631,5 +633,65 @@ public class CommonMethodsUtilService {
 				LOG.error("Exception raised in percentageMergeintoTwoDecimalPlaces in CommonMethodsUtilService ", e);
 			}
 			return perc.toString();
+		}
+		
+		public void readAllFileINaDirectory(String filePath,String content1, String content2){
+			try {
+		        
+				File folder = new File(filePath);
+		         Set<String> membershipNoStrList = new HashSet<String>(0);
+		         Scanner scanner =  null;
+		         Long totalCount =0L;
+		         for (final File file : folder.listFiles()) {
+		             if (file.isDirectory()) {
+		            	  System.out.println(file.getName());
+		             } else {
+		            	 scanner = new Scanner(file);
+		            	 boolean isStarted=false;
+		    	         while (scanner.hasNextLine()) {
+		    	        	 String str = scanner.nextLine();
+		    	        	 if(str.contains(content1)){	        	//content1 = "ENUE Exception occuredin  generating payment gateway basic details  with"	 
+		    	        		 isStarted=true;
+		    	        	 }else if (isStarted && str.contains(content2)){	     // content2 = "AuthDesc: Y"   		 
+		    	        		 membershipNoStrList.add(str.substring(42, 50));
+		    	        		 isStarted=false;
+		    	        		 totalCount=totalCount+1;
+		    	        		 System.out.println("Membership No : "+str.substring(42, 50)+" -----> TOTAL COUNT :"+totalCount);
+		    	        	 }
+		    	         }
+		             
+		             }
+		         }
+		        
+		         System.out.println("Unique Memberships Count : "+membershipNoStrList.size());
+		         System.out.println(membershipNoStrList);
+		         scanner.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		public void readFileByFilePath(String filePath,String content1, String content2){
+			try {
+		         File file = new File("D:\\static_content\\PAErrors.log.1");
+		         Long totalCount = 0L;
+		         Scanner scanner = new Scanner(file);
+		         List<String> membershipNoStrList = new ArrayList<String>(0);
+		         boolean isStarted=false;
+		         while (scanner.hasNextLine()) {
+    	        	 String str = scanner.nextLine();
+    	        	 if(str.contains(content1)){	        	//content1 = "ENUE Exception occuredin  generating payment gateway basic details  with"	 
+    	        		 isStarted=true;
+    	        	 }else if (isStarted && str.contains(content2)){	     // content2 = "AuthDesc: Y"   		 
+    	        		 membershipNoStrList.add(str.substring(42, 50));
+    	        		 isStarted=false;
+    	        		 totalCount=totalCount+1;
+    	        		 System.out.println("TOTAL COUNT :"+totalCount);
+    	        	 }
+    	         }
+		         scanner.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 }
