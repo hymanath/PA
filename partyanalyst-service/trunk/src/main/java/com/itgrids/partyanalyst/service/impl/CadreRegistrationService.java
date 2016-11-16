@@ -14164,5 +14164,30 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return finalList;
 	}
-	
+	public List<CadreRegisterInfo> getDistrictsByState(Long stateId)
+	{
+		List<CadreRegisterInfo> cadreRegisterInfoList=null;
+		List<Object[]> returnList = null;
+		//Long distId;
+		try {
+				returnList = districtDAO.getDistrictForState(stateId);
+				if(returnList !=null && returnList.size()>0)
+				{
+					cadreRegisterInfoList = new ArrayList<CadreRegisterInfo>();
+					for (Object[] objects : returnList) 
+					{
+						CadreRegisterInfo cadreRegisterInfo = new CadreRegisterInfo();
+						cadreRegisterInfo = new CadreRegisterInfo();
+						cadreRegisterInfo.setId(Long.valueOf(objects[0].toString()));
+						cadreRegisterInfo.setName(objects[1].toString());
+						
+						cadreRegisterInfoList.add(cadreRegisterInfo);
+					}
+				}
+			}
+			catch (Exception e) {
+				LOG.error("Exception raised in getDistrictsByState in CadreRegistrationService service", e);
+			}
+		return cadreRegisterInfoList;
+	}
 }

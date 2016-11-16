@@ -218,5 +218,6 @@ public interface ICadreRegistrationService {
 	 public List<GISUserTrackingVO> getLatestLattitudeLangitudeOfTabUserAgentDetails(Long constituencyId,String startDate,String endDate);
 	 public void saveDataToHistoryTable(TdpCadre tdpCadre);
 	 //public List<IdAndNameVO> getAllDistricts();
+	 public List<CadreRegisterInfo> getDistrictsByState(Long stateId);
 }
 

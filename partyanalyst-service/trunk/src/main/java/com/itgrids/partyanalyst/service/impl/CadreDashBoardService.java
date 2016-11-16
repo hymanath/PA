@@ -6210,6 +6210,28 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 }
 		 
 		 
+	public List<CadreDashboardVO> get2016LocationWiseRegisteredCountsForConstitunecy(String type,Long locationScopeId,String locationType,Long districId){
+		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
+		 try {
+		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCountsForConstituency(type,locationScopeId,locationType, null,districId);
+		 	List<Object[]> list2 = null;
+		 	if(type.equalsIgnoreCase("total")){
+		 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCountsForConstituency("Today",locationScopeId,locationType, null,districId);            
+		 	}
+		 	List<Object[]> list3 = null;
+		 	List<Object[]> list4 = null;
+		 	if(locationScopeId.longValue() != 2l){
+		 		list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(locationScopeId,locationType); 
+		 	}
+		 	if(locationScopeId.longValue() == 4l){
+		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
+		 	}
+		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
+		}
+		 return returnList;    
+	}
 	public List<CadreDashboardVO> get2016LocationWiseRegisteredCounts(String type,Long locationScopeId,String locationType){
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
@@ -6325,14 +6347,29 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	 	if(list1 != null && !list1.isEmpty()){
 	 		for (Object[] obj : list1) {
 				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-				String name = obj[1] != null ? obj[1].toString():"";
+				String name = null;
+				 if(locationScopeId != null && locationScopeId.longValue() == 3l || locationScopeId != null && locationScopeId.longValue() == 2l){
+					 name = obj[1] != null ? obj[1].toString():"";
+				}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
+						String t = obj[1] != null ? obj[1].toString():""; 
+						String t1 = obj[2] != null ? obj[2].toString():"";
+						name = t+"-"+t1;
+				}
+					
+				
 				locationNameMap.put(id, name);
 			}
 	 	}
 	 	
 	 	if(returnList != null && !returnList.isEmpty()){
 	 		for (CadreDashboardVO vo : returnList) {
-	 			vo.setName(locationNameMap.get(vo.getId()));
+	 			
+	 			if(locationScopeId != null && locationScopeId.longValue() == 3l || locationScopeId != null && locationScopeId.longValue() == 2l){
+	 				vo.setName(locationNameMap.get(vo.getId()).split("-")[0]);
+				}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
+					vo.setName(locationNameMap.get(vo.getId()).split("-")[0]);
+					vo.setDistrictname(locationNameMap.get(vo.getId()).split("-")[1]);
+				}
 	 		}
 	 	}
 	 	
