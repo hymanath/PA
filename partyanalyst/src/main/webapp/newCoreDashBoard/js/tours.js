@@ -211,7 +211,7 @@ function getToursBasicOverviewCountDetails()
 			  str+='</div>';  
 			}
 		  }else{
-		  str+='No Data Available';	  
+		  str+='<h4>No Data Available</h4>';	  
 		  }
 	     $("#tourOverviewDivId").html(str);  
 		 $("#overallTourLdrDsgntnId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
@@ -339,7 +339,7 @@ function getToursBasicOverviewCountDetails()
 						});
 		   }
 	}else{
-		$("#districtWiseLeaderDiv").html("No Data Available.")
+		$("#districtWiseLeaderDiv").html("<h4>No Data Available</h4>");
 	}	
   }
   function getTopPoorToursLocationDetails(userTypeId,selectedUserName,userType)
