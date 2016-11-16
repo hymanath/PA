@@ -687,20 +687,20 @@ $("#toursDateRangePicker").daterangepicker({
 							str+='<span id="errUpYearId" style="color:red;"></span>';   
 							//str+='<input type="text" value="'+result.year+'" length="4"  placeholder="Type Year Here" id="updateYearId" class="form-control clearFieldCls" name="toursInputVO.year"></input>';
 						str+='</div>';
-						if(result.ownToursCnt != null){
+						if(result.ownTours != null){
 							str+='<div class="col-md-3 col-xs-12 col-sm-6 ownDivCls">';
 								str+='<label Id="ownLabelId">Own Tours</label>';
-								var total = result.ownToursCnt;
+								var total = result.ownTours;
 								str+='<input type="text" value="'+total+'" length="2" placeholder="Type No of Tour Here" attr_err_id="ownSelectBoxUpErrId" id="updateOwnLocationId" class="form-control clearFieldCls isActiveBoxId" name="toursInputVO.ownTours"></input>';
 								str+='<input type="hidden" id="" name="toursInputVO.ownLocationScopeId">';
 								str+='<input type="hidden" id="" name="toursInputVO.ownLocationId">';
 								str+='<span id="ownSelectBoxUpErrId" class="textErrCls" style="color:red;"></span>';
 							str+='</div>';  
 						}  
-						if(result.inchargerToursCnt != null){
+						if(result.inchargerTours != null){
 							str+='<div class="col-md-3 col-xs-12 col-sm-6 inchargeDivCls">';
 								str+='<label Id="inchargeLabelId">Incharge Tours</label>';
-								var total = result.inchargerToursCnt;
+								var total = result.inchargerTours;
 								str+='<input type="text" value="'+total+'" length="2" placeholder="Type No of Tour Here" attr_err_id="inSelectBoxUpErrId" id="updateInchargeLocationId" class="form-control clearFieldCls isActiveBoxId" name="toursInputVO.inchargeTours"></input>';
 								str+='<input type="hidden" id="" name="toursInputVO.inchargeLocationScopeId">';
 								str+='<input type="hidden" id="" name="toursInputVO.inchargeLocationId">';
@@ -865,6 +865,7 @@ $("#toursDateRangePicker").daterangepicker({
 			$("#filer_input3").val('');      
 			$(".selectChosen").trigger("chosen:updated");
 			var filerKit = $("#update_TourFileId").prop("jFiler");
+			console.log(uploadResult);    
 			if(uploadResult != null && uploadResult == '<pre>"Updated"</pre>'){
 					setTimeout(function () {
 					$("#updateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
