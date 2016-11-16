@@ -182,7 +182,7 @@ public class ToursService implements IToursService {
 					String oldPath = selfAppraisalCandidateDetails.getReportPath();
 					if(oldPath != null){
 						if(oldPath.trim().length() > 2){
-							selfAppraisalCandidateDetails.setReportPath(oldPath+","+destPath);      
+							selfAppraisalCandidateDetails.setReportPath(oldPath);      
 						}else{
 							if(destPath != null && destPath.trim().length() > 1){    
 								selfAppraisalCandidateDetails.setReportPath(destPath);
@@ -194,7 +194,7 @@ public class ToursService implements IToursService {
 						}   
 					}
 				}else{
-					if(destPath != null && destPath.trim().length() > 1){    
+					if(destPath != null && destPath.trim().length() > 1){      
 						selfAppraisalCandidateDetails.setReportPath(destPath);
 					}  
 				}
@@ -476,7 +476,7 @@ public class ToursService implements IToursService {
     		}
     		List<Long> desigIdList = new ArrayList<Long>();
     		desigIdList.add(desigId);
-    		List<Object[]> desigDtls = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(desigIdList);
+    		/*List<Object[]> desigDtls = selfAppraisalCandidateDAO.getTotalLeadersDesignationBy(desigIdList);
     		
     		if(desigDtls != null && desigDtls.size() > 0){
     			toursBasicVO.setCandidateCount(desigDtls.get(0)[2] != null ? (Long)desigDtls.get(0)[2] : 0l);
@@ -486,8 +486,29 @@ public class ToursService implements IToursService {
     			toursBasicVO.setSelectedCandCount(memDtlsList.get(0)[1] != null ? (Long)memDtlsList.get(0)[1] : 0l);
     			toursBasicVO.setTotalTour((memDtlsList.get(0)[2] != null ? (Long)memDtlsList.get(0)[2] : 0l) + (memDtlsList.get(0)[3] != null ? (Long)memDtlsList.get(0)[3] : 0l));
     		}    
-    		return toursBasicVO; 
+    		return toursBasicVO;*/ 
+    		List<Long> CandidateIds = selfAppraisalCandidateLocationDAO.getCandiateIdList(null,null,desigIdList);
+    		if(CandidateIds != null && CandidateIds.size() > 0){
+    			toursBasicVO.setCandidateCount(Long.parseLong(Integer.toString(CandidateIds.size())));
+    		}
+    		List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursDetails(startDate,endDate,CandidateIds);
+    		Long selectedCandCount = 0l;    
+    		Long totalTours = 0l;
+    		if(memDtlsList != null && memDtlsList.size() > 0){   
+    			for(Object[] param : memDtlsList){
+    				selectedCandCount = selectedCandCount + 1;
+    				totalTours = totalTours + ((param[1] != null ? (Long)param[1] : 0l) + (param[2] != null ? (Long)param[2] : 0l));
+    			}       
+    			toursBasicVO.setSelectedCandCount(selectedCandCount);
+    			toursBasicVO.setTotalTour(totalTours);
+    		}
     		
+    		Long totalUniqueTour = selfAppraisalCandidateDetailsDAO.geTtotalUniqueTour(CandidateIds,startDate,endDate);
+    		if(totalUniqueTour != null){
+    			toursBasicVO.setInchargerToursCnt(totalUniqueTour);//total unique tours
+    		}
+    		return toursBasicVO; 
+    	 
     	}catch(Exception e){  
     		e.printStackTrace();
     		LOG.error("Error Occured at getDesignationDtls() in ToursService class",e);
