@@ -281,7 +281,9 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		   }
 		   Query query = getSession().createQuery(queryStr.toString());
 		   query.setParameterList("desigIdList", desigIdList);
-		   query.setParameterList("userAccessLevelValues", locationValueSet);
-		   return query.list();
+		   if(userAccessLevelId != null){
+			   query.setParameterList("userAccessLevelValues", locationValueSet);
+		   }
+		   return query.list();  
 	   }
 }
