@@ -2952,8 +2952,8 @@
 		 
 		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
 		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />
-		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		
-		      
+		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		 
+		     <property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />	  
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">

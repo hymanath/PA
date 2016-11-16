@@ -168,8 +168,8 @@
 		<!--<pattern>/rtcUnionSearchAction*</pattern>-->
 		<pattern>/affiliatedCadreSearchAction*</pattern>
 		<!--<pattern>/rtcUnionRegistrationAction*</pattern>-->
-		<pattern>/affiliatedCadreRegistrationAction*</pattern>		
-		
+		<pattern>/affiliatedCadreRegistrationAction*</pattern>	   	
+		<pattern>/tdpUserWiseReportMapAction*</pattern>
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">
