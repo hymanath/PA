@@ -174,7 +174,11 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 					}
 				}
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-					queryStr.append("  model.locationScopeId = 4 and model.locationValue = constituency.constituencyId  and constituency.district.districtId = :parentLocationTypeId ");
+					queryStr.append("  model.locationScopeId = 4 and model.locationValue = constituency.constituencyId  ");
+					if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+						queryStr.append(" and (constituency.district.districtId between 11 and 23) ");
+					else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
+						queryStr.append(" and (constituency.district.districtId between 1 and 10) ");
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and constituency.constituencyId = :childLocationTypeId ");
 					}
@@ -222,7 +226,7 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 			queryStr.append(" and model.isDeleted = 'N' ");
 			
 			Query query = getSession().createQuery(queryStr.toString());
-			if( inputVO.getParentLocationTypeId().longValue()>0L)
+			if( inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
 			if( inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
