@@ -548,13 +548,13 @@ $("#toursDateRangePicker").daterangepicker({
 					var percent = (notSubmit * (100/result.candidateCount)).toFixed(2);
 					str+='<h3>'+(result.candidateCount-result.selectedCandCount)+'<small class="text-success">'+percent+'%</small></h3>';
 				str+='</td>';
-				str+='<td>';
+				str+='<td>';  
 					str+='<h4 class="text-capitalize text-muted">Submited Tours</h4>';
 					str+='<h3>'+result.totalTour+'</h3>';
 				str+='</td>';
 				str+='<td>';
 					str+='<h4 class="text-capitalize text-muted">Average Tours</h4>';
-					str+='<h3>'+(result.totalTour/result.selectedCandCount).toFixed(2)+'</h3>';    
+					str+='<h3>'+(result.totalTour/result.inchargerToursCnt).toFixed(2)+'</h3>';      
 				str+='</td>';
 			str+='</tr>';
 		str+='</table>';
@@ -565,7 +565,7 @@ $("#toursDateRangePicker").daterangepicker({
 		var jsObj = { 
 			 desigId : desigId,
 			 startDateStr : fromDateStr,
-			 endDateStr : toDateStr  
+			 endDateStr : toDateStr    
 			}
 		$.ajax({
 			type : 'POST',
