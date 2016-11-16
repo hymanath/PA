@@ -1020,10 +1020,12 @@ function getToursBasicOverviewCountDetails()
 		$("#locationWiseCadreReportDivId").html(' ');
 		$("#locationWiseProcessImgReport").show();
 	 	var jsObj ={ 
+					 activityMemberId : globalActivityMemberId,
 					 designationIds : designationIds, 
 					 isTourSubmitted : tourSubmittedType,
 					 fromDate : globalTourFormDate,
-					 toDate :  glovalTourToDate
+					 toDate :  glovalTourToDate,
+					 stateId : globalStateIdForTour
 				  }
 		$.ajax({
 			type : 'POST',
