@@ -1248,7 +1248,61 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 						}
 					}
 				}
-			
+				//Update the locationValuesSet whose locationValuesSet contains districtId[517-Visakhapatnam Rural]
+				// get the constituency id of Visakhapatnam Rural and update the locationValuesSet and locationLevelId.
+				Set<Long> locationIdSet = null;
+				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+					
+					  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {  
+						  
+					      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+					      
+					      for(UserTypeVO vo:userTypeMap.values()){
+					    	  locationIdSet = vo.getLocationValuesSet();
+					    	  if(locationIdSet.contains(517l)){
+					    		  List<Long> constIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+					    		  if(constIds != null && constIds.size() > 0){
+					    			  locationIdSet.addAll(constIds);  
+					    		  }
+					    		  vo.setLocationLevelId(5l);
+					    	  }
+					      }
+				     }  
+				}
+				//Update the locationValuesSet whose locationValuesSet contains districtId[13-Visakhapatnam]
+				// get the constituency id of Visakhapatnam and constituency Id of other dists then update the locationValuesSet and locationLevelId.
+				List<Long> totalLocationIds = null;
+				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+					
+					  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {    
+						  
+					      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+					      
+					      for(UserTypeVO vo:userTypeMap.values()){
+					    	  locationIdSet = vo.getLocationValuesSet();
+					    	  if(locationIdSet.contains(13l)){
+					    		  totalLocationIds = new ArrayList<Long>();
+					    		  List<Long> extraConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+					    		  List<Object[]> allConstIds = constituencyDAO.getConstituenciesList(new ArrayList<Long>(locationIdSet));
+					    		  if(allConstIds != null && allConstIds.size() > 0){
+					    			  for(Object[] param : allConstIds){
+					    				  totalLocationIds.add(param[2] != null ? (Long)param[2] : 0l);
+					    			  }
+					    			  if(extraConstIds != null && extraConstIds.size() > 0){
+					    				  totalLocationIds.removeAll(extraConstIds);
+					    			  }
+					    		  }
+					    		  if(totalLocationIds != null && totalLocationIds.size() > 0){
+					    			  locationIdSet.clear();
+					    			  locationIdSet.addAll(totalLocationIds); 
+					    			  vo.setLocationLevelId(5l);
+					    		  }
+					    		  
+					    	  }  
+					      }
+				     }  
+				}
+				
 				//setting target Count
 				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 					
@@ -1829,6 +1883,8 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 			List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0); 
 			Map<String,Long> targetCdrCntMap = new HashMap<String, Long>(0);
 			Map<String,Long> regCdrCntMap = new HashMap<String, Long>(0);
+			Map<String,Long> regCdrCntMapToday = new HashMap<String, Long>(0);
+			Map<String,Long> regCdrCntMap2014 = new HashMap<String, Long>(0);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date frmDt = null;
 			Date toDt=null;
@@ -1844,10 +1900,23 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 			activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
 			childActivityMembersMap= activityMemberVO.getActivityMembersMap();
 			locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+			Set<Long> tempCostIds = new HashSet<Long>(){{add(133l);add(134l);add(135l);add(136l);add(137l);add(138l);add(140l);
+			add(141l);add(354l);add(355l);add(356l);add(357l);add(358l);add(359l);add(368l);add(146l);add(147l);add(149l);add(152l);
+			add(153l);add(155l);add(156l);add(157l);add(159l);add(160l);add(163l);add(303l);add(304l);add(305l);add(306l);add(307l);
+			add(308l);add(309l);add(310l);add(182l);add(184l);add(185l);add(186l);add(187l);add(191l);add(192l);add(193l);add(194l);
+			add(195l);add(196l);add(327l);add(328l);add(329l);add(330l);add(331l);}};
+			  
+			Set<Long> conIdSet = locationLevelIdsMap.get(5l);
+			if(conIdSet != null){
+				conIdSet.addAll(tempCostIds);
+			}else{
+				locationLevelIdsMap.put(5l, tempCostIds);      
+			}
 			
+			  
 			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
-			}
+			}  
 			//check location category
 			String nameCategory = null;
 			String category = null;
@@ -1856,14 +1925,14 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 				nameCategory = nameList.get(0);
 				category = nameCategory.substring(nameCategory.lastIndexOf(" ")+1);
 			}
-			//calculate target count
+			//calculate target count  
 			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
 					Long accessLevelValue =0l;  
 					if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency
 						accessLevelValue = 10l; //region scope 10  means parliament constituency 
 					}else if(entry.getKey().longValue()==5l){
-						accessLevelValue = 4l;  
+						accessLevelValue = 4l;   
 					}else{  
 						accessLevelValue = entry.getKey();   
 					} // xxxx    
@@ -1897,6 +1966,93 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 							regCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l); 
 						}
 					}
+				}
+			}
+			
+			//calculate registered count for today  
+			//regCdrCntMap.clear();
+			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+				for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+					//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay,4l);
+					Long accessLevelValue =0l;  
+					if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency
+						accessLevelValue = 10l; //region scope 10  means parliament constituency 
+					}else if(entry.getKey().longValue()==5l){
+						accessLevelValue = 4l;  
+					}else{      
+						accessLevelValue = entry.getKey();   
+					}
+					List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay);
+					if(totalRegCadreList != null && totalRegCadreList.size() > 0){
+						for (Object[] param : totalRegCadreList) {
+							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
+							regCdrCntMapToday.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);  
+						}
+					}
+				}
+			}
+			
+			//calculate registered count for 2014  
+			//regCdrCntMap.clear();
+			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+				for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+					Long accessLevelValue =0l;  
+					if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency
+						accessLevelValue = 10l; //region scope 10  means parliament constituency 
+					}else if(entry.getKey().longValue()==5l){
+						accessLevelValue = 4l;  
+					}else{
+						accessLevelValue = entry.getKey();     
+					}
+					//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay,3l);
+					List<Object[]> totalRegCadreList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId);
+					if(totalRegCadreList != null && totalRegCadreList.size() > 0){  
+						for (Object[] param : totalRegCadreList) {
+							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();  
+							regCdrCntMap2014.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
+						}
+					}
+				}      
+			}
+			//for DP
+			Set<Long> locationIdSet = null;
+			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+				for(UserTypeVO vo:childActivityMembersMap.values()){
+					locationIdSet = vo.getLocationValuesSet();
+			    	  if(locationIdSet.contains(517l)){
+			    		  List<Long> constIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+			    		  if(constIds != null && constIds.size() > 0){
+			    			  locationIdSet.addAll(constIds);  
+			    		  }
+			    		  vo.setLocationLevelId(5l);
+			    	  }
+				}
+			}
+			
+			//for GS
+			List<Long> totalLocationIds = null;
+			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+				for(UserTypeVO vo:childActivityMembersMap.values()){
+					locationIdSet = vo.getLocationValuesSet();
+			    	  if(locationIdSet.contains(13l)){
+			    		  totalLocationIds = new ArrayList<Long>();
+			    		  List<Long> extraConstIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+			    		  List<Object[]> allConstIds = constituencyDAO.getConstituenciesList(new ArrayList<Long>(locationIdSet));
+			    		  if(allConstIds != null && allConstIds.size() > 0){
+			    			  for(Object[] param : allConstIds){
+			    				  totalLocationIds.add(param[2] != null ? (Long)param[2] : 0l);
+			    			  }
+			    			  if(extraConstIds != null && extraConstIds.size() > 0){
+			    				  totalLocationIds.removeAll(extraConstIds);
+			    			  }  
+			    		  }
+			    		  if(totalLocationIds != null && totalLocationIds.size() > 0){
+			    			  locationIdSet.clear();
+			    			  locationIdSet.addAll(totalLocationIds); 
+			    			  vo.setLocationLevelId(5l);
+			    		  }
+			    		  
+			    	  }
 				}
 			}
 			//Pushing target Count
@@ -1942,71 +2098,29 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 					}
 				}
 			}
-			//calculate registered count for today  
-			regCdrCntMap.clear();
-			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
-				for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-					//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay,4l);
-					Long accessLevelValue =0l;  
-					if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency
-						accessLevelValue = 10l; //region scope 10  means parliament constituency 
-					}else if(entry.getKey().longValue()==5l){
-						accessLevelValue = 4l;  
-					}else{      
-						accessLevelValue = entry.getKey();   
-					}
-					List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay);
-					if(totalRegCadreList != null && totalRegCadreList.size() > 0){
-						for (Object[] param : totalRegCadreList) {
-							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
-							regCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);  
-						}
-					}
-				}
-			}
+			
 			//pushing reg count for today
 			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){  
 				for(UserTypeVO vo:childActivityMembersMap.values()){
 					for(Long locationValueId:vo.getLocationValuesSet()){
 						String key = vo.getLocationLevelId()+"_"+locationValueId;
-						if(regCdrCntMap.get(key) != null){
-							setTodayCount(locationValueId,vo.getSubLocationList(),regCdrCntMap.get(key));
+						if(regCdrCntMapToday.get(key) != null){
+							setTodayCount(locationValueId,vo.getSubLocationList(),regCdrCntMapToday.get(key));
 							//nameVO.setCount(regCdrCntMap.get(key));
 							//vo.getSubLocationList().add(nameVO);
-							vo.setTotalCadreCountToday(vo.getTotalCadreCountToday()+regCdrCntMap.get(key));
+							vo.setTotalCadreCountToday(vo.getTotalCadreCountToday()+regCdrCntMapToday.get(key));
 						}
 					}
 				}
 			}
-			//calculate registered count for 2014  
-			regCdrCntMap.clear();
-			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
-				for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-					Long accessLevelValue =0l;  
-					if(entry.getKey().longValue() == 4l){// user level 4 means parliament constituency
-						accessLevelValue = 10l; //region scope 10  means parliament constituency 
-					}else if(entry.getKey().longValue()==5l){
-						accessLevelValue = 4l;  
-					}else{
-						accessLevelValue = entry.getKey();     
-					}
-					//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay,3l);
-					List<Object[]> totalRegCadreList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId);
-					if(totalRegCadreList != null && totalRegCadreList.size() > 0){  
-						for (Object[] param : totalRegCadreList) {
-							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();  
-							regCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
-						}
-					}
-				}      
-			}
+			
 			//pushing reg count for 2014
 			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				for(UserTypeVO vo:childActivityMembersMap.values()){
 					for(Long locationValueId:vo.getLocationValuesSet()){
 						String key = vo.getLocationLevelId()+"_"+locationValueId;
-						if(regCdrCntMap.get(key) != null){
-							vo.setTotalTargetCount2014(vo.getTotalTargetCount2014()+regCdrCntMap.get(key));
+						if(regCdrCntMap2014.get(key) != null){
+							vo.setTotalTargetCount2014(vo.getTotalTargetCount2014()+regCdrCntMap2014.get(key));
 						}  
 					}
 				}
