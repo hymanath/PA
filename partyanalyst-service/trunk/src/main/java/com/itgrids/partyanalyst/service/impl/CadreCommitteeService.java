@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrDistrictDetailDAO;
@@ -132,6 +133,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
+import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -155,6 +157,7 @@ import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
@@ -279,10 +282,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private SetterAndGetterUtilService setterAndGetterUtilService;
 	private IActivityLocationInfoDatesDAO activityLocationInfoDatesDAO;
 	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
-	private INominationPostCandidateDAO nominationPostCandidateDAO;
+	private INominationPostCandidateDAO nominationPostCandidateDAO;    
+	private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
 	
 	
 	
+	public ICadreRegUserTabUserDAO getCadreRegUserTabUserDAO() {
+		return cadreRegUserTabUserDAO;
+	}
+
+	public void setCadreRegUserTabUserDAO(
+			ICadreRegUserTabUserDAO cadreRegUserTabUserDAO) {
+		this.cadreRegUserTabUserDAO = cadreRegUserTabUserDAO;
+	}
+
 	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
 		return nominationPostCandidateDAO;
 	}
@@ -19181,6 +19194,29 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 		
 		return finaVoList;
 	}
+ public List<CadreCommitteeVO> getFieldMonitoringMapReportDetails(Long constitunecyId,Long fieldUserId)
+ {
+	List<CadreCommitteeVO> returnList = new ArrayList<CadreCommitteeVO>();
+	try{
+		List<Object[]> reportDetails = cadreRegUserTabUserDAO.getFieldMonitoringMapReportDetails(constitunecyId,fieldUserId);
+		if(reportDetails != null && reportDetails.size() > 0){
+			
+			for (Object[] param : reportDetails) {
+				CadreCommitteeVO vo = new CadreCommitteeVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				returnList.add(vo);
+			}
+		}
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		LOG.error("Exception Occured in getFieldMonitoringMapReportDetails() Method - Exception is : ",e);
+	}
+	return returnList;
+	
+}
 	
  
  

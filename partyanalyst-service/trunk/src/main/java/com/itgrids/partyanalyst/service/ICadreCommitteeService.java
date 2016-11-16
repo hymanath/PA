@@ -179,4 +179,5 @@ public interface ICadreCommitteeService {
 	 public LocationWiseBoothDetailsVO1 getActivityLocationDetailsNew(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId,List<String> datesList);
 	 public List<LocationWiseBoothDetailsVO> getSubLevelForConstituency(Long stateId, List<Long> districtIds, List<Long> constituencyIds, Long locationLevelId);
+	 public List<CadreCommitteeVO> getFieldMonitoringMapReportDetails(Long constitunecyId,Long fieldUserId);
 }
