@@ -3018,6 +3018,32 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
-}//public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option)
+  public String getDistrictsByState(){
+		LOG.info("Entered into getDistrictsByStateWiseAction method in CadreRegistrationAction Action");
+		
+		try{
+			jobj = new JSONObject(getTask());
+			String state = jobj.getString("stateid");
+			Long stateId = null;
+			if(state.equals("AP")){
+				stateId = 1l;
+			}else{
+				stateId = 36l;
+			}
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
+			
+			cadreRegisterInfo = cadreRegistrationService.getDistrictsByState(stateId);
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getDistrictsByStateWiseAction method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+}
+
 
 

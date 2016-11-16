@@ -1051,6 +1051,22 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String get2016LocationWiseRegisteredCountsForConstitunecy()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			String type = jObj.getString("type");
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			String locationType = jObj.getString("locationType");
+			Long districtId = jObj.getLong("districtId");
+			cadreDashboardVOList = cadreDashBoardService.get2016LocationWiseRegisteredCountsForConstitunecy(type, locationScopeId, locationType,districtId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in get2016LocationWiseRegisteredCountsForConstitunecy ",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String get2016LocationWiseRegisteredCounts()
 	{
 		try{
@@ -1067,7 +1083,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
-	
+		
 	public String getDataSourceTypeWiseRegisteredDetails()
 	{
 		try{

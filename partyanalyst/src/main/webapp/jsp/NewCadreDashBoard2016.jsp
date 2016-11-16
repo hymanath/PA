@@ -44,7 +44,6 @@
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
-
 	<!-- YUI Dependency files (End) -->
 </head>
 <style>
@@ -384,8 +383,7 @@ table.dataTable tr.odd {
 		<!----New code for constituency and district wise Start ----->
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> District  Target VS Registered Cadre  
-				
+				<h4 Style="color:green"> DISTRICT  TARGET VS REGISTERED CADRE
 				</h4>
 			
 				<div style="padding:5px;">
@@ -409,10 +407,7 @@ table.dataTable tr.odd {
 			</div>
 			<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency  Target Vs Registered Cadre  
-				
-				
-				</h4>
+				<h4 style="color:green"> CONSTITUENCY  TARGET VS REGISTERED CADRE </h4>
 				
 				<div style="padding:5px;">
 					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="todayconstituencyValue" name="compareD" value="today" checked="true" style="margin-top:0px;"/>
@@ -422,6 +417,7 @@ table.dataTable tr.odd {
 					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> OVER ALL</span>      
 					<button class="btn btn-success btn-xs" id="constExcelExpBtnId" attr_tab_user_type="Tab" >Export To Excel</button>
+					<span style="margin-left: 520px;">FILTER BY:<select id="districtId"></select></span>
 					<div class="btn-group pull-right">  
 						<button type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</inpbuttonut>
 						<button type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</button>
@@ -434,7 +430,46 @@ table.dataTable tr.odd {
 			</div>
 		</div>
 		<!----New code for constituency and district wise End ----->
-		
+ <div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+  <div class="modal-dialog modal-lg" role="document" style="width:85%">
+    <div class="modal-content" style="border-radius:0px">
+      <div class="modal-header" style="background-color:#CCC">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel1">KUPPAM CONSTITUENCY DETAILED REPORT</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row webModal">
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+					<label class="radio-inline">
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="Total" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Over All</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio2" value="Today" style="margin-top: 0px;"><h5 style="margin-top:-1px">Today</h5>      
+					</label>  
+				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">     
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="boothRadio1" value="booth" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Booth Wise</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5 style="margin-top:-1px">Panchayat Wise</h5>
+					</label>
+					<label class="radio-inline">
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5 style="margin-top:-1px">Mandal Wise</h5>
+					</label>
+				</div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<div id="kupamRegDtlsId"></div>
+		  </div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end--> 
 </div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script type="text/javascript" src="newCoreDashBoard/js/bootstrap.min.js"></script>
@@ -547,7 +582,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				$("#ts2016CountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 				$("#ts2016PrecCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');	
 				$("#totalApTgRegisCount").html('');
-			}else if(typeId == 'today'){
+				}else if(typeId == 'today'){
 				$("#todayApTgRegisCount").html('');
 			}
 			
@@ -559,12 +594,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			var jObj = {
 				type:type,
 				locationScopeId:locationScopeId,
-				locationType:locationType
+				locationType:locationType,
+				districtId:0
 				
 			}
 			$.ajax({
 			  type:'GET',
-			  url: 'get2016LocationWiseRegisteredCountsAction.action',
+			  url: 'get2016LocationWiseRegisteredCountsForConstitunencyAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
 				if(result !=null && result.length >0){
@@ -902,6 +938,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	
 	function get2016LocationWiseRegisteredCountsConstituencyWise(type,locationScope,locationType){
 		setcolorsForStatus();
+		getDistricts(locationType);
 		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
@@ -910,12 +947,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			var jObj = {
 				type:type,
 				locationScopeId:locationScopeId,
-				locationType:locationType
+				locationType:locationType,
+				districtId:0
 				
 			}
 			$.ajax({
 			  type:'GET',
-			  url: 'get2016LocationWiseRegisteredCountsAction.action',
+			  url: 'get2016LocationWiseRegisteredCountsForConstitunencyAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
 				$("#constituencyWise2016Details").html('');
@@ -923,7 +961,31 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					
 		 });
 	}
-	
+	function get2016LocationWiseRegisteredCountsConstituencyWiseForOnChange(type,locationScope,locationType,districtId){
+		setcolorsForStatus();
+		getDistricts(locationType);
+		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+				var type = type;
+				var locationScopeId = locationScope;
+				var locationType =locationType;
+				
+			var jObj = {
+				type:type,
+				locationScopeId:locationScopeId,
+				locationType:locationType,
+				districtId:districtId
+				
+			}
+			$.ajax({
+			  type:'GET',
+			  url: 'get2016LocationWiseRegisteredCountsForConstitunencyAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+            }).done(function(result){
+				$("#constituencyWise2016Details").html('');
+			build2016LocationWiseRegisteredCountsConstituencyWise(result,type);
+					
+		 });
+	}
 	function get2016LocationWiseRegisteredCountsDistrictWise(type,locationScope,locationType){
 		setcolorsForStatus();
 		$("#districtWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -934,12 +996,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			var jObj = {
 				type:type,
 				locationScopeId:locationScopeId,
-				locationType:locationType
+				locationType:locationType,
+				districtId:0
 				
 			}
 			$.ajax({
 			  type:'GET',
-			  url: 'get2016LocationWiseRegisteredCountsAction.action',
+			  url: 'get2016LocationWiseRegisteredCountsForConstitunencyAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
 				$("#districtWise2016Details").html('');
@@ -978,17 +1041,17 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			
 			str+='<table class="table table-bordered " id="districtWise2016DataTableId">';
 				str+='<thead>';
-					str+='<th>District Id</th>';   
-					str+='<th>District</th>';
-					str+='<th>Target Cadres</th>';
-					str+='<th>Renewal</th>';
-					str+='<th>New</th>';
-					str+='<th>Man Power</th>';  
-					str+='<th>Total Count</th>';
+					str+='<th>DISTRICT ID</th>';   
+					str+='<th>DISTRICT</th>';
+					str+='<th>TARGET</th>';
+					str+='<th>RENEWAL</th>';
+					str+='<th>NEW</th>';
+					str+='<th>MAN PAWER</th>';  
+					str+='<th>TOTAL REGISTRATIONS</th>';
 					if(type == "total"){
-						str+='<th>Today Count</th>';
+						str+='<th>TODAY REGISTRATIONS</th>';
 					}
-					str+='<th>% of Register cadres</th>';
+					str+='<th>REG.%</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
@@ -1090,24 +1153,26 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			}
 			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
 				str+='<thead>';
-					str+='<th>Constituency No</th>';
-					str+='<th>Constituency</th>';  
+					str+='<th>AC_No</th>';
+					str+='<th>DISTRICT</th>';
+					str+='<th>CONSTITUENCY</th>';  
 					
-					str+='<th>Target Cadres</th>';
-					str+='<th>Renewal</th>';
-					str+='<th>New</th>';
-					str+='<th>Man Power</th>';    
-					str+='<th>Total Count</th>';
+					str+='<th>TARGET</th>';
+					str+='<th>RENEWAL</th>';
+					str+='<th>NEW</th>';
+					str+='<th>MAN POWER</th>';    
+					str+='<th>TOTAL REGISTRATIONS</th>';
 					if(type == "total"){
-						str+='<th>Today Count</th>';    
+						str+='<th>TODAY REGISTRATIONS</th>';    
 					}
-					str+='<th>% of Register cadres</th>';    
+					str+='<th>REG.%</th>';    
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-					str+='<td>'+result[i].no+'</td>';           
-					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].no+'</td>';    
+					str+='<td>'+result[i].districtname+'</td>';
+					str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
 					
 					str+='<td>'+result[i].targetCount+'</td>';
 					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
@@ -1174,7 +1239,166 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 		});
 	}
-	
+function getDistricts(locationType){
+     var jsObj=
+		{				
+				stateid:locationType,			
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsForCadreAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result.length > 0){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#districtId").html(str);   
+	   }
+   });
+  }
+$(document).on('change',"#districtId",function(){
+   get2016LocationWiseRegisteredCountsConstituencyWiseForOnChange("today",4,"AP",$(this).val());
+});
+$(document).on('click','.scopeRadioCls',function(){
+		var selectionType=$("input:radio[name=selectionType]:checked").val();
+		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var scopeType=$("input:radio[name=scopeType]:checked").val();
+		var constituencyId = $("#hideConstId").val();
+		getRegistrationCountDtls(constituencyId,selectionType,scopeType);    
+	});
+	$(document).on("click",".getDtlsCls",function(){         
+		var constName = $(this).attr("attr_const_name");
+		$("#myModalLabel1").html(constName+" CONSTITUENCY DETAILED REPORT") 
+		$( "#boothRadio1" ).prop( "checked", true );         
+		$("#cadreModal").modal("show");
+		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var constituencyId = $(this).attr("attr_const_id");
+		$("#hideConstId").attr("value",constituencyId);
+		var selectionType = "booth";    
+		var scopeType = $("input:radio[name=compareC]:checked").val();
+		if(scopeType == "Today"){
+			$( "#inlineRadio2" ).prop( "checked", true );
+		}else{
+			$( "#inlineRadio1" ).prop( "checked", true );          
+			         
+		}
+		getRegistrationCountDtls(constituencyId,selectionType,scopeType);
+	});
+	function getRegistrationCountDtls(constituencyId,selectionType,scopeType){
+		var jObj = {
+			constituencyId : constituencyId,
+			scope : scopeType,        
+			location : selectionType    
+		}
+		$.ajax({
+			type:'GET',
+			url: 'get2016LocationWiseRegisterationDtls.action',    
+			data : {task:JSON.stringify(jObj)}
+		}).done(function(result){ 
+			$("#kupamRegDtlsId").html("");
+			if(result != null && result.length > 0){
+				buildRegistrationCountDtls(result,selectionType,scopeType);
+			}      
+		});      
+	}
+	function buildRegistrationCountDtls(result,location,scope){    
+		var str = '';  
+		str+='<div class="table-responsive m_top20">';
+          str+='<table class="table table-bordered" id="regCadreCountTableId">';
+            str+='<thead class="text-capital text-center">';
+              str+='<tr>';
+                str+='<th rowspan="2">MANDAL</th>';
+				if(location == "panchayat"){
+					str+='<th rowspan="2">PANCHAYAT</th>';
+				}
+                if(location == "booth"){
+					str+='<th rowspan="2">PANCHAYAT</th>';
+					str+='<th rowspan="2">MUNICIPALITY</th>';
+					str+='<th rowspan="2">BOOTH NO</th>';
+				}
+                str+='<th rowspan="2">TOTAL VOTERS</th>';
+                str+='<th rowspan="2">2014 TOTAL CADRE</th>';
+				if(scope == "today"){
+					str+='<th colspan="6" class="text-capital text-center">2016 CADRE</th>';
+				}else{
+					str+='<th colspan="5" class="text-capital text-center">2016 CADRE</th>';
+				}
+                    
+              str+='</tr>';     
+              str+='<tr>';
+				str+='<th>RENEWAL CADRE 2016</th>';
+                str+='<th>RENEWAL CADRE PERCENT(%)</th>';
+                str+='<th>TOTAL CADRE 2016</th>';
+				if(scope == "today"){
+					str+='<th>TOTAL CADRE ON TODAY</th>'; 
+				}
+                
+                str+='<th>NEW CADRE</th>';
+                str+='<th>NEW CADRE PERCENT(%)</th>';
+              str+='</tr>';
+            str+='</thead>';
+			for(var i in result){  
+				str+='<tr>';
+				if(result[i].mandalName == null || result[i].mandalName.trim().length < 1){
+					str+='<td>-</td> ';
+				}else{
+					str+='<td>'+result[i].mandalName+'</td> ';
+				}
+				
+				
+				if(location == "panchayat"){
+					str+='<td>'+result[i].panchayatName+'</td>';
+				}
+				
+				if(location == "booth"){
+					if(result[i].panchayatName == null || result[i].panchayatName.trim().length < 1){
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[i].panchayatName+'</td> ';
+					}
+					
+					if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
+						str+='<td>-</td> ';
+					}else{
+						str+='<td>'+result[i].localElectionBody+'</td> ';
+					}
+					
+					str+='<td>'+result[i].boothName+'</td>';   
+				}
+				
+			   str+='<td>'+result[i].totalVoter+'</td>';  
+			   str+='<td>'+result[i].cadreCount2014+'</td>';
+			   str+='<td>'+result[i].renewalCount+'</td>';
+			   if(result[i].cadreCount2014 > 0){
+				   var precent = (result[i].renewalCount*(100/result[i].cadreCount2014)).toFixed(0);
+				   str+='<td>'+precent+'</td>';
+			   }else{
+				   str+='<td>0</td>';
+			   }
+			   str+='<td>'+result[i].cadreCount2016OverAll+'</td>';
+			   if(scope == "today"){
+					str+='<td>'+result[i].cadreCount2016Today+'</td>';  
+			   }			  
+            
+              
+              str+='<td>'+result[i].newCount+'</td>'; 
+			  if(result[i].cadreCount2016OverAll > 0){    
+				  var precent = (result[i].newCount*(100/result[i].cadreCount2016OverAll)).toFixed(0);   
+				  str+='<td>'+precent+'</td>';     
+			  }else{
+				  str+='<td>0</td>';    
+			  }
+              
+			  str+='</tr>';
+			}
+          str+='</table>';
+        str+='</div>';
+		$("#kupamRegDtlsId").html(str);  
+		$("#regCadreCountTableId").dataTable();
+	}
 </script>
 <script>
 	$(document).on("click","#constExcelExpBtnId",function(){
