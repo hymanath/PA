@@ -162,7 +162,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						     }
 					   }
 				   }
-			    //calculation overAll percentage
+			        //calculation overAll percentage
 					if(LeaderMemebersMap != null && LeaderMemebersMap.size() > 0){
 					     ToursBasicVO overAllDtlsVO = new ToursBasicVO();
 						for(Entry<Long,ToursBasicVO> entry:LeaderMemebersMap.entrySet()){
@@ -1153,6 +1153,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
    public ToursBasicVO getLeaderAverageToursBasedOnAccessLevel(Long candidateId,Long stateId,String fromDateStr,String toDateStr){
 	   ToursBasicVO resultVO = new ToursBasicVO();
 	   Set<Long> locationValues = new HashSet<Long>();
+	   Map<Long,ToursBasicVO> toursDtlsMap = new LinkedHashMap<Long, ToursBasicVO>();
 	   Long locationAccessLevelId =0l;
 	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   Date fromDate=null;
@@ -1169,12 +1170,39 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-			 List<Object[]> rtrnObjList = null;
 			 if(locationAccessLevelId > 0l && locationValues != null && locationValues.size() > 0){
-				 rtrnObjList = selfAppraisalCandidateDetailsDAO.getToursVisitedDetailsByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);	 
+				 List<Object[]> rtrnSbmtdTurCnddateCntObjList = selfAppraisalCandidateDetailsDAO.getToursSubmittedCnddteAndNoOfToursCntByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);	 
+				 setToursDtlsToVO(rtrnSbmtdTurCnddateCntObjList,toursDtlsMap);
 			 }
-			List<ToursBasicVO> locationDtlsLst = new ArrayList<ToursBasicVO>();
-			setToursDtlsToVO(rtrnObjList,locationDtlsLst);
+			 if(locationAccessLevelId > 0l && locationValues != null && locationValues.size() > 0){
+				 List<Object[]> rtrnOwnTurObjLst = selfAppraisalCandidateDetailsDAO.getOwnToursCntByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);	 
+				 if(rtrnOwnTurObjLst != null && rtrnOwnTurObjLst.size() > 0){
+					 for(Object[] param:rtrnOwnTurObjLst){
+						 if(toursDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
+							 toursDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[1])); 
+						 }
+					 }
+				 }
+			 }
+			 if(locationAccessLevelId > 0l && locationValues != null && locationValues.size() > 0){
+				 List<Object[]> rtrnInchargeObjLst = selfAppraisalCandidateDetailsDAO.getInchargeToursCntByUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);	 
+				 if(rtrnInchargeObjLst != null && rtrnInchargeObjLst.size() > 0){
+					 for(Object[] param:rtrnInchargeObjLst){
+						 if(toursDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
+							 toursDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[1])); 
+						 }
+					 }
+				 }
+			 }
+			 if(toursDtlsMap != null && toursDtlsMap.size() > 0){
+				 for(Entry<Long,ToursBasicVO> entry:toursDtlsMap.entrySet()){
+					      if(entry.getValue() != null){
+					    	    entry.getValue().setTotalSubmittedToursCnt(entry.getValue().getOwnToursCnt()+entry.getValue().getInchargerToursCnt());
+								Double averageTours = entry.getValue().getTotalSubmittedToursCnt().doubleValue()/entry.getValue().getNoOfDistinctTours().doubleValue();
+								entry.getValue().setAverageTours(averageTours);
+					      }
+				 }
+			 }
 			if(locationAccessLevelId.longValue()==1l){////district 
 				resultVO.setId(locationAccessLevelId);
 				resultVO.setName("DISTRICT WISE AVERAGE TOURS REPORT ");
@@ -1185,8 +1213,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				resultVO.setId(locationAccessLevelId);
 				resultVO.setName("CONSTITUENCY WISE AVERAGE TOURS REPORT");
 			}
-			   resultVO.getSubList().addAll(locationDtlsLst);
-		    if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
+			  if(toursDtlsMap != null && toursDtlsMap.size() > 0){
+				  resultVO.getSubList().addAll(toursDtlsMap.values());  
+			  }
+			if(resultVO.getSubList() != null && resultVO.getSubList().size() > 0){
 		    	Collections.sort(resultVO.getSubList(), toursPoorPerformanceAscendingPer);
 		    }
 	   }catch(Exception e){
@@ -1194,7 +1224,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	   }
 	   return resultVO;
    }
-   public void setToursDtlsToVO(List<Object[]> objList,List<ToursBasicVO> locationVOList){
+   public void setToursDtlsToVO(List<Object[]> objList,Map<Long,ToursBasicVO> toursDtlsMap){
 		try{
 			if(objList != null && !objList.isEmpty()){
 				for(Object[] param:objList){
@@ -1202,13 +1232,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					locationVO.setSubmitedLeaderCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
-					locationVO.setOwnToursCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
-					locationVO.setInchargerToursCnt(commonMethodsUtilService.getLongValueForObject(param[4]));
-					locationVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[5]));
-					locationVO.setTotalSubmittedToursCnt(locationVO.getOwnToursCnt()+locationVO.getInchargerToursCnt());
-					Double averageTours = locationVO.getTotalSubmittedToursCnt().doubleValue()/locationVO.getNoOfDistinctTours().doubleValue();
-					locationVO.setAverageTours(averageTours);
-					locationVOList.add(locationVO);
+					locationVO.setNoOfDistinctTours(commonMethodsUtilService.getLongValueForObject(param[3]));
+					toursDtlsMap.put(locationVO.getId(), locationVO);
 				}
 			}
 		}catch(Exception e){
