@@ -34,8 +34,8 @@ public class ToursBasicVO {
 	private Long noOfLeaderCnt=0l;
 	private Long submitedLeaderCnt=0l;
 	private Long notSubmitedLeaserCnt=0l;
-	private Long ownToursCnt;
-	private Long inchargerToursCnt;
+	private Long ownToursCnt=0l;
+	private Long inchargerToursCnt=0l;
 	private Long totalSubmittedToursCnt=0l;
 	private Double averageTours=0.0d;
 	private String locationScope;
