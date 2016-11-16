@@ -14669,7 +14669,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
-	<action name="getDistrictsForCadreAction" class="cadreRegistrationAction" method="getDistrictsByState" >
+	<action name="showElectronicBulletinsAction" class="coreDashboardAction" method="showElectronicBulletins">
+		<result name="success">/jsp/electronicMediaBulletinsCD.jsp</result>
+	</action>
+		<action name="getDistrictsForCadreAction" class="cadreRegistrationAction" method="getDistrictsByState" >
 			<result type="json" name="success">
 				<param name="root">cadreRegisterInfo</param>
 			</result>                          
