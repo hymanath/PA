@@ -116,4 +116,5 @@ public interface ICadreDashBoardService {
 	 public List<List<CadreDashboardVO>> get2016LocationWiseRegisteredCountsForPreviligedUser(Long userId, String locationType, String type);
 	 public List<RegistrationCountVO> getRegistrationCountDtls(String location, Long constId, String scope);
 	 public List<IdAndNameVO> getCadreRegistrationCountByConstituency(Long constituencyId,String fromDateStr,String toDateStr);
+	 public List<CadreDashboardVO> get2016LocationWiseRegisteredCountsForConstitunecy(String type,Long locationScopeId,String locationType,Long districId);
 }

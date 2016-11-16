@@ -26,8 +26,15 @@ public class CadreDashboardVO {
 	private Long veryPoor;
 	private String levelPerformanceType;
 	private Long mapPowerCount;
+	private String districtname;
 	
 	
+	public String getDistrictname() {
+		return districtname;
+	}
+	public void setDistrictname(String districtname) {
+		this.districtname = districtname;
+	}
 	public Long getId() {
 		return id;
 	}

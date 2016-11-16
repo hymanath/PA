@@ -410,5 +410,30 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		  Query query = getSession().createQuery(queryStr.toString());
 		  return query.list();
 	 }
-	 
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getDistrictForState(Long stateId){
+			
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select model.districtId,model.districtName from District model where ");
+			if(stateId != null && stateId.longValue()==1l){
+				queryStr.append(" model.districtId between 11 and 23 or model.districtId =517 ");
+			}else if(stateId != null && stateId.longValue()==36l){
+				queryStr.append(" model.districtId between 1 and 10 ");
+			}
+			/*if(stateId.longValue() >0L){
+				queryStr.append(" and model.state.stateId =:stateId ");
+			}
+			else
+			{
+				queryStr.append(" and model.state.stateId in (1,36) ");
+			}*/
+			queryStr.append(" order by model.districtName asc ");
+
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			/*if(stateId.longValue() >0L){
+				query.setParameter("stateId", stateId);
+			}*/
+			return query.list();
+		}
 }
