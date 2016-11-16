@@ -281,7 +281,7 @@
                             	<div class="panel-heading">
                                 	<div class="row">
                                     	<div class="col-md-5 col-xs-12 col-sm-12">
-                                        	<h4><span class="headingColor">District Registrations - Target Vs Archieve</span></h4><br>
+                                        	<h4><span class="headingColor">District Registrations - Target Vs Achieved</span></h4><br>
                                         	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
                                         </div>
                                         <div class="col-md-7 col-xs-12 col-sm-12 m_XsTop10">
