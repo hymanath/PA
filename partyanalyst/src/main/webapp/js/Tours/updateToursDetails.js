@@ -159,20 +159,20 @@ $("#toursDateRangePicker").daterangepicker({
 			$("#filer_input3").val('');      
 			$(".selectChosen").trigger("chosen:updated");
 			var filerKit = $("#filer_input3").prop("jFiler");
-			if(uploadResult != null && uploadResult == '<pre>"Saved"</pre>'){
-					setTimeout(function () {
-					$("#successSpanId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
-					}, 500);  
-					$("#successSpanId").show();
-					$("#successSpanId").html(""); 
-					filerKit.reset();
-			}else{
+			//if(uploadResult != null && uploadResult == '<pre>"Saved"</pre>'){
+			setTimeout(function () {
+			$("#successSpanId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+			}, 500);  
+			$("#successSpanId").show();
+			$("#successSpanId").html("");       
+			filerKit.reset();
+			/* }else{
 				setTimeout(function () {      
 					$("#successSpanId").html("<center style='color: red; font-size: 16px;'>Failed</center>").fadeOut(3000);
 					}, 500);  
 					$("#successSpanId").show();
 					$("#successSpanId").html("");          
-			}
+			} */
 				
 	}
 	
@@ -755,7 +755,7 @@ $("#toursDateRangePicker").daterangepicker({
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-			str+='<span id="errFileUploadId" style="color:red;"></span>';   
+			str+='<span id="errFileUploadId" style="color:red;"></span>';     
 		str+='</div>'; 
 		}
 		
@@ -771,11 +771,12 @@ $("#toursDateRangePicker").daterangepicker({
 			str+='<div class="col-md-4 col-md-offset-4">';
 			   str+='<span class="updateTourStatusCls"></span>';  
 				str+='<button class="btn btn-success btn-block" onclick="updatingApplication();" type="button">UPDATE APPLICATION</button>';
-				str+='<span id="updateSpanId"></span>';  
+				str+='<span id="updateSpanId"></span>';
+				str+='<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="updateProcessingImgId"></center></div>';
 			str+='</div>';
-			  str+='<div class="col-md-12 col-sm-12 col-xs-12" id=""></div>';  
+			  str+='<div class="col-md-12 col-sm-12 col-xs-12" id=""></div>';    
 		str+='</div>';
-		str+='<input type="hidden" id="" value="'+result.candDtlsId+'"name="toursInputVO.candidateDtlsId">';          
+		str+='<input type="hidden" id="" value="'+result.candDtlsId+'"name="toursInputVO.candidateDtlsId">';            
 		str+='<input type="hidden" id="fileStatusId" value="1" name="toursInputVO.oldFileStatus">';          
 		str+='</form>';
 		$("#memDtlsUpdateId").html(str);      
@@ -788,6 +789,7 @@ $("#toursDateRangePicker").daterangepicker({
 		initializeFile();     
 	}
 	function updatingApplication(){ 
+	$("#updateProcessingImgId").show();
 	$("#errUpMnthId").html("");
 	$("#errUpYearId").html("");	
 	$(".textErrCls").html(""); 
@@ -859,6 +861,7 @@ $("#toursDateRangePicker").daterangepicker({
 		$("#errFileUploadId").html("");
 	});
 	function showUpdateStatus(uploadResult){
+			$("#updateProcessingImgId").hide();       
 			$(".clearFieldCls").val(' ');
 			$("#updateMonthId").val(0);
 			$("#updateYearId").val(0);    
@@ -866,20 +869,20 @@ $("#toursDateRangePicker").daterangepicker({
 			$(".selectChosen").trigger("chosen:updated");
 			var filerKit = $("#update_TourFileId").prop("jFiler");
 			console.log(uploadResult);    
-			if(uploadResult != null && uploadResult == '<pre>"Updated"</pre>'){
-					setTimeout(function () {
-					$("#updateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
-					}, 500);  
-					$("#updateSpanId").show();
-					$("#updateSpanId").html("");         
-					filerKit.reset();
-			}else{
+			//if(uploadResult != null && uploadResult == '<pre>"Updated"</pre>'){
+			setTimeout(function () {
+			$("#updateSpanId").html("<center style='color: green; font-size: 16px;'>Updated Successfully</center>").fadeOut(3000);
+			}, 500);  
+			$("#updateSpanId").show();
+			$("#updateSpanId").html("");           
+			filerKit.reset();            
+			/* }else{
 				setTimeout(function () {      
 					$("#updateSpanId").html("<center style='color: red; font-size: 16px;'>Failed</center>").fadeOut(3000);
 					}, 500);  
 					$("#updateSpanId").show();
 					$("#updateSpanId").html("");          
-			}
+			} */
 				
 	}
 	
