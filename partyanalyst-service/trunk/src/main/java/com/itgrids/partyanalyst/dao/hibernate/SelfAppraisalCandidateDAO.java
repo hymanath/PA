@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -99,18 +99,6 @@ public class SelfAppraisalCandidateDAO extends GenericDaoHibernate<SelfAppraisal
 	     	         	 " and model.selfAppraisalDesignationId=3  ");
 	     Query query = getSession().createQuery(queryStr.toString());
 	      return query.list();
-   }
-   public List<Long> getCandiateIdList(List<Long> desigIdList){
-	   StringBuilder queryStr = new StringBuilder();
-	   queryStr.append(" select " +
-		           " distinct model.selfAppraisalCandidateId " +
-		           " from SelfAppraisalCandidate model " +
-		           " where " +
-		           " model.isActive='Y' " +
-		           " and model.selfAppraisalDesignation.selfAppraisalDesignationId in (:desigIdList) ");
-	   Query query = getSession().createQuery(queryStr.toString());
-	   query.setParameterList("desigIdList", desigIdList);  
-	   return query.list();
    }
    public List<Object[]> getTotalLeaderDesignationWise(List<Long> designationIds){
 		StringBuilder queryStr = new StringBuilder();
