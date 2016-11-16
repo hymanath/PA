@@ -3129,4 +3129,7 @@ public String getTourSubmittedLeadersDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String showElectronicBulletins(){
+	return "success";
+}
 }
