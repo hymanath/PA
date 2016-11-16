@@ -560,8 +560,8 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 						" from SelfAppraisalCandidateDetails SACD where " +
 						" date(SACD.tourDate) between :fromDate and :toDate " +
 						" and SACD.selfAppraisalCandidate.selfAppraisalCandidateId in (:CandidateIds) ");
-		queryStr.append(" group by SACD.selfAppraisalCandidate.selfAppraisalDesignationId");   
-		Query query = getSession().createQuery(queryStr.toString());  
+		queryStr.append(" group by SACD.selfAppraisalCandidate.selfAppraisalCandidateId");   
+		Query query = getSession().createQuery(queryStr.toString());    
         if(startDate != null && endDate != null ){
         	query.setDate("fromDate", startDate);
         	query.setDate("toDate", endDate);
@@ -750,7 +750,7 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 		 		 }
 		 		 return query.list();
 	   }
-	  public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate,Long userAccessLevelId,Set<Long> userAccessLevelValues){
+	  public Long geTtotalUniqueTour(List<Long> candidateIds,Date fromDate,Date toDate){
 		  StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select count(distinct model.selfAppraisalCandidateDetailsId) from SelfAppraisalCandidateDetails model where" +
 		  				  " model.selfAppraisalCandidate.selfAppraisalCandidateId in (:candidateIds) " +  
