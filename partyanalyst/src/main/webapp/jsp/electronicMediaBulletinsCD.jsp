@@ -187,8 +187,8 @@ $(document).ready(function(){
 									if(result[i].description == null || result[i].description == 0){
 										str+='<p> - </p>';
 									}else{
-										if(result.description !=null && result[0].description.length>450){
-											str+='<h4 class="modal-title" style="cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="'+result[i].description+'">'+result[i].description.substring(0,450)+'...</h4>';
+										if(result[i].description !=null && result[i].description.length>160){
+											str+='<h4 class="modal-title" style="cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="'+result[i].description+'">'+result[i].description.substring(160)+'...</h4>';
 										}else{
 											str+='<h4 class="modal-title">'+result[i].description+'</h4>';
 										}
@@ -458,6 +458,8 @@ $(document).ready(function(){
 			}
 		
 		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html(str);
+		$('[data-toggle="tooltip"]').tooltip();
+		
 	 }
 	}
 				
