@@ -827,8 +827,9 @@ public String getConstituencyByVendor(){
 			
 			String type = jObj.getString("type");
 			Long stateId = jObj.getLong("stateId");
+			String sortType = jObj.getString("sortType");
 			
-			idAndNameVOList = fieldMonitoringService.getConstituencyWiseTodayAndOverAllCounts(type,stateId);
+			idAndNameVOList = fieldMonitoringService.getConstituencyWiseTodayAndOverAllCounts(type,stateId,sortType);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getConstituencyWiseTodayAndOverAllCounts()  of FieldMonitoringAction", e);
 		}
@@ -884,8 +885,9 @@ public String getConstituencyByVendor(){
 			
 			String type = jObj.getString("type");
 			Long stateId = jObj.getLong("stateId");
+			String sortType = jObj.getString("sortType");
 			
-			idAndNameVOList = fieldMonitoringService.getDistrictWiseTodayAndOverAllCounts(type,stateId);
+			idAndNameVOList = fieldMonitoringService.getDistrictWiseTodayAndOverAllCounts(type,stateId,sortType);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseTodayAndOverAllCounts()  of FieldMonitoringAction", e);
 		}
