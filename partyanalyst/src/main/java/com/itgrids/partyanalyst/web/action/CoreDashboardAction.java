@@ -2899,7 +2899,7 @@ public String registrationsSuccess(){
 			if(AuthDesc != null){
 				if(!AuthDesc.trim().equalsIgnoreCase("Y"))
 					status="failure";
-				else if(AuthDesc.trim().equalsIgnoreCase("Y") && resultStatus != null && resultStatus.getResultCode()==0)
+				else if(AuthDesc.trim().equalsIgnoreCase("Y"))// && resultStatus != null && resultStatus.getResultCode()==0)
 					status="success";
 				else
 					status="failure";
