@@ -174,10 +174,14 @@ $(document).ready(function(){
 				str+='<div class="row deleteRow">';
 			}
 			str+='<div class="col-md-4 col-xs-12 col-sm-6 m_top10">';
-				str+='<span class="panelHeading pad_5 "><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].channelName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>&nbsp; '+result[i].channelName+'</span>';
-				str+='<div class="panel panel-default panelEMNPopup" style="margin-top:5px">';
+				str+='<span class="panelHeading pad_5 "><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/'+result[i].channelName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>&nbsp; '+result[i].channelName+'</span>';
+				str+='<div class="panel panel-default panelEMNPopup" >';
 					str+='<div class="panel-heading">';
+					if(result[i].title !=null && result[i].title.length >30){
+						str+='<h4 class="panel-title" style="cursor:pointer;font-size: 16px;" data-toggle="tooltip" data-placement="bottom" title="'+result[i].title+'">'+result[i].title.substring(0,30)+'...</h4>';
+					}else{
 						str+='<h4 class="panel-title">'+result[i].title+'</h4>';
+					}
 					str+='</div>';
 					str+='<div class="panel-body">';
 						str+='<div class="row">';
@@ -187,16 +191,17 @@ $(document).ready(function(){
 									if(result[i].description == null || result[i].description == 0){
 										str+='<p> - </p>';
 									}else{
-										if(result[i].description !=null && result[i].description.length>160){
-											str+='<h4 class="modal-title" style="cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="'+result[i].description+'">'+result[i].description.substring(160)+'...</h4>';
+										if(result[i].description !=null && result[i].description.length >120){
+											str+='<span class="modal-title" style="cursor:pointer;font-size: 16px;" data-toggle="tooltip" data-placement="bottom" title="'+result[i].description+'">'+result[i].description.substring(0,120)+'...</span>';
 										}else{
-											str+='<h4 class="modal-title">'+result[i].description+'</h4>';
+											str+='<span class="modal-title" style="font-size: 16px;">'+result[i].description+'</span>';
 										}
 									}
 									
 							str+='</div>';
+							str+='<span class="arrowChange pull-right" style="border:none;color:#fff;top:0px;"><i class="glyphicon glyphicon-plus bulletinDetailsCls " attr_id="'+i+'" style="margin-right: 13px; border: 1px solid black; padding: 5px; margin-top: -5px;cursor:pointer;"/>';
 						str+='</div>';
-						str+='<div class="m_top10">';
+						str+='<div class="m_top10" style="display:none;" id="showFromToBlockDiv'+i+'">';
 							str+='<div>';
 								if(result[i].candidates != null && result[i].candidates.length > 0){
 									str+='<label class="font_fff m_top10" >From Whom</label>';
@@ -213,7 +218,7 @@ $(document).ready(function(){
 														if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == 0){
 															str+='&nbsp;&nbsp; - ';
 														}else{
-															str+='<p class="bg_ff color333 pad_5">&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'</p>';
+															str+='<p class="bg_ff color333 pad_5">&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].benefit+' | '+result[i].candidates[j].fromList[k].candidateName+'</p>';
 														}
 														
 													}
@@ -224,7 +229,7 @@ $(document).ready(function(){
 														str+='&nbsp;&nbsp; - ';
 													}else{
 														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'';
+														str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].benefit+' | '+result[i].candidates[j].fromList[k].candidateName+'';
 													}
 													
 												}
@@ -256,7 +261,7 @@ $(document).ready(function(){
 														if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName ==0){
 															str+='&nbsp;&nbsp; - </span>';
 														}else{
-															str+='<p class="bg_ff color333">&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+'</p>';
+															str+='<p class="bg_ff color333">&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+' | '+result[i].candidates[j].toList[k].benefit+' | '+result[i].candidates[j].toList[k].candidateName+'</p>';
 														}
 														
 													}
@@ -268,7 +273,7 @@ $(document).ready(function(){
 														str+='&nbsp;&nbsp; - </span>';
 													}else{
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].toList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+'</span>';
+														str+='&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+' | '+result[i].candidates[j].toList[k].benefit+' | '+result[i].candidates[j].toList[k].candidateName+'</span>';
 													}
 													
 												}
@@ -289,9 +294,9 @@ $(document).ready(function(){
 									}
 								}else{
 									str+='<label class="font_fff m_top10" >From Whom</label><br/>';
-									str+='No Data Availabel';
+									str+='No Data Availabel<br/>';
 									str+='<label class="font_fff m_top10" >To Whom</label><br/>';
-									str+='No Data Availabel';
+									str+='No Data Availabel<br/>';
 									
 								}
 								
@@ -462,7 +467,13 @@ $(document).ready(function(){
 		
 	 }
 	}
-				
+	$(document).on("click",".bulletinDetailsCls",function(){
+		var id= $(this).attr("attr_id");
+		$("#showFromToBlockDiv"+id).toggle();
+		$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+	
+	});
+			
 				
 </script>
 </body>
