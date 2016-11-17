@@ -902,5 +902,8 @@ $("#toursDateRangePicker").daterangepicker({
 			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
-	});  
+	});
+	$(document).on('click','#deleteFileId',function(){
+		$("#showPdfId").hide();  
+	});
 	
