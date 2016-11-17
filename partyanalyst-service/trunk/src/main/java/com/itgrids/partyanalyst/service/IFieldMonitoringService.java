@@ -48,10 +48,10 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getDistrictByStateId(Long stateId, Long stateTypeId);
 	public List<FieldMonitoringVO> getConstituencyIssueWiseOverAllDetails(String fromDateStr,String toDateStr,Long issueTypeId,Long statusTypeId,Long stateId);
 	public List<FieldMonitoringVO> getDataCollectorsConstituencyWiseCount();
-	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId);
+	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
 	public List<IdAndNameVO> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId);
 	public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId,String comment);
 	 public List<IdAndNameVO> getcadrePerformnanceTypeList();
 	 public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId);
-	 public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId);
+	 public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
 }
