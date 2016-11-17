@@ -829,4 +829,84 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	 		return query.list();
 	 		
 	 	}
+	 	public List<Object[]> get2016CadreCntDistWise(List<Long> constituencyIds,Date fromDate,Date toDate,String districtName){
+			
+		       StringBuilder queryStr = new StringBuilder();  
+		        queryStr.append("select ");
+		        
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		    	   queryStr.append(" model1.district.districtId,");  
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		    	   queryStr.append(" model2.districtId,"); 
+		       }
+		        queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
+		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
+							    "  and model1.deformDate is null ");
+		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
+		        }
+		        if(fromDate!= null && toDate!=null){
+			   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+			   }
+			   if(constituencyIds != null && constituencyIds.size() > 0){
+		   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
+		       }
+		       queryStr.append(" and model.locationScopeId=:locationScopeId ");
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		    	   queryStr.append(" group by model1.district.districtId ");  
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		    	   queryStr.append(" group by model2.districtId "); 
+		       }
+		       Query query = getSession().createQuery(queryStr.toString());
+			   if(constituencyIds != null && constituencyIds.size() > 0){
+			    query.setParameterList("constituencyIds", constituencyIds);
+			   }
+			   if(fromDate != null && toDate != null){
+		 			query.setDate("fromDate", fromDate);
+		 			query.setDate("toDate", toDate);
+		 		}
+			   query.setParameter("locationScopeId", 4l);
+		   return query.list();
+	}
+	 	public List<Object[]> get2016RenewalCadreCntDistWise(List<Long> constituencyIds,Date fromDate,Date toDate,String districtName){
+			
+		       StringBuilder queryStr = new StringBuilder();  
+		        queryStr.append("select ");
+		        
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		    	   queryStr.append(" model1.district.districtId,");  
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		    	   queryStr.append(" model2.districtId,"); 
+		       }
+		        queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
+		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
+							    "  and model1.deformDate is null ");
+		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
+		        }
+		        if(fromDate!= null && toDate!=null){
+			   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+			   }
+			   if(constituencyIds != null && constituencyIds.size() > 0){
+		   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
+		       }
+		       queryStr.append(" and model.locationScopeId=:locationScopeId ");
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		    	   queryStr.append(" group by model1.district.districtId ");  
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		    	   queryStr.append(" group by model2.districtId "); 
+		       }
+		       Query query = getSession().createQuery(queryStr.toString());
+			   if(constituencyIds != null && constituencyIds.size() > 0){
+			    query.setParameterList("constituencyIds", constituencyIds);
+			   }
+			   if(fromDate != null && toDate != null){
+		 			query.setDate("fromDate", fromDate);
+		 			query.setDate("toDate", toDate);
+		 		}
+			   query.setParameter("locationScopeId", 4l);
+		   return query.list();
+	}
 }

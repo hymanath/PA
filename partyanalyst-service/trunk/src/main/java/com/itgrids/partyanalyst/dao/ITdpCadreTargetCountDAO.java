@@ -19,5 +19,7 @@ public interface ITdpCadreTargetCountDAO extends GenericDao<TdpCadreTargetCount,
 	public List<Object[]> getTtalCadreTargetCountScopeWiseCount(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId);
 	public List<Object[]> getTtalCadreTargetCountScopeWiseCountSpecial(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long enrollmentYearId);
 	public List<Object[]> getDistrictsTargetCountForTodayAndOverAll(Long stateId);
-	 public List<Object[]> getConstitencysTargetCountForTodayAndOverAll(Long stateId);
+	public List<Object[]> getConstitencysTargetCountForTodayAndOverAll(Long stateId);
+	public List<Object[]> getTtalCadreTargetCntDistWise(Long enrollmentYearId,List<Long> constituencyIds,String districtName);
+	 
 }
