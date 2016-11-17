@@ -1586,7 +1586,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				},
 				plotOptions: {
 					column: {
-						stacking: 'percent',
+						stacking: 'normal',
 						dataLabels: {
 							enabled: true,
 							 formatter: function() {
@@ -1703,13 +1703,23 @@ function getTabUserInfoDetails(tabUserIdStr){
 					text: null
 				},
 				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					categories: candidateNameArray,
 					title: {
 						text: null
-					}
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10);
+							},	
+					 }
 				},
 				yAxis: {
 					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,    
 					title: {
 						text: null,
 						align: 'high'
@@ -1733,7 +1743,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 
 				plotOptions: {
 					column: {
-						stacking: 'percent',
+						stacking: 'normal',      
 						dataLabels: {
 							enabled: true,
 							 formatter: function() {
@@ -4681,20 +4691,3 @@ function buildTabUserComparisonRslt(result){
 	$(document).on("click",".settingCloseCls",function(){  
 		$(".specialCadreDropDown").toggle();    
 	});
-
-/* 	getUserTrackingDtslBySurveyUserId();targetWiseId,2016CadreWiseId
-	function getUserTrackingDtslBySurveyUserId(){
-		var jsObj={  
-			surveyUserId :7792,
-			fromDate :'07-11-2016',
-			toDate :'07-11-2016'
-		};
-		$.ajax({          
-			type : 'POST',       
-			url : 'getUserTrackingDtslBySurveyUserIdAction.action',  
-			dataType : 'json',
-			data : {task :JSON.stringify(jsObj)} 
-		}).done(function(result){
-            console.log(result);
-		});
-	} */
