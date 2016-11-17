@@ -21,6 +21,7 @@ public class CadreBasicVO {
 	
 	private List<CadreBasicVO> subList1;
 	private List<CadreBasicVO> subList2;
+	private List<FieldReportVO> subList3;
 	
 	
 	public String getDeviceUserName() {
@@ -117,5 +118,12 @@ public class CadreBasicVO {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}	
+	}
+	public List<FieldReportVO> getSubList3() {
+		return subList3;
+	}
+	public void setSubList3(List<FieldReportVO> subList3) {
+		this.subList3 = subList3;
+	}
+	
 }
