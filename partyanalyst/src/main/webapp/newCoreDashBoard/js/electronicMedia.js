@@ -209,8 +209,8 @@ $('.dateRangePickerClsForEmn').on('apply.daterangepicker', function(ev, picker) 
 
 function commoncalls(){
 	var searchType = $(".emnMediaPrograms .active").attr("attr_searchType");
-	var type = $('input[name=emnSearchTypeName]:checked').val();
-	
+	//var type = $('input[name=emnSearchTypeName]:checked').val();
+	var type = "program";
 	getMediaProgramsOnParty(locationLevelIdGlb,locationValueArrGlb);
 	getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type);
 }
