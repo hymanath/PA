@@ -221,4 +221,15 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 		}
 		return null;
 	}
+	public List<Object[]> getRegDtlsHourWiseList(Long cadreSurveyUserId,Date surveyDate){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select model.hour,sum(model.regCount) from TdpCadreUserHourRegInfo model where " +
+		 		  " date(model.surveyDate) = :surveyDate " +  
+		 		  " and model.cadreSurveyUserId = :cadreSurveyUserId" +
+		 		  " group by model.hour order by model.hour");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setDate("surveyDate", surveyDate);  
+		 query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		 return query.list();  
+	}
 }
