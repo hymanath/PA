@@ -57,11 +57,11 @@
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel-heading bg_cc">
-							<h4 class="panel-title"><label>Select user</label><span style="color:red"> *</span>
-                    <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
-                    	<option value="0">Select user</option>
-                    </select>
-							<span id="usernameHeading"></span> -USER TRACKING MAP</h4>
+							<h4 class="panel-title">
+							<span id="usernameHeading"></span> -USER TRACKING MAP <label style="margin-left: 430px;">Select user</label><span style="color:red"> *</span>
+							 <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
+                    	    <option value="0">Select user</option>
+                             </select></h4>
 							</div>
 							<div id="map1" style="width: 100%; height: 800px;"></div>
 						</div>
@@ -247,7 +247,6 @@ function displayLocation(result,status){
 	  
 	  getFieldMonitoringMapReportDetails();
 function getFieldMonitoringMapReportDetails(){
-	//var constitunecyId =$("#").val();
 	var userName = "${param.username}";
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
@@ -279,7 +278,7 @@ function showMapDetails(value){
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value ;
-						var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
+	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
 	
 }
 </script>
