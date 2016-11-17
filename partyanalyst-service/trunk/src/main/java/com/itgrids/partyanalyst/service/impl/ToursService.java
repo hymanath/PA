@@ -220,82 +220,78 @@ public class ToursService implements IToursService {
 	}
 	public String saveUploadFile(Map<File,String> mapfiles){
 		try{
+			
 			String destPath = new String();
+			String localPath = new String();
 			StringBuilder returnPath = new StringBuilder();
 			String folderName = folderCreation();
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(new Date());
 			int year = calendar.get(Calendar.YEAR);
 			int month = calendar.get(Calendar.MONTH);
-
-			int temp = month+1;
-			String monthText = getMonthForInt(temp);
 			
-			StringBuilder pathBuilder = null;
-			StringBuilder str ;
+			StringBuilder folderStr = new StringBuilder();
+			int temp = month+1;
+			String yr = String.valueOf(year); // YEAR YYYY
+			String monthText = getMonthForInt(temp);
+			folderStr.append(monthText).append(yr); 
+			String mnthYr = folderStr.toString();//November-2016
+			
+			calendar.setTime(new DateUtilService().getCurrentDateAndTime());  
 			int i = 0;
 			for (Map.Entry<File, String> entry : mapfiles.entrySet()){
-				pathBuilder = new StringBuilder();
-				str = new StringBuilder();
 				Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-				destPath = folderName+"\\"+randomNumber+"."+entry.getValue();           
-				pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".").append(entry.getValue());
+				//DB path    
+				destPath = mnthYr+"/"+randomNumber+"."+entry.getValue();
+				//local sys path
+				localPath = folderName+"/"+randomNumber+"."+entry.getValue();  
 				if(i == 0){
-					returnPath.append(destPath);
+					returnPath.append(destPath);      
 				}else{
-					returnPath.append(","+destPath);
+					returnPath.append(","+destPath);  
 				}
 				i++;
-				str.append(randomNumber).append(".").append(entry.getValue());
-				ActivityService activityService = new ActivityService();  
-				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+				ActivityService activityService = new ActivityService(); 
+				//saving the file here...
+				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),localPath);
 				 
 				if(fileCpyStts.equalsIgnoreCase("error")){
 					LOG.error(" Exception Raise in copying file");  
 						throw new ArithmeticException();
 				}
 			}  
-			return returnPath.toString(); 
+			return returnPath.toString();   
 		}catch(Exception e){
 			e.printStackTrace();  
 		}
 		return null;
 	}
-	public static String folderCreation(){
+	
+	
+	public static String folderCreation()
+	{
 		try {
 			LOG.debug(" in FolderForArticle ");
 	  		
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(new Date());
+			calendar.setTime(new DateUtilService().getCurrentDateAndTime());  
 			int year = calendar.get(Calendar.YEAR);
 			int month = calendar.get(Calendar.MONTH);
 			
-			String staticPath = IConstants.TOUR_DOCUMENTS;
-			String tourDir = ActivityService.createFolder("E:/"+staticPath);  
-			tourDir = ActivityService.createFolder("E:/"+staticPath+"/"+IConstants.TOUR_DOCUMENTS);
-			 
-			String yr = String.valueOf(year); // YEAR YYYY
+			String targetDirpath = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports/"+IConstants.TOUR_DOCUMENTS+"/"+getMonthForInt(month+1)+year;
 			
-			StringBuilder str = new StringBuilder();
-			int temp = month+1;
-			String monthText = getMonthForInt(temp);
-			str.append(monthText).append("-").append(yr);  
-			 
-			 
-			String mnthYr = str.toString();
-			String mnthYrDir = staticPath+"/"+IConstants.TOUR_DOCUMENTS+"/"+mnthYr;
-			String mnthDirSts = ActivityService.createFolder("E:/"+mnthYrDir);      
-			if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
-				return "FAILED";
-			}
-			 
-			return "E:\\"+staticPath+"\\"+IConstants.TOUR_DOCUMENTS+"\\"+mnthYr;  
+			File requriredDir = new File(targetDirpath);
+			
+			if(!requriredDir.exists())
+				requriredDir.mkdirs();
+			
+			return requriredDir.getAbsolutePath();
 			 
 		} catch (Exception e) {
 			LOG.error(" Failed to Create");  
 			return "FAILED";
 		}
 	}
+	
 	public static String getMonthForInt(int num) {    
 		String month = "";
 		DateFormatSymbols dfs = new DateFormatSymbols();
