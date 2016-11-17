@@ -210,26 +210,23 @@ $(document).ready(function(){
 											for(var k in result[i].candidates[j].fromList){
 												str+='<div class="pad_5 bg_ff color333 m_top10" >';
 												if(result[i].candidates[j].fromList[k].organizationTypeId == 2){
-													if(result[i].candidates[j].fromList[k].organizationTypeId == null || result[i].candidates[j].fromList[k].organizationTypeId ==0){
-														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp; - ';
-													}else{
+													
 														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationTypeId+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == 0){
+														if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
 															str+='&nbsp;&nbsp; - ';
 														}else{
-															str+='<p class="bg_ff color333 pad_5">&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].benefit+' | '+result[i].candidates[j].fromList[k].candidateName+'</p>';
+															str+='<p class="bg_ff color333 pad_5">&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].candidateName+' | '+result[i].candidates[j].fromList[k].benefit+' </p>';
 														}
 														
-													}
+													
 													
 												}else{
-													if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == 0){
+													if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
 														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
 														str+='&nbsp;&nbsp; - ';
 													}else{
 														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].benefit+' | '+result[i].candidates[j].fromList[k].candidateName+'';
+														str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].candidateName+' | '+result[i].candidates[j].fromList[k].benefit+' ';
 													}
 													
 												}
@@ -253,27 +250,24 @@ $(document).ready(function(){
 											for(var k in result[i].candidates[j].toList){
 												str+='<div class="pad_5 bg_ff color333 m_top10" >';
 												if(result[i].candidates[j].toList[k].organizationTypeId == 2){
-													if(result[i].candidates[j].toList[k].organizationTypeId == null || result[i].candidates[j].toList[k].organizationTypeId == 0){
-														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp; - </span>';
-													}else{
+													
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].toList[k].organizationTypeId+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName ==0){
+														if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName ==""){
 															str+='&nbsp;&nbsp; - </span>';
 														}else{
-															str+='<p class="bg_ff color333">&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+' | '+result[i].candidates[j].toList[k].benefit+' | '+result[i].candidates[j].toList[k].candidateName+'</p>';
+															str+='<p class="bg_ff color333">&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+' | '+result[i].candidates[j].toList[k].candidateName+' | '+result[i].candidates[j].toList[k].benefit+' </p>';
 														}
 														
-													}
+													
 													
 													
 												}else{
-													if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName == 0){
+													if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName == ""){
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
 														str+='&nbsp;&nbsp; - </span>';
 													}else{
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].toList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+' | '+result[i].candidates[j].toList[k].benefit+' | '+result[i].candidates[j].toList[k].candidateName+'</span>';
+														str+='&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+'  | '+result[i].candidates[j].toList[k].candidateName+' | '+result[i].candidates[j].toList[k].benefit+'</span>';
 													}
 													
 												}
