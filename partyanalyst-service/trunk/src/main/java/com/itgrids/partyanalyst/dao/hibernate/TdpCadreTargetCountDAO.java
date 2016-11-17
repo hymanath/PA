@@ -441,4 +441,40 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 	Query query = getSession().createQuery(sb.toString());
 	return query.list();
 }
+   public List<Object[]> getTtalCadreTargetCntDistWise(Long enrollmentYearId,List<Long> constituencyIds,String districtName){
+		
+		       StringBuilder queryStr = new StringBuilder();  
+		        queryStr.append("select ");
+		        
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		    	   queryStr.append(" model1.district.districtId,");  
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		    	   queryStr.append(" model2.districtId,"); 
+		       }
+		        queryStr.append(" sum(model.targetCount) from TdpCadreTargetCount model ");
+		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
+							    "  and model1.deformDate is null ");
+		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
+		        }
+				queryStr.append(" and model.enrollmentYear.enrollmentYearId=:enrollmentYearId and model.isDeleted='N' ");
+		       
+			  if(constituencyIds != null && constituencyIds.size() > 0){
+		   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
+		       }
+		       queryStr.append(" and model.locationScopeId=:locationScopeId ");
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		    	   queryStr.append(" group by model1.district.districtId ");  
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		    	   queryStr.append(" group by model2.districtId "); 
+		       }
+		       Query query = getSession().createQuery(queryStr.toString());
+		       query.setParameter("enrollmentYearId", enrollmentYearId);
+			   if(constituencyIds != null && constituencyIds.size() > 0){
+			    query.setParameterList("constituencyIds", constituencyIds);
+			   }
+			   query.setParameter("locationScopeId", 4l);
+		   return query.list();
+	}
 }

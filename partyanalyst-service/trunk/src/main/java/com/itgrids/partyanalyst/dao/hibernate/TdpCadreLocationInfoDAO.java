@@ -30,7 +30,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
     	Query query = getSession().createSQLQuery(" ALTER TABLE tdp_cadre_location_info AUTO_INCREMENT = 1 ");
     	return query.executeUpdate();
     }
-    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue){
+    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue){ //santos
 		
 	      StringBuilder queryStr = new StringBuilder();  
 	       
@@ -962,4 +962,37 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		query.setMaxResults(20);
 		return query.list();
 	}
+	public List<Object[]> get2014CadreDistWise(List<Long> constituencyIds,String districtName){
+		
+	       StringBuilder queryStr = new StringBuilder();  
+	        queryStr.append("select ");
+	        
+	       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+	    	   queryStr.append(" model1.district.districtId,");  
+	       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+	    	   queryStr.append(" model2.districtId,"); 
+	       }
+	        queryStr.append(" sum(model.cadre2014) from TdpCadreLocationInfo model ");
+	        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+	         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
+						    "  and model1.deformDate is null ");
+	        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+	        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
+	        }
+		  if(constituencyIds != null && constituencyIds.size() > 0){
+	   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
+	       }
+	       queryStr.append(" and model.locationScopeId=:locationScopeId ");
+	       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+	    	   queryStr.append(" group by model1.district.districtId ");  
+	       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+	    	   queryStr.append(" group by model2.districtId "); 
+	       }
+	       Query query = getSession().createQuery(queryStr.toString());
+		   if(constituencyIds != null && constituencyIds.size() > 0){
+		    query.setParameterList("constituencyIds", constituencyIds);
+		   }
+		   query.setParameter("locationScopeId", 4l);
+	   return query.list();
+}
 }

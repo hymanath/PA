@@ -1662,12 +1662,12 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
 	 Map<Long,Long> cadreTarget2016Map = new HashMap<Long, Long>();
-	 Map<Long,CadreReportVO> locationWiseCadreDetaislMap = new HashMap<Long, CadreReportVO>();
+	 Map<Long,CadreReportVO> locationWiseCadreDetaislMap = new HashMap<Long, CadreReportVO>(0);
+	 Map<Long,CadreReportVO> adilabadAndMancherialDistMap = new HashMap<Long, CadreReportVO>(0);
 	 Map<Long,String> locationIdAndNameMap = new HashMap<Long, String>();
 	 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	 Date toDate=null;
 	 Date fromDate=null;
-	 
 	 
 	 try{
 		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
@@ -1675,10 +1675,53 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 			 fromDate = sdf.parse(fromDateStr);
 		 }
 		 if(locationType != null && locationType.equalsIgnoreCase("District")){
+			 
+			    List<Long> adilabadCnsttuencesIds = new ArrayList<Long>(){{add(1l);add(3l);add(5l);add(6l);add(7l);}};
+			    List<Long> mancherialDstrctCnsttuncesIds = new ArrayList<Long>(){{add(2l);add(4l);add(8l);add(296l);add(295l);}};
+			    Map<Long,Long> adlbdAndMnchrlDst2014TrtMap = new HashMap<Long, Long>();
+			    Map<Long,Long> adlbdAndMnchrlDst2016TrtMap = new HashMap<Long, Long>();
+			    Map<Long,String> adlbdAndMnchrlDstrctIdAndNameMap = new HashMap<Long, String>();
+			    /* calculating Adilabad and Mancherial Ts district Details start */
+			    List<Object[]> rtrnDistOblLst = districtDAO.getSpecificDistrictIdAndName();
+			    setRequiredLocationName(rtrnDistOblLst,adlbdAndMnchrlDstrctIdAndNameMap);
+			    
+			    List<Object[]> rtrn2014AdlbdDistTrtOblLst = tdpCadreTargetCountDAO.getTtalCadreTargetCntDistWise(3l, adilabadCnsttuencesIds,"Adilabad");
+			    setCadreTargetCntToMap(rtrn2014AdlbdDistTrtOblLst,adlbdAndMnchrlDst2014TrtMap);
+			    
+			    List<Object[]> rtrn2016AdlbdDistTrtOblLst = tdpCadreTargetCountDAO.getTtalCadreTargetCntDistWise(4l, adilabadCnsttuencesIds,"Adilabad");
+			    setCadreTargetCntToMap(rtrn2016AdlbdDistTrtOblLst,adlbdAndMnchrlDst2016TrtMap);
+			    
+			    List<Object[]> rtrn2014MnchrlDistTrtOblLst = tdpCadreTargetCountDAO.getTtalCadreTargetCntDistWise(3l, mancherialDstrctCnsttuncesIds,"Mancherial");
+			    setCadreTargetCntToMap(rtrn2014MnchrlDistTrtOblLst,adlbdAndMnchrlDst2014TrtMap);
+			    
+			    List<Object[]> rtrn2016MnchrlDistTrtOblLst = tdpCadreTargetCountDAO.getTtalCadreTargetCntDistWise(4l, mancherialDstrctCnsttuncesIds,"Mancherial");
+			    setCadreTargetCntToMap(rtrn2016MnchrlDistTrtOblLst,adlbdAndMnchrlDst2016TrtMap);
+			    
+			    List<Object[]> rtrn2014CadreAdlbdOblLst = tdpCadreLocationInfoDAO.get2014CadreDistWise(adilabadCnsttuencesIds,"Adilabad");
+			    set2014CadreCountToMap(rtrn2014CadreAdlbdOblLst,adilabadAndMancherialDistMap,adlbdAndMnchrlDstrctIdAndNameMap);
+			    
+			    List<Object[]> rtrn2014CadreMnchrlOblLst = tdpCadreLocationInfoDAO.get2014CadreDistWise(mancherialDstrctCnsttuncesIds,"Mancherial");
+			    set2014CadreCountToMap(rtrn2014CadreMnchrlOblLst,adilabadAndMancherialDistMap,adlbdAndMnchrlDstrctIdAndNameMap);
+			    
+			    List<Object[]> rtrn2016CadreAdlbdOblLst = tdpCadreDateWiseInfoDAO.get2016CadreCntDistWise(adilabadCnsttuencesIds, fromDate, toDate,"Adilabad");
+			    set2016CadreCountToMap(rtrn2016CadreAdlbdOblLst,adilabadAndMancherialDistMap);
+			    List<Object[]> rtrn2016CadreMnchrlOblLst = tdpCadreDateWiseInfoDAO.get2016CadreCntDistWise(mancherialDstrctCnsttuncesIds, fromDate, toDate,"Mancherial");
+			    set2016CadreCountToMap(rtrn2016CadreMnchrlOblLst,adilabadAndMancherialDistMap);
+			    
+			    List<Object[]> rtrn2016RenewalCadreAdlbdOblLst = tdpCadreDateWiseInfoDAO.get2016RenewalCadreCntDistWise(adilabadCnsttuencesIds, fromDate, toDate,"Adilabad");
+			    setRenewalCountToMap(rtrn2016RenewalCadreAdlbdOblLst,adilabadAndMancherialDistMap);
+			    List<Object[]> rtrn2016RenewalMnchrlOblLst = tdpCadreDateWiseInfoDAO.get2016RenewalCadreCntDistWise(mancherialDstrctCnsttuncesIds, fromDate, toDate,"Mancherial");
+			    
+			    setRenewalCountToMap(rtrn2016RenewalMnchrlOblLst,adilabadAndMancherialDistMap);
+			    calculateNewCadreAnddPercentage(adilabadAndMancherialDistMap,adlbdAndMnchrlDst2014TrtMap,adlbdAndMnchrlDst2016TrtMap);
+			    
+			    /* End */
+			    
 				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null,3l,null,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
 				List<Object[]> rtrn2016CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(3l, null, 4l,null,null);// 2016 target 
 				setCadreTargetCntToMap(rtrn2016CadreTargetObjList,cadreTarget2016Map);
+				
 		 }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
 				List<Object[]> rtrn2014CadreTargetObjList = tdpCadreTargetCountDAO.getTtalCadreTargetCountScopeWise(4l, null, 3l,null,null);// 2014 target 
 				setCadreTargetCntToMap(rtrn2014CadreTargetObjList,cadreTarget2014Map);
@@ -1697,7 +1740,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 		     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
 		    	 locationScopeId = 4l; 
 		     }
-		     userAccessLevelValues = new ArrayList<Long>(locationIdAndNameMap.keySet()); 
+		    userAccessLevelValues = new ArrayList<Long>(locationIdAndNameMap.keySet()); 
 		  
 		   List<Object[]> total2014CadreObjList = tdpCadreLocationInfoDAO.get2014TotalCadreCountLocationWise(locationScopeId, userAccessLevelValues);//2014 cadre
 		   set2014CadreCountToMap(total2014CadreObjList,locationWiseCadreDetaislMap,locationIdAndNameMap);
@@ -1707,6 +1750,11 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 		   setRenewalCountToMap(total2016RenewalCadreObjList,locationWiseCadreDetaislMap);
 		  //calculating new cadre and percentage
 		  calculateNewCadreAnddPercentage(locationWiseCadreDetaislMap,cadreTarget2014Map,cadreTarget2016Map);
+		  
+		  if(locationType != null && locationType.equalsIgnoreCase("District")){
+			  locationWiseCadreDetaislMap.remove(1l);//removing Adilabad District 
+			  locationWiseCadreDetaislMap.putAll(adilabadAndMancherialDistMap);//Adding Adilabad and Mancherial Ts district Data
+		  }
 		  //sortring 
 		  if(locationWiseCadreDetaislMap != null && locationWiseCadreDetaislMap.size() > 0){
 			  resultList = new ArrayList<CadreReportVO>(locationWiseCadreDetaislMap.values());
@@ -3888,7 +3936,7 @@ try{
 			Date lastOneDayTime = calendar.getTime(); 
  			
  			Date surveyDate = dateUtilService.getCurrentDateAndTime();
- 			List<Long> hourList = new ArrayList<Long>(){{add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
+ 			List<Long> hourList = new ArrayList<Long>(){{add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};//santosh
  			//put("Upto 8 AM",8l);
  			Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{  
  				put("08-09",8l);put("09-10",9l);put("10-11",10l);put("11-12",11l);put("12-13 PM",12l);put("13-14",13l);put("14-15",14l);put("15-16",15l);

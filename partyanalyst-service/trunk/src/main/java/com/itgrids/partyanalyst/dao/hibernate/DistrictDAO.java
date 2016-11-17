@@ -11,8 +11,7 @@ import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class DistrictDAO extends GenericDaoHibernate<District, Long> implements
-IDistrictDAO {
+public class DistrictDAO extends GenericDaoHibernate<District, Long> implements IDistrictDAO {
 
 	public DistrictDAO() {
 		super(District.class);
@@ -434,6 +433,12 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 			/*if(stateId.longValue() >0L){
 				query.setParameter("stateId", stateId);
 			}*/
+			return query.list();
+		}
+		public List<Object[]> getSpecificDistrictIdAndName(){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select model.districtId,model.districtName from District model where model.districtId in (1,518) ");
+			Query query = getSession().createQuery(queryStr.toString());
 			return query.list();
 		}
 }
