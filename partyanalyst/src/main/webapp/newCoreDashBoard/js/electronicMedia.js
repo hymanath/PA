@@ -3911,7 +3911,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 }
     function getRescentNewsBulletinTime(){
 		$.ajax({
-			url: wurl+"CommunityNewsPortal/webservice/getRescentNewsBulletinTime"
+			url: wurl+"/CommunityNewsPortal/webservice/getRescentNewsBulletinTime"
 			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentNewsBulletinTime"
 		}).then(function(result){
 			if(result != null){
