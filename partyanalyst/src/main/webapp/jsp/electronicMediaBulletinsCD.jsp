@@ -124,6 +124,7 @@ var globalSearchType = "${param.status}";
 var globalNewsChannelIds = "${param.npsStr}";//News ChannelIds
 var globalStIndex = "${param.stIdx}";//startIndex
 var globalEndIndex = "${param.edIdx}";//endIndex
+var callFrom = "${param.callFrom}";
 
 /*  var globalOrgType = "N";//isDepartment
 var globalOrgIdStr = "872,1117,163,362";//OrganizationIds
@@ -139,7 +140,10 @@ var globalSearchType = "category"; */
 
 $(document).ready(function(){
 	setTimeout(function(){ 
-	newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
+	if(callFrom == "basicDetails")
+		newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
+	else if(callFrom == "partyDetails")
+		getEMMMediaProgramsOnPartyProgramsWiseBulletins(0);
 	}, 1000);
 	
 });
@@ -210,26 +214,58 @@ $(document).ready(function(){
 											for(var k in result[i].candidates[j].fromList){
 												str+='<div class="pad_5 bg_ff color333 m_top10" >';
 												if(result[i].candidates[j].fromList[k].organizationTypeId == 2){
-													
-														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationTypeId+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
+													str+='<p class="bg_ff color333">';
+														if(result[i].candidates[j].fromList[k].organizationTypeId == null || result[i].candidates[j].fromList[k].organizationTypeId == ""){
+															str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
+														}else{
+															str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationTypeId+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
+														}
+														if(result[i].candidates[j].fromList[k].candidateName == null || result[i].candidates[j].fromList[k].candidateName == ""){
 															str+='&nbsp;&nbsp; - ';
 														}else{
-															str+='<p class="bg_ff color333 pad_5">&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].candidateName+' | '+result[i].candidates[j].fromList[k].benefit+' </p>';
+															str+='&nbsp;'+result[i].candidates[j].fromList[k].candidateName+' | ';
 														}
-														
+														if(result[i].candidates[j].fromList[k].benefit == null || result[i].candidates[j].fromList[k].benefit ==""){
+															str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:17px;width:17px;display:inline-block"/>';
+														}else{
+															str+='&nbsp;<img  src="images/'+result[i].candidates[j].fromList[k].benefit+'.png" class="img-responsive" alt="" style="height:17px;width:17px;display:inline-block"/> | ';
+														}
+														/* if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
+															str+='&nbsp;&nbsp; - ';
+														}else{
+															str+='&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'';
+														} */
+													str+='</p>';
 													
 													
-												}else{
-													if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
-														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp; - ';
 													}else{
-														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+' | '+result[i].candidates[j].fromList[k].candidateName+' | '+result[i].candidates[j].fromList[k].benefit+' ';
+														if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
+															str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
+															str+='&nbsp;&nbsp; - ';
+														}else{
+															str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
+														}
+															str+='<p class="bg_ff color333 pad_5">';
+															if(result[i].candidates[j].fromList[k].candidateName == null || result[i].candidates[j].fromList[k].candidateName == ""){
+																str+='&nbsp;&nbsp; - ';
+															}else{
+																str+='&nbsp;'+result[i].candidates[j].fromList[k].candidateName+' | ';
+															}
+															if(result[i].candidates[j].fromList[k].benefit == null || result[i].candidates[j].fromList[k].benefit ==""){
+																str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:17px;width:17px;display:inline-block"/>';
+															}else{
+																str+='&nbsp;<img  src="images/'+result[i].candidates[j].fromList[k].benefit+'.png" class="img-responsive" alt="" style="height:17px;width:17px;display:inline-block"/> | ';
+															}
+															/* if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == ""){
+																str+='&nbsp;&nbsp; - ';
+															}else{
+																str+='&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'';
+															} */
+															str+='</p>';
+															
+														
+														
 													}
-													
-												}
 												
 												 
 														
@@ -250,13 +286,30 @@ $(document).ready(function(){
 											for(var k in result[i].candidates[j].toList){
 												str+='<div class="pad_5 bg_ff color333 m_top10" >';
 												if(result[i].candidates[j].toList[k].organizationTypeId == 2){
-													
-														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].toList[k].organizationTypeId+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName ==""){
-															str+='&nbsp;&nbsp; - </span>';
+														if(result[i].candidates[j].toList[k].organizationTypeId == null || result[i].candidates[j].toList[k].organizationTypeId == ""){
+															str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
 														}else{
-															str+='<p class="bg_ff color333">&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+' | '+result[i].candidates[j].toList[k].candidateName+' | '+result[i].candidates[j].toList[k].benefit+' </p>';
+															str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].toList[k].organizationTypeId+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
 														}
+														
+														str+='<p class="bg_ff color333 pad_5">';
+														if(result[i].candidates[j].toList[k].candidateName == null || result[i].candidates[j].toList[k].candidateName == ""){
+															str+='&nbsp;&nbsp; - ';
+														}else{
+															str+='&nbsp;'+result[i].candidates[j].toList[k].candidateName+' | ';
+														}
+														if(result[i].candidates[j].toList[k].benefit == null || result[i].candidates[j].toList[k].benefit ==""){
+															str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:17px;width:17px;display:inline-block"/>';
+														}else{
+															str+='&nbsp;<img  src="images/'+result[i].candidates[j].toList[k].benefit+'.png" class="img-responsive" alt="" style="height:17px;width:17px;display:inline-block"/> | ';
+														}
+														/* if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName == ""){
+															str+='&nbsp;&nbsp; - ';
+														}else{
+															str+='&nbsp;'+result[i].candidates[j].toList[k].organizationName+'';
+														} */
+														str+='</p>';
+														
 														
 													
 													
@@ -264,12 +317,27 @@ $(document).ready(function(){
 												}else{
 													if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName == ""){
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp; - </span>';
+														
 													}else{
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].toList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
-														str+='&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+'  | '+result[i].candidates[j].toList[k].candidateName+' | '+result[i].candidates[j].toList[k].benefit+'</span>';
 													}
-													
+													str+='<p class="bg_ff color333 pad_5">';
+														if(result[i].candidates[j].toList[k].candidateName == null || result[i].candidates[j].toList[k].candidateName == ""){
+															str+='&nbsp;&nbsp; - ';
+														}else{
+															str+=''+result[i].candidates[j].toList[k].candidateName+' | ';
+														}
+														if(result[i].candidates[j].toList[k].benefit == null || result[i].candidates[j].toList[k].benefit ==""){
+															str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
+														}else{
+															str+='<img   src="images/'+result[i].candidates[j].toList[k].benefit+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/> | ';
+														}
+														if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName == ""){
+															str+='&nbsp;&nbsp; - ';
+														}else{
+															str+='&nbsp;'+result[i].candidates[j].toList[k].organizationName+'';
+														}
+													str+='</p>';
 												}
 													
 													
@@ -352,7 +420,7 @@ $(document).ready(function(){
 								
 								str+='<label class="font_fff m_top10" >Article Tracking</label>';
 								str+='<div class="pad_5 bg_ff" style="color:#000;">';
-								if(result[i].trackingLocationScopeId == null || result[i].trackingLocationScopeId == 0){
+								if(result[i].trackingLocationScopeId == null || result[i].trackingLocationScopeId == ""){
 									str+='<span>Tracking Location Scope : - </span>';
 								}else{
 									if(result[i].trackingLocationScopeId == 1){
@@ -366,7 +434,7 @@ $(document).ready(function(){
 								
 								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
 								
-								if(result[i].trackingLocationLevelId == null || result[i].trackingLocationLevelId ==0){
+								if(result[i].trackingLocationLevelId == null || result[i].trackingLocationLevelId ==""){
 										str+='<span>Tracking Location       :  - </span>';
 								}else{
 									if(result[i].trackingLocationLevelList !=null && result[i].trackingLocationLevelList.length>0){
@@ -384,7 +452,7 @@ $(document).ready(function(){
 								
 								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
 								
-								if(result[i].trackingLabelId == null || result[i].trackingLabelId ==0){
+								if(result[i].trackingLabelId == null || result[i].trackingLabelId ==""){
 										str+='<span>Label Name       :  - </span>';
 								}else{
 									if(result[i].trackingLablesList !=null && result[i].trackingLablesList.length>0){
@@ -451,7 +519,8 @@ $(document).ready(function(){
 					hrefTextPrefix: '#pages-',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*6;								
-						newsBulletinPointBasicDetailsBulletinsOfOrganization(num);						
+						newsBulletinPointBasicDetailsBulletinsOfOrganization(num);
+						getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);						
 					}					
 				});
 			}
@@ -464,11 +533,24 @@ $(document).ready(function(){
 	$(document).on("click",".bulletinDetailsCls",function(){
 		var id= $(this).attr("attr_id");
 		$("#showFromToBlockDiv"+id).toggle();
-		$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+		$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
 	
 	});
 			
-				
+	function getEMMMediaProgramsOnPartyProgramsWiseBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"N"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/N/"+globalStIndex+"/"+globalEndIndex
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }		
 </script>
 </body>
 </html>

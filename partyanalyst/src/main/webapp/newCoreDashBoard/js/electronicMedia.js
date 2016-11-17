@@ -565,8 +565,9 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 		
 		for(var j in result[i].tvNewsDetailsVOList1){
 			candidateNameArray.push(result[i].tvNewsDetailsVOList1[j].channelName)
-			PositiveCountArray.push(result[i].tvNewsDetailsVOList1[j].count)
-			
+			//PositiveCountArray.push(result[i].tvNewsDetailsVOList1[j].count)
+			 PositiveCountArray.push({"y":result[i].tvNewsDetailsVOList1[j].count,"extra":result[i].organizationId+"-"+result[i].tvNewsDetailsVOList1[j].channelId});
+
 				
 			countVar =countVar+1;
 			if (countVar === 5) {
@@ -628,7 +629,17 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 							}
 						}
 					  
+					},
+					point: {
+					  events: {
+						click: function () {
+						  getArticlesForPartyDetailedDistEdiPartiesOverView(this.extra);
+			  
+						
+						}
+					  }
 					}
+
 				}
 			},
 
@@ -656,6 +667,13 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 	}
 	
 }
+function getArticlesForPartyDetailedDistEdiPartiesOverView(val){
+  var t = val.split("-");
+  
+  window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+t[0]+'&orgType=N&npsStr='+t[1]+'&stIdx=0&edIdx=6&callFrom=partyDetails','_blank');
+      
+}
+
 function buildEmmDetailedPartyMediaProgramsOnPartyTimeWise(result)
 {
 	var str='';
@@ -3932,6 +3950,6 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		
 		
 		
-		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&bfIds='+benefitIds+'&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status='+searchType+'&stIdx=0&edIdx=6 ','_blank');
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&bfIds='+benefitIds+'&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status='+searchType+'&stIdx=0&edIdx=6&callForm=basicDetails','_blank');
 
 	});	
