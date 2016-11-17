@@ -219,7 +219,7 @@ function getAllTvChannels()
 {
 
   $.ajax({
-    url: wurl+"CommunityNewsPortal/webservice/getAllTvChannels"
+    url: wurl+"/CommunityNewsPortal/webservice/getAllTvChannels"
     //url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllTvChannels"
   }).then(function(result){
 	  $("#emnNewsChannelsUlId").html("");
