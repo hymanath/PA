@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreSmsLeaderLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
@@ -124,6 +125,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ICadreSurveyUserDAO cadreSurveyUserDAO;
     private ITabUserLocationDetailsDAO tabUserLocationDetailsDAO;
     private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
+    private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
     
     
 	public void setTdpCadreSmsLeaderLocationDAO(
@@ -313,6 +315,11 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	public void setCadreSurveyUserAssignDetailsDAO(
 			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
 		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
+	}
+	
+	public void setTdpCadreUserHourRegInfoDAO(
+			ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO) {
+		this.tdpCadreUserHourRegInfoDAO = tdpCadreUserHourRegInfoDAO;
 	}
 	public CadreRegistratedCountVO showCadreRegistreredCount(String retrieveType){
 	    CadreRegistratedCountVO regCountVO = null;
@@ -3925,6 +3932,7 @@ try{
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
+ 	//swadhin
  	public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option){
  		try{
  			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
@@ -4201,12 +4209,13 @@ try{
 		  LOG.error("Exception raised in setSurveyTrackingDtlsToMap() in CoreDashboardCadreRegistrationService service", e);  
 	  }
   }
- 
+ //swadhin
  public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr){
 	  CadreBasicVO resultVO = new CadreBasicVO();
 	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	  Date toDate=null;
 	  Date fromDate=null;
+	  Date today = null;
 	 try{
 		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
 			 toDate = sdf.parse(toDateStr);
@@ -4215,7 +4224,7 @@ try{
 			 toDate = new DateUtilService().getCurrentDateAndTime();
 			 fromDate = new DateUtilService().getCurrentDateAndTime();
 		 }
-		 
+		 today = new DateUtilService().getCurrentDateAndTime();
 		 List<CadreBasicVO> userTrackingDtlList = new ArrayList<CadreBasicVO>(0);
 		 List<CadreBasicVO> eryFveMntsDtlsLstUsrTrckngLst = new ArrayList<CadreBasicVO>(0);
 		 
@@ -4229,9 +4238,59 @@ try{
  			 resultVO.setSubList1(userTrackingDtlList);
  		 }
  		 if(eryFveMntsDtlsLstUsrTrckngLst != null && eryFveMntsDtlsLstUsrTrckngLst.size() > 0){
- 			 resultVO.setSubList2(eryFveMntsDtlsLstUsrTrckngLst);
+ 			 resultVO.setSubList2(eryFveMntsDtlsLstUsrTrckngLst);  
  		 }
+ 		//between 8pm -> 8am
+ 		List<Long> hourList = new ArrayList<Long>(){{add(20l);add(21l);add(22l);add(23l);add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
+		//between 8am -> 8pm  
+		Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{  
+			put("8am-9am",8l);put("9am-10am",9l);put("10am-11am",10l);put("11am-12pm",11l);
+			put("12pm-1pm",12l);put("1pm-2pm",13l);put("2pm-3pm",14l);put("3pm-4pm",15l);
+			put("4pm-5pm",16l);put("5pm-6pm",17l);put("6pm-7pm",18l);put("7pm-8pm",19l);
+		}}; 
  		 
+ 		 
+ 		 	List<Object[]> regDtlsHourWiseList = tdpCadreUserHourRegInfoDAO.getRegDtlsHourWiseList(cadreSurveyUserId,today);
+ 		 	Map<Long,Long> hourAndRegCountMap = new HashMap<Long,Long>();
+			
+			if(regDtlsHourWiseList != null && regDtlsHourWiseList.size() > 0){
+				for(Object[] param : regDtlsHourWiseList){
+					hourAndRegCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			Long totalCadreUpto8amToday = 0l;
+			
+			for(Long param : hourList){
+				if( hourAndRegCountMap.get(param) != null)
+					totalCadreUpto8amToday = totalCadreUpto8amToday + hourAndRegCountMap.get(param);
+			}
+			FieldReportVO fieldReportVO = new FieldReportVO();
+			List<FieldReportVO> fieldReportVOs = new ArrayList<FieldReportVO>();
+			//special for 8pm -> 8am
+ 			fieldReportVO = new FieldReportVO();
+ 			fieldReportVO.setLabel("8pm-8am");
+ 			fieldReportVO.setOrder(13l);
+ 			fieldReportVO.setTodayTotalReg(totalCadreUpto8amToday);
+ 			//add first
+ 			fieldReportVOs.add(fieldReportVO);
+ 			//now add all
+ 			for(Entry<String,Long> entry : labelAndPositionMap.entrySet()){
+ 				fieldReportVO = new FieldReportVO();
+ 				fieldReportVO.setLabel(entry.getKey());
+ 				fieldReportVO.setOrder(entry.getValue());
+ 				if(hourAndRegCountMap.get(entry.getValue()) != null){
+ 					fieldReportVO.setTodayTotalReg(hourAndRegCountMap.get(entry.getValue()));
+ 				}
+ 				else{
+ 					fieldReportVO.setTodayTotalReg(0l);
+ 				}
+ 				fieldReportVOs.add(fieldReportVO);
+ 			}
+ 			if(fieldReportVOs != null && fieldReportVOs.size() > 0){
+				Collections.sort(fieldReportVOs, shortTimeAsc);
+			}
+ 			resultVO.setSubList3(fieldReportVOs);
+ 			
  		if(rtrnTrackingDtlsLst != null && rtrnTrackingDtlsLst.size() > 0){
  			 Object[] cadreSurveyUserObj = rtrnTrackingDtlsLst.get(0);
 			 resultVO.setSurveyUserId(cadreSurveyUserId);
