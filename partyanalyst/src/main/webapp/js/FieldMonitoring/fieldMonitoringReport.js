@@ -66,8 +66,7 @@ function buildFieldMonitoringReport(result){
 					//str+='<td> - </td>';
 					str+='<td>'+result[i].districtName+'</td>';
 					str+='<td>'+result[i].constituencyName+'</td>';
-				//	str+='<td>'+result[i].totalDataCollectors+'<span class="glyphicon glyphicon-map-marker mapClass" attr_id="'+result[i].id+'" attr_userName="'+result[i].name+'" attr_constistuencyId="'+result[i].constituencyId+'" title="Click here For User Tracking" style="cursor:pointer;"></span>&nbsp</td>';
-					str+='<td>'+result[i].totalDataCollectors+'</td>';
+					str+='<td>'+result[i].totalDataCollectors+'<span class="glyphicon glyphicon-map-marker mapClass" attr_id="'+result[i].id+'" attr_userName="'+result[i].name+'" attr_constistuencyId="'+result[i].constituencyId+'" title="Click here For User Tracking" style="cursor:pointer;"></span>&nbsp</td>';
 					str+='<td>'+result[i].todayRegCount+'</td>';
 					str+='<td>'+result[i].startedUsers+'</td>';
 					str+='<td>'+result[i].notYetStartedUsers+'</td>';
@@ -121,9 +120,7 @@ var tableToExcel = (function() {
 $(document).on("click",".mapClass",function(){  
 	var cadreUserId = $(this).attr("attr_id");
 	var userName = $(this).attr("attr_userName");
-	var constistuencyId =$(this).attr("attr_constistuencyId");	
-	//var urlStr = "tdpUserWiseReportMapAction.action?userId="+cadreUserId+"&username="+userName;
+	var constistuencyId =$(this).attr("attr_constistuencyId");
 	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+cadreUserId+"&username="+userName+"&constistuencyId="+constistuencyId+"&userId="+"" ;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
-	//getFieldMonitoringMapReportDetails();
 });

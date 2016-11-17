@@ -14687,5 +14687,8 @@
 				<param name="root">cadreCommitteeList</param>
 			</result>
 		</action>
+		<action name="tdpUserWiseReportMapAction" class="cadreCommitteeAction" method="tdpUserWiseReportMap">
+ 			 <result name="success">/jsp/tdpUserWiseReportMap.jsp</result>
+ 	</action>
 </package>
 </struts>
