@@ -14035,7 +14035,7 @@
 			<param name="root">cadreDtlsResultList</param>
 		</result>
 	</action>
-	<action name="getLocationWiseCadreDetailsAction" class="cadreRegistrationAction"  method="getLocationWiseCadreDetails">
+	<action name="getApAndTsConstituenciesDtlsAction" class="cadreRegistrationAction"  method="getApAndTsConstituenciesDtls">
 			<result type="json" name="success">
 			<param name="root">cadreDtlsResultList</param>
 		</result>
@@ -14682,11 +14682,16 @@
 			<param name="root">cadreDashboardVOList</param>
 		</result>
 	</action>
- 	<action name="getFieldMonitoringReportMapDetailsAction" class="cadreCommitteeAction" method="getFieldMonitoringMapReportDetails">
-			<result type="json" name="success">
+ 	 <action name="getFieldMonitoringReportMapDetailsAction" class="cadreCommitteeAction" method="getFieldMonitoringMapReportDetails">
+	 		<result type="json" name="success">
 				<param name="root">cadreCommitteeList</param>
 			</result>
-		</action>
+	</action>
+	 <action name="getTsDistrictDetailsAction" class="cadreRegistrationAction"  method="getTsDistrictDetails">
+			<result type="json" name="success">
+			<param name="root">cadreDtlsResultList</param>
+		</result>
+	</action>
 		<action name="tdpUserWiseReportMapAction" class="cadreCommitteeAction" method="tdpUserWiseReportMap">
  			 <result name="success">/jsp/tdpUserWiseReportMap.jsp</result>
  	</action>

@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -2733,7 +2734,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	  }
 	  return Action.SUCCESS;
   }
-  public String getLocationWiseCadreDetails(){
+  public String getApAndTsConstituenciesDtls(){
 	  try{
 		  jobj = new JSONObject(getTask());
 			String locationType = jobj.getString("locationType");
@@ -2741,7 +2742,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String fromDate = jobj.getString("fromDate");
 			String todate = jobj.getString("todate");
 			Long accessLevelId = jobj.getLong("accessLevelId");
-			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Long> userAccessLevelValues = new CopyOnWriteArrayList<Long>();
 			JSONArray userAccessLevelValuesArray=jobj.getJSONArray("accessLevelValues");
 			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
 				for( int i=0;i<userAccessLevelValuesArray.length();i++){
@@ -2750,7 +2751,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			}
 			String isKuppamExcluded = jobj.getString("isKuppamExcluded");
 			String sortingType = jobj.getString("sortingType");
-			cadreDtlsResultList = coreDashboardCadreRegistrationService.getLocationWiseCadreDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues,isKuppamExcluded,sortingType);
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getApAndTsConstituenciesDtls(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues,isKuppamExcluded,sortingType);
 	  }catch(Exception e){
 		  LOG.error("Error occured at getLocationWiseCadreDetails() in CadreRegistrationAction class",e);  
 	  }
@@ -3043,7 +3044,27 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+public String getTsDistrictDetails(){
+	  try{
+		  jobj = new JSONObject(getTask());
+			String locationType = jobj.getString("locationType");
+			Long stateId = jobj.getLong("stateId");
+			String fromDate = jobj.getString("fromDate");
+			String todate = jobj.getString("todate");
+			Long accessLevelId = jobj.getLong("accessLevelId");
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jobj.getJSONArray("accessLevelValues");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String sortingType = jobj.getString("sortingType");
+			cadreDtlsResultList = coreDashboardCadreRegistrationService.getTsDistrictDetails(stateId,locationType,fromDate,todate,accessLevelId,userAccessLevelValues,sortingType);
+	  }catch(Exception e){
+		  LOG.error("Error occured at getLocationWiseCadreDetails() in CadreRegistrationAction class",e);  
+	  }
+	  return Action.SUCCESS;
 }
-
-
+}
 

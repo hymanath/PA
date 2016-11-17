@@ -1846,13 +1846,12 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId,
 				 accessLevelValues:accessLevelValues,
-				 isKuppamExcluded:"False",
 				 sortingType:sortingType
 				 
 			  }
 		$.ajax({
 			type : 'POST',
-			url : 'getLocationWiseCadreDetailsAction.action',
+			url : 'getTsDistrictDetailsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -2160,7 +2159,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  }
 		$.ajax({
 			type : 'POST',
-			url : 'getLocationWiseCadreDetailsAction.action',
+			url : 'getApAndTsConstituenciesDtlsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -2214,7 +2213,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 			  }
 		$.ajax({
 			type : 'POST',
-			url : 'getLocationWiseCadreDetailsAction.action',
+			url : 'getApAndTsConstituenciesDtlsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
