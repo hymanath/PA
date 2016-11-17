@@ -141,19 +141,36 @@ h1,h2,h3,h4,h5,h6,.table
 				</div>
 			</div>
 		</div>-->
+<div class="row">
+	<div class="col-md-12 col-xs-12 col-sm-12">
+      <h3 style="margin-top:-30px;color:#F13F25" class="text-center"><b>2014 - 2016 MEMBERSHIP DRIVE</b></h3>
+    </div>
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<label class="radio-inline pull-right" style="margin-left:10px;">
+				<input type="radio" name="radio" class="radioCls" value="2"><b>Target Achieved[%]</b></input>
+			</label>
+			<label class="radio-inline pull-right">
+				<input type="radio" name="radio" class="radioCls" checked value="1"><b>Registrations</b></input>
+			</label>
+			<label class="radio-inline pull-right">
+				<b>Sort By: </b>
+			</label>
+		</div>
+	</div>
   <div class="row">		
 	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff">
+				<div class="panel-heading" style="background:#fff;padding:5px">
 					<div class="row">
 						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive"/>
+							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital"><span style="color:#3A98DE">Today TOp 20</span></h5>
+							<h5 class="text-capital" style="font-size:12px;"><span style="color:#3A98DE">Today TOp 20</span></h5>
 							<h4 class="text-capital">Districts in ap</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
 						</div>
 					</div>
 				</div>
@@ -164,15 +181,16 @@ h1,h2,h3,h4,h5,h6,.table
 		</div>
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff">
+				<div class="panel-heading" style="background:#fff;padding:5px">
 					<div class="row">
 						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive"/>
+							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital"><span style="color:#3A98DE">Today TOp 20</span></h5>
+							<h5 class="text-capital" style="font-size:12px;"><span style="color:#3A98DE">Today TOp 20</span></h5>
 							<h4 class="text-capital">Constituencies in ap</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
 						</div>
 					</div>
 				</div>
@@ -187,15 +205,16 @@ h1,h2,h3,h4,h5,h6,.table
 	<div class="row">
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff">
+				<div class="panel-heading" style="background:#fff;padding:5px">
 					<div class="row">
 						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive"/>
+							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
+							<h5 class="text-capital" style="font-size:12px;"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
 							<h4 class="text-capital">District in ap</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
 						</div>
 					</div>
 				</div>
@@ -207,15 +226,16 @@ h1,h2,h3,h4,h5,h6,.table
 		
 		<div class="col-md-6 col-xs-12 col-sm-6">
 			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff">
+				<div class="panel-heading" style="background:#fff;padding:5px">
 					<div class="row">
 						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive"/>
+							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
 							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h4 class="text-capital">Constituencies in ap</h4>
-							<h5 style="margin-right: 25px;" class="pull-right">Percentage[%]</h5>
+							<h4 class="text-capital" style="font-size:12px;">Constituencies in ap</h4>
+							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
+							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
 						</div>
 					</div>
 				</div>
@@ -237,7 +257,7 @@ h1,h2,h3,h4,h5,h6,.table
 <script src="dist/2016DashBoard/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>		
 <script type="text/javascript">
-
+$("#menu").parent().remove();
 
 //get2016LocationWiseRegisteredCounts("total");
 function get2016LocationWiseRegisteredCounts(typeId){
@@ -296,17 +316,17 @@ $("#totalPerceId").hide();
 		 });
 	}
 	
-getConstituencyWiseDisrictList1("Today",1);
-//getConstituencyWiseDisrictList2("Today",36);
-getConstituencyWiseDisrictList3("Total",1);
-//getConstituencyWiseDisrictList4("Total",36);
-getTodayDistrictList("Today",1);
-getOverAllDistrictList("Total",1);
-function getConstituencyWiseDisrictList1(type,stateId){
+getConstituencyWiseDisrictList1("Today",1,"count");
+getConstituencyWiseDisrictList3("Total",1,"count");
+getTodayDistrictList("Today",1,"count");
+getOverAllDistrictList("Total",1,"count");
+
+function getConstituencyWiseDisrictList1(type,stateId,sortType){
 	$("#todayapImgId").show();
 	var jObj = {
 		type:type,
-		stateId:stateId
+		stateId:stateId,
+		sortType : sortType
 	}
 	$.ajax({
 	  type:'GET',
@@ -314,34 +334,18 @@ function getConstituencyWiseDisrictList1(type,stateId){
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildingConstituencyList(result,"constituencyListPanel1",type);
+			buildingConstituencyList(result,"constituencyListPanel1",type,sortType);
 		}
 		$("#todayapImgId").hide();
 	});
 }
 
-function getConstituencyWiseDisrictList2(type,stateId){
-	$("#todaytsImgId").show();
-	var jObj = {
-		type:type,
-		stateId:stateId
-	}
-	$.ajax({
-	  type:'GET',
-	  url: 'getConstituencyWiseTodayAndOverAllCountsAction.action',
-	  data : {task:JSON.stringify(jObj)} ,
-	}).done(function(result){
-		if(result != null && result.length > 0){
-			buildingConstituencyList(result,"constituencyListPanel2",type);
-		}
-		$("#todaytsImgId").hide();
-	});
-}
-function getConstituencyWiseDisrictList3(type,stateId){
+function getConstituencyWiseDisrictList3(type,stateId,sortType){
 	$("#totalapimgId").show();
 	var jObj = {
 		type:type,
-		stateId:stateId
+		stateId:stateId,
+		sortType : sortType
 	}
 	$.ajax({
 	  type:'GET',
@@ -349,32 +353,14 @@ function getConstituencyWiseDisrictList3(type,stateId){
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildingConstituencyList(result,"constituencyListPanel3",type);
+			buildingConstituencyList(result,"constituencyListPanel3",type,sortType);
 		}
 		$("#totalapimgId").hide();
 	});
 }
-function getConstituencyWiseDisrictList4(type,stateId){
-	$("#totaltsimgId").show();
-	var jObj = {
-		type:type,
-		stateId:stateId
-	}
-	$.ajax({
-	  type:'GET',
-	  url: 'getConstituencyWiseTodayAndOverAllCountsAction.action',
-	  data : {task:JSON.stringify(jObj)} ,
-	}).done(function(result){
-		if(result != null && result.length > 0){
-			buildingConstituencyList(result,"constituencyListPanel4",type);
-		}
-		$("#totaltsimgId").hide();
-	});
-}
-
-function buildingConstituencyList(result,divId,type){
+function buildingConstituencyList(result,divId,type,sortType){
 	var str='';
-	str+='<div class="'+divId+'" style="height:300px;overflow-y:scroll;">';
+	str+='<div class="'+divId+'" style="height:170px;overflow-y:scroll;">';
 		str+='<table class="table table-condensed" style="margin-bottom:0px;">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
@@ -384,8 +370,11 @@ function buildingConstituencyList(result,divId,type){
 				}else{
 					str+='<td><span class="count" style="background-color:#9D0D3E"><b>'+temp+'</b></span></td>';
 				}
-				str+='<td class="text-capital">'+result[i].name+'</td>';
-				str+='<td>'+result[i].per2016+'</td>';
+				str+='<td class="text-capital" >'+result[i].name+'</td>';
+				if(sortType == "count")
+					str+='<td style="width:80px">'+result[i].attenteeCount+'</td>';
+				else if(sortType == "percentage")
+					str+='<td style="width:80px">'+result[i].per2016+'</td>';
 			str+='</tr>';
 		}
 		
@@ -410,13 +399,14 @@ function buildingConstituencyList(result,divId,type){
 	}, 22000)
 }	
 
-setTimeout(function(){ location.reload(); }, 43000);
+//setTimeout(function(){ location.reload(); }, 43000);
 
-function getTodayDistrictList(type,stateId){
+function getTodayDistrictList(type,stateId,sortType){
 	$("#todaytsImgId").show();
 	var jObj = {
 		type:type,
-		stateId:stateId
+		stateId:stateId,
+		sortType:sortType
 	}
 	$.ajax({
 	  type:'GET',
@@ -424,16 +414,17 @@ function getTodayDistrictList(type,stateId){
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildingConstituencyList(result,"todayDistrictList",type);
+			buildingConstituencyList(result,"todayDistrictList",type,sortType);
 		}
 		$("#todaytsImgId").hide();
 	});
 }
-function getOverAllDistrictList(type,stateId){
+function getOverAllDistrictList(type,stateId,sortType){
 	$("#todaytsImgId").show();
 	var jObj = {
 		type:type,
-		stateId:stateId
+		stateId:stateId,
+		sortType:sortType
 	}
 	$.ajax({
 	  type:'GET',
@@ -441,12 +432,63 @@ function getOverAllDistrictList(type,stateId){
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildingConstituencyList(result,"overAllDistrictList",type);
+			buildingConstituencyList(result,"overAllDistrictList",type,sortType);
 		}
 		$("#todaytsImgId").hide();
 	});
 }
 
+		
+setInterval(function() {
+    refreshFunctions();
+  }, 60 * 1000)	
+  
+function refreshFunctions(){
+	//alert(123);
+	var value = $('input[name=radio]:checked').val();
+	
+	if(value == 1){
+		getConstituencyWiseDisrictList1("Today",1,"count");
+		getConstituencyWiseDisrictList3("Total",1,"count");
+		getTodayDistrictList("Today",1,"count");
+		getOverAllDistrictList("Total",1,"count");
+		
+		$(".percentage").hide();
+		$(".counts").show();
+	}
+	else if(value == 2){
+		getConstituencyWiseDisrictList1("Today",1,"percentage");
+		getConstituencyWiseDisrictList3("Total",1,"percentage");
+		getTodayDistrictList("Today",1,"percentage");
+		getOverAllDistrictList("Total",1,"percentage");
+		
+		$(".percentage").show();
+		$(".counts").hide();
+	}	
+}
+
+$(document).on("click",".radioCls",function(){
+	var value = $('input[name=radio]:checked').val();
+	
+	if(value == 1){
+		getConstituencyWiseDisrictList1("Today",1,"count");
+		getConstituencyWiseDisrictList3("Total",1,"count");
+		getTodayDistrictList("Today",1,"count");
+		getOverAllDistrictList("Total",1,"count");
+		
+		$(".percentage").hide();
+		$(".counts").show();
+	}
+	else if(value == 2){
+		getConstituencyWiseDisrictList1("Today",1,"percentage");
+		getConstituencyWiseDisrictList3("Total",1,"percentage");
+		getTodayDistrictList("Today",1,"percentage");
+		getOverAllDistrictList("Total",1,"percentage");
+		
+		$(".percentage").show();
+		$(".counts").hide();
+	}	
+});
 </script>		
 </body>
 </html>
