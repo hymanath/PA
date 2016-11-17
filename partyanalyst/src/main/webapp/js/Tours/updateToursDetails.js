@@ -749,7 +749,7 @@ $("#toursDateRangePicker").daterangepicker({
 							
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-							str+='<button type="button" style="margin-left:5px;" class="btn btn-default btn-sm pull-right btn-success">VIEW</button>';
+							str+='<button type="button" style="margin-left:5px;" attr_filePath="'+result.filePath+'" id="showPdfId" class="btn btn-default btn-sm pull-right btn-success">VIEW</button>';
 							str+='<button type="button" class="btn btn-default btn-sm pull-right btn-danger" attr_file_count="'+fileCount+'" id="deleteFileId">DELETE</button>';  
 						str+='</div>';
 					str+='</div>';
@@ -886,4 +886,21 @@ $("#toursDateRangePicker").daterangepicker({
 			} */
 				
 	}
+	$(document).on('click','#showPdfId',function(){
+		var dbFilePath = $(this).attr("attr_filePath");  
+		var str = ''; 
+		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+			$("#tourReportPdfModelId").modal("hide");
+			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}else{
+			//$("#tourReportPdfModelId").modal("show");
+			//str += '<iframe src="'+wurl+'/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+			//str += '<iframe src="'+wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+			//str += '</iframe>';
+			//$("#tourReportPdfDetailsId").html(str);
+			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}      
+	});  
 	
