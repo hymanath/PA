@@ -174,7 +174,7 @@ $(document).ready(function(){
 				str+='<div class="row deleteRow">';
 			}
 			str+='<div class="col-md-4 col-xs-12 col-sm-6 m_top10">';
-				str+='<span class="panelHeading pad_5 "><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].channelName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>'+result[i].channelName+'</span>';
+				str+='<span class="panelHeading pad_5 "><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].channelName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>&nbsp; '+result[i].channelName+'</span>';
 				str+='<div class="panel panel-default panelEMNPopup" style="margin-top:5px">';
 					str+='<div class="panel-heading">';
 						str+='<h4 class="panel-title">'+result[i].title+'</h4>';
@@ -203,7 +203,7 @@ $(document).ready(function(){
 									for(var j in result[i].candidates){
 										if(result[i].candidates[j].fromList != null && result[i].candidates[j].fromList.length > 0){
 											for(var k in result[i].candidates[j].fromList){
-												str+='<div class="pad_5 bg_ff color333" >';
+												str+='<div class="pad_5 bg_ff color333 m_top10" >';
 												if(result[i].candidates[j].fromList[k].organizationTypeId == 2){
 													if(result[i].candidates[j].fromList[k].organizationTypeId == null || result[i].candidates[j].fromList[k].organizationTypeId ==0){
 														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
@@ -223,7 +223,7 @@ $(document).ready(function(){
 														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
 														str+='&nbsp;&nbsp; - ';
 													}else{
-														str+='<span ><img   src="Party_logos_small/'+result[i].candidates[j].fromList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
+														str+='<span ><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].candidates[j].fromList[k].organizationName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
 														str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'';
 													}
 													
@@ -246,7 +246,7 @@ $(document).ready(function(){
 									for(var j in result[i].candidates){
 										if(result[i].candidates[j].toList != null && result[i].candidates[j].toList.length > 0){
 											for(var k in result[i].candidates[j].toList){
-												str+='<div class="pad_5 bg_ff color333" >';
+												str+='<div class="pad_5 bg_ff color333 m_top10" >';
 												if(result[i].candidates[j].toList[k].organizationTypeId == 2){
 													if(result[i].candidates[j].toList[k].organizationTypeId == null || result[i].candidates[j].toList[k].organizationTypeId == 0){
 														str+='<span ><img src="https://www.mytdp.com/CommunityNewsPortal/ElectronicMedia/img/empty.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>';
@@ -288,9 +288,9 @@ $(document).ready(function(){
 										}
 									}
 								}else{
-									str+='<label class="font_fff m_top10" >From Whom</label>';
+									str+='<label class="font_fff m_top10" >From Whom</label><br/>';
 									str+='No Data Availabel';
-									str+='<label class="font_fff m_top10" >To Whom</label>';
+									str+='<label class="font_fff m_top10" >To Whom</label><br/>';
 									str+='No Data Availabel';
 									
 								}
@@ -302,7 +302,7 @@ $(document).ready(function(){
 										str+='<p style="text-align: center; color: rgb(255, 255, 255); font-weight: bold;">----'+result[0].timings[l].bulletinDate+'----</p>';
 										str+='<table class="table table-bordered  bg_ff color333">';
 										str+='<thead>';
-											str+='<th>Program Time</th>';
+											//str+='<th>Program Time</th>';
 											str+='<th>Program Name</th>';
 											str+='<th>In TIme</th>';
 											str+='<th>Out Time</th>';
@@ -313,11 +313,11 @@ $(document).ready(function(){
 										if(result[i].timings[l].timeList != null && result[i].timings[l].timeList.length > 0){
 											for(var m in result[i].timings[l].timeList){
 												str+='<tr>';
-												if(result[i].timings[l].timeList[m].bulletinStartTime == null || result[i].timings[l].timeList[m].bulletinStartTime == 0){
+												/* if(result[i].timings[l].timeList[m].bulletinStartTime == null || result[i].timings[l].timeList[m].bulletinStartTime == 0){
 													str+='<td> - </td>';
 												}else{
 													str+='<td>'+result[i].timings[l].timeList[m].bulletinStartTime+'</td>';
-												}
+												} */
 												if(result[i].timings[l].timeList[m].newsBulletinName == null || result[i].timings[l].timeList[m].newsBulletinName == 0){
 													str+='<td> - </td>';
 												}else{
@@ -351,6 +351,89 @@ $(document).ready(function(){
 									str+='<h4>No Data Availabel.</h4>';
 								}
 								
+								str+='<label class="font_fff m_top10" >Article Tracking</label>';
+								str+='<div class="pad_5 bg_ff" style="color:#000;">';
+								if(result[i].trackingLocationScopeId == null || result[i].trackingLocationScopeId == 0){
+									str+='<span>Tracking Location Scope : - </span>';
+								}else{
+									if(result[i].trackingLocationScopeId == 1){
+										str+='<span>Tracking Location Scope : State</span>';
+									}
+									if(result[i].trackingLocationScopeId == 2){
+										str+='<span>Tracking Location Scope : District</span>';
+									}
+								}
+								str+='</div>';
+								
+								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
+								
+								if(result[i].trackingLocationLevelId == null || result[i].trackingLocationLevelId ==0){
+										str+='<span>Tracking Location       :  - </span>';
+								}else{
+									if(result[i].trackingLocationLevelList !=null && result[i].trackingLocationLevelList.length>0){
+										for(var j in result[i].trackingLocationLevelList){
+											if(result[i].trackingLocationLevelId == result[i].trackingLocationLevelList[j].categoryId){
+												str+='<span>Tracking Location       : '+result[i].trackingLocationLevelList[j].category+'</span>';
+											}
+										}
+									}
+									
+								}
+									
+											
+								str+='</div>';
+								
+								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
+								
+								if(result[i].trackingLabelId == null || result[i].trackingLabelId ==0){
+										str+='<span>Label Name       :  - </span>';
+								}else{
+									if(result[i].trackingLablesList !=null && result[i].trackingLablesList.length>0){
+										for(var j in result[i].trackingLablesList){
+											if(result[i].trackingLabelId == result[i].trackingLablesList[j].categoryId){
+												str+='<span>Label Name       : '+result[i].trackingLablesList[j].category+'</span>';
+											}
+										}
+									}
+									
+								}
+								
+								str+='</div>';
+								str+='<label class="font_fff m_top10" >Article Characteristics</label>';
+								str+='<div class="pad_5 bg_ff" style="color:#000;">';
+								if(result[i].isImportant == 'Y'){
+									str+='<span>Is Important       : YES  </span>';
+								}else{
+									str+='<span>Is Important       : -  </span>';
+								}
+								
+								str+='</div>';
+								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
+								if(result[i].isActionable == 'Y'){
+									str+='<span>Actionable       :  YES </span>';
+								}else{
+									str+='<span>Actionable       :  -  </span>';
+								}
+									
+								str+='</div>';
+								
+								str+='<label class="font_fff m_top10" >Location Details</label>';
+								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
+								if(result[i].idNameVO.emailString == null || result[i].idNameVO.emailString == 0){
+									str+='<span>Impact Scope       :  -  </span>';
+								}else{
+									str+='<span>Impact Scope       : '+result[i].idNameVO.emailString+' </span>';
+								}
+									
+								str+='</div>';
+								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
+								if(result[i].idNameVO.name == null || result[i].idNameVO.name == 0){
+									str+='<span>Location       :  -  </span>';
+								}else{
+									str+='<span>Location       : '+result[i].idNameVO.name+' </span>';
+								}
+									
+								str+='</div>';
 								
 							str+='</div>';
 						str+='</div>';
