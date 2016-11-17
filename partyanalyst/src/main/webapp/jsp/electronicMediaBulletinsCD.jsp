@@ -173,9 +173,9 @@ $(document).ready(function(){
 			if(i == 0 || i%3 == 0){
 				str+='<div class="row deleteRow">';
 			}
-			str+='<div class="col-md-4 col-xs-12 col-sm-6">';
-				str+='<span class="panelHeading">'+result[i].channelName+'</span>';
-				str+='<div class="panel panel-default panelEMNPopup">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-6 m_top10">';
+				str+='<span class="panelHeading pad_5 "><img   src="https://www.mytdp.com/CommunityNewsPortal/Party_logos_small/'+result[i].channelName+'.png" class="img-responsive" alt="" style="height:25px;width:25px;display:inline-block"/>'+result[i].channelName+'</span>';
+				str+='<div class="panel panel-default panelEMNPopup" style="margin-top:5px">';
 					str+='<div class="panel-heading">';
 						str+='<h4 class="panel-title">'+result[i].title+'</h4>';
 					str+='</div>';
@@ -213,7 +213,7 @@ $(document).ready(function(){
 														if(result[i].candidates[j].fromList[k].organizationName == null || result[i].candidates[j].fromList[k].organizationName == 0){
 															str+='&nbsp;&nbsp; - ';
 														}else{
-															str+='&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'';
+															str+='<p class="bg_ff color333 pad_5">&nbsp;&nbsp;'+result[i].candidates[j].fromList[k].organizationName+'</p>';
 														}
 														
 													}
@@ -256,7 +256,7 @@ $(document).ready(function(){
 														if(result[i].candidates[j].toList[k].organizationName == null || result[i].candidates[j].toList[k].organizationName ==0){
 															str+='&nbsp;&nbsp; - </span>';
 														}else{
-															str+='&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+'</span>';
+															str+='<p class="bg_ff color333">&nbsp;&nbsp;'+result[i].candidates[j].toList[k].organizationName+'</p>';
 														}
 														
 													}
