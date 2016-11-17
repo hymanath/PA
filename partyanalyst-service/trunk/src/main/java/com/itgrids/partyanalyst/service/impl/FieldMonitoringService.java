@@ -2840,7 +2840,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
     	return returnvo;
     }
 	
-	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId){
+	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId,String sortType){
 		 Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
@@ -2878,9 +2878,16 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			}
 			if(returnList != null && !returnList.isEmpty()){
 				for (IdAndNameVO vo : returnList) {
-					vo.setPer2016(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					vo.setPer2016(Double.valueOf(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 				}
 			}
+			
+			if(sortType != null && sortType.equalsIgnoreCase("percentage")){
+				if(returnList != null && !returnList.isEmpty()){
+					 Collections.sort(returnList, registrationsPercCountAsc);
+				}
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception occurred at getConstituencyWiseTodayAndOverAllCounts() of FieldMonitoringService", e);
 		}
@@ -2982,7 +2989,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
   }
 	return returnList;  
 }
-  public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId){
+  public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType){
 	  Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
 		try {
@@ -3021,7 +3028,13 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			}
 			if(returnList != null && !returnList.isEmpty()){
 				for (IdAndNameVO vo : returnList) {
-					vo.setPer2016(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					vo.setPer2016(Double.valueOf(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}
+			}
+			
+			if(sortType != null && sortType.equalsIgnoreCase("percentage")){
+				if(returnList != null && !returnList.isEmpty()){
+					 Collections.sort(returnList, registrationsPercCountAsc);
 				}
 			}
 			
@@ -3031,4 +3044,12 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		return returnList;
 	}
   
+  public static Comparator<IdAndNameVO> registrationsPercCountAsc = new Comparator<IdAndNameVO>() {
+		public int compare(IdAndNameVO vo2, IdAndNameVO vo1) {
+			 //return (cstVO1.getScalePerc()) - (cstVO2.getScalePerc());
+            Double perc2 = vo1.getPer2016();
+             Double perc1 = vo2.getPer2016();
+           return perc2.compareTo(perc1);
+		}
+	}; 
 }
