@@ -3660,7 +3660,7 @@
 		  <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />  
 		  <property name="tabUserLocationDetailsDAO" ref="tabUserLocationDetailsDAO" />
 		  <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
-		
+		<property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO" />
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
