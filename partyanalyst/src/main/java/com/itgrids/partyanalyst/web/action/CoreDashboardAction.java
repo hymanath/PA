@@ -1309,8 +1309,8 @@ public String getTopPoorPerformancecommittees(){
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
 			Long userTypeId = jObj.getLong("userTypeId");
-			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByUserType(userAccessLevelId,userAccessLevelValues,stateId,dateStr,userTypeId);
-		
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByUserType(userAccessLevelId,userAccessLevelValues,stateId,dateStr,userTypeId,activityMemberId);
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
 		}

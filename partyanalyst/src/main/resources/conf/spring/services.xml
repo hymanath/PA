@@ -3587,7 +3587,8 @@
 	  <property name="setterAndGetterUtilService"  ref="setterAndGetterUtilService"></property>
 	  <property name="debateDAO"  ref="debateDAO"></property>
 	  <property name="debateSubjectDAO"  ref="debateSubjectDAO"></property>
-	  <property name="trainingCampBatchDAO"  ref="trainingCampBatchDAO"></property>  
+	  <property name="trainingCampBatchDAO"  ref="trainingCampBatchDAO"></property>
+	  <property name="trainingCampDetailsInfoDAO"  ref="trainingCampDetailsInfoDAO"></property>    
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">

@@ -2,13 +2,12 @@
 var globalStateId=1; //default Ap 
 var customStartDate1 = moment().format('DD/MM/YYYY');
 
-$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
+//$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
-	$(".trainingDate").html("( "+customStartDate+" )");
+	//$(".trainingDate").html("( "+customStartDate+" )");
 	stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
-	getTrainingCampProgramOverviewDtls();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 });
  function initialiseDatePickerForTrainingProgram(){
@@ -24,33 +23,41 @@ $(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
 }
 var getDocumentWidth = $(document).width();
 
-
-   function getTrainingCampProgramOverviewDtls(){
+	function getTrainingCampBasicDetailsCntOverview()
+	{
 	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#villageWardTblId").html(' ');
+	 $("#mdlTwnDvsnTabId").html(' ');
 	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
- 	  var jsObj ={ 
-	               userAccessLevelId : globalUserAccessLevelId,
-				   userAccessLevelValuesArray : globalUserAccessLevelValues,
-				    stateId : globalStateId,
-					dateStr : dateStr
-				 }
-	  $.ajax({
+		var jsObj ={ 
+		             userAccessLevelId : globalUserAccessLevelId,
+					 userAccessLevelValuesArray : globalUserAccessLevelValues,
+					 stateId : globalStateId,
+					 dateStr : dateStr
+				  }
+		$.ajax({
 			type : 'POST',
-			url : 'getTrainingProgramBasicCntAction.action',
+			url : 'getTrainingCampBasicDetailsCntOverviewAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#programsDtlsCntTableId").html(' ');
-		  if(result != null && result.length > 0){
-			  buildTrainingCampProgramDtlsOverview(result);
-		  }else{
-			  $("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
-		  }
-		});	
-  }
-  function buildTrainingCampProgramDtlsOverview(programList){
+		  $("#programsDtlsCntTableId").html(' ');
+		 if(result != null){
+			 buildTrainingProgramBasicDetails(result);
+		 }else{
+			$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
+			$("#villageWardTblId").html("NO DATA AVAILABLE");
+			$("#mdlTwnDvsnTabId").html("NO DATA AVAILABLE");
+		 }
+		});
+	}
+  function buildTrainingProgramBasicDetails(result){
 	  var str='';
+	  var programList = result.trainingProgramList;
+	  var lastUPdatedTime;
+	if(programList != null && programList.length > 0){
 		  for(var i in programList){
+			 lastUPdatedTime= programList[0].lastUpdatedTime;
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
 			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
@@ -75,38 +82,13 @@ var getDocumentWidth = $(document).width();
 			str+='<hr class="m_0"/>';
 		 str+='</div>';	
 	  }
-	 $("#programsDtlsCntTableId").html(str);
-  }	   
-   
-	function getTrainingCampBasicDetailsCntOverview()
-	{
-	 $("#mdlTwnDvsnTabId").html(' ');
-	 $("#villageWardTblId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
-		var jsObj ={ 
-		             userAccessLevelId : globalUserAccessLevelId,
-					 userAccessLevelValuesArray : globalUserAccessLevelValues,
-					 stateId : globalStateId,
-					 dateStr : dateStr
-				  }
-		$.ajax({
-			type : 'POST',
-			url : 'getTrainingCampBasicDetailsCntOverviewAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		  $("#villageWardTblId").html(' ');
-		  $("#mdlTwnDvsnTabId").html(' ');
-		 if(result != null){
-			 buildTrainingProgramBasicDetails(result);
-		 }else{
-			$("#villageWardTblId").html("NO DATA AVAILABLE");
-			$("#mdlTwnDvsnTabId").html("NO DATA AVAILABLE");
-		 }
-		});
+	  //setLastUpdatedTimeForTrainingCamp(lastUPdatedTime);
+	}else{
+		str+='NO DATA AVAILABLE';
 	}
-  function buildTrainingProgramBasicDetails(result){
-	  var str='';
+	
+	 $("#programsDtlsCntTableId").html(str);
+	 
 	var villageWardRslt = result.villageWardVO;
  	var str1='';
 	str1='<h4 class="text-capitalize m_top10">village / ward</h4>';
@@ -173,7 +155,8 @@ var getDocumentWidth = $(document).width();
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
 					 dateStr : dateStr,
-					 userTypeId : globalUserTypeId
+					 userTypeId : globalUserTypeId,
+					 activityMemberId : globalActivityMemberId
 				  }
 		  
 		$.ajax({
@@ -190,7 +173,6 @@ var getDocumentWidth = $(document).width();
 			}
 		});
 	}
-
 function buildLocationWiseTrainingProgramDetails(result){
 		$("#districtWiseProgramCntDivId").html('');
 		if(result != null && result.length > 0){
@@ -450,7 +432,7 @@ var globalUserWiseMemberRslt;
 			});
 		});
 		}else{
-		$("#genSecTraining"+i).html("No Data Available");
+		//$("#genSecTraining"+i).html("No Data Available");
 		$("#genSecTraining"+i).css("height","35px");
 		} 
 	}
@@ -1073,7 +1055,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='<span class="count">'+rank+'</span>';
 		 str+='</div>';
 		 str+='<div class="panel-body">';
-	   if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9 || result[i].userTypeId==5 || result[i].userTypeId==6){ // MLA Constituency Incharge, MP and District President Incharge 
+	   if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9 || result[i].userTypeId==5){//|| result[i].userTypeId==6 // MLA Constituency Incharge, MP and District President Incharge 
 		   var lctnName = result[i].locationName;
            lctnName = lctnName.substring(0, lctnName.lastIndexOf(" "));
 		 str+='<h4 class="text-capital">'+result[i].userType+' ('+lctnName+')</h4>';	 
@@ -1431,7 +1413,6 @@ function buildTrainingProgramRslt(result){
 	   }
 	}
 }
-//swadhin
 	 function getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedUserName,userType){
     $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
@@ -1455,7 +1436,94 @@ function buildTrainingProgramRslt(result){
 		});
 	}
 	function buildTrainingProgramPoorPerformanceLocationRslt(result,userTypeId,selectedUserName,userType){
-    var resultListFirst;
+	var resultListFirst;
+	var resultListSecond;
+    var str='';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
+		str+='</div>';
+	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	  if(userTypeId!= null && userTypeId==3){
+		str+='<p class="text-capital">districts<span style="margin-left:200px">Attended Percentage</span></p>';  
+		resultListFirst = result.districtList;
+		resultListSecond = result.constituencyList;
+	  }
+	  if(userTypeId!= null && userTypeId==4 || userTypeId==5 || userTypeId==6 || userTypeId==7 || userTypeId==8 || userTypeId==9 || userTypeId==11){
+		 str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
+		resultListFirst = result.constituencyList;
+	  }
+      str+='<table class="table tableCumulative">';
+      if(resultListFirst != null && resultListFirst.length > 0){
+		  var order=1;
+		  var BGColor = 1;
+		  for(var i in resultListFirst){
+			
+			str+='<tr>';
+			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
+			str+='<td>'+resultListFirst[i].name+'</td>';
+			str+='<td>';
+				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+resultListFirst[i].totalAttenedCountPer+'%">';
+			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+resultListFirst[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+resultListFirst[i].totalAttenedCountPer+'%;">';
+					str+='<span class="sr-only">'+resultListFirst[i].totalAttenedCountPer+'</span>';
+				  str+='</div>';
+				str+='</div>';
+			str+='</td>';
+			str+='<td class="text-danger">'+resultListFirst[i].totalAttenedCountPer+'%</td>';
+			str+='</tr>';
+			order=order+1;
+			if(order==6)
+				break;
+			BGColor = BGColor - 0.2;
+			}
+			str+='</table>';
+	  }else{
+		  str+='No Data Available';
+	  }	  
+	  str+='</div>';
+	  
+	    if(resultListSecond == null || resultListSecond.length == 0){
+		   $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
+	        $('.progressCustom').tooltip();	
+		  return;
+	  }
+	  
+	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	   if(userTypeId!= null && userTypeId==3){
+		str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
+	  }
+	  str+='<table class="table tableCumulative">';
+      if(resultListSecond != null && resultListSecond.length > 0){
+		  var order=1;
+		  var BGColor = 1;
+		  
+		  for(var i in resultListSecond){
+			str+='<tr>';
+			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
+			str+='<td>'+resultListSecond[i].name+'</td>';
+			str+='<td>';
+				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+resultListSecond[i].totalAttenedCountPer+'%">';
+		str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+resultListSecond[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+resultListSecond[i].totalAttenedCountPer+'%;">';
+			str+='<span class="sr-only">'+resultListSecond[i].totalAttenedCountPer+'</span>';
+			str+='</div>';
+			str+='</div>';
+			str+='</td>';
+			str+='<td class="text-danger">'+resultListSecond[i].totalAttenedCountPer+'%</td>';
+			str+='</tr>';
+			order=order+1;
+			if(order==6)
+				break;
+			BGColor = BGColor - 0.2;
+			}
+			str+='</table>';
+			}else{
+			 str+='No Data Available';	
+			}
+	        str+='</div>';
+																				
+	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
+	 $('.progressCustom').tooltip();
+	 
+   /*  var resultListFirst;
 	var resultListSecond;
     var str='';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
@@ -1547,7 +1615,7 @@ function buildTrainingProgramRslt(result){
 	        str+='</div>';
 																				
 	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
-	 $('.progressCustom').tooltip()
+	 $('.progressCustom').tooltip() */
 	}
 /* Training Funcitons End*/
 

@@ -1929,7 +1929,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-								training - <small class="text-muted trainingDate">up to date</small>
+								training  <small class="text-muted trainingDate"></small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
@@ -1942,7 +1942,7 @@
 							<span class="trainingIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForTraining hide">
+							<span class="input-group pull-right dateRangePickerClsForTraining hide" style="display:none;">
 								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -1969,7 +1969,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
+						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
 							<div class="row">
 							   <div id="programsDtlsCntTableId"></div>
@@ -3266,7 +3266,7 @@
 		stateLevelCampDetailsRepresentativeWise(programIdArr);
 		getStateLevelCampCount(programIdArr); */   
 		getTrainingCampBasicDetailsCntOverview();   
-		getTrainingCampProgramOverviewDtls();   
+		//getTrainingCampProgramOverviewDtls();   
 		//Meeting
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
