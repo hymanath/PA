@@ -566,13 +566,14 @@ function getToursBasicOverviewCountDetails()
 						enabled: false,
 					}
 				},
-				tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
+				tooltip: {formatter: function(){
+					return '<b>Total Tour:'+ Highcharts.numberFormat(this.y, 0) +'</b><br/>'+
+                    'Name: '+ this.x;   
+				}      
 				},
 				plotOptions: {
 					column: {  
-						stacking: 'percent',
+						stacking: 'normal',
 						dataLabels: {
 							enabled: true,
 							 formatter: function() {
@@ -689,14 +690,15 @@ function getToursBasicOverviewCountDetails()
 						enabled: false,
 					}
 				},
-				tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
+				tooltip: {formatter: function(){
+					return '<b>Total Tour:'+ Highcharts.numberFormat(this.y, 0) +'</b><br/>'+
+                    'Name: '+ this.x; 
+				}      
 				},
 
 				plotOptions: {
 					column: {
-						stacking: 'percent',
+						stacking: 'normal',
 						dataLabels: {
 							enabled: true,
 							 formatter: function() {
