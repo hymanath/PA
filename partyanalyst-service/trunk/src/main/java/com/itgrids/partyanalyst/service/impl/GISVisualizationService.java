@@ -373,9 +373,13 @@ public class GISVisualizationService implements IGISVisualizationService{
 			 Double perc  = parentLocationVO.getTodayNewRegCount()*100.0/ todayTarget;
 			 parentLocationVO.setTodayTarget(todayTarget);
 			 parentLocationVO.setTodayRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(perc));
+			 Double newPerc = 0.0;
+			 if(parentLocationVO.getTodayRegCount().longValue() > 0l)
+			 newPerc = parentLocationVO.getTodayNewRegCount()*100.0/parentLocationVO.getTodayRegCount();
+			 Double renPerc = 0.0;
 			 
-			 Double newPerc = parentLocationVO.getTodayNewRegCount()*100.0/parentLocationVO.getTodayRegCount();
-			 Double renPerc = parentLocationVO.getTodayRenewalCount()*100.0/parentLocationVO.getTodayRegCount();
+			 if(parentLocationVO.getTodayRegCount().longValue() > 0l)
+			 renPerc = parentLocationVO.getTodayRenewalCount()*100.0/parentLocationVO.getTodayRegCount();
 			 parentLocationVO.setTodayNewRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(newPerc));
 			 parentLocationVO.setTodayRenewalPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(renPerc));
 			 
