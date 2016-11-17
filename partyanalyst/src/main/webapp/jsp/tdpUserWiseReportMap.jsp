@@ -58,10 +58,11 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel-heading bg_cc">
 							<h4 class="panel-title">
-							<span id="usernameHeading"></span> -USER TRACKING MAP <label style="margin-left: 430px;">Select user</label><span style="color:red"> *</span>
+							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 400px;">Select user</label><span style="color:red"> *</span>
 							 <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
                     	    <option value="0">Select user</option>
                              </select></h4>
+							 <h4><span id="userTrackingId"></span>-USER TRACKING</h4>
 							</div>
 							<div id="map1" style="width: 100%; height: 800px;"></div>
 						</div>
@@ -78,7 +79,8 @@
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
  <!--<script src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
-<script async src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCZ4cuu1YVAs0qkYQdXpSpy2XU0MeuRpt8&libraries=geometry"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ELXOA5iHgPThVcenSQjMwkev64EcZbE&callback=initMap"
+    async defer></script>
 <script type="text/javascript">
 var cadreSurveyUserName = '${param.username}';
 $("#usernameHeading").html(cadreSurveyUserName);
@@ -89,6 +91,8 @@ var pathArr = [];
   var map;
 var glblLat = 17.3700;
 var glblLon = 78.4800;
+	//inputs to build path
+  var flightPlanCoordinates = [];
   
   getUserTrackingDetails();
 	function getUserTrackingDetails(){
@@ -105,12 +109,13 @@ var glblLon = 78.4800;
 		  data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 			markersArr = [];
+			flightPlanCoordinates = [];
 			pathArr = [];
 			if(result != null){
 				$('#map1').html('');
 				if(result.subList1 != null && result.subList1.length > 0){
 					for(var i in result.subList1){
-						//var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
+						var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
 						//pathArr.push(obj);
 						if(i == 0){
 							glblLat = parseFloat(result.subList1[i].latitude).toFixed(2);
@@ -127,6 +132,7 @@ var glblLon = 78.4800;
 						temparr.push(result.subList1[i].longititude);
 						temparr.push(result.subList1[i].surveyTime);
 						markersArr.push(temparr);
+						flightPlanCoordinates.push(temparr);
 						//displayLocation(result.subList1[i].latitude,result.subList1[i].longititude);
 					}
 				}
@@ -151,78 +157,67 @@ var glblLon = 78.4800;
 			else{
 					alert('No Registration staff are available in this Constituency.Please try later...');
 				}
-			//buildUserTrackingMap(markersArr,pathArr);
-			initMap(markersArr);
+			buildUserTrackingMap(markersArr,pathArr);
+			//initMap(markersArr,flightPlanCoordinates);
 		});
-		
 	}
-	
-	function initMap(markersArr) {
+
+function buildUserTrackingMap(markersArr,flightPlanCoordinates) {
+
 		glblLat = parseFloat(glblLat+"00");
 		glblLon = parseFloat(glblLon+"00");
 		//console.log(glblLat);
-	//	console.log(glblLon);
-  var map1 = new google.maps.Map(document.getElementById('map1'), {
-    zoom: 12,
-    center: {lat: glblLat, lng: glblLon},
-    mapTypeId: google.maps.MapTypeId.TERRAIN
-  });
+		//console.log(glblLon);
+		  var map1 = new google.maps.Map(document.getElementById('map1'), {
+			zoom: 12,
+			center: {lat: glblLat, lng: glblLon},
+			mapTypeId: google.maps.MapTypeId.TERRAIN
+		  });
+	  
+	  //inputs to build markers
+	  var locations = markersArr;
+	  
+	//logic to build path
+	  var flightPath = new google.maps.Polyline({
+		path: flightPlanCoordinates,
+		geodesic: true,
+		strokeColor: '#FF0000',
+		strokeOpacity: 1.0,
+		strokeWeight: 2
+	  });
 
-
-	//inputs to build path
-  var flightPlanCoordinates = [];
-  
-  //inputs to build markers
-  var locations = markersArr;
-  
-//logic to build path
-  var flightPath = new google.maps.Polyline({
-    path: flightPlanCoordinates,
-    geodesic: true,
-    strokeColor: '#FF0000',
-    strokeOpacity: 1.0,
-    strokeWeight: 2
-  });
-
-//logic to build markers  
-	var infowindow = new google.maps.InfoWindow();
-	var marker,i;
-	for (i = 0; i < locations.length; i++) {
-		marker = new google.maps.Marker({
-			position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-			map: map1
-		});
-		  
-		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-			return function() {
-				infowindow.setContent(locations[i][0]);
-				infowindow.open(map1, marker);
-			}
-		})(marker, i));
-	}
-	
-	flightPath.setMap(map1);
+	//logic to build markers  
+		var infowindow = new google.maps.InfoWindow();
+		var marker,i;
+		for (i = 0; i < locations.length; i++) {
+			marker = new google.maps.Marker({
+				position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				map: map1
+			});
+			  
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent(locations[i][0]);
+					infowindow.open(map1, marker);
+				}
+			})(marker, i));
+		}
+		
+		flightPath.setMap(map1);
 }
 
-function displayLocation(result,status){
-	
-	var temparr=[];
-					
-					
-					
-					
+/*
+function displayLocation(result,status){	
+		var temparr=[];
         var request = new XMLHttpRequest();
-
         var method = 'GET';
         var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+result.latitude+','+result.longititude+'&sensor=true';
-        var async = true;
-		
+        var async = true;		
         request.open(method, url, async);
         request.onreadystatechange = function(){
           if(request.readyState == 4 && request.status == 200){
             var data = JSON.parse(request.responseText);
-            var address = data.results[0];
-			
+            var address = data.results[0];			
 			
 			if(address != "undefined" && address !== undefined){
 				temparr.push("Name : "+result.tdpCadreName+"<br/>Mobile No : "+result.tdpCadreMbl+"<br/> SurveyTime: "+result.surveyTime+"<br/> Location : "+address.formatted_address+"");
@@ -241,16 +236,15 @@ function displayLocation(result,status){
 				initMap(markersArr);
 			}
 			
-		}, 1000);
-		
-      };
-	  
-	  getFieldMonitoringMapReportDetails();
+		}, 1000);		
+}*/ 
+	 
+getFieldMonitoringMapReportDetails();
 function getFieldMonitoringMapReportDetails(){
 	var userName = "${param.username}";
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
-	
+
 	var jsObj ={
 		constitunecyId : "${param.constistuencyId}",
 		fieldUserId : "${param.fieldUserId}"
@@ -264,23 +258,28 @@ function getFieldMonitoringMapReportDetails(){
 			if(result != null && result.length > 0){
 				for(var i in result){
 					if("${param.userId}" == ""){
-						var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+result[i].id ;
+						var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+result[i].id+"&cadreName="+result[i].cadreName;
 						var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
+						$("#userTrackingId").text("${param.cadreName}");
 					}
 				$("#mapId").append('<option value='+result[i].id+'>'+result[i].cadreName+'</option>');
 				}
 				$("#mapId").val("${param.userId}");
+				$("#userTrackingId").text("${param.cadreName}");
 			}
+				
 		});
 }
 function showMapDetails(value){
+	var cadreUserId=$( "#mapId option:selected" ).text();
 	var userName = "${param.username}";
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value ;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
-	
+	$("#userTrackingId").text("${param.userId}");
 }
+
 </script>
 </body>
 </html>
