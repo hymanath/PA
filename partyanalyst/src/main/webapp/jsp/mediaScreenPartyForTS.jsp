@@ -350,7 +350,7 @@ setInterval(function() {
   }, 60 * 1000)
 
 function refreshFunctions(){
-	alert(123);
+	//alert(123);
 	var value = $('input[name=radio]:checked').val();
 	
 	if(value == 1){
