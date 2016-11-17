@@ -314,7 +314,7 @@ function getpartyWiseChannelCounts(result){
 		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>';
 		for(var i=1;i<(result.length-1);i++)
 		{
-			str+='<h4 class="panel-title m_top20"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" class="debatesPartyIcon"/>'+result[i].organization+'</h4>';
+			str+='<h4 class="panel-title m_top10"><img src="newCoreDashBoard/img/'+result[i].organization+'.png" class="debatesPartyIcon"/>'+result[i].organization+'</h4>';
 			if($(window).width() < 500)
 			{
 				str+='<div class="table-responsive m_XsTop10">';
@@ -361,7 +361,7 @@ function getpartyWiseChannelCounts(result){
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total</h5>';
-					str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[EmnG].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].categoryCount+'</a></h4>';
+					str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].categoryCount+'</a></h4>';
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
 					str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
 				str+='</td>';
@@ -370,9 +370,9 @@ function getpartyWiseChannelCounts(result){
 					str+='<td>';
 						str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[j].organization+'</h5>';
 						if(result[EmnG].tvNewsDetailsVOList[j].title =="category"){
-							str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[EmnG].organizationId+' attr_categoryId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 						}else if(result[EmnG].tvNewsDetailsVOList[j].title =="benefit"){
-							str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[EmnG].organizationId+' attr_categoryId=" " attr_benefitId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="Y" attr_searchType="benefit" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId=" " attr_benefitId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="Y" attr_searchType="benefit" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 						}
 						
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
@@ -386,7 +386,7 @@ function getpartyWiseChannelCounts(result){
 			str+='</div>';
 		}
 	}else{
-		str+='<h4 class="panel-title m_top20">NO DATA AVAILABLE</h4>';
+		str+='<h4 class="panel-title m_top10">NO DATA AVAILABLE</h4>';
 	}
 	$("#electronicMediaChannelCountId").html(str);
 }
