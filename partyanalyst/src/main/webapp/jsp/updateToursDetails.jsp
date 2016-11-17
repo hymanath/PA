@@ -203,6 +203,22 @@
 	</div>
 </div>
 <!-- Modal -->
+<div class="modal fade" tabindex="-1" id="tourReportPdfModelId" role="dialog">
+			<div class="modal-dialog" style="width:70%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">LEADERS TOUR REPORT DETAILS</h4>
+					</div>
+					<div class="modal-body" id="tourReportPdfDetailsId">  
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->  
+<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:80%">
     <div class="modal-content">
@@ -275,11 +291,15 @@
 <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>     
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>    
 <script type="text/javascript">
-//$("#uploadFile").dropzone({ url: "/file/post" });
+//getting Dynamic Browser URL
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
+wurl = wurl.replace("/PartyAnalyst","");  
+//alert(wurl);
 $(document).on("click",".submitedDataModal",function(){
 	$("#myModal").modal('show');
 });
-$('.selectChosen').chosen({width:'100%'})
+$('.selectChosen').chosen({width:'100%'})      
 </script>
 </body>
 </html>  
