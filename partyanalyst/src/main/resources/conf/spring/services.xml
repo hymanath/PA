@@ -1619,7 +1619,7 @@
     
       <bean name="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" />
-    	<property name="cronExpression" value="0 20 0/1 * * ?" />
+    	<property name="cronExpression" value="0 20 0/2 * * ?" />
 	</bean>
     <bean name="insertTriggerForTdpCadreTotalTodayWiseLowLevelPush" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
