@@ -237,11 +237,11 @@ public List<Object[]> getLocationTypeWiseLocationName(Long stateId,String Locati
 	   if(stateId != null && stateId.longValue()==1l && isKuppamExcluded != null && isKuppamExcluded.equalsIgnoreCase("True")){
 		  queryStr.append(" and model.constituencyId not in(282) ");  
 	   }
-	   if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	   if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID && accessLevelValue != null && accessLevelValue.size() > 0){
 		    queryStr.append(" and  model.district.districtId in (:accessLevelValue) ");
 	   }
 	    Query query = getSession().createQuery(queryStr.toString());
-	    if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	    if(accessLevelId != null && accessLevelId==IConstants.DISTRICT_LEVEl_ACCESS_ID && accessLevelValue != null && accessLevelValue.size() > 0 ){
 	      query.setParameterList("accessLevelValue", accessLevelValue);
 	    }
 	    return query.list();
