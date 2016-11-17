@@ -5,7 +5,7 @@
 	
 	var currentFromDate = moment().format("DD-MM-YYYY");
 	var currentToDate = moment().format("DD-MM-YYYY");
-	var newsPaperIdsGlob = [1,2,3];
+	var newsPaperIdsGlob = [1,2,3,10,11,12];
 	var impactScopeIdsGlob = [1,2,3,4,5,6,8];
 	$(document).ready(function(){
 		$("#dateRangeIdForNews").daterangepicker({
