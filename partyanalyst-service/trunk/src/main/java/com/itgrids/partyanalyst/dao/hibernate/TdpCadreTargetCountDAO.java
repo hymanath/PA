@@ -445,17 +445,16 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 		
 		       StringBuilder queryStr = new StringBuilder();  
 		        queryStr.append("select ");
-		        
-		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		    	   queryStr.append(" model1.district.districtId,");  
-		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		    	   queryStr.append(" model2.districtId,"); 
 		       }
 		        queryStr.append(" sum(model.targetCount) from TdpCadreTargetCount model ");
-		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam") ){
 		         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
 							    "  and model1.deformDate is null ");
-		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
 		        }
 				queryStr.append(" and model.enrollmentYear.enrollmentYearId=:enrollmentYearId and model.isDeleted='N' ");
@@ -464,9 +463,9 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 		   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
 		       }
 		       queryStr.append(" and model.locationScopeId=:locationScopeId ");
-		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		    	   queryStr.append(" group by model1.district.districtId ");  
-		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		    	   queryStr.append(" group by model2.districtId "); 
 		       }
 		       Query query = getSession().createQuery(queryStr.toString());

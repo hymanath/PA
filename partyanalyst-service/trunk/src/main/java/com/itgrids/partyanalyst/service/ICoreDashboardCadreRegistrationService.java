@@ -31,7 +31,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public CadreResponseVO savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
 	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr);
 	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr,String sortingType);
-	public List<CadreReportVO> getLocationWiseCadreDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded,String sortingType);
+	public List<CadreReportVO> getApAndTsConstituenciesDtls(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded,String sortingType);
 	public CadreReportVO getApAndTsDistrictList();
 	public List<IdAndNameVO> getOccupationList();
 	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate);
@@ -53,5 +53,6 @@ public interface ICoreDashboardCadreRegistrationService {
  	public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option);
 	public List<CadreReportVO> getTodayAndYesterdayTabUserRgstrtnComparisonDetails(Long stateId);
 	public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr);
-	 public CadreRegistratedCountVO getStateWiseMandalMuncipalityNotStartedCount(Long stateId);
+	public CadreRegistratedCountVO getStateWiseMandalMuncipalityNotStartedCount(Long stateId);
+	public List<CadreReportVO> getTsDistrictDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String sortingType);
 }

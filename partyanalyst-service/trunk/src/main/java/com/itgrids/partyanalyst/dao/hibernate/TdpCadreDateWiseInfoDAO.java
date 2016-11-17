@@ -121,79 +121,91 @@ return query.list();
 }
    public List<Object[]> get2016TotalCadreCountBasedOnUserType(List<Long> locationValue,Date fromDate,Date toDate,Long userTypeId,Long activityMemberId){
 	
-    StringBuilder queryStr = new StringBuilder();  
-    
-       queryStr.append("select distinct ");
-     
-	   if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-		 	 if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
-		  		 queryStr.append(" model1.district.districtId, ");; 
-		  	  }else{
-		  		 queryStr.append(" model2.districtId, ");
-		  	  }  
-	   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-		|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-	 	     queryStr.append(" model1.constituencyId,");  
-	   }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-		     queryStr.append(" model3.assemblyId,") ; 
-	   }
-       queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
-    
-      if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-   	      if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
-      		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
-      	  }else{
-      		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
-      	  }  
-      }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-	  || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-   	       queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model.locationScopeId=4 and model1.deformDate is null "); 
-      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-         	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
-      }
-	    if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
-	     	  if(locationValue != null && locationValue.size() > 0){
-	   	      queryStr.append("  and model1.district.districtId in (:locationValue) ");	
-	     	  }
-		 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-			 if(locationValue != null && locationValue.size() > 0){
-				 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
-			 } 
-		 }else if(locationValue != null && locationValue.size() > 0){
-			 if(locationValue != null && locationValue.size() > 0){
-	 	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
-			 }
-	 	 }
-	   	if(fromDate!= null && toDate!=null){
-		      queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-	   	}
-
-        if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-		     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
-       		 queryStr.append(" group by model1.district.districtId ");; 
-       	}else{
-       		 queryStr.append(" group by model2.districtId ");
-       	}   
-	   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-   	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-		 queryStr.append("  group by model1.constituencyId ");
-	   }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-		 queryStr.append("  group by  model3.assemblyId ");
-	   }
-	  Query query = getSession().createQuery(queryStr.toString());
-	  if(fromDate!= null && toDate!=null){
-		 query.setDate("fromDate", fromDate);
-	     query.setDate("toDate", toDate);
-	  }
-	  if(locationValue != null && locationValue.size() > 0){
-		query.setParameterList("locationValue", locationValue);  
-	  }
+		        StringBuilder queryStr = new StringBuilder();  
+		        queryStr.append("select distinct ");
+    		   if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+					 	  if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+					  		 queryStr.append(" model1.district.districtId, ");; 
+					  	  }else{
+					  		 queryStr.append(" model2.districtId, ");
+					  	  }  
+			   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+				|| userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+					   if(activityMemberId != null && activityMemberId.longValue()==53l){
+			      		  queryStr.append(" model4.constituencyId,");	  
+			           }else{
+				 	     queryStr.append(" model1.constituencyId,");  
+			           }
+			   }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+				     queryStr.append(" model3.assemblyId,") ; 
+			   }
+		       queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
+		      if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+			   	      if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+			      		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
+			      	  }else{
+			      		 queryStr.append(" ,District model2 where model2.districtId = model.locationValue and model.locationScopeId=3 ");
+			      	  }  
+		      }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+			  || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+			    	  if(activityMemberId != null && activityMemberId.longValue()==53l){//53 ActivityMemberId person is one District President.He has access some constituencies Those Constituencies has mapped in this Table.
+			        	  queryStr.append(" ,DistrictConstituencies model4 where model4.constituencyId=model.locationValue and model.locationScopeId=4 ");
+			          }else{
+			   	       queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model.locationScopeId=4 and model1.deformDate is null ");
+			          }
+		      }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+		         	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
+		      }
+		     if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
+		     	  if(locationValue != null && locationValue.size() > 0){
+			     		 if(activityMemberId != null && activityMemberId.longValue()==53l){
+		           			 queryStr.append("  and model4.districtId in (:locationValue) ");
+		           		 }else{
+		           			 queryStr.append("  and model1.district.districtId in (:locationValue) "); 
+		           		 }
+		   	      }
+		     	 if(activityMemberId != null && activityMemberId.longValue()==50l){//50 ActivityMemberId person is one District President.He has Access only this constituency(354,355,356,357,358,368).so that we are removing remaining constituencies
+			    	  queryStr.append(" and model1.constituencyId not in (133,134,135,136,137,138,140,141,359)");
+			     }
+			 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+				 if(locationValue != null && locationValue.size() > 0){
+					 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
+				 } 
+			 }else if(locationValue != null && locationValue.size() > 0){
+		 	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
+		 	 }
+		   	if(fromDate!= null && toDate!=null){
+			      queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
+		   	}
+			if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+			     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+		   		 queryStr.append(" group by model1.district.districtId ");; 
+			     }else{
+		   		 queryStr.append(" group by model2.districtId ");
+			     }   
+		   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+		     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+			    if(activityMemberId != null && activityMemberId.longValue()==53l){
+				 queryStr.append("  group by model4.constituencyId ");
+			    }else{
+			     queryStr.append("  group by model1.constituencyId ");
+			    }
+		   }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+			  queryStr.append("  group by  model3.assemblyId ");
+		   }
+		  Query query = getSession().createQuery(queryStr.toString());
+		  if(fromDate!= null && toDate!=null){
+			 query.setDate("fromDate", fromDate);
+		     query.setDate("toDate", toDate);
+		  }
+		  if(locationValue != null && locationValue.size() > 0){
+			query.setParameterList("locationValue", locationValue);  
+		  }
   return query.list();
   }
   public List<Object[]> get2016TotalRenewalCadreCountBasedOnUserType(List<Long> locationValue,Date fromDate,Date toDate,Long userTypeId,Long activityMemberId){
 		
-      StringBuilder queryStr = new StringBuilder();  
- 
+         StringBuilder queryStr = new StringBuilder();  
          queryStr.append("select distinct ");
          if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
       	     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
@@ -203,12 +215,15 @@ return query.list();
            	  }   
          }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
    	     || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-       	    queryStr.append(" model1.constituencyId,");  
+        	 if(activityMemberId != null && activityMemberId.longValue()==53l){
+         		  queryStr.append(" model4.constituencyId,");	  
+              }else{
+            	  queryStr.append(" model1.constituencyId,");  
+              }
          }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
     	     queryStr.append(" model3.assemblyId,") ; 
          }
          queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
-     
          if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
        	      if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
          		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
@@ -217,41 +232,52 @@ return query.list();
          	  }
          }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
    	      || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+        	 if(activityMemberId != null && activityMemberId.longValue()==53l){//53 ActivityMemberId person is one District President.He has access some constituencies Those Constituencies has mapped in this Table.
+           	  queryStr.append(" ,DistrictConstituencies model4 where model4.constituencyId=model.locationValue and model.locationScopeId=4 ");
+             }else{
        	     queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model.locationScopeId=4 and model1.deformDate is null ");
+             }
           }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
         	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
           }
-        	 
          if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
 	     	  if(locationValue != null && locationValue.size() > 0){
-	   	      queryStr.append("  and model1.district.districtId in (:locationValue) ");	
+		     		 if(activityMemberId != null && activityMemberId.longValue()==53l){
+	           			 queryStr.append("  and model4.districtId in (:locationValue) ");
+	           		 }else{
+	           			 queryStr.append("  and model1.district.districtId in (:locationValue) "); 
+	           		 }	
 	     	  }
+	     	  if(activityMemberId != null && activityMemberId.longValue()==50l){//50 ActivityMemberId person is one District President.He has Access only this constituency(354,355,356,357,358,368).so that we are removing remaining constituencies
+    	    	  queryStr.append(" and model1.constituencyId not in (133,134,135,136,137,138,140,141,359)");
+    	      }
 		 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
 			 if(locationValue != null && locationValue.size() > 0){
 				 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
 			 } 
 		 }else if(locationValue != null && locationValue.size() > 0){
-			 if(locationValue != null && locationValue.size() > 0){
-	 	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
-			 }
-	 	 }
+		 	    queryStr.append(" and model.locationValue in (:locationValue)");  
+		 }
         if(fromDate!= null && toDate!=null){
 		    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-		  }
-	      
-        if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-	  	     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
-	      		 queryStr.append(" group by model1.district.districtId ");; 
-	      	  }else{
-	      		 queryStr.append(" group by model2.districtId ");
-	      	  }   
+		}
+	    if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		  	     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
+		      		 queryStr.append(" group by model1.district.districtId ");; 
+		      	  }else{
+		      		 queryStr.append(" group by model2.districtId ");
+		      	  }   
 		 }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 	      || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
-			 queryStr.append("  group by model1.constituencyId ");
+			    if(activityMemberId != null && activityMemberId.longValue()==53l){
+		  			 queryStr.append("  group by model4.constituencyId ");
+		  		 }else{
+				     queryStr.append("  group by model1.constituencyId ");
+		  		 }
 		 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-			 queryStr.append("  group by  model3.assemblyId ");
+			   queryStr.append("  group by  model3.assemblyId ");
 		 }
-	  Query query = getSession().createQuery(queryStr.toString());
+	   Query query = getSession().createQuery(queryStr.toString());
 	  if(fromDate!= null && toDate!=null){
 		 query.setDate("fromDate", fromDate);
 	     query.setDate("toDate", toDate);
@@ -834,16 +860,16 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 		       StringBuilder queryStr = new StringBuilder();  
 		        queryStr.append("select ");
 		        
-		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		    	   queryStr.append(" model1.district.districtId,");  
-		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		    	   queryStr.append(" model2.districtId,"); 
 		       }
 		        queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
-		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
 							    "  and model1.deformDate is null ");
-		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
 		        }
 		        if(fromDate!= null && toDate!=null){
@@ -853,9 +879,9 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 		   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
 		       }
 		       queryStr.append(" and model.locationScopeId=:locationScopeId ");
-		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		    	   queryStr.append(" group by model1.district.districtId ");  
-		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		    	   queryStr.append(" group by model2.districtId "); 
 		       }
 		       Query query = getSession().createQuery(queryStr.toString());
@@ -874,16 +900,16 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 		       StringBuilder queryStr = new StringBuilder();  
 		        queryStr.append("select ");
 		        
-		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		    	   queryStr.append(" model1.district.districtId,");  
-		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		    	   queryStr.append(" model2.districtId,"); 
 		       }
 		        queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
-		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		        if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam") ){
 		         queryStr.append(" ,Constituency model1 where model1.constituencyId=model.locationValue and model1.electionScope.electionScopeId=2 " +
 							    "  and model1.deformDate is null ");
-		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		        }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		        	 queryStr.append(" ,DistrictConstituencies model2 where model2.constituencyId=model.locationValue ");
 		        }
 		        if(fromDate!= null && toDate!=null){
@@ -893,9 +919,9 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 		   	     queryStr.append(" and model.locationValue in(:constituencyIds) ");
 		       }
 		       queryStr.append(" and model.locationScopeId=:locationScopeId ");
-		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad")){
+		       if(districtName != null && districtName.equalsIgnoreCase("Adilabad") || districtName.equalsIgnoreCase("Visakhapatnam")){
 		    	   queryStr.append(" group by model1.district.districtId ");  
-		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial")){
+		       }else if(districtName != null && districtName.equalsIgnoreCase("Mancherial") || districtName.equalsIgnoreCase("Visakhapatnam Rural")){
 		    	   queryStr.append(" group by model2.districtId "); 
 		       }
 		       Query query = getSession().createQuery(queryStr.toString());

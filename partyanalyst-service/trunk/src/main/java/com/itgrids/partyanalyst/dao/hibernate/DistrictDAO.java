@@ -435,10 +435,11 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 			}*/
 			return query.list();
 		}
-		public List<Object[]> getSpecificDistrictIdAndName(){
+		public List<Object[]> getSpecificDistrictIdAndName(List<Long> districtIds){
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select model.districtId,model.districtName from District model where model.districtId in (1,518) ");
+			queryStr.append(" select model.districtId,model.districtName from District model where model.districtId in (:districtIds) ");
 			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameterList("districtIds", districtIds);
 			return query.list();
 		}
 }
