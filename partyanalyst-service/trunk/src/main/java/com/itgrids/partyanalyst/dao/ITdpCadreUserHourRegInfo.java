@@ -24,4 +24,5 @@ public interface ITdpCadreUserHourRegInfo extends GenericDao<TdpCadreUserHourReg
 	public int insertCadreDataByUserWiseHourWise();
 	public int insertCadreDataByUserWiseHourWiseOverall();
 	public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type);
+	public List<Object[]> getRegDtlsHourWiseList(Long cadreSurveyUserId,Date surveyDate);
 }
