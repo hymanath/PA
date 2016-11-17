@@ -360,7 +360,7 @@ function getConstituencyWiseDisrictList3(type,stateId,sortType){
 }
 function buildingConstituencyList(result,divId,type,sortType){
 	var str='';
-	str+='<div class="'+divId+'" style="height:170px;overflow-y:scroll;">';
+	str+='<div class="'+divId+'" style="height:160px;overflow-y:scroll;">';
 		str+='<table class="table table-condensed" style="margin-bottom:0px;">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
