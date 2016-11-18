@@ -1890,7 +1890,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get training camp program details count by user type.. 
 	*  @since 23-AUGUST-2016
 	*/
-/*	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId){
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId){
 		String status = "leadership";
 		List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 		Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
@@ -1934,7 +1934,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				 if(twnDivDtlsMap != null && twnDivDtlsMap.size() > 0){ //
 		               /* for town division scenario .there may be change in mandal level record is not there but
 						in town division record is there*/
-					/* for(Entry<Long, List<TrainingCampProgramVO>> entry:twnDivDtlsMap.entrySet()){
+					 for(Entry<Long, List<TrainingCampProgramVO>> entry:twnDivDtlsMap.entrySet()){
 						 TrainingCampProgramVO programVO = new TrainingCampProgramVO();
 						        programVO.setId(entry.getKey());
 						        programVO.setName(twnDivisionProgramIdNameMap.get(entry.getKey()));
@@ -2024,7 +2024,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
     	}catch(Exception e){
     		 LOG.error("Error occured at setAttendedDataToMap() in CoreDashboardMainService {}",e);	
     	}
-    }*/
+    }
 	
 	/**
 	* @param  Long userAccessLevelId
@@ -2035,7 +2035,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get training camp program details count by user type.. 
 	*  @since 10-NOV-2016
 	*/
-	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId){
+/*	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId,Long activityMemberId){
 		List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 		Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
 		Map<Long,String> programIdNameMap = new HashMap<Long, String>();
@@ -2102,7 +2102,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	  }catch(Exception e){
 		  LOG.error("Error occured at setTrainingCampProgramDtlsToMap() in CoreDashboardMainService {}",e);  
 	  }
-  }
+  } */
   
   /**
 	* @param  Long userId
@@ -2519,7 +2519,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
 	* @param String reportType
-	*  @param Long stateId
+	*  @param Long stateId 
 	* @return List<UserTypeVO>
 	* @author Santosh 
 	* @Description :This Service Method is used to get selected child member and for userType.. 
@@ -2637,7 +2637,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get top5 poor Training Camp Program locations attended counts. 
 	*  @since 29-AUGUST-2016
 	*/
- /* public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String toDateStr){
+  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String toDateStr){
 	  
 	  TrainingCampProgramVO resultVO = new TrainingCampProgramVO();
 	  Map<Long,TrainingCampProgramVO> eligibleMembersMap = new HashMap<Long, TrainingCampProgramVO>();
@@ -2804,7 +2804,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	//ascending order of percantages.
 	 return perc2.compareTo(perc1);
 	}
-	}; */
+	}; 
 	/**
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
@@ -2814,7 +2814,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get top5 poor Training Camp Program locations attended counts. 
 	*  @since 10-NOV-2016
 	*/
-  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String toDateStr){
+/*  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String toDateStr){
 	  
 	  TrainingCampProgramVO resultVO = new TrainingCampProgramVO();
 	  Map<Long,TrainingCampProgramVO> trainingCampDtlsMap = new HashMap<Long, TrainingCampProgramVO>();
@@ -2914,7 +2914,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	//ascending order of percantages.
 	 return perc2.compareTo(perc1);
 	}
-	}; 
+	}; */
 	/**
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
