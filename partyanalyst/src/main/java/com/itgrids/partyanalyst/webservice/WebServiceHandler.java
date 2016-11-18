@@ -40,7 +40,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
-import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
+import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
@@ -2110,7 +2110,7 @@ public class WebServiceHandler {
 	    @Path("/Secure/getCadreRegistrationIssuesStatusDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public FieldMonitoringVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO)
+		public GISIssuesVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO)
 	    {
 			return webServiceHandlerService.getCadreRegistrationIssuesStatusDetails(inputVO);
 		}

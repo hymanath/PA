@@ -2342,7 +2342,8 @@
 	  <property name="constituencyDAO" ref="constituencyDAO"/> 
 	  <property name="delimitationConstituencyMandalDetailsDAO" ref="delimitationConstituencyMandalDetailsDAO"/> 
 	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/> 
-	   <property name="panchayatDAO" ref="panchayatDAO"/> 
+	   <property name="panchayatDAO" ref="panchayatDAO"/>
+	   <property name="fieldMonitoringService" ref="fieldMonitoringService"/> 
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
