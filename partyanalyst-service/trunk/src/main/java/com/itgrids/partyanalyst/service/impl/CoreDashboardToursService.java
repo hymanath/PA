@@ -890,7 +890,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   }
 					 }
 			 }
-			 if(locationAccessLevelId == 2l){//state access
+			 if(locationAccessLevelId == 2l || locationAccessLevelId == 4l){//state access And PARLIAMENT Access
 				
 				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursSubmittedCandidateCntAndNoOfToursDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
 				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
