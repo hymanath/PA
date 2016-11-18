@@ -19,6 +19,7 @@ public class TdpCadreDataSourceTypeInfo {
 	
 	private Long tdpCadreDataSourceTypeInfoId;
 	private String type;
+	private Long   stateId;
 	private String dataSourceType;
 	private Long cadre2016;
 	private Long newCadre;
@@ -93,5 +94,12 @@ public class TdpCadreDataSourceTypeInfo {
 		this.insertedTime = insertedTime;
 	}
 	
+	@Column(name = "state_id")
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
 	
 }
