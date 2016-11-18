@@ -489,6 +489,10 @@ $(document).on("click",".radioCls",function(){
 		$(".counts").hide();
 	}	
 });
+
+$(document).ready(function(){
+	$("input[name=radio][value='1']").prop("checked",true);
+});
 </script>		
 </body>
 </html>
