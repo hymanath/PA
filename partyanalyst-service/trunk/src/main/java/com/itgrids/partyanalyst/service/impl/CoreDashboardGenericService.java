@@ -511,10 +511,10 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 						values = districtDAO.getDistrictNamesByIds(new ArrayList<Long>(locationLevelValues));
 						suffix = " District";
 					}else if(locationLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-						values = constituencyDAO.getConstituenctNamesByIds(new ArrayList<Long>(locationLevelValues));
+						values = constituencyDAO.getConstituenciesNamesByIds(new ArrayList<Long>(locationLevelValues));
 						suffix = " Parliament";
 					}else if(locationLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-						values = constituencyDAO.getConstituenctNamesByIds(new ArrayList<Long>(locationLevelValues));
+						values = constituencyDAO.getConstituenciesNamesByIds(new ArrayList<Long>(locationLevelValues));
 						suffix = " Constituency";
 					}
 					
