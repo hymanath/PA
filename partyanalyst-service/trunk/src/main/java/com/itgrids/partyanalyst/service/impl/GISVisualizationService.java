@@ -1761,6 +1761,8 @@ public class GISVisualizationService implements IGISVisualizationService{
 					if(vo != null){
 						vo.setTodayActiveCount(Long.valueOf(vo.getTodayActiveUsersList() != null?String.valueOf(vo.getTodayActiveUsersList().size()):"0"));
 						vo.setTodayInActiveCount(vo.getAllocatedCount() - vo.getTodayActiveCount());
+						vo.setLastOneHrInActiveCount(vo.getTodayActiveCount() - vo.getLastOneHrActiveCount());
+						
 						if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 							vo.getLastOneHrActiveusersList().clear();
 							vo.getLastOneHrInActiveusersList().clear();
