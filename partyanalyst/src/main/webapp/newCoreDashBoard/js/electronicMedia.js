@@ -431,8 +431,13 @@ function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 		
 		for(var j in result[i].tvNewsDetailsVOList1){
 			locationNameArr.push(result[i].tvNewsDetailsVOList1[j].organization)
-			PositiveCntArr.push(result[i].tvNewsDetailsVOList1[j].positiveTime)
-			NegativeCntArr.push(result[i].tvNewsDetailsVOList1[j].negativeTime)
+			if(locationLevelIdGlb == 2){
+				PositiveCntArr.push({"y":result[i].tvNewsDetailsVOList1[j].positiveTime,"extra":"3-"+result[i].tvNewsDetailsVOList1[j].organizationId+"-"+result[i].organizationId+"-1"});
+				NegativeCntArr.push({"y":result[i].tvNewsDetailsVOList1[j].negativeTime,"extra":"3-"+result[i].tvNewsDetailsVOList1[j].organizationId+"-"+result[i].organizationId+"-2"});
+			}else{
+				PositiveCntArr.push({"y":result[i].tvNewsDetailsVOList1[j].positiveTime,"extra":locationLevelIdGlb+"-"+locationValueArrGlb+"-"+result[i].organizationId+"-1"});
+				NegativeCntArr.push({"y":result[i].tvNewsDetailsVOList1[j].negativeTime,"extra":locationLevelIdGlb+"-"+locationValueArrGlb+"-"+result[i].organizationId+"-2"});
+			}
 		}
 		
 		$("#EMNDistrictWiseGraph"+i).highcharts({
@@ -506,8 +511,19 @@ function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 							}
 						}
 					  
-					},
-				}
+					}
+					
+				},
+				series: {
+					cursor: 'pointer',
+					point: {
+						events: {
+							click: function () {
+								getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(this.extra);
+							}
+						}
+					}
+				},
 			},
 			series: [{
 				name: 'Positive',
@@ -523,6 +539,12 @@ function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 	}
 }
 
+function getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(val){
+	 var t = val.split("-");
+	  
+	  window.open('showElectronicBulletinsAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&npsStr='+newsChannelsIdsGlbl+'&scops='+impactScopeIds+'&orgIdStr='+t[2]+'&orgType=N&bfIds='+t[3]+'&stIdx=0&edIdx=6&callFrom=districtWiseProgramDetailsForParty','_blank');
+	
+}
 function getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type)
 {
 	$("#electronicMediaPrograms").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -630,18 +652,17 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 							}
 						}
 					  
-					},
+					}
+				},
+				series: {
 					point: {
 					  events: {
 						click: function () {
 						  getArticlesForPartyDetailedDistEdiPartiesOverView(this.extra);
-			  
-						
 						}
 					  }
 					}
-
-				}
+				}	
 			},
 
 			 tooltip: {
