@@ -36,7 +36,7 @@
 		if(picker.chosenLabel == "Today"){
 			$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
 		}else{
-			$("#currentViewing").html(picker.chosenLabel+" ( "+currentFromDate+" to "+currentToDate+" )");
+			$("#currentViewing").html(picker.chosenLabel+"("+currentFromDate+" to "+currentToDate+")");
 		}
 		
 		commonNewsBasicCalls();
@@ -7123,7 +7123,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			if(picker.chosenLabel == "Today"){
 				$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
 			}else{
-				$("#currentViewing").html(picker.chosenLabel+" ( "+currentFromDate+" to "+currentToDate+" )");
+				$("#currentViewing").html(picker.chosenLabel+"("+currentFromDate+" to "+currentToDate+")");
 			}
 			commonNewsBasicCalls();
 			
