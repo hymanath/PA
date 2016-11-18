@@ -18,6 +18,9 @@ public class CadreBasicVO {
 	private String deviceUserName;
 	private String userMobileNo;
 	private String imagePathStr;
+	private Long totalRegCount;
+	private Long todayRegCount;
+	private Long currentHourRegCount;
 	
 	private List<CadreBasicVO> subList1;
 	private List<CadreBasicVO> subList2;
@@ -125,5 +128,24 @@ public class CadreBasicVO {
 	public void setSubList3(List<FieldReportVO> subList3) {
 		this.subList3 = subList3;
 	}
+	public Long getTotalRegCount() {
+		return totalRegCount;
+	}
+	public void setTotalRegCount(Long totalRegCount) {
+		this.totalRegCount = totalRegCount;
+	}
+	public Long getTodayRegCount() {
+		return todayRegCount;
+	}
+	public void setTodayRegCount(Long todayRegCount) {
+		this.todayRegCount = todayRegCount;
+	}
+	public Long getCurrentHourRegCount() {
+		return currentHourRegCount;
+	}
+	public void setCurrentHourRegCount(Long currentHourRegCount) {
+		this.currentHourRegCount = currentHourRegCount;
+	}
+	
 	
 }
