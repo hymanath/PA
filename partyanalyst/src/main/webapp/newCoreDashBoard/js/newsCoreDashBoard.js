@@ -7095,7 +7095,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		}else if(type == "lastMonth"){
 			currentFromDate = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
 			currentToDate = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
-			$("#currentViewing").html("Last Month ( "+currentFromDate+" to "+currentToDate+" )");
+			$("#currentViewing").html("Last Month("+currentFromDate+" to "+currentToDate+")");
 			commonNewsBasicCalls();
 		}
 		
