@@ -167,7 +167,7 @@ h1,h2,h3,h4,h5,h6,.table
 							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital" style="font-size:12px;"><span style="color:#3A98DE">Today TOp 20</span></h5>
+							<h5 class="text-capital" style="font-size:12px;"><span style="color:#3A98DE">Today TOp</span></h5>
 							<h4 class="text-capital">Districts in ap</h4>
 							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
 							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
@@ -211,7 +211,7 @@ h1,h2,h3,h4,h5,h6,.table
 							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital" style="font-size:12px;"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
+							<h5 class="text-capital" style="font-size:12px;"><span style="color:#9D0D3E">OverAll Top</span></h5>
 							<h4 class="text-capital">District in ap</h4>
 							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
 							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
@@ -232,8 +232,8 @@ h1,h2,h3,h4,h5,h6,.table
 							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
 						</div>
 						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h4 class="text-capital" style="font-size:12px;">Constituencies in ap</h4>
+							<h5 class="text-capital" style="font-size:12px;"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
+							<h4 class="text-capital">Constituencies in ap</h4>
 							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
 							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
 						</div>
