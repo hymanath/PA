@@ -30,7 +30,7 @@ public class TdpCadreDataSourceTypeInfoDAO extends GenericDaoHibernate<TdpCadreD
 					  " where   model.isDeleted = 'N' and model.tdpCadre.isDe" +
 					  "leted = 'N' and "+
 					  "         model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId and" +
-					  "         (model.tdpCadre.insertedWebUser.userId not in (3930,7394) or model.tdpCadre.insertedWebUser.userId is null) " );
+					  "         ( model.tdpCadre.insertedUserId not in ("+IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS+","+IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS+")  or model.tdpCadre.insertedUserId is null) " );
 			if(date != null){
 				sb.append(" and date(model.tdpCadre.surveyTime) =  :date ");
 			}
@@ -54,7 +54,7 @@ public class TdpCadreDataSourceTypeInfoDAO extends GenericDaoHibernate<TdpCadreD
 					  "         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
 					  "         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
 					  "         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear " +
-					  "  and (tc.insertedWebUser.userId not in (3930,7394) or tc.insertedWebUser.userId is null) ");
+					  "  and (tc.insertedUserId not in ("+IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS+","+IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS+") or tc.insertedUserId is null) ");
 					  
 			if(date != null){
 				sb.append(" and date(tc.surveyTime) = :date");
@@ -78,7 +78,7 @@ public class TdpCadreDataSourceTypeInfoDAO extends GenericDaoHibernate<TdpCadreD
 					  " from    TdpCadreEnrollmentYear model " +
 					  " where   model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and "+
 					  "         model.tdpCadre.enrollmentYear = 2014 and model.enrollmentYearId = :enrollmentYearId " +
-					  " and model.tdpCadre.insertedWebUser.userId in (3930,7394) " );
+					  " and model.tdpCadre.insertedUserId in ("+IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS+","+IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS+") " );
 			if( date != null ){
 				sb.append(" and date(model.tdpCadre.surveyTime) = :date ");
 			}
@@ -102,7 +102,7 @@ public class TdpCadreDataSourceTypeInfoDAO extends GenericDaoHibernate<TdpCadreD
 					  "         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
 					  "         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
 					  "         year2.isDeleted = 'N' and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear " +
-					  "  and tc.insertedWebUser.userId in (3930,7394) ");
+					  "  and tc.insertedUserId in ("+IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS+","+IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS+") ");
 					  
 			if(date != null){
 				sb.append(" and date(tc.surveyTime) = :date ");
