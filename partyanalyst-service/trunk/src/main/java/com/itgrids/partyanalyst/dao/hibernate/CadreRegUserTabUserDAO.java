@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.model.CadreRegUserTabUser;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabUser, Long> implements ICadreRegUserTabUserDAO{
 
@@ -357,5 +359,74 @@ return query.list();
 		query.setParameter("fieldUserId", fieldUserId);
 		return query.list();
 		
+	}
+public List<Object[]> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select ");
+		
+		if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+		sb.append("model1.constituency.district.districtId,model1.constituency.district.districtName, " );
+		}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+			sb.append("model1.constituency.constituencyId,model1.constituency.name, " );
+		}
+		sb.append(" model2.cadreRegIssueStatus.cadreRegIssueStatusId,count(distinct model2.cadreRegIssueId) " +
+				" from CadreSurveyUserAssignDetails model1,CadreRegIssue model2" +
+				" where model1.cadreSurveyUser.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId" +
+				" and model1.cadreSurveyUser.isDeleted = 'N'" +
+				" and model1.cadreSurveyUser.isEnabled = 'Y' and model1.isDeleted = 'N'" +
+				" and date(model2.insertedTime) between :startDate and :endDate " );
+				
+		
+		if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+		{
+			if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+				//sb.append("  and  model1.constituency.district.state.stateId = :parentLocationTypeId ");
+				if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L){
+					sb.append("  and model1.constituency.district.districtId = :childLocationTypeId ");
+				}
+			}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+				
+				if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+					sb.append(" and (model1.constituency.district.districtId between 11 and 23) ");
+				else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
+					sb.append(" and (model1.constituency.district.districtId between 1 and 10) ");
+				if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L){
+					sb.append(" and model1.constituency.constituencyId = :childLocationTypeId ");
+				}
+			}
+		
+		}
+		if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+			if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+				sb.append(" and (model1.constituency.district.districtId between 11 and 23) ");
+			else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
+				sb.append(" and (model1.constituency.district.districtId between 1 and 10) ");
+			}
+		
+		sb.append(" group by  model2.cadreRegIssueStatus.cadreRegIssueStatusId ");
+		if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+			sb.append(" ,model1.constituency.district.districtId order by model2.cadreRegIssueStatus.cadreRegIssueStatusId ");
+		}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+			sb.append(" ,model1.constituency.constituencyId  order by model2.cadreRegIssueStatus.cadreRegIssueStatusId ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		//if( inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
+			//query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
+		if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L)
+			query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
+		if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			try{
+				query.setDate("startDate", format.parse(inputVO.getStartDate()));
+				query.setDate("endDate", format.parse(inputVO.getEndDate()));
+			}catch(Exception e){
+				
+			}
+		}
+		
+		return query.list();
 	}
 }

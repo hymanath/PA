@@ -74,8 +74,8 @@ import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
-import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
@@ -110,7 +110,6 @@ import com.itgrids.partyanalyst.dto.WebServiceBaseVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.CadreTabRecordsStatus;
 import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
@@ -4332,18 +4331,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  return returnVO; 
 	  }
 	 
-	  public FieldMonitoringVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO){
+	  public GISIssuesVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO){
 		  log.error("Entered into the getCadreRegistrationIssuesStatusDetails  method in WebServiceHandlerService");
-		  FieldMonitoringVO returnVO = new FieldMonitoringVO();
+		  GISIssuesVO returnVO = new GISIssuesVO();
 		  try {
-			  List<FieldMonitoringVO> returnList = fieldMonitoringService.getFieldMonitoringUserWiseDetails(inputVO);
+			  List<GISIssuesVO> returnList = fieldMonitoringService.getLocationWiseIssueStatus(inputVO);
 			  if(commonMethodsUtilService.isListOrSetValid(returnList)){
-				  for (FieldMonitoringVO fieldMonitoringVO : returnList) {
-					
-					  
-				}
+				  returnVO.setSubList(returnList);
 			  }
 			} catch (Exception e) {
+				e.printStackTrace();
 				log.error("exception occured in  the getCadreRegistrationIssuesStatusDetails  method in WebServiceHandlerService");
 			}
 		  
