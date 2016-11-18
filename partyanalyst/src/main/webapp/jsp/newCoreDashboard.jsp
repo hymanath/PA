@@ -83,10 +83,10 @@
 							<!--<img src="today" id="thisMonthRadionBtnId" class="datesClass" attr_type="today" title="today"/>-->
 							<!--<button type="button" attr_type="currentMonth" class="btn btn-success datesClass">Current Month</button>-->
 							 <label style="color:green;" class="radio-inline">
-							  <input type="radio" attr_type="currentMonth" class="datesClass" name="optradio">Current Month
+							  <input type="radio" attr_type="currentMonth" class="datesClass" name="optradio" checked>Current Month</input>
 							 </label>
 							<label style="color:green;"  class="radio-inline">
-							  <input type="radio" attr_type="lastMonth"  class="datesClass" name="optradio">Last Month
+							  <input type="radio" attr_type="lastMonth"  class="datesClass" name="optradio">Last Month</input>
 							</label>
 						</li> 
 						<!--<li>
@@ -499,10 +499,10 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-md-9 col-sm-9 col-xs-12 newsHead">
-								<h4 class="panel-title text-capital">
+								<h4 class="panel-title text-capital" style="width:440px;">    
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									news - <small class="text-muted" id="currentViewing"></small>
-								</h4>
+									Print Media News - <small class="text-muted" id="currentViewing"></small>  
+								</h4>  
 								
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-12 newsHead1 m_XsTop10">
@@ -1208,10 +1208,10 @@
 				<div class="panel-heading">
 					<div class="row">
 						<div class="col-md-9 col-sm-9 col-xs-12 emnHead">
-							<h4 class="panel-title text-capital">
+							<h4 class="panel-title text-capital" style="width: 412px;">
 								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
-								electronic news - <small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
-							</h4>
+								electronic media news-<small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
+							</h4>    
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1 m_XsTop10">
 							<span class="emnSetIcon pull-right">
