@@ -149,6 +149,8 @@ $(document).ready(function(){
 		newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
 	else if(callFrom == "partyDetails")
 		getEMMMediaProgramsOnPartyProgramsWiseBulletins(0);
+	else if(callFrom == "districtWiseProgramDetailsForParty")
+		getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(0);
 	}, 1000);
 	
 });
@@ -527,7 +529,9 @@ $(document).ready(function(){
 							if(callFrom == "basicDetails")
 								newsBulletinPointBasicDetailsBulletinsOfOrganization(num);		
 							else if(callFrom == "partyDetails")
-								getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);						
+								getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);		
+							else if(callFrom == "districtWiseProgramDetailsForParty")
+									getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(num);
 					}					
 				});
 			}
@@ -563,15 +567,31 @@ $(document).ready(function(){
 
 		$.ajax({
 		  type : 'GET',      
-		 url: wurl+"/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
-		 //url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex
 		
 		}).then(function(result){
 		  var countByDate=0;
 		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
 		});    
   }		
+  
+  function getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }		
+  
 </script>
 </body>
 </html>
