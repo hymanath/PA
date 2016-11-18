@@ -615,7 +615,7 @@ public class Scheduler {
 		}
 		
 		try{ 
-			rs = cadreRegistrationServiceNew.pushDataSourceWisetdpCadreCounts();
+			rs = cadreRegistrationServiceNew.pushDataSourceWisetdpCadreCountsByState();
 		}
 		catch(Exception e)
 		{
