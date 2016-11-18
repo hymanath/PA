@@ -6,7 +6,9 @@ public class DataSourceTypeVO implements Serializable{
 	
 	private static final long serialVersionUID = -1993987653731091867L;
 	
+	
 	private String type;
+	private Long   stateId;
 	private String dataSourceType;
 	private Long   totalCount = 0l;
 	private Long   newCount = 0l;
@@ -56,7 +58,11 @@ public class DataSourceTypeVO implements Serializable{
 	public void setRenewalPercent(Double renewalPercent) {
 		this.renewalPercent = renewalPercent;
 	}
-	
-	
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
 	
 }
