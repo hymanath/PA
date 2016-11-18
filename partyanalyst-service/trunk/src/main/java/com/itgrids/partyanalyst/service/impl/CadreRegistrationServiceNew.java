@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -2312,6 +2313,272 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   }
        
       
+       /** 8)
+    	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+    	 *  pushing tdp cadre counts based on data source type State Wise.
+    	 *  @since 14-NOVEMBER-2016 
+    	 */
+       public ResultStatus pushDataSourceWisetdpCadreCountsByState(){
+		   
+			final ResultStatus rs = new ResultStatus();
+			try {
+				
+				  final Map<Long,Map<String,DataSourceTypeVO>> todayMap = getDataSourceTypeCountsByState("Today");
+	    		  final Map<Long,Map<String,DataSourceTypeVO>> totalMap = getDataSourceTypeCountsByState("Total");
+	    		  final List<DataSourceTypeVO> finalList = new ArrayList<DataSourceTypeVO>();
+	    		  
+	    		  if(todayMap != null && todayMap.size() > 0){
+      				for(Map.Entry<Long , Map<String, DataSourceTypeVO>> entry : todayMap.entrySet()){
+      					Map<String, DataSourceTypeVO> dataSourceMap = entry.getValue();
+      					if(dataSourceMap != null && dataSourceMap.size() > 0){
+      						finalList.addAll(dataSourceMap.values());
+      					}
+      				}
+	      		  } 
+	    		  
+	    		  if(totalMap != null && totalMap.size() > 0){
+      				for(Map.Entry<Long , Map<String, DataSourceTypeVO>> entry : totalMap.entrySet()){
+      					Map<String, DataSourceTypeVO> dataSourceMap = entry.getValue();
+      					if(dataSourceMap != null && dataSourceMap.size() > 0){
+      						finalList.addAll(dataSourceMap.values());
+      					}
+      				}
+		      	  }
+	    		  
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        		
+			                int deletedRecords = tdpCadreDataSourceTypeInfoDAO.deleteAllRecords();
+			        		Date currentTime = dateUtilService.getCurrentDateAndTime();
+				    		
+			        		if(finalList != null && finalList.size() > 0){
+					   			int i= 0;
+			      			for (DataSourceTypeVO VO : finalList)
+			      			{
+			      				i = i + 1;
+			      				if(VO != null){
+			      					
+			      					TdpCadreDataSourceTypeInfo info = new TdpCadreDataSourceTypeInfo();
+			      					info.setType(VO.getType());
+			      					info.setStateId(VO.getStateId());
+			      					info.setDataSourceType(VO.getDataSourceType());
+			      					
+			      					if(VO.getTotalCount() != null && VO.getTotalCount() > 0l){
+			      						info.setCadre2016(VO.getTotalCount());
+			      					}
+			      					if(VO.getNewCount() != null && VO.getNewCount() > 0l){
+			      						info.setNewCadre(VO.getNewCount());
+			      					}
+			      					
+			      					if(VO.getRenewalCount() != null && VO.getRenewalCount() > 0l){
+			      						info.setRenewalCadre(VO.getRenewalCount() );
+			      					}
+			      					
+			      					info.setNewCadrePercent( VO.getNewPercent() > 0 ? VO.getNewPercent().toString() : null);
+			      					info.setRenewalCadrePercent(VO.getRenewalPercent() > 0 ? VO.getRenewalPercent().toString() : null);
+			      					
+			      					info.setInsertedTime(currentTime);
+			      					
+			      					tdpCadreDataSourceTypeInfoDAO.save(info);
+			      				}
+			      				 if( i % 10 == 0 ) { 
+					    			 //flush a batch of inserts and release memory:
+					    		     tdpCadreDAO.flushAndclearSession();
+					    		 }
+			      			}
+			      		}
+			        	   
+				          rs.setResultCode(1);
+				          rs.setMessage("success");
+			         }
+			    });
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at pushDataSourceWisetdpCadreCountsByState() in CadreRegistrationServiceNew service", e);
+				rs.setResultCode(0);
+				rs.setMessage("failure");
+			}
+			return rs;
+		}
+       
+       public  Map<Long,Map<String,DataSourceTypeVO>> getDataSourceTypeCountsByState(String type){
+    	     Map<Long,Map<String,DataSourceTypeVO>> stateMap = new HashMap<Long,Map<String,DataSourceTypeVO>>(0);
+      	  try{ 
+      		  	Date currentDate = null;
+      		  	if(type.equalsIgnoreCase("Today")){
+      		  		currentDate = dateUtilService.getCurrentDateAndTime();
+      		  	}
+      		  	
+      		    List<Object[]> data = tdpCadreDataSourceTypeInfoDAO.getTdpCadreCountsByDataDourceTypeByDistrict(currentDate);
+      		    if(data != null && data.size() > 0)
+      		    {
+      		    	for(Object[] obj : data)
+      		    	{	
+      		    		if(obj[0] != null && (Long)obj[0] > 0l)
+      		    		{	
+      		    			Long stateId = null;
+      		    			if((Long)obj[0] >= 1l && (Long)obj[0] <= 10l){
+      		    				stateId = 36l;
+      		    			}else{
+      		    				stateId = 1l;
+      		    			}
+      		    			Map<String,DataSourceTypeVO> dataSourceTypeMap = stateMap.get(stateId);
+      		    			if(dataSourceTypeMap == null){
+      		    				stateMap.put(stateId, new HashMap<String, DataSourceTypeVO>());
+      		    			}
+      		    			dataSourceTypeMap = stateMap.get(stateId);
+      		    			if(obj[1] != null && obj[1].toString().trim().length() > 0){
+      		    				DataSourceTypeVO dataSourceVO = dataSourceTypeMap.get(obj[1].toString());
+      		    				if(dataSourceVO == null){
+      		    					dataSourceVO = new DataSourceTypeVO();
+      		    					dataSourceVO.setDataSourceType(obj[1].toString());
+      		    					dataSourceVO.setType(type);
+      		    					dataSourceVO.setStateId(stateId);
+      		    					dataSourceTypeMap.put(obj[1].toString(), dataSourceVO);
+      		    				}
+      		    				dataSourceVO = dataSourceTypeMap.get(obj[1].toString());
+      		    				dataSourceVO.setTotalCount(dataSourceVO.getTotalCount() + (obj[2]!=null ? (Long)obj[2] : 0l));
+      		    				dataSourceVO.setNewCount(dataSourceVO.getNewCount() + (obj[2]!=null ? (Long)obj[2] : 0l));
+      		    			}
+      		    		}
+      		    	}
+      		    }
+      		   
+      		    
+      		    List<Object[]> renewalData = tdpCadreDataSourceTypeInfoDAO.getRenewalTdpCadreCountsByDataDourceTypeByDistrict(currentDate);  
+      		    if(renewalData != null && renewalData.size() > 0){
+      		    	for(Object[] obj : renewalData){
+      		    
+      		    		if(obj[0] != null && (Long)obj[0] > 0l)
+      		    		{	
+      		    			Long stateId = null;
+      		    			if((Long)obj[0] >= 1l && (Long)obj[0] <= 10l){
+      		    				stateId = 36l;
+      		    			}else{
+      		    				stateId = 1l;
+      		    			}
+      		    			Map<String,DataSourceTypeVO> dataSourceTypeMap = stateMap.get(stateId);
+      		    			if(dataSourceTypeMap != null){
+      		    				if(obj[1] != null && obj[1].toString().trim().length() > 0){
+          		    				DataSourceTypeVO dataSourceVO = dataSourceTypeMap.get(obj[1].toString());
+          		    				if(dataSourceVO != null){
+          		    					dataSourceVO.setRenewalCount(dataSourceVO.getRenewalCount() + (obj[2]!=null ? (Long)obj[2] : 0l));
+          		    					dataSourceVO.setNewCount(dataSourceVO.getTotalCount() - dataSourceVO.getRenewalCount() );
+          		    				}
+          		    			}
+      		    			}
+      		    		}
+      		    	}
+      		    }
+      		    
+      		    
+      		    //PARTY OFFICE.
+      		    List<String> vijPartyIds = new ArrayList<String>(Arrays.asList(IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS.split(",")));
+      		    List<String> hydPartyIds = new ArrayList<String>(Arrays.asList(IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS.split(",")));
+      		    
+      		    List<Object[]> partyOfficeTotalList = tdpCadreDataSourceTypeInfoDAO.getTdpCadreRecordsCountByPartyOfficeByDistrict(currentDate);
+      			if(partyOfficeTotalList != null && partyOfficeTotalList.size() > 0)
+      			{	
+      				for (Object[] obj : partyOfficeTotalList) 
+      				{	
+      					if(obj[0] != null && (Long)obj[0] > 0l)
+      		    		{	
+      		    			Long stateId = null;
+      		    			if((Long)obj[0] >= 1l && (Long)obj[0] <= 10l){
+      		    				stateId = 36l;
+      		    			}else{
+      		    				stateId = 1l;
+      		    			}
+      		    			Map<String,DataSourceTypeVO> dataSourceTypeMap = stateMap.get(stateId);
+      		    			if(dataSourceTypeMap == null){
+      		    				stateMap.put(stateId, new HashMap<String, DataSourceTypeVO>());
+      		    			}
+      		    			dataSourceTypeMap = stateMap.get(stateId);
+      		    			if(obj[1] != null && obj[1].toString().trim().length() > 0)
+      		    			{
+      		    				String dataSourceType = null;
+      		    				if( vijPartyIds.contains(obj[1].toString())){
+      		    					dataSourceType =  IConstants.VIJAYAWADA_PARY_OFFICE;
+      		    				}else if(hydPartyIds.contains(obj[1].toString())){
+      		    					dataSourceType =  IConstants.HYDERABAD_PARY_OFFICE;
+      		    				}
+      		    				if(dataSourceType != null){
+      		    					DataSourceTypeVO dataSourceVO = dataSourceTypeMap.get(dataSourceType);
+      		    					if(dataSourceVO == null){
+      		    						dataSourceVO = new DataSourceTypeVO();
+      		    						dataSourceVO.setDataSourceType(dataSourceType);
+      		    						dataSourceVO.setType(type);
+      		    						dataSourceVO.setStateId(stateId);
+          		    					dataSourceTypeMap.put(dataSourceType, dataSourceVO);
+          		    				}
+      		    					dataSourceVO = dataSourceTypeMap.get(dataSourceType);
+      		    					dataSourceVO.setTotalCount(dataSourceVO.getTotalCount() + (obj[2]!=null ? (Long)obj[2] : 0l));
+          		    				dataSourceVO.setNewCount(dataSourceVO.getNewCount() + (obj[2]!=null ? (Long)obj[2] : 0l));
+      		    				}
+      		    			}
+      		    		}
+      				}
+      			}
+      			
+      			List<Object[]> partyOfficeRenewalList = tdpCadreDataSourceTypeInfoDAO.getRenewalTdpCadreRecordsCountByPartyOfficeByDistrict(currentDate);
+      			if(partyOfficeRenewalList != null && partyOfficeRenewalList.size() > 0){
+      				for (Object[] obj : partyOfficeRenewalList)
+      				{
+      					if(obj[0] != null && (Long)obj[0] > 0l)
+      		    		{	
+      		    			Long stateId = null;
+      		    			if((Long)obj[0] >= 1l && (Long)obj[0] <= 10l){
+      		    				stateId = 36l;
+      		    			}else{
+      		    				stateId = 1l;
+      		    			}
+      		    			Map<String,DataSourceTypeVO> dataSourceTypeMap = stateMap.get(stateId);
+      		    			if(dataSourceTypeMap != null)
+      		    			{
+      		    				if(obj[1] != null && obj[1].toString().trim().length() > 0)
+          		    			{
+          		    				String dataSourceType = null;
+          		    				if( vijPartyIds.contains(obj[1].toString())){
+          		    					dataSourceType =  IConstants.VIJAYAWADA_PARY_OFFICE;
+          		    				}else if(hydPartyIds.contains(obj[1].toString())){
+          		    					dataSourceType =  IConstants.HYDERABAD_PARY_OFFICE;
+          		    				}
+          		    				if(dataSourceType != null){
+          		    					DataSourceTypeVO dataSourceVO = dataSourceTypeMap.get(dataSourceType);
+          		    					if(dataSourceVO != null){
+          		    						dataSourceVO.setRenewalCount(dataSourceVO.getRenewalCount() + (obj[2]!=null ? (Long)obj[2] : 0l));
+              		    					dataSourceVO.setNewCount(dataSourceVO.getTotalCount() - dataSourceVO.getRenewalCount() );
+              		    				}
+          		    				}
+          		    			}
+      		    			}
+      		    			
+      		    		}
+      				}
+      			}
+      			
+      			
+      			if(stateMap != null && stateMap.size() > 0){
+      				for(Map.Entry<Long , Map<String, DataSourceTypeVO>> entry : stateMap.entrySet()){
+      					Map<String, DataSourceTypeVO> dataSourceMap = entry.getValue();
+      					if(dataSourceMap != null && dataSourceMap.size() > 0){
+      						for(Map.Entry<String, DataSourceTypeVO> entry1 : dataSourceMap.entrySet()){
+      	      					DataSourceTypeVO VO =  entry1.getValue();
+      	 		    			if(VO.getTotalCount() != null && VO.getTotalCount() > 0l){
+      	 		    				  VO.setRenewalPercent( calcPercantage( VO.getRenewalCount() , VO.getTotalCount()) );
+      	 		    				  VO.setNewPercent( calcPercantage( VO.getNewCount() , VO.getTotalCount()) );
+      	 		    			  }
+      	 		    		  }
+      					}
+      				}
+      			} 
+      		    
+  		  }catch(Exception e) {
+  			  LOG.error("Exception occured in getDataSourceTypeCountsByState() Method - ",e);
+  		  }
+      	  return stateMap;
+        }
+       
        
        
        
@@ -2349,6 +2616,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
        }
        
        
-       
+      
        
 }
