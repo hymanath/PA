@@ -389,6 +389,10 @@ $(document).on("click",".radioCls",function(){
 	}	
 });
 
+$(document).ready(function(){
+	$("input[name=radio][value='1']").prop("checked",true);
+});
+
 </script>
 </body>
 </html>
