@@ -2213,16 +2213,18 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
      					if( obj[0] != null && obj[1] != null){
      						DataSourceTypeVO VO = new DataSourceTypeVO();
      						String dataSourceType = null;
-     						if((Long)obj[0] == 3930l){
+     						if(obj[0] != null && obj[0].toString().trim().contains(IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS)){
      							dataSourceType = IConstants.HYDERABAD_PARY_OFFICE;
-     						}else if((Long)obj[0] == 7394l){
+     						}else if(obj[0] != null && obj[0].toString().trim().contains(IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS)){
      							dataSourceType = IConstants.VIJAYAWADA_PARY_OFFICE;	
      						}
-     						VO.setDataSourceType(dataSourceType);
-     						VO.setType(type);
-     		    			VO.setTotalCount(obj[1]!=null ? (Long)obj[1] : 0l);
-     		    			VO.setNewCount(VO.getTotalCount());
-     		    			finalMap.put(VO.getDataSourceType() , VO );
+     						if(dataSourceType != null){
+	     						VO.setDataSourceType(dataSourceType);
+	     						VO.setType(type);
+	     		    			VO.setTotalCount(obj[1]!=null ? (Long)obj[1] : 0l);
+	     		    			VO.setNewCount(VO.getTotalCount());
+	     		    			finalMap.put(VO.getDataSourceType() , VO );
+     						}
      					}
      				}
      			}
@@ -2232,9 +2234,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
      				for (Object[] obj : partyOfficeRenewalList) {
      					if(obj[0] != null && obj[0].toString().trim().length() > 0){
      						String dataSourceType = null;
-     						if((Long)obj[0] == 3930l){
+     						if(obj[0] != null && obj[0].toString().trim().contains(IConstants.LATEST_HYD_PARTY_OFFICE_USER_IDS)){
      							dataSourceType = IConstants.HYDERABAD_PARY_OFFICE;
-     						}else if((Long)obj[0] == 7394l){
+     						}else if(obj[0] != null && obj[0].toString().trim().contains(IConstants.LATEST_VIJ_PARTY_OFFICE_USER_IDS)){
      							dataSourceType = IConstants.VIJAYAWADA_PARY_OFFICE;	
      						}
      		    			DataSourceTypeVO VO = finalMap.get(dataSourceType);
