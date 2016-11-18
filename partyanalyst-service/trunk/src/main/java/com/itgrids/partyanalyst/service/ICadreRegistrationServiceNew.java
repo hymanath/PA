@@ -17,6 +17,7 @@ public interface ICadreRegistrationServiceNew {
 	public ResultStatus pushHourWiseTdpCadreDetailsByOverall();
 	
 	public ResultStatus pushDataSourceWisetdpCadreCounts();
+	public ResultStatus pushDataSourceWisetdpCadreCountsByState();
 	
 	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password);
 	
