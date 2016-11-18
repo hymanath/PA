@@ -138,19 +138,21 @@ var globalStIndex = "0";//startIndex
 var globalEndIndex = "2";//endIndex
 var globalSearchType = "category"; */
 
-$(document).ready(function(){
-	setTimeout(function(){ 
-	if(callFrom == "basicDetails")
-		newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
-	else if(callFrom == "partyDetails")
-		getEMMMediaProgramsOnPartyProgramsWiseBulletins(0);
-	}, 1000);
-	
-});
-	var url = window.location.href;
+var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
+	
+$(document).ready(function(){
+	setTimeout(function(){
+	//if(callFrom == "basicDetails")
+		newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
+	//else if(callFrom == "partyDetails")
+		//getEMMMediaProgramsOnPartyProgramsWiseBulletins(0);
+	}, 1000);
+	
+});
+	
 	
 	function newsBulletinPointBasicDetailsBulletinsOfOrganization(globalStIndex){
 		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -520,7 +522,7 @@ $(document).ready(function(){
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*6;								
 						newsBulletinPointBasicDetailsBulletinsOfOrganization(num);
-						getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);						
+						//getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);						
 					}					
 				});
 			}
@@ -542,7 +544,7 @@ $(document).ready(function(){
 
 		$.ajax({
 		  type : 'GET',      
-		  url: wurl+"/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"N"/"+globalStIndex+"/"+globalEndIndex+"/"
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMMediaProgramsOnPartyProgramsWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/N/"+globalStIndex+"/"+globalEndIndex
 		
