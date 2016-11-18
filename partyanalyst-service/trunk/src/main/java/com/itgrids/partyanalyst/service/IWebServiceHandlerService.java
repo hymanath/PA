@@ -18,7 +18,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
-import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
+import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
@@ -177,5 +177,5 @@ public interface IWebServiceHandlerService {
     public List<IdAndNameVO> getDistrictWiseConstituency(Long districtId);
     public List<GISVisualizationDetailsVO> getMembershipDriveDayWiseVisualizationDetails(GISVisualizationParameterVO inputVO);
     public GISUserTrackingVO getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO);
-    public FieldMonitoringVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO);
+    public GISIssuesVO getCadreRegistrationIssuesStatusDetails(GISVisualizationParameterVO inputVO);
 }

@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
+import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -54,4 +55,5 @@ public interface IFieldMonitoringService {
 	 public List<IdAndNameVO> getcadrePerformnanceTypeList();
 	 public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId);
 	 public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
+	 public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO);
 }

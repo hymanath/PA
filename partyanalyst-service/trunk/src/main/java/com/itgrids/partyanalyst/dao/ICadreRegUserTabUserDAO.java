@@ -30,4 +30,5 @@ public interface ICadreRegUserTabUserDAO extends GenericDao<CadreRegUserTabUser,
 	public List<Object[]> getStartedUsersIssueTypeWiseCountsForFieldMonrUsers(Date today,GISVisualizationParameterVO inputVO);
 	public List<Object[]> getLastOneHourUsersOfFMUser(Date lastHourTime,Date today,GISVisualizationParameterVO inputVO);
 	public List<Object[]> getFieldMonitoringMapReportDetails(Long constitunecyId, Long fieldUserId);
+	public List<Object[]> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO);
 }

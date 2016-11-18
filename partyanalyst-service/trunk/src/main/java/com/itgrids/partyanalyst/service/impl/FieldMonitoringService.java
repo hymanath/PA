@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dto.CadreRegUserVO;
 import com.itgrids.partyanalyst.dto.DataMonitoringVerificationVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringIssueVO;
 import com.itgrids.partyanalyst.dto.FieldMonitoringVO;
+import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -3048,8 +3049,88 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		public int compare(IdAndNameVO vo2, IdAndNameVO vo1) {
 			 //return (cstVO1.getScalePerc()) - (cstVO2.getScalePerc());
             Double perc2 = vo1.getPer2016();
-             Double perc1 = vo2.getPer2016();
-           return perc2.compareTo(perc1);
+            Double perc1 = vo2.getPer2016();
+            return perc2.compareTo(perc1);
 		}
 	}; 
+  public GISIssuesVO getMatchedLocationVO(Long id,List<GISIssuesVO> list){
+	  GISIssuesVO returnvo = null;
+  	try {
+			if(list != null && !list.isEmpty()){
+				for (GISIssuesVO vo : list) {
+					if(vo.getId().longValue() == id.longValue()){
+						return vo;
+					}
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getMatchedLocationVO() of FieldMonitoringService", e);
+		}
+  	return returnvo;
+  }
+  
+  public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO){
+		List<GISIssuesVO> returnList = new ArrayList<GISIssuesVO>();
+		try {
+			
+			List<CadreRegIssueStatus> statusList = cadreRegIssueStatusDAO.getAll();
+			
+			
+			 
+			List<Object[]> locationsList = null;
+			if(inputVO.getParentLocationType() != null)
+			{
+				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+					locationsList = districtDAO.getDistrictForState(inputVO.getStateId());
+				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+					locationsList = constituencyDAO.getConstituenciesByStateId(1l,inputVO.getStateId());
+				}
+			}
+			
+			if(locationsList != null && locationsList.size() > 0){
+				for(Object[] obj : locationsList){
+					GISIssuesVO vo1 = new GISIssuesVO();
+					List<GISIssuesVO> issuesStatusList = new ArrayList<GISIssuesVO>();
+					
+					vo1.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo1.setName(obj[1] != null ? obj[1].toString():"");
+					
+					 if(statusList != null && statusList.size() >0){
+						 for(CadreRegIssueStatus model : statusList){
+							 GISIssuesVO vo = new GISIssuesVO(); 
+							 vo.setId(model.getCadreRegIssueStatusId() != null ? model.getCadreRegIssueStatusId().longValue() : 0l);
+							 vo.setName(model.getStatus() != null ? model.getStatus().toString() : "");
+							 issuesStatusList.add(vo);
+						 }
+					}
+					 vo1.setIssuesList(issuesStatusList);
+					 
+					returnList.add(vo1);	
+				}
+			}
+			List<Object[]> list2 = cadreRegUserTabUserDAO.getLocationWiseIssueStatus(inputVO);
+			if(list2 != null && !list2.isEmpty()){
+				for (Object[] obj : list2) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					GISIssuesVO vo = getMatchedLocationVO(id, returnList);
+					if(vo != null){
+						List<GISIssuesVO> statsList = vo.getIssuesList();
+						GISIssuesVO stutsVO = getMatchedLocationVO(statusId, statsList);
+						if(stutsVO != null){
+							stutsVO.setCount(count);
+							vo.setTotalIssues(vo.getTotalIssues()+count);//location wise total issues
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getLocationWiseIssueStatus() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
 }
