@@ -515,11 +515,11 @@ function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 					
 				},
 				series: {
-					cursor: 'pointer',
+					//cursor: 'pointer',
 					point: {
 						events: {
 							click: function () {
-								getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(this.extra);
+								//getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(this.extra);
 							}
 						}
 					}
