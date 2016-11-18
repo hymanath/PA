@@ -115,7 +115,7 @@ function getToursBasicOverviewCountDetails()
 			  str+='<tbody><tr>';
 				  str+='<td>';
 				     if(overAllResult.noOfLeaderCnt > 0){
-						str+='<h4 id="overallTourLdrDsgntnId"  attr_tour_submitted_type="All" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.noOfLeaderCnt+'</h4>';
+						str+='<h4 id="overallTourLdrDsgntnId" attr_designation_name="OVERALL"  attr_tour_submitted_type="All" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.noOfLeaderCnt+'</h4>';
 				     }else{
 					   str+='<h4>0</h4>';
 					 }
@@ -123,7 +123,7 @@ function getToursBasicOverviewCountDetails()
 				  str+='</td>';
 				  str+='<td>';
 				     if(overAllResult.submitedLeaderCnt > 0){
-						str+='<h4 id="submitedTourLdrDsgntnId" attr_tour_submitted_type="Yes" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.submitedLeaderCnt+'<span class="font-10 text-success"> '+overAllResult.submitedCandidateTourPer+'%</span></h4>';
+						str+='<h4 id="submitedTourLdrDsgntnId" attr_designation_name="OVERALL" attr_tour_submitted_type="Yes" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.submitedLeaderCnt+'<span class="font-10 text-success"> '+overAllResult.submitedCandidateTourPer+'%</span></h4>';
 				      }else{
 						str+='<h4>0<span class="font-10 text-success">0.0%</span></h4>';
 					 }
@@ -131,7 +131,7 @@ function getToursBasicOverviewCountDetails()
 				  str+='</td>';
 				  str+='<td>';
 				  if(overAllResult.notSubmitedLeaserCnt > 0){
-					str+='<h4 id="notSubmitedTourLdrDsgntnCntId" attr_tour_submitted_type="No" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+overAllResult.notsubmitedCandidateTourPer+'%</span></h4>';
+					str+='<h4 id="notSubmitedTourLdrDsgntnCntId" attr_tour_submitted_type="No" attr_designation_name="OVERALL" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+overAllResult.notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+overAllResult.notsubmitedCandidateTourPer+'%</span></h4>';
 			        }else{
 					  str+='<h4>0<span class="font-10 text-danger">0.0%</span></h4>';
 				  }
@@ -174,7 +174,7 @@ function getToursBasicOverviewCountDetails()
 					  str+='<td>';
 					      str+='<p class="text-muted text-capital">Total<br>Leaders</p>';
 					      if(designationWiseRlst[i].noOfLeaderCnt > 0){
-						    str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="All" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)" >'+designationWiseRlst[i].noOfLeaderCnt+'</h4>';
+						    str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="All" attr_designation_name="'+designationWiseRlst[i].designation+'" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)" >'+designationWiseRlst[i].noOfLeaderCnt+'</h4>';
 			 			  }else{
 						    str+='<h4>0</h4>';
 			  		      }
@@ -182,7 +182,7 @@ function getToursBasicOverviewCountDetails()
 					  str+='<td>';
 					  	  str+='<p class="text-muted text-capital">Submited<br>Leaders</p>';  
 						  if(designationWiseRlst[i].submitedLeaderCnt > 0){
-								  str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="Yes" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseRlst[i].submitedLeaderCnt+'<span class="font-10 text-success"> '+designationWiseRlst[i].submitedCandidateTourPer.toFixed(2)+'%</span></h4>';
+								  str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="Yes" attr_designation_name="'+designationWiseRlst[i].designation+'"  class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseRlst[i].submitedLeaderCnt+'<span class="font-10 text-success"> '+designationWiseRlst[i].submitedCandidateTourPer.toFixed(2)+'%</span></h4>';
 					      }else{
 								 str+='<h4>0<span class="font-10 text-success">0.0%</span></h4>';
 				          }
@@ -190,7 +190,7 @@ function getToursBasicOverviewCountDetails()
 					  str+='<td>';
 					  	  str+='<p class="text-muted text-capital">Not Submited<br>Leaders</p>';  
 						  if(designationWiseRlst[i].notSubmitedLeaserCnt > 0){
-								  str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="No" class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseRlst[i].notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+designationWiseRlst[i].notsubmitedCandidateTourPer.toFixed(2)+'%</span></h4>';
+								  str+='<h4 attr_dsgntn_ids='+strIds+' attr_tour_submitted_type="No" attr_designation_name="'+designationWiseRlst[i].designation+'"  class="overAllToursCls" style="cursor:pointer;color:rgb(51, 122, 183)">'+designationWiseRlst[i].notSubmitedLeaserCnt+'<span class="font-10 text-danger"> '+designationWiseRlst[i].notsubmitedCandidateTourPer.toFixed(2)+'%</span></h4>';
 					      }else{
 							    str+='<h4>0<span class="font-10 text-danger">0.0%</span></h4>';
 						   }
@@ -1007,17 +1007,18 @@ function getToursBasicOverviewCountDetails()
 	$(document).on("click",".overAllToursCls",function(){
 		var tourSubmittedType = $(this).attr("attr_tour_submitted_type");
 		var designationIdsStr = $(this).attr("attr_dsgntn_ids");
+		var designationName = $(this).attr("attr_designation_name");
 		$("#cadreExcelExpBtnId").attr("attr_tab_user_type","Tour");
 		$("#cadreExcelExpBtnId").hide();
 		var designationIds;
 		if(designationIdsStr != null && designationIdsStr != undefined){
 		  designationIds=designationIdsStr.split(",");	
 		}
-		 getTourSubmittedLeadersDetails(tourSubmittedType,designationIds);
+		 getTourSubmittedLeadersDetails(tourSubmittedType,designationIds,designationName);
 	});
-   function getTourSubmittedLeadersDetails(tourSubmittedType,designationIds)
+   function getTourSubmittedLeadersDetails(tourSubmittedType,designationIds,designationName)
 	{   
-		$("#locationWiseCadreReportHeadingId").html("Tours Submitted Details Report");
+		$("#locationWiseCadreReportHeadingId").html("<b>"+designationName+"</b> - Tours Submitted Details Report");
 		$("#locationWiseCadreReportModalId").modal("show");
 		$("#locationWiseCadreReportDivId").html(' ');
 		$("#locationWiseProcessImgReport").show();
