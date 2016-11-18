@@ -1436,7 +1436,9 @@ function buildTrainingProgramRslt(result){
 		});
 	}
 	function buildTrainingProgramPoorPerformanceLocationRslt(result,userTypeId,selectedUserName,userType){
-	var resultListFirst;
+	
+	/* Intermediate Table Implementations */
+	/*var resultListFirst;
 	var resultListSecond;
     var str='';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
@@ -1521,9 +1523,9 @@ function buildTrainingProgramRslt(result){
 	        str+='</div>';
 																				
 	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
-	 $('.progressCustom').tooltip();
+	 $('.progressCustom').tooltip(); */
 	 
-   /*  var resultListFirst;
+   var resultListFirst;
 	var resultListSecond;
     var str='';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
@@ -1615,7 +1617,7 @@ function buildTrainingProgramRslt(result){
 	        str+='</div>';
 																				
 	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
-	 $('.progressCustom').tooltip() */
+	 $('.progressCustom').tooltip(); 
 	}
 /* Training Funcitons End*/
 
