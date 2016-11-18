@@ -607,12 +607,14 @@ $("#toursDateRangePicker").daterangepicker({
 						str+='<div class="col-md-3">';
 						if(result[i].type=="pdf"){
 							str+='<img src="images/pdf.jpg" class="img-responsive" alt="" style="width:80px;"/>';
-						}else if(result[i].type=="xls"){  
+						}else if(result[i].type=="xls" || result[i].type=="xlsx"){  
 							str+='<img src="images/excel.jpg" class="img-responsive" alt="" style="width:80px;"/>';       
-						}else if(result[i].type=="doc"){
+						}else if(result[i].type=="doc" || result[i].type=="docx"){
 							str+='<img src="images/word.jpg" class="img-responsive" alt="" style="width:80px;"/>';         
+						}else if(result[i].type != null){      
+							str+='<img src="images/fileImage.png" class="img-responsive" alt="" style="width:80px;"/>';         
 						}else{  
-							str+='<img src="" class="img-responsive" alt=""/>';           
+							str+='<img src="" class="img-responsive" alt=""/>';             
 						}
 						str+='</div>';  
 						str+='<div class="col-md-3">';
@@ -733,14 +735,16 @@ $("#toursDateRangePicker").daterangepicker({
 								str+='<div class="media-left">';
 									if(result.type=="pdf"){
 										str+='<span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/>';
-									}else if(result.type=="xls"){  
+									}else if(result.type=="xls" || result.type=="xlsx"){  
 										str+='<span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/>';       
-									}else if(result.type=="doc"){
+									}else if(result.type=="doc" || result.type=="docx"){
 										str+='<span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/>';         
+									}else if(result.type != null){  
+										str+='<span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/>';         
 									}else{  
-										str+='<span><img src="" class="media-object" alt=""/>';           
+										str+='<span><img src="" class="media-object" alt=""/>';             
 									}  
-									str+='</span>';
+									str+='</span>';      
 								str+='</div>';
 								str+='<div class="media-body">';      
 									str+=''+result.filePath+'';
