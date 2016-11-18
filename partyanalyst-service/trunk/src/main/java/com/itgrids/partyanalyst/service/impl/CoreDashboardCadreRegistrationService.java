@@ -4414,10 +4414,14 @@ try{
 				}
 			}
 			Long totalCadreUpto8amToday = 0l;
+			Long totalRegToday = 0l;
 			
 			for(Long param : hourList){
-				if( hourAndRegCountMap.get(param) != null)
+				if( hourAndRegCountMap.get(param) != null){
 					totalCadreUpto8amToday = totalCadreUpto8amToday + hourAndRegCountMap.get(param);
+					totalRegToday = totalRegToday + hourAndRegCountMap.get(param);
+				}
+					
 			}
 			FieldReportVO fieldReportVO = new FieldReportVO();
 			List<FieldReportVO> fieldReportVOs = new ArrayList<FieldReportVO>();
@@ -4435,6 +4439,7 @@ try{
  				fieldReportVO.setOrder(entry.getValue());
  				if(hourAndRegCountMap.get(entry.getValue()) != null){
  					fieldReportVO.setTodayTotalReg(hourAndRegCountMap.get(entry.getValue()));
+ 					totalRegToday = totalRegToday + hourAndRegCountMap.get(entry.getValue());
  				}
  				else{
  					fieldReportVO.setTodayTotalReg(0l);
@@ -4445,8 +4450,31 @@ try{
 				Collections.sort(fieldReportVOs, shortTimeAsc);
 			}
  			resultVO.setSubList3(fieldReportVOs);
- 			
- 		if(rtrnTrackingDtlsLst != null && rtrnTrackingDtlsLst.size() > 0){
+ 			//calculate total reg for cadreSurveyUser.
+ 			Long overAllRegCount = 0l;
+ 			List<Object[]> totalRegCount = tdpCadreUserHourRegInfoDAO.getTotalRegCount(cadreSurveyUserId);
+ 			if(totalRegCount != null && totalRegCount.size() > 0){
+ 				overAllRegCount = commonMethodsUtilService.getLongValueForObject(totalRegCount.get(0)[1]);
+ 			}
+ 			Calendar cal = Calendar.getInstance();
+ 			cal.setTime(today);
+ 			Long hr = (long) cal.get(Calendar.HOUR_OF_DAY); 
+ 			if(hr == 0l){  
+ 				hr = 23l;  
+ 			}else{
+ 				hr = hr-1l;
+ 			}
+ 			Long currentHourRegCnt = 0l;   
+ 			List<Object[]> totalRegForCurrentHour = tdpCadreUserHourRegInfoDAO.getTotalRegForAHour(cadreSurveyUserId,today,hr);
+ 			if(totalRegForCurrentHour != null && totalRegForCurrentHour.size() > 0){
+ 				for(Object[] param : totalRegForCurrentHour){
+ 					currentHourRegCnt = currentHourRegCnt + commonMethodsUtilService.getLongValueForObject(param[2]);
+ 				}
+ 			}
+ 			resultVO.setTotalRegCount(overAllRegCount);    
+ 			resultVO.setTodayRegCount(totalRegToday);
+ 			resultVO.setCurrentHourRegCount(currentHourRegCnt);
+ 		if(rtrnTrackingDtlsLst != null && rtrnTrackingDtlsLst.size() > 0){  
  			 Object[] cadreSurveyUserObj = rtrnTrackingDtlsLst.get(0);
 			 resultVO.setSurveyUserId(cadreSurveyUserId);
 			 resultVO.setUserName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[5]));
