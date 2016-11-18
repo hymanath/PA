@@ -33,11 +33,17 @@ public class TdpCadreDataVerification extends BaseModel implements Serializable{
 	private Long verifiedBy;
 	private Date verifiedTime;
 	private Long dataRejectReasonId;
+	private Long districtId;
+	private Long constituencyId;
+	private Long cadreSurveyUserId;
+	private String remark;
 	
 	private TdpCadre tdpCadre;
 	private CadreRegUser cadreRegUser;
 	private DataRejectReason dataRejectReason;
-	
+	private District district;
+	private Constituency constituency;
+	private CadreSurveyUser  cadreSurveyUser;	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "tdp_cadre_data_verification_id", unique = true, nullable = false)
@@ -112,6 +118,72 @@ public class TdpCadreDataVerification extends BaseModel implements Serializable{
 	public void setDataRejectReason(DataRejectReason dataRejectReason) {
 		this.dataRejectReason = dataRejectReason;
 	}
+	
+	@Column(name="district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	
+	@Column(name="constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@Column(name="cadre_survey_user_id")
+	public Long getCadreSurveyUserId() {
+		return cadreSurveyUserId;
+	}
+	public void setCadreSurveyUserId(Long cadreSurveyUserId) {
+		this.cadreSurveyUserId = cadreSurveyUserId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_survey_user_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreSurveyUser getCadreSurveyUser() {
+		return cadreSurveyUser;
+	}
+	public void setCadreSurveyUser(CadreSurveyUser cadreSurveyUser) {
+		this.cadreSurveyUser = cadreSurveyUser;
+	}
+	
+	@Column(name="remark")
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 	
 	
 }
