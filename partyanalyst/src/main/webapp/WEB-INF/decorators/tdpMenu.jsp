@@ -820,23 +820,7 @@
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
 								</li>
 							</c:if>
-						<!--	
-						<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-							  <li>
-								<a href="#"><i class="fa fa-envelope ico-white"></i><span>&nbsp;&nbsp;Media Dashboard</span></a>
-								 <h2><i class="fa fa-envelope ico-white line_heightDiv"></i>Media Dashboard</h2>
-								 <ul>
-								  <li>
-								   <a href="mediaScreenPartyAction.action"><img class=" ico-white pull-left" src="newCoreDashBoard/img/electronicMediaIcon.png" style="width:25px; height:30px;"></img><span>&nbsp;&nbsp;AP Media Screen</span></a>
-								  </li>
-								  <li>
-								 <a href="mediaScreenPartyForTSAction.action"><img class=" ico-white pull-left" src="newCoreDashBoard/img/electronicMediaIcon.png" style="width:25px; height:30px;"></img><span>&nbsp;&nbsp;TS Media Screen</span></a>
-								  </li>
-							   </ul>
-							</li>
-						</c:if>			
-						-->
-						
+					
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
