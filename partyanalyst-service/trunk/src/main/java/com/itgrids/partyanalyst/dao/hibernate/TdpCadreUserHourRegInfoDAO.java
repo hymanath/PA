@@ -226,10 +226,32 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 		 sb.append("select model.hour,sum(model.regCount) from TdpCadreUserHourRegInfo model where " +
 		 		  " date(model.surveyDate) = :surveyDate " +  
 		 		  " and model.cadreSurveyUserId = :cadreSurveyUserId" +
+
 		 		  " group by model.hour order by model.hour");
 		 Query query = getSession().createQuery(sb.toString());
 		 query.setDate("surveyDate", surveyDate);  
 		 query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
 		 return query.list();  
+	}
+	public List<Object[]> getTotalRegCount(Long cadreSurveyUserId){
+		StringBuilder sb = new StringBuilder();
+		 sb.append("select model.cadreSurveyUserId,sum(model.regCount) from TdpCadreUserHourRegInfo model where " +
+		 		  " model.cadreSurveyUserId = :cadreSurveyUserId " +
+		 		  " group by model.cadreSurveyUserId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		 return query.list(); 
+	}
+	public List<Object[]> getTotalRegForAHour(Long cadreSurveyUserId,Date surveyDate, Long hr){
+		StringBuilder sb = new StringBuilder();
+		 sb.append("select model.cadreSurveyUserId,model.hour,model.regCount from TdpCadreUserHourRegInfo model where " +
+		 		  " model.cadreSurveyUserId = :cadreSurveyUserId" +
+		 		  " and date(model.surveyDate) = :surveyDate " +
+		 		  " and model.hour = :hr ");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		 query.setParameter("hr", hr);
+		 query.setDate("surveyDate", surveyDate);
+		 return query.list(); 
 	}
 }
