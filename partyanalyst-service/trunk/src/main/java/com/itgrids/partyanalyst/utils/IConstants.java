@@ -864,7 +864,7 @@ public interface IConstants {
     public static final Long CADREPERCENTAGE = 30l;
     public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","s" +
     		"aveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction","displayDashboardCommentsAction","savingDashboardCommentAction","deleteDashBoardcommentsAction",
-    		 "coreDashboardAction1","updateTransactionTrackingDtalsAction"};
+    		 "coreDashboardAction1","updateTransactionTrackingDtalsAction","mediaScreenPartyAction.action","mediaScreenPartyForTSAction.action"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     
@@ -1051,7 +1051,7 @@ public interface IConstants {
 		 "saveRegistrationFeedbackQueriesDetailsAction.action" ,"updateNotificationTypeAction.action","updateNotificationAction.action",
 		 "notificationIsActiveStatusAction.action","getNotificationTypeDetailsStatsAction.action","getNotificationTypeDetailsAction.action",
 		 "saveNotificationTypeTextAction.action","saveNotificationAction.action",
-		 "genereateReportAction.action","retriveDebateDetailsAction.action"};
+		 "genereateReportAction.action","retriveDebateDetailsAction.action","mediaScreenPartyAction.action","mediaScreenPartyForTSAction.action"};
 	
 	public static final Long  APPOINTMENT_ACTION_STATUS_CHANGE = 1L;
 	
