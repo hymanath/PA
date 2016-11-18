@@ -2076,6 +2076,11 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		query.setParameter("stateId", stateId);
 		return query.list();
 	}
+  public List<Object[]> getConstituenciesNamesByIds(List<Long> constituencyIds){
+		Query query = getSession().createQuery(" select model.constituencyId,model.name from Constituency model where model.constituencyId in (:constituencyIds) ");
+		query.setParameterList("constituencyIds",constituencyIds);
+		return query.list();
+	}
 }
 
 

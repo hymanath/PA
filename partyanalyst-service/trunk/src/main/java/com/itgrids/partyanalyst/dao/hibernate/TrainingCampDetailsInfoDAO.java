@@ -175,7 +175,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 		  	  }  
        }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
     	   if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
-    		   queryStr.append(" model3.assemblyId,model3.name,") ;   
+    		   queryStr.append(" model3.assembly.constituencyId,model3.assembly.name,") ;   
     	   }else{
     		   queryStr.append(" model1.constituencyId,model1.name,");   
     	   }
@@ -207,7 +207,15 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 				 queryStr.append(" and model3.parliamentId in (:locationValues)"); 
 			 } 
 		 }else if(locationValues != null && locationValues.size() > 0){
-			    queryStr.append(" and model.locationValue in (:locationValues)");  
+				 if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+					 if(activityMemberId != null && activityMemberId.longValue() == 1l || activityMemberId.longValue() == 2l || activityMemberId.longValue()==3l){
+						 queryStr.append(" and model1.district.districtId in (:locationValues)");
+					 }else{
+						 queryStr.append(" and model.locationValue in (:locationValues)");	 
+					 }
+				 }else{
+					  queryStr.append(" and model.locationValue in (:locationValues)");	 
+				 }
 	 	 }
        
         if(locationType != null && locationType.equalsIgnoreCase("District")){
