@@ -427,7 +427,7 @@ $(document).ready(function(){
 								
 								str+='<label class="font_fff m_top10" >Article Tracking</label>';
 								str+='<div class="pad_5 bg_ff" style="color:#000;">';
-								if(result[i].trackingLocationScopeId == null || result[i].trackingLocationScopeId == ""){
+								if(result[i].trackingLocationScopeId == null || result[i].trackingLocationScopeId == 0){
 									str+='<span>Tracking Location Scope : - </span>';
 								}else{
 									if(result[i].trackingLocationScopeId == 1){
@@ -441,7 +441,7 @@ $(document).ready(function(){
 								
 								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
 								
-								if(result[i].trackingLocationLevelId == null || result[i].trackingLocationLevelId ==""){
+								if(result[i].trackingLocationLevelId == null || result[i].trackingLocationLevelId ==0){
 										str+='<span>Tracking Location       :  - </span>';
 								}else{
 									if(result[i].trackingLocationLevelList !=null && result[i].trackingLocationLevelList.length>0){
@@ -459,7 +459,7 @@ $(document).ready(function(){
 								
 								str+='<div class="pad_5 bg_ff" style="color:#000;margin-top:4px;">';
 								
-								if(result[i].trackingLabelId == null || result[i].trackingLabelId ==""){
+								if(result[i].trackingLabelId == null || result[i].trackingLabelId ==0){
 										str+='<span>Label Name       :  - </span>';
 								}else{
 									if(result[i].trackingLablesList !=null && result[i].trackingLablesList.length>0){

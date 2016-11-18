@@ -1809,7 +1809,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 				str+='<div class="pad_5 bg_ED">';
 					str+='<div id="stateWiseMainGraph'+i+'" style="height:150px"></div>';
 				str+='</div>';
-				str+='<h4 class="panel-title">Total - '+result[i].categoryCount+'</h4>';
+				str+='<h4 class="panel-title">Total - <a style="cursor:pointer" class="stateWiseTotalsCls" attr_party_id="'+result[i].id+'" attr_category_id="1,2">'+result[i].categoryCount+'</a></h4>';
 				str+='<div class="row">';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<div id="newsChannels'+i+'" style="height:100px;"></div>';
@@ -1826,7 +1826,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 				for(var j in result[i].tvNewsDetailsVOList)
 				{
 					graphIdSub = graphIdSub + 1;
-					str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+					str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - <a class="stateWiseTotalsCls" style="cursor:pointer" attr_party_id="'+result[i].id+'" attr_category_id="'+result[i].tvNewsDetailsVOList[j].categoryId+'">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 					str+='<div class="row">';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<div id="newsChannels'+i+j+graphIdSub+'" style="height:100px;"></div>';
@@ -1866,7 +1866,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						
 						str+='<div class="row">';
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-							str+='<h4 class="panel-title">Total - '+result[i].tvNewsDetailsVOList1[k].categoryCount+'</h4>';
+							str+='<h4 class="panel-title">Total - <a style="cursor:pointer" class="stateWiseIndividualCls" attr_channel_id="'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].channelId+'" attr_party_id="'+result[i].id+'" attr_category_id="1,2">'+result[i].tvNewsDetailsVOList1[k].categoryCount+'<a></h4>';
 							str+='<div class="row">';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="newsChannelsProgramsTot'+i+k+graphIdMain+'" style="height:100px;"></div>';
@@ -1885,7 +1885,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						{
 							graphId = graphId+1;
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName+' - '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryCount+'</h4>';
+								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryName+' - <a style="cursor:pointer" class="stateWiseIndividualCls" attr_channel_id="'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[0].channelId+'" attr_party_id="'+result[i].id+'" attr_category_id="'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryId+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].categoryCount+'</a></h4>';
 								str+='<div class="row">';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<div id="newsChannelsPrograms'+i+k+graphId+'" style="height:100px;"></div>';
@@ -4018,4 +4018,18 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 				'This Year': [moment().startOf('Year'), moment()]
 			}  
 		});
+	});
+	$(document).on("click",".stateWiseTotalsCls",function(){
+		var categoryIds = $(this).attr("attr_category_id");
+		var partyId = $(this).attr("attr_party_id");
+		
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=N&bfIds=1,2&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status=category&stIdx=0&edIdx=6&callFrom=basicDetails');
+	});
+	
+	$(document).on("click",".stateWiseIndividualCls",function(){
+		var categoryId = $(this).attr("attr_category_id");
+		var channelId = $(this).attr("attr_channel_id");
+		var partyId = $(this).attr("attr_party_id");
+		
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=N&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=basicDetails');
 	});
