@@ -177,9 +177,10 @@ $(document).on("click",".filtersSubmitDivIdEmn",function(){
 });
 
 
-//$("#emnHeadDate").html("("currentFromDateEmn "-" currentToDateEmn")");
-$("#emnHeadDate").html("Today("+moment().format("DD/MM/YY")+" to "+moment().format("DD/MM/YY")+")");
-$("#dateRangeIdForEmn").daterangepicker({
+//$("#emnHeadDate").html("This Month("+currentFromDateEmn+ " to " +currentToDateEmn+")");  
+$("#emnHeadDate").html("Today("+currentFromDateEmn+")");    
+$("#dateRangeIdForEmn").daterangepicker({          
+	
 	opens: 'left',
 	startDate: moment(),
 	endDate: moment(),
@@ -3962,4 +3963,38 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		
 		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&bfIds='+benefitIds+'&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status='+searchType+'&stIdx=0&edIdx=6&callFrom=basicDetails','_blank');
 
-	});	
+	});
+	$(document).on("click",".datesClass",function(){  
+		var type = $(this).attr("attr_type");
+		if(type == "currentMonth"){
+			currentFromDateEmn = moment().format('DD-MM-YYYY');
+			currentToDateEmn = moment().format('DD-MM-YYYY');
+			$("#emnHeadDate").html(" TODAY ( "+currentFromDateEmn+" )");      
+			getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);   
+		}else if(type == "lastMonth"){
+			currentFromDateEmn = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
+			currentToDateEmn = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
+			$("#emnHeadDate").html("Last Month("+currentFromDateEmn+" to "+currentToDateEmn+")");
+			getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);
+		}
+	
+		$("#dateRangeIdForEmn").daterangepicker({            
+		
+			opens: 'left',
+			startDate: currentFromDateEmn,  
+			endDate: currentToDateEmn,
+			locale: {
+				format: 'DD-MM-YYYY'
+			},
+			ranges: {
+				'Today' : [moment(), moment()],
+				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+				'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+				'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+				'This Month': [moment().startOf('month'), moment()],
+				'This Year': [moment().startOf('Year'), moment()]
+			}  
+		});
+	});
