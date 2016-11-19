@@ -145,11 +145,11 @@ var url = window.location.href;
 	
 $(document).ready(function(){
 	setTimeout(function(){
-	if(callFrom == "basicDetails")
+	if(callFrom == "bad")
 		newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
-	else if(callFrom == "partyDetails")
+	else if(callFrom == "pds")
 		getEMMMediaProgramsOnPartyProgramsWiseBulletins(0);
-	else if(callFrom == "districtWiseProgramDetailsForParty")
+	else if(callFrom == "dpdpd")
 		getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(0);
 	}, 1000);
 	
@@ -526,11 +526,11 @@ $(document).ready(function(){
 					hrefTextPrefix: '#pages-',
 					onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*6;
-							if(callFrom == "basicDetails")
+							if(callFrom == "bad")
 								newsBulletinPointBasicDetailsBulletinsOfOrganization(num);		
-							else if(callFrom == "partyDetails")
+							else if(callFrom == "pds")
 								getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);		
-							else if(callFrom == "districtWiseProgramDetailsForParty")
+							else if(callFrom == "dpdpd")
 									getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(num);
 					}					
 				});

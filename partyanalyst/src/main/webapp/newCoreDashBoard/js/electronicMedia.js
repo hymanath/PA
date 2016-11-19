@@ -515,11 +515,11 @@ function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 					
 				},
 				series: {
-					//cursor: 'pointer',
+					cursor: 'pointer',
 					point: {
 						events: {
 							click: function () {
-								//getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(this.extra);
+								getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(this.extra);
 							}
 						}
 					}
@@ -542,7 +542,7 @@ function buildEMMDetailedPartyDistrictWiseProgramsOverview(result)
 function getEMMDetailedPartyDistrictWiseProgramsBulletinDetailsOverview(val){
 	 var t = val.split("-");
 	  
-	  window.open('showElectronicBulletinsAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&npsStr='+newsChannelsIdsGlbl+'&scops='+impactScopeIds+'&orgIdStr='+t[2]+'&orgType=N&bfIds='+t[3]+'&stIdx=0&edIdx=6&callFrom=districtWiseProgramDetailsForParty','_blank');
+	  window.open('showElectronicBulletinsAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&npsStr='+newsChannelsIdsGlbl+'&scops='+impactScopeIds+'&orgIdStr='+t[2]+'&orgType=N&bfIds='+t[3]+'&stIdx=0&edIdx=6&callFrom=dpdpd','_blank');
 	
 }
 function getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type)
@@ -655,6 +655,7 @@ function buildEmmDetailedPartyMediaProgramsOnParty(result)
 					}
 				},
 				series: {
+					cursor: 'pointer',
 					point: {
 					  events: {
 						click: function () {
@@ -702,7 +703,7 @@ function getArticlesForPartyDetailedDistEdiPartiesOverView(val){
 		   orgType = "N";
 	  }
 	  
-	  window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&npsStr='+t[1]+'&stIdx=0&edIdx=6&callFrom=partyDetails','_blank');
+	  window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&npsStr='+t[1]+'&stIdx=0&edIdx=6&callFrom=pds','_blank');
 	      
 	}
 
@@ -3982,7 +3983,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		
 		
 		
-		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&bfIds='+benefitIds+'&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status='+searchType+'&stIdx=0&edIdx=6&callFrom=basicDetails','_blank');
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType='+orgType+'&bfIds='+benefitIds+'&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status='+searchType+'&stIdx=0&edIdx=6&callFrom=bad','_blank');
 
 	});
 	$(document).on("click",".datesClass",function(){  
