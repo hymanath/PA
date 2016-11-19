@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IFieldVendorLocationDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
@@ -92,6 +93,8 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO;
 	private ICadreSurveyUserPerformanceTypeDAO cadreSurveyUserPerformanceTypeDAO;
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
+	private ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO;
+	
 	//Setters
 	
 	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
@@ -217,6 +220,13 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	}
 	public void setTdpCadreTargetCountDAO(ITdpCadreTargetCountDAO tdpCadreTargetCountDAO) {
 		this.tdpCadreTargetCountDAO = tdpCadreTargetCountDAO;
+	}
+	
+	public ITdpCadreDataVerificationDAO getTdpCadreDataVerificationDAO() {
+		return tdpCadreDataVerificationDAO;
+	}
+	public void setTdpCadreDataVerificationDAO(ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO) {
+		this.tdpCadreDataVerificationDAO = tdpCadreDataVerificationDAO;
 	}
 	//business method.
 	public List<IdAndNameVO> getVendors(Long stateId){
@@ -3053,84 +3063,121 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
             return perc2.compareTo(perc1);
 		}
 	}; 
-  public GISIssuesVO getMatchedLocationVO(Long id,List<GISIssuesVO> list){
-	  GISIssuesVO returnvo = null;
-  	try {
-			if(list != null && !list.isEmpty()){
-				for (GISIssuesVO vo : list) {
-					if(vo.getId().longValue() == id.longValue()){
-						return vo;
-					}
-				}
-			}
-			return null;
-		} catch (Exception e) {
-			LOG.error("Exception occurred at getMatchedLocationVO() of FieldMonitoringService", e);
-		}
-  	return returnvo;
-  }
-  
-  public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO){
-		List<GISIssuesVO> returnList = new ArrayList<GISIssuesVO>();
-		try {
-			
-			List<CadreRegIssueStatus> statusList = cadreRegIssueStatusDAO.getAll();
-			
-			
-			 
-			List<Object[]> locationsList = null;
-			if(inputVO.getParentLocationType() != null)
-			{
-				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
-					locationsList = districtDAO.getDistrictForState(inputVO.getStateId());
-				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
-					locationsList = constituencyDAO.getConstituenciesByStateId(1l,inputVO.getStateId());
-				}
-			}
-			
-			if(locationsList != null && locationsList.size() > 0){
-				for(Object[] obj : locationsList){
-					GISIssuesVO vo1 = new GISIssuesVO();
-					List<GISIssuesVO> issuesStatusList = new ArrayList<GISIssuesVO>();
-					
-					vo1.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo1.setName(obj[1] != null ? obj[1].toString():"");
-					
-					 if(statusList != null && statusList.size() >0){
-						 for(CadreRegIssueStatus model : statusList){
-							 GISIssuesVO vo = new GISIssuesVO(); 
-							 vo.setId(model.getCadreRegIssueStatusId() != null ? model.getCadreRegIssueStatusId().longValue() : 0l);
-							 vo.setName(model.getStatus() != null ? model.getStatus().toString() : "");
-							 issuesStatusList.add(vo);
-						 }
-					}
-					 vo1.setIssuesList(issuesStatusList);
-					 
-					returnList.add(vo1);	
-				}
-			}
-			List<Object[]> list2 = cadreRegUserTabUserDAO.getLocationWiseIssueStatus(inputVO);
-			if(list2 != null && !list2.isEmpty()){
-				for (Object[] obj : list2) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
-					
-					GISIssuesVO vo = getMatchedLocationVO(id, returnList);
-					if(vo != null){
-						List<GISIssuesVO> statsList = vo.getIssuesList();
-						GISIssuesVO stutsVO = getMatchedLocationVO(statusId, statsList);
-						if(stutsVO != null){
-							stutsVO.setCount(count);
-							vo.setTotalIssues(vo.getTotalIssues()+count);//location wise total issues
+	public GISIssuesVO getMatchedLocationVO(Long id,List<GISIssuesVO> list){
+		  GISIssuesVO returnvo = null;
+	  	try {
+				if(list != null && !list.isEmpty()){
+					for (GISIssuesVO vo : list) {
+						if(vo.getId().longValue() == id.longValue()){
+							return vo;
 						}
 					}
 				}
+				return null;
+			} catch (Exception e) {
+				LOG.error("Exception occurred at getMatchedLocationVO() of FieldMonitoringService", e);
 			}
-			
-		} catch (Exception e) {
-			LOG.error("Exception occurred at getLocationWiseIssueStatus() of FieldMonitoringService", e);
+	  	return returnvo;
+	  }
+	  
+	  public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO){
+			List<GISIssuesVO> returnList = new ArrayList<GISIssuesVO>();
+			try {
+				
+				List<CadreRegIssueStatus> statusList = cadreRegIssueStatusDAO.getAll();
+				
+				
+				 
+				List<Object[]> locationsList = null;
+				if(inputVO.getParentLocationType() != null)
+				{
+					if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
+						locationsList = districtDAO.getDistrictForState(inputVO.getStateId());
+					}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT)){
+						locationsList = constituencyDAO.getConstituenciesByStateId(1l,inputVO.getStateId());
+					}
+				}
+				
+				if(locationsList != null && locationsList.size() > 0){
+					for(Object[] obj : locationsList){
+						GISIssuesVO vo1 = new GISIssuesVO();
+						List<GISIssuesVO> issuesStatusList = new ArrayList<GISIssuesVO>();
+						
+						vo1.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo1.setName(obj[1] != null ? obj[1].toString():"");
+						
+						 if(statusList != null && statusList.size() >0){
+							 for(CadreRegIssueStatus model : statusList){
+								 GISIssuesVO vo = new GISIssuesVO(); 
+								 vo.setId(model.getCadreRegIssueStatusId() != null ? model.getCadreRegIssueStatusId().longValue() : 0l);
+								 vo.setName(model.getStatus() != null ? model.getStatus().toString() : "");
+								 issuesStatusList.add(vo);
+							 }
+						}
+						 vo1.setIssuesList(issuesStatusList);
+						 
+						returnList.add(vo1);	
+					}
+				}
+				List<Object[]> list2 = cadreRegUserTabUserDAO.getLocationWiseIssueStatus(inputVO);
+				if(list2 != null && !list2.isEmpty()){
+					for (Object[] obj : list2) {
+						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long statusId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						GISIssuesVO vo = getMatchedLocationVO(id, returnList);
+						if(vo != null){
+							List<GISIssuesVO> statsList = vo.getIssuesList();
+							GISIssuesVO stutsVO = getMatchedLocationVO(statusId, statsList);
+							if(stutsVO != null){
+								stutsVO.setCount(count);
+								vo.setTotalIssues(vo.getTotalIssues()+count);//location wise total issues
+							}
+						}
+					}
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception occurred at getLocationWiseIssueStatus() of FieldMonitoringService", e);
+			}
+			return returnList;
 		}
-		return returnList;
-	}
+	
+ public FieldMonitoringVO getVerificationCountList(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr){
+			FieldMonitoringVO returnVO = new FieldMonitoringVO();
+			try{
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				Date fromDate = null;	
+				Date toDate = null;
+				if(fromDateStr != null && toDateStr != null){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				Long totalRegisteredCount = tdpCadreDataVerificationDAO.getTotalRegistered(stateId,districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+				Long passedCount = tdpCadreDataVerificationDAO.getVerifiedPassedCount(stateId,districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+			    Long rejectedCount = tdpCadreDataVerificationDAO.getVerifiedRejectedCount(stateId,districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+			   
+			    Long pendingCount = 0l;
+			    
+			    if(totalRegisteredCount == null)
+			    	totalRegisteredCount = 0l;
+			    if(passedCount == null)
+			    	passedCount = 0l;
+			    if(rejectedCount == null)
+			    	rejectedCount = 0l;
+			 
+			    pendingCount = totalRegisteredCount - passedCount - rejectedCount;
+			    
+			    returnVO.setTodayRegCount(totalRegisteredCount);
+			    returnVO.setPassedcount(passedCount);
+			    returnVO.setRejectedCount(rejectedCount);
+			    returnVO.setPendingCount(pendingCount);
+			    
+			    
+		}catch(Exception e){
+			LOG.error("Exception occurred at getVerificationCountList() of FieldMonitoringService", e);
+		}
+		return returnVO;
+		}	
 }
