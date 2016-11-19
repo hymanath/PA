@@ -461,6 +461,9 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				
 			   Long cadreId = 0l;
 			   Long reasonId = 0l;
+			   Long constitunecyId =0l;
+			   Long districtId =0l;
+			   Long cadreUserId =0l;
 			   //Long userId = 0l;
 			   IdNameVO idNameVO = new IdNameVO();
 			   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
@@ -471,10 +474,16 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				   jObj = jsonArray.getJSONObject(i);
 				   cadreId = jObj.getLong("cadreId");
 				   reasonId = jObj.getLong("reasonId");
+				   constitunecyId = jObj.getLong("constitunecyId");
+				   districtId = jObj.getLong("districtId");
+				   cadreUserId = jObj.getLong("cadreUserId");
 				   //userId = jObj.getLong("userId");
 				   idNameVO.setCadreId(cadreId);
 				   idNameVO.setRejectedCount(reasonId);
 				   idNameVO.setId(userId);
+				   idNameVO.setConstitunecyId(constitunecyId);
+				   idNameVO.setDistrictId(districtId);
+				   idNameVO.setDistrictId(cadreUserId);
 				   idNameVOs.add(idNameVO);
 			   }
 			   resultStatus = dataMonitoringService.updateRejectDtls(idNameVOs);    
