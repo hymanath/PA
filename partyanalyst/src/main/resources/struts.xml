@@ -14695,5 +14695,10 @@
 		<action name="tdpUserWiseReportMapAction" class="cadreCommitteeAction" method="tdpUserWiseReportMap">
  			 <result name="success">/jsp/tdpUserWiseReportMap.jsp</result>
  	</action>
+ 	<action name="getVerificationCountsAction" class="fieldMonitoringAction"  method="getVerificationCounts">
+		<result type="json" name="success">
+			<param name="root">fieldMonitoringVO</param>
+		</result>
+	</action>
 </package>
 </struts>
