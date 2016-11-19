@@ -669,6 +669,23 @@ public String getConstituencyByVendor(){
 		return Action.SUCCESS;
 	}
   
+  public String getLocationWiseOverViewDetails(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			String locationType = jObj.getString("locationType");
+			Long locationVal = jObj.getLong("locationVal");
+			
+			dataMonitoringVerificationVOList = fieldMonitoringService.getLocationWiseOverViewDetails(fromDateStr,toDateStr,locationType,locationVal);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseOverViewDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+  
   public String getLocationWiseDetailedOverViewDetails(){
 		try {
 			

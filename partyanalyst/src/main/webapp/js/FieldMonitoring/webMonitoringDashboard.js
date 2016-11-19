@@ -6,7 +6,7 @@
 		getIssueTypeWiseCounts(1);
 		getDataMonitoringOverViewDetails(1);
 		getDistrictWiseIssueTypesCount(1);
-		getLocationWiseOverAllDetails("state",1,"districtWiseOverviewDetailsId");
+		//getLocationWiseOverAllDetails("state",1,"districtWiseOverviewDetailsId");
 	}
 	function getOverAllDataCollectorsCounts(state){
 		var dates = $(".singleDate").val();

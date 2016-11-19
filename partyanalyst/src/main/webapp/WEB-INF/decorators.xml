@@ -711,5 +711,6 @@
 		<pattern>/tdpUserWiseMapAction*</pattern>
 		<pattern>/mediaScreenPartyForTSAction*</pattern>
 		<pattern>/showElectronicBulletinsAction*</pattern>
+		<pattern>/dataMonitoringDashboardNewAction*</pattern>
 	</decorator> 
 </decorators>

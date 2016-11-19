@@ -803,7 +803,7 @@
 											</c:if>
 											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DATA_MONITORING_DASHBOARD')}">
 												<li>
-													<a href="dataMonitoringDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Data Monitoring DashBoard</span></a>
+													<a href="dataMonitoringDashboardNewAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Data Monitoring DashBoard</span></a>
 												</li>
 											</c:if>
 											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_WEB_MONITORING_DASHBOARD')}">
