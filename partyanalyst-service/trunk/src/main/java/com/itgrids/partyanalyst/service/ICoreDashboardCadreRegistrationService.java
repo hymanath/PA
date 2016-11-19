@@ -52,7 +52,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public String getLocationWiseRegistrationSMSTracking();
  	public List<FieldReportVO> getHourWiseRegDtls(Long stateId, String option);
 	public List<CadreReportVO> getTodayAndYesterdayTabUserRgstrtnComparisonDetails(Long stateId);
-	public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr);
+	public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long fieldUserId,Long constitunecyId);
 	public CadreRegistratedCountVO getStateWiseMandalMuncipalityNotStartedCount(Long stateId);
 	public List<CadreReportVO> getTsDistrictDetails(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String sortingType);
 }

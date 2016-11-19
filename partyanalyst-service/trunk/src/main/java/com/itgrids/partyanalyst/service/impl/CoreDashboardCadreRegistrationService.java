@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegUserTabUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CadreBasicVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -127,7 +129,18 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
     private ITabUserLocationDetailsDAO tabUserLocationDetailsDAO;
     private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
     private ITdpCadreUserHourRegInfo tdpCadreUserHourRegInfoDAO;
-    
+    private ICadreRegUserTabUserDAO cadreRegUserTabUserDAO;
+	
+	
+	
+	public ICadreRegUserTabUserDAO getCadreRegUserTabUserDAO() {
+		return cadreRegUserTabUserDAO;
+	}
+
+	public void setCadreRegUserTabUserDAO(
+			ICadreRegUserTabUserDAO cadreRegUserTabUserDAO) {
+		this.cadreRegUserTabUserDAO = cadreRegUserTabUserDAO;
+	}
     
 	public void setTdpCadreSmsLeaderLocationDAO(
 			ITdpCadreSmsLeaderLocationDAO tdpCadreSmsLeaderLocationDAO) {
@@ -4370,7 +4383,7 @@ try{
 	  }
   }
  //swadhin
- public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr){
+ public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long fieldUserId,Long constitunecyId){
 	  CadreBasicVO resultVO = new CadreBasicVO();
 	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	  Date toDate=null;
@@ -4393,7 +4406,20 @@ try{
 		 
 		 setDUserTrackingDtlsToList(rtrnTrackingDtlsLst,userTrackingDtlList,"samples");
 		 setDUserTrackingDtlsToList(rtrnEvry5MinutesUsrTrkngDtlList,eryFveMntsDtlsLstUsrTrckngLst,null);
+		 if(cadreSurveyUserId.longValue() == 0l){
+		 List<Long> cadreSurveyUserIds = new ArrayList<Long>();
+		 List<Object[]> reportDetails = cadreRegUserTabUserDAO.getFieldMonitoringMapReportDetails(constitunecyId,fieldUserId);
 		 
+		 if(reportDetails != null && reportDetails.size() > 0){
+				
+				for (Object[] param : reportDetails) {
+					cadreSurveyUserIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+		 
+		 List<Object[]> latestObjets = tabUserLocationDetailsDAO.getLatestLattitudeAndLongitude(cadreSurveyUserIds);
+		 setDUserTrackingDtlsToList(latestObjets,userTrackingDtlList,"all");
+		 }
  		 if(userTrackingDtlList != null && userTrackingDtlList.size() > 0){
  			 resultVO.setSubList1(userTrackingDtlList);
  		 }
@@ -4501,6 +4527,10 @@ try{
 				 regDtlsVO.setSurveyTime(commonMethodsUtilService.getStringValueForObject(param[0]));
 				 regDtlsVO.setLongititude(commonMethodsUtilService.getStringValueForObject(param[1]));
 				 regDtlsVO.setLatitude(commonMethodsUtilService.getStringValueForObject(param[2]));
+				 if(type != null && type.trim().equalsIgnoreCase("all")){
+				 regDtlsVO.setTdpCadreName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				 regDtlsVO.setTdpCadreMbl(commonMethodsUtilService.getStringValueForObject(param[4]));
+				 }
 				 
 				 if(type != null && type.trim().equalsIgnoreCase("samples")){
 					 regDtlsVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
