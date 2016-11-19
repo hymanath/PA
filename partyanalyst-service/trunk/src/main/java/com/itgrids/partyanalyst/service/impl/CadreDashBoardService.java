@@ -6363,9 +6363,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 if(locationScopeId != null && locationScopeId.longValue() == 3l || locationScopeId != null && locationScopeId.longValue() == 2l){
 					 name = obj[1] != null ? obj[1].toString():"";
 				}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
-						String t = obj[1] != null ? obj[1].toString():""; 
-						String t1 = obj[2] != null ? obj[2].toString():"";
-						name = t+"-"+t1;
+						String t = obj[1] != null ? obj[1].toString():""; //consName
+						String t1 = obj[2] != null ? obj[2].toString():"";//distName
+						Long t3 = Long.valueOf(obj[3] != null ? obj[3].toString():"0");//districtId
+						name = t+"-"+t1+"-"+t3;
 				}
 					
 				
@@ -6381,6 +6382,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}else if(locationScopeId != null && locationScopeId.longValue() == 4l){
 					vo.setName(locationNameMap.get(vo.getId()).split("-")[0]);
 					vo.setDistrictname(locationNameMap.get(vo.getId()).split("-")[1]);
+					vo.setValue(locationNameMap.get(vo.getId()).split("-")[2]);
 				}
 	 		}
 	 	}
