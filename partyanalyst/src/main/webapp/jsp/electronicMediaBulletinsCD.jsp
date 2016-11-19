@@ -541,23 +541,27 @@ $(document).ready(function(){
 		
 	 }
 	}
+		
 	$(document).on("click",".bulletinDetailsCls",function(){
 		$(".bulletinDetailsCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");
-		$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
-		var id= $(this).attr("attr_id");
-		var iconId= $(this).attr("attr_iconid");
-		//$("#showFromToBlockDiv"+id).toggle();
+		if($(this).hasClass("glyphicon-plus")){
+			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+		}else{
+			$(this).removeClass("glyphicon-minus").addClass("glyphicon-plus");
+		}
 		
-				$('.bulletinShowDivs').each(function(index) {
-					
-					if($(this).attr("id") == id){
-					   $(this).show();
-					}
-				  else{
-					   $(this).hide();
-					}
+		
+		var id= $(this).attr("attr_id");
+		$('.bulletinShowDivs').each(function(index) {
+			
+			if($(this).attr("id") == id){
+			   $(this).toggle();
+			}
+		  else{
+			   $(this).hide();
+			}
 
-				});
+		});
 	 
 	
 	});
@@ -582,9 +586,9 @@ $(document).ready(function(){
 
 		$.ajax({
 		  type : 'GET',      
-		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		  //url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
 		}).then(function(result){
 		  var countByDate=0;
