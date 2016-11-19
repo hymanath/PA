@@ -543,8 +543,9 @@ $(document).ready(function(){
 	}
 		
 	$(document).on("click",".bulletinDetailsCls",function(){
-		$(".bulletinDetailsCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+		
 		if($(this).hasClass("glyphicon-plus")){
+			$(".bulletinDetailsCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
 		}else{
 			$(this).removeClass("glyphicon-minus").addClass("glyphicon-plus");
