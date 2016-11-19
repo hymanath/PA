@@ -2103,7 +2103,7 @@ public class WebServiceHandler {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public CadreBasicVO getUserTrackingDetailsBySurveyUserId(CadreBasicVO inputVO)
 	    {
-			return coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(inputVO.getSurveyUserId(),inputVO.getFromDate(),inputVO.getToDate());
+			return coreDashboardCadreRegistrationService.getUserTrackngDtslBySurveyUserId(inputVO.getSurveyUserId(),inputVO.getFromDate(),inputVO.getToDate());
 		 }
 		
 		@POST
