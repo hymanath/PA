@@ -113,6 +113,7 @@ var glblLon = 78.4800;
 			markersArr = [];
 			flightPlanCoordinates = [];
 			pathArr = [];
+			var searchTypeId = $('#mapId').val();
 			if(result != null){
 				$('#map1').html('');
 				if(result.subList1 != null && result.subList1.length > 0){
@@ -134,7 +135,10 @@ var glblLon = 78.4800;
 							displayLocation(result.subList1[i],"");
 						}*/
 						var temparr=[];
-						temparr.push("S.No:"+(parseInt(i)+1)+"<br/>"+result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
+						if(searchTypeId==0)
+							temparr.push(""+result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
+						else 
+							temparr.push("S.No:"+(parseInt(i)+1)+"<br/>"+result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
 						temparr.push(result.subList1[i].latitude);
 						temparr.push(result.subList1[i].longititude);
 						temparr.push(result.subList1[i].surveyTime);
