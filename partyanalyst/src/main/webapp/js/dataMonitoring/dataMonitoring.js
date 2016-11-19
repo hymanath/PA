@@ -1,4 +1,4 @@
-	$(document).on("change", "#stateId", function(e){
+	/*$(document).on("change", "#stateId", function(e){
 		getVendors();  
 	});  
 	$(document).on("change", "#vendorId", function(e){
@@ -6,7 +6,7 @@
 	});
 	$(document).on("change", "#districtId", function(e){
 		getVendorConstituencies();
-	});	
+	});	*/
 	
 function getDistricts(){
 	$('#districtId').find('option').remove();
@@ -168,13 +168,13 @@ function getUsers(constituencyId){
 	function refreshSelectBox(selectBoxId){
 		$("#"+selectBoxId).trigger("chosen:updated");
 	}
-	$(document).on("click","#getRegStatusId",function(){
+	/*$(document).on("click","#getRegStatusId",function(){
 		$("#detailsDivId").show();
 		$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#loggedInFieldUsersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		getCadreRegStatusType();
 		getReasons();
-	});
+	});*/
 	var globalSrt = '';
 	function getReasons(){
 		$.ajax({
@@ -195,7 +195,7 @@ function getUsers(constituencyId){
 			}     
 		});
 	}
-	function getCadreRegStatusType(){
+	/*function getCadreRegStatusType(){
 		
 		var userId = $("#cadreSurveyUserId").val();
 		var constituencyId = $("#constituencyId").val();
@@ -236,7 +236,7 @@ function getUsers(constituencyId){
 				$("#loggedInFieldUsersId").html('No Data Available...');  
 			}
 		});  
-	}  
+	}  */
 	function modifyDate(date){  
 		var dateArr = date.split("/");     
 		return dateArr[1]+"/"+dateArr[0]+"/"+dateArr[2];
@@ -262,6 +262,7 @@ function getUsers(constituencyId){
 		$("#totalCountId").html(str);
 	}
 	function buildTotalRegCdrVendorAndTabUserWise(result,startDate,endDate){
+		
 		var str = '';
 		str+='<h4 class="panel-title text-muted">Logged In FieldUsers</h4>';
 			str+='<div class="table-responsive">';
@@ -278,18 +279,14 @@ function getUsers(constituencyId){
 					str+='</thead>';
 					for(var i in result){   
 						str+='<tr>';
-						if(result[i].status == "active"){ 
-							str+='<td class="issueCmpltd">'+result[i].name+'</td>';
-						}else{
-							str+='<td class="issuePending">'+result[i].name+'</td>';
-						}
+							str+='<td>'+result[i].userName+'</td>';
 							str+='<td>'+result[i].tabUserName+'</td>';
 							str+='<td>'+result[i].mobileNo+'</td>';
 							str+='<td>'+result[i].totalCount+'</td>';
-							str+='<td>'+result[i].approvedCount+'</td>';
+							str+='<td>'+result[i].passedcount+'</td>';
 							str+='<td>'+result[i].rejectedCount+'</td>';
 							str+='<td>'+result[i].pendingCount+'</td>';  
-							str+='<td><button class="btn btn-success issuesBtn" attr_user_mobile="'+result[i].mobileNo+'" attr_user_name="'+result[i].tabUserName+'" attr_survey_user_id="'+result[i].id+'" attr_tab_user_id="'+result[i].tabUserId+'" attr_web_user_id="'+0+'" attr_start_date="'+startDate+'" attr_end_date="'+endDate+'">Verify Records</button></td>';
+							str+='<td><button class="btn btn-success issuesBtn" attr_user_mobile="'+result[i].mobileNo+'" attr_user_name="'+result[i].tabUserName+'" attr_survey_user_id="'+result[i].cadreSurveyUserId+'" attr_tab_user_id="'+result[i].tabUserId+'" attr_web_user_id="'+0+'" attr_start_date="'+startDate+'" attr_end_date="'+endDate+'">Verify Records</button></td>';
 						str+='</tr>';  
 					}
 				str+='</table>';
@@ -1019,8 +1016,79 @@ function getUsers(constituencyId){
 		}, 500);    
 	});
 	$(document).on('click','#bulkApproveId',function(){
-		$("#getRegStatusId").trigger("click");
+		//$("#getRegStatusId").trigger("click");
 	}); 
 	$(document).on('click','#bulkRejectId',function(){
-		$("#getRegStatusId").trigger("click");    
+		//$("#getRegStatusId").trigger("click");    
 	});
+
+	
+function getOverAllVerificationCount(){
+	  $("#verifiactionDivId").show();
+		var dateStr = $(".datePicker").val();
+		var dateArr = dateStr.split("-");
+		var fromDate = dateArr[0].trim();
+		var toDate = dateArr[1].trim();
+		var state=0;
+		var userId = $("#cadreSurveyUserId").val();
+		var constituencyId = $("#constituencyId").val();
+		var districtId = $("#districtId").val();
+		
+		var jsObj = { 
+		  stateId : state,
+		  districtId : districtId,
+		  constituencyId : constituencyId,
+		  userId : userId,
+		  fromDate : fromDate,		
+		  toDate : toDate		 	
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getVerificationCountsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			$("#verifiactionDivId").show();
+			if(result != null){
+				$("#totalRegisteredId").html(result.todayRegCount);
+				$("#verfPendingId").html(result.pendingCount);
+				$("#verPassedId").html(result.passedcount);
+				$("#verRejectedId").html(result.rejectedCount);
+			}	
+		});
+	}	
+$(document).on("click","#getRegStatusId",function(){
+	getOverAllVerificationCount();
+	getCadreVerificationDetails();
+});
+	
+function getCadreVerificationDetails(){
+	//$("#detailsDivId").show();
+	var dateStr = $(".datePicker").val();
+		var dateArr = dateStr.split("-");
+		var fromDate = dateArr[0].trim();
+		var toDate = dateArr[1].trim();
+		var state=0;
+		var userId = $("#cadreSurveyUserId").val();
+		var constituencyId = $("#constituencyId").val();
+		var districtId = $("#districtId").val();
+		
+		var jsObj = { 
+		  stateId : state,
+		  districtId : districtId,
+		  constituencyId : constituencyId,
+		  userId : userId,
+		  fromDate : fromDate,		
+		  toDate : toDate		 	
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getCadreVerificationDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			
+				buildTotalRegCdrVendorAndTabUserWise(result,fromDate,toDate);
+		});
+}	
+	
