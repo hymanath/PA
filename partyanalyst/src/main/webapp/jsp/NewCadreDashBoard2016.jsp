@@ -492,6 +492,7 @@ $('#PreviousmembersCount').addClass('animated fadeInUp');
 $('#membersCount').addClass('animated fadeInX');
 
 //color codes code start
+var glDistricvtId = 0;
 var statusColorArr = [];
 var statusarr = ['VeryGood','Good','Ok','Poor','VeryPoor'];
 function setcolorsForStatus(){
@@ -534,7 +535,7 @@ function setcolorsForStatus(){
 //dist
 
 $(document).on("click",".aptsclass",function(){
-	
+		glDistricvtId = 0;
 	  $(".aptsclass").removeClass("btn-success");
 	  $(this).addClass("btn-success");
 	  
@@ -542,7 +543,7 @@ $(document).on("click",".aptsclass",function(){
 	
 });
 $(document).on("click",".radiobuttonSelectedWise",function(){
-	 
+	 glDistricvtId = 0;
 	 var selectedRadioButton = $(this).val();
 	 var state = ''; 
 	 $('.aptsclass').each(function(i, obj){
@@ -556,7 +557,7 @@ $(document).on("click",".radiobuttonSelectedWise",function(){
 });
 //cons
 $(document).on("click",".aptsconsSele",function(){
-	 
+		glDistricvtId = 0;
 	  $(".aptsconsSele").removeClass("btn-success");
 	  $(this).addClass("btn-success");
 	  
@@ -565,7 +566,7 @@ $(document).on("click",".aptsconsSele",function(){
 });
 
 $(document).on("click",".radiobuttonSelectedConsWise",function(){
-	
+		glDistricvtId = 0;
 	 var selectedRadioButton = $(this).val();
 	 var state = ''; 
 	 $('.aptsconsSele').each(function(i, obj){
@@ -1574,7 +1575,6 @@ function getDistricts(locationType){
 		$('#constituencyWise2016DataTableId_length').append('<span class="filterCls" style="margin-left: 400px;"><label>District Filter : </label><select id="districtId" class="form-control" style="width: 180px;"></select></span>');		
 		getDistricts(locationType);		
 	}	
-	var glDistricvtId = 0;
 $(document).on('click','.scopeRadioCls',function(){
 		var selectionType=$("input:radio[name=selectionType]:checked").val();
 		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
