@@ -3179,5 +3179,73 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			LOG.error("Exception occurred at getVerificationCountList() of FieldMonitoringService", e);
 		}
 		return returnVO;
+	}	
+ 
+ public List<FieldMonitoringVO> getVerfiedCadreSurveyUserDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr){
+	List<FieldMonitoringVO> returnList = new ArrayList<FieldMonitoringVO>(); 
+	try{
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate = null;	
+		Date toDate = null;
+		if(fromDateStr != null && toDateStr != null){
+			fromDate = sdf.parse(fromDateStr);
+			toDate = sdf.parse(toDateStr);
+		}
+		List<Object[]> cadreDetailsList=tdpCadreDataVerificationDAO.getCadreSurveyUserDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+		if(cadreDetailsList != null && !cadreDetailsList.isEmpty()){
+		for (Object[] objects : cadreDetailsList) {
+			FieldMonitoringVO vo = new FieldMonitoringVO();
+			vo.setCadreSurveyUserId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+			vo.setUserName(objects[2] != null ? objects[2].toString():"");
+			vo.setTabUserName(objects[3] != null ? objects[3].toString():"");
+			vo.setMobileNo(objects[1] != null ? objects[1].toString():"");
+			vo.setTotalCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
+			vo.setTabUserId(Long.valueOf(objects[5] != null ? objects[5].toString() :"0"));
+			returnList.add(vo);
 		}	
+	}
+		Map<Long,Long> verfPassedMap = new LinkedHashMap<Long, Long>();
+		List<Object[]> cadreVerPassedList = tdpCadreDataVerificationDAO.getCadreVerfPassedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+		if(cadreVerPassedList != null && !cadreVerPassedList.isEmpty()){
+			for (Object[] objects : cadreVerPassedList) {
+				Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
+				Long passedCount = Long.valueOf(objects[1] != null ? objects[1].toString():"0");
+				verfPassedMap.put(cadreUserId, passedCount);
+			}
+		}
+		
+		if(returnList != null && !returnList.isEmpty() && verfPassedMap != null && !verfPassedMap.isEmpty()){
+			for (FieldMonitoringVO vo : returnList) {
+				vo.setPassedcount(verfPassedMap.get(vo.getCadreSurveyUserId()));
+			}
+		}
+		
+		Map<Long,Long> verfRejMap = new LinkedHashMap<Long, Long>();
+		List<Object[]> cadreVerRejList =tdpCadreDataVerificationDAO.getCadreVerfRejectedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+		if(cadreVerRejList != null && !cadreVerRejList.isEmpty()){
+			for (Object[] objects : cadreVerPassedList) {
+			Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
+			Long rejectedCount = Long.valueOf(objects[1] != null ? objects[1].toString():"0");
+			verfRejMap.put(cadreUserId, rejectedCount);
+		}
+	  }
+		if(returnList != null && !returnList.isEmpty() && verfRejMap != null && !verfRejMap.isEmpty()){
+			for (FieldMonitoringVO vo : returnList) {
+				vo.setRejectedCount(verfRejMap.get(vo.getCadreSurveyUserId()));
+			}
+		}
+		
+		if(returnList != null && !returnList.isEmpty()){
+			for(FieldMonitoringVO vo : returnList){
+				vo.setPendingCount(vo.getTotalCount()-vo.getPassedcount()-vo.getRejectedCount());
+			}
+		}
+		
+		
+	}catch(Exception e){
+		LOG.error("Exception occurred at getVerfiedCadreSurveyUserDetails() of FieldMonitoringService", e);
+	}
+	return returnList;
+ }
+ 
 }
