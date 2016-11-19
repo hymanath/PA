@@ -89,21 +89,38 @@
 					<div class="col-md-3 col-xs-12 col-sm-6">
                     	<button class="btn btn-success m_top25 text-capital" id="getRegStatusId">submit</button>
 					</div>
-					<!--<div class="col-md-3 col-xs-12 col-sm-6">
+			<div id="verifiactionDivId" style="display:none;">	
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+                    	<div class="block bg_F4 pad_20" style="margin-left:20px; margin-right:15px;margin-top:7px;" id="dataverificationId">
+                        	<div class="row">
+                            	<div class="col-md-3 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">today registered : <span id="totalRegisteredId"></span></h5>
+                                </div>
+                                <div class="col-md-3 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">verification pending : <span id="verfPendingId"></span></h5>
+                                </div>
+                                <div class="col-md-3 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">verified passed : <span id="verPassedId"></span></h5>
+                                </div>
+								<div class="col-md-3 col-xs-12 col-sm-3">
+                                	<h5 class="text-capital">verifed - junck/rejected : <span id="verRejectedId"></span></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>	
+			</div>	
+				<!--<div class="col-md-3 col-xs-12 col-sm-6">
                     	<button class="btn btn-success m_top25 text-capital" id="imageId">image</button>
 					</div>-->
                 </div>
             </div>
-            <div class="block pad_20 m_top20" id="detailsDivId" style="display:none;">
+           
             	<div class="row">
-                	<div class="col-md-12 col-xs-12 col-sm-12">
-                    	<div class="block bg_F4 pad_20">
-                        	<div class="row" id="totalCountId"></div>  
-                        </div>
-                    </div>       
                     <div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="loggedInFieldUsersId"></div>
                 </div>
-            </div>
+           
         </div> 
     </div>
 </div>
