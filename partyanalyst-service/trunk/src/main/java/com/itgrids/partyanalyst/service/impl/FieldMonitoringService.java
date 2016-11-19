@@ -3204,36 +3204,30 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			returnList.add(vo);
 		}	
 	}
-		Map<Long,Long> verfPassedMap = new LinkedHashMap<Long, Long>();
+		
 		List<Object[]> cadreVerPassedList = tdpCadreDataVerificationDAO.getCadreVerfPassedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
 		if(cadreVerPassedList != null && !cadreVerPassedList.isEmpty()){
 			for (Object[] objects : cadreVerPassedList) {
 				Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
 				Long passedCount = Long.valueOf(objects[1] != null ? objects[1].toString():"0");
-				verfPassedMap.put(cadreUserId, passedCount);
+				Long tabUserId = Long.valueOf(objects[2] != null ? objects[2].toString():"0");
+				FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+				if(vo != null)
+					vo.setPassedcount(passedCount);
 			}
 		}
 		
-		if(returnList != null && !returnList.isEmpty() && verfPassedMap != null && !verfPassedMap.isEmpty()){
-			for (FieldMonitoringVO vo : returnList) {
-				vo.setPassedcount(verfPassedMap.get(vo.getCadreSurveyUserId()));
-			}
-		}
-		
-		Map<Long,Long> verfRejMap = new LinkedHashMap<Long, Long>();
 		List<Object[]> cadreVerRejList =tdpCadreDataVerificationDAO.getCadreVerfRejectedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
 		if(cadreVerRejList != null && !cadreVerRejList.isEmpty()){
 			for (Object[] objects : cadreVerPassedList) {
 			Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
 			Long rejectedCount = Long.valueOf(objects[1] != null ? objects[1].toString():"0");
-			verfRejMap.put(cadreUserId, rejectedCount);
+			Long tabUserId = Long.valueOf(objects[2] != null ? objects[2].toString():"0");
+			FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+			if(vo != null)
+				vo.setRejectedCount(rejectedCount);
 		}
 	  }
-		if(returnList != null && !returnList.isEmpty() && verfRejMap != null && !verfRejMap.isEmpty()){
-			for (FieldMonitoringVO vo : returnList) {
-				vo.setRejectedCount(verfRejMap.get(vo.getCadreSurveyUserId()));
-			}
-		}
 		
 		if(returnList != null && !returnList.isEmpty()){
 			for(FieldMonitoringVO vo : returnList){
