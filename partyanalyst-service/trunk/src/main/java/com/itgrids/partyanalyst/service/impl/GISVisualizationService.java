@@ -1335,7 +1335,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 				 toDate  =sdf.parse(inputVO.getEndDate());
 			}
 			
-			if(inputVO.getParentLocationType() != null && inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+			if(inputVO.getParentLocationType() != null && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 				List<Object[]> latestObj = tabUserLocationDetailsDAO.getLattitudLangitudeOfTabUser(inputVO,fromDate,toDate);
 				List<Long> locationIdsList = new ArrayList<Long>(0);
 				if(commonMethodsUtilService.isListOrSetValid(latestObj)){
@@ -1682,6 +1682,28 @@ public class GISVisualizationService implements IGISVisualizationService{
 									locationVO.setLocationName(tabUser.getLocationName());
 									locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
 								}
+								
+								if(locationVO.getActiveLongitudeStr() == null){
+									locationVO.setActiveLongitudeStr(tabUser.getLongitude());
+									locationVO.setActiveLattitudeStr(tabUser.getLattitude());
+								}else if(locationVO.getLast1hrInactiveLongitudeStr() == null){
+									locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+									locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+								}else if(locationVO.getLast1hrActiveLongitudeStr() == null){
+									locationVO.setLast1hrActiveLongitudeStr(tabUser.getLongitude());
+									locationVO.setLast1hrActiveLattitudeStr(tabUser.getLattitude());
+								}else if(locationVO.getInActiveLongitudeStr() != null && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty()){
+									locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+									locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+								}else if(locationVO.getActiveLongitudeStr() != null  && !locationVO.getActiveLongitudeStr().toString().trim().isEmpty()){
+									locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+									locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+								}else if(locationVO.getInActiveLongitudeStr() != null  && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty() ){
+									locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+									locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+								}							
+								
+								
 								locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
 							}
 						}
@@ -1705,6 +1727,27 @@ public class GISVisualizationService implements IGISVisualizationService{
 								locationVO.setLocationName(tabUser.getLocationName());
 								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
 							}
+							
+							if(locationVO.getActiveLongitudeStr() == null){
+								locationVO.setActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getLast1hrInactiveLongitudeStr() == null){
+								locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getLast1hrActiveLongitudeStr() == null){
+								locationVO.setLast1hrActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getInActiveLongitudeStr() != null && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty()){
+								locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getActiveLongitudeStr() != null  && !locationVO.getActiveLongitudeStr().toString().trim().isEmpty()){
+								locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getInActiveLongitudeStr() != null  && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty() ){
+								locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+							}
+							
 							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
 						}
 					}
@@ -1727,6 +1770,28 @@ public class GISVisualizationService implements IGISVisualizationService{
 								locationVO.setLocationName(tabUser.getLocationName());
 								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
 							}
+							
+							
+							if(locationVO.getActiveLongitudeStr() == null){
+								locationVO.setActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getLast1hrInactiveLongitudeStr() == null){
+								locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getLast1hrActiveLongitudeStr() == null){
+								locationVO.setLast1hrActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getInActiveLongitudeStr() != null && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty()){
+								locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getActiveLongitudeStr() != null  && !locationVO.getActiveLongitudeStr().toString().trim().isEmpty()){
+								locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getInActiveLongitudeStr() != null  && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty() ){
+								locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+							}
+							
 							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
 						}
 					}
@@ -1749,6 +1814,28 @@ public class GISVisualizationService implements IGISVisualizationService{
 								locationVO.setLocationName(tabUser.getLocationName());
 								locationVO.setAllocatedCount(locationWiseAllocatedCoutnMap.get(tabUser.getLocationId()));
 							}
+							
+							
+							if(locationVO.getActiveLongitudeStr() == null){
+								locationVO.setActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getLast1hrInactiveLongitudeStr() == null){
+								locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getLast1hrActiveLongitudeStr() == null){
+								locationVO.setLast1hrActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getInActiveLongitudeStr() != null && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty()){
+								locationVO.setLast1hrInactiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setLast1hrInActiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getActiveLongitudeStr() != null  && !locationVO.getActiveLongitudeStr().toString().trim().isEmpty()){
+								locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+							}else if(locationVO.getInActiveLongitudeStr() != null  && !locationVO.getInActiveLongitudeStr().toString().trim().isEmpty() ){
+								locationVO.setInActiveLongitudeStr(tabUser.getLongitude());
+								locationVO.setInactiveLattitudeStr(tabUser.getLattitude());
+							}
+							
 							locationWiseUsersMap.put(tabUser.getLocationId(), locationVO);
 						}
 					}
