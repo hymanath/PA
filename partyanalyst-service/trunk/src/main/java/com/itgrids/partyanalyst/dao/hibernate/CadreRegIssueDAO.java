@@ -1020,9 +1020,9 @@ public List<Object[]> getLocationWiseDataVerifiedCounts(Date fromDate,Date toDat
 public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,String locationType,Long locationVal){
 	StringBuilder sb = new StringBuilder();
 	sb.append("select");
-	if(locationType != null && locationType.equalsIgnoreCase("state"))
+	if(locationType != null && locationType.equalsIgnoreCase("district"))
 		sb.append(" model.userAddress.district.districtId,");
-	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
 		sb.append(" model.userAddress.constituency.constituencyId,");
 	
 	sb.append(" model.cadreRegIssueStatus.cadreRegIssueStatusId," +
@@ -1032,21 +1032,21 @@ public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,Stri
 	if(fromDate != null && toDate != null)
 		sb.append(" where (date(model.insertedTime) between :fromDate and :toDate)");
 	
-	if(locationType != null && locationType.equalsIgnoreCase("state") && locationVal.longValue() > 0l){
+	if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l){
 		if(locationVal.longValue() == 1l){
 			sb.append(" and model.userAddress.district.districtId between 11 and 23 ");
 		}else if(locationVal.longValue() == 36l){
 			sb.append(" and model.userAddress.district.districtId between 1 and 10 ");
 		}
 	}
-	else if(locationType != null && locationType.equalsIgnoreCase("district") && locationVal.longValue() > 0l)
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal.longValue() > 0l)
 		sb.append(" and model.userAddress.district.districtId = :locationVal");
 	
 	sb.append(" group by");
-	if(locationType != null && locationType.equalsIgnoreCase("state"))
+	if(locationType != null && locationType.equalsIgnoreCase("district"))
 		sb.append(" model.userAddress.district.districtId,model.cadreRegIssueStatus.cadreRegIssueStatusId" +
 					" order by model.userAddress.district.districtName");
-	else if(locationType != null && locationType.equalsIgnoreCase("district"))
+	else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
 		sb.append(" model.userAddress.constituency.constituencyId,model.cadreRegIssueStatus.cadreRegIssueStatusId" +
 					" order by model.userAddress.constituency.name");
 	
@@ -1055,7 +1055,7 @@ public List<Object[]> getLocationWiseIssuesCounts(Date fromDate,Date toDate,Stri
 		query.setParameter("fromDate", fromDate);
 		query.setParameter("toDate", toDate);
 	}
-	if(locationType != null && !locationType.equalsIgnoreCase("state") && locationVal != null && locationVal.longValue() > 0l)
+	if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal != null && locationVal.longValue() > 0l)
 		query.setParameter("locationVal", locationVal);
 	
 	return query.list();

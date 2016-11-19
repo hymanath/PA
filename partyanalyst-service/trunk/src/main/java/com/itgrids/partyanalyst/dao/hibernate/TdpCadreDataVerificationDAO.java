@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDataVerification, Long> implements ITdpCadreDataVerificationDAO{
 
@@ -60,13 +59,13 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 			sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 		
-		sb.append(" group by");
+		sb.append(" ");
 		if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
-			sb.append(" model.cadreSurveyUserId");
+			sb.append(" group by model.cadreSurveyUserId");
 		else if(constituencyId != null && constituencyId.longValue() > 0l)
-			sb.append(" model.constituency.constituencyId");
+			sb.append(" group by model.constituency.constituencyId");
 		else if(districtId != null && districtId.longValue() > 0l)
-			sb.append(" model.constituency.district.districtId");
+			sb.append(" group by model.constituency.district.districtId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null && toDate != null){
@@ -243,6 +242,45 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 	
 }
 
+	public List<Object[]> getDataVerifiedDetailsOverView(Date fromDate,Date toDate,String locationType,Long locationVal,String type){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select");
+		if(locationType != null && locationType.trim().equalsIgnoreCase("district"))
+			sb.append(" model.districtId,");
+		else if(locationType != null && locationType.trim().equalsIgnoreCase("constituency"))
+			sb.append(" model.constituencyId,");
+		sb.append(" count(distinct model.tdpCadreId) from TdpCadreDataVerification model" +
+					" where");
+		if(type != null && type.trim().equalsIgnoreCase("approved"))
+			sb.append(" model.dataRejectReasonId is null");
+		else if(type != null && type.trim().equalsIgnoreCase("rejected"))
+			sb.append(" model.dataRejectReasonId is not null");
+		if(locationType != null && locationType.trim().equalsIgnoreCase("district")){
+			if(locationVal != null && locationVal.longValue() == 1l)
+				sb.append(" and model.constituency.district.districtId between 11 and 23");
+			else if(locationVal != null && locationVal.longValue() == 36l)
+				sb.append(" and model.constituency.district.districtId between 1 and 10");
+		}
+		else if(locationType != null && locationType.trim().equalsIgnoreCase("constituency") && locationVal != null && locationVal.longValue() > 0l)
+			sb.append(" and model.constituency.district.districtId = :locationVal");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model.verifiedTime) between :fromDate and :toDate"); 
+		
+		if(locationType != null && locationType.equalsIgnoreCase("district"))
+			sb.append(" group by model.districtId");
+		 else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+			sb.append(" group by model.constituencyId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(locationType != null && locationType.trim().equalsIgnoreCase("constituency") && locationVal != null && locationVal.longValue() > 0l)
+			 query.setParameter("locationVal", locationVal);
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate", fromDate);
+			 query.setDate("toDate", toDate);
+		 }
+		
+		return query.list();
+	}
 public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb =  new StringBuilder();
 	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
