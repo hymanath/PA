@@ -20,4 +20,13 @@ public class SelfAppraisalDesignationDAO extends GenericDaoHibernate<SelfApprais
 		  Query query = getSession().createQuery(queryStr.toString());
 		  return query.list();
 	}
+	public List<Object[]> getDesignationDtls(List<Long> desigList){
+		StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select model.selfAppraisalDesignationId,model.designation,model.orderNo from SelfAppraisalDesignation model where model.isActive='Y' " +
+		  		" and model.selfAppraisalDesignationId in (:desigList) " +
+		  		" order by model.orderNo ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameterList("desigList", desigList);
+		  return query.list();
+	}
 }
