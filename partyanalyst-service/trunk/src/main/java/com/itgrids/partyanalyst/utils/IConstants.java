@@ -1221,6 +1221,6 @@ public interface IConstants {
 	public static final Long DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
 	public static final Long MP_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
 	public static final Long SECRETARY_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
-	public static final Long STATE_SUB_LEVEL_DESIG_IDS[] = {1L,2L,3L,4L,5L,6L,7L,8L,9L};
+	public static final Long STATE_SUB_LEVEL_DESIG_IDS [] = {1L,2L,3L,4L,5L,6L,7L,8L,9L};
 	
 }

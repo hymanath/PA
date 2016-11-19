@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		      query.setParameter("candidateId", candidateId);
 		       return query.list();
 	   }
-	   public List<Object[]> getNoOfLeadersCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId){
+	   public List<Object[]> getNoOfLeadersCntDesignationByBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Long userTypeId){
 		     StringBuilder queryStr = new StringBuilder();
 		     queryStr.append(" select " +
 		     		 		" model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
@@ -60,8 +61,9 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 				 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 				    queryStr.append(" and model.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 				 }
-		     	
-		     	  queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId ");
+		     	 queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId in(:designationIds) ");
+		     	 
+		     	 queryStr.append(" group by model.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId ");
 		     	  Query query = getSession().createQuery(queryStr.toString());
 		     		
 		 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
@@ -70,6 +72,19 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		 		if(stateId != null && stateId.longValue() > 0){
 		 			 query.setParameter("stateId", stateId);
 		 		}
+	 		   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+	 		    	query.setParameterList("designationIds",Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS));
+		     	}else if(userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS));
+		     	}else if(userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS));
+		     	}else if(userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS));
+		     	}else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS));
+		     	}else if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
+		     	}
 		 		 return query.list();
 	   }
 	   public List<Object[]> getDesigWiseAllCandidate(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,List<Long> desigList){
