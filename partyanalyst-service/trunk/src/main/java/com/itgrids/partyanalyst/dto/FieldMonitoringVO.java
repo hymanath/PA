@@ -72,6 +72,10 @@ public class FieldMonitoringVO {
 	private String performanceType;
 	private String slowPerformer;
 	private String betterPerformer;
+	private Long pendingCount = 0l;
+	private Long passedcount = 0l;
+	private Long rejectedCount = 0l;
+	
 	
 	
 	public String getSlowPerformer() {
@@ -409,6 +413,24 @@ public class FieldMonitoringVO {
 	}
 	public void setLastOneHrActUsers(Long lastOneHrActUsers) {
 		this.lastOneHrActUsers = lastOneHrActUsers;
+	}
+	public Long getPendingCount() {
+		return pendingCount;
+	}
+	public void setPendingCount(Long pendingCount) {
+		this.pendingCount = pendingCount;
+	}
+	public Long getPassedcount() {
+		return passedcount;
+	}
+	public void setPassedcount(Long passedcount) {
+		this.passedcount = passedcount;
+	}
+	public Long getRejectedCount() {
+		return rejectedCount;
+	}
+	public void setRejectedCount(Long rejectedCount) {
+		this.rejectedCount = rejectedCount;
 	}
 	
 }
