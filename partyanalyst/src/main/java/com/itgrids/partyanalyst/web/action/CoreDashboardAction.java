@@ -3001,7 +3001,8 @@ public String getToursBasicOverviewCountDetails(){
 		Long stateId = jObj.getLong("stateId");
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
-		toursBasicVO = coreDashboardToursService.getToursBasicOverviewCountDetails(stateId,fromDate,toDate,activityMemberId);
+		Long userTypeId = jObj.getLong("userTypeId");
+		toursBasicVO = coreDashboardToursService.getToursBasicOverviewCountDetails(stateId,fromDate,toDate,activityMemberId,userTypeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
 	}
@@ -3009,7 +3010,7 @@ public String getToursBasicOverviewCountDetails(){
 }
 public String getDistrictWiseToursSubmitedDetails(){
 	try {
-		LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
+		LOG.info("Entered into getDistrictWiseToursSubmitedDetails()  of CoreDashboardAction");
 		jObj = new JSONObject(getTask());
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long stateId = jObj.getLong("stateId");
@@ -3125,7 +3126,8 @@ public String getTourSubmittedLeadersDetails(){
 		}
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long stateId = jObj.getLong("stateId");
-		toursDtlsList = coreDashboardToursService.getTourSubmittedLeadersDetails(desgnatnIdsLst,isTourSubmitted,fromDate,toDate,activityMemberId,stateId);
+		Long userTypeId = jObj.getLong("userTypeId");
+		toursDtlsList = coreDashboardToursService.getTourSubmittedLeadersDetails(desgnatnIdsLst,isTourSubmitted,fromDate,toDate,activityMemberId,stateId,userTypeId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getTourSubmittedLeadersDetails() method of CoreDashBoard", e);
 	}

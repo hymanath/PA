@@ -89,7 +89,8 @@ function getToursBasicOverviewCountDetails()
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
 					 fromDate : globalTourFormDate,
-					 toDate : glovalTourToDate                      
+					 toDate : glovalTourToDate,
+					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
 			type : 'POST',
@@ -861,7 +862,7 @@ function getToursBasicOverviewCountDetails()
 			designationIds : desigIdArr,                  
 			stateId : globalStateIdForTour,      
 			fromDate : globalTourFormDate,                
-			toDate : glovalTourToDate 
+			toDate : glovalTourToDate
 		}
 		$.ajax({
 			type : 'POST',
@@ -950,7 +951,8 @@ function getToursBasicOverviewCountDetails()
 					 candidateId : candidateId, 
 					 stateId : globalStateIdForTour,
 					 fromDate : globalTourFormDate,
-					 toDate :  glovalTourToDate
+					 toDate :  glovalTourToDate,
+					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
 			type : 'POST',
@@ -1028,7 +1030,8 @@ function getToursBasicOverviewCountDetails()
 					 isTourSubmitted : tourSubmittedType,
 					 fromDate : globalTourFormDate,
 					 toDate :  glovalTourToDate,
-					 stateId : globalStateIdForTour
+					 stateId : globalStateIdForTour,
+					 userTypeId : globalUserTypeId
 				  }
 		$.ajax({
 			type : 'POST',
