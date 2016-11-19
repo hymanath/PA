@@ -913,4 +913,23 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  public String getCadreVerificationDetails(){
+		try {
+
+			jObj = new JSONObject(getTask());
+			
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long userId = jObj.getLong("userId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			
+			fieldMonitoringList = fieldMonitoringService.getVerfiedCadreSurveyUserDetails(stateId,districtId,constituencyId,userId,fromDateStr,toDateStr);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadreVerificationDetails()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
