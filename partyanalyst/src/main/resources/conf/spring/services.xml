@@ -3720,6 +3720,7 @@
 	   <property name="cadreSurveyUserPerformanceDAO" ref="cadreSurveyUserPerformanceDAO"/>
 	   <property name="cadreSurveyUserPerformanceTypeDAO" ref="cadreSurveyUserPerformanceTypeDAO"/>
 	   <property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"/>
+	   <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO"/>
 	   <property name="tdpCadreDataVerificationDAO" ref="tdpCadreDataVerificationDAO"/>
 	</bean>
 	

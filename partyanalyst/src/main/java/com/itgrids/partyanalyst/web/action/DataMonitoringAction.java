@@ -310,6 +310,26 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 			return Action.SUCCESS;
 	    }
 	    
+	    public String dataMonitoringDashboardNew(){
+	    	session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			List<String> entitlements = null;
+			boolean noaccess = false;
+			
+			if(regVO == null)
+				return Action.INPUT;
+			
+			if(regVO != null && regVO.getEntitlements() != null && regVO.getEntitlements().size()>0)
+			{
+				entitlements = regVO.getEntitlements();
+				 if(!(entitlements.contains("CADRE_DATA_MONITORING_DASHBOARD".trim())))
+				 {
+				        noaccess = true ;  
+				 }
+			}
+	    	return Action.SUCCESS;
+	    }
+	    
 	   public String getDataMonitoringOverViewDetails(){
 	        try{
 	        	jObj = new JSONObject(getTask());

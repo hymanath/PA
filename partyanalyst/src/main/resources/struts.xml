@@ -227,7 +227,7 @@
 			<result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
 			<result type="redirect" name="cadreFiledMonitoringReport">fieldMonitoringReportAction.action</result>
 			<result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
-			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
+			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardNewAction.action</result>
 			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
 			<result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
@@ -5683,7 +5683,7 @@
       <result type="redirect" name="cadreFiledMonitoringDashboard">fieldMonitoringDashboardAction.action</result>
       <result type="redirect" name="cadreFiledMonitoringReport">fieldMonitoringReportAction.action</result>
       <result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
-      <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardAction.action</result>
+      <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardNewAction.action</result>
       <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>    
       <result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>   
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
@@ -14244,6 +14244,9 @@
 	<action name="dataMonitoringDashboardAction" class="dataMonitoringAction" method="dataMonitoringDashboard">
 		<result name="success">/jsp/dataMonitoringDashboard.jsp</result>  
 	</action>
+	<action name="dataMonitoringDashboardNewAction" class="dataMonitoringAction" method="dataMonitoringDashboardNew">
+		<result name="success">/jsp/dataMonitoringDashboardNew.jsp</result>  
+	</action>
 	 <action name="getDataMonitoringOverViewDetailsAction" class="dataMonitoringAction"  method="getDataMonitoringOverViewDetails">
       <result type="json" name="success">
       <param name="root">resultVO</param>
@@ -14315,6 +14318,11 @@
 		</result>
 	</action>
 	<action name="getLocationWiseDetailedOverViewDetailsAction" class="fieldMonitoringAction"  method="getLocationWiseDetailedOverViewDetails">
+			<result type="json" name="success">
+			<param name="root">dataMonitoringVerificationVOList</param>
+		</result>
+	</action>
+	<action name="getLocationWiseOverViewDetailsAction" class="fieldMonitoringAction"  method="getLocationWiseOverViewDetails">
 			<result type="json" name="success">
 			<param name="root">dataMonitoringVerificationVOList</param>
 		</result>

@@ -97,12 +97,12 @@
 				</div>
             </div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+        <!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h4 class="panel-title text-capital">district wise detailed overview</h4>
             <div class="table-responsive m_top10">
 				<div id="districtWiseOverviewDetailsId"></div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
