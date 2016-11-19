@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.SelfAppraisalDesignation;
 
 public interface ISelfAppraisalDesignationDAO extends GenericDao<SelfAppraisalDesignation, Long> {
    public List<Object[]> getDesiganationList();
+   public List<Object[]> getDesignationDtls(List<Long> desigList);
 }
