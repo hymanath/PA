@@ -890,8 +890,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   }
 					 }
 			 }
-			 if(locationAccessLevelId == 2l || locationAccessLevelId == 4l){//state access And PARLIAMENT Access
-				
+			//Getting Mp Details
 				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursSubmittedCandidateCntAndNoOfToursDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP");
 				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
 				 
@@ -931,7 +930,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							   }
 						 }
 				 }
-			 }
 			 //calculating average
 			 if(memberDetaislMap != null && memberDetaislMap.size() > 0){
 				 
