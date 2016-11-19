@@ -30,7 +30,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
     	Query query = getSession().createSQLQuery(" ALTER TABLE tdp_cadre_location_info AUTO_INCREMENT = 1 ");
     	return query.executeUpdate();
     }
-    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue){ //santos
+    public List<Object[]> get2014TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue){ 
 		
 	      StringBuilder queryStr = new StringBuilder();  
 	       
