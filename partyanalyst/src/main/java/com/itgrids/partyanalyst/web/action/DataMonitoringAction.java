@@ -52,10 +52,12 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   
 		//setters and getters.
 		  
+		   
 		   public JSONObject getjObj() {
 			   return jObj;
 		   }
-		   public HttpSession getSession() {
+		  
+		public HttpSession getSession() {
 			return session;
 		}
 
@@ -484,6 +486,7 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 			   Long constitunecyId =0l;
 			   Long districtId =0l;
 			   Long cadreUserId =0l;
+			   Long tabUserInfoId = 0l;
 			   //Long userId = 0l;
 			   IdNameVO idNameVO = new IdNameVO();
 			   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
@@ -497,13 +500,15 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				   constitunecyId = jObj.getLong("constitunecyId");
 				   districtId = jObj.getLong("districtId");
 				   cadreUserId = jObj.getLong("cadreUserId");
+				   tabUserInfoId = jObj.getLong("tabUserInfoId");
 				   //userId = jObj.getLong("userId");
 				   idNameVO.setCadreId(cadreId);
 				   idNameVO.setRejectedCount(reasonId);
 				   idNameVO.setId(userId);
 				   idNameVO.setConstitunecyId(constitunecyId);
 				   idNameVO.setDistrictId(districtId);
-				   idNameVO.setDistrictId(cadreUserId);
+				   idNameVO.setCadreUserId(cadreUserId);
+				   idNameVO.setTabUserId(tabUserInfoId);
 				   idNameVOs.add(idNameVO);
 			   }
 			   resultStatus = dataMonitoringService.updateRejectDtls(idNameVOs);    
@@ -522,6 +527,10 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				if(regVO != null)
 					userId = regVO.getRegistrationID();
 			   Long cadreId = 0l;
+			   Long constitunecyId =0l;
+			   Long districtId =0l;
+			   Long cadreUserId =0l;
+			   Long tabUserInfoId = 0l;
 			   //Long userId = 0l;
 			   IdNameVO idNameVO = new IdNameVO();
 			   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
@@ -531,8 +540,16 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 				   idNameVO = new IdNameVO();
 				   jObj = jsonArray.getJSONObject(i);
 				   cadreId = jObj.getLong("cadreId");
+				   constitunecyId = jObj.getLong("constitunecyId");
+				   districtId = jObj.getLong("districtId");
+				   cadreUserId = jObj.getLong("cadreUserId");
+				   tabUserInfoId = jObj.getLong("tabUserInfoId");
 				   //userId = jObj.getLong("userId");
 				   idNameVO.setCadreId(cadreId);
+				   idNameVO.setConstitunecyId(constitunecyId);
+				   idNameVO.setDistrictId(districtId);
+				   idNameVO.setCadreUserId(cadreUserId);
+				   idNameVO.setTabUserId(tabUserInfoId);
 				   idNameVO.setId(userId);
 				   idNameVOs.add(idNameVO);  
 			   }
@@ -553,4 +570,5 @@ public class DataMonitoringAction extends ActionSupport implements ServletReques
 		   }
 		   return Action.SUCCESS;
 	   }
+	   
 }
