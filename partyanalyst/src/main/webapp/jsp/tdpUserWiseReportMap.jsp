@@ -60,7 +60,7 @@
 							<h4 class="panel-title">
 							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 230px;">Select User</label>
 							 <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
-                    	    <option value="0">Select User</option>
+                    	    <option value="0">All</option>
                              </select>&nbsp&nbsp<input type="checkbox" name="checkbox" value="2" id="checkboxId" style="margin-left: 30px;"><label style="margin-left: 10px;">WITH ROUTE</label></h4>
 							 <h5><span id="userTrackingId"></span>-USER TRACKING</h5>
 							</div>
@@ -97,6 +97,8 @@ var glblLon = 78.4800;
   getUserTrackingDetails();
 	function getUserTrackingDetails(){
 		var jsObj={
+			constId : "${param.constistuencyId}",
+			fieldUserId : "${param.fieldUserId}",
 			surveyUserId:"${param.userId}",
 			fromDate:"",
 			toDate:""
@@ -315,8 +317,6 @@ if(withRoute == "true")
 }else{
 		$('#checkboxId').prop('checked', false);
 	}
-
-
 </script>
 </body>
 </html>
