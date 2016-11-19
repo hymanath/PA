@@ -11,7 +11,7 @@ public class DataMonitoringVerificationVO {
 	private Long openIssues = 0l;
 	private Long fixedIssues = 0l;
 	private Long closedIssues = 0l;
-	
+	private Long rejectedCount = 0l;
 	
 	public Long getId() {
 		return id;
@@ -60,5 +60,11 @@ public class DataMonitoringVerificationVO {
 	}
 	public void setClosedIssues(Long closedIssues) {
 		this.closedIssues = closedIssues;
+	}
+	public Long getRejectedCount() {
+		return rejectedCount;
+	}
+	public void setRejectedCount(Long rejectedCount) {
+		this.rejectedCount = rejectedCount;
 	}
 }

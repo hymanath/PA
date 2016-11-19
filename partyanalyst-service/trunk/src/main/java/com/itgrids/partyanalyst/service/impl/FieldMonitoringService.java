@@ -36,6 +36,8 @@ import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
@@ -93,10 +95,19 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ICadreSurveyUserPerformanceDAO cadreSurveyUserPerformanceDAO;
 	private ICadreSurveyUserPerformanceTypeDAO cadreSurveyUserPerformanceTypeDAO;
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
+	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
 	private ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO;
+	
 	
 	//Setters
 	
+	public ITdpCadreDateWiseInfoDAO getTdpCadreDateWiseInfoDAO() {
+		return tdpCadreDateWiseInfoDAO;
+	}
+	public void setTdpCadreDateWiseInfoDAO(
+			ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO) {
+		this.tdpCadreDateWiseInfoDAO = tdpCadreDateWiseInfoDAO;
+	}
 	public ITdpCadreLocationInfoDAO getTdpCadreLocationInfoDAO() {
 		return tdpCadreLocationInfoDAO;
 	}
@@ -1837,6 +1848,83 @@ public List<IdAndNameVO> setDistricts(Long stateId){
 	}catch (Exception e) {
 		e.printStackTrace();
 		LOG.error("Exception raised in getCadreRegIssueStatusType() in FieldMonitoringService class", e);
+	}
+	return returnList;
+}
+
+public List<DataMonitoringVerificationVO> getLocationWiseOverViewDetails(String fromDateStr,String toDateStr,String locationType,Long locationVal){
+	List<DataMonitoringVerificationVO> returnList = new ArrayList<DataMonitoringVerificationVO>();
+	try {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date startDate = null;
+		Date endDate = null;
+		if(fromDateStr != null && toDateStr != null){
+			startDate = sdf.parse(fromDateStr);
+			endDate = sdf.parse(toDateStr);
+		}
+		
+		List<Object[]> list = tdpCadreDateWiseInfoDAO.getLocationWiseDetailedOverViewDetails(startDate, endDate, locationType, locationVal);
+		if(list != null && !list.isEmpty()){
+			for (Object[] obj : list) {
+				DataMonitoringVerificationVO vo = new DataMonitoringVerificationVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				
+				returnList.add(vo);
+			}
+		}
+		
+		List<Object[]> verPassedList = tdpCadreDataVerificationDAO.getDataVerifiedDetailsOverView(startDate, endDate, locationType, locationVal, "approved");
+		if(verPassedList != null && !verPassedList.isEmpty()){
+			for (Object[] obj : verPassedList) {
+				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				DataMonitoringVerificationVO vo = getMatchDataVerificationVO(returnList, id);
+				if(vo != null)
+					vo.setVerifiedCount(count);
+			}
+		}
+		
+		List<Object[]> rejectedList = tdpCadreDataVerificationDAO.getDataVerifiedDetailsOverView(startDate, endDate, locationType, locationVal, "rejected");
+		if(rejectedList != null && !rejectedList.isEmpty()){
+			for (Object[] obj : rejectedList) {
+				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				DataMonitoringVerificationVO vo = getMatchDataVerificationVO(returnList, id);
+				if(vo != null)
+					vo.setRejectedCount(count);
+			}
+		}
+		
+		if(returnList != null && !returnList.isEmpty()){
+			for (DataMonitoringVerificationVO vo : returnList) {
+				vo.setNotVerifiedCount(vo.getCount()-vo.getVerifiedCount()-vo.getRejectedCount());
+			}
+		}
+		
+		List<Object[]> list2 = cadreRegIssueDAO.getLocationWiseIssuesCounts(startDate, endDate, locationType, locationVal);
+		if(list2 != null && !list2.isEmpty()){
+			for (Object[] obj : list2) {
+				Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				
+				DataMonitoringVerificationVO vo = getMatchDataVerificationVO(returnList, id);
+				if(vo != null){
+					Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					if(statusId.longValue() == 1l)
+						vo.setOpenIssues(count);
+					else if(statusId.longValue() == 2l)
+						vo.setFixedIssues(count);
+					else if(statusId.longValue() == 3l)
+						vo.setClosedIssues(count);
+				}
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception occurred at getLocationWiseOverViewDetails() of FieldMonitoringService", e);
 	}
 	return returnList;
 }
