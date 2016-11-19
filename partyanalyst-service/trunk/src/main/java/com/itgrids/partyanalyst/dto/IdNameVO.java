@@ -393,7 +393,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
 	}
-
+	
 	public Long getCadreUserId() {
 		return cadreUserId;
 	}
