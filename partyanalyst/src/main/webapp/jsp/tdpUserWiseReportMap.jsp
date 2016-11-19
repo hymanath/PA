@@ -171,7 +171,7 @@ var glblLon = 78.4800;
 				
 			}
 			else{
-					alert('No Registration staff are available in this Constituency.Please try later...');
+					//alert('No Registration staff are available in this Constituency.Please try later...');
 				}
 			buildUserTrackingMap(markersArr,pathArr);
 			//initMap(markersArr,flightPlanCoordinates);
