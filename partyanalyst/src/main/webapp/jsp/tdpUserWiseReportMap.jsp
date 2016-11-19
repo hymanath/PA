@@ -96,6 +96,7 @@ var glblLon = 78.4800;
   
   getUserTrackingDetails();
 	function getUserTrackingDetails(){
+		var searchTypeId = $('#mapId').val();
 		var jsObj={
 			constId : "${param.constistuencyId}",
 			fieldUserId : "${param.fieldUserId}",
@@ -113,7 +114,6 @@ var glblLon = 78.4800;
 			markersArr = [];
 			flightPlanCoordinates = [];
 			pathArr = [];
-			var searchTypeId = $('#mapId').val();
 			if(result != null){
 				$('#map1').html('');
 				if(result.subList1 != null && result.subList1.length > 0){
@@ -135,10 +135,15 @@ var glblLon = 78.4800;
 							displayLocation(result.subList1[i],"");
 						}*/
 						var temparr=[];
-						if(searchTypeId==0)
-							temparr.push(""+result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
-						else 
-							temparr.push("S.No:"+(parseInt(i)+1)+"<br/>"+result.subList1[i].tdpCadreName+"<br/>"+result.subList1[i].tdpCadreMbl+"<br/>"+result.subList1[i].surveyTime);
+						if(searchTypeId==0){
+							//$('#checkboxId').prop('checked', false);
+							//$('#checkboxId').prop("disabled", true);
+							temparr.push("<b>Tab User Name</b> : "+result.subList1[i].tdpCadreName+"<br/> <b>Mobile No </b> : "+result.subList1[i].tdpCadreMbl+"<br/> <b>Last Sync Time </b> : "+result.subList1[i].surveyTime);
+							
+						}	
+						else {
+							temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList1[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList1[i].tdpCadreMbl+"<br/> <b>Sync Time </b> : "+result.subList1[i].surveyTime);
+						}
 						temparr.push(result.subList1[i].latitude);
 						temparr.push(result.subList1[i].longititude);
 						temparr.push(result.subList1[i].surveyTime);
@@ -283,6 +288,7 @@ function getFieldMonitoringMapReportDetails(){
 }
 var withRoute = "${param.withRoute}";
 function showMapDetails(value){
+	var withRoute = false;
 	var cadreUserId=$( "#mapId option:selected" ).text();
 	var userName = "${param.username}";
 	var constitunecyId = "${param.constistuencyId}";
