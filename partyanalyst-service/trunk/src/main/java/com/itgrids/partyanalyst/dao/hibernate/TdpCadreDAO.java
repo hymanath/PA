@@ -8149,7 +8149,11 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 						" cvs.cadre_verification_status_id as statusId," +//7
 						" cvs.status as status , "+//8
 						" drr.data_reject_reason_id as reasonId," +//9
-						" drr.reject_reason as reason "+//10  
+						" drr.reject_reason as reason," +//10 
+						" ua.constituency_id as constituencyId," +//11 
+						" ua.district_id as districtId," +//12 
+						" tc.created_by as cadreSurveyUserId," +//13
+						" tc.tab_user_info_id as tabUserInfoId "+//14  
 						" from   " +
 						" tdp_cadre tc "+
 						" left outer join tdp_cadre_data_verification tcdv on tc.tdp_cadre_id = tcdv.tdp_cadre_id "+
@@ -8182,13 +8186,13 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			queryStr.append(" and  ua.state_id = 1 ");
 		}
 		
-		if(webUserId != null && webUserId.equals(0l)){
+		//if(webUserId != null && webUserId.equals(0l)){
 			queryStr.append(" and tc.created_by = :surveyUserId "+
 							" and tc.tab_user_info_id = :tabUserId ");
-		}else{
-			queryStr.append(" and tc.inserted_web_user_id = :webUserId ");
+		//}else{
+			//queryStr.append(" and tc.inserted_web_user_id = :webUserId ");
 					
-		}
+		//}
 	    if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Approved")){
 		     queryStr.append(" and tc.cadre_verification_status_id=1 ");	 
 		 }else if(verificationStatus != null && verificationStatus.equalsIgnoreCase("Rejected")){
@@ -8197,9 +8201,9 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 			 queryStr.append(" and tc.cadre_verification_status_id is null "); 
 		 }
          
-	    if(dataSourceType != null && dataSourceType.trim().length() > 0){
+	    /*if(dataSourceType != null && dataSourceType.trim().length() > 0){
 			 queryStr.append(" and tc.data_source_type=:dataSourceType "); 
-	    }
+	    }*/
 	    Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("cadreId", Hibernate.LONG)
 				.addScalar("name", Hibernate.STRING)
@@ -8211,26 +8215,30 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 				.addScalar("statusId", Hibernate.LONG)
 				.addScalar("status", Hibernate.STRING)
 				.addScalar("reasonId", Hibernate.LONG)
-				.addScalar("reason", Hibernate.STRING);  
+				.addScalar("reason", Hibernate.STRING)
+				.addScalar("constituencyId", Hibernate.LONG)
+				.addScalar("districtId", Hibernate.LONG)
+				.addScalar("cadreSurveyUserId", Hibernate.LONG)
+				.addScalar("tabUserInfoId", Hibernate.LONG);  
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);  
 			query.setParameter("endDate", endDate);
 		}
-		if(webUserId != null && webUserId.equals(0l)){
+		//if(webUserId != null && webUserId.equals(0l)){
 			query.setParameter("surveyUserId", surveyUserId);
 			query.setParameter("tabUserId", tabUserId);
-		}else{
-			query.setParameter("webUserId", webUserId);
-		}
+		//}else{
+		//	query.setParameter("webUserId", webUserId);
+		//}
 		if(minValue != null && minValue > 0){
 			query.setFirstResult(minValue);
 		}
 		if(maxValue != null && maxValue > 0){
 			query.setMaxResults(maxValue);
 		}
-		if(dataSourceType != null && dataSourceType.trim().length() > 0){
+		/*if(dataSourceType != null && dataSourceType.trim().length() > 0){
 			query.setParameter("dataSourceType", dataSourceType);	  
-		}
+		}*/
 		return query.list();
 	}
 	

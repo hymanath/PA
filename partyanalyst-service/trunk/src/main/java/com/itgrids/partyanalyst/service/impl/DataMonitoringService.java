@@ -493,6 +493,10 @@ public class DataMonitoringService implements IDataMonitoringService {
 						idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
 						idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
 						idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
+						idNameVO.setConstitunecyId(param[11] != null ? (Long)param[11] : 0l);//constituencyId
+						idNameVO.setDistrictid(param[12] != null ? (Long)param[12] : 0l);//districtId
+						idNameVO.setCadreUserId(param[13] != null ? (Long)param[13] : 0l);//cadreSurveyUserId
+						idNameVO.setTabUserId(param[14] != null ? (Long)param[14] : 0l);//tabUserInfoId
 						ownVoterDtls.add(idNameVO);
 					}
 				  if(minValue == 0){
@@ -520,6 +524,10 @@ public class DataMonitoringService implements IDataMonitoringService {
 						idNameVO.setStatus(param[8] != null ? param[8].toString() : "noStatus");
 						idNameVO.setId(param[9] != null ? (Long)param[9] : 0l);//rejected reason id
 						idNameVO.setWish(param[10] != null ? param[10].toString() : "");//reason
+						idNameVO.setConstitunecyId(param[11] != null ? (Long)param[11] : 0l);//constituencyId
+						idNameVO.setDistrictid(param[12] != null ? (Long)param[12] : 0l);//districtId
+						idNameVO.setCadreUserId(param[13] != null ? (Long)param[13] : 0l);//cadreSurveyUserId
+						idNameVO.setTabUserId(param[14] != null ? (Long)param[14] : 0l);//tabUserInfoId
 						familyVoterDtls.add(idNameVO);
 					}
 					 if(minValue == 0){
@@ -743,8 +751,9 @@ public class DataMonitoringService implements IDataMonitoringService {
   					tdpCadreDataVerification.setDataRejectReasonId(idNameVO.getRejectedCount());
   					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
   					tdpCadreDataVerification.setConstituencyId(idNameVO.getConstitunecyId());
-  					tdpCadreDataVerification.setDistrictId(idNameVO.getDistrictid());
+  					tdpCadreDataVerification.setDistrictId(idNameVO.getDistrictId());
   					tdpCadreDataVerification.setCadreSurveyUserId(idNameVO.getCadreUserId());
+  					tdpCadreDataVerification.setTabUserInfoId(idNameVO.getTabUserId());
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),2l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);     
   				}
@@ -774,6 +783,10 @@ public class DataMonitoringService implements IDataMonitoringService {
   					tdpCadreDataVerification.setTdpCadreId(idNameVO.getCadreId());
   					tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
   					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
+  					tdpCadreDataVerification.setConstituencyId(idNameVO.getConstitunecyId());
+  					tdpCadreDataVerification.setDistrictId(idNameVO.getDistrictId());
+  					tdpCadreDataVerification.setCadreSurveyUserId(idNameVO.getCadreUserId());
+  					tdpCadreDataVerification.setTabUserInfoId(idNameVO.getTabUserId());
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),1l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);      
   				}
