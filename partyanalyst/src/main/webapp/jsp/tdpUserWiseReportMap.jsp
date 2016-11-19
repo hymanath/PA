@@ -96,7 +96,6 @@ var glblLon = 78.4800;
   
   getUserTrackingDetails();
 	function getUserTrackingDetails(){
-		var searchTypeId = $('#mapId').val();
 		var jsObj={
 			constId : "${param.constistuencyId}",
 			fieldUserId : "${param.fieldUserId}",
@@ -114,6 +113,7 @@ var glblLon = 78.4800;
 			markersArr = [];
 			flightPlanCoordinates = [];
 			pathArr = [];
+			var searchTypeId = $('#mapId').val();
 			if(result != null){
 				$('#map1').html('');
 				if(result.subList1 != null && result.subList1.length > 0){
@@ -137,7 +137,7 @@ var glblLon = 78.4800;
 						var temparr=[];
 						if(searchTypeId==0){
 							//$('#checkboxId').prop('checked', false);
-							//$('#checkboxId').prop("disabled", true);
+							$('#checkboxId').prop("disabled", true);
 							temparr.push("<b>Tab User Name</b> : "+result.subList1[i].tdpCadreName+"<br/> <b>Mobile No </b> : "+result.subList1[i].tdpCadreMbl+"<br/> <b>Last Sync Time </b> : "+result.subList1[i].surveyTime);
 							
 						}	
