@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -1114,6 +1115,8 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	*  @since 13-October-2016
 	*/
 	public CadreResponseVO savingCadreDetails(CadreRegistrationVO cadreRegistrationVO){  
+		 Gson gson = new Gson();
+		 LOG.error("entered into ONLINE for "+cadreRegistrationVO.getMobileNumber()+" - VOTER ID - "+cadreRegistrationVO.getVoterId()+" registration savingCadreDetails() start Time : "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+" with json Format: "+gson.toJson(cadreRegistrationVO));
 		CadreResponseVO responceVO = null;
 	    try {
 	         ClientConfig clientConfig = new DefaultClientConfig();
@@ -1129,6 +1132,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	        
 	         if(responceVO.getSaveStatus().equalsIgnoreCase("Success") && responceVO.getTdpCadreId() != null && responceVO.getTdpCadreId().longValue()>0L &&
 	        		 cadreRegistrationVO.getShipAddress() != null && !cadreRegistrationVO.getShipAddress().isEmpty()){
+	        	 LOG.error("entered into ONLINE registration savingCadreDetails() end Time : "+cadreRegistrationVO.getMobileNumber()+" - VOTER ID - "+cadreRegistrationVO.getVoterId()+" with json Format: "+gson.toJson(cadreRegistrationVO));
 	        	 TdpCadreOnline  tdpCadreOnline = new TdpCadreOnline();
 	        	 tdpCadreOnline.setTdpCadreId(responceVO.getTdpCadreId());
 	        	 tdpCadreOnline.setShipAddress(cadreRegistrationVO.getShipAddress());
@@ -1141,6 +1145,7 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	        
 	    } catch (Exception e) {
 	      LOG.error("Exception raised at savingCadreDetails", e);
+	      LOG.error(" Exception occured in ONLINE for "+cadreRegistrationVO.getMobileNumber()+" - VOTER ID - "+cadreRegistrationVO.getVoterId()+" registration savingCadreDetails() end Time : "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+" with json Format: "+gson.toJson(cadreRegistrationVO));
 	    }
 	    return responceVO;    
 	  }
