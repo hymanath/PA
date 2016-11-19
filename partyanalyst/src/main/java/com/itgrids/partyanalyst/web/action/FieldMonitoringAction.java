@@ -893,4 +893,24 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  
+  public String getVerificationCounts(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long userId = jObj.getLong("userId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+		
+			
+			fieldMonitoringVO = fieldMonitoringService.getVerificationCountList(stateId,districtId,constituencyId,userId,fromDateStr,toDateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVerificationCountList()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
