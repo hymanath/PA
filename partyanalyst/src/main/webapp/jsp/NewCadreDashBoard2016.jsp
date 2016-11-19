@@ -1139,10 +1139,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						str+='<th>TODAY REG</th>';
 					} */
 					if(type == "total"){
-						str+='<th>TOTAL REG.  Count</th>';
-						str+='<th>TODAY REG.  Count</th>';    
+						str+='<th>TOTAL REG.  COUNT</th>';
+						str+='<th>TODAY REG.  COUNT</th>';    
 					}else if(type == "today"){
-						str+='<th>TODAY REG.  Count</th>';   
+						str+='<th>TODAY REG.  COUNT</th>';   
 					}
 					str+='<th>REG.%</th>';
 				str+='</thead>';
@@ -1228,7 +1228,12 @@ $(document).on("click",".vsDistrictResultCls",function(){
 	$("#subDistTrId"+districtId).html("");
 	var type = $('input[name=compareD]:checked').val();
 	var locationScope = 4;
-	var locationType = $(".aptsconsSele").val();
+	var locationType = ''; 
+	 $('.aptsclass').each(function(i, obj){
+          if($(this).hasClass("btn-success")){
+			  locationType = $(this).val();
+		  }
+     });
 	if($(this).hasClass("glyphicon-plus") == true)
 	{
 		$(".vsDistrictResultCls").removeClass("glyphicon-minus").addClass("glyphicon-plus");
@@ -1258,10 +1263,10 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 						str+='<th>TODAY REG</th>';    
 					} */
 					if(type == "total"){
-						str+='<th>TOTAL REG.  Count</th>';
-						str+='<th>TODAY REG.  Count</th>';    
+						str+='<th>TOTAL REG.  COUNT</th>';
+						str+='<th>TODAY REG.  COUNT</th>';    
 					}else if(type == "today"){
-						str+='<th>TODAY REG.  Count</th>';   
+						str+='<th>TODAY REG.  COUNT</th>';   
 					}
 					str+='<th>REG.%</th>';    
 				str+='</thead>';
@@ -1415,10 +1420,10 @@ function getDistricts(locationType){
 					str+='<th>NEW</th>';
 					str+='<th>MAN POWER</th>';    
 					if(type == "total"){
-						str+='<th>TOTAL REG.  Count</th>';
-						str+='<th>TODAY REG.  Count</th>';    
+						str+='<th>TOTAL REG.  COUNT</th>';
+						str+='<th>TODAY REG.  COUNT</th>';    
 					}else if(type == "today"){
-						str+='<th>TODAY REG.  Count</th>';   
+						str+='<th>TODAY REG.  COUNT</th>';   
 					}
 					str+='<th>REG.%</th>';    
 				str+='</thead>';
