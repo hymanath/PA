@@ -49,6 +49,9 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String image;
 	private String voterImage;
 	private Long statusId = 0l;
+	private Long constitunecyId;
+	private Long districtId;
+	private Long cadreUserId;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -373,6 +376,30 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
+	}
+
+	public Long getConstitunecyId() {
+		return constitunecyId;
+	}
+
+	public void setConstitunecyId(Long constitunecyId) {
+		this.constitunecyId = constitunecyId;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getCadreUserId() {
+		return cadreUserId;
+	}
+
+	public void setCadreUserId(Long cadreUserId) {
+		this.cadreUserId = cadreUserId;
 	}
 	
 	

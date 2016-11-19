@@ -742,6 +742,9 @@ public class DataMonitoringService implements IDataMonitoringService {
   					tdpCadreDataVerification.setVerifiedBy(cadreRegUserId);
   					tdpCadreDataVerification.setDataRejectReasonId(idNameVO.getRejectedCount());
   					tdpCadreDataVerification.setVerifiedTime(dateUtilService.getCurrentDateAndTime());
+  					tdpCadreDataVerification.setConstituencyId(idNameVO.getConstitunecyId());
+  					tdpCadreDataVerification.setDistrictId(idNameVO.getDistrictid());
+  					tdpCadreDataVerification.setCadreSurveyUserId(idNameVO.getCadreUserId());
   					Integer count = tdpCadreDAO.updateApprovedCadre(idNameVO.getCadreId(),2l);   
   					tdpCadreDataVerificationDAO.save(tdpCadreDataVerification);     
   				}
