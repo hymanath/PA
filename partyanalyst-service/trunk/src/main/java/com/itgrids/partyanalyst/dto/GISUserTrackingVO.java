@@ -41,7 +41,67 @@ public class GISUserTrackingVO implements java.io.Serializable{
 	private List<GISUserTrackingVO> lastOneHrActiveusersList = new ArrayList<GISUserTrackingVO>(0);
 	private List<GISUserTrackingVO> lastOneHrInActiveusersList = new ArrayList<GISUserTrackingVO>(0);
 	
+	private String activeLongitudeStr;
+	private String activeLattitudeStr;
 	
+	private String last1hrActiveLongitudeStr;
+	private String last1hrActiveLattitudeStr;
+	
+	private String inActiveLongitudeStr;
+	private String inactiveLattitudeStr;
+	
+	private String last1hrInactiveLongitudeStr;
+	private String last1hrInActiveLattitudeStr;
+	
+	
+	public String getActiveLongitudeStr() {
+		return activeLongitudeStr;
+	}
+	public void setActiveLongitudeStr(String activeLongitudeStr) {
+		this.activeLongitudeStr = activeLongitudeStr;
+	}
+	public String getActiveLattitudeStr() {
+		return activeLattitudeStr;
+	}
+	public void setActiveLattitudeStr(String activeLattitudeStr) {
+		this.activeLattitudeStr = activeLattitudeStr;
+	}
+	public String getLast1hrActiveLongitudeStr() {
+		return last1hrActiveLongitudeStr;
+	}
+	public void setLast1hrActiveLongitudeStr(String last1hrActiveLongitudeStr) {
+		this.last1hrActiveLongitudeStr = last1hrActiveLongitudeStr;
+	}
+	public String getLast1hrActiveLattitudeStr() {
+		return last1hrActiveLattitudeStr;
+	}
+	public void setLast1hrActiveLattitudeStr(String last1hrActiveLattitudeStr) {
+		this.last1hrActiveLattitudeStr = last1hrActiveLattitudeStr;
+	}
+	public String getInActiveLongitudeStr() {
+		return inActiveLongitudeStr;
+	}
+	public void setInActiveLongitudeStr(String inActiveLongitudeStr) {
+		this.inActiveLongitudeStr = inActiveLongitudeStr;
+	}
+	public String getInactiveLattitudeStr() {
+		return inactiveLattitudeStr;
+	}
+	public void setInactiveLattitudeStr(String inactiveLattitudeStr) {
+		this.inactiveLattitudeStr = inactiveLattitudeStr;
+	}
+	public String getLast1hrInactiveLongitudeStr() {
+		return last1hrInactiveLongitudeStr;
+	}
+	public void setLast1hrInactiveLongitudeStr(String last1hrInactiveLongitudeStr) {
+		this.last1hrInactiveLongitudeStr = last1hrInactiveLongitudeStr;
+	}
+	public String getLast1hrInActiveLattitudeStr() {
+		return last1hrInActiveLattitudeStr;
+	}
+	public void setLast1hrInActiveLattitudeStr(String last1hrInActiveLattitudeStr) {
+		this.last1hrInActiveLattitudeStr = last1hrInActiveLattitudeStr;
+	}
 	public Long getTodayActiveCount() {
 		return todayActiveCount;
 	}
