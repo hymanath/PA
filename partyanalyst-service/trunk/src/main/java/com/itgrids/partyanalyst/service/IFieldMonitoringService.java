@@ -57,4 +57,5 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
 	public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO);
 	public FieldMonitoringVO getVerificationCountList(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr);
+	public List<FieldMonitoringVO> getVerfiedCadreSurveyUserDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr);
 }
