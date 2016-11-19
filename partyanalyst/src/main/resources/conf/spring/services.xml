@@ -59,7 +59,7 @@
 		<property name="mobileService" ref="mobileService" />
 		<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
-		
+		<!--<property name="voterTagDAO" ref="voterTagDAO" />-->
 		
 	</bean>
 	
@@ -3663,6 +3663,7 @@
 		  <property name="tabUserLocationDetailsDAO" ref="tabUserLocationDetailsDAO" />
 		  <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
 		<property name="tdpCadreUserHourRegInfoDAO" ref="tdpCadreUserHourRegInfoDAO" />
+		<property name="cadreRegUserTabUserDAO" ref="cadreRegUserTabUserDAO" />
 		 
 	</bean>
 	<bean name="gisVisualizationService" class="com.itgrids.partyanalyst.service.impl.GISVisualizationService">
