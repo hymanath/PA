@@ -37,7 +37,9 @@ public class TdpCadreDataVerification extends BaseModel implements Serializable{
 	private Long constituencyId;
 	private Long cadreSurveyUserId;
 	private String remark;
+	private Long tabUserInfoId;
 	
+	private TabUserInfo tabUserInfo;
 	private TdpCadre tdpCadre;
 	private CadreRegUser cadreRegUser;
 	private DataRejectReason dataRejectReason;
@@ -184,6 +186,22 @@ public class TdpCadreDataVerification extends BaseModel implements Serializable{
 		this.remark = remark;
 	}
 	
+	@Column(name="tab_user_info_id")
+	public Long getTabUserInfoId() {
+		return tabUserInfoId;
+	}
+	public void setTabUserInfoId(Long tabUserInfoId) {
+		this.tabUserInfoId = tabUserInfoId;
+	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tab_user_info_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TabUserInfo getTabUserInfo() {
+		return tabUserInfo;
+	}
+	public void setTabUserInfo(TabUserInfo tabUserInfo) {
+		this.tabUserInfo = tabUserInfo;
+	}
 }
