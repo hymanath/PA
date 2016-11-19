@@ -159,14 +159,15 @@ public class TdpCadreDataVerificationDAO extends GenericDaoHibernate<TdpCadreDat
 		return (Long) query.uniqueResult();
 		
 	}
-/*	
+	
 public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb = new StringBuilder();
 	sb.append("select model.cadreSurveyUserId," +
 			" model.mobileNo," +
 			" model.username," +
 			" model.tabUserName," +
-			" sum(model.totalRecords)" +
+			" sum(model.totalRecords)," +
+			" model.tabUserInfo.tabUserInfoId" +
 			" from TabUserEnrollmentInfo model" +
 			" where model.enrollmentYearId = 4");
 	if(fromDate != null && toDate != null)
@@ -200,6 +201,84 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 	
 	return  query.list();
 }
-	*/
+	
+public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
+	StringBuilder sb =  new StringBuilder();
+	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
+			" count(distinct model.tdpCadreId)" +
+			" from TdpCadreDataVerification model" +
+			" where");
+	if(fromDate != null && toDate != null)
+		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
+	
+	 if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.districtId between 11 and 23 ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and model.districtId between 1 and 10 ");
+		}
+	if(districtId != null && districtId.longValue() > 0l)
+		sb.append(" and model.districtId = :districtId");
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		sb.append(" and model.constituencyId = :constituencyId");
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
+	
+	sb.append(" and model.dataRejectReason.dataRejectReasonId is null ");
+	sb.append(" group by model.cadreSurveyUserId");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}
+	if(districtId != null && districtId.longValue() > 0l)
+		query.setParameter("districtId", districtId);
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		query.setParameter("constituencyId", constituencyId);
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+	
+	return query.list();
+	
+}
 
+public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
+	StringBuilder sb =  new StringBuilder();
+	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
+			" count(distinct model.tdpCadreId)" +
+			" from TdpCadreDataVerification model" +
+			" where");
+	if(fromDate != null && toDate != null)
+		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
+	
+	 if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.districtId between 11 and 23 ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and model.districtId between 1 and 10 ");
+		}
+	if(districtId != null && districtId.longValue() > 0l)
+		sb.append(" and model.districtId = :districtId");
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		sb.append(" and model.constituencyId = :constituencyId");
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
+	
+	sb.append(" and model.dataRejectReason.dataRejectReasonId is not null ");
+	sb.append(" group by model.cadreSurveyUserId");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}
+	if(districtId != null && districtId.longValue() > 0l)
+		query.setParameter("districtId", districtId);
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		query.setParameter("constituencyId", constituencyId);
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+	
+	return query.list();
+	
+}
 }
