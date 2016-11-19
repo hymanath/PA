@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -255,7 +256,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	}
 	return d;
 	}
-	public List<List<ToursBasicVO>> getDesigWiseMemberDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId){
+	public List<List<ToursBasicVO>> getDesigWiseMemberDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
 		try{
 			Map<Long,Map<Long,ToursBasicVO>> desigIdAndMapOfCandIdAndCandDtlsMap = new LinkedHashMap<Long,Map<Long,ToursBasicVO>>();
 			Long locationScopeId = 0l;
@@ -339,13 +340,21 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			4			ORGANIZING SECRETARIES			32					1			Krishan Ganni					65
 			4			ORGANIZING SECRETARIES			33					1			VENKATESWARA RAO VANAMADI		66
 		*/
-		    List<Object[]> disignationIdList = selfAppraisalDesignationDAO.getDesiganationList();
+		
 		    List<Long> desigList = new ArrayList<Long>();
-		    if(disignationIdList != null && disignationIdList.size() > 0){
-		    	for(Object[] param : disignationIdList){
-		    		desigList.add(commonMethodsUtilService.getLongValueForObject(param[0])); 
-		    	}
-		    }
+		    if(userTypeId.longValue() == IConstants.STATE_TYPE_USER_ID){
+		    	desigList = Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS);
+		    }else if(userTypeId.longValue() == IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS);
+		    }else if(userTypeId.longValue() == IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS);
+		    }else if(userTypeId.longValue() == IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS);
+		    }else if(userTypeId.longValue() == IConstants.MP_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS);
+		    }else if(userTypeId.longValue() == IConstants.SECRETARY_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
+		    }  
 		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet,desigList);
 		    
 		    prepairDesignationWiseCandidateDtls(desigWiseAllCandidate, desigIdAndMapOfCandIdAndCandDtlsMap);
@@ -488,7 +497,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			4			ORGANIZING SECRETARIES			32					1			Krishan Ganni					65
 			4			ORGANIZING SECRETARIES			33					1			VENKATESWARA RAO VANAMADI		66
 		*/
-		    
+			
 		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet,disigList);
 		    
 		    prepairDesignationWiseCandidateDtls(desigWiseAllCandidate, desigIdAndMapOfCandIdAndCandDtlsMap);
@@ -706,15 +715,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    	}
 			    }
 	    		
-	    		/*List<Object[]> desigDtls = selfAppraisalCandidateLocationDAO.getTotalLeadersDesignationBy(desigIdList,locationScopeId,locationValueSet,startDate,endDate);
-	    		Long cndCount = 0l;    
-	    		if(desigDtls != null && desigDtls.size() > 0){ 
-	    			for(Object[] param : desigDtls){
-	    				cndCount = cndCount + (param[1] != null ? (Long)param[1] : 0l);
-	    			}
-	    			toursBasicVO.setCandidateCount(cndCount);       
-	    		}*/  
-	    		//List<Object[]> memDtlsList= selfAppraisalCandidateDetailsDAO.getSubmittedToursLeadersDetails(startDate,endDate,desigIdList);
 	    		List<Long> CandidateIds = selfAppraisalCandidateLocationDAO.getCandiateIdList(locationScopeId,locationValueSet,desigIdList);
 	    		if(CandidateIds != null && CandidateIds.size() > 0){
 	    			toursBasicVO.setCandidateCount(Long.parseLong(Integer.toString(CandidateIds.size())));
@@ -741,7 +741,71 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	    	}
 	    	return null;  
 	    }
-	public List<ToursBasicVO> getDesignationLabelList(Long activityMemberId){
+	public List<ToursBasicVO> getDesignationLabelList(Long activityMemberId, Long userTypeId ){
+		try{
+			List<Long>  desigList = new ArrayList<Long>();
+			List<Object[]> designationDtlsList = null;
+			
+			if(userTypeId.longValue() == IConstants.STATE_TYPE_USER_ID){
+		    	desigList = Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS);
+		    	designationDtlsList = selfAppraisalDesignationDAO.getDesignationDtls(desigList);
+		    }else if(userTypeId.longValue() == IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS);
+		    	designationDtlsList = selfAppraisalDesignationDAO.getDesignationDtls(desigList);
+		    }else if(userTypeId.longValue() == IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS);
+		    	designationDtlsList = selfAppraisalDesignationDAO.getDesignationDtls(desigList);
+		    }else if(userTypeId.longValue() == IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS);  
+		    	designationDtlsList = selfAppraisalDesignationDAO.getDesignationDtls(desigList);
+		    }else if(userTypeId.longValue() == IConstants.MP_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS);
+		    	designationDtlsList = selfAppraisalDesignationDAO.getDesignationDtls(desigList);
+		    }else if(userTypeId.longValue() == IConstants.SECRETARY_USER_TYPE_ID){
+		    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);
+		    	designationDtlsList = selfAppraisalDesignationDAO.getDesignationDtls(desigList);
+		    }
+			List<ToursBasicVO> basicVOs = new ArrayList<ToursBasicVO>();
+			ToursBasicVO toursBasicVO = null; 
+			ToursBasicVO orgAndSecVO = new ToursBasicVO();
+			if(designationDtlsList != null && designationDtlsList.size() > 0){
+				for(Object[] param : designationDtlsList){
+					toursBasicVO = new ToursBasicVO();
+					if(commonMethodsUtilService.getLongValueForObject(param[0])==4l || commonMethodsUtilService.getLongValueForObject(param[0])==5l){
+					   if(orgAndSecVO.getComment() == null){
+						   orgAndSecVO.setComment(commonMethodsUtilService.getStringValueForObject(param[0]));
+						   orgAndSecVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					   }else{
+						   orgAndSecVO.setComment(orgAndSecVO.getComment()+","+commonMethodsUtilService.getLongValueForObject(param[0]));
+						   orgAndSecVO.setName(orgAndSecVO.getName()+"/"+commonMethodsUtilService.getStringValueForObject(param[1]));
+					   }
+					}else{   
+						toursBasicVO.setComment(commonMethodsUtilService.getLongValueForObject(param[0]).toString());//id
+						toursBasicVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						toursBasicVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(param[2]));//order
+						basicVOs.add(toursBasicVO);
+					}
+				}
+			}
+			if(basicVOs != null){
+				if(basicVOs.get(0).getComment().trim().equalsIgnoreCase("3")){
+					if(orgAndSecVO != null){
+						basicVOs.add(1, orgAndSecVO);   
+					}
+				}else{
+					if(orgAndSecVO != null && orgAndSecVO.getComment() != null){
+						basicVOs.add(0, orgAndSecVO);  
+					}  
+				}
+			}  
+			return basicVOs;  
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error Occured at getDesignationLabelList() in ToursService class",e);
+		}
+		return null;
+	}
+	/*public List<ToursBasicVO> getDesignationLabelList(Long activityMemberId){
 		try{
 			Long locationScopeId = 0l;
 			Set<Long> locationValueSet = new HashSet<Long>(0);
@@ -769,7 +833,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						   orgAndSecVO.setComment(orgAndSecVO.getComment()+","+commonMethodsUtilService.getLongValueForObject(param[0]));
 						   orgAndSecVO.setName(orgAndSecVO.getName()+"/"+commonMethodsUtilService.getStringValueForObject(param[1]));
 					   }
-					}else{ 
+					}else{   
 						toursBasicVO.setComment(commonMethodsUtilService.getLongValueForObject(param[0]).toString());//id
 						toursBasicVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 						toursBasicVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(param[2]));//order
@@ -780,12 +844,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			if(basicVOs != null){
 				if(basicVOs.get(0).getComment().trim().equalsIgnoreCase("3")){
 					if(orgAndSecVO != null){
-						basicVOs.add(1, orgAndSecVO);  
+						basicVOs.add(1, orgAndSecVO);   
 					}
 				}else{
-					if(orgAndSecVO != null){
+					if(orgAndSecVO != null && orgAndSecVO.getComment() != null){
 						basicVOs.add(0, orgAndSecVO);  
-					}
+					}  
 				}
 			}
 			return basicVOs;  
@@ -794,7 +858,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			LOG.error("Error Occured at getDesignationLabelList() in ToursService class",e);
 		}
 		return null;
-	}
+	}*/
 	public static Comparator<ToursBasicVO> sortCandidateDesc = new Comparator<ToursBasicVO>(){
 			public int compare(ToursBasicVO vo1, ToursBasicVO vo2){  
 				Long count1 = vo1.getTotalTour();
