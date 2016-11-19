@@ -8,7 +8,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VoterImageChecker {
 
@@ -21,6 +23,7 @@ public class VoterImageChecker {
 	static Statement stmt = null;
 	
 	static String voterImgPath = "/mnt/tdp-img/voter_images/";
+	static String previousVoterImgPath = "/mnt/tdp-img/voter_images/PUB11/";
 	static String resultDir = "/mnt/tdp-img/voter_check_logs/";
 	
 	public static void main(String[] args)
@@ -55,10 +58,28 @@ public class VoterImageChecker {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			stmt = conn.createStatement();
+			Map<Integer,String> previousPathMap = new HashMap<Integer,String>(0);
 			
 			StringBuilder sb = new StringBuilder();
 			
-			ResultSet rs = stmt.executeQuery("SELECT V.voter_id,V.voter_id_card_no,V.image_path,B.booth_id,B.part_no FROM voter V,booth_publication_voter BPV,booth B WHERE "
+			ResultSet rs = stmt.executeQuery("SELECT V.voter_id,B.part_no,V.voter_id_card_no FROM voter V,booth_publication_voter BPV,booth B WHERE "
+					+ " V.voter_id = BPV.voter_id AND BPV.booth_id = B.booth_id AND B.publication_date_id = 11 AND B.constituency_id = "+constituencyId
+					+ " GROUP BY V.voter_id ");
+			
+			while(rs.next())
+			 {
+				 try{
+					 Integer voterId = rs.getInt("voter_id");
+					 String voterIdCardNo = rs.getString("voter_id_card_no");
+					 String partNo = rs.getString("part_no");
+					 String path = constituencyId+"/Part"+partNo+"/"+voterIdCardNo+".jpg";
+					 previousPathMap.put(voterId,path);
+				 }catch (Exception e) {
+					e.printStackTrace();
+				}
+			 }
+			
+			rs = stmt.executeQuery("SELECT V.voter_id,V.voter_id_card_no,V.image_path,B.booth_id,B.part_no FROM voter V,booth_publication_voter BPV,booth B WHERE "
 					+ " V.voter_id = BPV.voter_id AND BPV.booth_id = B.booth_id AND B.publication_date_id = 22 AND B.constituency_id = "+constituencyId
 					+ " ORDER BY B.booth_id,BPV.serial_no");
 			 while(rs.next())
@@ -73,7 +94,23 @@ public class VoterImageChecker {
 				 File file = new File(voterImgPath+imgPath);
 				 
 				 if(!file.exists())
-					 sb.append(constituencyId+"\t"+voterId+"\t"+voterIdCardNo+"\t"+imgPath+"\t"+boothId+"\t"+partNo+"\n");
+				 {
+					 String oldPath = previousPathMap.get(voterId);
+					 if(oldPath != null)
+					 {
+						 File oldFile = new File(previousVoterImgPath+oldPath);
+						 if(oldFile.exists())
+						 {
+							 boolean result = oldFile.renameTo(file);
+							 if(result)
+								 sb.append(constituencyId+"\t"+voterId+"\t"+voterIdCardNo+"\t"+imgPath+"\t"+boothId+"\t"+partNo+"\tSuccess\t"+oldFile.getAbsolutePath()+"\t"+file.getAbsolutePath()+"\n");
+							 else
+								 sb.append(constituencyId+"\t"+voterId+"\t"+voterIdCardNo+"\t"+imgPath+"\t"+boothId+"\t"+partNo+"\tFail\t"+oldFile.getAbsolutePath()+"\t"+file.getAbsolutePath()+"\n");
+						 }
+					 }
+					 else
+						 sb.append(constituencyId+"\t"+voterId+"\t"+voterIdCardNo+"\t"+imgPath+"\t"+boothId+"\t"+partNo+"\n");
+				 }
 				 
 				 }catch (Exception e) {
 					 e.printStackTrace();
