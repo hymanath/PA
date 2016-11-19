@@ -337,10 +337,11 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			LOG.info("Entered into getToursBasicOverviewCountDetails()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
 			Long activityMemberId = jObj.getLong("activityMemberId");
-			Long stateId = jObj.getLong("stateId");
+			Long stateId = jObj.getLong("stateId");  
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
-			listOfTourBasicVoList = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId); 
+			Long globalUserTypeId = jObj.getLong("globalUserTypeId");
+			listOfTourBasicVoList = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId,globalUserTypeId); 
 			
 		} catch (Exception e) { 
 			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
@@ -410,8 +411,8 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		try{
 			jObj = new JSONObject(getTask());
 			Long activityMemberId = jObj.getLong("activityMemberId");
-			
-			listOfTourBasicVo = coreDashboardToursService.getDesignationLabelList(activityMemberId);
+			Long globalUserTypeId = jObj.getLong("globalUserTypeId");
+			listOfTourBasicVo = coreDashboardToursService.getDesignationLabelList(activityMemberId,globalUserTypeId);
 		}catch(Exception e){  
 			e.printStackTrace();    
 			LOG.error("Exception raised at getDesignationDtlsOfCandidate()  of ToursAction", e);
