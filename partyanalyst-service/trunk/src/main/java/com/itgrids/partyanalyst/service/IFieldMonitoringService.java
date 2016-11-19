@@ -52,8 +52,9 @@ public interface IFieldMonitoringService {
 	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
 	public List<IdAndNameVO> getConstituenciesByStateForStateTypeId(Long stateId,Long stateTypeId,Long districtId);
 	public ResultStatus saveCaderSurveyUserPerformanceDetails(Long loginUserId,Long cadreSurveyUserId,Long performanceTypeId,String comment);
-	 public List<IdAndNameVO> getcadrePerformnanceTypeList();
-	 public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId);
-	 public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
-	 public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO);
+	public List<IdAndNameVO> getcadrePerformnanceTypeList();
+	public List<IdAndNameVO> getcadrePerfrmanceList(Long cadreSurveyUserId);
+	public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType);
+	public List<GISIssuesVO> getLocationWiseIssueStatus(GISVisualizationParameterVO inputVO);
+	public FieldMonitoringVO getVerificationCountList(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr);
 }
