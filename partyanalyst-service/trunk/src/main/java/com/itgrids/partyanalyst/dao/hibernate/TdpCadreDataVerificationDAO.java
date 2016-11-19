@@ -185,7 +185,7 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 		sb.append(" and model.constituency.constituencyId = :constituencyId");
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
-	sb.append(" group by model.cadreSurveyUserId");
+	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
 	if(fromDate != null && toDate != null){
@@ -205,7 +205,8 @@ public 	List<Object[]> getCadreSurveyUserDetails(Long stateId,Long districtId,Lo
 public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb =  new StringBuilder();
 	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
-			" count(distinct model.tdpCadreId)" +
+			" count(distinct model.tdpCadreId)," +
+			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
 			" where");
 	if(fromDate != null && toDate != null)
@@ -224,7 +225,7 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 	
 	sb.append(" and model.dataRejectReason.dataRejectReasonId is null ");
-	sb.append(" group by model.cadreSurveyUserId");
+	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
 	if(fromDate != null && toDate != null){
@@ -245,7 +246,8 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
 	StringBuilder sb =  new StringBuilder();
 	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
-			" count(distinct model.tdpCadreId)" +
+			" count(distinct model.tdpCadreId)," +
+			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
 			" where");
 	if(fromDate != null && toDate != null)
@@ -264,7 +266,7 @@ public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,L
 		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 	
 	sb.append(" and model.dataRejectReason.dataRejectReasonId is not null ");
-	sb.append(" group by model.cadreSurveyUserId");
+	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
 	if(fromDate != null && toDate != null){
