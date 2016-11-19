@@ -439,4 +439,23 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		 }
 		 return sqlQuery.list();
   }
+  
+  public List<Object[]> getLatestLattitudeAndLongitude(List<Long> cadreSurveyUserIds){
+	  
+	  StringBuilder str = new StringBuilder();
+		str.append(" select model.survey_time,model.longititude,model.latitude,model1.name,model1.mobile_no," +
+				" model.cadre_survey_user_id from " +
+				" tab_user_location_details model,tab_user_info model1 where model.cadre_survey_user_id in (:cadreSurveyUserIds) " +
+				" and model.tab_user_info_id= model1.tab_user_info_id and model1.cadre_survey_user_id=model.cadre_survey_user_id " +
+				" group by model.cadre_survey_user_id order by model.tab_user_location_details_id ");
+		
+		Session session = getSession();
+        SQLQuery sqlQuery = session.createSQLQuery(str.toString());
+        
+        if(cadreSurveyUserIds != null && cadreSurveyUserIds.size() >0){
+		 	sqlQuery.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
+        }
+		 	return sqlQuery.list();	
+  }
+  
 }
