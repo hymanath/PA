@@ -680,7 +680,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		else
 		 {
 			/*$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>"+resultArr[0]+" ,Application Submission Failed.Please try Again./span>"); */
-			alert("<span style='color: red;font-size:22px;'>Application Submission Failed.Please try Again./span>");
+			alert("Application Submission Failed.Please try Again.");
 			$('#saveBtnId').show();
 		 }
 		/*else
