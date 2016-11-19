@@ -452,17 +452,18 @@ function getToursBasicOverviewCountDetails()
 	 $("#topPoorLocationsToursDivId").html(str);    
 	 $('.progressCustom').tooltip();	
 	}
-	var globalUserTypeWiseTourCountRslt;
+	var globalUserTypeWiseTourCountRslt;  
 	function getDesigWiseMemberDtls(){ 
 	$("#userTypeWiseTopFiveStrongAndPoorToursMemsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"> <div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 			activityMemberId : globalActivityMemberId,        
 			stateId : globalStateIdForTour,
 			fromDate : globalTourFormDate,              
-			toDate :  glovalTourToDate      
+			toDate :  glovalTourToDate,
+			globalUserTypeId : globalUserTypeId
 		}
 		$.ajax({
-			type : 'POST',
+			type : 'POST',         
 			url : 'getDesigWiseMemberDtlsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}         
@@ -751,6 +752,7 @@ function getToursBasicOverviewCountDetails()
 		
 		var jsObj ={ 
 			activityMemberId : globalActivityMemberId,
+			globalUserTypeId : globalUserTypeId
 		}
 		$.ajax({
 			type : 'POST',
@@ -841,7 +843,11 @@ function getToursBasicOverviewCountDetails()
 						str+='<h4>'+result.totalTour+'</h4>';  
 					str+='</td>';
 					str+='<td>';
-					var average = result.totalTour / result.inchargerToursCnt;         
+						if(result.totalTour == 0){
+							var average = 0;        
+						}else{  
+							var average = result.totalTour / result.inchargerToursCnt;        
+						}    
 						str+='<p class="text-muted text-capital">Average<br>Tours</p>';
 						str+='<h4>'+average.toFixed(2)+'</h4>';  
 					str+='</td>';
@@ -892,8 +898,8 @@ function getToursBasicOverviewCountDetails()
 						str+='<th>TOTAL</th>';
 						str+='<th>COMMENT</th>';
 					str+='</thead>';
-					str+='<tbody>';
-						var comment  = "";
+					str+='<tbody>';  
+						var comment  = "";  
 						var k = 0;
 						var candidateId = result[0].id;
 						var candidateName = result[0].name;
@@ -901,7 +907,7 @@ function getToursBasicOverviewCountDetails()
 						for(var i in result){
 							comment  = "";
 							if(result[i].totalTour > 0){         
-								str+='<tr class="candidateCls" attr_candiate_id="'+result[i].id+'" attr_cand_name="'+result[i].name+'" attr_cand_desig="'+result[i].designation+'">'; 
+								str+='<tr class="candidateCls" attr_desig_id="'+result[i].designationId+'" attr_activity_mem_id="'+result[i].activityMemberId+'" attr_candiate_id="'+result[i].id+'" attr_cand_name="'+result[i].name+'" attr_cand_desig="'+result[i].designation+'">'; 
 									k = parseInt(k) + 1;      
 									str+='<td>';
 										str+='<span class="tableCount">'+k+'</span>';
