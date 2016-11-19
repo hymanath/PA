@@ -901,9 +901,17 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 			var paperNamesArrayEmn = []
 			for(var k in result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList)
 			{
-				positivePercArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc)
-				negativePercArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].negativePerc)
-				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].organization)
+				if(locationLevelIdGlb == 2){
+					
+				positivePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc,"extra":"3-"+result[i].tvNewsDetailsVOList[j].organizationId+"-"+result[i].organizationId+"-1"});
+				negativePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].negativePerc,"extra":"3-"+result[i].tvNewsDetailsVOList[j].organizationId+"-"+result[i].organizationId+"-2"});
+				
+				}else{
+					
+					positivePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc,"extra":locationLevelIdGlb+"-"+locationValueArrGlb+"-"+result[i].organizationId+"-1"});
+					negativePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].negativePerc,"extra":locationLevelIdGlb+"-"+locationValueArrGlb+"-"+result[i].organizationId+"-2"});
+				}
+					paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].organization)
 			}
 			$('#partyVsChannelGraph'+i+''+j+'').highcharts({
 				colors: ['#64C664','#D33E39'],
@@ -979,7 +987,17 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 								}
 							}
 						  
-						},
+						}
+					},
+					series: {
+						cursor: 'pointer',
+						point: {
+							events: {
+								click: function () {
+									getEMMDetailedPartiesDistrictWiseOverview(this.extra);
+								}
+							}
+						}
 					}
 				},
 				series: [{
@@ -1115,6 +1133,12 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 	}); 
 	
 }
+function getEMMDetailedPartiesDistrictWiseOverview(val){
+	 var t = val.split("-");
+	  
+	  window.open('showElectronicBulletinsAction.action?levelId='+t[0]+'&temp='+t[1]+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&npsStr='+newsChannelsIdsGlbl+'&scops='+impactScopeIds+'&orgIdStr='+t[2]+'&orgType=N&bfIds='+t[3]+'&stIdx=0&edIdx=6&callFrom=dpdwd','_blank');
+	
+}
 function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 {
 	var str = '';
@@ -1148,8 +1172,10 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 			var positivePercArrayEmn = []
 			var negativePercArrayEmn = []
 			var paperNamesArrayEmn = []
-				positivePercArrayEmn.push(result[i].tvNewsDetailsVOList1[j].positivePerc)
-				negativePercArrayEmn.push(result[i].tvNewsDetailsVOList1[j].negativePerc)
+				
+				positivePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList1[j].positivePerc,"extra":result[i].tvNewsDetailsVOList1[j].organizationId+"-"+result[i].channelId+"-1"});
+				negativePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList1[j].negativePerc,"extra":result[i].tvNewsDetailsVOList1[j].organizationId+"-"+result[i].channelId+"-2"});
+				
 				paperNamesArrayEmn.push(result[i].tvNewsDetailsVOList1[j].organization)
 		
 			$('#partyVsChannelGraph'+i+''+j+'').highcharts({
@@ -1215,7 +1241,17 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 								}
 							}
 						  
-						},
+						}
+					},
+					series: {
+						cursor: 'pointer',
+						point: {
+							events: {
+								click: function () {
+									getEMMDetailedChannelsPartiesDistrictWiseOverview(this.extra);
+								}
+							}
+						}
 					}
 				},
 				series: [{
@@ -1274,7 +1310,14 @@ function buildgetEMMDetailedPartiesVsChannelsTvChannelWise(result)
 	}); 
 	
 }
-
+function getEMMDetailedChannelsPartiesDistrictWiseOverview(val){
+	
+	 var t = val.split("-");
+	  
+	  window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&npsStr='+t[1]+'&scops='+impactScopeIds+'&orgIdStr='+t[0]+'&orgType=N&bfIds='+t[2]+'&stIdx=0&edIdx=6&callFrom=dpcwd','_blank');
+	
+	
+}
 /*detailed Govt */
 function getProblemsDetailedOverView()
 {

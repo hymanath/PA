@@ -151,6 +151,10 @@ $(document).ready(function(){
 		getEMMMediaProgramsOnPartyProgramsWiseBulletins(0);
 	else if(callFrom == "dpdpd")
 		getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(0);
+	else if(callFrom == "dpdwd")
+		getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins(0);
+	else if(callFrom == "dpcwd")
+		getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins(0)
 	}, 1000);
 	
 });
@@ -532,6 +536,11 @@ $(document).ready(function(){
 								getEMMMediaProgramsOnPartyProgramsWiseBulletins(num);		
 							else if(callFrom == "dpdpd")
 									getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview(num);
+							else if(callFrom == "dpdwd")
+								getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins(num);
+							else if(callFrom == "dpcwd")
+								getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins(num);
+								
 					}					
 				});
 			}
@@ -587,9 +596,9 @@ $(document).ready(function(){
 
 		$.ajax({
 		  type : 'GET',      
-		  //url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
-		url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyDistrictWiseProgramsBulletinsOverview/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
 		}).then(function(result){
 		  var countByDate=0;
@@ -597,6 +606,34 @@ $(document).ready(function(){
 		});    
   }		
   
+  function getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }	
+  function getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }	
 </script>
 </body>
 </html>
