@@ -18,46 +18,6 @@
 	<div class="row">     
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="block">
-            	<!--<div class="row">
-                	<div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select State</label>
-                        <select class="select" id="stateId">
-							<option value="0">Select State</option> 
-                        	<option value="1">Andhra Pradesh</option>
-							<option value="36">Telangana</option>   
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select Vendor</label>
-                        <select class="select" id="vendorId">
-                        	<option>Andhra Pradesh</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select District</label>
-                        <select class="select" id="districtId">
-                        	<option>Andhra Pradesh</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select Constituency</label>  
-                        <select class="select" id="constituencyId">
-                        	<option>Andhra Pradesh</option>      
-                        </select>
-                    </div>    
-                    <div class="col-md-4 col-xs-12 col-sm-6">
-                    	<label>Select Date</label>
-                        <div class="input-group inputGCustom">
-                            <span class="input-group-addon">
-	                            <i class="glyphicon glyphicon-calendar"></i>
-                            </span>
-                             <input type="text" class="form-control datePicker"/>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-6">
-                    	<button class="btn btn-success m_top25" id="getRegStatusId">submit</button>
-                    </div>
-                </div>-->
 				<div class="row">
 					<div class="col-md-3 col-xs-12 col-sm-6">
                     	<label>Select District<span style="color:red">*</span>&nbsp;&nbsp;<span style="color:red;" id="errMsgDivId"></span></label>
@@ -86,41 +46,38 @@
 							<input type="text" class="form-control datePicker"/>
 						</div>
                     </div>
-					<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<button class="btn btn-success m_top25 text-capital" id="getRegStatusId">submit</button>
-					</div>
-			<div id="verifiactionDivId" style="display:none;">	
+                </div>
 				<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-                    	<div class="block bg_F4 pad_20" style="margin-left:20px; margin-right:15px;margin-top:7px;" id="dataverificationId">
-                        	<div class="row">
-                            	<div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h5 class="text-capital">registered : <span id="totalRegisteredId"></span></h5>
-                                </div>
-                                <div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h5 class="text-capital">verification pending : <span id="verfPendingId"></span></h5>
-                                </div>
-                                <div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h5 class="text-capital">verified passed : <span id="verPassedId"></span></h5>
-                                </div>
-								<div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h5 class="text-capital">verifed - junck/rejected : <span id="verRejectedId"></span></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-				</div>	
-			</div>	
-				<!--<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<button class="btn btn-success m_top25 text-capital" id="imageId">image</button>
-					</div>-->
-                </div>
-            </div>
-           
-            	<div class="row">
-                    <div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="loggedInFieldUsersId"></div>
-                </div>
-           
+					<div class="col-md-11 col-xs-12 col-sm-6">
+                    	<button class="btn btn-success  m_top25 text-capital pull-right" id="getRegStatusId">submit</button>
+					</div>
+				</div>
+				<div class="row">
+					<div id="verifiactionDivId" style="display:none;">	
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="block bg_F4 pad_20" style="margin-left:20px; margin-right:15px;margin-top:7px;" id="dataverificationId">
+								<div class="row">
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">total registrations : <span id="totalRegisteredId"></span></h5>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">verification pending : <span id="verfPendingId"></span></h5>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">verified passed : <span id="verPassedId"></span></h5>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h5 class="text-capital">verifed - junck/rejected : <span id="verRejectedId"></span></h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div>
+				<div class="row">		
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20 table-responsive" id="loggedInFieldUsersId"></div></div>
+				</div>
+           </div>
         </div> 
     </div>
 </div>
