@@ -20,25 +20,25 @@
         	<div class="block">
 				<div class="row">
 					<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<label>Select District<span style="color:red">*</span>&nbsp;&nbsp;<span style="color:red;" id="errMsgDivId"></span></label>
+                    	<label>SELECT DISTRICT<span style="color:red">*</span>&nbsp;&nbsp;<span style="color:red;" id="errMsgDivId"></span></label>
 						<select class="select" id="districtId" onchange="getConstituencies(this.value)">
 						    <option value="0">Select District</option>
                         </select>
 					</div>
                 	<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<label>Select Constituency</label><span style="color:red"> *</span>
+                    	<label>SELECT CONSTITUENCY</label><span style="color:red"> *</span>
 						<select class="select" id="constituencyId" onchange="getUsers(this.value)">
 						    <option value="0">Select Constituency</option>
                         </select>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<label>Select User</label><span style="color:red"> *</span>
+                    	<label>SELECT USER</label><span style="color:red"> *</span>
 						<select class="select" id="cadreSurveyUserId">
 						    <option value="0">Select User</option>
                         </select>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<label>Select Date</label><span style="color:red"> *</span>
+                    	<label>SELECT DATE</label><span style="color:red"> *</span>
                         <div class="input-group inputGCustom">
 							<span class="input-group-addon">
 								<i class="glyphicon glyphicon-calendar"></i>
@@ -48,8 +48,8 @@
                     </div>
                 </div>
 				<div class="row">
-					<div class="col-md-11 col-xs-12 col-sm-6">
-                    	<button class="btn btn-success  m_top25 text-capital pull-right" id="getRegStatusId">submit</button>
+					<div class="col-md-12 col-xs-12 col-sm-6">
+                    	<button class="btn btn-success  m_top25 text-capital pull-right" id="getRegStatusId" style="margin-right: 20px;">submit</button>
 					</div>
 				</div>
 				<div class="row">
