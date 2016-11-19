@@ -175,6 +175,7 @@ function getUsers(constituencyId){
 		getCadreRegStatusType();
 		getReasons();
 	});*/
+	
 	var globalSrt = '';
 	function getReasons(){
 		$.ajax({
@@ -297,20 +298,20 @@ function getUsers(constituencyId){
 	$(document).on('click','.issuesBtn',function(){
 		var surveyUserId = $(this).attr("attr_survey_user_id");
 		var tabUserId = $(this).attr("attr_tab_user_id");
-		var webUserId = $(this).attr("attr_web_user_id");
+		//var webUserId = $(this).attr("attr_web_user_id");
 		var startDate = $(this).attr("attr_start_date");
 		var endDate = $(this).attr("attr_end_date");
 		var userName = $(this).attr("attr_user_name");
 		var userMobile = $(this).attr("attr_user_mobile");
 		var resultType="All"
 		var minValue = 0; 
-		if(webUserId==0){
+		//if(webUserId==0){
 			$("#userId").html("Tab UserID - "+tabUserId+"");	
 			$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");	
-		}else{
-			$("#userId").html("User ID - "+webUserId+"");	
-			$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");		
-		}
+		//}else{
+			//$("#userId").html("User ID - "+webUserId+"");	
+			//$("#userDescriptionId").html("<i>"+userName+" - "+userMobile+"</i>");		
+		//}
 	   
 	   	$("#relativePaginationId").html(' ');
 		$("#selfPaginationId").html(' ');
@@ -319,13 +320,14 @@ function getUsers(constituencyId){
 		$("#issuesDataMonitroing li:first-child").addClass("active");  
 		$(".activeCls").addClass("active");
 		$(".relativeCls").removeClass("active");
-		getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);
+		getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType);
 	});
+	
 	function getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType){
 		var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
-		var startDate = dateArr[0].trim();
-		var endDate = dateArr[1].trim();
+		var fromDate = dateArr[0].trim();
+		var toDate = dateArr[1].trim();
 		if(resultType=="All"){
 			$("#selfTblDivId").html(' ');
 			$("#relativeDivId").html(' ');
@@ -344,9 +346,9 @@ function getUsers(constituencyId){
 		{				
 			surveyUserId : surveyUserId,
 			tabUserId : tabUserId,
-			webUserId : webUserId,
-			startDate : modifyDate(startDate),
-			endDate : modifyDate(endDate) ,  
+			webUserId : 0,
+			startDate : modifyDate(fromDate),
+			endDate : modifyDate(toDate) , 
 			minValue :minValue,
             maxValue :10,
 			resultType:resultType,
@@ -362,7 +364,7 @@ function getUsers(constituencyId){
 		}).done(function(result){
 			$("#cadreValidateId").html('');
 			if(result != null && result.length > 0){  
-				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,webUserId,userName,userMobile,minValue,resultType);  
+				buildVerifiedDtlsCount(result,surveyUserId,tabUserId,0,userName,userMobile,minValue,resultType);  
 			}else{
 				if(resultType=="All"){    
 					$("#selfTblDivId").html('No Data Available...');
@@ -457,14 +459,14 @@ function getUsers(constituencyId){
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].mobileNo+'</td>';
 								str+='<td>'+result[0][i].gender+'</td>';
-								str+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" class="localSelectOwnCls" type="checkbox"/></td>';  
+								str+='<td><input attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" class="localSelectOwnCls" type="checkbox"/></td>';  
 							str+='</tr>'; 
 					
 					
 							str+='<tr class="ownDeleteRow'+i+'">';    
 								str+='<td>';  
-									str+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'">Approve</button>';
-									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;">Reject</button>';
+									str+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Approve</button>';
+									str+='<button class="btn btn-danger singleRejectCls btn-sm"  attr_position_id="'+i+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_reason_id="ownHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Reject</button>';
 								str+='</td>';    
 								str+='<td colspan="3">';
 									str+='<select class="select" id="ownHideSelectBoxId'+i+'" style="display:none;">';
@@ -488,9 +490,9 @@ function getUsers(constituencyId){
 					items: selfTotalCount,
 					itemsOnPage: 10,
 					cssStyle: 'light-theme',
-					onPageClick: function(pageNumber) { 
+					onPageClick: function(pageNumber) {					
 						var num=(pageNumber-1)*10;
-						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Self");
+						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Self");
 					}
 				});
 			}	
@@ -501,7 +503,7 @@ function getUsers(constituencyId){
 			str2+='<table class="table">';
 				str2+='<thead class="text-capital">';
 					str2+='<th>captured photo</th>';
-					str2+='<th>Voter photo</th>';
+					str2+='<th>Relative Voter photo</th>';
 					str2+='<th>name</th>';
 					str2+='<th>mobile number</th>';
 					str2+='<th>gender</th>';
@@ -573,12 +575,12 @@ function getUsers(constituencyId){
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
-								str2+='<td><input attr_position_id="'+i+'"  attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" class="localSelectFamilyCls" type="checkbox"/></td>';
+								str2+='<td><input attr_position_id="'+i+'"  attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" class="localSelectFamilyCls" type="checkbox"/></td>';
 							str2+='</tr>'; 
 							str2+='<tr class="familyDeleteRow'+i+'">';
 								str2+='<td>';
-									str2+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'">Approve</button>';//familyHideSelectBoxId0
-									str2+='<button class="btn btn-danger singleRejectCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" style="margin-left: 5px;">Reject</button>';
+									str2+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Approve</button>';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-danger singleRejectCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Reject</button>';
 								str2+='</td>';
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
@@ -606,7 +608,7 @@ function getUsers(constituencyId){
 						cssStyle: 'light-theme',
 						onPageClick: function(pageNumber) { 
 						var num=(pageNumber-1)*10;
-						getMembersDetails(surveyUserId,tabUserId,webUserId,userName,userMobile,num,"Relative");
+						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Relative");
 					}
 				});
 			}	
@@ -721,6 +723,14 @@ function getUsers(constituencyId){
 		$("#submitBtnReasonId").attr("attr_cadre_id",cadreId);
 		var position = $(this).attr("attr_position_id");
 		$("#submitBtnReasonId").attr("attr_position_id",position);
+		var districtId = $(this).attr("attr_dist_id");
+		$("#submitBtnReasonId").attr("attr_dist_id",districtId);
+		var constituencyId = $(this).attr("attr_const_id");
+		$("#submitBtnReasonId").attr("attr_const_id",constituencyId);
+		var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+		$("#submitBtnReasonId").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
+		var tabUserInfoId = $(this).attr("attr_tab_user_id");
+		$("#submitBtnReasonId").attr("attr_tab_user_id",tabUserInfoId);
 		$(".reasonErrorCls").html('');
 		$(".reasonSuccessCls").html('');
 		$("#rsnSlctBxId").html(globalSrt);  
@@ -730,13 +740,17 @@ function getUsers(constituencyId){
 		$(".reasonErrorCls").html('');  
 		var cadreId = $(this).attr("attr_cadre_id");
 		var reasonId = $("#rsnSlctBxId").val();
-		var position = $(this).attr("attr_position_id");   
+		var position = $(this).attr("attr_position_id"); 
+		var distId = $(this).attr("attr_dist_id"); 
+		var constId = $(this).attr("attr_const_id"); 
+		var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+		var tabUserInfoId = $(this).attr("attr_tab_user_id");
 		if(reasonId == 0){  
 			$(".reasonErrorCls").html('Please Select Reason...');  
 			return;  
 		} 
 		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId });
+		rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId,"districtId" : distId,"constitunecyId" : constId,"cadreUserId" : cadreSurveyUserId, "tabUserInfoId" : tabUserInfoId  });
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
@@ -823,9 +837,13 @@ function getUsers(constituencyId){
 			$('.localSelectOwnCls').each(function(){
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
+					var distId = $(this).attr("attr_dist_id"); 
+					var constId = $(this).attr("attr_const_id"); 
+					var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+					var tabUserInfoId = $(this).attr("attr_tab_user_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId}); 
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "districtId" : distId,"constitunecyId" : constId,"cadreUserId" : cadreSurveyUserId, "tabUserInfoId" : tabUserInfoId}); 
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);
@@ -835,9 +853,13 @@ function getUsers(constituencyId){
 			$('.localSelectFamilyCls').each(function(){
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
+					var distId = $(this).attr("attr_dist_id"); 
+					var constId = $(this).attr("attr_const_id"); 
+					var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+					var tabUserInfoId = $(this).attr("attr_tab_user_id");
 					selectReasonId = $(this).attr("attr_reason_id");
 					reasonId = $("#"+selectReasonId).val();
-					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId});
+					rejectList.push({"cadreId" : cadreId, "reasonId" : reasonId, "districtId" : distId,"constitunecyId" : constId,"cadreUserId" : cadreSurveyUserId, "tabUserInfoId" : tabUserInfoId});
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);      
@@ -882,15 +904,28 @@ function getUsers(constituencyId){
 	$(document).on("click",".singleApproveCls",function(){  
 		var cadreId = $(this).attr("attr_cadre_id");
 		var position = $(this).attr("attr_position_id");
+		var districtId = $(this).attr("attr_dist_id");
+		var constituencyId = $(this).attr("attr_const_id");
+		var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+		var tabUserInfoId = $(this).attr("attr_tab_user_id");
 		$("#groupingApprovedYes").attr("attr_position_id",position);
 		$("#groupingApprovedYes").attr("attr_cadre_id",cadreId);
+		$("#groupingApprovedYes").attr("attr_dist_id",districtId);
+		$("#groupingApprovedYes").attr("attr_const_id",constituencyId);
+		$("#groupingApprovedYes").attr("attr_cadre_survey_user_id",cadreSurveyUserId);
+		$("#groupingApprovedYes").attr("attr_tab_user_id",tabUserInfoId);
 		$("#confirmModalId").modal("show");      
 	});
 	$(document).on("click","#groupingApprovedYes",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
-		var position = $(this).attr("attr_position_id");   
+		var position = $(this).attr("attr_position_id");
+		var distId = $(this).attr("attr_dist_id");
+		var constId = $(this).attr("attr_const_id");
+		var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+		var tabUserInfoId = $(this).attr("attr_tab_user_id");
+			
 		var rejectList = [];
-		rejectList.push({"cadreId" : cadreId}); 
+		rejectList.push({"cadreId" : cadreId,"districtId" : distId,"constitunecyId" : constId,"cadreUserId" : cadreSurveyUserId, "tabUserInfoId" : tabUserInfoId}); 
 		var singleReject = {"data" : rejectList};
 		$.ajax({
 			type:'GET',      
@@ -939,7 +974,7 @@ function getUsers(constituencyId){
 			return;       
 		}    
 		$("#globalErrId").html(' ');  
-		var cadreId = ''; 
+		var cadreId = '';	
 		var rejectList = []; 
 		var positionIdArr = [];
 		var position = 0;
@@ -947,7 +982,11 @@ function getUsers(constituencyId){
 			$('.localSelectOwnCls').each(function(){  
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId});
+					var distId = $(this).attr("attr_dist_id"); 
+					var constId = $(this).attr("attr_const_id"); 
+					var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+					var tabUserInfoId = $(this).attr("attr_tab_user_id");
+					rejectList.push({"cadreId" : cadreId,"districtId" : distId,"constitunecyId" : constId,"cadreUserId" : cadreSurveyUserId,"tabUserInfoId" : tabUserInfoId});
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);
@@ -957,7 +996,11 @@ function getUsers(constituencyId){
 			$('.localSelectFamilyCls').each(function(){    
 				if($(this).is(':checked')){
 					cadreId = $(this).attr("attr_cadre_id");
-					rejectList.push({"cadreId" : cadreId});
+					var distId = $(this).attr("attr_dist_id"); 
+					var constId = $(this).attr("attr_const_id"); 
+					var cadreSurveyUserId = $(this).attr("attr_cadre_survey_user_id");
+					var tabUserInfoId = $(this).attr("attr_tab_user_id");
+					rejectList.push({"cadreId" : cadreId,"districtId" : distId,"constitunecyId" : constId,"cadreUserId" : cadreSurveyUserId,"tabUserInfoId" : tabUserInfoId});
 					//collect row position for delete row.
 					position = $(this).attr("attr_position_id");
 					positionIdArr.push(position);
@@ -1066,6 +1109,7 @@ function getOverAllVerificationCount(){
 $(document).on("click","#getRegStatusId",function(){
 	getOverAllVerificationCount();
 	getCadreVerificationDetails();
+	getReasons();
 });
 	
 function getCadreVerificationDetails(){
@@ -1100,7 +1144,6 @@ function getCadreVerificationDetails(){
 				buildTotalRegCdrVendorAndTabUserWise(result,fromDate,toDate);
 		});
 }	
-
 function validations(){
 	var districtId = $("#districtId").val();
 	if(districtId == 0){
@@ -1111,5 +1154,3 @@ function validations(){
 	}
 	return true;
 }
-
-	
