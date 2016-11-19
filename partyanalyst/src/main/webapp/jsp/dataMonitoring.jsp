@@ -60,7 +60,7 @@
                 </div>-->
 				<div class="row">
 					<div class="col-md-3 col-xs-12 col-sm-6">
-                    	<label>Select District</label><span style="color:red"> *</span>
+                    	<label>Select District<span style="color:red">*</span>&nbsp;&nbsp;<span style="color:red;" id="errMsgDivId"></span></label>
 						<select class="select" id="districtId" onchange="getConstituencies(this.value)">
 						    <option value="0">Select District</option>
                         </select>
@@ -95,7 +95,7 @@
                     	<div class="block bg_F4 pad_20" style="margin-left:20px; margin-right:15px;margin-top:7px;" id="dataverificationId">
                         	<div class="row">
                             	<div class="col-md-3 col-xs-12 col-sm-3">
-                                	<h5 class="text-capital">today registered : <span id="totalRegisteredId"></span></h5>
+                                	<h5 class="text-capital">registered : <span id="totalRegisteredId"></span></h5>
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-3">
                                 	<h5 class="text-capital">verification pending : <span id="verfPendingId"></span></h5>
