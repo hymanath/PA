@@ -271,7 +271,7 @@ function getUsers(constituencyId){
 						str+='<th>USER ID</th>';
 						str+='<th>TAB USER NAME</th>';
 						str+='<th>MOBILE NO</th>';
-						str+='<th>COMPLETED REGISTRATIONS</th>';
+						str+='<th>TOTAL REGISTRATIONS</th>';
 						str+='<th>VERIFIED - PASSED</th>';
 						str+='<th>VERIFIED - JUNK/REJECTED</th>';
 						str+='<th>PENDING</th>';
