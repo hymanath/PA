@@ -4382,8 +4382,135 @@ try{
 		  LOG.error("Exception raised in setSurveyTrackingDtlsToMap() in CoreDashboardCadreRegistrationService service", e);  
 	  }
   }
- //swadhin
- public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long fieldUserId,Long constitunecyId){
+  
+//swadhin
+ public CadreBasicVO getUserTrackngDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr){
+	  CadreBasicVO resultVO = new CadreBasicVO();
+	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	  Date toDate=null;
+	  Date fromDate=null;
+	  Date today = null;
+	 try{
+		 if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+			 toDate = sdf.parse(toDateStr);
+			 fromDate = sdf.parse(fromDateStr);
+		 }else{
+			 toDate = new DateUtilService().getCurrentDateAndTime();
+			 fromDate = new DateUtilService().getCurrentDateAndTime();
+		 }
+		 today = new DateUtilService().getCurrentDateAndTime();
+		 List<CadreBasicVO> userTrackingDtlList = new ArrayList<CadreBasicVO>(0);
+		 List<CadreBasicVO> eryFveMntsDtlsLstUsrTrckngLst = new ArrayList<CadreBasicVO>(0);
+		 
+		 List<Object[]> rtrnTrackingDtlsLst = tdpCadreDAO.getUserTrackingDetails(cadreSurveyUserId, fromDate, toDate);
+		 List<Object[]> rtrnEvry5MinutesUsrTrkngDtlList = tabUserLocationDetailsDAO.getSurveyUserTrackingDtls(cadreSurveyUserId, fromDate, toDate);
+		 
+		 setDUserTrackingDtlsToList(rtrnTrackingDtlsLst,userTrackingDtlList,"samples");
+		 setDUserTrackingDtlsToList(rtrnEvry5MinutesUsrTrkngDtlList,eryFveMntsDtlsLstUsrTrckngLst,null);
+		 
+ 		 if(userTrackingDtlList != null && userTrackingDtlList.size() > 0){
+ 			 resultVO.setSubList1(userTrackingDtlList);
+ 		 }
+ 		 if(eryFveMntsDtlsLstUsrTrckngLst != null && eryFveMntsDtlsLstUsrTrckngLst.size() > 0){
+ 			 resultVO.setSubList2(eryFveMntsDtlsLstUsrTrckngLst);  
+ 		 }
+ 		//between 8pm -> 8am
+ 		List<Long> hourList = new ArrayList<Long>(){{add(20l);add(21l);add(22l);add(23l);add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
+		//between 8am -> 8pm  
+		Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{  
+			put("8am-9am",8l);put("9am-10am",9l);put("10am-11am",10l);put("11am-12pm",11l);
+			put("12pm-1pm",12l);put("1pm-2pm",13l);put("2pm-3pm",14l);put("3pm-4pm",15l);
+			put("4pm-5pm",16l);put("5pm-6pm",17l);put("6pm-7pm",18l);put("7pm-8pm",19l);
+		}}; 
+ 		 
+ 		 
+ 		 	List<Object[]> regDtlsHourWiseList = tdpCadreUserHourRegInfoDAO.getRegDtlsHourWiseList(cadreSurveyUserId,today);
+ 		 	Map<Long,Long> hourAndRegCountMap = new HashMap<Long,Long>();
+			
+			if(regDtlsHourWiseList != null && regDtlsHourWiseList.size() > 0){
+				for(Object[] param : regDtlsHourWiseList){
+					hourAndRegCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			Long totalCadreUpto8amToday = 0l;
+			Long totalRegToday = 0l;
+			
+			for(Long param : hourList){
+				if( hourAndRegCountMap.get(param) != null){
+					totalCadreUpto8amToday = totalCadreUpto8amToday + hourAndRegCountMap.get(param);
+					totalRegToday = totalRegToday + hourAndRegCountMap.get(param);
+				}
+					
+			}
+			FieldReportVO fieldReportVO = new FieldReportVO();
+			List<FieldReportVO> fieldReportVOs = new ArrayList<FieldReportVO>();
+			//special for 8pm -> 8am
+ 			fieldReportVO = new FieldReportVO();
+ 			fieldReportVO.setLabel("8pm-8am");
+ 			fieldReportVO.setOrder(13l);
+ 			fieldReportVO.setTodayTotalReg(totalCadreUpto8amToday);
+ 			//add first
+ 			fieldReportVOs.add(fieldReportVO);
+ 			//now add all
+ 			for(Entry<String,Long> entry : labelAndPositionMap.entrySet()){
+ 				fieldReportVO = new FieldReportVO();
+ 				fieldReportVO.setLabel(entry.getKey());
+ 				fieldReportVO.setOrder(entry.getValue());
+ 				if(hourAndRegCountMap.get(entry.getValue()) != null){
+ 					fieldReportVO.setTodayTotalReg(hourAndRegCountMap.get(entry.getValue()));
+ 					totalRegToday = totalRegToday + hourAndRegCountMap.get(entry.getValue());
+ 				}
+ 				else{
+ 					fieldReportVO.setTodayTotalReg(0l);
+ 				}
+ 				fieldReportVOs.add(fieldReportVO);
+ 			}
+ 			if(fieldReportVOs != null && fieldReportVOs.size() > 0){
+				Collections.sort(fieldReportVOs, shortTimeAsc);
+			}
+ 			resultVO.setSubList3(fieldReportVOs);
+ 			//calculate total reg for cadreSurveyUser.
+ 			Long overAllRegCount = 0l;
+ 			List<Object[]> totalRegCount = tdpCadreUserHourRegInfoDAO.getTotalRegCount(cadreSurveyUserId);
+ 			if(totalRegCount != null && totalRegCount.size() > 0){
+ 				overAllRegCount = commonMethodsUtilService.getLongValueForObject(totalRegCount.get(0)[1]);
+ 			}
+ 			Calendar cal = Calendar.getInstance();
+ 			cal.setTime(today);
+ 			Long hr = (long) cal.get(Calendar.HOUR_OF_DAY); 
+ 			if(hr == 0l){  
+ 				hr = 23l;  
+ 			}else{
+ 				hr = hr-1l;
+ 			}
+ 			Long currentHourRegCnt = 0l;   
+ 			List<Object[]> totalRegForCurrentHour = tdpCadreUserHourRegInfoDAO.getTotalRegForAHour(cadreSurveyUserId,today,hr);
+ 			if(totalRegForCurrentHour != null && totalRegForCurrentHour.size() > 0){
+ 				for(Object[] param : totalRegForCurrentHour){
+ 					currentHourRegCnt = currentHourRegCnt + commonMethodsUtilService.getLongValueForObject(param[2]);
+ 				}
+ 			}
+ 			resultVO.setTotalRegCount(overAllRegCount);    
+ 			resultVO.setTodayRegCount(totalRegToday);
+ 			resultVO.setCurrentHourRegCount(currentHourRegCnt);
+ 		if(rtrnTrackingDtlsLst != null && rtrnTrackingDtlsLst.size() > 0){  
+ 			 Object[] cadreSurveyUserObj = rtrnTrackingDtlsLst.get(0);
+			 resultVO.setSurveyUserId(cadreSurveyUserId);
+			 resultVO.setUserName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[5]));
+			 resultVO.setDeviceUserName(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[8]));
+			 resultVO.setUserMobileNo(commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[9]));
+			 resultVO.setImagePathStr("http://www.mytdp.in/tab_user_images/"+commonMethodsUtilService.getStringValueForObject(cadreSurveyUserObj[10]));
+		 }
+ 		
+	 }catch(Exception e){
+		 LOG.error("Exception raised in getUserTrackingDtslBySurveyUserId() in CoreDashboardCadreRegistrationService service", e);	 
+	 }
+	 return resultVO;
+ }
+  
+ //srujana , srishailam 
+ public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long fieldUserId,Long constitunecyId)
+ {
 	  CadreBasicVO resultVO = new CadreBasicVO();
 	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	  Date toDate=null;
@@ -4519,6 +4646,8 @@ try{
 	 }
 	 return resultVO;
  }
+ 
+ 
  public void setDUserTrackingDtlsToList(List<Object[]> objList,List<CadreBasicVO> resultList,String type){
 	 try{
 		 if(objList != null && objList.size() > 0){
