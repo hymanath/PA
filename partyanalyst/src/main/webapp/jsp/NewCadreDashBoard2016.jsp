@@ -417,13 +417,21 @@ table.dataTable tr.odd {
 					<input type="radio" class="typeRd radiobuttonSelectedConsWise" id="totalconstituencyValue" name="compareD" value="total" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> OVER ALL</span>      
 					<button class="btn btn-success btn-xs" id="constExcelExpBtnId" attr_tab_user_type="Tab" >Export To Excel</button>
-					<span style="margin-left: 520px;">FILTER BY:<select id="districtId"></select></span>
 					<div class="btn-group pull-right">  
 						<button type="button" value="AP" class="btn btn-mini btn-success   aptsconsSele" name="distTargetBtn" id="apConsTargetComp" checked="checked">AP</inpbuttonut>
 						<button type="button" value="TS" class="btn btn-mini   aptsconsSele" name="distTargetBtn" id="tsConsTargetComp">TS</button>
 					</div>
 				</div>
-				<div id="constituencyWise2016Details"   class="m_top10"></div>
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="constituencyWise2016DetailsOvrVw" class="m_top10"></div>
+					</div>
+					
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="constituencyWise2016Details" class="m_top10"></div>
+					</div>
+				</div>
+				
 				<div id="leaderDataDiv1" class="scrollable_div" style="margin-top: -1px">
 					
 				</div>
@@ -488,7 +496,7 @@ var statusColorArr = [];
 var statusarr = ['VeryGood','Good','Ok','Poor','VeryPoor'];
 function setcolorsForStatus(){
 		statusColorArr = new Array();
-		var colorStatic = new Array('#008000','#90EE90','#FFFF00','#FFA500','#C43C35');
+		var colorStatic = new Array('#008000','#90EE90','#556B2F','#FFA500','#C43C35');
 		var colorCount = 0;
 		for(var i in statusarr){
 				var obj = {
@@ -1007,7 +1015,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 	
 	function get2016LocationWiseRegisteredCountsConstituencyWise(type,locationScope,locationType){
 		setcolorsForStatus();
-		getDistricts(locationType);
+		
 		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
@@ -1026,13 +1034,14 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
 				$("#constituencyWise2016Details").html('');
-			build2016LocationWiseRegisteredCountsConstituencyWise(result,type);
-					
+				vsResultGlob = result;
+				build2016LocationWiseRegisteredCountsConstituencyWise(result,type,"0",locationType);
 		 });
 	}
 	function get2016LocationWiseRegisteredCountsConstituencyWiseForOnChange(type,locationScope,locationType,districtId){
+		$("#subDistTrId"+districtId).show();
+		$("#subDistTrId"+districtId).html('<img src="images/icons/loading.gif" style="margin-left:500px;width:80px;height:80px;" id="parentDistrictWiseImgId"/>');
 		setcolorsForStatus();
-		$("#constituencyWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 				var type = type;
 				var locationScopeId = locationScope;
 				var locationType =locationType;
@@ -1049,11 +1058,14 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			  url: 'get2016LocationWiseRegisteredCountsForConstitunencyAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
-				$("#constituencyWise2016Details").html('');
-			build2016LocationWiseRegisteredCountsConstituencyWise(result,type);
-					
+				inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,districtId);		
 		 });
 	}
+	$(document).on("change","#districtId",function(){
+		var locationType = $(".aptsconsSele").val();
+		build2016LocationWiseRegisteredCountsConstituencyWise(vsResultGlob,$('input[name=compareD]:checked').val(),$(this).val(),locationType);
+	});
+	
 	function get2016LocationWiseRegisteredCountsDistrictWise(type,locationScope,locationType){
 		setcolorsForStatus();
 		$("#districtWise2016Details").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1095,7 +1107,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='<tr>';
 						str+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[0].veryGood+'</td>';
 						str+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[0].good+'</td>';
-						str+='<td><div class="cCodeDiv" style="background-color:yellow;"/>'+result[0].ok+'</td>';
+						str+='<td><div class="cCodeDiv" style="background-color:darkolivegreen;"/>'+result[0].ok+'</td>';
 						str+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[0].poor+'</td>';
 						str+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[0].veryPoor+'</td>';
 					str+='</tr>';
@@ -1114,17 +1126,23 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='<th>TARGET</th>';
 					str+='<th>RENEWAL</th>';
 					str+='<th>NEW</th>';
-					str+='<th>MAN PAWER</th>';  
-					str+='<th>TOTAL REGISTRATIONS</th>';
+					str+='<th>MAN POWER</th>';  
+					/* str+='<th>TOTAL REG</th>';
 					if(type == "total"){
-						str+='<th>TODAY REGISTRATIONS</th>';
+						str+='<th>TODAY REG</th>';
+					} */
+					if(type == "total"){
+						str+='<th>TOTAL REG.Count</th>';
+						str+='<th>TODAY REG.Count</th>';    
+					}else if(type == "today"){
+						str+='<th>TODAY REG.Count</th>';   
 					}
 					str+='<th>REG.%</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
-					str+='<tr>';
-					str+='<td>'+result[i].id+'</td>';
+					str+='<tr class="tejasClass">';
+					str+='<td><i class="glyphicon glyphicon-plus vsDistrictResultCls" style="cursor:pointer;" attr_distId="'+result[i].id+'"></i>'+result[i].id+'</td>';
 					str+='<td>'+result[i].name+'</td>';    
 					
 					str+='<td>'+result[i].targetCount+'</td>';
@@ -1175,6 +1193,11 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
 						str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
 					}
+					 
+					str+='</tr>';
+					str+='<span>';
+					str+='<tr class="subDistTrCls" id="subDistTrId'+result[i].id+'">';
+						
 					str+='</tr>';
 				}
 				str+='</tbody>';
@@ -1186,40 +1209,34 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		}
 		
 		$("#districtWise2016Details").html(str);
-		$("#districtWise2016DataTableId").dataTable({
+		/*$("#districtWise2016DataTableId").dataTable({
 			"aaSorting": [[ 4, "desc" ]], 
-			"iDisplayLength" : 10,
-			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]	
-		});
+			"iDisplayLength" : 15,
+			"aLengthMenu": [[15,20,50, 100, -1], [15,20,50, 100, "All"]]	
+		});*/
 	}
-	        
-	function build2016LocationWiseRegisteredCountsConstituencyWise(result,type){
-		var str='';
-		if(result !=null && result.length >0){
-			str+='<div class="table-responsive" style="margin-top:20px;">';
-			str+='<table class="table table-bordered" >';
-				str+='<thead>';
-					str+='<th>VERY GOOD</th>';
-					str+='<th>GOOD</th>';
-					str+='<th>OK</th>';
-					str+='<th>POOR</th>';
-					str+='<th>VERY POOR</th>';
-				str+='</thead>';
-			   str+='<tbody>';
-					str+='<tr>';
-						str+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[0].veryGood+'</td>';
-						str+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[0].good+'</td>';
-						str+='<td><div class="cCodeDiv" style="background-color:yellow;"/>'+result[0].ok+'</td>';
-						str+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[0].poor+'</td>';
-						str+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[0].veryPoor+'</td>';
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
-			if($(window).width > 768)
-			{
-				str+='<div class="table-responsive">';
-			}
-			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
+$(document).on("click",".vsDistrictResultCls",function(){
+	var districtId = $(this).attr("attr_distId");
+	$(".subDistTrCls").html("");
+	$("#subDistTrId"+districtId).html("");
+	var type = $('input[name=compareD]:checked').val();
+	var locationScope = 4;
+	var locationType = $(".aptsconsSele").val();
+	if($(this).hasClass("glyphicon-plus") == true)
+	{
+		$(".vsDistrictResultCls").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+		$(this).addClass("glyphicon-minus").removeClass("glyphicon-plus");
+		get2016LocationWiseRegisteredCountsConstituencyWiseForOnChange(type,locationScope,locationType,districtId);
+	}else{
+		$(".vsDistrictResultCls").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+	}
+});
+function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,matchedId){
+	var str='';
+	str+='<td colspan="9" style="background: silver">';
+	if(result !=null && result.length >0){
+		//str+='<span class="pull-right"><i class="glyphicon glyphicon-remove clearSubTr" attr_distId="'+matchedId+'" style="cursor:pointer;"></i></span>';
+		str+='<table class="table table-bordered " id="constituencyWise2016DataTableId1">';
 				str+='<thead>';
 					str+='<th>AC_No</th>';
 					str+='<th>DISTRICT</th>';
@@ -1229,85 +1246,93 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='<th>RENEWAL</th>';
 					str+='<th>NEW</th>';
 					str+='<th>MAN POWER</th>';    
-					str+='<th>TOTAL REGISTRATIONS</th>';
+					/* str+='<th>TOTAL REG</th>';
 					if(type == "total"){
-						str+='<th>TODAY REGISTRATIONS</th>';    
+						str+='<th>TODAY REG</th>';    
+					} */
+					if(type == "total"){
+						str+='<th>TOTAL REG.Count</th>';
+						str+='<th>TODAY REG.Count</th>';    
+					}else if(type == "today"){
+						str+='<th>TODAY REG.Count</th>';   
 					}
 					str+='<th>REG.%</th>';    
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
-					str+='<tr>';
-					str+='<td>'+result[i].no+'</td>';    
-					str+='<td>'+result[i].districtname+'</td>';
-					str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
-					
-					str+='<td>'+result[i].targetCount+'</td>';
-					if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
-						str+='<td> - </td>';
-					}else{
-						if(result[i].renewalCount == null || result[i].renewalCount == 0){
-						str+='<td>'+result[i].renewalCount+'</td>';
-						}else{
-							str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
-						}
-					}
-					
-					
-					if(result[i].newPerc == null || result[i].newPerc == 0){
-						str+='<td> - </td>';
-					}else{
-						if(result[i].newCount == null || result[i].newCount == 0){
-							str+='<td>'+result[i].newCount+'</td>';
-						}else{
-							str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
-						}
-					}
-					if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
-						str+='<td> - </td>';
-					}else{
-						str+='<td>'+result[i].mapPowerCount+'</td>';
-					}
-					
-					if(result[i].count2016 == null || result[i].count2016 == 0){
-						str+='<td> - </td>';
-					}else{
-						str+='<td>'+result[i].count2016+'</td>';
-					}
-					if(type == "total"){
-						if(result[i].count2016Today == null || result[i].count2016Today == 0){
+					 if(matchedId == result[i].value){
+						str+='<tr class="'+result[i].value+'cls distrctCls">';
+						str+='<td>'+result[i].no+'</td>';    
+						str+='<td attr_district_name ='+result[i].districtname+'>'+result[i].districtname+'</td>';
+						str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
+						
+						str+='<td>'+result[i].targetCount+'</td>';
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
 							str+='<td> - </td>';
 						}else{
-							str+='<td>'+result[i].count2016Today+'</td>';
+							if(result[i].renewalCount == null || result[i].renewalCount == 0){
+							str+='<td>'+result[i].renewalCount+'</td>';
+							}else{
+								str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+							}
 						}
-					}  
-					
-					if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
-						str+='<td> - </td>';
-					}else{
-						var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
-						str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
 						
+						
+						if(result[i].newPerc == null || result[i].newPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].newCount == null || result[i].newCount == 0){
+								str+='<td>'+result[i].newCount+'</td>';
+							}else{
+								str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+							}
+						}
+						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].mapPowerCount+'</td>';
+						}
+						
+						if(result[i].count2016 == null || result[i].count2016 == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016+'</td>';
+						}
+						if(type == "total"){
+							if(result[i].count2016Today == null || result[i].count2016Today == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[i].count2016Today+'</td>';
+							}
+						}  
+						
+						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+							str+='<td> - </td>';
+						}else{
+							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
+							
+						}
+						
+						str+='</tr>';
 					}
 					
-					str+='</tr>';
 				}
 				str+='</tbody>';
 			str+='</table>';
-			if($(window).width > 768)
-			{
-				str+='</div>';
-			}
-		}
-		
-		$("#constituencyWise2016Details").html(str);
-		$("#constituencyWise2016DataTableId").dataTable({
+	}else{
+		str+='No DATA AVAILABLE';
+	}
+	str+='</td>';
+	$("#subDistTrId"+matchedId).html(str);
+	$("#constituencyWise2016DataTableId1").dataTable({
 			"aaSorting": [[ 4, "desc" ]], 
 			"iDisplayLength" : 10,
 			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 		});
-	}
+}
 function getDistricts(locationType){
+	//$("#districtId").html("");  
      var jsObj=
 		{				
 				stateid:locationType			
@@ -1327,9 +1352,189 @@ function getDistricts(locationType){
 	   }
    });
   }
-$(document).on('change',"#districtId",function(){
-   get2016LocationWiseRegisteredCountsConstituencyWiseForOnChange("today",4,"AP",$(this).val());
-});
+	var vsResultGlob = "";
+	function build2016LocationWiseRegisteredCountsConstituencyWise(result,type,matchedId,locationType){
+		var str='';
+		var str1='';
+		if(result !=null && result.length >0){
+			str1+='<div class="table-responsive" style="margin-top:20px;">';
+			str1+='<table class="table table-bordered" >';
+				str1+='<thead>';
+					str1+='<th>VERY GOOD</th>';
+					str1+='<th>GOOD</th>';
+					str1+='<th>OK</th>';
+					str1+='<th>POOR</th>';
+					str1+='<th>VERY POOR</th>';
+				str1+='</thead>';
+			   str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<td ><div class="cCodeDiv" style="background-color:green;"/>'+result[0].veryGood+'</td>';
+						str1+='<td ><div class="cCodeDiv" style="background-color:lightgreen;"/>'+result[0].good+'</td>';
+						str1+='<td><div class="cCodeDiv" style="background-color:darkolivegreen;"/>'+result[0].ok+'</td>';
+						str1+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[0].poor+'</td>';
+						str1+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[0].veryPoor+'</td>';
+					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+			$("#constituencyWise2016DetailsOvrVw").html(str1)
+			if($(window).width > 768)
+			{
+				str+='<div class="table-responsive">';
+			}
+			
+			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
+				str+='<thead>';
+					str+='<th>AC_No</th>';
+					str+='<th>DISTRICT</th>';
+					str+='<th>CONSTITUENCY</th>';  
+					
+					str+='<th>TARGET</th>';
+					str+='<th>RENEWAL</th>';
+					str+='<th>NEW</th>';
+					str+='<th>MAN POWER</th>';    
+					if(type == "total"){
+						str+='<th>TOTAL REG.Count</th>';
+						str+='<th>TODAY REG.Count</th>';    
+					}else if(type == "today"){
+						str+='<th>TODAY REG.Count</th>';   
+					}
+					str+='<th>REG.%</th>';    
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					 if(matchedId == 0){
+						str+='<tr class="'+result[i].value+'cls distrctCls">';
+						str+='<td>'+result[i].no+'</td>';    
+						str+='<td attr_district_name ='+result[i].districtname+'>'+result[i].districtname+'</td>';
+						str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
+						
+						str+='<td>'+result[i].targetCount+'</td>';
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].renewalCount == null || result[i].renewalCount == 0){
+							str+='<td>'+result[i].renewalCount+'</td>';
+							}else{
+								str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+							}
+						}
+						
+						
+						if(result[i].newPerc == null || result[i].newPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].newCount == null || result[i].newCount == 0){
+								str+='<td>'+result[i].newCount+'</td>';
+							}else{
+								str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+							}
+						}
+						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].mapPowerCount+'</td>';
+						}
+						
+						if(result[i].count2016 == null || result[i].count2016 == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016+'</td>';
+						}
+						if(type == "total"){
+							if(result[i].count2016Today == null || result[i].count2016Today == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[i].count2016Today+'</td>';
+							}
+						}  
+						
+						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+							str+='<td> - </td>';
+						}else{
+							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
+							
+						}
+						
+						str+='</tr>';
+					}else if(matchedId == result[i].value){
+						str+='<tr class="'+result[i].value+'cls distrctCls">';
+						str+='<td>'+result[i].no+'</td>';    
+						str+='<td attr_district_name ='+result[i].districtname+'>'+result[i].districtname+'</td>';
+						str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
+						
+						str+='<td>'+result[i].targetCount+'</td>';
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].renewalCount == null || result[i].renewalCount == 0){
+							str+='<td>'+result[i].renewalCount+'</td>';
+							}else{
+								str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+							}
+						}
+						
+						
+						if(result[i].newPerc == null || result[i].newPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].newCount == null || result[i].newCount == 0){
+								str+='<td>'+result[i].newCount+'</td>';
+							}else{
+								str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+							}
+						}
+						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].mapPowerCount+'</td>';
+						}
+						
+						if(result[i].count2016 == null || result[i].count2016 == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016+'</td>';
+						}
+						if(type == "total"){
+							if(result[i].count2016Today == null || result[i].count2016Today == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[i].count2016Today+'</td>';
+							}
+						}  
+						
+						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+							str+='<td> - </td>';
+						}else{
+							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
+							
+						}
+						
+						str+='</tr>';
+					}
+					
+				}
+				str+='</tbody>';
+			str+='</table>';
+			if($(window).width > 768)
+			{
+				str+='</div>';
+			}
+		}
+		
+		$("#constituencyWise2016Details").html(str);
+		$("#constituencyWise2016DataTableId").dataTable({
+			"aaSorting": [[ 4, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
+		});
+		$('#constituencyWise2016DataTableId_length').css("margin-bottom","10px");
+		$('#constituencyWise2016DataTableId_length').append('<span class="filterCls" style="margin-left: 400px;"><label>District Filter : </label><select id="districtId" class="form-control" style="width: 180px;"></select></span>');
+		
+		getDistricts(locationType);
+		
+	}
 $(document).on('click','.scopeRadioCls',function(){
 		var selectionType=$("input:radio[name=selectionType]:checked").val();
 		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1467,6 +1672,9 @@ $(document).on('click','.scopeRadioCls',function(){
 		$("#kupamRegDtlsId").html(str);  
 		$("#regCadreCountTableId").dataTable();
 	}
+/* $(document).on("click",".clearSubTr",function(){
+	$(".subDistTrCls").html("");
+}); */
 </script>
 <script>
 	$(document).on("click","#constExcelExpBtnId",function(){
