@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.model.TdpCadreDataVerification;
 
 public interface ITdpCadreDataVerificationDAO extends GenericDao<TdpCadreDataVerification, Long>{
 	public Long getActiveTeamMemberCnt(Long stateId);
+	public List<Object[]> getDataVerifiedDetailsOverView(Date fromDate,Date toDate,String locationType,Long locationVal,String type);
 	public Long getTotalRegistered(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate);
 	public Long getVerifiedPassedCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate);
 	public Long getVerifiedRejectedCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate);

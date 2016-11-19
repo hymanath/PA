@@ -935,4 +935,51 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			   query.setParameter("locationScopeId", 4l);
 		   return query.list();
 	}
+	 	
+	 public List<Object[]> getLocationWiseDetailedOverViewDetails(Date fromDate,Date toDate,String locationType,Long locationVal){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select");
+		 if(locationType != null && locationType.equalsIgnoreCase("district"))
+			sb.append(" d.districtId,d.districtName,");
+		 else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+			sb.append(" c.constituencyId,c.name,");
+		 
+		 sb.append(" sum(model.cadre2016)" +
+		 			" from TdpCadreDateWiseInfo model");
+		 if(locationType != null && locationType.equalsIgnoreCase("district")){
+			 sb.append(" ,District d where model.locationScopeId = 3" +
+			 		" and model.locationValue = d.districtId");
+		 }
+		 else if(locationType != null && locationType.equalsIgnoreCase("constituency")){
+			sb.append(",Constituency c where model.locationScopeId = 4" +
+					" and model.locationValue = c.constituencyId");
+		 }
+		 if(fromDate != null && toDate != null){
+			 sb.append(" and date(model.surveyDate) between :fromDate and :toDate");
+		 }
+		 if(locationType != null && locationType.equalsIgnoreCase("district")){
+			 if(locationVal != null && locationVal.longValue() == 1l){
+				 sb.append(" and d.districtId between 11 and 23");
+			 }
+			 else if(locationVal != null && locationVal.longValue() == 36l){
+				 sb.append(" and d.districtId between 1 and 10");
+			 }
+		 }
+		 else if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal != null && locationVal.longValue() > 0l)
+			 sb.append(" and c.district.districtId = :locationVal");
+		 
+		 if(locationType != null && locationType.equalsIgnoreCase("district"))
+			sb.append(" group by d.districtId order by d.districtName");
+		 else if(locationType != null && locationType.equalsIgnoreCase("constituency"))
+			sb.append(" group by c.constituencyId order by c.name");
+		 
+		 Query query = getSession().createQuery(sb.toString());
+		 if(locationType != null && locationType.equalsIgnoreCase("constituency") && locationVal != null && locationVal.longValue() > 0l)
+			 query.setParameter("locationVal", locationVal);
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate", fromDate);
+			 query.setDate("toDate", toDate);
+		 }
+		 return query.list();
+	 }
 }
