@@ -3083,10 +3083,12 @@ public String getUserTrackingDtslBySurveyUserId(){
 	try {
 		LOG.info("Entered into getUserTrackingDtslBySurveyUserId()  of CoreDashboardAction");
 		jObj = new JSONObject(getTask());
+		Long constId = jObj.getLong("constId");
+		Long fieldUserId = jObj.getLong("fieldUserId");
 		Long surveyUserId = jObj.getLong("surveyUserId");
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
-		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate);
+		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate,fieldUserId,constId);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getUserTrackingDtslBySurveyUserId() method of CoreDashBoard", e);
 	}
