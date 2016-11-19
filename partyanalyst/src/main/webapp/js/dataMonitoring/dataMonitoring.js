@@ -18,7 +18,7 @@ function getDistricts(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){
-		$("#districtId").append('<option value="0">All</option>');
+		$("#districtId").append('<option value="0">Select District</option>');
 		if(result != null && result.length > 0){
 			for(var i in result){
 				$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -264,13 +264,13 @@ function getUsers(constituencyId){
 	function buildTotalRegCdrVendorAndTabUserWise(result,startDate,endDate){
 		
 		var str = '';
-		str+='<h4 class="panel-title text-muted">Logged In FieldUsers</h4>';
+		str+='<h4 class="panel-title text-muted">User Wise Data Verification Details</h4>';
 			str+='<div class="table-responsive">';
 				str+='<table class="table b_1 m_top10" id="tabWiseDtlsId">';
 					str+='<thead>';
-						str+='<th>SURVEY USER ID</th>';
-						str+='<th>FIELD STAFF NAME</th>';
-						str+='<th>CONTACT NO</th>';
+						str+='<th>USER ID</th>';
+						str+='<th>TAB USER NAME</th>';
+						str+='<th>MOBILE NO</th>';
 						str+='<th>COMPLETED REGISTRATIONS</th>';
 						str+='<th>VERIFIED - PASSED</th>';
 						str+='<th>VERIFIED - JUNK/REJECTED</th>';
@@ -1024,7 +1024,13 @@ function getUsers(constituencyId){
 
 	
 function getOverAllVerificationCount(){
+	if(!validations())
+		{
+			return;
+		}	
+	
 	  $("#verifiactionDivId").show();
+	  
 		var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
 		var fromDate = dateArr[0].trim();
@@ -1063,7 +1069,11 @@ $(document).on("click","#getRegStatusId",function(){
 });
 	
 function getCadreVerificationDetails(){
-	//$("#detailsDivId").show();
+	if(!validations())
+		{
+			return;
+		}
+	
 	var dateStr = $(".datePicker").val();
 		var dateArr = dateStr.split("-");
 		var fromDate = dateArr[0].trim();
@@ -1087,8 +1097,19 @@ function getCadreVerificationDetails(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			
 				buildTotalRegCdrVendorAndTabUserWise(result,fromDate,toDate);
 		});
 }	
+
+function validations(){
+	var districtId = $("#districtId").val();
+	if(districtId == 0){
+		$("#errMsgDivId").html("<span style='color:red;'>Please Select District</span>");
+		return false;
+	}else{
+		$("#errMsgDivId").html("");
+	}
+	return true;
+}
+
 	
