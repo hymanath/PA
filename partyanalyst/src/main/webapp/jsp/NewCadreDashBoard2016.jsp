@@ -437,6 +437,7 @@ table.dataTable tr.odd {
 				</div>
 			</div>
 		</div>
+		<input type="hidden" value="" id="hideConstId"/>  
 		<!----New code for constituency and district wise End ----->
  <div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
   <div class="modal-dialog modal-lg" role="document" style="width:85%">
@@ -449,7 +450,7 @@ table.dataTable tr.odd {
         <div class="row webModal">
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 					<label class="radio-inline">
-						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="Total" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Over All</h5>
+						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio1" value="Total" style="margin-top: 0px;"><h5 style="margin-top:-1px">Over All</h5>
 					</label>
 					<label class="radio-inline">
 						<input type="radio" class="scopeRadioCls" name="scopeType" id="inlineRadio2" value="Today" style="margin-top: 0px;"><h5 style="margin-top:-1px">Today</h5>      
@@ -460,7 +461,7 @@ table.dataTable tr.odd {
 						<input type="radio" class="locationRadioCls" name="selectionType" id="boothRadio1" value="booth" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Booth Wise</h5>
 					</label>
 					<label class="radio-inline">
-						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5 style="margin-top:-1px">Panchayat Wise</h5>
+						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio" value="panchayat" style="margin-top: 0px;"><h5 style="margin-top:-1px">Panchayat Wise</h5>
 					</label>
 					<label class="radio-inline">
 						<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5 style="margin-top:-1px">Mandal Wise</h5>
@@ -1574,15 +1575,22 @@ function getDistricts(locationType){
 		
 		$('#constituencyWise2016DataTableId_length').append('<span class="filterCls" style="margin-left: 400px;"><label>District Filter : </label><select id="districtId" class="form-control" style="width: 180px;"></select></span>');		
 		getDistricts(locationType);		
-	}	
-$(document).on('click','.scopeRadioCls',function(){
+	}
+	$(document).on('click','.locationRadioCls',function(){
+		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var selectionType=$("input:radio[name=selectionType]:checked").val();
+		var scopeType=$("input:radio[name=scopeType]:checked").val();
+		var constituencyId = $("#hideConstId").val();
+		getRegistrationCountDtls(constituencyId,selectionType,scopeType);  
+	});      
+	$(document).on('click','.scopeRadioCls',function(){
 		var selectionType=$("input:radio[name=selectionType]:checked").val();
 		$("#kupamRegDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var scopeType=$("input:radio[name=scopeType]:checked").val();
 		var constituencyId = $("#hideConstId").val();
 		getRegistrationCountDtls(constituencyId,selectionType,scopeType);    
 	});
-	$(document).on("click",".getDtlsCls",function(){         
+	$(document).on("click",".getDtlsCls",function(){              
 		var constName = $(this).attr("attr_const_name");
 		$("#myModalLabel1").html(constName+" CONSTITUENCY DETAILED REPORT") 
 		$( "#boothRadio1" ).prop( "checked", true );         
@@ -1592,8 +1600,8 @@ $(document).on('click','.scopeRadioCls',function(){
 		$("#hideConstId").attr("value",constituencyId);
 		var selectionType = "booth";    
 		var scopeType = $("input:radio[name=compareC]:checked").val();
-		if(scopeType == "Today"){
-			$( "#inlineRadio2" ).prop( "checked", true );
+		if(scopeType == "today"){  
+			$( "#inlineRadio2" ).prop( "checked", true );  
 		}else{
 			$( "#inlineRadio1" ).prop( "checked", true );          
 			         
