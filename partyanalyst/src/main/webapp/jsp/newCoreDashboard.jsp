@@ -3286,7 +3286,7 @@
 		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
         /* Tours Default Call */
         getToursBasicOverviewCountDetails();     
-		//getDesigWiseMemberDtls();  
+		getDesigWiseMemberDtls();  
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
