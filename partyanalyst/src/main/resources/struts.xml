@@ -231,6 +231,7 @@
 			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
 			<result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
+			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5687,6 +5688,7 @@
       <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>    
       <result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>   
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
+      <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -14377,6 +14379,8 @@
 	</action>
 	<action name="updateToursDetailsAction" class="toursAction">
 		<result name="success">/jsp/updateToursDetails.jsp</result>
+		<result name="error" type="redirect">login.action</result>                 
+		<result name="input">/jsp/loginForm.jsp?src=updateToursDetailsAction</result>
 	</action> 
 	<action name="getDesigationListAction" class="toursAction"  method="getDesigationList">
 			<result type="json" name="success">
