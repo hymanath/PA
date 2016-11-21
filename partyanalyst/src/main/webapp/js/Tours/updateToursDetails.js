@@ -507,7 +507,7 @@ $("#toursDateRangePicker").daterangepicker({
 			toDateStr = datesArr[1]; 
 		}
 		getDesignationDtls(fromDateStr,toDateStr,desigId);
-		getMemDtls(fromDateStr,toDateStr,desigId);
+		getMemDtls(fromDateStr,toDateStr,desigId,desigName);
 		
 	});
 	//getDesignationDtls();
@@ -561,7 +561,7 @@ $("#toursDateRangePicker").daterangepicker({
 		$("#desigDtlsId").html(str);
 	}
 	//getMemDtls();
-	function getMemDtls(fromDateStr,toDateStr,desigId){   
+	function getMemDtls(fromDateStr,toDateStr,desigId,desigName){   
 		var jsObj = { 
 			 desigId : desigId,
 			 startDateStr : fromDateStr,
@@ -575,15 +575,15 @@ $("#toursDateRangePicker").daterangepicker({
 		}).done(function(result){
 			$("#memDtlsProcessImgId").hide();  
 			if(result != null){
-				buildMemDtls(result);               
+				buildMemDtls(result,desigName);               
 			}
 		});
 	}
-	function buildMemDtls(result){
+	function buildMemDtls(result,desigName){
 		var str = '';
 		str+='<table class="table table-condensed tableModal" id="memTableId">';
 			str+='<thead class="text-capital">';
-				str+='<th>general secretary name</th>';
+				str+='<th>'+desigName+'</th>';      
 				str+='<th>Year</th>';
 				str+='<th>Month</th>';
 				str+='<th>total tours submited</th>';
