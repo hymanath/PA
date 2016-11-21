@@ -17,8 +17,12 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
@@ -29,8 +33,11 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
+import com.itgrids.partyanalyst.model.CadreSurveyUser;
+import com.itgrids.partyanalyst.model.TabLogInAuth;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CoreDashboardToursService implements ICoreDashboardToursService {
@@ -45,15 +52,29 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	private IDistrictDAO districtDAO;
 	private ISelfAppraisalCandidateTourLocationDAO selfAppraisalCandidateTourLocationDAO;
 	private ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO;
-	private CommonMethodsUtilService commonMethodsUtilService ;  
+	private CommonMethodsUtilService commonMethodsUtilService ;
+	private TransactionTemplate transactionTemplate = null;
+	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private ITabLogInAuthDAO tabLogInAuthDAO;
-     
+	 
 
 	public ITabLogInAuthDAO getTabLogInAuthDAO() {
 		return tabLogInAuthDAO;
 	}
 	public void setTabLogInAuthDAO(ITabLogInAuthDAO tabLogInAuthDAO) {
 		this.tabLogInAuthDAO = tabLogInAuthDAO;
+	}
+	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
+		return cadreSurveyUserDAO;
+	}
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 	public void setSelfAppraisalCandidateDetailsDAO(
 			ISelfAppraisalCandidateDetailsDAO selfAppraisalCandidateDetailsDAO) {
@@ -1574,6 +1595,36 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   e.printStackTrace();
 		   LOG.error("Error occured at getSubLevelDtls() in CoreDashboardToursService ",e);	
 	   }
+   }
+   
+   public String savingTabUserDetails(final Long loginUserId,final String userName,final String imeiNo){
+	 String status = null;
+	   try {
+		   status = (String)transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus arg0) {
+				CadreSurveyUser cadreSurveyUser = cadreSurveyUserDAO.getCadreSurveyUserByUsername(userName);
+				
+				TabLogInAuth tabLogInAuth = new TabLogInAuth();
+				tabLogInAuth.setCadreSurveyUserId(cadreSurveyUser.getCadreSurveyUserId());
+				tabLogInAuth.setImeiNo(imeiNo);
+				tabLogInAuth.setIsDeleted("N");
+				tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				tabLogInAuth.setVersion("2");
+				tabLogInAuth.setStatus("success");
+				tabLogInAuth.setUpdatedById(loginUserId);
+				tabLogInAuth = tabLogInAuthDAO.save(tabLogInAuth);
+				
+				if(tabLogInAuth != null)
+					return "success";
+				else
+					return "failure";
+			}
+		}); 
+	} catch (Exception e) {
+		status = "failure";
+		LOG.error("Error occured at savingTabUserDetails() in CoreDashboardToursService ",e);
+	}
+	   return status;
    }
    public List<TabLoginAuthVO> getTabLoginDetails(String cadreSurveyUserName)
    {

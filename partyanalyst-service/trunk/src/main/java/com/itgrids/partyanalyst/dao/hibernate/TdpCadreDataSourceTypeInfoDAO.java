@@ -120,11 +120,12 @@ public class TdpCadreDataSourceTypeInfoDAO extends GenericDaoHibernate<TdpCadreD
 	 }
 	 
 	 public List<Object[]> getDataSourceTypeWiseCountsByType(String type){
-		 Query query = getSession().createQuery("select model.dataSourceType,model.cadre2016," +
-		 								" model.newCadre,model.newCadrePercent," +
-		 								" model.renewalCadre,model.renewalCadrePercent" +
+		 Query query = getSession().createQuery("select model.dataSourceType,sum(model.cadre2016)," +
+		 								" sum(model.newCadre),model.newCadrePercent," +
+		 								" sum(model.renewalCadre),model.renewalCadrePercent" +
 		 								" from TdpCadreDataSourceTypeInfo model" +
-		 								" where model.type = :type");
+		 								" where model.type = :type" +
+		 								" group by model.dataSourceType");
 		 query.setParameter("type", type);
 		 return query.list();
 	 }
