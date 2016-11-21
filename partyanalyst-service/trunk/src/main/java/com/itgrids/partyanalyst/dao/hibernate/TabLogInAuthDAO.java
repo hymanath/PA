@@ -113,4 +113,16 @@ public class TabLogInAuthDAO extends GenericDaoHibernate<TabLogInAuth,Long> impl
 				"  model.imeiNo from TabLogInAuth model where model.isDeleted ='N' and (model.imeiNo like '%"+imei+"%' or model.imeiNo like '%"+imei+"%') ");
 		return query.list();
 	}
+	public List<Object[]> getTabLoginDetails(String cadreSurveyUserName){
+		Query query = getSession().createQuery("select model.imeiNo, " +
+				" model.insertedTime,model.status,model.isDeleted from TabLogInAuth model where model.cadreSurveyUser.userName=:cadreSurveyUserName and model.isDeleted ='N'");
+		query.setParameter("cadreSurveyUserName", cadreSurveyUserName);
+		return query.list();		
+	}
+	public List<Object[]> getTabUserDetails(String imeiNo){
+		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId,model.cadreSurveyUser.userName, " +
+				" model.insertedTime,model.status,model.isDeleted from TabLogInAuth model where model.imeiNo=:imeiNo and model.isDeleted ='N'");
+		query.setParameter("imeiNo", imeiNo);
+		return query.list();		
+	}
 }
