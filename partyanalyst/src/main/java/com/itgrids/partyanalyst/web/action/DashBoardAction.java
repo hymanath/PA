@@ -566,11 +566,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			Long userId = user.getRegistrationID();
-			/*if(entitlements.contains("CADRE_WEB_MONITORING_DASHBOARD_ENTITLEMENT".trim())){
-				return "cadreWebMonitoring";   
-			}*/
-			if(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD_REDIRECT"))
-			{
+			if(entitlements.contains("TOUR_USER_ENTITLEMENT")){
+				return "tourUserEntitlement";      
+			}
+			if(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD_REDIRECT")){
 				return "cadre2016dashboard";
 			}
 			if(entitlements.contains("MEMBERSHIP_DRIVE_CONSTITUENCY_OVERVIEW_ENTITLEMENT".trim())){
@@ -846,7 +845,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			return "callCenterTrainingAdmin";
 		}	
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TRAINING_CAMP_CALLER")){
-			return "callCenterTrainingAgent";
+			return "callCenterTrainingAgent";  
 		}
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){
 			return "trainingCampFeedbackUpdate";
