@@ -187,11 +187,11 @@
                         	<div>
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab casteWiseDetaislCls" role="tablist">
-                               <li role="presentation" class="active selectCls"  id="allCasteId"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="2" class="castePositionCls" role="tab" data-toggle="tab">Overall</a></li>
-                                <li role="presentation" class="selectCls" id="stateCasteId"><a href="#state" aria-controls="state" attr_href_id="state" role="tab" attr_level_value="2" class="castePositionCls" data-toggle="tab">State</a></li>
-                                <li role="presentation"  class="selectCls"  id="districtCasteId"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab">district</a></li>
-                                <li role="presentation"  class="selectCls"  id="assemblyCasteId"><a href="#constituency" aria-controls="constituency" attr_href_id="constituency" attr_level_value="4" class="castePositionCls" role="tab" data-toggle="tab">constituency</a></li>
-								<li role="presentation"  class="selectCls"  id="mandalCasteId"><a href="#mndlmncpltyCrprtn" aria-controls="mndlmncpltyCrprtn" attr_href_id="mndlmncpltyCrprtn" attr_level_value="5" class="castePositionCls" role="tab" data-toggle="tab">Mandal/Muncipality/Corporation</a></li>
+                               <li role="presentation" class="active selectCls"  id="allCasteId"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="2" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="OVERALL">Overall</a></li>
+                                <li role="presentation" class="selectCls" id="stateCasteId"><a href="#state" aria-controls="state" attr_href_id="state" role="tab" attr_level_value="2" class="castePositionCls" data-toggle="tab" attr_heading="STATE">State</a></li>
+                                <li role="presentation"  class="selectCls"  id="districtCasteId"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="DISTRICT">district</a></li>
+                                <li role="presentation"  class="selectCls"  id="assemblyCasteId"><a href="#constituency" aria-controls="constituency" attr_href_id="constituency" attr_level_value="4" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="CONSTITUENCY">constituency</a></li>
+								<li role="presentation"  class="selectCls"  id="mandalCasteId"><a href="#mndlmncpltyCrprtn" aria-controls="mndlmncpltyCrprtn" attr_href_id="mndlmncpltyCrprtn" attr_level_value="5" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="MANDAL/MUNCIPALITY/CORPORATION">Mandal/Muncipality/Corporation</a></li>
                               </ul>
                               <!-- Tab panes -->
                               <div class="tab-content navTabsSelectionBody">
@@ -210,12 +210,12 @@
                         	<div>
 
                               <!-- Nav tabs -->
-                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab" role="tablist">
-                                <li role="presentation" class="active castGrupCls" id="allCasteGrpId" ><a href="#overallCasteGroup" attr_href_id="overallCasteGroup" aria-controls="overallCasteGroup" attr_level_value="2" class="casteGroupCls" role="tab" data-toggle="tab">Overall</a></li>
-                                <li role="presentation" class="castGrupCls" id="stateCasteGrpId" ><a href="#stateCasteGroup" aria-controls="stateCasteGroup" attr_href_id="stateCasteGroup" role="tab" attr_level_value="2" class="casteGroupCls" data-toggle="tab">State</a></li>
-                                <li role="presentation" class="castGrupCls" id="districtCasteGrpId" ><a href="#districtCasteGroup" aria-controls="districtCasteGroup" attr_href_id="districtCasteGroup" attr_level_value="3" class="casteGroupCls" role="tab" data-toggle="tab">district</a></li>
-                                <li role="presentation"  class="castGrupCls" id="assemblyCasteGrpId" ><a href="#constituencyCasteGroup" aria-controls="constituencyCasteGroup" attr_href_id="constituencyCasteGroup" attr_level_value="4" class="casteGroupCls" role="tab" data-toggle="tab">constituency</a></li>
-								<li role="presentation"  class="castGrupCls" id="mandalCasteGrpId" ><a href="#mndlmncpltyCrprtnCasteGroup" aria-controls="mndlmncpltyCrprtnCasteGroup" attr_href_id="mndlmncpltyCrprtnCasteGroup" attr_level_value="5" class="casteGroupCls" role="tab" data-toggle="tab">Mandal/Muncipality/Corporation</a></li>
+                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab casteCategryWiseDetaislCls" role="tablist">
+                                <li role="presentation" class="active castGrupCls" id="allCasteGrpId" ><a href="#overallCasteGroup" attr_href_id="overallCasteGroup" aria-controls="overallCasteGroup" attr_level_value="2" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="OVERALL">Overall</a></li>
+                                <li role="presentation" class="castGrupCls" id="stateCasteGrpId" ><a href="#stateCasteGroup" aria-controls="stateCasteGroup" attr_href_id="stateCasteGroup" role="tab" attr_level_value="2" class="casteGroupCls" data-toggle="tab" attr_heading="STATE">State</a></li>
+                                <li role="presentation" class="castGrupCls" id="districtCasteGrpId" ><a href="#districtCasteGroup" aria-controls="districtCasteGroup" attr_href_id="districtCasteGroup" attr_level_value="3" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="DISTRICT">district</a></li>
+                                <li role="presentation"  class="castGrupCls" id="assemblyCasteGrpId" ><a href="#constituencyCasteGroup" aria-controls="constituencyCasteGroup" attr_href_id="constituencyCasteGroup" attr_level_value="4" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="CONSTITUENCY">constituency</a></li>
+								<li role="presentation"  class="castGrupCls" id="mandalCasteGrpId" ><a href="#mndlmncpltyCrprtnCasteGroup" aria-controls="mndlmncpltyCrprtnCasteGroup" attr_href_id="mndlmncpltyCrprtnCasteGroup" attr_level_value="5" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="MANDAL/MUNCIPALITY/CORPORATION">Mandal/Muncipality/Corporation</a></li>
                               </ul>
                               <!-- Tab panes -->
                               <div class="tab-content navTabsSelectionBody">
@@ -371,12 +371,13 @@
 	  <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
 		<div class="modal-content">
 		  <div class="modal-header">
+		  <div class="modelHeading"></div>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		  </div>
 		  <div class="modal-body">
-			<table class="table table-condensed " id="nominatedPostCandidateDetailsId">
+			<div class="table table-condensed " id="nominatedPostCandidateDetailsId">
 	
-			</table>
+			</div>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
