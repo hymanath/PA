@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.apache.xmlbeans.impl.regex.REUtil;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -25,6 +24,7 @@ import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -59,7 +59,16 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private IPanchayatDAO panchayatDAO;
 	private 
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
+	public ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 
+	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
+		return tdpCadreCandidateDAO;
+	}
+
+
+	public void setTdpCadreCandidateDAO(ITdpCadreCandidateDAO tdpCadreCandidateDAO) {
+		this.tdpCadreCandidateDAO = tdpCadreCandidateDAO;
+	}
 	
 	public INominatedPostAgeRangeDAO getNominatedPostAgeRangeDAO() {
 		return nominatedPostAgeRangeDAO;
@@ -1051,10 +1060,12 @@ public CastePositionVO setApplicationCntDataToVO(List<Object[]> rtrnApplicationD
 	return resultVO;
 }
 
-public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId){
+public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId,Long casteCategoryId){
 	List<IdNameVO>  finalList = new ArrayList<IdNameVO>();
+	List<Long> cadreIds = new ArrayList<Long>();
+	Map<Long,IdNameVO> cadreMap = new HashMap<Long,IdNameVO>();
 	try{
-		List<Object[]> candidateLst = nominatedPostDAO.getStatusWiseNominatedProfileDetils(stateId,casteStateId,positionId,postStatusIds,boardLevelId);
+		List<Object[]> candidateLst = nominatedPostDAO.getStatusWiseNominatedProfileDetils(stateId,casteStateId,positionId,postStatusIds,boardLevelId,casteCategoryId);
 		if(candidateLst !=null && !candidateLst.isEmpty()){
 			for(Object[] param : candidateLst){
 				IdNameVO idNameVO = new IdNameVO();
@@ -1068,9 +1079,27 @@ public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteSt
 				idNameVO.setDistrictName(param[7] != null ? param[7].toString() :"");
 				idNameVO.setConstitunecyId(param[8] != null ? (Long)param[8] : 0l);
 				idNameVO.setConstituencyName(param[9] != null ? param[9].toString() : "");
+				idNameVO.setCadreId(param[10] != null ? (Long)param[10] : 0l);
+				if(idNameVO.getCadreId() != null && idNameVO.getCadreId().longValue() > 0l){
+					cadreIds.add(idNameVO.getCadreId());
+					cadreMap.put(idNameVO.getCadreId(), idNameVO);
+				}
 				finalList.add(idNameVO);
 			}
 		}
+		 
+		List<Object[]> pubRepDetails = null;
+		if(cadreIds != null && cadreIds.size() >0 )
+			pubRepDetails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(cadreIds);
+		
+		if(pubRepDetails !=null && !pubRepDetails.isEmpty()){
+			for(Object[] param : pubRepDetails){
+					IdNameVO vo = cadreMap.get(param[0]);
+					vo.setCadreUserId(param[1] != null ? (Long)param[1] : 0l);//public Rep Id
+					vo.setPublicRepr(param[2] != null ? param[2].toString() : "");//
+			  }
+			}
+		
 	}catch(Exception e){
 		LOG.error("Exception occured into NominatedPostMainDashboardervice",e);
 	}
