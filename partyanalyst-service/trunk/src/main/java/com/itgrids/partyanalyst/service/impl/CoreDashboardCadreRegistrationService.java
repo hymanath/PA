@@ -2105,7 +2105,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 	* @Description :This Service Method is used to get selected child member and for userType.. 
 	* @since 14-Oct-2016
 	*/
-	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr){
+	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr, String sortingType){
 		try{  
 			Date toDay = new Date();
 			List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0); 
@@ -2135,7 +2135,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 			add(195l);add(196l);add(327l);add(328l);add(329l);add(330l);add(331l);}};
 			  
 			Set<Long> conIdSet = locationLevelIdsMap.get(5l);
-			if(conIdSet != null){
+			if(conIdSet != null){  
 				conIdSet.addAll(tempCostIds);
 			}else{
 				locationLevelIdsMap.put(5l, tempCostIds);      
@@ -2356,9 +2356,16 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				resultList.addAll(childActivityMembersMap.values());
 			}
-			if(resultList != null && resultList.size() > 0){
-				Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
+			if(sortingType.equalsIgnoreCase("TargetWise")){
+				if(resultList != null && resultList.size() > 0){
+					Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
+				}
+			}else{
+				if(resultList != null && resultList.size() > 0){
+					Collections.sort(resultList, cadreMemberEligibleAttendedPercDesc);
+				}  
 			}
+			
 			return resultList;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2366,6 +2373,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 		}
 		return null;
 	}
+	
 	public static Comparator<UserTypeVO> cadreMemberEligibleAttendedPercDesc = new Comparator<UserTypeVO>() {
 		public int compare(UserTypeVO member2, UserTypeVO member1) {
 
