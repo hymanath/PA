@@ -107,8 +107,8 @@ $(document).on("click",".casteGroupCls",function(){
 			 if(positionList != null && positionList.length > 0){
 				str+='<tr>';
 				str+='<td id="'+result[i].casteId+'">'+result[i].casteName+'</td>';
-				 for(var j in result[i].positionList){
-					str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;">'+positionList[j].count+'</td>'; 
+				for(var j in result[i].positionList){
+					str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;" attr_pstn_name='+result[i].positionList[j].positionName+' attr_caste_state_name =\''+result[i].casteName+'\'>'+positionList[j].count+'</td>'; 
 				 }
 				str+='</tr>';
 			 }
@@ -178,7 +178,7 @@ $(document).on("click",".casteGroupCls",function(){
 				str+='<tr>';
 				str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
 				 for(var j in result[i].casteList){
-					str+='<td>'+casteList[j].count+'</td>'; 
+					str+='<td attr_pstn_id='+result[i].positionId+'  attr_caste_category_id ='+casteList[j].casteId+' class="casteCategryPstnCls" style ="cursor:pointer;" attr_pstn_name='+result[i].positionName+' attr_caste_category_name =\''+casteList[j].casteName+'\'>'+casteList[j].count+'</td>'; 
 				 }
 				str+='</tr>';
 			 }
@@ -1551,31 +1551,68 @@ function buildCasteWiseCountsChart(result){
 }
 $(document).on("click",".castePstnCls",function(){
 var positionId = $(this).attr("attr_pstn_id");
+var positionName = $(this).attr("attr_pstn_name").toUpperCase();
 var casteStateId = $(this).attr("attr_caste_state_id");
+var casteStateNAme = $(this).attr("attr_caste_state_name").toUpperCase();
+var casteCategoryId = 0;
 var boardLevelId;
+var boardLevel;
 
 $(".casteWiseDetaislCls li").each(function(){
 	if($(this).hasClass("active")){
 		 boardLevelId = $(this).find("a").attr("attr_level_value");
+		 boardLevel = $(this).find("a").attr("attr_heading");
 		 var index = $(this).closest('li').attr('data-slick-index');
 		 if(index==0){
-		 boardLevelId =0;	 
+		 boardLevelId =0;
+		 boardLevel="OVERALL"		 
 		 } 
 		 }
 });
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId);
+
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId);
+$(".modelHeading").html("");
+$(".modelHeading").html(boardLevel+ " " +casteStateNAme+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
+
+$("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 
 });
+$(document).on("click",".casteCategryPstnCls",function(){
+var positionId = $(this).attr("attr_pstn_id");
+var positionName = $(this).attr("attr_pstn_name").toUpperCase();
+var casteCategoryName = $(this).attr("attr_caste_category_name");
+var casteCategoryId = $(this).attr("attr_caste_category_id");
+var casteStateId = 0;
+var boardLevelId;
+var boardLevel;
 
-function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId){
+$(".casteCategryWiseDetaislCls li").each(function(){
+	if($(this).hasClass("active")){
+		 boardLevelId = $(this).find("a").attr("attr_level_value");
+		 boardLevel = $(this).find("a").attr("attr_heading");
+		 var index = $(this).closest('li').attr('data-slick-index');
+		 if(index==0){
+		 boardLevelId =0;
+		boardLevel="OVERALL";			 
+		 } 
+		 }
+});
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId);
+$(".modelHeading").html("");
+$(".modelHeading").html(boardLevel+ " " +casteCategoryName+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
+$("#nominatedPostCandidateDetailsId").html("");
+$("#nominatedCandadteModalId").modal("show");
+});
+function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId){
   var postStatusIdsLst = [3,4];
   var jsObj={
         stateId : globalStateId,
 		casteStateId : casteStateId,
 		positionId : positionId,
 		boardLevelId : boardLevelId,
-		postStatusIdsLst : postStatusIdsLst
+		postStatusIdsLst : postStatusIdsLst,
+		casteCategoryId:casteCategoryId,
       }
       $.ajax({
          type:'GET',
@@ -1594,15 +1631,16 @@ function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId){
 
 function buildNominatedCandidateDetails(result){
 	var str ='';
-	str+='<table class = table table-bordered id ="nomtedPstCndteId">';
+	str+='<table class="table table-bordered nomtedPstCndteId" id ="nomtedPstCndteId">';
 	str +='<thead>';
+	str +='<th>IMAGE PATH</th>';
 	str +='<th>CANDIDATE NAME</th>';
 	str +='<th>MOBILE NO</th>';
 	str +='<th>RELATIVE NAME</th>';
 	str +='<th>MEMBERSHIPNO</th>';
-	str +='<th>IMAGE PATH</th>';
 	str +='<th>DISTRICT NAME</th>';
 	str +='<th>CONSTITUENCY NAME</th>';
+	str +='<th>DESIGNATION</th>';
 	str +='</thead>';
 	str +='<tbody>';
 	for(var i in result){
@@ -1610,6 +1648,11 @@ function buildNominatedCandidateDetails(result){
 		var name =result[i].name;
 		var mobNo = result[i].mobileNo;
 		var membershipNo = result[i].membershipNo;
+		if(membershipNo != null && membershipNo !=0){
+			str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageUrl+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+		}else{
+			str+='<td><img src="http://www.mytdp.com/images/not_cadre_images/'+result[i].imageUrl+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+		}
 		if(name != null){
 			str+='<td>'+result[i].name+'</td>';
 		}else{
@@ -1619,23 +1662,37 @@ function buildNominatedCandidateDetails(result){
 		if(mobNo != null && mobNo != 0){
 			str+='<td>'+mobNo+'</td>';
 		}else {
-			str +='<td>'+0+'</td>';
+			str +='<td>-</td>';
 		}
-		str+='<td>'+result[i].relativeName+'</td>';
+		if(result[i].relativeName != null){
+			str+='<td>'+result[i].relativeName+'</td>';
+		}else{
+			str +='<td>-</td>';
+		}
 		if(membershipNo != null && membershipNo !=0){
 			str+='<td>'+membershipNo+'</td>';
 		}else {
-			str +='<td>'+0+'</td>';
+			str +='<td>-</td>';
 		}
-		str+='<td><img src="http://www.mytdp.in/tab_user_images/'+result[i].imageUrl+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+		
+		if(result[i].districtName != null)
 		str+='<td>'+result[i].districtName+'</td>';
+		
+		if(result[i].constituencyName != null)
 		str+='<td>'+result[i].constituencyName+'</td>';
+		
+		if(result[i].publicRepr != null){
+			str+='<td>'+result[i].publicRepr+'</td>';
+		}else{
+			str +='<td>-</td>';
+		}
 		str +='</tr>';
 	}
 	str+='</tbody>';
 	str +='</table>';
+	
 	$("#nominatedPostCandidateDetailsId").html(str);
-	$("#nomtedPstCndteId").dataTable();
+	$(".nomtedPstCndteId").dataTable();
 	
 }
 function setDefaultImage(img){
