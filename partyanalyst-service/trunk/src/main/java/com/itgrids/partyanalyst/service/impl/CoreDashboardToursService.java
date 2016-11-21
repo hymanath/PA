@@ -264,7 +264,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	}
 	return d;
 	}
-	public List<List<ToursBasicVO>> getDesigWiseMemberDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
+	public List<List<ToursBasicVO>> getDesigWiseMemberDtls(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId, String level){
 		try{
 			Map<Long,Map<Long,ToursBasicVO>> desigIdAndMapOfCandIdAndCandDtlsMap = new LinkedHashMap<Long,Map<Long,ToursBasicVO>>();
 			Long locationScopeId = 0l;
@@ -348,21 +348,36 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			4			ORGANIZING SECRETARIES			32					1			Krishan Ganni					65
 			4			ORGANIZING SECRETARIES			33					1			VENKATESWARA RAO VANAMADI		66
 		*/
-		
-		    List<Long> desigList = new ArrayList<Long>();
-		    if(userTypeId.longValue() == IConstants.STATE_TYPE_USER_ID){
-		    	desigList = Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS);
-		    }else if(userTypeId.longValue() == IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-		    	desigList = Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS);
-		    }else if(userTypeId.longValue() == IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
-		    	desigList = Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS);
-		    }else if(userTypeId.longValue() == IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
-		    	desigList = Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS);
-		    }else if(userTypeId.longValue() == IConstants.MP_USER_TYPE_ID){
-		    	desigList = Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS);
-		    }else if(userTypeId.longValue() == IConstants.SECRETARY_USER_TYPE_ID){
-		    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
-		    }  
+			List<Long> desigList = new ArrayList<Long>();
+			if(level.equalsIgnoreCase("bellow")){
+				if(userTypeId.longValue() == 2l){  
+			    	desigList = Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+			    	desigList = Arrays.asList(new Long[]{4L,5L});      
+			    }else if(userTypeId.longValue() == IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.MP_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == 5l){
+			    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
+			    }  
+			}else{
+				if(userTypeId.longValue() == IConstants.STATE_TYPE_USER_ID){  
+			    	desigList = Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.MP_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS);
+			    }else if(userTypeId.longValue() == IConstants.SECRETARY_USER_TYPE_ID){
+			    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
+			    }  
+			}
+		    
+		    
 		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet,desigList);
 		    
 		    prepairDesignationWiseCandidateDtls(desigWiseAllCandidate, desigIdAndMapOfCandIdAndCandDtlsMap);
@@ -402,26 +417,36 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    if(desigIdAndMapOfCandIdAndCandDtlsMap != null && desigIdAndMapOfCandIdAndCandDtlsMap.size() > 0){
 		    	for(Entry<Long,Map<Long,ToursBasicVO>> entry : desigIdAndMapOfCandIdAndCandDtlsMap.entrySet()){
 		    		candIdAndCandDtlsMap = desigIdAndMapOfCandIdAndCandDtlsMap.get(entry.getKey());
-		    		//collect the value of Sec/OS
-		    		if(candIdAndCandDtlsMap != null && (entry.getKey().longValue()==4 || entry.getKey().longValue()==5)){
-		    			subList1.addAll(candIdAndCandDtlsMap.values());
-		    			continue;
+		    		if(level.equalsIgnoreCase("bellow")){
+			    		subList = new ArrayList<ToursBasicVO>();
+			    		if(candIdAndCandDtlsMap != null){
+			    			subList.addAll(candIdAndCandDtlsMap.values());
+			    			Collections.sort(subList, sortCandidateDesc);
+			    			finalList.add(subList);  
+			    		} 
+		    		}else{       
+		    			//collect the value of Sec/OS
+			    		if(candIdAndCandDtlsMap != null && (entry.getKey().longValue()==4 || entry.getKey().longValue()==5)){
+			    			subList1.addAll(candIdAndCandDtlsMap.values());
+			    			continue;
+			    		}
+			    		//add Sec/os in the final list;
+			    		if(entry.getKey().longValue() >= 6){
+			    			if(subList1 != null && subList1.size() > 0){
+			    		    	Collections.sort(subList1, sortCandidateDesc);
+			    		    	finalList.add(subList1);
+			    		    	subList1 = new ArrayList<ToursBasicVO>();
+			    		    }
+			    		}
+			    		subList = new ArrayList<ToursBasicVO>();
+			    		if(candIdAndCandDtlsMap != null){
+			    			subList.addAll(candIdAndCandDtlsMap.values());
+			    			Collections.sort(subList, sortCandidateDesc);
+			    			finalList.add(subList);  
+			    		} 
 		    		}
-		    		//add Sec/os in the final list;
-		    		if(entry.getKey().longValue() >= 6){
-		    			if(subList1 != null && subList1.size() > 0){
-		    		    	Collections.sort(subList1, sortCandidateDesc);
-		    		    	finalList.add(subList1);
-		    		    	subList1 = new ArrayList<ToursBasicVO>();
-		    		    }
-		    		}
-		    		subList = new ArrayList<ToursBasicVO>();
-		    		if(candIdAndCandDtlsMap != null){
-		    			subList.addAll(candIdAndCandDtlsMap.values());
-		    			Collections.sort(subList, sortCandidateDesc);
-		    			finalList.add(subList);  
-		    		} 
-		    	}
+		    		
+		    	} 
 		    }
 		      
 			return finalList;
