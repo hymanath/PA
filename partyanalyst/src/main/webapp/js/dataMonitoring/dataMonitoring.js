@@ -503,7 +503,7 @@ function getUsers(constituencyId){
 			str2+='<table class="table">';
 				str2+='<thead class="text-capital">';
 					str2+='<th>captured photo</th>';
-					str2+='<th>Relative Voter photo</th>';
+					//str2+='<th>Relative Voter photo</th>';
 					str2+='<th>name</th>';
 					str2+='<th>mobile number</th>';
 					str2+='<th>gender</th>';
@@ -517,9 +517,9 @@ function getUsers(constituencyId){
 								str2+='<td rowspan="2">';
 									str2+='<img src="https://www.mytdp.com/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
-								str2+='<td rowspan="2">';
+								/*str2+='<td rowspan="2">';
 									str2+='<img src="https://www.mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str2+='</td>';
+								str2+='</td>';*/
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
@@ -543,9 +543,9 @@ function getUsers(constituencyId){
 								str2+='<td rowspan="2">';
 									str2+='<img src="https://www.mytdp.com/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
-								str2+='<td rowspan="2">';
+								/*str2+='<td rowspan="2">';
 									str2+='<img src="https://www.mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str2+='</td>';
+								str2+='</td>';*/
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
@@ -569,9 +569,9 @@ function getUsers(constituencyId){
 								str2+='<td rowspan="2">';
 									str2+='<img src="https://www.mytdp.com/images/cadre_images/'+result[1][i].image+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
 								str2+='</td>';
-								str2+='<td rowspan="2">';
+								/*str2+='<td rowspan="2">';
 									str2+='<img src="https://www.mytdp.com/voter_images/'+result[1][i].voterImage+'" class="img-responsive img-thumbnail" alt="image" style="width:80px;height:80px;"/>';
-								str2+='</td>';  
+								str2+='</td>';  */
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
@@ -902,6 +902,7 @@ function getUsers(constituencyId){
 	});
 	//single approve
 	$(document).on("click",".singleApproveCls",function(){  
+	$("#successApprovedId").html('');
 		var cadreId = $(this).attr("attr_cadre_id");
 		var position = $(this).attr("attr_position_id");
 		var districtId = $(this).attr("attr_dist_id");
