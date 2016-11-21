@@ -27,5 +27,6 @@ public interface INominatedPostMainDashboardService {
 	 
 	 public List<NominatedPostVO> getNominatedPostCandidateLocationWiseDetails(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName);
 	 public List<NominatedPostVO> getNominatedPostCandidatePositionWiseDetails(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId, String locationLevelName);
+	 public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId);
 
 }
