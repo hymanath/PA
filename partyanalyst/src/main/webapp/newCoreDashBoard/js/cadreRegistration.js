@@ -3431,13 +3431,19 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		$("#childMembersId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var childUserTypeIdsArray = [];
 		childUserTypeIdsArray = firstChildUserTypeIdString.split(",");        
-		  
+		 var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});
 		var jsObj={  
 			parentActivityMemberId : globalActivityMemberId,        
 			childUserTypeIdsArray : childUserTypeIdsArray,
 			stateId : globalStateId,
 			fromDateStr : '02/10/2016',
-			toDateStr : getTodayDate()
+			toDateStr : getTodayDate(),
+			sortingType : sortingType
 		};
 		$.ajax({                   
 			type : 'GET',    
