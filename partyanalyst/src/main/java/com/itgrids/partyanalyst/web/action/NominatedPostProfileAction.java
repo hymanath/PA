@@ -1738,4 +1738,30 @@ public String execute()
 		return Action.SUCCESS;
 	}
 	
+	
+	public String getNominatedPostCandidateDetils(){
+		/*
+		 * Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId
+		 */
+		try{
+			LOG.info("Entered into nominatedPostProfileAction of getNominatedPostCandidateDetils()");
+			jObj = new JSONObject(getTask());
+			List<Long> postStatusIds =new ArrayList<Long>();
+			JSONArray postStatusIdsArr = jObj.getJSONArray("postStatusIdsLst");
+			Long stateId = jObj.getLong("stateId");
+			Long casteStateId = jObj.getLong("casteStateId");
+			Long positionId = jObj.getLong("positionId");
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			//String type = jObj.getString("type");
+			  if(postStatusIdsArr != null && postStatusIdsArr.length()> 0){
+			    	for(int i = 0;i<postStatusIdsArr.length();i++){
+			    		postStatusIds.add(new Long(postStatusIdsArr.getInt(i)));
+			    	}
+			    }
+			  idNameVOList = nominatedPostMainDashboardService.getNominatedPostCandidateDetils(stateId,casteStateId,positionId,postStatusIds,boardLevelId);
+		}catch(Exception e){
+			LOG.error("Entered into getNominatedPostCandidateDetils Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }

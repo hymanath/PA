@@ -92,7 +92,7 @@ $(document).on("click",".casteGroupCls",function(){
 	 	var str='';
 	   str+='<div class="col-md-12 pad_left0">';
          str+='<div class="table-responsive">';
-        str+='<table class="table table-bordered dataTableCaste" style="margin:0px !important">';
+        str+='<table class="table table-bordered dataTableCaste" style="margin:0px !important" id ="cstePstionTableDetilsId">';
 		if(result[0].positionList != null && result[0].positionList.length > 0){
 		  str+='<thead class="text-capital" style="font-size:12px;">';
 		  str+='<th></th>';
@@ -108,7 +108,7 @@ $(document).on("click",".casteGroupCls",function(){
 				str+='<tr>';
 				str+='<td id="'+result[i].casteId+'">'+result[i].casteName+'</td>';
 				 for(var j in result[i].positionList){
-					str+='<td>'+positionList[j].count+'</td>'; 
+					str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;">'+positionList[j].count+'</td>'; 
 				 }
 				str+='</tr>';
 			 }
@@ -1549,4 +1549,98 @@ function buildCasteWiseCountsChart(result){
 		$('#casteWisePositions').html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
 	}
 }
+$(document).on("click",".castePstnCls",function(){
+var positionId = $(this).attr("attr_pstn_id");
+var casteStateId = $(this).attr("attr_caste_state_id");
+var boardLevelId;
+
+$(".casteWiseDetaislCls li").each(function(){
+	if($(this).hasClass("active")){
+		 boardLevelId = $(this).find("a").attr("attr_level_value");
+		 var index = $(this).closest('li').attr('data-slick-index');
+		 if(index==0){
+		 boardLevelId =0;	 
+		 } 
+		 }
+});
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId);
+$("#nominatedCandadteModalId").modal("show");
+
+});
+
+function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId){
+  var postStatusIdsLst = [3,4];
+  var jsObj={
+        stateId : globalStateId,
+		casteStateId : casteStateId,
+		positionId : positionId,
+		boardLevelId : boardLevelId,
+		postStatusIdsLst : postStatusIdsLst
+      }
+      $.ajax({
+         type:'GET',
+         url:'getNominatedPostCandidateDetilsAction.action',
+         dataType: 'json',
+         data: {task:JSON.stringify(jsObj)}      
+      }).done(function(result){
+    	  if(result != null){
+    		  buildNominatedCandidateDetails(result)
+    	  }else {
+			  $("#nominatedPostCandidateDetailsId").html('No Data AVailabale');
+		  }
+		     
+    });		
+}
+
+function buildNominatedCandidateDetails(result){
+	var str ='';
+	str+='<table class = table table-bordered id ="nomtedPstCndteId">';
+	str +='<thead>';
+	str +='<th>CANDIDATE NAME</th>';
+	str +='<th>MOBILE NO</th>';
+	str +='<th>RELATIVE NAME</th>';
+	str +='<th>MEMBERSHIPNO</th>';
+	str +='<th>IMAGE PATH</th>';
+	str +='<th>DISTRICT NAME</th>';
+	str +='<th>CONSTITUENCY NAME</th>';
+	str +='</thead>';
+	str +='<tbody>';
+	for(var i in result){
+		str+='<tr>';
+		var name =result[i].name;
+		var mobNo = result[i].mobileNo;
+		var membershipNo = result[i].membershipNo;
+		if(name != null){
+			str+='<td>'+result[i].name+'</td>';
+		}else{
+			str+='<td>'-'</td>';
+		}
+		
+		if(mobNo != null && mobNo != 0){
+			str+='<td>'+mobNo+'</td>';
+		}else {
+			str +='<td>'+0+'</td>';
+		}
+		str+='<td>'+result[i].relativeName+'</td>';
+		if(membershipNo != null && membershipNo !=0){
+			str+='<td>'+membershipNo+'</td>';
+		}else {
+			str +='<td>'+0+'</td>';
+		}
+		str+='<td><img src="http://www.mytdp.in/tab_user_images/'+result[i].imageUrl+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+		str+='<td>'+result[i].districtName+'</td>';
+		str+='<td>'+result[i].constituencyName+'</td>';
+		str +='</tr>';
+	}
+	str+='</tbody>';
+	str +='</table>';
+	$("#nominatedPostCandidateDetailsId").html(str);
+	$("#nomtedPstCndteId").dataTable();
+	
+}
+function setDefaultImage(img){
+    img.onerror = "";
+    img.src = "images/cadre_images/human.jpg";
+    return true;
+  }
 	

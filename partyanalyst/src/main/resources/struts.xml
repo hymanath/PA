@@ -14708,9 +14708,16 @@
 			<param name="root">fieldMonitoringVO</param>
 		</result>
 	</action>
+	
 	<action name="getCadreVerificationDetailsAction" class="fieldMonitoringAction"  method="getCadreVerificationDetails">
 			<result type="json" name="success">
 			<param name="root">fieldMonitoringList</param>
+		</result>
+	</action>
+ 	
+ 	<action name="getNominatedPostCandidateDetilsAction" class="nominatedPostProfileAction"  method="getNominatedPostCandidateDetils">
+			<result type="json" name="success">
+			<param name="root">idNameVOList</param>
 		</result>
 	</action>
 </package>
