@@ -470,7 +470,8 @@ function getToursBasicOverviewCountDetails()
 			stateId : globalStateIdForTour,
 			fromDate : globalTourFormDate,              
 			toDate :  glovalTourToDate,
-			globalUserTypeId : globalUserTypeId
+			globalUserTypeId : globalUserTypeId,
+			level : ""  
 		}
 		$.ajax({
 			type : 'POST',         
@@ -976,7 +977,8 @@ function getToursBasicOverviewCountDetails()
 			stateId : globalStateIdForTour,
 			fromDate : globalTourFormDate,              
 			toDate :  glovalTourToDate,
-			globalUserTypeId : userTypeId            
+			globalUserTypeId : userTypeId,
+			level : "bellow"    
 		}
 		$.ajax({
 			type : 'POST',         
