@@ -85,6 +85,11 @@ var globalStateIdForTour=1; //for
 function getToursBasicOverviewCountDetails()
 	{    
 		$("#tourOverviewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+		{ 
+			$("#tourOverviewDivId").html(' ');
+			 return;
+		}
 		var jsObj ={ 
 					 activityMemberId : globalActivityMemberId,
 					 stateId : globalStateIdForTour,
@@ -223,6 +228,11 @@ function getToursBasicOverviewCountDetails()
 	 function getDistrictWiseToursSubmitedDetails()
 		{   
 			$("#districtWiseLeaderDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+			{
+				$("#districtWiseLeaderDiv").html(' ');
+				 return;
+			}
 			var jsObj ={ 
 						 activityMemberId : globalActivityMemberId,
 						 stateId : globalStateIdForTour,
