@@ -186,7 +186,7 @@
                         <div class="panel-body pad_0">
                         	<div>
                               <!-- Nav tabs -->
-                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab" role="tablist">
+                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab casteWiseDetaislCls" role="tablist">
                                <li role="presentation" class="active selectCls"  id="allCasteId"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="2" class="castePositionCls" role="tab" data-toggle="tab">Overall</a></li>
                                 <li role="presentation" class="selectCls" id="stateCasteId"><a href="#state" aria-controls="state" attr_href_id="state" role="tab" attr_level_value="2" class="castePositionCls" data-toggle="tab">State</a></li>
                                 <li role="presentation"  class="selectCls"  id="districtCasteId"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab">district</a></li>
@@ -366,6 +366,23 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="nominatedCandadteModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-condensed " id="nominatedPostCandidateDetailsId">
+	
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
 </div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
