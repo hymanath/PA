@@ -1598,39 +1598,39 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
    }
    
    public String savingTabUserDetails(final Long loginUserId,final String userName,final String imeiNo){
-	 String status = null;
-	   try {
-		   status = (String)transactionTemplate.execute(new TransactionCallback() {
-			public Object doInTransaction(TransactionStatus arg0) {
-				CadreSurveyUser cadreSurveyUser = cadreSurveyUserDAO.getCadreSurveyUserByUsername(userName);
-				
-				TabLogInAuth tabLogInAuth = new TabLogInAuth();
-				tabLogInAuth.setCadreSurveyUserId(cadreSurveyUser.getCadreSurveyUserId());
-				tabLogInAuth.setImeiNo(imeiNo);
-				tabLogInAuth.setIsDeleted("N");
-				tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-				tabLogInAuth.setVersion("2");
-				tabLogInAuth.setStatus("success");
-				tabLogInAuth.setUpdatedById(loginUserId);
-				tabLogInAuth = tabLogInAuthDAO.save(tabLogInAuth);
-				
-				if(tabLogInAuth != null)
-					return "success";
-				else
-					return "failure";
-			}
-		}); 
-	} catch (Exception e) {
-		status = "failure";
-		LOG.error("Error occured at savingTabUserDetails() in CoreDashboardToursService ",e);
-	}
-	   return status;
-   }
-   public List<TabLoginAuthVO> getTabLoginDetails(String cadreSurveyUserName)
+		 String status = null;
+		   try {
+			   status = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					CadreSurveyUser cadreSurveyUser = cadreSurveyUserDAO.getCadreSurveyUserByUsername(userName);
+					
+					TabLogInAuth tabLogInAuth = new TabLogInAuth();
+					tabLogInAuth.setCadreSurveyUserId(cadreSurveyUser.getCadreSurveyUserId());
+					tabLogInAuth.setImeiNo(imeiNo);
+					tabLogInAuth.setIsDeleted("N");
+					tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					tabLogInAuth.setVersion("2");
+					tabLogInAuth.setStatus("success");
+					tabLogInAuth.setUpdatedById(loginUserId);
+					tabLogInAuth = tabLogInAuthDAO.save(tabLogInAuth);
+					
+					if(tabLogInAuth != null)
+						return "success";
+					else
+						return "failure";
+				}
+			}); 
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Error occured at savingTabUserDetails() in CoreDashboardToursService ",e);
+		}
+		   return status;
+	   }
+ public List<TabLoginAuthVO> getDetailsByUserName(String userName)
    {
   	List<TabLoginAuthVO> returnList = new ArrayList<TabLoginAuthVO>();
   	try{
-  		List<Object[]> tabLoginDetails = tabLogInAuthDAO.getTabLoginDetails(cadreSurveyUserName);
+  		List<Object[]> tabLoginDetails = tabLogInAuthDAO.getTabLoginDetails(userName);
   		if(tabLoginDetails != null && tabLoginDetails.size() > 0){
   			
   			for (Object[] param : tabLoginDetails) {
@@ -1652,7 +1652,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   	return returnList;
   	
   }
-   public List<TabLoginAuthVO> getTabUserDetails(String imeiNo)
+   public List<TabLoginAuthVO> getUpdatedIMEINumberDetails(String imeiNo)
    {
   	List<TabLoginAuthVO> returnList = new ArrayList<TabLoginAuthVO>();
   	try{
