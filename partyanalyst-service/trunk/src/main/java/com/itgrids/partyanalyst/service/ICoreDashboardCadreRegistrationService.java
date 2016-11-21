@@ -29,7 +29,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<IdAndNameVO> getAllRelationDetails();
 	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreRegistrationCount(Long activityMemberId,Long stateId,Long userTypeId,Long userId,String fromDate,String toDate,String sortingType);
 	public CadreResponseVO savingCadreDetails(CadreRegistrationVO cadreRegistrationVO);
-	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr);
+	public List<UserTypeVO> getSelectedChildTypeMembersForCadreRegistration(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String fromDateStr,String toDateStr, String sortingType);
 	public List<CadreReportVO> getCadreDetailsBasedOnUserType(Long activityMemberId,Long stateId,Long userTypeId,String fromDateStr,String toDateStr,String sortingType);
 	public List<CadreReportVO> getApAndTsConstituenciesDtls(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded,String sortingType);
 	public CadreReportVO getApAndTsDistrictList();
