@@ -341,7 +341,8 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			Long globalUserTypeId = jObj.getLong("globalUserTypeId");
-			listOfTourBasicVoList = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId,globalUserTypeId); 
+			String level = jObj.getString("level");
+			listOfTourBasicVoList = coreDashboardToursService.getDesigWiseMemberDtls(stateId,fromDate,toDate,activityMemberId,globalUserTypeId,level); 
 			
 		} catch (Exception e) { 
 			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
