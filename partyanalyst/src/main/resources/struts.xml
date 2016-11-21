@@ -14736,10 +14736,10 @@
 		</result>
 	    </action>
 	
-		<!-- <action name="getAssigndUsrDetailsAction" class="coreDashboardAction"  method="getAssigndUsrDetails">
+		<action name="getAssigndUsrDetailsAction" class="coreDashboardAction"  method="getAssigndUsrDetails">
 			<result type="json" name="success">
-			<param name="root">idNameVOList</param>
+			<param name="root">tabUserDetails</param>
 		   </result>
-		</action>-->
+		</action>
  </package>
 </struts>
