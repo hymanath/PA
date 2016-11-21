@@ -1050,4 +1050,30 @@ public CastePositionVO setApplicationCntDataToVO(List<Object[]> rtrnApplicationD
 	}
 	return resultVO;
 }
+
+public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId){
+	List<IdNameVO>  finalList = new ArrayList<IdNameVO>();
+	try{
+		List<Object[]> candidateLst = nominatedPostDAO.getStatusWiseNominatedProfileDetils(stateId,casteStateId,positionId,postStatusIds,boardLevelId);
+		if(candidateLst !=null && !candidateLst.isEmpty()){
+			for(Object[] param : candidateLst){
+				IdNameVO idNameVO = new IdNameVO();
+				idNameVO.setId(param[0] != null ? (Long)param[0] : 0l);
+				idNameVO.setName(param[1] != null ? param[1].toString() : "");
+				idNameVO.setMobileNo(param[2] != null ? param[2].toString() : "");
+				idNameVO.setRelativeName(param[3] != null ? param[3].toString() : "");//relative Name
+				idNameVO.setMembershipNo(param[4]!=null ? param[4].toString() : "");
+				idNameVO.setImageUrl(param[5] != null ? param[5].toString() : "");// imageUrl
+				idNameVO.setDistId(param[6] != null ? (Long)param[6] :"");
+				idNameVO.setDistrictName(param[7] != null ? param[7].toString() :"");
+				idNameVO.setConstitunecyId(param[8] != null ? (Long)param[8] : 0l);
+				idNameVO.setConstituencyName(param[9] != null ? param[9].toString() : "");
+				finalList.add(idNameVO);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured into NominatedPostMainDashboardervice",e);
+	}
+	return finalList;
+}
 }
