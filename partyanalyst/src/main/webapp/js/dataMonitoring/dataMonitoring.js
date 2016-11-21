@@ -350,7 +350,7 @@ function getUsers(constituencyId){
 			startDate : modifyDate(fromDate),
 			endDate : modifyDate(toDate) , 
 			minValue :minValue,
-            maxValue :10,
+            maxValue :50,
 			resultType:resultType,
 			verificationStatus:"Total",
             dataSourceType:"",
@@ -485,13 +485,13 @@ function getUsers(constituencyId){
 					$("#ownHideSelectBoxId"+i).html(globalSrt);  
 				}
 			}
-			if(minValue == 0 && selfTotalCount > 10){
+			if(minValue == 0 && selfTotalCount > 50){
 				$("#selfPaginationId").pagination({
 					items: selfTotalCount,
-					itemsOnPage: 10,
+					itemsOnPage: 50,
 					cssStyle: 'light-theme',
 					onPageClick: function(pageNumber) {					
-						var num=(pageNumber-1)*10;
+						var num=(pageNumber-1)*50;
 						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Self");
 					}
 				});
@@ -601,13 +601,13 @@ function getUsers(constituencyId){
 						}
 					}
 					//$(".select").chosen({width:'100%'});        
-					if(minValue == 0 && relativeTotalCount > 10){
+					if(minValue == 0 && relativeTotalCount > 50){
 						$("#relativePaginationId").pagination({
 						items: relativeTotalCount,
-						itemsOnPage: 10,
+						itemsOnPage: 50,
 						cssStyle: 'light-theme',
 						onPageClick: function(pageNumber) { 
-						var num=(pageNumber-1)*10;
+						var num=(pageNumber-1)*50;
 						getMembersDetails(surveyUserId,tabUserId,0,userName,userMobile,num,"Relative");
 					}
 				});
