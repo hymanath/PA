@@ -1,7 +1,7 @@
 var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
-if(wurl.length == 3)
-	wurl = url.substr(0,(url.indexOf(".in")+3));
+ if(wurl.length == 3)
+	wurl = url.substr(0,(url.indexOf(".in")+3)); 
 
 var newsChannelsIdsGlbl = [1,2,3,4,5,6,7];
 var impactScopeIds = [1,2,3,4,5,6,7,8,9];
@@ -3385,11 +3385,11 @@ function buildEMMCompGovtDistDetailedOverview(result)
 				problemRelatedPieChartArray.push(result.tvNewsDetailsDeptVOList[i].count);
 				deptWiseEMNRelatedGraph.push(problemRelatedPieChartArray);
 			}
-		var getLiLengthGovt = result.tvNewsDetailsDeptVOList.length;
-		$("#districtWiseEMNRelatedToProblemGovt").html(str);
 		
+		$("#districtWiseEMNRelatedToProblemGovt").html(str);
+		var getLiLengthGovt = result.tvNewsDetailsDeptVOList.length;
 		getLiLengthGovt = (getLiLengthGovt*36)+"px";
-		$("#districtWiseEMNRelatedToProblemGovt").css("height",getLiLengthGovt)
+		$("#districtWiseEMNRelatedToProblemGraphGovt").css("height",getLiLengthGovt)
 		$(".emnChannelWiseSlickDistGovt").slick({
 			 slide: 'li',
 			 slidesToShow: 4,
@@ -4067,7 +4067,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		var categoryIds = $(this).attr("attr_category_id");
 		var partyId = $(this).attr("attr_party_id");
 		
-		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=N&bfIds=1,2&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status=category&stIdx=0&edIdx=6&callFrom=basicDetails');
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=N&bfIds=1,2&ediDistIdsStr='+categoryIds+'&npsStr='+newsChannelsIdsGlbl+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
 	});
 	
 	$(document).on("click",".stateWiseIndividualCls",function(){
@@ -4075,14 +4075,14 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		var channelId = $(this).attr("attr_channel_id");
 		var partyId = $(this).attr("attr_party_id");
 		
-		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=N&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=basicDetails');
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=N&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
 	});
 	
 	$(document).on("click",".stateWiseGovtTotalsCls",function(){
 		var partyId = $(this).attr("attr_party_id");
 		var categoryId = $(this).attr("attr_category_id");
 		
-		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=Y&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+newsChannelsIdsGlbl+'&status=category&stIdx=0&edIdx=6&callFrom=basicDetails');
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=Y&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+newsChannelsIdsGlbl+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
 	});
 	
 	$(document).on("click",".stateWiseGovtIndividualCls",function(){
@@ -4090,6 +4090,6 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		var channelId = $(this).attr("attr_channel_id");
 		var partyId = $(this).attr("attr_party_id");
 		
-		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=Y&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=basicDetails');
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=Y&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
 	});
 	
