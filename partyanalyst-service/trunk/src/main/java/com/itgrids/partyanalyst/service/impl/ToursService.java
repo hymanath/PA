@@ -156,7 +156,7 @@ public class ToursService implements IToursService {
 		}
 	}
 	public ResultStatus updateTourDtls(ToursInputVO toursInputVO,Long userId, Map<File,String> mapfiles){  
-		LOG.info("Entered into saveTourDtls() of ToursService{}"); 
+		LOG.info("Entered into updateTourDtls() of ToursService{}"); 
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			
@@ -212,7 +212,7 @@ public class ToursService implements IToursService {
 			return resultStatus;
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Exception raised in saveTourDtls() of ToursService{}", e);
+			LOG.error("Exception raised in updateTourDtls() of ToursService{}", e);
 			resultStatus.setResultCode(0);
 			resultStatus.setMessage("Failed");
 			return resultStatus;
