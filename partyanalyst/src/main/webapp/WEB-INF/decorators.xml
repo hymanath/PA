@@ -712,5 +712,6 @@
 		<pattern>/mediaScreenPartyForTSAction*</pattern>
 		<pattern>/showElectronicBulletinsAction*</pattern>
 		<pattern>/dataMonitoringDashboardNewAction*</pattern>
+		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 	</decorator> 
 </decorators>

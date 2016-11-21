@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
@@ -149,6 +150,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String en;
 	private String AuthDesc;
 	private List<IdNameVO> idNameVOs;
+	private List<TabLoginAuthVO> tabDetails;
 	/**
 	 * Ending Payment Gateway required parameters
 	 * 
@@ -156,9 +158,16 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	//setters And Getters
 	
-	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public List<TabLoginAuthVO> getTabDetails() {
+		return tabDetails;
+	}
+
+	public void setTabDetails(List<TabLoginAuthVO> tabDetails) {
+		this.tabDetails = tabDetails;
 	}
 
 	public ICadreRegistrationService getCadreRegistrationService() {
@@ -3136,4 +3145,53 @@ public String getTourSubmittedLeadersDetails(){
 public String showElectronicBulletins(){
 	return "success";
 }
+public String cadreSurveyUserAssign(){
+	  return Action.SUCCESS;
+}
+
+public String getDetailsByUserName(){
+	
+	try{
+		LOG.info("Entered into getDetailsByUserName()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		String userName = jObj.getString("userName");
+		tabDetails = coreDashboardToursService.getDetailsByUserName(userName);
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getDetailsByUserName() method of CoreDashBoard", e);
+	}
+	
+	return Action.SUCCESS;
+
+}
+
+public String getUpdatedIMEINumberDetails(){
+	
+	try {
+		LOG.info("Entered into getUpdatedIMEINumberDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		String imeiNo = jObj.getString("imeiNumber");
+		tabDetails = coreDashboardToursService.getUpdatedIMEINumberDetails(imeiNo);
+
+	} catch (Exception e) {
+		LOG.error("Exception raised at getUpdatedIMEINumberDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
+/*public String getAssigndUsrDetails(){
+	
+	try {
+		LOG.info("Entered into getAssigndUsrDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		String UserName=jObj.getString("userName");
+		String ImeiNo = jObj.getString("imeiNumber");
+
+	} catch (Exception e) {
+		LOG.error("Exception raised at getAssigndUsrDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}*/
+
+
 }
