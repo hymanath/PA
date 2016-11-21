@@ -26,6 +26,8 @@ import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateTourLocationDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalDesignationDAO;
+import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
+import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -43,10 +45,16 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	private IDistrictDAO districtDAO;
 	private ISelfAppraisalCandidateTourLocationDAO selfAppraisalCandidateTourLocationDAO;
 	private ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO;
-	private CommonMethodsUtilService commonMethodsUtilService ;
-	
+	private CommonMethodsUtilService commonMethodsUtilService ;  
+	private ITabLogInAuthDAO tabLogInAuthDAO;
+     
 
-	
+	public ITabLogInAuthDAO getTabLogInAuthDAO() {
+		return tabLogInAuthDAO;
+	}
+	public void setTabLogInAuthDAO(ITabLogInAuthDAO tabLogInAuthDAO) {
+		this.tabLogInAuthDAO = tabLogInAuthDAO;
+	}
 	public void setSelfAppraisalCandidateDetailsDAO(
 			ISelfAppraisalCandidateDetailsDAO selfAppraisalCandidateDetailsDAO) {
 		this.selfAppraisalCandidateDetailsDAO = selfAppraisalCandidateDetailsDAO;
@@ -1542,4 +1550,58 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   LOG.error("Error occured at getSubLevelDtls() in CoreDashboardToursService ",e);	
 	   }
    }
+   public List<TabLoginAuthVO> getTabLoginDetails(String cadreSurveyUserName)
+   {
+  	List<TabLoginAuthVO> returnList = new ArrayList<TabLoginAuthVO>();
+  	try{
+  		List<Object[]> tabLoginDetails = tabLogInAuthDAO.getTabLoginDetails(cadreSurveyUserName);
+  		if(tabLoginDetails != null && tabLoginDetails.size() > 0){
+  			
+  			for (Object[] param : tabLoginDetails) {
+  				TabLoginAuthVO vo = new TabLoginAuthVO();
+  				vo.setImiNo(commonMethodsUtilService.getStringValueForObject(param[0]));
+  				vo.setInsertedTime(commonMethodsUtilService.getStringValueForObject(param[1]));
+  				vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+  				vo.setIsDeleted(commonMethodsUtilService.getStringValueForObject(param[3]));
+  				
+  				returnList.add(vo);
+  			}
+  		}
+  	}
+  	catch(Exception e)
+  	{
+  		e.printStackTrace();
+  		LOG.error("Exception Occured in getTabLoginDetails() Method - Exception is : ",e);
+  	}
+  	return returnList;
+  	
+  }
+   public List<TabLoginAuthVO> getTabUserDetails(String imeiNo)
+   {
+  	List<TabLoginAuthVO> returnList = new ArrayList<TabLoginAuthVO>();
+  	try{
+  		List<Object[]> tabLoginDetails = tabLogInAuthDAO.getTabUserDetails(imeiNo);
+  		if(tabLoginDetails != null && tabLoginDetails.size() > 0){
+  			
+  			for (Object[] param : tabLoginDetails) {
+  				TabLoginAuthVO vo = new TabLoginAuthVO();
+  				vo.setCadreSurveyUserId(commonMethodsUtilService.getLongValueForObject(param[0]));
+  				vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+  				vo.setInsertedTime(commonMethodsUtilService.getStringValueForObject(param[2]));
+  				vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[3]));
+  				vo.setIsDeleted(commonMethodsUtilService.getStringValueForObject(param[4]));
+  				returnList.add(vo);
+  			}
+  		}
+  	}
+  	catch(Exception e)
+  	{
+  		e.printStackTrace();
+  		LOG.error("Exception Occured in getTabUserDetails() Method - Exception is : ",e);
+  	}
+  	return returnList;
+  	
+  }
+
+  
 }
