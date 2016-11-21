@@ -301,4 +301,45 @@ public class SelfAppraisalCandidateLocationDAO extends GenericDaoHibernate<SelfA
 		   }
 		   return query.list();  
 	   }
+	 public List<Object[]> getCandiateIdsScope(List<Long> candiateIds,String designations){
+		 StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" select distinct model.selfAppraisalLocationScopeId,model.selfAppraisalCandidate.selfAppraisalCandidateId " +
+		  				  " from SelfAppraisalCandidateLocation model where model.selfAppraisalCandidateId in (:candiateIds)");
+				          if(designations.equalsIgnoreCase("MP/MLA/CI")){
+				        	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (6,7,8) ");  
+				          }else if(designations.equalsIgnoreCase("DistrictPresident")){
+				        	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (2) and model.type='Incharge' ");   
+				          }else if(designations.equalsIgnoreCase("Minister")){
+				        	queryStr.append(" and model.selfAppraisalCandidate.selfAppraisalDesignationId in (1) and model.type='Own' ");  
+				          }
+		  				  queryStr.append(" order by model.selfAppraisalCandidate.selfAppraisalDesignationId ");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setParameterList("candiateIds", candiateIds);
+		 return query.list();
+	 }
+	 public List<Object[]> getCandiateLocation(Long locationScopeId,List<Long> candiateIds,String designationType){
+		   
+		    StringBuilder queryStr = new StringBuilder();
+		   
+		    queryStr.append(" select distinct model.selfAppraisalCandidate.selfAppraisalCandidateId,");
+		    if(locationScopeId != null && locationScopeId == 1l){ //district
+				  queryStr.append(" model.userAddress.district.districtId,");
+				  queryStr.append(" model.userAddress.district.districtName ");
+		    }else if(locationScopeId != null && locationScopeId == 2l){//Parliament
+			     queryStr.append(" model.userAddress.parliamentConstituency.constituencyId,");
+			     queryStr.append(" model.userAddress.parliamentConstituency.name ");
+		    }else if(locationScopeId != null && locationScopeId == 3l){//Constituency
+				  queryStr.append(" model.userAddress.constituency.constituencyId,");
+				  queryStr.append(" model.userAddress.constituency.name ");
+		    }
+		    queryStr.append(" from SelfAppraisalCandidateLocation model where model.selfAppraisalCandidate.selfAppraisalCandidateId in (:candiateIds) ");
+		    if(designationType != null && designationType.equalsIgnoreCase("DistrictPresident")){
+		    	queryStr.append(" and model.type='Incharge' ");
+		    }else if(designationType != null && designationType.equalsIgnoreCase("Minister")){
+		    	queryStr.append(" and model.type='Own' ");
+		    }
+		    Query query = getSession().createQuery(queryStr.toString());
+		    query.setParameterList("candiateIds", candiateIds);
+		    return query.list();
+	 }
 }

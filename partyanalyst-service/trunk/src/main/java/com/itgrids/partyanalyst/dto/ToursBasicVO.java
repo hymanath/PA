@@ -51,6 +51,10 @@ public class ToursBasicVO {
 	private List<String> filePathList = null;
 	private Long noOfDistinctTours=0l;
 	private String isTourSubmitted;
+	
+	private Long locationId;
+	private String locationName;
+	
 	public ToursBasicVO() {
 		super();
 	}
@@ -326,6 +330,18 @@ public class ToursBasicVO {
 	public void setOwnToursCnt(Long ownToursCnt) {
 		this.ownToursCnt = ownToursCnt;
 	}
-	
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+		
 	
 }

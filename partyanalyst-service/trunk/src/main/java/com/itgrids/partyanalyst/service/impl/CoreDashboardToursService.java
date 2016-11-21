@@ -1348,8 +1348,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					  }
 				  }
 			  }
-			  resultList.addAll(leaderDtlsMap.values());
-			  return resultList; 
 		   }else if(isSubmitted.equalsIgnoreCase("All")){
 			   
 			   //Submitted candidate details
@@ -1373,6 +1371,56 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					   entry.getValue().setTotalSubmittedToursCnt(entry.getValue().getOwnToursCnt()+entry.getValue().getInchargerToursCnt());   
 				   }
 			   }
+		   }
+		   //Getting Candidate Location 
+		   if(leaderDtlsMap != null && leaderDtlsMap.size() > 0){
+			   Map<Long,Set<Long>> candiateScopeMap = new HashMap<Long, Set<Long>>();
+			   Map<Long,Set<Long>> ministerScopeMap = new HashMap<Long, Set<Long>>();
+			   Map<Long,Set<Long>> districtPersidentScopeMap = new HashMap<Long, Set<Long>>();
+			   Map<Long,ToursBasicVO> locationMap = new HashMap<Long, ToursBasicVO>();
+	           List<Object[]> candiateScopeIdsObjLst = selfAppraisalCandidateLocationDAO.getCandiateIdsScope(new ArrayList<Long>(leaderDtlsMap.keySet()),"MP/MLA/CI");
+	           List<Object[]> dstrctPrsdntScopeObjLst = selfAppraisalCandidateLocationDAO.getCandiateIdsScope(new ArrayList<Long>(leaderDtlsMap.keySet()),"DistrictPresident");
+	           List<Object[]>  ministerScopeObjLst = selfAppraisalCandidateLocationDAO.getCandiateIdsScope(new ArrayList<Long>(leaderDtlsMap.keySet()),"Minister");
+	           if(candiateScopeIdsObjLst != null && candiateScopeIdsObjLst.size() > 0){
+	        	   setCandidateIdsScopeWise(candiateScopeIdsObjLst,candiateScopeMap);
+	 	       }
+	           if(dstrctPrsdntScopeObjLst != null && dstrctPrsdntScopeObjLst.size() > 0){
+	        	   setCandidateIdsScopeWise(dstrctPrsdntScopeObjLst,districtPersidentScopeMap);
+	 	       }
+	           if(ministerScopeObjLst != null && ministerScopeObjLst.size() > 0){
+	        	   setCandidateIdsScopeWise(ministerScopeObjLst,ministerScopeMap);
+	 	       }
+	           if(candiateScopeMap != null && candiateScopeMap.size() > 0){
+	        	   for(Entry<Long,Set<Long>> entry:candiateScopeMap.entrySet()){
+	        		   Long locationScopeId = entry.getKey();
+	        		    List<Object[]> locationObjLst = selfAppraisalCandidateLocationDAO.getCandiateLocation(locationScopeId,new ArrayList<Long>(entry.getValue()),null);
+	        		    setCandiateLocation(locationScopeId,locationObjLst,locationMap);
+	        	   }
+	           }
+	           if(ministerScopeMap != null && ministerScopeMap.size() > 0){
+	        	   for(Entry<Long,Set<Long>> entry:ministerScopeMap.entrySet()){
+	        		   Long locationScopeId = entry.getKey();
+	        		    List<Object[]> locationObjLst = selfAppraisalCandidateLocationDAO.getCandiateLocation(locationScopeId,new ArrayList<Long>(entry.getValue()),"Minister");
+	        		    setCandiateLocation(locationScopeId,locationObjLst,locationMap);
+	        	   }
+	           }
+	           if(districtPersidentScopeMap != null && districtPersidentScopeMap.size() > 0){
+	        	   for(Entry<Long,Set<Long>> entry:districtPersidentScopeMap.entrySet()){
+	        		   Long locationScopeId = entry.getKey();
+	        		    List<Object[]> locationObjLst = selfAppraisalCandidateLocationDAO.getCandiateLocation(locationScopeId,new ArrayList<Long>(entry.getValue()),"DistrictPresident");
+	        		    setCandiateLocation(locationScopeId,locationObjLst,locationMap);
+	        	   }
+	            }
+	           if(locationMap != null && locationMap.size() > 0){
+	        	   for(Entry<Long,ToursBasicVO> entry:locationMap.entrySet()){
+	        		   ToursBasicVO candiateVO = leaderDtlsMap.get(entry.getKey());
+	        		    if(candiateVO != null){
+	        		    	candiateVO.setLocationId(entry.getValue().getLocationId());
+	        		    	candiateVO.setLocationName(entry.getValue().getLocationName());
+	        		    	candiateVO.setDesignation(candiateVO.getDesignation()+"(<strong>"+entry.getValue().getLocationName()+"</strong>)");
+	        		    }
+	        	   }
+	           }
 		   }
 		   if(leaderDtlsMap != null && leaderDtlsMap.size() > 0){
 			   resultList.addAll(leaderDtlsMap.values());
@@ -1445,6 +1493,45 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   }
 	   }catch(Exception e){
 		   LOG.error("Error occured at setInchargeToursSubmittedLeadersDtls() in CoreDashboardToursService ",e);	  
+	   }
+   }
+   public void setCandidateIdsScopeWise(List<Object[]> objList, Map<Long,Set<Long>> candiateScopeMap){
+	   try{
+		  if(objList != null && objList.size() > 0){
+			  for(Object[] param:objList){
+				  Set<Long> candiateIdsSet = candiateScopeMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   if(candiateIdsSet == null){
+					   candiateIdsSet = new HashSet<Long>();
+					   candiateScopeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),candiateIdsSet);
+				   }
+				   candiateIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+			  }
+		  }
+	   }catch(Exception e){
+		   LOG.error("Error occured at setCandidateIdsScopeWise() in CoreDashboardToursService ",e);   
+	   }
+   }
+  public void setCandiateLocation(Long locationScopeId,List<Object[]> locationObjLst,Map<Long,ToursBasicVO> locationMap){
+	   try{
+		   if(locationObjLst != null && locationObjLst.size() > 0){
+			   for(Object[] param:locationObjLst){
+				   ToursBasicVO locationVO = new ToursBasicVO();
+				    locationVO.setCandDtlsId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				    locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[1]));
+				    String suffix="";
+				    if(locationScopeId.longValue() == 1l){
+				    	suffix = "District";
+				    }else if(locationScopeId.longValue() == 2l){
+				    	suffix = "Parliament";
+				    }else if(locationScopeId.longValue() == 3l){
+				    	suffix = "Constituency";
+				    }
+				    locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2])+" "+suffix);
+				    locationMap.put(locationVO.getCandDtlsId(), locationVO);
+			   }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured at setCandiateLocation() in CoreDashboardToursService ",e);   
 	   }
    }
    public void getSubLevelDtls(Long activityMemberId){
