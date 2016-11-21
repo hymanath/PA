@@ -3796,6 +3796,9 @@
 	 <property name="districtDAO" ref="districtDAO"></property>
 	 <property name="selfAppraisalDesignationDAO" ref="selfAppraisalDesignationDAO"></property>
 	 <property name="selfAppraisalCandidateTourLocationDAO" ref="selfAppraisalCandidateTourLocationDAO"></property>
+	 <property name="transactionTemplate" ref="transactionTemplate" />
+	 <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
+	 <property name="tabLogInAuthDAO" ref="tabLogInAuthDAO" />
 	</bean>
 	
 </beans>			

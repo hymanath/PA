@@ -289,7 +289,7 @@ table.dataTable tr.odd {
 								<td><div id="tsConstiCountId"><h2>119</h2>
 									<p>Registration Started Constituencies</p></div>
 								</td>
-								<td><div id="ts2014NewCountId"><h2>794427</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>
+								<td><div id="ts2014NewCountId"><h2>794130</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>
 								<td>
 									<div id="ts2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 								</td>
@@ -305,7 +305,7 @@ table.dataTable tr.odd {
 									<img style="display:inline-block;width:110px;" class="pull-right" src="images/AP.png">
 								</td>
 								<td><div id="apConstiCountId"><h2>175</h2><p>Registration Started Constituencies</p></div></td>
-								<td><div id="ap2014NewCountId"><h2>4716975</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>
+								<td><div id="ap2014NewCountId"><h2>4672124</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>
 								<td><div id="ap2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 								<td><p><span class="text-orange">Total - [%] </span></p><div id="ap2016PrecCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							</tr>
@@ -747,7 +747,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 			    str+='<div class="col-md-3 col-xs-12 col-sm-3" style="margin-top: 40px;padding-left:0px;padding-right:0px">';
 					str+='<h2 class="f_26" style="margin-bottom: 0px;">'+todayCount+'</h2>';
 					str+='<p>Members Registered <br>';
-						str+='<span style="font-weight:bold;">Today</span>';
+						if(type == 'Today')
+							str+='<span style="font-weight:bold;">Today</span>';
+						else if(type == 'Total')
+							str+='<span style="font-weight:bold;">Total</span>';
 					str+='</p> </div>';
 					
 				if(type == 'Today')
@@ -1151,7 +1154,7 @@ function get2016LocationWiseRegisteredCounts(typeId){
 				str+='<tbody>';
 				for(var i in result){
 					str+='<tr class="tejasClass">';
-					str+='<td><i class="glyphicon glyphicon-plus vsDistrictResultCls" style="cursor:pointer;" attr_distId="'+result[i].id+'"></i>'+result[i].id+'</td>';
+					str+='<td><i class="glyphicon glyphicon-plus vsDistrictResultCls" style="cursor:pointer;" attr_distId="'+result[i].id+'" attr_type="'+type+'"></i>'+result[i].id+'</td>';
 					str+='<td>'+result[i].name+'</td>';    
 					
 					str+='<td>'+result[i].targetCount+'</td>';
@@ -1228,7 +1231,7 @@ $(document).on("click",".vsDistrictResultCls",function(){
 	var districtId = $(this).attr("attr_distId");
 	$(".subDistTrCls").html("");
 	$("#subDistTrId"+districtId).html("");
-	var type = $('input[name=compareD]:checked').val();
+	var type = $(this).attr("attr_type");
 	var locationScope = 4;
 	var locationType = ''; 
 	 $('.aptsclass').each(function(i, obj){
