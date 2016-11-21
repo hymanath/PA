@@ -108,7 +108,7 @@ $(document).on("click",".casteGroupCls",function(){
 				str+='<tr>';
 				str+='<td id="'+result[i].casteId+'">'+result[i].casteName+'</td>';
 				for(var j in result[i].positionList){
-					str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;" attr_pstn_name='+result[i].positionList[j].positionName+' attr_caste_state_name =\''+result[i].casteName+'\'>'+positionList[j].count+'</td>'; 
+					str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;color:green;font-weight:bold;" attr_pstn_name='+result[i].positionList[j].positionName+' attr_caste_state_name =\''+result[i].casteName+'\'><u>'+positionList[j].count+'</u></td>'; 
 				 }
 				str+='</tr>';
 			 }
@@ -178,7 +178,7 @@ $(document).on("click",".casteGroupCls",function(){
 				str+='<tr>';
 				str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
 				 for(var j in result[i].casteList){
-					str+='<td attr_pstn_id='+result[i].positionId+'  attr_caste_category_id ='+casteList[j].casteId+' class="casteCategryPstnCls" style ="cursor:pointer;" attr_pstn_name='+result[i].positionName+' attr_caste_category_name =\''+casteList[j].casteName+'\'>'+casteList[j].count+'</td>'; 
+					str+='<td attr_pstn_id='+result[i].positionId+'  attr_caste_category_id ='+casteList[j].casteId+' class="casteCategryPstnCls" style ="cursor:pointer;color:green;font-weight:bold;" attr_pstn_name='+result[i].positionName+' attr_caste_category_name =\''+casteList[j].casteName+'\'><u>'+casteList[j].count+'</u></td>'; 
 				 }
 				str+='</tr>';
 			 }
@@ -1600,7 +1600,7 @@ $(".casteCategryWiseDetaislCls li").each(function(){
 });
 getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId);
 $(".modelHeading").html("");
-$(".modelHeading").html(boardLevel+ " " +casteCategoryName+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
+$(".modelHeading").html(boardLevel+ " " +casteCategoryName+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 });
@@ -1633,7 +1633,7 @@ function buildNominatedCandidateDetails(result){
 	var str ='';
 	str+='<table class="table table-bordered nomtedPstCndteId" id ="nomtedPstCndteId">';
 	str +='<thead>';
-	str +='<th>IMAGE PATH</th>';
+	str +='<th>IMAGE</th>';
 	str +='<th>CANDIDATE NAME</th>';
 	str +='<th>MOBILE NO</th>';
 	str +='<th>RELATIVE NAME</th>';
@@ -1664,7 +1664,7 @@ function buildNominatedCandidateDetails(result){
 		}else {
 			str +='<td>-</td>';
 		}
-		if(result[i].relativeName != null){
+		if(result[i].relativeName != null && result[i].relativeName != ""){
 			str+='<td>'+result[i].relativeName+'</td>';
 		}else{
 			str +='<td>-</td>';
