@@ -2787,7 +2787,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		  Long stateId = jobj.getLong("stateId");
 		  String fromDateStr = jobj.getString("fromDateStr");
 		  String toDateStr = jobj.getString("toDateStr");
-		  activityMembersList = coreDashboardCadreRegistrationService.getSelectedChildTypeMembersForCadreRegistration(parentActivityMemberId, childUserTypeIds, stateId, fromDateStr, toDateStr);
+		  String sortingType = jobj.getString("sortingType");
+		  activityMembersList = coreDashboardCadreRegistrationService.getSelectedChildTypeMembersForCadreRegistration(parentActivityMemberId, childUserTypeIds, stateId, fromDateStr, toDateStr,sortingType);
 
 		  }catch(Exception e){
 			  e.printStackTrace();
