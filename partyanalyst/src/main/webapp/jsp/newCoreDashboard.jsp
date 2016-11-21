@@ -164,12 +164,12 @@
                 </div>       
 				<div class="specialCadreDropDown" style="right:13px;top:30px;">
 					<ul class="list-inline">
-						<li><h4>Sorting Type</h4></li><span class="glyphicon glyphicon-remove-circle pull-right settingCloseCls" style="cursor:pointer;"></span><br>     
-						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="2016CadreWiseId" attr_sort_type="2016CadreWise" checked/>&nbsp&nbsp2016 Cadre Registrations</label></li>
-						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="targetWiseId" attr_sort_type="TargetWise" />&nbsp&nbsp2016 Target Cadre</label></li><br> 
+						<li><h4>Sorting Type</h4></li><span class="glyphicon glyphicon-remove-circle pull-right settingCloseCls" style="cursor:pointer;"></span><br> 
+						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="targetWiseId" attr_sort_type="TargetWise" checked/>&nbsp&nbsp2016 Target Cadre</label></li><br>
+						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="2016CadreWiseId" attr_sort_type="2016CadreWise" />&nbsp&nbsp2016 Cadre Registrations</label></li>
 					
-					</ul>  
-					<button type="button" class="btn btn-success specialCadreBtncls">Get Details</button> 
+					</ul>        
+					<button type="button" class="btn btn-success specialCadreBtncls">Get Details</button>   
 					<span id="checkErrId" style="color:red;"></span>  
 				</div>    
                 <div class="panel-body">
