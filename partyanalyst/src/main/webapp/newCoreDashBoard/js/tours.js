@@ -916,8 +916,8 @@ function getToursBasicOverviewCountDetails()
 						var gesignation = result[0].designation;
 						for(var i in result){
 							comment  = "";
-							if(result[i].totalTour > 0){         
-								str+='<tr class="candidateCls" attr_desig_id="'+result[i].designationId+'" attr_activity_mem_id="'+result[i].activityMemberId+'" attr_candiate_id="'+result[i].id+'" attr_cand_name="'+result[i].name+'" attr_cand_desig="'+result[i].designation+'">'; 
+							if(result[i].totalTour > 0){       
+								str+='<tr class="candidateCls lowLevelActivityMemberClsForTour" attr_desig_id="'+result[i].designationId+'" attr_activity_mem_id="'+result[i].activityMemberId+'" attr_candiate_id="'+result[i].id+'" attr_cand_name="'+result[i].name+'" attr_cand_desig="'+result[i].designation+'">'; 
 									k = parseInt(k) + 1;      
 									str+='<td>';
 										str+='<span class="tableCount">'+k+'</span>';
@@ -938,9 +938,13 @@ function getToursBasicOverviewCountDetails()
 									}else{
 										str+='<td>-</td>';
 									}  
-								str+='</tr>';   
+								str+='</tr>';
+								str+='<tr class="showHideTr" style="display:none" attr_id = "subLevelMemDtslId'+result[i].designationId+''+i+'">';
+								str+='<td colspan="5"  id="subLevelMemDtslId'+result[i].designationId+''+i+'">';  
+								str+='</td>';
+								str+='</tr>';
 							}
-						}  
+						}       
 						
 					str+='</tbody>';  
 				str+='</table>';  
@@ -950,9 +954,122 @@ function getToursBasicOverviewCountDetails()
 			}
 		
 		$("#directChildMemberForToursDivId").html(str);
-		$("#tourLeaderDtlsId").dataTable();              
+		//$("#tourLeaderDtlsId").dataTable();              
 		getLeaderAverageToursBasedOnAccessLevel(candidateId,candidateName,gesignation);
-	}	 
+	}
+	$(document).on("click",".lowLevelActivityMemberClsForTour",function(){ 
+	    $(this).next('tr.showHideTr').show(); 
+		var activityMemberId = $(this).attr("attr_activity_mem_id");  
+		var userTypeId = $(this).attr("attr_desig_id"); 
+		var selectedMemberName = $(this).attr("attr_cand_name");  
+		var selectedUserType = $(this).attr("attr_cand_desig");  
+		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
+		if(selectedUserType != null && selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){ 
+		}else{
+			getDirectChildActivityTourMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		}	
+	});
+	function getDirectChildActivityTourMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
+		$("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj ={ 
+			activityMemberId : activityMemberId,        
+			stateId : globalStateIdForTour,
+			fromDate : globalTourFormDate,              
+			toDate :  glovalTourToDate,
+			globalUserTypeId : userTypeId            
+		}
+		$.ajax({
+			type : 'POST',         
+			url : 'getDesigWiseMemberDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}         
+			}).done(function(result){
+				$("#"+childActivityMemberId).html('');
+				if(result != null && result.length > 0){
+					buildChildActivityMembersDetailsForTour(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
+				}else{
+					if(childActivityMemberId == "userTypeWiseChildDtlsTabId"){
+						$("#"+childActivityMemberId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
+					}
+				}
+			});
+	}
+	function buildChildActivityMembersDetailsForTour(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId){
+		
+		var str = '';
+		str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
+		/* if($(window).width() < 768){
+			str+='<div class="table-responsive">';
+		} */ 
+		if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
+				str+='<span class="remveSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+		 } 
+		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){         
+			 str+='<table  class="table table-condensed tableHoverLevelsInner m_top20">';
+		 }else{
+			str+='<table class="table table-condensed tableHoverLevels m_top20">';  
+		 }
+		str+='<table id="tourLeaderDtlsId" class="table table-condensed tableHoverLevels m_top20 bg_ED">';
+		str+='<thead>';
+			str+='<th>%RANK</th>';
+			str+='<th>DESIGNATION</th>';
+			str+='<th class="text-capital">NAME</th>';      
+			str+='<th>TOTAL</th>';
+			str+='<th>COMMENT</th>';
+		str+='</thead>';
+		str+='<tbody>';  
+		var comment  = "";  
+		var k = 0;
+		var candidateId = result[0][0].id;
+		var candidateName = result[0][0].name;
+		var gesignation = result[0][0].designation;
+		for(var i in result){
+			for(var j in result[i]){
+				comment  = "";
+				if(result[i][j].totalTour > 0){       
+					str+='<tr class="candidateCls" attr_desig_id="'+result[i][j].designationId+'" attr_activity_mem_id="'+result[i][j].activityMemberId+'" attr_candiate_id="'+result[i][j].id+'" attr_cand_name="'+result[i][j].name+'" attr_cand_desig="'+result[i][j].designation+'">'; 
+					k = parseInt(k) + 1;      
+					str+='<td>';
+						str+='<span class="tableCount">'+k+'</span>';
+					str+='</td>';
+					str+='<td>'+result[i][j].designation+'</td>';    
+					str+='<td>'+result[i][j].name+'</td>';
+					str+='<td>'+result[i][j].totalTour+'</td>';
+					if(result[i][j].remarkList.length > 0 && result[i][j].remarkList != null){  
+						for(var k in result[i][j].remarkList){
+							if(result[i][j].remarkList[k] != null && result[i][j].remarkList[k].length > 2){ 
+								comment = comment + result[i][j].remarkList[k];            
+								comment = comment + "</br>"
+							}
+						}
+					} 
+					if(comment.length > 2 && comment != null){         
+						str+='<td>'+comment+'</td>';  
+					}else{
+						str+='<td>-</td>';
+					}  
+					str+='</tr>';
+					str+='<tr class="showHideTr" style="display:none" attr_id = "subLevelMemDtslId'+result[i][j].designationId+''+i+'">';
+					str+='<td colspan="5"  id="subLevelMemDtslId'+result[i][j].designationId+''+i+'">';  
+					str+='</td>';
+					str+='</tr>';
+				}
+			}
+		}     			
+		str+='</tbody>';  
+		str+='</table>';  
+		/* if($(window).width() < 768){
+			str+='</div>';
+		} */
+		$("#"+childActivityMemberId).html(str);
+		//$("#tourLeaderDtlsId").dataTable();              
+		//getLeaderAverageToursBasedOnAccessLevel(candidateId,candidateName,gesignation);
+	}
+	$(document).on("click",".remveSlcUsrType",function(){
+		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
+		 $("#"+removeSelected).html(' ');
+		 $("#"+removeSelected).closest('.showHideTr').hide();
+	});
   	$(document).on("click",".candidateCls",function(){
 		var candiateId = $(this).attr("attr_candiate_id");
 		var candidateName = $(this).attr("attr_cand_name");
@@ -1116,4 +1233,4 @@ function getToursBasicOverviewCountDetails()
 		
  function generateExcelReportForToursDetails(){
 	tableToExcel(tourSubmittedDtlsDataTblid, 'Tours Submitted Details Report');
-}		
+}     
