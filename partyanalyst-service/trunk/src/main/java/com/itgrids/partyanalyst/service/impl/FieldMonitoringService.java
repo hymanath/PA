@@ -3307,7 +3307,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		
 		List<Object[]> cadreVerRejList =tdpCadreDataVerificationDAO.getCadreVerfRejectedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
 		if(cadreVerRejList != null && !cadreVerRejList.isEmpty()){
-			for (Object[] objects : cadreVerPassedList) {
+			for (Object[] objects : cadreVerRejList) {
 			Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
 			Long rejectedCount = Long.valueOf(objects[1] != null ? objects[1].toString():"0");
 			Long tabUserId = Long.valueOf(objects[2] != null ? objects[2].toString():"0");
