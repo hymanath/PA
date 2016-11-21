@@ -151,6 +151,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String AuthDesc;
 	private List<IdNameVO> idNameVOs;
 	private List<TabLoginAuthVO> tabDetails;
+	private String tabUserDetails;
 	/**
 	 * Ending Payment Gateway required parameters
 	 * 
@@ -158,8 +159,17 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	//setters And Getters
 	
+	
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public String getTabUserDetails() {
+		return tabUserDetails;
+	}
+
+	public void setTabUserDetails(String tabUserDetails) {
+		this.tabUserDetails = tabUserDetails;
 	}
 
 	public List<TabLoginAuthVO> getTabDetails() {
@@ -3179,19 +3189,24 @@ public String getUpdatedIMEINumberDetails(){
 	return Action.SUCCESS;
 }
 
-/*public String getAssigndUsrDetails(){
-	
+public String getAssigndUsrDetails(){
 	try {
 		LOG.info("Entered into getAssigndUsrDetails()  of CoreDashboardAction");
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		Long loginUserId = null;
+		if(regVO != null)
+			loginUserId = regVO.getRegistrationID();
+		
 		jObj = new JSONObject(getTask());
-		String UserName=jObj.getString("userName");
-		String ImeiNo = jObj.getString("imeiNumber");
+		String userName=jObj.getString("userName");
+		String imeiNo = jObj.getString("imeiNumber");
+		tabUserDetails = coreDashboardToursService.savingTabUserDetails(loginUserId,userName,imeiNo);
 
 	} catch (Exception e) {
 		LOG.error("Exception raised at getAssigndUsrDetails() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
-}*/
+}
 
 
 }

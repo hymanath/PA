@@ -86,32 +86,80 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 </style>
 </head>
 <body>
+<div class="container">  
+	<div class="row">   
 
-<ul class="tab">
-  <li><a href="javascript:void(0)" class="tablinks" id="1">UPDATE USER</a></li>
-  <li><a href="javascript:void(0)" class="tablinks" id="2" >UPDATE IMEI NO </a></li>
-  <li><a href="javascript:void(0)" class="tablinks" id="3"  >ASSIGN USER</a></li>
-</ul>
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="block">				
+								
+				<ul class="tab">
+				  <li><a href="javascript:void(0)" class="tablinks" id="1">UPDATE USER</a></li>
+				  <li><a href="javascript:void(0)" class="tablinks" id="2" >UPDATE IMEI NO </a></li>
+				  <li><a href="javascript:void(0)" class="tablinks" id="3"  >ASSIGN USER</a></li>
+				</ul>
 
-<div id="updateUserDivId" class="tabcontent">
-  <h3> UNLOCK THE USER : </h3>
-  <input type ="text" name="userName" value="userName" id="UpdteUsrId"/>
-  <input type ="submit" value="Get Details" class=" btn btn-success" onclick ="getDetailsByUserName();"/>
+				</div>
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12 tabcontent"  id="updateUserDivId" style="margin-left:15px;" >
+				<div class="block">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px">
+								<label> <h6> UNLOCK THE USER : </h6></label>
+								<input type ="text" name="userName" placeholder="Enter username" id="UpdteUsrId"/>
+								<input type ="submit" value="Get Details" class=" btn btn-success" onclick ="getDetailsByUserName();"/>
+						</div>
+					</div>
+						<div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px" id="usersDetailsDiv">							
+							</div>
+						</div>
+				</div>
+			</div>	
+			
+			<div class="col-md-12 col-xs-12 col-sm-12 tabcontent" id="updateImeiDivId"   style="display:none;margin-left:15px;">
+				<div class="block">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">
+							<label> <h6>UNLOCK THE IMEI NO : </h6></label>
+							<input type ="text" name="IMEINo" placeholder="Enter IMEI no" id="updatedIMEIId"/>
+							<input type ="submit" value="Get Details" class=" btn btn-success"  onclick ="getIMEINumberDetails();"/>
+						</div>
+					</div>
+					<div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px" id="imeiDetailsDiv">							
+							</div>
+						</div>
+				</div>
+			</div>
+			
+			<div class="col-md-12 col-xs-12 col-sm-12 tabcontent" id="assignUserDivId"   style="display:none;margin-left:15px;">
+				<div class="block">
+					<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">							
+							<div class="col-md-4 col-xs-12 col-sm-6">
+								<div class="row">
+									<label> <h6> USERNAME : </h6></label>
+									<input type ="text" name="userName" placeholder="Enter UserName" id="AssignUserNameId"/></br>
+								</div>	
+							</div>	
+							<div class="col-md-4 col-xs-12 col-sm-6">
+								<div class="row">
+									<label> <h6> IMEI NO. : </h6></label>
+									<input type ="text" name="IMEINo" placeholder="Enter IMEI no " id="AssignImeiNumberId"/></br>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-6">
+								<div class="row">
+									<input type ="submit" class=" btn btn-success" value="ASSIGN USER" onclick ="getUpdatedIMEINumberDetails();"/>
+								</div>
+							</div>							
+					</div>	
+					</div>
+					</div>
+				</div>
+			</div>
+				
 </div>
-
-<div id="updateImeiDivId" class="tabcontent"  style="display:none;">
-  <h3>UNLOCK THE IMEI NO : </h3>
-  <input type ="text" name="IMEINo" value="IMEINo" id="updatedIMEIId"/>
-  <input type ="submit" value="Get Details" class=" btn btn-success"  onclick ="getIMEINumberDetails();"/>
-</div>
-
-<div id="assignUserDivId"  class="tabcontent"   style="display:none;">
-  <h3> ASSIGN USER TO IMEI NO. </h3>
-  <input type ="text" name="userName" value="userName" id="AssignUserNameId"/></br>
-  <input type ="text" name="IMEINo" value="IMEINo" id="AssignImeiNumberId"/>
-  <input type ="submit" class=" btn btn-success" value="ASSIGN USER" onclick ="getUpdatedIMEINumberDetails();"/>
-</div>
-
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
 <!-- online First Page Script -->
@@ -132,6 +180,9 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 
 $('.tablinks').click(function(){
 	$('.tabcontent').hide();
+		   $('#UpdteUsrId,#AssignUserNameId,#AssignImeiNumberId,#updatedIMEIId').val('');
+		   $('#usersDetailsDiv').html('');
+		   $('#imeiDetailsDiv').html('');
 	var tab_id = $(this).attr('id');
 	if(tab_id==1)
 		$('#updateUserDivId').show();
@@ -139,8 +190,6 @@ $('.tablinks').click(function(){
 		$('#updateImeiDivId').show();
 	else if(tab_id==3)
 		$('#assignUserDivId').show();
-	
-	
 });
 
 
@@ -149,7 +198,7 @@ function getDetailsByUserName(){
 	var uname = $("#UpdteUsrId").val();
 	 
 	  var jsObj = {
-		  userName:"294_001"  
+		  userName:"180_committee_001"  
 	      
 	 }
 	 
@@ -159,7 +208,29 @@ function getDetailsByUserName(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   
+	   if(result != null){
+		   var str='';
+			
+			str+='<table  class="table table-condensed table-bordered">';
+				str+='<thead>';
+				str+='<tr>';
+					str+='<th> IMEI NO </th>';
+					str+='<th> PRESENT STATUS </th>';
+					str+='<th> LAST LOGIN TIME </th>';
+				str+='</tr>';
+				str+='</thead>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td> '+result[i].imiNo+' </td>';
+					str+='<td>  '+result[i].status+' </td>';
+					str+='<td>  '+result[i].insertedTime+' </td>';
+				str+='</tr>';
+				
+			}	
+			str+='</table>';
+		   $('#usersDetailsDiv').html(str);
+		   
+	   }
    });
   }
   
@@ -167,7 +238,7 @@ function getDetailsByUserName(){
 	var imeiNo = $("#updatedIMEIId").val();
 	 
 	  var jsObj = {
-		  imeiNumber:imeiNo  
+		  imeiNumber:"865498027253814"  //865498027263995  9999
 	      
 	 }
 	 
@@ -177,7 +248,28 @@ function getDetailsByUserName(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   
+	   if(result != null){
+			var str='';
+			
+			str+='<table  class="table table-condensed table-bordered">';
+				str+='<thead>';
+				str+='<tr>';
+					str+='<th> USER NAME  </th>';
+					str+='<th> PRESENT STATUS </th>';
+					str+='<th> LAST LOGIN TIME </th>';
+				str+='</tr>';
+				str+='</thead>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td> '+result[i].name+' </td>';
+					str+='<td>  '+result[i].status+' </td>';
+					str+='<td>  '+result[i].insertedTime+' </td>';
+				str+='</tr>';
+				
+			}	
+			str+='</table>';
+		   $('#imeiDetailsDiv').html(str);
+	   }
    });
   }
   
@@ -185,8 +277,8 @@ function getDetailsByUserName(){
 	var assignUname = $("#AssignUserNameId").val();
 	var assignImeiNo = $("#AssignImeiNumberId").val();
 	  var jsObj = {
-		  userName:assignUname,  
-	      imeiNumber:assignImeiNo
+		  userName:"180_committee_001",  
+	      imeiNumber:"865498027253814"
 	 }
 	 
     $.ajax({
@@ -198,8 +290,6 @@ function getDetailsByUserName(){
 	   
    });
   }
-  
-  
 </script>
 </body>
 </html>
