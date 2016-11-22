@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cadre Online Registration</title>
+<title> LOCKING AND UNLOCKING TAB USER  </title>
 <link href="dist/cadreRegistration/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <!--<link href="dist/cadreRegistration/landingPage/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/cadreRegistration/landingPage/css/responsive.css" rel="stylesheet" type="text/css">-->
