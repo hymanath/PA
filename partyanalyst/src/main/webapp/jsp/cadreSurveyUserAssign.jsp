@@ -94,9 +94,9 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 				<div class="block">				
 								
 				<ul class="tab">
-				  <li><a href="javascript:void(0)" class="tablinks" id="1">UPDATE USER</a></li>
-				  <li><a href="javascript:void(0)" class="tablinks" id="2" >UPDATE IMEI NO </a></li>
-				  <li><a href="javascript:void(0)" class="tablinks" id="3"  >ASSIGN USER</a></li>
+				  <li style="background-color:#cccccc;" class="tabCls"><a href="javascript:void(0)" class="tablinks" id="1">UNLOCK USER</a></li>
+				  <li class="tabCls"><a href="javascript:void(0)" class="tablinks" id="2" >UNLOCK IMEI NO </a></li>
+				  <li class="tabCls"><a href="javascript:void(0)" class="tablinks" id="3"  >ASSIGN USER</a></li>
 				</ul>
 
 				</div>
@@ -105,14 +105,14 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 				<div class="block">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px">
-						<div id="errorId" style="color:red;"></div>
+						<div id="errorId"  class="errorCls" style="color:red;"></div>
 								<label> <h6> UNLOCK THE USER : </h6></label>
 								<input type ="text" name="userName" placeholder="Enter username" id="UpdteUsrId"/>
 								<input type ="submit" value="Get Details" class=" btn btn-success" onclick ="getDetailsByUserName();"/>
 						</div>
 					</div>
 						<div class="row">
-							<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px" id="usersDetailsDiv">							
+							<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px; padding:10px;" id="usersDetailsDiv">							
 							</div>
 						</div>
 				</div>
@@ -122,14 +122,14 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 				<div class="block">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">
-						 <div id="errorImeiNo" style="color:red;"></div>
+						 <div id="errorImeiNo" class="errorCls" style="color:red;"></div>
 							<label> <h6>UNLOCK THE IMEI NO : </h6></label>
 							<input type ="text" name="IMEINo" placeholder="Enter IMEI no" id="updatedIMEIId"/>
 							<input type ="submit" value="Get Details" class=" btn btn-success"  onclick ="getIMEINumberDetails();"/>
 						</div>
 					</div>
 					<div class="row">
-							<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px" id="imeiDetailsDiv">							
+							<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px; padding:10px" id="imeiDetailsDiv">							
 							</div>
 						</div>
 				</div>
@@ -139,7 +139,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 				<div class="block">
 					<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">	
-                       <div id="assignErrorId" style="color:red;"></div>					
+                       <div id="assignErrorId"  class="errorCls" style="color:red;"></div>					
 							<div class="col-md-4 col-xs-12 col-sm-6">
 								<div class="row">
 									<label> <h6> USERNAME : </h6></label>
@@ -185,9 +185,10 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 
 $('.tablinks').click(function(){
 	$('.tabcontent').hide();
+	$('.tabCls').removeAttr('style');
 		   $('#UpdteUsrId,#AssignUserNameId,#AssignImeiNumberId,#updatedIMEIId').val('');
 		   $('#usersDetailsDiv').html('');
-		   $('#imeiDetailsDiv').html('');
+		   $('#imeiDetailsDiv,.errorCls').html('');
 	var tab_id = $(this).attr('id');
 	if(tab_id==1)
 		$('#updateUserDivId').show();
@@ -202,9 +203,8 @@ $('.tablinks').click(function(){
 function getDetailsByUserName(){
 	var uname = $("#UpdteUsrId").val();
 	 
-	  var jsObj = {
-		  userName:"180_committee_001"  
-	      
+	  var jsObj = { 
+	      userName:uname 
 	 }
 	 if(uname =='' && uname == 0)
 	{
@@ -232,18 +232,26 @@ function getDetailsByUserName(){
 		str+='<table  class="table table-condensed table-bordered" id="userNameTableId">';
 			str+='<thead>';
 			str+='<tr>';
+				str+='<th> ASSEMBLY  </th>';
 				str+='<th> IMEI NO </th>';
-				str+='<th> PRESENT STATUS </th>';
+				str+='<th>  STATUS </th>';
 				str+='<th> LAST LOGIN TIME </th>';
-				str+='<th> CONSTISTUENCY NAME </th>';
+				str+='<th> UNLOCK </th>';
 			str+='</tr>';
 			str+='</thead>';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td> '+result[i].imiNo+' </td>';
-				str+='<td>  '+result[i].status+' </td>';
-				str+='<td>  '+result[i].insertedTime+' </td>';
-				str+='<td>  '+result[i].constistuencyName+' </td>';
+				str+='<td>'+result[i].constistuencyName+' </td>';
+				str+='<td>'+result[i].imiNo+' </td>';
+				str+='<td> '+result[i].status+' </td>';
+				str+='<td>'+result[i].insertedTime+' </td>';
+				//str+='<td>&nbsp<span class="glyphicon glyphicon-remove UnclockUserCls"  title="Unlock The IMEINo" style="cursor:pointer;" attr_tab_login_id="'+result[i].tabLoginAuthId+'"></span></td>';
+				
+				if(result[i].isDeleted == 'N')
+				str+='<td><button type="button" class=" btn btn-warning btn-sm UnclockUserCls" attr_tab_login_id="'+result[i].tabLoginAuthId+'" title="Unlock The IMEINo">Unlock</button></td>';
+			else
+				str+='<td></td>';
+			
 			str+='</tr>';
 			
 		}	
@@ -261,8 +269,7 @@ function getDetailsByUserName(){
 	var imeiNo = $("#updatedIMEIId").val();
 	 
 	  var jsObj = {
-		  imeiNumber:"865498027253814"  //865498027263995  9999
-	      
+	      imeiNumber:imeiNo
 	 }
 	 if(imeiNo == 0 && imeiNo == '')
 	 {
@@ -270,8 +277,7 @@ function getDetailsByUserName(){
 		 return;
 	 }else{
 		 $("#errorImeiNo").html("");
-	 }
-	 
+	 } 
     $.ajax({
           type:'GET',
           url: 'getUpdatedIMEINumberDetailsAction.action',
@@ -290,20 +296,25 @@ var str='';
 	str+='<table  class="table table-condensed table-bordered" id="iMEINumberDetailsId">';
 		str+='<thead>';
 		str+='<tr>';
+		    str+='<th> ASSEMBLY  </th>';
 			str+='<th> USER NAME  </th>';
-			str+='<th> PRESENT STATUS </th>';
+			str+='<th>  STATUS </th>';
 			str+='<th> LAST LOGIN TIME </th>';
-			str+='<th> CONSTISTUENCY NAME </th>';
+			str+='<th> UNLOCK </th>';
 		str+='</tr>';
 		str+='</thead>';
 	for(var i in result){
 		str+='<tr>';
+		    str+='<td> '+result[i].constistuencyName+' </td>';
 			str+='<td> '+result[i].name+' </td>';
-			str+='<td>  '+result[i].status+' </td>';
-			str+='<td>  '+result[i].insertedTime+' </td>';
-			str+='<td>  '+result[i].constistuencyName+' </td>';
-		str+='</tr>';
-		
+			str+='<td> '+result[i].status+' </td>';
+			str+='<td> '+result[i].insertedTime+' </td>';
+			//str+='<td>&nbsp<span class="glyphicon glyphicon-remove UnclockUserCls"  title="Unlock The User" style="cursor:pointer;" attr_tab_login_id="'+result[i].tabLoginAuthId+'"></span></td>';
+			if(result[i].isDeleted == 'N')
+				str+='<td><button type="button" class=" btn btn-warning btn-sm UnclockUserCls" attr_tab_login_id="'+result[i].tabLoginAuthId+'" title="Unlock The User">Unlock</button></td>';
+			else
+				str+='<td></td>';
+		str+='</tr>';	
 	}	
 	str+='</table>';
    $('#imeiDetailsDiv').html(str);
@@ -315,36 +326,64 @@ var str='';
 
 }
 
-   function getUpdatedIMEINumberDetails(){
-	var assignUname = $("#AssignUserNameId").val();
-	var assignImeiNo = $("#AssignImeiNumberId").val();
-	  var jsObj = {
-		  userName:"180_committee_001",  
-	      imeiNumber:"865498027253814"
-	 }
-	if(assignUname =='' && assignUname == 0)
-	{
-		$("#assignErrorId").html("UserName Required");
-		return;
-	}else{
-		$("#assignErrorId").html("");
-	}
-	if(assignImeiNo =='' && assignImeiNo == 0)
-	{
-		$("#assignErrorId").html("ImeiNumber Required");
-		return;
-	}else{
-		$("#assignErrorId").html("");
-	}
-	 
-    $.ajax({
-          type:'GET',
-          url: 'getAssigndUsrDetailsAction.action',
-          dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
-	   
-   });
+   function getUpdatedIMEINumberDetails(){	   
+	   var isOk = confirm("Are you sure want to assign IMEI NO with this Username?");
+	   if(isOk){
+			var assignUname = $("#AssignUserNameId").val();
+			var assignImeiNo = $("#AssignImeiNumberId").val();
+			  var jsObj = {
+				  userName:assignUname,  
+				  imeiNumber:assignImeiNo
+			 }
+			if(assignUname =='' && assignUname == 0)
+			{
+				$("#assignErrorId").html("UserName Required");
+				return;
+			}else{
+				$("#assignErrorId").html("");
+			}
+			if(assignImeiNo =='' && assignImeiNo == 0)
+			{
+				$("#assignErrorId").html("ImeiNumber Required");
+				return;
+			}else{
+				$("#assignErrorId").html("");
+			}
+			 
+			$.ajax({
+				  type:'GET',
+				  url: 'getAssigndUsrDetailsAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   
+		   });
+	   }
+	
+  }
+  $(document).on("click",".UnclockUserCls",function(){	
+	  var tabLoginAuthId =$(this).attr("attr_tab_login_id");
+     updateUserORIMEIDetails(tabLoginAuthId,$(this).attr("title"));	  
+});
+function updateUserORIMEIDetails(tabLoginAuthId,title){
+	
+	var isOk = confirm("Are you sure want to  "+title+"?");
+	   if(isOk){
+				   
+			  var jsObj = {
+				  loginAuthId:tabLoginAuthId        
+			 }	 
+			$.ajax({
+				  type:'GET',
+				  url: 'getUnLockUserNameAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null){
+				  
+			   }
+		   });
+	   }
   }
 </script>
 </body>
