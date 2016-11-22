@@ -1589,8 +1589,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
    }
     
-   public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId,Long casteCategryId){
-	       StringBuilder sb = new StringBuilder();
+   public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
+                                                             Long ageRangeTypeId,Long deptmentId,Long corptionId,Long slectPostonId,
+                                                             String genderType,List<Long> postStatusIds){
+	         StringBuilder sb = new StringBuilder();
 	       sb.append(" select model.nominationPostCandidate.nominationPostCandidateId," +
 	                 " model.nominationPostCandidate.candidateName," +
 			         " model.nominationPostCandidate.mobileNo,"+

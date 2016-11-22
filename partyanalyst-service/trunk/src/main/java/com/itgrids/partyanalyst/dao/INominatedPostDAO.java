@@ -51,5 +51,7 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public Integer updateNominatedPostsForOpenState(Set<Long> postIds,Long userId,Date date);
 	public Long getOpenedPositions(Long memberId);
 	
-	 public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId,Long casteCategryId);
+	 public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
+                                                               Long ageRangeTypeId,Long deptmentId,Long corptionId,Long slectPostonId,
+                                                               String genderType,List<Long> postStatusIds);
 }
