@@ -2964,9 +2964,9 @@
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Cadre Registration Comparison Details</h4>  
+				<h4 class="modal-title" id="tourDocHeadingId">Cadre Registration Comparison Details</h4>  
 			  </div>
-			  <div class="modal-body">
+			  <div class="modal-body">   
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12"> <div id="cdrModelId"></div></div>
 				</div>
@@ -3166,6 +3166,10 @@
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script type="text/javascript">
+	//getting Dynamic Browser URL
+	var windowUrl = window.location.href;
+	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
 	$(document).on("click","#demoBtn",function(){
 		$("#attendanceModal").modal('show');
 	});
@@ -3345,6 +3349,7 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 		$("#switchButtonId").addClass("showCls");
 	}
 });    
+
 </script> 
 </body>
 </html>
