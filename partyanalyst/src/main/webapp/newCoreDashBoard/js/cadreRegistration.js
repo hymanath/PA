@@ -3410,8 +3410,8 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		}
 		$("#designationListId").html(str); 
 		//$("#desigPosition0").trigger("click");   
+		$(".comparisonSelect li:first-child").addClass("active");
 		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
-		
 	}
 	$(document).on("click","#desigPosition0",function(){
 		firstChildUserTypeIdString = $(this).attr("attr_userTypeId");
@@ -3470,7 +3470,11 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			for(var i in result){
 				k = parseInt(k) + 1;     
 			str+='<li style="cursor:pointer;" style="width:380px !important;">';
-			str += '<div class="panel panel-default panelSlick">';
+			  if(i==0){
+			   str+='<div class="panel panel-default panelSlick panelActiveSlick">';
+		      }else{
+		     str+='<div class="panel panel-default panelSlick">';
+		     }
 				str += '<div class="panel-heading">';
 					str += '<h4 class="panel-title">'+result[i].name+'</h4><span class="count">'+(k)+'</span>';     
 				str += '</div>';
@@ -3585,6 +3589,8 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		var userTypeId = $(this).attr("attr_user_type_id");
 		var selectedMemberName = $(this).attr("attr_name");
 		var selectedUserType = $(this).attr("attr_desig");
+  	  	$(".slickPanelSliderCadre").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+		$(this).parent().parent().find(".panelSlick").addClass("panelActiveSlick");
 		//changed 
 		if(userTypeId == 3 || userTypeId == 5){ 
 			$("#individualDtlsId").show();				
@@ -3661,7 +3667,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 						str+='<table class="table table-condensed tableHoverLevels m_top20">';  
 					 }
 						str+='<thead>';
-						str+='<th>%RANK</th>';
+						str+='<th>RANK</th>';
 						str+='<th>DESIGNATION</th>';
 						str+='<th class="text-capital">NAME</th>';      
 						str+='<th>TOTAL</th>';
@@ -3669,7 +3675,6 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 						str+='<th>%</th>';
 					str+='</thead>';
 					str+='<tbody>';
-						   
 						var k = 0;
 						for(var i in result){
 							if(result[i].totalCadreCount > 0){         
