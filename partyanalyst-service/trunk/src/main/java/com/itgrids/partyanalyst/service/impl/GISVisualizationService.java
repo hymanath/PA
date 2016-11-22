@@ -1578,7 +1578,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 								}
 							
 								locationVO.getTodayActiveUsersList().add(tabUser);
-								locationVO.setActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayActiveUsersList().size())));
+								locationVO.setActiveCount(locationVO.getActiveCount()+Long.valueOf(String.valueOf(locationVO.getTodayActiveUsersList().size())));
 								if(locationVO.getDistrictId() == null || locationVO.getDistrictId().longValue() == 0L){
 									locationVO.setDistrictId(tabUser.getDistrictId());
 									locationVO.setDistrictName(tabUser.getDistrictName());
@@ -1601,7 +1601,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							}
 						
 							locationVO.getTodayInActiveUsersList().add(tabUser);
-							locationVO.setInActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayInActiveUsersList().size())));
+							locationVO.setInActiveCount(locationVO.getInActiveCount()+Long.valueOf(String.valueOf(locationVO.getTodayInActiveUsersList().size())));
 							if(locationVO.getDistrictId() == null || locationVO.getDistrictId().longValue() == 0L){
 								locationVO.setDistrictId(tabUser.getDistrictId());
 								locationVO.setDistrictName(tabUser.getDistrictName());
@@ -1674,7 +1674,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 								}
 							
 								locationVO.getTodayActiveUsersList().add(tabUser);
-								locationVO.setActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayActiveUsersList().size())));
+								locationVO.setActiveCount(locationVO.getActiveCount()+Long.valueOf(String.valueOf(locationVO.getTodayActiveUsersList().size())));
 								if(locationVO.getLocationId() == null || locationVO.getLocationId().longValue() == 0L){
 									locationVO.setDistrictId(tabUser.getDistrictId());
 									locationVO.setDistrictName(tabUser.getDistrictName());
@@ -1719,7 +1719,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							}
 						
 							locationVO.getTodayInActiveUsersList().add(tabUser);
-							locationVO.setInActiveCount(Long.valueOf(String.valueOf(locationVO.getTodayInActiveUsersList().size())));
+							locationVO.setInActiveCount(locationVO.getInActiveCount()+Long.valueOf(String.valueOf(locationVO.getTodayInActiveUsersList().size())));
 							if(locationVO.getLocationId() == null || locationVO.getLocationId().longValue() == 0L){
 								locationVO.setDistrictId(tabUser.getDistrictId());
 								locationVO.setDistrictName(tabUser.getDistrictName());
