@@ -2658,6 +2658,27 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   public String cadreOnlineRegistration(){
 	  return Action.SUCCESS;
   }  
+  public String cadreWebRegistration(){
+	  try {
+			RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+			if(user==null)
+				return "input";
+			boolean noaccess = false;
+			List<String> entitlements = null;
+			if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(!(entitlements.contains("CADRE_WEB_REGISTRATION_2016") || entitlements.contains("CADRE_WEB_REGISTRATION_2016_ADMIN_USER"))){
+					noaccess = true ;
+				}
+			}
+			if(noaccess)
+				return Action.ERROR;
+	} catch (Exception e) {
+		LOG.error("Entered into cadreWebRegistration method in CadreRegistrationAction....");
+	}
+	  return Action.SUCCESS;
+  } 
+  
   public String getTdpCadresBySearch(){
 	  try {
 		jobj = new JSONObject(getTask());
