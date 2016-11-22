@@ -20,16 +20,20 @@ public class TdpCadreSmsLeaderLocationDAO extends GenericDaoHibernate<TdpCadreSm
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select TCSL.mobile_no as mobileNo,TCSLL.location_scope_id as locationScopeId," +
-				"TCSLL.location_value as locationValue," +
-				"TCSLL.location_name as locationName," +
-				"TCTC.target_count as targetCount,TCLI.type as type," +
-				" TCLI.cadre_2016 as cadre,TCSL.name as personName ,TCSL.is_group as isGroup,TCLI.cadre_2014 as 2014Cadre," +
+				" TCSLL.location_value as locationValue," +
+				" TCSLL.location_name as locationName," +
+				" TCTC.target_count as targetCount," +
+				" TCLI.type as type," +
+				" TCLI.cadre_2016 as cadre," +
+				" TCSL.name as personName ," +
+				" TCSL.is_group as isGroup," +
+				" TCLI.cadre_2014 as 2014Cadre," +
 				" TCLI.renewal_cadre as renewel " +
 				" " +
 				" FROM " +
 				" tdp_cadre_sms_leader_location TCSLL,tdp_cadre_sms_leader TCSL, " +
 				" tdp_cadre_target_count  TCTC,tdp_cadre_location_info TCLI " +
-				"" +
+				" " +
 				" WHERE" +
 				" " +
 				" TCSLL.tdp_cadre_sms_leader_id = TCSL.tdp_cadre_sms_leader_id " +
