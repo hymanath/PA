@@ -18,4 +18,5 @@ public interface ICoreDashboardToursService {
 	public List<TabLoginAuthVO> getDetailsByUserName(String userName);
 	public List<TabLoginAuthVO> getUpdatedIMEINumberDetails(String imeiNo);
 	public String savingTabUserDetails(final Long loginUserId,final String userName,final String imeiNo);
+	public String updateUserORIMEIDetails(Long loginAuthId);
 }
