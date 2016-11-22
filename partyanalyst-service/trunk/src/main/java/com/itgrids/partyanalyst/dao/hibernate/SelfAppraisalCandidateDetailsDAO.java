@@ -637,7 +637,9 @@ public class SelfAppraisalCandidateDetailsDAO extends GenericDaoHibernate<SelfAp
 						" model.month, " +//1    
 						" model.year, " +//2
 						" model.remarks, " +//3
-						" model.reportPath " +//4
+						" model.reportPath, " +//4
+						" model.ownTours, " +  //5
+						" model.inchargeTours" +//6
 						" from SelfAppraisalCandidateDetails model where " +
 						" model.selfAppraisalCandidate.selfAppraisalCandidateId in (:cndIdListForCmtAndFile) " +
 						" and date(model.tourDate) between (:fromDate) and (:toDate) " );
