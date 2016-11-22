@@ -43,11 +43,17 @@ public class SurveyInfoVO implements Serializable{
 	private String teamleadName;
 
 	
-	private Long targetCount;
-	private Long todayCount;
-	private Long totalCount;
+	private Long targetCount=0l;
+	private Long todayCount=0l;
+	private Long totalCount=0l;
+	
+	private Long total2014Cadre=0l;
+	private Long totalRenewalCadre=0l;
+	private Long remainingRenewalCadre=0l;
 	
 	private String message;
+	
+	
 	
 	private List<SurveyInfoVO> surveyInfoVOList = new ArrayList<SurveyInfoVO>(0);
 	
@@ -285,6 +291,25 @@ public class SurveyInfoVO implements Serializable{
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	public Long getTotal2014Cadre() {
+		return total2014Cadre;
+	}
+	public void setTotal2014Cadre(Long total2014Cadre) {
+		this.total2014Cadre = total2014Cadre;
+	}
+	public Long getTotalRenewalCadre() {
+		return totalRenewalCadre;
+	}
+	public void setTotalRenewalCadre(Long totalRenewalCadre) {
+		this.totalRenewalCadre = totalRenewalCadre;
+	}
+	public Long getRemainingRenewalCadre() {
+		return remainingRenewalCadre;
+	}
+	public void setRemainingRenewalCadre(Long remainingRenewalCadre) {
+		this.remainingRenewalCadre = remainingRenewalCadre;
+	}
+
 	
 	
 }
