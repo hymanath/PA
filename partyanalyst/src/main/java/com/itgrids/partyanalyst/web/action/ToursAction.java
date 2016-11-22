@@ -363,8 +363,9 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 				for( int i=0;i<designationIdArray.length();i++){
 					disigList.add(Long.valueOf(designationIdArray.getString(i)));
 				}   
-			}   
-			listOfTourBasicVo = coreDashboardToursService.getMemberDtlsForADesignation(disigList,stateId,fromDate,toDate,activityMemberId); 
+			}  
+			String outPutType = jObj.getString("outPutType");
+			listOfTourBasicVo = coreDashboardToursService.getMemberDtlsForADesignation(disigList,stateId,fromDate,toDate,activityMemberId,outPutType); 
 			
 		} catch (Exception e) { 
 			LOG.error("Exception raised at getToursBasicOverviewCountDetails() method of CoreDashBoard", e);
