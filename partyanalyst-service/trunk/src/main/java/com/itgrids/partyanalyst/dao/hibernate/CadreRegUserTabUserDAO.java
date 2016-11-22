@@ -360,9 +360,12 @@ return query.list();
 	public List<Object[]> getFieldMonitoringMapReportDetails(Long constitunecyId, Long fieldUserId){
 		Query query = getSession().createQuery("select distinct cru.cadreSurveyUserId,cru.cadreSurveyUser.userName from CadreRegUserTabUser cru,CadreSurveyUserAssignDetails csuad where cru.cadreRegUser.userId = :fieldUserId " +
 				" and cru.cadreSurveyUserId = csuad.cadreSurveyUserId and csuad.constituencyId = :constitunecyId and cru.cadreSurveyUser.isEnabled='Y' order by cru.cadreSurveyUser.userName asc ");
-		
+		if(constitunecyId != null && constitunecyId.longValue() >0){
 		query.setParameter("constitunecyId", constitunecyId);
+		 }
+		if(fieldUserId != null && fieldUserId.longValue() >0){
 		query.setParameter("fieldUserId", fieldUserId);
+		}
 		return query.list();
 		
 	}
