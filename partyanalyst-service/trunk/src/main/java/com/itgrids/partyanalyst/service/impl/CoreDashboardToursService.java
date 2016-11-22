@@ -1704,6 +1704,26 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   	return returnList;
   	
   }
+   
+	public String updateUserORIMEIDetails(Long loginAuthId) {
+		String status = null;
 
+		try {
+			int tabLoginDetails = tabLogInAuthDAO
+					.updateUserORIMEIDetails(loginAuthId);
+			if (tabLoginDetails > 0)
+				status = "success";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(
+					"Exception Occured in updateUserORIMEIDetails Method - Exception is : ",
+					e);
+			status = "failure";
+		}
+		return status;
+
+	}
+   
   
 }

@@ -131,4 +131,13 @@ public class TabLogInAuthDAO extends GenericDaoHibernate<TabLogInAuth,Long> impl
 		query.setParameter("imeiNo", imeiNo);
 		return query.list();		
 	}
+	
+	public int updateUserORIMEIDetails(Long loginAuthId){
+		//0authId,1userName,2name,3mobileNo,4imei
+		Query query = getSession().createQuery("update TabLogInAuth model set model.isDeleted = 'Y' " +
+				" where model.tabLogInAuthId =:loginAuthId ");
+		query.setParameter("loginAuthId", loginAuthId);
+		return query.executeUpdate();
+	}
+	
 }
