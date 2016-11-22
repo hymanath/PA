@@ -154,7 +154,15 @@ $(document).ready(function(){
 	else if(callFrom == "dpdwd")
 		getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins(0);
 	else if(callFrom == "dpcwd")
-		getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins(0)
+		getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins(0);
+	else if(callFrom == "dgpdsb")
+		getEMMDetailedGovtProblemsDetailedOverviewOfStateBulletins(0);
+	else if(callFrom == "dgpdcb")
+		getEMMDetailedGovtProblemsDetailedOverviewChannelWiseBulletins(0);
+	else if(callFrom == "dgpdwp")
+		getEMMDetailedGovtProblemsDetailedOverviewDepartmentWiseBulletins(0);
+	else if(callFrom == "dgpdiswd")
+		getEMMDetailedGovtProblemsDetailedOverviewBulletins(0);
 	}, 1000);
 	
 });
@@ -541,6 +549,14 @@ $(document).ready(function(){
 								getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins(num);
 							else if(callFrom == "dpcwd")
 								getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins(num);
+							else if(callFrom == "dgpdsb")
+								getEMMDetailedGovtProblemsDetailedOverviewOfStateBulletins(num);
+							else if(callFrom == "dgpdcb")
+								getEMMDetailedGovtProblemsDetailedOverviewChannelWiseBulletins(num);
+							else if(callFrom == "dgpdwp")
+								getEMMDetailedGovtProblemsDetailedOverviewDepartmentWiseBulletins(num);
+							else if(callFrom == "dgpdiswd")
+								getEMMDetailedGovtProblemsDetailedOverviewBulletins(num);
 								
 					}					
 				});
@@ -612,9 +628,9 @@ $(document).ready(function(){
 
 		$.ajax({
 		  type : 'GET',      
-		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		 url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		 //url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsPartiesDistrictWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
 		}).then(function(result){
 		  var countByDate=0;
@@ -629,6 +645,62 @@ $(document).ready(function(){
 		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartiesVsChannelsTvChannelWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }	
+  function getEMMDetailedGovtProblemsDetailedOverviewOfStateBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewOfStateBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalCategoryIds+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewOfStateBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalBfIdStr+"/"+globalCategoryIds+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }	
+  function getEMMDetailedGovtProblemsDetailedOverviewChannelWiseBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewChannelWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewChannelWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }	
+   function getEMMDetailedGovtProblemsDetailedOverviewDepartmentWiseBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewDepartmentWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewDepartmentWiseBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		}).then(function(result){
+		  var countByDate=0;
+		  buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});    
+  }	
+  function getEMMDetailedGovtProblemsDetailedOverviewBulletins(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedGovtProblemsDetailedOverviewBulletins/"+globalUserAccessLevelId+"/"+globalLevelValue+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsChannelIds+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"
 		
 		}).then(function(result){
 		  var countByDate=0;
