@@ -1604,7 +1604,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			         " model.nominationPostCandidate.address.constituency.constituencyId," +
 	                 " model.nominationPostCandidate.address.constituency.name," +
 	                 " tc.tdpCadreId  "+
-	   		         " from NominatedPost model " +
+	   		         " from NominatedPostFinal model " +
 			         " left outer join model.nominationPostCandidate.tdpCadre tc");
 			        
 	   
@@ -1612,7 +1612,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	       		sb.append(" where model.nominationPostCandidate.address.state.stateId=:stateId");
    		      }
 	          if(postStatusIds != null && !postStatusIds.isEmpty()){
-	        	  sb.append(" and model.nominatedPostStatus.nominatedPostStatusId in(:postStatusIds)");
+	        	  sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
 	          }
 	   		  if(casteStateId != null && casteStateId.longValue()>0l){
 	   		     sb.append(" and model.nominationPostCandidate.casteState.casteStateId =:casteStateId"); 
