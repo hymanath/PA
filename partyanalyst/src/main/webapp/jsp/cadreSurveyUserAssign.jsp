@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
 <link rel="stylesheet" href="js/flipclock/flipclock.css">
+<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
 <!-- online First Page-->
 	
 		
@@ -104,6 +105,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 				<div class="block">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 25px">
+						<div id="errorId" style="color:red;"></div>
 								<label> <h6> UNLOCK THE USER : </h6></label>
 								<input type ="text" name="userName" placeholder="Enter username" id="UpdteUsrId"/>
 								<input type ="submit" value="Get Details" class=" btn btn-success" onclick ="getDetailsByUserName();"/>
@@ -120,6 +122,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 				<div class="block">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">
+						 <div id="errorImeiNo" style="color:red;"></div>
 							<label> <h6>UNLOCK THE IMEI NO : </h6></label>
 							<input type ="text" name="IMEINo" placeholder="Enter IMEI no" id="updatedIMEIId"/>
 							<input type ="submit" value="Get Details" class=" btn btn-success"  onclick ="getIMEINumberDetails();"/>
@@ -135,7 +138,8 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 			<div class="col-md-12 col-xs-12 col-sm-12 tabcontent" id="assignUserDivId"   style="display:none;margin-left:15px;">
 				<div class="block">
 					<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">							
+					<div class="col-md-12 col-xs-12 col-sm-6" style="margin-top: 25px">	
+                       <div id="assignErrorId" style="color:red;"></div>					
 							<div class="col-md-4 col-xs-12 col-sm-6">
 								<div class="row">
 									<label> <h6> USERNAME : </h6></label>
@@ -173,6 +177,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>
 
 
 
@@ -201,6 +206,13 @@ function getDetailsByUserName(){
 		  userName:"180_committee_001"  
 	      
 	 }
+	 if(uname =='' && uname == 0)
+	{
+		$("#errorId").html("UserName Required");
+		return;
+	}else{
+		$("#errorId").html("");
+	}
 	 
     $.ajax({
           type:'GET',
@@ -209,29 +221,40 @@ function getDetailsByUserName(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null){
-		   var str='';
-			
-			str+='<table  class="table table-condensed table-bordered">';
-				str+='<thead>';
-				str+='<tr>';
-					str+='<th> IMEI NO </th>';
-					str+='<th> PRESENT STATUS </th>';
-					str+='<th> LAST LOGIN TIME </th>';
-				str+='</tr>';
-				str+='</thead>';
-			for(var i in result){
-				str+='<tr>';
-					str+='<td> '+result[i].imiNo+' </td>';
-					str+='<td>  '+result[i].status+' </td>';
-					str+='<td>  '+result[i].insertedTime+' </td>';
-				str+='</tr>';
-				
-			}	
-			str+='</table>';
-		   $('#usersDetailsDiv').html(str);
-		   
+		   buildGetDetailsByUserName(result);
 	   }
    });
+  }
+  function buildGetDetailsByUserName(result)
+  {
+  var str='';
+		
+		str+='<table  class="table table-condensed table-bordered" id="userNameTableId">';
+			str+='<thead>';
+			str+='<tr>';
+				str+='<th> IMEI NO </th>';
+				str+='<th> PRESENT STATUS </th>';
+				str+='<th> LAST LOGIN TIME </th>';
+				str+='<th> CONSTISTUENCY NAME </th>';
+			str+='</tr>';
+			str+='</thead>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td> '+result[i].imiNo+' </td>';
+				str+='<td>  '+result[i].status+' </td>';
+				str+='<td>  '+result[i].insertedTime+' </td>';
+				str+='<td>  '+result[i].constistuencyName+' </td>';
+			str+='</tr>';
+			
+		}	
+		str+='</table>';
+	   $('#usersDetailsDiv').html(str);
+	  $("#userNameTableId").dataTable({
+	   "aaSorting": [[ 0, "asc" ]],
+	   "iDisplayLength": 20,
+	   "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+});
+
   }
   
   function getIMEINumberDetails(){
@@ -241,6 +264,13 @@ function getDetailsByUserName(){
 		  imeiNumber:"865498027253814"  //865498027263995  9999
 	      
 	 }
+	 if(imeiNo == 0 && imeiNo == '')
+	 {
+		 $("#errorImeiNo").html("ImeiNumber Required");
+		 return;
+	 }else{
+		 $("#errorImeiNo").html("");
+	 }
 	 
     $.ajax({
           type:'GET',
@@ -249,30 +279,42 @@ function getDetailsByUserName(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null){
-			var str='';
-			
-			str+='<table  class="table table-condensed table-bordered">';
-				str+='<thead>';
-				str+='<tr>';
-					str+='<th> USER NAME  </th>';
-					str+='<th> PRESENT STATUS </th>';
-					str+='<th> LAST LOGIN TIME </th>';
-				str+='</tr>';
-				str+='</thead>';
-			for(var i in result){
-				str+='<tr>';
-					str+='<td> '+result[i].name+' </td>';
-					str+='<td>  '+result[i].status+' </td>';
-					str+='<td>  '+result[i].insertedTime+' </td>';
-				str+='</tr>';
-				
-			}	
-			str+='</table>';
-		   $('#imeiDetailsDiv').html(str);
+		   buildGetIMEINumberDetails(result);
 	   }
    });
   }
-  
+function buildGetIMEINumberDetails(result)
+{
+var str='';
+	
+	str+='<table  class="table table-condensed table-bordered" id="iMEINumberDetailsId">';
+		str+='<thead>';
+		str+='<tr>';
+			str+='<th> USER NAME  </th>';
+			str+='<th> PRESENT STATUS </th>';
+			str+='<th> LAST LOGIN TIME </th>';
+			str+='<th> CONSTISTUENCY NAME </th>';
+		str+='</tr>';
+		str+='</thead>';
+	for(var i in result){
+		str+='<tr>';
+			str+='<td> '+result[i].name+' </td>';
+			str+='<td>  '+result[i].status+' </td>';
+			str+='<td>  '+result[i].insertedTime+' </td>';
+			str+='<td>  '+result[i].constistuencyName+' </td>';
+		str+='</tr>';
+		
+	}	
+	str+='</table>';
+   $('#imeiDetailsDiv').html(str);
+	$("#iMEINumberDetailsId").dataTable({
+   "aaSorting": [[ 0, "asc" ]],
+   "iDisplayLength": 20,
+   "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+});
+
+}
+
    function getUpdatedIMEINumberDetails(){
 	var assignUname = $("#AssignUserNameId").val();
 	var assignImeiNo = $("#AssignImeiNumberId").val();
@@ -280,6 +322,20 @@ function getDetailsByUserName(){
 		  userName:"180_committee_001",  
 	      imeiNumber:"865498027253814"
 	 }
+	if(assignUname =='' && assignUname == 0)
+	{
+		$("#assignErrorId").html("UserName Required");
+		return;
+	}else{
+		$("#assignErrorId").html("");
+	}
+	if(assignImeiNo =='' && assignImeiNo == 0)
+	{
+		$("#assignErrorId").html("ImeiNumber Required");
+		return;
+	}else{
+		$("#assignErrorId").html("");
+	}
 	 
     $.ajax({
           type:'GET',

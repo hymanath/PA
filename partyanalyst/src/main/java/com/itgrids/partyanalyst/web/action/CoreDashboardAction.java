@@ -3207,6 +3207,21 @@ public String getAssigndUsrDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getUserTrackingDtslBySurveyUserId1(){
+	try {
+		LOG.info("Entered into getUserTrackingDtslBySurveyUserId()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		//Long constId = jObj.getLong("constId");
+		//Long fieldUserId = jObj.getLong("fieldUserId");
+		Long surveyUserId = jObj.getLong("surveyUserId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate,null,null);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getUserTrackingDtslBySurveyUserId1() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 
 
 }

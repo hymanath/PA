@@ -14757,5 +14757,10 @@
 			<param name="root">tabUserDetails</param>
 		   </result>
 		</action>
+		 <action name="getUserTrackingDtslBySurveyUserIdAction1" class="coreDashboardAction"  method="getUserTrackingDtslBySurveyUserId1">
+			<result type="json" name="success">
+			<param name="root">cadreVO</param>
+		</result>
+	</action>
  </package>
 </struts>
