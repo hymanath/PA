@@ -13964,7 +13964,7 @@
 	</action>
 	
 	<action name="cadreWebRegistrationAction" class="cadreRegistrationAction" method="cadreWebRegistration">
-			<result name="success">/jsp/cadreOnlineRegistration2016.jsp</result>
+			<result name="success">/jsp/cadreWebRegistration2016.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=cadreWebRegistrationAction</result>
 			 <result name="input">/jsp/loginForm.jsp?src=cadreWebRegistrationAction</result>
 	</action>
