@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -10,4 +11,5 @@ public interface IDistrictConstituenciesDAO extends GenericDao<DistrictConstitue
 	public List<Object[]> getConstituenciesOfDistrict();
 	public List<Object[]> getConstituenciesOfDistrictStateWise(Long stateId);
 	public List<Long> getConstituenciesOfDistrictById(Long districtId);	
+	public List<Object[]> getDistrictByConstituenciesIds(Set<Long> constituenciesIds);
 }

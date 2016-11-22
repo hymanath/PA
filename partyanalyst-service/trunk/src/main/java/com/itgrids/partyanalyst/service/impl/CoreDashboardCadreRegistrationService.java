@@ -2365,7 +2365,29 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 		 				  }
 		 			  }
 		 		  }
-		 	  }    
+		 	  }  
+			 //Setting District Name for District President of Visakhapatnam and Visakhapatnam Rural
+			 if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+				 if(childActivityMembersMap.containsKey(50l)){
+					 UserTypeVO vo = childActivityMembersMap.get(50l);
+					 List<Object[]> distObjLst = constituencyDAO.getDistAndConDtslByConstituenciesIds(new ArrayList<Long>(vo.getLocationValuesSet()));
+					 if(distObjLst != null && distObjLst.size() > 0){
+						 vo.getLocationValuesSet().clear();
+						 vo.getLocationValuesSet().add(commonMethodsUtilService.getLongValueForObject(distObjLst.get(0)[0]));
+						 vo.setLocationName(commonMethodsUtilService.getStringValueForObject(distObjLst.get(0)[1])+" District");
+					 }
+				 }
+				 if(childActivityMembersMap.containsKey(53l)){
+					 UserTypeVO vo = childActivityMembersMap.get(53l);
+					 List<Object[]> distObjLst = districtConstituenciesDAO.getDistrictByConstituenciesIds(vo.getLocationValuesSet());
+					 if(distObjLst != null && distObjLst.size() > 0){
+						 vo.getLocationValuesSet().clear();
+						 vo.getLocationValuesSet().add(commonMethodsUtilService.getLongValueForObject(distObjLst.get(0)[0]));
+						 vo.setLocationName(commonMethodsUtilService.getStringValueForObject(distObjLst.get(0)[1])+" District");
+					 }
+				 }
+			 }
+			 
 			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				resultList.addAll(childActivityMembersMap.values());
 			}

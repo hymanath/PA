@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -35,6 +36,13 @@ public class DistrictConstituenciesDAO extends GenericDaoHibernate<DistrictConst
 	public List<Long> getConstituenciesOfDistrictById(Long districtId){
 		Query query = getSession().createQuery(" select distinct model.constituencyId  from DistrictConstituencies model where model.districtId = :districtId ");
 		query.setParameter("districtId", districtId);
+		return query.list();
+	}
+	public List<Object[]> getDistrictByConstituenciesIds(Set<Long> constituenciesIds){
+		Query query = getSession().createQuery(" select distinct model.district.districtId," +
+				" model.district.districtName " +
+				" from DistrictConstituencies model where model.constituency.constituencyId in(:constituencyids)  ");
+		query.setParameterList("constituencyids", constituenciesIds);
 		return query.list();
 	}
 }
