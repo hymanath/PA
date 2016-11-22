@@ -376,7 +376,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			4			ORGANIZING SECRETARIES			33					1			VENKATESWARA RAO VANAMADI		66
 		*/
 			List<Long> desigList = new ArrayList<Long>();
-			if(level.equalsIgnoreCase("bellow")){
+			if(level.equalsIgnoreCase("bellow")){  
 				if(userTypeId.longValue() == 2l){  
 			    	desigList = Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS);
 			    }else if(userTypeId.longValue() == IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
@@ -387,7 +387,15 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    	desigList = Arrays.asList(IConstants.MP_SUB_LEVEL_DESIG_IDS);
 			    }else if(userTypeId.longValue() == 5l){
 			    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
-			    }  
+			    } 
+				
+				if(activityMemberId != null && activityMemberId == 4l || activityMemberId == 5l){
+					 List<Long> districtIds = constituencyDAO.getDistrictsByConstituenciesIds(locationValueSet);
+					 locationScopeId = 3l; // district access level ids
+					 locationValueSet.clear();
+					 locationValueSet.addAll(districtIds);     
+				}
+				
 			}else{
 				if(userTypeId.longValue() == IConstants.STATE_TYPE_USER_ID){  
 			    	desigList = Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS);
