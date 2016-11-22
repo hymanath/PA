@@ -96,7 +96,7 @@ var glblLon = 78.4800;
 		$('#map1').html('<div id=""><img class="ajaxImgStyle" src="images/icons/search.gif"/></div>');
 		$.ajax({
           type:'GET',
-          url: 'getUserTrackingDtslBySurveyUserIdAction.action',
+          url: 'getUserTrackingDtslBySurveyUserIdAction1.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
