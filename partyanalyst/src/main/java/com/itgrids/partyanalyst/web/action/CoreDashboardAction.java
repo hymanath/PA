@@ -807,6 +807,44 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String newCoreDashboardPage(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Long registrationId = null;
+			if(user == null || user.getRegistrationID() == null)
+				return ERROR;
+			
+			
+			registrationId = user.getRegistrationID();
+			
+			boolean noaccess = false;
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(!(entitlements.contains("CORE_DASHBOARD_USER") || entitlements.contains("CORE_DASHBOARD_ADMIN_USER"))){
+					noaccess = true ;
+				}
+			}
+			
+			if(noaccess)
+				return "error";
+			
+			userDataVO = coreDashboardService.getUserBasicDetails(registrationId);
+			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();
+			userDataVO.setDeptIdList(diptIdList);
+			List<UserDataVO> committeeDataVOList = coreDashboardMainService.getbasicCommitteeDetails();
+			if(committeeDataVOList!=null && committeeDataVOList.size()>0)
+				userDataVO.setSubList(committeeDataVOList);
+		}catch(Exception e) {
+			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getUserBasicDetails(){
 		try{
 			LOG.info("Entered into getUserBasicDetails()  of CoreDashboardAction");
