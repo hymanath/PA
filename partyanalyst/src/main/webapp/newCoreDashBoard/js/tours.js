@@ -173,7 +173,7 @@ function getToursBasicOverviewCountDetails()
 				  toursDesignationIdsString = toursDesignationIdsString+','+strIds;	
 				}
 			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
-				str+='<h4>'+designationWiseRlst[i].designation+'<i style="cursor: pointer; font-size: 16px; margin-left: 30px;" class="glyphicon glyphicon-info-sign tourDocCls" attr_desig_id="'+designationWiseRlst[i].id+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Get Tour Documents"></i></h4>';
+				str+='<h4>'+designationWiseRlst[i].designation+'<i style="cursor: pointer; font-size: 16px; margin-left: 30px;" class="glyphicon glyphicon-info-sign tourDocCls" attr_desig_id="'+designationWiseRlst[i].id+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Get Tour Details"></i></h4>';        
 				  str+='<div class="table-responsive">';  
 				  str+='<table class="table tableTraining bg_ED m_XsTop10">';
 				  str+='<tbody><tr>';
@@ -1349,17 +1349,29 @@ function getToursBasicOverviewCountDetails()
 	$(document).on('click','#showPdfId',function(){
 		var dbFilePath = $(this).attr("attr_filePath");         
 		var str = ''; 
+		var fileNameArr = dbFilePath.split(".");
+		var extName = fileNameArr[1];
 		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
-			$("#tourReportPdfModelId").modal("hide");
-			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			$("#tourDocumentId").modal("hide");
+			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open('http://ieee802.org/secmail/docIZSEwEqHFr.doc','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}else{
-			//$("#tourReportPdfModelId").modal("show");
-			//str += '<iframe src="'+wurl+'/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
-			//str += '<iframe src="'+wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
-			//str += '</iframe>';
-			//$("#tourReportPdfDetailsId").html(str);
-			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
-			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			$("#tourDocumentId").modal("show");
+			if(extName.trim()=="pdf" || extName.trim()=="PDF"){
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}
+			if(extName.trim()=="jpg"){          
+				str += '<iframe src="http://mytdp.com/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+				str += '</iframe>';
+			}              
+			if(extName.trim()=="doc" || extName.trim()=="docx"){      
+				str += '<iframe src="https://docs.google.com/gview?url=http://mytdp.com/Reports/tour_documents/'+dbFilePath+'&embedded=true" frameborder="0" style="width: 100%; height: 500px;">';
+				str += '</iframe>';
+			}     
+			$("#tourDocumentBodyId").html(str);
+			//window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			// window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}      
 	});
