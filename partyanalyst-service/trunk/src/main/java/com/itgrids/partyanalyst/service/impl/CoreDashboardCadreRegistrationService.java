@@ -2353,6 +2353,19 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 					}
 				}
 			}  
+			//Setting Location Name
+			 if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		 		  for(UserTypeVO vo:childActivityMembersMap.values()){
+		 			  for(Long locationValueId:vo.getLocationValuesSet()){
+		 				  String key = vo.getLocationLevelId()+"_"+locationValueId;
+		 				  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
+		 					  vo.setLocationName(nameForLocationMap.get(key));
+		 				  }else{
+		 					  vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
+		 				  }
+		 			  }
+		 		  }
+		 	  }    
 			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				resultList.addAll(childActivityMembersMap.values());
 			}
