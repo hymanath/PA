@@ -4696,3 +4696,9 @@ function buildTabUserComparisonRslt(result){
 	$(document).on("click",".settingCloseCls",function(){  
 		$(".specialCadreDropDown").toggle();    
 	});
+	
+	/* Sorting type validation in setting */
+	$(document).on("click",".selectOneSpecialCadre",function(){
+		$(".selectOneSpecialCadre").prop("checked",false);
+		$(this).prop("checked",true);
+	});
