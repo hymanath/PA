@@ -233,6 +233,7 @@
 			<result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
 			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
+			<result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5691,6 +5692,7 @@
       <result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
       <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
+      <result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -13178,9 +13180,10 @@
 		<result name="error" type="redirect">login.action</result>
 	</action>
 	
-	<action name="coreDashboardAction1" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
+	<action name="coreDashboardAction1" class="coreDashboardAction" method="newCoreDashboardPage">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
-		<result name="error" type="redirect">login.action</result>
+		<result name="input">/jsp/loginForm.jsp?src=coreDashboardAction1</result>
+		<result name="error">/jsp/loginForm.jsp?src=coreDashboardAction1</result>
 	</action>
 	<action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
 		<result name="success">/jsp/nominatedPostMainDashboard.jsp</result>
