@@ -714,5 +714,6 @@
 		<pattern>/dataMonitoringDashboardNewAction*</pattern>
 		<pattern>/getMomPartyMeetingDetailsAction*</pattern>
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
+		<pattern>/cadreWebRegistrationAction*</pattern>
 	</decorator> 
 </decorators>
