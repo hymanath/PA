@@ -173,8 +173,8 @@ function getToursBasicOverviewCountDetails()
 				  toursDesignationIdsString = toursDesignationIdsString+','+strIds;	
 				}
 			    str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >';
-				str+='<h4>'+designationWiseRlst[i].designation+'</h4>';
-				  str+='<div class="table-responsive">';
+				str+='<h4>'+designationWiseRlst[i].designation+'<i style="cursor: pointer; font-size: 16px; margin-left: 30px;" class="glyphicon glyphicon-info-sign tourDocCls" attr_desig_id="'+designationWiseRlst[i].id+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Get Tour Documents"></i></h4>';
+				  str+='<div class="table-responsive">';  
 				  str+='<table class="table tableTraining bg_ED m_XsTop10">';
 				  str+='<tbody><tr>';
 					  str+='<td>';
@@ -219,7 +219,8 @@ function getToursBasicOverviewCountDetails()
 		  }else{
 		  str+='<h4>No Data Available</h4>';	  
 		  }
-	     $("#tourOverviewDivId").html(str);  
+	     $("#tourOverviewDivId").html(str);
+		 $('[data-toggle="tooltip"]').tooltip();      
 		 $("#overallTourLdrDsgntnId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
 		 $("#submitedTourLdrDsgntnId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
 		 $("#notSubmitedTourLdrDsgntnCntId").attr("attr_dsgntn_ids",toursDesignationIdsString);  
@@ -879,7 +880,8 @@ function getToursBasicOverviewCountDetails()
 			designationIds : desigIdArr,                  
 			stateId : globalStateIdForTour,      
 			fromDate : globalTourFormDate,                
-			toDate : glovalTourToDate
+			toDate : glovalTourToDate,
+			outPutType : ""           
 		}
 		$.ajax({
 			type : 'POST',
@@ -1233,6 +1235,131 @@ function getToursBasicOverviewCountDetails()
 		 }); 
 	}
 		
- function generateExcelReportForToursDetails(){
-	tableToExcel(tourSubmittedDtlsDataTblid, 'Tours Submitted Details Report');
-}     
+	function generateExcelReportForToursDetails(){
+		tableToExcel(tourSubmittedDtlsDataTblid, 'Tours Submitted Details Report');
+	}
+	$(document).on('click','.tourDocCls',function(){
+		$("#cdrModelDivId").modal("show");
+		$("#tourDocHeadingId").html("Leaders Submitted Documents");
+		$("#cdrModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		var desigId = $(this).attr("attr_desig_id");
+		var desigIdArr =[];
+		desigIdArr.push(desigId);  
+		var jsObj ={ 
+			activityMemberId : globalActivityMemberId,
+			designationIds : desigIdArr,                  
+			stateId : globalStateIdForTour,      
+			fromDate : globalTourFormDate,                
+			toDate : glovalTourToDate,  
+			outPutType : "document"
+		}
+		$.ajax({   
+			type : 'POST',    
+			url : 'getMemberDtlsForADesignationAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}         
+		}).done(function(result){
+			$("#cdrModelId").html('');     
+			if(result != null && result.length > 0){ 
+				buildDocumentDtls(result);
+			}        
+		});
+	});
+	function buildDocumentDtls(result){
+		
+		var str='';
+		str+='<div class="table-responsive">';
+	 	str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed " id="tourDocumentTblid">';     
+		str+='<thead>';
+             str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>Year</th>';
+			 str+='<th>Month</th>';
+			 str+='<th>comment</th>';
+			 str+='<th>document</th>';  
+			 str+='<th>Own Tour</th>'
+			 str+='<th>Incharge Tour</th>'  
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+			if(result[i].name != null && result[i].name.length > 0){
+				str+='<td>'+result[i].name+'</td>';      
+			}else{
+				str+='<td> - </td>';  
+			}
+			if(result[i].designation != null && result[i].designation.length > 0){
+				str+='<td>'+result[i].designation+'</td>';  
+			}else{
+				str+='<td> - </td>';  
+			}
+			if(result[i].year != null){
+				str+='<td>'+result[i].year+'</td>';  
+			}else{
+				str+='<td> - </td>';  
+			}
+			if(result[i].month != null && result[i].month.length > 0){
+				str+='<td>'+result[i].month+'</td>';  
+			}else{
+				str+='<td> - </td>';  
+			}
+			if(result[i].comment != null && result[i].comment.length > 0){
+				str+='<td>'+result[i].comment+'</td>';  
+			}else{
+				str+='<td> - </td>';  
+			}
+			if(result[i].filePath != null && result[i].filePath.length > 0){
+				var fullName = result[i].filePath;
+				var nameArr = fullName.split(".");
+				var type = nameArr[1];
+				if(type=="pdf" || type=="PDF"){
+					str+='<td id="showPdfId" attr_filePath="'+result[i].filePath+'" style="cursor:pointer;"><span><img src="images/pdf.jpg" class="media-object" alt="" style="width:30px;"/></td>';
+				}else if(type=="xls" ||type=="xlsx"){  
+					str+='<td id="showPdfId" attr_filePath="'+result[i].filePath+'" style="cursor:pointer;"><span><img src="images/excel.jpg" class="media-object" alt="" style="width:30px;"/></td>';       
+				}else if(type=="doc" || type=="docx"){
+					str+='<td id="showPdfId" attr_filePath="'+result[i].filePath+'" style="cursor:pointer;"><span><img src="images/word.jpg" class="media-object" alt="" style="width:30px;"/></td>';         
+				}else if(type != null){  
+					str+='<td id="showPdfId" attr_filePath="'+result[i].filePath+'" style="cursor:pointer;"><span><img src="images/fileImage.png" class="media-object" alt="" style="width:30px;"/></td>';         
+				}           
+			}else{    
+				str+='<td> - </td>';  
+			}
+			if(result[i].ownTours != null){
+				str+='<td>'+result[i].ownTours+'</td>';  
+			}else{
+				str+='<td> - </td>';  
+			}
+			if(result[i].inchargerTours != null){
+				str+='<td>'+result[i].inchargerTours+'</td>';  
+			}else{
+				str+='<td> - </td>';  
+			}
+			str+='</tr>';
+		}
+		 str+='</tbody>';
+		 str+='</table>';
+		str+='</div>';
+		$("#cdrModelId").html(str);    
+		$("#tourDocumentTblid").dataTable({
+			"aaSorting": [[ 1, "desc" ]], 
+			"iDisplayLength" : 10,
+			"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+		}); 
+	}
+	$(document).on('click','#showPdfId',function(){
+		var dbFilePath = $(this).attr("attr_filePath");         
+		var str = ''; 
+		if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+			$("#tourReportPdfModelId").modal("hide");
+			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}else{
+			//$("#tourReportPdfModelId").modal("show");
+			//str += '<iframe src="'+wurl+'/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+			//str += '<iframe src="'+wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'" width="100%" height="800">';    
+			//str += '</iframe>';
+			//$("#tourReportPdfDetailsId").html(str);
+			window.open(wurl+'/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+			//window.open(wurl+'/PartyAnalyst/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		}      
+	});
