@@ -3596,12 +3596,19 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		$(".headingColor").hide();
 		var userTypeIdArr = [];
-		userTypeIdArr.push(userTypeId);     
+		userTypeIdArr.push(userTypeId);
+		var sortingType = '';
+		$(".selectOneSpecialCadre").each(function() {
+			if($(this).is(":checked")){  
+				sortingType = $(this).attr("attr_sort_type");
+			}  
+		});        
 		var jsObj ={ parentActivityMemberId : ActivityMemberId,        
 			         childUserTypeIdsArray : userTypeIdArr,    
 					 stateId : globalStateId,
 					 fromDateStr : '02/10/2016',
-					 toDateStr : getTodayDate()          
+					 toDateStr : getTodayDate(),
+					 sortingType : sortingType  
 				  }       
 	   	$.ajax({  
 			type : 'POST',   
@@ -4690,8 +4697,8 @@ function buildTabUserComparisonRslt(result){
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
 		getEnumeratorsInfoTS(globalActivityMemberId,36);      
-	   
-	  $(".specialCadreDropDown").toggle();    
+		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);       
+		$(".specialCadreDropDown").toggle();    
 	});
 	$(document).on("click",".settingCloseCls",function(){  
 		$(".specialCadreDropDown").toggle();    
