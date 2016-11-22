@@ -455,7 +455,7 @@
 										<!--<div class="row" id="enumeratorsId"></div> -->    
 										<div class="row m_top20">
 											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="headingColor" style="display:none;">DISTRICT WISE REGISTRATIONS</span>
+												<span class="headingColor1" id="districtWiseRportHeadingId" style="display:none;">DISTRICT WISE REGISTRATIONS</span>
 												<div id="individualDtlsId"></div>   
 											</div>
 											<!--<div class="col-md-6 col-xs-12 col-sm-6">
@@ -463,12 +463,11 @@
 												<div id="voterDtlsId"></div>  
 											   </div>-->
 										</div>
-										
 										<div class="row m_top20">
-										  <div class="col-md-5 col-xs-12 col-sm-5">
-											<h4><span class="headingColor hideConReport">CONSTITUENCY WISE REGISTRATIONS</span></h4>
+										  <div class="col-md-7 col-xs-12 col-sm-5">
+											<h4><span class="headingColor1 hideConReport" id="constituencyReportHeadingId">CONSTITUENCY WISE REGISTRATIONS</span></h4>
 										  </div>
-										  <div class="col-md-7 col-xs-12 col-sm-7">
+										  <div class="col-md-5 col-xs-12 col-sm-7">
 											<ul class="activeUlCls list-inline pull-right">
                                                 <li class="active consFilterCls" attr_filter_value="All">All</li>
                                                 <li class="consFilterCls" attr_filter_value="verygood">Very Good</li>

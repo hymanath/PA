@@ -1162,7 +1162,7 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		 if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-		getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	 
+		  getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	 
 		 }else{
 		 getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 	     getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	 
@@ -1202,6 +1202,7 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
 				str+='<span class="remveSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 		 } 
+		 str+='<div class="table-responsive">';
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
 			 str+='<table  class="table table-condensed tableHoverLevelsInner m_top20">';
 		 }else{
@@ -1247,7 +1248,8 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		 }
 		str+='</tbody>';
 		str+='</table>';
-	$("#"+childActivityMemberId).html(str);
+		str+='</div>';
+	    $("#"+childActivityMemberId).html(str);
 	}
 /* more training blocks start*/
 function getTrainingProgramBasicCnt(){

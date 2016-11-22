@@ -3409,8 +3409,8 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			str += '</ul>';    
 		}
 		$("#designationListId").html(str); 
-		$("#desigPosition0").trigger("click");   
-		//getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
+		//$("#desigPosition0").trigger("click");   
+		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);
 		
 	}
 	$(document).on("click","#desigPosition0",function(){
@@ -3424,7 +3424,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$(".headingColor").hide();          
+		$(".headingColor1").hide();          
 		getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString);      
 	});
 	function getSelectedChildTypeMembersForCadreRegistration(firstChildUserTypeIdString){  
@@ -3461,23 +3461,32 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	function buildChildMembers(result){
 		var attrActivityMemberId=result[0].activityMemberId;
 		var attrUserTypeId=result[0].userTypeId;
-		//var userTypeIdArr = [];
-		//userTypeIdArr = attrUserTypeId.split(",");         
+		var selectedMemberName = result[0].name;
+		var selectedUserType = result[0].userType;
 		var str = '';
 		str += '<div class="col-md-12 col-xs-12 col-sm-12">';
 			str+='<ul class="list-inline slickPanelSliderCadre">';
-			
 			var k = 0;
 			for(var i in result){
-				k = parseInt(k) + 1;       
+				k = parseInt(k) + 1;     
 			str+='<li style="cursor:pointer;" style="width:380px !important;">';
 			str += '<div class="panel panel-default panelSlick">';
 				str += '<div class="panel-heading">';
 					str += '<h4 class="panel-title">'+result[i].name+'</h4><span class="count">'+(k)+'</span>';     
 				str += '</div>';
 				str += '<div class="panel-body directChildCls" attr_name="'+result[i].name+'" attr_desig="'+result[i].userType+'" id="directChildId'+i+'" attr_activity_member_id="'+result[i].activityMemberId+'" attr_user_type_id="'+result[i].userTypeId+'">';
-					str += '<h4 class="text-capital">'+result[i].userType+'</h4>';
-					str += '<table class="table table-condensed">';
+				  var yourValues = result[i].locationName;
+					 if(yourValues != null){
+						  if(yourValues.indexOf(',') == -1){
+							  var locatinName = yourValues.substring(0, yourValues.lastIndexOf(" "));
+							   str += '<h4 class="text-capital">'+result[i].userType+' (<b>'+locatinName+'</b>)</h4>';
+							}else{
+							    str += '<h4 class="text-capital">'+result[i].userType+'</h4>';
+							}
+					 }else{
+						    str += '<h4 class="text-capital">'+result[i].userType+'</h4>';
+					 }
+				 	str += '<table class="table table-condensed">';
 						str += '<thead>';
 							str += '<tr>';   
 								str += '<th>2014-16</th>';  
@@ -3492,7 +3501,6 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 								str += '<td>'+result[i].totalCadreCountPer+'%</td>';
 							str += '</tr>';
 						str += '</tbody>';
-					
 					str += '</table>';
 					/* if(result[i].subLocationList.length > 0){
 						str += '<h4 class="text-capital">'+result[i].locationLevelName+' Wise Registrations</h4>';    
@@ -3516,18 +3524,17 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		str += '</div>';
 		$("#childMembersId").html(str);  
 		//$("#directChildId0").trigger("click"); 
-		
-
-		getDirectChildMembers(attrActivityMemberId,attrUserTypeId);
+		getDirectChildMembers(selectedMemberName,selectedUserType,attrActivityMemberId,attrUserTypeId,"directChildId");
 		//change
-		
 		//getEnumerationDtlsForMem(attrActivityMemberId);
 		if(attrUserTypeId == 3 || attrUserTypeId == 5){
-			getGSAndDPDtls(attrActivityMemberId);
+			 $("#individualDtlsId").show();
+			 getGSAndDPDtls(attrActivityMemberId,selectedMemberName,selectedUserType);
 		}else{
 			$("#individualDtlsId").html("");
+			$("#individualDtlsId").hide();
 		}
-		getDtlsOfBellowLvlMember(attrActivityMemberId);
+		getDtlsOfBellowLvlMember(attrActivityMemberId,selectedMemberName,selectedUserType);
 		//getVoterInfo(attrActivityMemberId);        
 		  
 		$("#childActivityMemberDivIdForMeeting").html(str);
@@ -3576,25 +3583,32 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	$(document).on('click','.directChildCls',function(){
 		var activityMemberId = $(this).attr("attr_activity_member_id");
 		var userTypeId = $(this).attr("attr_user_type_id");
-		getDirectChildMembers(activityMemberId,userTypeId);
+		var selectedMemberName = $(this).attr("attr_name");
+		var selectedUserType = $(this).attr("attr_desig");
 		//changed 
-		if(userTypeId == 3 || userTypeId == 5){    
-			getGSAndDPDtls(activityMemberId);
+		if(userTypeId == 3 || userTypeId == 5){ 
+			$("#individualDtlsId").show();				
+			getGSAndDPDtls(activityMemberId,selectedMemberName,selectedUserType);
 		}else{
-			$("#individualDtlsId").html("");    
+			$("#individualDtlsId").html(" "); 
+            $("#individualDtlsId").hide();			
 		}
 		//getEnumerationDtlsForMem(activityMemberId);      
 		//getVoterInfo(activityMemberId);
-		getDtlsOfBellowLvlMember(activityMemberId);  
-		
+		getDirectChildMembers(selectedMemberName,selectedUserType,activityMemberId,userTypeId,"directChildId");
+		getDtlsOfBellowLvlMember(activityMemberId,selectedMemberName,selectedUserType);  
 	});
-	function getDirectChildMembers(ActivityMemberId,userTypeId){
+	function getDirectChildMembers(selectedMemberName,selectedUserType,ActivityMemberId,userTypeId,divId){
 		$("#accessMemberId").show();    
-		$("#directChildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
-		$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		$(".headingColor").hide();
+		$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 if(userTypeId == 3 || userTypeId == 5){    
+			$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		}else{
+			$("#individualDtlsId").hide();
+		}
+		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+	 	//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$(".headingColor1").hide();
 		var userTypeIdArr = [];
 		userTypeIdArr.push(userTypeId);
 		var sortingType = '';
@@ -3617,10 +3631,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildDirectChildMembers(result);
-				        
+				buildDirectChildMembers(result,divId,selectedMemberName,selectedUserType);
 			}else{
-				$("#directChildId").html('');
+				$("#"+divId).html('');
 				//$("#enumeratorsId").html('');        
 				$("#individualDtlsId").html(''); 
 				//$("#voterDtlsId").html('');       
@@ -3628,17 +3641,26 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			}
 		});
 	}
-	function buildDirectChildMembers(result){    
+	
+	function buildDirectChildMembers(result,divId,selectedMemberName,selectedUserType){    
 		var activityMemberId = result[0].activityMemberId;  
 		var str = '';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			if($(window).width < 768)
-			{
-				str+='<div class="table-responsive">';
-			}
-			
-				str+='<table class="table table-condensed tableHoverLevels m_top20">';
-					str+='<thead>';
+		 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					if($(window).width < 768)
+					{
+						str+='<div class="table-responsive">';
+					}
+			         str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
+					 if(divId != "directChildId"){
+							str+='<span class="remveInnerTblCls pull-right" attr_removeSelecUserType = "'+divId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+					 } 
+					 str+='<div class="table-responsive">';
+					 if(divId != "directChildId"){
+						 str+='<table  class="table table-condensed tableHoverLevelsInner m_top20">';
+					 }else{
+						str+='<table class="table table-condensed tableHoverLevels m_top20">';  
+					 }
+						str+='<thead>';
 						str+='<th>%RANK</th>';
 						str+='<th>DESIGNATION</th>';
 						str+='<th class="text-capital">NAME</th>';      
@@ -3651,28 +3673,40 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 						var k = 0;
 						for(var i in result){
 							if(result[i].totalCadreCount > 0){         
-								str+='<tr id="belowLvlMemId'+i+'" class="bellowLvlCls" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
+								str+='<tr id="belowLvlMemId'+i+'"  class="bellowLvlCls"    attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'"  attr_selectedusertype = "'+result[i].userType+'" attr_activity_member_id="'+result[i].activityMemberId+'">'; 
 									k = parseInt(k) + 1;      
 									str+='<td>';
 										str+='<span class="tableCount">'+k+'</span>';
 									str+='</td>';
-									str+='<td>'+result[i].userType+'</td>';    
+								     var yourValues = result[i].locationName;
+									 if(yourValues != null){
+										  if(yourValues.indexOf(',') == -1){
+											  var locatinName = yourValues.substring(0, yourValues.lastIndexOf(" "));
+											 str+='<td>'+result[i].userType+' (<b>'+locatinName+'</b>)</td>';
+											}else{
+											  str+='<td>'+result[i].userType+'</td>';
+											}
+									 }else{
+									     str+='<td>'+result[i].userType+'</td>';	 
+									 }
 									str+='<td>'+result[i].name+'</td>';
 									str+='<td>'+result[i].totalCadreCount+'</td>';
 									str+='<td>'+result[i].totalCadreCountToday+'</td>';
 									str+='<td>'+result[i].totalCadreCountPer+'</td>';
+									str+='<tr class="showHideTr" style="display:none" attr_id = "subLevelMembersdivId'+result[i].userTypeId+''+i+'">';
+									str+='<td colspan="8"  id="subLevelMembersdivId'+result[i].userTypeId+''+i+'">';
 								str+='</tr>';   
 							}
 						}  
-						
 					str+='</tbody>';
 				str+='</table>';  
+			str+='</div>'
 			if($(window).width < 768)
 			{
 				str+='</div>';
 			}
 		str+='</div>';
-		$("#directChildId").html(str);
+		$("#"+divId).html(str);
 		//$("#belowLvlMemId0").trigger("click");
 		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		//$("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
@@ -3702,11 +3736,23 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		//$("#enumeratorsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');        
 		$("#individualDtlsId").html(''); 
 		//$("#voterDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$(".headingColor").hide();
+		$(".headingColor1").hide();
+		$(this).next('tr.showHideTr').show(); 
 		var activityMemberId = $(this).attr("attr_activity_member_id");
+		var userTypeId = $(this).attr("attr_usertypeid"); 
+		var selectedMemberName = $(this).attr("attr_selectedmembername");  
+		var selectedUserType = $(this).attr("attr_selectedusertype");  
+		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
+		 getDirectChildMembers(selectedMemberName,selectedUserType,activityMemberId,userTypeId,childActivityMemberId);
 		//getEnumerationDtlsForMem(activityMemberId);   
 		//getVoterInfo(activityMemberId);
-		getDtlsOfBellowLvlMember(activityMemberId);
+		getDtlsOfBellowLvlMember(activityMemberId,selectedMemberName,selectedUserType);
+	});
+	
+	$(document).on("click",".remveInnerTblCls",function(){
+		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
+		 $("#"+removeSelected).html(' ');
+		 $("#"+removeSelected).closest('.showHideTr').hide();
 	});
 	function getEnumerationDtlsForMem(globalActivityMemberId){
 		
@@ -3756,9 +3802,10 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
      var filterApplyType = $(this).attr("attr_filter_value");
       buildDtlsOfBellowLvlMember(globalSubLevelRslt,"individualDtls",filterApplyType);
   });
-	function getDtlsOfBellowLvlMember(globalActivityMemberId){
+	function getDtlsOfBellowLvlMember(globalActivityMemberId,selectedMemberName,selectedUserType){
 		$("#individualDtls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		$(".hideConReport").show();
+		$("#constituencyReportHeadingId").html("CONSTITUENCY WISE REGISTRATIONS<b>("+selectedMemberName+" - "+selectedUserType+")</b>");
 		var startDate = '';    
 		var endDate = '';  
          var flterApplyType="No";	
@@ -4077,7 +4124,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		var today = dd+'/'+mm+'/'+yyyy;
 		return today;
 	}
-	function getGSAndDPDtls(globalActivityMemberId){
+	function getGSAndDPDtls(globalActivityMemberId,selectedMemberName,selectedUserType){
+	  $("#individualDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+	  $("#districtWiseRportHeadingId").html("DISTRICT WISE REGISTRATIONS<b>("+selectedMemberName+" - "+selectedUserType+")</b>");
 		var startDate = '';    
 		var endDate = '';    
 		var jsObj={  
@@ -4092,10 +4141,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			dataType : 'json',  
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){        
-			
 			 if(result != null && result.length > 0){
 				 buildGetGSAndDPDtls(result);
-				 $(".headingColor").show();     
+				 $(".headingColor1").show();     
 			 }else{        
 				 $("#individualDtlsId").html("")
 			 }
