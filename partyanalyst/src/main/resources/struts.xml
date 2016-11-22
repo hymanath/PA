@@ -14765,5 +14765,10 @@
 			<param name="root">cadreVO</param>
 		</result>
 	</action>
+		 <action name="getUnLockUserNameAction" class="coreDashboardAction"  method="updateUserORIMEIDetails">
+			<result type="json" name="success">
+			<param name="root">tabUserDetails</param>
+		</result>
+	    </action>
  </package>
 </struts>

@@ -3260,6 +3260,18 @@ public String getUserTrackingDtslBySurveyUserId1(){
 	}
 	return Action.SUCCESS;
 }
+public String updateUserORIMEIDetails(){
+	try {
+		LOG.info("Entered into updateUserORIMEIDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask()); 
+		Long loginAuthId =jObj.getLong("loginAuthId");
+		tabUserDetails = coreDashboardToursService.updateUserORIMEIDetails(loginAuthId);
+
+	} catch (Exception e) {
+		LOG.error("Exception raised at getUnLockUserName() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 
 
 }
