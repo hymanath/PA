@@ -3287,13 +3287,13 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			vo.setUserName(objects[2] != null ? objects[2].toString():"");
 			vo.setTabUserName(objects[3] != null ? objects[3].toString():"");
 			vo.setMobileNo(objects[1] != null ? objects[1].toString():"");
-			vo.setTotalCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
+			vo.setTodayRegCount(Long.valueOf(objects[4] != null ? objects[4].toString():"0"));
 			vo.setTabUserId(Long.valueOf(objects[5] != null ? objects[5].toString() :"0"));
 			returnList.add(vo);
 		}	
 	}
 		
-		List<Object[]> cadreVerPassedList = tdpCadreDataVerificationDAO.getCadreVerfPassedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+		List<Object[]> cadreVerPassedList = tdpCadreDataVerificationDAO.getCadreVerfPassedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, null, null);
 		if(cadreVerPassedList != null && !cadreVerPassedList.isEmpty()){
 			for (Object[] objects : cadreVerPassedList) {
 				Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
@@ -3305,7 +3305,7 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 			}
 		}
 		
-		List<Object[]> cadreVerRejList =tdpCadreDataVerificationDAO.getCadreVerfRejectedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, fromDate, toDate);
+		List<Object[]> cadreVerRejList =tdpCadreDataVerificationDAO.getCadreVerfRejectedDetails(stateId, districtId, constituencyId, cadreSurveyUserId, null, null);
 		if(cadreVerRejList != null && !cadreVerRejList.isEmpty()){
 			for (Object[] objects : cadreVerRejList) {
 			Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
@@ -3317,12 +3317,24 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		}
 	  }
 		
+		List<Object[]> cadreTotalReg =tdpCadreDataVerificationDAO.getOverAllTotalRegisteredCount(stateId, districtId, constituencyId, cadreSurveyUserId, null, null);
+		if(cadreTotalReg != null && !cadreTotalReg.isEmpty()){
+			for (Object[] objects : cadreTotalReg) {
+				Long cadreUserId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
+				Long overAllCount = Long.valueOf(objects[1]!= null ? objects[1].toString():"0");
+				Long tabUserId = Long.valueOf(objects[2] != null ? objects[2].toString():"0");
+				FieldMonitoringVO vo = getMatchedVOByList(cadreUserId, tabUserId, returnList);
+				if(vo != null)
+					vo.setTotalCount(overAllCount);
+				
+			}
+		}
+
 		if(returnList != null && !returnList.isEmpty()){
 			for(FieldMonitoringVO vo : returnList){
 				vo.setPendingCount(vo.getTotalCount()-vo.getPassedcount()-vo.getRejectedCount());
 			}
 		}
-		
 		
 	}catch(Exception e){
 		LOG.error("Exception occurred at getVerfiedCadreSurveyUserDetails() of FieldMonitoringService", e);
