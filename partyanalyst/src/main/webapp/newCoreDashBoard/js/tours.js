@@ -1190,7 +1190,7 @@ function getToursBasicOverviewCountDetails()
 	   str+='<thead>';
              str+='<th>Name</th>';
 			 str+='<th>Designation</th>';
-			 str+='<th>TourSubmitted</th>'
+			 str+='<th>Tour Submitted</th>'
              if(tourSubmittedType!="No"){
 			  str+='<th>No Of Tours</th>';	 
 			 }			 

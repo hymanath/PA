@@ -712,6 +712,7 @@
 		<pattern>/mediaScreenPartyForTSAction*</pattern>
 		<pattern>/showElectronicBulletinsAction*</pattern>
 		<pattern>/dataMonitoringDashboardNewAction*</pattern>
+		<pattern>/getMomPartyMeetingDetailsAction*</pattern>
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 	</decorator> 
 </decorators>

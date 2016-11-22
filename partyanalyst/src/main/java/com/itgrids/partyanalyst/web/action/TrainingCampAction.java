@@ -2908,5 +2908,7 @@ public String getMeetingTypesNew(){
 	}
 	return Action.SUCCESS;
 }
-
+public String getMomPartyMeetingDetails(){
+	return Action.SUCCESS;
+}
 }
