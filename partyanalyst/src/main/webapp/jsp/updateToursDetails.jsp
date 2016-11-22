@@ -294,8 +294,7 @@
 //getting Dynamic Browser URL
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
-wurl = wurl.replace("/PartyAnalyst","");  
-//alert(wurl);
+wurl = wurl.replace("/PartyAnalyst","");
 $(document).on("click",".submitedDataModal",function(){
 	$("#myModal").modal('show');
 });
