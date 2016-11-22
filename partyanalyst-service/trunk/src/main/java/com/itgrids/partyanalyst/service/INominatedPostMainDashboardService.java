@@ -29,7 +29,7 @@ public interface INominatedPostMainDashboardService {
 	 public List<NominatedPostVO> getNominatedPostCandidatePositionWiseDetails(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long casteCategoryId,Long positionStatusId,Long stateId,Long districtId, String locationLevelName);
 	 
 	 public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
-             Long ageRangeTypeId,Long deptmentId,Long corptionId,Long slectPostonId,
+             Long ageRangeTypeId,Long deptmentId,Long corptionId,
              String genderType,List<Long> postStatusIds);
 
 }
