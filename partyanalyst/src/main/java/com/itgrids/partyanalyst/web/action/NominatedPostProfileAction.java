@@ -1749,17 +1749,25 @@ public String execute()
 			List<Long> postStatusIds =new ArrayList<Long>();
 			JSONArray postStatusIdsArr = jObj.getJSONArray("postStatusIdsLst");
 			Long stateId = jObj.getLong("stateId");
-			Long casteStateId = jObj.getLong("casteStateId");
-			Long positionId = jObj.getLong("positionId");
-			Long boardLevelId = jObj.getLong("boardLevelId");
-			Long casteCategoryId = jObj.getLong("casteCategoryId");
+			Long casteStateId = jObj.getLong("casteStateId");//
+			Long positionId = jObj.getLong("positionId");//
+			Long boardLevelId = jObj.getLong("boardLevelId");//
+			Long casteCategryId = jObj.getLong("casteCategoryId");
+			Long ageRangeTypeId = jObj.getLong("ageRangeTypeId");
+			Long deptmentId = jObj.getLong("departmentId");
+			Long corptionId = jObj.getLong("corporationId");
+			Long slectPostonId  = jObj.getLong("applictonStatusId");
+			//Long ageWisePostionId  = jObj.getLong("ageWisePostionId");
+			String genderType = jObj.getString("genderType");
 			//String type = jObj.getString("type");
 			  if(postStatusIdsArr != null && postStatusIdsArr.length()> 0){
 			    	for(int i = 0;i<postStatusIdsArr.length();i++){
 			    		postStatusIds.add(new Long(postStatusIdsArr.getInt(i)));
 			    	}
 			    }
-			  idNameVOList = nominatedPostMainDashboardService.getNominatedPostCandidateDetils(stateId,casteStateId,positionId,postStatusIds,boardLevelId,casteCategoryId);
+			  idNameVOList = nominatedPostMainDashboardService.getNominatedPostCandidateDetils(stateId,casteStateId,positionId,boardLevelId,casteCategryId,
+					                                                       ageRangeTypeId,deptmentId,corptionId,slectPostonId,genderType,postStatusIds);
+					                                                                          
 		}catch(Exception e){
 			LOG.error("Entered into getNominatedPostCandidateDetils Action",e);
 		}

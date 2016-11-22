@@ -517,14 +517,14 @@ function buildOverAllTotalCountsByPosition(result){
 				str+='<td>'+result[i].name+'</td>';
 				if(result[i].applicatnStatsList != null && result[i].applicatnStatsList.length > 0){
 					for(var j in result[i].applicatnStatsList){
-						if(result[i].applicatnStatsList[j].statusName == 'Total'){
-							str+='<td>'+result[i].applicatnStatsList[j].statusCount+'</td>';
-							str+='<td>'+result[i].applicatnStatsList[j].maleCount+'</td>';
-							str+='<td>'+result[i].applicatnStatsList[j].femaleCount+'</td>';
+						if(result[i].applicatnStatsList[j].statusName == 'Total'){   
+							str+='<td class="cateGrupCls" attr_gender_type="T" attr_age_range_id="0" attr_cstGrup_id="'+result[i].id+'" style="cursor:pointer;">'+result[i].applicatnStatsList[j].statusCount+'</td>';
+							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;">'+result[i].applicatnStatsList[j].maleCount+'</td>';
+							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;">'+result[i].applicatnStatsList[j].femaleCount+'</td>';
 						}
 						else{
-							str+='<td>'+result[i].applicatnStatsList[j].maleCount+'</td>';
-							str+='<td>'+result[i].applicatnStatsList[j].femaleCount+'</td>';
+							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;">'+result[i].applicatnStatsList[j].maleCount+'</td>';
+							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;">'+result[i].applicatnStatsList[j].femaleCount+'</td>';
 						}
 					}
 				}
@@ -1598,13 +1598,16 @@ $(".casteCategryWiseDetaislCls li").each(function(){
 		 } 
 		 }
 });
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId,ageRangeTypeId,
+                                     genderType,departmentId,corporationId,ageWisePostionId,slctApplicionStatusId);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " " +casteCategoryName+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 });
-function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId){
+
+function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId,ageRangeTypeId,
+                                     genderType,departmentId,corporationId,ageWisePostionId,slctApplicionStatusId){
   var postStatusIdsLst = [3,4];
   var jsObj={
         stateId : globalStateId,
@@ -1612,7 +1615,13 @@ function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,ca
 		positionId : positionId,
 		boardLevelId : boardLevelId,
 		postStatusIdsLst : postStatusIdsLst,
-		casteCategoryId:casteCategoryId,
+		casteCategoryId :casteCategoryId,
+		ageRangeTypeId : ageRangeTypeId,
+		genderType : genderType,
+		departmentId :departmentId,
+		corporationId :corporationId,
+		applictonStatusId:slctApplicionStatusId
+		
       }
       $.ajax({
          type:'GET',
@@ -1701,3 +1710,18 @@ function setDefaultImage(img){
     return true;
   }
 	
+$(document).on("click",".cateGrupCls",function(){
+var departmentId = $("#departmentId").chosen().val();
+var corporationId = $("#corporationId").chosen().val();
+var positionId =$("#positionId").chosen().val();
+var boardLevelId = $("#locationLevelId").chosen().val();
+var slctApplicionStatusId = $("#positionStatusId").chosen().val();
+var casteCategoryId = $(this).attr("attr_caste_category_id");
+//var casteGroupId = $(this).attr("attr_cstGrup_id");
+var ageRangeTypeId = $(this).attr("attr_age_range_id");
+var genderType = $(this).attr("attr_gender_type");
+var casteStateId =0;
+
+
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmentId,corporationId,casteCategoryId,ageRangeTypeId,genderType,slctApplicionStatusId);
+});
