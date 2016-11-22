@@ -2258,7 +2258,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 			}
 			
 			//for GS
-			List<Long> totalLocationIds = null;
+			List<Long> totalLocationIds = null;  
 			if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				for(UserTypeVO vo:childActivityMembersMap.values()){
 					locationIdSet = vo.getLocationValuesSet();
@@ -3171,7 +3171,7 @@ try{
 		}
 		return null;   
 	}
-	/**
+	/**position two
 	* @param  Long parentActivityMemberId  
 	* @param  Long childUserTypeId
 	* @param Long stateId
@@ -3180,7 +3180,7 @@ try{
 	* @Description :This Service Method is used to get selected child member and for userType.. 
 	*  @since 15-Oct-2016
 	*/
-	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate){
+	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate, String sortingType){
 	
 		try{
 			List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0);
@@ -3322,11 +3322,20 @@ try{
 		 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 		 		  resultList.addAll(childActivityMembersMap.values());
 		 	  }
-		 	  if(resultList != null && resultList.size() > 0)  
+		 	  /*if(resultList != null && resultList.size() > 0)  
 		 	  {
 		 		  Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
-		 	  }
-		 	 return resultList;	  
+		 	  }*/
+		 	 if(sortingType.equalsIgnoreCase("TargetWise")){
+		 		 if(resultList != null && resultList.size() > 0){
+		 			 Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
+		 		 }
+		 	 }else{  
+		 		 if(resultList != null && resultList.size() > 0){
+		 			 Collections.sort(resultList, cadreMemberEligibleAttendedPercDesc);
+		 		 }  
+		 	 }
+		 	 return resultList;	            
 		}catch(Exception e){
 			LOG.error("Error occured at getSelectedChildTypeMembersForTrainingProgram() in CoreDashboardMainService ",e);
 		}
