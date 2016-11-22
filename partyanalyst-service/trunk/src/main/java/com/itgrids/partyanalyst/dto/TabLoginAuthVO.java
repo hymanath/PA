@@ -18,6 +18,8 @@ public class TabLoginAuthVO implements Serializable{
 	private String insertedTime;
 	private String status;
 	private String name;
+	private Long tabLoginAuthId;
+	private String constistuencyName;
 	
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
@@ -61,6 +63,18 @@ public class TabLoginAuthVO implements Serializable{
 	}
 	public void setInsertedTime(String insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	public Long getTabLoginAuthId() {
+		return tabLoginAuthId;
+	}
+	public void setTabLoginAuthId(Long tabLoginAuthId) {
+		this.tabLoginAuthId = tabLoginAuthId;
+	}
+	public String getConstistuencyName() {
+		return constistuencyName;
+	}
+	public void setConstistuencyName(String constistuencyName) {
+		this.constistuencyName = constistuencyName;
 	}
 	
 	

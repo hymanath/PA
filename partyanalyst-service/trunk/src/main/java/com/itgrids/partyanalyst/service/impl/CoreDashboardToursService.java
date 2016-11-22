@@ -1661,6 +1661,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   				vo.setInsertedTime(commonMethodsUtilService.getStringValueForObject(param[1]));
   				vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
   				vo.setIsDeleted(commonMethodsUtilService.getStringValueForObject(param[3]));
+  				vo.setTabLoginAuthId(commonMethodsUtilService.getLongValueForObject(param[4]));
+  				vo.setConstistuencyName(commonMethodsUtilService.getStringValueForObject(param[5]));
   				
   				returnList.add(vo);
   			}
@@ -1688,6 +1690,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   				vo.setInsertedTime(commonMethodsUtilService.getStringValueForObject(param[2]));
   				vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[3]));
   				vo.setIsDeleted(commonMethodsUtilService.getStringValueForObject(param[4]));
+  				vo.setTabLoginAuthId(commonMethodsUtilService.getLongValueForObject(param[5]));
+  				vo.setConstistuencyName(commonMethodsUtilService.getStringValueForObject(param[6]));
   				returnList.add(vo);
   			}
   		}
