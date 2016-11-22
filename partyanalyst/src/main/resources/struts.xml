@@ -14724,6 +14724,9 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="getMomPartyMeetingDetailsAction" class="trainingCampAction" method="getMomPartyMeetingDetails">
+		<result name="success">/jsp/momPartyMeetingDetails.jsp</result>
+	</action>
 	<action name="cadreSurveyUsersAssignAction" class="coreDashboardAction" method="cadreSurveyUserAssign">
 		<result name="success">/jsp/cadreSurveyUserAssign.jsp</result>
 	</action>
