@@ -34,7 +34,7 @@ public interface ICoreDashboardCadreRegistrationService {
 	public List<CadreReportVO> getApAndTsConstituenciesDtls(Long stateId,String locationType,String fromDateStr,String toDateStr,Long accessLevelId,List<Long> userAccessLevelValues,String isKuppamExcluded,String sortingType);
 	public CadreReportVO getApAndTsDistrictList();
 	public List<IdAndNameVO> getOccupationList();
-	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate);
+	public List<UserTypeVO> getSelectedChildTypeMembersForCadreReg(Long parentActivityMemberId,List<Long> childUserTypeIds,Long stateId,String startDate, String endDate,String sortingType);
 	public CadreRegistratedCountVO getStateDtls(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public List<CadreRegistratedCountVO> getSourceOfRegistrationDtls(Long activityMemberId,Long stateId,String startDate, String endDate);
 	public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr);
