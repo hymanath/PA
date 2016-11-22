@@ -4002,11 +4002,9 @@ try{
 					VO.setLocationValue(objects[2] !=null ? (Long)objects[2]:0l);
 					VO.setName(objects[3] !=null ? objects[3].toString():"");
 					VO.setTargetCount(objects[4] !=null ? (Long)objects[4]:0l);
-					if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && 
-							objects[5].toString().trim().equalsIgnoreCase("today")){						
+					if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && objects[5].toString().trim().equalsIgnoreCase("today")){						
 						VO.setTodayCount(objects[6] !=null ? (Long)objects[6]:0l);						
-					}else if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && 
-							objects[5].toString().trim().equalsIgnoreCase("total")){
+					}else if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && objects[5].toString().trim().equalsIgnoreCase("total")){
 						VO.setTotalCount(objects[6] !=null ? (Long)objects[6]:0l);	
 						VO.setTotalRenewalCadre(objects[10] !=null ? (Long)objects[10]:0l);
 					}
@@ -4144,7 +4142,8 @@ try{
 							{
 								String[] mobile = new String[1];									
 								mobile[0] = mainVo.getPhoneNo();
-								smsCountrySmsService.sendOTPSmsFromAdmin(dearStr.toString(), true, mobile);																	
+								System.out.println(dearStr.toString());
+								//smsCountrySmsService.sendOTPSmsFromAdmin(dearStr.toString(), true, mobile);																	
 							}
 						}	
 					}
