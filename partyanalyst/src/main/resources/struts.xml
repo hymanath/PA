@@ -230,6 +230,7 @@
 			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardNewAction.action</result>
 			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
 			<result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>
+			<result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
 			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
@@ -5687,6 +5688,7 @@
       <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardNewAction.action</result>
       <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>    
       <result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>   
+      <result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
       <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
     </action>
@@ -13957,6 +13959,13 @@
 	<action name="cadreOnlineRegistrationAction" class="cadreRegistrationAction" method="cadreOnlineRegistration">
 			<result name="success">/jsp/cadreOnlineRegistration2016.jsp</result>
 	</action>
+	
+	<action name="cadreWebRegistrationAction" class="cadreRegistrationAction" method="cadreWebRegistration">
+			<result name="success">/jsp/cadreOnlineRegistration2016.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=cadreWebRegistrationAction</result>
+			 <result name="input">/jsp/loginForm.jsp?src=cadreWebRegistrationAction</result>
+	</action>
+	
 	<action name="getRegistrationPersonDetailsAction" class="coreDashboardAction" method="getRegistrationPersonDetails">
 		<result type="json" name="success">
 	  		<param name="root">newCadreRegistrationVO</param>   
