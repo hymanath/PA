@@ -1060,12 +1060,16 @@ public CastePositionVO setApplicationCntDataToVO(List<Object[]> rtrnApplicationD
 	return resultVO;
 }
 
-public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,List<Long> postStatusIds,Long boardLevelId,Long casteCategoryId){
+public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
+                                                       Long ageRangeTypeId,Long deptmentId,Long corptionId,Long slectPostonId,
+                                                       String genderType,List<Long> postStatusIds){
 	List<IdNameVO>  finalList = new ArrayList<IdNameVO>();
 	List<Long> cadreIds = new ArrayList<Long>();
 	Map<Long,IdNameVO> cadreMap = new HashMap<Long,IdNameVO>();
 	try{
-		List<Object[]> candidateLst = nominatedPostDAO.getStatusWiseNominatedProfileDetils(stateId,casteStateId,positionId,postStatusIds,boardLevelId,casteCategoryId);
+		List<Object[]> candidateLst = nominatedPostDAO.getStatusWiseNominatedProfileDetils(stateId,casteStateId,positionId,boardLevelId,casteCategryId,
+                                                                                          ageRangeTypeId,deptmentId,corptionId,slectPostonId,
+                                                                                          genderType,postStatusIds);
 		if(candidateLst !=null && !candidateLst.isEmpty()){
 			for(Object[] param : candidateLst){
 				IdNameVO idNameVO = new IdNameVO();
