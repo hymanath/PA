@@ -388,14 +388,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    }else if(userTypeId.longValue() == 5l){
 			    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
 			    } 
-				
-				if(activityMemberId != null && activityMemberId == 4l || activityMemberId == 5l){
-					 List<Long> districtIds = constituencyDAO.getDistrictsByConstituenciesIds(locationValueSet);
-					 locationScopeId = 3l; // district access level ids
-					 locationValueSet.clear();
-					 locationValueSet.addAll(districtIds);     
-				}
-				
 			}else{
 				if(userTypeId.longValue() == IConstants.STATE_TYPE_USER_ID){  
 			    	desigList = Arrays.asList(IConstants.STATE_SUB_LEVEL_DESIG_IDS);
@@ -410,6 +402,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    }else if(userTypeId.longValue() == IConstants.SECRETARY_USER_TYPE_ID){
 			    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
 			    }  
+			}
+			if(activityMemberId != null && activityMemberId == 4l || activityMemberId == 5l){
+				 List<Long> districtIds = constituencyDAO.getDistrictsByConstituenciesIds(locationValueSet);
+				 locationScopeId = 3l; // district access level ids
+				 locationValueSet.clear();
+				 locationValueSet.addAll(districtIds);       
 			}
 			
 		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet,desigList);
