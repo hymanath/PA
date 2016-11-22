@@ -1737,3 +1737,9 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     text-align: center;
     width: 20px;
 }
+.headingColor1 {
+    background-color: rgb(74, 88, 99);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    padding: 3px 7px;
+}
