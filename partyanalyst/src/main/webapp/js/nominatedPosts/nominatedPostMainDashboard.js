@@ -108,7 +108,11 @@ $(document).on("click",".casteGroupCls",function(){
 				str+='<tr>';
 				str+='<td id="'+result[i].casteId+'">'+result[i].casteName+'</td>';
 				for(var j in result[i].positionList){
-					str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;color:green;font-weight:bold;" attr_pstn_name='+result[i].positionList[j].positionName+' attr_caste_state_name =\''+result[i].casteName+'\'><u>'+positionList[j].count+'</u></td>'; 
+					if(positionList[j].count == 0){
+						str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="" style ="color:green;font-weight:bold;" attr_pstn_name='+result[i].positionList[j].positionName+' attr_caste_state_name =\''+result[i].casteName+'\'>'+positionList[j].count+'</td>'; 
+					}else{
+						str+='<td attr_pstn_id='+result[i].positionList[j].positionId+' attr_caste_state_id ='+result[i].casteId+' class="castePstnCls" style ="cursor:pointer;color:green;font-weight:bold;" attr_pstn_name='+result[i].positionList[j].positionName+' attr_caste_state_name =\''+result[i].casteName+'\'><u>'+positionList[j].count+'</u></td>';
+					}
 				 }
 				str+='</tr>';
 			 }
@@ -178,7 +182,11 @@ $(document).on("click",".casteGroupCls",function(){
 				str+='<tr>';
 				str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
 				 for(var j in result[i].casteList){
-					str+='<td attr_pstn_id='+result[i].positionId+'  attr_caste_category_id ='+casteList[j].casteId+' class="casteCategryPstnCls" style ="cursor:pointer;color:green;font-weight:bold;" attr_pstn_name='+result[i].positionName+' attr_caste_category_name =\''+casteList[j].casteName+'\'><u>'+casteList[j].count+'</u></td>'; 
+					if(casteList[j].count == 0){
+						str+='<td attr_pstn_id='+result[i].positionId+'  attr_caste_category_id ='+casteList[j].casteId+' class="" style ="color:green;font-weight:bold;" attr_pstn_name='+result[i].positionName+' attr_caste_category_name =\''+casteList[j].casteName+'\'>'+casteList[j].count+'</td>';
+					}else{
+						str+='<td attr_pstn_id='+result[i].positionId+'  attr_caste_category_id ='+casteList[j].casteId+' class="casteCategryPstnCls" style ="cursor:pointer;color:green;font-weight:bold;" attr_pstn_name='+result[i].positionName+' attr_caste_category_name =\''+casteList[j].casteName+'\'><u>'+casteList[j].count+'</u></td>';
+					}
 				 }
 				str+='</tr>';
 			 }
@@ -517,14 +525,34 @@ function buildOverAllTotalCountsByPosition(result){
 				str+='<td>'+result[i].name+'</td>';
 				if(result[i].applicatnStatsList != null && result[i].applicatnStatsList.length > 0){
 					for(var j in result[i].applicatnStatsList){
-						if(result[i].applicatnStatsList[j].statusName == 'Total'){   
-							str+='<td class="cateGrupCls" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].id+'" attr_caste_categry_name="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].statusCount+'</u></td>';
-							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
-							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].femaleCount+'</u></td>';
+						if(result[i].applicatnStatsList[j].statusName == 'Total'){ 
+							if(result[i].applicatnStatsList[j].statusCount == 0){
+								str+='<td class="" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].id+'" attr_caste_categry_name="'+result[i].name+'" style="color:green;font-weight:bold;">'+result[i].applicatnStatsList[j].statusCount+'</td>';
+							}else{
+								str+='<td class="cateGrupCls" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].id+'" attr_caste_categry_name="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;">'+result[i].applicatnStatsList[j].statusCount+'</td>';
+							}
+							if(result[i].applicatnStatsList[j].statusCount == 0){
+								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
+							}else{
+								str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
+							}
+							if(result[i].applicatnStatsList[j].statusCount == 0){
+								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="color:green;font-weight:bold;">'+result[i].applicatnStatsList[j].femaleCount+'</td>';
+							}else{
+								str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].femaleCount+'</u></td>';
+							}
 						}
 						else{
-							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
-							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].femaleCount+'</u></td>';
+							if(result[i].applicatnStatsList[j].maleCount == 0){
+								str+='<td class="" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="color:green;font-weight:bold;">'+result[i].applicatnStatsList[j].maleCount+'</td>';
+							}else{
+								str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
+							}
+							if(result[i].applicatnStatsList[j].femaleCount == 0){
+								str+='<td class="" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="color:green;font-weight:bold;">'+result[i].applicatnStatsList[j].femaleCount+'</td>';
+							}else{
+								str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].femaleCount+'</u></td>';
+							}
 						}
 					}
 				}
