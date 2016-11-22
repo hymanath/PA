@@ -2353,7 +2353,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 								str+='<table class="table">';
 									str+='<tr>';
 										str+='<td><p class="text-muted">Total</p>';
-											str+=''+result[i].categoryCount+'';
+											str+='<a style="cursor:pointer;" class="compPartyFstBlkCls" attr_channel_id="'+result[i].tvNewsDetailsVOList[0].organizationId+'" attr_category_id="1,2">'+result[i].categoryCount+'</a>';
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
 											str+=''+result[i].totalCoveredTime+'';
@@ -2365,7 +2365,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 						for(var j in result[i].tvNewsDetailsVOList)
 						{
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - <a style="cursor:pointer;" class="compPartyFstBlkCls" attr_channel_id="'+result[i].tvNewsDetailsVOList[j].organizationId+'" attr_category_id="'+result[i].tvNewsDetailsVOList[j].categoryId+'">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 							str+='</div>';
 							
 							str+='<div class="col-md-8 col-xs-12 col-sm-8">';
@@ -2511,16 +2511,17 @@ $(document).on("click",".NewsSlickPanelSliderLiEmnCls",function(){
 });
 function comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr,channelName)
 {
+	var channelId = channelIdArr[0];
 	$("#partyRankWiseDetailsOfChannelSub").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
 	}).then(function(result){
-		buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName)
+		buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,channelId)
 	});
 }
-function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName)
+function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,channelId)
 {
 	var str='';
 	str+='<div class="pad_15 bg_ED">';
@@ -2538,7 +2539,7 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName)
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 							str+='<div class="row">';
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-									str+='<h4 class="panel-title text-capital">Total - '+result[i].categoryCount+'</h4>';
+									str+='<h4 class="panel-title text-capital">Total - <a style="cursor:pointer;" class="stateWiseIndividualCls" attr_category_id="1,2" attr_channel_id="'+channelId+'" attr_party_id="'+result[i].tvNewsDetailsVOList[0].organizationId+'">'+result[i].categoryCount+'</a></h4>';
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="RankWiseDetailsOfChannelSub'+i+'A'+totGraphId+'" style="height:100px"></div>';
@@ -2557,7 +2558,7 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName)
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<div class="row">';
 									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-										str+='<h4 class="panel-title text-capital"> '+result[i].tvNewsDetailsVOList[j].categoryName+'- '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+										str+='<h4 class="panel-title text-capital"> '+result[i].tvNewsDetailsVOList[j].categoryName+'- <a style="cursor:pointer;" class="stateWiseIndividualCls" attr_category_id="'+result[i].tvNewsDetailsVOList[j].categoryId+'" attr_channel_id="'+channelId+'" attr_party_id="'+result[i].tvNewsDetailsVOList[j].organizationId+'">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<div id="RankWiseDetailsOfChannelSub'+i+''+graphId+'" style="height:100px"></div>';
@@ -2880,7 +2881,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 								str+='<table class="table">';
 									str+='<tr>';
 										str+='<td><p class="text-muted">Total</p>';
-											str+=''+result[i].categoryCount+'';
+											str+='<a style="cursor:pointer;" class="compGovtFstBlkCls" attr_category_id="1,2" attr_channel_id="'+result[i].tvNewsDetailsVOList[0].organizationId+'">'+result[i].categoryCount+'</a>';
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
 											str+=''+result[i].totalCoveredTime+'';
@@ -2892,7 +2893,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 						for(var j in result[i].tvNewsDetailsVOList)
 						{
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+								str+='<h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].categoryName+' - <a style="cursor:pointer;" class="compGovtFstBlkCls" attr_category_id="'+result[i].tvNewsDetailsVOList[j].categoryId+'" attr_channel_id="'+result[i].tvNewsDetailsVOList[j].organizationId+'">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 							str+='</div>';
 							
 							str+='<div class="col-md-8 col-xs-12 col-sm-8">';
@@ -3044,10 +3045,10 @@ function comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr,channelName)
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
 	}).then(function(result){
-		buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
+		buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,channelIdArr[0])
 	});
 }
-function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
+function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,channelId)
 {
 	var str='';
 	str+='<div class="pad_15 bg_ED">';
@@ -3065,7 +3066,7 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 							str+='<div class="row">';
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-									str+='<h4 class="panel-title text-capital">Total - '+result[i].categoryCount+'</h4>';
+									str+='<h4 class="panel-title text-capital">Total - <a style="cursor:pointer;" class="stateWiseGovtIndividualCls" attr_category_id="1,2" attr_channel_id="'+channelId+'" attr_party_id="'+result[i].tvNewsDetailsVOList[0].organizationId+'">'+result[i].categoryCount+'</a></h4>';
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<div id="RankWiseDetailsOfChannelSubGovt'+i+'A'+totGraphId+'" style="height:100px"></div>';
@@ -3084,7 +3085,7 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName)
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<div class="row">';
 									str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-										str+='<h4 class="panel-title text-capital"> '+result[i].tvNewsDetailsVOList[j].categoryName+'- '+result[i].tvNewsDetailsVOList[j].categoryCount+'</h4>';
+										str+='<h4 class="panel-title text-capital"> '+result[i].tvNewsDetailsVOList[j].categoryName+'- <a style="cursor:pointer;" class="stateWiseGovtIndividualCls" attr_category_id="'+result[i].tvNewsDetailsVOList[j].categoryId+'" attr_channel_id="'+channelId+'" attr_party_id="'+result[i].tvNewsDetailsVOList[j].organizationId+'">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<div id="RankWiseDetailsOfChannelSubGovt'+i+''+graphId+'" style="height:100px"></div>';
@@ -4091,5 +4092,19 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		var partyId = $(this).attr("attr_party_id");
 		
 		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr='+partyId+'&orgType=Y&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
+	});
+	
+	$(document).on("click",".compPartyFstBlkCls",function(){
+		var channelId = $(this).attr("attr_channel_id");
+		var categoryId = $(this).attr("attr_category_id");
+		
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr= &orgType=N&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
+	});
+	
+	$(document).on("click",".compGovtFstBlkCls",function(){
+		var channelId = $(this).attr("attr_channel_id");
+		var categoryId = $(this).attr("attr_category_id");
+		
+		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&scops='+impactScopeIds+'&orgIdStr= &orgType=Y&bfIds=1,2&ediDistIdsStr='+categoryId+'&npsStr='+channelId+'&status=category&stIdx=0&edIdx=6&callFrom=bad');
 	});
 	
