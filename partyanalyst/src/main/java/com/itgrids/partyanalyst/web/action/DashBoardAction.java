@@ -566,6 +566,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			Long userId = user.getRegistrationID();
+			if(entitlements.contains("CORE_DASHBOARD_USER"))
+			{
+				return "coredashboarduser";
+			}
 			if(entitlements.contains("CADRE_WEB_REGISTRATION_2016"))
 			{
 				return "cadrewebregistration2016";
