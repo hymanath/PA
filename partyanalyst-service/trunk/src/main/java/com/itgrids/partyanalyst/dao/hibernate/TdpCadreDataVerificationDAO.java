@@ -207,12 +207,12 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 			" count(distinct model.tdpCadreId)," +
 			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
-			" where");
+			" where model.dataRejectReason.dataRejectReasonId is null ");
 	if(fromDate != null && toDate != null)
 		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 	
 	 if(stateId != null && stateId.longValue() == 1l){
-			sb.append("  and model.districtId between 11 and 23 ");
+			sb.append(" and model.districtId between 11 and 23 ");
 		}else if(stateId != null && stateId.longValue() == 36l){
 			sb.append(" and model.districtId between 1 and 10 ");
 		}
@@ -223,7 +223,7 @@ public List<Object[]> getCadreVerfPassedDetails(Long stateId,Long districtId,Lon
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 	
-	sb.append(" and model.dataRejectReason.dataRejectReasonId is null ");
+	//sb.append(" and model.dataRejectReason.dataRejectReasonId is null ");
 	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
@@ -287,7 +287,7 @@ public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,L
 			" count(distinct model.tdpCadreId)," +
 			" model.tabUserInfo.tabUserInfoId" +
 			" from TdpCadreDataVerification model" +
-			" where");
+			" where model.dataRejectReason.dataRejectReasonId is not null");
 	if(fromDate != null && toDate != null)
 		sb.append(" date(model.verifiedTime) between :fromDate and :toDate");
 	
@@ -303,7 +303,7 @@ public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,L
 	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
 		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
 	
-	sb.append(" and model.dataRejectReason.dataRejectReasonId is not null ");
+	//sb.append(" and model.dataRejectReason.dataRejectReasonId is not null ");
 	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
 	
 	Query query = getSession().createQuery(sb.toString());
@@ -321,4 +321,53 @@ public List<Object[]> getCadreVerfRejectedDetails(Long stateId,Long districtId,L
 	return query.list();
 	
 }
+public List<Object[]> getOverAllTotalRegisteredCount(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId,Date fromDate,Date toDate){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select model.cadreSurveyUser.cadreSurveyUserId," +
+				" sum(model.totalRecords)," +
+				" model.tabUserInfo.tabUserInfoId " +
+				" from TabUserEnrollmentInfo model" +
+				" where model.enrollmentYearId = 4");
+	if(fromDate != null && toDate != null)
+		sb.append(" and date(model.surveyTime) between :fromDate and :toDate");
+	
+	 if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.constituency.district.districtId between 11 and 23 ");
+		}else if(stateId != null && stateId.longValue() == 36l){
+			sb.append(" and model.constituency.district.districtId between 1 and 10 ");
+		}
+
+	if(districtId != null && districtId.longValue() > 0l)
+		sb.append(" and model.constituency.district.districtId = :districtId");
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		sb.append(" and model.constituency.constituencyId = :constituencyId");
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		sb.append(" and model.cadreSurveyUserId = :cadreSurveyUserId");
+	
+	/*sb.append(" ");
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		sb.append(" group by model.cadreSurveyUserId");
+	else if(constituencyId != null && constituencyId.longValue() > 0l)
+		sb.append(" group by model.constituency.constituencyId");
+	else if(districtId != null && districtId.longValue() > 0l)
+		sb.append(" group by model.constituency.district.districtId");*/
+	sb.append(" group by model.tabUserInfo.tabUserInfoId,model.cadreSurveyUserId");
+	
+	Query query = getSession().createQuery(sb.toString());
+	if(fromDate != null && toDate != null){
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+	}
+	if(districtId != null && districtId.longValue() > 0l)
+		query.setParameter("districtId", districtId);
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		query.setParameter("constituencyId", constituencyId);
+	if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+	
+	return query.list();
+	
+}
+
+
 }
