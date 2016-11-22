@@ -23,7 +23,8 @@ public class TdpCadreSmsLeaderLocationDAO extends GenericDaoHibernate<TdpCadreSm
 				"TCSLL.location_value as locationValue," +
 				"TCSLL.location_name as locationName," +
 				"TCTC.target_count as targetCount,TCLI.type as type," +
-				" TCLI.cadre_2016 as cadre,TCSL.name as personName ,TCSL.is_group as isGroup " +
+				" TCLI.cadre_2016 as cadre,TCSL.name as personName ,TCSL.is_group as isGroup,TCLI.cadre_2014 as 2014Cadre," +
+				" TCLI.renewal_cadre as renewel " +
 				" " +
 				" FROM " +
 				" tdp_cadre_sms_leader_location TCSLL,tdp_cadre_sms_leader TCSL, " +
@@ -51,7 +52,9 @@ public class TdpCadreSmsLeaderLocationDAO extends GenericDaoHibernate<TdpCadreSm
 				.addScalar("type", Hibernate.STRING)
 				.addScalar("cadre", Hibernate.LONG)
 				.addScalar("personName", Hibernate.STRING)
-				.addScalar("isGroup", Hibernate.STRING);
+				.addScalar("isGroup", Hibernate.STRING)
+				.addScalar("2014Cadre", Hibernate.LONG)
+				.addScalar("renewel", Hibernate.LONG);
 				
 		return query.list();
 		
