@@ -3948,6 +3948,7 @@ try{
 			List<SurveyInfoVO> finalMobileList = new ArrayList<SurveyInfoVO>();
 			Map<String,Map<Long,Map<Long,SurveyInfoVO>>> mobileMap = new HashMap<String, Map<Long,Map<Long,SurveyInfoVO>>>();
 			//0.mobileNo,1.locationScopeId,2.locationValue,3.locationName,4.targetCount,5.type,6.cadreCount,7.personName,8.group
+			//9.2014Cadre,10.renewel
 			List<Object[]> listObj =  tdpCadreSmsLeaderLocationDAO.locationWiseRegistrationSMSTracking();			
 			
 			Map<String,String> mobileNameMap = new HashMap<String, String>();
@@ -3969,7 +3970,8 @@ try{
 					SurveyInfoVO VO = locationMap.get(objects[2] !=null ? (Long)objects[2]:0l);
 					
 					if(VO == null){
-						VO = new SurveyInfoVO();						
+						VO = new SurveyInfoVO();
+						VO.setTotal2014Cadre(objects[9] !=null ? (Long)objects[9]:0l);
 						locationMap.put(objects[2] !=null ? (Long)objects[2]:0l, VO);
 					}
 					
@@ -3983,10 +3985,13 @@ try{
 						VO.setTodayCount(objects[6] !=null ? (Long)objects[6]:0l);						
 					}else if(objects[5] !=null && !objects[5].toString().trim().isEmpty() && 
 							objects[5].toString().trim().equalsIgnoreCase("total")){
-						VO.setTotalCount(objects[6] !=null ? (Long)objects[6]:0l);
+						VO.setTotalCount(objects[6] !=null ? (Long)objects[6]:0l);	
+						VO.setTotalRenewalCadre(objects[10] !=null ? (Long)objects[10]:0l);
 					}
 					VO.setEmailId(objects[7] !=null ? objects[7].toString():"");
 					VO.setVoterCardNo(objects[8] !=null ? objects[8].toString():"");
+
+					VO.setRemainingRenewalCadre(VO.getTotal2014Cadre() - VO.getTotalRenewalCadre());
 					
 					mobileNameMap.put(VO.getPhoneNo(), VO.getEmailId());
 					groupMap.put(VO.getPhoneNo(), VO.getVoterCardNo());
