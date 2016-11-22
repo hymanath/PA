@@ -821,6 +821,12 @@
 								</li>
 							</c:if>
 					
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">
+								<li>
+									<a href="coreDashboardAction1.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp; CORE DASHBOARD </span></a>
+								</li>
+							</c:if>
+							
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
