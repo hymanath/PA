@@ -518,13 +518,13 @@ function buildOverAllTotalCountsByPosition(result){
 				if(result[i].applicatnStatsList != null && result[i].applicatnStatsList.length > 0){
 					for(var j in result[i].applicatnStatsList){
 						if(result[i].applicatnStatsList[j].statusName == 'Total'){   
-							str+='<td class="cateGrupCls" attr_gender_type="T" attr_age_range_id="0" attr_cstGrup_id="'+result[i].id+'" style="cursor:pointer;">'+result[i].applicatnStatsList[j].statusCount+'</td>';
-							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;">'+result[i].applicatnStatsList[j].maleCount+'</td>';
-							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;">'+result[i].applicatnStatsList[j].femaleCount+'</td>';
+							str+='<td class="cateGrupCls" attr_gender_type="" attr_age_range_id="0" attr_cstGrup_id="'+result[i].id+'" attr_caste_categry_name="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].statusCount+'</u></td>';
+							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
+							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id="0" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].femaleCount+'</u></td>';
 						}
 						else{
-							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;">'+result[i].applicatnStatsList[j].maleCount+'</td>';
-							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;">'+result[i].applicatnStatsList[j].femaleCount+'</td>';
+							str+='<td class="cateGrupCls" attr_gender_type="M" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].maleCount+'</u></td>';
+							str+='<td class="cateGrupCls" attr_gender_type="F" attr_cstGrup_id="'+result[i].id+'" attr_age_range_id='+result[i].applicatnStatsList[j].statusId+' style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].applicatnStatsList[j].femaleCount+'</u></td>';
 						}
 					}
 				}
@@ -1555,8 +1555,13 @@ var positionName = $(this).attr("attr_pstn_name").toUpperCase();
 var casteStateId = $(this).attr("attr_caste_state_id");
 var casteStateNAme = $(this).attr("attr_caste_state_name").toUpperCase();
 var casteCategoryId = 0;
+var departmntId = 0;
+var corporationId = 0;
+var ageRangeTypeId = 0;
+var genderType = "";
 var boardLevelId;
 var boardLevel;
+var postStatusIdsLst = [3,4];
 
 $(".casteWiseDetaislCls li").each(function(){
 	if($(this).hasClass("active")){
@@ -1570,7 +1575,7 @@ $(".casteWiseDetaislCls li").each(function(){
 		 }
 });
 
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " " +casteStateNAme+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
 
@@ -1584,8 +1589,13 @@ var positionName = $(this).attr("attr_pstn_name").toUpperCase();
 var casteCategoryName = $(this).attr("attr_caste_category_name");
 var casteCategoryId = $(this).attr("attr_caste_category_id");
 var casteStateId = 0;
+var departmntId = 0;
+var corporationId = 0;
+var ageRangeTypeId = 0;
+var genderType = "";
 var boardLevelId;
 var boardLevel;
+var postStatusIdsLst = [3,4];
 
 $(".casteCategryWiseDetaislCls li").each(function(){
 	if($(this).hasClass("active")){
@@ -1598,17 +1608,14 @@ $(".casteCategryWiseDetaislCls li").each(function(){
 		 } 
 		 }
 });
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId,ageRangeTypeId,
-                                     genderType,departmentId,corporationId,ageWisePostionId,slctApplicionStatusId);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " " +casteCategoryName+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 });
 
-function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,casteCategoryId,ageRangeTypeId,
-                                     genderType,departmentId,corporationId,ageWisePostionId,slctApplicionStatusId){
-  var postStatusIdsLst = [3,4];
+function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst){
   var jsObj={
         stateId : globalStateId,
 		casteStateId : casteStateId,
@@ -1618,9 +1625,8 @@ function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,ca
 		casteCategoryId :casteCategoryId,
 		ageRangeTypeId : ageRangeTypeId,
 		genderType : genderType,
-		departmentId :departmentId,
-		corporationId :corporationId,
-		applictonStatusId:slctApplicionStatusId
+		departmentId :departmntId,
+		corporationId :corporationId
 		
       }
       $.ajax({
@@ -1711,17 +1717,28 @@ function setDefaultImage(img){
   }
 	
 $(document).on("click",".cateGrupCls",function(){
-var departmentId = $("#departmentId").chosen().val();
-var corporationId = $("#corporationId").chosen().val();
-var positionId =$("#positionId").chosen().val();
-var boardLevelId = $("#locationLevelId").chosen().val();
-var slctApplicionStatusId = $("#positionStatusId").chosen().val();
-var casteCategoryId = $(this).attr("attr_caste_category_id");
-//var casteGroupId = $(this).attr("attr_cstGrup_id");
+if($("#positionStatusId").val() == 0){
+ var postStatusIdsLst = [2,4,5,7];
+}else{
+ var postStatusIdsLst = [$("#positionStatusId").val()];
+}
+var statusName = $("#positionStatusId option:selected").text();
+var positionId = $("#positionId").val();
+var positionName = $("#positionId option:selected").text().toUpperCase();
+var casteCategoryName = $(this).attr("attr_caste_categry_name");
+var casteCategoryId = $(this).attr("attr_cstGrup_id");
+var casteStateId = 0;
+var departmntId = $("#departmentId").val();
+var corporationId = $("#corporationId").val();
 var ageRangeTypeId = $(this).attr("attr_age_range_id");
 var genderType = $(this).attr("attr_gender_type");
-var casteStateId =0;
+var boardLevelId = $("#locationLevelId").val();
+var boardLevel = $("#locationLevelId option:selected").text().toUpperCase();
 
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
+$(".modelHeading").html("");
+$(".modelHeading").html(boardLevel+ " LEVEL " +casteCategoryName+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
 
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmentId,corporationId,casteCategoryId,ageRangeTypeId,genderType,slctApplicionStatusId);
+$("#nominatedPostCandidateDetailsId").html("");
+$("#nominatedCandadteModalId").modal("show");
 });

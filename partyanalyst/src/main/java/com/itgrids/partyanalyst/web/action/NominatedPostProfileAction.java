@@ -1756,7 +1756,6 @@ public String execute()
 			Long ageRangeTypeId = jObj.getLong("ageRangeTypeId");
 			Long deptmentId = jObj.getLong("departmentId");
 			Long corptionId = jObj.getLong("corporationId");
-			Long slectPostonId  = jObj.getLong("applictonStatusId");
 			//Long ageWisePostionId  = jObj.getLong("ageWisePostionId");
 			String genderType = jObj.getString("genderType");
 			//String type = jObj.getString("type");
@@ -1766,7 +1765,7 @@ public String execute()
 			    	}
 			    }
 			  idNameVOList = nominatedPostMainDashboardService.getNominatedPostCandidateDetils(stateId,casteStateId,positionId,boardLevelId,casteCategryId,
-					                                                       ageRangeTypeId,deptmentId,corptionId,slectPostonId,genderType,postStatusIds);
+					                                                       ageRangeTypeId,deptmentId,corptionId,genderType,postStatusIds);
 					                                                                          
 		}catch(Exception e){
 			LOG.error("Entered into getNominatedPostCandidateDetils Action",e);
