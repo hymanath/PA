@@ -42,6 +42,7 @@ public class TabUserEnrollmentInfo implements Serializable {
 	private Constituency constituency;
 	private Long districtId;
 	private TabUserInfo tabUserInfo;
+	private CadreSurveyUser cadreSurveyUser;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -185,6 +186,17 @@ public class TabUserEnrollmentInfo implements Serializable {
 	}
 	public void setTabUserInfo(TabUserInfo tabUserInfo) {
 		this.tabUserInfo = tabUserInfo;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_survey_user_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreSurveyUser getCadreSurveyUser() {
+		return cadreSurveyUser;
+	}
+	public void setCadreSurveyUser(CadreSurveyUser cadreSurveyUser) {
+		this.cadreSurveyUser = cadreSurveyUser;
 	}
 	
 	
