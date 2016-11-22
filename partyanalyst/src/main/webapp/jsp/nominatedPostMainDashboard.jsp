@@ -264,8 +264,8 @@
                     	<label>Application Status</label>
                         <select class="chosenSelect" id="positionStatusId">
                         	<option value="0">ALL</option>  
-							<option value="2">Shortlisted</option>
-							<option value="4">Ready For Final Review</option>
+							<option value="3">Shortlisted</option>
+							<option value="6">Ready For Final Review</option>
 							<option value="5">Finalized</option>
 							<option value="7">G.O Issued</option>  
                         </select>
