@@ -135,6 +135,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 					 }
+					 if(activityMemberId != null && activityMemberId == 4l || activityMemberId == 5l){
+					 List<Long> districtIds = constituencyDAO.getDistrictsByConstituenciesIds(locationValues);
+					 locationAccessLevelId = 3l; // district access level ids
+					 locationValues.clear();
+					 locationValues.addAll(districtIds);
+					 }
 				 }
 		 		   List<Object[]> rtrnLeaderCntObjLst = selfAppraisalCandidateLocationDAO.getNoOfLeadersCntDesignationByBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,userTypeId);
 				   if(rtrnLeaderCntObjLst != null &&  rtrnLeaderCntObjLst.size() > 0){
@@ -943,6 +949,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
 						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 					 }
+					 if(activityMemberId != null && activityMemberId == 4l || activityMemberId == 5l){
+						 List<Long> districtIds = constituencyDAO.getDistrictsByConstituenciesIds(locationValues);
+						 locationAccessLevelId = 3l; // district access level ids
+						 locationValues.clear();
+						 locationValues.addAll(districtIds);
+					}
 				 }
 			 
 			    List<Object[]> rtrnObjLst = selfAppraisalCandidateTourLocationDAO.getCandiateLocationScopeIdAndValuesByDesignation(3l);//get gs access level and values
@@ -1009,6 +1021,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					 }
 			 }
 			//Getting Mp Details
+			   if(locationAccessLevelId == 2l){ // Mp will come only for state access user
 				 List<Object[]> rtrnMpObjList = selfAppraisalCandidateDetailsDAO.getToursSubmittedCandidateCntAndNoOfToursDistrictWiseBsdOnUserAccssLvl(locationAccessLevelId, locationValues, stateId, fromDate, toDate,"MP",userTypeId);
 				 setMemberDetails(rtrnMpObjList,memberDetaislMap,designationMap); 
 				 
@@ -1048,6 +1061,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							   }
 						 }
 				 }
+			   }
 			 //calculating average
 			 if(memberDetaislMap != null && memberDetaislMap.size() > 0){
 				 
