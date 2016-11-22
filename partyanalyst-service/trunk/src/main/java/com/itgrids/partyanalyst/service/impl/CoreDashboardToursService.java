@@ -411,8 +411,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			    	desigList = Arrays.asList(IConstants.SECRETARY_SUB_LEVEL_DESIG_IDS);    
 			    }  
 			}
-		    
-		    
+			
 		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet,desigList);
 		    
 		    prepairDesignationWiseCandidateDtls(desigWiseAllCandidate, desigIdAndMapOfCandIdAndCandDtlsMap);
@@ -491,8 +490,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		}
 		return null;  
 	}
-	public List<ToursBasicVO> getMemberDtlsForADesignation(List<Long> disigList,Long stateId,String fromDateStr,String toDateStr,Long activityMemberId){
+	public List<ToursBasicVO> getMemberDtlsForADesignation(List<Long> disigList,Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,String outPutType){
 		try{
+			List<ToursBasicVO> docListVO = new ArrayList<ToursBasicVO>();
 			Map<Long,Map<Long,ToursBasicVO>> desigIdAndMapOfCandIdAndCandDtlsMap = new HashMap<Long,Map<Long,ToursBasicVO>>();
 			Long locationScopeId = 0l;
 			Set<Long> locationValueSet = new HashSet<Long>(0);
@@ -581,7 +581,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    		}
 		    	}
 		    }
-		    
+		    ToursBasicVO resultVO = null;
 		    Map<Long,List<String>> candIdAndRemarksListMap = new HashMap<Long,List<String>>();
 		    List<String> remarksList = null;
 		    Map<Long,List<String>> candIdAndFilePathListMap = new HashMap<Long,List<String>>();
@@ -589,31 +589,56 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    if(cndIdListForCmtAndFile != null && cndIdListForCmtAndFile.size() > 0){
 		    	List<Object[]> memberDtls = selfAppraisalCandidateDetailsDAO.getCommendAndFilePathDtls(cndIdListForCmtAndFile,fromDate,toDate);
 		    	if(memberDtls != null && memberDtls.size() > 0){  
-		    		for(Object[] param : memberDtls){
-		    			//add remarks to map
-		    			remarksList = candIdAndRemarksListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-		    			if(remarksList != null){
-		    				remarksList.add(commonMethodsUtilService.getStringValueForObject(param[3]));
-		    			}else{
-		    				remarksList = new ArrayList<String>();
-		    				remarksList.add(commonMethodsUtilService.getStringValueForObject(param[3]));
-		    				candIdAndRemarksListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),remarksList);
+		    		if(outPutType.equalsIgnoreCase("document")){
+		    			for(Object[] param : memberDtls){
+		    				resultVO = new ToursBasicVO();
+		    				resultVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		    				resultVO.setMonth(commonMethodsUtilService.getStringValueForObject(param[1]));
+		    				resultVO.setYear(commonMethodsUtilService.getLongValueForObject(param[2]));
+		    				resultVO.setComment(commonMethodsUtilService.getStringValueForObject(param[3]));
+		    				resultVO.setFilePath(commonMethodsUtilService.getStringValueForObject(param[4]));
+		    				resultVO.setOwnTours(commonMethodsUtilService.getLongValueForObject(param[5]));
+		    				resultVO.setInchargerTours(commonMethodsUtilService.getLongValueForObject(param[6]));  
+		    				if(commonMethodsUtilService.getLongValueForObject(param[0]) != null){
+		    					resultVO.setName(candIdAndCandDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getName());
+		    					resultVO.setDesignation(candIdAndCandDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getDesignation());
+		    				}
+		    				docListVO.add(resultVO);
 		    			}
-		    			//add file path to map
-		    			filePathList = candIdAndFilePathListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-		    			if(filePathList != null){
-		    				filePathList.add(commonMethodsUtilService.getStringValueForObject(param[4]));
-		    			}else{
-		    				filePathList = new ArrayList<String>();
-		    				filePathList.add(commonMethodsUtilService.getStringValueForObject(param[4]));
-		    				candIdAndFilePathListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),filePathList);
-		    			}
+		    			return docListVO;  
+		    		}else{
+		    			for(Object[] param : memberDtls){
+			    			//add remarks to map
+			    			remarksList = candIdAndRemarksListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+			    			if(remarksList != null){
+			    				remarksList.add(commonMethodsUtilService.getStringValueForObject(param[3]));
+			    			}else{
+			    				remarksList = new ArrayList<String>();
+			    				remarksList.add(commonMethodsUtilService.getStringValueForObject(param[3]));
+			    				candIdAndRemarksListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),remarksList);
+			    			}
+			    			//add file path to map
+			    			filePathList = candIdAndFilePathListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+			    			if(filePathList != null){
+			    				filePathList.add(commonMethodsUtilService.getStringValueForObject(param[4]));
+			    			}else{
+			    				filePathList = new ArrayList<String>();
+			    				filePathList.add(commonMethodsUtilService.getStringValueForObject(param[4]));
+			    				candIdAndFilePathListMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),filePathList);
+			    			}
+			    			
+			    		}
 		    		}
+		    		
 		    	}
+		    }
+		    if(candIdAndFilePathListMap.keySet() != null ){
+		    	Set<Long> cndIds = candIdAndFilePathListMap.keySet();
+		    	
 		    }
 		    
 		    List<Long> locValLstOfCandidate = null;
-		    ToursBasicVO resultVO = null;
+		    
 		    Long candidateId = null;
 		    Long tourCount = 0l;
 		    if(desigIdAndMapOfCandIdAndCandDtlsMap != null && desigIdAndMapOfCandIdAndCandDtlsMap.size() > 0){
