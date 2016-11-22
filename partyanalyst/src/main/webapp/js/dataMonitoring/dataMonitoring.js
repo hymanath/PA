@@ -268,11 +268,12 @@ function getUsers(constituencyId){
 		str+='<h4 class="panel-title text-muted">User Wise Data Verification Details</h4>';
 			str+='<div class="table-responsive">';
 				str+='<table class="table b_1 m_top10" id="tabWiseDtlsId">';
-					str+='<thead>';
+					str+='<thead class="text-primary">';
 						str+='<th>USER ID</th>';
 						str+='<th>TAB USER NAME</th>';
 						str+='<th>MOBILE NO</th>';
 						str+='<th>TOTAL REGISTRATIONS</th>';
+						str+='<th>REGISTRATIONS BETWEEN<br><span style="color:green">[ '+startDate+' - '+endDate+' ]</span></th>';
 						str+='<th>VERIFIED - PASSED</th>';
 						str+='<th>VERIFIED - JUNK/REJECTED</th>';
 						str+='<th>PENDING</th>';
@@ -284,6 +285,7 @@ function getUsers(constituencyId){
 							str+='<td>'+result[i].tabUserName+'</td>';
 							str+='<td>'+result[i].mobileNo+'</td>';
 							str+='<td>'+result[i].totalCount+'</td>';
+							str+='<td>'+result[i].todayRegCount+'</td>';
 							str+='<td>'+result[i].passedcount+'</td>';
 							str+='<td>'+result[i].rejectedCount+'</td>';
 							str+='<td>'+result[i].pendingCount+'</td>';  
