@@ -17,6 +17,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursInputVO;
@@ -140,7 +141,22 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 	   }
 	//Business method
 	   public String execute(){
-		   return Action.SUCCESS;
+		   RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		    boolean noaccess = false;
+		    if(regVO==null){
+		      return "input";
+		    }
+		    List<String> entitlements = null;
+		    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		      entitlements = regVO.getEntitlements();
+		      if(!(entitlements.contains("TOUR_USER_ENTITLEMENT"))){//|| entitlements.contains("CADRE_TAB_LOCKING_USER_ADMIN_ENTITLEMENT")
+		        noaccess = true ;
+		      }
+		      if(noaccess){
+		        return "error";
+		      }
+		    }
+		    return Action.SUCCESS;
 	   }
 		public String savingTourDtlsApplication(){
 			try { 
