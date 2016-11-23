@@ -1647,18 +1647,21 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		   try {
 			   status = (String)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
-					CadreSurveyUser cadreSurveyUser = cadreSurveyUserDAO.getCadreSurveyUserByUsername(userName);
-					
-					TabLogInAuth tabLogInAuth = new TabLogInAuth();
-					tabLogInAuth.setCadreSurveyUserId(cadreSurveyUser.getCadreSurveyUserId());
-					tabLogInAuth.setImeiNo(imeiNo);
-					tabLogInAuth.setIsDeleted("N");
-					tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-					tabLogInAuth.setVersion("2");
-					tabLogInAuth.setStatus("success");
-					tabLogInAuth.setUpdatedById(loginUserId);
-					tabLogInAuth = tabLogInAuthDAO.save(tabLogInAuth);
-					
+					List<CadreSurveyUser> list = cadreSurveyUserDAO.getCadreSurveyUserByUsername(userName);
+					TabLogInAuth tabLogInAuth= null;
+					if(commonMethodsUtilService.isListOrSetValid(list)){
+						CadreSurveyUser cadreSurveyUser = list.get(0);
+						tabLogInAuth = new TabLogInAuth();
+						tabLogInAuth.setCadreSurveyUserId(cadreSurveyUser.getCadreSurveyUserId());
+						tabLogInAuth.setImeiNo(imeiNo);
+						tabLogInAuth.setIsDeleted("N");
+						tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						tabLogInAuth.setVersion("2");
+						tabLogInAuth.setStatus("success");
+						tabLogInAuth.setUpdatedById(loginUserId);
+						tabLogInAuth = tabLogInAuthDAO.save(tabLogInAuth);
+						
+					}
 					if(tabLogInAuth != null)
 						return "success";
 					else
