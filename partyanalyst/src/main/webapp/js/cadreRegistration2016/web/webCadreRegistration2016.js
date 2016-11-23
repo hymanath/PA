@@ -60,8 +60,8 @@ function onLoadCalls(){
 function getSearchByMyVoterIdDetails(){
 	eachTimeClearFields();
 	$('#checkbox8').attr('checked', false);
-	$('#prmaryAddrsId').attr('checked', true);
-	$('#deliveryCheckBox').attr('checked', false);
+	//$('#prmaryAddrsId').attr('checked', true);
+	//$('#deliveryCheckBox').attr('checked', false);
 	// $('#nameId1').attr('readonly',true);
 	//$('#prmaryAddrsId').trigger('click');
 	$('.deliveryAddrCls').html('');
@@ -224,9 +224,9 @@ var str = "";
 		 if(result.candidateAadherNo != null && result.candidateAadherNo != ""){
 			$("#aadharId").val(result.candidateAadherNo);
 		 }
-		 if(result.houseNo != null && result.houseNo != ""){
+		 /*if(result.houseNo != null && result.houseNo != ""){
 			$("#phnoId").val(result.houseNo);
-		 }
+		 }*/
 		 	$("#PrvNomineeDetailsId").prop( 'checked',false);
 			$("#addNewNomineeId").prop( 'checked',false);
 			$("#changeNomineeId").prop( 'checked',false);
@@ -309,12 +309,12 @@ var str = "";
 		  presntVillageId =result.villageId;
 		  
 		if(result.districtId<11){
-			$("#PrsntStateList").val(36);
-			$("#PrsntStateList").trigger("chosen:updated");
+			//$("#PrsntStateList").val(36);
+			//$("#PrsntStateList").trigger("chosen:updated");
 			getDistrictsForStates(36,2);
 		}else{
-			$("#PrsntStateList").val(1);
-			$("#PrsntStateList").trigger("chosen:updated");
+			//$("#PrsntStateList").val(1);
+			//$("#PrsntStateList").trigger("chosen:updated");
 			getDistrictsForStates(1,2);
 		}
 
@@ -529,7 +529,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		{				
 			$('.subBlock').html('');
 			
-				str+= '<div class="container m_top10" id="yourElement">';
+				str+= '<div class="container m_top10" id="yourElement" style="text-align: center;">';
 				str+= '<div class="span12  show-grid" style="position: relative;">';
 				str+= '<p class="text-align">Thank You For Your Registration</p>';
 				str+= '<h3 class="text-align"> Successfully Registration Completed </h3>';
@@ -540,7 +540,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
 				str+= '</div>';
 				str+= '</div>';
 				str+= '<div class="container m_top10" id="yourElement">';
-				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<div class="span12  show-grid" style="position: relative;text-align: center;">';
 				str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 				str+= '</div>';
 				str+= '</div>';
@@ -595,6 +595,9 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		 */
  }
  
+ function startSearchingPage(){
+	 window.location.href="cadreWebRegistrationAction.action";
+ }
 $(document).on("click",".checkboxCls",function(){
 	//$("#prvNomneNameId").prop( 'disabled',true);
 	  $(".checkboxCls").prop( 'checked',false);  
@@ -698,8 +701,8 @@ $(document).on("click",".isImageCheck",function(){
    });
  function eachTimeClearFields()
  {
-	 $("#checkVoterId,#imgErrDivId,#cadreMobileNoId,#emailErrId,#cadreCasteId,#cadreEducationId,#cadreOccupationId,#prvNomneNameDivId,#prvNomneGendrDivId,#prvNomneGendrDivId,#prevNomneAgeDivId,#prevNomneReltvDivId,#nomineeDivId,#stateErrPhId,#stateErrPaId,#stateErrPa1Id,#stateErrPsId,#stateErrPlId,#stateErrPh1Id,#stateErrId,#distriErrId,#constErrId,#mandalErrId,#wardErrId,#stateErrDhId,#stateErrDaId,#stateErrDa1Id,#stateErrDsId,#stateErrDlId,#stateErrDh1Id,#wrkSateErrId,#wrkDistErrId,#wrkDistErrId,#wrkConstitErrId,#wrkConstitErrId,#wrkMadalErrId,#wrkVillageErrId").html(''); 
-	 $('#deliveryAddrId').hide();
+	 /*$("#checkVoterId,#imgErrDivId,#cadreMobileNoId,#emailErrId,#cadreCasteId,#cadreEducationId,#cadreOccupationId,#prvNomneNameDivId,#prvNomneGendrDivId,#prvNomneGendrDivId,#prevNomneAgeDivId,#prevNomneReltvDivId,#nomineeDivId,#stateErrPhId,#stateErrPaId,#stateErrPa1Id,#stateErrPsId,#stateErrPlId,#stateErrPh1Id,#stateErrId,#distriErrId,#constErrId,#mandalErrId,#wardErrId,#stateErrDhId,#stateErrDaId,#stateErrDa1Id,#stateErrDsId,#stateErrDlId,#stateErrDh1Id,#wrkSateErrId,#wrkDistErrId,#wrkDistErrId,#wrkConstitErrId,#wrkConstitErrId,#wrkMadalErrId,#wrkVillageErrId").html(''); */
+	// $('#deliveryAddrId').hide();
 	 $('#nameId1').attr('readonly');
 	$("#existImgId").attr('src','dist/img/default_image.png');
 	$("#nameId1").val('');  
