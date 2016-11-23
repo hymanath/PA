@@ -13,9 +13,12 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
+import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
@@ -185,7 +188,6 @@ public class WebServiceHandlerForCadre {
 	public CardPrintValidationUserVO validateCardPrintUserLogin(@PathParam("username") String username,@PathParam("password") String password){
 		CardPrintValidationUserVO cardPrintValidationUserVO  = null;
 		try{
-			 
 			cardPrintValidationUserVO = webServiceHandlerServiceForCadre.validateCardPrintUserLogin(username,password);
 			
 		}catch(Exception e){
@@ -197,13 +199,30 @@ public class WebServiceHandlerForCadre {
 	@GET
 	@Path("/tdpCadrePrintDetails/{memberShipId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void tdpCadrePrintDetails(@PathParam("memberShipId") String memberShipId){
-		//TdpCadrePrintDetailsVO
+	public TdpCadrePrintDetailsVO getTdpCadrePrintDetailsByMemberShipId(@PathParam("memberShipId") String memberShipId){
+		TdpCadrePrintDetailsVO tdpCadrePrintDetailsVO = null;
 		try{
-			
+			tdpCadrePrintDetailsVO = webServiceHandlerServiceForCadre.getTdpCadrePrintDetailsByMemberShipId(memberShipId);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised in tdpCadrePrintDetails() in WebServiceHandlerForCadre class",e);
 		}
+		return tdpCadrePrintDetailsVO;
 	}
+	
+	@POST
+	@Path("/updateCardPrintValidStatus")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResultStatus updateCardPrintValidStatus(CardPrintValidationVO inputVO){
+		ResultStatus rs = null;
+		try{
+			rs  =  webServiceHandlerServiceForCadre.updateCardPrintValidStatus(inputVO);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in updateCardPrintValidStatus() in WebServiceHandlerForCadre class",e);
+		}
+		return rs;
+	}
+	
 }
