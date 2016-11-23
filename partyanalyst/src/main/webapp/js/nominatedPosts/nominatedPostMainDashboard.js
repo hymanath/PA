@@ -356,7 +356,10 @@ $(document).on("click",".casteGroupCls",function(){
 
 	 function getAllStatusDetails(){
 		positionId =$("#positionId option:selected").val();
-		levelId = $("#locationLevelId").val();
+	    levelId = $("#locationLevelId").val();
+		if(levelId == null){
+		levelId = 2;
+		}
 		deptId = $("#departmentId").val();
 		boardId = $("#corporationId").val();
 		casteGroupId =$("#casteGroupId").val();
@@ -373,7 +376,6 @@ $(document).on("click",".casteGroupCls",function(){
 		$("#totalFemaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 		$("#totalMaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 	    $("#totalMaleFemaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
-		
 		var jsObj={
 		positionId  : positionId,
 		levelId     : levelId,
@@ -383,6 +385,7 @@ $(document).on("click",".casteGroupCls",function(){
 		applStatusId: applStatusId,
 		stateId     : stateId
 		}
+
 		$.ajax({
 			type:'GET',
 			url:'getOverAllTotalCountsByPositionAction.action',  
@@ -1282,6 +1285,10 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var positionId = $("#positionId").val();
 		var position = $("#positionId option:selected").text();
 		var locationLevelId = $("#locationLevelId").val();
+		if(locationLevelId == null){
+			locationLevelId = 2;
+		
+		}
 		var locationLevel= $("#locationLevelId option:selected").text();
 		var deptId = $("#departmentId").val();
 		var deptName = $("#departmentId option:selected").text();
@@ -1290,7 +1297,10 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var castGroupId = $("#casteGroupId").val();
 		var casteGroup = $("#casteGroupId option:selected").text();
 		var positionStatusId = $("#positionStatusId").val();   
-		var locationLevelName = $("#locationLevelId option:selected").text();  
+		var locationLevelName = $("#locationLevelId option:selected").text(); 
+			if(locationLevelName == ""){
+			locationLevelName = "state";
+			}
 		getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName);
 		var positionStatusId = $("#positionStatusId").val(); 
 		var postionStatus =$("#positionStatusId option:selected").text();
@@ -1379,15 +1389,47 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		for(var i in result){
 			str+='<tr class="text-capital">';
 				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].totalPositions+'</td>';
-				str+='<td>'+result[i].maleCount+'</td>';
-				str+='<td>'+result[i].femaleCount+'</td>';
-				str+='<td>'+result[i].firstAgeGroupCount+'</td>';
-				str+='<td>'+result[i].secondAgeGroupCount+'</td>';
-				str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
-				str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
-				str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" attr_dist_id="'+result[i].districtId+'" attr_position_id="'+positionId+'" attr_locationLevel_id="'+locationLevelId+'" attr_dept_id="'+deptId+'" attr_corporation_id="'+corporationId+'" attr_castGroup_id="'+castGroupId+'" attr_positionStatus_id="'+positionStatusId+'" attr_state_id="'+stateId+'" attr_location_level_name="'+locationLevelName+'"></i></td>';       
+				if(result[i].totalPositions == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].totalPositions+'</td>';
+				}else{
+					str+='<td attr_age_range_id="0" attr_gender_type="" class="stateCountCls" style="cursor:pointer;color:green;font-weight:bold;" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].totalPositions+'</u></td>';
+				}
+				if(result[i].maleCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].maleCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="0" attr_gender_type="M" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].maleCount+'</u></td>';
+				}
+				if(result[i].femaleCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].femaleCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="0" attr_gender_type="F" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].femaleCount+'</u></td>';
+				}
+				if(result[i].firstAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].firstAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="1" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].firstAgeGroupCount+'</u></td>';
+				}
+				if(result[i].secondAgeGroupCount == 0){
+					str+='<td style="font-weight:bold;">'+result[i].secondAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="2" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].secondAgeGroupCount+'</u></td>';
+				}
+				if(result[i].thirdAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].thirdAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="3" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].thirdAgeGroupCount+'</u></td>';
+				}
+				if(result[i].fourthAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].fourthAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="4" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].fourthAgeGroupCount+'</u></td>';
+				}
+				if(result[i].fifthAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].fifthAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="5" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].fifthAgeGroupCount+'</u></td>';
+				}
+				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" attr_dist_id="'+result[i].districtId+'" attr_position_id="'+positionId+'" attr_locationLevel_id="'+locationLevelId+'" attr_dept_id="'+deptId+'" attr_corporation_id="'+corporationId+'" attr_castGroup_id="'+castGroupId+'" attr_positionStatus_id="'+positionStatusId+'" attr_state_id="'+stateId+'" attr_location_level_name="'+locationLevelName+'" attr_location_name="'+result[i].name+'"></i></td>';       
 			str+='</tr>';
 			str+='<tr class="showHideTr" style="display:none" id="districtPositionId'+i+'">';    
 			str+='</tr>';
@@ -1413,6 +1455,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var castegroupId = $(this).attr("attr_castGroup_id");
 		var positionStatusId = $(this).attr("attr_positionStatus_id");  
 		var locationLevelName = $(this).attr("attr_location_level_name");  
+		var locationName=$(this).attr("attr_location_name");
 		
 		$("#"+sectionId+"").show();
 		$("#"+sectionId+"").html("<img style='margin-left: 85px;widht:30px;height:30px;' src='images/icons/loading.gif'>");
@@ -1420,17 +1463,22 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		
 		if($(this).hasClass("glyphicon-minus"))
 		{
-			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"expand");    
+		$("#"+sectionId+"").show();
+		$("#"+sectionId+"").html("<img style='margin-left: 85px;widht:30px;height:30px;' src='images/icons/loading.gif'>");
+			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"expand",locationName);    
 		}else{
-			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"close");
+		$("#"+sectionId+"").hide();
+		$("#"+sectionId+"").html("<img style='margin-left: 85px;widht:30px;height:30px;display:none;' src='images/icons/loading.gif'>");
+			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"close",locationName);
 		}
 	});
 	
-	function getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,actionType){
+	function getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,actionType,locationName){
 	  
 		if(actionType == "close"){
 			 return;
 		}
+		
 		var jsObj={
 		positionId 			: positionId,      
 		boardLevelId 		: boardLevelId,  
@@ -1449,12 +1497,12 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){  
-				buildPositionsForDistrict(result,sectionId);  			
+				buildPositionsForDistrict(result,sectionId,districtId,locationName);  			
 			}
 		}); 
 	}
 	
-	function buildPositionsForDistrict(result,sectionId){
+	function buildPositionsForDistrict(result,sectionId,districtId,locationName){
 		//<tr class="showHideTr"> 
 		var str = '';
 		if(result != null && result.length >0){
@@ -1476,15 +1524,55 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         str+='<tbody class="text-capital">';
 		for(var i in result){
         str+='<tr style="width:100px;">';
-		str+='<td >&nbsp&nbsp&nbsp'+result[i].name+'</td>';     
-		str+='<td>'+result[i].totalPositions+'</td>';
+		str+='<td >&nbsp&nbsp&nbsp'+result[i].name+'</td>';
+				if(result[i].totalPositions == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].totalPositions+'</td>';
+				}else{
+					str+='<td attr_age_range_id="0" attr_gender_type="" class="positionContCls" style="cursor:pointer;color:green;font-weight:bold;" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].totalPositions+'</u></td>';
+				}
+				if(result[i].maleCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].maleCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="0" attr_gender_type="M" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].maleCount+'</u></td>';
+				}
+				if(result[i].femaleCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].femaleCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="0" attr_gender_type="F" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].femaleCount+'</u></td>';
+				}
+				if(result[i].firstAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].firstAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="1" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+locationName+'"><u>'+result[i].firstAgeGroupCount+'</u></td>';
+				}
+				if(result[i].secondAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].secondAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="2" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].secondAgeGroupCount+'</u></td>';
+				}
+				if(result[i].thirdAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].thirdAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="3" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].thirdAgeGroupCount+'</u></td>';
+				}
+				if(result[i].fourthAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].fourthAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="4" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].fourthAgeGroupCount+'</u></td>';
+				}
+				if(result[i].fifthAgeGroupCount == 0){
+					str+='<td style="color:green;font-weight:bold;">'+result[i].fifthAgeGroupCount+'</td>';
+				}else{
+					str+='<td attr_age_range_id="5" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="positionContCls" attr_position_id="'+result[i].districtId+'" attr_location_id="'+districtId+'" attr_position_name="'+result[i].name+'" attr_location_name="'+locationName+'"><u>'+result[i].fifthAgeGroupCount+'</u></td>';
+				}		
+		/*str+='<td>'+result[i].totalPositions+'</td>';
         str+='<td>'+result[i].maleCount+'</td>';
         str+='<td>'+result[i].femaleCount+'</td>';
 		str+='<td>'+result[i].firstAgeGroupCount+'</td>';
 		str+='<td>'+result[i].secondAgeGroupCount+'</td>';
 		str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
 		str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
-		str+='<td>'+result[i].fifthAgeGroupCount+'</td>';    
+		str+='<td>'+result[i].fifthAgeGroupCount+'</td>'; */   
 		str+='<td></td>';
         str+='</tr>';
 		}
@@ -1624,6 +1712,7 @@ var genderType = "";
 var boardLevelId;
 var boardLevel;
 var postStatusIdsLst = [5,7];
+var locationId =0;
 
 $(".casteWiseDetaislCls li").each(function(){
 	if($(this).hasClass("active")){
@@ -1637,7 +1726,7 @@ $(".casteWiseDetaislCls li").each(function(){
 		 }
 });
 
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " " +casteStateNAme+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
 
@@ -1658,6 +1747,7 @@ var genderType = "";
 var boardLevelId;
 var boardLevel;
 var postStatusIdsLst = [5,7];
+var locationId = 0;
 
 $(".casteCategryWiseDetaislCls li").each(function(){
 	if($(this).hasClass("active")){
@@ -1670,14 +1760,15 @@ $(".casteCategryWiseDetaislCls li").each(function(){
 		 } 
 		 }
 });
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " " +casteCategoryName+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
 });
 
-function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst){
+function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId){
+$("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;' src='images/icons/loading.gif'>");
   var jsObj={
         stateId : globalStateId,
 		casteStateId : casteStateId,
@@ -1688,7 +1779,8 @@ function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,de
 		ageRangeTypeId : ageRangeTypeId,
 		genderType : genderType,
 		departmentId :departmntId,
-		corporationId :corporationId
+		corporationId :corporationId,
+		locationId:locationId
 		
       }
       $.ajax({
@@ -1707,6 +1799,7 @@ function getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,de
 }
 
 function buildNominatedCandidateDetails(result){
+$("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;display:none;' src='images/icons/loading.gif'>");
 	var str ='';
 	str+='<table class="table table-bordered nomtedPstCndteId" id ="nomtedPstCndteId">';
 	str +='<thead>';
@@ -1796,8 +1889,9 @@ var ageRangeTypeId = $(this).attr("attr_age_range_id");
 var genderType = $(this).attr("attr_gender_type");
 var boardLevelId = $("#locationLevelId").val();
 var boardLevel = $("#locationLevelId option:selected").text().toUpperCase();
+var locationId = 0;
 
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " LEVEL " +casteCategoryName+ " CASTE CATEGORY- " +positionName+ " POSITION - CANDIDATES" );
 
@@ -1824,8 +1918,9 @@ var ageRangeTypeId = $(this).attr("attr_age_range_id");
 var genderType = $(this).attr("attr_gender_type");
 var boardLevelId = $("#locationLevelId").val();
 var boardLevel = $("#locationLevelId option:selected").text().toUpperCase();
+var locationId = 0;
 
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " LEVEL " +casteName+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
 
@@ -1852,10 +1947,70 @@ var ageRangeTypeId = $(this).attr("attr_age_range_id");
 var genderType = $(this).attr("attr_gender_type");
 var boardLevelId = $("#locationLevelId").val();
 var boardLevel = $("#locationLevelId option:selected").text().toUpperCase();
+var locationId = 0;
 
-getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst);
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
 $(".modelHeading").html("");
 $(".modelHeading").html(boardLevel+ " LEVEL " +casteName+ " CASTE - " +positionName+ " POSITION - CANDIDATES" );
+
+$("#nominatedPostCandidateDetailsId").html("");
+$("#nominatedCandadteModalId").modal("show");
+});
+
+$(document).on("click",".stateCountCls",function(){
+if($("#positionStatusId").val() == 0){
+ var postStatusIdsLst = [3,6,5,7];
+}else{
+ var postStatusIdsLst = [$("#positionStatusId").val()];
+}
+var statusName = $("#positionStatusId option:selected").text();
+var positionId = 0;
+var positionName = "";
+var casteCategoryName = "";
+var casteCategoryId = $("#casteGroupId").val();
+var casteStateId =  0;
+var casteName = "";
+var departmntId = $("#departmentId").val();
+var corporationId = $("#corporationId").val();
+var ageRangeTypeId = $(this).attr("attr_age_range_id");
+var genderType = $(this).attr("attr_gender_type");
+var boardLevelId = $("#locationLevelId").val();
+var boardLevel = $("#locationLevelId option:selected").text().toUpperCase();
+var locationId = $(this).attr("attr_location_id");
+var locationName = $(this).attr("attr_location_name").toUpperCase();
+
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
+$(".modelHeading").html("");
+$(".modelHeading").html(locationName+ "  CANDIDATES" );
+
+$("#nominatedPostCandidateDetailsId").html("");
+$("#nominatedCandadteModalId").modal("show");
+});
+$(document).on("click",".positionContCls",function(){
+if($("#positionStatusId").val() == 0){
+ var postStatusIdsLst = [3,6,5,7];
+}else{
+ var postStatusIdsLst = [$("#positionStatusId").val()];
+}
+var statusName = $("#positionStatusId option:selected").text();
+var positionId = $(this).attr("attr_position_id");
+var positionName = $(this).attr("attr_position_name").toUpperCase();
+var casteCategoryName = "";
+var casteCategoryId = $("#casteGroupId").val();
+var casteStateId =  0;
+var casteName = "";
+var departmntId = $("#departmentId").val();
+var corporationId = $("#corporationId").val();
+var ageRangeTypeId = $(this).attr("attr_age_range_id");
+var genderType = $(this).attr("attr_gender_type");
+var boardLevelId = $("#locationLevelId").val();
+var boardLevel = $("#locationLevelId option:selected").text().toUpperCase();
+var locationId = $(this).attr("attr_location_id");
+var locationName = $(this).attr("attr_location_name").toUpperCase();
+
+getNominatedPostCandidateDetils(positionId,casteStateId,boardLevelId,departmntId,corporationId,casteCategoryId,ageRangeTypeId,genderType,postStatusIdsLst,locationId);
+$(".modelHeading").html("");
+$(".modelHeading").html(locationName+ "  " +positionName+ "  POSITION CANDIDATES" );
 
 $("#nominatedPostCandidateDetailsId").html("");
 $("#nominatedCandadteModalId").modal("show");
