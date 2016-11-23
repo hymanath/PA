@@ -3832,6 +3832,17 @@ try{
 		}
 		return null;
 	}
+ /**
+	* @param Long stateId
+	* @param Long activityMemberId
+	* @param startDate
+	* @param endDate
+	* @param sortingType
+	* @return List<CadreReportVO>
+	* @author Santosh 
+	* @Description :This service method is used to get constituency wise details based on User. 
+	* @since 16-OCT-2016
+	*/
  public List<CadreReportVO> getConstituencyWiseReportBasedOnUserType(Long activityMemberId,Long stateId,String startDate, String endDate,String sortingType){
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,Long>  cadreTarget2014Map = new HashMap<Long, Long>();
@@ -3921,6 +3932,14 @@ try{
 	 }
 	 return resultList;
  }
+ /**
+	* @param Long stateId
+	* @param List<Long> locationIdsList
+	* @return List<CadreReportVO>
+	* @author Santosh 
+	* @Description :This service is used to get Started and Not Stared Constituencies Details. 
+	* @since 20-OCT-2016
+	*/
  public List<CadreReportVO> getLocationWiseCadreInfoTodayDetails(Long stateId,List<Long> locationIdsList){
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,CadreReportVO> cnsttncsDstrctMap = new HashMap<Long, CadreReportVO>();
@@ -3983,7 +4002,14 @@ try{
 		 }
 	 }
  }
- 
+    /**
+	* @param Long stateId
+	* @param List<Long> locationIdsList
+	* @return List<CadreReportVO>
+	* @author Santosh 
+	* @Description :This service is used to get Mandal Muncipality Started and Not Stared Details. 
+	* @since 21-OCT-2016
+	*/
  public List<CadreReportVO> getMandalMuncipalityStatedAndNotStatedDetails(Long stateId,List<Long> locationIdsList){
 	 List<CadreReportVO> resultList = new ArrayList<CadreReportVO>();
 	 Map<Long,CadreReportVO> cnsttncsDstrctMap = new HashMap<Long, CadreReportVO>();
