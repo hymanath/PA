@@ -4114,7 +4114,11 @@ try{
 						
 						Long totalTarget=0l;
 						Long totalAchieved=0l;
-						Long totalToDay=0l;					
+						Long totalToDay=0l;	                 
+						
+						Long totalCadre = 0l;
+						Long totalRenewal = 0l;
+						Long totalYetToRenewal = 0l;
 						
 						if(mainVo !=null && mainVo.getSurveyInfoVOList() !=null && mainVo.getSurveyInfoVOList().size()>0){
 							
@@ -4132,20 +4136,39 @@ try{
 									
 										//mobileNameMap.put(location.getPhoneNo(), location.getEmailId());
 										//groupMap.put(location.getPhoneNo(), location.getVoterCardNo());
-										
-										if(achevedPerc !=null && achevedPerc>0.0){
-											messageStr.append(location.getName()+ " :\n Membership Target  : "
-													+location.getTargetCount()+" , Achieved : "+location.getTotalCount()+
-													" ("+achevedPerc+ " % ) Today : "+location.getTodayCount()+"  \n");
-										}else{
-											messageStr.append(location.getName()+ " :\n Membership Target  : "
-													+location.getTargetCount()+" , Achieved : "+location.getTotalCount()+
-													" , Today : "+location.getTodayCount()+"  \n");
+										Double renewalPerc= 0.0 ;
+										if(location.getTotal2014Cadre() !=null && location.getTotal2014Cadre()>0l){
+											renewalPerc=calcPercantage(location.getTotalRenewalCadre(),location.getTotal2014Cadre());
 										}
+										Double yetToRenewal= 0.0 ;
+										if(location.getTotal2014Cadre() !=null && location.getTotal2014Cadre()>0l){
+											yetToRenewal=calcPercantage(location.getRemainingRenewalCadre(),location.getTotal2014Cadre());
+										} 
+										if(achevedPerc !=null && achevedPerc>0.0){
+											messageStr.append(location.getName()+ 
+													":\n\n Membership Target  : "+location.getTargetCount()+ 
+													",\n Achieved : "+location.getTotalCount()+" ("+achevedPerc+ " % )" +
+													",\n Today : "+location.getTodayCount()+
+													",\n 2014 total cadre :" +location.getTotal2014Cadre()+
+													",\n 2014 Renewal Cadre :"+location.getTotalRenewalCadre() +"("+renewalPerc+" %)" +
+													",\n Not Yet Renewal Cadre: "+location.getRemainingRenewalCadre() +" ("+yetToRenewal+"%) \n");  
+										}else{
+											messageStr.append(location.getName()+ 
+													":\n\n Membership Target  : "+location.getTargetCount()+
+													",\n Achieved : "+location.getTotalCount()+
+													",\n Today : "+location.getTodayCount()+
+													",\n 2014 total cadre :" +location.getTotal2014Cadre()+
+													",\n 2014 Renewal Cadre :"+location.getTotalRenewalCadre() +"("+renewalPerc+" %)" +
+													",\n Not Yet Renewal Cadre: "+location.getRemainingRenewalCadre() +" ("+yetToRenewal+"%) \n");     
+										}             
 										
-										totalTarget = totalTarget + location.getTargetCount();
+										totalTarget = totalTarget + location.getTargetCount();  
 										totalAchieved = totalAchieved + location.getTotalCount();
 										totalToDay = totalToDay + location.getTodayCount();
+										
+										totalCadre = totalCadre + location.getTotal2014Cadre();
+										totalRenewal = totalRenewal + location.getTotalRenewalCadre();
+										totalYetToRenewal = totalYetToRenewal + location.getRemainingRenewalCadre();
 										
 									}
 								}
@@ -4156,19 +4179,37 @@ try{
 							if(totalAchieved !=null && totalAchieved>0l){
 								totalAchevedPerc=calcPercantage(totalAchieved,totalTarget);
 							}
+							Double totalRenewalPerc= 0.0 ;
+							if(totalCadre !=null && totalCadre>0l){
+								totalRenewalPerc=calcPercantage(totalRenewal,totalCadre);
+							}
+							Double totalYetToRenewalPerc= 0.0 ;
+							if(totalCadre !=null && totalCadre>0l){
+								totalYetToRenewalPerc=calcPercantage(totalYetToRenewal,totalCadre);  
+							}  
 							
 							if(groupMap.get(mainVo.getPhoneNo()) !=null && groupMap.get(mainVo.getPhoneNo()).trim().equalsIgnoreCase("Y")){
 								if(totalAchevedPerc !=null && totalAchevedPerc>0.0){
-									overallStr.append(" Membership Total Target :"+totalTarget+", Total Achieved : "+totalAchieved+" ("+totalAchevedPerc+" %) , Today :"+totalToDay+" \n");
+									overallStr.append(" Membership Total Target :"+totalTarget+
+											" ,\n Total Achieved : "+totalAchieved+" ("+totalAchevedPerc+" %) " +
+											" ,\n Today :"+totalToDay+
+											" ,\n Total Cadre 2014 :"+totalCadre+
+											" ,\n Total Renewal 2014: "+totalRenewal+" ("+totalRenewalPerc+" %)" +
+										    " ,\n Total Yet To Renewal : "+totalYetToRenewal+" ("+totalYetToRenewalPerc+" %)  \n");
 								}else{
-									overallStr.append(" Total Target :"+totalTarget+", Total Achieved : "+totalAchieved+" , Today :"+totalToDay+" \n");
-								}
-							}
+									overallStr.append(" Membership Total Target :"+totalTarget+
+											" ,\n Total Achieved : "+totalAchieved+
+											" ,\n Today :"+totalToDay+
+											" ,\n Total Cadre 2014 :"+totalCadre+
+											" ,\n Total Renewal 2014: "+totalRenewal+" ("+totalRenewalPerc+" %) " +
+											" ,\n Total Yet To Renewal : "+totalYetToRenewal+" ("+totalYetToRenewalPerc+" %)  \n");
+								}   
+							}   
 							
 							//overallStr.append(" ............................................ \n ");
 							
 							
-							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu \n" );
+							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu, \n" );
 							
 							
 							
@@ -4193,7 +4234,8 @@ try{
 							//bottomStr.append(" ................... \n\n ");
 							
 							 if(totalDays > days)
-								 bottomStr.append(" We have Only "+remainingDays+" Days left to reach our target \n ");
+								 bottomStr.append("\n We have Only "+remainingDays+" Days left to reach our target.\n" +
+								 		          " Please complete the renewals as soon as possible");      
 							
 							
 							 dearStr.append(overallStr.toString()).append(messageStr.toString()).append(bottomStr.toString());
