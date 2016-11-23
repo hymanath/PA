@@ -234,6 +234,7 @@
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
 			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
 			<result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
+			<result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5693,6 +5694,7 @@
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
       <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
       <result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
+      <result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -13185,6 +13187,13 @@
 		<result name="input">/jsp/loginForm.jsp?src=coreDashboardAction1</result>
 		<result name="error">/jsp/loginForm.jsp?src=coreDashboardAction1</result>
 	</action>
+	
+	<action name="coreDashboardNewAction" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
+		<result name="success">/jsp/newCoreDashboard.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=coreDashboardNewAction</result>
+		<result name="error">/jsp/loginForm.jsp?src=coreDashboardNewAction</result>
+	</action>
+	
 	<action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
 		<result name="success">/jsp/nominatedPostMainDashboard.jsp</result>
 	</action>
@@ -14739,10 +14748,12 @@
 	<action name="getMomPartyMeetingDetailsAction" class="trainingCampAction" method="getMomPartyMeetingDetails">
 		<result name="success">/jsp/momPartyMeetingDetails.jsp</result>
 	</action>
-	<action name="cadreSurveyUsersAssignAction" class="coreDashboardAction" method="cadreSurveyUserAssign">
-		<result name="success">/jsp/cadreSurveyUserAssign.jsp</result>
-	</action>
-	
+	<action name="cadreSurveyUsersAssignAction" class="cadreDashBoardAction" method="cadreSurveyuserAssignDetails">
+			<result name="success">/jsp/cadreSurveyUserAssign.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=cadreSurveyUsersAssignAction</result>	
+			<result name="input">/jsp/loginForm.jsp?src=cadreSurveyUsersAssignAction</result>
+      </action>
+      
 	 	<action name="getDetailsByUserNameAction" class="coreDashboardAction"  method="getDetailsByUserName">
 			<result type="json" name="success">
 			<param name="root">tabDetails</param>
