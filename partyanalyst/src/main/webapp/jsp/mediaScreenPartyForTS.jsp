@@ -315,8 +315,69 @@ $(document).on("click",".arrowDotsCls",function(){
 		$(".arrowDots li:nth-child(2)").toggleClass("active")
 	}
 });
+setInterval(function(){
+	consShow()
+	consHide()
+},100);
 
-setTimeout(function(){
+function consShow()
+{
+	var cons = setInterval(function(){
+		if($(".newsWidgetCls1").find(".slick-track li:nth-child(11)").hasClass("slick-current") == true)
+		{
+			$(".newsWidgetCls1").find(".slick-track li:nth-child(11)").removeClass("slick-current");
+			clearInterval(cons);
+			clearInterval(triggerCLick);
+			clearInterval(triggerCLickS);
+			$(".emptyDiv2").find(".slick-prev").trigger("click");
+			$("#constituencyDiv").show();
+			$("#districtDiv").hide();
+			$(".arrowDots li:nth-child(1)").toggleClass("active")
+			$(".arrowDots li:nth-child(2)").toggleClass("active");
+			var value = $(".btnActive").attr("attr_val");
+			if(value == 1){
+				getConstituencyWiseDisrictList2("Today",1,"count");
+				getConstituencyWiseDisrictList4("Total",1,"count");
+			}
+			else if(value == 2){
+				getConstituencyWiseDisrictList2("Today",1,"percentage");
+				getConstituencyWiseDisrictList4("Total",1,"percentage");
+			}
+		}
+		
+	}, 100);
+
+}
+function consHide()
+{
+	var consH = setInterval(function(){ 
+		if($(".newsWidgetCls2").find(".slick-track li:nth-child(20)").hasClass("slick-current") == true)
+		{
+			clearInterval(consH);
+			$(".newsWidgetCls2").find(".slick-track li:nth-child(20)").removeClass("slick-current")
+			clearInterval(triggerCLick1);
+			clearInterval(triggerCLickS1);
+			$(".emptyDiv3").find(".slick-prev").trigger("click");
+			$("#constituencyDiv").hide();
+			$("#districtDiv").show();
+			$(".arrowDots li:nth-child(1)").toggleClass("active")
+			$(".arrowDots li:nth-child(2)").toggleClass("active")
+			var value = $(".btnActive").attr("attr_val");
+			if(value == 1){
+				getTodayDistrictList("Today",1,"count");
+				getOverAllDistrictList("Total",1,"count");
+			}
+			else if(value == 2){
+				getTodayDistrictList("Today",1,"percentage");
+				getOverAllDistrictList("Total",1,"percentage");
+			}
+			
+		}
+		
+	}, 100);
+
+}
+/* setTimeout(function(){
 	$("#constituencyDiv").show();
 	$("#districtDiv").hide();
 	$(".arrowDots li:nth-child(1)").toggleClass("active")
@@ -330,9 +391,9 @@ setTimeout(function(){
 		getConstituencyWiseDisrictList2("Today",36,"percentage");
 		getConstituencyWiseDisrictList4("Total",36,"percentage");
 	}
-}, 24000);
+}, 24000); */
 
-setInterval(function(){ 
+/* setInterval(function(){ 
 	$("#constituencyDiv").hide();
 	$("#districtDiv").show();
 	$(".arrowDots li:nth-child(1)").toggleClass("active")
@@ -346,8 +407,8 @@ setInterval(function(){
 		getTodayDistrictList("Today",36,"percentage");
 		getOverAllDistrictList("Total",36,"percentage");
 	}
-}, 50 * 1000);
-setInterval(function(){ 
+}, 50 * 1000); */
+/* setInterval(function(){ 
 	$("#constituencyDiv").show();
 	$("#districtDiv").hide();
 	$(".arrowDots li:nth-child(1)").toggleClass("active")
@@ -361,7 +422,7 @@ setInterval(function(){
 		getConstituencyWiseDisrictList2("Today",36,"percentage");
 		getConstituencyWiseDisrictList4("Total",36,"percentage");
 	}
-}, 75 * 1000);
+}, 75 * 1000); */
 
 function getConstituencyWiseDisrictList2(type,stateId,sortType){
 	$("#todaytsImgId").show();
@@ -439,9 +500,11 @@ function getConstituencyWiseDisrictList4(type,stateId,sortType){
 }
 
 var triggerCLick1 = '';
+var triggerCLickS1 = '';
 function trigger1()
 {
   triggerCLick1 = setInterval(function(){  $(".emptyDiv2").find(".newsWidgetCnt .up").trigger("click");  },2300);
+  triggerCLickS1 = setInterval(function(){  $(".emptyDiv3").find(".slick-next").trigger("click"); },2300);
 }
 
 
@@ -469,7 +532,7 @@ function buildingConstituencyList3(result,divId,type,sortType){
 	$(".emptyDiv3").html(str1);
 	$('.newsWidgetCls2').slick({
 	  infinite: false,
-	   autoplay: true,
+	   autoplay: false,
 	   autoplaySpeed: 1800,
 	  slidesToShow: 1,
 	  centerMode: true,
@@ -516,9 +579,11 @@ function getOverAllDistrictList(type,stateId,sortType){
 }
 
 var triggerCLick = '';
+var triggerCLickS = '';
 function trigger()
 {
   triggerCLick = setInterval(function(){  $(".emptyDiv").find(".newsWidgetCnt .up").trigger("click");  },2300);
+  triggerCLickS = setInterval(function(){  $(".emptyDiv1").find(".slick-next").trigger("click"); },2300);
 }
 
 function buildingDistrictListOverAll(result,divId,type,sortType){
@@ -545,7 +610,7 @@ function buildingDistrictListOverAll(result,divId,type,sortType){
 	$(".emptyDiv1").html(str1);
 	$('.newsWidgetCls1').slick({
 	  infinite: false,
-	   autoplay: true,
+	   autoplay: false,
 	   autoplaySpeed: 1800,
 	  slidesToShow: 1,
 	  centerMode: true,
