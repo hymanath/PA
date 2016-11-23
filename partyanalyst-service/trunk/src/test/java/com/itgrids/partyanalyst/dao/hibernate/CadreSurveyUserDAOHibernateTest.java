@@ -1,12 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
-import com.itgrids.partyanalyst.model.CadreSurveyUser;
 
 public class CadreSurveyUserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -26,7 +22,7 @@ public class CadreSurveyUserDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testGetCadreSurveyUserByUsername()
 	{
-		CadreSurveyUser cadreSurveyUser = cadreSurveyUserDAO.getCadreSurveyUserByUsername("001_001");
-		System.out.println(cadreSurveyUser.getCadreSurveyUserId());
+		//CadreSurveyUser cadreSurveyUser = cadreSurveyUserDAO.getCadreSurveyUserByUsername("001_001");
+		//System.out.println(cadreSurveyUser.getCadreSurveyUserId());
 	}
 }

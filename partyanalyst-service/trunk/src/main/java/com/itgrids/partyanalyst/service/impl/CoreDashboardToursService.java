@@ -1659,7 +1659,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				public Object doInTransaction(TransactionStatus arg0) {
 					List<Long> tabLogInAuthIdsList = tabLogInAuthDAO.checkAlreadyExisyToUserIMEINo(userName,imeiNo);
 					TabLogInAuth tabLogInAuth= null;
-					if(commonMethodsUtilService.isListOrSetValid(tabLogInAuthIdsList)){
+					if(tabLogInAuthIdsList == null || tabLogInAuthIdsList.size() == 0){
 						List<CadreSurveyUser> list = cadreSurveyUserDAO.getCadreSurveyUserByUsername(userName);
 						if(commonMethodsUtilService.isListOrSetValid(list)){
 							CadreSurveyUser cadreSurveyUser = list.get(0);
@@ -1668,7 +1668,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 							tabLogInAuth.setImeiNo(imeiNo);
 							tabLogInAuth.setIsDeleted("N");
 							tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-							tabLogInAuth.setVersion("2");
+							tabLogInAuth.setVersion("1");
 							tabLogInAuth.setStatus("success");
 							tabLogInAuth.setUpdatedById(loginUserId);
 							tabLogInAuth = tabLogInAuthDAO.save(tabLogInAuth);
