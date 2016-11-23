@@ -1591,7 +1591,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
     
    public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
                                                              Long ageRangeTypeId,Long deptmentId,Long corptionId,
-                                                             String genderType,List<Long> postStatusIds){
+                                                             String genderType,List<Long> postStatusIds,Long locationId){
 	         StringBuilder sb = new StringBuilder();
 	       sb.append(" select model.nominationPostCandidate.nominationPostCandidateId," +
 	                 " model.nominationPostCandidate.candidateName," +
@@ -1641,7 +1641,29 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   		    }else {
 	   			 sb.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
 	   		    }
-	   		 }   
+	   		 }  
+	   		  
+	   		if(locationId !=null && locationId.longValue()>0l){
+	   			
+	   			if(boardLevelId.longValue() == 2l){
+	   				sb.append(" and  model.nominatedPostMember.address.state.stateId = :locationId ");
+	   			}
+	   			else if(boardLevelId.longValue() == 3l){
+	   				sb.append(" and  model.nominatedPostMember.address.district.districtId = :locationId  ");
+	   			}
+	   			else if(boardLevelId.longValue() == 4l){
+	   				sb.append(" and model.nominatedPostMember.address.constituency.constituencyId = :locationId ");
+	   			}
+	   			else if(boardLevelId.longValue() == 5l){
+	   				sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId = :locationId ");
+	   			}
+	   			else if(boardLevelId.longValue() == 7l){
+	   				sb.append(" and  model.nominatedPostMember.address.panchayat.localElectionBodyId = :locationId ");
+	   			}
+	   			else if(boardLevelId.longValue() == 6l){
+	   				sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :locationId ");
+	   			}
+	   		}
 	   		  //sb.append("and model.nominationPostCandidate.tdpCadreId = tc.tdpCadreId");
 	   		 Query qry = getSession().createQuery(sb.toString());
 	   		 
@@ -1674,6 +1696,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	     }
 	   	if(genderType !=null && !genderType.equalsIgnoreCase("")){
 	   		qry.setParameter("genderType", genderType);
+	     }
+	   	if(locationId !=null && locationId.longValue()>0l){
+	   		qry.setParameter("locationId", locationId);
 	     }
 	   
 	   return qry.list();
