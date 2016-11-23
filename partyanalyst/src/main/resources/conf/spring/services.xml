@@ -3723,6 +3723,7 @@
 	   <property name="tdpCadreTargetCountDAO" ref="tdpCadreTargetCountDAO"/>
 	   <property name="tdpCadreDateWiseInfoDAO" ref="tdpCadreDateWiseInfoDAO"/>
 	   <property name="tdpCadreDataVerificationDAO" ref="tdpCadreDataVerificationDAO"/>
+	   <property name="districtConstituenciesDAO" ref="districtConstituenciesDAO"/>
 	</bean>
 	
 	<bean name="dataMonitoringService" class="com.itgrids.partyanalyst.service.impl.DataMonitoringService" >
