@@ -4142,8 +4142,8 @@ try{
 							{
 								String[] mobile = new String[1];									
 								mobile[0] = mainVo.getPhoneNo();
-								System.out.println(dearStr.toString());
-								//smsCountrySmsService.sendOTPSmsFromAdmin(dearStr.toString(), true, mobile);																	
+								//System.out.println(dearStr.toString());
+								smsCountrySmsService.sendOTPSmsFromAdmin(dearStr.toString(), true, mobile);																	
 							}
 						}	
 					}
