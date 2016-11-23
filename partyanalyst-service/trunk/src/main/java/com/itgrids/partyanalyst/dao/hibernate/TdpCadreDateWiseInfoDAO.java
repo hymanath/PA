@@ -340,18 +340,23 @@ return query.list();
 		Query query = getSession().createQuery(queryStr.toString()); 
 		return (Long) query.uniqueResult();    
 	}
-	public List<Object[]> get2016TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate){
+	public List<Object[]> get2016TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,String type,Date fromDate,Date toDate){
 	    
 		StringBuilder queryStr = new StringBuilder();  
       
 	  if(locationValue != null && locationValue.size() > 0){
-			queryStr.append(" select model.locationValue,sum(model.cadre2016) from TdpCadreDateWiseInfo model where model.locationScopeId =:locationScopeId ");
+			queryStr.append(" select model.locationValue,sum(model.cadre2016) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId ");
 		}
       if(fromDate!= null && toDate!=null){ 
       	queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");   
       }
       if(locationValue != null && locationValue.size() > 0){
-      	queryStr.append(" and model.locationValue in (:locationValue)");  
+      	queryStr.append(" and model.locationValue in (:locationValue) ");  
+      }
+      if(type.equalsIgnoreCase("total")){
+    	  queryStr.append(" and model.type = 'Total' ");
+      }else{
+    	  queryStr.append(" and model.type = 'Today' ");  
       }
       queryStr.append(" group by model.locationValue order by model.locationValue asc");
     

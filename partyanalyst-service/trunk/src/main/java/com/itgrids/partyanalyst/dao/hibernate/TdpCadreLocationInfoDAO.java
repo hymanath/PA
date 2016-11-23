@@ -278,7 +278,7 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 			
 			return query.list();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();  
 		}  
 		return null;
 	}
@@ -287,11 +287,13 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
     	StringBuilder queryStr = new StringBuilder();  
         
     	if(locationValue != null && locationValue.size() > 0){
-    		queryStr.append(" select model.locationValue,sum(model.cadre2014) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId ");
+    		queryStr.append(" select model.locationValue,sum(model.cadre2014) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId " +
+    				" and model.type = 'Total' ");
         }
         if(locationValue != null && locationValue.size() > 0){
-        	queryStr.append(" and model.locationValue in (:locationValue)");  
-        }
+        	queryStr.append(" and model.locationValue in (:locationValue) ");  
+        }  
+        
         queryStr.append(" group by model.locationValue order by model.locationValue asc");
       
         Query query = getSession().createQuery(queryStr.toString());
