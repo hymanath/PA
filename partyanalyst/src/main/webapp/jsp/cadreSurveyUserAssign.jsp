@@ -208,7 +208,7 @@ function getDetailsByUserName(){
 	 }
 	 if(uname =='' && uname == 0)
 	{
-		$("#errorId").html("UserName Required");
+		$("#errorId").html(" Username is required");
 		return;
 	}else{
 		$("#errorId").html("");
@@ -273,7 +273,7 @@ function getDetailsByUserName(){
 	 }
 	 if(imeiNo == 0 && imeiNo == '')
 	 {
-		 $("#errorImeiNo").html("ImeiNumber Required");
+		 $("#errorImeiNo").html("IMEI Number is Required");
 		 return;
 	 }else{
 		 $("#errorImeiNo").html("");
@@ -326,29 +326,34 @@ var str='';
 
 }
 
-   function getUpdatedIMEINumberDetails(){	   
-	   var isOk = confirm("Are you sure want to assign IMEI NO with this Username?");
-	   if(isOk){
-			var assignUname = $("#AssignUserNameId").val();
-			var assignImeiNo = $("#AssignImeiNumberId").val();
-			  var jsObj = {
-				  userName:assignUname,  
-				  imeiNumber:assignImeiNo
-			 }
-			if(assignUname =='' && assignUname == 0)
+   function getUpdatedIMEINumberDetails(){	
+	   
+	   var assignUname = $("#AssignUserNameId").val();
+	   var assignImeiNo = $("#AssignImeiNumberId").val();
+
+	   if(assignUname =='' && assignUname == 0)
 			{
-				$("#assignErrorId").html("UserName Required");
+				$("#assignErrorId").html("UserName is required");
 				return;
 			}else{
 				$("#assignErrorId").html("");
 			}
 			if(assignImeiNo =='' && assignImeiNo == 0)
 			{
-				$("#assignErrorId").html("ImeiNumber Required");
+				$("#assignErrorId").html("IMEI Number is required");
 				return;
 			}else{
 				$("#assignErrorId").html("");
 			}
+
+	   var isOk = confirm("Are you sure want to assign IMEI NO with this Username?");
+	   if(isOk){
+			
+			  var jsObj = {
+				  userName:assignUname,  
+				  imeiNumber:assignImeiNo
+			 }
+			
 			 
 			$.ajax({
 				  type:'GET',
