@@ -418,7 +418,8 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 	sb.append("select model.locationValue," +
 			" model.targetCount" +
 			" from TdpCadreTargetCount model" +
-			" where model.locationScopeId = 3 and model.isDeleted = 'N' ");
+			" where model.locationScopeId = 3 and model.isDeleted = 'N'" +
+			" and model.enrollmentYearId = 4 ");
 	if(stateId != null && stateId.longValue() == 1l)
 		sb.append(" and model.locationValue between 11 and 23");
 	else if(stateId != null && stateId.longValue() == 36l)
@@ -433,7 +434,8 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 			" model.targetCount" +
 			" from TdpCadreTargetCount model,Constituency C" +
 			" where model.locationScopeId = 4 and model.isDeleted = 'N' " +
-			"and model.locationValue = C.constituencyId");
+			" and model.locationValue = C.constituencyId" +
+			" and model.enrollmentYearId = 4");
 	if(stateId != null && stateId.longValue() == 1l)
 		sb.append(" and C.district.districtId between 11 and 23");
 	else if(stateId != null && stateId.longValue() == 36l)
@@ -475,5 +477,42 @@ public List<Object[]> getConstitiuencyWiseTargetBasedOnUserType(Long userAccessL
 			   }
 			   query.setParameter("locationScopeId", 4l);
 		   return query.list();
+	}
+   
+   public Long getTargetCountForTodayAndOverAll(List<Long> constiIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.targetCount)" +
+				" from TdpCadreTargetCount model" +
+				" where model.locationScopeId = 4 and model.isDeleted = 'N'" +
+				" and model.enrollmentYearId = 4 ");
+		if(constiIds != null && !constiIds.isEmpty())
+			sb.append(" and model.locationValue in (:constiIds)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(constiIds != null && !constiIds.isEmpty())
+			query.setParameterList("constiIds", constiIds);
+		
+		return (Long) query.uniqueResult();
+	}
+   
+   public Long getOtherDistTargetCountForTodayAndOverAll(Long stateId,List<Long> constiIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.targetCount)" +
+				" from TdpCadreTargetCount model,Constituency c" +
+				" where model.locationValue = c.constituencyId" +
+				" and model.locationScopeId = 4 and model.isDeleted = 'N'" +
+				" and model.enrollmentYearId = 4 ");
+		if(stateId != null && stateId.longValue() == 1l)
+			sb.append(" and c.district.districtId = 13");
+		else if(stateId != null && stateId.longValue() == 36l)
+			sb.append(" and c.district.districtId = 1");
+		if(constiIds != null && !constiIds.isEmpty())
+			sb.append(" and model.locationValue not in (:constiIds)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(constiIds != null && !constiIds.isEmpty())
+			query.setParameterList("constiIds", constiIds);
+		
+		return (Long) query.uniqueResult();
 	}
 }
