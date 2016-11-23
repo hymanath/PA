@@ -53,5 +53,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	
 	 public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
                                                                Long ageRangeTypeId,Long deptmentId,Long corptionId,
-                                                               String genderType,List<Long> postStatusIds);
+                                                               String genderType,List<Long> postStatusIds,Long locationId);
 }
