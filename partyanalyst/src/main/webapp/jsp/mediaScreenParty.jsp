@@ -64,6 +64,7 @@ blockquote h2
 .distPriority , .distName
 {
 	display:inline-block;
+	text-transform:uppercase;
 }
 .slickCount
 {
