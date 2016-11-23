@@ -32,4 +32,5 @@ public interface ITabLogInAuthDAO  extends GenericDao<TabLogInAuth,Long>{
 	public List<Object[]> getTabLoginDetails(String cadreSurveyUserName);
 	public List<Object[]> getTabUserDetails(String imeiNo);
 	public int updateUserORIMEIDetails(Long loginAuthId);
+	public List<Long> checkAlreadyExisyToUserIMEINo(String userName,String imei);
 }
