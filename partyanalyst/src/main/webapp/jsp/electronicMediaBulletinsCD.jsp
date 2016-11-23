@@ -140,9 +140,9 @@ var globalSearchType = "category"; */
 
 var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
-	if(wurl.length == 3)
+	 if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
-	
+
 $(document).ready(function(){
 	setTimeout(function(){
 	if(callFrom == "bad")
