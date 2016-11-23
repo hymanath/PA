@@ -285,12 +285,12 @@
                                         </div>
                                         <div class="col-md-7 col-xs-12 col-sm-12 m_XsTop10">
                                         	<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active districtFilterCls" attr_filter_value="All">All</li>
-                                                <li class="districtFilterCls" attr_filter_value="verygood">Very Good</li>
-                                                <li class="districtFilterCls" attr_filter_value="good">Good</li>
-                                                <li class="districtFilterCls" attr_filter_value="ok">Ok</li>
-												<li class="districtFilterCls" attr_filter_value="poor">Poor</li>
-                                                <li class="districtFilterCls" attr_filter_value="verypoor">Very Poor</li>
+                                                <li class="active districtFilterCls" id="dstrctOverlAllCntId" attr_over_all_cnt="0"  attr_filter_value="All">All - 0</li>
+                                                <li class="districtFilterCls"  id="dstrctyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood">Very Good - 0</li>
+                                                <li class="districtFilterCls"  id="dstrctGoodCntId" attr_good_cnt="0" attr_filter_value="good">Good - 0</li>
+                                                <li class="districtFilterCls"   id="dstrctOkCntId" attr_ok_cnt="0" attr_filter_value="ok">Ok - 0</li>
+												<li class="districtFilterCls"   id="dstrctPoorCntId" attr_poor_cnt="0"  attr_filter_value="poor">Poor - 0</li>
+                                                <li class="districtFilterCls"  id="dstrctVeryPoorCntId" attr_very_poor_cnt="0" attr_filter_value="verypoor">Very Poor - 0</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -469,12 +469,12 @@
 										  </div>
 										  <div class="col-md-5 col-xs-12 col-sm-7">
 											<ul class="activeUlCls list-inline pull-right">
-                                                <li class="active consFilterCls" attr_filter_value="All">All</li>
-                                                <li class="consFilterCls" attr_filter_value="verygood">Very Good</li>
-                                                <li class="consFilterCls" attr_filter_value="good">Good</li>
-                                                <li class="consFilterCls" attr_filter_value="ok">Ok</li>
-												<li class="consFilterCls" attr_filter_value="poor">Poor</li>
-                                                <li class="consFilterCls" attr_filter_value="verypoor">Very Poor</li>
+                                                <li class="active consFilterCls" id="usrWseCnsttuncyAllCntId" attr_filter_value="All">All-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyVryGdCntId" attr_filter_value="verygood">Very Good-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyGdCntId" attr_filter_value="good">Good-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyOkCntId" attr_filter_value="ok">Ok-0</li>
+												<li class="consFilterCls" id="usrWseCnsttuncyPoorCntId" attr_filter_value="poor">Poor-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyVryPoorCntId" attr_filter_value="verypoor">Very Poor-0</li>
                                             </ul>
 										  </div>
 										  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
