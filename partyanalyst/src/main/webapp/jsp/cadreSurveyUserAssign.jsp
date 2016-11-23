@@ -155,6 +155,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 							<div class="col-md-4 col-xs-12 col-sm-6">
 								<div class="row">
 									<input type ="submit" class=" btn btn-success" value="ASSIGN USER" onclick ="getUpdatedIMEINumberDetails();"/>
+									<div id="assignId"></div>
 								</div>
 							</div>							
 					</div>	
@@ -352,16 +353,17 @@ var str='';
 			  var jsObj = {
 				  userName:assignUname,  
 				  imeiNumber:assignImeiNo
-			 }
-			
-			 
+			 } 
 			$.ajax({
 				  type:'GET',
 				  url: 'getAssigndUsrDetailsAction.action',
 				  dataType: 'json',
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
-			   
+			   if(result != null){
+				   alert("Successfully  Assigned");
+				  
+			   } 
 		   });
 	   }
 	
@@ -385,7 +387,7 @@ function updateUserORIMEIDetails(tabLoginAuthId,title){
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
 			   if(result != null){
-				  
+				   alert("Successfully "+title);		  
 			   }
 		   });
 	   }
