@@ -3132,7 +3132,7 @@ public String getTodayAndYesterdayTabUserRgstrtnComparisonDetails(){
 	}
 	return Action.SUCCESS;
 }
-/*public String getLocationWiseRegistrationSMSTracking(){
+public String getLocationWiseRegistrationSMSTracking(){
 	try{
 		
 		status = coreDashboardCadreRegistrationService.getLocationWiseRegistrationSMSTracking();
@@ -3141,7 +3141,7 @@ public String getTodayAndYesterdayTabUserRgstrtnComparisonDetails(){
 		e.printStackTrace();
 	}
 	return Action.SUCCESS;
-}*/
+}
 public String getUserTrackingDtslBySurveyUserId(){
 	try {
 		LOG.info("Entered into getUserTrackingDtslBySurveyUserId()  of CoreDashboardAction");
