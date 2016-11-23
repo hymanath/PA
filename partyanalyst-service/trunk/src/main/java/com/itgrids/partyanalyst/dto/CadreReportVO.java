@@ -46,6 +46,7 @@ public class CadreReportVO implements Serializable {
 	private String todayPersent;
 	private Long yesRegCount;
 	private Long todayRegCount;
+	private Long allDistrictCnt;
 	
 	public Integer getSno() {
 		return sno;
@@ -264,6 +265,10 @@ public class CadreReportVO implements Serializable {
 	public void setTodayRegCount(Long todayRegCount) {
 		this.todayRegCount = todayRegCount;
 	}
-	
-	
+	public Long getAllDistrictCnt() {
+		return allDistrictCnt;
+	}
+	public void setAllDistrictCnt(Long allDistrictCnt) {
+		this.allDistrictCnt = allDistrictCnt;
+	}
 }

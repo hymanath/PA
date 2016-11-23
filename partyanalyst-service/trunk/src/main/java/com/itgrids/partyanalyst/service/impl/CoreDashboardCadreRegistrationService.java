@@ -1612,6 +1612,36 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 				}
 			 
 		 }
+		 Long veryGoodCnt=0l;
+		 Long goodCnt=0l;
+		 Long okCnt=0l;
+		 Long  poorCnt=0l;
+		 Long veryPoorCnt=0l;
+		 if(resultList != null && resultList.size() > 0){
+			 for(CadreReportVO cadreReportVO:resultList){
+				   if(cadreReportVO.getTotal2016CadrePer() > 100){
+					   veryGoodCnt = veryGoodCnt+1;
+					}
+					if(cadreReportVO.getTotal2016CadrePer() > 90 && cadreReportVO.getTotal2016CadrePer() <= 100){
+				      goodCnt=goodCnt+1;
+				    }
+					if(cadreReportVO.getTotal2016CadrePer() > 80 && cadreReportVO.getTotal2016CadrePer() <= 90){
+					  okCnt=okCnt+1;
+				    }
+					if(cadreReportVO.getTotal2016CadrePer() > 60 && cadreReportVO.getTotal2016CadrePer() <= 80){
+					  poorCnt=poorCnt+1;
+				   }
+				   if(cadreReportVO.getTotal2016CadrePer() < 60){
+					 veryPoorCnt=veryPoorCnt+1;
+				   }
+		  }
+		  resultList.get(0).setAllDistrictCnt(new Long(resultList.size()));
+		  resultList.get(0).setVeryGoodCnt(veryGoodCnt);
+		  resultList.get(0).setGoodCnt(goodCnt);
+		  resultList.get(0).setOkCnt(okCnt);
+		  resultList.get(0).setPoorCnt(poorCnt);
+		  resultList.get(0).setVeryPoorCnt(veryPoorCnt); 
+		 }
 		 
 	 }catch (Exception e) {
 		 LOG.error("Exception raised in getCadreDetailsBasedOnUserType() in CadreRegistrationService service", e);	
@@ -1972,7 +2002,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 					 veryPoorCnt=veryPoorCnt+1;
 				   }
 		  }
-		  resultList.get(0).setAllConstituencyCnt(new Long(resultList.size()));
+		  resultList.get(0).setAllDistrictCnt(new Long(resultList.size()));
 		  resultList.get(0).setVeryGoodCnt(veryGoodCnt);
 		  resultList.get(0).setGoodCnt(goodCnt);
 		  resultList.get(0).setOkCnt(okCnt);
@@ -3855,6 +3885,36 @@ try{
 					}else if(sortingType != null && sortingType.equalsIgnoreCase("2016CadreWise")){
 						Collections.sort(resultList, cadreRegistrationCountDecc);
 					}
+			 }
+			 Long veryGoodCnt=0l;
+			 Long goodCnt=0l;
+			 Long okCnt=0l;
+			 Long  poorCnt=0l;
+			 Long veryPoorCnt=0l;
+			 if(resultList != null && resultList.size() > 0){
+				 for(CadreReportVO cadreReportVO:resultList){
+					   if(cadreReportVO.getTotal2016CadrePer() > 100){
+						   veryGoodCnt = veryGoodCnt+1;
+						}
+						if(cadreReportVO.getTotal2016CadrePer() > 90 && cadreReportVO.getTotal2016CadrePer() <= 100){
+					      goodCnt=goodCnt+1;
+					    }
+						if(cadreReportVO.getTotal2016CadrePer() > 80 && cadreReportVO.getTotal2016CadrePer() <= 90){
+						  okCnt=okCnt+1;
+					    }
+						if(cadreReportVO.getTotal2016CadrePer() > 60 && cadreReportVO.getTotal2016CadrePer() <= 80){
+						  poorCnt=poorCnt+1;
+					   }
+					   if(cadreReportVO.getTotal2016CadrePer() < 60){
+						 veryPoorCnt=veryPoorCnt+1;
+					   }
+			  }
+			  resultList.get(0).setAllConstituencyCnt(new Long(resultList.size()));
+			  resultList.get(0).setVeryGoodCnt(veryGoodCnt);
+			  resultList.get(0).setGoodCnt(goodCnt);
+			  resultList.get(0).setOkCnt(okCnt);
+			  resultList.get(0).setPoorCnt(poorCnt);
+			  resultList.get(0).setVeryPoorCnt(veryPoorCnt); 
 			 }
 	 }catch(Exception e){
 		 LOG.error("Exception raised in getConstituencyWiseReportBasedOnUserType() in CoreDashboardCadreRegistrationService service", e); 
