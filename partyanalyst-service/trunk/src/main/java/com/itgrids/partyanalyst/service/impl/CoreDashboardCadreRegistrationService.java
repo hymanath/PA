@@ -2227,8 +2227,8 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 						accessLevelValue = entry.getKey();   
 					}
 					//List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,frmDt, toDt,4l);
-					List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,frmDt, toDt);
-					if(totalRegCadreList != null && totalRegCadreList.size() > 0){
+					List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,"total",null, null);
+					if(totalRegCadreList != null && totalRegCadreList.size() > 0){  
 						for (Object[] param : totalRegCadreList) {
 							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
 							regCdrCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l); 
@@ -2250,7 +2250,7 @@ public static Comparator<CadreReportVO> cadreRegistrationCountDecc = new Compara
 					}else{      
 						accessLevelValue = entry.getKey();   
 					}
-					List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,toDay, toDay);
+					List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,"today",null, null);
 					if(totalRegCadreList != null && totalRegCadreList.size() > 0){
 						for (Object[] param : totalRegCadreList) {
 							String locationLevelAndId = entry.getKey()+"_"+param[0].toString();
@@ -3311,7 +3311,7 @@ try{
 		 				  accessLevelValue = entry.getKey();   
 		 			  }
 		 			  //List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,frmDt, toDt,4l);
-		 			  List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,frmDt, toDt);
+		 			  List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,"total",null, null);
 		 			  if(totalRegCadreList != null && totalRegCadreList.size() > 0){
 				   			for (Object[] param : totalRegCadreList) {  
 				   				String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -3355,7 +3355,7 @@ try{
 		 				  accessLevelValue = entry.getKey();   
 		 			  }
 		 			  //List<Object[]> totalRegCadreList = tdpCadreDAO.getTotalCadreCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDate, toDate,4l);
-		 			  List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,toDate, toDate);
+		 			  List<Object[]> totalRegCadreList = tdpCadreDateWiseInfoDAO.get2016TotalCadreCountLocationWiseCount(accessLevelValue,new ArrayList<Long>(entry.getValue()),stateId,"today",null, null);
 		 			  if(totalRegCadreList != null && totalRegCadreList.size() > 0){
 		 				  for (Object[] param : totalRegCadreList) {
 		 					  String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -3394,7 +3394,7 @@ try{
 		 			  vo.setTotalCadreCountPer(calculatePercantage(vo.getTotalCadreCount(),vo.getTotalTargetCount()));
 		 		  }
 		 	  }
-		 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){  
 		 		  resultList.addAll(childActivityMembersMap.values());
 		 	  }
 		 	  /*if(resultList != null && resultList.size() > 0)  
@@ -3407,14 +3407,14 @@ try{
 		 		 }
 		 	 }else{  
 		 		 if(resultList != null && resultList.size() > 0){
-		 			 Collections.sort(resultList, cadreMemberEligibleAttendedPercDesc);
+		 			 Collections.sort(resultList, cadreMemberEligibleAttendedPercDesc);      
 		 		 }  
 		 	 }
 		 	 return resultList;	            
 		}catch(Exception e){
 			LOG.error("Error occured at getSelectedChildTypeMembersForTrainingProgram() in CoreDashboardMainService ",e);
 		}
-		return null;
+		return null;  
 	}
 
 	public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr){
