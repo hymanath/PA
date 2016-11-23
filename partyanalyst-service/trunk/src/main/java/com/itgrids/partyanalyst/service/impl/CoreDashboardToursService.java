@@ -563,17 +563,25 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			4			ORGANIZING SECRETARIES			32					1			Krishan Ganni					65
 			4			ORGANIZING SECRETARIES			33					1			VENKATESWARA RAO VANAMADI		66
 		*/
-			
+			//particularly for two members(convert constituency id into distring id)    
+			if(activityMemberId != null && activityMemberId == 4l || activityMemberId == 5l){
+				 List<Long> districtIds = constituencyDAO.getDistrictsByConstituenciesIds(locationValueSet);
+				 locationScopeId = 3l; // district access level ids
+				 locationValueSet.clear();
+				 locationValueSet.addAll(districtIds);         
+			}
 		    List<Object[]> desigWiseAllCandidate = selfAppraisalCandidateLocationDAO.getDesigWiseAllCandidate(stateId,locationScopeId,locationValueSet,disigList);
 		    
 		    prepairDesignationWiseCandidateDtls(desigWiseAllCandidate, desigIdAndMapOfCandIdAndCandDtlsMap);
 		    Map<Long,ToursBasicVO> candIdAndCandDtlsMap = null;
+		    Map<Long,ToursBasicVO> candIdAndCandDtlsMapForAllDesig = new HashMap<Long,ToursBasicVO>();
 		    
 		    //get all the comment and file.
 		    List<Long> cndIdListForCmtAndFile = new ArrayList<Long>();
 		    if(disigList != null && disigList.size() > 0){
 		    	for(Long id  : disigList){
 		    		candIdAndCandDtlsMap = desigIdAndMapOfCandIdAndCandDtlsMap.get(id);
+		    		candIdAndCandDtlsMapForAllDesig.putAll(candIdAndCandDtlsMap);
 		    		if(candIdAndCandDtlsMap != null){
 		    			cndIdListForCmtAndFile.addAll(candIdAndCandDtlsMap.keySet());
 		    		}
@@ -582,7 +590,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    ToursBasicVO resultVO = null;
 		    Map<Long,List<String>> candIdAndRemarksListMap = new HashMap<Long,List<String>>();
 		    List<String> remarksList = null;
-		    Map<Long,List<String>> candIdAndFilePathListMap = new HashMap<Long,List<String>>();
+		    Map<Long,List<String>> candIdAndFilePathListMap = new HashMap<Long,List<String>>();    
 		    List<String> filePathList = null;  
 		    if(cndIdListForCmtAndFile != null && cndIdListForCmtAndFile.size() > 0){
 		    	List<Object[]> memberDtls = selfAppraisalCandidateDetailsDAO.getCommendAndFilePathDtls(cndIdListForCmtAndFile,fromDate,toDate);
@@ -590,7 +598,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    		if(outPutType.equalsIgnoreCase("document")){
 		    			for(Object[] param : memberDtls){
 		    				resultVO = new ToursBasicVO();
-		    				resultVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		    				resultVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));         
 		    				resultVO.setMonth(commonMethodsUtilService.getStringValueForObject(param[1]));
 		    				resultVO.setYear(commonMethodsUtilService.getLongValueForObject(param[2]));
 		    				resultVO.setComment(commonMethodsUtilService.getStringValueForObject(param[3]));
@@ -598,8 +606,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		    				resultVO.setOwnTours(commonMethodsUtilService.getLongValueForObject(param[5]));
 		    				resultVO.setInchargerTours(commonMethodsUtilService.getLongValueForObject(param[6]));  
 		    				if(commonMethodsUtilService.getLongValueForObject(param[0]) != null){
-		    					resultVO.setName(candIdAndCandDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getName());
-		    					resultVO.setDesignation(candIdAndCandDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getDesignation());
+		    					if(candIdAndCandDtlsMapForAllDesig.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
+		    						resultVO.setName(candIdAndCandDtlsMapForAllDesig.get(commonMethodsUtilService.getLongValueForObject(param[0])).getName());
+		    						resultVO.setDesignation(candIdAndCandDtlsMapForAllDesig.get(commonMethodsUtilService.getLongValueForObject(param[0])).getDesignation());
+		    					}    
 		    				}
 		    				docListVO.add(resultVO);
 		    			}
