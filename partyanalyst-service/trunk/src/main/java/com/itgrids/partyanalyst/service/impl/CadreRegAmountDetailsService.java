@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.hsqldb.lib.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
@@ -31,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.CadreRegAmountDetails;
 import com.itgrids.partyanalyst.model.CadreRegAmountFile;
+import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.service.ICadreRegAmountDetailsService;
 
 public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsService{
@@ -126,10 +125,14 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 						cadreRegAmountDetails.setRegistrationType("WEB");
 						
 					}
-					else
+					else  
 					{
-					cadreRegAmountDetails.setCadreSurveyUserId(cadreSurveyUserDAO.getCadreSurveyUserByUsername(uploadVO.getUsername()).getCadreSurveyUserId());
-					cadreRegAmountDetails.setRegistrationType("TAB");
+						List<CadreSurveyUser> list1 = cadreSurveyUserDAO.getCadreSurveyUserByUsername(uploadVO.getUsername());
+						if(list1 != null && list1.size()>0){
+							CadreSurveyUser cadreSurveyUser = list1.get(0);
+							cadreRegAmountDetails.setCadreSurveyUserId(cadreSurveyUser.getCadreSurveyUserId());
+							cadreRegAmountDetails.setRegistrationType("TAB");
+						}
 					
 					}
 					cadreRegAmountDetails.setAmount(Long.valueOf(uploadVO.getAmount().toString()));
