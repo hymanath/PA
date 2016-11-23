@@ -21,7 +21,7 @@ public interface ITdpCadreDateWiseInfoDAO extends GenericDao<TdpCadreDateWiseInf
 	public Long getTotalCadreCountLocationWise(Long accessLvlId, List<Long>accessLvlValue, Long stateId, Date frmDt, Date toDt);
 	public Long getTotalRenewlCadreLocationWise(Long accessLvlId, List<Long> accessLvlValue,Long stateId, Date frmDt, Date toDt);
 	public Long getTotalConstituencyForCdrRegStarted(Long StateId);
-	public List<Object[]> get2016TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
+	public List<Object[]> get2016TotalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,String type,Date fromDate,Date toDate);
 	public List<Object[]> get2016TotalRenewalCadreCountLocationWiseCount(Long locationScopeId,List<Long> locationValue,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationParameterVO inputVO);
 	public int insertTdpCadreLocInfoDateWiseUpToConstituencyLevel();
