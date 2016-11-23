@@ -1,9 +1,11 @@
 $(document).on("click",".compareBlockSwitchCls",function(){
 	$(".detailsCls").hide();           
 	$(".compareCls").show();  
+	$(".usrWseCnsttuncyUlCls li").removeClass("active");
+	$(".usrWseCnsttuncyUlCls li:first-child").addClass("active");
 	getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);    
 });
-$(document).on("click",".cadreComparison",function(){
+$(document).on("click",".cadreDetailsCls",function(){
 	$(".detailsCls").show();     
 	$(".compareCls").hide(); 
     var filterApplyType="No";
@@ -115,7 +117,7 @@ $(document).on("click",".moreBlocksCadreIcon",function(){
 	//aaa
 	$(".moreBlocksCadre").toggle();
 	$(".compareCls").hide();         
-	$(".cadreComparison").addClass("active");
+	$(".cadreDetailsCls").addClass("active");
 	var filterApplyType="No";
 	var accessLevelId=0;
 	var accessLevelValues=[];
@@ -1795,6 +1797,10 @@ function getTabUserInfoDetails(tabUserIdStr){
 	 function getCadreDetailsBasedOnUserType(filterApplyType){
 		 $("#userTypeWiseHighChartDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var sortingType = '';
+		
+	     $(".districtFilterUlCls li").removeClass("active");
+	     $(".districtFilterUlCls li:first-child").addClass("active");
+		
 	   $(".selectOneSpecialCadre").each(function() {
 		  if($(this).is(":checked")){  
 			sortingType = $(this).attr("attr_sort_type");
@@ -1864,7 +1870,11 @@ function getTabUserInfoDetails(tabUserIdStr){
    function getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType,sortingType){
 	   $("#tsDistrictWiseRegistrationDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   	 var sortingType = '';
-		 $("#dstrctOverlAllCntId").html("All - 0 ");
+		 
+		 $(".districtFilterUlCls li").removeClass("active");
+	     $(".districtFilterUlCls li:first-child").addClass("active");
+		
+		$("#dstrctOverlAllCntId").html("All - 0 ");
 		 $("#dstrctyveryGoodCntId").html("Very Good - 0");
 		 $("#dstrctGoodCntId").html("Good - 0");
 		 $("#dstrctOkCntId").html("Ok - 0");
@@ -2164,7 +2174,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 					text: ' '
 				}
 			},
-			tooltip: {//swadhin 
+			tooltip: {
 			 formatter: function() {
 					var series = this.point.series.chart.series, // get all series 
 					index = this.point.series.xData.indexOf(this.point.x); // get index	
@@ -2194,6 +2204,9 @@ function getTabUserInfoDetails(tabUserIdStr){
   }
   function getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded){
 	  $("#apConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	    $(".apConstituencyUlCls li").removeClass("active");
+	    $(".apConstituencyUlCls li:first-child").addClass("active");
+		
 	     $("#cnsttncyverlAllCntId").html("All - 0 ");
 		 $("#cnsttncyveryGoodCntId").html("Very Good - 0 ");
 		 $("#cnsttncyverlGoodCntId").html("Good - 0 ");
@@ -2248,7 +2261,11 @@ function getTabUserInfoDetails(tabUserIdStr){
    function getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active){
 	   $("#tsConstituencyRegistrationReportDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   
-	     var filterApplyType="No"
+	     var filterApplyType="No";
+		 
+		 $(".tsConstituencyUlCls li").removeClass("active");
+	     $(".tsConstituencyUlCls li:first-child").addClass("active");
+		 
 		 $("#tsCnsttncyverlAllCntId").html("All - 0 ");
 		 $("#tsCnsttncyveryGoodCntId").html("Very Good - 0 ");
 		 $("#tsCnsttncyverlGoodCntId").html("Good - 0 ");
@@ -2256,7 +2273,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 		 $("#tsCnsttncyverlPoorCntId").html("Poor - 0 ");
 		 $("#tsCnsttncyveryPoorCntId").html("Very Poor - 0 ");
 		var sortingType = '';
-	   $(".selectOneSpecialCadre").each(function() {
+	    $(".selectOneSpecialCadre").each(function() {
 		  if($(this).is(":checked")){  
 			sortingType = $(this).attr("attr_sort_type");
 		  }
@@ -3251,8 +3268,8 @@ $(document).on("click","#getCadreRegistrationDetailsBtnId",function(){
 		   return;
 	   }
 	    $("#cadreRegSearchErrorId").html(' ');
-	   	$(".constituencyUlCls li").removeClass("active");
-		$(".constituencyUlCls li:first-child").addClass("active");
+	   	$(".apConstituencyUlCls li").removeClass("active");
+		$(".apConstituencyUlCls li:first-child").addClass("active");
 	    $("#apConstituencySelectBoxId").attr("attr_filter_value","All");
 	    $("#tsConstituencySelectBoxId").attr("attr_filter_value","All");
 	    $(".ascendingApSorting").attr("attr_filter_value","All");
@@ -3297,8 +3314,8 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		   return;
 	   }
 	    $("#cadreTsRegSearchErrorId").html(' ');
-	   	$(".constituencyUlCls li").removeClass("active");
-		$(".constituencyUlCls li:first-child").addClass("active");
+	   	$(".tsConstituencyUlCls li").removeClass("active");
+		$(".tsConstituencyUlCls li:first-child").addClass("active");
 	    $("#tsConstituencySelectBoxId").attr("attr_filter_value","All");
 	    $(".decendingTsSorting").attr("attr_filter_value","All");
 	    $(".ascendingTsSorting").attr("attr_filter_value","All");
@@ -3871,7 +3888,9 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		$("#individualDtls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		$(".hideConReport").show();
 		$("#constituencyReportHeadingId").html("CONSTITUENCY WISE REGISTRATIONS<b>("+selectedMemberName+" - "+selectedUserType+")</b>");
-		
+	    $(".usrWseCnsttuncyUlCls li").removeClass("active");
+		$(".usrWseCnsttuncyUlCls li:first-child").addClass("active");
+		 
 		 $("#usrWseCnsttuncyAllCntId").html("All-0");
 		 $("#usrWseCnsttuncyVryGdCntId").html("Very Good-0");
 		 $("#usrWseCnsttuncyGdCntId").html("Good-0");
@@ -4827,7 +4846,20 @@ function buildTabUserComparisonRslt(result){
 		showCadreRegistreredCountTS(globalActivityMemberId,36);
 		getEnumeratorsInfo(globalActivityMemberId);
 		getEnumeratorsInfoTS(globalActivityMemberId,36);      
-		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);       
+		getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId);      
+
+		var filterApplyType="No";
+		var is2014Active="No";
+		var accessLevelId=0;
+		var accessLevelValues=[];
+		var renewal2016CheckboxIsChecked="Y";
+		var new2016CheckboxIsChecked="Y";
+		var cadre2014CheckboxIsChecked="Y";  
+		var isKuppamExcluded="True";
+		getCadreDetailsBasedOnUserType(filterApplyType);  
+		getTsDistrictWiseTsDetails(accessLevelId,accessLevelValues,filterApplyType);	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);
+		getTsConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active);	
+			
 		$(".specialCadreDropDown").toggle();    
 	});
 	$(document).on("click",".settingCloseCls",function(){  
@@ -4839,3 +4871,4 @@ function buildTabUserComparisonRslt(result){
 		$(".selectOneSpecialCadre").prop("checked",false);
 		$(this).prop("checked",true);
 	});
+	
