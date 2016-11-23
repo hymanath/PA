@@ -19,6 +19,27 @@
 body
 {
 	background-image:url("dist/mediaScreenParty/background.png");
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+.slick-prev::before, .slick-next::before
+{
+	padding:5px 5px !important;
+	background-color:rgba(255,255,255,0.8);
+}
+blockquote h2 span
+{
+	font-size:38px !important;
+}
+blockquote h2
+{
+	text-transform:uppercase !important;
+	font-size:18px !important;
+	vertical-align:middle;
+}
+.newsWidgetCls1 , .newsWidgetCls2
+{
+	padding-left:0px
 }
 .newsWidgetCls
 {
@@ -28,20 +49,45 @@ body
 {
 	padding:30px 20px;
 	color:#fff;
-	background-color:rgba(0,0,0,0.6);
+	background-color:#585335;
 	border:1px solid #eecf36;
-	width:260px;
+
+}
+.registrationsCount
+{
+	display:none;
+	color:#EECF36;
+	font-size:14px;
+	width:80px;
+	text-align:center;
+}
+.distPriority , .distName
+{
+	display:inline-block;
+}
+.slickCount
+{
+	font-size:22px;
+	margin-right:5px;
+}
+.slickSlide.slick-active .distPriority .slickCount , .slickSlide.slick-current .distPriority .slickCount
+{
+	font-size:38px;
 }
 .slick-track
 {
 	padding:20px;
 }
+.slickSlide.slick-active .registrationsCount, .slickSlide.slick-current .registrationsCount ,.slickSlide.slick-active .distPriority, .slickSlide.slick-current .distPriority,.slickSlide.slick-active .distName, .slickSlide.slick-current .distName
+{
+	display:block
+}
 .slickSlide.slick-active , .slickSlide.slick-current 
 {
 	background-color:#ed1b24 ;
-	padding:40px 20px;
-	margin-top:-10px;
-	width:260px;
+	padding:20px 20px;
+	margin-top:-15px;
+	width:250px;
 }
 .mCSB_inside > .mCSB_container
 {
@@ -118,119 +164,98 @@ h1,h2,h3,h4,h5,h6,.table
     -webkit-transform: scale(1.0);
   }
 }
+.btnNewCustom.btnActive
+{
+	background-color:#fff;
+}
+.m_top20
+{
+	margin-top:20px;
+}
+.btnNewCustom
+{
+	background-color:#CCCCCC
+}
+.arrowDots
+{
+	padding-left:0px;
+}
+.arrowDots li
+{
+	width:10px;
+	height:10px;
+	background-color:#91833C;
+	cursor:pointer;
+	display:inline-block;
+	list-style:none;
+	margin:0px 5px;
+}
+.arrowDots li.active
+{
+	background-color:#ED1B24;
+}
+
 </style>
 </head>
 <body>
-<!--<div class="container">
+<div  class="container" >
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-			<h3 style="margin-top:-30px;color:#EE4A24" class="text-center"><b>2016 - 2018 MEMBERSHIP DRIVE</b></h3>
-		</div>
-		<div class="col-md-12 col-xs-12 col-sm-12">
-			<label class="radio-inline pull-right" style="margin-left:10px;">
-				<input type="radio" name="radio" class="radioCls" value="2"><b>Target Achieved[%]</b></input>
-			</label>
-			<label class="radio-inline pull-right">
-				<input type="radio" name="radio" class="radioCls" checked value="1"><b>Registrations</b></input>
-			</label>
-			<label class="radio-inline pull-right">
-				<b>Sort By: </b>
-			</label>
+			<ul class="arrowDots pull-left">
+				<li class="active"></li>
+				<li></li>
+			</ul>
+			<div class="btn-group pull-right">
+			  <button type="button" attr_val="1" class="btn btnClassChange btnNewCustom btnActive">REGISTRATIONS</button>
+			  <button type="button" attr_val="2" class="btn btnClassChange btnNewCustom">TARGET ACHIEVED %</button>
+			</div>
 		</div>
 	</div>
-	<div class="row">		
+	<div id="districtDiv">
 		<div class="row">
-			<div class="col-md-6 col-xs-12 col-sm-6">
-			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff;padding:5px">
-					<div class="row">
-						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
-						</div>
-						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital" style="font-size:12px;"><span style="color:#3A98DE">Today TOp</span></h5>
-							<h4 class="text-capital">Districts in ts</h4>
-							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
-							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
-						</div>
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				
+				<div class="row m_top20">
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<img src="dist/mediaScreenParty/TS_Districts.png" class="img-responsive" style="margin:auto"/>
+					</div>
+					<div class="col-md-6 col-xs-12 col-sm-6">
+						<span style="color:#ED1B24"><b>TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></b></span>
+						<div class="emptyDiv"></div>
 					</div>
 				</div>
-				<div class="panel-body" style="padding:0px;" id="todayDistrictList">
-					<div id="todaytsImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
-				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-6">
+				<span style="color:#ED1B24"><b>TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></b></span>
+				<div class="emptyDiv1"></div>
+			</div>
+		</div>
+	</div>	
+
+	<div   id="constituencyDiv" style="display:none;">
+		<div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-6">
+			<div class="col-md-6 col-xs-12 col-sm-6">
+				<img src="dist/mediaScreenParty/TS_Constituencies.png" class="img-responsive" style="margin:auto"/>
+			</div>
+			<div class="col-md-6 col-xs-12 col-sm-6">
+				<span style="color:#ED1B24">TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></span>
+				<div class="emptyDiv2"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-6">
+				<span style="color:#ED1B24">TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></span>
+				<div class="emptyDiv3"></div>
 			</div>
 		</div>
 		
-			<div class="col-md-6 col-xs-12 col-sm-6">
-				<div class="panel panel-default">
-					<div class="panel-heading" style="background:#fff;padding:5px">
-						<div class="row">
-							<div class="col-md-2 col-xs-4 col-sm-3">
-								<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
-							</div>
-							<div class="col-md-10 col-xs-4 col-sm-9">
-								<h5 class="text-capital" style="font-size:12px;"><span style="color:#3A98DE">today TOp 20</span></h5>
-								<h4 class="text-capital">constituencies in ts</h4>
-								<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
-								<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
-							</div>
-						</div>
-					</div>
-				<div class="panel-body" style="padding:0px;" id="constituencyListPanel2">
-					<div id="todaytsImgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
-				</div>
-			</div>
 		</div>
-	</div>	
-  </div>
-  <div class="row">		
-	<div class="row">
-		<div class="col-md-6 col-xs-12 col-sm-6">
-			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff;padding:5px;">
-					<div class="row">
-						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
-						</div>
-						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital" style="font-size:12px;"><span style="color:#9D0D3E">OverAll TOp</span></h5>
-							<h4 class="text-capital">District in ts</h4>
-							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
-							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body" style="padding:0px;" id="overAllDistrictList">
-				<div id="totaltsimgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
-				</div>
-			</div>
-		</div>
-	 
-		<div class="col-md-6 col-xs-12 col-sm-6">
-			<div class="panel panel-default">
-				<div class="panel-heading" style="background:#fff;padding:5px;">
-					<div class="row">
-						<div class="col-md-2 col-xs-4 col-sm-3">
-							<img src="dist/mediaScreenParty/Notification.png" class="img-responsive" style="width:50px;"/>
-						</div>
-						<div class="col-md-10 col-xs-4 col-sm-9">
-							<h5 class="text-capital" style="font-size:12px;"><span style="color:#9D0D3E">OverAll TOp 20</span></h5>
-							<h4 class="text-capital">Constituencies in ts</h4>
-							<h5 style="margin-right: 25px;font-size:12px;display:none;" class="pull-right percentage">Percentage[%]</h5>
-							<h5 style="margin-right: 25px;font-size:12px;" class="pull-right counts">Registrations</h5>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body" style="padding:0px;" id="constituencyListPanel4">
-				<div id="totaltsimgId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
-				</div>
-			</div>
-		</div>
-	</div>	
-  </div>
-  
- </div> -->
- <div class="container" id="districtDiv">
+	</div>
+</div>
+ <!--<div class="container" id="districtDiv">
 	<div class="row">
 	<div class="col-md-12 col-xs-12 col-sm-6">
 		<div class="col-md-6 col-xs-12 col-sm-6">
@@ -270,7 +295,7 @@ h1,h2,h3,h4,h5,h6,.table
 	</div>
 	
 	</div>
-</div>
+</div>-->
  
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -327,7 +352,7 @@ function buildingConstituencyList2(result,divId,type,sortType){
 		for(var i in result){
 			var temp = parseInt(i)+1;
 			
-				str1+='<li data-title="'+temp+' '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
+				str1+='<li data-title="<span>'+temp+'</span> '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
 				str1+='<h3>'+result[i].attenteeCount+'</h3>';
 			str1+='</li>';
 		}
@@ -378,9 +403,9 @@ function buildingConstituencyList3(result,divId,type,sortType){
 			var temp = parseInt(i)+1;
 		
 			str1+='<li class="slickSlide">';
-				str1+='<h3>'+temp+'';
-				str1+='<span style="color:#EECF36;font-size:13px;width:80px;text-align:center;" class="pull-right">Registrations <br/>'+result[i].attenteeCount+'</span></h3>';
-				str1+='<h4>'+result[i].name+'</h4>';
+				str1+='<span class="distPriority"><span class="slickCount">'+temp+'</span>';
+				str1+='<span  class="pull-right registrationsCount">Registrations <br/><b>'+result[i].attenteeCount+'</b></span></span>';
+				str1+='<span class="distName">'+result[i].name+'</span>';
 			str1+='</li>';
 		}
 	str1+='</ul>';
@@ -390,7 +415,7 @@ function buildingConstituencyList3(result,divId,type,sortType){
 	   autoplay: true,
 	   autoplaySpeed: 1800,
 	  slidesToShow: 1,
-	  centerMode: false,
+	  centerMode: true,
 	  variableWidth: true
 	});
 	setInterval(function(){
@@ -444,9 +469,9 @@ function buildingDistrictListOverAll(result,divId,type,sortType){
 			var temp = parseInt(i)+1;
 		
 			str1+='<li class="slickSlide">';
-				str1+='<h3>'+temp+'';
-				str1+='<span style="color:#EECF36;font-size:13px;width:80px;text-align:center;" class="pull-right">Registrations <br/>'+result[i].attenteeCount+'</span></h3>';
-				str1+='<h4>'+result[i].name+'</h4>';
+				str1+='<span class="distPriority"><span class="slickCount">'+temp+'</span>';
+				str1+='<span  class="pull-right registrationsCount">Registrations <br/><b>'+result[i].attenteeCount+'</b></span></span>';
+				str1+='<span class="distName">'+result[i].name+'</span>';
 			str1+='</li>';
 		}
 	str1+='</ul>';
@@ -456,7 +481,7 @@ function buildingDistrictListOverAll(result,divId,type,sortType){
 	   autoplay: true,
 	   autoplaySpeed: 1800,
 	  slidesToShow: 1,
-	  centerMode: false,
+	  centerMode: true,
 	  variableWidth: true
 	});
 	setInterval(function(){
@@ -470,9 +495,9 @@ function buildingDistrictList(result,divId,type,sortType){
 		for(var i in result){
 			var temp = parseInt(i)+1;
 			if(type == "Today"){
-				str1+='<li data-title="'+temp+' '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
+				str1+='<li data-title="<span>'+temp+'</span> '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
 			}else{
-				str1+='<li data-title="'+temp+' '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
+				str1+='<li data-title="<span>'+temp+'</span> '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
 			}
 				str1+='<h3>'+result[i].attenteeCount+'</h3>';
 			str1+='</li>';
