@@ -1141,4 +1141,24 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String cadreSurveyuserAssignDetails(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CADRE_TAB_LOCKING_USER_ENTITLEMENT")) || entitlements.contains("CADRE_TAB_LOCKING_USER_ADMIN_ENTITLEMENT")){
+				noaccess = true ;
+			}
+		
+			if(noaccess){
+				return "error";
+			}
+		}
+		return Action.SUCCESS;
+	}
 }
