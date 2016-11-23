@@ -3416,4 +3416,8 @@
 	<bean id="tdpCadreDataSourceTypeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDataSourceTypeInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="cardPrintValidationRejectReasonDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardPrintValidationRejectReasonDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
