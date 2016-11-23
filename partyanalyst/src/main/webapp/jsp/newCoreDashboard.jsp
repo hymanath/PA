@@ -254,7 +254,7 @@
                                 <li class="text-capital"><i class="fa fa-gears"></i></li>
                             </ul>    
                             <ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
-                                <li class="text-capital cadreComparison">Detailed</li>
+                                <li class="text-capital cadreDetailsCls">Detailed</li>
 								<li class="text-capital compareBlockSwitchCls">Comparison</li>  
                             </ul>
                             
@@ -284,7 +284,7 @@
                                         	<h2><span class="headingColor" id="apDistrictHeadingId" style="display:none;">Andhra Pradesh</span></h2>
                                         </div>
                                         <div class="col-md-7 col-xs-12 col-sm-12 m_XsTop10">
-                                        	<ul class="activeUlCls list-inline pull-right">
+                                        	<ul class="activeUlCls districtFilterUlCls list-inline pull-right">
                                                 <li class="active districtFilterCls" id="dstrctOverlAllCntId" attr_over_all_cnt="0"  attr_filter_value="All">All - 0</li>
                                                 <li class="districtFilterCls"  id="dstrctyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood">Very Good - 0</li>
                                                 <li class="districtFilterCls"  id="dstrctGoodCntId" attr_good_cnt="0" attr_filter_value="good">Good - 0</li>
@@ -329,7 +329,7 @@
 											<ul class="activeUlCls list-inline pull-right m_top20" style="margin-right: 12px !important;display:inline-block">
 												<li id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
 											</ul>
-                                        	<ul class="activeUlCls list-inline  constituencyUlCls m_top20">
+                                        	<ul class="activeUlCls list-inline  apConstituencyUlCls m_top20">
                                             	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All">All - 0</li>
                                                 <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_filter_value="verygood">Very Good - 0</li>
                                                 <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId"  attr_filter_value="good">Good - 0</li>
@@ -387,7 +387,7 @@
 											<ul class="activeUlCls list-inline pull-right m_top20" style="margin-right: 12px !important;display:inline-block">
 												<li  id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
 											</ul>
-                                        	<ul class="activeUlCls list-inline constituencyUlCls m_top20">
+                                        	<ul class="activeUlCls list-inline tsConstituencyUlCls m_top20">
                                             <li class="active tsConstituencyFilterCls"  id="tsCnsttncyverlAllCntId" attr_filter_value="All"  >All - 0</li>
                                                 <li class="tsConstituencyFilterCls" id="tsCnsttncyveryGoodCntId"  attr_filter_value="verygood">Very Good - 0</li>
                                                 <li class="tsConstituencyFilterCls" id="tsCnsttncyverlGoodCntId"  attr_filter_value="good">Good - 0</li>
@@ -468,7 +468,7 @@
 											<h4><span class="headingColor1 hideConReport" id="constituencyReportHeadingId">CONSTITUENCY WISE REGISTRATIONS</span></h4>
 										  </div>
 										  <div class="col-md-5 col-xs-12 col-sm-7">
-											<ul class="activeUlCls list-inline pull-right">
+											<ul class="activeUlCls list-inline usrWseCnsttuncyUlCls pull-right">
                                                 <li class="active consFilterCls" id="usrWseCnsttuncyAllCntId" attr_filter_value="All">All-0</li>
                                                 <li class="consFilterCls" id="usrWseCnsttuncyVryGdCntId" attr_filter_value="verygood">Very Good-0</li>
                                                 <li class="consFilterCls" id="usrWseCnsttuncyGdCntId" attr_filter_value="good">Good-0</li>
