@@ -2660,6 +2660,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   }  
   public String cadreWebRegistration(){
 	  try {
+		  	session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
 			if(user==null)
 				return "input";
