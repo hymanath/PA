@@ -19,11 +19,14 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
+import com.itgrids.partyanalyst.dao.ICardPrintValidationRejectReasonDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintValidationUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceTypeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
@@ -42,10 +45,14 @@ import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreDateVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
+import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.DataSourceTypeVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationInfoVO;
+import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
+import com.itgrids.partyanalyst.model.CardPrintValidation;
+import com.itgrids.partyanalyst.model.CardPrintValidationRejectReason;
 import com.itgrids.partyanalyst.model.TdpCadreDataSourceTypeInfo;
 import com.itgrids.partyanalyst.model.TdpCadreDateWiseInfoTemp;
 import com.itgrids.partyanalyst.model.TdpCadreHourRegInfoTemp;
@@ -90,6 +97,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ICardPrintValidationUserDAO cardPrintValidationUserDAO;
 	private DateUtilService dateUtilService;
 	private ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO;
+	private ITdpCadreCardPrintDAO tdpCadreCardPrintDAO;
+	private ICardPrintValidationDAO cardPrintValidationDAO;
+	private ICardPrintValidationRejectReasonDAO cardPrintValidationRejectReasonDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -197,6 +207,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setTdpCadreDataSourceTypeInfoDAO(
 			ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO) {
 		this.tdpCadreDataSourceTypeInfoDAO = tdpCadreDataSourceTypeInfoDAO;
+	}
+	
+	public void setTdpCadreCardPrintDAO(ITdpCadreCardPrintDAO tdpCadreCardPrintDAO) {
+		this.tdpCadreCardPrintDAO = tdpCadreCardPrintDAO;
+	}
+	
+	public void setCardPrintValidationDAO(
+			ICardPrintValidationDAO cardPrintValidationDAO) {
+		this.cardPrintValidationDAO = cardPrintValidationDAO;
+	}
+	
+	public void setCardPrintValidationRejectReasonDAO(
+			ICardPrintValidationRejectReasonDAO cardPrintValidationRejectReasonDAO) {
+		this.cardPrintValidationRejectReasonDAO = cardPrintValidationRejectReasonDAO;
 	}
 	//Business methods
 	/**
@@ -2583,6 +2607,11 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
        
        
        //PRINTING RELATED 
+       /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  Card Print UserName and Password Validation. 
+	   	 *  @since 19-NOVEMBER-2016 
+	   	 */
        public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password){
     	   
     	   CardPrintValidationUserVO finalVO = null;
@@ -2615,7 +2644,101 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     	   return finalVO;
        }
        
+       /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  Get Tdp Cadre Card Details Based on Member ShipId. 
+	   	 *  @since 19-NOVEMBER-2016 
+	   	 */
+       public TdpCadrePrintDetailsVO  getTdpCadrePrintDetailsByMemberShipId(String memberShipId){
+    	   
+    	   TdpCadrePrintDetailsVO tdpCadrePrintDetailsVO = null;
+    	   try{
+    		   
+    		   List<Object[]> list = tdpCadreCardPrintDAO.getCardPrintDetailsByMemberShipId(memberShipId);
+    		   if(list != null && list.size() > 0){
+    			   
+    			   Object[] obj  = list.get(0);
+    			   
+    			   if(obj != null && obj.length > 0){
+    				   
+    				   tdpCadrePrintDetailsVO = new TdpCadrePrintDetailsVO();
+    				   
+    				   tdpCadrePrintDetailsVO.setTdpCadreId(obj[0] != null ? (Long)obj[0] : 0l);
+    				   tdpCadrePrintDetailsVO.setMemberShipId(obj[1] != null ? obj[1].toString() : "");
+    				   tdpCadrePrintDetailsVO.setCadreName(obj[2] != null ? obj[2].toString() : "");
+    				   tdpCadrePrintDetailsVO.setImagePath(obj[3] != null ? obj[3].toString() : "");
+    				   
+    				   tdpCadrePrintDetailsVO.setDistrictName(obj[4] != null ? obj[4].toString() : "");
+    				   tdpCadrePrintDetailsVO.setConstituencyName(obj[5] != null ? obj[5].toString() : "");
+    				   tdpCadrePrintDetailsVO.setMandalName(obj[6] != null ? obj[6].toString() : "");
+    				   tdpCadrePrintDetailsVO.setPanchayatName(obj[7] != null ? obj[7].toString() : "");
+    				   tdpCadrePrintDetailsVO.setMuncipalityName(obj[8] != null ? obj[8].toString() : "");
+    				   tdpCadrePrintDetailsVO.setWardName(obj[9] != null ? obj[9].toString() : "");
+    				   tdpCadrePrintDetailsVO.setBoothName(obj[10] != null ? obj[10].toString() : "");
+    				   tdpCadrePrintDetailsVO.setAreaCovered(obj[11] != null ? obj[11].toString() : "");
+    				   tdpCadrePrintDetailsVO.setHouseNo(obj[12] != null ? obj[12].toString() : "");
+    				   
+    				   tdpCadrePrintDetailsVO.setCardPrintVendorId(obj[13] != null ? (Long)obj[13] : 0l);
+    				   tdpCadrePrintDetailsVO.setBoxNo(obj[14] != null ? obj[14].toString() : "");
+    				   
+    			   }
+    		   }
+    		   
+		  }catch(Exception e){
+			  LOG.error("Exception occur in getTdpCadrePrintDetailsByMemberShipId()  Of CadreRegistrationServiceNew class - ",e);
+		  }
+    	   return tdpCadrePrintDetailsVO;
+       }
        
-      
-       
+       /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  saving Card Print Valid Staus.
+	   	 *  @since 19-NOVEMBER-2016 
+	   	 */
+       public ResultStatus updateCardPrintValidStatus(final CardPrintValidationVO inputVO){
+    	   
+    	   final ResultStatus rs = new ResultStatus();
+    	   try{
+    			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			        	
+			        		Date currentTime = dateUtilService.getCurrentDateAndTime();
+				    		
+			        		CardPrintValidation cardPrintValidation = new CardPrintValidation();
+			        		
+			        		cardPrintValidation.setCardPrintVendorId(inputVO.getCardPrintValidationUserId());
+			        		cardPrintValidation.setTdpCadreId(inputVO.getTdpCadreId());
+			        		cardPrintValidation.setMemberShipId(inputVO.getMemberShipId());
+			        		cardPrintValidation.setPrintStatus(inputVO.getPrintStatus());
+			        		if(inputVO.getRejectReason() != null && inputVO.getRejectReason().trim().length() > 0){
+			        			cardPrintValidation.setRejectReason(inputVO.getRejectReason());
+			        		}
+			        		cardPrintValidation.setCardPrintValidationUserId(inputVO.getCardPrintValidationUserId());
+			        		cardPrintValidation.setInsertedTime(currentTime);
+			        		cardPrintValidation.setBoxNo(inputVO.getBoxNo());
+			        		
+			        		cardPrintValidation = cardPrintValidationDAO.save(cardPrintValidation);
+			        		
+			        		if(inputVO.getRejectReasonIds() != null && inputVO.getRejectReasonIds().size() > 0){
+			        		   for(Long reasonId : inputVO.getRejectReasonIds()){
+			        			   
+			        			   CardPrintValidationRejectReason cardPrintValidationRejectReason = new CardPrintValidationRejectReason();
+			        			   cardPrintValidationRejectReason.setCardPrintValidationId(cardPrintValidation.getCardPrintValidationId());
+			        			   cardPrintValidationRejectReason.setPrintRejectReasonId(reasonId);
+			        			   cardPrintValidationRejectReasonDAO.save(cardPrintValidationRejectReason);
+			        		   }
+			        		}
+			        		
+				          rs.setResultCode(1);
+				          rs.setMessage("Success");
+			         }
+			    });
+    		   
+		  }catch(Exception e){
+			  LOG.error("Exception occur in updateCardPrintValidStatus()  Of CadreRegistrationServiceNew class - ",e);
+			  rs.setResultCode(0);
+			  rs.setMessage("Failure");
+		  }
+    	   return rs;
+       }
 }
