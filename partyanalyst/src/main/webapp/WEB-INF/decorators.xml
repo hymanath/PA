@@ -683,6 +683,7 @@
 	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
 	   <pattern>/coreDashboardAction*</pattern>
 	   <pattern>/partyAndLeaderActivitiesAndPerformanceTracking*</pattern>
+	   <pattern>/coreDashboardNewAction*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>
 		<pattern>/birthDayAction*</pattern>
 		<pattern>/govtOrderIssuedAction*</pattern> 
@@ -715,5 +716,6 @@
 		<pattern>/getMomPartyMeetingDetailsAction*</pattern>
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 		<pattern>/cadreWebRegistrationAction*</pattern>
+		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 	</decorator> 
 </decorators>
