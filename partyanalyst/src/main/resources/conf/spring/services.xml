@@ -3762,6 +3762,9 @@
 	   <property name="cardPrintValidationUserDAO" ref="cardPrintValidationUserDAO" />
 	   <property name="dateUtilService" ref="dateUtilService" />
 	   <property name="tdpCadreDataSourceTypeInfoDAO" ref="tdpCadreDataSourceTypeInfoDAO" />
+	   <property name="tdpCadreCardPrintDAO" ref="tdpCadreCardPrintDAO" />
+	   <property name="cardPrintValidationDAO" ref="cardPrintValidationDAO" />
+	   <property name="cardPrintValidationRejectReasonDAO" ref="cardPrintValidationRejectReasonDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
