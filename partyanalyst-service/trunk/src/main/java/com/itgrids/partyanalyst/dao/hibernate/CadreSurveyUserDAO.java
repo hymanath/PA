@@ -112,11 +112,12 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		return (Long) query.uniqueResult();
 	}
 	
-	public CadreSurveyUser getCadreSurveyUserByUsername(String username)
+	public List<CadreSurveyUser> getCadreSurveyUserByUsername(String username)
 	{
-		Query query = getSession().createQuery("select model from CadreSurveyUser model where model.userName = :username");
+		Query query = getSession().createQuery("select model from CadreSurveyUser model where model.userName = :username and model.isDeleted='N' and  model.isExcluded='N' " +
+				" and model.isEnabled ='Y' ");
 		query.setParameter("username", username);
-		return (CadreSurveyUser) query.uniqueResult();
+		return  query.list();
 	}
 	
 	
