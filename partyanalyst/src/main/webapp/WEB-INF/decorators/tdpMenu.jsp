@@ -823,7 +823,7 @@
 					
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">
 								<li>
-									<a href="coreDashboardAction1.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp; CORE DASHBOARD </span></a>
+									<a target="_blank" href="coreDashboardAction1.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp; CORE DASHBOARD </span></a>
 								</li>
 							</c:if>
 							
