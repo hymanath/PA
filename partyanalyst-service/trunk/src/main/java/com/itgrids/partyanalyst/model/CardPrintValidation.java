@@ -22,16 +22,20 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "card_print_validation")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class CardPrintValidation extends BaseModel implements Serializable{//reject_reason is pending.
+public class CardPrintValidation extends BaseModel implements Serializable{
    
+	
+	private static final long serialVersionUID = 4921104915311915718L;
 	private Long cardPrintValidationId;
 	private Long cardPrintVendorId;
 	private Long tdpCadreId;
 	private String memberShipId;
 	private String printStatus;
+	private String rejectReason;
 	private Long cardPrintValidationUserId;
 	private Date insertedTime;
 	private String boxNo;
+	
 	
 	
 	private CardPrintVendor cardPrintVendor;
@@ -136,4 +140,14 @@ public class CardPrintValidation extends BaseModel implements Serializable{//rej
 			CardPrintValidationUser cardPrintValidationUser) {
 		this.cardPrintValidationUser = cardPrintValidationUser;
 	}
+	
+	@Column(name="reject_reason")
+	public String getRejectReason() {
+		return rejectReason;
+	}
+	public void setRejectReason(String rejectReason) {
+		this.rejectReason = rejectReason;
+	}
+	
+	
 }
