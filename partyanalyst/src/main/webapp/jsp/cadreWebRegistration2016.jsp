@@ -1818,7 +1818,7 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 	//$("#nameId").
 });
 
-$(document).on("click","#prmaryAddrsId",function(){
+/*$(document).on("click","#prmaryAddrsId",function(){
 	
 	$('.shipAddressCls').addClass('hide');
 	$("#wrkShippingErrId").html("");
@@ -1837,38 +1837,38 @@ $(document).on("click","#prmaryAddrsId",function(){
 	}else{
 		$(this).trigger('click');
 	}
-});
+});*/
 
-$(document).on("click","#deliveryCheckBox",function(){
-	$("#deliveryStatsId").val("CR");
-	$("#workStateList").val(0);
-	$("#workStateList").trigger("chosen:updated");
-	$('#prmaryAddrsId').attr('checked', false);
-	$('#deliveryAbrodCheckBox').attr('checked', false);
-	$('#deliveryPOCheckBox').attr('checked', false);
+/*$(document).on("click","#deliveryCheckBox",function(){
+	//$("#deliveryStatsId").val("CR");
+	//$("#workStateList").val(0);
+	//$("#workStateList").trigger("chosen:updated");
+	//$('#prmaryAddrsId').attr('checked', false);
+	//$('#deliveryAbrodCheckBox').attr('checked', false);
+	//$('#deliveryPOCheckBox').attr('checked', false);
 	$('.shipAddressCls').addClass('hide');
 	$("#wrkShippingErrId").html("");
 	$("#shipAddress").val("");
 	if($(this).is(":checked")){
-		$('#deliveryAddrId').show();
+		//$('#deliveryAddrId').show();
 	}
 	else{
-		$('#deliveryAddrId').hide();
+		//$('#deliveryAddrId').hide();
 		$('.delvryAdrCls').val(0);
 		$('.delvryAddrCls').val('');
 		 $(".delvryAdrCls").trigger("chosen:updated");
 		$(this).trigger('click');
 		//$('#prmaryAddrsId').trigger('click');
 	}	
-});
+});*/
 
-$(document).on("click","#deliveryAbrodCheckBox",function(){
+/*$(document).on("click","#deliveryAbrodCheckBox",function(){
 	$("#deliveryStatsId").val("ACR");
 	$("#workStateList").val(0);
 	$("#workStateList").trigger("chosen:updated");
-	$('#prmaryAddrsId').attr('checked', false);
+	//$('#prmaryAddrsId').attr('checked', false);
 	$('#deliveryCheckBox').attr('checked', false);
-	$('#deliveryPOCheckBox').attr('checked', false);
+	//$('#deliveryPOCheckBox').attr('checked', false);
 	$("#wrkShippingErrId").html("");
 	$("#shipAddress").val("");
 	if($(this).is(":checked")){
@@ -1879,9 +1879,9 @@ $(document).on("click","#deliveryAbrodCheckBox",function(){
 		$(this).trigger('click');
 		//$('#prmaryAddrsId').trigger('click');
 	}	
-});
+});*/
 
-$(document).on("click","#deliveryPOCheckBox",function(){
+/*$(document).on("click","#deliveryPOCheckBox",function(){
 	$("#deliveryStatsId").val("PO");
 	$("#workStateList").val(0);
 	$("#workStateList").trigger("chosen:updated");
@@ -1897,14 +1897,14 @@ $(document).on("click","#deliveryPOCheckBox",function(){
 	}else{
 		$(this).trigger('click');
 	}	
-});
-$(document).on("click","#deliveryAbrodCheckBox",function(){
+});*/
+/*$(document).on("click","#deliveryAbrodCheckBox",function(){
 	$("#deliveryStatsId").val("ACR");
 	$("#workStateList").val(0);
 	$("#workStateList").trigger("chosen:updated");
-	$('#prmaryAddrsId').attr('checked', false);
+	//$('#prmaryAddrsId').attr('checked', false);
 	$('#deliveryCheckBox').attr('checked', false);
-	$('#deliveryPOCheckBox').attr('checked', false);
+	//$('#deliveryPOCheckBox').attr('checked', false);
 	$("#wrkShippingErrId").html("");
 	$("#shipAddress").val("");
 	if($(this).is(":checked")){
@@ -1913,7 +1913,7 @@ $(document).on("click","#deliveryAbrodCheckBox",function(){
 	}else{
 			$(this).trigger('click');
 	}	
-});
+});*/
 
 /*
 $(document).on("click","#deliveryPOCheckBox",function(){
@@ -1949,27 +1949,27 @@ $(document).on("click","#prmaryAddrsId",function(){
 });
 */
 $(document).on("click","#byindianCourierId",function(){
-	$('#deliveryStatsId').val('CR');
+	//$('#deliveryStatsId').val('CR');
 	$('#byPartyOfcId').attr('checked', false);
 	$('#bycourierId').attr('checked', false);
-	$('.shipAddressCls').addClass('hide');
-	$('#shipAddress').val('');
+	//$('.shipAddressCls').addClass('hide');
+	//$('#shipAddress').val('');
 	$(this).attr('checked', true);	
 });
 
 $(document).on("click","#bycourierId",function(){
-	$('.shipAddressCls').removeClass('hide');
-	$('#shipAddress').val('');
-	$('#deliveryStatsId').val('OR');
+	//$('.shipAddressCls').removeClass('hide');
+	//$('#shipAddress').val('');
+	//$('#deliveryStatsId').val('OR');
 	$('#byPartyOfcId').attr('checked', false);
 	$('#byindianCourierId').attr('checked', false);
 	$(this).attr('checked', true);	
 });
 
 $(document).on("click","#byPartyOfcId",function(){
-	$('.shipAddressCls').addClass('hide');
-	$('#shipAddress').val('');
-	$('#deliveryStatsId').val('PO');
+	//$('.shipAddressCls').addClass('hide');
+	//$('#shipAddress').val('');
+	//$('#deliveryStatsId').val('PO');
 	$('#bycourierId').attr('checked', false);
 	$('#byindianCourierId').attr('checked', false);
 	$(this).attr('checked', true);	
