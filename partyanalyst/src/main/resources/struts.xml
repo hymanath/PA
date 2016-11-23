@@ -14652,7 +14652,7 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action> 	
-	<action name="mediaScreenPartyAction" class="fieldMonitoringAction" method="mediaScreenParty">
+	<action name="tdpMembershipPerformanceForAPAction" class="fieldMonitoringAction" method="mediaScreenParty">
 			<result>/jsp/mediaScreenParty.jsp</result>
 	</action>
 	<action name="getDesignationLabelListAction" class="toursAction"  method="getDesignationLabelList">
@@ -14685,7 +14685,7 @@
 			<param name="root">toursDtlsList</param>
 		</result>
 	</action>
-	<action name="mediaScreenPartyForTSAction" class="fieldMonitoringAction" method="mediaScreenPartyForTS">
+	<action name="tdpMembershipPerformanceForTSAction" class="fieldMonitoringAction" method="mediaScreenPartyForTS">
 			<result>/jsp/mediaScreenPartyForTS.jsp</result>
 	</action>
 	<action name="getDistrictWiseTodayAndOverAllCountsAction" class="fieldMonitoringAction"  method="getDistrictWiseTodayAndOverAllCounts">

@@ -202,12 +202,12 @@ h1,h2,h3,h4,h5,h6,.table
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<ul class="arrowDots pull-left">
-				<li class="active"></li>
-				<li></li>
+				<li attr_val="1" class="active arrowDotsCls"></li>
+				<li attr_val="2" class="arrowDotsCls"></li>
 			</ul>
 			<div class="btn-group pull-right">
-			  <button type="button" attr_val="1" class="btn btnClassChange btnNewCustom btnActive">REGISTRATIONS</button>
-			  <button type="button" attr_val="2" class="btn btnClassChange btnNewCustom">TARGET ACHIEVED %</button>
+			  <button type="button" attr_val="1" class="btn btnClassChange btnNewCustom btnActive radioCls">REGISTRATIONS</button>
+			  <button type="button" attr_val="2" class="btn btnClassChange btnNewCustom radioCls">TARGET ACHIEVED %</button>
 			</div>
 		</div>
 	</div>
@@ -255,47 +255,6 @@ h1,h2,h3,h4,h5,h6,.table
 		</div>
 	</div>
 </div>
- <!--<div class="container" id="districtDiv">
-	<div class="row">
-	<div class="col-md-12 col-xs-12 col-sm-6">
-		<div class="col-md-6 col-xs-12 col-sm-6">
-			<img src="dist/mediaScreenParty/TS_Districts.png" class="img-responsive" style="margin:auto"/>
-		</div>
-		<div class="col-md-6 col-xs-12 col-sm-6">
-			<span style="color:#ED1B24">TODAY TOP</span>
-			<div class="emptyDiv"></div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-6">
-			<span style="color:#ED1B24">TILL NOW TOP</span>
-			<div class="emptyDiv1"></div>
-		</div>
-	</div>
-	
-	</div>
-</div>	
-
-<div class="container" id="constituencyDiv" style="display:none;">
-	<div class="row">
-	<div class="col-md-12 col-xs-12 col-sm-6">
-		<div class="col-md-6 col-xs-12 col-sm-6">
-			<img src="dist/mediaScreenParty/TS_Constituencies.png" class="img-responsive" style="margin:auto"/>
-		</div>
-		<div class="col-md-6 col-xs-12 col-sm-6">
-			<span style="color:#ED1B24">TODAY TOP</span>
-			<div class="emptyDiv2"></div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-6">
-			<span style="color:#ED1B24">TILL NOW TOP</span>
-			<div class="emptyDiv3"></div>
-		</div>
-	</div>
-	
-	</div>
-</div>-->
  
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -310,6 +269,11 @@ h1,h2,h3,h4,h5,h6,.table
 <script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>	
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>	
 <script type="text/javascript"> 
+$(document).on("click",".btnClassChange",function(){
+	$(".btnNewCustom").removeClass("btnActive")
+	$(this).addClass("btnActive")
+});
+
 $("#menu").parent().remove();
 
 //getConstituencyWiseDisrictList2("Today",36,"count");
@@ -317,14 +281,87 @@ $("#menu").parent().remove();
 getTodayDistrictList("Today",36,"count");
 getOverAllDistrictList("Total",36,"count");
 
+
+$(document).on("click",".arrowDotsCls",function(){
+	var value = $(".arrowDots li.active").attr('attr_val');
+	var valPerc = $(".btnActive").attr("attr_val");
+	if(value == 1){
+		$("#constituencyDiv").show();
+		$("#districtDiv").hide();
+		$(".arrowDots li:nth-child(1)").toggleClass("active")
+		$(".arrowDots li:nth-child(2)").toggleClass("active")
+		if(valPerc == 1){
+			getConstituencyWiseDisrictList2("Today",36,"count");
+			getConstituencyWiseDisrictList4("Total",36,"count");
+		}
+		else if(valPerc == 2){
+			getConstituencyWiseDisrictList2("Today",36,"percentage");
+			getConstituencyWiseDisrictList4("Total",36,"percentage");
+		}
+	}
+	else if(value == 2){
+		if(valPerc == 1){
+			getTodayDistrictList("Today",36,"count");
+			getOverAllDistrictList("Total",36,"count");
+		}
+		else if(valPerc == 2){
+			getTodayDistrictList("Today",36,"percentage");
+			getOverAllDistrictList("Total",36,"percentage");
+		}
+		
+		$("#constituencyDiv").hide();
+		$("#districtDiv").show();
+		$(".arrowDots li:nth-child(1)").toggleClass("active")
+		$(".arrowDots li:nth-child(2)").toggleClass("active")
+	}
+});
+
 setTimeout(function(){
 	$("#constituencyDiv").show();
 	$("#districtDiv").hide();
-	getConstituencyWiseDisrictList2("Today",36,"count");
-	getConstituencyWiseDisrictList4("Total",36,"count");
+	$(".arrowDots li:nth-child(1)").toggleClass("active")
+	$(".arrowDots li:nth-child(2)").toggleClass("active")
+	var value = $(".btnActive").attr("attr_val");
+	if(value == 1){
+		getConstituencyWiseDisrictList2("Today",36,"count");
+		getConstituencyWiseDisrictList4("Total",36,"count");
+	}
+	else if(value == 1){
+		getConstituencyWiseDisrictList2("Today",36,"percentage");
+		getConstituencyWiseDisrictList4("Total",36,"percentage");
+	}
 }, 24000);
 
-setTimeout(function(){ location.reload(); }, 72000);
+setInterval(function(){ 
+	$("#constituencyDiv").hide();
+	$("#districtDiv").show();
+	$(".arrowDots li:nth-child(1)").toggleClass("active")
+	$(".arrowDots li:nth-child(2)").toggleClass("active")
+	var value = $(".btnActive").attr("attr_val");
+	if(value == 1){
+		getTodayDistrictList("Today",36,"count");
+		getOverAllDistrictList("Total",36,"count");
+	}
+	else if(value == 2){
+		getTodayDistrictList("Today",36,"percentage");
+		getOverAllDistrictList("Total",36,"percentage");
+	}
+}, 50 * 1000);
+setInterval(function(){ 
+	$("#constituencyDiv").show();
+	$("#districtDiv").hide();
+	$(".arrowDots li:nth-child(1)").toggleClass("active")
+	$(".arrowDots li:nth-child(2)").toggleClass("active")
+	var value = $(".btnActive").attr("attr_val");
+	if(value == 1){
+		getConstituencyWiseDisrictList2("Today",36,"count");
+		getConstituencyWiseDisrictList4("Total",36,"count");
+	}
+	else if(value == 1){
+		getConstituencyWiseDisrictList2("Today",36,"percentage");
+		getConstituencyWiseDisrictList4("Total",36,"percentage");
+	}
+}, 75 * 1000);
 
 function getConstituencyWiseDisrictList2(type,stateId,sortType){
 	$("#todaytsImgId").show();
@@ -346,12 +383,15 @@ function getConstituencyWiseDisrictList2(type,stateId,sortType){
 }
 
 function buildingConstituencyList2(result,divId,type,sortType){
-	
+	var value = $(".btnActive").attr("attr_val");
 	var str1 = '';
 	str1+='<ul id="mainNewsWidget2" class="newsWidgetCls">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
-			
+			temp = (temp < 10 ? '0' : '') + temp
+				if(value == 2){
+					result[i].attenteeCount = result[i].per2016;
+				}
 				str1+='<li data-title="<span>'+temp+'</span> '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
 				str1+='<h3>'+result[i].attenteeCount+'</h3>';
 			str1+='</li>';
@@ -395,16 +435,30 @@ function getConstituencyWiseDisrictList4(type,stateId,sortType){
 	});
 }
 
+var triggerCLick1 = '';
+function trigger1()
+{
+  triggerCLick1 = setInterval(function(){  $(".emptyDiv2").find(".newsWidgetCnt .up").trigger("click");  },2300);
+}
+
+
 function buildingConstituencyList3(result,divId,type,sortType){
-	
+	var value = $(".btnActive").attr("attr_val");
+	clearInterval(triggerCLick1);
 	var str1 = '';
 	str1+='<ul  class="newsWidgetCls2">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
-		
+			temp = (temp < 10 ? '0' : '') + temp
+			if(value == 2){
+				result[i].attenteeCount = result[i].per2016;
+			}
 			str1+='<li class="slickSlide">';
 				str1+='<span class="distPriority"><span class="slickCount">'+temp+'</span>';
-				str1+='<span  class="pull-right registrationsCount">Registrations <br/><b>'+result[i].attenteeCount+'</b></span></span>';
+				if(value == 1)
+					str1+='<span  class="pull-right registrationsCount">Registrations <br/><b>'+result[i].attenteeCount+'</b></span></span>';
+				else if(value == 2) 
+					str1+='<span  class="pull-right registrationsCount">Target Achieved <br/><b>'+result[i].attenteeCount+'</b></span></span>';
 				str1+='<span class="distName">'+result[i].name+'</span>';
 			str1+='</li>';
 		}
@@ -418,10 +472,7 @@ function buildingConstituencyList3(result,divId,type,sortType){
 	  centerMode: true,
 	  variableWidth: true
 	});
-	setInterval(function(){
-		$(".emptyDiv2").find(".newsWidgetCnt .up").trigger("click");
-	},2000);
-	
+	trigger1();
 }
 
 function getTodayDistrictList(type,stateId,sortType){
@@ -461,16 +512,29 @@ function getOverAllDistrictList(type,stateId,sortType){
 	});
 }
 
+var triggerCLick = '';
+function trigger()
+{
+  triggerCLick = setInterval(function(){  $(".emptyDiv").find(".newsWidgetCnt .up").trigger("click");  },2300);
+}
+
 function buildingDistrictListOverAll(result,divId,type,sortType){
-	
+	var value = $(".btnActive").attr("attr_val");
+	clearInterval(triggerCLick);
 	var str1 = '';
 	str1+='<ul  class="newsWidgetCls1">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
-		
+			temp = (temp < 10 ? '0' : '') + temp
+			if(value == 2){
+				result[i].attenteeCount = result[i].per2016;
+			}
 			str1+='<li class="slickSlide">';
 				str1+='<span class="distPriority"><span class="slickCount">'+temp+'</span>';
-				str1+='<span  class="pull-right registrationsCount">Registrations <br/><b>'+result[i].attenteeCount+'</b></span></span>';
+				if(value == 1)
+					str1+='<span  class="pull-right registrationsCount">Registrations <br/><b>'+result[i].attenteeCount+'</b></span></span>';
+				else if(value == 2)
+					str1+='<span  class="pull-right registrationsCount">Target Achieved <br/><b>'+result[i].attenteeCount+'</b></span></span>';
 				str1+='<span class="distName">'+result[i].name+'</span>';
 			str1+='</li>';
 		}
@@ -484,16 +548,19 @@ function buildingDistrictListOverAll(result,divId,type,sortType){
 	  centerMode: true,
 	  variableWidth: true
 	});
-	setInterval(function(){
-		$(".emptyDiv").find(".newsWidgetCnt .up").trigger("click");
-	},2300);
+	trigger();
 }
 
 function buildingDistrictList(result,divId,type,sortType){
+	var value = $(".btnActive").attr("attr_val");
 	var str1 = '';
 	str1+='<ul id="mainNewsWidget" class="newsWidgetCls">';
 		for(var i in result){
 			var temp = parseInt(i)+1;
+			temp = (temp < 10 ? '0' : '') + temp
+			if(value == 2){
+				result[i].attenteeCount = result[i].per2016;
+			}
 			if(type == "Today"){
 				str1+='<li data-title="<span>'+temp+'</span> '+result[i].name+'" data-date="12-2-2013"  data-image="images/img/2.jpg"  data-link="http://google.com" data-link-type="readmore">';
 			}else{
@@ -527,9 +594,6 @@ function buildingDistrictList(result,divId,type,sortType){
 }	
 
 //setTimeout(function(){ location.reload(); }, 43000);
-setInterval(function() {
-    refreshFunctions();
-  }, 60 * 1000)
 
 function refreshFunctions(){
 	//alert(123);
@@ -556,30 +620,19 @@ function refreshFunctions(){
 }
 
 $(document).on("click",".radioCls",function(){
-	var value = $('input[name=radio]:checked').val();
-	
+	var value = $(".btnActive").attr("attr_val");
+	$(".arrowDots li:nth-child(1)").addClass("active");
+	$(".arrowDots li:nth-child(2)").removeClass("active");
+	$("#constituencyDiv").hide();
+	$("#districtDiv").show();
 	if(value == 1){
-		getConstituencyWiseDisrictList2("Today",36,"count");
-		getConstituencyWiseDisrictList4("Total",36,"count");
 		getTodayDistrictList("Today",36,"count");
 		getOverAllDistrictList("Total",36,"count");
-		
-		$(".percentage").hide();
-		$(".counts").show();
 	}
 	else if(value == 2){
-		getConstituencyWiseDisrictList2("Today",36,"percentage");
-		getConstituencyWiseDisrictList4("Total",36,"percentage");
 		getTodayDistrictList("Today",36,"percentage");
 		getOverAllDistrictList("Total",36,"percentage");
-		
-		$(".percentage").show();
-		$(".counts").hide();
-	}	
-});
-
-$(document).ready(function(){
-	$("input[name=radio][value='1']").prop("checked",true);
+	}
 });
 
 </script>
