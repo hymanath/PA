@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
+import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 
 public interface ICadreRegistrationServiceNew {
 	
@@ -20,5 +22,7 @@ public interface ICadreRegistrationServiceNew {
 	public ResultStatus pushDataSourceWisetdpCadreCountsByState();
 	
 	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password);
+	public TdpCadrePrintDetailsVO  getTdpCadrePrintDetailsByMemberShipId(String memberShipId);
+	public ResultStatus updateCardPrintValidStatus(final CardPrintValidationVO inputVO);
 	
 }
