@@ -4059,6 +4059,7 @@ try{
  	public String getLocationWiseRegistrationSMSTracking()
 	{
  		String result="";
+ 		String message="";
 		try{
 			
 			SimpleDateFormat remainingDateSdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -4181,7 +4182,7 @@ try{
 											yetToRenewal=calcPercantage(location.getRemainingRenewalCadre(),location.getTotal2014Cadre());
 										} 
 										if(achevedPerc !=null && achevedPerc>0.0){
-											messageStr.append(location.getName()+ 
+											messageStr.append("\n"+location.getName()+ 
 													":\n\n Membership Target  : "+location.getTargetCount()+ 
 													",\n Achieved : "+location.getTotalCount()+" ("+achevedPerc+ " % )" +
 													",\n Today : "+location.getTodayCount()+
@@ -4189,7 +4190,7 @@ try{
 													",\n 2014 Renewal Cadre :"+location.getTotalRenewalCadre() +"("+renewalPerc+" %)" +
 													",\n Not Yet Renewal Cadre: "+location.getRemainingRenewalCadre() +" ("+yetToRenewal+"%) \n");  
 										}else{
-											messageStr.append(location.getName()+ 
+											messageStr.append("\n"+location.getName()+ 
 													":\n\n Membership Target  : "+location.getTargetCount()+
 													",\n Achieved : "+location.getTotalCount()+
 													",\n Today : "+location.getTodayCount()+
@@ -4231,21 +4232,21 @@ try{
 											" ,\n Today :"+totalToDay+
 											" ,\n Total Cadre 2014 :"+totalCadre+
 											" ,\n Total Renewal 2014: "+totalRenewal+" ("+totalRenewalPerc+" %)" +
-										    " ,\n Total Yet To Renewal : "+totalYetToRenewal+" ("+totalYetToRenewalPerc+" %)  \n");
+										    " ,\n Total Yet To Renewal : "+totalYetToRenewal+" ("+totalYetToRenewalPerc+" %)  \n\n");
 								}else{
 									overallStr.append(" Membership Total Target :"+totalTarget+
 											" ,\n Total Achieved : "+totalAchieved+
 											" ,\n Today :"+totalToDay+
 											" ,\n Total Cadre 2014 :"+totalCadre+
 											" ,\n Total Renewal 2014: "+totalRenewal+" ("+totalRenewalPerc+" %) " +
-											" ,\n Total Yet To Renewal : "+totalYetToRenewal+" ("+totalYetToRenewalPerc+" %)  \n");
+											" ,\n Total Yet To Renewal : "+totalYetToRenewal+" ("+totalYetToRenewalPerc+" %)  \n\n ");
 								}   
 							}   
 							
 							//overallStr.append(" ............................................ \n ");
 							
 							
-							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu, \n" );
+							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu, \n\n " );
 							
 							
 							
@@ -4271,7 +4272,7 @@ try{
 							
 							 if(totalDays > days)
 								 bottomStr.append("\n We have Only "+remainingDays+" Days left to reach our target.\n" +
-								 		          " Please complete the renewals as soon as possible");      
+								 		          " PLEASE CONCENTRATE ON THE RENEWALS TO COMPLETE AS SOON AS POSSIBLE .\n ");      
 							
 							
 							 dearStr.append(overallStr.toString()).append(messageStr.toString()).append(bottomStr.toString());
@@ -4280,7 +4281,9 @@ try{
 							{
 								String[] mobile = new String[1];									
 								mobile[0] = mainVo.getPhoneNo();
-								smsCountrySmsService.sendOTPSmsFromAdmin(dearStr.toString(), true, mobile);																	
+								//System.out.println(dearStr.toString());
+								message=message+" ";
+								smsCountrySmsService.sendSmsFromAdmin(dearStr.toString(), true, mobile);																	
 							}
 						}	
 					}
@@ -4289,7 +4292,7 @@ try{
 			result="success";
 		}catch(Exception e){
 			result="failure";
-			LOG.error("Exception raised in getLocationWiseRegistrationSMSTracking() in CoreDashboardCadreRegistrationService service", e); 
+			LOG.error("Exception raised in getLocationWiseRegistrationSMSTracking() and message is "+message+" in CoreDashboardCadreRegistrationService service", e); 
 		}
 		return result;
 	}
