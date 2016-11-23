@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
@@ -1143,7 +1144,16 @@ private final static Logger LOG = Logger.getLogger(CoreDashboardCadreRegistratio
 	           
 	         responceVO = webResource.accept("application/json").type("application/json").post(CadreResponseVO.class,cadreRegistrationVO);
 	        
-	         if(responceVO.getSaveStatus().equalsIgnoreCase("Success") && responceVO.getTdpCadreId() != null && responceVO.getTdpCadreId().longValue()>0L &&
+	         if(responceVO.getSaveStatus().equalsIgnoreCase("Success") && cadreRegistrationVO.getDataSourceType() != null && 
+	        		   cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("WEB")){
+	        	/*
+	        	 String mobileNo = cadreRegistrationVO.getMobileNumber();
+	        	 if(mobileNo != null && mobileNo.length()>10)
+					mobileNo = mobileNo.substring(mobileNo.length()-10, mobileNo.length());
+				cadreRegistrationService.sendSMSInTelugu(mobileNo.trim(), commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C38\u0C2D\u0C4D\u0C2F\u0C24\u0C4D\u0C35\u0C02 \u0C24\u0C40\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C2E\u0C32\u0C41. ")+"Ref. No: "+responceVO.getRefNo()));
+				*/
+	         }				
+	         else if(responceVO.getSaveStatus().equalsIgnoreCase("Success") && responceVO.getTdpCadreId() != null && responceVO.getTdpCadreId().longValue()>0L &&
 	        		 cadreRegistrationVO.getShipAddress() != null && !cadreRegistrationVO.getShipAddress().isEmpty()){
 	        	 LOG.error("entered into ONLINE registration savingCadreDetails() end Time : "+cadreRegistrationVO.getMobileNumber()+" - VOTER ID - "+cadreRegistrationVO.getVoterId()+" with json Format: "+gson.toJson(cadreRegistrationVO));
 	        	 TdpCadreOnline  tdpCadreOnline = new TdpCadreOnline();
