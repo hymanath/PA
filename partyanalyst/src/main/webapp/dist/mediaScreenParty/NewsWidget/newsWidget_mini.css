@@ -164,6 +164,7 @@ font-weight: 400;
 .button.prev span:after{background-image:url("../images/newsWidget/arrow-prev.gif");left:60px;}
 
 .button.up span{background-image:url("../images/newsWidget/arrow-up.gif");}
+.button.up span{background-image:url("../images/newsWidget/arrow-up.gif");}
 .button.up span:after{background-image:url("../images/newsWidget/arrow-up.gif"); top:60px; }
 
 .button.down span{background-image:url("../images/newsWidget/arrow-down.gif");}
