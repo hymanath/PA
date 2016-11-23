@@ -1,0 +1,275 @@
+/* This is a minified version. 
+It will only state properties that I thought is important to change the style.
+Edit them and add this style after newsWidget.css.
+
+For more advanced users you can edit them directly in newsWidget.css
+ */
+ 
+ 
+ /* REMOVE TO ADD A FONT
+
+.newsWidget{font-family:Arial, Helvetica, sans-serif;}
+#fullNewsReader{font-family:Arial, Helvetica, sans-serif;}
+
+REMOVE TO ADD A FONT  */
+
+ /* ## CLOSED NEWS ## */
+article.closed{
+height:30px;
+margin:1px 0px; 
+background-color:rgba(0,0,0,0.6); 
+background-image: none;
+}
+
+
+article.closed aside{ margin: 0px 10px;}
+article.closed aside mark {
+color: #fff;
+font-size: 12px; 
+font-weight: 200;
+font-style: normal; 
+margin-left: 30px; 
+line-height: 30px;}
+article.closed:hover aside mark {color: #fff;}
+
+article.closed aside time {
+border-right: 1px solid #333333;
+text-align: center;
+height: 30px;
+width: 30px;
+left: 0px;
+top: 0px;
+display:none;
+}
+
+
+article.closed aside time strong {
+color:#EEE; /*fallback*/
+color: rgba(255, 255, 255, 0.8);
+margin-top: 3px; 
+font-weight: 300;
+font-size: 12px;
+
+}
+
+article.closed aside  time em {
+color:#888; /*fallback*/
+color: rgba(255, 255, 255, 0.2);
+text-transform: uppercase;
+margin-top: -4px;
+font-weight: 400;
+font-style: normal;
+font-size: 8px;
+display: block;
+
+}
+
+
+
+
+
+
+ /* ## CURRENT NEWS (One in white area between closed)## */
+article.current {
+background: #ED1B24;
+padding:0;
+color:#fff;
+}
+
+
+article.current blockquote {
+padding: 0px 20px 0 20px;
+}
+
+article.current h2 {
+font-weight: 400;
+text-transform:capitalize;
+font-size:24px;
+line-height: 16px;
+}
+
+
+
+article.current blockquote time {
+letter-spacing: 0px;
+display:none;
+line-height: 15px;
+font-style: italic;
+font-size: 12px;
+margin-bottom: 20px;
+}
+
+article.current blockquote .excerpt {
+letter-spacing: 0px;
+line-height: 20px;
+font-style: normal;
+margin-top: 15px;
+font-size: 13px;
+}
+
+
+
+article.current h2 {color: #fff;}
+article.current:hover h2 {color: #fff;}
+
+article.current blockquote .excerpt {color: #888;display:none;}
+article.current:hover blockquote .excerpt {color: #555;}
+
+article.current blockquote time{color: #bbb;}
+article.current:hover blockquote time{color: #bbb;}
+
+
+article.current blockquote a.link {
+line-height: 40px;
+text-indent: 100px;
+font-weight: 300;
+font-size: 16px;
+bottom: -40px;
+height: 40px;
+}
+
+article.current blockquote a.link {
+background-color:#09C;	
+background-image: url("../images/newsWidget/arrow-next.gif");
+color: #FFF;
+display:none;
+}
+
+article.current blockquote a.link strong {
+color: #FFF;
+font-weight: 400;
+}
+
+
+
+
+
+/* Navigation and Buttons */
+.newsWidget nav{width:60px; height:60px; }
+.newsWidget nav .newsWidgetCnt {margin-top:-40px;}
+
+.button{background-color:#111;height:38px; width:38px; margin:1px;}
+.button span{opacity:0.5; margin:10px;}
+
+.button.exit.fullpage {top:10px; right:-59px; }
+.button.exit.widget {top:0px; right:0; }
+
+.button.exit span{background-image:url("../images/newsWidget/cross.gif");}
+.button.exit span:after{background-image:url("../images/newsWidget/cross.gif");top:60px; }
+
+.button.next span{background-image:url("../images/newsWidget/arrow-next.gif"); }
+.button.next span:after{background-image:url("../images/newsWidget/arrow-next.gif");left:-60px;}
+
+.button.prev span{background-image:url("../images/newsWidget/arrow-prev.gif");}
+.button.prev span:after{background-image:url("../images/newsWidget/arrow-prev.gif");left:60px;}
+
+.button.up span{background-image:url("../images/newsWidget/arrow-up.gif");}
+.button.up span:after{background-image:url("../images/newsWidget/arrow-up.gif"); top:60px; }
+
+.button.down span{background-image:url("../images/newsWidget/arrow-down.gif");}
+.button.down span:after{background-image:url("../images/newsWidget/arrow-down.gif");top:-60px;}
+.button:hover.up span,.button.over.up span,.button:hover.exit span,.button.over.exit span{top:-60px;}
+.button:hover.down span,.button.over.down span{top:60px;}
+.button:hover.next span,.button.over.next span{left:60px;}
+.button:hover.prev span,.button.over.prev span{left:-60px;}
+.button:hover.view span,.button.over.view span{top:-120px;}
+
+
+
+/* ## READER ##*/
+
+.widgetNewsReader header{ background:#fff;}
+
+.widgetNewsReader  header mark{padding:20px 40px; color:#000;}
+.widgetNewsReader  header time{padding:20px 40px; color:#333;}
+
+
+#fullNewsReader {background:rgba(0,0,0,0.5);  }
+
+#fullNewsReader header{width:750px; padding:20px 40px; background:#fff; }
+
+#fullNewsReader header mark, .widgetNewsReader header mark{
+font-weight: 400;
+text-transform:capitalize;
+font-size:24px;
+color:#000;
+}
+
+
+#fullNewsReader header time, .widgetNewsReader header time{
+letter-spacing: 0px;
+line-height: 15px;
+font-style: italic;
+font-size: 12px;
+padding-bottom: 20px;
+color:#333;
+}
+
+
+
+#fullNewsReader article,widgetNewsReader article{
+width:862px; margin: 0 auto;
+}
+
+
+
+#fullNewsReader article .imgHolder,.widgetNewsReader article .imgHolder{
+width:100%;
+display:inline-block;
+}
+
+#fullNewsReader .imgHolder img{width:830px; margin-left:16px; margin-bottom:0; }
+#fullNewsReader article .news {width:750px; margin-left:16px; padding:20px 40px; background:#FFF;
+letter-spacing: 0px;
+line-height: 20px;
+font-style: normal;
+font-size: 14px;}
+
+
+.widgetNewsReader article .news {padding:20px 40px; background:#FFF; letter-spacing: 0px;
+line-height: 20px;
+font-style: normal;
+font-size: 14px;}
+
+
+
+/* SLIDER */
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
+	background:#09C; /* rgba fallback */
+}
+.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar{
+	background:#09E;
+}
+.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar,
+.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar{
+	background:#09F;
+}
+
+
+
+/* ## EASING AND ANIMATION */
+
+
+article.current h2,article.current:hover h2,article.current:hover blockquote .excerpt,article.current blockquote .excerpt,article.current:hover blockquote time,article.current blockquote time, article.closed aside mark , article.closed:hover aside mark , a.readmore {
+-webkit-transition-property: color;
+-moz-transition-property: color;
+-o-transition-property: color;
+transition-property: color;
+-webkit-transition-duration: 300ms;
+-moz-transition-duration:300ms;
+-o-transition-duration: 300ms;
+transition-duration: 300ms;
+-webkit-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+-moz-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+-o-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+-webkit-transition-delay: 0;
+-moz-transition-delay: 0;
+-o-transition-delay: 0;
+transition-delay: 0;
+}
+.button span{
+-webkit-transition-property:top, left, opacity; -moz-transition-property:top, left, opacity; -o-transition-property:top, left, opacity; transition-property:top, left, opacity; -webkit-transition-duration:0ms, 0ms, 800ms; -moz-transition-duration:0ms, 0ms, 800ms; -o-transition-duration:0ms, 0ms, 800ms; transition-duration:0ms, 0ms, 800ms; -webkit-transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1); -moz-transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1); -o-transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1); transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1); -webkit-transition-delay:0ms; -moz-transition }
+
+.button:hover,.button.over{}.button:hover span,.button.over span{-webkit-transition-duration:400ms;-moz-transition-duration:400ms;-o-transition-duration:400ms;transition-duration:400ms;-webkit-transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1);-moz-transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1);-o-transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1);transition-timing-function:cubic-bezier(0.23, 1, 0.32, 1);-webkit-transition-delay:0ms;-moz-transition-delay:0ms;-o-transition-delay:0ms;transition-delay:0ms;opacity:1.0;}
+
