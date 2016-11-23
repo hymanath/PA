@@ -5,9 +5,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
+import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterSearchVO;
 import com.itgrids.partyanalyst.dto.WebServiceCadreVO;
@@ -169,6 +172,7 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		
 	}
 	
+	//Printing Related.
 	public CardPrintValidationUserVO validateCardPrintUserLogin(String username,String password){
 		
 		CardPrintValidationUserVO cardPrintValidationUserVO = null;
@@ -181,6 +185,29 @@ public class WebServiceHandlerServiceForCadre implements IWebServiceHandlerServi
 		return cardPrintValidationUserVO;
 	}
 	
+	public TdpCadrePrintDetailsVO getTdpCadrePrintDetailsByMemberShipId(String memberShipId){
+		
+		TdpCadrePrintDetailsVO tdpCadrePrintDetailsVO = null;
+		try{
+			tdpCadrePrintDetailsVO = cadreRegistrationServiceNew.getTdpCadrePrintDetailsByMemberShipId(memberShipId);
+			
+		}catch(Exception e) {
+			log.error("Entered into the getTdpCadrePrintDetailsByMemberShipId() in WebServiceHandlerServiceForCadre class");
+		}
+		return tdpCadrePrintDetailsVO;
+	}
 	
+	 public ResultStatus updateCardPrintValidStatus(CardPrintValidationVO inputVO){
+		 
+		   ResultStatus resultStatus = null;
+			try{
+				
+				  resultStatus = cadreRegistrationServiceNew.updateCardPrintValidStatus(inputVO);
+				  
+			}catch(Exception e) {
+				log.error("Entered into the updateCardPrintValidStatus() in WebServiceHandlerServiceForCadre class");
+			}
+			return resultStatus;
+	 }
 	
 }
