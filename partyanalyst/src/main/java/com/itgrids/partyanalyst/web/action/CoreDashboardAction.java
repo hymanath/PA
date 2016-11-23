@@ -2917,14 +2917,19 @@ public String savingCadreDetails(){
 		CadreResponseVO responceVO =coreDashboardCadreRegistrationService.savingCadreDetails(cadreRegistrationVO);
 		if(responceVO!=null && responceVO.getSaveStatus().equalsIgnoreCase("Success")){
 			
-			PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,responceVO.getMemberShipNo().trim(),responceVO.getRefNo().trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION",cadreRegistrationVO.getDeliveryLocation());			            
-			inputStream = new StringBufferInputStream("SUCCESS" +"," +responceVO.getRefNo()+"," +//1
-	                ""+responceVO.getMemberShipNo().trim()+"," +//2
-	                ""+pamentGateWayVO.getOrderNo().trim()+"," +//3
-	                ""+pamentGateWayVO.getCheckSum().trim()+"," +//4
-	                ""+pamentGateWayVO.getRedirectURL().trim()+"," +//5
-	                ""+pamentGateWayVO.getAmount().trim()+",");//6
-			//inputStream = new StringBufferInputStream(status);
+			if(cadreRegistrationVO.getDataSourceType() != null && cadreRegistrationVO.getDataSourceType().equalsIgnoreCase("WEB"))
+				inputStream = new StringBufferInputStream("SUCCESS" +"," +responceVO.getRefNo()+"," +//1
+		                ""+responceVO.getMemberShipNo().trim()+"");
+			else{
+				PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,responceVO.getMemberShipNo().trim(),responceVO.getRefNo().trim(),"2016 CADRE ONLINE REGISTRATION","NORMAL REGISTRATION",cadreRegistrationVO.getDeliveryLocation());			            
+				inputStream = new StringBufferInputStream("SUCCESS" +"," +responceVO.getRefNo()+"," +//1
+						""+responceVO.getMemberShipNo().trim()+"," +//2
+						""+pamentGateWayVO.getOrderNo().trim()+"," +//3
+						""+pamentGateWayVO.getCheckSum().trim()+"," +//4
+						""+pamentGateWayVO.getRedirectURL().trim()+"," +//5
+						""+pamentGateWayVO.getAmount().trim()+",");//6
+				//inputStream = new StringBufferInputStream(status);
+			}
 		}
 		
 	} catch (Exception e) {
