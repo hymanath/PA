@@ -43,10 +43,10 @@ public class TdpCadreDateWiseInfoDAO extends GenericDaoHibernate<TdpCadreDateWis
     public List<Object[]> get2016TotalCadreCountLocationWise(Long locationScopeId,List<Long> locationValue,Date fromDate,Date toDate){
 		
 	      StringBuilder queryStr = new StringBuilder();  
-	      queryStr.append(" select model.locationValue,sum(model.cadre2016) from TdpCadreDateWiseInfo model where model.locationScopeId =:locationScopeId ");
-	      if(fromDate!= null && toDate!=null){
+	      queryStr.append(" select model.locationValue,sum(model.cadre2016) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId and model.type='Total' ");
+	    /*  if(fromDate!= null && toDate!=null){
 	   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-	   	  }
+	   	  }*/
 	      if(locationValue != null && locationValue.size() > 0){
 	    	queryStr.append(" and model.locationValue in (:locationValue)");  
 	      }
@@ -55,10 +55,10 @@ public class TdpCadreDateWiseInfoDAO extends GenericDaoHibernate<TdpCadreDateWis
 		  Query query = getSession().createQuery(queryStr.toString());
 		    query.setParameter("locationScopeId", locationScopeId);
 		    
-		  if(fromDate!= null && toDate!=null){
+		 /* if(fromDate!= null && toDate!=null){
 			 query.setDate("fromDate", fromDate);
 		     query.setDate("toDate", toDate);
-		  }
+		  }*/
 		  if(locationValue != null && locationValue.size() > 0){
 			query.setParameterList("locationValue", locationValue);  
 		  }
@@ -69,11 +69,11 @@ public List<Object[]> get2016TotalRenewalCadreCountLocationWise(Long locationSco
 
 StringBuilder queryStr = new StringBuilder();  
 
-queryStr.append(" select model.locationValue,sum(model.renewalCadre) from TdpCadreDateWiseInfo model where model.locationScopeId =:locationScopeId ");
+queryStr.append(" select model.locationValue,sum(model.renewalCadre) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId and model.type='Total' ");
 
-if(fromDate!= null && toDate!=null){
+/*if(fromDate!= null && toDate!=null){
 	queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-}
+}*/
 if(locationValue != null && locationValue.size() > 0){
 	queryStr.append(" and model.locationValue in (:locationValue)");  
 }
@@ -82,10 +82,10 @@ queryStr.append(" group by model.locationValue order by model.locationValue asc"
 Query query = getSession().createQuery(queryStr.toString());
 query.setParameter("locationScopeId", locationScopeId);
 
-if(fromDate!= null && toDate!=null){
+/*if(fromDate!= null && toDate!=null){
 	 query.setDate("fromDate", fromDate);
  query.setDate("toDate", toDate);
-}
+}*/
 if(locationValue != null && locationValue.size() > 0){
 	query.setParameterList("locationValue", locationValue);  
 }
@@ -139,7 +139,7 @@ return query.list();
 			   }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
 				     queryStr.append(" model3.assemblyId,") ; 
 			   }
-		       queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
+		       queryStr.append(" sum(model.cadre2016) from TdpCadreLocationInfo model ");
 		      if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 			   	      if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
 			      		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
@@ -174,9 +174,10 @@ return query.list();
 			 }else if(locationValue != null && locationValue.size() > 0){
 		 	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
 		 	 }
-		   	if(fromDate!= null && toDate!=null){
+		     queryStr.append(" and model.type='Total' ");
+		  /* 	if(fromDate!= null && toDate!=null){
 			      queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-		   	}
+		   	}*/
 			if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 			     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
 		   		 queryStr.append(" group by model1.district.districtId ");; 
@@ -194,10 +195,10 @@ return query.list();
 			  queryStr.append("  group by  model3.assemblyId ");
 		   }
 		  Query query = getSession().createQuery(queryStr.toString());
-		  if(fromDate!= null && toDate!=null){
+		 /* if(fromDate!= null && toDate!=null){
 			 query.setDate("fromDate", fromDate);
 		     query.setDate("toDate", toDate);
-		  }
+		  }*/
 		  if(locationValue != null && locationValue.size() > 0){
 			query.setParameterList("locationValue", locationValue);  
 		  }
@@ -223,7 +224,7 @@ return query.list();
          }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
     	     queryStr.append(" model3.assemblyId,") ; 
          }
-         queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
+         queryStr.append(" sum(model.renewalCadre) from TdpCadreLocationInfo model ");
          if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
        	      if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
          		 queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model.locationScopeId=4 and model1.electionScope.electionScopeId=2 and model1.deformDate is null ");; 
@@ -258,9 +259,10 @@ return query.list();
 		 }else if(locationValue != null && locationValue.size() > 0){
 		 	    queryStr.append(" and model.locationValue in (:locationValue)");  
 		 }
-        if(fromDate!= null && toDate!=null){
+          queryStr.append(" and model.type='Total' ");
+      /*  if(fromDate!= null && toDate!=null){
 		    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-		}
+		}*/
 	    if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 		  	     if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
 		      		 queryStr.append(" group by model1.district.districtId ");; 
@@ -278,10 +280,10 @@ return query.list();
 			   queryStr.append("  group by  model3.assemblyId ");
 		 }
 	   Query query = getSession().createQuery(queryStr.toString());
-	  if(fromDate!= null && toDate!=null){
+	/*  if(fromDate!= null && toDate!=null){
 		 query.setDate("fromDate", fromDate);
 	     query.setDate("toDate", toDate);
-	  }
+	  }*/
 	  if(locationValue != null && locationValue.size() > 0){
 		query.setParameterList("locationValue", locationValue);  
 	  }
@@ -660,7 +662,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	        }else{
 	       	queryStr.append(" model.locationValue,"); 
 	        }
-	        queryStr.append(" sum(model.cadre2016) from TdpCadreDateWiseInfo model ");
+	        queryStr.append(" sum(model.cadre2016) from TdpCadreLocationInfo model ");
 	        
 	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
 	       	queryStr.append(",Constituency model2 where model2.constituencyId = model.locationValue and model2.electionScope.electionScopeId=2 and model2.deformDate is null and model.locationScopeId=4 ");
@@ -670,9 +672,9 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	         queryStr.append(" where model.locationScopeId=4 ");
 	       }
 	     
-	       if(fromDate!= null && toDate!=null){
+	     /*  if(fromDate!= null && toDate!=null){
 		   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-		   	  }
+		   	  }*/
 	       
 	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
 	       	queryStr.append(" and model2.district.districtId in (:locationValue) ");
@@ -683,6 +685,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	   	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
 	   	    }
 	       }
+	       queryStr.append(" and model.type='Total' ");
 	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
 	       	queryStr.append(" group by model2.constituencyId ");
 	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
@@ -691,10 +694,10 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	       	queryStr.append(" group by  model.locationValue ");
 	       }
 	   	  Query query = getSession().createQuery(queryStr.toString());
-	   	 if(fromDate!= null && toDate!=null){
+	   /*	 if(fromDate!= null && toDate!=null){
 			 query.setDate("fromDate", fromDate);
 		     query.setDate("toDate", toDate);
-		  }
+		  }*/
 	   	  if(locationValue != null && locationValue.size() > 0){
 	   		query.setParameterList("locationValue", locationValue);  
 	   	  }
@@ -713,7 +716,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	        }else{
 	       	    queryStr.append(" model.locationValue,"); 
 	        }
-	        queryStr.append(" sum(model.renewalCadre) from TdpCadreDateWiseInfo model ");
+	        queryStr.append(" sum(model.renewalCadre) from TdpCadreLocationInfo model ");
 	        
 	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
 	       	queryStr.append(",Constituency model2 where model2.constituencyId = model.locationValue and model2.electionScope.electionScopeId=2 and model2.deformDate is null and model.locationScopeId=4 ");
@@ -722,9 +725,9 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	       }else {
 	         queryStr.append(" where model.locationScopeId=4 ");
 	       }
-	       if(fromDate!= null && toDate!=null){
+	    /*   if(fromDate!= null && toDate!=null){
 		   	    queryStr.append(" and date(model.surveyDate) between :fromDate and :toDate ");	 
-		   	  }
+		   	}*/
 	       
 	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValue != null && locationValue.size() > 0){
 	       	queryStr.append(" and model2.district.districtId in (:locationValue) ");
@@ -735,6 +738,7 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	   	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
 	   	    }
 	       }
+	       queryStr.append(" and model.type='Total' ");
 	       if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
 	       	queryStr.append(" group by model2.constituencyId ");
 	       }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
@@ -742,11 +746,11 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 	       }else {
 	       	queryStr.append(" group by model.locationValue ");
 	       }
-	   	  Query query = getSession().createQuery(queryStr.toString());
-	   	 if(fromDate!= null && toDate!=null){
+	   	    Query query = getSession().createQuery(queryStr.toString());
+	   	  /* if(fromDate!= null && toDate!=null){
 			 query.setDate("fromDate", fromDate);
 		     query.setDate("toDate", toDate);
-		  }
+		   }*/
 	   	  if(locationValue != null && locationValue.size() > 0){
 	   		query.setParameterList("locationValue", locationValue);  
 	   	  }

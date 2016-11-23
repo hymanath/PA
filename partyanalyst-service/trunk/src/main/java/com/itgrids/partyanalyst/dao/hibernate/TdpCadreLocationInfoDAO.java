@@ -34,7 +34,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 		
 	      StringBuilder queryStr = new StringBuilder();  
 	       
-	      queryStr.append(" select model.locationValue,sum(model.cadre2014) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId ");
+	      queryStr.append(" select model.locationValue,sum(model.cadre2014) from TdpCadreLocationInfo model where model.locationScopeId =:locationScopeId and model.type='Total' ");
 	     
 	      if(locationValue != null && locationValue.size() > 0){
 	    	queryStr.append(" and model.locationValue in (:locationValue)");  
@@ -105,6 +105,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
          	 }else if(locationValue != null && locationValue.size() > 0){
           	 	    queryStr.append(" and model.locationValue in (:locationValue)");  
           	 }
+              queryStr.append(" and model.type='Total' ");
          	 if(userTypeId != null && userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
         		  if(activityMemberId != null && activityMemberId.longValue()==4l || activityMemberId.longValue()==5l){
                		 queryStr.append(" group by model1.district.districtId ");; 
@@ -719,6 +720,7 @@ public List<Object[]> getConstitiuencyWise2014CadreCountBasedOnUserType(Long use
 	 	 	queryStr.append(" and model.locationValue in (:locationValue)");  
 	    }
    }
+   queryStr.append(" and model.type='Total' ");
    if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID){
    	queryStr.append(" group by model2.constituencyId ");
    }else if(userAccessLevelId != null && userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
