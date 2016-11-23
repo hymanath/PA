@@ -241,13 +241,13 @@ h1,h2,h3,h4,h5,h6,.table
 				<img src="dist/mediaScreenParty/TS_Constituencies.png" class="img-responsive" style="margin:auto"/>
 			</div>
 			<div class="col-md-6 col-xs-12 col-sm-6">
-				<span style="color:#ED1B24">TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span style="color:#ED1B24"><b>TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></b></span>
 				<div class="emptyDiv2"></div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-6">
-				<span style="color:#ED1B24">TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span style="color:#ED1B24"><b>TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></b></span>
 				<div class="emptyDiv3"></div>
 			</div>
 		</div>
@@ -398,7 +398,7 @@ function buildingConstituencyList2(result,divId,type,sortType){
 		}
 	str1+='</ul>';
 	$(".emptyDiv2").html(str1);
-
+	
 	$("#mainNewsWidget2").newsWidget({
 		currentNewsWidth: 400,
 		currentNewsHeight:100,
@@ -413,6 +413,9 @@ function buildingConstituencyList2(result,divId,type,sortType){
 		linkText:", Read!" , 
 		titleInLink : "before"
 	});
+	if(value == 2){
+		$(".textChanged").html("Target Achieved");
+	}
 	
 }
 
@@ -571,7 +574,7 @@ function buildingDistrictList(result,divId,type,sortType){
 		}
 	str1+='</ul>';
 	$(".emptyDiv").html(str1);
-
+	
 	/* var myVar;
 	myFunction()
 	function myFunction() {
@@ -591,6 +594,10 @@ function buildingDistrictList(result,divId,type,sortType){
 		linkText:", Read!" , 
 		titleInLink : "before"
 	});
+	if(value == 2){
+		$(".textChanged").html("Target Achieved");
+	}
+	
 }	
 
 //setTimeout(function(){ location.reload(); }, 43000);
@@ -626,12 +633,18 @@ $(document).on("click",".radioCls",function(){
 	$("#constituencyDiv").hide();
 	$("#districtDiv").show();
 	if(value == 1){
+		
 		getTodayDistrictList("Today",36,"count");
 		getOverAllDistrictList("Total",36,"count");
+		//$(".textChanged").html("Registrations");
+		
 	}
 	else if(value == 2){
+		
 		getTodayDistrictList("Today",36,"percentage");
 		getOverAllDistrictList("Total",36,"percentage");
+		
+		
 	}
 });
 

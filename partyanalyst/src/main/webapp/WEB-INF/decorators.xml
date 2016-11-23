@@ -707,9 +707,9 @@
 		<pattern>/newCadreDashBoard2016Action*</pattern>
 		<pattern>/fieldMonitoringReportAction*</pattern>
 		<pattern>/privilegedUserCadreRegAction*</pattern> 
-		<pattern>/mediaScreenPartyAction*</pattern>
+		<pattern>/tdpMembershipPerformanceForAPAction*</pattern>
 		<pattern>/tdpUserWiseMapAction*</pattern>
-		<pattern>/mediaScreenPartyForTSAction*</pattern>
+		<pattern>/tdpMembershipPerformanceForTSAction*</pattern>
 		<pattern>/showElectronicBulletinsAction*</pattern>
 		<pattern>/dataMonitoringDashboardNewAction*</pattern>
 		<pattern>/getMomPartyMeetingDetailsAction*</pattern>

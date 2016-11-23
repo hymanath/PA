@@ -241,13 +241,13 @@ h1,h2,h3,h4,h5,h6,.table
 				<img src="dist/mediaScreenParty/AP_Constituencies.png" class="img-responsive" style="margin:auto"/>
 			</div>
 			<div class="col-md-6 col-xs-12 col-sm-6">
-				<span style="color:#ED1B24">TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span style="color:#ED1B24"><b>TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></b></span>
 				<div class="emptyDiv2"></div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-6">
-				<span style="color:#ED1B24">TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span style="color:#ED1B24"><b>TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></b></span>
 				<div class="emptyDiv3"></div>
 			</div>
 		</div>
@@ -411,7 +411,9 @@ function buildingConstituencyList2(result,divId,type,sortType){
 		linkText:", Read!" , 
 		titleInLink : "before"
 	});
-	
+	if(value == 2){
+		$(".textChanged").html("Target Achieved");
+	}
 }
 
 function getConstituencyWiseDisrictList3(type,stateId,sortType){
@@ -510,6 +512,9 @@ function buildingConstituencyList(result,divId,type,sortType){
 		linkText:", Read!" , 
 		titleInLink : "before"
 	});
+	if(value == 2){
+		$(".textChanged").html("Target Achieved");
+	}
 }	
 
 var triggerCLick = '';
