@@ -336,12 +336,12 @@ function consShow()
 			$(".arrowDots li:nth-child(2)").toggleClass("active");
 			var value = $(".btnActive").attr("attr_val");
 			if(value == 1){
-				getConstituencyWiseDisrictList2("Today",1,"count");
-				getConstituencyWiseDisrictList4("Total",1,"count");
+				getConstituencyWiseDisrictList2("Today",36,"count");
+				getConstituencyWiseDisrictList4("Total",36,"count");
 			}
 			else if(value == 2){
-				getConstituencyWiseDisrictList2("Today",1,"percentage");
-				getConstituencyWiseDisrictList4("Total",1,"percentage");
+				getConstituencyWiseDisrictList2("Today",36,"percentage");
+				getConstituencyWiseDisrictList4("Total",36,"percentage");
 			}
 		}
 		
@@ -364,12 +364,12 @@ function consHide()
 			$(".arrowDots li:nth-child(2)").toggleClass("active")
 			var value = $(".btnActive").attr("attr_val");
 			if(value == 1){
-				getTodayDistrictList("Today",1,"count");
-				getOverAllDistrictList("Total",1,"count");
+				getTodayDistrictList("Today",36,"count");
+				getOverAllDistrictList("Total",36,"count");
 			}
 			else if(value == 2){
-				getTodayDistrictList("Today",1,"percentage");
-				getOverAllDistrictList("Total",1,"percentage");
+				getTodayDistrictList("Today",36,"percentage");
+				getOverAllDistrictList("Total",36,"percentage");
 			}
 			
 		}
