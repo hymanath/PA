@@ -1014,4 +1014,46 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		   query.setParameter("locationScopeId", 4l);
 	   return query.list();
 }
+	
+	public Long getTotalCountInConstituencies(String type,List<Long> constIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.cadre2016)" +
+					" from TdpCadreLocationInfo model" +
+					" where model.locationScopeId = 4");
+		if(type != null && !type.trim().isEmpty())
+			sb.append(" and model.type = :type");
+		if(constIds != null && !constIds.isEmpty())
+			sb.append(" and model.locationValue in (:constIds)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(type != null && !type.trim().isEmpty())
+			query.setParameter("type", type);
+		if(constIds != null && !constIds.isEmpty())
+			query.setParameterList("constIds", constIds);
+		
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getOtherDistTotalCountInConstituencies(String type,List<Long> constIds,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.cadre2016)" +
+					" from TdpCadreLocationInfo model,Constituency c" +
+					" where model.locationValue = c.constituencyId and model.locationScopeId = 4");
+		if(stateId != null && stateId.longValue() == 1l)
+			sb.append(" and c.district.districtId = 13");
+		else if(stateId != null && stateId.longValue() == 36l)
+			sb.append(" and c.district.districtId = 1");
+		if(type != null && !type.trim().isEmpty())
+			sb.append(" and model.type = :type");
+		if(constIds != null && !constIds.isEmpty())
+			sb.append(" and model.locationValue not in (:constIds)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(type != null && !type.trim().isEmpty())
+			query.setParameter("type", type);
+		if(constIds != null && !constIds.isEmpty())
+			query.setParameterList("constIds", constIds);
+		
+		return (Long) query.uniqueResult();
+	}
 }

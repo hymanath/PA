@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ICadreSurveyUserPerformanceDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserPerformanceTypeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorLocationDAO;
 import com.itgrids.partyanalyst.dao.IFieldVendorTabUserDAO;
@@ -37,7 +38,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreDataVerificationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
@@ -97,10 +97,16 @@ public class FieldMonitoringService implements IFieldMonitoringService {
 	private ITdpCadreTargetCountDAO tdpCadreTargetCountDAO;
 	private ITdpCadreDateWiseInfoDAO tdpCadreDateWiseInfoDAO;
 	private ITdpCadreDataVerificationDAO tdpCadreDataVerificationDAO;
-	
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	
 	//Setters
-	
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
 	public ITdpCadreDateWiseInfoDAO getTdpCadreDateWiseInfoDAO() {
 		return tdpCadreDateWiseInfoDAO;
 	}
@@ -3099,6 +3105,46 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					if(stateId == 1l && vo.getId() != 13l)
+						returnList.add(vo);
+					else if(stateId == 36l && vo.getId() != 1l)
+						returnList.add(vo);
+				}
+			}
+			
+			List<Long> constitIds = null;
+			if(stateId == 1l)
+				constitIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(517l);
+			else if(stateId == 36l)
+				constitIds = districtConstituenciesDAO.getConstituenciesOfDistrictById(518l);
+			
+			if(constitIds != null && !constitIds.isEmpty()){
+				Long count = tdpCadreLocationInfoDAO.getTotalCountInConstituencies(type, constitIds);
+				if(count != null && count.longValue() > 0l){
+					IdAndNameVO vo = new IdAndNameVO();
+					if(stateId == 1l){
+						vo.setId(517l);
+						vo.setName("Visakhapatnam Rural");
+					}
+					else if(stateId == 36l){
+						vo.setId(518l);
+						vo.setName("Mancherial");
+					}
+					vo.setAttenteeCount(count);
+					returnList.add(vo);
+				}
+				Long otherCount = tdpCadreLocationInfoDAO.getOtherDistTotalCountInConstituencies(type, constitIds, stateId);
+				if(otherCount != null && otherCount.longValue() > 0l){
+					IdAndNameVO vo = new IdAndNameVO();
+					if(stateId == 1l){
+						vo.setId(13l);
+						vo.setName("Visakhapatnam");
+					}
+					else if(stateId == 36l){
+						vo.setId(1l);
+						vo.setName("Adilabad");
+					}
+					vo.setAttenteeCount(otherCount);
 					returnList.add(vo);
 				}
 			}
@@ -3108,13 +3154,33 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 				for (Object[] obj : dstrictTrgetList) {
 					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					targetMap.put(locaId, count);
+					if(stateId == 1l && locaId != 13l)
+						targetMap.put(locaId, count);
+					else if(stateId == 36l && locaId != 1l)
+						targetMap.put(locaId, count);
 				}
 			}
+			
+			if(constitIds != null && !constitIds.isEmpty()){
+				Long count = tdpCadreTargetCountDAO.getTargetCountForTodayAndOverAll(constitIds);
+				if(count != null && count.longValue() > 0l){
+					if(stateId == 1l)
+						targetMap.put(517l, count);
+					else if(stateId == 36l)
+						targetMap.put(518l, count);
+				}
+				Long otherCount = tdpCadreTargetCountDAO.getOtherDistTargetCountForTodayAndOverAll(stateId, constitIds);
+				if(otherCount != null && otherCount.longValue() > 0l){
+					if(stateId == 1l)
+						targetMap.put(13l, otherCount);
+					else if(stateId == 36l)
+						targetMap.put(1l, otherCount);
+				}
+			}
+			
 			if(returnList != null && !returnList.isEmpty()){
 				for (IdAndNameVO vo : returnList) {
 					vo.setInviteeCount(targetMap.get(vo.getId()));//TargetCoount
-					
 				}
 			}
 			if(type.trim().equalsIgnoreCase("Today")){
@@ -3131,7 +3197,12 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 				}
 			}
 			
-			if(sortType != null && sortType.equalsIgnoreCase("percentage")){
+			if(sortType != null && sortType.equalsIgnoreCase("count")){
+				if(returnList != null && !returnList.isEmpty()){
+					 Collections.sort(returnList, registrationsCountAsc);
+				}
+			}
+			else if(sortType != null && sortType.equalsIgnoreCase("percentage")){
 				if(returnList != null && !returnList.isEmpty()){
 					 Collections.sort(returnList, registrationsPercCountAsc);
 				}
@@ -3142,6 +3213,15 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
 		}
 		return returnList;
 	}
+  
+  public static Comparator<IdAndNameVO> registrationsCountAsc = new Comparator<IdAndNameVO>() {
+		public int compare(IdAndNameVO vo2, IdAndNameVO vo1) {
+			 //return (cstVO1.getScalePerc()) - (cstVO2.getScalePerc());
+          Long perc2 = vo1.getAttenteeCount();
+          Long perc1 = vo2.getAttenteeCount();
+          return perc2.compareTo(perc1);
+		}
+	}; 
   
   public static Comparator<IdAndNameVO> registrationsPercCountAsc = new Comparator<IdAndNameVO>() {
 		public int compare(IdAndNameVO vo2, IdAndNameVO vo1) {
