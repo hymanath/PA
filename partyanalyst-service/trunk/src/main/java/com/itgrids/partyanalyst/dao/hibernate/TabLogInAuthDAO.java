@@ -140,4 +140,13 @@ public class TabLogInAuthDAO extends GenericDaoHibernate<TabLogInAuth,Long> impl
 		return query.executeUpdate();
 	}
 	
+	
+	public List<Long> checkAlreadyExisyToUserIMEINo(String userName,String imei){
+		Query query = getSession().createQuery("select distinct model.tabLogInAuthId from TabLogInAuth model where " +
+				" model.isDeleted='N' and model.cadreSurveyUser.userName =:userName and  (model.imeiNo = :imei or model.imeiNo2=:imei) ");
+		query.setParameter("userName", userName);
+		query.setParameter("imei", imei);
+		return query.list();
+	}
+	
 }
