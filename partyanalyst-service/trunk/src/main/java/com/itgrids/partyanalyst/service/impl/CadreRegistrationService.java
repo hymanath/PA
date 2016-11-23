@@ -4121,7 +4121,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 	
-	private  String sendSMSInTelugu(String mobileNo,String msg){
+	public  String sendSMSInTelugu(String mobileNo,String msg){
 		
 		try {
 			
