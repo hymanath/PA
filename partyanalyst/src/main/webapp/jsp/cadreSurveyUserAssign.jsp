@@ -360,7 +360,10 @@ var str='';
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
 			   if(result != null){
-				   alert("Successfully  Assigned");
+					if(result == "success")
+						alert("Successfully  Assigned");
+					else
+						alert("This User and IMEI No already assigned . Please check once the assign detials, Then try agian...");
 				    location.reload();
 			   } 
 		   });
@@ -372,8 +375,13 @@ var str='';
      updateUserORIMEIDetails(tabLoginAuthId,$(this).attr("title"));	  
 });
 function updateUserORIMEIDetails(tabLoginAuthId,title){
+	console.log(title =="Unlock The User");
 	
-	var isOk = confirm("Are you sure want to  "+title+"?");
+	if(title =="Unlock The User")
+		title = title+" for this IMEI No ";
+	else
+		title = title+" for this  Username ";
+	var isOk = confirm("Are you sure want to  "+title+" ?");
 	   if(isOk){
 				   
 			  var jsObj = {
