@@ -1410,7 +1410,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 					str+='<td attr_age_range_id="1" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].firstAgeGroupCount+'</u></td>';
 				}
 				if(result[i].secondAgeGroupCount == 0){
-					str+='<td style="font-weight:bold;">'+result[i].secondAgeGroupCount+'</td>';
+					str+='<td style="color:green;font-weight:bold;">'+result[i].secondAgeGroupCount+'</td>';
 				}else{
 					str+='<td attr_age_range_id="2" attr_gender_type="" style="cursor:pointer;color:green;font-weight:bold;" class="stateCountCls" attr_location_id="'+result[i].districtId+'" attr_location_name="'+result[i].name+'"><u>'+result[i].secondAgeGroupCount+'</u></td>';
 				}
