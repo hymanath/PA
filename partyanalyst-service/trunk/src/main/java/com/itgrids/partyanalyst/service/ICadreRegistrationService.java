@@ -219,5 +219,6 @@ public interface ICadreRegistrationService {
 	 public void saveDataToHistoryTable(TdpCadre tdpCadre);
 	 //public List<IdAndNameVO> getAllDistricts();
 	 public List<CadreRegisterInfo> getDistrictsByState(Long stateId);
+	 public  String sendSMSInTelugu(String mobileNo,String msg);
 }
 
