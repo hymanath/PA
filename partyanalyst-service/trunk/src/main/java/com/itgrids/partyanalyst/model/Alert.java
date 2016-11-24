@@ -3,8 +3,6 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
-
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +49,7 @@ public class Alert extends BaseModel implements Serializable {
 	
 	private Long alertCategoryId;
 	private Long alertCategoryTypeId;
+	private AlertCategory alertCategory;
 
 	
 
@@ -287,6 +286,18 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertCategoryTypeId(Long alertCategoryTypeId) {
 		this.alertCategoryTypeId = alertCategoryTypeId;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_category_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertCategory getAlertCategory() {
+		return alertCategory;
+	}
+
+	public void setAlertCategory(AlertCategory alertCategory) {
+		this.alertCategory = alertCategory;
+	}
+	
 
 	
 
