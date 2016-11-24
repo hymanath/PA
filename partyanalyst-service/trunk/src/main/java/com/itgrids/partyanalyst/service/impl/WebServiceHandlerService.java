@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.AccessLocationVO;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
+import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -132,6 +133,7 @@ import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
+import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -243,7 +245,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IPanchayatDAO panchayatDAO;
     private IFieldMonitoringService fieldMonitoringService;
     
+    private IAlertService alertService;
     
+    
+	public void setAlertService(IAlertService alertService) {
+		this.alertService = alertService;
+	}
+
 	public IFieldMonitoringService getFieldMonitoringService() {
 		return fieldMonitoringService;
 	}
@@ -4345,6 +4353,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 		  
 		 return returnVO;
+	  }
+	  
+	  public String setArticleDetailsIntoAlert(ActionableVO VO){
+		  String result = null;
+		  try{			  
+			  result = alertService.setArticleDetailsIntoAlert(VO);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the setArticleDetailsIntoAlert  method in WebServiceHandlerService");
+		  }
+		  return result;
 	  }
 	  
 }

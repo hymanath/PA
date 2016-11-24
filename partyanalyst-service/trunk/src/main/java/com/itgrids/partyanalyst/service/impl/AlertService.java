@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
+import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
@@ -1237,6 +1238,37 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			   }
 		    }
 		}
+	}
+	
+	public String  setArticleDetailsIntoAlert(ActionableVO inputVO){		
+		String result = null;
+		try{	
+			
+			 Alert alert = new Alert();			 
+			 alert.setAlertTypeId(inputVO.getAlertType());
+			 alert.setImpactLevelId(inputVO.getRegionScopeId());
+			 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
+			 alert.setDescription(inputVO.getDesc().toString());
+			 alert.setCreatedBy(inputVO.getUserId());
+			 alert.setUpdatedBy(inputVO.getUserId());
+			 alert.setAlertStatusId(1l);
+			 alert.setAlertSourceId(3l);
+			 alert.setCreatedTime(dateUtilService.getCurrentDateAndTime());
+			 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			 alert.setIsDeleted("N");
+			 //UserAddress userAddress = saveUserAddress(inputVO);
+			 //alert.setAddressId(userAddress.getUserAddressId());
+			 alert = alertDAO.save(alert);
+			
+			 result = "success";
+			 
+		}catch(Exception e){
+			result = "failure";
+			e.printStackTrace();
+			LOG.error("Entered in setArticleDetailsIntoAlert() method");
+		}
+		return result; 
+		
 	}
 	
 }
