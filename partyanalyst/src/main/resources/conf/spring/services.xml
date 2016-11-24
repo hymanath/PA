@@ -1697,7 +1697,7 @@
     
     <bean name="pushGenderWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="triggerGenderWiseTdpCadreCounts" />
-    	<property name="cronExpression" value="0 30 20  * * ?" />
+    	<property name="cronExpression" value="0 7 20  * * ?" />
 	</bean>
     <bean name="triggerGenderWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1706,7 +1706,7 @@
 	
 	<bean name="pushCasteStateWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="triggerCasteStateWiseTdpCadreCounts" />
-       <property name="cronExpression" value="0 45 20  * * ?" /> 
+       <property name="cronExpression" value="0 37 20  * * ?" /> 
 	</bean>
     <bean name="triggerCasteStateWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1715,7 +1715,7 @@
 	
 	<bean name="pushAgeWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="triggerAgeWiseTdpCadreCounts" />
-        <property name="cronExpression" value="0 0 21  * * ?" /> 
+        <property name="cronExpression" value="0 7 21  * * ?" /> 
 	</bean>
     <bean name="triggerAgeWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
@@ -1768,9 +1768,9 @@
 		    <ref bean="locationWiseRegistrationSMSTracking"/>
 		    <ref bean="pushDataSourceWisetdpCadreCounts" />
 		    
-		   <!-- <ref bean="pushGenderWiseTdpCadreCounts"/> 
+		    <ref bean="pushGenderWiseTdpCadreCounts"/> 
 		    <ref bean="pushCasteStateWiseTdpCadreCounts"/> 
-		    <ref bean="pushAgeWiseTdpCadreCounts"/> -->
+		    <ref bean="pushAgeWiseTdpCadreCounts"/> 
 		    
         </list>
     	</property>
