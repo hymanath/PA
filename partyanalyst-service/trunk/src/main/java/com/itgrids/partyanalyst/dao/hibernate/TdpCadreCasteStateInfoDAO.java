@@ -13,7 +13,7 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 	}
 	
 	public int pushCadreCountsLocationWiseByCasteState(){
-		Query query = getSession().createSQLQuery("CALL proceedureName();");
+		Query query = getSession().createSQLQuery("CALL tdp_cadre_caste_info(); ");
 		return query.executeUpdate();  
 	}
 }

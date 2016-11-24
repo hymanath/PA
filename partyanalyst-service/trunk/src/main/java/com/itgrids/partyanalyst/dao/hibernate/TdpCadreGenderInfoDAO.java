@@ -14,7 +14,7 @@ public class TdpCadreGenderInfoDAO extends GenericDaoHibernate<TdpCadreGenderInf
 	}
 	
 	public int pushCadreCountsLocationWiseByGender(){
-		Query query = getSession().createSQLQuery("CALL proceedureName();");
+		Query query = getSession().createSQLQuery("CALL tdp_cadre_gender_info(); ");
 		return query.executeUpdate();  
 	}
 }
