@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
@@ -28,4 +29,5 @@ public interface IAlertService {
 	public String deleteAlertAssignedCandidates(Long alertId,Long tdpCadreId);
 	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId);
 	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId);
+	public String  setArticleDetailsIntoAlert(ActionableVO actionableVO);
 }

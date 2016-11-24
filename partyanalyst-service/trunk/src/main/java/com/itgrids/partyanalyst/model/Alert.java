@@ -48,6 +48,9 @@ public class Alert extends BaseModel implements Serializable {
 	private AlertUserType alertUserType;
 	private AlertSource alertSource;
 	private Long alertSourceId;
+	
+	private Long alertCategoryId;
+	private Long alertCategoryTypeId;
 
 	
 
@@ -267,7 +270,24 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertSourceId(Long alertSourceId) {
 		this.alertSourceId = alertSourceId;
 	}
-	
+
+	@Column(name = "alert_category_id")
+	public Long getAlertCategoryId() {
+		return alertCategoryId;
+	}
+
+	public void setAlertCategoryId(Long alertCategoryId) {
+		this.alertCategoryId = alertCategoryId;
+	}
+	@Column(name = "alert_category_type_id")
+	public Long getAlertCategoryTypeId() {
+		return alertCategoryTypeId;
+	}
+
+	public void setAlertCategoryTypeId(Long alertCategoryTypeId) {
+		this.alertCategoryTypeId = alertCategoryTypeId;
+	}
+
 	
 
 }
