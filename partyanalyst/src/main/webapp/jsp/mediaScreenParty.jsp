@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>MEDIA PARTY SCREEN</title>
+<title>TDP 2016-2018 MEMBERSHIP DRIVE RANKINGS</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
@@ -58,7 +58,7 @@ blockquote h2
 	display:none;
 	color:#EECF36;
 	font-size:14px;
-	width:80px;
+	width:100px;
 	text-align:center;
 }
 .distPriority , .distName
@@ -206,6 +206,9 @@ h1,h2,h3,h4,h5,h6,.table
 <div  class="container" >
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
+			<h3 class="text-center" style="color:#ED1B24;font-weight:bold;margin-top:-20px;">TDP 2016-2018 MEMBERSHIP DRIVE RANKINGS</h3>
+		</div>
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 			<ul class="arrowDots pull-left">
 				<li attr_val="1" class="active arrowDotsCls"></li>
 				<li attr_val="2" class="arrowDotsCls"></li>
@@ -226,7 +229,7 @@ h1,h2,h3,h4,h5,h6,.table
 					</div>
 					<div class="col-md-6 col-xs-12 col-sm-6">
 						<h4 style="color:#ED1B24"><b>TODAY TOP<i class="glyphicon glyphicon-arrow-up"></i></b></h4>
-						<div class="emptyDiv"></div>
+						<div class="emptyDiv m_top10"></div>
 					</div>
 				</div>
 			</div>
@@ -234,7 +237,7 @@ h1,h2,h3,h4,h5,h6,.table
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-6">
 				<h4 style="color:#ED1B24"><b>TILL NOW TOP<i class="glyphicon glyphicon-arrow-up"></i></b></h4>
-				<div class="emptyDiv1"></div>
+				<div class="emptyDiv1 m_top10"></div>
 			</div>
 		</div>
 	</div>	
