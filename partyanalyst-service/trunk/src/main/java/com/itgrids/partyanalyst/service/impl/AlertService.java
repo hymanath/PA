@@ -1239,6 +1239,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		    }
 		}
 	}
+	private void getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId){
+		LOG.info("Entered in getTotalAlertGroupByStatus() method of AlertService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatus(fromDate,toDate,stateId);
+		}catch(Exception e){
+			
+		}
+	}
 	
 	public String  setArticleDetailsIntoAlert(ActionableVO inputVO){		
 		String result = null;
@@ -1272,4 +1287,5 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	}
 	
 }
+	
 
