@@ -244,7 +244,7 @@ textarea {
 					
                 </div>
             </div>
-			<div class="row" style="margin-top:20px;">
+			<!--<div class="row" style="margin-top:20px;">
 				 <div class="container breadcrumb">
 					  <p> <b>Note:</b><br/>
 							New and Renewal Membership charges are  &#x20B9; 100/-. This Enrollment is valid for 2 years (2016-2018).</p>
@@ -257,7 +257,7 @@ textarea {
 					  <p><br/>    
 					   <i>For any Technical Support, please contact <b>+91-7997950724</b> / email : tdpmembership2016@gmail.com </i></p>
 				</div>
-			</div>
+			</div> -->
         </div>
         <div class="col-md-6 col-xs-12 col-sm-6">
         	<div class="mainBlock renewal">
@@ -1262,6 +1262,23 @@ textarea {
   </div>
 </div>
 </div>
+
+
+	<div class="row" style="margin-top:20px;">
+		 <div class="container breadcrumb">
+			  <p> <b>Note:</b><br/>
+					New and Renewal Membership charges are  &#x20B9; 100/-. This Enrollment is valid for 2 years (2016-2018).</p>
+					Membership card delivery charges:
+					  <ul>    
+						<li>India: &#x20B9;10/-</li>
+						<li>Outside India: &#x20B9;30/-</li>
+						<li>No charges applicable, if you collect at State Party Office [Hyderabad  or Guntur]</li>
+					  </ul> 
+			  <p><br/>    
+			   <i>For any Technical Support, please contact <b>+91-7997950724</b> / email : tdpmembership2016@gmail.com </i></p>
+		</div>
+	</div>
+			
 	<div id="wrapper">
 		<div id="example" ></div>
 	</div>
