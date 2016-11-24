@@ -902,7 +902,7 @@
 					<value>com.itgrids.partyanalyst.model.AlertTrackingAction</value>
 					<value>com.itgrids.partyanalyst.model.AlertSource</value>
 					<value>com.itgrids.partyanalyst.model.AlertSourceUser</value>
-					
+					<value>com.itgrids.partyanalyst.model.AlertCategory</value>
 					
 				   <!-- debate End-->
 				   <!-- employee attendance report start-->

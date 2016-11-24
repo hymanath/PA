@@ -2344,6 +2344,7 @@
 	  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/> 
 	   <property name="panchayatDAO" ref="panchayatDAO"/>
 	   <property name="fieldMonitoringService" ref="fieldMonitoringService"/> 
+	   <property name="alertService" ref="alertService"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
