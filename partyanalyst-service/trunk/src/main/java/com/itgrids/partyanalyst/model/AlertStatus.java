@@ -18,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class AlertStatus extends BaseModel implements Serializable {
 	private Long alertStatusId;
 	private String alertStatus;
+	private Long statusOrder;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,5 +39,14 @@ public class AlertStatus extends BaseModel implements Serializable {
 	public void setAlertStatus(String alertStatus) {
 		this.alertStatus = alertStatus;
 	}
+	@Column(name = "status_order")
+	public Long getStatusOrder() {
+		return statusOrder;
+	}
+
+	public void setStatusOrder(Long statusOrder) {
+		this.statusOrder = statusOrder;
+	}
+	
 
 }
