@@ -3258,7 +3258,7 @@
 	  
 	$(document).ready(function(){
 		//Main header remove
-		$(".eventsheader").hide();
+		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 		stateLevelCampDetails();
 	});
@@ -3365,6 +3365,20 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	}
 });    
 
+var loginUserId ='${sessionScope.USER.registrationID}';
+
+function manageHeader(){
+	if(loginUserId == null || loginUserId =='' || loginUserId.length ==0){
+
+		$(".navbarHeader").show();
+		$(".eventsheader").hide();
+	}else {
+
+		$(".eventsheader").show();
+		$(".navbarHeader").hide();
+	}
+}
+manageHeader();
 </script> 
 </body>
 </html>
