@@ -624,4 +624,58 @@ public class Scheduler {
 		return rs;
 	}
 	
+	
+	public ResultStatus pushCadreCountsLocationWiseByGender(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}  
+		try{  
+			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByGender();
+			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
+				if(rs.getMessage().equalsIgnoreCase("Failure")){
+					log.error(" Exception Occurred While Pushing Location wise Gender Data to Intermediate Table.. "); 
+				}
+			}
+		}catch(Exception e){
+			log.error("\n\n pushCadreCountsLocationWiseByGender() "); 
+		}
+		return rs;  
+	}
+	
+	public ResultStatus pushCadreCountsLocationWiseByCasteState(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}   
+		try{  
+			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByCasteState();
+			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
+				if(rs.getMessage().equalsIgnoreCase("Failure")){
+					log.error(" Exception Occurred While Pushing Location wise CasteState Data to Intermediate Table.. "); 
+				}
+			}
+		}catch(Exception e){
+			log.error("\n\n pushCadreCountsLocationWiseByCasteState() "); 
+		}
+		return rs;  
+	}
+	
+	public ResultStatus pushCadreCountsLocationWiseByAge(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}  
+		try{  
+			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByAge();
+			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
+				if(rs.getMessage().equalsIgnoreCase("Failure")){
+					log.error(" Exception Occurred While Pushing Location wise Age Data to Intermediate Table.. "); 
+				}
+			}
+		}catch(Exception e){
+			log.error("\n\n pushCadreCountsLocationWiseByAge() "); 
+		}
+		return rs;  
+	}
 }
