@@ -13190,8 +13190,8 @@
 	
 	<action name="coreDashboardNewAction" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=coreDashboardNewAction</result>
-		<result name="error">/jsp/loginForm.jsp?src=coreDashboardNewAction</result>
+		<result name="input" type="redirect">loginAction.action</result>
+		<result name="error" type="redirect">loginAction.action</result>
 	</action>
 	
 	<action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
