@@ -26,11 +26,14 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITabUserEnrollmentInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCasteStateInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDataSourceTypeInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDateWiseInfoTempDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreGenderInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreHourRegInfoTempDAO;
@@ -100,6 +103,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreCardPrintDAO tdpCadreCardPrintDAO;
 	private ICardPrintValidationDAO cardPrintValidationDAO;
 	private ICardPrintValidationRejectReasonDAO cardPrintValidationRejectReasonDAO;
+	private ITdpCadreGenderInfoDAO tdpCadreGenderInfoDAO;
+	private ITdpCadreCasteStateInfoDAO tdpCadreCasteStateInfoDAO;
+	private ITdpCadreAgeInfoDAO tdpCadreAgeInfoDAO;
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -221,6 +227,20 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	public void setCardPrintValidationRejectReasonDAO(
 			ICardPrintValidationRejectReasonDAO cardPrintValidationRejectReasonDAO) {
 		this.cardPrintValidationRejectReasonDAO = cardPrintValidationRejectReasonDAO;
+	}
+	
+	public void setTdpCadreGenderInfoDAO(
+			ITdpCadreGenderInfoDAO tdpCadreGenderInfoDAO) {
+		this.tdpCadreGenderInfoDAO = tdpCadreGenderInfoDAO;
+	}
+	
+	public void setTdpCadreCasteStateInfoDAO(
+			ITdpCadreCasteStateInfoDAO tdpCadreCasteStateInfoDAO) {
+		this.tdpCadreCasteStateInfoDAO = tdpCadreCasteStateInfoDAO;
+	}
+	
+	public void setTdpCadreAgeInfoDAO(ITdpCadreAgeInfoDAO tdpCadreAgeInfoDAO) {
+		this.tdpCadreAgeInfoDAO = tdpCadreAgeInfoDAO;
 	}
 	//Business methods
 	/**
@@ -2603,8 +2623,59 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
       	  return stateMap;
         }
        
+       /** 9)
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  pushing 2014 && 2016 tdp cadre counts location wise based on gender .
+	   	 *  @since 23-NOVEMBER-2016 
+	   	 */
+       public ResultStatus pushCadreCountsLocationWiseByGender(){
+   		ResultStatus rs = new ResultStatus();
+   		try {
+   			
+   			int count = tdpCadreGenderInfoDAO.pushCadreCountsLocationWiseByGender();
+   			rs.setMessage("Success");
+   		} catch (Exception e) {
+   			LOG.error("Exception raised at pushCadreCountsLocationWiseByGender() in CadreRegistrationServiceNew Class", e);
+   			rs.setMessage("Failure");
+   		}
+   		return rs;    
+   	 }
        
-       
+       /** 10)
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  pushing 2014 && 2016 tdp cadre counts location wise based on Caste State .
+	   	 *  @since 23-NOVEMBER-2016 
+	   	 */
+      public ResultStatus pushCadreCountsLocationWiseByCasteState(){
+  		ResultStatus rs = new ResultStatus();
+  		try {
+  			
+  			int count = tdpCadreCasteStateInfoDAO.pushCadreCountsLocationWiseByCasteState();
+  			rs.setMessage("Success");
+  		} catch (Exception e) {
+  			LOG.error("Exception raised at pushCadreCountsLocationWiseByCasteState() in CadreRegistrationServiceNew Class", e);
+  			rs.setMessage("Failure");
+  		}
+  		return rs;    
+  	 }
+      
+      /** 11)
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  pushing 2014 && 2016 tdp cadre counts location wise based on Caste State .
+	   	 *  @since 23-NOVEMBER-2016 
+	   	 */
+    public ResultStatus pushCadreCountsLocationWiseByAge(){
+		ResultStatus rs = new ResultStatus();
+		try {
+			
+			int count = tdpCadreAgeInfoDAO.pushCadreCountsLocationWiseByAge();
+			rs.setMessage("Success");
+		} catch (Exception e) {
+			LOG.error("Exception raised at pushCadreCountsLocationWiseByAge() in CadreRegistrationServiceNew Class", e);
+			rs.setMessage("Failure");
+		}
+		return rs;    
+	 }
        
        //PRINTING RELATED 
        /**
@@ -2677,9 +2748,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     				   tdpCadrePrintDetailsVO.setBoothName(obj[10] != null ? obj[10].toString() : "");
     				   tdpCadrePrintDetailsVO.setAreaCovered(obj[11] != null ? obj[11].toString() : "");
     				   tdpCadrePrintDetailsVO.setHouseNo(obj[12] != null ? obj[12].toString() : "");
-    				   
-    				   tdpCadrePrintDetailsVO.setCardPrintVendorId(obj[13] != null ? (Long)obj[13] : 0l);
-    				   tdpCadrePrintDetailsVO.setBoxNo(obj[14] != null ? obj[14].toString() : "");
     				   
     			   }
     		   }
