@@ -3420,4 +3420,17 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreGenderInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreGenderInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreCasteStateInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCasteStateInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCadreAgeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreAgeInfoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		
