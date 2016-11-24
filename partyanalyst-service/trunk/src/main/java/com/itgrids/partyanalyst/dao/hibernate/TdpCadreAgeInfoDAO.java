@@ -13,7 +13,7 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
 	}
 	
 	public int pushCadreCountsLocationWiseByAge(){
-		Query query = getSession().createSQLQuery("CALL proceedureName();");
+		Query query = getSession().createSQLQuery("CALL tdp_cadre_age_info(); ");
 		return query.executeUpdate();  
 	}
 }
