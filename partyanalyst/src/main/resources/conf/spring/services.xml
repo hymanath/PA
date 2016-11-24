@@ -1687,13 +1687,41 @@
 	
 	<bean name="pushDataSourceWisetdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="triggerDataSourceWisetdpCadreCounts" />
-    	<property name="cronExpression" value="0 3 0/1 * * ?"/>
+    	<property name="cronExpression" value="0 0/10 * * * ?"/>
 	</bean>
     <bean name="triggerDataSourceWisetdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="pushDataSourceWisetdpCadreCounts" />
     </bean>
     
+    
+    <bean name="pushGenderWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerGenderWiseTdpCadreCounts" />
+    	<property name="cronExpression" value="0 30 20  * * ?" />
+	</bean>
+    <bean name="triggerGenderWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByGender" /> 
+	</bean> 
+	
+	<bean name="pushCasteStateWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerCasteStateWiseTdpCadreCounts" />
+       <property name="cronExpression" value="0 45 20  * * ?" /> 
+	</bean>
+    <bean name="triggerCasteStateWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByCasteState"/> 
+	</bean> 
+	
+	<bean name="pushAgeWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerAgeWiseTdpCadreCounts" />
+        <property name="cronExpression" value="0 0 21  * * ?" /> 
+	</bean>
+    <bean name="triggerAgeWiseTdpCadreCounts" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByAge"/> 
+	</bean>
+	
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1739,6 +1767,10 @@
 		    <ref bean="tdpCadreDataHourWiseByOverall" />
 		    <ref bean="locationWiseRegistrationSMSTracking"/>
 		    <ref bean="pushDataSourceWisetdpCadreCounts" />
+		    
+		   <!-- <ref bean="pushGenderWiseTdpCadreCounts"/> 
+		    <ref bean="pushCasteStateWiseTdpCadreCounts"/> 
+		    <ref bean="pushAgeWiseTdpCadreCounts"/> -->
 		    
         </list>
     	</property>
@@ -3767,6 +3799,8 @@
 	   <property name="tdpCadreCardPrintDAO" ref="tdpCadreCardPrintDAO" />
 	   <property name="cardPrintValidationDAO" ref="cardPrintValidationDAO" />
 	   <property name="cardPrintValidationRejectReasonDAO" ref="cardPrintValidationRejectReasonDAO" />
+	   <property name="tdpCadreGenderInfoDAO" ref="tdpCadreGenderInfoDAO" />
+	   <property name="tdpCadreCasteStateInfoDAO" ref="tdpCadreCasteStateInfoDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
