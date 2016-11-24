@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.AccommodationVO;
+import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -2114,5 +2115,15 @@ public class WebServiceHandler {
 	    {
 			return webServiceHandlerService.getCadreRegistrationIssuesStatusDetails(inputVO);
 		}
+		
+		@POST
+		@Path("/setArticleDetailsIntoAlert")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String setArticleDetailsIntoAlert(ActionableVO VO){
+			return webServiceHandlerService.setArticleDetailsIntoAlert(VO);
+		}
+		
+		
 		
 }
