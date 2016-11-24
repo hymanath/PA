@@ -21,9 +21,6 @@ public class TdpCadrePrintDetailsVO implements Serializable{
 	private String areaCovered;
 	private String houseNo;
 	
-	private Long cardPrintVendorId;
-	private String boxNo;
-	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
@@ -102,18 +99,6 @@ public class TdpCadrePrintDetailsVO implements Serializable{
 	public void setHouseNo(String houseNo) {
 		this.houseNo = houseNo;
 	}
-	public Long getCardPrintVendorId() {
-		return cardPrintVendorId;
-	}
-	public void setCardPrintVendorId(Long cardPrintVendorId) {
-		this.cardPrintVendorId = cardPrintVendorId;
-	}
 	
-	public String getBoxNo() {
-		return boxNo;
-	}
-	public void setBoxNo(String boxNo) {
-		this.boxNo = boxNo;
-	}
 	
 }
