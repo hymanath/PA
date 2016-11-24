@@ -25,4 +25,8 @@ public interface ICadreRegistrationServiceNew {
 	public TdpCadrePrintDetailsVO  getTdpCadrePrintDetailsByMemberShipId(String memberShipId);
 	public ResultStatus updateCardPrintValidStatus(final CardPrintValidationVO inputVO);
 	
+	public ResultStatus pushCadreCountsLocationWiseByGender();
+	public ResultStatus pushCadreCountsLocationWiseByCasteState();
+	public ResultStatus pushCadreCountsLocationWiseByAge();
+	
 }
