@@ -232,5 +232,26 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("levelId", levelId);*/
 		return query.list();
 	}
+	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.alertStatus.alertStatusId, model.alertStatus.alertStatus, count(distinct model.alertId) " +
+						" from Alert model ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+		}
+		if(stateId.longValue() != 0){
+			queryStr.append(" and model.userAddress.state.stateId = :stateId ");
+		}
+		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.statusOrder ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(stateId.longValue() != 0){
+			query.setParameter("stateId", stateId);
+		}
+		return query.list();
+	}
 	
 }
