@@ -235,7 +235,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.alertStatus.alertStatusId, model.alertStatus.alertStatus, count(distinct model.alertId) " +
-						" from Alert model ");
+						" from Alert model where ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
