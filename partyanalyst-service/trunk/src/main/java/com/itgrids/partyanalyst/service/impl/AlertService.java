@@ -1581,6 +1581,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				 alert.setAlertCategoryId(inputVO.getAlertCategory());
 				 alert.setIsDeleted("N");
+				 alert.setAlertCategoryTypeId(inputVO.getId());
 				 
 				 UserAddress UA = new UserAddress();
 					
