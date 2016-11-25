@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Array;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,6 +65,7 @@ import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
@@ -7337,5 +7336,31 @@ public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,Lis
 		LOG.error("Exception Occured in getNominatedPostDetails()", e);
 	}
 	return resultVO;
+}
+
+public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId){
+	List<IdAndNameVO> retrurnList = new ArrayList<IdAndNameVO>();
+	try{
+		List<Object[]> applnDocs = applicationDocumentDAO.getApplicationDocuments(tdpCadreId, searchType, nominateCandId, applicationId);
+		
+		if(commonMethodsUtilService.isListOrSetValid(applnDocs)){
+			for(Object[] param :applnDocs){
+				IdAndNameVO vo = new IdAndNameVO();
+				
+				vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setImagePathStr(commonMethodsUtilService.getStringValueForObject(param[1]));
+				vo.setStartTime(commonMethodsUtilService.getStringValueForObject(param[2]));
+				vo.setApTotal(commonMethodsUtilService.getLongValueForObject(param[3]));// nominated Post Application Id
+				vo.setAttenteeCount(commonMethodsUtilService.getLongValueForObject(param[4]));//nominated Post candidate Id
+				retrurnList.add(vo);
+				
+				
+			}
+		}
+		
+	}catch(Exception e){
+		
+	}
+	return retrurnList;
 }
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
@@ -74,4 +75,5 @@ public interface INominatedPostProfileService {
 				final Long statusId,final String comment);
 	 public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId,Long candId);
 	 public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,List<Long> locationValues,Long departmentId,Long boardId,Long positionId);
+	 public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId);
 }

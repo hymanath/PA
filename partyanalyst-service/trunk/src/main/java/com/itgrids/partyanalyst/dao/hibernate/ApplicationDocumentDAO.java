@@ -40,4 +40,37 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 		query.setParameterList("applicationIds", applicationIds);
 		return query.list();
 	}
+	public List<Object[]> getApplicationDocuments(Long tdpCadreId,String searchType,Long nominateCandId,Long applicationId){
+		StringBuilder str = new StringBuilder();
+		
+		if(nominateCandId != null && nominateCandId.longValue()>0L)
+			searchType="Not Cadre";
+		
+		str.append(" select model.applicationDocumentId,model.filePath,date(model.insertedDate),model.nominatedPostApplication.nominatedPostApplicationId,model.nominationPostCandidate.nominationPostCandidateId from ApplicationDocument model  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+	        	str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId ");
+	        }
+	        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+	        	str.append(" and model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId ");
+	        }
+	        
+	        if(applicationId != null && applicationId.longValue() >0l)
+	        	str.append(" and model.nominatedPostApplication.nominatedPostApplicationId = :applicationId ");
+	        
+	        
+	        //str.append( " order by model.postType.postTypeId ");
+	        
+	        Query query = getSession().createQuery(str.toString());
+	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+	        	  query.setParameter("tdpCadreId", tdpCadreId);
+	        }
+	        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+	        	  query.setParameter("nominateCandId", nominateCandId);
+	        }
+	        
+	        if(applicationId != null && applicationId.longValue() >0l)
+	        	query.setParameter("applicationId", applicationId);
+	      
+	        return query.list();
+	  }
 }

@@ -1171,7 +1171,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			strQuery.append(" model.applicationStatus.applicationStatusId  in (3,6,5,7) and ");
 		}else{
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
@@ -1280,7 +1280,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				        " where ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			strQuery.append(" model.applicationStatus.applicationStatusId  in (3,6,5,7) and ");
 		}
 		else
 		{
@@ -1392,7 +1392,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				        " where ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			strQuery.append(" model.applicationStatus.applicationStatusId  in (3,6,5,7) and ");
 		}else{
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
