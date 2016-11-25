@@ -1,6 +1,14 @@
 
 $(document).ready(function(){
 	getLocationLevelAlertCount();
+	var levelId = 0;
+	var levelValue = 0;
+	$('.stateCls').each(function(){
+		if($(this).hasClass("active"))
+			levelValue = $(this).attr("attr_state_id");
+	});
+	
+	var statusId=0;
 	 var fromDate='';
 	 var toDate='';
 	 var dateStr = $("#dateRangePickerId").val(); 
@@ -8,11 +16,34 @@ $(document).ready(function(){
 			fromDate = dateStr.split("-")[0];
 			toDate = dateStr.split("-")[1];
 		}
-	getLocationLevelAlertData(0,0,fromDate,toDate);
+	var	categoryId =0;
+	$("#errorId").html("");
+	
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+	
 });
 $(document).on("click",'.applyBtn',function(){
 	$("#locationLevelDataId").html('');
 	getLocationLevelAlertCount();
+	var levelId = 0;
+	var levelValue = 0;
+	$('.stateCls').each(function(){
+		if($(this).is(":checked"))
+			levelValue = $(this).attr("attr_state_id");
+	});
+	
+	var statusId=0;
+	 var fromDate='';
+	 var toDate='';
+	 var dateStr = $("#dateRangePickerId").val(); 
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+	var	categoryId =0;
+	$("#errorId").html("");
+	
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);	
 })
 function getLocationLevelAlertCount()
 {
@@ -110,6 +141,7 @@ function getLocationLevelAlertCount()
       str+='</table>';
 	$("#locationLevelId").html(str);
 }*/
+//8888
 function buildLocationLevelAlert(result,jsObj){
 	
 	
@@ -130,9 +162,9 @@ function buildLocationLevelAlert(result,jsObj){
 		 totalAlerts = totalAlerts + result[i].count;
 	 }
 	 if(totalAlerts > 0)
-    str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;font-size: 26px;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalAlerts+'</a></p>';
+		str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;font-size: 26px;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalAlerts+'</a></p>';
 	else
-	str+='<p>'+totalAlerts+'</p>';
+		str+='<p>'+totalAlerts+'</p>';
     str+='<h5 class="text-capital textColor_333">total alerts</h5>';
      str+='</td>';
 	for(var i in result[0].locationsList)
@@ -190,25 +222,63 @@ function buildLocationLevelAlert(result,jsObj){
 }
 $(document).on("click",".locationLevelCls",function(){
 	var levelId = $(this).attr("attr-levelId");
+	var levelValue = 0;
+	$('.stateCls').each(function(){
+		if($(this).hasClass("active"))
+			levelValue = $(this).attr("attr_state_id");
+	});
+	
 	var statusId=$(this).attr("attr-statusId");
 	var fromDate = $(this).attr("attr-fromDate");
 	var toDate=$(this).attr("attr-toDate");
+	var	categoryId =0;
 	$("#errorId").html("");
-	getLocationLevelAlertData(levelId,statusId,fromDate,toDate);
+	
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+});
+$(document).on("click",".headerWiseDataCls",function(){
+	var levelId = $(this).attr("attr_levlId");
+	var levelValue = 0;
+	
+	$('.stateCls').each(function(){
+		if($(this).hasClass("active"))
+			levelValue = $(this).attr("attr_state_id");
+	});
+	
+	var statusId=$(this).attr("attr_id");
+	var categoryId=$(this).attr("attr_category_id");
+	var fromDate='';
+	var toDate='';
+	var dateStr = $("#dateRangePickerId").val(); 
+	
+	if(dateStr !=null && dateStr.length>0){
+		fromDate = dateStr.split("-")[0];
+		toDate = dateStr.split("-")[1];
+	}
+	
+	$("#errorId").html("");
+	
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
 });
 
+//999
 var GlobalAlertData;
-function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
+function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId)
 {
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
+	
+	
     GlobalAlertData = [];
 		var jsObj =
 		     {
-			levelId  : levelId,
-			statusId :statusId,
-			fromDate :fromDate,
-			toDate   :toDate,
-			task : ""
+				levelId  : levelId,
+				statusId :statusId,
+				fromDate :fromDate,
+				toDate   :toDate,
+				levelValue:levelValue,
+				categoryId:categoryId,
+				assignId:0,
+				task : ""
 		      }
 			$.ajax({
 					  type:'GET',
@@ -286,12 +356,14 @@ function buildAlertData(result,jsObj)
 	str+='<thead>';
 	//str+='<th>S.NO</th>';
 	//str+='<th>Desc</th>';
-	str+='<th>Alert Type</th>';
-	str+='<th>Status</th>';
-	str+='<th>Involved No Of Candidates</th>';
-	str+='<th>Notified Date</th>';
-	str+='<th>Information Source</th>';
-	str+='<th>Severity</th>';
+	str+='<th>ALERT CATEGORY </th>';
+	str+='<th>ALERT TYPE </th>';
+	str+='<th>STATUS</th>';
+	str+='<th>INVOLVED NO OF CANDIDATES</th>';
+	str+='<th>NOTIFIED DATE </th>';
+	str+='<th>INFORMATION DATE </th>';
+	str+='<th>SEVERITY</th>';
+	/*
 	if(jsObj.levelId == 2)
 	{
 	str+='<th>STATE</th>';	
@@ -300,9 +372,11 @@ function buildAlertData(result,jsObj)
 	{
 		str+='<th>LOCATION</th>';
 	}
+	
 	str+='<th></th>';	
+	*/
 	str+='</thead>';
-	str+='</tbody>';
+	str+='<tbody>';
 	var j=0;
 	for(var i in result)
 	{
@@ -310,6 +384,7 @@ function buildAlertData(result,jsObj)
 	str+='<tr>';	
 	//str+='<td>'+j+'</td>';
 	//str+='<td><a target="_blank" title="Click here to View Alert Details" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
+	str+='<td>'+result[i].alertCategoryName+'</td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].status+'</td>';
 	str+='<td>'+result[i].count+'</td>';
@@ -317,18 +392,19 @@ function buildAlertData(result,jsObj)
 	str+='<td>'+result[i].userType+'</td>';
 	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
 	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
-	if(result[i].regionScopeId== 2)
-			{
-				str+='<td>'+result[i].locationVO.state+'</td>';
-			}
-			else
-			{
-			str+='<td>'+result[i].locationVO.districtName+'</td>';	
-			}
+	/*if(result[i].regionScopeId== 2)
+	{
+		str+='<td>'+result[i].locationVO.state+'</td>';
+	}
+	else
+	{
+		str+='<td>'+result[i].locationVO.districtName+'</td>';	
+	}
+	
 	//str+='<td><button class="btn btn-success">VIEW</button></td>';
 	str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
 	//<button class="btn btn-success alertModel" target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">VIEW</button></td>';
-	
+	*/
 	str+='</tr>';	
 	}
 	str+='</tbody>';

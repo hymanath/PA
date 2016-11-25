@@ -416,17 +416,25 @@ function getAlertAssignedCandidate()
 		str+='<tr>';
 		str+='<td>';
 			str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
-			str+='<h3>'+totalAlert+'</h3>';  
+			if(totalAlert != null && totalAlert>0)
+				str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="2"  attr_category_id="0">'+totalAlert+'</a></u></h3>'; 
+			else
+				str+='<h3>'+totalAlert+'</h3>'; 
 		str+='</td>';
 		var j = 1;
 		for(var i in result){
 			str+='<td>';
-				str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
-				str+='<h3>'+result[i].count+'</h3>';  
+			str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
+			if(result[i].count != null && result[i].count >0 )
+				str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="2"  attr_category_id="0">'+result[i].count+'</a></u></h3>';  
+			else
+				str+='<h3>'+result[i].count+'</h3>';
+			
 			str+='</td>';
 			j = j+1;     
 		}
 		str+='</tr>';
+		
 		$("#overAllCount").html(str);
 	}
 	
@@ -462,13 +470,21 @@ function getAlertAssignedCandidate()
 			str+='<tr>';
 			var appClr = colorArr[result[i].status];
 			var appClrHd = colorArrHead[result[i].status];
-			str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted">'+result[i].count+'</span></td>';
+			if(result[i].count != null && result[i].count > 0)
+				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="2">'+result[i].count+'</a> </u></span></td>';
+			else
+				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
+			
 			for(var j in result[i].subList1){
-				str+='<td style="background-color:'+appClr+'">'+result[i].subList1[j].categoryCount+'</td>';
+				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount >0)
+					str+='<td style="background-color:'+appClr+'"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="2">'+result[i].subList1[j].categoryCount+' </a></u></td>';
+				else
+					str+='<td style="background-color:'+appClr+'"> '+result[i].subList1[j].categoryCount+' </td>';
 			}
 			str+='</tr>';   
 		}
 		$("#alertCatTabId").html(str);  
+		
 	}
 	 
 	function getAlertCountGroupByLocationThenStatus(stateId,fromDate,toDate){
@@ -502,13 +518,21 @@ function getAlertAssignedCandidate()
 				continue;
 			}
 			str+='<tr>';
-			str+='<td>'+result[i].status+'<span class="pull-right text-muted">'+result[i].count+'</span></td>';
+			if(result[i].count != null && result[i].count>0)
+				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0">'+result[i].count+'</a></u></span></td>';							
+			else
+				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><'+result[i].count+'</span></td>';
+			
 			for(var j in result[i].subList1){
-				str+='<td>'+result[i].subList1[j].categoryCount+'</td>';    
+				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
+					str+='<td><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0">'+result[i].subList1[j].categoryCount+'</u></td>';
+				else				
+					str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 			}
 			str+='</tr>';
 		}
-		$("#locWiseAltCntId").html(str);      
+		$("#locWiseAltCntId").html(str);  
+		
 	}
 </script>
 </body>
