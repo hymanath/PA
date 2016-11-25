@@ -333,11 +333,15 @@ function buildCandidateBoardRslt(result,departmentId,status){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
+						   if(status != "Total"){
+							 str+='<span id="board'+i+'" href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'"  data-toggle="tooltip"  data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+						   }else{
+								str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
+				            }
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom deptDtlsCls boardHrfCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"  id="board'+i+'" href="#board'+result[i].id+'"  attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab" >'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom deptDtlsCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}else{
 							str+='<span class="label label-primary pull-right labelCustom boardHrfCls" id="board'+i+'" href="#board'+result[i].id+'" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab"  title="click here to get positions details." data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
@@ -354,7 +358,11 @@ function buildCandidateBoardRslt(result,departmentId,status){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_report_type="Board" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
+							 if(status != "Total"){
+							 str+='<span id="board'+i+'" href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'"  data-toggle="tooltip"  data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+						   }else{
+								str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
+				            }
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
