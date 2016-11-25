@@ -264,7 +264,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setLevelId(jObj.getLong("levelId"));
 			inputVO.setStatusId(jObj.getLong("statusId"));
 			inputVO.setFromDate(jObj.getString("fromDate"));
-			inputVO.setToDate(jObj.getString("toDate"));
+			inputVO.setToDate(jObj.getString("toDate")); 
+			
+			inputVO.setLevelValue(jObj.getLong("levelValue"));
+			inputVO.setCategoryId(jObj.getLong("categoryId"));
+			inputVO.setAssignId(jObj.getLong("assignId"));
+			
 			alertDataList = alertService.getLocationLevelWiseAlertsData(regVo.getRegistrationID(),inputVO);
 			
 		}
