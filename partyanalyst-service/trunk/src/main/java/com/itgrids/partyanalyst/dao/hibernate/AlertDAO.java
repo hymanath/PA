@@ -338,5 +338,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		return query.list(); 
 	}
 	
+	public List<Alert> getAlertDetailsOfNewstype(Long alertCategoryType){
+		
+		Query query = getSession().createQuery(" select model from Alert model " +
+				"  where " +
+				" model.alertCategoryTypeId = :alertCategoryType " +
+				" order by model.updatedTime desc ");
+		
+		query.setParameter("alertCategoryType", alertCategoryType);
+		
+		return query.list();
+		
+	}
+	
+	public int updateAlertStatusOfNews(Long alertCategoryType,Long alertStatusId){
+		Query query = getSession().createQuery(" update Alert model set model.alertStatusId =:alertStatusId where " +
+				"  model.alertCategoryTypeId =: alertCategoryType ");
+		
+		query.setParameter("alertCategoryType", alertCategoryType);
+		query.setParameter("alertStatusId", alertStatusId);
+		
+		return query.executeUpdate();
+	}
+	
 }
 

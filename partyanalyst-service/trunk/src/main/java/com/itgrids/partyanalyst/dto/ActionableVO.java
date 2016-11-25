@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.itgrids.partyanalyst.model.BaseModel;
 
@@ -19,6 +20,36 @@ public class ActionableVO extends BaseModel implements Serializable{
 	private Long userId;
 	
 	private String type;
+	private String imageUrl;
+	
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	private Long parliamentId;
+	private Long mandalId;
+	private Long panchayatId;
+	private Long villageId;
+	private Long municipalCorpGmcId;
+	private Long wardId;
+	private Long impactScopeId;
+	
+	private Date insertedTime;
+	private Date updatedTime;
+	
+	
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
 	
 	public Long getId() {
 		return id;
@@ -85,6 +116,72 @@ public class ActionableVO extends BaseModel implements Serializable{
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	public Long getMunicipalCorpGmcId() {
+		return municipalCorpGmcId;
+	}
+	public void setMunicipalCorpGmcId(Long municipalCorpGmcId) {
+		this.municipalCorpGmcId = municipalCorpGmcId;
+	}
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public Long getImpactScopeId() {
+		return impactScopeId;
+	}
+	public void setImpactScopeId(Long impactScopeId) {
+		this.impactScopeId = impactScopeId;
 	}
 	
 	
