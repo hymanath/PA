@@ -256,8 +256,27 @@
   </div>
 </div>
 
-
-
+<div class="modal fade" id="nominatedPostDetailsModalId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document" style="margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title text-capital" id="postHeadingId"></h4>
+	  <div class="modal-body">
+	    <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			   <div ><center ><img style="display: none;" src="images/icons/loading.gif" id="nominatedPostDlsProcessingImgId"></center></div>
+				<div id="nominatedPostDtlsTblId"> </div>    
+			</div>      
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
