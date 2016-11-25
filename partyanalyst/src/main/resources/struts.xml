@@ -14802,5 +14802,10 @@
 			<param name="root">nominatedPostDashboardVO</param>
 		</result>
 	</action>
+	    <action name="getApplicationDocumentsAction" class="nominatedPostProfileAction"  method="getApplicationDocuments">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

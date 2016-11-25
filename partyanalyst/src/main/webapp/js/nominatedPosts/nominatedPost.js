@@ -2414,18 +2414,18 @@ function populateFields(result){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		   if(result !=null){
-			   buildCandidateAppliedPostByCadreDetails(result);
+			   buildCandidateAppliedPostByCadreDetails(result,cadreId,candiId);
 		   }   
    });	
   }
-  function buildCandidateAppliedPostByCadreDetails(result){
+  function buildCandidateAppliedPostByCadreDetails(result,cadreId,candiId){
 	 var str = '';
 	 if(result.subList.length > 0 || result.subList1.length > 0){
 		 $("#appliedPostForSelectedId").show();
 	 if(result.subList != null && result.subList.length > 0){
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">';
                     str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);" id="appliedPostId">';
-                        	str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE</h4>';
+                        	str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE <i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for all application" onclick="getApplicationDocuments('+cadreId+','+candiId+',0);"></i></h4>';
                            str+='<div class="row">';
                             str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
                                 	str+='<div class="panel panel-default panelPost">';
@@ -2444,6 +2444,8 @@ function populateFields(result){
                                                 	str+='<p class="labelStatus " style="background:lightblue;" > '+result.subList[i].status+' </p>';
 												else
                                                 	str+='<p class="labelStatus " style="background:green;">'+result.subList[i].status+' </p>';
+													
+													str+='<i class="glyphicon glyphicon-list-alt pull-right" style="cursor:pointer;" title="View documents for this application" onclick="getApplicationDocuments('+cadreId+','+candiId+','+result.subList[i].nominatePostApplicationId+');"></i>';
 													if(result.subList[i].levelName != null){
 														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 													}
@@ -2934,3 +2936,93 @@ $(document).on("click",".searchTypeCls1",function(){
 	if(value == 3)
 		$("#searchById").attr("maxLength","10");
 });
+
+function getApplicationDocuments(cadreId,candiId,applicationId){
+
+	 var type = $("input[type='radio']:checked").val();
+	 //var cadreId = candiId>0?0:globalCadreId;
+		var jsObj={
+				globalCadreId :cadreId,
+				searchType:type,
+				nominateCandId:candiId,//3423
+				applicationId:applicationId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getApplicationDocumentsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   //if(result !=null && result.length > 0){
+			  buildUploadedDocuments(result);
+		   //}   
+   });	
+  }
+  
+  function buildUploadedDocuments(result){
+  $("#applicationDocsModelId").modal("show");
+  if(result !=null && result.length > 0){
+  
+  var buildStr='';
+							buildStr+='<div class="panel-body">';
+							buildStr +='<div class="row image-response" style="text-align:center;">';
+							buildStr+='<ul class="list-inline slick-training " style="width:830px; margin-left: 20px;">';
+							for(var i in result)
+							{
+								buildStr+='<li class="slick-training-slide">';
+								buildStr+='<div class="" style="width: 800px;">';
+								var indexOdfDot = result[i].imagePathStr.indexOf(".");
+								var fileExt = result[i].imagePathStr.substring(indexOdfDot+1,result[i].imagePathStr.length);
+								
+								buildStr += '<iframe src="./nominated_post_documents/'+result[i].imagePathStr+'" width="100%" height="800">';    
+								buildStr += '</iframe>';
+								
+								buildStr+='</div>';
+								buildStr+='</li>';
+							}
+							buildStr+='</ul>';
+							buildStr +='</div>';
+							buildStr+='</div>';
+						
+							$('#uploadedDopcumentsDivId').html(buildStr);
+					}else{
+						$('#uploadedDopcumentsDivId').html(" NO UPLOADED DOCUMENTS ARE AVAILABLE");
+					}
+				$('.slick-training').slick({
+					 dots: false,
+					 slide: 'li',
+					 infinite: false,
+					 speed: 300,
+					 slidesToShow: 1,
+					 slidesToScroll: 1,
+					 variableWidth: true,
+					 responsive: [
+					 {
+						 breakpoint: 1024,
+						 settings: {
+						 slidesToShow: 3,
+						 slidesToScroll: 3,
+						 infinite: true,
+						 dots: true
+						}
+					 },
+					 {
+						 breakpoint: 600,
+						 settings: {
+						 slidesToShow: 2,
+						 slidesToScroll: 2
+						 }
+					},
+					 {
+						 breakpoint: 480,
+						 settings: {
+						 slidesToShow: 1,
+						 slidesToScroll: 1
+						 }
+					 }
+					 ]
+				});
+				
+  }
+  
+  

@@ -451,14 +451,16 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		   			
 				   			File[] files = multiPartRequestWrapper.getFiles(key);
 				   			filePaths = new ArrayList<String>();
+				   			int i = 0;
 				   			if(files != null && files.length > 0)
 				   			for(File f : files)
 				   			{
-				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[i].split("\\.");
 				   	            String ext = "";
 				   	            if(extension.length > 1){
 				   	            	ext = extension[extension.length-1];
 				   	            	mapfiles.put(f,ext);
+				   	            	i++;
 				   	            }
 				   	        
 				   			}
@@ -1793,4 +1795,16 @@ public String execute()
 		}
 	   return Action.SUCCESS;	
 	 }
+	public String getApplicationDocuments()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			idAndNameVOList = nominatedPostProfileService.getApplicationDocuments(jObj.getLong("globalCadreId"),jObj.getString("searchType"),jObj.getLong("nominateCandId"),jObj.getLong("applicationId"));
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in getApplicationDocuments() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
 }

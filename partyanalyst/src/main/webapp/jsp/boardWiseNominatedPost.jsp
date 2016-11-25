@@ -86,9 +86,11 @@
 							<h4 class="panel-title"  id="postMembersId">APPLIED THIS POST - MEMBERS DETAILS</h4>
 						</div>
 						<div class="panel-body" style="background-color:#f4f4f4;">
-							<div class="">
+							<div class="table-responsive">
 								<div id="resultDivId"></div>
 							</div>
+							<!--<button class="btn btn-success appleNewPostBtn">APPLY HERE</button>-->
+							<a class="btn  appleNewPostBtn" style="float:right;font-weight:bold" title="You can apply Nomianted Post here"><u>Click here to apply for new post</u></a>
 						</div>
 					</div>
 				</div>
@@ -102,6 +104,17 @@
         	
         </div>
     </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="newApplyPost" role="dialog">  
+	<div class="modal-dialog" style="width:80%;">      
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" onclick="refreshingPage();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 <iframe src="http://localhost:8080/PartyAnalyst/nominatedPostProfileAction.action?status=openedInPopup" style="width:100%;border:0px" class="newPostApplyPopup"></iframe> 
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
@@ -142,6 +155,13 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript">
+var getHeight = $(window).height();
+getHeight = (getHeight -( ( getHeight/100 ) * 10));
+
+$(".newPostApplyPopup").css("height",getHeight)
+$(document).on("click",".appleNewPostBtn",function(){
+	$("#newApplyPost").modal('show');
+});
 var globalLevelTxt = '${param.levelTxt}';
 var globalDeptName = '${param.deptName}'; 
 var headBrdId='${param.brdName}';
@@ -281,6 +301,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	var str='';
 	
 	if(result.subList != null && result.subList.length > 0){
+
 		str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead style="background-color:#f8f8f8" class="text-capital">';
 			str+='<th>Name</th>';
@@ -1278,6 +1299,11 @@ function tableResponsive()
 		  // window.location.reload();
 		   setTimeout(function(){getBoardWiseNominatedPostMemberDetails();getNominatedPostPostionDetails();}, 1000);
    });
+   }
+   
+   function refreshingPage(){
+	   
+	   window.location.reload();
    }
 </script>
 </body>
