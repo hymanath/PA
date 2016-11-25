@@ -1716,29 +1716,34 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	    }else if(locationLevelId.longValue() == 4l){// 4-constituency
 	    	queryStr.append(" and model.nominatedPostMember.address.constituency.constituencyId in (:locationValues) ");	
 	    }
-	    
+	    if(locationLevelId != null && locationLevelId.longValue() > 0l){
+	    	queryStr.append(" and model.nominatedPostMember.boardLevelId=:locationLevelId ");
+	    }
 	    if(departmentId != null && departmentId.longValue() > 0){
 	    	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId ");
 	    }
-	    if(boardId != null && boardId.longValue() > 0){
+	    if(boardId != null && boardId.longValue() > 0l){
 	    	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.boardId=:boardId ");
 	    }
-	    if(positionId != null && positionId.longValue() > 0){
+	    if(positionId != null && positionId.longValue() > 0l){
 	    	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.positionId=:positionId ");
 	    }
 	    queryStr.append(" group by model.nominatedPostStatusId ");
 	    Query query = getSession().createQuery(queryStr.toString());
-	   if(locationValues != null && locationValues.size() > 0){
+	   if(locationValues != null && locationValues.size() > 0l){
 		   query.setParameterList("locationValues", locationValues);
 	   }
-	   if(departmentId != null && departmentId.longValue() > 0){
+	   if(departmentId != null && departmentId.longValue() > 0l){
 		  query.setParameter("departmentId", departmentId);   
 	   }
-	   if(boardId != null && boardId.longValue() > 0){
+	   if(boardId != null && boardId.longValue() > 0l){
 		   query.setParameter("boardId", boardId);   
 	   }
-	   if(positionId != null && positionId.longValue() > 0){
+	   if(positionId != null && positionId.longValue() > 0l){
 		   query.setParameter("positionId", positionId); 
+	   }
+	   if(locationLevelId != null && locationLevelId.longValue() > 0l){
+		  query.setParameter("locationLevelId", locationLevelId); 
 	   }
 	   return query.list();
    }
