@@ -14776,12 +14776,12 @@
 			<param name="root">cadreVO</param>
 		</result>
 	</action>
-	<action name="getUnLockUserNameAction" class="coreDashboardAction"  method="updateUserORIMEIDetails">
+	 <action name="getUnLockUserNameAction" class="coreDashboardAction"  method="updateUserORIMEIDetails">
 		<result type="json" name="success">
-			<param name="root">tabUserDetails</param>
-		</result>
-	</action>
-	<action name="getTotalAlertGroupByStatusAction" class="createAlertAction"  method="getTotalAlertGroupByStatus">
+		<param name="root">tabUserDetails</param>
+	</result>
+    </action>
+    <action name="getTotalAlertGroupByStatusAction" class="createAlertAction"  method="getTotalAlertGroupByStatus">
 		<result type="json" name="success">  
 			<param name="root">alertVOs</param>
 		</result>
@@ -14794,6 +14794,12 @@
 	<action name="getAlertCountGroupByLocationThenStatusAction" class="createAlertAction"  method="getAlertCountGroupByLocationThenStatus">
 		<result type="json" name="success">  
 			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	
+    <action name="getNominatedPostDetailsAction" class="nominatedPostProfileAction" method="getNominatedPostDetails">
+	  <result type="json" name="success">
+			<param name="root">nominatedPostDashboardVO</param>
 		</result>
 	</action>
  </package>

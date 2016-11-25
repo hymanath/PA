@@ -1622,7 +1622,7 @@ public String execute()
 				    }
 				    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, positionId, status);
 		 }catch(Exception e) {
-			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+			 LOG.error("Exception Occured in getFinalReviewCandidateCountForLocation() in NominatedPostProfileAction ",e);
 		}
 	   return Action.SUCCESS;	
 	 }
@@ -1678,7 +1678,7 @@ public String execute()
 		 try{  
 			 return Action.SUCCESS;	
 		 }catch(Exception e) {
-			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+			 LOG.error("Exception Occured in getGovtOrderIssued() in NominatedPostProfileAction ",e);
 		}
 	   return Action.SUCCESS;	
 	 }  
@@ -1720,7 +1720,7 @@ public String execute()
 			    String status = jObj.getString("status");
 			    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, today, expireDate, status);
 		 }catch(Exception e) {
-			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+			 LOG.error("Exception Occured in getFinalReviewCandidateCountForLocationFilter() in NominatedPostProfileAction ",e);
 		}
 	   return Action.SUCCESS;	
 	 }
@@ -1773,4 +1773,24 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	public String getNominatedPostDetails(){
+		 try{
+		    jObj = new JSONObject(getTask());
+		    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 
+		    Long locationLevelId = jObj.getLong("locationLevelId");
+			Long departmentId = jObj.getLong("departmentId");
+			Long boardId = jObj.getLong("boardId");
+			Long positionId = jObj.getLong("positionId");
+			JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
+			    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
+			    	for(int i = 0;i<locationLevelValueArr.length();i++){
+			    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
+			    	}
+			    }
+			    nominatedPostDashboardVO = nominatedPostProfileService.getNominatedPostDetails(locationLevelId,lctnLevelValueList,departmentId,boardId,positionId); 
+		 }catch(Exception e) {
+			 LOG.error("Exception Occured in getNominatedPostDetails() in NominatedPostProfileAction ",e);
+		}
+	   return Action.SUCCESS;	
+	 }
 }
