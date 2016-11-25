@@ -48,6 +48,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private ResultStatus resultStatus;
 	private Long alertId;
 	private List<IdNameVO> idNameVOList;
+	private List<AlertVO> alertVOs;
 	
 	
 	
@@ -179,6 +180,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 
 	public void setAlertDataList(List<AlertDataVO> alertDataList) {
 		this.alertDataList = alertDataList;
+	}
+	
+	public List<AlertVO> getAlertVOs() {
+		return alertVOs;
+	}
+
+	public void setAlertVOs(List<AlertVO> alertVOs) {
+		this.alertVOs = alertVOs;
 	}
 
 	public String execute()
@@ -469,6 +478,44 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getTotalAlertGroupByStatus(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			alertVOs = alertService.getTotalAlertGroupByStatus(fromDate, toDate, stateId);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getTotalAlertGroupByStatus() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTotalAlertGroupByStatusThenCategory(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			alertVOs = alertService.getTotalAlertGroupByStatusThenCategory(fromDate, toDate, stateId);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getTotalAlertGroupByStatus() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAlertCountGroupByLocationThenStatus(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			alertVOs = alertService.getAlertCountGroupByLocationThenStatus(fromDate, toDate, stateId);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getTotalAlertGroupByStatus() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
