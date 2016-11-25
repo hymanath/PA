@@ -115,18 +115,17 @@ public class TabLogInAuthDAO extends GenericDaoHibernate<TabLogInAuth,Long> impl
 	}
 	public List<Object[]> getTabLoginDetails(String cadreSurveyUserName){
 		Query query = getSession().createQuery("select model.imeiNo, " +
-				" model.insertedTime,model.status,model.isDeleted,model.tabLogInAuthId,csuad.constituency.name " +
-				" from TabLogInAuth model,CadreSurveyUserAssignDetails csuad" +
-				" where model.cadreSurveyUser.userName=:cadreSurveyUserName and " +
-				" model.cadreSurveyUserId=csuad.cadreSurveyUserId  order by  model.tabLogInAuthId desc");
+				" model.insertedTime,model.status,model.isDeleted,model.tabLogInAuthId " +
+				" from TabLogInAuth model" +
+				" where model.cadreSurveyUser.userName=:cadreSurveyUserName order by  model.tabLogInAuthId desc");
 		query.setParameter("cadreSurveyUserName", cadreSurveyUserName);
 		return query.list();		
 	}
 	public List<Object[]> getTabUserDetails(String imeiNo){
 		Query query = getSession().createQuery("select distinct model.cadreSurveyUser.cadreSurveyUserId,model.cadreSurveyUser.userName, " +
-				 "  model.insertedTime,model.status,model.isDeleted,model.tabLogInAuthId,csuad.constituency.name " +
-				 "  from TabLogInAuth model,CadreSurveyUserAssignDetails csuad where" +
-				 "  model.cadreSurveyUserId=csuad.cadreSurveyUserId and model.imeiNo=:imeiNo  " +
+				 "  model.insertedTime,model.status,model.isDeleted,model.tabLogInAuthId " +
+				 "  from TabLogInAuth model where" +
+				 "  model.imeiNo=:imeiNo  " +
 				 "  order by model.tabLogInAuthId desc");
 		query.setParameter("imeiNo", imeiNo);
 		return query.list();		
