@@ -13179,13 +13179,13 @@
 	
 	<action name="partyAndLeaderActivitiesAndPerformanceTracking" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
-		<result name="error" type="redirect">login.action</result>
+		<result name="error" type="redirect">loginAction.action</result>
 	</action>
 	
 	<action name="coreDashboardAction1" class="coreDashboardAction" method="newCoreDashboardPage">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=coreDashboardAction1</result>
-		<result name="error">/jsp/loginForm.jsp?src=coreDashboardAction1</result>
+		<result name="input">/jsp/loginForm.jsp?src=updateActivityAction</result>
+		<result name="error" type="redirect">loginAction.action</result>
 	</action>
 	
 	<action name="coreDashboardNewAction" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
