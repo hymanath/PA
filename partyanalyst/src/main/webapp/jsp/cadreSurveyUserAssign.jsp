@@ -232,7 +232,7 @@ function getDetailsByUserName(){
 		str+='<table  class="table table-condensed table-bordered" id="userNameTableId">';
 			str+='<thead>';
 			str+='<tr>';
-				str+='<th> ASSEMBLY  </th>';
+				//str+='<th> ASSEMBLY  </th>';
 				str+='<th> IMEI NO </th>';
 				str+='<th>  STATUS </th>';
 				str+='<th> LAST LOGIN TIME </th>';
@@ -241,7 +241,7 @@ function getDetailsByUserName(){
 			str+='</thead>';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td>'+result[i].constistuencyName+' </td>';
+				//str+='<td>'+result[i].constistuencyName+' </td>';
 				str+='<td>'+result[i].imiNo+' </td>';
 				str+='<td> '+result[i].status+' </td>';
 				str+='<td>'+result[i].insertedTime+' </td>';
@@ -296,7 +296,7 @@ var str='';
 	str+='<table  class="table table-condensed table-bordered" id="iMEINumberDetailsId">';
 		str+='<thead>';
 		str+='<tr>';
-		    str+='<th> ASSEMBLY  </th>';
+		    //str+='<th> ASSEMBLY  </th>';
 			str+='<th> USER NAME  </th>';
 			str+='<th>  STATUS </th>';
 			str+='<th> LAST LOGIN TIME </th>';
@@ -305,7 +305,7 @@ var str='';
 		str+='</thead>';
 	for(var i in result){
 		str+='<tr>';
-		    str+='<td> '+result[i].constistuencyName+' </td>';
+		    //str+='<td> '+result[i].constistuencyName+' </td>';
 			str+='<td> '+result[i].name+' </td>';
 			str+='<td> '+result[i].status+' </td>';
 			str+='<td> '+result[i].insertedTime+' </td>';
