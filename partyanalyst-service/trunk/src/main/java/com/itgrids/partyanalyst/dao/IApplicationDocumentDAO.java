@@ -12,4 +12,5 @@ public interface IApplicationDocumentDAO extends GenericDao<ApplicationDocument,
 	public Integer deleteNominatedUploadedFile(List<Long> applicatnDocIdList);
 	public List<Object[]> getNominatedPostReport(Long tdpCadreId);
 	public List<Object[]> getNominatedPostDocumentDetails(Set<Long> candidateIds);
+	public List<Object[]> getApplicationDocuments(Long tdpCadreId,String searchType,Long nominateCandId,Long applicationId);
 }
