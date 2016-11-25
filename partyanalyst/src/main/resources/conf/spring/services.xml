@@ -3484,6 +3484,8 @@
 	<property name="cadreCommitteeService" ref="cadreCommitteeService"></property>
 	<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
 	<property name="panchayatDAO" ref="panchayatDAO"></property>
+	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
+	
 	</bean>
 	<!-- Debate End -->
 	
