@@ -27,7 +27,22 @@ public class AlertDataVO {
 	private String committeePosition;
 	private String committeeName;
 	private String electionType;
+	private Long alertCategoryId;
+	private String alertCategoryName;
 	
+	
+	public Long getAlertCategoryId() {
+		return alertCategoryId;
+	}
+	public void setAlertCategoryId(Long alertCategoryId) {
+		this.alertCategoryId = alertCategoryId;
+	}
+	public String getAlertCategoryName() {
+		return alertCategoryName;
+	}
+	public void setAlertCategoryName(String alertCategoryName) {
+		this.alertCategoryName = alertCategoryName;
+	}
 	public String getMobileNo() {
 		return mobileNo;
 	}

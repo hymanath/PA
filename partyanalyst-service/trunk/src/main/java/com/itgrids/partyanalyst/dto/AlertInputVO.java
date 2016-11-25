@@ -5,6 +5,29 @@ public class AlertInputVO {
 	private Long statusId;
 	private String fromDate;
 	private String toDate;
+	private Long levelValue;
+	private Long categoryId;	
+	private Long assignId;
+	
+	
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+	public Long getAssignId() {
+		return assignId;
+	}
+	public void setAssignId(Long assignId) {
+		this.assignId = assignId;
+	}
 	public Long getLevelId() {
 		return levelId;
 	}
