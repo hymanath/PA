@@ -1,17 +1,15 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -19,6 +17,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
+import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
@@ -35,7 +34,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -43,7 +41,6 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -55,8 +52,6 @@ import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
-import com.itgrids.partyanalyst.model.AppointmentComment;
-import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
@@ -92,10 +87,7 @@ private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUti
 private IAlertCommentAssigneeDAO alertCommentAssigneeDAO;
 private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 private ICadreCommitteeService cadreCommitteeService;
-
-
-
-
+private IAlertCategoryDAO alertCategoryDAO;
 
 
 public ICadreCommitteeService getCadreCommitteeService() {
@@ -264,6 +256,11 @@ public IAlertTypeDAO getAlertTypeDAO() {
 
 public void setAlertTypeDAO(IAlertTypeDAO alertTypeDAO) {
 	this.alertTypeDAO = alertTypeDAO;
+}
+
+
+public void setAlertCategoryDAO(IAlertCategoryDAO alertCategoryDAO) {
+	this.alertCategoryDAO = alertCategoryDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -1239,7 +1236,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		    }
 		}
 	}
-	private void getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId){
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByStatus(java.lang.String, java.lang.String, java.lang.Long)
+	 */
+	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId){
 		LOG.info("Entered in getTotalAlertGroupByStatus() method of AlertService{}");
 		try{
 			Date fromDate = null;
@@ -1249,10 +1250,42 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			AlertVO alertVO = null;
+			List<AlertVO> alertVOs = new ArrayList<AlertVO>();
+			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			//get all the alert status and build the template
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			if(statusList != null && statusList.size() > 0){
+				for(Object[] param : statusList){
+					alertVO = new AlertVO();
+					alertVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					alertVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[1]));
+					alertVOs.add(alertVO);
+				}
+			}
+			//get alert status count and and create a map of alertStatusId and its count
 			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatus(fromDate,toDate,stateId);
+			if(alertCountList != null && alertCountList.size() > 0){
+				for(Object[] param : alertCountList){
+					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			//push the status count into list if count is 0 push 0 also
+			if(alertVOs != null && alertVOs.size() > 0){
+				for(AlertVO vo : alertVOs){
+					if(statusIdAndCountMap.get(vo.getStatusId()) != null){
+						vo.setCount(statusIdAndCountMap.get(vo.getStatusId()));
+					}else{
+						vo.setCount(0l);
+					}
+				}
+			}
+			return alertVOs; 
 		}catch(Exception e){
-			
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByStatus() method of AlertService{}");
 		}
+		return null;
 	}
 	
 	public String  setArticleDetailsIntoAlert(ActionableVO inputVO){		
@@ -1284,6 +1317,232 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return result; 
 		
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByStatusThenCategory(java.lang.String, java.lang.String, java.lang.Long)
+	 */
+	public List<AlertVO> getTotalAlertGroupByStatusThenCategory(String fromDateStr, String toDateStr, Long stateId){
+		LOG.info("Entered in getTotalAlertGroupByStatusThenCategory() method of AlertService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			AlertVO alertVO = null;
+			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
+			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			//get all the alert category for  building the template
+			List<Object[]> categoryList = alertCategoryDAO.getAllCategory(); 
+			
+			//get alert status count and and create a map of alertStatusId and its corresponding  alert count
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatus(fromDate,toDate,stateId);
+			if(alertCountList != null && alertCountList.size() > 0){
+				for(Object[] param : alertCountList){
+					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			//get all the alert count group by status then category.
+			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,Long> categoryIdAndCountMap = null;//new HashMap<Long, Long>();
+			Map<Long,Map<Long,Long>> statusIdAndCategoryIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			List<Object[]> alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategory(fromDate, toDate, stateId);
+			if(alertCountGrpByCatList != null && alertCountGrpByCatList.size() > 0){
+				for(Object[] param : alertCountGrpByCatList){
+					categoryIdAndCountMap = statusIdAndCategoryIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(categoryIdAndCountMap != null){
+						categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}else{
+						categoryIdAndCountMap = new HashMap<Long, Long>();
+						categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						statusIdAndCategoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),categoryIdAndCountMap);
+					}
+					statusIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			//build final vo to sent to ui
+			List<AlertVO> finalList = new ArrayList<AlertVO>();
+			AlertVO innerListAlertVO = null;
+			if(statusIdAndCategoryIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> entry : statusIdAndCategoryIdAndCountMap.entrySet()){
+					categoryIdAndCountMap = entry.getValue();
+					if(categoryIdAndCountMap.size() > 0){
+						if(categoryList != null && categoryList.size() > 0){
+							alertVOs = new ArrayList<AlertVO>();
+							innerListAlertVO = new AlertVO();
+							for(Object[] param : categoryList){
+								alertVO = new AlertVO();
+								alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
+								alertVOs.add(alertVO);  
+							}
+						}
+						for(AlertVO param : alertVOs){
+							if(categoryIdAndCountMap.get(param.getCategoryId()) != null){
+								param.setCategoryCount(categoryIdAndCountMap.get(param.getCategoryId()));  
+							}else{
+								param.setCategoryCount(0l);
+							}
+						}
+						innerListAlertVO.setSubList1(alertVOs);
+						if(statusIdAndNameMap.get(entry.getKey()) != null){
+							innerListAlertVO.setStatusId(entry.getKey());
+							innerListAlertVO.setStatus(statusIdAndNameMap.get(entry.getKey()));
+							
+						}
+						if(statusIdAndCountMap.get(entry.getKey()) != null){
+							innerListAlertVO.setCount(statusIdAndCountMap.get(entry.getKey()));
+						}
+						finalList.add(innerListAlertVO);     
+					}
+				}
+			}
+			return finalList; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByStatusThenCategory() method of AlertService{}");
+		}
+		return null;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getAlertCountGroupByLocationThenStatus(java.lang.String, java.lang.String, java.lang.Long)
+	 */
+	public List<AlertVO> getAlertCountGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId){
+		LOG.info("Entered in getAlertCountGroupByLocation() method of AlertService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			AlertVO alertVO = null;
+			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
+			Map<Long,Long> impactLevelIdAndCountMap = new HashMap<Long,Long>();
+			//get all the alert status for  building the template
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			//get alert status count and and create a map of impactLevelId and its corresponding alert count
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByImpactLevel(fromDate,toDate,stateId);
+			if(alertCountList != null && alertCountList.size() > 0){
+				for(Object[] param : alertCountList){
+					impactLevelIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			//get all the alert count group by impact level then status wise.
+			Map<Long,String> impactIdAndLevelMap = new HashMap<Long,String>();
+			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();
+			Map<Long,Map<Long,Long>> impactIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			List<Object[]> alertCountGrpByStatusList = alertDAO.getTotalAlertGroupByImpactLevelThenStatus(fromDate, toDate, stateId);
+			if(alertCountGrpByStatusList != null && alertCountGrpByStatusList.size() > 0){  
+				for(Object[] param : alertCountGrpByStatusList){  
+					statusIdAndCountMap = impactIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(statusIdAndCountMap != null){
+						statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}else{
+						statusIdAndCountMap = new HashMap<Long, Long>();
+						statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						impactIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),statusIdAndCountMap);
+					}
+					impactIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			//build final vo to sent to ui
+			List<AlertVO> finalList = new ArrayList<AlertVO>();  
+			AlertVO innerListAlertVO = null;
+			if(impactIdAndStatusIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> entry : impactIdAndStatusIdAndCountMap.entrySet()){
+					statusIdAndCountMap = entry.getValue();
+					if(statusIdAndCountMap.size() > 0){
+						if(statusList != null && statusList.size() > 0){
+							alertVOs = new ArrayList<AlertVO>();
+							innerListAlertVO = new AlertVO();
+							for(Object[] param : statusList){
+								alertVO = new AlertVO();
+								alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));//status is
+								alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));//status name
+								alertVOs.add(alertVO);  
+							}
+						}
+						for(AlertVO param : alertVOs){
+							if(statusIdAndCountMap.get(param.getCategoryId()) != null){
+								param.setCategoryCount(statusIdAndCountMap.get(param.getCategoryId()));//status wise alert count
+							}else{
+								param.setCategoryCount(0l);//status wise alert count
+							}
+						}  
+						innerListAlertVO.setSubList1(alertVOs);
+						if(impactIdAndLevelMap.get(entry.getKey()) != null){  
+							innerListAlertVO.setStatusId(entry.getKey());//impact level id
+							innerListAlertVO.setStatus(impactIdAndLevelMap.get(entry.getKey()));//impact level
+							
+						}
+						if(impactLevelIdAndCountMap.get(entry.getKey()) != null){
+							innerListAlertVO.setCount(impactLevelIdAndCountMap.get(entry.getKey()));// total count
+						}
+						finalList.add(innerListAlertVO);     
+					}
+				}
+				//merge village and ward
+				Long impLvlId = 0L;
+				String impLvl = "";
+				Long impLvlCnt = 0L;
+				Long stsCnt = 0l;
+				List<AlertVO> mergedVo = new ArrayList<AlertVO>();
+				Map<Long,String> statusIdAndNameMap = null;//new HashMap<Long,String>();
+				Map<Long,Long> stsIdAndCountMap = null;//new HashMap<Long,Long>();
+				if(finalList != null && finalList.size() > 0){
+					//for template
+					for(Object[] param : statusList){
+						alertVO = new AlertVO();
+						alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));//status is
+						alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));//status name
+						mergedVo.add(alertVO);  
+					}
+					
+					for(AlertVO param : finalList){
+						if(param.getStatusId().longValue() == 6L || param.getStatusId().longValue() == 8L){
+							impLvlId = 11L;
+							impLvl = "VILLAGE/WARD";
+							impLvlCnt = impLvlCnt + param.getCount();
+							statusIdAndNameMap = new HashMap<Long,String>();
+							stsIdAndCountMap = new HashMap<Long,Long>();
+							for(AlertVO param2 : param.getSubList1()){
+								statusIdAndNameMap.put(param2.getCategoryId(), param2.getCategory());
+								stsIdAndCountMap.put(param2.getCategoryId(), param2.getCategoryCount());
+							}
+							
+							//push status count
+							for(AlertVO param3 : mergedVo){
+								if(stsIdAndCountMap.get(param3.getCategoryId()) != null){
+									param3.setCategoryCount(param3.getCategoryCount() + stsIdAndCountMap.get(param3.getCategoryId()));//status wise alert count
+								}else{
+									param3.setCategoryCount(0l);//status wise alert count
+								}  
+							}  
+							
+						}
+					}
+					if(impLvlId.longValue() == 11L){
+						AlertVO newAlertVO = new AlertVO();
+						newAlertVO.setStatusId(impLvlId);
+						newAlertVO.setStatus(impLvl);
+						newAlertVO.setCount(impLvlCnt);
+						newAlertVO.setSubList1(mergedVo);
+						finalList.add(newAlertVO);
+					}
+				}
+			}
+			return finalList;   
+		}catch(Exception e){
+			e.printStackTrace();  
+			LOG.error("Error occured getAlertCountGroupByLocationThenStatus() method of AlertService{}");
+		}
+		return null;
 	}
 	
 }
