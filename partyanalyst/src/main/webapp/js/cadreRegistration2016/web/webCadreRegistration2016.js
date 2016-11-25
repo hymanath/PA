@@ -86,6 +86,16 @@ function getSearchByMyVoterIdDetails(){
 	 var familyVoterId=0;
 	 var tdpCadreId=$("#tdpCadreId").val();
 	 var status=$("#statusId").val();
+	var memberShipNo=$("#hiddenMemberShipNumber").val();
+	if(memberShipNo != null && memberShipNo != ""){
+		$("#membrShipDivId").show();
+		$("#updateSerchWVoterIdResultsBackBtn").parent().addClass("show");
+		$("#searchResultsBackBtnR").parent().addClass("hide");
+		$("#searchResultsBackBtn").parent().addClass("hide");
+		
+	}else{
+		$("#membrShipDivId").hide();
+	}
 	
 		if(tdpCadreId == null || tdpCadreId=='' || typeof tdpCadreId == "undefined" || tdpCadreId.lenght == 0  ) 
 			tdpCadreId = 0;
@@ -118,6 +128,7 @@ function getSearchByMyVoterIdDetails(){
 				buildCadreFamilyDetails(result);
 				buildCadreRelativesDetails(result,"prevNomneReltvId");
 				buildOccupationList(result,"occupationId");
+				 buildRelatMemberShipID(memberShipNo);
 			
 		});
 		
@@ -794,3 +805,9 @@ $("#affiliatedCadreForm").submit();
 		});
   }
  //});
+ 
+ function buildRelatMemberShipID(membershipId){
+	 if(membershipId != null && membershipId != ""){
+		 $("#membrShipId1").val(membershipId);
+	 }
+}
