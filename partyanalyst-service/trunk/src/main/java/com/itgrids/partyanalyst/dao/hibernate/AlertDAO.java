@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -42,7 +43,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	}
 	
 	
-	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,Date fromDate,Date toDate,Long levelId,Long statusId)
+	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
@@ -51,7 +52,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
 		str.append(" ,constituency.constituencyId,constituency.name");
 		str.append(" ,state.stateId,state.stateName");
-		str.append(" ,ward.constituencyId,ward.name");
+		str.append(" ,ward.constituencyId,ward.name, alertCategory.alertCategoryId,alertCategory.category ");
 		str.append(" from Alert model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 		str.append(" left join model.userAddress.constituency constituency ");
@@ -60,15 +61,44 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.userAddress.district district ");
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
+		str.append(" left join model.alertCategory alertCategory ");
 		str.append(" where model.isDeleted ='N'");
-		if(levelId != null && levelId > 0)
-		str.append(" and model.impactLevelId=:levelId");
+		if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L){
+			str.append(" and model.impactLevelId=:levelId");
+			if(inputVO.getLevelId().longValue() == 2L){
+				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				else
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+			else if(inputVO.getLevelId().longValue() == 3L){
+				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				else
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+			else if(inputVO.getLevelId().longValue() == 4L){
+				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				else
+					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}
 		if(sourceIds != null && sourceIds.size() > 0)
 			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
 		if(fromDate != null)
 			str.append(" and date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate");
-		if(statusId != null && statusId > 0)
+		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
 			str.append(" and model.alertStatus.alertStatusId = :statusId");
+		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
+			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("sourceIds", sourceIds);
 		if(fromDate != null)
@@ -78,10 +108,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(sourceIds != null && sourceIds.size() > 0)
 			query.setParameterList("sourceIds", sourceIds);
-		if(statusId != null && statusId > 0)
-			query.setParameter("statusId", statusId);
-		if(levelId != null && levelId > 0)
-		query.setParameter("levelId", levelId);
+		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
+			query.setParameter("statusId", inputVO.getStatusId());
+		if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L)
+		query.setParameter("levelId", inputVO.getLevelId());
+		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
+			query.setParameter("alertCategoryId", inputVO.getCategoryId());
 		return query.list();
 	}
 	
@@ -112,13 +144,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.alertId,model.description,date(model.createdTime)," +
-				" model.alertType.alertType,model.alertSource.source,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
-				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");
-		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
-		str.append(" ,constituency.constituencyId,constituency.name");
-		str.append(" ,state.stateId,state.stateName");
-		str.append(" ,ward.constituencyId,ward.name");
+		str.append("select model.alertId,model.description,date(model.createdTime)," +//2
+				" model.alertType.alertType,model.alertSource.source,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +//3-7
+				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");//8-9
+		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");//10-17
+		str.append(" ,constituency.constituencyId,constituency.name");//18 -19 
+		str.append(" ,state.stateId,state.stateName");//20
+		str.append(" ,ward.constituencyId,ward.name, alertCategory.alertCategoryId,alertCategory.category ");//21 - 23
 		if(assignedCadreId != null && assignedCadreId > 0)
 		{
 			str.append(" from AlertAssigned model1,Alert model left join model.userAddress.panchayat panc ");
@@ -129,6 +161,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.userAddress.district district ");
 			str.append(" left join model.userAddress.state state ");
 			str.append(" left join model.userAddress.ward ward ");
+			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" where model.isDeleted ='N' and model1.alertId = model.alertId and model1.tdpCadreId =:assignedCadreId");
 		}
 		else
@@ -142,6 +175,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.userAddress.district district ");
 			str.append(" left join model.userAddress.state state ");
 			str.append(" left join model.userAddress.ward ward ");
+			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" where model.isDeleted ='N' ");	
 		}
 	/*	if(levelId != null && levelId > 0)

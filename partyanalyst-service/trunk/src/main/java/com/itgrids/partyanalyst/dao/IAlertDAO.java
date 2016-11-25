@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.model.Alert;
 
 public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getLocationLevelWiseAlerts(List<Long> userTypeIds,Date startDate,Date endDate);
-	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> userTypeIds,Date fromDate,Date toDate,Long levelId,Long statusId);
+	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> userTypeIds,AlertInputVO inputVO,Date fromDate,Date toDate);
 	public List<Object[]> getAlertsData(Long alertId);
 
 	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId);
