@@ -339,7 +339,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 						if(status != "Total"){
 							str+='<span class="label label-primary pull-right labelCustom deptDtlsCls boardHrfCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"  id="board'+i+'" href="#board'+result[i].id+'"  attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab" >'+result[i].count+'</span>';
 						}else{
-							str+='<span class="label label-primary pull-right labelCustom boardHrfCls" id="board'+i+'" href="#board'+result[i].id+'" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab" title="click here to get positions details." data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom boardHrfCls" id="board'+i+'" href="#board'+result[i].id+'" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab"  title="click here to get positions details." data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
 						str+='</div>';
 					str+='</div>';
@@ -360,7 +360,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 						if(status != "Total"){
 							str+='<span class="label label-primary pull-right labelCustom deptDtlsCls boardHrfCls" id="board'+i+'" href="#board'+result[i].id+'" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab"  attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}else{
-							str+='<span class="label label-primary pull-right labelCustom boardHrfCls" title="click here to get positions details" id="board'+i+'" href="#board'+result[i].id+'"  attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom boardHrfCls" title="click here to get positions details." id="board'+i+'" href="#board'+result[i].id+'"  attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
 						str+='</div>';
 					str+='</div>';
