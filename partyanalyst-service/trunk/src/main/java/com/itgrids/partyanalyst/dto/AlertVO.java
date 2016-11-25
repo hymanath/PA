@@ -32,8 +32,14 @@ public class AlertVO {
 	private Long categoryCount = 0l;
 	
 	private List<AlertVO> subList1;
+	private String title;
 	
-	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public List<IdNameVO> getAssignList() {
 		return assignList;
 	}
