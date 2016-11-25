@@ -7312,7 +7312,30 @@ public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Lon
 		e.printStackTrace();
 		LOG.error("Exception Occured in isApplicationAlreadyShortlisted()", e);
 	}
-	return status;
-	
+	return status;	
+}
+/*
+ * Author:Santosh
+ */
+public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,List<Long> locationValues,Long departmentId,Long boardId,Long positionId){
+	NominatedPostDashboardVO resultVO = new NominatedPostDashboardVO();
+	try{
+		List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(locationLevelId,locationValues,departmentId,boardId,positionId);
+			if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+				for(Object[] param:rtrnObjLst){
+					Long nominatedPostStatusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long postCnt = commonMethodsUtilService.getLongValueForObject(param[1]);
+					if(nominatedPostStatusId == 1l || nominatedPostStatusId == 2l){//statusId: 1-Open,2-Final Review
+					 resultVO.setOpenPostCnt(resultVO.getOpenPostCnt()+postCnt);		
+					}else if(nominatedPostStatusId == 3l || nominatedPostStatusId == 4l){//statusId: 3-Confirmed,4-GO Issued
+					 resultVO.setFinalizedAndGoPassedCnt(resultVO.getFinalizedAndGoPassedCnt()+postCnt);	
+					}
+					resultVO.setTotalCnt(resultVO.getTotalCnt()+postCnt);
+				}
+			}
+	}catch(Exception e){
+		LOG.error("Exception Occured in getNominatedPostDetails()", e);
+	}
+	return resultVO;
 }
 }
