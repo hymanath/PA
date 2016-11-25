@@ -32,7 +32,8 @@ public class NominatedPostDashboardVO {
 	private Long sixtyAvoveAgeRangeCount=0l;
 	private Long overAllCount=0l;
 	private Long totalApplicationCount=0l;
-	
+	private Long openPostCnt=0l;
+	private Long finalizedAndGoPassedCnt=0l;
 	
 	public String getPercentage() {
 		return percentage;
@@ -174,4 +175,16 @@ public class NominatedPostDashboardVO {
 	public void setTotalApplicationCount(Long totalApplicationCount) {
 		this.totalApplicationCount = totalApplicationCount;
 	}
+	public Long getOpenPostCnt() {
+		return openPostCnt;
+	}
+	public void setOpenPostCnt(Long openPostCnt) {
+		this.openPostCnt = openPostCnt;
+	}
+	public Long getFinalizedAndGoPassedCnt() {
+		return finalizedAndGoPassedCnt;
+	}
+	public void setFinalizedAndGoPassedCnt(Long finalizedAndGoPassedCnt) {
+		this.finalizedAndGoPassedCnt = finalizedAndGoPassedCnt;
+	}	
 }
