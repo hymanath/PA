@@ -428,3 +428,72 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	background:none !important;
 }
+.tableCounts tr td
+{
+	border-top: 4px solid #2E3560 !important;
+	padding: 14px;
+	background-color: #EAE9EF;
+}
+.tableCounts
+{
+	border-collapse:separate;
+	border-spacing: 10px 0px;
+}
+.menuSelection
+{
+	padding-left: 0px;
+	padding: 2px;
+	background-color: #ccc;
+	width:130px;
+	border-radius: 4px;
+	display: inline-block;
+}
+.menuSelection li
+{
+	display: inline-block;
+	padding: 5px 8px;
+	background-color: #ccc;
+	cursor: pointer;
+}
+.menuSelection li.active    
+{
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 5px 12px;
+}    
+.alertMenuDiv
+{
+	background-color: #FED501;
+	display: inline-block;
+	padding: 3px 8px;
+	cursor: pointer;
+}
+.tableAlert tr td , .tableAlert thead th 
+{
+	border-top: 0px !important;
+	border-bottom: 0px !important;
+}
+.tableAlert tr td:nth-child(2) , .tableAlert thead th:nth-child(2)
+{
+	background-color: #F08080
+}
+.tableAlert tr td:nth-child(3) , .tableAlert thead th:nth-child(3)
+{
+	background-color: #D8E5F5
+}
+.tableAlert tr td:nth-child(4) , .tableAlert thead th:nth-child(4)
+{  
+	background-color: #C9EBF5
+}
+.tableAlert tr td:nth-child(5) , .tableAlert thead th:nth-child(5)
+{
+	background-color: #C0E1D8
+}
+.tableAlert tr td:nth-child(6) , .tableAlert thead th:nth-child(6)
+{
+	background-color: #ECDDD6
+}
+.tableAlert tr td:nth-child(7) , .tableAlert thead th:nth-child(7)
+{
+	background-color: #E7D2D7       
+}  
