@@ -297,8 +297,5 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertCategory(AlertCategory alertCategory) {
 		this.alertCategory = alertCategory;
 	}
-	
-
-	
 
 }
