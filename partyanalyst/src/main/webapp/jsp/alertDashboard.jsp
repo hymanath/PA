@@ -38,7 +38,7 @@
         	<div class="panel panel-default">
            		<div class="panel-heading bg_cc">
 					<div class="row">
-						<div class="col-md-9 col-xs-12 col-sm-6">
+						<div class="col-md-6 col-xs-12 col-sm-6">
 							<h4 class="panel-title text-capital">alert dashboard</h4>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
@@ -48,44 +48,45 @@
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</div>
-						</div>	
-					</div>
-                	
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<ul class="menuSelection">
+								<li attr_state_Id="0" class="stateCls">ALL</li>
+								<li attr_state_Id="1" class="stateCls active">AP</li>
+								<li attr_state_Id="36" class="stateCls">TS</li>   
+							</ul>  
+							<div class="btn-group alertMenuDiv">
+							  <i class="glyphicon glyphicon-align-justify alertMenu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+							  <ul class="dropdown-menu pull-right alertMenuDropdown">
+								<li><a href="#">Create New Alert</a></li>
+								<li><a href="#">View Alert</a></li>
+								<li><a href="#">Alerts Overview</a></li>
+							  </ul>
+							</div>
+						</div>
+					</div>  
                 </div> 
-
 						
                 <div class="panel-body bg_EF">
-                	<div class="table-responsive" id="locationLevelId">
-                       
-                    </div>
-                    <!--<h4 class="text-success text-capital m_top10">view alerts<small class="text-capitalize">responsible alert owner wise</small></h4>
-                    <div class="row">
-                    	<div class="col-md-3 col-xs-12 col-sm-6">
-                        	<label>Assigning To</label>
-                            <select class="selectChosen">
-                            	<option>Constituency Incharge</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 col-xs-12 col-sm-6">
-                        	<label>State</label>
-                            <select class="selectChosen">
-                            	<option>Constituency Incharge</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 col-xs-12 col-sm-6">
-                        	<label>District</label>
-                            <select class="selectChosen">
-                            	<option>Constituency Incharge</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 col-xs-12 col-sm-6">
-                        	<label>Constituency</label>
-                            <select class="selectChosen">
-                            	<option>Constituency Incharge</option>
-                            </select>
-                        </div>
-                    </div>-->
-					
+                	<!--<div class="table-responsive" id="locationLevelId"></div>-->
+					<div class="table-responsive" id="">
+					</div>
+					<div class="row">
+						
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<table class="table tableCounts" id="overAllCount"></table>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<table class="table table-condensed b_1" id="alertCatTabId"></table>  
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-body bg_EF">
+									<table class="table tableAlert" id="locWiseAltCntId"></table>
+								</div>
+							</div>
+						</div>
+					</div>
 					<!--location Filter-->
 					<div class="col-md-3 col-xs-12 col-sm-6" >
 							<label>Assigned Cadre</label>
@@ -280,17 +281,25 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+
+$(document).on("click",".menuSelection li",function(){
+	$(this).parent(".menuSelection").find("li").removeClass("active");
+	$(this).addClass("active");
+});
 $('.chosenSelect').chosen({width:'100%'});
 function createAlert(){
 	window.open("createAlertAction.action", '_blank');
 }
 
 $('[data-toggle="tooltip"]').tooltip()
+var globalStateId = 1;
+var currentFromDate = moment().subtract(29, 'days').format("DD/MM/YYYY");
+var currentToDate = moment().format("DD/MM/YYYY");  
 
 $(document).ready(function(){
 	$("#dateRangePickerId").daterangepicker({
 		opens:'left',
-		startDate:moment().subtract(29, 'days'),
+		startDate:moment().subtract(29, 'days'),    
 		endDate:moment(),
 		ranges: {
            'Today': [moment(), moment()],
@@ -304,6 +313,17 @@ $(document).ready(function(){
 	//$("#dateRangePickerId").val(moment().subtract(29, 'days').format("MM/DD/YYYY")+'-'+moment().format("MM/DD/YYYY"))
 	$(".ranges").addClass("rangesNew")
 });
+	$('#dateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
+		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
+		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+		currentFromDate = picker.startDate.format('DD/MM/YYYY');
+		currentToDate = picker.endDate.format('DD/MM/YYYY');     
+		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
+		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);   
+	});
+	
 $(document).on("change","#dateRangePickerId",function(){
 	$("#locationLevelDataId").html('');
 	getLocationLevelAlertCount();
@@ -351,7 +371,145 @@ function getAlertAssignedCandidate()
 		$("#assignedCadreId").trigger('chosen:updated');
 	});
 	
-}
+}    
+	$(document).on("click",".stateCls",function(){
+		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
+		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
+		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+		var stateId = $(this).attr("attr_state_Id");
+		globalStateId = stateId;
+		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
+		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);  
+	});  
+	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
+	$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
+	$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+	getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+	getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
+	getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);   
+	function getTotalAlertGroupByStatus(stateId,fromDate,toDate){
+		var jsObj = { 
+			stateId : stateId,     
+			fromDate : fromDate,
+			toDate : toDate            
+		}
+		$.ajax({
+			type : 'POST',      
+			url : 'getTotalAlertGroupByStatusAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#overAllCount").html('');
+			if(result != null && result.length > 0){
+				buildTotalAlertGroupByStatus(result);
+			}
+		});
+	}
+	function buildTotalAlertGroupByStatus(result){
+		var colorArr = ['#191970','#F08080','#0000CD','#40E0D0','#006400','#FF8C00','#8B0000'];
+		var totalAlert = 0;
+		for(var i in result){
+			totalAlert = totalAlert + result[i].count;
+		}
+		var str = '';
+		str+='<tr>';
+		str+='<td>';
+			str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
+			str+='<h3>'+totalAlert+'</h3>';  
+		str+='</td>';
+		var j = 1;
+		for(var i in result){
+			str+='<td>';
+				str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
+				str+='<h3>'+result[i].count+'</h3>';  
+			str+='</td>';
+			j = j+1;     
+		}
+		str+='</tr>';
+		$("#overAllCount").html(str);
+	}
+	
+	function getTotalAlertGroupByStatusThenCategory(stateId,fromDate,toDate){
+		var jsObj = { 
+			stateId : stateId,     
+			fromDate : fromDate,
+			toDate : toDate            
+		}
+		$.ajax({
+			type : 'POST',      
+			url : 'getTotalAlertGroupByStatusThenCategoryAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#alertCatTabId").html('');  
+			if(result != null && result.length > 0){
+				buildTotalAlertGroupByStatusThenCategory(result);
+			}
+		});
+	}
+	function buildTotalAlertGroupByStatusThenCategory(result){
+		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
+		var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
+		var str = '';  
+		str+='<thead class="bg_CD">';
+		str+='<th>&nbsp;</th>';
+		for(var i in result[0].subList1){
+			str+='<th class="text-capital">'+result[0].subList1[i].category+'</th>';
+		}  
+		str+='</thead>';
+		for(var i in result){  
+			str+='<tr>';
+			var appClr = colorArr[result[i].status];
+			var appClrHd = colorArrHead[result[i].status];
+			str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted">'+result[i].count+'</span></td>';
+			for(var j in result[i].subList1){
+				str+='<td style="background-color:'+appClr+'">'+result[i].subList1[j].categoryCount+'</td>';
+			}
+			str+='</tr>';   
+		}
+		$("#alertCatTabId").html(str);  
+	}
+	 
+	function getAlertCountGroupByLocationThenStatus(stateId,fromDate,toDate){
+		var jsObj = { 
+			stateId : stateId,     
+			fromDate : fromDate,
+			toDate : toDate            
+		}
+		$.ajax({
+			type : 'POST',      
+			url : 'getAlertCountGroupByLocationThenStatusAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){  
+			$("#locWiseAltCntId").html('');     
+			if(result != null && result.length > 0){
+				buildAlertCountGroupByLocationThenStatus(result);
+			}
+		});
+	}
+	function buildAlertCountGroupByLocationThenStatus(result){
+		var str = '';
+		str+='<thead>';
+		str+='<th>&nbsp;</th>';
+		for(var i in result[0].subList1){
+			str+='<th class="text-capital">'+result[0].subList1[i].category+'</th>'; 
+		}
+		str+='</thead>';
+		for(var i in result){
+			if(result[i].statusId==1 || result[i].statusId==5 || result[i].statusId==6 || result[i].statusId==7 || result[i].statusId==8 || result[i].statusId==9 || result[i].statusId==10){
+				continue;
+			}
+			str+='<tr>';
+			str+='<td>'+result[i].status+'<span class="pull-right text-muted">'+result[i].count+'</span></td>';
+			for(var j in result[i].subList1){
+				str+='<td>'+result[i].subList1[j].categoryCount+'</td>';    
+			}
+			str+='</tr>';
+		}
+		$("#locWiseAltCntId").html(str);      
+	}
 </script>
 </body>
 </html>
