@@ -11,202 +11,17 @@
 <link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/2016DashBoard/Plugins/Scroller/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<link href="dist/mediaScreenParty/custom.css" rel="stylesheet" type="text/css"/>
 <link href="dist/mediaScreenParty/NewsWidget/newsWidget.css" rel="stylesheet" type="text/css"/>
 <link href="dist/mediaScreenParty/NewsWidget/newsWidget_mini.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
-<style type="text/css">
-body
-{
-	background-image:url("dist/mediaScreenParty/background.png");
-	background-repeat:no-repeat;
-	background-size:cover;
-}
-.slick-prev::before, .slick-next::before
-{
-	padding:5px 5px !important;
-	background-color:rgba(255,255,255,0.8);
-}
-blockquote h2 span
-{
-	font-size:38px !important;
-}
-blockquote h2
-{
-	text-transform:uppercase !important;
-	font-size:18px !important;
-	vertical-align:middle;
-}
-.newsWidgetCls1 , .newsWidgetCls2
-{
-	padding-left:0px
-}
-.newsWidgetCls
-{
-	padding-left:0px !important
-}
-.slickSlide
-{
-	padding:30px 20px;
-	color:#fff;
-	background-color:#585335;
-	border:1px solid #eecf36;
-
-}
-.registrationsCount
-{
-	display:none;
-	color:#EECF36;
-	font-size:14px;
-	width:100px;
-	text-align:center;
-}
-.distPriority , .distName
-{
-	display:inline-block;
-	text-transform:uppercase;
-}
-.slickCount
-{
-	font-size:22px;
-	margin-right:5px;
-}
-.slickSlide.slick-active .distPriority .slickCount , .slickSlide.slick-current .distPriority .slickCount
-{
-	font-size:38px;
-}
-.slick-track
-{
-	padding:20px;
-}
-.slickSlide.slick-active .distName, .slickSlide.slick-current .distName
-{
-	font-size:22px;
-}
-.slickSlide.slick-active .registrationsCount, .slickSlide.slick-current .registrationsCount ,.slickSlide.slick-active .distPriority, .slickSlide.slick-current .distPriority,.slickSlide.slick-active .distName, .slickSlide.slick-current .distName
-{
-	display:block
-}
-.slickSlide.slick-active , .slickSlide.slick-current 
-{
-	background-color:#ed1b24 ;
-	padding:20px 20px;
-	margin-top:-20px;
-	width:250px;
-}
-.mCSB_inside > .mCSB_container
-{
-	margin-right:10px;
-}
-.text-capital
-{
-	text-transform:uppercase;
-}
-.count
-{
-	background-color:#ddd;
-	border-radius:50%;
-	height:25px;
-	width:25px;
-	display:block;
-	text-align:center;
-	font-size:16px;
-	color:#fff;
-}
-h1,h2,h3,h4,h5,h6,.table
-{
-	margin:0px;
-}
-<!--.menuR
-{
-	display:none;
-}-->
-.spinner {
-  margin: 30px auto;
-  width: 40px;
-  height: 40px;
-  position: relative;
-  text-align: center;
-  
-  -webkit-animation: sk-rotate 2.0s infinite linear;
-  animation: sk-rotate 2.0s infinite linear;
-}
-
-.dot1, .dot2 {
-  width: 60%;
-  height: 60%;
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  background-color: #1ABC9C;
-  border-radius: 100%;
-  
-  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
-  animation: sk-bounce 2.0s infinite ease-in-out;
-}
-
-.dot2 {
-  top: auto;
-  bottom: 0;
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
-@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
-
-@-webkit-keyframes sk-bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
-}
-
-@keyframes sk-bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 50% { 
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-  }
-}
-.btnNewCustom.btnActive
-{
-	background-color:#fff;
-}
-.m_top20
-{
-	margin-top:20px;
-}
-.btnNewCustom
-{
-	background-color:#CCCCCC
-}
-.arrowDots
-{
-	padding-left:0px;
-}
-.arrowDots li
-{
-	width:10px;
-	height:10px;
-	background-color:#91833C;
-	cursor:pointer;
-	display:inline-block;
-	list-style:none;
-	margin:0px 5px;
-}
-.arrowDots li.active
-{
-	background-color:#ED1B24;
-}
-
-</style>
 </head>
 <body>
 <div  class="container" >
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-			<h3 class="text-center" style="color:#ED1B24;font-weight:bold;margin-top:-20px;">TDP 2016-2018 MEMBERSHIP DRIVE RANKINGS</h3>
+			<h3 class="text-center mainHeading">TDP 2016-2018 MEMBERSHIP DRIVE RANKINGS</h3>
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 			<ul class="arrowDots pull-left">
@@ -354,7 +169,6 @@ function consShow()
 				getConstituencyWiseDisrictList3("Total",1,"percentage");
 			}
 		}
-		
 	}, 100);
 
 }
@@ -438,21 +252,39 @@ function buildingConstituencyList2(result,divId,type,sortType){
 		}
 	str1+='</ul>';
 	$(".emptyDiv2").html(str1);
-
-	$("#mainNewsWidget2").newsWidget({
-		currentNewsWidth: 400,
-		currentNewsHeight:100,
-		fullArticleType : "widget" ,
-		navBtns: "right", 
-		closedNewsWidth:300,
-		closedNewsPosition:"left", 
-		closedNewsOffset:50,
-		widgetOpenType: "fade",
-		fullArticleOpen: "fadeUp",
-		fullArticleClose: "fadeRight",
-		linkText:", Read!" , 
-		titleInLink : "before"
-	});
+	if($(window).width() < 500)
+	{
+		$("#mainNewsWidget2").newsWidget({
+			currentNewsWidth: 270,
+			currentNewsHeight:100,
+			fullArticleType : "widget" ,
+			navBtns: "right", 
+			closedNewsWidth:300,
+			closedNewsPosition:"left", 
+			closedNewsOffset:50,
+			widgetOpenType: "fade",
+			fullArticleOpen: "fadeUp",
+			fullArticleClose: "fadeRight",
+			linkText:", Read!" , 
+			titleInLink : "before"
+		});
+	}else{
+		$("#mainNewsWidget2").newsWidget({
+			currentNewsWidth: 400,
+			currentNewsHeight:100,
+			fullArticleType : "widget" ,
+			navBtns: "right", 
+			closedNewsWidth:300,
+			closedNewsPosition:"left", 
+			closedNewsOffset:50,
+			widgetOpenType: "fade",
+			fullArticleOpen: "fadeUp",
+			fullArticleClose: "fadeRight",
+			linkText:", Read!" , 
+			titleInLink : "before"
+		});
+	}
+	
 	if(value == 2){
 		$(".textChanged").html("Target Achieved");
 	}
@@ -546,21 +378,38 @@ function buildingConstituencyList(result,divId,type,sortType){
 		}
 	str1+='</ul>';
 	$(".emptyDiv").html(str1);
-
-	$("#mainNewsWidget").newsWidget({
-		currentNewsWidth: 400,
-		currentNewsHeight:100,
-		fullArticleType : "widget" ,
-		navBtns: "right", 
-		closedNewsWidth:300,
-		closedNewsPosition:"left", 
-		closedNewsOffset:50,
-		widgetOpenType: "fade",
-		fullArticleOpen: "fadeUp",
-		fullArticleClose: "fadeRight",
-		linkText:", Read!" , 
-		titleInLink : "before"
-	});
+	if($(window).width() < 500)
+	{
+		$("#mainNewsWidget").newsWidget({
+			currentNewsWidth: 280,
+			currentNewsHeight:100,
+			fullArticleType : "widget" ,
+			navBtns: "right", 
+			closedNewsWidth:300,
+			closedNewsPosition:"left", 
+			closedNewsOffset:50,
+			widgetOpenType: "fade",
+			fullArticleOpen: "fadeUp",
+			fullArticleClose: "fadeRight",
+			linkText:", Read!" , 
+			titleInLink : "before"
+		});
+	}else{
+		$("#mainNewsWidget").newsWidget({
+			currentNewsWidth: 400,
+			currentNewsHeight:100,
+			fullArticleType : "widget" ,
+			navBtns: "right", 
+			closedNewsWidth:300,
+			closedNewsPosition:"left", 
+			closedNewsOffset:50,
+			widgetOpenType: "fade",
+			fullArticleOpen: "fadeUp",
+			fullArticleClose: "fadeRight",
+			linkText:", Read!" , 
+			titleInLink : "before"
+		});
+	}
 	if(value == 2){
 		$(".textChanged").html("Target Achieved");
 	}
