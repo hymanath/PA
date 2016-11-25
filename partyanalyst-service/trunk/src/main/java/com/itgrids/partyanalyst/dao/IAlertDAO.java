@@ -15,4 +15,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 
 	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId);
 	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId);
+	public List<Object[]> getTotalAlertGroupByStatusThenCategory(Date fromDate, Date toDate, Long stateId);
+	public List<Object[]> getTotalAlertGroupByImpactLevel(Date fromDate, Date toDate, Long stateId);
+	public List<Object[]> getTotalAlertGroupByImpactLevelThenStatus(Date fromDate, Date toDate, Long stateId);
 }
