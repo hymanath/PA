@@ -30,4 +30,7 @@ public interface IAlertService {
 	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId);
 	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId);
 	public String  setArticleDetailsIntoAlert(ActionableVO actionableVO);
+	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId);
+	public List<AlertVO> getTotalAlertGroupByStatusThenCategory(String fromDateStr, String toDateStr, Long stateId);
+	public List<AlertVO> getAlertCountGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId);
 }
