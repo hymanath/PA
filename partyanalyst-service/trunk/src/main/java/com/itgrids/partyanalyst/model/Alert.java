@@ -50,6 +50,8 @@ public class Alert extends BaseModel implements Serializable {
 	private Long alertCategoryId;
 	private Long alertCategoryTypeId;
 	private AlertCategory alertCategory;
+	
+	private String title;
 
 	
 
@@ -297,5 +299,15 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertCategory(AlertCategory alertCategory) {
 		this.alertCategory = alertCategory;
 	}
+	
+	@Column(name = "title")
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	
 
 }
