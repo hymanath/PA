@@ -25,9 +25,13 @@ public class AlertVO {
 	private Long tdpCadreId;
 	private Long id;
 	private Long statusId;
+	private String status;
+	private Long count;
+	private String category;
+	private Long categoryId;
+	private Long categoryCount = 0l;
 	
-	
-	
+	private List<AlertVO> subList1;
 	
 	
 	public List<IdNameVO> getAssignList() {
@@ -150,6 +154,42 @@ public class AlertVO {
 	}
 	public void setAlertSourceId(Long alertSourceId) {
 		this.alertSourceId = alertSourceId;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+	public List<AlertVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<AlertVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public Long getCategoryCount() {
+		return categoryCount;
+	}
+	public void setCategoryCount(Long categoryCount) {
+		this.categoryCount = categoryCount;
 	}
 	
 
