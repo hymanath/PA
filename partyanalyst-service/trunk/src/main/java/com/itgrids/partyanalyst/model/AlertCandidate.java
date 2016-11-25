@@ -29,6 +29,7 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	private Alert alert;
 	private TdpCadre tdpCadre;
 	private AlertImpact alertImpact;
+	private Long candidateId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -98,6 +99,14 @@ public class AlertCandidate extends BaseModel implements Serializable {
 
 	public void setAlertImpact(AlertImpact alertImpact) {
 		this.alertImpact = alertImpact;
+	}
+	@Column(name = "candidate_id")
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
 	}
 	
 

@@ -1568,105 +1568,107 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public void updateAlertForNewsInUpdateStatus(final ActionableVO inputVO,final Alert oldAlert){
 		try {
 			
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-				if(oldAlert == null){
-					int updateAlert = alertDAO.updateAlertStatusOfNews(inputVO.getId(),inputVO.getStatusId());
-				}else{
-									
-					Alert alert = null;
-					
-					if(oldAlert.getAlertId() !=null && oldAlert.getAlertId()>0){
-						alert = oldAlert;
-					}else{
-						alert = new Alert();
-					}
-					
-					 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
-						 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());
-						 if(alertList !=null && alertList.size()>0){
-							 alert = alertList.get(0);
-						 }
-						 
-						 alert.setCreatedTime(inputVO.getInsertedTime());
-						 alert.setAlertStatusId(inputVO.getStatusId());
-						 alert.setCreatedBy(inputVO.getUserId());
-						 
-					 }				 
-					 alert.setAlertTypeId(inputVO.getAlertType());
-					 
-					 setImpactId(alert,inputVO);
-					 
-					 //alert.setImpactLevelId(inputVO.getRegionScopeId());
-					 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
-					 alert.setDescription(inputVO.getDesc().toString());							 
-					 alert.setUpdatedBy(inputVO.getUserId());
-					 alert.setAlertSourceId(3l);				 
-					 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					 alert.setAlertCategoryId(inputVO.getAlertCategory());
-					 alert.setIsDeleted("N");
-					 alert.setAlertCategoryTypeId(inputVO.getId());
-					 
-					UserAddress UA = new UserAddress();
+			if(oldAlert == null){
+				int updateAlert = alertDAO.updateAlertStatusOfNews(inputVO.getId(),inputVO.getStatusId());
+			}
+			else{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					//else{
+										
+						Alert alert = null;
 						
-					UA.setState(stateDAO.get(inputVO.getStateId()));
-					UA.setDistrict(inputVO.getDistrictId()!=null?districtDAO.get(inputVO.getDistrictId()):null);
-					UA.setConstituency(inputVO.getConstituencyId() !=null ? constituencyDAO.get(inputVO.getConstituencyId()):null);
-					UA.setTehsil(inputVO.getMandalId() !=null ? tehsilDAO.get(inputVO.getMandalId()):null);
-					UA.setLocalElectionBody(inputVO.getMunicipalCorpGmcId() !=null ? localElectionBodyDAO.get(inputVO.getMunicipalCorpGmcId()):null);
-					UA.setWard(inputVO.getWardId() !=null ? constituencyDAO.get(inputVO.getWardId()):null);
-					UA.setParliamentConstituency(inputVO.getParliamentId() !=null ? constituencyDAO.get(inputVO.getParliamentId()):null);
-					UA.setPanchayat(inputVO.getPanchayatId() !=null ? panchayatDAO.get(inputVO.getPanchayatId()):null);
-					 
-					UserAddress userAddressNew = userAddressDAO.save(UA); 
-					
-					alert.setUserAddress(userAddressNew.getUserAddressId() !=null ?
-							userAddressDAO.get(userAddressNew.getUserAddressId()):null);
-					
-					 alert = alertDAO.save(alert);
-					 
-					 //Saving into Alert Candidate For Print and Electronic Media
-					 if(inputVO.getActionableVoList() != null && inputVO.getActionableVoList().size() > 0)
-					 {
-						 
-						//get TdpCadre Details by candidateId
-						 Set<Long> candidateIds = new HashSet<Long>();
-						 for(ActionableVO vo : inputVO.getActionableVoList()) {
-							 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
-								 candidateIds.add(vo.getCandidateId());
-							 }						
+						if(oldAlert.getAlertId() !=null && oldAlert.getAlertId()>0){
+							alert = oldAlert;
+						}else{
+							alert = new Alert();
 						}
-						//candidateId,cadreId
-						List<Object[]> tdpCadres = tdpCadreCandidateDAO.getTdpCadreIdsOfCandidates(candidateIds);
+						
+						 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
+							 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());
+							 if(alertList !=null && alertList.size()>0){
+								 alert = alertList.get(0);
+							 }
+							 
+							 alert.setCreatedTime(inputVO.getInsertedTime());
+							 alert.setAlertStatusId(inputVO.getStatusId());
+							 alert.setCreatedBy(inputVO.getUserId());
+							 
+						 }				 
+						 alert.setAlertTypeId(inputVO.getAlertType());
 						 
-						 Map<Long,Long> tdpcadreMap = new HashMap<Long, Long>(0);
-						 if(tdpCadres !=null && tdpCadres.size()>0){
-							 for (Object[] obj : tdpCadres) {							
-								 tdpcadreMap.put((Long)obj[0], obj[1] !=null ? (Long)obj[1]:null);
-							}
-						 }
+						 setImpactId(alert,inputVO);
 						 
+						 //alert.setImpactLevelId(inputVO.getRegionScopeId());
+						 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
+						 alert.setDescription(inputVO.getDesc());	
+						 alert.setTitle(inputVO.getTitle());
+						 alert.setUpdatedBy(inputVO.getUserId());
+						 alert.setAlertSourceId(3l);				 
+						 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						 alert.setAlertCategoryId(inputVO.getAlertCategory());
+						 alert.setIsDeleted("N");
+						 alert.setAlertCategoryTypeId(inputVO.getId());
 						 
-						for(ActionableVO vo : inputVO.getActionableVoList())
+						UserAddress UA = new UserAddress();
+							
+						UA.setState(stateDAO.get(inputVO.getStateId()));
+						UA.setDistrict(inputVO.getDistrictId()!=null?districtDAO.get(inputVO.getDistrictId()):null);
+						UA.setConstituency(inputVO.getConstituencyId() !=null ? constituencyDAO.get(inputVO.getConstituencyId()):null);
+						UA.setTehsil(inputVO.getMandalId() !=null ? tehsilDAO.get(inputVO.getMandalId()):null);
+						UA.setLocalElectionBody(inputVO.getMunicipalCorpGmcId() !=null ? localElectionBodyDAO.get(inputVO.getMunicipalCorpGmcId()):null);
+						UA.setWard(inputVO.getWardId() !=null ? constituencyDAO.get(inputVO.getWardId()):null);
+						UA.setParliamentConstituency(inputVO.getParliamentId() !=null ? constituencyDAO.get(inputVO.getParliamentId()):null);
+						UA.setPanchayat(inputVO.getPanchayatId() !=null ? panchayatDAO.get(inputVO.getPanchayatId()):null);
+						 
+						UserAddress userAddressNew = userAddressDAO.save(UA); 
+						
+						alert.setUserAddress(userAddressNew.getUserAddressId() !=null ?
+								userAddressDAO.get(userAddressNew.getUserAddressId()):null);
+						
+						 alert = alertDAO.save(alert);
+						 
+						 //Saving into Alert Candidate For Print and Electronic Media
+						 if(inputVO.getActionableVoList() != null && inputVO.getActionableVoList().size() > 0)
 						 {
-							 if(vo != null && vo.getId()!= null && vo.getId() > 0)
-							 {
-								 AlertCandidate alertCandidate = new AlertCandidate();
-								 alertCandidate.setAlertId(alert.getAlertId());
-								 alertCandidate.setAlertImpactId(vo.getBenefitId());
-								 alertCandidate.setAlertCandidateId(vo.getCandidateId());
+							 
+							//get TdpCadre Details by candidateId
+							 Set<Long> candidateIds = new HashSet<Long>();
+							 for(ActionableVO vo : inputVO.getActionableVoList()) {
 								 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
-									 alertCandidate.setTdpCadreId(tdpcadreMap.get(vo.getCandidateId()));
-								 }							
-								 alertCandidateDAO.save(alertCandidate);
-							 }						
+									 candidateIds.add(vo.getCandidateId());
+								 }						
+							}
+							//candidateId,cadreId
+							List<Object[]> tdpCadres = tdpCadreCandidateDAO.getTdpCadreIdsOfCandidates(candidateIds);
+							 
+							 Map<Long,Long> tdpcadreMap = new HashMap<Long, Long>(0);
+							 if(tdpCadres !=null && tdpCadres.size()>0){
+								 for (Object[] obj : tdpCadres) {							
+									 tdpcadreMap.put((Long)obj[0], obj[1] !=null ? (Long)obj[1]:null);
+								}
+							 }
+							 
+							 
+							for(ActionableVO vo : inputVO.getActionableVoList())
+							 {
+								 if(vo != null && vo.getId()!= null && vo.getId() > 0)
+								 {
+									 AlertCandidate alertCandidate = new AlertCandidate();
+									 alertCandidate.setAlertId(alert.getAlertId());
+									 alertCandidate.setAlertImpactId(vo.getBenefitId());
+									 alertCandidate.setCandidateId(vo.getCandidateId());
+									 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
+										 alertCandidate.setTdpCadreId(tdpcadreMap.get(vo.getCandidateId()));
+									 }							
+									 alertCandidateDAO.save(alertCandidate);
+								 }						
+							 }
 						 }
-					 }
-					 
-				}
-				
-		      }
-			});
+					
+			      }
+				});
+			}
 		} catch (Exception e) {
 			LOG.error("error in updateAlertForNewsInUpdateStatus() method");
 		}
