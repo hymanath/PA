@@ -240,11 +240,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
-		if(stateId != null && stateId.longValue() > 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}
 		}
 		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
@@ -268,11 +270,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
-		if(stateId != null && stateId.longValue() > 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}
 		}
 		queryStr.append(" group by model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
@@ -292,11 +296,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
-		if(stateId != null && stateId.longValue() > 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}
 		}  
 		queryStr.append(" group by model.regionScopes.regionScopesId order by model.regionScopes.regionScopesId ");
@@ -321,11 +327,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null && toDate != null)  
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		
-		if(stateId != null && stateId.longValue() > 0L){
+		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
 				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}
 		}
 		queryStr.append(" group by model.regionScopes.regionScopesId, model.alertStatus.alertStatusId " +
@@ -335,7 +343,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		return query.list(); 
+		return query.list();       
 	}
 	
 	public List<Alert> getAlertDetailsOfNewstype(Long alertCategoryType){
@@ -359,6 +367,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("alertStatusId", alertStatusId);
 		
 		return query.executeUpdate();
+	}
+	public List<Long> getLocationIdList(Date fromDate, Date toDate, Long stateId, String Location){
+		StringBuilder queryStr = new StringBuilder();
+		
+		return null;
 	}
 	
 }
