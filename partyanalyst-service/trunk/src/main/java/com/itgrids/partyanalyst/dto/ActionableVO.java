@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.itgrids.partyanalyst.model.BaseModel;
 
@@ -36,6 +37,12 @@ public class ActionableVO extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private Long candidateId;
+	private Long benefitId;
+	
+	private String title;
+	
+	private List<ActionableVO> actionableVoList;
 	
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -182,6 +189,30 @@ public class ActionableVO extends BaseModel implements Serializable{
 	}
 	public void setImpactScopeId(Long impactScopeId) {
 		this.impactScopeId = impactScopeId;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	public Long getBenefitId() {
+		return benefitId;
+	}
+	public void setBenefitId(Long benefitId) {
+		this.benefitId = benefitId;
+	}
+	public List<ActionableVO> getActionableVoList() {
+		return actionableVoList;
+	}
+	public void setActionableVoList(List<ActionableVO> actionableVoList) {
+		this.actionableVoList = actionableVoList;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	

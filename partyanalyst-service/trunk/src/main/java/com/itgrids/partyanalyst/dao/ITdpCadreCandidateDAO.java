@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -19,4 +20,5 @@ public interface ITdpCadreCandidateDAO extends GenericDao<TdpCadreCandidate, Lon
 	public List<Object[]> getPublicRepresentativeDetailsByCadreIds(List<Long> cadreIds);
 	public List<Object[]> getCandidateDetails(List<Long> cadreIds);
 	public List<Object[]> getCandidateDetailsForCommittee(List<Long> cadreIds);
+	public List<Object[]> getTdpCadreIdsOfCandidates(Set<Long> candidateIds);
 }
