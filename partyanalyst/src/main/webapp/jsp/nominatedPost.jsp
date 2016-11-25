@@ -893,6 +893,23 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- Application Documents Model Open -->
+<div class="modal fade" id="applicationDocsModelId">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"> UPLOADED DOCUMENTS </h4>
+      </div>
+      <div class="modal-body">
+        <p><div id="uploadedDopcumentsDivId">  </div></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 <script>
 var globalCadreId=0;
 var globalNPCandiId=0;
@@ -908,6 +925,16 @@ $(function() {
      format:"MM/DD/YYYY"   
     });
 });
+var globalstatus='${status}';
+onload();
+
+function onload(){
+  if(globalstatus != null && globalstatus.length>0){
+ // setTimeout(function(){
+    $('.eventsheader,.footerCls').addClass('hide');
+    //},500);
+  } 
+}
 $("#DOBId").val(moment().format('MM/DD/YYYY'));
 $("#DOBId").val(" ");
 /*
