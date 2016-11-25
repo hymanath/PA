@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -444,6 +445,12 @@ textarea {
 						 <div class="col-md-2 col-xs-12 col-sm-2 m_top5 pull-right" id="enterVoterIdDetailsBack">
 							<span id="enterVoterIdResultsBack" class="backBtn"> ← Back</span>
 						</div>
+						<div class="col-md-2 col-xs-12 col-sm-2 m_top5 pull-right" id="voterSearchBack">
+							<span id="voterSearchBack" class="backBtn"> ← Back</span>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-2 m_top5 pull-right" id="enterSearchDetailsBack">
+							<span id="enterSearchDetailsBack" class="backBtn"> ← Back</span>
+						</div>
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12" id="searchVoterDetailsId"></div>
                     	<div id="searchVoterDetailsImgId" style="display:none;"><center><img src="images/search.gif"/></center></div>
@@ -481,7 +488,6 @@ textarea {
                     <h3 class="text-left text-capital text-muted m_top10">Renewal Membership - <small class="text-capitalize">Using Existing [2014-2016] Membership Number</small>  <!--<button class="btn btn-xs btn-mini homeCls" style="float:right;"> Home </button></h3>-->
                 </div>
 				
-
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div class="row">
 							<div class="col-md-2 col-xs-12 col-sm-2 hide pull-right">
@@ -489,6 +495,12 @@ textarea {
 							</div>
 							<div class="col-md-2 col-xs-12 col-sm-2 hide pull-right">
 								<span id="searchResultsBackBtnR" class="backBtn"> ← Back</span>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-2 hide pull-right">
+								<span id="updateSerchWVoterIdResultsBackBtn" class="backBtn"> ← Back</span>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-2 hide pull-right">
+								<span id="continueWithRelVtrIdResultsBackBtn" class="backBtn"> ← Back</span>
 							</div>
 						</div>
 					</div>
@@ -501,7 +513,7 @@ textarea {
                         	<div class="row" id="existingCadreInfo">
                             	<div class="col-md-6 col-xs-12 col-sm-6">
                                     <label>Name</label>
-                                    <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName" disabled="true"/>
+                                    <input type="text" class="form-control" id="nameId1" name="cadreRegistrationVO.cadreName" disabled="true"/> 
 									<input type="hidden" class="form-control" id="hiddenTdpCadreId" name="cadreRegistrationVO.tdpCadreId"/>
 									<input type="hidden" class="form-control" id="hiddenVoterId" name="cadreRegistrationVO.voterId"/>
 									<input type="hidden" class="form-control" id="hiddenFamilyVoterId" name="cadreRegistrationVO.familyVoterId"/>
@@ -512,7 +524,11 @@ textarea {
 									<input type="hidden" class="form-control" id="hiddenConstId" name="cadreRegistrationVO.constituencyId"/>
 									<input type="hidden" class="form-control" id="hiddenNewImgExist" name="cadreRegistrationVO.isNewImageExist"/>
 									<input type="hidden" class="form-control" id="hiddenIsNomneeChngd" name="cadreRegistrationVO.isNomineeChanged"/>
-                                </div>
+                                </div >
+								<div class="col-md-6 col-xs-12 col-sm-6" style="diplay:none;" id="membrShipDivId">
+									<label>Existing Membership Number</label>
+										<input type="text" class="form-control" id="membrShipId1" disabled="true"/>
+								</div>
                                 <div class="col-md-6 col-xs-12 col-sm-6" style="display:none;" id="teluguNameDivId">
                                     <label>Telugu Name</label>
                                     <input type="text" class="form-control"/>
@@ -935,6 +951,9 @@ textarea {
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-6" id="renewalMembershipId"></div>
                     </div>
+					
+					
+			  
                 </div>
                 <div class="panel-body existingMembershipR hide">
                 	<div class="row">
@@ -949,6 +968,7 @@ textarea {
                         
                     </div>
                 </div>
+		
                 <div class="panel-body updateProfileR hide">
                 	<div class="row">
                     	<div class="col-md-6 col-xs-12 col-sm-6">
@@ -964,7 +984,7 @@ textarea {
                                         <h4 class="panel-title">registered with relative voter id</h4>
                                     </div>
                                 	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                    	<button class="btn btn-success btn-block text-capital updateId" onclick="getCadreDetailsForRelativeCadre('update')">update your voter id</button>
+                                    	<button class="btn btn-success btn-block text-capital updateVtrId" onclick="getCadreDetailsForRelativeCadre('update')">update your voter id</button>
                                         <div class="m_top20 text-center">/Or/</div>
                                         <button class="btn btn-success btn-block text-capital m_top20 updateId" onclick="getCadreDetailsForRelativeCadre('continue')">continue with relative voter id</button>
                                     </div>
@@ -1201,6 +1221,142 @@ textarea {
                         </div>
                     </div>
                 </div>
+				<div class="panel-body nandhiniCls1 hide">
+                <div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<span id="nandhiniCls1IdBack" class="backBtn pull-right"> ← Back</span>
+					</div>
+                    	<div class="col-md-6 col-xs-12 col-sm-6">
+                        	<h4 class="panel-title text-capital">selected profile</h4>
+                            <img src="dist/img/membership_icon.png" class="img-responsive m_top50" style="margin:auto" alt="membership Icon"/>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-6">
+                        	<div class="pad_20" >
+                            	<div class="row">
+                                	<div class="col-md-12 col-xs-12 col-sm-12" id="renwalMembRelativeId"></div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                    	<h4 class="text-capital">your profile showing</h4>
+                                        <h4 class="panel-title">registered with relative voter id</h4>
+                                    </div>
+                                	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                    	<button class="btn btn-success btn-block text-capital updateEntrVtrId">update your voter id</button>
+                                        <div class="m_top20 text-center">/Or/</div>
+                                        <button class="btn btn-success btn-block text-capital m_top20" id="updateWithReltiveVterId">continue with relative voter id</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+<div class="panel-body nandhiniCls2 hide">
+    <div class="row">
+	 <div class="col-md-2 col-xs-12 col-sm-2 pull-right">
+		<span id="nandhiniCls2IdBack" class="backBtn"> ← Back</span>
+	</div>
+  </div>
+  <div class="row">
+       <div class="col-md-3 col-xs-12 col-sm-3 m_top10 hide">
+            <label>CONSTITUENCY</label><span style="color:red;">*</span>
+				<span id="constituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                    <select class="select" id="updateVoterConstId" class="form-control">
+					    <option value="0">Select Constituency</option>
+					</select>
+        </div>
+        <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+              <label>ENTER VOTER ID:<span id="voterErrDivId" style="color:red;"></span></label>
+                <input type="text" class="form-control" id="updateInputVoterId"/>
+        </div>
+		<div  class="col-md-3 col-xs-12 col-sm-3 m_top30">
+	        <button class="btn btn-success text-capital submitUpdateVoterCls" onclick="getUpdateVoterDetails();">SUBMIT</button> 
+	     </div>		 
+	   </div>
+      <div  class="col-md-4 col-xs-12 col-sm-6 m_top10">
+	   <!--<button class="btn btn-success text-capital forgetVoterId" style="margin-left:100px;">Forget Voter Card NO</button> -->
+	   <a href="" aria-controls="home" role="tab" data-toggle="tab" id="frgtVotCardNoId" class="forgetVoterIdR">Forget Voter ID</a>
+	 </div>
+   </div>
+   <div class="panel-body nandhiniCls3 hide">
+                	<div class="row">
+				       <div class="col-md-2 col-xs-12 col-sm-2 pull-right" id="searchOwnVoterIdBack">
+							<span id="nandhiniCls3IdBack" class="backBtn"> ← Back</span>
+						 </div>
+					</div>	
+					<div class="row" id="serchFamVoterDivId">
+                    	<div class="col-md-12 col-xs-12 col-sm-12">
+                        	<h4 class="panel-title text-capital">Search Your Family Voter Id</h4>
+                        </div>
+                    </div>
+                    <div class="row m_top20">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="errorDivId" style="color:red;"></div>
+						</div>
+					</div>
+					<div class="row">
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>STATE</label><span style="color:red;">*</span>
+                           <span id="fStatesDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+						  <select id="fStatesDivId" onchange="getDistrictsForStates(this.value,4);" class="select">
+							<option value="0">Select State</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="36">Telangana</option>
+						  </select>
+						 
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>DISTRICT</label><span style="color:red;">*</span>
+							<span id="fDistrictDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                            <select class="select" id="fDistrictId" class="form-control" onchange="getConstituenciesForDistricts(this.value,4)">
+							<option value="0">Select District</option>
+							</select>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>CONSTITUENCY</label><span style="color:red;">*</span>
+							<span id="fConstituencyDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                            <select class="select" id="fConstituencyId" class="form-control" onchange="getMandalCorporationsByConstituency(this.value,4)">
+							<option value="0">Select Constituency</option>
+							</select>
+                        </div>
+					</div>
+					<div class="row m_top10 hide" id="fNotGreaterCitiesDivId" >
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>MANDAL/MUNCIPALITY</label>
+							<span id="fMandalDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                            <select class="select" id="fMandalList" class="form-control" onchange="getPanchayatWardByMandal(this.value,4)">
+							<option value="0">Select Mandal/Muncipality</option>
+							</select>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10" id="fPanchayatTwnId">
+                        	<label>VILLAGE/WARD</label>
+							<span id="fPanchayatDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                           <select class="select" id="fPanchayatList" class="form-control" onchange="getAllCadreInPanchayat(this.value)">
+						   <option value="0">Select Village/Ward</option>
+							</select>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                        	<label>BOOTH</label>
+							<span id="fBoothDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
+                             <select class="select" id="fBoothsList" class="form-control">
+							  <option value="0">Select Booth</option>
+							</select>
+                        </div>
+					</div>
+					 <div class="row m_top10">
+					    <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+                        	<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="voterId" id="fRadVoterId" checked/>VOTER ID</label>
+                            <label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="hNo" id="fRadHNoId"/>H.NO</label>
+							<label class="radio-inline checkCls"> <input type="radio" name="radioVal" value="name" id="fRadNameId"/>NAME</label>
+                        </div>
+						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                           <input type="text" class="form-control" id="fSearchVoterNameId" placeholder="Please enter Voter ID/H.No/Name"/>
+						</div>
+					  </div>
+					<div class="row">
+                        <div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-4 m_top10 col-sm-offset-4 m_top20">
+                        	<button class="btn btn-block btn-success text-capital btn-lg updateVoterSearch" onclick="getUpdatedSearchVoterDetails();">Search Details</button>
+                        </div>
+                    </div>
+                </div>
+			  
                 <!-- profile details Block End-->
             </div>
         </div>
@@ -1261,6 +1417,8 @@ textarea {
     </div>
   </div>
 </div>
+  <!-- voter Search --> 
+    
 </div>
 
 	<div id="wrapper">
@@ -1276,6 +1434,7 @@ textarea {
 <input type="hidden" id="hidnFamlyVoterId"/>
 <input type="hidden" id="hiddenMblNo"/>
 <input type="hidden"  id="hiddenCadreIdFrRewl"/>
+<input type="hidden" id="hiddenMemberShipNumber"/> 
 
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
@@ -1416,6 +1575,7 @@ function myVoterButtonDetails(){
 	$(".searchResultsBlock").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".searchResultsBlock").addClass("hide");
+		
 		$(".profileDetailsBlock").removeClass("hide");
 		$(".profileDetailsBlock").addClass("animated fadeIn");	
    	},500);
@@ -1533,7 +1693,7 @@ $(document).on("click",".voterSearchR",function(){
 		$(".searchResultsBlockR").addClass("animated fadeIn");		
 	},500);
 });
-$(document).on("click",".updateId",function(){
+/*$(document).on("click",".updateId",function(){
 	$(".updateProfileR").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".updateProfileR,.renewal,.subBlockR,.newProfile").addClass("hide");
@@ -1550,7 +1710,7 @@ $(document).on("click",".updateId",function(){
 		$(".profileDetailsBlockR").removeClass("hide");
 		$(".profileDetailsBlockR").addClass("animated fadeIn");		
 	},500);*/
-});
+//});
 
 $('.imageDiv input:checkbox').click(function() {
     $('.imageDiv input:checkbox').not(this).prop('checked', false);
@@ -1677,6 +1837,8 @@ function submitVoterIdDetails(){
 		$(".enterVoterIdBlock").addClass("hide");
 		$("#enterVoterIdDetailsBack").show();
 		$("#voterIdSearchBack").hide();
+		$("#voterSearchBack").hide();
+		$("#enterSearchDetailsBack").hide();
 		
 		$(".subBlock,.searchResultsBlock").removeClass("hide");
 		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
@@ -1739,8 +1901,10 @@ function submitVoterDetails(){
 	$(".voterIdSearch").addClass("animated fadeOut");
 	setTimeout(function(){
 		$(".voterIdSearch").addClass("hide");
-		$("#enterVoterIdDetailsBack").hide();
 		$("#voterIdSearchBack").show();
+		$("#enterVoterIdResultsBack").hide();
+		$("#voterSearchBack").hide();
+		$("#enterSearchDetailsBack").hide();
 		$(".subBlock,.searchResultsBlock").removeClass("hide");
 		$(".subBlock,.searchResultsBlock").addClass("animated fadeIn");
 	},500)
@@ -1767,7 +1931,7 @@ $(document).on("click","#searchResultsBack",function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.voterIdSearch").removeClass("hide");
 		$(".subBlock,.voterIdSearch").addClass("animated fadeIn");
-		//fieldsValusEmpty();
+		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".searchResultsBlock").removeClass("animated fadeIn");
@@ -1809,7 +1973,7 @@ $(document).on("click","#enterVoterIdResultsBack",function(){
 		$(".searchResultsBlock").addClass("hide");
 		$(".subBlock,.enterVoterIdBlock").removeClass("hide");
 		$(".subBlock,.enterVoterIdBlock").addClass("animated fadeIn");
-		//fieldsValusEmpty();
+		fieldsValusEmpty();
 	},500);
 	setTimeout(function(){
 		$(".subBlock,.enterVoterIdBlock").removeClass("animated fadeOut");
@@ -1985,6 +2149,177 @@ $(document).on("click",".deliveriAddrCls",function(){
 	$('.deliveriAddrCls').prop('checked',false);
 	$(this).prop('checked',false);
 	
+});
+
+$(document).on("click","#nandhiniCls3IdBack",function(){
+	$(".nandhiniCls3").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls3").addClass("hide");
+		renwlFieldsEmpty();
+		$(".nandhiniCls2").removeClass("hide");
+		$(".nandhiniCls2").addClass("animated fadeIn");
+		
+	},500);
+	setTimeout(function(){
+		$(".nandhiniCls2").removeClass("animated fadeOut");
+		$(".nandhiniCls3").removeClass("animated fadeIn");
+	},1000);
+	
+});
+
+$(document).on("click","#nandhiniCls2IdBack",function(){
+	$(".nandhiniCls2").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls2").addClass("hide");
+		$(".nandhiniCls1").removeClass("hide");
+		$(".nandhiniCls1").addClass("animated fadeIn");
+	},500);
+	setTimeout(function(){
+		$(".nandhiniCls1").removeClass("animated fadeOut");
+		$(".nandhiniCls2").removeClass("animated fadeIn");
+	},1000);
+	
+});
+$(document).on("click","#nandhiniCls1IdBack",function(){
+	$(".nandhiniCls1").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls1").addClass("hide");
+		renwlFieldsEmpty();
+		$(".selectMembership ").removeClass("hide");
+		$(".selectMembership ").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".nandhiniCls1").removeClass("animated fadeOut");
+		$(".selectMembership").removeClass("animated fadeIn");
+	},1500)
+	//$("#validateRenMemshipId,#renewalMobileId,#renewalVoterId").val('');
+	//$("#renewalMembershipId").html(' ');
+});
+$(document).on("click",".updateEntrVtrId",function(){
+	$(".nandhiniCls1").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls1").addClass("hide");
+		$(".nandhiniCls2 ").removeClass("hide");
+		$(".nandhiniCls2 ").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".nandhiniCls1").removeClass("animated fadeOut");
+		$(".nandhiniCls2").removeClass("animated fadeIn");
+	},1500)
+	//$("#validateRenMemshipId,#renewalMobileId,#renewalVoterId").val('');
+	//$("#renewalMembershipId").html(' ');
+});
+
+$(document).on("click",".forgetVoterIdR",function(){
+	$('#fNotGreaterCitiesDivId').addClass('hide');
+	$(".nandhiniCls2").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls2").addClass("hide");
+		$(".nandhiniCls3 ").removeClass("hide");
+		$(".nandhiniCls3 ").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".nandhiniCls2").removeClass("animated fadeOut");
+		$(".nandhiniCls3").removeClass("animated fadeIn");
+	},1500)
+	//$("#validateRenMemshipId,#renewalMobileId,#renewalVoterId").val('');
+	//$("#renewalMembershipId").html(' ');
+});
+function updateSerchVoterDetails(){
+	$(".nandhiniCls3").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls3").addClass("hide");
+		$("#enterSearchDetailsBack").show();
+		$("#searchResultsBack").hide();
+		$("#enterVoterIdResultsBack").hide();
+		$("#voterSearchBack").hide();
+		
+		$(".searchResultsBlock ").removeClass("hide");
+		$(".searchResultsBlock ").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".nandhiniCls3").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+	},1500)
+	$(".renewal").removeClass("hide");
+	$(".renewal").addClass("animated fadeIn");
+	$(".renewal").removeClass("animated fadeIn");
+}	
+function updateVoterDetials(){
+	$(".nandhiniCls2").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls2").addClass("hide");
+		$("#voterSearchBack").show();
+		$("#enterSearchDetailsBack").hide();
+		$("#voterIdSearchBack").hide();
+		$("#enterVoterIdDetailsBack").hide();
+		$(".searchResultsBlock ").removeClass("hide");
+		$(".searchResultsBlock ").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".nandhiniCls2").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+	},1500)
+	$(".renewal").removeClass("hide");
+	$(".renewal").addClass("animated fadeIn");
+	$(".renewal").removeClass("animated fadeIn");
+}
+$(document).on("click","#voterSearchBack",function(){
+	$(".searchResultsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".searchResultsBlock").addClass("hide");
+		renwlFieldsEmpty();
+		$(".renewal").show();
+		$(".nandhiniCls2,.subBlockR").removeClass("hide");
+		$(".nandhiniCls2,.subBlockR").addClass("animated fadeIn");
+	},500)
+	setTimeout(function(){
+		$(".searchResultsBlock").removeClass("animated fadeOut");
+		$(".nandhiniCls2,.subBlockR").removeClass("animated fadeIn");
+	},1500)
+});
+$(document).on("click","#enterSearchDetailsBack",function(){
+	$(".searchResultsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".searchResultsBlock").addClass("hide");
+		renwlFieldsEmpty();
+		$(".renewal").show();
+		$(".nandhiniCls3,.subBlockR").removeClass("hide");
+		$(".nandhiniCls3,.subBlockR ").addClass("animated fadeIn");
+	},1500)
+	setTimeout(function(){
+		$(".nandhiniCls3,.subBlockR").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");
+	},1500)
+});
+  $(document).on("click","#updateSerchWVoterIdResultsBackBtn",function(){
+	$(".profileDetailsBlock,.subBlockR").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".searchResultsBlock").removeClass("hide");
+		$(".profileDetailsBlock").addClass("hide");
+		$(".searchResultsBlock").addClass("animated fadeIn");		
+	},500);
+	setTimeout(function(){
+		$(".profileDetailsBlock,.subBlockR").removeClass("animated fadeOut");
+		$(".searchResultsBlock").removeClass("animated fadeIn");		
+	},1500);
+});
+$(document).on("click","#continueWithRelVtrIdResultsBackBtn",function(){
+		$(".profileDetailsBlock").addClass("animated fadeOut");
+	setTimeout(function(){
+		$(".nandhiniCls1,.subBlockR").removeClass("hide");
+		$(".renewal").show();
+		$(".profileDetailsBlock").addClass("hide");
+		$(".nandhiniClass1,.subBlockR").addClass("animated fadeIn");		
+	},500);
+	setTimeout(function(){
+		$(".profileDetailsBlock").removeClass("animated fadeOut");
+		$(".nandhiniCls1,.subBlockR").removeClass("animated fadeIn");		
+	},1500);
+});
+
+$(document).on("click","#updateWithReltiveVterId",function(){
+	renMemberDetails();
 });
 
 </script>
