@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -88,7 +89,15 @@ private IAlertCommentAssigneeDAO alertCommentAssigneeDAO;
 private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 private ICadreCommitteeService cadreCommitteeService;
 private IAlertCategoryDAO alertCategoryDAO;
+private IPanchayatDAO panchayatDAO;
 
+
+
+
+
+public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+	this.panchayatDAO = panchayatDAO;
+}
 
 public ICadreCommitteeService getCadreCommitteeService() {
 	return cadreCommitteeService;
@@ -1292,22 +1301,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		String result = null;
 		try{	
 			
-			 Alert alert = new Alert();			 
-			 alert.setAlertTypeId(inputVO.getAlertType());
-			 alert.setImpactLevelId(inputVO.getRegionScopeId());
-			 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
-			 alert.setDescription(inputVO.getDesc().toString());
-			 alert.setCreatedBy(inputVO.getUserId());
-			 alert.setUpdatedBy(inputVO.getUserId());
-			 alert.setAlertStatusId(1l);
-			 alert.setAlertSourceId(3l);
-			 alert.setCreatedTime(dateUtilService.getCurrentDateAndTime());
-			 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			 alert.setIsDeleted("N");
-			 //UserAddress userAddress = saveUserAddress(inputVO);
-			 //alert.setAddressId(userAddress.getUserAddressId());
-			 alert = alertDAO.save(alert);
-			
+			 Alert alert = null;
+			if(inputVO !=null && inputVO.getType().trim().equalsIgnoreCase("updateStatus")){
+				updateAlertForNewsInUpdateStatus(inputVO,null);
+			}else if(inputVO !=null && inputVO.getType().trim().equalsIgnoreCase("update")){
+				//updateAlertForNewsInUpdateStatus(inputVO);				
+				List<Alert> alertList = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());				
+				alert = alertList.get(0);
+				updateAlertForNewsInUpdateStatus(inputVO,alert);				
+			}else{
+				updateAlertForNewsInUpdateStatus(inputVO,new Alert());
+			}
 			 result = "success";
 			 
 		}catch(Exception e){
@@ -1543,6 +1547,90 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured getAlertCountGroupByLocationThenStatus() method of AlertService{}");
 		}
 		return null;
+	}
+	
+	
+	
+	public void updateAlertForNewsInUpdateStatus(ActionableVO inputVO,Alert alert){
+		try {
+			
+			if(alert == null){
+				int updateAlert = alertDAO.updateAlertStatusOfNews(inputVO.getId(),inputVO.getStatusId());
+			}else{
+								
+				 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
+					 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());
+					 if(alertList !=null && alertList.size()>0){
+						 alert = alertList.get(0);
+					 }
+					 
+					 alert.setCreatedTime(inputVO.getInsertedTime());
+					 alert.setAlertStatusId(inputVO.getStatusId());
+					 alert.setCreatedBy(inputVO.getUserId());
+					 
+				 }				 
+				 alert.setAlertTypeId(inputVO.getAlertType());
+				 
+				 inputVO = setImpactId(alert,inputVO);
+				 
+				 //alert.setImpactLevelId(inputVO.getRegionScopeId());
+				 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
+				 alert.setDescription(inputVO.getDesc().toString());							 
+				 alert.setUpdatedBy(inputVO.getUserId());
+				 alert.setAlertSourceId(3l);				 
+				 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				 alert.setAlertCategoryId(inputVO.getAlertCategory());
+				 alert.setIsDeleted("N");
+				 
+				 UserAddress UA = new UserAddress();
+					
+				UA.setState(stateDAO.get(inputVO.getStateId()));
+				UA.setDistrict(inputVO.getDistrictId()!=null?districtDAO.get(inputVO.getDistrictId()):null);
+				UA.setConstituency(inputVO.getConstituencyId() !=null ? constituencyDAO.get(inputVO.getConstituencyId()):null);
+				UA.setTehsil(inputVO.getMandalId() !=null ? tehsilDAO.get(inputVO.getMandalId()):null);
+				UA.setLocalElectionBody(inputVO.getMunicipalCorpGmcId() !=null ? localElectionBodyDAO.get(inputVO.getMunicipalCorpGmcId()):null);
+				UA.setWard(inputVO.getWardId() !=null ? constituencyDAO.get(inputVO.getWardId()):null);
+				UA.setParliamentConstituency(inputVO.getParliamentId() !=null ? constituencyDAO.get(inputVO.getParliamentId()):null);
+				UA.setPanchayat(inputVO.getPanchayatId() !=null ? panchayatDAO.get(inputVO.getPanchayatId()):null);
+				 
+				UserAddress userAddressNew = userAddressDAO.save(UA); 
+				
+				//alert.setUserAddress(userAddressNew.getUserAddressId() !=null ?
+						//userAddressDAO.get(userAddressNew.getUserAddressId()):null);
+				
+				 alert = alertDAO.save(alert);
+			}			
+		} catch (Exception e) {
+			LOG.error("error in updateAlertForNewsInUpdateStatus() method");
+		}
+	}
+	
+	public ActionableVO setImpactId(Alert alert,ActionableVO VO){
+		try {
+			if(VO.getRegionScopeId() !=null && VO.getRegionScopeId()>0l){
+				if(VO.getRegionScopeId() ==1l){
+					alert.setImpactLevelId(2l);
+				}else if(VO.getRegionScopeId() ==2l){
+					alert.setImpactLevelId(3l);
+				}else if(VO.getRegionScopeId() ==3l){
+					alert.setImpactLevelId(4l);
+				}if(VO.getRegionScopeId() ==4l){
+					alert.setImpactLevelId(10l);
+				}if(VO.getRegionScopeId() ==5l){
+					alert.setImpactLevelId(5l);
+				}if(VO.getRegionScopeId() ==6l){
+					alert.setImpactLevelId(6l);
+				}if(VO.getRegionScopeId() ==8l){
+					alert.setImpactLevelId(7l);
+				}if(VO.getRegionScopeId() ==9l){
+					alert.setImpactLevelId(8l);
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("error in setImpactId() method ");
+		}
+		return VO;
 	}
 	
 }
