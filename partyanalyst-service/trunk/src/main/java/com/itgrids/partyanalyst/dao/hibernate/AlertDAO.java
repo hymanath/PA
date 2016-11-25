@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		IAlertDAO {
@@ -239,19 +240,103 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
-		if(stateId.longValue() != 0){
-			queryStr.append(" and model.userAddress.state.stateId = :stateId ");
+		if(stateId != null && stateId.longValue() > 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
 		}
-		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.statusOrder ");
+		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(stateId.longValue() != 0){
-			query.setParameter("stateId", stateId);
+		
+		return query.list(); 
+	}
+	public List<Object[]> getTotalAlertGroupByStatusThenCategory(Date fromDate, Date toDate, Long stateId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" model.alertStatus.alertStatusId, " +
+						" model.alertStatus.alertStatus, " +
+						" model.alertCategory.alertCategoryId, " +
+						" model.alertCategory.category," +
+						" count(distinct model.alertId) " +
+						" from Alert model where ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
-		return query.list();
+		if(stateId != null && stateId.longValue() > 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}
+		queryStr.append(" group by model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+						" order by model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list(); 
+	}
+	public List<Object[]> getTotalAlertGroupByImpactLevel(Date fromDate, Date toDate, Long stateId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.regionScopes.regionScopesId, model.regionScopes.scope, count(distinct model.alertId) " +
+						" from Alert model where ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+		}
+		if(stateId != null && stateId.longValue() > 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}  
+		queryStr.append(" group by model.regionScopes.regionScopesId order by model.regionScopes.regionScopesId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		
+		return query.list();   
+	}
+	public List<Object[]> getTotalAlertGroupByImpactLevelThenStatus(Date fromDate, Date toDate, Long stateId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" model.regionScopes.regionScopesId, " +
+						" model.regionScopes.scope, " +
+						" model.alertStatus.alertStatusId, " +
+						" model.alertStatus.alertStatus," +
+						" count(distinct model.alertId) " +
+						" from Alert model where ");
+		if(fromDate != null && toDate != null)  
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+		
+		if(stateId != null && stateId.longValue() > 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}
+		queryStr.append(" group by model.regionScopes.regionScopesId, model.alertStatus.alertStatusId " +
+						" order by model.regionScopes.regionScopesId, model.alertStatus.alertStatusId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list(); 
 	}
 	
 }
+
