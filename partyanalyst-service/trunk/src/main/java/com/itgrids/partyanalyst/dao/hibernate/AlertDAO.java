@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
@@ -360,11 +361,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	}
 	
 	public int updateAlertStatusOfNews(Long alertCategoryType,Long alertStatusId){
-		Query query = getSession().createQuery(" update Alert model set model.alertStatusId =:alertStatusId where " +
-				"  model.alertCategoryTypeId =: alertCategoryType ");
+		Query query = getSession().createQuery(" update Alert model set model.alertStatusId =:alertStatusId,model.updatedTime=:updatedTime where " +
+				"  model.alertCategoryTypeId =:alertCategoryType ");
 		
 		query.setParameter("alertCategoryType", alertCategoryType);
 		query.setParameter("alertStatusId", alertStatusId);
+		query.setParameter("updatedTime", new DateUtilService().getCurrentDateAndTime());
 		
 		return query.executeUpdate();
 	}

@@ -1572,8 +1572,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				int updateAlert = alertDAO.updateAlertStatusOfNews(inputVO.getId(),inputVO.getStatusId());
 			}
 			else{
-				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				String result = (String) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
 					//else{
 										
 						Alert alert = null;
@@ -1623,8 +1623,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 
 						UserAddress userAddressNew = userAddressDAO.save(UA); 
 						
-						alert.setUserAddress(userAddressNew.getUserAddressId() !=null ?
-								userAddressDAO.get(userAddressNew.getUserAddressId()):null);
+						alert.setAddressId(userAddressNew.getUserAddressId() !=null ?
+								userAddressNew.getUserAddressId().longValue():null);
 						
 						 alert = alertDAO.save(alert);
 						 
@@ -1665,7 +1665,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								 }						
 							 }
 						 }
-					
+					return "success";
 			      }
 				});
 			}
