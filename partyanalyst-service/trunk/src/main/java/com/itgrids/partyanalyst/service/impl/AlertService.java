@@ -327,11 +327,20 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setDescription(inputVO.getDesc().toString());
 				 alert.setCreatedBy(userId);
 				 alert.setUpdatedBy(userId);
-				 alert.setAlertStatusId(1l);
+
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+					 alert.setAlertStatusId(2l);// if assifn list given default status is notified
+				 else
+					 alert.setAlertStatusId(1l);// default pending status
+
 				 alert.setAlertSourceId(inputVO.getAlertSourceId());
 				 alert.setCreatedTime(date.getCurrentDateAndTime());
 				 alert.setUpdatedTime(date.getCurrentDateAndTime());
 				 alert.setIsDeleted("N");
+				 
+				 alert.setAlertCategoryId(1L);//default Manual alert
+				 alert.setTitle(inputVO.getTitle());
+				 
 				 UserAddress userAddress = saveUserAddress(inputVO);
 				 alert.setAddressId(userAddress.getUserAddressId());
 				 alert = alertDAO.save(alert);
@@ -651,7 +660,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 fromDate = sdf.parse(inputVO.getFromDate());
 			 toDate = sdf.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate,inputVO.getLevelId(),inputVO.getStatusId());
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,inputVO,fromDate,toDate);
 			 setAlertLocationWiseData(list,returnList);
 		}
 		catch(Exception e)
@@ -709,6 +718,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alertVO.setRegionScope(params[7] != null ?params[7].toString() : "");
 				 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 				 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
+				 alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
+				 alertVO.setAlertCategoryName(commonMethodsUtilService.getStringValueForObject(params[26]));
+				 
 				 LocationVO locationVO = new LocationVO();
 				 locationVO.setWardId(params[23] != null ? (Long)params[23] : null);
 				 locationVO.setWardName(params[24] != null ? params[24].toString() : "");
@@ -723,6 +735,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 locationVO.setVillageId(params[12] != null ? (Long)params[12] : null);
 				 locationVO.setVillageName(params[13] != null ? params[13].toString() : "");
 				 locationVO.setLocalBodyId(params[14] != null ? (Long)params[14] : null);
+				
 				 String eleType = params[18] != null ? params[18].toString() : "";
 				 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
 				alertVO.setLocationVO(locationVO);
