@@ -1416,7 +1416,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getAlertCountGroupByLocationThenStatus(java.lang.String, java.lang.String, java.lang.Long)
 	 */
 	public List<AlertVO> getAlertCountGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId){
-		LOG.info("Entered in getAlertCountGroupByLocation() method of AlertService{}");
+		LOG.info("Entered in getAlertCountGroupByLocationThenStatus() method of AlertService{}");
 		try{
 			Date fromDate = null;
 			Date toDate = null;
@@ -1527,8 +1527,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								}else{
 									param3.setCategoryCount(0l);//status wise alert count
 								}  
-							}  
-							
+							}
 						}
 					}
 					if(impLvlId.longValue() == 11L){
