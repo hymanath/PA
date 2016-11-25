@@ -245,7 +245,7 @@ table.dataTable tr.odd {
 	background-color:#999999;
 	padding:2px 6px!important;
 	color:#fff !important;
-	font-size:16px !important;
+	font-size:14px !important;
 	font-weight:bold;
 	border-radius:8px;
 }
@@ -344,8 +344,10 @@ table.dataTable tr.odd {
 								<h4 class="panel-title">OVER ALL</h4>
 							</div>
 							<div class="panel-body" style="background-color:#DBF1E4">
-								<div id="totalRegisCount">
-									<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+								<div class="row">
+									<div id="totalRegisCount">
+										<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>
+									</div>
 								</div>
 							</div>
 						</div>
