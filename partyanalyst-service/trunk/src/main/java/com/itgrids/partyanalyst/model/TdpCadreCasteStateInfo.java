@@ -28,6 +28,8 @@ public class TdpCadreCasteStateInfo extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 6950268490241100216L;
 	
 	private Long tdpCadreCasteStateInfoId;
+	private Long stateId;
+    private Long districtId;
 	private Long casteStateId;
 	private Long locationScopeId;
 	private Long locationValue;
@@ -42,7 +44,8 @@ public class TdpCadreCasteStateInfo extends BaseModel implements Serializable {
 	private Date   insertedTime;
 	
 	private CasteState casteState;
-	
+	private State  state;
+	private District district;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -167,7 +170,50 @@ public class TdpCadreCasteStateInfo extends BaseModel implements Serializable {
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
 	}
+
+	@Column(name = "state_id")
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
 	
+	@Column(name = "district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+   
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="state_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
 	
 	
 }
