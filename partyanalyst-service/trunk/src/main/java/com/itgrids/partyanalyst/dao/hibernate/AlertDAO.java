@@ -483,11 +483,98 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		
 		return query.executeUpdate();
 	}
-	public List<Long> getLocationIdList(Date fromDate, Date toDate, Long stateId, String Location){
+	public List<Object[]> getLocationIdList(Date fromDate, Date toDate, Long stateId, String Location){
 		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.impactLevelId, model.impactLevelValue " +
+						" from Alert model where ");
 		
-		return null;
+		if(fromDate != null && toDate != null)  
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+		
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+		}
+		if(Location.equalsIgnoreCase("state")){
+			queryStr.append(" and model.impactLevelId = 2 ");  
+		}else if(Location.equalsIgnoreCase("district")){
+			queryStr.append(" and model.impactLevelId = 3 ");
+		}else if(Location.equalsIgnoreCase("constituency")){
+			queryStr.append(" and model.impactLevelId = 4 ");
+		}else if(Location.equalsIgnoreCase("village")){
+			queryStr.append(" and model.impactLevelId in (6,8) ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();  
 	}
-	
+	public List<Object[]> getAlertCountGrpBylocationIdAndStatusIdAndCategoryId(Date fromDate, Date toDate, Long stateId, List<Long> locaionIds, String Location){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+						" model.impactLevelValue, " +//0
+						" model.alertStatus.alertStatusId, " +//1
+						" model.alertStatus.alertStatus, " +//2
+						" model.alertCategory.alertCategoryId, " +//3
+						" model.alertCategory.category, " +//4
+						" count(distinct model.alertId) " +//5
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " +
+						" where ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			}else if(stateId.longValue() == 36L){
+				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 36 ");  
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		
+		if(Location.equalsIgnoreCase("state")){
+			queryStr.append(" and model.impactLevelId = 2 ");  
+		}else if(Location.equalsIgnoreCase("district")){
+			queryStr.append(" and model.impactLevelId = 3 ");
+		}else if(Location.equalsIgnoreCase("constituency")){
+			queryStr.append(" and model.impactLevelId = 4 ");
+		}else if(Location.equalsIgnoreCase("village")){
+			queryStr.append(" and model.impactLevelId in (6,8) ");  
+		}
+		
+		if(locaionIds != null){
+			queryStr.append(" and model.impactLevelValue in (:locaionIds) ");  
+		}
+		queryStr.append(" group by model.impactLevelValue, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+						" order by model.impactLevelValue, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);  
+		}
+		if(locaionIds != null){  
+			query.setParameterList("locaionIds", locaionIds);  
+		}
+		return query.list();  
+	}
 }
 
