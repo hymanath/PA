@@ -669,15 +669,18 @@ public class Scheduler {
 			return rs;
 		}
 		log.error(" Entered In To -  Pushing Location wise Age Data to Intermediate Table .. "); 
+		log.fatal(" Entered In To -  Pushing Location wise Age Data to Intermediate Table .. ");
 		try{  
 			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByAge();
 			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
 				if(rs.getMessage().equalsIgnoreCase("Failure")){
 					log.error(" Exception Occurred While Pushing Location wise Age Data to Intermediate Table.. "); 
+				    log.fatal(" Exception Occurred While Pushing Location wise Age Data to Intermediate Table.. ");
 				}
 			}
 		}catch(Exception e){
 			log.error("\n\n pushCadreCountsLocationWiseByAge() "); 
+			log.fatal("\n\n pushCadreCountsLocationWiseByAge() "); 
 		}
 		return rs;  
 	}
