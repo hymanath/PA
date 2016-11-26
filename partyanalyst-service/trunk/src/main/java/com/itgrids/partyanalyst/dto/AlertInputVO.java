@@ -9,8 +9,15 @@ public class AlertInputVO {
 	private Long categoryId;	
 	private Long assignId;
 	private String searchTypeStr;
+	private Long alertTypeId;
 	
 	
+	public Long getAlertTypeId() {
+		return alertTypeId;
+	}
+	public void setAlertTypeId(Long alertTypeId) {
+		this.alertTypeId = alertTypeId;
+	}
 	public String getSearchTypeStr() {
 		return searchTypeStr;
 	}
