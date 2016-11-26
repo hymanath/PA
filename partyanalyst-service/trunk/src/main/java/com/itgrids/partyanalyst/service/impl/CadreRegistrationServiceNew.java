@@ -45,7 +45,9 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTargetCountDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfo;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTempDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CadreDateVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
@@ -106,6 +108,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	private ITdpCadreGenderInfoDAO tdpCadreGenderInfoDAO;
 	private ITdpCadreCasteStateInfoDAO tdpCadreCasteStateInfoDAO;
 	private ITdpCadreAgeInfoDAO tdpCadreAgeInfoDAO;
+	private IVoterAgeRangeDAO voterAgeRangeDAO; 
 	//setters
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -241,6 +244,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	
 	public void setTdpCadreAgeInfoDAO(ITdpCadreAgeInfoDAO tdpCadreAgeInfoDAO) {
 		this.tdpCadreAgeInfoDAO = tdpCadreAgeInfoDAO;
+	}
+	
+	public void setVoterAgeRangeDAO(IVoterAgeRangeDAO voterAgeRangeDAO) {
+		this.voterAgeRangeDAO = voterAgeRangeDAO;
 	}
 	//Business methods
 	/**
@@ -2808,5 +2815,221 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			  rs.setMessage("Failure");
 		  }
     	   return rs;
+       }
+       
+       
+       //DEMOGRAPHIC ANALYSIS.
+       /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  AGE WISE SUMMARY REPORT.
+	   	 *  @since 25-NOVEMBER-2016 
+	   	 */
+       public CadreCountsVO ageWiseTdpCadreSummaryReport(Long stateId){
+    	   
+    	   CadreCountsVO finalVO = new CadreCountsVO();
+    	   
+    	   try{
+    		   
+    		   Long previousCadreTotalCount = 0l;
+    		   Long cadreTotalCount = 0l;
+    		   Long newCadreTotalCount = 0l;
+    		   Long renewalCadreTotalCount = 0l;
+    		   
+    		   	Map<Long,CadreCountsVO> finalMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+    		   	List<Object[]> ageRangeList = voterAgeRangeDAO.getSpecificAgeRangeList();
+    		   	if(ageRangeList != null && ageRangeList.size() > 0){
+    		   		for(Object[] obj : ageRangeList){
+    		   			CadreCountsVO ageRangeVO = new CadreCountsVO();
+    		   			ageRangeVO.setId(obj[0] != null ? (Long)obj[0] : 0l);
+    		   			ageRangeVO.setName(obj[1]!=null ? obj[1].toString() : "");
+    		   			finalMap.put(ageRangeVO.getId(), ageRangeVO);
+    		   		}
+    		   	}
+    		   	
+    		   	List<Object[]> data =  tdpCadreAgeInfoDAO.getStateWiseAgeWiseCadreCounts(stateId);
+    		    if( data != null && data.size() > 0){
+    		    	for(Object[] obj : data){
+    		    		
+    		    		if(obj[0] != null && (Long)obj[0] > 0l){
+    		    			
+    		    			CadreCountsVO ageRangeVO = finalMap.get((Long)obj[0]);
+    		    			if(ageRangeVO != null){
+    		    				
+    		    				ageRangeVO.setPreviousCadreCount(obj[1] != null ? (Long)obj[1] : 0l);
+    		    				previousCadreTotalCount = previousCadreTotalCount + ageRangeVO.getPreviousCadreCount();
+    		    				
+    		    				ageRangeVO.setCadreCount(obj[2] != null ? (Long)obj[2] : 0l);
+    		    				cadreTotalCount = cadreTotalCount + ageRangeVO.getCadreCount();
+    		    				
+    		    				ageRangeVO.setNewCadre(obj[3] != null ? (Long)obj[3] : 0l);
+    		    				newCadreTotalCount = newCadreTotalCount + ageRangeVO.getNewCadre();
+    		    				
+    		    				ageRangeVO.setRenewalCadre(obj[4] != null ? (Long)obj[4] : 0l);
+    		    				renewalCadreTotalCount = renewalCadreTotalCount + ageRangeVO.getRenewalCadre();
+    		    			}
+    		    			
+    		    		}
+    		    	}
+    		    }	    
+    		   
+    		    //perc
+    		    List<CadreCountsVO> finalList = null ; 
+    		    if(finalMap != null && finalMap.size() > 0){
+    		    	for (Map.Entry<Long, CadreCountsVO> entry : finalMap.entrySet()){
+    				
+    		    		CadreCountsVO ageRangeVO =  entry.getValue();
+    		    		
+    		    		if(previousCadreTotalCount != null && previousCadreTotalCount > 0l){
+    		    			ageRangeVO.setPreviousCadrePercent( calcPercantage( ageRangeVO.getPreviousCadreCount() , previousCadreTotalCount ) );
+    		    		}
+    		    		if(cadreTotalCount != null && cadreTotalCount > 0l){
+    		    			ageRangeVO.setCadrePercent( calcPercantage( ageRangeVO.getCadreCount() , cadreTotalCount ) );
+    		    		}
+    		    		
+    		    		if(ageRangeVO.getCadreCount() != null && ageRangeVO.getCadreCount() > 0l){
+    		    			ageRangeVO.setNewCadrePercent(calcPercantage( ageRangeVO.getNewCadre() , ageRangeVO.getCadreCount() ));
+    		    			ageRangeVO.setRenewalCadrePercent(calcPercantage( ageRangeVO.getRenewalCadre() , ageRangeVO.getCadreCount() ));
+    		    		}
+    				    if(ageRangeVO.getPreviousCadreCount() != null && ageRangeVO.getPreviousCadreCount() > 0l){
+    				    	ageRangeVO.setPreviousCadreRenewalPercent(calcPercantage( ageRangeVO.getRenewalCadre() , ageRangeVO.getPreviousCadreCount() ));
+    				    }
+    		    		
+    				}
+    		    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
+    		    	finalVO.setSubList(finalList);
+    		    }
+				
+    		    finalVO.setPreviousCadreTotalCount(previousCadreTotalCount);
+    		    finalVO.setCadreTotalCount(cadreTotalCount);
+    		    finalVO.setNewCadreTotalCount(newCadreTotalCount);
+    		    finalVO.setRenewalCadreTotalCount(renewalCadreTotalCount);
+    		    
+    		    if(finalVO.getCadreTotalCount() != null && finalVO.getCadreTotalCount() > 0l){
+    		    	finalVO.setNewCadrePercent(calcPercantage( finalVO.getNewCadreTotalCount() , finalVO.getCadreTotalCount() ));
+    		    	finalVO.setRenewalCadrePercent(calcPercantage( finalVO.getRenewalCadreTotalCount() , finalVO.getCadreTotalCount() ));
+	    		}
+    		    if(finalVO.getPreviousCadreTotalCount() != null && finalVO.getPreviousCadreTotalCount() > 0l){
+    		    	finalVO.setPreviousCadreRenewalPercent(calcPercantage( finalVO.getRenewalCadreTotalCount() , finalVO.getPreviousCadreTotalCount() ));
+			    }
+    		    
+    		    
+		  }catch(Exception e){
+			  LOG.error("Exception occur in ageWiseSummaryReport()  Of CadreRegistrationServiceNew class - ",e);
+		  }
+    	   return finalVO;
+       }
+       /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  AGE WISE REPORT FOR DISTRICTS / CONSTITUENCIES.
+	   	 *  @since 25-NOVEMBER-2016 
+	   	 */
+       public List<CadreCountsVO> getLocationWisegeWiseTdpCadreCounts(Long stateId , Long districtId , String searchType){
+    	   List<CadreCountsVO> finalList = null;
+    	   try{
+    		   
+    		    List<Object[]> ageRangeList = voterAgeRangeDAO.getSpecificAgeRangeList();
+    		   
+    		    Map<Long,CadreCountsVO> finalMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+    		    
+    		    List<Object[]> data = null;
+    		    if(searchType.equalsIgnoreCase("district")){
+    		    	
+    		    	data  = tdpCadreAgeInfoDAO.getDistrictwiseAgeWiseCadreCounts(stateId);
+    		    	
+    		    }else if(searchType.equalsIgnoreCase("constituency")){
+    		    	
+    		    	data  = tdpCadreAgeInfoDAO.getConstituencyWiseAgeWiseCadreCounts(stateId , districtId);
+    		    }
+    		   
+    		    if(data != null && data.size() > 0){
+    		    	for(Object[] obj : data){
+    		    		
+    		    		if(obj[0] != null && obj[4] != null){
+    		    			
+    		    			Long locationId = (Long)obj[0];
+    		    			Long ageRangeId = (Long)obj[4];
+    		    			
+    		    			CadreCountsVO locationVO = finalMap.get(locationId);
+    		    			if(locationVO == null){
+    		    				locationVO = new CadreCountsVO();
+    		    				
+    		    				locationVO.setId(locationId);
+    		    				locationVO.setName(obj[1] != null ? obj[1].toString() : "");
+    		    				locationVO.setSuperLocationId(obj[2]!=null ? (Long)obj[2] : 0l);
+    		    				locationVO.setSuperlocationName(obj[3] != null ? obj[3].toString() : "");
+    		    				
+    		    				if(ageRangeList != null && ageRangeList.size() > 0){
+    		    					Map<Long,CadreCountsVO> ageRangeMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+    		        		   		for(Object[] params : ageRangeList){
+    		        		   			CadreCountsVO ageRangeVO = new CadreCountsVO();
+    		        		   			ageRangeVO.setId(params[0] != null ? (Long)params[0] : 0l);
+    		        		   			ageRangeVO.setName(params[1]!=null ? params[1].toString() : "");
+    		        		   			ageRangeMap.put(ageRangeVO.getId(), ageRangeVO);
+    		        		   		}
+    		        		   		locationVO.setSubMap(ageRangeMap);
+    		        		   	}
+    		    				finalMap.put(locationId, locationVO);
+    		    			}
+    		    			locationVO = finalMap.get(locationId);
+    		    			if( locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0){
+    		    				
+    		    				CadreCountsVO ageRangeVO = locationVO.getSubMap().get(ageRangeId);
+    		    				if(ageRangeVO != null){
+    		    					
+    		    					ageRangeVO.setPreviousCadreCount(obj[5] != null ? (Long)obj[5] : 0l);
+    		    					locationVO.setPreviousCadreTotalCount(locationVO.getPreviousCadreTotalCount() + ageRangeVO.getPreviousCadreCount());
+        		    				
+        		    				ageRangeVO.setCadreCount(obj[6] != null ? (Long)obj[6] : 0l);
+        		    				locationVO.setCadreTotalCount(locationVO.getCadreTotalCount() + ageRangeVO.getCadreCount());
+        		    				
+        		    				ageRangeVO.setNewCadre(obj[7] != null ? (Long)obj[7] : 0l);
+        		    				ageRangeVO.setRenewalCadre(obj[8] != null ? (Long)obj[8] : 0l);
+        		    				
+    		    				}
+    		    			}
+    		    		}
+    		    	}
+    		    }
+    		    
+    		    //calc perc
+    		    if(finalMap != null && finalMap.size() > 0){
+    		    	
+    		    	for (Map.Entry<Long, CadreCountsVO> locationEntry : finalMap.entrySet()){
+    		    		
+    		    		CadreCountsVO locationVO =  locationEntry.getValue();
+    		    		if(locationVO != null && locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0){
+    		    			
+    		    			for(Map.Entry<Long, CadreCountsVO> ageRangeEntry : locationVO.getSubMap().entrySet()){
+    		    				
+    		    				CadreCountsVO ageRangeVO =  ageRangeEntry.getValue();
+    		    				
+    		    				if(locationVO.getPreviousCadreTotalCount() != null && locationVO.getPreviousCadreTotalCount() > 0l){
+    	    		    			ageRangeVO.setPreviousCadrePercent( calcPercantage( ageRangeVO.getPreviousCadreCount() , locationVO.getPreviousCadreTotalCount() ) );
+    	    		    		}
+    	    		    		if(locationVO.getCadreTotalCount() != null && locationVO.getCadreTotalCount() > 0l){
+    	    		    			ageRangeVO.setCadrePercent( calcPercantage( ageRangeVO.getCadreCount() , locationVO.getCadreTotalCount() ) );
+    	    		    		}
+    	    		    		
+    	    		    		if(ageRangeVO.getCadreCount() != null && ageRangeVO.getCadreCount() > 0l){
+    	    		    			ageRangeVO.setNewCadrePercent(calcPercantage( ageRangeVO.getNewCadre() , ageRangeVO.getCadreCount() ));
+    	    		    			ageRangeVO.setRenewalCadrePercent(calcPercantage( ageRangeVO.getRenewalCadre() , ageRangeVO.getCadreCount() ));
+    	    		    		}
+    	    				    if(ageRangeVO.getPreviousCadreCount() != null && ageRangeVO.getPreviousCadreCount() > 0l){
+    	    				    	ageRangeVO.setPreviousCadreRenewalPercent(calcPercantage( ageRangeVO.getRenewalCadre() , ageRangeVO.getPreviousCadreCount() ));
+    	    				    }
+    		    				
+    		    			}
+    		    			locationVO.setSubList(new ArrayList<CadreCountsVO>(locationVO.getSubMap().values()));
+    		    			locationVO.getSubMap().clear();
+    		    		}
+    		    	}
+    		    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
+    		    }
+    		    
+    		   
+		  }catch(Exception e){
+			  LOG.error("Exception occur in ageWiseSummaryReport()  Of getLocationWisegeWiseTdpCadreCounts class - ",e);
+		  }
+    	   return finalList;
        }
 }
