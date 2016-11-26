@@ -15,6 +15,17 @@
 	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
+	
+	<link href="dist/alertDashBoard/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<link href="dist/alertDashBoard/dist/css/custom.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
+	<link href="dist/alertDashBoard/dist/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/alertDashBoard/dist/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+	<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+	<link href="dist/alertDashBoard/dist/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+
 	<!-- JQuery files (Start) -->
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
@@ -113,7 +124,7 @@
 						</div>
 					</div>
 					<!--location Filter-->
-					<div class="col-md-3 col-xs-12 col-sm-6" >
+					<!--<div class="col-md-3 col-xs-12 col-sm-6" >
 							<label>Assigned Cadre</label>
 							 <select class="chosenSelect" id="assignedCadreId">
 								 <option value="0">All</option>
@@ -156,14 +167,120 @@
 						
 					<div class="col-md-2 col-xs-12 col-sm-4">
 							<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button">View</button>
-						</div>
+						</div>-->
 					<!--location Filter End-->
-					
-					<div class="row  m_top10">
+				
+					<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<div class="col-md-4 col-xs-12 col-sm-4">
+						<h3>VIEW / ASSIGN ALERT</h3>
+					</div>
+					<div class="row pull-right">
 						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="col-md-3 col-xs-12 col-sm-4">
+								<button type="button" class="btn btn-default showfilterBlock" >Show Filters</button>
+							</div>
+							<div class="filterBlockDiv updateDropDown" style="width:1000px" >
+							<div class="col-md-12 col-xs-12 col-sm-12">
+							 <button type="button" class="closedropdown close"  data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+							</div>
+							<div class="updateDropDownArrow">
+							
+								<div class="col-md-3 col-xs-12 col-sm-6">
+									<label style="font-size:14px;" class="textcolor_black">Assigned Cadre</label>
+									<select class="form-control chosen-select" id="assignedCadreId" >
+										<option value="0" selected="selected">Select Assigned Cadre</option>
+										<option value="1">Party</option>
+										<option value="2">Govt</option>
+									</select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6">
+									<label style="font-size:14px;" class="textcolor_black">State</label>
+									 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
+										 <option value="0">All</option>
+										 <option value="1">Andhra Pradesh</option>
+										 <option value="36">Telangana</option>
+									 </select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6">
+									<label style="font-size:14px;" class="textcolor_black">District</label>
+										<select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
+										<option value="0">All</option></select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6">
+									<label style="font-size:14px;" class="textcolor_black">Assembly</label>
+									<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
+									<option value="0">All</option>
+									</select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6">
+									<label style="font-size:14px;" class="textcolor_black">Mandal/Municipality</label>
+									<select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
+										<option value="0">All</option>
+									 </select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6">
+									<label style="font-size:14px;" class="textcolor_black">Panchayat/Ward</label>
+									<select class="dropkickClass" id="referpanchayatId" >
+										<option value="0">All</option>
+									</select>
+								</div>
+									<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
+									
+								</div>
+							</div>							
+						</div>
+					</div>	
+				</div>
+			</div>
+			<div class="row m_top10">
+				<div class="col-md-12 col-xs-12 col-sm-12 alertheadingcolor">
+					<div class="col-md-3 col-xs-12 col-sm-3">
+					<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
+						<select class="form-control chosen-select" id="alertTypeId" >
+							<option value="0" selected="selected">Select Alert Type</option>
+							<option value="1">Party</option>
+							<option value="2">Govt</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-3">
+					<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
+						<select class="form-control chosen-select" id="alertStatusId" >
+							<option value="0" selected="selected">Select Alert Status</option>
+							<option value="1">Pending</option>
+							<option value="2">Notified</option>
+							<option value="3">Action In Progess</option>
+							<option value="4">Completed</option>
+							<option value="5">Unable to Resolve</option>
+							<option value="6">Action Not Required</option>
+						</select>
+					</div>
+					
+				</div>
+				<div class="col-md-12 col-xs-12 col-sm-12 pad_0">
+					<div class="panel panel-default">
+						<div class="panel-heading panel-headingColor">
+							<div class="row">
+								<div class="col-md-3 col-xs-12 col-sm-3">
+									<h4 class="panel-title text_capital"><b>alert details</b></h4>
+								</div>
+								
+							</div>
+							
+							
+						</div>
+						<div class="panel-body bg_ff">
 							<div id="locationLevelDataId"></div>
 						</div>
 					</div>
+						
+				</div>
+			</div>
+					<!--<div class="row  m_top10">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="locationLevelDataId"></div>
+						</div>
+					</div>-->
                 </div>
             </div>
         </div>
@@ -305,8 +422,35 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<script src="dist/alertDashBoard/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+	$("#alertTypeId").chosen();
+	$("#alertStatusId").chosen();
+	$("#assignedCadreId").chosen();
+	$("#assignedCadreStateId").chosen();
+	$("#assignedCadreDistrictId").chosen();
+	$("#assignedCadreAssemblyId").chosen();
+	$("#assignedCadreManMunId").chosen();
+	$("#assignedCadrePanWardId").chosen();
+	$(".datatableId").dataTable();
+		$(document).on("click",".showfilterBlock",function(){
+			$(".filterBlockDiv").toggle();
+			
+		});
+		$(document).on("click",".closedropdown",function(){
+			$(".filterBlockDiv").hide();
+			
+		});
+		
+		
 $(document).on("click",".menuSelection li",function(){
 	$(this).parent(".menuSelection").find("li").removeClass("active");
 	$(this).addClass("active");
@@ -405,7 +549,24 @@ function getAlertAssignedCandidate()
 		globalStateId = stateId;
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
-		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);  
+		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate); 
+		
+		var levelId = 0;
+		var levelValue = stateId;
+				
+		var statusId=0;
+		var fromDate = '';
+		var toDate='';
+		var dateStr = $("#dateRangePickerId").val(); 
+		
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+		var	categoryId =0;
+		$("#errorId").html("");
+		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+		
 	});  
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 	$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
