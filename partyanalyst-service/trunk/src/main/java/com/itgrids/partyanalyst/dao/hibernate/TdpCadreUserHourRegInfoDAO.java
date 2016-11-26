@@ -174,6 +174,8 @@ public List<Object[]> getTdpCadreDataHourWiseForTabUsersOverall(){
 					queryStr.append(" and (model1.constituency.district.districtId between 11 and 23 ) ");
 				}
 			}
+			queryStr.append(" and model1.cadreSurveyUser.isDeleted='N' " +
+					"  and model1.cadreSurveyUser.isEnabled='Y'  and model1.isDeleted='N' ");
 			
 				queryStr.append(" group by model.cadreSurveyUserId ");
 			
