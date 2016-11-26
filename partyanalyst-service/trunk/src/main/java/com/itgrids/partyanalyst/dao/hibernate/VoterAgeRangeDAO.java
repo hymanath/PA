@@ -41,4 +41,9 @@ public class VoterAgeRangeDAO extends GenericDaoHibernate<VoterAgeRange, Long> i
 		return getHibernateTemplate().find("from VoterAgeRange model order by model.minValue asc ");
 	}
 	
+	public List<Object[]> getSpecificAgeRangeList(){
+		Query query = getSession().createQuery(" select model.voterAgeRangeId , model.ageRange  from VoterAgeRange model where model.voterAgeRangeId not in (1,7) ");
+		return query.list();
+	}
+	
 }
