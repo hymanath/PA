@@ -8,8 +8,15 @@ public class AlertInputVO {
 	private Long levelValue;
 	private Long categoryId;	
 	private Long assignId;
+	private String searchTypeStr;
 	
 	
+	public String getSearchTypeStr() {
+		return searchTypeStr;
+	}
+	public void setSearchTypeStr(String searchTypeStr) {
+		this.searchTypeStr = searchTypeStr;
+	}
 	public Long getLevelValue() {
 		return levelValue;
 	}
