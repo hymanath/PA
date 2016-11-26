@@ -19,7 +19,7 @@ $(document).ready(function(){
 	var	categoryId =0;
 	$("#errorId").html("");
 	
-	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
 	
 });
 $(document).on("click",'.applyBtn',function(){
@@ -43,7 +43,7 @@ $(document).on("click",'.applyBtn',function(){
 	var	categoryId =0;
 	$("#errorId").html("");
 	
-	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);	
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");	
 })
 function getLocationLevelAlertCount()
 {
@@ -222,6 +222,7 @@ function buildLocationLevelAlert(result,jsObj){
 }
 $(document).on("click",".locationLevelCls",function(){
 	var levelId = $(this).attr("attr-levelId");
+	var locationBlock = $(this).attr("attr_search_Location");
 	var levelValue = 0;
 	$('.stateCls').each(function(){
 		if($(this).hasClass("active"))
@@ -234,12 +235,12 @@ $(document).on("click",".locationLevelCls",function(){
 	var	categoryId =0;
 	$("#errorId").html("");
 	
-	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
 });
 $(document).on("click",".headerWiseDataCls",function(){
 	var levelId = $(this).attr("attr_levlId");
 	var levelValue = 0;
-	
+	var locationBlock = $(this).attr("attr_search_Location");
 	$('.stateCls').each(function(){
 		if($(this).hasClass("active"))
 			levelValue = $(this).attr("attr_state_id");
@@ -258,26 +259,33 @@ $(document).on("click",".headerWiseDataCls",function(){
 	
 	$("#errorId").html("");
 	
-	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
 });
 
 //999
 var GlobalAlertData;
-function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId)
+function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock)
 {
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
+	var assignId = $('#assignedCadreId').val();
+	var alertTpeId = $('#alertTypeId').val();
+	if(assignId== null || assignId.length==0)
+		assignId=0;
+	if(alertTpeId== null || alertTpeId.length==0)
+		alertTpeId=0;
 	
     GlobalAlertData = [];
 		var jsObj =
 		     {
+				alertTypeId:alertTpeId,
 				levelId  : levelId,
 				statusId :statusId,
 				fromDate :fromDate,
 				toDate   :toDate,
 				levelValue:levelValue,
 				categoryId:categoryId,
-				assignId:0,
-				task : ""
+				assignId:assignId,
+				task : locationBlock
 		      }
 			$.ajax({
 					  type:'GET',
@@ -718,8 +726,13 @@ function getAlertStatusCommentsTrackingDetails()
 			fromDate = dateStr.split("-")[0];
 			toDate = dateStr.split("-")[1];
 		}
+		var alertTpeId = $('#alertTypeId').val();	
+		if(alertTpeId== null || alertTpeId.length==0)
+			alertTpeId=0;
+		
 		var jsObj =
 		     {
+				alertTypeId:alertTpeId,
 				stateId  : stateId,
 				districtId :districtId,
 				constituencyId :constituencyId,
@@ -740,8 +753,3 @@ function getAlertStatusCommentsTrackingDetails()
 					buildAlertData(result,jsObj);
 				});
 }
-	
-	
-
-
-
