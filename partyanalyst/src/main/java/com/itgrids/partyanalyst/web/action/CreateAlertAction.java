@@ -522,5 +522,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getTotalAlertGroupByStatusThenCategoryLocationWise(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			String Location = jObj.getString("Location");  
+			alertVOs = alertService.getTotalAlertGroupByStatusThenCategoryLocationWise(fromDate, toDate, stateId, Location);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
