@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1714,6 +1715,183 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("error in setImpactId() method ");
 		}
 		return VO;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByStatusThenCategory(java.lang.String, java.lang.String, java.lang.Long)
+	 */
+	public List<AlertVO> getTotalAlertGroupByStatusThenCategoryLocationWise(String fromDateStr, String toDateStr, Long stateId, String Location){
+		LOG.info("Entered in getTotalAlertGroupByStatusThenCategory() method of AlertService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//get all the location id list.
+			List<Object[]> locationIdList = alertDAO.getLocationIdList(fromDate, toDate, stateId, Location);
+			Map<Long,List<Long>> impactIdAndLocValueList = new HashMap<Long,List<Long>>();
+			List<Long> locValList = null;
+			//all location values
+			List<Long> locaionIds = new ArrayList<Long>();
+			if(locationIdList != null && locationIdList.size() > 0){
+				for(Object[] param : locationIdList){
+					locaionIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					locValList = impactIdAndLocValueList.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locValList != null){
+						locValList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}else{
+						locValList = new ArrayList<Long>();
+						locValList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						impactIdAndLocValueList.put(commonMethodsUtilService.getLongValueForObject(param[0]), locValList);
+					}
+				}
+			}
+			//get all the location name correspond to location id
+			List<Object[]> locationIdAndName1 = null;
+			List<Object[]> locationIdAndName2 = null;
+			if(Location.equalsIgnoreCase("state")){
+				if(impactIdAndLocValueList.get(2L) != null){
+					locationIdAndName1 = stateDAO.getAllStatesByStateIds(impactIdAndLocValueList.get(2L));//impact lvl id 2
+				}
+			}else if(Location.equalsIgnoreCase("district")){
+				if(impactIdAndLocValueList.get(3L) != null){
+					locationIdAndName1 = districtDAO.getSpecificDistrictIdAndName(impactIdAndLocValueList.get(3L));//impact lvl id 3
+				}
+			}else if(Location.equalsIgnoreCase("constituency")){
+				if(impactIdAndLocValueList.get(4L) != null){
+					locationIdAndName1 = constituencyDAO.getConstituenciesNamesByIds(impactIdAndLocValueList.get(4L));//impact lvl id 4
+				}
+			}else if(Location.equalsIgnoreCase("village")){
+				if(impactIdAndLocValueList.get(6L) != null){
+					locationIdAndName1 = panchayatDAO.getPanchayatNamesByIds(impactIdAndLocValueList.get(6L));//impact lvl id 6
+				}
+				if(impactIdAndLocValueList.get(8L) != null){
+					locationIdAndName2 = constituencyDAO.getConstituenciesNamesByIds(impactIdAndLocValueList.get(8L));//impact lvl id 8
+				}
+				if(locationIdAndName2 != null && locationIdAndName2.size() > 0){
+					if(locationIdAndName1 != null){
+						locationIdAndName1.addAll(locationIdAndName2);
+					}else{
+						locationIdAndName1 = new ArrayList<Object[]>();
+						locationIdAndName1.addAll(locationIdAndName2);
+					}
+				}
+			}
+			//create a map for locationId and name 
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			if(locationIdAndName1 != null && locationIdAndName1.size() > 0){
+				for(Object[] param : locationIdAndName1){
+					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			AlertVO alertVO = null;
+			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
+			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			//get all the alert category for  building the template
+			List<Object[]> categoryList = alertCategoryDAO.getAllCategory(); 
+			
+			//get all the alert count group by Location then status then category.
+			Map<Long,Map<Long,String>> locationIdAndStatusIdAndSatatusMap = new LinkedHashMap<Long,Map<Long,String>>();
+			Map<Long,String> statusIdAndStatusNameMap = null;//new LinkedHashMap<Long,String>();
+			
+			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,Long> categoryIdAndCountMap = null;//new HashMap<Long, Long>();
+			Map<Long,Map<Long,Long>> statusIdAndCategoryIdAndCountMap = null;//new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Map<Long,Map<Long,Long>>> locationIdAndStatusIdAndCategoryIdAndCountMap = new LinkedHashMap<Long,Map<Long,Map<Long,Long>>>();
+			if(locaionIds.size() > 0){
+				List<Object[]> alertCountGrpBylocationIdAndStatusIdAndCategoryId = alertDAO.getAlertCountGrpBylocationIdAndStatusIdAndCategoryId(fromDate, toDate, stateId, locaionIds, Location);
+				if(alertCountGrpBylocationIdAndStatusIdAndCategoryId != null && alertCountGrpBylocationIdAndStatusIdAndCategoryId.size() > 0){
+					for(Object[] param : alertCountGrpBylocationIdAndStatusIdAndCategoryId){
+						statusIdAndCategoryIdAndCountMap = locationIdAndStatusIdAndCategoryIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(statusIdAndCategoryIdAndCountMap != null){
+							categoryIdAndCountMap = statusIdAndCategoryIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+							if(categoryIdAndCountMap != null){
+								categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+								
+							}else{
+								categoryIdAndCountMap = new LinkedHashMap<Long, Long>();
+								categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+								statusIdAndCategoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),categoryIdAndCountMap);
+							}
+						}else{
+							statusIdAndCategoryIdAndCountMap = new LinkedHashMap<Long,Map<Long,Long>>();
+							categoryIdAndCountMap = new LinkedHashMap<Long, Long>();
+							categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+							statusIdAndCategoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),categoryIdAndCountMap);
+							locationIdAndStatusIdAndCategoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndCategoryIdAndCountMap);
+						}
+						//create a map for related status against location
+						statusIdAndStatusNameMap = locationIdAndStatusIdAndSatatusMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(statusIdAndStatusNameMap != null){
+							statusIdAndStatusNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[2]));
+						}else{
+							statusIdAndStatusNameMap = new LinkedHashMap<Long,String>();
+							statusIdAndStatusNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[2]));
+							locationIdAndStatusIdAndSatatusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndStatusNameMap);
+						}  
+					}
+				}
+			}    
+			
+			//build final vo to sent to ui
+			List<AlertVO> finalList = null;//new ArrayList<AlertVO>();
+			List<AlertVO> superFinalList = new ArrayList<AlertVO>();
+			AlertVO innerListAlertVO = null;
+			AlertVO outerListAlertVO = null;
+			if(locationIdAndStatusIdAndCategoryIdAndCountMap .size() > 0){
+				for(Entry<Long,Map<Long,Map<Long,Long>>> entry2 : locationIdAndStatusIdAndCategoryIdAndCountMap.entrySet()){
+					statusIdAndCategoryIdAndCountMap = entry2.getValue();
+					if(statusIdAndCategoryIdAndCountMap.size() > 0){
+						finalList = new ArrayList<AlertVO>();
+						outerListAlertVO = new AlertVO();
+						statusIdAndStatusNameMap = locationIdAndStatusIdAndSatatusMap.get(entry2.getKey());
+						for(Entry<Long,Map<Long,Long>> entry : statusIdAndCategoryIdAndCountMap.entrySet()){
+							categoryIdAndCountMap = entry.getValue();
+							if(categoryIdAndCountMap.size() > 0){
+								if(categoryList != null && categoryList.size() > 0){
+									alertVOs = new ArrayList<AlertVO>();
+									innerListAlertVO = new AlertVO();
+									for(Object[] param : categoryList){
+										alertVO = new AlertVO();
+										alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
+										alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
+										alertVOs.add(alertVO);  
+									}
+								}
+								for(AlertVO param : alertVOs){
+									if(categoryIdAndCountMap.get(param.getCategoryId()) != null){
+										param.setCategoryCount(categoryIdAndCountMap.get(param.getCategoryId()));  
+									}else{
+										param.setCategoryCount(0l);
+									}
+								}
+								innerListAlertVO.setSubList1(alertVOs);
+								if(statusIdAndStatusNameMap.get(entry.getKey()) != null){
+									innerListAlertVO.setStatusId(entry.getKey());
+									innerListAlertVO.setStatus(statusIdAndStatusNameMap.get(entry.getKey()));
+								}
+								/*if(statusIdAndCountMap.get(entry.getKey()) != null){
+									innerListAlertVO.setCount(statusIdAndCountMap.get(entry.getKey()));
+								}*/  
+								finalList.add(innerListAlertVO);     
+							}
+						}
+						outerListAlertVO.setLocationId(entry2.getKey());
+						outerListAlertVO.setLocationName(locationIdAndNameMap.get(entry2.getKey()));
+						outerListAlertVO.setSubList2(finalList);
+						superFinalList.add(outerListAlertVO);
+					}
+				}
+			}
+			return superFinalList; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByStatusThenCategory() method of AlertService{}");
+		}
+		return null;
 	}
 	
 }
