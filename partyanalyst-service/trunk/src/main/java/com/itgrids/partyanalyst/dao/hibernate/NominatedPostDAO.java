@@ -1747,4 +1747,53 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   }
 	   return query.list();
    }
+   
+   public List<Object[]> getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(Long LocationLevelId,List<Long> locationValues,Long departmentId,Long boardId){
+	   StringBuilder queryStr = new StringBuilder();
+	   queryStr.append(" select ");
+	   if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+    	   queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId,model.nominatedPostMember.nominatedPostPosition.departments.deptName,");
+       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+      	   queryStr.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPostMember.nominatedPostPosition.board.boardName,");
+       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+ 		  queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName,");
+ 	   }
+       queryStr.append(" count(distinct model.nominatedPostId)"); 
+       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' and model.nominatedPostStatusId in ("+IConstants.NOMINATED_OPEN_POSTS_STATUS_IDS+") ");
+        if(locationValues !=null && locationValues.size()>0){
+        	queryStr.append(" and model.nominatedPostMember.locationValue in (:locationValues)");
+		}
+	    if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	queryStr.append(" and model.nominatedPostMember.boardLevelId=:locationLevelId ");
+	    }
+	    if(departmentId != null && departmentId.longValue() > 0){
+	    	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId ");
+	    }
+	    if(boardId != null && boardId.longValue() > 0l){
+	    	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.boardId=:boardId ");
+	    }
+	    
+	   if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
+       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+     	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.board.boardId order by model.nominatedPostMember.nominatedPostPosition.board.boardId ");
+       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.position.positionId order by  model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+       }
+       
+       Query query = getSession().createQuery(queryStr.toString());
+       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+    	 query.setParameter("locationLevelId", LocationLevelId);
+       }
+       if(locationValues != null && locationValues.size() > 0){
+    	   query.setParameterList("locationValues", locationValues);
+       }
+       if(departmentId != null && departmentId.longValue() > 0){
+    	   query.setParameter("departmentId", departmentId);
+       }
+       if(boardId != null && boardId.longValue() > 0){
+    	   query.setParameter("boardId", boardId);
+      }
+       return query.list();
+  }
 }
