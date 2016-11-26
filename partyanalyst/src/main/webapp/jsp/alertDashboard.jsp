@@ -236,7 +236,7 @@
 				<div class="col-md-12 col-xs-12 col-sm-12 alertheadingcolor">
 					<div class="col-md-3 col-xs-12 col-sm-3">
 					<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
-						<select class="form-control chosen-select" id="alertTypeId" >
+						<select class="form-control chosen-select " id="alertTypeId" onchange="getLocationFilterAlertData()">
 							<option value="0" selected="selected">Select Alert Type</option>
 							<option value="1">Party</option>
 							<option value="2">Govt</option>
@@ -245,7 +245,7 @@
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-3">
 					<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
-						<select class="form-control chosen-select" id="alertStatusId" >
+						<select class="form-control chosen-select" id="alertStatusId"  onchange="getLocationFilterAlertData()">
 							<option value="0" selected="selected">Select Alert Status</option>
 							<option value="1">Pending</option>
 							<option value="2">Notified</option>
@@ -746,12 +746,23 @@ function getAlertAssignedCandidate()
 		}).done(function(result){ 
 			$("#multiLocationId").html('');
 			if(result != null && result.length > 0){
-				buildTotalAlertGroupByStatusThenCategoryLocationWise(result);     
+				buildTotalAlertGroupByStatusThenCategoryLocationWise(result,globalLocation);     
 			}
 		});
 	}
-	function buildTotalAlertGroupByStatusThenCategoryLocationWise(result){
+	function buildTotalAlertGroupByStatusThenCategoryLocationWise(result,globalLocation){
 		var str = '';
+		var levelId=2;
+		
+		if(globalLocation == 'State')
+			levelId= 2;
+		else if(globalLocation == 'District')
+			levelId= 3;
+		else if(globalLocation == 'Constituency')
+			levelId= 4;
+		else if(globalLocation == 'Village')
+			levelId= 6;
+		
 		for(var i in result){
 			str+='<table class="table b_1">';
 				str+='<thead class="bg_ff">';
@@ -768,9 +779,16 @@ function getAlertAssignedCandidate()
 							cnt = parseInt(cnt) + parseInt(result[i].subList2[j].subList1[k].categoryCount);
 						}
 						var appClr = colorArrHead[result[i].subList2[j].status];
-						str+='<td class="text-capital" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right">'+cnt+'</span></td>';
+						if(cnt != null && cnt>0)
+							str+='<td class="text-capital" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> <u><a class="belowLocationCls" href="javascript:{};" attr_id="'+result[i].subList2[j].statusId+'" title="Click here to view '+globalLocation+' Alerts Details" attr_levlValue="'+result[i].locationId+'" attr_levlid="'+levelId+'" attr_category_id="0" attr_search_location="locationInnerBlock">'+cnt+'</a></u></span></td>';
+						else
+							str+='<td class="text-capital" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> '+cnt+'</span></td>';
+						
 						for(var k in result[i].subList2[j].subList1){
-							str+='<td>'+result[i].subList2[j].subList1[k].categoryCount+'</td>';
+							if(result[i].subList2[j].subList1[k].categoryCount != null && result[i].subList2[j].subList1[k].categoryCount>0)
+								str+='<td> <u><a class="belowLocationCls" href="javascript:{};" attr_id="'+result[i].subList2[j].statusId+'" title="Click here to view '+globalLocation+' Alerts Details" attr_levlid="'+levelId+'" attr_category_id="'+result[i].subList2[j].subList1[k].categoryId+'" attr_search_location="locationInnerBlock" attr_levlValue="'+result[i].locationId+'" > '+result[i].subList2[j].subList1[k].categoryCount+' </u></td>';
+							else
+								str+='<td>'+result[i].subList2[j].subList1[k].categoryCount+'</td>';
 						}
 						str+='</tr>';
 					}
