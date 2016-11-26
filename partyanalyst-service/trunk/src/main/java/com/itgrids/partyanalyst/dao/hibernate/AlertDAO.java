@@ -90,10 +90,18 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 			}
 		}
+		else{
+			if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+				str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+				str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			else
+				str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}
 		if(sourceIds != null && sourceIds.size() > 0)
 			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
 		if(fromDate != null)
-			str.append(" and date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate");
+			str.append(" and ( date(model.updatedTime) >=:fromDate and date(model.updatedTime) <=:toDate ) ");
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
 			str.append(" and model.alertStatus.alertStatusId = :statusId");
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
@@ -271,17 +279,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.alertStatus.alertStatusId, model.alertStatus.alertStatus, count(distinct model.alertId) " +
-						" from Alert model where ");
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " +
+						" where ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 1 ");
+				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId in (1,36) ");
 			}
 		}
 		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
@@ -301,17 +320,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" model.alertCategory.alertCategoryId, " +
 						" model.alertCategory.category," +
 						" count(distinct model.alertId) " +
-						" from Alert model where ");
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " +
+						"where ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 1 ");
+				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId in (1,36) ");
 			}
 		}
 		queryStr.append(" group by model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
@@ -327,17 +357,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getTotalAlertGroupByImpactLevel(Date fromDate, Date toDate, Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.regionScopes.regionScopesId, model.regionScopes.scope, count(distinct model.alertId) " +
-						" from Alert model where ");
+				" from Alert model " +
+				" left join model.userAddress userAddress " +
+				" left join userAddress.state state  " +
+				" left join userAddress.district district  " +
+				" left join userAddress.constituency constituency  " +
+				" left join userAddress.tehsil tehsil  " +
+				" left join userAddress.localElectionBody localElectionBody  " +
+				" left join userAddress.panchayat panchayat  " +
+				" left join userAddress.ward ward  " +
+				" where ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 1 ");
+				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId in (1,36) ");
 			}
 		}  
 		queryStr.append(" group by model.regionScopes.regionScopesId order by model.regionScopes.regionScopesId ");
@@ -358,17 +399,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" model.alertStatus.alertStatusId, " +
 						" model.alertStatus.alertStatus," +
 						" count(distinct model.alertId) " +
-						" from Alert model where ");
-		if(fromDate != null && toDate != null)  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " +
+						" where ");
+		if(fromDate != null && toDate != null){
 			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
-		
+		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 1 ");
+				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
-				queryStr.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+","+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and state.stateId in (1,36) ");
 			}
 		}
 		queryStr.append(" group by model.regionScopes.regionScopesId, model.alertStatus.alertStatusId " +
