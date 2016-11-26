@@ -152,6 +152,15 @@
                             	<option>Party</option>
                             </select>
                         </div>-->
+						 <div class="col-md-3 col-sm-6 col-xs-12">
+                        	<label>Alert Category : </label><span class="text-danger">*</span>
+                            <select class="dropkickClass"  id="alertCategory" name="alertVO.categoryId" >
+                            	<option value="0"> Select Alert Category </option>
+                            	<option value="1"> Mannual  </option>
+                            	<option value="2"> Print Media </option>
+                            	<option value="3"> Electronic Media </option>
+                            </select>
+                        </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Information Source For Alert</label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertSourceId" name="alertVO.alertSourceId" >
@@ -210,6 +219,24 @@
                             </select>
                         </div>
                     </div>
+					
+					<div class="row m_top10">
+                    	<div class="col-md-12 col-xs-12 col-sm-12">
+                        	<label>Alert Title : </label><span class="text-danger">*</span>
+							 <label class="radio-inline">
+                            	<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+                            </label>
+							 <div class="row m_top10">
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<input type="text" class="form-control " id="alertTitleId" name="alertVO.title"></textarea>
+								</div>
+							</div> 
+                        </div>
+                    </div>
+					
                     <div class="row m_top10">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<label>Alert Description</label><span class="text-danger">*</span>
@@ -532,10 +559,11 @@ $(document).on("click",".involveBlockNew",function(){
      // 'descrptionId'.
 
 	 	if ($('#alertdescriptionId').length){
-control.makeTransliteratable(['alertdescriptionId']);
- 
-
-}
+			control.makeTransliteratable(['alertdescriptionId']);
+		}
+		if ($('#alertTitleId').length){
+			control.makeTransliteratable(['alertTitleId']);
+		}
    }
    function languageChangeHandler() {
   
@@ -606,7 +634,11 @@ function createAlert()
  // var  candidate=$("#candidatesNameListId").val();
   //var  candidateName=$("#candidateNameId").val();
   var  description=$("#alertdescriptionId").val().trim();
-   $("#errorDiv1").html('');
+  
+  var categoryId=$("#alertCategory").val();
+  var title=$("#alertTitleId").val().trim();
+
+  $("#errorDiv1").html('');
   $("#errorDiv1").css("color","red");
   $("#candidateId").val('');
   if(alertType==0)
@@ -614,11 +646,16 @@ function createAlert()
     $("#errorDiv1").html(" Please select Alert Type ");
         return;
   }
+  if(categoryId == 0){
+	  $("#errorDiv1").html(" Please select Alert Category ");
+        return;
+  }
   if(alertSourceId==0)
   {
     $("#errorDiv1").html(" Please select Alert Source ");
         return;
   }
+  
    if(alertSeverityId==0)
   {
     $("#errorDiv1").html(" Please select Alert Severity ");
@@ -760,11 +797,17 @@ function createAlert()
 	
 	
 
+	 if(title.length==0 ||title=='')
+	  {
+		$("#errorDiv1").html(" Please enter Alert Title.  ");
+			return;
+	  }
+  
    if(description.length==0 ||description=='')
-  {
-    $("#errorDiv1").html(" Please select description ");
-        return;
-  }
+	  {
+		$("#errorDiv1").html(" Please enter description ");
+			return;
+	  }
 $("#createAlertajaxImg").html('<img src="images/search.gif"/>');
 var uploadHandler = {
 				upload: function(o) {

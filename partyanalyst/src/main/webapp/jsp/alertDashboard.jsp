@@ -417,7 +417,7 @@ function getAlertAssignedCandidate()
 		str+='<td>';
 			str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
 			if(totalAlert != null && totalAlert>0)
-				str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="2"  attr_category_id="0">'+totalAlert+'</a></u></h3>'; 
+				str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0">'+totalAlert+'</a></u></h3>'; 
 			else
 				str+='<h3>'+totalAlert+'</h3>'; 
 		str+='</td>';
@@ -426,7 +426,7 @@ function getAlertAssignedCandidate()
 			str+='<td>';
 			str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
 			if(result[i].count != null && result[i].count >0 )
-				str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="2"  attr_category_id="0">'+result[i].count+'</a></u></h3>';  
+				str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0">'+result[i].count+'</a></u></h3>';  
 			else
 				str+='<h3>'+result[i].count+'</h3>';
 			
@@ -471,20 +471,19 @@ function getAlertAssignedCandidate()
 			var appClr = colorArr[result[i].status];
 			var appClrHd = colorArrHead[result[i].status];
 			if(result[i].count != null && result[i].count > 0)
-				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="2">'+result[i].count+'</a> </u></span></td>';
+				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0">'+result[i].count+'</a> </u></span></td>';
 			else
 				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
 			
 			for(var j in result[i].subList1){
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount >0)
-					str+='<td style="background-color:'+appClr+'"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="2">'+result[i].subList1[j].categoryCount+' </a></u></td>';
+					str+='<td style="background-color:'+appClr+'"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="0">'+result[i].subList1[j].categoryCount+' </a></u></td>';
 				else
 					str+='<td style="background-color:'+appClr+'"> '+result[i].subList1[j].categoryCount+' </td>';
 			}
 			str+='</tr>';   
 		}
 		$("#alertCatTabId").html(str);  
-		
 	}
 	 
 	function getAlertCountGroupByLocationThenStatus(stateId,fromDate,toDate){
