@@ -297,6 +297,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setVillageId(jObj.getLong("panchayatId"));
 			inputVO.setLocationType(jObj.getString("mandalType"));
 			inputVO.setId(jObj.getLong("alertTypeId"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			
 			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"));
 			
 		}
