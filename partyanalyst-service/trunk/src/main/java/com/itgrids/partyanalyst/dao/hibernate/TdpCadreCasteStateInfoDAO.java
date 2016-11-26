@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -16,4 +18,38 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		Query query = getSession().createSQLQuery("CALL tdp_cadre_caste_info(); ");
 		return query.executeUpdate();  
 	}
+	
+	
+	public List<Object[]> casteCategoryWiseTdpCadreCounts(Long stateId , String minorityCasteIds){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName, " +//1
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//5
+				"   from   TdpCadreCasteStateInfo model ");
+		
+		sb.append(" where model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
+				
+		if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId ");
+		}
+		sb.append(" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("stateId", stateId );
+		return query.list();
+	}
+	
+	public Object[] minorityCastesTdpCadreCounts(Long stateId , String minorityCasteIds){
+		
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//3
+				"    from   TdpCadreCasteStateInfo model " +
+				"    where  model.casteState.caste.casteId  in ("+minorityCasteIds+")");
+		if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("stateId", stateId );
+		return (Object[])query.uniqueResult();
+	}
+	
 }
