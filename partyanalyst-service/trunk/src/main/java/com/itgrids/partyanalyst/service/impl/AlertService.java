@@ -343,6 +343,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 
 				 UserAddress userAddress = saveUserAddress(inputVO);
 				 alert.setAddressId(userAddress.getUserAddressId());
+				 alert.setAlertCategoryTypeId(inputVO.getCategoryId());
 				 alert = alertDAO.save(alert);
 				 
 				 

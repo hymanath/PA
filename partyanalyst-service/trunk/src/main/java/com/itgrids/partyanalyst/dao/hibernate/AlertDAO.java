@@ -45,15 +45,20 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	
 	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate)
 	{
+		String serchTypeStr="statusBlock";
+		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
-				" model.alertType.alertType,model.alertSource.source,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
+				" model.alertType.alertType,alertSource.source,alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
 				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
 		str.append(" ,constituency.constituencyId,constituency.name");
 		str.append(" ,state.stateId,state.stateName");
 		str.append(" ,ward.constituencyId,ward.name, alertCategory.alertCategoryId,alertCategory.category ");
-		str.append(" from Alert model left join model.userAddress.panchayat panc ");
+		str.append(" from Alert model " +
+				" left join model.alertSeverity alertSeverity" +
+				" left join model.alertSource  alertSource " +
+				" left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 		str.append(" left join model.userAddress.constituency constituency ");
 		str.append(" left join model.userAddress.localElectionBody localElectionBody ");
@@ -65,38 +70,60 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" where model.isDeleted ='N'");
 		if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L){
 			str.append(" and model.impactLevelId=:levelId");
-			if(inputVO.getLevelId().longValue() == 2L){
-				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				else
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		
+			if(serchTypeStr != null && serchTypeStr.equalsIgnoreCase("totalBlock")){
+					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+						str.append(" and state.stateId in (1) ");
+					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+						str.append(" and state.stateId in (36) ");
+					else
+						str.append(" and state.stateId in (1,36) ");
 			}
-			else if(inputVO.getLevelId().longValue() == 3L){
-				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				else
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-			}
-			else if(inputVO.getLevelId().longValue() == 4L){
-				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				else
-					str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			else{
+				if(inputVO.getLevelId().longValue() == 2L){
+					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+						str.append(" and state.stateId in (1) ");
+					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+						str.append(" and state.stateId in (36) ");
+					else
+						str.append(" and state.stateId in (1,36) ");
+				}
+				else if(inputVO.getLevelId().longValue() == 3L){
+					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+						str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+						str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					else
+						str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}
+				else if(inputVO.getLevelId().longValue() == 4L){
+					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+						str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+						str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					else
+						str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}
 			}
 		}
 		else{
-			if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-				str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-			else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-				str.append(" and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-			else
-				str.append(" and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			if(serchTypeStr != null && (serchTypeStr.equalsIgnoreCase("totalBlock") || serchTypeStr.equalsIgnoreCase("statusBlock") )){
+				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+					str.append(" and state.stateId in (1) ");
+				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+					str.append(" and state.stateId in (36) ");
+				else
+					str.append(" and state.stateId in (1,36) ");
+			}
+			else{
+				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+					str.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+					str.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				else
+					str.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+			
 		}
 		if(sourceIds != null && sourceIds.size() > 0)
 			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
@@ -288,9 +315,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  " +
-						" where ");
+				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+			queryStr.append(" and (date(model.updatedTime) between :fromDate and :toDate) ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -329,9 +356,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  " +
-						"where ");
+				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+			queryStr.append(" and ( date(model.updatedTime) between :fromDate and :toDate)  ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -366,9 +393,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				" left join userAddress.localElectionBody localElectionBody  " +
 				" left join userAddress.panchayat panchayat  " +
 				" left join userAddress.ward ward  " +
-				" where ");
+				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+			queryStr.append(" and (date(model.updatedTime) between :fromDate and :toDate) ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -408,9 +435,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  " +
-						" where ");
+						" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+			queryStr.append(" and (date(model.updatedTime) between :fromDate and :toDate)  ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
