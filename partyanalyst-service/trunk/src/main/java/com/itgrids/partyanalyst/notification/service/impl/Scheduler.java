@@ -630,6 +630,7 @@ public class Scheduler {
 		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
 			return rs;
 		}  
+		log.error(" Entered In To - Pushing Location wise Gender Data to Intermediate Table.. ");
 		try{  
 			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByGender();
 			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
@@ -648,6 +649,7 @@ public class Scheduler {
 		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
 			return rs;
 		}   
+		log.error(" Entered In To - Pushing Location wise CasteState Data to Intermediate Table.. "); 
 		try{  
 			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByCasteState();
 			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
@@ -665,7 +667,8 @@ public class Scheduler {
 		ResultStatus rs = new ResultStatus();
 		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
 			return rs;
-		}  
+		}
+		log.error(" Entered In To -  Pushing Location wise Age Data to Intermediate Table .. "); 
 		try{  
 			rs = cadreRegistrationServiceNew.pushCadreCountsLocationWiseByAge();
 			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
