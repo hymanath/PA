@@ -63,7 +63,7 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
     	
     	StringBuilder sb = new StringBuilder();
     	
-    	sb.append("select info.constituencyId,info.constituencyName,info.districtId ,info.districtName," +
+    	sb.append("select C.constituencyId,C.name,info.districtId ,info.district.districtName," +
     			"         info.ageRangeId , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
     			"  from   TdpCadreAgeInfo info , Constituency C " +
     			"  where  info.locationValue = C.constituencyId and " +
