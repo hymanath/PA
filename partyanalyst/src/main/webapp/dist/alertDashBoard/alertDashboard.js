@@ -267,7 +267,6 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 {
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
 	
-	
     GlobalAlertData = [];
 		var jsObj =
 		     {
@@ -289,6 +288,7 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 					buildAlertData(result,jsObj);
 				});
 }
+
 
 function buildAlertData(result,jsObj)
 {
@@ -325,7 +325,7 @@ function buildAlertData(result,jsObj)
 		Level = "";
 	}
 	var str='';
-	
+	/*
 	if(jsObj.statusId > 0)
 	{
 		if(Level.length > 0)
@@ -349,7 +349,7 @@ function buildAlertData(result,jsObj)
 		{
 			str+='<h4 class="text-success text-capital m_top10"> Alert Details</h4>';
 		}
-	}
+	}*/
 	
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff" id="alertDataTableId">';
@@ -690,7 +690,7 @@ function getAlertStatusCommentsTrackingDetails()
 	
 	function getLocationFilterAlertData()
 {
-
+	$(".filterBlockDiv").hide();
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
     GlobalAlertData = [];
 	var stateId = $("#stateId").val();
