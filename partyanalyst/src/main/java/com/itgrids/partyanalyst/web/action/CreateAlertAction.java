@@ -269,6 +269,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setLevelValue(jObj.getLong("levelValue"));
 			inputVO.setCategoryId(jObj.getLong("categoryId"));
 			inputVO.setAssignId(jObj.getLong("assignId"));
+			inputVO.setSearchTypeStr(jObj.getString("task"));
+			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
 			
 			alertDataList = alertService.getLocationLevelWiseAlertsData(regVo.getRegistrationID(),inputVO);
 			
@@ -294,6 +296,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setTehsilId(jObj.getLong("mandalId"));
 			inputVO.setVillageId(jObj.getLong("panchayatId"));
 			inputVO.setLocationType(jObj.getString("mandalType"));
+			inputVO.setId(jObj.getLong("alertTypeId"));
 			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"));
 			
 		}
