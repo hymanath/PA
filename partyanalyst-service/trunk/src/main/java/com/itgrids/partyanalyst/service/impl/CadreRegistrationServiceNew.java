@@ -3032,4 +3032,126 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		  }
     	   return finalList;
        }
+       
+       /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  CASTE CATEGORY  WISE SUMMARY REPORT.
+	   	 *  @since 26-NOVEMBER-2016. 
+	   	 */
+      public CadreCountsVO casteCategoryWiseTdpCadreSummaryReport(Long stateId){
+   	   
+   	   CadreCountsVO finalVO = new CadreCountsVO();
+   	   
+   	   try{
+   		   
+   		   //TOTAL COUNTS
+   		   Long previousCadreTotalCount = 0l;
+   		   Long cadreTotalCount = 0l;
+   		   Long newCadreTotalCount = 0l;
+   		   Long renewalCadreTotalCount = 0l;
+   		   
+   		   	Map<Long,CadreCountsVO> finalMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+   		   	
+   		   	List<Object[]> data =  tdpCadreCasteStateInfoDAO.casteCategoryWiseTdpCadreCounts(stateId , IConstants.CADRE_NEW_MINORITY_CASTE_IDS);
+   		    Object[] minorityData =  tdpCadreCasteStateInfoDAO.minorityCastesTdpCadreCounts(stateId , IConstants.CADRE_NEW_MINORITY_CASTE_IDS);
+   		   	
+   		    if( data != null && data.size() > 0){
+   		    	for(Object[] obj : data){
+   		    		
+   		    		if(obj[0] != null && (Long)obj[0] > 0l){
+   		    			
+   		    			CadreCountsVO casteCategoryVO = finalMap.get((Long)obj[0]);
+   		    			if(casteCategoryVO == null){
+   		    				casteCategoryVO = new CadreCountsVO();
+   		    				casteCategoryVO.setId((Long)obj[0]);
+   		    				casteCategoryVO.setName(obj[1] != null ? obj[1].toString() : "");
+   		    				finalMap.put(casteCategoryVO.getId(), casteCategoryVO);
+   		    			}
+   		    			casteCategoryVO = finalMap.get((Long)obj[0]);
+   		    				
+   		    			casteCategoryVO.setPreviousCadreCount(obj[2] != null ? (Long)obj[2] : 0l);
+   		    			previousCadreTotalCount = previousCadreTotalCount + casteCategoryVO.getPreviousCadreCount();
+   		    				
+   		    			casteCategoryVO.setCadreCount(obj[3] != null ? (Long)obj[3] : 0l);
+   		    		    cadreTotalCount = cadreTotalCount + casteCategoryVO.getCadreCount();
+   		    				
+   		    		    casteCategoryVO.setNewCadre(obj[4] != null ? (Long)obj[4] : 0l);
+   		    			newCadreTotalCount = newCadreTotalCount + casteCategoryVO.getNewCadre();
+   		    				
+   		    			casteCategoryVO.setRenewalCadre(obj[5] != null ? (Long)obj[5] : 0l);
+   		    			renewalCadreTotalCount = renewalCadreTotalCount + casteCategoryVO.getRenewalCadre();
+   		    		}
+   		    	}
+   		    }	    
+   		   
+   		 if(minorityData != null && minorityData.length > 0){
+    			
+   			CadreCountsVO casteCategoryVO = new CadreCountsVO();
+   			casteCategoryVO.setId(0L);
+   			casteCategoryVO.setName("Minority");	
+   			
+   			casteCategoryVO.setPreviousCadreCount(minorityData[0] != null ? (Long)minorityData[0] : 0l);
+   			previousCadreTotalCount = previousCadreTotalCount + casteCategoryVO.getPreviousCadreCount();
+   			
+   			casteCategoryVO.setCadreCount(minorityData[1] != null ? (Long)minorityData[1] : 0l);
+		    cadreTotalCount = cadreTotalCount + casteCategoryVO.getCadreCount();
+				
+		    casteCategoryVO.setNewCadre(minorityData[2] != null ? (Long)minorityData[2] : 0l);
+			newCadreTotalCount = newCadreTotalCount + casteCategoryVO.getNewCadre();
+				
+			casteCategoryVO.setRenewalCadre(minorityData[3] != null ? (Long)minorityData[3] : 0l);
+			renewalCadreTotalCount = renewalCadreTotalCount + casteCategoryVO.getRenewalCadre();
+   			
+   			finalMap.put(casteCategoryVO.getId(), casteCategoryVO);
+		 }
+   		    
+   		    
+   		    //perc
+   		    List<CadreCountsVO> finalList = null ; 
+   		    if(finalMap != null && finalMap.size() > 0){
+   		    	for (Map.Entry<Long, CadreCountsVO> entry : finalMap.entrySet()){
+   				
+   		    		CadreCountsVO dataVO =  entry.getValue();
+   		    		
+   		    		if(previousCadreTotalCount != null && previousCadreTotalCount > 0l){
+   		    			dataVO.setPreviousCadrePercent( calcPercantage( dataVO.getPreviousCadreCount() , previousCadreTotalCount ) );
+   		    		}
+   		    		if(cadreTotalCount != null && cadreTotalCount > 0l){
+   		    			dataVO.setCadrePercent( calcPercantage( dataVO.getCadreCount() , cadreTotalCount ) );
+   		    		}
+   		    		
+   		    		if(dataVO.getCadreCount() != null && dataVO.getCadreCount() > 0l){
+   		    			dataVO.setNewCadrePercent(calcPercantage( dataVO.getNewCadre() , dataVO.getCadreCount() ));
+   		    			dataVO.setRenewalCadrePercent(calcPercantage( dataVO.getRenewalCadre() , dataVO.getCadreCount() ));
+   		    		}
+   				    if(dataVO.getPreviousCadreCount() != null && dataVO.getPreviousCadreCount() > 0l){
+   				    	dataVO.setPreviousCadreRenewalPercent(calcPercantage( dataVO.getRenewalCadre() , dataVO.getPreviousCadreCount() ));
+   				    }
+   		    		
+   				}
+   		    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
+   		    	finalVO.setSubList(finalList);
+   		    }
+			
+   		    //Total Counts Perc
+   		    finalVO.setPreviousCadreTotalCount(previousCadreTotalCount);
+   		    finalVO.setCadreTotalCount(cadreTotalCount);
+   		    finalVO.setNewCadreTotalCount(newCadreTotalCount);
+   		    finalVO.setRenewalCadreTotalCount(renewalCadreTotalCount);
+   		    
+   		    if(finalVO.getCadreTotalCount() != null && finalVO.getCadreTotalCount() > 0l){
+   		    	finalVO.setNewCadrePercent(calcPercantage( finalVO.getNewCadreTotalCount() , finalVO.getCadreTotalCount() ));
+   		    	finalVO.setRenewalCadrePercent(calcPercantage( finalVO.getRenewalCadreTotalCount() , finalVO.getCadreTotalCount() ));
+	    	}
+   		    if(finalVO.getPreviousCadreTotalCount() != null && finalVO.getPreviousCadreTotalCount() > 0l){
+   		    	finalVO.setPreviousCadreRenewalPercent(calcPercantage( finalVO.getRenewalCadreTotalCount() , finalVO.getPreviousCadreTotalCount() ));
+			}
+   		    
+		  }catch(Exception e){
+			  LOG.error("Exception occur in casteCategoryWiseTdpCadreSummaryReport()  Of CadreRegistrationServiceNew class - ",e);
+		  }
+   	   return finalVO;
+      }
+      
+     
 }
