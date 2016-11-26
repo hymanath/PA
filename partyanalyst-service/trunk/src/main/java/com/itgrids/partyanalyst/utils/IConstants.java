@@ -1223,4 +1223,5 @@ public interface IConstants {
 	public static final Long SECRETARY_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
 	public static final Long STATE_SUB_LEVEL_DESIG_IDS [] = {1L,2L,3L,4L,5L,6L,7L,8L,9L};
 	
+	public static final String CADRE_NEW_MINORITY_CASTE_IDS = "81,97,107,292,299,300,301";
 }
