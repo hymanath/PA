@@ -2679,6 +2679,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 			rs.setMessage("Success");
 		} catch (Exception e) {
 			LOG.error("Exception raised at pushCadreCountsLocationWiseByAge() in CadreRegistrationServiceNew Class", e);
+			LOG.fatal("Exception raised at pushCadreCountsLocationWiseByAge() in CadreRegistrationServiceNew Class", e);
 			rs.setMessage("Failure");
 		}
 		return rs;    
