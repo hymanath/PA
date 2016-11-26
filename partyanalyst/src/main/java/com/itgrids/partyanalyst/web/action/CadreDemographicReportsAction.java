@@ -1,0 +1,118 @@
+package com.itgrids.partyanalyst.web.action;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
+
+import com.itgrids.partyanalyst.dto.CadreCountsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
+
+public class CadreDemographicReportsAction  extends ActionSupport implements ServletRequestAware{
+	
+	private static final long serialVersionUID = -3507936702681837368L;
+	private static final Logger LOG = Logger.getLogger(CadreDemographicReportsAction.class);
+	
+	//Instance Variables
+	private HttpServletRequest  request;
+	private HttpSession session;
+	private String 	task;
+	private JSONObject  jobj;
+	private CadreCountsVO cadreCountsVO;
+	private List<CadreCountsVO> cadreCountsVOList;
+	
+	//Attributes
+	private ICadreRegistrationServiceNew cadreRegistrationServiceNew; 
+	
+	//setters And Getters
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
+	public JSONObject getJobj() {
+		return jobj;
+	}
+	public void setJobj(JSONObject jobj) {
+		this.jobj = jobj;
+	}
+	
+   public void setCadreRegistrationServiceNew(
+			ICadreRegistrationServiceNew cadreRegistrationServiceNew) {
+		this.cadreRegistrationServiceNew = cadreRegistrationServiceNew;
+	}
+   
+	public CadreCountsVO getCadreCountsVO() {
+	   return cadreCountsVO;
+    }
+	public void setCadreCountsVO(CadreCountsVO cadreCountsVO) {
+		this.cadreCountsVO = cadreCountsVO;
+	}
+	
+	
+	public List<CadreCountsVO> getCadreCountsVOList() {
+		return cadreCountsVOList;
+	}
+	public void setCadreCountsVOList(List<CadreCountsVO> cadreCountsVOList) {
+		this.cadreCountsVOList = cadreCountsVOList;
+	}
+	//implementation methods
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request; 
+	}
+	
+	//business methods
+	public String execute(){
+		try {
+			
+			 session = request.getSession();
+			
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+		}catch(Exception e) {
+			LOG.error("Exception raised at execute() in cadreDemographicReportsAction Action ", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String ageWiseTdpCadreSummaryReport(){
+		
+		try{
+			 //Long stateId = 1L;
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+				
+			 cadreCountsVO = cadreRegistrationServiceNew.ageWiseTdpCadreSummaryReport(stateId);
+		}catch(Exception e){
+			LOG.error("Exception raised at ageWiseTdpCadreSummaryReport() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWisegeWiseTdpCadreCounts(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+			 Long districtId = jobj.getLong("districtId");
+			 String searchType = jobj.getString("searchType");
+			
+			cadreCountsVOList = cadreRegistrationServiceNew.getLocationWisegeWiseTdpCadreCounts(stateId,districtId,searchType);
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWisegeWiseTdpCadreCounts() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+}
+

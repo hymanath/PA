@@ -717,5 +717,6 @@
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 		<pattern>/cadreWebRegistrationAction*</pattern>
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
+		<pattern>/cadreDemographicReportsAction*</pattern>
 	</decorator> 
 </decorators>

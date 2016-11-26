@@ -14812,5 +14812,20 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="cadreDemographicReportsAction" class="cadreDemographicReportsAction">
+			 <result name="success">/jsp/cadreDemographicReports.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreDemographicReportsAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	 <action name="ageWiseTdpCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="ageWiseTdpCadreSummaryReport">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVO</param>
+		</result>
+	</action>
+	<action name="getLocationWisegeWiseTdpCadreCountsAction" class="cadreDemographicReportsAction"  method="getLocationWisegeWiseTdpCadreCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
