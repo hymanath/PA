@@ -30,7 +30,22 @@ public class LocationVO implements Serializable {
 	private String locationType;
 	private String fromDate;
 	private String toDate;
+	private String status;
+	private Long statusId;
 	
+	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getId() {
 		return id;
 	}
