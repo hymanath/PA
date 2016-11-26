@@ -30,10 +30,12 @@ public class AlertVO {
 	private String category;
 	private Long categoryId;
 	private Long categoryCount = 0l;
+	private Long locationId;
+	private String locationName;
 	
 	private List<AlertVO> subList1;
+	private List<AlertVO> subList2;
 	private String title;
-	
 	public String getTitle() {
 		return title;
 	}
@@ -198,5 +200,22 @@ public class AlertVO {
 		this.categoryCount = categoryCount;
 	}
 	
-
+	public List<AlertVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<AlertVO> subList2) {
+		this.subList2 = subList2;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 }
