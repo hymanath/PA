@@ -45,8 +45,6 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	
 	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate)
 	{
-		String serchTypeStr="statusBlock";
-		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
 				" model.alertType.alertType,alertSource.source,alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
@@ -71,7 +69,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L){
 			str.append(" and model.impactLevelId=:levelId");
 		
-			if(serchTypeStr != null && serchTypeStr.equalsIgnoreCase("totalBlock")){
+			if(inputVO.getSearchTypeStr() != null && inputVO.getSearchTypeStr().equalsIgnoreCase("totalBlock")){
 					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
 						str.append(" and state.stateId in (1) ");
 					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
@@ -107,7 +105,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			}
 		}
 		else{
-			if(serchTypeStr != null && (serchTypeStr.equalsIgnoreCase("totalBlock") || serchTypeStr.equalsIgnoreCase("statusBlock") )){
+			if(inputVO.getSearchTypeStr() != null && (inputVO.getSearchTypeStr().equalsIgnoreCase("totalBlock") || inputVO.getSearchTypeStr().equalsIgnoreCase("statusBlock") )){
 				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
 					str.append(" and state.stateId in (1) ");
 				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
@@ -125,6 +123,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			}
 			
 		}
+		if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue()>0L)
+			str.append(" and model.alertTypeId =:alertTypeId ");
 		if(sourceIds != null && sourceIds.size() > 0)
 			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
 		if(fromDate != null)
@@ -149,6 +149,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("levelId", inputVO.getLevelId());
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
 			query.setParameter("alertCategoryId", inputVO.getCategoryId());
+		if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue()>0L)
+			query.setParameter("alertTypeId", inputVO.getAlertTypeId());
 		return query.list();
 	}
 	
