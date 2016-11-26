@@ -94,7 +94,7 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
 		sb.append("select info.ageRangeId , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
 		         " from   TdpCadreAgeInfo info , Constituency C " +
 		         " where  info.locationValue = C.constituencyId and " +
-		         "        info.locationScopeId = :locationScopeId ");
+		         "        info.locationScopeId = 4 ");
 		
 		if(stateId != null && stateId == 1L){
 			sb.append(" and C.district.districtId between 11 and 23 ");
@@ -104,7 +104,6 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
 		sb.append(" group by info.ageRangeId ");
 		Query query = getSession().createQuery(sb.toString());
 		
-		query.setParameter("locationScopeId", IConstants.LOCATION_SCOPE_ID_CONSTITUENCY);
 		return query.list();
 	}
 	
