@@ -537,7 +537,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " +
 						" where ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate ");
+			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
