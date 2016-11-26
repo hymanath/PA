@@ -28,6 +28,8 @@ public class TdpCadreAgeInfo extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 858095076798141947L;
 	private Long tdpCadreAgeInfoId;
 	private Long ageRangeId;
+	private Long stateId;
+	private Long districtId;
 	private Long locationScopeId;
 	private Long locationValue;
 	private Long cadre2014;
@@ -41,7 +43,9 @@ public class TdpCadreAgeInfo extends BaseModel implements Serializable {
 	private Date insertedTime;
 	
     private VoterAgeRange voterAgeRange;
-
+    private State state;
+    private District district;
+    
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_age_info_id", unique = true, nullable = false)
@@ -77,6 +81,24 @@ public class TdpCadreAgeInfo extends BaseModel implements Serializable {
 		this.locationValue = locationValue;
 	}
 
+	@Column(name = "state_id")
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	
+	@Column(name = "district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	
 	@Column(name = "cadre_2014")
 	public Long getCadre2014() {
 		return cadre2014;
@@ -163,6 +185,29 @@ public class TdpCadreAgeInfo extends BaseModel implements Serializable {
 	public void setVoterAgeRange(VoterAgeRange voterAgeRange) {
 		this.voterAgeRange = voterAgeRange;
 	}
-    
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="state_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
     
 }
