@@ -286,7 +286,8 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 						queryStr.append(" and (constituency.district.districtId  between 11 and 23) ");
 				}
 			}
-			queryStr.append(" and model.cadreSurveyUserAssignDetails.cadreSurveyUser.isEnabled='Y'  and model.cadreSurveyUserAssignDetails.isDeleted='N' ");
+			queryStr.append(" and model.cadreSurveyUserAssignDetails.cadreSurveyUser.isDeleted='N' " +
+					"  and model.cadreSurveyUserAssignDetails.cadreSurveyUser.isEnabled='Y'  and model.cadreSurveyUserAssignDetails.isDeleted='N' ");
 			/*if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
 				queryStr.append(" and (district.districtId between 11 and 23) ");
 			else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
