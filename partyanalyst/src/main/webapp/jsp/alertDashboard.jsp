@@ -72,7 +72,6 @@
 					<div class="table-responsive" id="">
 					</div>
 					<div class="row">
-						
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<table class="table tableCounts" id="overAllCount"></table>
 						</div>
@@ -84,6 +83,32 @@
 								<div class="panel-body bg_EF">
 									<table class="table tableAlert" id="locWiseAltCntId"></table>
 								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading bg_cc">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="panel-title text-capital">location wise alerts</h4>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<label class="radio-inline">
+												<input name="location" type="radio" checked/> State    
+											</label>
+											<label class="radio-inline">
+												<input name="location" type="radio"/> District
+											</label>
+											<label class="radio-inline">
+												<input name="location" type="radio"/> Constituency
+											</label>
+											<label class="radio-inline">
+												<input name="location" type="radio"/> Village/Ward
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body bg_EF" id="multiLocationId"></div>
 							</div>
 						</div>
 					</div>
@@ -532,6 +557,53 @@ function getAlertAssignedCandidate()
 		}
 		$("#locWiseAltCntId").html(str);  
 		
+	}
+	getTotalAlertGroupByStatusThenCategoryLocationWise();
+	function getTotalAlertGroupByStatusThenCategoryLocationWise(){
+		var jsObj = { 
+			stateId : 1,             
+			fromDate : '10/08/2016',
+			toDate : '26/11/2016',
+			Location : 'state'
+		}                  
+		$.ajax({
+			type : 'POST',      
+			url : 'getTotalAlertGroupByStatusThenCategoryLocationWiseAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){  
+			if(result != null && result.length > 0){
+				buildTotalAlertGroupByStatusThenCategoryLocationWise(result);     
+			}
+		});
+	}
+	function buildTotalAlertGroupByStatusThenCategoryLocationWise(result){
+		var str = '';
+		for(var i in result){
+			str+='<table class="table b_1">';
+				str+='<thead class="bg_ff">';
+					str+='<th>'+result[i].locationName+'</th>';
+					for(var l in result[0].subList2[0].subList1){
+						str+='<th>'+result[0].subList2[0].subList1[l].category+'</th>';
+					}
+				str+='</thead>';
+				str+='<tbody>';
+					for(var j in result[i].subList2){
+						str+='<tr>';  
+						var cnt = 0;
+						for(var k in result[i].subList2[j].subList1){
+							cnt = parseInt(cnt) + parseInt(result[i].subList2[j].subList1[k].categoryCount);
+						}
+						str+='<td>'+result[i].subList2[j].status+'<span class="pull-right">'+cnt+'</span></td>';
+						for(var k in result[i].subList2[j].subList1){
+							str+='<td>'+result[i].subList2[j].subList1[k].categoryCount+'</td>';
+						}
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';     
+		}
+		$("#multiLocationId").html(str);      
 	}
 </script>
 </body>
