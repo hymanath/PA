@@ -10,6 +10,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class LocationVO implements Serializable {
 
+	private Long id;
+	private String name;
 	private Long districtId;
 	private String districtName;
 	private Long constituencyId;
@@ -29,6 +31,18 @@ public class LocationVO implements Serializable {
 	private String fromDate;
 	private String toDate;
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getFromDate() {
 		return fromDate;
 	}
