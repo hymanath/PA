@@ -5001,7 +5001,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 				//Map<Long,Long> memberwisePostsCountMap = new HashMap<Long, Long>(0);
 			  if(LocationLevelId.equals(5l)){
-			        if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
+				    if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 			          for (Long manTowDivId : lctnLevelValueList) {
 			        	  
 			            String mtdId = manTowDivId.toString();
@@ -5056,14 +5056,77 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			  if(finalMap !=null && finalMap.size() > 0){
 				  fnlCnddtCuntLst = new ArrayList<IdNameVO>(finalMap.values());
 			  }
-			
-			  
+			  if(status != null && status.equalsIgnoreCase("Total")){
+				   mandalList.clear();
+				   townList.clear();
+				   divisonList.clear();	
+				   
+				   if(fnlCnddtCuntLst != null && fnlCnddtCuntLst.size() > 0l){
+						  for(IdNameVO VO:fnlCnddtCuntLst){
+							  VO.setCount(0l);
+						  }
+					}
+				   
+				  if(LocationLevelId.equals(5l)){
+				        if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
+				          for (Long manTowDivId : lctnLevelValueList) {
+				        	  
+					            String mtdId = manTowDivId.toString();
+					            char temp = mtdId.charAt(0);
+					            Long firstChar=Long.parseLong(temp+"");
+					            if(firstChar==4l){
+					              mandalList.add(Long.parseLong(mtdId.substring(1)));
+					            }else if(firstChar==5l){
+					              townList.add(Long.parseLong(mtdId.substring(1)));
+					            }else if(firstChar==6l){
+					              divisonList.add(Long.parseLong(mtdId.substring(1)));
+					            }            
+				          }
+				        }
+				        if(mandalList !=null && mandalList.size()>0){
+				        	 List<Object[]> mandalObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(5l, mandalList, departmentId, boardId);
+				        	 setOpenCntToResultLst(mandalObjList,fnlCnddtCuntLst);
+				        }
+				        if(townList != null && townList.size() > 0){
+				        	List<Object[]> townObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(6l, townList, departmentId, boardId);
+				        	setOpenCntToResultLst(townObjList,fnlCnddtCuntLst);
+					    }
+				        if(divisonList != null && divisonList.size()>0){
+				        	 List<Object[]> divObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(7l, divisonList, departmentId, boardId);
+				        	 setOpenCntToResultLst(divObjList,fnlCnddtCuntLst);
+					    }
+				}else{
+					  List<Object[]> rtrnOpenCntOblLst = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(LocationLevelId,lctnLevelValueList, departmentId, boardId);
+					  setOpenCntToResultLst(rtrnOpenCntOblLst,fnlCnddtCuntLst);
+				}
+			 }
 		 }catch(Exception e) {
 			 LOG.error("Exceptionr riased at getFinalReviewCandidateCountLocationWise in NominatedPostProfileService class", e); 
 		 }
 		  return fnlCnddtCuntLst;
 	}
-
+	public void setOpenCntToResultLst(List<Object[]> objList,List<IdNameVO> resultList){
+		   if(objList != null && objList.size() > 0){
+			   for(Object[] param:objList){
+				   IdNameVO VO = getMatchVO(commonMethodsUtilService.getLongValueForObject(param[0]),resultList);   
+				   		if(VO != null){
+				   			VO.setCount(VO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+				   		}
+			   }
+		   } 
+	}
+    @SuppressWarnings("null")
+	public IdNameVO getMatchVO(Long id,List<IdNameVO> resultList){
+    	if(resultList == null && resultList.size() == 0l){
+    		return null;
+    	}
+    	for(IdNameVO VO:resultList){
+    		if(VO.getId().equals(id)){
+    			return VO;
+    		}
+    	}
+    	return null;
+    }
 	public Map<Long,IdNameVO> setDataToMapForFinalReview(List<Object[]> rtrnObjList,Map<Long,IdNameVO> finalMap,Map<Long,Map<String,Long>> movedPostsStatusDetailsMap,String status){
 		try{
 			if(rtrnObjList != null && !rtrnObjList.isEmpty()){
