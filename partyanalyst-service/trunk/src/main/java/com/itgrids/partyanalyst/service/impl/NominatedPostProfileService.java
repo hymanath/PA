@@ -5056,6 +5056,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			  if(finalMap !=null && finalMap.size() > 0){
 				  fnlCnddtCuntLst = new ArrayList<IdNameVO>(finalMap.values());
 			  }
+			  //Setting Open Post Count only instead of total post Count in the case of Total Status  
 			  if(status != null && status.equalsIgnoreCase("Total")){
 				   mandalList.clear();
 				   townList.clear();
@@ -5063,7 +5064,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				   
 				   if(fnlCnddtCuntLst != null && fnlCnddtCuntLst.size() > 0l){
 						  for(IdNameVO VO:fnlCnddtCuntLst){
-							  VO.setCount(0l);
+							  VO.setCount(0l);//clearing total post cnt
 						  }
 					}
 				   
