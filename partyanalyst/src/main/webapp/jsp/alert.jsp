@@ -236,7 +236,7 @@
 							</div> 
                         </div>
                     </div>
-					
+					<!--
                     <div class="row m_top10">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
                         	<label>Alert Description</label><span class="text-danger">*</span>
@@ -247,7 +247,7 @@
                             	<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
                             </label>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="row m_top10">
                     	<div class="col-md-12 col-sm-12 col-xs-12">
                         	<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
@@ -538,6 +538,141 @@ $(document).on("click",".involveBlockNew",function(){
 
  var control;
 	var lang;
+	var cloneCount=0;
+	var involvedCadreIds = [];
+	var assignCadreIds = [];
+   $(document).on("click",".apptDetailsDiv",function(){
+		console.log($(this).attr("attr_name"));
+		 if($(this).is(':checked')){
+		
+			 $("#involvedCandidatesDiv").show();
+			 $(".membersBlock").show();
+			  var name  = $(this).attr("attr_name");
+			  var image = $(this).attr("attr_img_url");
+			  var attrId = $(this).attr("attr_id");
+			  var attrConsti =  $(this).attr("attr-consti");
+			   var mobile = $(this).attr("attr_mobile");
+			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
+			var str ='';
+				str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+				str+='<div class="involveBlock">';
+				str+='<div class="media"><div class="media-left">';
+				str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
+				str+='</div>';
+				str+='<div class="media-body">';
+				if(btnAttr == "involve")
+				{
+					str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
+				}
+				else
+				{
+					str+='<input type="hidden" class="form-control assignmemberDatacls" name="alertVO.assignList['+cloneCount+'].id" value="'+attrId+'"/>';
+				}
+				
+				str+='<div class="col-md-12"><b>'+name+'</b></div>';
+				str+='<div class="col-md-12"><b>'+mobile+'</b></div>';
+				str+='<div class="col-md-12"><label>'+attrConsti+'</label></div>';
+				str+='<div class="col-md-12">';
+			if(btnAttr == "involve")
+			{
+				str+='<div class="form-inline">';
+				//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
+				str+='<div class="onoffswitch" style="display:inline-block">';
+				str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
+				str+='<label class="onoffswitch-label" for="myonoffswitch'+cloneCount+'">';
+				str+='<span class="onoffswitch-inner"></span>';
+				str+='<span class="onoffswitch-switch"></span>';
+				str+='</label>';
+				str+='</div>';
+				str+='</div>';
+			}
+			str+='</div></div></div>';
+			if(btnAttr == "involve")
+			{
+				str+='<span class="closeIcon" btn-type="involve" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
+				$("#duplicateCandidateBlock").html('');
+			}
+			else
+			{
+				str+='<span class="closeIcon" btn-type="assign" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
+				$("#duplicateCandidateBlock").html('');
+				
+			}
+			if(btnAttr == "involve")
+			{
+					if(jQuery.inArray(attrId, involvedCadreIds) == -1 )
+					{
+						
+						involvedCadreIds.push(attrId);	
+						$(".membersBlock").append(str);
+						$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+						var addStr ='';
+						addStr+='<p class="text-capital" >'+name+'</p>';
+						addStr+='<p>'+mobile+'</p>';
+						addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+						$("#duplicateCandidateBlock").html(''+addStr+'');
+						$("#memberConfirmation").html("Member Added");
+						
+						$("#myModalConformation").modal('show');
+						setTimeout(function(){ $("#myModalConformation").modal('hide');
+							 }, 2000);
+							 setTimeout(function(){ $("body").addClass("modal-open");	
+						}, 3000);
+					}else{
+						var duplicateStr ='';
+						duplicateStr+='<p class="text-capital" >'+name+'</p>';
+						duplicateStr+='<p>'+mobile+'</p>';
+						duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+						$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+						$("#memberConfirmation").html("already added member to this alert");
+						$("#myModalConformation").modal('show');
+						 setTimeout(function(){ $("body").addClass("modal-open");	
+						}, 3000);
+					}	
+			}
+			else
+				
+				{
+						if(jQuery.inArray(attrId, assignCadreIds) == -1 )
+						{
+							
+							assignCadreIds.push(attrId);	
+							$(".assignedMembersBlock").append(str);
+							$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
+							var addStr ='';
+							addStr+='<p class="text-capital" >'+name+'</p>';
+							addStr+='<p>'+mobile+'</p>';
+							addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+							$("#duplicateCandidateBlock").html(''+addStr+'');
+							$("#memberConfirmation").html("Member Added");
+							
+							$("#myModalConformation").modal('show');
+							setTimeout(function(){ $("#myModalConformation").modal('hide');
+								 }, 2000);
+								 setTimeout(function(){ $("body").addClass("modal-open");	
+							}, 3000);
+						}else{
+							var duplicateStr ='';
+							duplicateStr+='<p class="text-capital" >'+name+'</p>';
+							duplicateStr+='<p>'+mobile+'</p>';
+							duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+							$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+							$("#memberConfirmation").html("already added member to this alert");
+							$("#myModalConformation").modal('show');
+							 setTimeout(function(){ $("body").addClass("modal-open");	
+							}, 3000);
+						}	
+				}
+				
+				 
+						 
+				  cloneCount = cloneCount+1;
+				   $('html, body').animate({
+						scrollTop: $('.membersBlock').offset().bottom
+					}, 2000);
+		 }
+   });
+   
    function onLoad() {
 	
        lang = $("input[name=language]:checked").val();
@@ -831,8 +966,10 @@ var uploadHandler = {
 
 function clearFields()
 {
+	$("#alertTitleId").val("");
 	$(".alertclearCls").val("");
 	$(".clearCls").val("");
+	 $("#alertCategory").val(0);
 	 $("#alertTypeId").val(0);
 	  var select = new Dropkick("#alertTypeId");
 				select.refresh();
