@@ -114,5 +114,19 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		
 		return Action.SUCCESS;
 	}
+	
+	public String casteCategoryWiseTdpCadreSummaryReport(){
+		
+		try{
+			 //Long stateId = 1L;
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+				
+			 cadreCountsVO = cadreRegistrationServiceNew.casteCategoryWiseTdpCadreSummaryReport(stateId);
+		}catch(Exception e){
+			LOG.error("Exception raised at casteCategoryWiseTdpCadreSummaryReport() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
 
