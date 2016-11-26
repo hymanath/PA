@@ -24,7 +24,6 @@
 	<link href="dist/alertDashBoard/dist/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 	<link href="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 	<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
-	<link href="dist/alertDashBoard/dist/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 
 	<!-- JQuery files (Start) -->
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
@@ -241,6 +240,7 @@
 							<option value="0" selected="selected">Select Alert Type</option>
 							<option value="1">Party</option>
 							<option value="2">Govt</option>
+							<option value="3">Others</option>
 						</select>
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-3">
@@ -422,35 +422,8 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<script src="dist/alertDashBoard/dist/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/Plugins/Slick/slick.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="dist/alertDashBoard/dist/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-	$("#alertTypeId").chosen();
-	$("#alertStatusId").chosen();
-	$("#assignedCadreId").chosen();
-	$("#assignedCadreStateId").chosen();
-	$("#assignedCadreDistrictId").chosen();
-	$("#assignedCadreAssemblyId").chosen();
-	$("#assignedCadreManMunId").chosen();
-	$("#assignedCadrePanWardId").chosen();
-	$(".datatableId").dataTable();
-		$(document).on("click",".showfilterBlock",function(){
-			$(".filterBlockDiv").toggle();
-			
-		});
-		$(document).on("click",".closedropdown",function(){
-			$(".filterBlockDiv").hide();
-			
-		});
-		
-		
 $(document).on("click",".menuSelection li",function(){
 	$(this).parent(".menuSelection").find("li").removeClass("active");
 	$(this).addClass("active");
@@ -493,7 +466,28 @@ $(document).ready(function(){
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
-		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);		
+		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+
+		var levelId = 0;
+		var levelValue = 0;
+			$('.stateCls').each(function(){
+				if($(this).hasClass("active"))
+					levelValue = $(this).attr("attr_state_id");
+			});
+			
+		var statusId=0;
+		var fromDate = '';
+		var toDate='';
+		var dateStr = $("#dateRangePickerId").val(); 
+		
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+		var	categoryId =0;
+		$("#errorId").html("");
+		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+		
 	});
 	
 $(document).on("change","#dateRangePickerId",function(){
@@ -558,6 +552,9 @@ function getAlertAssignedCandidate()
 		var levelId = 0;
 		var levelValue = stateId;
 				
+		var levelId = 0;
+		var levelValue = stateId;
+				
 		var statusId=0;
 		var fromDate = '';
 		var toDate='';
@@ -569,7 +566,7 @@ function getAlertAssignedCandidate()
 		}
 		var	categoryId =0;
 		$("#errorId").html("");
-		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
 	}); 
 	$(document).on("click",".locationCls",function(){
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
@@ -616,7 +613,7 @@ function getAlertAssignedCandidate()
 		str+='<td>';
 			str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
 			if(totalAlert != null && totalAlert>0)
-				str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0">'+totalAlert+'</a></u></h3>'; 
+				str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
 			else
 				str+='<h3>'+totalAlert+'</h3>'; 
 		str+='</td>';
@@ -625,7 +622,7 @@ function getAlertAssignedCandidate()
 			str+='<td>';
 			str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
 			if(result[i].count != null && result[i].count >0 )
-				str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0">'+result[i].count+'</a></u></h3>';  
+				str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
 			else
 				str+='<h3>'+result[i].count+'</h3>';
 			
@@ -671,13 +668,13 @@ function getAlertAssignedCandidate()
 			var appClr = colorArr[result[i].status];
 			var appClrHd = colorArrHead[result[i].status];
 			if(result[i].count != null && result[i].count > 0)
-				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0">'+result[i].count+'</a> </u></span></td>';
+				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].count+'</a> </u></span></td>';
 			else
 				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
 			
 			for(var j in result[i].subList1){
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount >0)
-					str+='<td style="background-color:'+appClr+'"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="0">'+result[i].subList1[j].categoryCount+' </a></u></td>';
+					str+='<td style="background-color:'+appClr+'"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].subList1[j].categoryCount+' </a></u></td>';
 				else
 					str+='<td style="background-color:'+appClr+'"> '+result[i].subList1[j].categoryCount+' </td>';
 			}
@@ -718,13 +715,13 @@ function getAlertAssignedCandidate()
 			}
 			str+='<tr>';
 			if(result[i].count != null && result[i].count>0)
-				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0">'+result[i].count+'</a></u></span></td>';							
+				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
 			else
 				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><'+result[i].count+'</span></td>';
 			
 			for(var j in result[i].subList1){
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
-					str+='<td><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0">'+result[i].subList1[j].categoryCount+'</u></td>';
+					str+='<td><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
 				else				
 					str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 			}
@@ -782,6 +779,26 @@ function getAlertAssignedCandidate()
 		}
 		$("#multiLocationId").html(str);      
 	}
+	
+	
+	$("#alertTypeId").chosen();
+	$("#alertStatusId").chosen();
+	$("#assignedCadreId").chosen();
+	$("#assignedCadreStateId").chosen();
+	$("#assignedCadreDistrictId").chosen();
+	$("#assignedCadreAssemblyId").chosen();
+	$("#assignedCadreManMunId").chosen();
+	$("#assignedCadrePanWardId").chosen();
+	$(".datatableId").dataTable();
+		$(document).on("click",".showfilterBlock",function(){
+			$(".filterBlockDiv").toggle();
+			
+		});
+		$(document).on("click",".closedropdown",function(){
+			$(".filterBlockDiv").hide();
+			
+		});
+		
 </script>
 </body>
 </html>
