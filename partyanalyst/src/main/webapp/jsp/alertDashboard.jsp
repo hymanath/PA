@@ -105,16 +105,16 @@
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<label class="radio-inline">
-												<input name="location" type="radio" checked/> State    
+												<input class="locationCls" name="location" type="radio" value="State" checked/> State    
 											</label>
 											<label class="radio-inline">
-												<input name="location" type="radio"/> District
+												<input class="locationCls" name="location" type="radio" value="District"/> District
 											</label>
 											<label class="radio-inline">
-												<input name="location" type="radio"/> Constituency
+												<input class="locationCls" name="location" type="radio" value="Constituency"/> Constituency
 											</label>
 											<label class="radio-inline">
-												<input name="location" type="radio"/> Village/Ward
+												<input class="locationCls" name="location" type="radio" value="Village"/> Village/Ward
 											</label>
 										</div>
 									</div>
@@ -462,6 +462,7 @@ function createAlert(){
 
 $('[data-toggle="tooltip"]').tooltip()
 var globalStateId = 1;
+globalLocation = "state";  
 var currentFromDate = moment().subtract(29, 'days').format("DD/MM/YYYY");
 var currentToDate = moment().format("DD/MM/YYYY");  
 
@@ -486,11 +487,13 @@ $(document).ready(function(){
 		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');     
 		currentFromDate = picker.startDate.format('DD/MM/YYYY');
 		currentToDate = picker.endDate.format('DD/MM/YYYY');     
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
-		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);   
+		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
+		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);		
 	});
 	
 $(document).on("change","#dateRangePickerId",function(){
@@ -545,12 +548,13 @@ function getAlertAssignedCandidate()
 		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
 		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
 		var stateId = $(this).attr("attr_state_Id");
 		globalStateId = stateId;
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
-		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate); 
-		
+		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
+		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 		var levelId = 0;
 		var levelValue = stateId;
 				
@@ -566,14 +570,23 @@ function getAlertAssignedCandidate()
 		var	categoryId =0;
 		$("#errorId").html("");
 		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId);
+	}); 
+	$(document).on("click",".locationCls",function(){
+		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
+		var locationType=$("input:radio[name=location]:checked").val();
+		globalLocation = locationType;
+		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 		
-	});  
+	});
+	
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 	$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
 	$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+	$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
 	getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 	getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
-	getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);   
+	getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
+	getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 	function getTotalAlertGroupByStatus(stateId,fromDate,toDate){
 		var jsObj = { 
 			stateId : stateId,     
@@ -642,9 +655,10 @@ function getAlertAssignedCandidate()
 			}
 		});
 	}
+	var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 	function buildTotalAlertGroupByStatusThenCategory(result){
 		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
-		var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
+		//var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 		var str = '';  
 		str+='<thead class="bg_CD">';
 		str+='<th>&nbsp;</th>';
@@ -719,20 +733,21 @@ function getAlertAssignedCandidate()
 		$("#locWiseAltCntId").html(str);  
 		
 	}
-	getTotalAlertGroupByStatusThenCategoryLocationWise();
-	function getTotalAlertGroupByStatusThenCategoryLocationWise(){
+	
+	function getTotalAlertGroupByStatusThenCategoryLocationWise(stateId,fromDate,toDate,globalLocation){
 		var jsObj = { 
-			stateId : 1,             
-			fromDate : '10/08/2016',
-			toDate : '26/11/2016',
-			Location : 'state'
+			stateId : stateId,             
+			fromDate : fromDate,
+			toDate : toDate,
+			Location : globalLocation
 		}                  
 		$.ajax({
 			type : 'POST',      
 			url : 'getTotalAlertGroupByStatusThenCategoryLocationWiseAction.action',
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){  
+		}).done(function(result){ 
+			$("#multiLocationId").html('');
 			if(result != null && result.length > 0){
 				buildTotalAlertGroupByStatusThenCategoryLocationWise(result);     
 			}
@@ -755,7 +770,8 @@ function getAlertAssignedCandidate()
 						for(var k in result[i].subList2[j].subList1){
 							cnt = parseInt(cnt) + parseInt(result[i].subList2[j].subList1[k].categoryCount);
 						}
-						str+='<td>'+result[i].subList2[j].status+'<span class="pull-right">'+cnt+'</span></td>';
+						var appClr = colorArrHead[result[i].subList2[j].status];
+						str+='<td class="text-capital" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right">'+cnt+'</span></td>';
 						for(var k in result[i].subList2[j].subList1){
 							str+='<td>'+result[i].subList2[j].subList1[k].categoryCount+'</td>';
 						}
