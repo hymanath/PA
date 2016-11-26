@@ -68,11 +68,14 @@
 								</div>
 							</div>
 						</div>
-						<div id="ageWiseSummaryDetails"></div>
-						<div id="ageWiseDistrictDetails"></div>
+						<div id="ageWiseSummaryDetails" class="ageWiseBlock"></div>
+						<div id="ageWiseDistrictDetails" class="ageWiseBlock"></div>
 						<div id="excelDivageWiseDistrictDetails" style="display:none;"></div>
-						<div id="ageWiseConstituencyDetails" ></div>
+						<div id="ageWiseConstituencyDetails" class="ageWiseBlock"></div>
 						<div id="excelDivageWiseConstituencyDetails" style="display:none;"></div>
+						
+						<div id="overAllCasteWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+						<div id="overAllGenderWiseSummaryDetails" class="genderWiseBlock" style="display:none;">Gender Wise Report</div>
 					</div>  
 				</div>	
 			</div>
@@ -102,8 +105,45 @@
 			getAgeWiseTdpCadreSummaryReport(stateId);
 			getDistrictWisegeWiseTdpCadreCounts(stateId,0,"district");
 			getConstituencyWisegeWiseTdpCadreCounts(stateId,0,"constituency");
+			getCasteCategoryWiseTdpCadreSummaryReport(stateId);
 	});
 	
+	$(document).on("click","#ageWiseReport",function(){
+		 var stateId = ''; 
+		$('.stateCls').each(function(i, obj){
+          if($(this).is(':checked')){
+			  stateId = $(this).val();
+		  }
+		});
+		$(".ageWiseBlock").show();
+		$(".casteWiseBlock").hide();
+		$(".genderWiseBlock").hide();
+		
+		getAgeWiseTdpCadreSummaryReport(stateId);
+		getDistrictWisegeWiseTdpCadreCounts(stateId,0,"district");
+		getConstituencyWisegeWiseTdpCadreCounts(stateId,0,"constituency");
+		
+	});	
+	$(document).on("click","#casteWiseReport",function(){
+		 var stateId = ''; 
+		$('.stateCls').each(function(i, obj){
+          if($(this).is(':checked')){
+			  stateId = $(this).val();
+		  }
+		});
+		
+		$(".ageWiseBlock").hide();
+		$(".casteWiseBlock").show();
+		$(".genderWiseBlock").hide();
+		getCasteCategoryWiseTdpCadreSummaryReport(stateId);
+		
+	});	
+	$(document).on("click","#genderWiseReport",function(){
+		$(".ageWiseBlock").hide();
+		$(".casteWiseBlock").hide();
+		$(".genderWiseBlock").show();
+		
+	});	
 	//Over All Report Start
 	function getAgeWiseTdpCadreSummaryReport(stateId){
 		 $("#ageWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -595,6 +635,179 @@
 		tableToExcel(constituencyWiseTableExcelDivId, 'CONSTITUENCY AGE WISE REPORT'); 
 	}
 	//Constituency Wise Report End
+	
+	//caste wise reports
+	function getCasteCategoryWiseTdpCadreSummaryReport(stateId){
+		 $("#overAllCasteWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jobj =	{  
+			         stateId:stateId
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'casteCategoryWiseTdpCadreSummaryReportAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			 $("#overAllCasteWiseSummaryDetails").html('');
+			 buildCasteCategoryWiseTdpCadreSummaryReport(result,stateId);
+			
+		});
+	}
+	
+	function buildCasteCategoryWiseTdpCadreSummaryReport(result,stateId){
+		var str='';
+		if(result !=null && result.subList !=null && result.subList.length>0){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				str+='<div class="panel panel-default">';
+				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
+				  str+='<div class="row">';
+					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
+						if(stateId == 1){
+							str+='<h3 class="panel-title text-capital">overall caste Category Wise AP report</h3>';
+						}else{
+							  str+='<h3 class="panel-title text-capital">overall caste Category Wise TS report</h3>';
+						}
+					str+='</div>';
+					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+						str+='<button class="btn btn-success btn-xs" id="overAllcasteWiseReportExcel" >Export To Excel</button></h4>';
+					str+='</div>';
+				  str+='</div>';
+				  str+='</div>';
+				  str+='<div class="panel-body">';
+					str+='<div class="table-reponsive">';
+					str+='<table class="table table-bordered" id="overaAllCasteWiseTableExcelDivId">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th class="text-capital "><b class="f_14">age range</th></b>';
+								str+='<th class="text-capital " ><b class="f_14">2014 cadre</th></b>';
+								str+='<th class="text-capital "><b class="f_14">2014 cadre %</th></b>';
+								str+='<th class="text-capital "><b class="f_14">2016 cadre</th></b>';
+								str+='<th class="text-capital "><b class="f_14">2016 cadre %</th></b>';
+								str+='<th class="text-capital "><b class="f_14">Renewal</th></b>';
+								str+='<th class="text-capital "><b class="f_14">Renewal %</br>(From 2014)</b></th>';
+								str+='<th class="text-capital "><b class="f_14">Renewal %</br>(From 2016)</b></th>';
+								str+='<th class="text-capital "><b class="f_14">New cadre</th>';
+								str+='<th class="text-capital "><b class="f_14">New cadre %</b></th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result.subList){
+							str+='<tr>';
+								str+='<td>'+result.subList[i].name+'</td>';
+								if(result.subList[i].previousCadreCount !=null && result.subList[i].previousCadreCount>0){
+									str+='<td>'+result.subList[i].previousCadreCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].previousCadrePercent !=null && result.subList[i].previousCadrePercent>0){
+									str+='<td>'+result.subList[i].previousCadrePercent+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].cadreCount !=null && result.subList[i].cadreCount>0){
+									str+='<td>'+result.subList[i].cadreCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].cadrePercent !=null && result.subList[i].cadrePercent>0){
+									str+='<td>'+result.subList[i].cadrePercent+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].renewalCadre !=null && result.subList[i].renewalCadre>0){
+									str+='<td>'+result.subList[i].renewalCadre+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].previousCadreRenewalPercent !=null && result.subList[i].previousCadreRenewalPercent>0){
+									str+='<td>'+result.subList[i].previousCadreRenewalPercent+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].renewalCadrePercent !=null && result.subList[i].renewalCadrePercent>0){
+									str+='<td>'+result.subList[i].renewalCadrePercent+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].newCadre !=null && result.subList[i].newCadre>0){
+									str+='<td>'+result.subList[i].newCadre+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result.subList[i].newCadrePercent !=null && result.subList[i].newCadrePercent>0){
+									str+='<td>'+result.subList[i].newCadrePercent+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+							str+='</tr>';
+						}
+						str+='<tr style="background-color:#efefef">';
+							str+='<th><b>Grand Total</b></th>';
+							if(result.previousCadreTotalCount !=null && result.previousCadreTotalCount>0){
+								str+='<th><b>'+result.previousCadreTotalCount+'</b></th>';
+								str+='<th><b>100</th>';
+							}else{
+								str+='<th> - </th>';
+								str+='<th> - </th>';
+							}
+							
+							if(result.cadreTotalCount !=null && result.cadreTotalCount>0){
+								str+='<th><b>'+result.cadreTotalCount+'</b></th>';
+								str+='<th><b>100</b></th>';
+							}else{
+								str+='<th> - </th>';
+								str+='<th> - </th>';
+							}
+							if(result.renewalCadreTotalCount !=null && result.renewalCadreTotalCount>0){
+								str+='<th><b>'+result.renewalCadreTotalCount+'</b></th>';
+							}else{
+								str+='<th> - </th>';
+							}
+							if(result.previousCadreRenewalPercent !=null && result.previousCadreRenewalPercent>0){
+								str+='<th><b>'+result.previousCadreRenewalPercent+'</b></th>';
+							}else{
+								str+='<th> - </th>';
+							}
+							if(result.renewalCadrePercent !=null && result.renewalCadrePercent>0){
+								str+='<th><b>'+result.renewalCadrePercent+'</b></th>';
+							}else{
+								str+='<th> - </th>';
+							}
+							if(result.newCadreTotalCount !=null && result.newCadreTotalCount>0){
+								str+='<th><b>'+result.newCadreTotalCount+'</b></th>';
+							}else{
+								str+='<th> - </th>';
+							}
+							if(result.newCadrePercent !=null && result.newCadrePercent>0){
+								str+='<th><b>'+result.newCadrePercent+'</b></th>';
+							}else{
+								str+='<th> - </th>';
+							}
+							
+						str+='</tr>';
+						str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				  str+='</div>';
+				str+='</div>';
+				
+					str+='</div>';
+				str+='</div>';
+		}else{
+			$("#overAllCasteWiseSummaryDetails").html("NO DATA AVAILABLE");
+		}
+		
+		$("#overAllCasteWiseSummaryDetails").html(str);
+	}
+	$(document).on("click","#overAllcasteWiseReportExcel",function(){
+		generateExcelReportForOverAllCasteWise();	
+	});
+	
+	function generateExcelReportForOverAllCasteWise(){
+		tableToExcel(overaAllCasteWiseTableExcelDivId, 'OVERALL CASTE WISE REPORT');        
+	}
 	
 </script> 
 <script>

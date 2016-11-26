@@ -14827,5 +14827,10 @@
 			<param name="root">cadreCountsVOList</param>
 		</result>
 	</action>
+	<action name="casteCategoryWiseTdpCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="casteCategoryWiseTdpCadreSummaryReport">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVO</param>
+		</result>
+	</action>
  </package>
 </struts>
