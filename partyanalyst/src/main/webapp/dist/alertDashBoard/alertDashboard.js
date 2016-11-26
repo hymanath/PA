@@ -1,26 +1,27 @@
 
 $(document).ready(function(){
 	getLocationLevelAlertCount();
-	var levelId = 0;
-	var levelValue = 0;
-	$('.stateCls').each(function(){
-		if($(this).hasClass("active"))
-			levelValue = $(this).attr("attr_state_id");
-	});
-	
-	var statusId=0;
-	 var fromDate='';
-	 var toDate='';
-	 var dateStr = $("#dateRangePickerId").val(); 
-		if(dateStr !=null && dateStr.length>0){
-			fromDate = dateStr.split("-")[0];
-			toDate = dateStr.split("-")[1];
-		}
-	var	categoryId =0;
-	$("#errorId").html("");
-	
-	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
-	
+	setTimeout(function(){ 
+		var levelId = 0;
+		var levelValue = 0;
+		$('.stateCls').each(function(){
+			if($(this).hasClass("active"))
+				levelValue = $(this).attr("attr_state_id");
+		});
+		
+		var statusId=0;
+		 var fromDate='';
+		 var toDate='';
+		 var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+		var	categoryId =0;
+		$("#errorId").html("");
+		
+		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+	}, 2000);
 });
 $(document).on("click",'.applyBtn',function(){
 	$("#locationLevelDataId").html('');
@@ -220,6 +221,27 @@ function buildLocationLevelAlert(result,jsObj){
 	str+='</table>'
 	$("#locationLevelId").html(str);
 }
+
+$(document).on("click",".belowLocationCls",function(){
+	var levelId = $(this).attr("attr_levlid");
+	var locationBlock = $(this).attr("attr_search_Location");
+	var levelValue = $(this).attr("attr_levlvalue");
+		
+	var statusId=$(this).attr("attr_id");
+	var fromDate = '';
+	var toDate='';
+	var dateStr = $("#dateRangePickerId").val(); 
+	
+	if(dateStr !=null && dateStr.length>0){
+		fromDate = dateStr.split("-")[0];
+		toDate = dateStr.split("-")[1];
+	}
+	var	categoryId =$(this).attr("attr_category_id");;
+	$("#errorId").html("");
+	
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
+});
+
 $(document).on("click",".locationLevelCls",function(){
 	var levelId = $(this).attr("attr-levelId");
 	var locationBlock = $(this).attr("attr_search_Location");
@@ -266,6 +288,11 @@ $(document).on("click",".headerWiseDataCls",function(){
 var GlobalAlertData;
 function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock)
 {
+	 
+	 $('html, body').animate({
+        scrollTop: $('#locationLevelDataId').offset().top
+    }, 2000);
+	
 	$("#locationLevelDataId").html('<img src="images/search.gif" />');
 	var assignId = $('#assignedCadreId').val();
 	var alertTpeId = $('#alertTypeId').val();
