@@ -754,11 +754,13 @@ function getAlertStatusCommentsTrackingDetails()
 			toDate = dateStr.split("-")[1];
 		}
 		var alertTpeId = $('#alertTypeId').val();	
+		var statusId = $('#alertStatusId').val();	
 		if(alertTpeId== null || alertTpeId.length==0)
 			alertTpeId=0;
 		
 		var jsObj =
 		     {
+				statusId:statusId,
 				alertTypeId:alertTpeId,
 				stateId  : stateId,
 				districtId :districtId,
