@@ -407,9 +407,9 @@ function buildAlertData(result,jsObj)
 	{
 		str+='<th>LOCATION</th>';
 	}
-	
-	str+='<th></th>';	
 	*/
+	str+='<th></th>';	
+	
 	str+='</thead>';
 	str+='<tbody>';
 	var j=0;
@@ -435,11 +435,11 @@ function buildAlertData(result,jsObj)
 	{
 		str+='<td>'+result[i].locationVO.districtName+'</td>';	
 	}
-	
+	*/
 	//str+='<td><button class="btn btn-success">VIEW</button></td>';
 	str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
 	//<button class="btn btn-success alertModel" target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">VIEW</button></td>';
-	*/
+	
 	str+='</tr>';	
 	}
 	str+='</tbody>';
