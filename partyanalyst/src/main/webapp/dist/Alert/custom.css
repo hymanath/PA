@@ -158,19 +158,19 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 }
 .critical
 {
-	border-color:#D65A36;
+	border-color:#D65A36 !important;
 }
 .high
 {
-	border-color:#FF8800;
+	border-color:#FF8800 !important;
 }
 .medium
 {
-	border-color:#F2C001;
+	border-color:#F2C001 !important;
 }
 .low
 {
-	border-color:#96C22D;
+	border-color:#96C22D !important;
 }
 .tableCategory
 {
@@ -465,8 +465,10 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	background-color: #FED501;
 	display: inline-block;
-	padding: 3px 8px;
+	padding: 8px 8px;
 	cursor: pointer;
+	border-radius:50%;
+	border:1px solid #333;
 }
 .tableAlert tr td , .tableAlert thead th 
 {
