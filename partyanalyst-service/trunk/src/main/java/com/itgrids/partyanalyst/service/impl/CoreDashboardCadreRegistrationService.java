@@ -4610,9 +4610,13 @@ try{
  		 if(eryFveMntsDtlsLstUsrTrckngLst != null && eryFveMntsDtlsLstUsrTrckngLst.size() > 0){
  			 resultVO.setSubList2(eryFveMntsDtlsLstUsrTrckngLst);  
  		 }
- 		//between 8pm -> 8am
- 		List<Long> hourList = new ArrayList<Long>(){{add(20l);add(21l);add(22l);add(23l);add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
-		//between 8am -> 8pm  
+ 		//between 8pm -> 11PM
+ 		List<Long> eightPmTo11PMHursList = new ArrayList<Long>(){{add(20l);add(21l);add(22l);add(23l);}};
+ 		//between 12am -> 8am
+ 		List<Long> twelveAmTo8AmHursList = new ArrayList<Long>(){{add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
+ 		
+ 		
+ 		//between 8am -> 8pm  
 		Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{  
 			put("8am-9am",8l);put("9am-10am",9l);put("10am-11am",10l);put("11am-12pm",11l);
 			put("12pm-1pm",12l);put("1pm-2pm",13l);put("2pm-3pm",14l);put("3pm-4pm",15l);
@@ -4628,28 +4632,48 @@ try{
 					hourAndRegCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
 				}
 			}
-			Long totalCadreUpto8amToday = 0l;
-			Long totalRegToday = 0l;
 			
-			for(Long param : hourList){
+			Long totalRegToday = 0l;
+			Long eightPmTo11PmTodalRegCnt =0l;
+			for(Long param : eightPmTo11PMHursList){
 				if( hourAndRegCountMap.get(param) != null){
-					totalCadreUpto8amToday = totalCadreUpto8amToday + hourAndRegCountMap.get(param);
+					eightPmTo11PmTodalRegCnt = eightPmTo11PmTodalRegCnt + hourAndRegCountMap.get(param);
 					totalRegToday = totalRegToday + hourAndRegCountMap.get(param);
 				}
 					
 			}
-			FieldReportVO fieldReportVO = new FieldReportVO();
+			
+			Long totalCadreReg12AmTo8AmRegCnt = 0l;
+			for(Long param : twelveAmTo8AmHursList){
+				if( hourAndRegCountMap.get(param) != null){
+					totalCadreReg12AmTo8AmRegCnt = totalCadreReg12AmTo8AmRegCnt + hourAndRegCountMap.get(param);
+					totalRegToday = totalRegToday + hourAndRegCountMap.get(param);
+				}
+			}
+			
 			List<FieldReportVO> fieldReportVOs = new ArrayList<FieldReportVO>();
-			//special for 8pm -> 8am
- 			fieldReportVO = new FieldReportVO();
- 			fieldReportVO.setLabel("8pm-8am");
- 			fieldReportVO.setOrder(13l);
- 			fieldReportVO.setTodayTotalReg(totalCadreUpto8amToday);
+			
+			FieldReportVO eightPMto12AmVO = new FieldReportVO();
+			//special for 8pm -> 12am
+			eightPMto12AmVO = new FieldReportVO();
+			eightPMto12AmVO.setLabel("8pm-12am");
+			eightPMto12AmVO.setOrder(20l);
+			eightPMto12AmVO.setTodayTotalReg(eightPmTo11PmTodalRegCnt);
  			//add first
- 			fieldReportVOs.add(fieldReportVO);
+ 			fieldReportVOs.add(eightPMto12AmVO);
+			
+			
+			FieldReportVO twelveAmTo8AMVO = new FieldReportVO();
+			//special for 12am -> 8am
+			twelveAmTo8AMVO = new FieldReportVO();
+			twelveAmTo8AMVO.setLabel("12am-8am");
+			twelveAmTo8AMVO.setOrder(21l);
+			twelveAmTo8AMVO.setTodayTotalReg(totalCadreReg12AmTo8AmRegCnt);
+ 			//add second
+ 			fieldReportVOs.add(twelveAmTo8AMVO);
  			//now add all
  			for(Entry<String,Long> entry : labelAndPositionMap.entrySet()){
- 				fieldReportVO = new FieldReportVO();
+ 				FieldReportVO fieldReportVO = new FieldReportVO();
  				fieldReportVO.setLabel(entry.getKey());
  				fieldReportVO.setOrder(entry.getValue());
  				if(hourAndRegCountMap.get(entry.getValue()) != null){
