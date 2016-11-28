@@ -189,13 +189,40 @@
                 
                 <div  class="searchMemberCls">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12 m_top10">
-					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
+					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name
+						<span class="btn btn-success btn-xs"><input type="checkbox" id="advanceSearchBtnId"/>Advanced Search</span>
+					</label>
+					
 					<div id="searchErrDiv" style="color:red;"></div>
                         <div class="searchDiv">
                             <div class="row">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
-                                	<div class="pad_5 bg_ff">
-									<label class="radio-inline">
+									<div class="pad_5 bg_ff" id="advancSrchDivId" style="display:none;padding-top: 15px; padding-bottom: 15px;"">
+										<label class="radio-inline">
+                                            <input type="radio" name="advncdSearch" checked="true" class="advancedSearchCls" id="genderId" value="1"/>Gender
+                                        </label>
+										<label class="radio-inline">
+                                            <input type="radio" name="advncdSearch" class="advancedSearchCls" id="casteId" value="2"/>Caste
+                                        </label>
+										<label class="radio-inline">
+                                            <input type="radio" name="advncdSearch" class="advancedSearchCls" id="ageId" value="3"/>Age
+                                        </label>
+										<label class="radio-inline">
+                                            <input type="radio" name="advncdSearch" class="advancedSearchCls" id="casteGroupId" value="4"/>Caste Group
+                                        </label>
+										<label class="radio-inline">
+                                            <input type="radio" name="advncdSearch" class="advancedSearchCls" id="educationId" value="5"/>Education
+                                        </label>
+										<div class="radio-inline" style="width:200px;">
+											<select class="chosenSelect" id="advancSearchSelectId">
+												<option value="0">Select Gender</option>
+												<option value="M">Male</option>
+												<option value="F">Female</option>
+											</select>
+										</div>
+									</div>
+                                	<div class="pad_5 bg_ff" id="normalSearchDivId">
+										<label class="radio-inline">
                                             <input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"/>Membership No
                                         </label>
                                         <label class="radio-inline">
@@ -784,9 +811,72 @@
 							<option value="votercardno">Voter Id Card No</option>
 							<option value="2">Public Representative</option>
 							<option value="3">Party Committee</option>
+							<option value="4">Caste</option>
+							<option value="5">Gender</option>
+							<option value="6">Age</option>
+							<option value="7">Caste Group</option>
+							<option value="8">Education</option>
 						</select>
 					</div>
 					
+					<div class="col-md-3 col-xs-12 col-sm-12 hideStateDivCls">
+						<label>State</label>
+						<select class="dropkickClass" id="filterStateId">
+							<option value="0">Select State</option>
+							<option value="1">Andhra Pradesh</option>
+							<option value="36">Telangana</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideDistrictDivCls">
+						<label>District</label>
+						<select class="dropkickClass" id="filterDistrictId">
+							<option value="0">Select District</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideConstituencyDivCls">
+						<label>Constituency</label>
+						<select class="dropkickClass" id="filterConstituencyId">
+							<option value="0">Select Constituency</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hidemanTowDivCls">
+						<label>Mandal/Town/Division</label>
+						<select class="dropkickClass" id="filterManTowDivId">
+							<option value="0">Select Mandal/Muncipality</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideCasteCls">
+						<label>Caste</label>
+						<select class="dropkickClass" id="filterCasteId">
+							<option value="0">Select Caste</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideGenderCls">
+						<label>Gender</label>
+						<select class="dropkickClass" id="filterGenderId">
+							<option value="0">Select Gender</option>
+							<option value="M">Male</option>
+							<option value="F">Female</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideAgeCls">
+						<label>Age Range</label>
+						<select class="dropkickClass" id="filterAgeId">
+							<option value="0">Select Age Range</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideCasreGroupCls">
+						<label>Caste Group</label>
+						<select class="dropkickClass" id="filterCasteGroupId">
+							<option value="0">Select Caste Group</option>
+						</select>
+					</div>
+					<div class="col-md-3 col-xs-12 col-sm-12 hideEducationCls">
+						<label>Education</label>
+						<select class="dropkickClass" id="filterEducationId">
+							<option value="0">Select Education</option>
+						</select>
+					</div>
 					
 					 <div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
 						<label class="advanceNameCls" id="searchNameLabel">Name/Membership No*<span class="text-danger">*</span></label>
@@ -1172,6 +1262,215 @@ function buildapptmemberDetails(result){
 	}
 	$("#apptmemberDetailsDiv").html("");
 	
+</script>
+<script>
+$(document).on("change","#filterStateId",function(){
+	var stateId = $(this).val();
+	getDistrictsForStates(stateId);
+});
+
+function getDistrictsForStates(state){
+   var jsObj=
+   {				
+		stateId:state,				
+		task:"getDistrictsForState"		
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getNewDistrictsOfStateSplittedAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		$("#filterDistrictId  option").remove();
+		$("#filterDistrictId").append('<option value="0">Select District</option>');			
+		if(result !=null && result.length>0){
+			for(var i in result){
+				$("#filterDistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		}
+		$("#filterDistrictId").dropkick();
+		 var select = new Dropkick("#filterDistrictId");
+		 select.refresh();
+	});
+}
+
+$(document).on("change","#filterDistrictId",function(){
+	var districtId = $(this).val();
+	var stateId = $("#filterStateId").val();
+	getConstituenciesForDistricts(districtId,stateId);
+});
+
+function getConstituenciesForDistricts(district,stateId){
+	var jsObj={				
+		districtId:district
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getConstituenciesListForDistrictAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	 $("#filterManTowDivId  option").remove();
+	 $("#filterConstituencyId  option").remove();
+	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality</option>');
+	 $("#filterConstituencyId").append('<option value="0">Select Constituency</option>');
+	 if(result !=null && result.length>0){
+		 for(var i in result){			  
+			$("#filterConstituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   }
+		}	
+		$("#filterConstituencyId").dropkick();
+		 var select = new Dropkick("#filterConstituencyId");
+		 select.refresh();
+	});
+}
+$(document).on("change","#filterConstituencyId",function(){
+	var constituencyId=$(this).val();
+	var stateId = $("#filterStateId").val();
+	getMandalVillageDetails(constituencyId,stateId);
+});
+function getMandalVillageDetails(constituencyId,stateId){
+   var jsObj={				
+		consistencyId : constituencyId
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getMandalsForConstituencyAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		$("#filterManTowDivId  option").remove();
+		$("#filterManTowDivId").append("<option value='0'>Select Mandal/Muncipality</option>");			  
+		for(var i in result){
+			$("#filterManTowDivId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$("#filterManTowDivId").dropkick();
+		 var select = new Dropkick("#filterManTowDivId");
+		 select.refresh();
+	});
+}
+
+getAllAgeRangesByOrder("filterAgeId");
+getAllCasteDetailsForVoters("filterCasteId");
+getAllCasteCategoryDetails("filterCasteGroupId");
+getEducationalQualifications("filterEducationId");
+
+function getAllAgeRangesByOrder(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAllAgeRangesByOrderAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterAgeId"){
+		   $("#filterAgeId  option").remove();
+			$("#filterAgeId").append("<option value='0'>Select Age Range</option>");			  
+			for(var i in result){
+				$("#filterAgeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterAgeId").dropkick();
+			 var select = new Dropkick("#filterAgeId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Age Range</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
+function getAllCasteDetailsForVoters(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAllCasteDetailsForVotersAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterCasteId"){
+		   $("#filterCasteId  option").remove();
+			$("#filterCasteId").append("<option value='0'>Select Caste</option>");			  
+			for(var i in result){
+				$("#filterCasteId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterCasteId").dropkick();
+			 var select = new Dropkick("#filterCasteId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Caste</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
+function getAllCasteCategoryDetails(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getAllCasteCategoryDetailsAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterCasteGroupId"){
+		   $("#filterCasteGroupId  option").remove();
+			$("#filterCasteGroupId").append("<option value='0'>Select Caste Group</option>");			  
+			for(var i in result){
+				$("#filterCasteGroupId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterCasteGroupId").dropkick();
+			 var select = new Dropkick("#filterCasteGroupId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Caste Group</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
+function getEducationalQualifications(divId){
+   var jsObj={				
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getEducationalQualificationsAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(divId == "filterEducationId"){
+		   $("#filterEducationId  option").remove();
+			$("#filterEducationId").append("<option value='0'>Select Education</option>");			  
+			for(var i in result){
+				$("#filterEducationId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#filterEducationId").dropkick();
+			 var select = new Dropkick("#filterEducationId");
+			 select.refresh();
+	   }
+		else{
+			$("#advancSearchSelectId").append("<option value='0'>Select Education</option>");			  
+			for(var i in result){
+				$("#advancSearchSelectId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#advancSearchSelectId").trigger('chosen:updated');
+		}
+	});
+}
+
 </script>
 </body>
 </html>

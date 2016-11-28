@@ -2711,6 +2711,12 @@ $("#searchDivId").show();
 			}
 		}
  $(document).on("click","#searchbtn",function(){
+	 var advanSearchVal = $("#advanceSearchBtnId").is(':checked');
+	if(advanSearchVal){
+		getAdvanceSearchDetails();
+		return;
+	}
+	 
 	  var value = $("input[name='checkBoxName']:checked").val();
 	  $("#addedRefferalsDiv").hide();
 	  	$('.ramakrishnaCls').hide();
@@ -2728,6 +2734,199 @@ $("#searchDivId").show();
 			notCadresearch();
 		}
  });
+ 
+function getAdvanceSearchDetails(){
+	$("#searchErrDiv").html("");
+	$("#scrollDivId").show();
+	$("#textId").hide();
+	$("#searchData1").html("");
+	
+	var searchType;
+	var searchValue = 0;
+	var locationType;
+	var locationVal;
+	var gender = "";
+	
+	var manMunId = $("#mandalList").val();
+	if(manMunId == 0){
+		$("#searchErrDiv").html("Select Mandal/Muncipality");
+		return;
+	}
+	
+	if(manMunId > 0){
+		if(manMunId.substr(0,1) == 2){
+			  locationType = "mandal";
+		}
+		else if(manMunId.substr(0,1) == 1){
+			 locationType = "muncipality";
+			 
+		}								
+		locationVal = manMunId.substr(1);
+	}
+	
+	var advanceSearchType = $('input:radio[name=advncdSearch]:checked').val();
+	
+	if(advanceSearchType == 2){
+		searchType = "caste";
+		searchValue = $("#advancSearchSelectId").val();
+		if(searchValue == 0){
+			$("#searchErrDiv").html("Select Caste");
+			return;
+		}
+	}
+	else if(advanceSearchType == 1){
+		searchType = "gender";
+		gender = $("#advancSearchSelectId").val();
+		if(gender == 0){
+			$("#searchErrDiv").html("Select Gender");
+			return;
+		}
+	}
+	else if(advanceSearchType == 3){
+		searchType = "age";
+		searchValue = $("#advancSearchSelectId").val();
+		if(searchValue == 0){
+			$("#searchErrDiv").html("Select Age");
+			return;
+		}
+	}
+	else if(advanceSearchType == 4){
+		searchType = "casteGroup";
+		searchValue = $("#advancSearchSelectId").val();
+		if(searchValue == 0){
+			$("#searchErrDiv").html("Select Caste Group");
+			return;
+		}
+	}
+	else if(advanceSearchType == 5){
+		searchType = "education";
+		searchValue = $("#advancSearchSelectId").val();
+		if(searchValue == 0){
+			$("#searchErrDiv").html("Select Education");
+			return;
+		}
+	}
+	$('#cadreSearchDtls').html(' <img style="height: 150px;" id="" class="col-md-4 col-md-offset-2 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3" src="images/icons/cadreSearch.gif">');
+	$("#searchDivId").show();
+	var jsObj={
+		searchType:searchType,
+		searchValue:searchValue,
+		locationType:locationType,
+		locationVal:locationVal,
+		gender:gender
+	}
+	//$("#apptmemberDetailsDiv").html('');
+		$.ajax({
+			type : 'POST',
+			url : 'getNewCadreSearchBySearchTypeAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#cadreSearchDtls").html("");
+			if(result !=null && result.length>0){
+			buildAdvancedSearchDetails(result);
+			
+			}else{
+				$("#cadreSearchDtls").html("<center><h4>No Data Available</h4></center>");
+			}
+	  }); 
+}
+
+function buildAdvancedSearchDetails(result){
+	$("#cadreSearchDtls").html('');
+         $("#textId").hide();
+		$("#cadreSearchDtls").show();
+		$("#scrollDivId").show();
+		var str='';
+		var str1='';
+		
+
+		
+		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS : </h4>';
+		str1+='<p>Search Results: <b><u id="cadreSearchSize">'+result.length+'</u></b> Members</p>';
+		$("#searchData1").html(str1);
+		
+			
+		if(result != null && result.length >0){
+			str +='<ul class="list-inline best-matched-profile ">';
+                                
+		for(var i in result)
+			{	
+				/*if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 )
+					str +='<li  style="background:lightgrey;height: 213px;">';
+				else*/
+					str +='<li style="height: 213px;">';
+				
+				str +='<div class="img-center">';
+				
+				
+				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
+				//str +='</div>';
+				//console.log(result[i].id);
+				if(result[i].id != null && result[i].id >= 0){ // no cadre search  candidate id
+				
+					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+						str +='</div>';
+					str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" sri attr_nominated_post_candidate_id="'+result[i].id+'" attr_membership_id="" />';
+				}else {
+						str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+							str +='</div>';
+						// cadre search  candidate id
+						str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].appointmentCandidateId+'" attr_membership_id="'+result[i].memberShipId+'" />';
+						
+						/*if(result[i].nominatedPostCandidateId == null){
+							result[i].nominatedPostCandidateId = 0;
+						}
+						if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 ){
+							str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+						}else{
+							str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+						}
+						*/
+				}
+			   // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
+				str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].name+'><b>'+result[i].name+'</b></p>';
+				str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'"><b>VOTERID : </b> '+result[i].voterCardNo+'</p>';
+				if(result[i].memberShipId != null && result[i].memberShipId != "")
+				str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipId+'"><b> MEMBERSHIP : </b> '+result[i].memberShipId+'</p>';
+				str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'"><b>MOBILE : </b> '+result[i].mobileNo+'</p>';
+				str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].id+'" attr_nominated_post_candidate_id="'+result[i].appointmentCandidateId+'"/>';
+				
+					//if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
+					//{
+						str +='<p class="text-center m_0"><b> ASSEMBLY : </b> '+result[i].constituency+'</p>';
+						str +='</li>';
+					/*}else if(result[i].constituency != null && result[i].constituency.length > 0){
+						 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
+						str +='</li>';
+					}else{
+						str +='<p class="text-center m_0">&nbsp;</p>';
+						str +='</li>';
+					}*/
+				 
+			}
+			str +='</ul>';	
+			$("#cadreSearchDtls").html(str);
+			var length = $("#cadreSearchDtls").find("li").length;
+			$("#membersCountId").html("<p id='memberCountSpanId'>Search Results <span class='font_weight'>"+length+"</span> Members</p>")
+			if(result.length>3)
+			{
+			$(".best-matched-profile").slick({
+				slide: 'li',
+				slidesToShow: 4,
+			   infinite: false
+			   });
+			   $(".slick-next").css("margin-right","10px;")
+			   $(".slick-prev").css("margin-left","10px;")
+			}
+			$("#textId").show();
+		}else{
+				str+='No Data Available';
+				$("#cadreSearchDtls").html(str);
+				$("#textId").hide();
+				//$("#cadreSearchDtls").html(No Data Available);			
+		}
+}
   
  function subLevelForConstituency(locationLevel){
 	 var distArrTemp=[];

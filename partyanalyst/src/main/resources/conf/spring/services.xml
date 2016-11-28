@@ -3347,6 +3347,9 @@
 		<property name="appointmentStatusFlowDAO" ref="appointmentStatusFlowDAO" />
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" />
 		<property name="tdpMemberDAO" ref="tdpMemberDAO" />
+		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
+		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO" />
+		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />
 	</bean>
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>
@@ -3532,6 +3535,7 @@
 		<property name="govtOrderDAO" ref="govtOrderDAO"></property>
 		<property name="govtOrderDocumentsDAO" ref="govtOrderDocumentsDAO"></property>
 		<property name="nominatedPostGovtOrderDAO" ref="nominatedPostGovtOrderDAO"></property>
+		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>

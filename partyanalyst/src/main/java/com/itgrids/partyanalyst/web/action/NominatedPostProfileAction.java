@@ -1807,4 +1807,56 @@ public String execute()
 		}
 	 return Action.SUCCESS;
 	}
+	
+	public String getAllAgeRangesByOrder()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			idAndNameVOList = nominatedPostProfileService.getAllAgeRangesByOrder();
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllAgeRangesByOrder() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
+	
+	public String getAllCasteDetailsForVoters()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			idAndNameVOList = nominatedPostProfileService.getAllCasteDetailsForVoters();
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllCasteDetailsForVoters() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
+	
+	public String getAllCasteCategoryDetails()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			idAndNameVOList = nominatedPostProfileService.getAllCasteCategoryDetails();
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllCasteCategoryDetails() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
+	
+	public String getEducationalQualifications()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			idAndNameVOList = nominatedPostProfileService.getEducationalQualifications();
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in getEducationalQualifications() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
 }

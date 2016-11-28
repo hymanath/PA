@@ -1610,4 +1610,23 @@ public String getPanchayatiesByMandalOrMuncipality(){
 	
 	return Action.SUCCESS;
 	}
+	
+public String getNewCadreSearchBySearchType(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			String searchType = jObj.getString("searchType");
+			Long searchVal = jObj.getLong("searchValue");
+			String locationType = jObj.getString("locationType");
+			Long locationVal = jObj.getLong("locationVal");
+			String gender = jObj.getString("gender");
+			
+			candidatesList = appointmentService.getNewCadreSearchBySearchType(searchType,searchVal,locationType,locationVal,gender);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNewCadreSearchBySearchType() method of AppointmentAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
 }

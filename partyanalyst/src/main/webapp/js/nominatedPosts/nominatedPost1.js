@@ -329,11 +329,19 @@ $(document).on("click","#addCandidateBtnId",function(){
 	}
 });
   function showHideBySearchType(){
-		
+		$(".hideStateDivCls").hide();
+		$(".hideDistrictDivCls").hide();
+		$(".hideConstituencyDivCls").hide();
+		$(".hidemanTowDivCls").hide();
+		$(".hideCasteCls").hide();
+		$(".hideGenderCls").hide();
+		$(".hideAgeCls").hide();
+		$(".hideCasreGroupCls").hide();
+		$(".hideEducationCls").hide();
 		//setToDefaultAdvancedSearch();
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
-			
+			//alert(selectVal);
 			if(selectVal == 2)
 			{
 				$(".advancePRCls,#searchBtnId").show();
@@ -388,9 +396,6 @@ $(document).on("click","#addCandidateBtnId",function(){
 			}
 			else if(selectVal == "mobileno" || selectVal == "mebershipno" || selectVal == "votercardno")
 			{
-				
-				
-				
 				$(".levelShowCls").hide();
 				$(".stateShowCls").hide();
 				$(".advanceprcls").show();
@@ -401,6 +406,25 @@ $(document).on("click","#addCandidateBtnId",function(){
 				$("#advanceSearchValueId").val("");
 				$(".advanceprclsDiv").show();
 				$("#searchBtnId").show();
+			}
+			else if(selectVal == 4 || selectVal == 5 || selectVal == 6 || selectVal == 7 || selectVal == 8)
+			{
+				setToDefaultAdvancedSearch();
+				$("#searchBtnId").show();
+				$(".hideStateDivCls").show();
+				$(".hideDistrictDivCls").show();
+				$(".hideConstituencyDivCls").show();
+				$(".hidemanTowDivCls").show();
+				if(selectVal == 4)
+					$(".hideCasteCls").show();
+				else if(selectVal == 5)
+					$(".hideGenderCls").show();
+				else if(selectVal == 6)
+					$(".hideAgeCls").show();
+				else if(selectVal == 7)
+					$(".hideCasreGroupCls").show();
+				else if(selectVal == 8)
+					$(".hideEducationCls").show();
 			}
 			else
 			{
@@ -554,6 +578,25 @@ $(document).on("click","#addCandidateBtnId",function(){
 			
 		   $("#referpanchayatId").val(0);
 		   $("#referpanchayatId").dropkick('reset');
+		   
+		   $("#filterStateId").val(0);
+		   $("#filterStateId").dropkick('reset');
+		   $("#filterDistrictId").val(0);
+		   $("#filterDistrictId").dropkick('reset');
+		   $("#filterConstituencyId").val(0);
+		   $("#filterConstituencyId").dropkick('reset');
+		   $("#filterManTowDivId").val(0);
+		   $("#filterManTowDivId").dropkick('reset');
+		   $("#filterCasteId").val(0);
+		   $("#filterCasteId").dropkick('reset');
+		   $("#filterAgeId").val(0);
+		   $("#filterAgeId").dropkick('reset');
+		   $("#filterCasteGroupId").val(0);
+		   $("#filterCasteGroupId").dropkick('reset');
+		   $("#filterGenderId").val(0);
+		   $("#filterGenderId").dropkick('reset');
+		   $("#filterEducationId").val(0);
+		   $("#filterEducationId").dropkick('reset');
 		
 	}
 	 function getPublicRepresentsDetails(){
@@ -738,6 +781,10 @@ $(document).on("click","#addCandidateBtnId",function(){
 				}		
 			});
 			 referCommitteeId = $("#referCommitteeId").val();
+		}
+		else if(advanceSearchType == 4 || advanceSearchType == 5 || advanceSearchType == 6 || advanceSearchType == 7 || advanceSearchType == 8){
+			getSearchDetailsByFilter();
+			return;
 		}
 		else 
 		{
@@ -952,6 +999,144 @@ $(document).on("click","#addCandidateBtnId",function(){
 	involvedCadreIds.pop(id);	
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 });*/
+
+function getSearchDetailsByFilter(){
+	var searchType;
+	var searchValue = 0;
+	var locationType;
+	var locationVal;
+	var gender = "";
+	
+	var stateId = $("#filterStateId").val();
+	var districtId = $("#filterDistrictId").val();
+	var constiId = $("#filterConstituencyId").val();
+	var manMunId = $("#filterManTowDivId").val();
+	if(stateId == 0){
+		$("#errorDivId").html("Select State");
+		return;
+	}
+	else if(districtId == 0){
+		$("#errorDivId").html("Select District");
+		return;
+	}
+	else if(constiId == 0){
+		$("#errorDivId").html("Select Constituency");
+		return;
+	}
+	else if(manMunId == 0){
+		$("#errorDivId").html("Select Mandal/Muncipality");
+		return;
+	}
+	
+	if(manMunId > 0){
+		if(manMunId.substr(0,1) == 1){
+			  locationType = "mandal";
+		}
+		else if(manMunId.substr(0,1) == 2){
+			 locationType = "muncipality";
+			 
+		}								
+		locationVal = manMunId.substr(1);
+	}
+	
+	var advanceSearchType = $("#advanceSearchTypeId").val();
+	if(advanceSearchType == 4){
+		searchType = "caste";
+		searchValue = $("#filterCasteId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Caste");
+			return;
+		}
+	}
+	else if(advanceSearchType == 5){
+		searchType = "gender";
+		gender = $("#filterGenderId").val();
+		if(gender == 0){
+			$("#errorDivId").html("Select Gender");
+			return;
+		}
+	}
+	else if(advanceSearchType == 6){
+		searchType = "age";
+		searchValue = $("#filterAgeId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Age");
+			return;
+		}
+	}
+	else if(advanceSearchType == 7){
+		searchType = "casteGroup";
+		searchValue = $("#filterCasteGroupId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Caste Group");
+			return;
+		}
+	}
+	else if(advanceSearchType == 8){
+		searchType = "education";
+		searchValue = $("#filterEducationId").val();
+		if(searchValue == 0){
+			$("#errorDivId").html("Select Education");
+			return;
+		}
+	}
+	$("#searchMemberAjax").css("display","block");
+	var jsObj={
+		searchType:searchType,
+		searchValue:searchValue,
+		locationType:locationType,
+		locationVal:locationVal,
+		gender:gender
+	}
+	$("#apptmemberDetailsDiv").html('');
+		$.ajax({
+			type : 'POST',
+			url : 'getNewCadreSearchBySearchTypeAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#searchMemberAjax").css("display","none");
+			$("#apptmemberDetailsDiv").html("");
+			if(result !=null && result.length>0){
+			buildapptmemberDetails(result);
+			
+			}else{
+				$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
+			}
+	  }); 
+}
+
+$(document).on("click","#advanceSearchBtnId",function(){
+	$("#advancSrchDivId").toggle();
+	$("#normalSearchDivId,#searchBy,#panchayatDiv").toggle();
+});
+
+$(document).on("click",".advancedSearchCls",function(){
+	$("#advancSearchSelectId").empty();
+	
+	var value = $(this).val();
+	if(value == 1){
+		var str = '';
+		str+='<option value="0">Select Gender</option>';
+		str+='<option value="M">Male</option>';
+		str+='<option value="F">Female</option>';
+		$("#advancSearchSelectId").html(str);
+		$("#advancSearchSelectId").trigger('chosen:updated');
+	}
+	else if(value == 2){
+		getAllCasteDetailsForVoters("advancSearchSelectId");
+	}
+	else if(value == 3){
+		getAllAgeRangesByOrder("advancSearchSelectId");
+	}
+	else if(value == 4){
+		getAllCasteCategoryDetails("advancSearchSelectId");
+	}
+	else if(value == 5){
+		getEducationalQualifications("advancSearchSelectId");
+	}
+});
+
 function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
