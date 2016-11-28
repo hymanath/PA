@@ -189,8 +189,8 @@
                         <div class="col-md-2 col-sm-6 col-xs-12 stateShowCls1">
                         	<label>State</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
-											 <option value="0">Select State</option>
-											 <option value="1">AP</option>
+											 <option value="-1">Select State</option>        
+											 <option value="1">AP</option>      
 											 <option value="36">TS</option>
                             </select>
                         </div>
