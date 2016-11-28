@@ -111,7 +111,7 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<button type="button" class="close" data-dismiss="modal" onclick="refreshingPage();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				 <iframe src="http://localhost:8080/PartyAnalyst/nominatedPostProfileAction.action?status=openedInPopup" style="width:100%;border:0px" class="newPostApplyPopup"></iframe> 
+				 <iframe  style="width:100%;border:0px" class="newPostApplyPopup"></iframe> 
 			</div>
 		</div>
 	</div>
@@ -155,12 +155,21 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/boardWiseNominatedPostAction")));
+wurl = wurl.replace("/PartyAnalyst","");
+
 var getHeight = $(window).height();
 getHeight = (getHeight -( ( getHeight/100 ) * 10));
 
 $(".newPostApplyPopup").css("height",getHeight)
 $(document).on("click",".appleNewPostBtn",function(){
-	$("#newApplyPost").modal('show');
+	
+	$(".newPostApplyPopup").attr("src",wurl+"/nominatedPostProfileAction.action?status=openedInPopup");
+	setTimeout(function(){
+		$("#newApplyPost").modal('show');
+	}, 1000);
 });
 var globalLevelTxt = '${param.levelTxt}';
 var globalDeptName = '${param.deptName}'; 
