@@ -3,15 +3,22 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "tdp_cadre_gender_info")
@@ -22,6 +29,8 @@ public class TdpCadreGenderInfo extends BaseModel implements Serializable {
 	
 	private Long   tdpCadreGenderInfoId;
 	private String gender;
+	private Long stateId;
+	private Long districtId;
 	private Long   locationScopeId;
 	private Long   locationValue;
 	private Long   cadre2014;
@@ -33,6 +42,9 @@ public class TdpCadreGenderInfo extends BaseModel implements Serializable {
 	private Long   renewalCadre;
 	private String renewalCadrePercent;
 	private Date   insertedTime;
+	
+	private State state;
+	private District district;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -140,5 +152,43 @@ public class TdpCadreGenderInfo extends BaseModel implements Serializable {
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
+	
+	@Column(name = "state_id")
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	
+	@Column(name = "district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="state_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
+	}
+	
 
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
+	}
 }
