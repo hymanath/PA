@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTemp1DAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreUserHourRegInfoTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.CadreCountsGenderVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CadreDateVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
@@ -3154,5 +3155,149 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
    	   return finalVO;
       }
       
+      /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  GENDER WISE SUMMARY REPORT.
+	   	 *  @since 28-NOVEMBER-2016 
+	   	 */
+     public CadreCountsGenderVO stateWiseCadreGenderCounts(Long stateId){
+  	   
+    	 CadreCountsGenderVO finalVO = new CadreCountsGenderVO();
+  	   
+  	   try{
+  		   
+  		    List<Object[]> data = tdpCadreGenderInfoDAO.stateWiseCadreGenderCounts(stateId);
+  		   
+  		    if(data != null && data.size() > 0){
+  		    	for(Object[] obj : data){
+  		    		if(obj[0] != null && !obj[0].toString().isEmpty()){
+  		    			setGenderDataToVO(obj[0].toString() , finalVO, obj);
+  		    		}
+  		    	}
+  		    	calcGenderPerc(finalVO);
+  		    }
+  		    
+		  }catch(Exception e){
+			  LOG.error("Exception occur in genderWiseTdpCadreSummaryReport()  Of CadreRegistrationServiceNew class - ",e);
+		  }
+  	   return finalVO;
+     }
+     public void setGenderDataToVO(String gender ,CadreCountsGenderVO locationVO ,Object[] obj){
+    	 
+    	 try{
+    		 	
+    		 if(gender.equalsIgnoreCase("M")){
+   			    
+    			 locationVO.setPreviousCadreMaleCount(obj[1]!=null ? (Long)obj[1]:0l);//previous cadre male count
+    			 locationVO.setCadreMaleCount(obj[2]!=null ? (Long)obj[2]:0l);//present cadre male count
+    			 locationVO.setNewCadreMaleCount(obj[3]!=null ? (Long)obj[3]:0l);//new  cadre male count
+    			 locationVO.setRenewalCadreMaleCount(obj[4]!=null ? (Long)obj[4]:0l);//renewal  cadre male count
+   				
+   			}else{
+   				
+   				locationVO.setPreviousCadreFemaleCount(obj[1]!=null ? (Long)obj[1]:0l);
+   				locationVO.setCadreFemaleCount(obj[2]!=null ? (Long)obj[2]:0l);
+   				locationVO.setNewCadreFemaleCount(obj[3]!=null ? (Long)obj[3]:0l);
+   				locationVO.setRenewalCadreFemaleCount(obj[4]!=null ? (Long)obj[4]:0l);
+   			}
+   			
+   			//totals
+    		 locationVO.setPreviousCadreTotalCount(locationVO.getPreviousCadreTotalCount() + (obj[1]!=null ? (Long)obj[1]:0l) );
+    		 locationVO.setCadreTotalCount( locationVO.getCadreTotalCount() + (obj[2]!=null ? (Long)obj[2]:0l) );
+    		 locationVO.setNewCadreTotalCount( locationVO.getNewCadreTotalCount() + (obj[3]!=null ? (Long)obj[3]:0l) );
+    		 locationVO.setRenewalCadreTotalCount( locationVO.getRenewalCadreTotalCount() + (obj[4]!=null ? (Long)obj[4]:0l) );
+   			
+		}catch (Exception e){
+			LOG.error("Exception occur in setGenderDataToVO()  Of CadreRegistrationServiceNew class - ",e);
+		}
+     }
+     public void calcGenderPerc(CadreCountsGenderVO locationVO){
+    	 
+    	 try{
+    		 if(locationVO.getPreviousCadreTotalCount() != null && locationVO.getPreviousCadreTotalCount() > 0l){
+	    			
+    			 locationVO.setPreviousCadreMalePerc( calcPercantage( locationVO.getPreviousCadreMaleCount() , locationVO.getPreviousCadreTotalCount() ) );
+    			 locationVO.setPreviousCadreFemalePerc( calcPercantage( locationVO.getPreviousCadreFemaleCount() , locationVO.getPreviousCadreTotalCount() ) );
+	    			
+    			 locationVO.setPreviousCadreRenewalPerc( calcPercantage( locationVO.getRenewalCadreTotalCount() , locationVO.getPreviousCadreTotalCount() ) );
+	    		}
+	    		
+	    		if(locationVO.getCadreTotalCount() != null && locationVO.getCadreTotalCount() > 0l){
+	    			
+	    			locationVO.setCadreMalePerc( calcPercantage( locationVO.getCadreMaleCount() , locationVO.getCadreTotalCount() ) );
+	    			locationVO.setCadreFemalePerc( calcPercantage( locationVO.getCadreFemaleCount() , locationVO.getCadreTotalCount() ) );
+	    			
+	    			locationVO.setNewCadrePerc(  calcPercantage( locationVO.getNewCadreTotalCount() , locationVO.getCadreTotalCount() ) );//new per
+	    			locationVO.setRenewalCadrePerc(  calcPercantage( locationVO.getRenewalCadreTotalCount()  , locationVO.getCadreTotalCount() ) ); // renewal 
+	    		}
+	    		
+	    		if(locationVO.getNewCadreTotalCount() != null && locationVO.getNewCadreTotalCount() > 0l){
+	    			locationVO.setNewCadreMalePerc( calcPercantage( locationVO.getNewCadreMaleCount(), locationVO.getNewCadreTotalCount() ) );
+	    			locationVO.setNewCadreFemalePerc( calcPercantage( locationVO.getNewCadreFemaleCount() , locationVO.getNewCadreTotalCount() ) );
+	    		}
+	    		
+	    		if(locationVO.getRenewalCadreTotalCount() != null && locationVO.getRenewalCadreTotalCount() > 0l){
+	    			locationVO.setRenewalCadreMalePerc( calcPercantage( locationVO.getRenewalCadreMaleCount(), locationVO.getRenewalCadreTotalCount() ) );
+	    			locationVO.setRenewalCadreFemalePerc( calcPercantage( locationVO.getRenewalCadreFemaleCount() , locationVO.getRenewalCadreTotalCount() ) );
+	    		}
+    		 
+		 }catch(Exception e){
+			 LOG.error("Exception occur in calcGenderPerc()  Of CadreRegistrationServiceNew class - ",e);
+		 }
+     }
      
+      /**
+	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	   	 *  LOCATION WISE (DISTRICT / CONSTITUENCY) GENDER WISE SUMMARY REPORT.
+	   	 *  @since 28-NOVEMBER-2016 
+	   	 */
+     public List<CadreCountsGenderVO> locationWiseCadreGenderCounts(Long stateId,Long districtId,String searchType){
+    	   
+    	 List<CadreCountsGenderVO> finalList = null;
+  	   
+  	   try{
+  		   
+  		   Map<Long ,CadreCountsGenderVO> finalMap = new LinkedHashMap<Long, CadreCountsGenderVO>(0);
+  		   
+  		   List<Object[]> data = null; 
+  		   if(searchType.equalsIgnoreCase("district")){
+  			 data = tdpCadreGenderInfoDAO.districtWiseCadreGenderCounts(stateId,districtId);
+  		   }else{
+  			 data = tdpCadreGenderInfoDAO.constituencyWiseCadreGenderCounts(stateId,districtId);
+  		   }
+  		   
+  		   if(data != null && data.size() > 0){
+  			   
+  			   for(Object[] obj : data){
+  				   if( obj[5] != null && (Long)obj[5] > 0l && obj[0] != null){
+  					  CadreCountsGenderVO locationVO =  finalMap.get((Long)obj[5]);
+  					  if(locationVO == null){ 
+  						 locationVO = new CadreCountsGenderVO();
+  						 locationVO.setId((Long)obj[5]);
+  						 locationVO.setName(obj[6]!=null?obj[6].toString() : "");
+  						 locationVO.setSuperLocationId(obj[7]!=null ? (Long)obj[7] : 0l);
+  						 locationVO.setSuperlocationName(obj[8]!=null ? obj[8].toString() :"");
+  						 finalMap.put(locationVO.getId(), locationVO);
+  					 }
+  					 locationVO =  finalMap.get((Long)obj[5]);
+  					 setGenderDataToVO(obj[0].toString() , locationVO, obj);
+  				   }
+  			   }
+  			   //percantages
+  			    if(finalMap != null && finalMap.size() > 0){
+  			    	for (Map.Entry<Long, CadreCountsGenderVO> entry : finalMap.entrySet()){
+  			    		CadreCountsGenderVO locationVO = entry.getValue();
+  			    		if(locationVO != null){
+  			    			calcGenderPerc(locationVO);
+  			    		}
+  					}
+  			    	finalList = new ArrayList<CadreCountsGenderVO>(finalMap.values());
+  			    }
+  		   }
+  	   }catch(Exception e){
+		  LOG.error("Exception occur in locationWiseCadreGenderCounts()  Of CadreRegistrationServiceNew class - ",e);
+	   }
+	   return finalList;
+     }
+  	   
 }
