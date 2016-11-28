@@ -1627,7 +1627,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 
 						UserAddress UA = new UserAddress();
 							
-						UA.setState(stateDAO.get(inputVO.getStateId()));
+						UA.setState(inputVO.getStateId() !=null ? stateDAO.get(inputVO.getStateId()):null);
 						UA.setDistrict(inputVO.getDistrictId()!=null?districtDAO.get(inputVO.getDistrictId()):null);
 						UA.setConstituency(inputVO.getConstituencyId() !=null ? constituencyDAO.get(inputVO.getConstituencyId()):null);
 						UA.setTehsil(inputVO.getMandalId() !=null ? tehsilDAO.get(inputVO.getMandalId()):null);
