@@ -291,11 +291,13 @@ control.makeTransliteratable(['commentsId']);
 										<div class="col-md-8 col-xs-12 col-sm-6">
 											<label>Alert Status</label>
 											<select class="dropkickClass" id="statusId">
-											<option value='0'>Select Status</option>
-											<option value='1'>Notified</option>
-											<option value='2'>Action In Progess</option>
-											<option value='3'>Completed</option>
-											<option value='4'>Unable to Resolve</option>
+												<option value='0'>Select Status</option>
+												<option value='1'>Pending</option>      
+												<option value='2'>Notified</option>  
+												<option value='3'>Action In Progess</option>  
+												<option value='4'>Completed</option>
+												<option value='5'>Unable to Resolve</option>
+												<option value='6'>Action Not Required</option>
 											</select>
 											
 											<label>Assigned Cadre</label>
