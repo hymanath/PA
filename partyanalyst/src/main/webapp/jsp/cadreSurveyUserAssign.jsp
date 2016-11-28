@@ -248,9 +248,9 @@ function getDetailsByUserName(){
 				//str+='<td>&nbsp<span class="glyphicon glyphicon-remove UnclockUserCls"  title="Unlock The IMEINo" style="cursor:pointer;" attr_tab_login_id="'+result[i].tabLoginAuthId+'"></span></td>';
 				
 				if(result[i].isDeleted == 'N')
-				str+='<td><button type="button" class=" btn btn-warning btn-sm UnclockUserCls" attr_tab_login_id="'+result[i].tabLoginAuthId+'" title="Unlock The IMEINo">Unlock</button></td>';
-			else
-				str+='<td></td>';
+					str+='<td><button type="button" class=" btn btn-warning btn-sm UnclockUserCls" attr_tab_login_id="'+result[i].tabLoginAuthId+'" title="Unlock The IMEINo">Unlock</button></td>';
+				else
+					str+='<td></td>';
 			
 			str+='</tr>';
 			

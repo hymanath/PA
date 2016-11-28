@@ -14812,6 +14812,26 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getAllAgeRangesByOrderAction" class="nominatedPostProfileAction"  method="getAllAgeRangesByOrder">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getAllCasteDetailsForVotersAction" class="nominatedPostProfileAction"  method="getAllCasteDetailsForVoters">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getAllCasteCategoryDetailsAction" class="nominatedPostProfileAction"  method="getAllCasteCategoryDetails">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getEducationalQualificationsAction" class="nominatedPostProfileAction"  method="getEducationalQualifications">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 	<action name="cadreDemographicReportsAction" class="cadreDemographicReportsAction">
 			 <result name="success">/jsp/cadreDemographicReports.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=cadreDemographicReportsAction</result>
@@ -14830,6 +14850,11 @@
 	<action name="casteCategoryWiseTdpCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="casteCategoryWiseTdpCadreSummaryReport">
 			<result type="json" name="success">
 			<param name="root">cadreCountsVO</param>
+		</result>
+	</action>
+	<action name="getNewCadreSearchBySearchTypeAction" class="appointmentAction" method="getNewCadreSearchBySearchType">
+		<result type="json" name="success">
+			<param name="root">candidatesList</param>
 		</result>
 	</action>
  </package>
