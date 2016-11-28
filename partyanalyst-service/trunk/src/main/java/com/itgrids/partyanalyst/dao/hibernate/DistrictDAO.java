@@ -87,12 +87,14 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		StringBuilder query = new StringBuilder();
 		query.append("select model.districtId,model.districtName from District model where model.state.stateId = ? ");
 		if(stateId.longValue()==1L){
-			query.append(" and model.districtId>10 and model.districtId<=23 ");
+			query.append(" and model.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		}
-		if(stateId.longValue()==36L){
-			query.append(" and model.districtId>=1 and model.districtId<=10 ");
+		else if(stateId.longValue()==36L){
+			query.append(" and model.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else{
+			return null;    
 		}
-		query.append(" order by model.districtName");
+		query.append(" order by model.districtName");     
 		return getHibernateTemplate().find(query.toString(),sid);
 	}
 	
