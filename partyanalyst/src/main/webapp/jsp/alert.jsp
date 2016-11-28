@@ -970,10 +970,13 @@ function clearFields()
 	$(".alertclearCls").val("");
 	$(".clearCls").val("");
 	 $("#alertCategory").val(0);
-	 $("#alertTypeId").val(0);
-	  var select = new Dropkick("#alertTypeId");
-				select.refresh();
-	 $("#alertSeverityId").val(0);
+	$("#alertTypeId").val(0);
+	var select = new Dropkick("#alertTypeId");
+	select.refresh();
+	$("#alertCategory").val(0);
+	var select = new Dropkick("#alertCategory");
+	select.refresh();
+	 $("#alertSeverityId").val(0);  
 	   var select = new Dropkick("#alertSeverityId");
 				select.refresh();
 		$("#alertlevelId1").val(2);
