@@ -156,7 +156,7 @@
                         	<label>Alert Category : </label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertCategory" name="alertVO.categoryId" >
                             	<option value="0"> Select Alert Category </option>
-                            	<option value="1"> Mannual  </option>
+                            	<option value="1"> Manual  </option>
                             	<option value="2"> Print Media </option>
                             	<option value="3"> Electronic Media </option>
                             </select>
@@ -249,6 +249,7 @@
                         </div>
                     </div>-->
                     <div class="row m_top10">
+						<label>Description : </label><span class="text-danger">*</span>
                     	<div class="col-md-12 col-sm-12 col-xs-12">
                         	<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
                         </div>
