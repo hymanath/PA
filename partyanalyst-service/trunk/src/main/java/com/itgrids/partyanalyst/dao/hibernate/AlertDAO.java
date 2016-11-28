@@ -310,7 +310,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " +
 				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and (date(model.updatedTime) between :fromDate and :toDate) ");
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -351,7 +351,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " +
 				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and ( date(model.updatedTime) between :fromDate and :toDate)  ");
+			queryStr.append(" and ( date(model.createdTime) between :fromDate and :toDate)  ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -388,7 +388,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				" left join userAddress.ward ward  " +
 				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and (date(model.updatedTime) between :fromDate and :toDate) ");
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -430,7 +430,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " +
 						" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and (date(model.updatedTime) between :fromDate and :toDate)  ");
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate)  ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -490,7 +490,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " +
 						" where ");
 				if(fromDate != null && toDate != null){
-				queryStr.append(" date(model.updatedTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
+				queryStr.append(" date(model.createdTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
 				}
 				if(stateId != null && stateId.longValue() >= 0L){
 					if(stateId.longValue() == 1L){
@@ -540,8 +540,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  " +
 						" where ");
-		if(fromDate != null && toDate != null){
-			queryStr.append(" date(model.updatedTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
+		if(fromDate != null && toDate != null){  
+			queryStr.append(" date(model.createdTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
