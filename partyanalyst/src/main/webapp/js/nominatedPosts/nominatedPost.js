@@ -2962,22 +2962,22 @@ function getApplicationDocuments(cadreId,candiId,applicationId){
   function buildUploadedDocuments(result){
   $("#applicationDocsModelId").modal("show");
   if(result !=null && result.length > 0){
-  
+  $('#uploadedDopcumentsDivId').html(' ');
   var buildStr='';
 							buildStr+='<div class="panel-body">';
 							buildStr +='<div class="row image-response" style="text-align:center;">';
-							buildStr+='<ul class="list-inline slick-training " style="width:830px; margin-left: 20px;">';
+							buildStr+='<ul class="list-inline slick-training " style=" margin-left: 20px;">';
 							for(var i in result)
 							{
-								buildStr+='<li class="slick-training-slide">';
-								buildStr+='<div class="" style="width: 800px;">';
+								buildStr+='<li >';
+								//buildStr+='<div class="" style="width: 800px;">';
 								var indexOdfDot = result[i].imagePathStr.indexOf(".");
 								var fileExt = result[i].imagePathStr.substring(indexOdfDot+1,result[i].imagePathStr.length);
 								
-								buildStr += '<iframe src="./nominated_post_documents/'+result[i].imagePathStr+'" width="100%" height="800">';    
+								buildStr += '<iframe src="https://mytdp.com/nominated_post_documents/'+result[i].imagePathStr+'"   height="800" width="1000px">';    
 								buildStr += '</iframe>';
 								
-								buildStr+='</div>';
+								//buildStr+='</div>';
 								buildStr+='</li>';
 							}
 							buildStr+='</ul>';
@@ -2989,38 +2989,46 @@ function getApplicationDocuments(cadreId,candiId,applicationId){
 						$('#uploadedDopcumentsDivId').html(" NO UPLOADED DOCUMENTS ARE AVAILABLE");
 					}
 				$('.slick-training').slick({
-					 dots: false,
-					 slide: 'li',
-					 infinite: false,
-					 speed: 300,
+					  slide: 'li',
 					 slidesToShow: 1,
 					 slidesToScroll: 1,
-					 variableWidth: true,
+					 infinite: false,
+					 swipeToSlide:false,
+					 swipe:false,
+					 touchMove:false,
 					 responsive: [
-					 {
-						 breakpoint: 1024,
-						 settings: {
-						 slidesToShow: 3,
-						 slidesToScroll: 3,
-						 infinite: true,
-						 dots: true
+						{
+						  breakpoint: 1024,
+						  settings: {
+							slidesToShow: 3,
+							slidesToScroll: 3
+						  }
+						},
+						{
+						  breakpoint: 768,
+						  settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						  }
+						},
+						{
+						  breakpoint: 600,
+						  settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						  }
+						},
+						{
+						  breakpoint: 480,
+						  settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						  }
 						}
-					 },
-					 {
-						 breakpoint: 600,
-						 settings: {
-						 slidesToShow: 2,
-						 slidesToScroll: 2
-						 }
-					},
-					 {
-						 breakpoint: 480,
-						 settings: {
-						 slidesToShow: 1,
-						 slidesToScroll: 1
-						 }
-					 }
-					 ]
+						// You can unslick at a given breakpoint now by adding:
+						// settings: "unslick"
+						// instead of a settings object
+					  ]
 				});
 				
   }
