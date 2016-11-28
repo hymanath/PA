@@ -686,4 +686,45 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 		  return query.list();
 	  }
 	
+	  public List<Object[]> getCadreDetailsBySearch(String searchType,Long searchValue,String locationType,Long locationVal,String gender,Long minAge,Long maxAge){
+			StringBuilder sb = new StringBuilder();
+			sb.append("select model.tdpCadre.tdpCadreId ,model.tdpCadre.firstname," +
+					" model.tdpCadre.mobileNo,model.tdpCadre.userAddress.constituency.name," +
+					" model.tdpCadre.memberShipNo, voter.voterIDCardNo, model.tdpCadre.image " +
+					" from TdpCadreEnrollmentYear model" +
+					" LEFT JOIN model.tdpCadre.voter voter" +
+					" where model.isDeleted = 'N' and model.enrollmentYearId = 4" +
+					" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
+			if(searchType != null && searchType.trim().equalsIgnoreCase("caste"))
+				sb.append(" and model.tdpCadre.casteStateId = :searchValue");
+			else if(searchType != null && searchType.trim().equalsIgnoreCase("gender"))
+				sb.append(" and model.tdpCadre.gender = :gender");
+			else if(searchType != null && searchType.trim().equalsIgnoreCase("age"))
+				sb.append(" and model.tdpCadre.age between :minAge and :maxAge");
+			else if(searchType != null && searchType.equalsIgnoreCase("casteGroup"))
+				sb.append(" and model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :searchValue");
+			else if(searchType != null && searchType.trim().equalsIgnoreCase("education"))
+				sb.append(" and model.tdpCadre.educationalQualifications.eduQualificationId = :searchValue");
+			
+			if(locationType != null && locationType.trim().equalsIgnoreCase("mandal"))
+				sb.append(" and model.tdpCadre.userAddress.tehsil.tehsilId = :locationVal");
+			else if(locationType != null && locationType.trim().equalsIgnoreCase("muncipality"))
+				sb.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationVal");
+			
+			Query query = getSession().createQuery(sb.toString());
+			if(searchType != null && searchType.trim().equalsIgnoreCase("gender"))
+				query.setParameter("gender", gender);
+			else if(searchType != null && searchType.trim().equalsIgnoreCase("age")){
+				query.setParameter("minAge", minAge);
+				query.setParameter("maxAge", maxAge);
+			}
+			else
+				query.setParameter("searchValue", searchValue);
+			
+			if(locationType != null && locationVal != null)
+				query.setParameter("locationVal", locationVal);
+			
+			
+			return query.list();
+		}
 }

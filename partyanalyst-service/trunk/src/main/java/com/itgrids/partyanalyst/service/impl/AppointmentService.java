@@ -63,10 +63,13 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentHistoryDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostAgeRangeDAO;
+import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -109,6 +112,7 @@ import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
 import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
+import com.itgrids.partyanalyst.model.NominatedPostAgeRange;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
@@ -167,10 +171,33 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentStatusFlowDAO appointmentStatusFlowDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private ITdpMemberDAO tdpMemberDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
+	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
+	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	
 	
 	
-	
+	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
+		return nominationPostCandidateDAO;
+	}
+	public void setNominationPostCandidateDAO(
+			INominationPostCandidateDAO nominationPostCandidateDAO) {
+		this.nominationPostCandidateDAO = nominationPostCandidateDAO;
+	}
+	public INominatedPostAgeRangeDAO getNominatedPostAgeRangeDAO() {
+		return nominatedPostAgeRangeDAO;
+	}
+	public void setNominatedPostAgeRangeDAO(
+			INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO) {
+		this.nominatedPostAgeRangeDAO = nominatedPostAgeRangeDAO;
+	}
+	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+		return tdpCadreEnrollmentYearDAO;
+	}
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
 	public ITdpMemberDAO getTdpMemberDAO() {
 		return tdpMemberDAO;
 	}
@@ -8327,5 +8354,55 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  			}
  			 return finalList;
  		 }
+ 		
+ 		public List<AppointmentCandidateVO> getNewCadreSearchBySearchType(String searchType,Long searchValue,String locationType,Long locationVal,String gender){
+ 			List<AppointmentCandidateVO> returnList = new ArrayList<AppointmentCandidateVO>();
+ 			try {
+ 				List<Long> tdpCadreIdsNominatedIdsList = new ArrayList<Long>();
+ 				Long minAge = 0l;
+ 				Long maxAge = 0l;
+ 				if(searchType != null && searchType.trim().equalsIgnoreCase("age")){
+ 					NominatedPostAgeRange ageRange = nominatedPostAgeRangeDAO.get(searchValue);
+ 					if(ageRange != null){
+ 						minAge = ageRange.getMinValue();
+ 						maxAge = ageRange.getMaxValue();
+ 					}
+ 				}
+				List<Object[]> list = tdpCadreEnrollmentYearDAO.getCadreDetailsBySearch(searchType, searchValue, locationType, locationVal, gender, minAge, maxAge);
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						AppointmentCandidateVO vo = new AppointmentCandidateVO();
+						vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+						vo.setCandidateType("cadre");
+						vo.setName(obj[1]!=null?obj[1].toString():"");
+						vo.setCadre(true);
+						vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+						vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+						vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
+						vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+						vo.setImageURL(obj[6]!=null?"images/cadre_images/"+obj[6].toString():null);
+						returnList.add(vo);
+						tdpCadreIdsNominatedIdsList.add(vo.getId());
+					}
+				}
+				
+				if(tdpCadreIdsNominatedIdsList != null && !tdpCadreIdsNominatedIdsList.isEmpty()){
+					List<Object[]> nominatedCandidatesList = nominationPostCandidateDAO.getNOminatedCadreList(tdpCadreIdsNominatedIdsList);
+					if(nominatedCandidatesList != null && !nominatedCandidatesList.isEmpty()){
+						for (Object[] obj : nominatedCandidatesList) {
+							Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+							Long nominatedCanId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+							AppointmentCandidateVO vo = getMatchedVO(returnList, cadreId);
+							if(vo != null)
+								vo.setAppointmentCandidateId(nominatedCanId);
+						}
+					}
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at getNewCadreSearchBySearchType() method of AppointmentService", e);
+			}
+ 			return returnList;
+ 		}
  }
 

@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDocumentsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -142,9 +143,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IGovtOrderDAO govtOrderDAO;
 	private IGovtOrderDocumentsDAO govtOrderDocumentsDAO;
 	private INominatedPostGovtOrderDAO nominatedPostGovtOrderDAO;
+	private IEducationalQualificationsDAO educationalQualificationsDAO;
 	
 	
 	
+	public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
+		return educationalQualificationsDAO;
+	}
+
+	public void setEducationalQualificationsDAO(
+			IEducationalQualificationsDAO educationalQualificationsDAO) {
+		this.educationalQualificationsDAO = educationalQualificationsDAO;
+	}
+
 	public INominatedPostGovtOrderDAO getNominatedPostGovtOrderDAO() {
 		return nominatedPostGovtOrderDAO;
 	}
@@ -6077,7 +6088,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					Long ageRangeId = commonMethodsUtilService.getLongValueForObject(obj[0]);
 					vo.setStatusId(ageRangeId);
 					vo.setStatusName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-					ageRangeMap.put(ageRangeId, vo);
+					if(ageRangeId != 6l)
+						ageRangeMap.put(ageRangeId, vo);
 				}
 		    }
 			List<Object[]> list = nominatedPostFinalDAO.getAgeGroupWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
@@ -6322,7 +6334,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
 					vo.setStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setStatusName(obj[1] != null ? obj[1].toString():"");
-					voList.add(vo);
+					if(vo.getStatusId() != 6l)
+						voList.add(vo);
 				}
 			}
 		} catch (Exception e) {
@@ -7427,4 +7440,76 @@ public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchT
 	}
 	return retrurnList;
 }
+
+	public List<IdAndNameVO> getAllAgeRangesByOrder(){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = nominatedPostAgeRangeDAO.getAllAgeRangesByOrder();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllAgeRangesByOrder()", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdAndNameVO> getAllCasteDetailsForVoters(){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = casteStateDAO.getAllCasteDetailsForVoters(1l);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllCasteDetailsForVoters()", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdAndNameVO> getAllCasteCategoryDetails(){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = casteCategoryDAO.getAllCasteCategoryDetails();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllCasteCategoryDetails()", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdAndNameVO> getEducationalQualifications(){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = educationalQualificationsDAO.getEducationalQualifications();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getEducationalQualifications()", e);
+		}
+		return returnList;
+	}
 }
