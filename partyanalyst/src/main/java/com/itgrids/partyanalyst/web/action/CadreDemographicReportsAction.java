@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreCountsGenderVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
@@ -27,6 +28,8 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	private JSONObject  jobj;
 	private CadreCountsVO cadreCountsVO;
 	private List<CadreCountsVO> cadreCountsVOList;
+	private CadreCountsGenderVO cadreCountsGenderVO;
+	private List<CadreCountsGenderVO> cadreCountsGenderVOList;
 	
 	//Attributes
 	private ICadreRegistrationServiceNew cadreRegistrationServiceNew; 
@@ -63,6 +66,22 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	}
 	public void setCadreCountsVOList(List<CadreCountsVO> cadreCountsVOList) {
 		this.cadreCountsVOList = cadreCountsVOList;
+	}
+	
+	
+	public CadreCountsGenderVO getCadreCountsGenderVO() {
+		return cadreCountsGenderVO;
+	}
+	public void setCadreCountsGenderVO(CadreCountsGenderVO cadreCountsGenderVO) {
+		this.cadreCountsGenderVO = cadreCountsGenderVO;
+	}
+	
+	public List<CadreCountsGenderVO> getCadreCountsGenderVOList() {
+		return cadreCountsGenderVOList;
+	}
+	public void setCadreCountsGenderVOList(
+			List<CadreCountsGenderVO> cadreCountsGenderVOList) {
+		this.cadreCountsGenderVOList = cadreCountsGenderVOList;
 	}
 	//implementation methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -118,7 +137,6 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	public String casteCategoryWiseTdpCadreSummaryReport(){
 		
 		try{
-			 //Long stateId = 1L;
 			jobj = new JSONObject(getTask());
 			 Long stateId = jobj.getLong("stateId");
 				
@@ -126,6 +144,33 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		}catch(Exception e){
 			LOG.error("Exception raised at casteCategoryWiseTdpCadreSummaryReport() in cadreDemographicReportsAction", e);
 		}
+		return Action.SUCCESS;
+	}
+	public String stateWiseCadreGenderCounts(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+				
+			 cadreCountsGenderVO = cadreRegistrationServiceNew.stateWiseCadreGenderCounts(stateId);
+		}catch(Exception e){
+			LOG.error("Exception raised at stateWiseCadreGenderCounts() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String locationWiseCadreGenderCounts(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+			 Long districtId = jobj.getLong("districtId");
+			 String searchType = jobj.getString("searchType");
+			
+			 cadreCountsGenderVOList = cadreRegistrationServiceNew.locationWiseCadreGenderCounts(stateId,districtId,searchType);
+		}catch(Exception e){
+			LOG.error("Exception raised at locationWiseCadreGenderCounts() in cadreDemographicReportsAction", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }

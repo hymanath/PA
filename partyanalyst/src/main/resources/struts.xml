@@ -14857,5 +14857,15 @@
 			<param name="root">candidatesList</param>
 		</result>
 	</action>
+	<action name="stateWiseCadreGenderCountsAction" class="cadreDemographicReportsAction"  method="stateWiseCadreGenderCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVO</param>
+		</result>
+	</action>
+	<action name="locationWiseCadreGenderCountsAction" class="cadreDemographicReportsAction"  method="locationWiseCadreGenderCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
