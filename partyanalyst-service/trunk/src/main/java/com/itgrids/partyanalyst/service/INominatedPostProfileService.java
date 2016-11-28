@@ -76,4 +76,8 @@ public interface INominatedPostProfileService {
 	 public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId,Long candId);
 	 public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,List<Long> locationValues,Long departmentId,Long boardId,Long positionId);
 	 public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId);
+	 public List<IdAndNameVO> getAllAgeRangesByOrder();
+	 public List<IdAndNameVO> getAllCasteDetailsForVoters();
+	 public List<IdAndNameVO> getAllCasteCategoryDetails();
+	 public List<IdAndNameVO> getEducationalQualifications();
 }

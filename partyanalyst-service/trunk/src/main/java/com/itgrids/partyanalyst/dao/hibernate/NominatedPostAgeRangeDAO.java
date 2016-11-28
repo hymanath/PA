@@ -20,4 +20,10 @@ public class NominatedPostAgeRangeDAO extends GenericDaoHibernate<NominatedPostA
 									" from NominatedPostAgeRange model");
 		return query.list();
 	}
+	
+	public List<Object[]> getAllAgeRangesByOrder(){
+		Query query = getSession().createQuery("select model.nominatedPostAgeRangeId,model.ageRange" +
+									" from NominatedPostAgeRange model order by model.orderId");
+		return query.list();
+	}
 }

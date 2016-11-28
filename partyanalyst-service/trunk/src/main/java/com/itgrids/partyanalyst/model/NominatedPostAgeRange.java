@@ -21,6 +21,7 @@ public class NominatedPostAgeRange extends BaseModel implements Serializable{
 	private String ageRange;
 	private Long minValue;
 	private Long maxValue;
+	private Long orderId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,5 +55,13 @@ public class NominatedPostAgeRange extends BaseModel implements Serializable{
 	}
 	public void setMaxValue(Long maxValue) {
 		this.maxValue = maxValue;
+	}
+	
+	@Column(name="order_id")
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 }

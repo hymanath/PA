@@ -30,4 +30,5 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getDistWiseRenewCountList();
 	public List<Object[]> getConstWiseCountList();
 	public List<Object[]> getConstWiseRenewCountList();
+	public List<Object[]> getCadreDetailsBySearch(String searchType,Long searchValue,String locationType,Long locationVal,String gender,Long minAge,Long maxAge);
 }

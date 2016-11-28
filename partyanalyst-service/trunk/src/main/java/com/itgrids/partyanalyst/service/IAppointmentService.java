@@ -108,4 +108,5 @@ public interface IAppointmentService {
 	public List<AppointmentScheduleVO> getApptRescheduledDetialsByCandidate(Long apptUserId,Long appointmentCandidateId);
 	public  List<AppointmentCandidateVO> advancedSearchRequestedMembers(String searchType,String searchValue,LocationInputVO inputVo);
 	public  List<AppointmentCandidateVO> searchRequestedMembers(String searchType,String searchValue);
+	public List<AppointmentCandidateVO> getNewCadreSearchBySearchType(String searchType,Long searchValue,String locationType,Long locationVal,String gender);
 }
