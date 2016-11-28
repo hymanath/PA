@@ -77,13 +77,14 @@
 					</div>  
                 </div> 
 						
-                <div class="panel-body bg_EF">
+                <div class="panel-body">
                 	<!--<div class="table-responsive" id="locationLevelId"></div>-->
 					<div class="table-responsive" id="">
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="overAllCount"></div>
+							
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<table class="table table-condensed b_1" id="alertCatTabId"></table>  
@@ -92,6 +93,7 @@
 							<div class="panel panel-default">
 								<div class="panel-body bg_EF">
 									<div  id="locWiseAltCntId"></div>
+									
 								</div>
 							</div>
 						</div>
@@ -118,7 +120,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel-body bg_EF" id="multiLocationId"></div>
+								<div class="panel-body bg_cc" id="multiLocationId"></div>
 							</div>
 						</div>
 					</div>
@@ -619,20 +621,20 @@ function getAlertAssignedCandidate()
 		str+='<table class="table tableCounts" >';
 			str+='<tr>';
 				str+='<td>';
-					str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
+					str+='<p style="color:#191970;">TOTAL ALERTS</p>';
 					if(totalAlert != null && totalAlert>0)
-						str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
+						str+='<h3 style="margin-top:10px !important;"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
 					else
 						str+='<h3>'+totalAlert+'</h3>'; 
 				str+='</td>';
 				var j = 1;
 				for(var i in result){
 					str+='<td>';
-					str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
+					str+='<p>'+result[i].status+'</p>';
 					if(result[i].count != null && result[i].count >0 )
-						str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
+						str+='<h3 style="color:'+colorArr[j]+';margin-top:10px !important;"><u><a style="color:'+colorArr[j]+'" href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
 					else
-						str+='<h3>'+result[i].count+'</h3>';
+						str+='<h3 style="margin-top:10px !important;">'+result[i].count+'</h3>';
 					
 					str+='</td>';
 					j = j+1;     
@@ -682,7 +684,7 @@ function getAlertAssignedCandidate()
 			if(result[i].count != null && result[i].count > 0)
 				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].count+'</a> </u></span></td>';
 			else
-				str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
+				str+='<td class="text-capitalize" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
 			
 			for(var j in result[i].subList1){
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount >0)
@@ -793,7 +795,7 @@ function getAlertAssignedCandidate()
 						str+='<th>'+result[0].subList2[0].subList1[l].category+'</th>';
 					}
 				str+='</thead>';
-				str+='<tbody>';
+				str+='<tbody class="bg_EF">';
 					for(var j in result[i].subList2){
 						str+='<tr>';  
 						var cnt = 0;
@@ -802,7 +804,7 @@ function getAlertAssignedCandidate()
 						}
 						var appClr = colorArrHead[result[i].subList2[j].status];
 						if(cnt != null && cnt>0)
-							str+='<td class="text-capital" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> <u><a class="belowLocationCls" href="javascript:{};" attr_id="'+result[i].subList2[j].statusId+'" title="Click here to view '+globalLocation+' Alerts Details" attr_levlValue="'+result[i].locationId+'" attr_levlid="'+levelId+'" attr_category_id="0" attr_search_location="locationInnerBlock">'+cnt+'</a></u></span></td>';
+							str+='<td class="text-capitalize" style="color:'+appClr+';width:200px !important;"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> <u><a class="belowLocationCls" href="javascript:{};" attr_id="'+result[i].subList2[j].statusId+'" title="Click here to view '+globalLocation+' Alerts Details" attr_levlValue="'+result[i].locationId+'" attr_levlid="'+levelId+'" attr_category_id="0" attr_search_location="locationInnerBlock">'+cnt+'</a></u></span></td>';
 						else
 							str+='<td class="text-capital" style="color:'+appClr+'"><strong>'+result[i].subList2[j].status+'</strong><span class="pull-right"> '+cnt+'</span></td>';
 						
