@@ -480,29 +480,29 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.impactLevelId, model.impactLevelValue " +
 						" from Alert model "+
-		" left join model.userAddress userAddress " +
-		" left join userAddress.state state  " +
-		" left join userAddress.district district  " +
-		" left join userAddress.constituency constituency  " +
-		" left join userAddress.tehsil tehsil  " +
-		" left join userAddress.localElectionBody localElectionBody  " +
-		" left join userAddress.panchayat panchayat  " +
-		" left join userAddress.ward ward  " +
-		" where ");
-if(fromDate != null && toDate != null){
-queryStr.append(" date(model.updatedTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
-}
-if(stateId != null && stateId.longValue() >= 0L){
-if(stateId.longValue() == 1L){
-queryStr.append(" and state.stateId = 1 ");
-//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-}else if(stateId.longValue() == 36L){
-//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-queryStr.append(" and state.stateId = 36 ");  
-}else if(stateId.longValue() == 0L){
-queryStr.append(" and state.stateId in (1,36) ");
-}
-}
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " +
+						" where ");
+				if(fromDate != null && toDate != null){
+				queryStr.append(" date(model.updatedTime) between :fromDate and :toDate and model.isDeleted = 'N' ");
+				}
+				if(stateId != null && stateId.longValue() >= 0L){
+					if(stateId.longValue() == 1L){
+					queryStr.append(" and state.stateId = 1 ");
+					//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+					}else if(stateId.longValue() == 36L){
+					//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					queryStr.append(" and state.stateId = 36 ");  
+					}else if(stateId.longValue() == 0L){
+					queryStr.append(" and state.stateId in (1,36) ");
+					}
+				}
 
 		if(Location.equalsIgnoreCase("state")){
 			queryStr.append(" and model.impactLevelId = 2 ");  
