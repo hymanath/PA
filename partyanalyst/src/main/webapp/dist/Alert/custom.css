@@ -440,6 +440,8 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 	border-top: 4px solid #2E3560 !important;
 	padding: 14px;
 	background-color: #EAE9EF;
+	padding:15px 10px !important;
+	text-transform:uppercase;
 }
 .tableCounts
 {
@@ -481,6 +483,10 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	border-top: 0px !important;
 	border-bottom: 0px !important;
+}
+.tableAlert tr td:nth-child(1) , .tableAlert thead th:nth-child(1) , #alertCatTabId tr td , #multiLocationId .table tr td
+{
+	padding-right:30px !important;
 }
 .tableAlert tr td:nth-child(2) , .tableAlert thead th:nth-child(2)
 {
