@@ -770,6 +770,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						try {
 			Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
 			Alert alert =	alertDAO.get(inputVo.getId());
+			alert.setUpdatedTime(currentDateAndTime);    
 			alert.setAlertStatusId(inputVo.getStatusId());
 			alert = alertDAO.save(alert);
 		    rs = "success";
