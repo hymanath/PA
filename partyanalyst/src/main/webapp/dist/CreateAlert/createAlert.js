@@ -238,7 +238,7 @@ function disableByLevel(index)
 	 {
 		  str+='<option value="2">State</option>';
 		  str+='<option value="3">District</option>';
-		   str+='<option value="4">Constituency</option>';
+		   str+='<option value="4">Constituency</option>';  
 		  str+='<option value="5">Mandal/Muncipality</option>';
 		  str+='<option value="6">Village/Ward</option>';
 		  $("#alertlevelId").append(str);
@@ -265,10 +265,9 @@ function disableByLevel(index)
   
   
   function getDistrictsForReferPopup(index) {
-{
 	var stateId = $("#stateId"+index).val();
 	var jobj = {
-		stateId : stateId
+		stateId : stateId  
 	}
 	$.ajax({
 		type : 'GET',
@@ -277,24 +276,59 @@ function disableByLevel(index)
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		var str='';
-		if(index == "")
-		{
-			    str +='<option value="0">ALL</option>';	
+		if(index == ""){
+			str +='<option value="0">ALL</option>';	
 		}
-		else
-		str+='<option value="0">Select District</option>';
-		if(result != null && result.length > 0){
+		else{
+			str+='<option value="0">Select District</option>';
+		}
+		if(result != null && result.length > 0){    
 			for(var i in result){
 				if(result[i].id > 0)
 				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
-		}
-		$("#referdistrictId"+index).html(str);
-		$("#referdistrictId"+index).dropkick();
-		var select1 = new Dropkick("#referdistrictId"+index);
-		select1.refresh();
-	});
- }
+			$("#referdistrictId"+index).html(str);
+			$("#referdistrictId"+index).dropkick();
+			var select1 = new Dropkick("#referdistrictId"+index);
+			select1.refresh();
+			//for const
+			$("#referconstituencyId"+index).html('<option value="0">Select Assembly</option>');
+			$("#referconstituencyId"+index).dropkick();
+			var select1 = new Dropkick("#referconstituencyId"+index);
+			select1.refresh();
+			//for mandal/municipality
+			$("#refermandalNameId"+index).html('<option value="0">Select Mandal/Muncipality</option>');
+			$("#refermandalNameId"+index).dropkick();
+			var select1 = new Dropkick("#refermandalNameId"+index);
+			select1.refresh();
+			//for panchayat
+			$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+			$("#referpanchayatId"+index).dropkick();
+			var select1 = new Dropkick("#referpanchayatId"+index);
+			select1.refresh();     
+		}else{
+			//for dist
+			$("#referdistrictId"+index).html('<option value="0">Select District</option>');
+			$("#referdistrictId"+index).dropkick();
+			var select1 = new Dropkick("#referdistrictId"+index);
+			select1.refresh();     
+			//for const
+			$("#referconstituencyId"+index).html('<option value="0">Select Assembly</option>');
+			$("#referconstituencyId"+index).dropkick();
+			var select1 = new Dropkick("#referconstituencyId"+index);
+			select1.refresh();
+			//for mandal/municipality
+			$("#refermandalNameId"+index).html('<option value="0">Select Mandal/Muncipality</option>');
+			$("#refermandalNameId"+index).dropkick();
+			var select1 = new Dropkick("#refermandalNameId"+index);
+			select1.refresh();
+			//for panchayat
+			$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+			$("#referpanchayatId"+index).dropkick();
+			var select1 = new Dropkick("#referpanchayatId"+index);
+			select1.refresh();  
+		} 
+	});  
   }
  function getConstituenciesBydistrictForReferPopup(index){
 	 var districtId = $("#referdistrictId"+index).val();
@@ -309,17 +343,43 @@ function disableByLevel(index)
 			var constiStr='';
 			if(result != null && result.length > 0){
 				if(index == "")
-			    constiStr +='<option value="0">ALL</option>';
-			else
-				 constiStr +='<option value="0">Select Assembly</option>';
+					constiStr +='<option value="0">ALL</option>';
+				else
+					constiStr +='<option value="0">Select Assembly</option>';
 				for(var i in result){
 					if(result[i].id > 0)
 					constiStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-					}
-			 $("#referconstituencyId"+index).html(constiStr);
-			 $("#referconstituencyId"+index).dropkick();
-			var select = new Dropkick("#referconstituencyId"+index);
-			 select.refresh();
+				}
+				$("#referconstituencyId"+index).html(constiStr);
+				$("#referconstituencyId"+index).dropkick();
+				var select = new Dropkick("#referconstituencyId"+index);
+				select.refresh();
+				//for mandal/municipality
+				$("#refermandalNameId"+index).html('<option value="0">Select Mandal/Muncipality</option>');
+				$("#refermandalNameId"+index).dropkick();
+				var select1 = new Dropkick("#refermandalNameId"+index);
+				select1.refresh();
+				//for panchayat
+				$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+				$("#referpanchayatId"+index).dropkick();
+				var select1 = new Dropkick("#referpanchayatId"+index);
+				select1.refresh();           
+			}else{
+				//for const
+				$("#referconstituencyId"+index).html('<option value="0">Select Assembly</option>');
+				$("#referconstituencyId"+index).dropkick();
+				var select1 = new Dropkick("#referconstituencyId"+index);
+				select1.refresh();
+				//for mandal/municipality
+				$("#refermandalNameId"+index).html('<option value="0">Select Mandal/Muncipality</option>');
+				$("#refermandalNameId"+index).dropkick();
+				var select1 = new Dropkick("#refermandalNameId"+index);
+				select1.refresh();
+				//for panchayat
+				$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+				$("#referpanchayatId"+index).dropkick();
+				var select1 = new Dropkick("#referpanchayatId"+index);
+				select1.refresh(); 
 			}
 		});
  }
@@ -343,11 +403,27 @@ function disableByLevel(index)
 				for(var i in result){
 					if(result[i].id > 0)
 					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-					}
-			 $("#refermandalNameId"+index).html(mandalStr);
-			 $("#refermandalNameId"+index).dropkick();
-			 var select = new Dropkick("#refermandalNameId"+index);
-			 select.refresh();
+				}
+				$("#refermandalNameId"+index).html(mandalStr);
+				$("#refermandalNameId"+index).dropkick();
+				var select = new Dropkick("#refermandalNameId"+index);
+				select.refresh();                
+				//for panchayat
+				$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+				$("#referpanchayatId"+index).dropkick();
+				var select1 = new Dropkick("#referpanchayatId"+index);
+				select1.refresh(); 
+			}else{
+				//for mandal/municipality
+				$("#refermandalNameId"+index).html('<option value="0">Select Mandal/Muncipality</option>');
+				$("#refermandalNameId"+index).dropkick();
+				var select1 = new Dropkick("#refermandalNameId"+index);
+				select1.refresh();
+				//for panchayat
+				$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+				$("#referpanchayatId"+index).dropkick();
+				var select1 = new Dropkick("#referpanchayatId"+index);
+				select1.refresh(); 
 			}
 		});
  }
@@ -377,19 +453,25 @@ function disableByLevel(index)
 						var panchyatStr='';
 						if(result!=null && result.length>0){
 							if(index == "")
-			    panchyatStr +='<option value="0">ALL</option>';
-					else
-				panchyatStr +='<option value="0">Select Panchayat</option>';
-			            for(var i in result){
-							if(result[i].id > 0)
-				 panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-			 }
-			    $("#referpanchayatId"+index).html(panchyatStr);
-			    $("#referpanchayatId"+index).dropkick();
-			 var select = new Dropkick("#referpanchayatId"+index);
-			 select.refresh();
-			}
-		   });
+								panchyatStr +='<option value="0">ALL</option>';
+							else
+								panchyatStr +='<option value="0">Select Panchayat</option>';
+							for(var i in result){
+								if(result[i].id > 0)
+									panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+							}
+							$("#referpanchayatId"+index).html(panchyatStr);
+							$("#referpanchayatId"+index).dropkick();
+							var select = new Dropkick("#referpanchayatId"+index);
+							select.refresh();
+						}else{
+							//for panchayat
+							$("#referpanchayatId"+index).html('<option value="0">Select Panchayat</option>');
+							$("#referpanchayatId"+index).dropkick();
+							var select1 = new Dropkick("#referpanchayatId"+index);
+							select1.refresh(); 
+						}     
+				});
 		}
 		
 		
@@ -1027,3 +1109,4 @@ function buildMemberTypes(result)
 }
  
 	
+  
