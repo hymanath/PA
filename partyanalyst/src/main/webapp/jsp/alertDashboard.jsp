@@ -12,7 +12,6 @@
 	<!-- Bootstrap -->
 	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 	
@@ -30,7 +29,6 @@
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
 	<script src="dist/DateRange/moment.js" type="text/javascript"></script>
 	<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 	<script src="dist/alertDashBoard/alertDashboard.js" type="text/javascript"></script>
 	
@@ -65,14 +63,14 @@
 								<li attr_state_Id="1" class="stateCls active">AP</li>
 								<li attr_state_Id="36" class="stateCls">TS</li>   
 							</ul>  
-							<div class="btn-group alertMenuDiv alertMenu">
+							<!--<div class="btn-group alertMenuDiv alertMenu">
 							  <i class="glyphicon glyphicon-align-justify  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 							  <ul class="dropdown-menu pull-right alertMenuDropdown">
 								<li><a href="#">Create New Alert</a></li>
 								<li><a href="#">View Alert</a></li>
 								<li><a href="#">Alerts Overview</a></li>
 							  </ul>
-							</div>
+							</div>-->
 						</div>
 					</div>  
                 </div> 
@@ -197,7 +195,7 @@
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label style="font-size:14px;" class="textcolor_black">State</label>
-									 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
+									 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
 										 <option value="0">All</option>
 										 <option value="1">Andhra Pradesh</option>
 										 <option value="36">Telangana</option>
@@ -205,29 +203,30 @@
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label style="font-size:14px;" class="textcolor_black">District</label>
-										<select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
+										<select class="chosen-select " id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
 										<option value="0">All</option></select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label style="font-size:14px;" class="textcolor_black">Assembly</label>
-									<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
+									<select class=" form-control chosen-select " id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
 									<option value="0">All</option>
 									</select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label style="font-size:14px;" class="textcolor_black">Mandal/Municipality</label>
-									<select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
+									<select class=" form-control chosen-select " id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
 										<option value="0">All</option>
 									 </select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label style="font-size:14px;" class="textcolor_black">Panchayat/Ward</label>
-									<select class="dropkickClass" id="referpanchayatId" >
+									<select class=" form-control chosen-select " id="referpanchayatId" >
 										<option value="0">All</option>
 									</select>
 								</div>
+								<div class="col-md-3 col-xs-12 col-sm-6">
 									<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
-									
+								</div>
 								</div>
 							</div>							
 						</div>
@@ -240,8 +239,8 @@
 						<div class="row">
 							<div class="col-md-3 col-xs-12 col-sm-3">
 								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
-								<select class="form-control chosen-select " id="alertTypeId" onchange="getLocationFilterAlertData()">
-									<option value="0" selected="selected">Select Alert Type</option>
+								<select class="form-control" id="alertTypeId">
+									<option value="0" selected="selected">All</option>
 									<option value="1">Party</option>
 									<option value="2">Govt</option>
 									<option value="3">Others</option>
@@ -249,8 +248,8 @@
 							</div>
 							<div class="col-md-3 col-xs-12 col-sm-3">
 								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
-								<select class="form-control chosen-select" id="alertStatusId"  onchange="getLocationFilterAlertData()">
-									<option value="0" selected="selected">Select Alert Status</option>
+								<select class="form-control chosen-select" id="alertStatusId" >
+									<option value="0" selected="selected">All</option>
 									<option value="1">Pending</option>
 									<option value="2">Notified</option>
 									<option value="3">Action In Progess</option>
@@ -259,6 +258,9 @@
 									<option value="6">Action Not Required</option>
 								</select>
 							</div>
+							
+							<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn  btn-success m_top20 " type="button"  >View</button>
+							
 						</div>
 					</div>
 				</div>
@@ -403,7 +405,7 @@
 					</div>
 					<div class="panel-body">
 						<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-						<select class="dropkickClass" id="statusId">
+						<select class="" id="statusId">
 							<option value='0'>Select Status</option>
 							
 							<option value='1'>Created</option>
@@ -508,7 +510,7 @@ $(document).on("click","#createAlertBtn",function(){
 	getAlertsource();
 	$("#apptmemberDetailsDiv").html("");
 });
-$(".dropkickClass").dropkick();
+//$(".dropkickClass").dropkick();
 
 getAlertAssignedCandidate();
 function getAlertAssignedCandidate()
@@ -825,12 +827,13 @@ function getAlertAssignedCandidate()
 	
 	$("#alertTypeId").chosen();
 	$("#alertStatusId").chosen();
+	$("#stateId").chosen();
 	$("#assignedCadreId").chosen();
-	$("#assignedCadreStateId").chosen();
-	$("#assignedCadreDistrictId").chosen();
-	$("#assignedCadreAssemblyId").chosen();
-	$("#assignedCadreManMunId").chosen();
-	$("#assignedCadrePanWardId").chosen();
+	$("#referdistrictId").chosen();
+	$("#referconstituencyId").chosen();
+	$("#refermandalNameId").chosen();
+	$("#referpanchayatId").chosen();
+	
 	$(".datatableId").dataTable();
 		$(document).on("click",".showfilterBlock",function(){
 			$(".filterBlockDiv").toggle();
