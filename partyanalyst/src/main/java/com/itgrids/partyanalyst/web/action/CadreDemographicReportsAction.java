@@ -73,12 +73,12 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	public String execute(){
 		try {
 			
-			 session = request.getSession();
+			/* session = request.getSession();
 			
 			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user == null || user.getRegistrationID() == null){
 				return ERROR;
-			}
+			}*/
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in cadreDemographicReportsAction Action ", e);
 		}
