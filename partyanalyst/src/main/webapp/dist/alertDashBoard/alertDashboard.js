@@ -395,8 +395,8 @@ function buildAlertData(result,jsObj)
 	str+='<th>ALERT TYPE </th>';
 	str+='<th>STATUS</th>';
 	str+='<th>INVOLVED NO OF CANDIDATES</th>';
-	str+='<th>NOTIFIED DATE </th>';
-	str+='<th>INFORMATION DATE </th>';
+	str+='<th>CREATED DATE </th>'; 
+	str+='<th>INFORMATION SOURCE </th>';
 	str+='<th>SEVERITY</th>';
 	/*
 	if(jsObj.levelId == 2)
