@@ -280,7 +280,14 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 
 .btnCreateAlert
 {
-	position:absolute;bottom:30px;right:30px;height:40px;width:40px;border-radius:50%;box-shadow:0px 0px 5px rgba(0,0,0,0.4);padding:3px 7px
+	position:fixed;
+	bottom:30px;
+	right:30px;
+	height:40px;
+	width:40px;
+	border-radius:50%;
+	box-shadow:0px 0px 5px rgba(0,0,0,0.4);
+	padding:3px 7px
 }
 .m_top10
 {
