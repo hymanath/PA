@@ -530,7 +530,7 @@ function getAlertAssignedCandidate()
 		if(result != null && result.length > 0){
 			for(var i in result){
 				if(result[i].id > 0)
-				str+='<option value="'+result[i].id+'">'+result[i].uname+'</option>';
+				str+='<option value="'+result[i].id+'">'+(result[i].uname).toUpperCase()+'</option>';
 			}
 		}
 		$("#assignedCadreId").html(str);
@@ -727,7 +727,7 @@ function getAlertAssignedCandidate()
 		}
 		str+='</thead>';
 		for(var i in result){
-			if(result[i].statusId==1 || result[i].statusId==5 || result[i].statusId==6 || result[i].statusId==7 || result[i].statusId==8 || result[i].statusId==9 || result[i].statusId==10){
+			if(result[i].statusId==6 || result[i].statusId==8){ //6(v)+8(m)=11 for village/mandal            
 				continue;
 			}
 			str+='<tr>';
