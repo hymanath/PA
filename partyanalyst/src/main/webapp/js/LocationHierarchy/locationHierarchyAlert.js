@@ -24,9 +24,10 @@ function getDistrictsForReferPopup(index) {
 			}
 		}
 		$("#referdistrictId"+index).html(str);
-		$("#referdistrictId"+index).dropkick();
-		var select1 = new Dropkick("#referdistrictId"+index);
-		select1.refresh();
+		 $("#referdistrictId"+index).trigger('chosen:updated');
+		//$("#referdistrictId"+index).dropkick();
+		//var select1 = new Dropkick("#referdistrictId"+index);
+		//select1.refresh();
 	});
  }
   }
@@ -51,9 +52,10 @@ function getDistrictsForReferPopup(index) {
 					constiStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
 			 $("#referconstituencyId"+index).html(constiStr);
-			 $("#referconstituencyId"+index).dropkick();
-			var select = new Dropkick("#referconstituencyId"+index);
-			 select.refresh();
+			  $("#referconstituencyId"+index).trigger('chosen:updated');
+			// $("#referconstituencyId"+index).dropkick();
+			//var select = new Dropkick("#referconstituencyId"+index);
+			// select.refresh();
 			}
 		});
  }
@@ -79,9 +81,10 @@ function getDistrictsForReferPopup(index) {
 					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
 			 $("#refermandalNameId"+index).html(mandalStr);
-			 $("#refermandalNameId"+index).dropkick();
-			 var select = new Dropkick("#refermandalNameId"+index);
-			 select.refresh();
+			   $("#refermandalNameId"+index).trigger('chosen:updated');
+			// $("#refermandalNameId"+index).dropkick();
+			// var select = new Dropkick("#refermandalNameId"+index);
+			// select.refresh();
 			}
 		});
  }
@@ -119,9 +122,11 @@ function getDistrictsForReferPopup(index) {
 				 panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 			 }
 			    $("#referpanchayatId"+index).html(panchyatStr);
-			    $("#referpanchayatId"+index).dropkick();
-			 var select = new Dropkick("#referpanchayatId"+index);
-			 select.refresh();
+				$("#referpanchayatId"+index).trigger('chosen:updated');
+				
+			 //   $("#referpanchayatId"+index).dropkick();
+			// var select = new Dropkick("#referpanchayatId"+index);
+			// select.refresh();
 			}
 		   });
 		}
