@@ -1608,7 +1608,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							 
 							 alert.setCreatedTime(inputVO.getInsertedTime());
 							 alert.setAlertStatusId(inputVO.getStatusId());
-							 alert.setCreatedBy(inputVO.getUserId());
+							// alert.setCreatedBy(inputVO.getUserId());
 							 
 						 }				 
 						 alert.setAlertTypeId(inputVO.getAlertType());
@@ -1619,7 +1619,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
 						 alert.setDescription(inputVO.getDesc());	
 						 alert.setTitle(inputVO.getTitle());
-						 alert.setUpdatedBy(inputVO.getUserId());
+						// alert.setUpdatedBy(inputVO.getUserId());
 						 alert.setAlertSourceId(3l);				 
 						 alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						 alert.setAlertCategoryId(inputVO.getAlertCategory());
