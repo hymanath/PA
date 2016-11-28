@@ -330,7 +330,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setUpdatedBy(userId);
 
 				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
-					 alert.setAlertStatusId(2l);// if assifn list given default status is notified
+					 alert.setAlertStatusId(2l);// if assign list given default status is notified
 				 else
 					 alert.setAlertStatusId(1l);// default pending status
 
@@ -1616,6 +1616,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 setImpactId(alert,inputVO);
 						 
 						 //alert.setImpactLevelId(inputVO.getRegionScopeId());
+						 
+						 if(alert.getImpactLevelId() !=  null &&alert.getImpactLevelId().longValue() ==3L && 
+								  inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L){ //only new district ids
+							if(inputVO.getDistrictId().longValue() == IConstants.CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID)
+								inputVO.setDistrictId(517L);
+							if(inputVO.getDistrictId().longValue() == IConstants.CNP_MANCHERIAL_DISTRICT_ID)
+								inputVO.setDistrictId(518L);
+							
+								inputVO.setRegionScopeValue(inputVO.getDistrictId());
+						 }
+						 
 						 alert.setImpactLevelValue(inputVO.getRegionScopeValue());
 						 alert.setDescription(inputVO.getDesc());	
 						 alert.setTitle(inputVO.getTitle());
@@ -1627,7 +1638,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alert.setAlertCategoryTypeId(inputVO.getId());
 						 
 						UserAddress UA = new UserAddress();
-							
+							 
 						UA.setState(inputVO.getStateId() !=null ? stateDAO.get(inputVO.getStateId()):null);
 						UA.setDistrict(inputVO.getDistrictId()!=null?districtDAO.get(inputVO.getDistrictId()):null);
 						UA.setConstituency(inputVO.getConstituencyId() !=null ? constituencyDAO.get(inputVO.getConstituencyId()):null);
@@ -1643,6 +1654,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								userAddressNew.getUserAddressId().longValue():null);
 						
 						 alert = alertDAO.save(alert);
+						 
+						 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+						 alertTrackingVO.setAlertUserTypeId(alert.getAlertSourceId());
+						 alertTrackingVO.setAlertStatusId(alert.getAlertStatusId());
+						 alertTrackingVO.setAlertId(alert.getAlertId());
+						 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+						 saveAlertTrackingDetails(alertTrackingVO)	;
+						 
 						 
 						 //Saving into Alert Candidate For Print and Electronic Media
 						 if(inputVO.getActionableVoList() != null && inputVO.getActionableVoList().size() > 0)
