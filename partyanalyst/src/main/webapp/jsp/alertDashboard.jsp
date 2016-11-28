@@ -65,8 +65,8 @@
 								<li attr_state_Id="1" class="stateCls active">AP</li>
 								<li attr_state_Id="36" class="stateCls">TS</li>   
 							</ul>  
-							<div class="btn-group alertMenuDiv">
-							  <i class="glyphicon glyphicon-align-justify alertMenu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+							<div class="btn-group alertMenuDiv alertMenu">
+							  <i class="glyphicon glyphicon-align-justify  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 							  <ul class="dropdown-menu pull-right alertMenuDropdown">
 								<li><a href="#">Create New Alert</a></li>
 								<li><a href="#">View Alert</a></li>
@@ -83,7 +83,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<table class="table tableCounts" id="overAllCount"></table>
+							<div id="overAllCount"></div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<table class="table table-condensed b_1" id="alertCatTabId"></table>  
@@ -91,7 +91,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-body bg_EF">
-									<table class="table tableAlert" id="locWiseAltCntId"></table>
+									<div  id="locWiseAltCntId"></div>
 								</div>
 							</div>
 						</div>
@@ -233,31 +233,34 @@
 				</div>
 			</div>
 			<div class="row m_top10">
-				<div class="col-md-12 col-xs-12 col-sm-12 alertheadingcolor">
-					<div class="col-md-3 col-xs-12 col-sm-3">
-					<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
-						<select class="form-control chosen-select " id="alertTypeId" onchange="getLocationFilterAlertData()">
-							<option value="0" selected="selected">Select Alert Type</option>
-							<option value="1">Party</option>
-							<option value="2">Govt</option>
-							<option value="3">Others</option>
-						</select>
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<div class="alertheadingcolor">
+						<div class="row">
+							<div class="col-md-3 col-xs-12 col-sm-3">
+								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
+								<select class="form-control chosen-select " id="alertTypeId" onchange="getLocationFilterAlertData()">
+									<option value="0" selected="selected">Select Alert Type</option>
+									<option value="1">Party</option>
+									<option value="2">Govt</option>
+									<option value="3">Others</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3">
+								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
+								<select class="form-control chosen-select" id="alertStatusId"  onchange="getLocationFilterAlertData()">
+									<option value="0" selected="selected">Select Alert Status</option>
+									<option value="1">Pending</option>
+									<option value="2">Notified</option>
+									<option value="3">Action In Progess</option>
+									<option value="4">Completed</option>
+									<option value="5">Unable to Resolve</option>
+									<option value="6">Action Not Required</option>
+								</select>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-3 col-xs-12 col-sm-3">
-					<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
-						<select class="form-control chosen-select" id="alertStatusId"  onchange="getLocationFilterAlertData()">
-							<option value="0" selected="selected">Select Alert Status</option>
-							<option value="1">Pending</option>
-							<option value="2">Notified</option>
-							<option value="3">Action In Progess</option>
-							<option value="4">Completed</option>
-							<option value="5">Unable to Resolve</option>
-							<option value="6">Action Not Required</option>
-						</select>
-					</div>
-					
 				</div>
-				<div class="col-md-12 col-xs-12 col-sm-12 pad_0">
+				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div class="panel panel-default">
 						<div class="panel-heading panel-headingColor">
 							<div class="row">
@@ -609,28 +612,37 @@ function getAlertAssignedCandidate()
 			totalAlert = totalAlert + result[i].count;
 		}
 		var str = '';
-		str+='<tr>';
-		str+='<td>';
-			str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
-			if(totalAlert != null && totalAlert>0)
-				str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
-			else
-				str+='<h3>'+totalAlert+'</h3>'; 
-		str+='</td>';
-		var j = 1;
-		for(var i in result){
-			str+='<td>';
-			str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
-			if(result[i].count != null && result[i].count >0 )
-				str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
-			else
-				str+='<h3>'+result[i].count+'</h3>';
-			
-			str+='</td>';
-			j = j+1;     
+		if($(window).width() < 500)
+		{
+			str+='<div class="table-responsive">';
 		}
-		str+='</tr>';
-		
+		str+='<table class="table tableCounts" >';
+			str+='<tr>';
+				str+='<td>';
+					str+='<h4 style="color:#191970;">TOTAL ALERTS</h4>';
+					if(totalAlert != null && totalAlert>0)
+						str+='<h3> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
+					else
+						str+='<h3>'+totalAlert+'</h3>'; 
+				str+='</td>';
+				var j = 1;
+				for(var i in result){
+					str+='<td>';
+					str+='<h4 style="color:'+colorArr[j]+'">'+result[i].status+'</h4>';
+					if(result[i].count != null && result[i].count >0 )
+						str+='<h3><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
+					else
+						str+='<h3>'+result[i].count+'</h3>';
+					
+					str+='</td>';
+					j = j+1;     
+				}
+			str+='</tr>';
+		str+='</table>';
+		if($(window).width() < 500)
+		{
+			str+='</div>';
+		}
 		$("#overAllCount").html(str);
 	}
 	
@@ -703,6 +715,11 @@ function getAlertAssignedCandidate()
 	}
 	function buildAlertCountGroupByLocationThenStatus(result){
 		var str = '';
+		if($(window).width() < 500)
+		{
+			str+='<div class="table-responsive">';
+		}
+		str+='<table class="table tableAlert">';
 		str+='<thead>';
 		str+='<th>&nbsp;</th>';
 		for(var i in result[0].subList1){
@@ -726,6 +743,11 @@ function getAlertAssignedCandidate()
 					str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 			}
 			str+='</tr>';
+		}
+		str+='</table>';
+		if($(window).width() < 500)
+		{
+			str+='</div>';
 		}
 		$("#locWiseAltCntId").html(str);  
 		
