@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreCountsGenderVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
@@ -36,5 +37,9 @@ public interface ICadreRegistrationServiceNew {
 	public List<CadreCountsVO> getLocationWisegeWiseTdpCadreCounts(Long stateId , Long districtId , String searchType);
 	
 	public CadreCountsVO casteCategoryWiseTdpCadreSummaryReport(Long stateId);
+	
+	
+	public CadreCountsGenderVO stateWiseCadreGenderCounts(Long stateId);
+	public List<CadreCountsGenderVO> locationWiseCadreGenderCounts(Long stateId,Long districtId,String searchType);
 	
 }
