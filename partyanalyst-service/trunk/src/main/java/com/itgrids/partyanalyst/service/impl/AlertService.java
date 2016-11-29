@@ -344,7 +344,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 
 				 UserAddress userAddress = saveUserAddress(inputVO);
 				 alert.setAddressId(userAddress.getUserAddressId());
-				 alert.setAlertCategoryTypeId(inputVO.getCategoryId());
+				// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
 				 alert = alertDAO.save(alert);
 				 
 				 
@@ -595,6 +595,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alertIds.add((Long)params[0]);
 					 }
 					 alertVO.setId((Long)params[0]);
+					 alertVO.setTitle(params[25] != null ? params[25].toString() : "");
 					 alertVO.setDesc(params[1].toString());
 					 alertVO.setDate(params[2] != null? params[2].toString():"");
 					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
@@ -618,6 +619,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationVO.setVillageId(params[12] != null ? (Long)params[12] : null);
 					 locationVO.setVillageName(params[13] != null ? params[13].toString() : "");
 					 locationVO.setLocalBodyId(params[14] != null ? (Long)params[14] : null);
+					 
 					 String eleType = params[18] != null ? params[18].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
 					alertVO.setLocationVO(locationVO);
