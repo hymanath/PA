@@ -76,6 +76,10 @@
 						
 						<div id="overAllCasteWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
 						<div id="CasteCategoryStateWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+						<div id="CasteCategoryDistrictWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+						<div id="excelDivGCasteCategoryDistrictWiseSummaryDetails" class="" style="display:none;"></div>
+						<div id="CasteCategoryConstituencyWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+						<div id="excelDivGCasteCategoryConstituencyWiseSummaryDetails" class="" style="display:none;"></div>
 						
 						<div id="overAllGenderWiseSummaryDetails" class="genderWiseBlock" style="display:none;"></div>
 						<div id="genderWiseDistrictDetails" class="genderWiseBlock" style="display:none;"></div>
@@ -115,6 +119,8 @@
 			//caste Wise Calls
 			getCasteCategoryWiseTdpCadreSummaryReport(stateId);
 			getstateWiseTdpCadreCasteCounts(stateId);
+			//getdistrictWiseTdpCadreCasteCounts(stateId,0);
+			//getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
 			//Gender Wise Calls
 			getstateWiseCadreGenderCounts(stateId);
 			getDistrictWiseCadreGenderCounts(stateId,0,"district");
@@ -150,6 +156,8 @@
 		$(".genderWiseBlock").hide();
 		getCasteCategoryWiseTdpCadreSummaryReport(stateId);
 		getstateWiseTdpCadreCasteCounts(stateId);
+		//getdistrictWiseTdpCadreCasteCounts(stateId,0);
+		//getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
 		
 	});	
 	$(document).on("click","#genderWiseReport",function(){
