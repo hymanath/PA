@@ -36,7 +36,7 @@
 				  str+='</div>';
 				  str+='</div>';
 				  str+='<div class="panel-body">';
-					str+='<div class="table-reponsive">';
+					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered" id="overaAllAgeWiseTableExcelDivId">';
 						str+='<thead>';
 							str+='<tr>';
@@ -217,7 +217,7 @@
 				  str+='</div>';
 				  str+='</div>';
 				  str+='<div class="panel-body">';
-					str+='<div class="table-reponsive">';
+					str+='<div class="table-responsive">';
 					
 					
 					str+='<table class="table table-bordered tableHeaderStyle districtWiseDataTableId" id="" >';
@@ -321,6 +321,7 @@
 		$("#ageWiseDistrictDetails").html(str);
 		$("#excelDivageWiseDistrictDetails").html(str1);
 		$('.districtWiseDataTableId').DataTable();
+		$('.districtWiseDataTableId').removeClass("dataTable");
 	}
 	
 	$(document).on("click","#districtWiseExcelReport",function(){
@@ -377,7 +378,7 @@
 				  str+='</div>';
 				  str+='</div>';
 				  str+='<div class="panel-body">';
-					str+='<div class="table-reponsive">';
+					str+='<div class="table-responsive">';
 					
 					
 					str+='<table class="table table-bordered tableHeaderStyle constituencyWiseDataTableId" id="" >';
@@ -479,6 +480,7 @@
 		$("#ageWiseConstituencyDetails").html(str);
 		$("#excelDivageWiseConstituencyDetails").html(str1);
 		$('.constituencyWiseDataTableId').DataTable();
+		$('.constituencyWiseDataTableId').removeClass("dataTable");
 	}
 	
 	$(document).on("click","#constituencyWiseExcelReport",function(){
@@ -529,7 +531,7 @@
 				  str+='</div>';
 				  str+='</div>';
 				  str+='<div class="panel-body">';
-					str+='<div class="table-reponsive">';
+					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered" id="overaAllCasteWiseTableExcelDivId">';
 						str+='<thead>';
 							str+='<tr>';
@@ -703,7 +705,7 @@
 				  str+='</div>';
 				  str+='<div class="panel-body">';
 					 str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note: M - Male & F - Female</label>';
-					str+='<div class="table-reponsive">';
+					str+='<div class="table-responsive m_top20">';
 					str+='<table class="table table-bordered tableHeaderStyle table-condensed" id="overAllGenderWiseTableToExcel">';
 						str+='<thead>';
 							str+='<tr>';
@@ -722,14 +724,14 @@
 								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >Renewal</th></b>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2014)</b></th>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2016)</b></th>';
-								str+='<th class="text-capital " ><b >M</b></th>';
-								str+='<th class="text-capital " ><b >F</b></th>';
+								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp;</br>(From 2014)</b></th>';
+								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp;</br>(From 2016)</b></th>';
+								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >New Cadre</b></th>';
 								str+='<th class="text-capital " ><b >New Cadre&nbsp;%</b></th>';
-								str+='<th class="text-capital " ><b >M</b></th>';
-								str+='<th class="text-capital " ><b >F</b></th>';
+								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 							str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
@@ -748,13 +750,13 @@
 									str+='<td>'+result.renewalCadreTotalCount+'</td>';
 									str+='<td>'+result.previousCadreRenewalPerc+'</td>';
 									str+='<td>'+result.renewalCadrePerc+'</td>';
-									str+='<td>'+result.renewalCadreMaleCount+'</td>';
-									str+='<td>'+result.renewalCadreFemaleCount+'</td>';
+									str+='<td>'+result.renewalCadreMalePerc+'</td>';
+									str+='<td>'+result.renewalCadreFemalePerc+'</td>';
 									
 									str+='<td>'+result.newCadreTotalCount+'</td>';
 									str+='<td>'+result.newCadrePerc+'</td>';
-									str+='<td>'+result.newCadreMaleCount+'</td>';
-									str+='<td>'+result.newCadreFemaleCount+'</td>';
+									str+='<td>'+result.newCadreMalePerc+'</td>';
+									str+='<td>'+result.newCadreFemalePerc+'</td>';
 								str+='</tr>';
 							
 						str+='</tbody>';
@@ -825,7 +827,7 @@
 				  str+='</div>';
 				  str+='<div class="panel-body">';
 				  str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note: M - Male & F - Female</label>';
-					str+='<div class="table-reponsive">';
+					str+='<div class="table-responsive m_top20">';
 					str+='<table class="table table-bordered tableHeaderStyle table-condensed " id="districtGenderWiseTableToExcel">';
 						str+='<thead>';
 							str+='<tr>';
@@ -844,14 +846,14 @@
 								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >Renewal</th></b>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2014)</b></th>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2016)</b></th>';
-								str+='<th class="text-capital " ><b >M</b></th>';
-								str+='<th class="text-capital " ><b >F</b></th>';
+								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp;</br>(From 2014)</b></th>';
+								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp;</br>(From 2016)</b></th>';
+								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >New Cadre</b></th>';
 								str+='<th class="text-capital " ><b >New Cadre&nbsp;%</b></th>';
-								str+='<th class="text-capital " ><b >M</b></th>';
-								str+='<th class="text-capital " ><b >F</b></th>';
+								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 							str+='</tr>';
 							
 						str+='</thead>';
@@ -872,13 +874,14 @@
 									str+='<td>'+result[i].renewalCadreTotalCount+'</td>';
 									str+='<td>'+result[i].previousCadreRenewalPerc+'</td>';
 									str+='<td>'+result[i].renewalCadrePerc+'</td>';
-									str+='<td>'+result[i].renewalCadreMaleCount+'</td>';
-									str+='<td>'+result[i].renewalCadreFemaleCount+'</td>';
+									str+='<td>'+result[i].renewalCadreMalePerc+'</td>';
+									str+='<td>'+result[i].renewalCadreFemalePerc+'</td>';
 									
 									str+='<td>'+result[i].newCadreTotalCount+'</td>';
 									str+='<td>'+result[i].newCadrePerc+'</td>';
-									str+='<td>'+result[i].newCadreMaleCount+'</td>';
-									str+='<td>'+result[i].newCadreFemaleCount+'</td>';
+									str+='<td>'+result[i].newCadreMalePerc+'</td>';
+									str+='<td>'+result[i].newCadreFemalePerc+'</td>';
+									
 								str+='</tr>';
 							}
 								
@@ -951,13 +954,13 @@
 				  str+='</div>';
 				  str+='</div>';
 				  str+='<div class="panel-body">';
-				    str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note: M - Male & F - Female</label>';
-					str+='<div class="table-reponsive" style="width:1050px;overflow-x:scroll;">';
+				    str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note:R-Renewal & N-New Cadre & M - Male & F - Female</label>';
+					str+='<div class="table-responsive m_top20" >';
 					str+='<table class="table table-bordered tableHeaderStyle table-condensed  constituencyWiseGenderDataTableId" id="">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th class="text-capital " rowspan="2" ><b>District</b></th>';
-								str+='<th class="text-capital " rowspan="2" ><b>Constituency</b></th>';
+								str+='<th class="text-capital " rowspan="2" ><b>cons</b></th>';
 								str+='<th class="text-capital " colspan="5" style="text-align:center;"><b class="f_14">2014 cadre</b></th>';
 								str+='<th class="text-capital " colspan="12" style="text-align:center;"><b class="f_14">2016 cadre</b></th>';
 							str+='</tr>';
@@ -971,15 +974,15 @@
 								str+='<th class="text-capital " ><b >Total</b></th>';
 								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str+='<th class="text-capital " ><b >Renewal</th></b>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2014)</b></th>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2016)</b></th>';
-								str+='<th class="text-capital " ><b >M</b></th>';
-								str+='<th class="text-capital " ><b >F</b></th>';
-								str+='<th class="text-capital " ><b >New Cadre</b></th>';
-								str+='<th class="text-capital " ><b >New Cadre&nbsp;%</b></th>';
-								str+='<th class="text-capital " ><b >M</b></th>';
-								str+='<th class="text-capital " ><b >F</b></th>';
+								str+='<th class="text-capital " ><b >R</th></b>';
+								str+='<th class="text-capital " ><b >R&nbsp;%&nbsp;</br>(From 2014)</b></th>';
+								str+='<th class="text-capital " ><b >R&nbsp;%&nbsp;</br>(From 2016)</b></th>';
+								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >N</b></th>';
+								str+='<th class="text-capital " ><b >N&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 							str+='</tr>';
 							
 						str+='</thead>';
@@ -1001,13 +1004,15 @@
 									str+='<td>'+result[i].renewalCadreTotalCount+'</td>';
 									str+='<td>'+result[i].previousCadreRenewalPerc+'</td>';
 									str+='<td>'+result[i].renewalCadrePerc+'</td>';
-									str+='<td>'+result[i].renewalCadreMaleCount+'</td>';
-									str+='<td>'+result[i].renewalCadreFemaleCount+'</td>';
+									str+='<td>'+result[i].renewalCadreMalePerc+'</td>';
+									str+='<td>'+result[i].renewalCadreFemalePerc+'</td>';
 									
 									str+='<td>'+result[i].newCadreTotalCount+'</td>';
 									str+='<td>'+result[i].newCadrePerc+'</td>';
-									str+='<td>'+result[i].newCadreMaleCount+'</td>';
-									str+='<td>'+result[i].newCadreFemaleCount+'</td>';
+									str+='<td>'+result[i].newCadreMalePerc+'</td>';
+									str+='<td>'+result[i].newCadreFemalePerc+'</td>';
+									
+									
 								str+='</tr>';
 							}
 								
@@ -1033,15 +1038,15 @@
 								str1+='<th class="text-capital " ><b >Total</b></th>';
 								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >Renewal</th></b>';
-								str1+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2014)</b></th>';
-								str1+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp; (From 2016)</b></th>';
-								str1+='<th class="text-capital " ><b >M</b></th>';
-								str1+='<th class="text-capital " ><b >F</b></th>';
-								str1+='<th class="text-capital " ><b >New Cadre</b></th>';
-								str1+='<th class="text-capital " ><b >New Cadre&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >M</b></th>';
-								str1+='<th class="text-capital " ><b >F</b></th>';
+								str1+='<th class="text-capital " ><b >R</th></b>';
+								str1+='<th class="text-capital " ><b >R&nbsp;%&nbsp; (From 2014)</b></th>';
+								str1+='<th class="text-capital " ><b >R&nbsp;%&nbsp; (From 2016)</b></th>';
+								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >N</b></th>';
+								str1+='<th class="text-capital " ><b >N&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 							str1+='</tr>';
 							
 						str1+='</thead>';
@@ -1063,13 +1068,14 @@
 									str1+='<td>'+result[i].renewalCadreTotalCount+'</td>';
 									str1+='<td>'+result[i].previousCadreRenewalPerc+'</td>';
 									str1+='<td>'+result[i].renewalCadrePerc+'</td>';
-									str1+='<td>'+result[i].renewalCadreMaleCount+'</td>';
-									str1+='<td>'+result[i].renewalCadreFemaleCount+'</td>';
+									str1+='<td>'+result[i].renewalCadreMalePerc+'</td>';
+									str1+='<td>'+result[i].renewalCadreFemalePerc+'</td>';
 									
 									str1+='<td>'+result[i].newCadreTotalCount+'</td>';
 									str1+='<td>'+result[i].newCadrePerc+'</td>';
-									str1+='<td>'+result[i].newCadreMaleCount+'</td>';
-									str1+='<td>'+result[i].newCadreFemaleCount+'</td>';
+									str1+='<td>'+result[i].newCadreMalePerc+'</td>';
+									str1+='<td>'+result[i].newCadreFemalePerc+'</td>';
+									
 								str1+='</tr>';
 							}
 								
@@ -1091,6 +1097,7 @@
 		$("#genderWiseConstituencyDetails").html(str);
 		$("#excelDivGenderWiseConstituencyDetails").html(str1);
 		$('.constituencyWiseGenderDataTableId').DataTable();
+		$('.constituencyWiseGenderDataTableId').removeClass("dataTable")
 	}
 	$(document).on("click","#constituencyGenderWiseExcelId",function(){
 		generateExcelReportForConstituencyGenderWise();	
