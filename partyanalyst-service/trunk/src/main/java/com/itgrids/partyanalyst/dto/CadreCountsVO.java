@@ -42,6 +42,13 @@ public class CadreCountsVO implements Serializable{
 		this.name = name;
 	}
 	
+	public CadreCountsVO(Long id , String name,Long superLocationId,String superlocationName){
+		this.id = id;
+		this.name = name;
+		this.superLocationId = superLocationId;
+		this.superlocationName = superlocationName;
+	}
+	
 	public Long getId() {
 		return id;
 	}
