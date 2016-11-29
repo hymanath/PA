@@ -3278,10 +3278,17 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   			 
   			finalMap.put(mainVO.getId(),mainVO);
   		 }
-	    
+	   
 	    if(finalMap != null && finalMap.size() > 0){
-	    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
-	    }
+ 	    	for (Map.Entry<Long, CadreCountsVO> mainEntry : finalMap.entrySet()){
+ 	    		CadreCountsVO mainVO = mainEntry.getValue();
+ 	    		if(mainVO != null && mainVO.getSubMap1() != null && mainVO.getSubMap1().size() > 0){
+ 	    			mainVO.setSubList(new ArrayList<CadreCountsVO>(mainVO.getSubMap1().values()));
+ 	    			mainVO.getSubMap1().clear();
+ 	    		}
+ 			}
+ 	    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
+ 	    }
  	  }catch(Exception e){
 		  LOG.error("Exception occur in stateWiseTdpCadreCasteCounts()  Of CadreRegistrationServiceNew class - ",e);
 	  }
@@ -3310,7 +3317,8 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		   LOG.error("Exception occur in calculateCastePercantages()  Of CadreRegistrationServiceNew class - ",e);
 	   }
    }
-      
+   
+   
       /**
 	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	   	 *  GENDER WISE SUMMARY REPORT.
