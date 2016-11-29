@@ -64,6 +64,69 @@ function getAlertData()
 			      buildAlertData(result);
 				});
 }
+
+
+function buildAlertData(result)
+{
+	
+	for(var i in result)
+	{
+			$("#typeId").html(''+result[i].alertType+'');
+			$("#severityId").html(''+result[i].severity+'');
+			$(".severityIdColorCls").addClass(''+result[i].severity+'');
+			$("#createdDate").html(''+result[i].date+'');
+			$("#levelId").html(''+result[i].regionScope+'');
+			var location ='';
+			if(result[i].regionScope == "STATE")
+			{
+				location +='<p>S:'+result[i].locationVO.state+'</p>';
+			}
+			else if(result[i].regionScope == "DISTRICT")
+			{
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p>';
+			}
+			
+			else if(result[i].regionScope == "CONSTITUENCY")
+			{
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p>';
+			}
+			else if(result[i].regionScope == "MANDAL" || result[i].regionScope == "MUNICIPAL-CORP-GMC" )
+			{
+				
+					if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
+				{
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T : '+result[i].locationVO.localEleBodyName+' </p>';	
+				}
+				else{
+					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p>';
+				}
+			}
+			
+			else if(result[i].regionScope == "VILLAGE" || result[i].regionScope == "WARD" )
+			{
+			
+				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
+				{
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T : '+result[i].locationVO.localEleBodyName+' </p><p>W : '+result[i].locationVO.wardName+'</p>';	
+				}
+				else{
+					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p><p> P : '+result[i].locationVO.villageName+'</p>';
+				}
+				
+			}	
+			
+			$("#LocationId").html(''+location+'');
+			$("#statusId").val(''+result[i].statusId+'');
+			  $("#statusId").dropkick('refresh')
+			$("#descriptionId").html(''+result[i].desc+'');
+			$("#titleId").html(''+result[i].title+'');
+			$("#alertStatus").html(''+result[i].status+'');
+			buildAlertCandidateData(result[i].subList);
+		
+	}
+	
+}
+
 function getAlertStatusCommentsTrackingDetails()
 	{
 		
@@ -273,65 +336,6 @@ $(document).on("click",".updateAlertStatusCls",function(){
 });
 
 
-function buildAlertData(result)
-{
-	
-	for(var i in result)
-	{
-			$("#typeId").html(''+result[i].alertType+'');
-			$("#severityId").html(''+result[i].severity+'');
-			$(".severityIdColorCls").addClass(''+result[i].severity+'');
-			$("#createdDate").html(''+result[i].date+'');
-			$("#levelId").html(''+result[i].regionScope+'');
-			var location ='';
-			if(result[i].regionScope == "STATE")
-			{
-				location +='<p>S:'+result[i].locationVO.state+'</p>';
-			}
-			else if(result[i].regionScope == "DISTRICT")
-			{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p>';
-			}
-			
-			else if(result[i].regionScope == "CONSTITUENCY")
-			{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p>';
-			}
-			else if(result[i].regionScope == "MANDAL" || result[i].regionScope == "MUNICIPAL-CORP-GMC" )
-			{
-				
-					if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
-				{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T : '+result[i].locationVO.localEleBodyName+' </p>';	
-				}
-				else{
-					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p>';
-				}
-			}
-			
-			else if(result[i].regionScope == "VILLAGE" || result[i].regionScope == "WARD" )
-			{
-			
-				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
-				{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T : '+result[i].locationVO.localEleBodyName+' </p><p>W : '+result[i].locationVO.wardName+'</p>';	
-				}
-				else{
-					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p><p> P : '+result[i].locationVO.villageName+'</p>';
-				}
-				
-			}	
-			
-			$("#LocationId").html(''+location+'');
-			$("#statusId").val(''+result[i].statusId+'');
-			  $("#statusId").dropkick('refresh')
-			$("#descriptionId").html(''+result[i].desc+'');
-			$("#alertStatus").html(''+result[i].status+'');
-			buildAlertCandidateData(result[i].subList);
-		
-	}
-	
-}
 function getAlertAssignedCandidates(alertId)
 {
 	$("#alertAssignedCandidateDataId").html('<img src="images/search.gif" />');
