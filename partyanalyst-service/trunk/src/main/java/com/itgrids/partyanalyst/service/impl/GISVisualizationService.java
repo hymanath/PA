@@ -464,19 +464,37 @@ public class GISVisualizationService implements IGISVisualizationService{
 					String rank = commonMethodsUtilService.getStringValueForObject(param[5]);
 					
 					GISVisualizationDetailsVO vo = locationsMap.get(locationId);
+					boolean flag = true;
 					if(vo != null){
-						String perc = (new BigDecimal(votersEarned*(100.0)/validVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						vo.setIsYCPArea("false");
-						//vo.setValidVotes(validVotes.toString());
-						vo.setEarnedVotesIn2014(votersEarned.toString());
-						vo.setEarnedVotesPercIn2014(perc.toString());
-						vo.setMarginVotes(marginVotes);
-						vo.setMarginVotesPerc(marginVotesPerc);
-						//vo.setRank("LOSS");
-						if(rank != null && rank.trim().equalsIgnoreCase("1"))
-							vo.setRank("WON");
-						if(YCPMLAMap.get(locationId) != null)
-							vo.setIsYCPArea("true");
+						if(flag){
+							String perc = (new BigDecimal(votersEarned*(100.0)/validVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							vo.setIsYCPArea("false");
+							//vo.setValidVotes(validVotes.toString());
+							vo.setEarnedVotesIn2014(votersEarned.toString());
+							vo.setEarnedVotesPercIn2014(perc.toString());
+							vo.setMarginVotes(marginVotes);
+							vo.setMarginVotesPerc(marginVotesPerc);
+							//vo.setRank("LOSS");
+							
+							if(rank != null && rank.trim().equalsIgnoreCase("1"))
+								vo.setRank("WON");
+							    vo.setFirstPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+							    vo.setFirstPositionPartyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+							    vo.setFirstPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+							if(YCPMLAMap.get(locationId) != null)
+								vo.setIsYCPArea("true");	
+							flag = false;
+						}else{//This section will execute only in the case of assembly.
+							if(rank != null && rank.trim().equalsIgnoreCase("2")){
+								vo.setSecondPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+								vo.setSecondPositionPartyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+								vo.setSecondPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+							}else if(rank != null && rank.trim().equalsIgnoreCase("3")){
+							   vo.setThirdPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+							   vo.setThirdPositionPartyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+							   vo.setThirdPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+							}
+						}
 					}
 				}
 			}
@@ -791,7 +809,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 		   //if(commonMethodsUtilService.isListOrSetValid(statusList))
 			//   parentLocationVO.getStatusList().addAll(statusList);
 	} catch (Exception e) {
-		LOG.error("Exception Occured in getMembershipDriveVisualizationDetails Method in GISVisualizationService Class",e);
+		LOG.error("Exception Occured in getMembershipDriveDayWiseVisualizationDetails Method in GISVisualizationService Class",e);
 	}
 	  return parentLocationVO;
 	}
