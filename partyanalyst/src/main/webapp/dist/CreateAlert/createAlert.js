@@ -150,7 +150,7 @@ function disableByLevel(index)
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
-				$("#searchNameLabel").text("Search By Name/Membership No*");
+				$("#searchNameLabel").html("Search By Name <span style='color:red;'> * </span> :");
 			}
 			else if(selectVal == "0")
 			{
@@ -181,11 +181,23 @@ function disableByLevel(index)
 				$(".advanceprclsDiv").show();
 				$("#searchBtnId").show();
 				$("#cadreCommitteeDiv_chosen").hide();
-				if(selectVal != "mebershipno" && selectVal != "votercardno")
-				$("#searchNameLabel").text("Search By Mobile");
-				else
-				$("#searchNameLabel").text("Search By Name/Membership No*");
-				
+				//if(selectVal != "mebershipno" && selectVal != "votercardno")
+				//$("#searchNameLabel").text("Search By Mobile");
+				//else
+				//$("#searchNameLabel").text("Search By Name/Membership No*");
+			
+				if(selectVal == "mobileno")
+				{
+					$("#searchNameLabel").html("Search By Mobile No <span style='color:red;'> * </span> :");
+				}
+				else if(selectVal == "mebershipno")
+				{
+					$("#searchNameLabel").html("Search By Mebership No <span style='color:red;'> * </span> :");
+				}
+				else if(selectVal == "votercardno")
+				{
+					$("#searchNameLabel").html("Search By Voter Card No <span style='color:red;'> * </span> :");
+				}
 			}
 				disableByLevel('');
 				$(".stateCls").show();
