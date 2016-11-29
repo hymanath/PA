@@ -1708,8 +1708,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	    StringBuilder queryStr = new StringBuilder();
 	    queryStr.append(" select model.nominatedPostStatusId,count(distinct model.nominatedPostId)  " +
 	    				" from NominatedPost model where model.isDeleted='N'  ");
-	    
-	    if(locationLevelId != null && locationLevelId.longValue() == 2l){// 2-state
+	    if(locationLevelId != null && locationLevelId.longValue() == 1l){//1-central
+	    	queryStr.append(" and model.nominatedPostMember.address.country.countryId in (:locationValues) ");	
+	    }else if(locationLevelId != null && locationLevelId.longValue() == 2l){// 2-state
 	    	queryStr.append(" and model.nominatedPostMember.address.state.stateId in (:locationValues) ");	
 	    }else if(locationLevelId.longValue() == 3l){// 3-district
 	    	queryStr.append(" and model.nominatedPostMember.address.district.districtId in (:locationValues) ");	
