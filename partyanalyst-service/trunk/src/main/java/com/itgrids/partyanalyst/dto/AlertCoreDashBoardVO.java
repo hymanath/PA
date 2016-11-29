@@ -14,7 +14,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long totalCount=0l;
 	private Long count=0l;
 	
-	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOList = new ArrayList<AlertCoreDashBoardVO>(0);
+	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 
 	public Long getId() {
 		return id;
@@ -64,14 +64,13 @@ public class AlertCoreDashBoardVO implements Serializable{
 		this.count = count;
 	}
 
-	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOList() {
-		return alertCoreDashBoardVOList;
+	public List<AlertCoreDashBoardVO> getSubList() {
+		return subList;
 	}
 
-	public void setAlertCoreDashBoardVOList(
-			List<AlertCoreDashBoardVO> alertCoreDashBoardVOList) {
-		this.alertCoreDashBoardVOList = alertCoreDashBoardVOList;
+	public void setSubList(List<AlertCoreDashBoardVO> subList) {
+		this.subList = subList;
 	}
-	
+
 	
 }
