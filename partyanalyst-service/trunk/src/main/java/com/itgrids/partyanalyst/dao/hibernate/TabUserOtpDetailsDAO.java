@@ -36,7 +36,8 @@ public class TabUserOtpDetailsDAO extends GenericDaoHibernate<TabUserOtpDetails,
 									+ " from tab_user_otp_details"
 									+ " where  mobile_no = :mobileNo"
 									+ " and is_valid = 'Y'"
-									+ " and (TIME_TO_SEC(TIME(:currentTime))-TIME_TO_SEC(TIME(updated_time)))/60 < 15")
+									+ " and (TIME_TO_SEC(TIME(:currentTime))-TIME_TO_SEC(TIME(updated_time)))/60 < 15 " +
+									" order by tab_user_otp_details_id desc ")
 									.addScalar("otp", Hibernate.LONG)
 									.addScalar("ref", Hibernate.LONG)
 									.addScalar("dateStr", Hibernate.STRING)
