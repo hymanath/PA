@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
@@ -1638,6 +1639,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alert.setAlertCategoryId(inputVO.getAlertCategory());
 						 alert.setIsDeleted("N");
 						 alert.setAlertCategoryTypeId(inputVO.getId());
+						 alert.setImpactScopeId(inputVO.getImpactScopeId());
 						 
 						UserAddress UA = new UserAddress();
 							 
@@ -1914,6 +1916,78 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured getTotalAlertGroupByStatusThenCategory() method of AlertService{}");
 		}
 		return null;
+	}
+	
+	public List<AlertCoreDashBoardVO> getOverAllAlertDetailsForCoreDashBoard(String startDate,String endDate,Long locationLevelId,
+			List<Long> levelValues,List<Long> impactScopeIds){
+		
+		
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			Date fromDate=null;
+			Date toDate =null;
+			if(startDate !=null && endDate !=null && !startDate.trim().isEmpty() && !endDate.trim().isEmpty()){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+			}
+			
+			Map<Long,AlertCoreDashBoardVO> alrtyTypeMap = new HashMap<Long, AlertCoreDashBoardVO>();
+			List<AlertCoreDashBoardVO> alrtyTypeList = new ArrayList<AlertCoreDashBoardVO>();
+						
+			List<Object[]> alertObj = alertTypeDAO.getAlertType();
+			setAlertTypes(alertObj,alrtyTypeMap);
+			
+			Map<Long,AlertCoreDashBoardVO> statusWiseMap = new HashMap<Long, AlertCoreDashBoardVO>();
+			Map<Long,Map<Long,AlertCoreDashBoardVO>> categoryWiseMap = new HashMap<Long, Map<Long,AlertCoreDashBoardVO>>();
+			
+			//0.alertId,1.alertCategoryId,2.category,3.alertTypeId,4.alertType,5.alertStatusId,6.alertStatus
+			List<Object[]> listObj = alertDAO.getOverAllAlertDetailsForCoreDashBoard(fromDate, toDate, locationLevelId, levelValues, impactScopeIds);
+			
+			if(listObj !=null && listObj.size()>0){
+				for (Object[] obj : listObj) {					
+					AlertCoreDashBoardVO alertVo = alrtyTypeMap.get((Long)obj[3]);
+					if(alertVo !=null){
+						if(obj[3] !=null){							
+							alertVo.getSetList().add((Long)obj[3]);														
+						}						
+					}					
+				}
+			}
+			
+			if(statusWiseMap !=null && statusWiseMap.size()>0){
+				for (Entry<Long, AlertCoreDashBoardVO> obj : statusWiseMap.entrySet()) {					
+					AlertCoreDashBoardVO Vo = obj.getValue();					
+					Vo.setCount(Long.valueOf(Vo.getSetList().size()));
+					
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getOverAllAlertDetailsForCoreDashBoard() method of AlertService{}");
+		}
+		
+		
+		return null;
+	}
+	
+	public void setAlertTypes(List<Object[]> alertObj ,Map<Long,AlertCoreDashBoardVO> alrtyTypeMap){
+		try {
+			
+			if(alertObj !=null && alertObj.size()>0){
+				for (Object[] obj : alertObj) {
+					AlertCoreDashBoardVO VO = new AlertCoreDashBoardVO();					
+					VO.setId(obj[3] !=null ? (Long)obj[3]:0l);
+					VO.setName(obj[4] !=null ? obj[4].toString():"");					
+					alrtyTypeMap.put(VO.getId(), VO);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setAlertTypes() method of AlertService{}");
+		}
 	}
 	
 }
