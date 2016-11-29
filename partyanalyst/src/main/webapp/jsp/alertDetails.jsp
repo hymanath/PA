@@ -243,6 +243,11 @@ control.makeTransliteratable(['commentsId']);
 								</tr>
 								<tr>
 									<td colspan="8">
+										<p class="text-capital"><span class="text-muted ">Title</span> : <span  id="titleId"></span></p>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="8">
 										<p class="text-capital"><span class="text-muted ">description</span> : <span  id="descriptionId"></span></p>
 									</td>
 								</tr>

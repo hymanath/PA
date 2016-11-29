@@ -140,7 +140,7 @@
                 	<div class="row">
                     	<div class="col-md-4 col-sm-6 col-xs-12">
                         	<label>Select Alert Type</label><span class="text-danger">*</span>
-                            <select class="dropkickClass" id="alertTypeId" name="alertVO.alertTypeId">
+                            <select class="dropkickClass" id="alertTypeId" name="alertVO.alertTypeId" onchange="updateStateDetails(this.value);">
                             	<option value="0">Select Alert</option>
                             </select>
                         </div>
@@ -152,7 +152,7 @@
                             	<option>Party</option>
                             </select>
                         </div>-->
-						 <div class="col-md-3 col-sm-6 col-xs-12">
+						<!-- <div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Alert Category : </label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertCategory" name="alertVO.categoryId" >
                             	<option value="0"> Select Alert Category </option>
@@ -161,6 +161,7 @@
                             	<option value="3"> Electronic Media </option>
                             </select>
                         </div>
+						-->
                         <div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Information Source For Alert</label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertSourceId" name="alertVO.alertSourceId" >
@@ -190,8 +191,8 @@
                         	<label>State</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
 											 <option value="0">Select State</option>            
-											 <option value="1">AP</option>      
-											 <option value="36">TS</option>       
+								 			 <option value="1"> Andhra Pradesh </option>      
+								 			 <option value="36"> Telangana </option>       
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-6 col-xs-12 locationsFilterCls distCls1">
@@ -249,14 +250,14 @@
                         </div>
                     </div>-->
                     <div class="row m_top10">
-						<label>Description : </label><span class="text-danger">*</span>
+						<label style="margin-left:15px;"> Description : </label><span class="text-danger">*</span>
                     	<div class="col-md-12 col-sm-12 col-xs-12">
                         	<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
                         </div>
                     </div> 
                     <div class="row m_top10">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
-                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
+                        	<h4 class="text-success text-capital">Involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
 						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
 							<div class="col-md-12">
@@ -380,7 +381,7 @@
 					
 					
 					 <div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
-						<label class="advanceNameCls" id="searchNameLabel">Search By Name/Membership No*<span class="text-danger">*</span></label>
+						<label class="advanceNameCls" id="searchNameLabel">Search By NAME/MEMBERSHIP NO / VOTER ID CARD NO *<span class="text-danger">*</span></label>
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 						
 					</div>
@@ -771,7 +772,7 @@ function createAlert()
   //var  candidateName=$("#candidateNameId").val();
   var  description=$("#alertdescriptionId").val().trim();
   
-  var categoryId=$("#alertCategory").val();
+  //var categoryId=$("#alertCategory").val();
   var title=$("#alertTitleId").val().trim();
 
   $("#errorDiv1").html('');
@@ -782,10 +783,10 @@ function createAlert()
     $("#errorDiv1").html(" Please select Alert Type ");
         return;
   }
-  if(categoryId == 0){
+ /* if(categoryId == 0){
 	  $("#errorDiv1").html(" Please select Alert Category ");
         return;
-  }
+  }*/
   if(alertSourceId==0)
   {
     $("#errorDiv1").html(" Please select Alert Source ");
@@ -967,10 +968,31 @@ var uploadHandler = {
 
 function clearFields()
 {
+	
+	
+	$("#apptmemberDetailsDiv").html("");
+	$(".membersBlock").html("");
+	$("#assignedMembers").html("");
+	$(".assignedMembersBlock").html("");
+	$("#involvedCandidatesDiv").hide();	
+	
+	showHideBySearchType();	
+	
+	involvedCadreIds =[];
+	$("#involvedMembers").html('(0 - Members added)');
+	
 	$("#alertTitleId").val("");
 	$(".alertclearCls").val("");
 	$(".clearCls").val("");
 	$("#alertCategory").val(0);
+	
+	$("#advanceSearchTypeId").val(0);
+	var select = new Dropkick("#advanceSearchTypeId");
+	select.refresh();	
+	
+	$("#stateId1").val(0);
+	var select = new Dropkick("#stateId1");
+	select.refresh();
 	
 	$("#alertTypeId").val(0);
 	var select = new Dropkick("#alertTypeId");
@@ -992,20 +1014,6 @@ function clearFields()
 	var select = new Dropkick("#alertSourceId");
 	select.refresh();
 	
-	$("#apptmemberDetailsDiv").html("");
-	$(".membersBlock").html("");
-	$("#assignedMembers").html("");
-	$(".assignedMembersBlock").html("");
-	$("#involvedCandidatesDiv").hide();
-	$("#advanceSearchTypeId").val(0);
-	var select = new Dropkick("#advanceSearchTypeId");
-	select.refresh();	
-	showHideBySearchType();	
-	$("#stateId1").val(0);
-	var select = new Dropkick("#stateId1");
-	select.refresh();
-	involvedCadreIds =[];
-	$("#involvedMembers").html('(0 - Members added)');
 }
 function getAlertType(){
 		$("#alertTypeId").html('');
@@ -1241,6 +1249,23 @@ function buildapptmemberDetails(result){
 		$('.check').tooltip()
 		
 		applyPagination();
+	}
+	
+	function updateStateDetails(id){
+		if(id == 2){
+			$('#stateId1').find('option').remove();
+			$('#stateId1').append("<option value='0'> Select State </option>");
+			$('#stateId1').append("<option value='1'> Andhra Pradesh </option>");
+		}else{
+			$('#stateId1').find('option').remove();
+			$('#stateId1').append("<option value='0'> Select State </option>");
+			$('#stateId1').append("<option value='1'> Andhra Pradesh </option>");
+			$('#stateId1').append("<option value='36'> telangana </option>");
+		}
+		
+		$("#stateId1").dropkick();
+		var selects = new Dropkick("#stateId1");
+		selects.refresh();
 	}
 getAlertType();
 buildLevels();
