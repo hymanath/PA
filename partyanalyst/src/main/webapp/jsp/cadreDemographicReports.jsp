@@ -75,6 +75,8 @@
 						<div id="excelDivageWiseConstituencyDetails" style="display:none;"></div>
 						
 						<div id="overAllCasteWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+						<div id="CasteCategoryStateWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+						
 						<div id="overAllGenderWiseSummaryDetails" class="genderWiseBlock" style="display:none;"></div>
 						<div id="genderWiseDistrictDetails" class="genderWiseBlock" style="display:none;"></div>
 						<div id="genderWiseConstituencyDetails" class="genderWiseBlock" style="display:none;"></div>
@@ -112,6 +114,7 @@
 			getConstituencyWisegeWiseTdpCadreCounts(stateId,0,"constituency");
 			//caste Wise Calls
 			getCasteCategoryWiseTdpCadreSummaryReport(stateId);
+			getstateWiseTdpCadreCasteCounts(stateId);
 			//Gender Wise Calls
 			getstateWiseCadreGenderCounts(stateId);
 			getDistrictWiseCadreGenderCounts(stateId,0,"district");
@@ -146,6 +149,7 @@
 		$(".casteWiseBlock").show();
 		$(".genderWiseBlock").hide();
 		getCasteCategoryWiseTdpCadreSummaryReport(stateId);
+		getstateWiseTdpCadreCasteCounts(stateId);
 		
 	});	
 	$(document).on("click","#genderWiseReport",function(){

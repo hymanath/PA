@@ -146,6 +146,18 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		}
 		return Action.SUCCESS;
 	}
+	public String stateWiseTdpCadreCasteCounts(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+				
+			 cadreCountsVOList = cadreRegistrationServiceNew.stateWiseTdpCadreCasteCounts(stateId);
+		}catch(Exception e){
+			LOG.error("Exception raised at stateWiseTdpCadreCasteCounts() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String stateWiseCadreGenderCounts(){
 		
 		try{
