@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AlertCoreDashBoardVO implements Serializable{
 
@@ -14,7 +16,10 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long totalCount=0l;
 	private Long count=0l;
 	
+	private Double countPerc=0.0;
+	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
+	private Set<Long> setList = new HashSet<Long>(0);
 
 	public Long getId() {
 		return id;
@@ -70,6 +75,22 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setSubList(List<AlertCoreDashBoardVO> subList) {
 		this.subList = subList;
+	}
+
+	public Double getCountPerc() {
+		return countPerc;
+	}
+
+	public void setCountPerc(Double countPerc) {
+		this.countPerc = countPerc;
+	}
+
+	public Set<Long> getSetList() {
+		return setList;
+	}
+
+	public void setSetList(Set<Long> setList) {
+		this.setList = setList;
 	}
 
 	

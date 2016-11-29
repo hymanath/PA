@@ -605,5 +605,55 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();  
 	}
+	
+	public List<Object[]> getOverAllAlertDetailsForCoreDashBoard(Date startDate,Date endDate,Long locationLevelId,List<Long> levelValues,
+			List<Long> impactScopeIds){
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.alertId," +
+				"model.alertCategory.alertCategoryId,model.alertCategory.category,model.alertType.alertTypeId,model.alertType.alertType," +
+				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus " +
+				" FROM  Alert model" +
+				" WHERE model.isDeleted ='N' " );
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.createdTime) between :startDate and :endDate  ");
+		}
+		
+		if(locationLevelId !=null && locationLevelId>0l && levelValues !=null && levelValues.size()>0){
+			if(locationLevelId ==2l)
+				str.append(" and model.userAddress.state.stateId in (:levelValues) ");
+			else if(locationLevelId ==3l)
+				str.append(" and model.userAddress.district.districtId in (:levelValues) ");
+			else if(locationLevelId ==5l)
+				str.append(" and model.userAddress.constituency.constituencyId in (:levelValues) ");
+			/*else if(locationLevelId ==5l)
+				str.append(" and model.userAddress.tehsil.tehsilId in (:levelValues) ");
+			else if(locationLevelId ==6l)
+				str.append(" and model.userAddress.panchayat.panchayatId in (:levelValues) ");
+			else if(locationLevelId ==7l)
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:levelValues) ");
+			else if(locationLevelId ==8l)
+				str.append(" and model.userAddress.ward.constituencyId in (:levelValues) ");	*/		
+		}
+		
+		if(impactScopeIds !=null && impactScopeIds.size()>0l){
+			str.append(" and model.impactScopeId in (:impactScopeIds) ");	
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		if(locationLevelId !=null && locationLevelId>0l && levelValues !=null && levelValues.size()>0){
+			query.setParameterList("levelValues", levelValues);
+		}
+		if(startDate !=null && endDate !=null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		return query.list();  
+		
+	}
 }
 
