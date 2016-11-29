@@ -32,6 +32,15 @@ public class CadreCountsVO implements Serializable{
 	   
 	private List<CadreCountsVO> subList;
 	private Map<Long,CadreCountsVO> subMap;
+	private Map<Long,CadreCountsVO> subMap1;
+	
+	public CadreCountsVO(){
+		
+	}
+	public CadreCountsVO(Long id , String name){
+		this.id = id;
+		this.name = name;
+	}
 	
 	public Long getId() {
 		return id;
@@ -146,6 +155,12 @@ public class CadreCountsVO implements Serializable{
 	}
 	public void setSubMap(Map<Long, CadreCountsVO> subMap) {
 		this.subMap = subMap;
+	}
+	public Map<Long, CadreCountsVO> getSubMap1() {
+		return subMap1;
+	}
+	public void setSubMap1(Map<Long, CadreCountsVO> subMap1) {
+		this.subMap1 = subMap1;
 	}
 	
 }
