@@ -149,4 +149,32 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		}
 		return query.list();
 	}
+	
+	//constituency wise
+	public List<Object[]> constituencyWiseTdpCadreCasteCounts(Long stateId , Long districtId ){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select C.constituencyId,C.name,model.districtId ,model.district.districtName ," +//3
+    			"         model.casteState.caste.casteId , model.casteState.caste.casteName, " +//5
+    			"         sum(model.cadre2014) , sum(model.cadre2016) , sum(model.newCadre) , sum(model.renewalCadre) " +//9
+    			"  from   TdpCadreCasteStateInfo model , Constituency C" +
+    			"  where  model.locationValue = C.constituencyId and model.locationScopeId = 4 ");
+    	if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId");
+		}
+    	if(districtId != null && districtId > 0l){
+			sb.append(" and model.districtId = :districtId ");
+		}
+    	sb.append(" group by C.constituencyId , model.casteState.caste.casteId " +
+    			"   order by model.district.districtName ,C.name, sum(model.cadre2014) desc");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	if(stateId != null && stateId > 0l){
+    		query.setParameter("stateId", stateId);
+		}
+    	if(districtId != null && districtId > 0l){
+			  query.setParameter("districtId",districtId);
+		}
+    	return query.list();
+    }
 }
