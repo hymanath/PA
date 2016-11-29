@@ -52,6 +52,8 @@ public class Alert extends BaseModel implements Serializable {
 	private AlertCategory alertCategory;
 	
 	private String title;
+	
+	private Long impactScopeId;
 
 	
 
@@ -306,6 +308,15 @@ public class Alert extends BaseModel implements Serializable {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	@Column(name = "impact_scope_id")
+	public Long getImpactScopeId() {
+		return impactScopeId;
+	}
+
+	public void setImpactScopeId(Long impactScopeId) {
+		this.impactScopeId = impactScopeId;
 	}
 	
 	
