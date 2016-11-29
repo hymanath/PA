@@ -189,9 +189,9 @@
                         <div class="col-md-2 col-sm-6 col-xs-12 stateShowCls1">
                         	<label>State</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
-											 <option value="-1">Select State</option>        
+											 <option value="0">Select State</option>            
 											 <option value="1">AP</option>      
-											 <option value="36">TS</option>
+											 <option value="36">TS</option>       
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-6 col-xs-12 locationsFilterCls distCls1">
@@ -805,7 +805,7 @@ function createAlert()
   
   if(level==2)
   {
-    if(state==0)
+    if(state==0)               
       {
       $("#errorDiv1").html(" Please select state ");
           return;
@@ -970,36 +970,42 @@ function clearFields()
 	$("#alertTitleId").val("");
 	$(".alertclearCls").val("");
 	$(".clearCls").val("");
-	 $("#alertCategory").val(0);
+	$("#alertCategory").val(0);
+	
 	$("#alertTypeId").val(0);
 	var select = new Dropkick("#alertTypeId");
 	select.refresh();
+	
 	$("#alertCategory").val(0);
 	var select = new Dropkick("#alertCategory");
 	select.refresh();
-	 $("#alertSeverityId").val(0);  
-	   var select = new Dropkick("#alertSeverityId");
-				select.refresh();
-		$("#alertlevelId1").val(2);
-	   var select = new Dropkick("#alertlevelId1");
-				select.refresh();
-		$("#alertSourceId").val(0);
-	   var select = new Dropkick("#alertSourceId");
-				select.refresh();
-	   $("#apptmemberDetailsDiv").html("");
-	   $(".membersBlock").html("");
-	    $("#assignedMembers").html("");
-	   $(".assignedMembersBlock").html("");
-	   $("#involvedCandidatesDiv").hide();
-	   $("#advanceSearchTypeId").val(0);
-		 var select = new Dropkick("#advanceSearchTypeId");
-				select.refresh();	
-		showHideBySearchType();	
-		$("#stateId1").val(0);
-		 var select = new Dropkick("#stateId1");
-				select.refresh();
-				involvedCadreIds =[];
-				$("#involvedMembers").html('(0 - Members added)');
+	
+	$("#alertSeverityId").val(0);  
+	var select = new Dropkick("#alertSeverityId");
+	select.refresh();
+	
+	$("#alertlevelId1").val(2);
+	var select = new Dropkick("#alertlevelId1");
+	select.refresh();
+	
+	$("#alertSourceId").val(0);
+	var select = new Dropkick("#alertSourceId");
+	select.refresh();
+	
+	$("#apptmemberDetailsDiv").html("");
+	$(".membersBlock").html("");
+	$("#assignedMembers").html("");
+	$(".assignedMembersBlock").html("");
+	$("#involvedCandidatesDiv").hide();
+	$("#advanceSearchTypeId").val(0);
+	var select = new Dropkick("#advanceSearchTypeId");
+	select.refresh();	
+	showHideBySearchType();	
+	$("#stateId1").val(0);
+	var select = new Dropkick("#stateId1");
+	select.refresh();
+	involvedCadreIds =[];
+	$("#involvedMembers").html('(0 - Members added)');
 }
 function getAlertType(){
 		$("#alertTypeId").html('');
