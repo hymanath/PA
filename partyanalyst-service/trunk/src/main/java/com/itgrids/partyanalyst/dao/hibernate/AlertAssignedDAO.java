@@ -41,7 +41,7 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 				" from AlertAssigned model where model.alert.isDeleted ='N' and model.isDeleted ='N' ");
 		if(alertId != null && alertId > 0)
 			str.append(" and  model.alert.alertId = :alertId");
-		Query query = getSession().createQuery(str.toString());
+		Query query = getSession().createQuery(str.toString() +" order by model.tdpCadre.firstname ");
 		if(alertId != null && alertId > 0)
 		query.setParameter("alertId", alertId);
 		return query.list();

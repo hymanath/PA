@@ -17,13 +17,19 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	}
 	public List<Object[]> getAlertTrackingDetails(Long alertId)
 	{
-		Query query = getSession().createQuery("select model.alertStatus.alertStatusId,"
-				+ "model.alertStatus.alertStatus,model.user.userId,model.user.firstName,model.user.lastName,model.insertedTime,"
-				+ "alertComment.alertCommentId,alertComment.comments,alertComment.user.firstName,alertComment.user.lastName,alertComment.insertedTime "
-				+ " from AlertTracking model left join model.alertComment alertComment " +
-				"  " +
-				 " where model.alertId = :alertId and alertComment.isDeleted ='N' "
-				+ " order by model.insertedTime desc");
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append("select alertStatus.alertStatusId,alertStatus.alertStatus,user.userId,user.firstName ");
+		queryStr.append(",user.lastName,model.insertedTime,alertComment.alertCommentId,alertComment.comments,");
+		queryStr.append(" user1.firstName,user1.lastName,alertComment.insertedTime  ");
+		queryStr.append(" from AlertTracking model " +
+				" 	left join  model.alertStatus alertStatus " +
+				" 	left join model.user user " +
+				" 	left join model.alertComment alertComment " +
+				" 	left join alertComment.user user1  " +
+				" ");
+		queryStr.append(" where model.alertId = :alertId ");
+		queryStr.append(" order by model.insertedTime desc");			
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
