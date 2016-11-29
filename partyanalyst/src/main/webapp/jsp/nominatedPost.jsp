@@ -1266,10 +1266,10 @@ function buildapptmemberDetails(result){
 <script>
 $(document).on("change","#filterStateId",function(){
 	var stateId = $(this).val();
-	getDistrictsForStates(stateId);
+	getFilterDistrictsForStates(stateId);
 });
 
-function getDistrictsForStates(state){
+function getFilterDistrictsForStates(state){
    var jsObj=
    {				
 		stateId:state,				
@@ -1285,7 +1285,9 @@ function getDistrictsForStates(state){
 		$("#filterDistrictId").append('<option value="0">Select District</option>');			
 		if(result !=null && result.length>0){
 			for(var i in result){
-				$("#filterDistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				if(result[i].id != 517){
+					$("#filterDistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
 			}
 		}
 		$("#filterDistrictId").dropkick();

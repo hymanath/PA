@@ -665,7 +665,9 @@ $(document).on("click","#addCandidateBtnId",function(){
 		str+='<option value="0">All</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
-				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				if(result[i].id != 517){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
 			}
 		}
 		$("#referdistrictId"+index).html(str);
