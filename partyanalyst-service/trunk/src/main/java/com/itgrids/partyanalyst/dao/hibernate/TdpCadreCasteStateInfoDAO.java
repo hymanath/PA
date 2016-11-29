@@ -99,10 +99,10 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
     	
     	StringBuilder sb = new StringBuilder();
     	
-    	sb.append("select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName,"+//3
-    			"         model.casteState.caste.casteId , model.casteState.caste.casteName, " +//
-    			"         sum(model.cadre2014) , sum(model.cadre2016) , sum(model.newCadre) , sum(model.renewalCadre)," +
-    			"         model.districtId ,model.district.districtName,  " +//8
+    	sb.append("select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName,"+//1
+    			"         model.casteState.caste.casteId , model.casteState.caste.casteName, " +//3
+    			"         sum(model.cadre2014) , sum(model.cadre2016) , sum(model.newCadre) , sum(model.renewalCadre)," +//7
+    			"         model.districtId ,model.district.districtName  " +//9
     			"  from   TdpCadreCasteStateInfo model " +
     			"  where  model.locationScopeId = 4 ");
     	if(stateId != null && stateId > 0l){
