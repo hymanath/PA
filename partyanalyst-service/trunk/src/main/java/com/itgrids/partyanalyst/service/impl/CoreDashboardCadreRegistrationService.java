@@ -4183,7 +4183,7 @@ try{
 										} 
 										if(achevedPerc !=null && achevedPerc>0.0){
 											messageStr.append("\n"+location.getName()+ 
-													":\n\n Membership Target  : "+location.getTargetCount()+ 
+													":\n Membership Target  : "+location.getTargetCount()+ 
 													",\n Achieved : "+location.getTotalCount()+" ("+achevedPerc+ " % )" +
 													",\n Today : "+location.getTodayCount()+
 													",\n 2014 total cadre :" +location.getTotal2014Cadre()+
@@ -4191,7 +4191,7 @@ try{
 													",\n Not Yet Renewal Cadre: "+location.getRemainingRenewalCadre() +" ("+yetToRenewal+"%) \n");  
 										}else{
 											messageStr.append("\n"+location.getName()+ 
-													":\n\n Membership Target  : "+location.getTargetCount()+
+													":\n Membership Target  : "+location.getTargetCount()+
 													",\n Achieved : "+location.getTotalCount()+
 													",\n Today : "+location.getTodayCount()+
 													",\n 2014 total cadre :" +location.getTotal2014Cadre()+
@@ -4246,7 +4246,7 @@ try{
 							//overallStr.append(" ............................................ \n ");
 							
 							
-							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu, \n\n " );
+							dearStr.append(" Dear "+mobileNameMap.get(mainVo.getPhoneNo())+" Garu, \n" );
 							
 							
 							
@@ -4270,9 +4270,11 @@ try{
 							
 							//bottomStr.append(" ................... \n\n ");
 							
-							 if(totalDays > days)
+							/* if(totalDays > days)
 								 bottomStr.append("\n We have Only "+remainingDays+" Days left to reach our target.\n" +
-								 		          " PLEASE CONCENTRATE ON THE RENEWALS TO COMPLETE AS SOON AS POSSIBLE .\n ");      
+								 		          " PLEASE CONCENTRATE ON THE RENEWALS TO COMPLETE AS SOON AS POSSIBLE .\n ");*/    
+							    
+							    bottomStr.append(" PLEASE CONCENTRATE ON THE RENEWALS TO COMPLETE AS SOON AS POSSIBLE .\n ");
 							
 							
 							 dearStr.append(overallStr.toString()).append(messageStr.toString()).append(bottomStr.toString());
