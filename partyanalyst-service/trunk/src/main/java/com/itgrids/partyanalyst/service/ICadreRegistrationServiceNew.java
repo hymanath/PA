@@ -38,6 +38,7 @@ public interface ICadreRegistrationServiceNew {
 	
 	public CadreCountsVO casteCategoryWiseTdpCadreSummaryReport(Long stateId);
 	public List<CadreCountsVO> stateWiseTdpCadreCasteCounts(Long stateId);
+	public List<CadreCountsVO> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId);
 	
 	public CadreCountsGenderVO stateWiseCadreGenderCounts(Long stateId);
 	public List<CadreCountsGenderVO> locationWiseCadreGenderCounts(Long stateId,Long districtId,String searchType);
