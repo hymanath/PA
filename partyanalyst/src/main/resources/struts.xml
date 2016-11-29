@@ -14031,12 +14031,14 @@
 		</result>
 	</action>
 	
+	<!-- 
 	<action name="getEducationalQualificationsAction" class="coreDashboardAction"  method="getEducationalQualifications">
 			<result type="json" name="success">
 			<param name="root">IdAndNameVOList</param>
 		</result>
 	</action>
-	
+	 -->
+	 
 	<action name="getAllRelationDetailsAction" class="coreDashboardAction"  method="getAllRelationDetails">
 			<result type="json" name="success">
 			<param name="root">IdAndNameVOList</param>
