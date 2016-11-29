@@ -442,6 +442,7 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 	background-color: #EAE9EF;
 	padding:15px 10px !important;
 	text-transform:uppercase;
+	text-align:center;
 }
 .tableCounts
 {
@@ -512,3 +513,7 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	background-color: #E7D2D7       
 }  
+.b_1
+{
+	border:1px solid #ddd  !important;
+}
