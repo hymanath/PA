@@ -1022,7 +1022,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     			{
     				if(locationValue.longValue() == 1l)
     				queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
-    				else if(locationValue.longValue() == 2l)
+    				else if(locationValue.longValue() == 2l || locationValue.longValue() == 36l)
     					queryStr.append(" and model.userAddress.district.districtId between 1 and 10 ");	
     				else{
     					if(memberShipCardNo.endsWith("HIDE") || mobileNo.endsWith("HIDE")){
