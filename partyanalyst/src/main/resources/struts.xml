@@ -14859,6 +14859,16 @@
 			<param name="root">cadreCountsVOList</param>
 		</result>
 	</action>
+	<action name="districtWiseTdpCadreCasteCountsAction" class="cadreDemographicReportsAction"  method="districtWiseTdpCadreCasteCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
+	<action name="constituencyWiseTdpCadreCasteCountsAction" class="cadreDemographicReportsAction"  method="constituencyWiseTdpCadreCasteCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
 	<action name="getNewCadreSearchBySearchTypeAction" class="appointmentAction" method="getNewCadreSearchBySearchType">
 		<result type="json" name="success">
 			<param name="root">candidatesList</param>

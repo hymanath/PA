@@ -158,6 +158,32 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		}
 		return Action.SUCCESS;
 	}
+	public String districtWiseTdpCadreCasteCounts(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+			 Long districtId = jobj.getLong("districtId");
+			 cadreCountsVOList = cadreRegistrationServiceNew.districtWiseTdpCadreCasteCounts(stateId,districtId);
+		}catch(Exception e){
+			LOG.error("Exception raised at districtWiseTdpCadreCasteCounts() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String constituencyWiseTdpCadreCasteCounts(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 Long stateId = jobj.getLong("stateId");
+			 Long districtId = jobj.getLong("districtId");
+			 cadreCountsVOList = cadreRegistrationServiceNew.constituencyWiseTdpCadreCasteCounts(stateId,districtId);
+		}catch(Exception e){
+			LOG.error("Exception raised at constituencyWiseTdpCadreCasteCounts() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	public String stateWiseCadreGenderCounts(){
 		
 		try{
