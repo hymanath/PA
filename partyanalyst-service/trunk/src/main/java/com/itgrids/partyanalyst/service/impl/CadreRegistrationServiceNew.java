@@ -3528,6 +3528,127 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	   return finalList;
 	}
    
+	
+	
+	 /**
+  	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+  	 *  Constituency Wise Tdp Cadre Caste Counts.
+  	 *  @since 29-NOVEMBER-2016. 
+  	 */
+	public List<CadreCountsVO> constituencyWiseTdpCadreCasteCounts(Long stateId , Long districtId){
+	   
+	   List<CadreCountsVO> finalList = null;
+	   
+	   try{
+		     Map<Long,CadreCountsVO> locationMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+		     
+		     List<Object[]> data =  tdpCadreCasteStateInfoDAO.constituencyWiseTdpCadreCasteCounts(stateId ,districtId);
+		     if(data != null && data.size() > 0){
+		    	 for(Object[] obj : data){
+		    		 
+		    		 if(obj[0]!=null && (Long)obj[0] > 0l){
+		    			 CadreCountsVO locationVO = locationMap.get((Long)obj[0]);
+		    			 if(locationVO == null){
+		    				 locationVO = new CadreCountsVO((Long)obj[0],obj[1]!=null?obj[1].toString():"" , obj[2]!=null?(Long)obj[2]:0l, obj[3]!=null?obj[3].toString():"");
+		    				 locationVO.setSubMap(new LinkedHashMap<Long, CadreCountsVO>(0));
+		    				 locationMap.put(locationVO.getId(), locationVO);
+		    			 }
+		    			 locationVO = locationMap.get((Long)obj[0]);
+		    			 Map<Long,CadreCountsVO> casteMap = locationVO.getSubMap();
+		    			 if(obj[4]!=null && (Long)obj[4] > 0l){
+		    				 
+		    				 CadreCountsVO casteVO = new CadreCountsVO((Long)obj[4] , obj[5]!=null?obj[5].toString() : "");
+		    				 
+		    				 casteVO.setPreviousCadreCount(obj[6]!=null ?(Long)obj[6]:0l);
+		    				 casteVO.setCadreCount(obj[7]!=null ?(Long)obj[7]:0l);
+		    				 casteVO.setNewCadre(obj[8]!=null ?(Long)obj[8]:0l);
+		    				 casteVO.setRenewalCadre(obj[9]!=null ?(Long)obj[9]:0l);
+  							
+  							locationVO.setPreviousCadreTotalCount(locationVO.getPreviousCadreTotalCount() + casteVO.getPreviousCadreCount());
+  							locationVO.setCadreTotalCount( locationVO.getCadreTotalCount() + casteVO.getCadreCount() );
+  							
+  							casteMap.put(casteVO.getId(), casteVO);
+		    			 }
+		    		 }
+		    	 }
+		     }
+		     
+		     //per
+		     if(locationMap!= null && locationMap.size() > 0)
+		     {
+		    	 for(Map.Entry<Long, CadreCountsVO> locationEntry : locationMap.entrySet())
+		    	 {
+		    		 CadreCountsVO locationVO = locationEntry.getValue();
+		    		 if(locationVO != null && locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0)
+		    		 {
+		    			 for (Map.Entry<Long, CadreCountsVO> casteEntry : locationVO.getSubMap().entrySet())
+		    			 {	
+		 	 	    		calculateCastePercantages(casteEntry.getValue() , locationVO.getPreviousCadreTotalCount() , locationVO.getCadreTotalCount() );
+		    			 }
+		    		 }
+		    	 }
+		     }
+		 	 	    		
+		   //FINDING OTHRS SCENARIO.
+	  		 if(locationMap != null && locationMap.size() > 0){
+	  	    	for (Map.Entry<Long, CadreCountsVO> locationEntry : locationMap.entrySet()){
+	  	    		CadreCountsVO locationVO = locationEntry.getValue();
+	  	    		if(locationVO != null && locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0){
+	  	    			CadreCountsVO othersVO = null;
+	  	    			for (Map.Entry<Long, CadreCountsVO> casteEntry : locationVO.getSubMap().entrySet()){
+	  	    				CadreCountsVO casteVO = casteEntry.getValue();
+	  	    				
+	  	    					if(casteVO.getPreviousCadrePercent() != null && casteVO.getPreviousCadrePercent() > 1){
+	  	  	    					
+	  	  	    					if(locationVO.getSubMap1() == null){
+	  	  	    					    locationVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+	  	  	    					}
+	  	  	    				     locationVO.getSubMap1().put(casteEntry.getKey(), casteEntry.getValue());
+	  	  	    				}else{
+	  	  	    					
+	  	  	    					if(othersVO == null){
+	  	  	    						othersVO = new CadreCountsVO(0L,"OTHERS");
+	  	  	    					}
+	  	  	    					othersVO.setPreviousCadreCount( othersVO.getPreviousCadreCount() + casteVO.getPreviousCadreCount());
+	  	  	    					othersVO.setCadreCount(othersVO.getCadreCount() + casteVO.getCadreCount() );
+	  	  	    					othersVO.setNewCadre(othersVO.getNewCadre() + casteVO.getNewCadre());
+	  	  	    					othersVO.setRenewalCadre(othersVO.getRenewalCadre() + casteVO.getRenewalCadre());
+	  	  	    				}
+	  	    				
+	  	    			}
+	  	    			locationVO.getSubMap().clear();
+	  	    			calculateCastePercantages(othersVO , locationVO.getPreviousCadreTotalCount() , locationVO.getCadreTotalCount() );
+	  	    			if(othersVO != null){
+	  	    				if(locationVO.getSubMap1() == null){
+	  	    					locationVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+		    				}
+	  	    				locationVO.getSubMap1().put(othersVO.getId(), othersVO);
+	  	    			}
+	  	    		}
+	  			}
+	  	    }	    		
+	        
+	  		 //con
+	  		if(locationMap!= null && locationMap.size() > 0)
+		     {
+		    	 for(Map.Entry<Long, CadreCountsVO> locationEntry : locationMap.entrySet())
+		    	 {
+		    		 CadreCountsVO locationVO = locationEntry.getValue();
+		    		 if(locationVO != null && locationVO.getSubMap1() != null && locationVO.getSubMap1().size() > 0)
+		    		 { 
+		    			 locationVO.setSubList(new ArrayList<CadreCountsVO>(locationVO.getSubMap1().values()));
+		    			 locationVO.getSubMap1().clear();
+		    		 }
+		    	 }
+		    	 finalList = new ArrayList<CadreCountsVO>(locationMap.values());
+		     }
+	   }catch(Exception e) {
+		   LOG.error("Exception occur in constituencyWiseTdpCadreCasteCounts()  Of CadreRegistrationServiceNew class - ",e);
+	   }
+	   return finalList;
+	}
+	
+	
       /**
 	   	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	   	 *  GENDER WISE SUMMARY REPORT.
