@@ -95,8 +95,8 @@
         </div>-->
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 	  <h3 class="text-capital" id="headinggId" style="color:#5C2D25;display:none"></h3>
-		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon" title="Select Locations" ></i></h3>
-		<div class="row">
+		<h3 class="text-capital headingColor hideFilterCls" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon" title="Select Locations" ></i></h3>
+		<div class="row hideFilterCls">
 		<div class="col-md-12 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -586,7 +586,7 @@ $(document).ready(function(){
 	}
 
 if(boardLevelId == 1){
- $(".hideRowCls").hide();	
+ $(".hideFilterCls").hide();	
 }
 if(boardLevelId == 2){
 $(".hideDistrictDivCls").hide();	
