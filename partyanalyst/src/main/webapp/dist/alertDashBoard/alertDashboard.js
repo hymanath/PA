@@ -387,7 +387,7 @@ function buildAlertData(result,jsObj)
 	}*/
 	
 	str+='<div class="table-responsive">';
-	str+='<table class="table table-bordered bg_ff" id="alertDataTableId">';
+	str+='<table class="table table-bordered bg_ff text-center" id="alertDataTableId">';
 	str+='<thead>';
 	//str+='<th>S.NO</th>';
 	//str+='<th>Desc</th>';
