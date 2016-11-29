@@ -2541,6 +2541,7 @@ function searchByApplicant()
          $("#addMemberDivId").hide();
          $("#searchBy").val(' ');
          $( "#membershipId" ).prop( "checked", true);
+		 $("#advanceSearchBtnId").trigger("click");
 	}
 	else {
 	 $("#searchMemberDiv").hide();
@@ -2723,7 +2724,7 @@ $("#searchDivId").show();
 		$('#searchDivId').hide();
 		$("#uploadFlDivId").hide();
 		$("#submitBtnId").hide();
-		$("#membersCountId").html(''); 
+		$("#membersCountId").html(""); 
         $("#searchErrDiv").html(""); 
 		$("#notCadreErrMsg").html(""); 
         $("#memberCountSpanId").html("");  		
@@ -2740,6 +2741,7 @@ function getAdvanceSearchDetails(){
 	$("#scrollDivId").show();
 	$("#textId").hide();
 	$("#searchData1").html("");
+	$("#membersCountId").html(""); 
 	
 	var searchType;
 	var searchValue = 0;
@@ -2824,8 +2826,7 @@ function getAdvanceSearchDetails(){
 		}).done(function(result){
 			$("#cadreSearchDtls").html("");
 			if(result !=null && result.length>0){
-			buildAdvancedSearchDetails(result);
-			
+			buildAdvancedSearchDetails(result);		
 			}else{
 				$("#cadreSearchDtls").html("<center><h4>No Data Available</h4></center>");
 			}
@@ -3231,5 +3232,15 @@ function getApplicationDocuments(cadreId,candiId,applicationId){
 				});
 				
   }
-  
+ $(document).on('click', '#advanceSearchBtnId', function(){
+	   $("#searchBy").val(""); 	   
+	   hideDetails();   
+	   $("#genderId").prop("checked",true);
+		  var str = '';
+		str+='<option value="0">Select Gender</option>';
+		str+='<option value="M">Male</option>';
+		str+='<option value="F">Female</option>';
+		$("#advancSearchSelectId").html(str);
+        $('#advancSearchSelectId').val(0).trigger("chosen:updated");   	  
+  });
   
