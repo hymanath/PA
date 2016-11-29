@@ -68,7 +68,7 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		}
 		sb.append(" and model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
 		sb.append(" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId ,model.casteState.caste.casteId " +
-				"   order by sum(model.cadre2014)");
+				"   order by sum(model.cadre2014) desc");
 		Query query = getSession().createQuery(sb.toString());
 		if(stateId != null && stateId > 0l){
 			query.setParameter("stateId", stateId );
@@ -87,13 +87,66 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		}
 		sb.append(" and model.casteState.caste.casteId  in ("+minorityCasteIds+") ");
 		sb.append(" group by model.casteState.caste.casteId " +
-				"   order by sum(model.cadre2014) ");
+				"   order by sum(model.cadre2014) desc ");
 		Query query = getSession().createQuery(sb.toString());
 		if(stateId != null && stateId > 0l){
 			query.setParameter("stateId", stateId );
 		}
 		return query.list();
 	}
-	
-	
+	//district wise
+	public List<Object[]> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId,String minorityCasteIds){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	
+    	sb.append("select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName,"+//3
+    			"         model.casteState.caste.casteId , model.casteState.caste.casteName, " +//
+    			"         sum(model.cadre2014) , sum(model.cadre2016) , sum(model.newCadre) , sum(model.renewalCadre)," +
+    			"         model.districtId ,model.district.districtName,  " +//8
+    			"  from   TdpCadreCasteStateInfo model " +
+    			"  where  model.locationScopeId = 4 ");
+    	if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId");
+		}
+    	if(districtId != null && districtId > 0l){
+			sb.append(" and model.districtId = :districtId ");
+		}
+    	sb.append(" and model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
+    	sb.append(" group by model.districtId  , model.casteState.casteCategoryGroup.casteCategory.casteCategoryId , model.casteState.caste.casteId " +
+    			"   order by model.district.districtName , sum(model.cadre2014) desc");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	if(stateId != null && stateId > 0l){
+    		query.setParameter("stateId", stateId);
+		}
+    	if(districtId != null && districtId > 0l){
+			  query.setParameter("districtId",districtId);
+		}
+    	return query.list();
+    }
+	public List<Object[]> districtWiseTdpCadreMinorityCasteCounts(Long stateId , Long districtId,String minorityCasteIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.caste.casteId , model.casteState.caste.casteName," +//1
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre)," +//5
+				"           model.districtId ,model.district.districtName " +//7
+				"   from TdpCadreCasteStateInfo model " +
+				"   where model.locationScopeId = 4 ");
+		if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId ");
+		}
+		if(districtId != null && districtId > 0l){
+			sb.append(" and model.districtId = :districtId ");
+		}
+		sb.append(" and model.casteState.caste.casteId  in ("+minorityCasteIds+") ");
+		sb.append(" group by model.districtId , model.casteState.caste.casteId  " +
+				 "  order by model.district.districtName , sum(model.cadre2014) desc");
+		Query query = getSession().createQuery(sb.toString());
+		if(stateId != null && stateId > 0l){
+			query.setParameter("stateId", stateId );
+		}
+		if(districtId != null && districtId > 0l){
+			  query.setParameter("districtId",districtId);
+		}
+		return query.list();
+	}
 }
