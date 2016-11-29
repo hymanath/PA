@@ -48,8 +48,52 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 			sb.append(" and model.stateId = :stateId ");
 		}
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("stateId", stateId );
+		if(stateId != null && stateId > 0l){
+			query.setParameter("stateId", stateId );
+		}
 		return (Object[])query.uniqueResult();
 	}
+	
+	//state wise
+	public List<Object[]> stateWiseTdpCadreCasteCounts(Long stateId , String minorityCasteIds){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName," +//1
+				"          model.casteState.caste.casteId , model.casteState.caste.casteName," +//3
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//7
+				"   from TdpCadreCasteStateInfo model " +
+				"   where model.locationScopeId = 4 ");
+		if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId ");
+		}
+		sb.append(" and model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
+		sb.append(" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId ,model.casteState.caste.casteId " +
+				"   order by sum(model.cadre2014)");
+		Query query = getSession().createQuery(sb.toString());
+		if(stateId != null && stateId > 0l){
+			query.setParameter("stateId", stateId );
+		}
+		return query.list();
+	}
+	public List<Object[]> stateWiseTdpCadreMinorityCasteCounts(Long stateId , String minorityCasteIds){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.caste.casteId , model.casteState.caste.casteName," +//1
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//5
+				"   from TdpCadreCasteStateInfo model " +
+				"   where model.locationScopeId = 4 ");
+		if(stateId != null && stateId > 0l){
+			sb.append(" and model.stateId = :stateId ");
+		}
+		sb.append(" and model.casteState.caste.casteId  in ("+minorityCasteIds+") ");
+		sb.append(" group by model.casteState.caste.casteId " +
+				"   order by sum(model.cadre2014) ");
+		Query query = getSession().createQuery(sb.toString());
+		if(stateId != null && stateId > 0l){
+			query.setParameter("stateId", stateId );
+		}
+		return query.list();
+	}
+	
 	
 }
