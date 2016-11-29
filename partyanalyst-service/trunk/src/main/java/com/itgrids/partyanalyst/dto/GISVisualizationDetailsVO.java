@@ -40,6 +40,15 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	private String rank;
 	private String isYCPArea;
 	
+	private Long firstPositionPartyId;
+	private Long secondPositionPartyId;
+	private Long thirdPositionPartyId;
+	private String firstPositionPartyName;
+	private String secondPositionPartyName;
+	private String thirdPositionPartyName;
+	private String firstPartyImageLogo;
+	private String secondPartyImageLogo;
+	private String thirdPartyImageLogo;
 	
 	//VERY-GOOD, GOOD, OK, POOR, VERY_POOR / ISSSUES Status Details
 	private List<GISVisualizationBasicVO> statusList = new ArrayList<GISVisualizationBasicVO>(0);
@@ -262,5 +271,59 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	public void setLocationsList(List<GISVisualizationDetailsVO> locationsList) {
 		this.locationsList = locationsList;
 	}
-	
+	public String getFirstPositionPartyName() {
+		return firstPositionPartyName;
+	}
+	public void setFirstPositionPartyName(String firstPositionPartyName) {
+		this.firstPositionPartyName = firstPositionPartyName;
+	}
+	public String getSecondPositionPartyName() {
+		return secondPositionPartyName;
+	}
+	public void setSecondPositionPartyName(String secondPositionPartyName) {
+		this.secondPositionPartyName = secondPositionPartyName;
+	}
+	public Long getFirstPositionPartyId() {
+		return firstPositionPartyId;
+	}
+	public void setFirstPositionPartyId(Long firstPositionPartyId) {
+		this.firstPositionPartyId = firstPositionPartyId;
+	}
+	public Long getSecondPositionPartyId() {
+		return secondPositionPartyId;
+	}
+	public void setSecondPositionPartyId(Long secondPositionPartyId) {
+		this.secondPositionPartyId = secondPositionPartyId;
+	}
+	public Long getThirdPositionPartyId() {
+		return thirdPositionPartyId;
+	}
+	public void setThirdPositionPartyId(Long thirdPositionPartyId) {
+		this.thirdPositionPartyId = thirdPositionPartyId;
+	}
+	public String getThirdPositionPartyName() {
+		return thirdPositionPartyName;
+	}
+	public void setThirdPositionPartyName(String thirdPositionPartyName) {
+		this.thirdPositionPartyName = thirdPositionPartyName;
+	}
+	public String getFirstPartyImageLogo() {
+		return firstPartyImageLogo;
+	}
+	public void setFirstPartyImageLogo(String firstPartyImageLogo) {
+		this.firstPartyImageLogo = firstPartyImageLogo;
+	}
+	public String getSecondPartyImageLogo() {
+		return secondPartyImageLogo;
+	}
+	public void setSecondPartyImageLogo(String secondPartyImageLogo) {
+		this.secondPartyImageLogo = secondPartyImageLogo;
+	}
+	public String getThirdPartyImageLogo() {
+		return thirdPartyImageLogo;
+	}
+	public void setThirdPartyImageLogo(String thirdPartyImageLogo) {
+		this.thirdPartyImageLogo = thirdPartyImageLogo;
+	}
+
 }

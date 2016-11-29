@@ -938,34 +938,36 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	
 	public List<Object[]> getAssemblyLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" SELECT B.constituency_id,sum(CBR.votes_earned),sum(BR.valid_votes),CR.margin_votes,CR.margin_votes_percentage,CR.rank  FROM ");
-		queryStr.append(" candidate_booth_result CBR, ");
-		queryStr.append(" nomination N, ");
-		queryStr.append(" booth_constituency_election BCE, ");
-		queryStr.append(" constituency_election CE, ");
-		queryStr.append(" booth B, ");
-		queryStr.append(" booth_result BR, ");
-		queryStr.append(" constituency c, candidate_result CR ");
-		queryStr.append(" WHERE ");
-		queryStr.append(" CR.nomination_id = N.nomination_id AND ");
-		queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
-		queryStr.append(" N.party_id = 872 AND ");
-		queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
-		queryStr.append(" CE.election_id = 258 AND ");
-		queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
-		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
-		queryStr.append(" BCE.booth_id = B.booth_id AND ");
-		queryStr.append(" B.local_election_body_id IS null  and B.constituency_id = c.constituency_id  ");
-		//if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
-			//queryStr.append(" and   c.district_id = "+inputVO.getParentLocationTypeId().longValue()+"");
-		if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
-			queryStr.append(" and (   c.district_id between 11 and 23) ");
-		else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
-			queryStr.append(" and (   c.district_id between 1 and 10) ");
-		queryStr.append(" group by  B.constituency_id ");
-		
-		Query query = getSession().createSQLQuery(queryStr.toString());
-		return query.list();
+	    queryStr.append(" SELECT B.constituency_id,sum(CBR.votes_earned),sum(BR.valid_votes),CR.margin_votes,CR.margin_votes_percentage,CR.rank,N.party_id,P.short_name,P.party_flag  FROM ");
+	    queryStr.append(" candidate_booth_result CBR, ");
+	    queryStr.append(" nomination N, ");
+	    queryStr.append(" booth_constituency_election BCE, ");
+	    queryStr.append(" constituency_election CE, ");
+	    queryStr.append(" booth B, ");
+	    queryStr.append(" booth_result BR, ");
+	    queryStr.append(" constituency c, candidate_result CR , Party P ");
+	    queryStr.append(" WHERE ");
+	    queryStr.append(" CR.nomination_id = N.nomination_id AND ");
+	    queryStr.append(" CBR.nomination_id = N.nomination_id AND ");
+	    //queryStr.append(" N.party_id = 872 AND ");
+	    queryStr.append(" N.party_id = P.party_id AND ");
+	    queryStr.append(" and CR.rank in (1,2,3) ");
+	    queryStr.append(" N.consti_elec_id = CE.consti_elec_id AND ");
+	    queryStr.append(" CE.election_id = 258 AND ");
+	    queryStr.append(" CBR.booth_constituency_election_id = BCE.booth_constituency_election_id AND ");
+	    queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
+	    queryStr.append(" BCE.booth_id = B.booth_id AND ");
+	    queryStr.append(" B.local_election_body_id IS null  and B.constituency_id = c.constituency_id  ");
+	    //if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
+	      //queryStr.append(" and   c.district_id = "+inputVO.getParentLocationTypeId().longValue()+"");
+	    if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 1L)
+	      queryStr.append(" and (   c.district_id between 11 and 23) ");
+	    else if(inputVO.getStateId() != null && inputVO.getStateId().longValue() == 2L)
+	      queryStr.append(" and (   c.district_id between 1 and 10) ");
+	    queryStr.append(" group by  B.constituency_id,CR.rank order by CR.rank ");
+	    
+	    Query query = getSession().createSQLQuery(queryStr.toString());
+	    return query.list();
 	}
 	
 	public List<Object[]> getMandalLevelElectionResultsForGISVisualization(GISVisualizationParameterVO inputVO){
