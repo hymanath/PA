@@ -16,4 +16,7 @@ public interface ITdpCadreCasteStateInfoDAO extends GenericDao<TdpCadreCasteStat
 	public List<Object[]> stateWiseTdpCadreCasteCounts(Long stateId , String minorityCasteIds);
 	public List<Object[]> stateWiseTdpCadreMinorityCasteCounts(Long stateId , String minorityCasteIds);
 	
+	public List<Object[]> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId,String minorityCasteIds);
+	public List<Object[]> districtWiseTdpCadreMinorityCasteCounts(Long stateId , Long districtId,String minorityCasteIds);
+	
 }
