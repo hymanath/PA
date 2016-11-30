@@ -235,6 +235,7 @@
 			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
 			<result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
 			<result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
+			<result type="redirect" name="cadreDemographicReports">cadreDemographicReportsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -14836,7 +14837,7 @@
 	</action>
 	<action name="cadreDemographicReportsAction" class="cadreDemographicReportsAction">
 			 <result name="success">/jsp/cadreDemographicReports.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=cadreDemographicReportsAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreDemographicReports</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	 <action name="ageWiseTdpCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="ageWiseTdpCadreSummaryReport">
