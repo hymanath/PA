@@ -90,16 +90,21 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	
 	//business methods
 	public String execute(){
-		try {
-			
-			/* session = request.getSession();
-			
-			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			if(user == null || user.getRegistrationID() == null){
-				return ERROR;
-			}*/
-		}catch(Exception e) {
-			LOG.error("Exception raised at execute() in cadreDemographicReportsAction Action ", e);
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD".trim())) || entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD_ADMIN_ENTITLEMENT".trim())){
+				noaccess = true ;
+			}
+		
+			if(noaccess){
+				return "error";
+			}
 		}
 		return Action.SUCCESS;
 	}
