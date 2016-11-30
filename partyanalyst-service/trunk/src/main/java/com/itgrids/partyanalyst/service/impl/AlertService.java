@@ -1920,7 +1920,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	
 	public List<AlertCoreDashBoardVO> getOverAllAlertDetailsForCoreDashBoard(String startDate,String endDate,Long locationLevelId,
 			List<Long> levelValues,List<Long> impactScopeIds){
-		
+		AlertCoreDashBoardVO finalVo = new AlertCoreDashBoardVO();
 		
 		try {
 			
@@ -1940,30 +1940,86 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			setAlertTypes(alertObj,alrtyTypeMap);
 			
 			Map<Long,AlertCoreDashBoardVO> statusWiseMap = new HashMap<Long, AlertCoreDashBoardVO>();
+			
+			List<Object[]> alertStatusObj = alertStatusDAO.getAllStatus();
+			setAlertStatus(alertStatusObj,statusWiseMap);
+			
+			
 			Map<Long,Map<Long,AlertCoreDashBoardVO>> categoryWiseMap = new HashMap<Long, Map<Long,AlertCoreDashBoardVO>>();
 			
 			//0.alertId,1.alertCategoryId,2.category,3.alertTypeId,4.alertType,5.alertStatusId,6.alertStatus
 			List<Object[]> listObj = alertDAO.getOverAllAlertDetailsForCoreDashBoard(fromDate, toDate, locationLevelId, levelValues, impactScopeIds);
 			
+		// 1) Alert Type Data Inserting Into finalVo
 			if(listObj !=null && listObj.size()>0){
 				for (Object[] obj : listObj) {					
 					AlertCoreDashBoardVO alertVo = alrtyTypeMap.get((Long)obj[3]);
 					if(alertVo !=null){
-						if(obj[3] !=null){							
-							alertVo.getSetList().add((Long)obj[3]);														
+						if(obj[0] !=null){			
+								alertVo.getSetList().add((Long)obj[0]);														
+						}						
+					}					
+				}
+			}
+			
+			if(alrtyTypeMap !=null && alrtyTypeMap.size()>0){
+				List<AlertCoreDashBoardVO> alertTypeList = new ArrayList<AlertCoreDashBoardVO>(0);
+				for (Entry<Long, AlertCoreDashBoardVO> obj : alrtyTypeMap.entrySet()) {					
+					AlertCoreDashBoardVO Vo = obj.getValue();					
+					Vo.setCount(Vo.getSetList() !=null ? Long.valueOf(Vo.getSetList().size()):0l);	
+					alertTypeList.add(Vo);
+				}				
+				finalVo.setSubList(alertTypeList);				
+			}
+			
+		
+		// 2) Alert Status Wise Data Inserting Into finalVo
+			
+			if(listObj !=null && listObj.size()>0){
+				for (Object[] obj : listObj) {					
+					AlertCoreDashBoardVO alertVo = statusWiseMap.get((Long)obj[5]);
+					if(alertVo !=null){
+						if(obj[0] !=null){							
+							alertVo.getSetList().add((Long)obj[0]);														
 						}						
 					}					
 				}
 			}
 			
 			if(statusWiseMap !=null && statusWiseMap.size()>0){
+				List<AlertCoreDashBoardVO> alertStatusList = new ArrayList<AlertCoreDashBoardVO>(0);
 				for (Entry<Long, AlertCoreDashBoardVO> obj : statusWiseMap.entrySet()) {					
 					AlertCoreDashBoardVO Vo = obj.getValue();					
-					Vo.setCount(Long.valueOf(Vo.getSetList().size()));
-					
-				}
+					Vo.setCount(Vo.getSetList() !=null ? Long.valueOf(Vo.getSetList().size()):0l);	
+					alertStatusList.add(Vo);
+				}				
+				finalVo.setSubList1(alertStatusList);				
 			}
 			
+		//3)Alert Category Wise Data Inserting Into finalVo
+			
+			if(listObj !=null && listObj.size()>0){
+				for (Object[] obj : listObj) {					
+					Map<Long,AlertCoreDashBoardVO> statusMap = categoryWiseMap.get((Long)obj[1]);
+					if(statusMap ==null){
+						statusMap = new HashMap<Long, AlertCoreDashBoardVO>();
+						setAlertStatus(alertStatusObj,statusMap);//default Status Details										
+						categoryWiseMap.put((Long)obj[1], statusMap);
+					}					
+					AlertCoreDashBoardVO VO = statusMap.get((Long)obj[5]);					
+					if(VO == null){
+						VO = new AlertCoreDashBoardVO();
+						VO.setId((Long)obj[5]);
+						VO.setName(obj[6] !=null ? obj[6].toString():"");						
+					}
+					
+					VO.setCategoryId(obj[1] !=null ? (Long)obj[1]:0l);
+					VO.setCategory(obj[2] !=null ? obj[2].toString():"");
+					
+					VO.getSetList().add(obj[0] !=null ? (Long)obj[0]:0l);
+				}
+			}
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Error occured getOverAllAlertDetailsForCoreDashBoard() method of AlertService{}");
@@ -1979,14 +2035,31 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			if(alertObj !=null && alertObj.size()>0){
 				for (Object[] obj : alertObj) {
 					AlertCoreDashBoardVO VO = new AlertCoreDashBoardVO();					
-					VO.setId(obj[3] !=null ? (Long)obj[3]:0l);
-					VO.setName(obj[4] !=null ? obj[4].toString():"");					
+					VO.setId(obj[0] !=null ? (Long)obj[0]:0l);
+					VO.setName(obj[1] !=null ? obj[1].toString():"");					
 					alrtyTypeMap.put(VO.getId(), VO);
 				}
 			}
 			
 		} catch (Exception e) {
 			LOG.error("Error occured setAlertTypes() method of AlertService{}");
+		}
+	}
+	
+	public void setAlertStatus(List<Object[]>  alertStatusObj,Map<Long,AlertCoreDashBoardVO> statusWiseMap){
+			try {
+			
+				if(alertStatusObj !=null && alertStatusObj.size()>0){
+					for (Object[] obj : alertStatusObj) {
+						AlertCoreDashBoardVO VO = new AlertCoreDashBoardVO();					
+						VO.setId(obj[0] !=null ? (Long)obj[0]:0l);
+						VO.setName(obj[1] !=null ? obj[1].toString():"");					
+						statusWiseMap.put(VO.getId(), VO);
+					}
+				}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setAlertStatus() method of AlertService{}");
 		}
 	}
 	
