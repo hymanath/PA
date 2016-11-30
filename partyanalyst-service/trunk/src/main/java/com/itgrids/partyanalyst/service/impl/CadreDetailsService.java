@@ -1307,9 +1307,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 					}
 				}
 				returnVO.setResponseCode("");
-				
+				List<Object[]> importantLeaders = null;
 				//0.cadreId,1.typeId,2.position,3.levelId,4.level,5.locationVal
-				List<Object[]> importantLeaders = importantLeadersDAO.getImportantLeadersDesignationByCadreList(cadreIds);
+				if(cadreIds != null && cadreIds.size() > 0)
+				 importantLeaders = importantLeadersDAO.getImportantLeadersDesignationByCadreList(cadreIds);
+				
 				if(commonMethodsUtilService.isListOrSetValid(importantLeaders)){
 					for (Object[] obj : importantLeaders) {
 						Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");

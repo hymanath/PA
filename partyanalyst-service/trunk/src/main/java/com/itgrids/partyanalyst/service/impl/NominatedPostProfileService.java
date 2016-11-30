@@ -4313,7 +4313,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					IdNameVO VO = deptMap.get((Long)obj[0]);
 					if(VO == null){
 						VO = new IdNameVO();
-						VO.setId((Long)obj[0]);
+						VO.setId(obj[0] !=null ? (Long)obj[0] : 0l);
 						VO.setName(obj[1] !=null ? obj[1].toString():"");
 						deptMap.put((Long)obj[0], VO);
 					}
