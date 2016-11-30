@@ -11,6 +11,7 @@ public class AlertInputVO {
 	private String searchTypeStr;
 	private Long alertTypeId;
 	
+	private Long alertImpactScopeId;
 	
 	public Long getAlertTypeId() {
 		return alertTypeId;
@@ -65,6 +66,12 @@ public class AlertInputVO {
 	}
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
+	}
+	public Long getAlertImpactScopeId() {
+		return alertImpactScopeId;
+	}
+	public void setAlertImpactScopeId(Long alertImpactScopeId) {
+		this.alertImpactScopeId = alertImpactScopeId;
 	}
 	
 

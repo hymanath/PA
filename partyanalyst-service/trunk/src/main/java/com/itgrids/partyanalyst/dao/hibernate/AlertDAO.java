@@ -52,7 +52,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
 		str.append(" ,constituency.constituencyId,constituency.name");
 		str.append(" ,state.stateId,state.stateName");
-		str.append(" ,ward.constituencyId,ward.name, alertCategory.alertCategoryId,alertCategory.category ");
+		str.append(" ,ward.constituencyId,ward.name,");
+		str.append(" alertCategory.alertCategoryId,alertCategory.category ");
 		str.append(" from Alert model " +
 				" left join model.alertSeverity alertSeverity" +
 				" left join model.alertSource  alertSource " +
@@ -68,10 +69,38 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.alertType  alertType ");
 		str.append(" left join model.alertStatus  alertStatus ");
 		str.append(" where model.isDeleted ='N' ");
-		if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L){
-			str.append(" and model.impactLevelId=:levelId");
 		
-				if(inputVO.getLevelId().longValue() == 2L){
+		if(inputVO.getAlertImpactScopeId() !=null && inputVO.getAlertImpactScopeId()>0l){
+			str.append(" and model.impactScopeId=:impactScopeId");
+			if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+				str.append(" and state.stateId in (1) ");
+			else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+				str.append(" and state.stateId in (36) ");
+			else
+				str.append(" and state.stateId in (1,36) ");
+			
+		}else{
+			if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L){
+			
+					if(inputVO.getLevelId().longValue() == 2L){
+						if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+							str.append(" and state.stateId in (1) ");
+						else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+							str.append(" and state.stateId in (36) ");
+						else
+							str.append(" and state.stateId in (1,36) ");
+					}
+					else if(inputVO.getLevelId().longValue() == 3L){
+						if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() >0L)
+							str.append(" and model.userAddress.district.districtId in ("+inputVO.getLevelValue()+") ");
+					}
+					else if(inputVO.getLevelId().longValue() == 4L){
+						if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() >0L)
+							str.append(" and model.userAddress.constituency.constituencyId in ("+inputVO.getLevelValue()+") ");
+					}
+			}
+			else{
+				if(inputVO.getSearchTypeStr() != null && (inputVO.getSearchTypeStr().equalsIgnoreCase("totalBlock") || inputVO.getSearchTypeStr().equalsIgnoreCase("statusBlock") )){
 					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
 						str.append(" and state.stateId in (1) ");
 					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
@@ -79,34 +108,19 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 					else
 						str.append(" and state.stateId in (1,36) ");
 				}
-				else if(inputVO.getLevelId().longValue() == 3L){
-					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() >0L)
-						str.append(" and model.userAddress.district.districtId in ("+inputVO.getLevelValue()+") ");
-				}
-				else if(inputVO.getLevelId().longValue() == 4L){
-					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() >0L)
-						str.append(" and model.userAddress.constituency.constituencyId in ("+inputVO.getLevelValue()+") ");
-				}
-		}
-		else{
-			if(inputVO.getSearchTypeStr() != null && (inputVO.getSearchTypeStr().equalsIgnoreCase("totalBlock") || inputVO.getSearchTypeStr().equalsIgnoreCase("statusBlock") )){
-				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-					str.append(" and state.stateId in (1) ");
-				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-					str.append(" and state.stateId in (36) ");
-				else
-					str.append(" and state.stateId in (1,36) ");
+				/*else{
+					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
+						str.append(" and state.stateId in (1) ");
+					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
+						str.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					else
+						str.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+				}*/
+				
 			}
-			else{
-				if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-					str.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-				else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-					str.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				else
-					str.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-			}
-			
 		}
+		
+		
 		if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue()>0L)
 			str.append(" and model.alertTypeId =:alertTypeId ");
 		if(sourceIds != null && sourceIds.size() > 0)
@@ -129,12 +143,15 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setParameterList("sourceIds", sourceIds);
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
 			query.setParameter("statusId", inputVO.getStatusId());
-		if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L)
-		query.setParameter("levelId", inputVO.getLevelId());
+		/*if(inputVO.getLevelId() != null && inputVO.getLevelId().longValue() > 0L)
+			query.setParameter("levelId", inputVO.getLevelId());*/
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
 			query.setParameter("alertCategoryId", inputVO.getCategoryId());
 		if(inputVO.getAlertTypeId() != null && inputVO.getAlertTypeId().longValue()>0L)
 			query.setParameter("alertTypeId", inputVO.getAlertTypeId());
+		if(inputVO.getAlertImpactScopeId() !=null && inputVO.getAlertImpactScopeId()>0l){
+			query.setParameter("impactScopeId", inputVO.getAlertImpactScopeId());			
+		}
 		return query.list();
 	}
 	
@@ -148,7 +165,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" ,constituency.constituencyId,constituency.name");//20
 		str.append(" ,state.stateId,state.stateName");//22
 		str.append(" ,ward.constituencyId,ward.name");//24
-		str.append(" ,model.title ");//25
+		str.append(" ,model.title,model.alertImpactScope.impactScope," + //25-26
+				" model.alertCategory.alertCategoryId,model.alertCategory.category ");//27-28
 		str.append(" from Alert model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 		str.append(" left join model.userAddress.constituency constituency ");
@@ -194,8 +212,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" left join model.alertStatus alertStatus ");
 			str.append(" where model.isDeleted ='N' and model1.alertId = model.alertId and model1.tdpCadreId =:assignedCadreId");
 		}
-		else
-			
+		else			
 		{
 			str.append(" from Alert model left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
@@ -215,8 +232,6 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(inputVO.getId() != null && inputVO.getId().longValue()>0L){
 			str.append(" and model.alertTypeId =:alertTypeId ");
 		}
-	/*	if(levelId != null && levelId > 0)
-		str.append(" and model.impactLevelId=:levelId");*/
 		if(sourceIds != null && sourceIds.size() > 0)
 			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
 		if(fromDate != null)
@@ -224,6 +239,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(inputVO.getStatusId() != null && inputVO.getStatusId() > 0)
 			str.append(" and model.alertStatus.alertStatusId = :statusId");
 		
+		if(inputVO.getCategoryId() !=null && inputVO.getCategoryId()>0l){
+			str.append(" and model.alertCategoryId = :alertCategoryId");
+		}
 		
 		//Location Filter
 		if(inputVO.getStateId() != null && inputVO.getStateId() > 0)
@@ -304,8 +322,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() > 0L)
 			query.setParameter("statusId", inputVO.getStatusId());
-	/*	if(levelId != null && levelId > 0)
-		query.setParameter("levelId", levelId);*/
+		if(inputVO.getCategoryId() !=null && inputVO.getCategoryId()>0l){
+			query.setParameter("alertCategoryId",inputVO.getCategoryId());
+		}
 		return query.list();
 	}
 	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
