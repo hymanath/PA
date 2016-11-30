@@ -308,7 +308,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("levelId", levelId);*/
 		return query.list();
 	}
-	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId){
+	public List<Object[]> getTotalAlertGroupByStatus(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select alertStatus.alertStatusId, alertStatus.alertStatus, count(distinct model.alertId) " +
 						" from Alert model " +
@@ -329,13 +329,14 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and state.stateId = 1 ");
-				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
-				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
 				queryStr.append(" and state.stateId in (1,36) ");
 			}
+		}
+		if(alertTypeId !=null && alertTypeId > 0L){
+			queryStr.append(" and model.alertTypeId = :alertTypeId ");
 		}
 		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -343,10 +344,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		
+		if(alertTypeId !=null && alertTypeId > 0L){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
 		return query.list(); 
 	}
-	public List<Object[]> getTotalAlertGroupByStatusThenCategory(Date fromDate, Date toDate, Long stateId){
+	public List<Object[]> getTotalAlertGroupByStatusThenCategory(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 						" alertStatus.alertStatusId, " +
@@ -375,13 +378,14 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and state.stateId = 1 ");
-				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 			}else if(stateId.longValue() == 36L){
-				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
 				queryStr.append(" and state.stateId in (1,36) ");
 			}
+		}
+		if(alertTypeId !=null && alertTypeId > 0L){
+			queryStr.append(" and model.alertTypeId = :alertTypeId ");
 		}
 		queryStr.append(" group by alertStatus.alertStatusId, alertCategory.alertCategoryId " +
 						" order by alertStatus.alertStatusId, alertCategory.alertCategoryId ");
@@ -390,51 +394,52 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		if(alertTypeId !=null && alertTypeId > 0L){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
+		
 		
 		return query.list(); 
 	}
-	public List<Object[]> getTotalAlertGroupByImpactLevel(Date fromDate, Date toDate, Long stateId){
+	public List<Object[]> getTotalAlertGroupByImpactLevel(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select model.regionScopes.regionScopesId, model.regionScopes.scope, count(distinct model.alertId) " +
+		queryStr.append("select model.alertImpactScope.alertImpactScopeId, model.alertImpactScope.impactScope, count(distinct model.alertId) " +
 				" from Alert model " +
-				" left join model.userAddress userAddress " +
-				" left join userAddress.state state  " +
-				" left join userAddress.district district  " +
-				" left join userAddress.constituency constituency  " +
-				" left join userAddress.tehsil tehsil  " +
-				" left join userAddress.localElectionBody localElectionBody  " +
-				" left join userAddress.panchayat panchayat  " +
-				" left join userAddress.ward ward  " +
 				" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and state.stateId = 1 ");
-				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and model.userAddress.state.stateId = 1 ");
 			}else if(stateId.longValue() == 36L){
-				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				queryStr.append(" and state.stateId = 36 ");
+				queryStr.append(" and model.userAddress.state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
-				queryStr.append(" and state.stateId in (1,36) ");
+				queryStr.append(" and model.userAddress.state.stateId in (1,36) ");
 			}
-		}  
-		queryStr.append(" group by model.regionScopes.regionScopesId order by model.regionScopes.regionScopesId ");
+		}
+		if(alertTypeId !=null && alertTypeId > 0L){
+			queryStr.append(" and model.alertTypeId = :alertTypeId ");
+		}
+		
+		queryStr.append(" group by model.alertImpactScope.alertImpactScopeId order by model.alertImpactScope.orderNo ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		if(alertTypeId !=null && alertTypeId>0l){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
 		
 		
 		return query.list();   
 	}
-	public List<Object[]> getTotalAlertGroupByImpactLevelThenStatus(Date fromDate, Date toDate, Long stateId){
+	public List<Object[]> getTotalAlertGroupByImpactLevelThenStatus(Date fromDate, Date toDate, Long stateId,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
-						" model.regionScopes.regionScopesId, " +
-						" model.regionScopes.scope, " +
+						" model.alertImpactScope.alertImpactScopeId, " +
+						" model.alertImpactScope.impactScope, " +
 						" alertStatus.alertStatusId, " +
 						" alertStatus.alertStatus," +
 						" count(distinct model.alertId) " +
@@ -455,24 +460,29 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and state.stateId = 1 ");
-				//queryStr.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+				queryStr.append(" and model.userAddress.state.stateId = 1 ");
 			}else if(stateId.longValue() == 36L){
-				//queryStr.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				queryStr.append(" and state.stateId = 36 ");
+				queryStr.append(" and model.userAddress.state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
-				queryStr.append(" and state.stateId in (1,36) ");
+				queryStr.append(" and model.userAddress.state.stateId in (1,36) ");
 			}
 		}
-		queryStr.append(" group by model.regionScopes.regionScopesId, alertStatus.alertStatusId " +
-						" order by model.regionScopes.regionScopesId, alertStatus.alertStatusId ");
+		if(alertTypeId !=null && alertTypeId>0l){
+			queryStr.append(" and model.alertTypeId = :alertTypeId ");
+		}
+		queryStr.append(" group by model.alertImpactScope.alertImpactScopeId, model.alertStatus.alertStatusId " +
+						" order by model.alertImpactScope.orderNo, model.alertStatus.alertStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		
+		if(alertTypeId !=null && alertTypeId>0l){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
 		return query.list();       
-	}
+	}  
 	
 	public List<Alert> getAlertDetailsOfNewstype(Long alertCategoryType){
 		
@@ -497,10 +507,22 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		
 		return query.executeUpdate();
 	}
-	public List<Object[]> getLocationIdList(Date fromDate, Date toDate, Long stateId, String Location){
+	public List<Object[]> getLocationIdList(Date fromDate, Date toDate, Long stateId, String Location,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.impactLevelId, model.impactLevelValue " +
-						" from Alert model "+
+		queryStr.append(" select distinct ");
+		if(Location.equalsIgnoreCase("state")){
+			queryStr.append(" state.stateId, state.stateName ");  
+		}else if(Location.equalsIgnoreCase("district")){
+			queryStr.append(" district.districtId, district.districtName ");  
+		}else if(Location.equalsIgnoreCase("constituency")){
+			queryStr.append(" constituency.constituencyId, constituency.name ");  
+		}else if(Location.equalsIgnoreCase("village")){
+			queryStr.append(" panchayat.panchayatId, panchayat.panchayatName ");  
+		}else if(Location.equalsIgnoreCase("ward")){
+			queryStr.append(" ward.wardId, ward.wardName ");  
+		}
+		queryStr.append(" ");   
+		queryStr.append(" from Alert model "+
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
 						" left join userAddress.district district  " +
@@ -524,29 +546,36 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 					queryStr.append(" and state.stateId in (1,36) ");
 					}
 				}
-
-		if(Location.equalsIgnoreCase("state")){
-			queryStr.append(" and model.impactLevelId = 2 ");  
-		}else if(Location.equalsIgnoreCase("district")){
-			queryStr.append(" and model.impactLevelId = 3 ");
-		}else if(Location.equalsIgnoreCase("constituency")){
-			queryStr.append(" and model.impactLevelId = 4 ");
-		}else if(Location.equalsIgnoreCase("village")){
-			queryStr.append(" and model.impactLevelId in (6,8) ");
-		}
-		
+				
+				if(alertTypeId !=null && alertTypeId>0l){
+					queryStr.append(" and model.alertTypeId = :alertTypeId ");
+				}
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		return query.list();  
+		if(alertTypeId !=null && alertTypeId>0l){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
+		return query.list();    
 	}
-	public List<Object[]> getAlertCountGrpBylocationIdAndStatusIdAndCategoryId(Date fromDate, Date toDate, Long stateId, List<Long> locaionIds, String Location){
+	public List<Object[]> getAlertCountGrpBylocationIdAndStatusIdAndCategoryId(Date fromDate, Date toDate, Long stateId, List<Long> locaionIds, String Location,Long alertTypeId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select " +
-						" model.impactLevelValue, " +//0
-						" alertStatus.alertStatusId, " +//1
+		queryStr.append(" select ");
+		if(Location.equalsIgnoreCase("state")){
+			queryStr.append(" state.stateId, " ); //0 
+		}else if(Location.equalsIgnoreCase("district")){
+			queryStr.append(" district.districtId, ");  //0
+		}else if(Location.equalsIgnoreCase("constituency" )){
+			queryStr.append(" constituency.constituencyId, ");  //0
+		}else if(Location.equalsIgnoreCase("village")){
+			queryStr.append(" panchayat.panchayatId, ");  //0  
+		}else if(Location.equalsIgnoreCase("ward")){
+			queryStr.append(" ward.wardId, ward.wardName ");  
+		}
+		
+		queryStr.append(" alertStatus.alertStatusId, " +//1
 						" alertStatus.alertStatus, " +//2
 						" alertCategory.alertCategoryId, " +//3
 						" alertCategory.category, " +//4
@@ -579,31 +608,202 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				queryStr.append(" and state.stateId in (1,36) ");
 			}
 		}
-		
+		if(alertTypeId !=null && alertTypeId > 0l){
+			queryStr.append(" and model.alertTypeId = :alertTypeId ");
+		}
 		if(Location.equalsIgnoreCase("state")){
-			queryStr.append(" and model.impactLevelId = 2 ");  
+			queryStr.append(" group by state.stateId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+					" order by state.stateId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
 		}else if(Location.equalsIgnoreCase("district")){
-			queryStr.append(" and model.impactLevelId = 3 ");
-		}else if(Location.equalsIgnoreCase("constituency")){
-			queryStr.append(" and model.impactLevelId = 4 ");
+			queryStr.append(" group by district.districtId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+					" order by district.districtId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
+		}else if(Location.equalsIgnoreCase("constituency" )){
+			queryStr.append(" group by constituency.constituencyId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+					" order by constituency.constituencyId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
 		}else if(Location.equalsIgnoreCase("village")){
-			queryStr.append(" and model.impactLevelId in (6,8) ");  
+			queryStr.append(" group by panchayat.panchayatId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+					" order by panchayat.panchayatId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
+		}else if(Location.equalsIgnoreCase("ward")){
+			queryStr.append(" group by ward.wardId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId " +
+					" order by ward.wardId, model.alertStatus.alertStatusId, model.alertCategory.alertCategoryId ");
 		}
 		
-		if(locaionIds != null){
-			queryStr.append(" and model.impactLevelValue in (:locaionIds) ");  
-		}
-		queryStr.append(" group by model.impactLevelValue, alertStatus.alertStatusId, alertCategory.alertCategoryId " +
-						" order by model.impactLevelValue, alertStatus.alertStatusId, alertCategory.alertCategoryId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);  
 		}
-		if(locaionIds != null){  
-			query.setParameterList("locaionIds", locaionIds);  
+		if(alertTypeId !=null && alertTypeId>0l){
+			query.setParameter("alertTypeId", alertTypeId);
 		}
 		return query.list();  
+	}
+	public List<Object[]> getTotalAlertGroupByLocation(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		if(userAccessLevelId.longValue() == 2L){
+			queryStr.append(" state.stateId, " +//0
+					" state.stateName, ");//1
+		}else if(userAccessLevelId.longValue() == 3L){
+			queryStr.append(" district.districtId, " +//0
+					" district.districtName, ");//1
+		}else if(userAccessLevelId.longValue() == 5L){
+			queryStr.append(" constituency.constituencyId, " +//0
+							" constituency.name, ");//1
+		}
+		
+		if(step.equalsIgnoreCase("two")){
+			queryStr.append(" model.alertCategory.alertCategoryId," +//2
+							" model.alertCategory.category,");//3
+		}
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " + 
+						" where model.isDeleted ='N'  ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
+		}
+		
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
+		
+		if(step.equalsIgnoreCase("one")){
+			if(userAccessLevelId.longValue() == 2L){
+				queryStr.append(" group by state.stateId order by state.stateId ");
+			}else if(userAccessLevelId.longValue() == 3L){
+				queryStr.append(" group by district.districtId order by district.districtId ");
+			}else if(userAccessLevelId.longValue() == 5L){
+				queryStr.append(" group by constituency.constituencyId order by constituency.constituencyId ");
+			}
+		}else{
+			if(userAccessLevelId.longValue() == 2L){
+				queryStr.append(" group by state.stateId, model.alertCategory.alertCategoryId order by state.stateId, model.alertCategory.alertCategoryId ");
+			}else if(userAccessLevelId.longValue() == 3L){
+				queryStr.append(" group by district.districtId, model.alertCategory.alertCategoryId order by district.districtId, model.alertCategory.alertCategoryId ");
+			}else if(userAccessLevelId.longValue() == 5L){
+				queryStr.append(" group by constituency.constituencyId, model.alertCategory.alertCategoryId order by constituency.constituencyId, model.alertCategory.alertCategoryId ");
+			}      
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);
+		}
+		return query.list();   
+	}  
+	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		if(userAccessLevelId.longValue() == 2L){
+			queryStr.append(" state.stateId, " +//0
+					" state.stateName, ");//1
+		}else if(userAccessLevelId.longValue() == 3L){
+			queryStr.append(" district.districtId, " +//0
+					" district.districtName, ");//1
+		}else if(userAccessLevelId.longValue() == 5L){
+			queryStr.append(" constituency.constituencyId, " +//0
+							" constituency.name, ");//1
+		}
+		if(step.equalsIgnoreCase("two")){
+			queryStr.append(" model.alertStatus.alertStatusId," +//2
+							" model.alertStatus.alertStatus,");//3
+		}
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat  " +
+						" left join userAddress.ward ward  " + 
+						" where model.isDeleted ='N'  ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
+		}
+		
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
+		if(step.equalsIgnoreCase("one")){
+			if(userAccessLevelId.longValue() == 2L){
+				queryStr.append(" group by state.stateId order by state.stateId ");
+			}else if(userAccessLevelId.longValue() == 3L){
+				queryStr.append(" group by district.districtId order by district.districtId ");
+			}else if(userAccessLevelId.longValue() == 5L){
+				queryStr.append(" group by constituency.constituencyId order by constituency.constituencyId ");
+			}
+		}else{
+			if(userAccessLevelId.longValue() == 2L){
+				queryStr.append(" group by state.stateId, model.alertStatus.alertStatusId order by state.stateId, model.alertStatus.alertStatusId ");
+			}else if(userAccessLevelId.longValue() == 3L){
+				queryStr.append(" group by district.districtId, model.alertStatus.alertStatusId order by district.districtId, model.alertStatus.alertStatusId ");
+			}else if(userAccessLevelId.longValue() == 5L){
+				queryStr.append(" group by constituency.constituencyId, model.alertStatus.alertStatusId order by constituency.constituencyId, model.alertStatus.alertStatusId ");
+			}      
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}    
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+		if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);  
+		}
+		return query.list(); 
 	}
 	
 	public List<Object[]> getOverAllAlertDetailsForCoreDashBoard(Date startDate,Date endDate,Long locationLevelId,List<Long> levelValues,
