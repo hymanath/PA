@@ -3488,7 +3488,8 @@
 	<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
 	<property name="panchayatDAO" ref="panchayatDAO"></property>
 	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
-	
+	<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
+	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
 	</bean>
 	<!-- Debate End -->
 	
