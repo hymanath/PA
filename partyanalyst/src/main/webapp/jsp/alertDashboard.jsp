@@ -46,7 +46,7 @@
         	<div class="panel panel-default">
            		<div class="panel-heading bg_cc">
 					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="col-md-5 col-xs-12 col-sm-6">    
 							<h4 class="panel-title text-capital">alert dashboard</h4>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
@@ -54,10 +54,10 @@
 								<input type="text" class="form-control" id="dateRangePickerId"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
+								</span>     
 							</div>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-2 col-xs-12 col-sm-3">
 							<ul class="menuSelection">
 								<li attr_state_Id="0" class="stateCls">ALL</li>
 								<li attr_state_Id="1" class="stateCls active">AP</li>
@@ -72,6 +72,14 @@
 							  </ul>
 							</div>-->
 						</div>
+						<div class="col-md-2 col-xs-12 col-sm-3">
+								<select class="form-control" id="alertTypeId">
+									<option value="0">All</option>
+									<option value="1" selected="selected">Party</option>            
+									<option value="2">Govt</option>
+									<option value="3">Others</option>
+								</select>
+							</div>
 					</div>  
                 </div> 
 						
@@ -246,13 +254,13 @@
 					<div class="alertheadingcolor">
 						<div class="row">
 							<div class="col-md-3 col-xs-12 col-sm-3">
-								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
-								<select class="form-control" id="alertTypeId">
+								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Category</label>
+								<select class="form-control" id="alertCategoryId">           
 									<option value="0" selected="selected">All</option>
-									<option value="1">Party</option>
-									<option value="2">Govt</option>
-									<option value="3">Others</option>
-								</select>
+									<option value="1">Manual</option>
+									<option value="2">Print Media</option>
+									<option value="3">Electronic Media</option>  
+								</select>  
 							</div>
 							<div class="col-md-3 col-xs-12 col-sm-3">
 								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
@@ -590,6 +598,17 @@ function getAlertAssignedCandidate()
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 		
 	});
+	$(document).on("change","#alertTypeId",function(){      
+		$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
+		$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
+		$("#locWiseAltCntId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />');
+
+		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
+		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
+		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+	});
 	
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
 	$("#alertCatTabId").html('<img style="margin-left:510px;width:30px;height:30px;" src="images/search.gif" />');  
@@ -600,10 +619,13 @@ function getAlertAssignedCandidate()
 	getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
 	getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
 	function getTotalAlertGroupByStatus(stateId,fromDate,toDate){
+		
+		var alertTypeId = $("#alertTypeId").val();
 		var jsObj = { 
 			stateId : stateId,     
 			fromDate : fromDate,
-			toDate : toDate            
+			toDate : toDate,
+			alertyTypeId : alertTypeId         
 		}
 		$.ajax({
 			type : 'POST',      
@@ -659,10 +681,12 @@ function getAlertAssignedCandidate()
 	}
 	
 	function getTotalAlertGroupByStatusThenCategory(stateId,fromDate,toDate){
+		var alertTypeId = $("#alertTypeId").val();
 		var jsObj = { 
 			stateId : stateId,     
 			fromDate : fromDate,
-			toDate : toDate            
+			toDate : toDate,
+			alertyTypeId : alertTypeId
 		}
 		$.ajax({
 			type : 'POST',      
@@ -710,10 +734,12 @@ function getAlertAssignedCandidate()
 	}
 	 
 	function getAlertCountGroupByLocationThenStatus(stateId,fromDate,toDate){
+		var alertTypeId = $("#alertTypeId").val();
 		var jsObj = { 
 			stateId : stateId,     
 			fromDate : fromDate,
-			toDate : toDate            
+			toDate : toDate,
+			alertyTypeId : alertTypeId
 		}
 		$.ajax({
 			type : 'POST',      
@@ -742,10 +768,10 @@ function getAlertAssignedCandidate()
 		}
 		str+='</thead>';
 		for(var i in result){
-			if(result[i].statusId==6 || result[i].statusId==8){ //6(v)+8(m)=11 for village/mandal            
-				continue;
-			}
-			str+='<tr>';
+			if(result[i].statusId==12){ //7(v)+9(m)=12 for village/mandal                     
+				continue;  
+			}            
+			str+='<tr>';   
 			if(result[i].count != null && result[i].count>0)
 				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
 			else
@@ -769,11 +795,13 @@ function getAlertAssignedCandidate()
 	}
 	
 	function getTotalAlertGroupByStatusThenCategoryLocationWise(stateId,fromDate,toDate,globalLocation){
+		var alertTypeId = $("#alertTypeId").val();
 		var jsObj = { 
 			stateId : stateId,             
 			fromDate : fromDate,
 			toDate : toDate,
-			Location : globalLocation
+			Location : globalLocation,
+			alertyTypeId : alertTypeId        
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -837,7 +865,8 @@ function getAlertAssignedCandidate()
 	
 	
 	$("#alertTypeId").chosen();
-	$("#alertStatusId").chosen();
+	$("#alertCategoryId").chosen();  
+	$("#alertStatusId").chosen();    
 	$("#stateId").chosen();
 	$("#assignedCadreId").chosen();
 	$("#referdistrictId").chosen();
@@ -847,14 +876,12 @@ function getAlertAssignedCandidate()
 	
 	$(".datatableId").dataTable();
 		$(document).on("click",".showfilterBlock",function(){
-			$(".filterBlockDiv").toggle();
-			
-		});
-		$(document).on("click",".closedropdown",function(){
-			$(".filterBlockDiv").hide();
-			
-		});
-		
+		$(".filterBlockDiv").toggle();  
+	});
+	$(document).on("click",".closedropdown",function(){
+		$(".filterBlockDiv").hide();
+	});
+	     
 </script>
 </body>
 </html>
