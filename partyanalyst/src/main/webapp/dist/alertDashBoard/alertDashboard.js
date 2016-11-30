@@ -371,6 +371,11 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 		alertTpeId=0;
 	
     GlobalAlertData = [];
+	var impactScopeId=0;
+	if(locationBlock == "locationBlock"){
+		impactScopeId=levelId;
+		levelId=0;
+	}
 		var jsObj =
 		     {
 				alertTypeId:alertTpeId,
@@ -381,6 +386,7 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 				levelValue:levelValue,
 				categoryId:categoryId,
 				assignId:assignId,
+				impactScopeId:impactScopeId,
 				task : locationBlock
 		      }
 			$.ajax({
@@ -823,6 +829,7 @@ function getAlertStatusCommentsTrackingDetails()
 			toDate = dateStr.split("-")[1];
 		}
 		var alertTpeId = $('#alertTypeId').val();	
+		var alertCategoryId = $('#alertCategoryId').val();	
 		var statusId = $('#alertStatusId').val();	
 		if(alertTpeId== null || alertTpeId.length==0)
 			alertTpeId=0;
@@ -840,6 +847,7 @@ function getAlertStatusCommentsTrackingDetails()
 				fromDate:fromDate,
 				toDate:toDate,
 				assignedCadreId:assignedCadreId,
+				categoryId:alertCategoryId,
 				task : ""
 		      }
 			$.ajax({

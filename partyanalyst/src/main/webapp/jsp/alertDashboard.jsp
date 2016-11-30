@@ -608,6 +608,16 @@ function getAlertAssignedCandidate()
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategoryLocationWise(globalStateId,currentFromDate,currentToDate,globalLocation);
+		
+		var statusId=0;
+		var levelId = 0;
+		var levelValue = 0;
+		var categoryId=0;
+		$('.stateCls').each(function(){
+			if($(this).hasClass("active"))
+				levelValue = $(this).attr("attr_state_id");
+		});	
+		getLocationLevelAlertData(levelValue,levelId,statusId,currentFromDate,currentToDate,categoryId,"totalBlock");
 	});
 	
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
@@ -773,13 +783,13 @@ function getAlertAssignedCandidate()
 			}            
 			str+='<tr>';   
 			if(result[i].count != null && result[i].count>0)
-				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
+				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="0" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
 			else
 				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><'+result[i].count+'</span></td>';
 			
 			for(var j in result[i].subList1){   
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
-					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
+					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
 				else				
 					str+='<td class="text-center">'+result[i].subList1[j].categoryCount+'</td>';
 			}

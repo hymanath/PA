@@ -71,8 +71,14 @@ function buildAlertData(result)
 	
 	for(var i in result)
 	{
+		var severityTdId=result[i].categoryId;
 			$("#typeId").html(''+result[i].alertType+'');
 			$("#severityId").html(''+result[i].severity+'');
+			if(severityTdId ==1){
+				$("#severityTdId").show();
+			}else{
+				$("#severityTdId").hide();
+			}
 			$(".severityIdColorCls").addClass(''+result[i].severity+'');
 			$("#createdDate").html(''+result[i].date+'');
 			$("#levelId").html(''+result[i].regionScope+'');
@@ -401,7 +407,3 @@ function getAlertAssignedCandidate(alertId)
 }
 
 $("#assignedCadreId").chosen();
-
-
-
-
