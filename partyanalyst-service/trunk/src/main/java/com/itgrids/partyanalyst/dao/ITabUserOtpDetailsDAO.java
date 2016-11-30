@@ -12,4 +12,5 @@ public interface ITabUserOtpDetailsDAO extends GenericDao<TabUserOtpDetails, Lon
 	public Long checkOTPDetails(String mobileNo,String otpNo,Date currentTime);
 	public TabUserOtpDetails checkValidOTPIsExists(Long tabUserInfoId,Long cadreSurveyUserId,String mobileNo,Date currentTime);
 	public List<Object[]> isExistOTPDetails(String mobileNo,Date currentTime);
+	public Integer  getAllOtpsForSameMobile(String mobileNo);
 }

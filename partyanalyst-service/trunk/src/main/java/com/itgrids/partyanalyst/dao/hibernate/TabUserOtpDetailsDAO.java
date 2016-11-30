@@ -77,4 +77,14 @@ public class TabUserOtpDetailsDAO extends GenericDaoHibernate<TabUserOtpDetails,
 		
 		return (TabUserOtpDetails) query.uniqueResult();
 	}
+	
+	public Integer  getAllOtpsForSameMobile(String mobileNo)
+	{
+		Query query=getSession().createSQLQuery("update tab_user_otp_details model "
+				+ "set model.is_valid = 'N'"
+				+ " where model.mobile_no = :mobileNo ");
+		query.setParameter("mobileNo", mobileNo);
+		return query.executeUpdate();
+		
+	}
 }
