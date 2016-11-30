@@ -3434,6 +3434,8 @@
 	<bean id="alertCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />  
 	</bean>
-	
+	<bean id="alertImpactScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertImpactScopeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />  
+	</bean>
 	
 </beans>		
