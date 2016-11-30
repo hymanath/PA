@@ -1129,7 +1129,7 @@ function buildapptmemberDetails(result){
 				str+='<td style="padding:0px !important;">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<ul class="createAppointmentSearch">';
-						str+='<li>';
+						str+='<li class="searhMemberCls'+result[i].id+'">';
 							str+='<div class="row">'; 
 								
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1248,6 +1248,14 @@ function buildapptmemberDetails(result){
 		}
 		
 		$("#apptmemberDetailsDiv").html(str);
+		/* Make Selected People next time who has already selected for referral in first search */
+		if(globalSelectedMemberIdsArr != null && globalSelectedMemberIdsArr.length > 0){
+			for(var i=0;i<globalSelectedMemberIdsArr.length;i++){
+				$(".close"+globalSelectedMemberIdsArr[i]).prop("checked",true);
+				$(".searhMemberCls"+globalSelectedMemberIdsArr[i]).css("background-color", "lightgrey"); 
+			}	
+		}
+		
 		$('[data-toggle="tooltip"]').tooltip()
 		$('.check').tooltip()
 		$('#searchedMembersId').DataTable({
