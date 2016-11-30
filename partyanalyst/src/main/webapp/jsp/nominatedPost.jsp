@@ -1308,10 +1308,10 @@ function getFilterDistrictsForStates(state){
 $(document).on("change","#filterDistrictId",function(){
 	var districtId = $(this).val();
 	var stateId = $("#filterStateId").val();
-	getConstituenciesForDistricts(districtId,stateId);
+	getConstituenciesForDistrictsOfAddChnge(districtId,stateId);
 });
 
-function getConstituenciesForDistricts(district,stateId){
+function getConstituenciesForDistrictsOfAddChnge(district,stateId){
 	var jsObj={				
 		districtId:district
 	}

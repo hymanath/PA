@@ -1449,6 +1449,14 @@ $(document).on("click",".boardHrfCls",function(){
 	function showSbmitStatus(result){
 		if(result.indexOf("SUCCESS") > -1){
 			saveFlag =true;
+			$('#goStatusSelId').val(0).trigger("chosen:updated");
+			$("#goNameId").val('');
+			$("#goCodeId").val('');
+			$(".dateR").daterangepicker({
+					opens:'left'
+				});
+			$("#goRemarksTextAreaId").val('');
+			$(".jFiler-item").empty();
 			if (confirm('G.O Details Updated Successfully...')) {
 				$("#goAssignPopup").modal("hide");				
 			}
@@ -1477,11 +1485,11 @@ $(document).on("click",".boardHrfCls",function(){
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>G.O Name</label>';
-				strglob+='<input type="text" name="govtOrderVO.goName" class="form-control"/>';
+				strglob+='<input type="text" name="govtOrderVO.goName" class="form-control" id="goNameId"/>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>G.O Code</label>';
-				strglob+='<input type="text" name="govtOrderVO.goCode" class="form-control"/>';
+				strglob+='<input type="text" name="govtOrderVO.goCode" class="form-control" id="goCodeId"/>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>Positions Duration</label>';
@@ -1489,7 +1497,7 @@ $(document).on("click",".boardHrfCls",function(){
 			strglob+='</div>';
 			strglob+='<div class="col-md-12 col-xs-12 col-sm-6">';
 				strglob+='<label>Comments</label>';
-				strglob+='<textarea id="goRemarksTextId" class="form-control" name="govtOrderVO.remarks" name="comment" placeholder="Enter Comments Here..."></textarea>';
+				strglob+='<textarea id="goRemarksTextAreaId" class="form-control" name="govtOrderVO.remarks" name="comment" placeholder="Enter Comments Here..."></textarea>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-12 col-xs-12 col-sm-6">';
 				strglob+='<label>Upload G.O</label>';
