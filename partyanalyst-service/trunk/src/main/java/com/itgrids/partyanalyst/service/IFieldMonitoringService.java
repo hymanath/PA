@@ -59,4 +59,6 @@ public interface IFieldMonitoringService {
 	public List<DataMonitoringVerificationVO> getLocationWiseOverViewDetails(String fromDateStr,String toDateStr,String locationType,Long locationVal);
 	public FieldMonitoringVO getVerificationCountList(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr);
 	public List<FieldMonitoringVO> getVerfiedCadreSurveyUserDetails(Long stateId,Long districtId,Long constituencyId,Long cadreSurveyUserId, String fromDateStr,String toDateStr);
+	public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCountsNew(String type,Long stateId);
+	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCountsNew(String type,Long stateId);
 }

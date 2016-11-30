@@ -2945,6 +2945,60 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
     	return returnvo;
     }
 	
+	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCountsNew(String type,Long stateId){
+		// Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = tdpCadreLocationInfoDAO.getConstituencyWiseTodayAndOverAllCounts(type, stateId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					returnList.add(vo);
+				}
+			}
+			/*List<Object[]> cnstincyTrgetList = tdpCadreTargetCountDAO.getConstitencysTargetCountForTodayAndOverAll(stateId);
+			if(cnstincyTrgetList != null && !cnstincyTrgetList.isEmpty()){
+				for (Object[] obj : cnstincyTrgetList) {
+					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					targetMap.put(locaId, count);
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setInviteeCount(targetMap.get(vo.getId()));//TargetCoount
+					
+				}
+			}
+			if(type.trim().equalsIgnoreCase("Today")){
+				if(returnList != null && !returnList.isEmpty()){
+					for (IdAndNameVO vo : returnList) {
+						vo.setInviteeCount(vo.getInviteeCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);//TargetCoount
+						
+					}
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setPer2016(Double.valueOf(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}
+			}
+			
+			if(sortType != null && sortType.equalsIgnoreCase("percentage")){
+				if(returnList != null && !returnList.isEmpty()){
+					 Collections.sort(returnList, registrationsPercCountAsc);
+				}
+			}
+			*/
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getConstituencyWiseTodayAndOverAllCountsNew() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
+	
 	public List<IdAndNameVO> getConstituencyWiseTodayAndOverAllCounts(String type,Long stateId,String sortType){
 		 Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
@@ -3094,6 +3148,62 @@ public static Comparator<FieldMonitoringVO> tabUserInfoTotalRegisCountAsc = new 
   }
 	return returnList;  
 }
+  
+  public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCountsNew(String type,Long stateId){
+	  //Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();
+		try {
+			List<Object[]> list = tdpCadreLocationInfoDAO.getDistrictWiseTodayAndOverAllCounts(type, stateId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setAttenteeCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					returnList.add(vo);
+				}
+			}
+			
+			/*List<Object[]> dstrictTrgetList = tdpCadreTargetCountDAO.getDistrictsTargetCountForTodayAndOverAll(stateId);
+			if(dstrictTrgetList != null && !dstrictTrgetList.isEmpty()){
+				for (Object[] obj : dstrictTrgetList) {
+					Long locaId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					targetMap.put(locaId, count);
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setInviteeCount(targetMap.get(vo.getId()));//TargetCoount
+					
+				}
+			}
+			if(type.trim().equalsIgnoreCase("Today")){
+				if(returnList != null && !returnList.isEmpty()){
+					for (IdAndNameVO vo : returnList) {
+						vo.setInviteeCount(vo.getInviteeCount()/IConstants.CADRE_REGISTRATION_2016_DAYS);//TargetCoount
+						
+					}
+				}
+			}
+			if(returnList != null && !returnList.isEmpty()){
+				for (IdAndNameVO vo : returnList) {
+					vo.setPer2016(Double.valueOf(new BigDecimal(vo.getAttenteeCount()*(100.0)/vo.getInviteeCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}
+			}
+			
+			if(sortType != null && sortType.equalsIgnoreCase("percentage")){
+				if(returnList != null && !returnList.isEmpty()){
+					 Collections.sort(returnList, registrationsPercCountAsc);
+				}
+			}*/
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getDistrictWiseTodayAndOverAllCountsNew() of FieldMonitoringService", e);
+		}
+		return returnList;
+	}
+  
   public List<IdAndNameVO> getDistrictWiseTodayAndOverAllCounts(String type,Long stateId,String sortType){
 	  Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>();

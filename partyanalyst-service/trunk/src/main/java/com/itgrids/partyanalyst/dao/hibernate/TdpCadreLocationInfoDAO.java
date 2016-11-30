@@ -980,7 +980,7 @@ public List<Object[]> getTodayLocalElectionBodyStartedDtlsStateWise(Long stateId
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("type", type);
 		query.setFirstResult(0);
-		query.setMaxResults(20);
+		query.setMaxResults(5);
 		return query.list();
 	}
 	public List<Object[]> get2014CadreDistWise(List<Long> constituencyIds,String districtName){
