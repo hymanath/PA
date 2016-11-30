@@ -17,8 +17,11 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long count=0l;
 	
 	private Double countPerc=0.0;
+	private Long categoryId;
+	private String category;
 	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
+	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
 	private Set<Long> setList = new HashSet<Long>(0);
 
 	public Long getId() {
@@ -91,6 +94,30 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setSetList(Set<Long> setList) {
 		this.setList = setList;
+	}
+
+	public List<AlertCoreDashBoardVO> getSubList1() {
+		return subList1;
+	}
+
+	public void setSubList1(List<AlertCoreDashBoardVO> subList1) {
+		this.subList1 = subList1;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	
