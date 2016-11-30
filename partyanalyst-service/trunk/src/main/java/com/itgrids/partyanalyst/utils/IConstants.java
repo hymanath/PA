@@ -865,7 +865,8 @@ public interface IConstants {
     public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","s" +
     		"aveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction","displayDashboardCommentsAction","savingDashboardCommentAction","deleteDashBoardcommentsAction",
     		 "coreDashboardAction1","updateTransactionTrackingDtalsAction","tdpMembershipPerformanceForAPAction.action","tdpMembershipPerformanceForTSAction.action",
-    		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action"};
+    		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action",
+    		 "tdpMembershipPerformanceAction","getConstituencyWiseTodayAndOverAllCountsNewAction","getDistrictWiseTodayAndOverAllCountsNewAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     
@@ -1053,7 +1054,8 @@ public interface IConstants {
 		 "notificationIsActiveStatusAction.action","getNotificationTypeDetailsStatsAction.action","getNotificationTypeDetailsAction.action",
 		 "saveNotificationTypeTextAction.action","saveNotificationAction.action",
 		 "genereateReportAction.action","retriveDebateDetailsAction.action","tdpMembershipPerformanceForAPAction.action","tdpMembershipPerformanceForTSAction.action",
-		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action"};
+		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action",
+		 "tdpMembershipPerformanceAction","getConstituencyWiseTodayAndOverAllCountsNewAction","getDistrictWiseTodayAndOverAllCountsNewAction"};
 	
 	public static final Long  APPOINTMENT_ACTION_STATUS_CHANGE = 1L;
 	
