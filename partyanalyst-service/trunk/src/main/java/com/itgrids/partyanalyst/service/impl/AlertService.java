@@ -614,7 +614,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
 					 alertVO.setSeverity(params[5] != null ? params[5].toString() : "");
 					 alertVO.setRegionScopeId(params[6] != null ? (Long)params[6] : null);
-					 alertVO.setRegionScope(params[7] != null ?params[7].toString() : "");
+					 alertVO.setRegionScope(params[26] != null ?params[26].toString() : "");
 					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 					 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
 					 LocationVO locationVO = new LocationVO();
@@ -631,6 +631,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationVO.setVillageId(params[12] != null ? (Long)params[12] : null);
 					 locationVO.setVillageName(params[13] != null ? params[13].toString() : "");
 					 locationVO.setLocalBodyId(params[14] != null ? (Long)params[14] : null);
+					 
+					 alertVO.setCategoryId(params[27] != null ? (Long)params[27] : null);
+					 alertVO.setCategory(params[28] != null ? params[28].toString() : "");
 					 
 					 String eleType = params[18] != null ? params[18].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");

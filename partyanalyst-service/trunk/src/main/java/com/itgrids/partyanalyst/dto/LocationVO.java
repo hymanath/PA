@@ -33,6 +33,9 @@ public class LocationVO implements Serializable {
 	private String status;
 	private Long statusId;
 	
+	private Long categoryId;
+	private String category;
+	
 	
 	public Long getStatusId() {
 		return statusId;
@@ -167,6 +170,19 @@ public class LocationVO implements Serializable {
 	public void setParliamentConstituencyId(Long parliamentConstituencyId) {
 		this.parliamentConstituencyId = parliamentConstituencyId;
 	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
 	
 	
 }
