@@ -170,6 +170,7 @@
 		<!--<pattern>/rtcUnionRegistrationAction*</pattern>-->
 		<pattern>/affiliatedCadreRegistrationAction*</pattern>	   	
 		<pattern>/tdpUserWiseReportMapAction*</pattern>
+		<pattern>/tdpMembershipPerformanceAction*</pattern>
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -718,6 +719,6 @@
 		<pattern>/cadreWebRegistrationAction*</pattern>
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 		<pattern>/cadreDemographicReportsAction*</pattern>
-		<pattern>/tdpMembershipPerformanceAction*</pattern>
+		<!--<pattern>/tdpMembershipPerformanceAction*</pattern>-->
 	</decorator> 
 </decorators>
