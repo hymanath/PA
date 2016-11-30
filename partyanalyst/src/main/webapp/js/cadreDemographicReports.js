@@ -1086,7 +1086,7 @@
 		
 		$("#CasteCategoryDistrictWiseSummaryDetails").html(str);
 		$("#excelDivGCasteCategoryDistrictWiseSummaryDetails").html(str1);
-		$(".CasteCategoryDistrictWiseDataTableId").dataTable();
+		$(".CasteCategoryDistrictWiseDataTableId").dataTable();//{"aaSorting": [ [0,'asc'], [4,'desc'] ] }
 		$(".CasteCategoryDistrictWiseDataTableId").removeClass("dataTable");
 		
 		$(document).on("click","#CasteCategoryDistrictWiseReportExcel",function(){
