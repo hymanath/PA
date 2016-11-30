@@ -1144,6 +1144,7 @@ function setDefaultImage(img){
    }
 	
 	var involvedCadreIds = [];
+	var globalSelectedMemberIdsArr = [];
    $(document).on("click",".apptDetailsDiv",function(){
 		
 		 if($(this).is(':checked')){
@@ -1200,6 +1201,7 @@ function setDefaultImage(img){
 			  /*  $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().bottom
                 }, 2000); */
+			globalSelectedMemberIdsArr.push(attrId);
 		 }else{ 
 			var attrId = $(this).attr("attr_id");
 			cloneCount = cloneCount-1;
@@ -1209,8 +1211,18 @@ function setDefaultImage(img){
 				}
 			$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 			$("#involveBlockParent"+attrId).remove();
+			
+			removeParticularValue(globalSelectedMemberIdsArr,attrId);
 		 }
    });
+   
+    function removeParticularValue(arr, item) {
+	      for(var i = arr.length; i--;) {
+	          if(arr[i] === item) {
+	              arr.splice(i, 1);
+	          }
+	      }
+	  }
    
     $(document).on("click",".closeIcon",function(){
 	//var id=$(this).attr("id");
@@ -1228,6 +1240,7 @@ function setDefaultImage(img){
 				  $(".candidatecls"+id).prop('checked', false); 
 				  $(".close"+id).prop('checked', false); 
 				  involvedCadreIds.pop(id);	
+				  removeParticularValue(globalSelectedMemberIdsArr,id);
 				  $("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 				return true;
                }
