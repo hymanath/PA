@@ -3253,12 +3253,12 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   	    			for (Map.Entry<Long, CadreCountsVO> subEntry : mainVO.getSubMap().entrySet()){
   	    				CadreCountsVO subVO = subEntry.getValue();
   	    				
-  	    				if(mainVO.getName().equalsIgnoreCase("Minority")){
+  	    				/*if(mainVO.getName().equalsIgnoreCase("Minority")){
   	    					if(mainVO.getSubMap1() == null){
   	    						mainVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
   	    					}
   	    					mainVO.getSubMap1().put(subEntry.getKey(), subEntry.getValue());
-  	    				}else{
+  	    				}else{*/
   	    					if(subVO.getPreviousCadrePercent() != null && subVO.getPreviousCadrePercent() > 1){
   	  	    					
   	  	    					if(mainVO.getSubMap1() == null){
@@ -3275,7 +3275,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   	  	    					othersVO.setNewCadre(othersVO.getNewCadre() + subVO.getNewCadre());
   	  	    					othersVO.setRenewalCadre(othersVO.getRenewalCadre() + subVO.getRenewalCadre());
   	  	    				}
-  	    				}
+  	    				/*}*/
   	    			}
   	    			mainVO.getSubMap().clear();
   	    			calculateCastePercantages(othersVO , previousCadreTotalcount , cadreTotalcount );
@@ -3314,7 +3314,6 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 				
 				if(previousCadreTotalCount != null && previousCadreTotalCount > 0l){
 					subVO.setPreviousCadrePercent(calcPercantage( subVO.getPreviousCadreCount() , previousCadreTotalCount ));
-					subVO.setPreviousCadreRenewalPercent(calcPercantage( subVO.getRenewalCadre() ,previousCadreTotalCount ));
 				}
 				
 				if(cadreTotalCount != null && cadreTotalCount > 0l){
@@ -3325,6 +3324,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 					subVO.setNewCadrePercent( calcPercantage( subVO.getNewCadre() , subVO.getCadreCount() ));
 					subVO.setRenewalCadrePercent( calcPercantage( subVO.getRenewalCadre() , subVO.getCadreCount() ));
 				}
+				if(subVO.getPreviousCadreCount() != null && subVO.getPreviousCadreCount() > 0l){
+					subVO.setPreviousCadreRenewalPercent(calcPercantage( subVO.getRenewalCadre() , subVO.getPreviousCadreCount() ));
+				}
+				
 			}
 		   
 	   }catch(Exception e) {
@@ -3541,7 +3544,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	   
 	   try{
 		     Map<Long,CadreCountsVO> locationMap = new LinkedHashMap<Long, CadreCountsVO>(0);
-		     
+		   
 		     List<Object[]> data =  tdpCadreCasteStateInfoDAO.constituencyWiseTdpCadreCasteCounts(stateId ,districtId);
 		     if(data != null && data.size() > 0){
 		    	 for(Object[] obj : data){
