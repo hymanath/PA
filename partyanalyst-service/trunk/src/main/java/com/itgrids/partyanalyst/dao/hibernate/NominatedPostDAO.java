@@ -1605,12 +1605,13 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	                 " model.nominationPostCandidate.address.constituency.name," +
 	                 " tc.tdpCadreId  "+
 	   		         " from NominatedPostFinal model " +
-			         " left outer join model.nominationPostCandidate.tdpCadre tc");
+			         " left outer join model.nominationPostCandidate.tdpCadre tc ");
 			        
 	   
 	          if(stateId != null && stateId.longValue() > 0){
-	       		sb.append(" where model.nominationPostCandidate.address.state.stateId=:stateId");
+	       		sb.append(" where model.nominatedPostMember.address.state.stateId=:stateId");
    		      }
+	         // sb.append(" and tc.enrollmentYear = 2014 and tc.isDeleted = 'N' " );  
 	          if(postStatusIds != null && !postStatusIds.isEmpty()){
 	        	  sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
 	          }
