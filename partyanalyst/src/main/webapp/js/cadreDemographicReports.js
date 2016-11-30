@@ -25,9 +25,9 @@
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
 						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">overall age wise AP report</h3>';
+							str+='<h3 class="panel-title text-capital">ap state - age wise summary </h3>';
 						}else{
-							  str+='<h3 class="panel-title text-capital">overall age wise TS report</h3>';
+							  str+='<h3 class="panel-title text-capital">ts state - age wise summary </h3>';
 						}
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
@@ -168,7 +168,9 @@
 	});
 	
 	function generateExcelReportForOverAllAgeWise(){
-		tableToExcel(overaAllAgeWiseTableExcelDivId, 'OVERALL AGE WISE REPORT');        
+		var stateName= getState();
+		var reportName = stateName +" STATE - AGE WISE SUMMARY  ";      
+		tableToExcel(overaAllAgeWiseTableExcelDivId, reportName);   
 	}
 	
 	//Over All Age Report End
@@ -205,11 +207,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">district age wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">district age wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital">'+getState()+' state - district wise age report</h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="districtWiseExcelReport" >Export To Excel</button></h4>';
@@ -325,12 +324,9 @@
 	}
 	
 	$(document).on("click","#districtWiseExcelReport",function(){
-		generateExcelReportDistrictWiseAgeReport();	
+		tableToExcel(districtWiseTableExcelDivId, getState() + " STATE - DISTRICT WISE AGE REPORT");  
 	});
 	
-	function generateExcelReportDistrictWiseAgeReport(){
-		tableToExcel(districtWiseTableExcelDivId, 'DISTRICT AGE WISE REPORT');        
-	}
 	//District Wise Age Report End
 	
 	
@@ -366,11 +362,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">constituency age wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">constituency age wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital">'+getState()+' state - constituency wise age report</h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="constituencyWiseExcelReport" >Export To Excel</button></h4>';
@@ -484,12 +477,9 @@
 	}
 	
 	$(document).on("click","#constituencyWiseExcelReport",function(){
-		generateExcelReportConstituencyWiseAgeReport();	
+		tableToExcel(constituencyWiseTableExcelDivId, getState() + " STATE - CONSTITUENCY WISE AGE REPORT"); 
 	});
 	
-	function generateExcelReportConstituencyWiseAgeReport(){
-		tableToExcel(constituencyWiseTableExcelDivId, 'CONSTITUENCY AGE WISE REPORT'); 
-	}
 	//Constituency Wise Age Report End
 	
 	//caste wise overAll reports start
@@ -519,11 +509,7 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">overall caste Category Wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">overall caste Category Wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital"> '+getState()+' STATE - CASTE CATEGORY WISE SUMMARY </h3>';
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="overAllcasteWiseReportExcel" >Export To Excel</button></h4>';
@@ -658,12 +644,8 @@
 		$("#overAllCasteWiseSummaryDetails").html(str);
 	}
 	$(document).on("click","#overAllcasteWiseReportExcel",function(){
-		generateExcelReportForOverAllCasteWise();	
+		tableToExcel(overaAllCasteWiseTableExcelDivId, getState()+' STATE - CASTE CATEGORY WISE SUMMARY');       
 	});
-	
-	function generateExcelReportForOverAllCasteWise(){
-		tableToExcel(overaAllCasteWiseTableExcelDivId, 'OVERALL CASTE WISE REPORT');        
-	}
 	
 	//caste wise overAll reports End
 	
@@ -694,11 +676,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">Caste Category State Wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">Caste Category State Wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital">'+getState()+' state - caste wise report </h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="CasteCategoryStateWiseReportExcel" >Export To Excel</button></h4>';
@@ -784,7 +763,7 @@
 						str+='</tbody>';
 						str+='</table>';
 						
-						str1+='<table class="table table-bordered table-condensed" id="CasteCategoryStateWiseTableExcelDivId">';
+						str1+='<table class="table table-bordered table-condensed" id="casteCategoryStateWiseTableExcelDivId">';
 						str1+='<thead>';
 							str1+='<tr>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Group</th></b>';
@@ -872,17 +851,13 @@
 		}
 		
 		$("#CasteCategoryStateWiseSummaryDetails").html(str);
+		$("#excelReportCastCategoryStateWiseDetails").html(str1);
 		$(".CasteCategoryStateWiseDataTableId").dataTable();
 		$(".CasteCategoryStateWiseDataTableId").removeClass("dataTable");
 		
 		$(document).on("click","#CasteCategoryStateWiseReportExcel",function(){
-		generateExcelReportForCasteCategoryStateWise();	
+		   tableToExcel(casteCategoryStateWiseTableExcelDivId, getState() + 'STATE - CASTE WISE REPORT');      
 		});
-	
-		function generateExcelReportForCasteCategoryStateWise(){
-			tableToExcel(CasteCategoryStateWiseTableExcelDivId, 'Caste Category State  Wise Report');        
-		}
-		
 	}
 	//caste Category state wise  reports End
 	
@@ -915,11 +890,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">Caste Category District Wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">Caste Category District Wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital">'+getState()+' STATE - DISTRICT WISE CASTE REPORT</h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="CasteCategoryDistrictWiseReportExcel" >Export To Excel</button></h4>';
@@ -1118,12 +1090,8 @@
 		$(".CasteCategoryDistrictWiseDataTableId").removeClass("dataTable");
 		
 		$(document).on("click","#CasteCategoryDistrictWiseReportExcel",function(){
-		generateExcelReportForCasteCategoryDistrictWise();	
+		  tableToExcel(CasteCategoryDistrictWiseTableExcelDivId, getState() +'STATE - DISTRICT WISE CASTE REPORT'); 
 		});
-	
-		function generateExcelReportForCasteCategoryDistrictWise(){
-			tableToExcel(CasteCategoryDistrictWiseTableExcelDivId, 'Caste Category State  Wise Report');        
-		}
 		
 	}
 	//caste Category District wise  reports End
@@ -1157,11 +1125,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">Caste Category Constituency Wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">Caste Category Constituency Wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital">'+getState()+' STATE - CONSTITUENCY WISE CASTE REPORT</h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="CasteCategoryConstituencyWiseReportExcel" >Export To Excel</button></h4>';
@@ -1356,12 +1321,8 @@
 		$(".CasteCategoryConstituencyWiseDataTableId").removeClass("dataTable");
 		
 		$(document).on("click","#CasteCategoryConstituencyWiseReportExcel",function(){
-		generateExcelReportForCasteCategoryConstituencyWise();	
+			tableToExcel(CasteCategoryConstituencyWiseTableExcelDivId, getState() +' STATE - CONSTITUENCY WISE CASTE REPORT');   
 		});
-	
-		function generateExcelReportForCasteCategoryConstituencyWise(){
-			tableToExcel(CasteCategoryConstituencyWiseTableExcelDivId, 'Caste Category State  Wise Report');        
-		}
 		
 	}
 	//caste Category Constituency wise  reports End
@@ -1392,11 +1353,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">overall gender wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">overall gender wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital">'+getState()+' STATE - GENDER WISE REPORT</h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="overAllGenderWiseExcelId" >Export To Excel</button></h4>';
@@ -1475,12 +1433,8 @@
 		
 	}
 	$(document).on("click","#overAllGenderWiseExcelId",function(){
-		generateExcelReportForOverAllGenderWise();	
+		tableToExcel(overAllGenderWiseTableToExcel, getState() + ' STATE - GENDER WISE REPORT');  
 	});
-	
-	function generateExcelReportForOverAllGenderWise(){
-		tableToExcel(overAllGenderWiseTableToExcel, 'OVERALL GENDER WISE REPORT');        
-	}
 	//Gender Wise OverAll Reports End
 	
 	//Gender Wise District Reports Start
@@ -1514,11 +1468,8 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">district gender wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">district gender wise TS report</h3>';
-						}
+					str+='<h3 class="panel-title text-capital"> '+getState()+' STATE - DISRTICT WISE GENDER REPORT </h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="districtGenderWiseExcelId" >Export To Excel</button></h4>';
@@ -1526,7 +1477,7 @@
 				  str+='</div>';
 				  str+='</div>';
 				  str+='<div class="panel-body">';
-				  str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note: M - Male & F - Female</label>';
+				  str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note:R - Renewal & N-New Cadre & M - Male & F - Female</label>';
 					str+='<div class="table-responsive m_top20">';
 					str+='<table class="table table-bordered tableHeaderStyle table-condensed " id="districtGenderWiseTableToExcel">';
 						str+='<thead>';
@@ -1545,13 +1496,13 @@
 								str+='<th class="text-capital " ><b >Total</b></th>';
 								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str+='<th class="text-capital " ><b >Renewal</th></b>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp;</br>(From 2014)</b></th>';
-								str+='<th class="text-capital " ><b >Renewal&nbsp;%&nbsp;</br>(From 2016)</b></th>';
+								str+='<th class="text-capital " ><b >R</th></b>';
+								str+='<th class="text-capital " ><b >R&nbsp;%&nbsp;</br>(From 2014)</b></th>';
+								str+='<th class="text-capital " ><b >R&nbsp;%&nbsp;</br>(From 2016)</b></th>';
 								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str+='<th class="text-capital " ><b >New Cadre</b></th>';
-								str+='<th class="text-capital " ><b >New Cadre&nbsp;%</b></th>';
+								str+='<th class="text-capital " ><b >N</b></th>';
+								str+='<th class="text-capital " ><b >N&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
 								str+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
 							str+='</tr>';
@@ -1601,12 +1552,9 @@
 		$("#genderWiseDistrictDetails").html(str);
 	}
 	$(document).on("click","#districtGenderWiseExcelId",function(){
-		generateExcelReportForDistrictGenderWise();	
+		tableToExcel(districtGenderWiseTableToExcel, getState() +' STATE - DISRTICT WISE GENDER REPORT');    
 	});
 	
-	function generateExcelReportForDistrictGenderWise(){
-		tableToExcel(districtGenderWiseTableToExcel, 'DISTRICT GENDER WISE REPORT');        
-	}
 	//Gender Wise District Reports End
 	
 	
@@ -1642,11 +1590,9 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-						if(stateId == 1){
-							str+='<h3 class="panel-title text-capital">constituency gender wise AP report</h3>';
-						}else{
-							  str+='<h3 class="panel-title text-capital">constituency gender wise TS report</h3>';
-						}
+					
+					str+='<h3 class="panel-title text-capital"> '+getState()+' STATE - CONSTITUENCY WISE GENDER REPORT </h3>';
+						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="constituencyGenderWiseExcelId" >Export To Excel</button></h4>';
@@ -1800,11 +1746,8 @@
 		$('.constituencyWiseGenderDataTableId').removeClass("dataTable")
 	}
 	$(document).on("click","#constituencyGenderWiseExcelId",function(){
-		generateExcelReportForConstituencyGenderWise();	
+		tableToExcel(constituencyGenderWiseTableToExcel, getState() + 'STATE - CONSTITUENCY WISE GENDER REPORT ');   
 	});
 	
-	function generateExcelReportForConstituencyGenderWise(){
-		tableToExcel(constituencyGenderWiseTableToExcel, 'CONSTITUENCY GENDER WISE REPORT');        
-	}
 	//Gender Wise Constituency Reports End
 	
