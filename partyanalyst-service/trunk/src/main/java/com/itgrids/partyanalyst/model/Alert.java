@@ -54,7 +54,7 @@ public class Alert extends BaseModel implements Serializable {
 	private String title;
 	
 	private Long impactScopeId;
-
+	private AlertImpactScope alertImpactScope;
 	
 
 	@Id
@@ -318,7 +318,15 @@ public class Alert extends BaseModel implements Serializable {
 	public void setImpactScopeId(Long impactScopeId) {
 		this.impactScopeId = impactScopeId;
 	}
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "impact_scope_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertImpactScope getAlertImpactScope() {
+		return alertImpactScope;
+	}
 
+	public void setAlertImpactScope(AlertImpactScope alertImpactScope) {
+		this.alertImpactScope = alertImpactScope;
+	}
 }
