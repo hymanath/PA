@@ -111,8 +111,8 @@ h1,h2,h3,h4,h5,h6
 					<tbody>
 						<tr>
 							<td style="padding-top: 2px; padding-bottom: 2px;">
-								<h4 style="display:inline-block;">AP</h4>
-								<img style="display:inline-block;width:45px;" src="images/AP.png">
+								<h4 style="display:inline-block;padding-left: 10px;">AP</h4>
+								<img style="display:inline-block;width:45px;" class="pull-right" src="images/AP.png">
 							</td>
 							<td><div id="ap2014CountId"><h4>4716975</h4></div></td>
 							<td><div id="ap2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
@@ -121,8 +121,8 @@ h1,h2,h3,h4,h5,h6
 						</tr>
 						<tr>
 							<td style="padding-top: 2px; padding-bottom: 2px;">
-								<h4 style="display:inline-block;">TS</h4>
-								<img style="display:inline-block;width:45px;" src="images/TS.png">
+								<h4 style="display:inline-block;padding-left: 10px;">TS</h4>
+								<img style="display:inline-block;width:45px;" class="pull-right" src="images/TS.png">
 							</td>
 							<td><div id="ts2014CountId"><h4>794427</h4></div></td>
 							<td><div id="ts2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
@@ -131,7 +131,7 @@ h1,h2,h3,h4,h5,h6
 						</tr>	
 						<tr>
 							<td>
-								<h4>TOTAL  <small>AP & TS</small></h4>
+								<h4 style="padding-left: 10px;">TOTAL  <small><b>AP & TS</b></small></h4>
 							</td>
 							<td><div id="total2014CountId"><h4>5511402</h4></div></td>
 							<td><div id="total2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
@@ -143,68 +143,68 @@ h1,h2,h3,h4,h5,h6
 			</div>
 		</div>
 	</div>
-	<div id="todayBlockDivId">
+	<div id="todayBlockDivId" style="display:none;">
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 2px; border-radius: 0px;">
-				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#3798DC;">Today Top 20 </span></h4>
-				<h5 style="display:inline-block;letter-spacing:-1px;" Class="text-uppercase">Constituencies in AP</h5>
+				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">Today Top 20 </span></h4>
+				<h5 style="display:inline-block;letter-spacing:-1px;color:#3798DC;" Class="text-uppercase"><b>Constituencies in AP</b></h5>
 			</div>
 			<div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;" id="todayAPConstituencies"></div>
 		</div>
 		<div class="row">
 		  <div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0">
-				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#3798DC;">Today Top 20 </span></h4>
-				<h5 style="display:inline-block;letter-spacing:-1px;" Class="text-uppercase">Constituencies in TS</h5>
+				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">Today Top 20 </span></h4>
+				<h5 style="display:inline-block;letter-spacing:-1px;color:#3798DC;" Class="text-uppercase"><b>Constituencies in TS</b></h5>
 		  </div>
 		  <div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;" id="todayTSConstituencies"></div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 2px; border-radius: 0px;">
-				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#3798DC;">Today Top 5 </span></h4>
-				<h5 style="display:inline-block;" Class="text-uppercase">Districts in AP</h5>
+				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">Today Top 5 </span></h4>
+				<h5 style="display:inline-block;color:#3798DC;" Class="text-uppercase"><b>Districts in AP</b></h5>
 			</div>
 			<div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;" id="todayAPDistricts"></div>
 		</div>
 
 		<div class="row">
 		  <div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0">
-			<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#3798DC;">Today Top 5 </span></h4>
-			<h5 style="display:inline-block;" Class="text-uppercase">Districts in AP</h5>
+			<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">Today Top 5 </span></h4>
+			<h5 style="display:inline-block;color:#3798DC;" Class="text-uppercase"><b>Districts in TS<b></h5>
 		  </div>
 		  <div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;" id="todayTSDistricts"></div>
 		</div>
 	</div>
-	<div id="totalBlockDivId" style="display:none;">
+	<div id="totalBlockDivId">
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 2px; border-radius: 0px;">
-				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#980033;">OverAll Top 20 </span></h4>
-				<h5 style="display:inline-block;letter-spacing:-1px;" Class="text-uppercase">Constituencies in AP</h5>
+				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">OverAll Top 20 </span></h4>
+				<h5 style="display:inline-block;letter-spacing:-1px;color:#980033;" Class="text-uppercase"><b>Constituencies in AP</b></h5>
 			</div>
 			<div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;" id="overAllAPConstituencies"></div>
 		</div>
 		<div class="row">
 		  <div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0">
-				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#980033;">OverAll Top 20 </span></h4>
-				<h5 style="display:inline-block;letter-spacing:-1px;" Class="text-uppercase">Constituencies in TS</h5>
+				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">OverAll Top 20 </span></h4>
+				<h5 style="display:inline-block;letter-spacing:-1px;color:#980033;" Class="text-uppercase"><b>Constituencies in TS</b></h5>
 		  </div>
 		  <div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;" id="overAllTSConstituencies"></div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 2px; border-radius: 0px;">
-				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#980033;">OverAll Top 5 </span></h4>
-				<h5 style="display:inline-block;" Class="text-uppercase">Districts in AP</h5>
+				<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">OverAll Top 5 </span></h4>
+				<h5 style="display:inline-block;color:#980033;" Class="text-uppercase"><b>Districts in AP</b></h5>
 			</div>
 			<div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;padding-bottom: 19px;" id="overAllAPDistricts"></div>
 		</div>
 
 		<div class="row">
-		  <div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0">
-			<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span style="color:#980033;">OverAll Top 5 </span></h4>
-			<h5 style="display:inline-block;" Class="text-uppercase">Districts in AP</h5>
+		  <div class="col-md-3 col-xs-12 col-sm-3 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 2px; border-radius: 0px;">
+			<h4 style="display:inline-block;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <span class="text-uppercase">OverAll Top 5 </span></h4>
+			<h5 style="display:inline-block;color:#980033;" Class="text-uppercase"><b>Districts in TS</b></h5>
 		  </div>
-		  <div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;padding-bottom: 19px;" id="overAllTSDistricts"></div>
+		  <div class="col-md-9 col-xs-12 col-sm-9 show-grid well well-small border-radius-0 mb-10" style="margin-bottom: 0px; border-radius: 0px;padding-bottom: 15px;" id="overAllTSDistricts"></div>
 		</div>
 	</div>
 </div>		
@@ -304,11 +304,6 @@ function get2016LocationWiseRegisteredCounts(type){
 	});
 }
 	
-getTodayConstituencyWiseForAP("Today",1);
-getTodayConstituencyWiseForTS("Today",36);
-getTodayDistrictForAP("Today",1);
-getTodayDistrictForTS("Today",36);
-
 function getTodayConstituencyWiseForAP(type,stateId){
 	//$("#todayapImgId").show();
 	var jObj = {
@@ -340,6 +335,7 @@ function buildingTodayAPConstituencies(result){
 	str+='</ul>';
 	$("#todayAPConstituencies").html(str);
 	$('.autoplay').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
 		autoplay: true,
@@ -384,6 +380,7 @@ function buildingTodayTSConstituencies(result){
 	str+='</ul>';
 	$("#todayTSConstituencies").html(str);
 	$('.autoplayTS').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
 		autoplay: true,
@@ -416,7 +413,7 @@ function getTodayDistrictForAP(type,stateId){
 
 function buildingTodayAPDistricts(result){
 	var str = '';
-	str+='<ul  class="list-inline" style="margin-bottom: 0px;">';
+	str+='<ul  class="list-inline todayAPDstrts" style="margin-bottom: 0px;">';
 	for(var i in result){
 		var temp = parseInt(i)+1;
 		temp = temp <=9 ? "0"+temp:temp;
@@ -427,17 +424,18 @@ function buildingTodayAPDistricts(result){
 	}
 	str+='</ul>';
 	$("#todayAPDistricts").html(str);
-	/*$('.autoplay').slick({
+	$('.todayAPDstrts').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 700,
+		autoplay: false,
+		autoplaySpeed: 2200,
 		variableWidth: true
 	});
 	$(".slick-prev").css("display","none");
 	$(".slick-next").css("display","none");
-	$(".slick-list").css("padding-bottom","6px");
-	$(".slick-list").css("padding-top","8px");*/
+	$(".slick-list").css("padding-bottom","5px");
+	$(".slick-list").css("padding-top","5px");
 }
 
 function getTodayDistrictForTS(type,stateId){
@@ -460,7 +458,7 @@ function getTodayDistrictForTS(type,stateId){
 
 function buildingTodayTSDistricts(result){
 	var str = '';
-	str+='<ul  class="list-inline" style="margin-bottom: 0px;">';
+	str+='<ul  class="list-inline tdyTSDistrcts" style="margin-bottom: 0px;">';
 	for(var i in result){
 		var temp = parseInt(i)+1;
 		temp = temp <=9 ? "0"+temp:temp;
@@ -471,27 +469,31 @@ function buildingTodayTSDistricts(result){
 	}
 	str+='</ul>';
 	$("#todayTSDistricts").html(str);
-	/*$('.autoplay').slick({
+	$('.tdyTSDistrcts').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 700,
+		autoplay: false,
+		autoplaySpeed: 2200,
 		variableWidth: true
 	});
 	$(".slick-prev").css("display","none");
 	$(".slick-next").css("display","none");
-	$(".slick-list").css("padding-bottom","6px");
-	$(".slick-list").css("padding-top","8px");*/
+	$(".slick-list").css("padding-bottom","5px");
+	$(".slick-list").css("padding-top","5px");
 }
-
+getOverAllConstituencyWiseForAP("Total",1);
+getOverAllConstituencyWiseForTS("Total",36);
+getOverAllDistrictForAP("Total",1);
+getOverAllDistrictForTS("Total",36);
 //OVERALL
 setTimeout(function(){
-	getOverAllConstituencyWiseForAP("Total",1);
-	getOverAllConstituencyWiseForTS("Total",36);
-	getOverAllDistrictForAP("Total",1);
-	getOverAllDistrictForTS("Total",36);
-	$("#todayBlockDivId").hide();
-	$("#totalBlockDivId").show();
+	getTodayConstituencyWiseForAP("Today",1);
+	getTodayConstituencyWiseForTS("Today",36);
+	getTodayDistrictForAP("Today",1);
+	getTodayDistrictForTS("Today",36);
+	$("#todayBlockDivId").show();
+	$("#totalBlockDivId").hide();
 }, 50000);
 setTimeout(function(){
 	location.reload();
@@ -528,6 +530,7 @@ function buildingOverAllAPConstituencies(result){
 	str+='</ul>';
 	$("#overAllAPConstituencies").html(str);
 	$('.autoplayTotal').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
 		autoplay: true,
@@ -572,6 +575,7 @@ function buildingOverAllTSConstituencies(result){
 	str+='</ul>';
 	$("#overAllTSConstituencies").html(str);
 	$('.autoplayTotalTS').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
 		autoplay: true,
@@ -604,7 +608,7 @@ function getOverAllDistrictForAP(type,stateId){
 
 function buildingOverAllAPDistricts(result){
 	var str = '';
-	str+='<ul  class="list-inline" style="margin-bottom: 0px;">';
+	str+='<ul  class="list-inline allAPDistricts" style="margin-bottom: 0px;">';
 	for(var i in result){
 		var temp = parseInt(i)+1;
 		temp = temp <=9 ? "0"+temp:temp;
@@ -615,17 +619,18 @@ function buildingOverAllAPDistricts(result){
 	}
 	str+='</ul>';
 	$("#overAllAPDistricts").html(str);
-	/*$('.autoplay').slick({
+	$('.allAPDistricts').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 700,
+		autoplay: false,
+		autoplaySpeed: 2200,
 		variableWidth: true
 	});
 	$(".slick-prev").css("display","none");
 	$(".slick-next").css("display","none");
-	$(".slick-list").css("padding-bottom","6px");
-	$(".slick-list").css("padding-top","8px");*/
+	$(".slick-list").css("padding-bottom","5px");
+	$(".slick-list").css("padding-top","5px");
 }
 
 function getOverAllDistrictForTS(type,stateId){
@@ -648,7 +653,7 @@ function getOverAllDistrictForTS(type,stateId){
 
 function buildingOverAllTSDistricts(result){
 	var str = '';
-	str+='<ul  class="list-inline" style="margin-bottom: 0px;">';
+	str+='<ul  class="list-inline overTSDistricts" style="margin-bottom: 0px;">';
 	for(var i in result){
 		var temp = parseInt(i)+1;
 		temp = temp <=9 ? "0"+temp:temp;
@@ -659,17 +664,18 @@ function buildingOverAllTSDistricts(result){
 	}
 	str+='</ul>';
 	$("#overAllTSDistricts").html(str);
-	/*$('.autoplay').slick({
+	$('.overTSDistricts').slick({
+		infinite : false,
 		slidesToShow: 1,
 		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 700,
+		autoplay: false,
+		autoplaySpeed: 2200,
 		variableWidth: true
 	});
 	$(".slick-prev").css("display","none");
 	$(".slick-next").css("display","none");
-	$(".slick-list").css("padding-bottom","6px");
-	$(".slick-list").css("padding-top","8px");*/
+	$(".slick-list").css("padding-bottom","5px");
+	$(".slick-list").css("padding-top","5px");
 }
 
 </script>		
