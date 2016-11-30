@@ -1785,22 +1785,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}else{
 				locationIdAndName1 = alertDAO.getLocationIdList(fromDate, toDate, stateId, Location, alertTypeId);
 			}
-			
-			Map<Long,List<Long>> impactIdAndLocValueList = new HashMap<Long,List<Long>>();
-			List<Long> locValList = null;
 			//all location values
 			List<Long> locaionIds = new ArrayList<Long>();
 			if(locationIdAndName1 != null && locationIdAndName1.size() > 0){
 				for(Object[] param : locationIdAndName1){
-					locaionIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-					locValList = impactIdAndLocValueList.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					if(locValList != null){
-						locValList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-					}else{
-						locValList = new ArrayList<Long>();
-						locValList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-						impactIdAndLocValueList.put(commonMethodsUtilService.getLongValueForObject(param[0]), locValList);
-					}
+					locaionIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));    
 				}
 			}
 			
