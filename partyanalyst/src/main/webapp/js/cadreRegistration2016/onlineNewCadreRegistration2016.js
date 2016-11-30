@@ -109,6 +109,7 @@
 
 
  function getMandalCorporationsByConstituency(consistency,id){
+
 	 if(id==1){
 		 $("#mandalDivIdImg").show();
 		 $("#panchayatTwnId").show();
@@ -181,9 +182,9 @@
 	   }else if(id==2){
 		   for(var i in result){
 			   if(result[i].id == 0){
-				  $("#PrsntMandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
+				  $("#PrsntMandalList").append('<option value='+result[i].id+' attr_type="0">Select Mandal</option>');
 			   }else{
-				  $("#PrsntMandalList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				  $("#PrsntMandalList").append('<option value='+result[i].id+'  attr_type="'+result[i].mobileNumber+'">'+result[i].name+'</option>');
 			   }
 			}
 
@@ -211,10 +212,10 @@
 	   }else if(id==3){		   
 		   for(var i in result){
 			   if(result[i].id == 0){
-				  $("#workMandalList").append('<option value='+result[i].id+'>Select Mandal</option>');
+				  $("#workMandalList").append('<option value='+result[i].id+' attr_type="0">Select Mandal</option>');
 			   }else{
-				  $("#workMandalList").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			   }
+				  $("#workMandalList").append('<option value='+result[i].id+'  attr_type="'+result[i].mobileNumber+'">'+result[i].name+'</option>');
+			   }			   
 			}
 			$("#workMandalList").trigger("chosen:updated");
 			 $('#wrkMadalErrId').html('');
@@ -222,6 +223,8 @@
    });
   }
   
+   var present_attr_type ="RURAL";
+   var work_attr_type ="RURAL";
   function getPanchayatWardByMandal(mandal,id)
 	{
 		var mandalSubStrId=0;
@@ -255,11 +258,41 @@
 		$("#PrsntVillageList").append('<option value="0">Select Panchayat</option>');
 		$("#PrsntVillageList").trigger("chosen:updated");
 		 $('#wardErrId').html('<img src="images/search.gif">');
+		 
+		 var present_attr_type = $('#PrsntMandalList :selected ').attr('attr_type');
+		 $('#PareaTypeStr').val(present_attr_type);
+		 if(present_attr_type =='RURAL'){
+			 $('#phamletId').val('');
+			$('#appartMentId').addClass('hide');		
+			$('#hamletId').removeClass('hide');	
+		 }else{
+			  $('#paptId').val('');
+			 $('#appartMentId').removeClass('hide');		
+			 $('#hamletId').addClass('hide');	
+		 }
+		 
+		 console.log(" present area type : "+present_attr_type);
 	}else if(id==3){
 		$("#workVillageList  option").remove();
 		$("#workVillageList").append('<option value="0">Select Panchayat</option>');
 		$("#workVillageList").trigger("chosen:updated");
 		 $('#wrkVillageErrId').html('<img src="images/search.gif">');
+		 
+		 
+		  var work_attr_type = $('#workMandalList :selected ').attr('attr_type');
+		 $('#WareaTypeStr').val(work_attr_type);
+
+		 if(work_attr_type =='RURAL'){
+			 $('#dhamletId').val('');
+			 $('#appartMentsId').addClass('hide');		
+			 $('#hamletsId').removeClass('hide');
+		 }else{
+			 $('#dAptId').val('');
+			  $('#appartMentsId').removeClass('hide');		
+			  $('#hamletsId').addClass('hide');	
+		 }
+		 
+		 
 	}
 				var jsObj ={					
 					mandalId:mandal,
@@ -1631,7 +1664,7 @@ function addressFieldsValidation()
 	var PrvNomneGendr=$("#prvNomneGendrId").val();
 	var PrvNomneAge=$("#prevNomneAgeId").val();
 	var PrvNomneReltv=$("#prevNomneReltvId").val();	
-	
+	 
 	//var wardId=$("#wardsList").val();	
 	
 	/*if(presntLebId > 0 && wardId ==0){
@@ -1810,6 +1843,7 @@ function addressFieldsValidation()
 	
 	//stateErrId
 	
+	var pAreaTypeStr = $('#PareaTypeStr').val();
 	
 		if(prsmtHno == null || prsmtHno.length ==0 )
 		{
@@ -1818,12 +1852,14 @@ function addressFieldsValidation()
 		}else{
 			$("#stateErrPhId").html("");
 		}	
-		if(prsmtAprt == null || prsmtAprt.length ==0 )
-		{
-			$("#stateErrPaId").html("<span style='color:red;'>Enter Appt Name.</span>");
-			isError=true;
-		}else{
-			$("#stateErrPaId").html("");
+		if(pAreaTypeStr =="URBAN"){
+			if( prsmtAprt == null || prsmtAprt.length ==0 )
+			{
+				$("#stateErrPaId").html("<span style='color:red;'>Enter Appt Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrPaId").html("");
+			}
 		}
 		if(prsmtArea == null || prsmtArea.length ==0 )
 		{
@@ -1849,14 +1885,15 @@ function addressFieldsValidation()
 			$("#stateErrPlId").html("");
 		}
 		
-		if(prsmtHamlet == null || prsmtHamlet.length ==0 )
-		{
-			$("#stateErrPh1Id").html("<span style='color:red;'>Enter Hamlet Name.</span>");
-			isError=true;
-		}else{
-			$("#stateErrPh1Id").html("");
+		if(pAreaTypeStr =="RURAL"){
+			if(prsmtHamlet == null || prsmtHamlet.length ==0 )
+			{
+				$("#stateErrPh1Id").html("<span style='color:red;'>Enter Hamlet Name.</span>");
+				isError=true;
+			}else{
+				$("#stateErrPh1Id").html("");
+			}
 		}
-	
 		if(state == null || state == 0)
 		{
 			$("#stateErrId").html("<span style='color:red;'>Select State</span>");
@@ -1905,6 +1942,8 @@ function addressFieldsValidation()
 	$("#stateErrDa1Id").html("");
 	$("#stateErrDhId").html("");
 	$("#stateErrDaId").html("");
+	var wAreaTypeStr = $('#WareaTypeStr').val();
+
 	
 	if($('#deliveryCheckBox').is(":checked"))
 	{
@@ -1917,13 +1956,15 @@ function addressFieldsValidation()
 				isError=true;
 			}else{
 				$("#stateErrDhId").html("");
-			}	
-			if(workAprt == null || workAprt.length ==0 )
-			{
-				$("#stateErrDaId").html("<span style='color:red;'>Enter Appt Name.</span>");
-				isError=true;
-			}else{
-				$("#stateErrDaId").html("");
+			}
+			if(wAreaTypeStr =="URBAN"){			
+				if( workAprt == null || workAprt.length ==0 )
+				{
+					$("#stateErrDaId").html("<span style='color:red;'>Enter Appt Name.</span>");
+					isError=true;
+				}else{
+					$("#stateErrDaId").html("");
+				}
 			}
 			if(workArea == null || workArea.length ==0 )
 			{
@@ -1949,12 +1990,14 @@ function addressFieldsValidation()
 				$("#stateErrDlId").html("");
 			}
 			
-			if(workHamlet == null || workHamlet.length ==0 )
-			{
-				$("#stateErrDh1Id").html("<span style='color:red;'>Enter Hamlet Name.</span>");
-				isError=true;
-			}else{
-				$("#stateErrDh1Id").html("");
+			if(wAreaTypeStr =="RURAL"){
+				if(workHamlet == null || workHamlet.length ==0 )
+				{
+					$("#stateErrDh1Id").html("<span style='color:red;'>Enter Hamlet Name.</span>");
+					isError=true;
+				}else{
+					$("#stateErrDh1Id").html("");
+				}
 			}
 			
 			if(workState == null || workState == 0)
