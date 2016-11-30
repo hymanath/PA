@@ -655,7 +655,7 @@ function getAlertAssignedCandidate()
 				str+='<td>';
 					str+='<p style="color:#191970;">TOTAL ALERTS</p>';
 					if(totalAlert != null && totalAlert>0)
-						str+='<h3 style="margin-top:10px !important;"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
+						str+='<h3 style="margin-top:10px !important;"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_position="first" attr_id="0" title="Click here to view total Alerts Details" attr_levlId="0"  attr_category_id="0" attr_search_Location="totalBlock">'+totalAlert+'</a></u></h3>'; 
 					else
 						str+='<h3>'+totalAlert+'</h3>'; 
 				str+='</td>';
@@ -664,7 +664,7 @@ function getAlertAssignedCandidate()
 					str+='<td>';
 					str+='<p>'+result[i].status+'</p>';
 					if(result[i].count != null && result[i].count >0 )
-						str+='<h3 style="color:'+colorArr[j]+';margin-top:10px !important;"><u><a style="color:'+colorArr[j]+'" href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
+						str+='<h3 style="color:'+colorArr[j]+';margin-top:10px !important;"><u><a style="color:'+colorArr[j]+'" href="javascript:{};" class="headerWiseDataCls" attr_position="first" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="totalBlock">'+result[i].count+'</a></u></h3>';  
 					else
 						str+='<h3 style="margin-top:10px !important;">'+result[i].count+'</h3>';
 					
@@ -717,13 +717,13 @@ function getAlertAssignedCandidate()
 				var appClr = colorArr[result[i].status];
 				var appClrHd = colorArrHead[result[i].status];
 				if(result[i].count != null && result[i].count > 0)
-					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].count+'</a> </u></span></td>';
-				else
+					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_position="second" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].count+'</a> </u></span></td>';
+				else  
 					str+='<td class="text-capitalize" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
 				
 				for(var j in result[i].subList1){
 					if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount >0)
-						str+='<td style="background-color:'+appClr+'" class="text-center"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].subList1[j].categoryCount+' </a></u></td>';
+						str+='<td style="background-color:'+appClr+'" class="text-center"> </u><a href="javascript:{};" class="headerWiseDataCls" attr_position="second" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_category_id="'+result[i].subList1[j].categoryId+'" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].subList1[j].categoryCount+' </a></u></td>';
 					else
 						str+='<td style="background-color:'+appClr+'" class="text-center"> '+result[i].subList1[j].categoryCount+' </td>';
 				}
@@ -773,17 +773,17 @@ function getAlertAssignedCandidate()
 			}            
 			str+='<tr>';   
 			if(result[i].count != null && result[i].count>0)
-				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
+				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="0" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
 			else
 				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><'+result[i].count+'</span></td>';
 			
-			for(var j in result[i].subList1){
+			for(var j in result[i].subList1){   
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
-					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
+					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
 				else				
 					str+='<td class="text-center">'+result[i].subList1[j].categoryCount+'</td>';
 			}
-			str+='</tr>';
+			str+='</tr>';       
 		}
 		str+='</table>';
 		if($(window).width() < 500)
@@ -881,7 +881,6 @@ function getAlertAssignedCandidate()
 	$(document).on("click",".closedropdown",function(){
 		$(".filterBlockDiv").hide();
 	});
-	     
 </script>
 </body>
 </html>
