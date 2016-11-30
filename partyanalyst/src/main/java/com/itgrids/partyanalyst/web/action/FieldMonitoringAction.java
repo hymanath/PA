@@ -852,8 +852,40 @@ public String getConstituencyByVendor(){
 		}
 		return Action.SUCCESS;
 	}
+  public String getConstituencyWiseTodayAndOverAllCountsNew(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String type = jObj.getString("type");
+			Long stateId = jObj.getLong("stateId");
+			//String sortType = jObj.getString("sortType");
+			
+			idAndNameVOList = fieldMonitoringService.getConstituencyWiseTodayAndOverAllCountsNew(type,stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituencyWiseTodayAndOverAllCounts()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
+  
+  public String getDistrictWiseTodayAndOverAllCountsNew(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String type = jObj.getString("type");
+			Long stateId = jObj.getLong("stateId");
+			//String sortType = jObj.getString("sortType");
+			
+			idAndNameVOList = fieldMonitoringService.getDistrictWiseTodayAndOverAllCountsNew(type,stateId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseTodayAndOverAllCounts()  of FieldMonitoringAction", e);
+		}
+		return Action.SUCCESS;
+	}
   
   public String mediaScreenParty(){
+	  return Action.SUCCESS;
+  }
+  public String tdpMembershipPerformance(){
 	  return Action.SUCCESS;
   }
   

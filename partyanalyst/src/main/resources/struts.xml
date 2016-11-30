@@ -14663,9 +14663,22 @@
 			<result type="json" name="success">
 			<param name="root">idAndNameVOList</param>
 		</result>
-	</action> 	
+	</action> 
+	<action name="getConstituencyWiseTodayAndOverAllCountsNewAction" class="fieldMonitoringAction"  method="getConstituencyWiseTodayAndOverAllCountsNew">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>	
+	<action name="getDistrictWiseTodayAndOverAllCountsNewAction" class="fieldMonitoringAction"  method="getDistrictWiseTodayAndOverAllCountsNew">
+			<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 	<action name="tdpMembershipPerformanceForAPAction" class="fieldMonitoringAction" method="mediaScreenParty">
 			<result>/jsp/mediaScreenParty.jsp</result>
+	</action>
+	<action name="tdpMembershipPerformanceAction" class="fieldMonitoringAction" method="tdpMembershipPerformance">
+			<result>/jsp/tdpMembershipPerformanceRankings.jsp</result>
 	</action>
 	<action name="getDesignationLabelListAction" class="toursAction"  method="getDesignationLabelList">
 		<result type="json" name="success">
