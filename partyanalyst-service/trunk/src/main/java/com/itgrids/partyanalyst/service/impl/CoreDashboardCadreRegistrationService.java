@@ -3436,8 +3436,8 @@ try{
 
 			List<Object[]> existingOTPDtls = tabUserOtpDetailsDAO.isExistOTPDetails(mobileNo,new DateUtilService().getCurrentDateAndTime());
 			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
-				Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
-				
+			//	Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
+				Object[] obj = existingOTPDtls.get(0);
 				String otp = commonMethodsUtilService.getStringValueForObject(obj[0]);
 				String referenceNo = String.valueOf(commonMethodsUtilService.getStringValueForObject(obj[1]));
 				String dateStr = commonMethodsUtilService.getStringValueForObject(obj[2]);
@@ -3482,7 +3482,13 @@ try{
 			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
 			int otpRand = 0;
 			int refRand = 0;
-			
+			try {
+				if(mobileNo != null && mobileNo.trim().length() ==10)
+					tabUserOtpDetailsDAO.getAllOtpsForSameMobile(mobileNo.trim());
+			} catch (Exception e) {
+				LOG.error(" Error occured while updating getAllOtpsForSameMobile as invalid ",e);
+			}
+		
 			while(otpRand <= 0 && refRand <= 0){
 				 otpRand = rnd.randomGenerator(6);
 				 refRand = rnd.randomGenerator(6);
