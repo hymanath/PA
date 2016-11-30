@@ -874,9 +874,9 @@
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
 								</li>
 								
-								<!-- <li>
+								 <li>
 									<a href="cadreDemographicReportsAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Cadre Demographic Reports</span></a>
-								</li> -->
+								</li> 
 							</c:if>
 							
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">
