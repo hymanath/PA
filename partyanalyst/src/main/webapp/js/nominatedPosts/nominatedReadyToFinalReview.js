@@ -700,47 +700,43 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				
 				
 				str+='<td style="position:relative" class="text-center">';
-				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
+				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0){
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
-				else{
-					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;>';
 						str+='</div>';
 					str+='</div>';
 				}
+				else{
+					str+='<span> NO </span>';
+				}
 				str+='</td>';
 				
 				str+='<td style="position:relative" class="text-center">';
-					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
+					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0){
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
+						/*str+='<div class="appliedPostPopup">';
+							//str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
+							//str+='</div>';
+						str+='</div>';*/
+					}
 					else{
 						str+='<span> NO </span>';
+					}
+				str+='</td>';
+				//srujana
+				str+='<td style="position:relative" class="text-center">';
+					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount > 0){
+						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
 						str+='<div class="appliedPostPopup">';
 							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
 							str+='</div>';
 						str+='</div>';
 					}
-				str+='</td>';
-				
-				
-				
-				//str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
-				/*str+='<td style="position:relative" class="text-center">';
-					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'">'+result.subList[i].otherDepartmentsCount+'</span>';
-					str+='<div class="appliedPostPopup">';
-						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
-						str+='</div>';
-					str+='</div>';
-				str+='</td>';*/
-				/*if(result.subList[i].referCandCount != null)
-					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">'+result.subList[i].referCandCount+'</a></td>';
-				else
-					str+='<td> - </td>';*/
-				/*if(result.subList[i].otherDeptShortListed != null && result.subList[i].otherDeptShortListed == 'YES')
-					str+='<td>'+result.subList[i].otherDeptShortListed+'</td>';
-				else
-					str+='<td> NO </td>';*/				
+					else{
+						str+='<span> NO </span>';
+					}
+				str+='</td>'; 
 				if(result.subList[i].referenceCount != null && result.subList[i].referenceCount>0)
 					str+='<td><a class="referenceDetailsCls" style="cursor:pointer;" data-toggle="modal" data-target="#referModelId" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'">'+result.subList[i].referenceCount+'</a></td>';
 				else
@@ -1531,7 +1527,7 @@ $(document).on("click",".appliedCount",function(e){
 	
 	
 function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType){
-	
+
 	var jsObj=
 	{				
 		candidateId:candidateId,
@@ -1708,28 +1704,28 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 			}
 				
 				str+='<td style="position:relative" class="text-center">';
-				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
+				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0){
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
-				else{
-					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;">';
 						str+='</div>';
 					str+='</div>';
 				}
+				else{
+					str+='<span> NO </span>';
+				}
 				str+='</td>';
 				
 				str+='<td style="position:relative" class="text-center">';
-					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
+					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0){
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
-					
-						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
-					else{
-						str+='<span> NO </span>';
 						str+='<div class="appliedPostPopup">';
 							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
 							str+='</div>';
 						str+='</div>';
+					}
+					else{
+						str+='<span> NO </span>';
 					}
 				str+='</td>';
 						
