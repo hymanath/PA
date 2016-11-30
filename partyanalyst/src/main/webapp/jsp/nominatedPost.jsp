@@ -883,7 +883,7 @@
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId" placeholder="Search By Name/Membership No">
 						
 					</div>
-					<div class="col-md-3 col-xs-12 col-sm-6">
+					<div class="col-md-3 col-xs-12 col-sm-6" class="advancePRCls">
 						<label class="advancePRCls">Search Designation</label>
 						 <select class="advancePRCls dropkickClass"  id="advanceDesignationId" onchange="getLevelByDesignation();">
 							<option value="0">Select Designation</option>
@@ -1102,6 +1102,7 @@ $(document).on("click",".involveBlockNew",function(){
 				select.refresh();	
 		showHideBySearchType();	
 					disableByLevel(1);
+					$("#searchMemberAjax").html('');
 					
 });
 
