@@ -223,6 +223,11 @@ function buildLocationLevelAlert(result,jsObj){
 }
 
 $(document).on("click",".belowLocationCls",function(){
+	var id = $(this).attr("attr_id");
+	var category = $(this).attr("attr_category_id");
+	initSelectBoxForSecondPos(id,category);
+	
+	
 	var levelId = $(this).attr("attr_levlid");
 	var locationBlock = $(this).attr("attr_search_Location");
 	var levelValue = $(this).attr("attr_levlvalue");
@@ -240,6 +245,7 @@ $(document).on("click",".belowLocationCls",function(){
 	$("#errorId").html("");
 	
 	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
+	
 });
 
 $(document).on("click",".locationLevelCls",function(){
@@ -264,7 +270,7 @@ $(document).on("click",".headerWiseDataCls",function(){
 	var levelValue = 0;
 	var locationBlock = $(this).attr("attr_search_Location");
 	$('.stateCls').each(function(){
-		if($(this).hasClass("active"))
+		if($(this).hasClass("active"))   
 			levelValue = $(this).attr("attr_state_id");
 	});
 	
@@ -282,7 +288,70 @@ $(document).on("click",".headerWiseDataCls",function(){
 	$("#errorId").html("");
 	
 	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock);
+	//swadhin
+	var postion = $(this).attr("attr_position");
+	var id = $(this).attr("attr_id");
+	if(postion == "first"){
+		initSelectBoxForFirstPos(id);
+	}
+	if(postion == "second"){
+		var category = $(this).attr("attr_category_id");
+		initSelectBoxForSecondPos(id,category);
+	}
+	if(postion == "third"){
+		initSelectBoxForFirstPos(id);
+	}
 });
+	function initSelectBoxForFirstPos(statusId){ 
+		$("#alertCategoryId").val(0);
+		$("#alertCategoryId").trigger("chosen:updated");
+		
+		if(statusId == 1){
+			$("#alertStatusId").val(1);
+		}else if(statusId == 2){
+			$("#alertStatusId").val(2);    
+		}else if(statusId == 3){
+			$("#alertStatusId").val(3);
+		}else if(statusId == 4){
+			$("#alertStatusId").val(4);
+		}else if(statusId == 5){
+			$("#alertStatusId").val(5);
+		}else if(statusId == 6){
+			$("#alertStatusId").val(6);                   
+		}else if(statusId == 0){
+			$("#alertStatusId").val(0);       
+		}
+		$("#alertStatusId").trigger("chosen:updated"); 
+	}
+	function initSelectBoxForSecondPos(statusId,category){ 
+		
+		if(statusId == 1){
+			$("#alertStatusId").val(1);    
+		}else if(statusId == 2){
+			$("#alertStatusId").val(2);    
+		}else if(statusId == 3){
+			$("#alertStatusId").val(3);
+		}else if(statusId == 4){
+			$("#alertStatusId").val(4);
+		}else if(statusId == 5){
+			$("#alertStatusId").val(5);
+		}else if(statusId == 6){
+			$("#alertStatusId").val(6);                   
+		}else if(statusId == 0){
+			$("#alertStatusId").val(0);
+		}
+		$("#alertStatusId").trigger("chosen:updated");
+		if(category == 1){
+			$("#alertCategoryId").val(1);
+		}else if(category == 2){
+			$("#alertCategoryId").val(2);    
+		}else if(category == 3){
+			$("#alertCategoryId").val(3);
+		}else if(category == 0){
+			$("#alertCategoryId").val(0);
+		}      
+		$("#alertCategoryId").trigger("chosen:updated");   
+	}
 
 //999
 var GlobalAlertData;
