@@ -338,6 +338,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 		$(".hideAgeCls").hide();
 		$(".hideCasreGroupCls").hide();
 		$(".hideEducationCls").hide();
+		$("#apptmemberDetailsDiv").html(" ");
 		//setToDefaultAdvancedSearch();
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
@@ -718,7 +719,6 @@ $(document).on("click","#addCandidateBtnId",function(){
 				
 	}
 	function getAdvancedSearchDetails(){
-		
 		$("#apptmemberDetailsDiv").html("");
 		var statusArr=[];
 		var tdpCadreIds=[];
@@ -743,6 +743,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 		 if(advanceSearchType==0){
 			 errorStr='Please Select Search Type';
 			 $("#errorDivId").html(errorStr);
+			 return;
 		 }
 		  var aptUserId = 0;
 		 // aptUserId = $("#appointmentUserSelectBoxId").val();
