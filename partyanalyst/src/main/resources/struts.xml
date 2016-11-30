@@ -34,8 +34,8 @@
 	<global-results>
     <result name="multipleAccess" type="redirect">homePage.action?action=multipleAccess</result>
 	<result name="exception">jsp/globalError.jsp</result>
-<!-- <result name="tdpLoginPage" type="redirect">https://mytdp.com/login.action</result> -->
-	<result name="tdpLoginPage" type="redirect">login.action</result>
+    <result name="tdpLoginPage" type="redirect">https://mytdp.com/login.action</result> 
+<!-- <result name="tdpLoginPage" type="redirect">login.action</result> -->
 	<result name="dashboard" type="redirect">dashBoardAction.action</result>
 	</global-results>
 
@@ -14032,13 +14032,13 @@
 		</result>
 	</action>
 	
-	<!-- 
+	
 	<action name="getEducationalQualificationsAction" class="coreDashboardAction"  method="getEducationalQualifications">
 			<result type="json" name="success">
 			<param name="root">IdAndNameVOList</param>
 		</result>
 	</action>
-	 -->
+	 
 	 
 	<action name="getAllRelationDetailsAction" class="coreDashboardAction"  method="getAllRelationDetails">
 			<result type="json" name="success">
@@ -14843,11 +14843,7 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
-	<action name="getEducationalQualificationsAction" class="nominatedPostProfileAction"  method="getEducationalQualifications">
-		<result type="json" name="success">
-			<param name="root">idAndNameVOList</param>
-		</result>
-	</action>
+	
 	<action name="cadreDemographicReportsAction" class="cadreDemographicReportsAction">
 			 <result name="success">/jsp/cadreDemographicReports.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=cadreDemographicReports</result>
