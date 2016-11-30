@@ -1155,7 +1155,9 @@ public interface IConstants {
 	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5,6,7"; 
 	public static final String NOMINATED_POST_REJECTED_STATUS_IDS="2,4";
 	public static final String AP_NEW_DISTRICTS_IDS_LIST = "11,12,13,14,15,16,17,18,19,20,21,22,23,517";
+	public static final Long[] AP_NEW_DISTRICTS_IDS = {11l,12l,13l,14l,15l,16l,17l,18l,19l,20l,21l,22l,23l,517l};
 	public static final String TS_NEW_DISTRICTS_IDS_LIST = "1,2,3,4,5,6,7,8,9,10,518";
+	public static final Long[] TS_NEW_DISTRICTS_IDS = {1l,2l,3l,4l,5l,6l,7l,8l,9l,10l,518l};
 	public static final Long NOMINATED_APPLICATION_FINAL_REVIEW=6L;
 	public static final Long NOMINATED_POST_FINAL_REVIEW=2L;
 	public static final String NOMINATED_OPEN_POSTS_STATUS_IDS ="1,2";
