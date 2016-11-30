@@ -718,5 +718,6 @@
 		<pattern>/cadreWebRegistrationAction*</pattern>
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 		<pattern>/cadreDemographicReportsAction*</pattern>
+		<pattern>/tdpMembershipPerformanceAction*</pattern>
 	</decorator> 
 </decorators>
