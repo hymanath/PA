@@ -1910,7 +1910,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	}
 	public List<Object[]> getDistrictWiseConstituency(Long districtId) {
 		Query query = getSession()
-				.createQuery("select distinct  model.constituencyId,model.name from Constituency model"
+				.createQuery("select distinct  model.constituencyId,model.name, model.areaType from Constituency model"
 						+ " where model.district.districtId = :districtId and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 order by model.name");
 		query.setParameter("districtId",districtId);
 		return query.list();
