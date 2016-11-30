@@ -49,7 +49,7 @@ textarea {
 {
 	list-style:none;
 }
- 
+
 </style>
 </head>
 <body>
@@ -706,16 +706,16 @@ textarea {
                         </div>
 						
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>H.No <span style="color:red;">*</span>&nbsp;<span id="stateErrPhId"></span></label>
+                        	<label>H.No./Plat No.<span style="color:red;">*</span>&nbsp;<span id="stateErrPhId"></span></label>
                             <input type="text"  id="phnoId"  class="form-control" name="cadreRegistrationVO.prsntAddrsHNo"/>
                         </div>
-                    	<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+                    	<div class="col-md-4 col-xs-12 col-sm-6 m_top10 hide" id="appartMentId">
                         	<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrPaId"></span></label>
                             <input type="text"  id="paptId" class="form-control"  name="cadreRegistrationVO.prsntAddrsApartment" />
                         </div>
                        
                         <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Area Name<span style="color:red;">*</span>&nbsp;<span id="stateErrPa1Id"></span></label>
+                        	<label>Area Name<span id="stateErrPa1Id"></span></label>
                             <input type="text"  id="pareaId" class="form-control"  name="cadreRegistrationVO.prsntAddrsAreaName"/>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -726,8 +726,8 @@ textarea {
                         	<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrPlId"></span></label>
                             <input type="text"  id="pLandmarkId" class="form-control"  name="cadreRegistrationVO.prsntAddrsLandmark"/>
                         </div>
-                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrPh1Id"></span></label>
+                        <div class="col-md-4 col-xs-12 col-sm-6 m_top10"  id="hamletId" >
+                        	<label>Village<span style="color:red;">*</span>&nbsp;<span id="stateErrPh1Id"></span></label>
                             <input type="text"  id="phamletId"class="form-control"  name="cadreRegistrationVO.prsntAddrsHamlet"/>
                         </div>
                         
@@ -755,7 +755,7 @@ textarea {
                             </select>
                         </div>
 						<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-                        	<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wardErrId"></span></label>
+                        	<label>Panchayat/Ward<span style="color:red;">*</span>&nbsp;<span id="wardErrId"></span></label>
                             <select class="select presntAddrCls" id="PrsntVillageList" name="cadreRegistrationVO.prsntAddrsVillId">
                             </select>
                         </div>
@@ -811,7 +811,7 @@ textarea {
 											</select>
 										</div>
 										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-											<label>Village/Ward<span style="color:red;">*</span>&nbsp;<span id="wrkVillageErrId"></span></label>
+											<label>Panchayat/Ward<span style="color:red;">*</span>&nbsp;<span id="wrkVillageErrId"></span></label>
 											<select class="select  delvryAdrCls"  id="workVillageList" name="cadreRegistrationVO.workAddrsVillId" >
 											</select>
 										</div>
@@ -820,13 +820,13 @@ textarea {
 											<label>H.No./ Plot No. <span style="color:red;">*</span>&nbsp;<span id="stateErrDhId"></span> </label>
 											<input type="text" id="dhnoId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHNo"/>
 										</div>
-										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10 hide"  id="appartMentsId">
 											<label>Apartment Name <span style="color:red;">*</span>&nbsp;<span id="stateErrDaId"></span></label>
 											<input type="text"  id="dAptId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsApartment" />
 										</div>
 									   
 										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-											<label>Area Name/Street/Road <span style="color:red;">*</span>&nbsp;<span id="stateErrDa1Id"></span></label>
+											<label>Area Name/Street/Road &nbsp;<span id="stateErrDa1Id"></span></label>
 											<input type="text"  id="dareaId"  class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsAreaName"/>
 										</div>
 										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -837,8 +837,8 @@ textarea {
 											<label>Land Mark<span style="color:red;">*</span>&nbsp;<span id="stateErrDlId"></span></label>
 											<input type="text"  id="dLandmarkId" class="form-control deliveryAddrCls"  name="cadreRegistrationVO.workAddrsLandmark"/>
 										</div>
-										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
-											<label>Hamlet<span style="color:red;">*</span>&nbsp;<span id="stateErrDh1Id"></span></label>
+										<div class="col-md-4 col-xs-12 col-sm-6 m_top10 hide" id="hamletsId">
+											<label>Village<span style="color:red;">*</span>&nbsp;<span id="stateErrDh1Id"></span></label>
 											<input type="text"  id="dhamletId" class="form-control deliveryAddrCls" name="cadreRegistrationVO.workAddrsHamlet"/>
 										</div>
 										<div class="col-md-4 col-xs-12 col-sm-6 m_top10">
@@ -1292,6 +1292,8 @@ textarea {
 <input type="hidden" id="hidnFamlyVoterId"/>
 <input type="hidden" id="hiddenMblNo"/>
 <input type="hidden"  id="hiddenCadreIdFrRewl"/>
+<input type="hidden"  value="" id="PareaTypeStr"/>
+<input type="hidden"  value="" id="WareaTypeStr"/>
 
 
 <!--<script src="dist/cadreRegistration/dist/js/jquery-1.11.3.js" type="text/javascript"></script>-->
