@@ -87,7 +87,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div id="alertCatTabId"></div>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel panel-default">
 								<div class="panel-body bg_EF">
 									<div  id="locWiseAltCntId"></div>
@@ -95,13 +95,17 @@
 							</div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default">
-								<div class="panel-heading bg_cc">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<h4 class="panel-title text-capital">location wise alerts</h4>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingThree">
+							  <h4 class="panel-title text-capital">
+								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								  location wise alerts 
+								<span class="glyphicon glyphicon-chevron-down pull-right undoIcon"></span></a>
+							  </h4>
+							</div>
+							<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+							  <div class="panel-body">
+								<div class="col-md-12 col-xs-12 col-sm-12">
 											<label class="radio-inline">
 												<input class="locationCls" name="location" type="radio" value="State" checked/> State    
 											</label>
@@ -114,11 +118,16 @@
 											<label class="radio-inline">
 												<input class="locationCls" name="location" type="radio" value="Village"/> Village/Ward
 											</label>
-										</div>
-									</div>
 								</div>
-								<div class="panel-body bg_cc" id="multiLocationId"></div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="bg_cc" id="multiLocationId"></div>
+								</div>
+							  </div>
 							</div>
+						</div>
+			
+
+							
 						</div>
 					</div>
 					<!--location Filter-->
@@ -673,7 +682,7 @@ function getAlertAssignedCandidate()
 		//var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 		var str = '';  
 		str+='<table class="table table-condensed b_1">';
-			str+='<thead class="bg_CD">';
+			str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
 				str+='<th>&nbsp;</th>';
 				for(var i in result[0].subList1){
 					str+='<th class="text-capital text-center" >'+result[0].subList1[i].category+'</th>';
@@ -684,7 +693,7 @@ function getAlertAssignedCandidate()
 				var appClr = colorArr[result[i].status];
 				var appClrHd = colorArrHead[result[i].status];
 				if(result[i].count != null && result[i].count > 0)
-					str+='<td class="text-capital" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].count+'</a> </u></span></td>';
+					str+='<td class="text-capital" style="color:'+appClrHd+';background-color:#eae9ef"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> </u> <a href="javascript:{};" class="headerWiseDataCls" attr_category_id="0" attr_id="'+result[i].statusId+'" title="Click here to view '+result[i].status+' Alerts Details" attr_levlId="0"  attr_search_Location="statusBlock">'+result[i].count+'</a> </u></span></td>';
 				else
 					str+='<td class="text-capitalize" style="color:'+appClrHd+'"><strong>'+result[i].status+'</strong><span class="pull-right text-muted"> '+result[i].count+' </span></td>';
 				
@@ -724,6 +733,7 @@ function getAlertAssignedCandidate()
 		{
 			str+='<div class="table-responsive">';
 		}
+		str+='<h4>IMPACTED AREA ALERTS</h4>';
 		str+='<table class="table tableAlert">';
 		str+='<thead>';
 		str+='<th>&nbsp;</th>';
