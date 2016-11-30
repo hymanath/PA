@@ -60,31 +60,59 @@
 								</div>
 								<div class="col-md-2 col-xs-12 col-sm-4">
 									<label class="radio-inline">
-									  <input type="radio" name="aptsradio" id="apCheckedCls" value="1" checked="true" class="stateCls"><h4 class="text-capital">AP</h4>
+									  <input type="radio" name="aptsradio" id="apCheckedCls" value="1" attr_state_name ="AP" checked="true" class="stateCls"><h4 class="text-capital">AP</h4>
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="aptsradio" id="tsCheckedCls" value="36" class="stateCls"><h4 class="text-capital">TS</h4>
+									  <input type="radio" name="aptsradio" id="tsCheckedCls" value="36" attr_state_name ="TS" class="stateCls"><h4 class="text-capital">TS</h4>
 									</label>
 								</div>
 							</div>
 						</div>
-						<div id="ageWiseSummaryDetails" class="ageWiseBlock"></div>
-						<div id="ageWiseDistrictDetails" class="ageWiseBlock"></div>
-						<div id="excelDivageWiseDistrictDetails" style="display:none;"></div>
-						<div id="ageWiseConstituencyDetails" class="ageWiseBlock"></div>
-						<div id="excelDivageWiseConstituencyDetails" style="display:none;"></div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="ageWiseSummaryDetails" class="ageWiseBlock"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="ageWiseDistrictDetails" class="ageWiseBlock"></div>
+								<div id="excelDivageWiseDistrictDetails" style="display:none;"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">	
+								<div id="ageWiseConstituencyDetails" class="ageWiseBlock"></div>
+								<div id="excelDivageWiseConstituencyDetails" style="display:none;"></div>
+							</div>
+						</div>
 						
-						<div id="overAllCasteWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
-						<div id="CasteCategoryStateWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
-						<div id="CasteCategoryDistrictWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
-						<div id="excelDivGCasteCategoryDistrictWiseSummaryDetails" class="" style="display:none;"></div>
-						<div id="CasteCategoryConstituencyWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
-						<div id="excelDivGCasteCategoryConstituencyWiseSummaryDetails" class="" style="display:none;"></div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="overAllCasteWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="CasteCategoryStateWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+								<div id="excelReportCastCategoryStateWiseDetails" class="" style="display:none;"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="CasteCategoryDistrictWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+								<div id="excelDivGCasteCategoryDistrictWiseSummaryDetails" class="" style="display:none;"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="CasteCategoryConstituencyWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
+								<div id="excelDivGCasteCategoryConstituencyWiseSummaryDetails" class="" style="display:none;"></div>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="overAllGenderWiseSummaryDetails" class="genderWiseBlock" style="display:none;"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="genderWiseDistrictDetails" class="genderWiseBlock" style="display:none;"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div id="genderWiseConstituencyDetails" class="genderWiseBlock" style="display:none;"></div>
+								<div id="excelDivGenderWiseConstituencyDetails" class="" style="display:none;"></div>
+							</div>
+						</div>
 						
-						<div id="overAllGenderWiseSummaryDetails" class="genderWiseBlock" style="display:none;"></div>
-						<div id="genderWiseDistrictDetails" class="genderWiseBlock" style="display:none;"></div>
-						<div id="genderWiseConstituencyDetails" class="genderWiseBlock" style="display:none;"></div>
-						<div id="excelDivGenderWiseConstituencyDetails" class="" style="display:none;"></div>
 					</div>  
 				</div>	
 			</div>
@@ -112,15 +140,18 @@
 	
 	$(document).on("click",".stateCls",function(){
 			var stateId = $(this).val();
+			
 			//age Wise Calls
 			getAgeWiseTdpCadreSummaryReport(stateId);
 			getDistrictWisegeWiseTdpCadreCounts(stateId,0,"district");
 			getConstituencyWisegeWiseTdpCadreCounts(stateId,0,"constituency");
+			
 			//caste Wise Calls
 			getCasteCategoryWiseTdpCadreSummaryReport(stateId);
 			getstateWiseTdpCadreCasteCounts(stateId);
-			//getdistrictWiseTdpCadreCasteCounts(stateId,0);
-			//getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
+			getdistrictWiseTdpCadreCasteCounts(stateId,0);
+			getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
+			
 			//Gender Wise Calls
 			getstateWiseCadreGenderCounts(stateId);
 			getDistrictWiseCadreGenderCounts(stateId,0,"district");
@@ -156,8 +187,8 @@
 		$(".genderWiseBlock").hide();
 		getCasteCategoryWiseTdpCadreSummaryReport(stateId);
 		getstateWiseTdpCadreCasteCounts(stateId);
-		//getdistrictWiseTdpCadreCasteCounts(stateId,0);
-		//getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
+		getdistrictWiseTdpCadreCasteCounts(stateId,0);
+		getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
 		
 	});	
 	$(document).on("click","#genderWiseReport",function(){
@@ -177,7 +208,15 @@
 		
 	});	
 	
-	
+	function getState(){
+		 var stateName= ''; 
+		$('.stateCls').each(function(i, obj){
+          if($(this).is(':checked')){
+			  stateName = $(this).attr("attr_state_name");
+		  }
+		});
+		return stateName;
+	}
 	
 </script> 
 <script>
