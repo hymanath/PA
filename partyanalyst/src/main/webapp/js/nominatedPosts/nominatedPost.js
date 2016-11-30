@@ -927,6 +927,7 @@ function getNominatedPostApplication(startIndex)
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				globalSelectedMemberIdsArr = []; // Clearing Array 
 				$("#textId").hide();
 				 isFree =true;
 				  $("#cadreSearchDtls").html('');
