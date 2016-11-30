@@ -231,11 +231,11 @@ control.makeTransliteratable(['commentsId']);
 									<td>
 										<p class="text-capital"><span class="text-muted">status</span> : <span id="alertStatus"></span></p>
 									</td>
-									<td>
+									<td id="severityTdId" style="display:none">
 										<p class="text-capital"><span class="text-muted">severity</span> : <span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
 									</td>
 									<td>
-										<p class="text-capital"><span class="text-muted ">location level</span> : <span  id="levelId"></span></p>
+										<p class="text-capital"><span class="text-muted ">impact level</span> : <span  id="levelId"></span></p>
 									</td>
 									<td>
 										<p class="text-capital"><span class="text-muted ">location</span> : <span  id="LocationId"></span></p>
