@@ -13376,6 +13376,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					IdAndNameVO vo = new IdAndNameVO();
 					vo.setId(objects[0] != null ? (Long) objects[0] : 0l);
 					vo.setName(objects[1] != null ? objects[1].toString() : "");
+					vo.setMobileNumber(objects[2] != null ? objects[2].toString() : "");
 					constituencyList.add(vo);
 				}
 			}
@@ -13397,6 +13398,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					  Long mandalId=Long.valueOf("1"+objects[0].toString());
 					vo.setId(mandalId);
 					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal");
+					vo.setMobileNumber("RURAL");
 					tehsilList.add(vo);
 
 				}
@@ -13410,6 +13412,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				 Long townId=Long.valueOf("2"+objects[0].toString());
 				vo.setId(townId);
 				vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Town" );
+				vo.setMobileNumber("URBAN");
 				tehsilList.add(vo);
 			}
 		}
