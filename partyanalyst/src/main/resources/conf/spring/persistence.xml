@@ -1058,6 +1058,7 @@
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreGenderInfo</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreCasteStateInfo</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreAgeInfo</value>
+	                  <value>com.itgrids.partyanalyst.model.AlertImpactScope</value>
 				 </list>
 			
 		</property>
