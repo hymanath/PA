@@ -33,14 +33,23 @@ public class VoterImageChecker {
 		conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		stmt = conn.createStatement();
 		List<Integer> cIdsList = new ArrayList<Integer>(0);
-		BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultDir+"6.txt"));
+		BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultDir+"1U.txt"));
 
-		ResultSet rs = stmt.executeQuery("select constituency_id from constituency where district_id BETWEEN 21 and 23 and " +
+		/*ResultSet rs = stmt.executeQuery("select constituency_id from constituency where district_id BETWEEN 21 and 23 and " +
 				" election_scope_id = 2 and deform_date is null");
 		
 		 while(rs.next())
-			 cIdsList.add(rs.getInt("constituency_id"));
-		 
+			 cIdsList.add(rs.getInt("constituency_id"));*/
+		cIdsList.add(102);
+		cIdsList.add(10);
+		cIdsList.add(11);
+		cIdsList.add(12);
+		cIdsList.add(13);
+		cIdsList.add(15);
+		cIdsList.add(16);
+		cIdsList.add(18);
+		cIdsList.add(1);
+		cIdsList.add(20);
 		 for(Integer cid : cIdsList)
 			 checkVoterImage(cid,outwriter);
 		 
