@@ -5885,9 +5885,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
 						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null){// finalyzed status id
+							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null && !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("5") 
+									&& !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("6") ){// finalyzed status id
 								//List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
-								if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
+								//if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
 									NominatedPost nominatedPost = nominatedPostList.get(0);
 									nominatedPost.setNominationPostCandidateId(candidateId);
 									nominatedPost.setNominatedPostStatusId(3l);
@@ -5910,16 +5911,16 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 									
 									changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
-								}
-								else{
+								//}
+								//else{
 									
-									return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
+								//	return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
 									
 									/*nominatedPostFinal.setApplicationStatusId(statusId);
 									nominatedPostFinal.setUpdatedBy(userId);
 									nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);*/
-								}
+								//}
 							}
 							else if(nominatedPostFinal != null){
 								
