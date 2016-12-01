@@ -13,11 +13,7 @@
 	{
 		box-shadow:0px 10px 5px rgba(0,0,0,0.4) !important;
 		z-index:9;
-	}
-	.cbnImage
-	{
-		margin-top: 8px !important;
-	}
+	}	
 }
 @media (min-width: 500px) and (max-width:780px) {
 	#mainheading
