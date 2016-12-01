@@ -72,6 +72,9 @@ function buildAlertData(result)
 	for(var i in result)
 	{
 		var severityTdId=result[i].categoryId;
+		if(result[i].category !=null)
+			$("#headingSpanId").html(''+result[i].category+'');
+		
 			$("#typeId").html(''+result[i].alertType+'');
 			$("#severityId").html(''+result[i].severity+'');
 			if(severityTdId ==1){

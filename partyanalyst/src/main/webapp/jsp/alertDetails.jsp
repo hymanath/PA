@@ -215,7 +215,8 @@ control.makeTransliteratable(['commentsId']);
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title">ALERT DETAILS</h4>
+
+						<h4 class="panel-title "><span id="headingSpanId" class="text-capital"></span> ALERT DETAILS</h4>
 					</div>
 					<div class="panel-body">
 						<div class="table-responsive" id="alertBasicDataDiv"></div>
