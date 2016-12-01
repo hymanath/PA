@@ -83,8 +83,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		HttpSession session = request.getSession();
 		String url = request.getRequestURL().toString();
 		
-		if(url.contains("partyAndLeaderActivitiesAndPerformanceTracking") || url.contains("leadertoleader.in") || 
-				url.contains("localhost:8080/PartyAnalyst") || url.contains("coreDashboardNewAction"))
+		if(url.contains("partyAndLeaderActivitiesAndPerformanceTracking") || url.contains("leadertoleader.in"))
 			return invocation.invoke();
 		
 		url = url.substring(url.lastIndexOf("/")+1,url.indexOf(".action"));
