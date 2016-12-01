@@ -152,7 +152,7 @@
 	</div>
 	<div class="row m_top20">
     	
-		<div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0  heightSet" style="background:#DFDFDF;padding-right:0px;border:1px solid #CCC;">
+		<div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0  heightSet" style="background:#DFDFDF;padding-right:0px;border:1px solid #CCC;padding-left:5px;">
           <div class="pad_15">
 	          <h4 class="headingColor text-capital"><u>departments</u></h4>
           </div>
@@ -299,7 +299,7 @@ function capitalizeFirstLetter(stringStr){
 
 function setHeight(){
 	var maxHeight = 0;
-	
+	$(".heightSet").height("100%");
 	$(".heightSet").each(function(){
 	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 	});

@@ -799,8 +799,8 @@
       </div>
       <div class="modal-body">
         <div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-					<div style="background:#fff">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div style="background:#fff">
 					<div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls">
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
@@ -963,8 +963,8 @@
 									</div>
 							</div></br>
 							<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
-						<div class="col-md-2 col-xs-12 col-sm-4">
-							<button type="button" class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();" id="searchBtnId"  style="margin-top: 25px;display:none;">Search Member</button>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<button type="button" class="btn btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();" id="searchBtnId"  style="margin-top: 25px;display:none;">Search Member</button>
 						</div>
 						<div class="col-md-1 col-xs-12 col-sm-12">
 							<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
