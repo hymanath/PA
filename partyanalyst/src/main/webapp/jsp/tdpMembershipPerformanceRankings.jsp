@@ -47,14 +47,14 @@
 	}
 	header.eventsheader 
 	{
-		background-image:url("dist/img/header-footer.png");
-		background-color:#fed501;
-		background-size:100% auto;
-		background-position:center bottom;
-		background-repeat: no-repeat;
-		background-origin: border-box;
-		background-repeat: no-repeat;
-		height: 71px;
+		background-image:url("dist/img/header_bg_s.jpg");
+		//background-color:#fed501;
+		//background-size:100% auto;
+		//background-position:center bottom;
+		background-repeat: repeat-x;
+		//background-origin: border-box;
+		//background-repeat: no-repeat;
+		height: 125px;
 	}
 	footer
 	{
@@ -174,35 +174,32 @@ h1,h2,h3,h4,h5,h6
     <header class="eventsheader">
 	<div class="container">
         <div class="row">
-            <div class="col-md-3 col-xs-6 col-sm-2 span2 logoR">
-                <img src="dist/img/logo.png" class="img-responsive" alt="logo">
+            <div class="col-md-3 col-xs-3 col-sm-3">
+                <img src="dist/img/logo_s.png" class="img-responsive" alt="logo">
+            </div>   
+			<div class="col-md-6 col-xs-6 col-sm-6">
+			<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12 span1 ntrR">
+						<center><img src="dist/img/nrt_s.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">  </center>
+					</div>
+					 <div class="col-md-12 col-xs-12 col-sm-12 span5 text-center headingR">               
+						 <p class="header-text display-style" id="mainheading" style="font-size:32px !important;color:#F5D73B; !important; text-align:center">2016-2018 MEMBERSHIP DRIVE</p><p style="text-align:center;color: rgb(92, 45, 37) ! important; font-size: 14px ! important;" class="header-text display-style"></p>                
+					</div>
+			</div>
+			</div>
+			 <div class="col-md-3 col-xs-3 col-sm-3">
+                <img src="dist/img/cbn_s.png" class="img-responsive" style="margin-top: 11px;" alt="cbn">
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-2 span1 cbnR">
-                <img src="dist/img/CBN1.png" class="img-responsive" alt="cbn">
-            </div>
-            <div class="col-md-4 col-xs-7 col-sm-4 span5 text-center headingR table-responsive" style="line-height:20px;">               
-                 <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;margin-bottom:0px;text-align:center">2016-2018 MEMBERSHIP DRIVE</p><p style="text-align:center;color: rgb(92, 45, 37) ! important; font-size: 14px ! important;" class="header-text display-style"></p>                
-            </div>
-            <div class="col-md-1 col-xs-1 col-sm-2 span1 ntrR"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">  
-            </div>
-            <div class="col-md-3 col-xs-5 col-xs-offset-1 col-sm-2 col-sm-offset-0 span3 menuR">
-			
-				
-				
-				
-				
+            <!-- <div class="col-md-3 col-xs-5 col-xs-offset-1 col-sm-2 col-sm-offset-0 span3 menuR">
 				<a id="loginId" href="javascript:{}" onclick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
 					<!--<span>|</span>
 					<a href="/freeUserRegistration.action">Register</a>-->
-					
-				
-				<p></p>
+				<!--<p></p>
 				
 				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs fullcollapse" href="#" style="margin-top:10px">
 					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
                 </a>
-				
-            </div>
+            </div> --->
         </div>       
     </div>
 </header>
@@ -212,7 +209,7 @@ h1,h2,h3,h4,h5,h6
 	<div class="row " id="PreviousmembersCount">
 		<div class="col-md-12 col-xs-12 col-sm-12 show-grid well well-small border-radius-0 mb-10" style="padding: 10px 0px 0px;">
 			<div class="table-responsive">
-				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" style="border-top-width: 0px;">
+				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" style="border-top-width: 0px; margin-bottom: 0px;">
 					<thead>
 						<th></th>
 						<th style="color:#FE6663"> 2014-16 </th>
@@ -501,8 +498,8 @@ function buildingTodayTSConstituencies(result){
 	});
 	$(".slick-prev").css("display","none");
 	$(".slick-next").css("display","none");
-	$(".slick-list").css("padding-bottom","6px");
-	$(".slick-list").css("padding-top","6px");
+	$(".slick-list").css("padding-bottom","10px");
+	$(".slick-list").css("padding-top","8px");
 }
 
 function getTodayDistrictForAP(type,stateId){
