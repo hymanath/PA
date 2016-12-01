@@ -1231,7 +1231,6 @@ function setDefaultImage(img){
 	          }
 	      }
 	  }
-   
     $(document).on("click",".closeIcon",function(){
 	//var id=$(this).attr("id");
 	var id =0;
@@ -1247,8 +1246,9 @@ function setDefaultImage(img){
 					  });
 				  $(".candidatecls"+id).prop('checked', false); 
 				  $(".close"+id).prop('checked', false); 
-				  involvedCadreIds.pop(id);	
+				 // involvedCadreIds.pop(id);	
 				  removeParticularValue(globalSelectedMemberIdsArr,id);
+				  removeParticularValue(involvedCadreIds,id);
 				  $("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 				return true;
                }
