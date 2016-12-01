@@ -2341,6 +2341,9 @@ function populateFields(result){
   } */
  $( document ).on("click",".cadreCls",function(){
  
+	    involvedCadreIds = [];
+	    globalSelectedMemberIdsArr = [];
+	    $("#involvedMembers").html('(0 - Members added)');
  
 		$('#phoneNumId').val('');
 		$('#houseNumberId').val('');
