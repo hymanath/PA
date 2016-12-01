@@ -53,5 +53,6 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public int updateApllicationStatusToReject(Long memberId,Long userId);
 	public List<NominatedPostApplication> getApplicationIdsByMemberId(Long memberId);
 	public List<Object[]> getApplicationIdsByCAndidateId(Long candidateId);
+	public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId);
 
 }

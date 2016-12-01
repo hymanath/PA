@@ -2275,4 +2275,18 @@ public List<Object[]> getApplicationIdsByCAndidateId(Long candidateId){
 		 
 		return query.list();
 }
+public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
+	StringBuilder queryStr = new StringBuilder();
+	
+	queryStr.append(" select model.board.boardId,model.departments.departmentId,count(model.nominatedPostApplicationId) from " +
+	" NominatedPostApplication model where model.boardLevel.boardLevelId = :boardLevelId and model.applicationStatus.applicationStatusId = 1 and " +
+	"  model.position.positionId is null and  model.isDeleted = 'N' and model.board.boardId is not null and model.departments.departmentId is not null group by model.board.boardId,model.departments.departmentId ");
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	
+	 query.setParameter("boardLevelId", boardLevelId);
+	 
+	return query.list();
+	
+}
 }
