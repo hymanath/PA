@@ -625,8 +625,13 @@ function getAlertAssignedCandidate()
 				fromDate = dateStr.split("-")[0];
 				toDate = dateStr.split("-")[1];
 			}
-			
+					
 		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+		//crearing Fields	
+		$("#alertCategoryId").val(0);
+		$("#alertStatusId").val(0);
+		$("#alertCategoryId").trigger('chosen:updated');
+		$("#alertStatusId").trigger('chosen:updated');
 	});
 	
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
@@ -792,13 +797,13 @@ function getAlertAssignedCandidate()
 			}            
 			str+='<tr>';   
 			if(result[i].count != null && result[i].count>0)
-				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="0" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
+				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="0" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].count+'</a></u></span></td>';							
 			else
 				str+='<td>'+result[i].status+'<span class="pull-right text-muted"><u><'+result[i].count+'</span></td>';
 			
 			for(var j in result[i].subList1){   
 				if(result[i].subList1[j].categoryCount != null && result[i].subList1[j].categoryCount > 0)
-					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="0"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
+					str+='<td class="text-center"><u><a href="javascript:{};" class="headerWiseDataCls" attr_position="third" attr_id="'+result[i].subList1[j].categoryId+'" title="Click here to view '+result[i].status+' Impact Alerts Details" attr_levlId="'+result[i].statusId+'"  attr_category_id="0"  attr_search_Location="locationBlock">'+result[i].subList1[j].categoryCount+'</u></td>';
 				else				
 					str+='<td class="text-center">'+result[i].subList1[j].categoryCount+'</td>';
 			}
