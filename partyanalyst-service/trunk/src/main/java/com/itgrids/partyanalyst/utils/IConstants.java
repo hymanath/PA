@@ -1182,7 +1182,16 @@ public interface IConstants {
 	
 	public static final String CORE_DEBATE_ELIMINATED_PARTIES_AP = "1676,1677,1678,1887,662,514,268,72";
 	public static final String CORE_DEBATE_ELIMINATED_PARTIES_TS = "1676,1677,1678,1887,662,514,268,1117";
-	public static final String[] EXCLUDE_URL_LIST = {};
+	public static final String[] EXCLUDE_URL_LIST = {"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","s" +
+    		"aveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction","displayDashboardCommentsAction","savingDashboardCommentAction","deleteDashBoardcommentsAction",
+   		 "coreDashboardAction1","updateTransactionTrackingDtalsAction","tdpMembershipPerformanceForAPAction.action","tdpMembershipPerformanceForTSAction.action",
+   		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action",
+   		 "tdpMembershipPerformanceAction","getConstituencyWiseTodayAndOverAllCountsNewAction","getDistrictWiseTodayAndOverAllCountsNewAction",
+   		 "getTrainingRecentTimeAction","coreDashboardNewAction","getLatestDebateAction","getApTsDistrictListAction" ,"getLoggedInUserStructureAction" ,
+   		  "getPartyMeetingTypeByPartyMeetingMainTypeAction" ,"getCommitteesBasicCountReportAction","getTrainingCampBasicDetailsCntOverviewAction" ,
+   		   "getPartyWiseTotalDebateDetailsAction" ,"getToursBasicOverviewCountDetailsAction","getDesigWiseMemberDtlsAction" ,"getTotalNewRenewalCadreStateWiseAction",
+   		    "getTotalNewRenewalCadreStateWiseTSAction","getStateDtls","getStateDtlsTS","getAttendanceOverViewForPartyOfficeAction" ,"getAttendanceOverViewForPartyOfficeWiseAction",
+   		     "getStateLevelCampAttendedDetails" ,"getPartyMeetingsMainTypeOverViewDataAction","getPartyMeetingBasicCountDetailsAction","coreDashboardNewAction"};
 	
 	//public static final String CADRE_REGISTRATION_URL = "http://mytdp.in/";
 	//public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";
