@@ -56,6 +56,7 @@ public class Alert extends BaseModel implements Serializable {
 	private Long impactScopeId;
 	private AlertImpactScope alertImpactScope;
 	
+	private String imageUrl;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -329,4 +330,13 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertImpactScope(AlertImpactScope alertImpactScope) {
 		this.alertImpactScope = alertImpactScope;
 	}
+	@Column(name = "image_url")
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	
 }
