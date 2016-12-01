@@ -123,9 +123,9 @@
 											<label class="radio-inline">
 												<input class="locationCls" name="location" type="radio" value="Constituency"/> Constituency
 											</label>
-											<label class="radio-inline">
+											<!--<label class="radio-inline">
 												<input class="locationCls" name="location" type="radio" value="Village"/> Village/Ward
-											</label>
+											</label>-->
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									<div class="bg_cc" id="multiLocationId"></div>
@@ -617,7 +617,16 @@ function getAlertAssignedCandidate()
 			if($(this).hasClass("active"))
 				levelValue = $(this).attr("attr_state_id");
 		});	
-		getLocationLevelAlertData(levelValue,levelId,statusId,currentFromDate,currentToDate,categoryId,"totalBlock");
+		
+		var fromDate='';
+		 var toDate='';
+		 var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+			
+		getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
 	});
 	
 	$("#overAllCount").html('<img style="margin-left:500px;width:30px;height:30px;" src="images/search.gif" />');
