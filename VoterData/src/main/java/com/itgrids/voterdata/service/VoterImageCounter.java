@@ -8,7 +8,7 @@ public class VoterImageCounter {
 
 	public static void main(String[] args)
 	{
-		countImages("D:\\Voter_Images_2016\\AP\\Voter_images\\Images\\");
+		countImages("D:\\Voter_Images_2016\\TS\\CID\\");
 	}
 	
 	public static void countImages(String mainDirPath)
