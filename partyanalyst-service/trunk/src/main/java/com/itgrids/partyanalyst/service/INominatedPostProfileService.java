@@ -80,4 +80,5 @@ public interface INominatedPostProfileService {
 	 public List<IdAndNameVO> getAllCasteDetailsForVoters();
 	 public List<IdAndNameVO> getAllCasteCategoryDetails();
 	 public List<IdAndNameVO> getEducationalQualifications();
+	 public List<IdNameVO> getDepartmentBoardPositions1(List<Long> deptIds,List<Long> boardIds,Long boardLevelId,List<Long> searchLevelValueIds,Long searchLevelId,Long nominatedPostCandId);
 }

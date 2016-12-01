@@ -56,4 +56,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
                                                                String genderType,List<Long> postStatusIds,Long locationId);
 	 public List<Object[]> getNominatedPostDetails(Long locationLevelId,List<Long> locationValues,Long departmentId,Long boardId,Long positionId);
 	 public List<Object[]> getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(Long LocationLevelId,List<Long> locationValues,Long departmentId,Long boardId);
+	 public List<Object[]> getLevelWiseDepartmentsBoardPosition1(List<Long> departmentId,List<Long> boardId,Long boardLevelId,List<Long> searchLevelValue);
 }
