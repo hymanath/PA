@@ -4960,7 +4960,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return finalMap;
 	}
 	/**
-	 * @Author  Santosh
+	 * @Author  Santosh & srishailam
 	 * @Version NominatedPostProfileService.java  July 22, 2016 06:00:00 PM 
 	 * @return List<IdNameVO>
 	 * description  { This service is used to get final Review Candidate count  }
@@ -5072,13 +5072,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					  setWishListCountToVO(returnWishList,finalMap);
 			  }
 				
-			  for (Long  deptId: finalMap.keySet()) {
+			 /* for (Long  deptId: finalMap.keySet()) {
 				  IdNameVO deptVo = finalMap.get(deptId);
 				  movedPostsStatusDetailsMap.get(deptVo.getMemberId());
 				  	if(status != null && status.trim().equalsIgnoreCase("finalReview")){
 				  		
 				  	}
-			  }
+			  }*/
 			  
 			  if(finalMap !=null && finalMap.size() > 0){
 				  fnlCnddtCuntLst = new ArrayList<IdNameVO>(finalMap.values());
@@ -5172,8 +5172,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		    		if(movedPostsStatusDetailsMap.get(obj[5] != null ? (Long)obj[5]:0l) != null){
 		    			Map<String,Long> statusWiseMap = movedPostsStatusDetailsMap.get(obj[5] != null ? (Long)obj[5]:0l);
 		    			Long count =0L;
-		    			if(status.equalsIgnoreCase("finalReview"))
-		    				count = statusWiseMap.get("READY FOR FINAL REVIEW");
+		    			if(status.equalsIgnoreCase("finalReview")){
+		    				//count = statusWiseMap.get("READY FOR FINAL REVIEW");// santhosh and srishailam 
+		    				count = commonMethodsUtilService.getLongValueForObject(obj[4]); //  in ready to final review overriding the existing value which is already set in previous iteration
+		    			}
 		    			else if(status.equalsIgnoreCase("finaliZed"))
 		    				count = statusWiseMap.get("FINALIZED");
 		    			else if(status.equalsIgnoreCase("goPassed"))
@@ -5885,18 +5887,19 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
 						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null && !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("5") 
-									&& !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("6") ){// finalyzed status id
+							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null
+									&& !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("5") 
+									&& !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("7") ){// finalyzed status id 5- confirmed, 7 -> G.O Passed
 								//List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 								//if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-									NominatedPost nominatedPost = nominatedPostList.get(0);
-									nominatedPost.setNominationPostCandidateId(candidateId);
-									nominatedPost.setNominatedPostStatusId(3l);
-									nominatedPost.setUpdatedBy(userId);
-									nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									nominatedPost = nominatedPostDAO.save(nominatedPost);
+									NominatedPost nominatedPost1 = nominatedPostList.get(0);
+									nominatedPost1.setNominationPostCandidateId(candidateId);
+									nominatedPost1.setNominatedPostStatusId(3l);
+									nominatedPost1.setUpdatedBy(userId);
+									nominatedPost1.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPost1 = nominatedPostDAO.save(nominatedPost1);
 									
-									nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
+									nominatedPostFinal.setNominatedPostId(nominatedPost1.getNominatedPostId());
 									nominatedPostFinal.setApplicationStatusId(statusId);
 									nominatedPostFinal.setUpdatedBy(userId);
 									nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -5911,6 +5914,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 									
 									changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
+									
 								//}
 								//else{
 									
@@ -5922,7 +5926,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);*/
 								//}
 							}
-							else if(nominatedPostFinal != null){
+						/*	else if(nominatedPostFinal != null){
 								
 								
 								NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
@@ -5933,6 +5937,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 								
+									
 								//Moving into OPEN Status if Applications Are less 
 								if(nominatedPostFinal !=null){							
 									Long memberId = nominatedPostFinal.getNominatedPostMemberId();
@@ -5975,7 +5980,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 										}
 									}
 								}
-							}
+							}*/
 												
 							NominatedPostComment nominatedPostComment = new NominatedPostComment();
 							nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
@@ -5986,7 +5991,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
 						}
 						else{
-							return 0L;
+							return 0L;// no open posts are available. so we are unable to assign this candidate to any post.
 						}
 					}
 					else{
