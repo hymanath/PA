@@ -848,6 +848,7 @@ $(document).on("click",".wishListCls",function(){
 					   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
 						$("#wishListCountId").html(totalWishListCount);
 				   }
+				   getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,0,0," ");
 				}
 			});
 		}
