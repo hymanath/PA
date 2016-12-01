@@ -434,10 +434,10 @@ var str = '';
 						str+='</div>';  
 					str+='</div>';
 					//if(gblStatus=="finaliZed"){
-						if(gblStatus != "Total" && gblStatus!="finaliZed")
+						if(gblStatus != "Total" && gblStatus!="finaliZed" && gblStatus!="goPassed")
 						{
 							str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 pad_right0">';
-								str+='<div class="positionsCls text-success">';
+							str+='<div class="positionsCls text-success">';
 							if(result[i].wishCount != null && result[i].wishCount > 0)
 							str+='<span style="cursor:pointer;" title="WishList Details" class="modalViewBtn referenceCls" data-toggle="tooltip" data-placement="top" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'" attr_status="wishList"><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;'+result[i].wishCount+'</span>';
 							else
@@ -471,6 +471,11 @@ var glFinalyeboardId=0;
 var glFinalyePositionId=0;
 
 $(document).on("click",".referenceCls",function(){  
+		if(gblStatus == "finaliZed"){
+			 $(".wishList").hide();	
+		}else{
+			$(".wishList").show();	
+		}
 		var departmentId = $(this).attr("attr_department_id");
 		var boardId = $(this).attr("attr_board_id");
 		var positionId = $(this).attr("attr_position_id");
@@ -615,7 +620,11 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 			str+='<th style="width:175px" class="text-center">Shortlisted any dep/ Corp</th>';			
 			str+='<th class="text-center">Reference</th>';
 			str+='<th class="text-center">Current Status</th>';
-			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';
+			if(gblStatus == "finaliZed"){
+			 str+='<th class="text-center">Comments/ Update Status/</th>';	
+			}else{
+			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';	
+			}
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
@@ -755,6 +764,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 							
 						str+='</div>';
 					str+='</div>';
+				  if(gblStatus != "finaliZed"){
 					if(result.subList[i].isPrefered == "Y"){
 						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);//11111
 						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" id="wishListId'+i+'" title="click here to remove from WishList." attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
@@ -762,6 +772,8 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					else{
 						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" title="click here to add in WishList." attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
+				  }
+
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
 					str+='<div class="updateDropDown" style="width:1100px;">';
