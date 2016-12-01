@@ -1859,4 +1859,53 @@ public String execute()
 		}
 	 return Action.SUCCESS;
 	}
+	public String getDepartmentBoardPositions1(){
+		try{
+			jObj =new JSONObject(getTask());
+			List<Long> deptIds = new ArrayList<Long>();
+			List<Long> boardIds = new ArrayList<Long>();
+			List<Long> searchLevelValueIds = new ArrayList<Long>();
+			Long boardLevelId = 0l;
+			Long nominatedPostCandId = 0l;
+			Long searchLevelId = 0l;
+			try {
+				JSONArray deptArr = jObj.getJSONArray("deptId");
+				JSONArray boardArr = jObj.getJSONArray("boardId");
+				JSONArray searchLevelValueArr = jObj.getJSONArray("searchLevelValue");
+				searchLevelId =  jObj.getLong("searchLevelId");
+				nominatedPostCandId =  jObj.getLong("nominatedPostCandId");
+				boardLevelId =  jObj.getLong("boardLevelId");
+				
+				if(deptArr != null && deptArr.length() > 0){
+					for (int i = 0; i < deptArr.length(); i++) {
+						deptIds.add(Long.parseLong(deptArr.get(i).toString()));
+					}
+				}
+				if(boardArr != null && boardArr.length() > 0){
+					for (int i = 0; i < boardArr.length(); i++) {
+						boardIds.add(Long.parseLong(boardArr.get(i).toString()));
+					}
+				}
+				if(searchLevelValueArr != null && searchLevelValueArr.length() > 0){
+					for (int i = 0; i < searchLevelValueArr.length(); i++) {
+						searchLevelValueIds.add(Long.parseLong(searchLevelValueArr.get(i).toString()));
+					}
+				}
+			} catch (Exception e) {
+				Long deptId = jObj.getLong("deptId");
+				deptIds.add(deptId);
+				Long boardId = jObj.getLong("boardId");
+				boardIds.add(boardId);
+				Long searchLevelValue = jObj.getLong("searchLevelValue");
+				searchLevelValueIds.add(searchLevelValue);
+			}
+			
+			idNameVOList = nominatedPostProfileService.getDepartmentBoardPositions1(deptIds,boardIds,boardLevelId,searchLevelValueIds,searchLevelId,nominatedPostCandId);      
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getDepartmentBoardPositions1 method of NominatedPostProfileAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
