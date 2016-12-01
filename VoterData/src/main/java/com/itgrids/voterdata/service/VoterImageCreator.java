@@ -19,7 +19,7 @@ import org.imgscalr.Scalr;
 public class VoterImageCreator {
 
 	static final String JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
-	static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=";
+	static final String DB_URL = "jdbc:sqlserver://192.168.11.4:1433;databaseName=";
 	static final String USER = "sa";
 	static final String PASS = "1tGrids";
 
@@ -32,7 +32,7 @@ public class VoterImageCreator {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     		conn = DriverManager.getConnection(DB_URL+dbName,USER,PASS);
     		stmt = conn.createStatement();
-    		BufferedWriter outwriter = new BufferedWriter(new FileWriter("C:\\Voter_Images_2016\\TS\\Result_"+dbName+".txt"));
+    		BufferedWriter outwriter = new BufferedWriter(new FileWriter("D:\\Voter_Images_2016\\TS\\Result_"+dbName+".txt"));
     		System.out.println("------------------------- "+dbName+" Started -------------------------\n ");
     		outwriter.write("------------------------- "+dbName+" Started -------------------------\n");
     		Date d1 = new Date();
@@ -83,7 +83,7 @@ public class VoterImageCreator {
 		try{
 			VoterImageCreator creator = new VoterImageCreator();
 			
-			creator.getImages("C:/Voter_Images_2016/TS","AC_005");
+			creator.getImages("D:/Voter_Images_2016/TS","AC_119");
 			
 		}catch(Exception e)
 		{
