@@ -213,8 +213,8 @@
 									<label style="font-size:14px;" class="textcolor_black">State</label>
 									 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
 										 <option value="0">All</option>
-										 <option value="1">Andhra Pradesh</option>
-										 <option value="36">Telangana</option>
+										 <option value="1" selected="selected">Andhra Pradesh</option>
+										 <option value="36">Telangana</option>  
 									 </select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
@@ -494,7 +494,7 @@ $(document).ready(function(){
 		var levelId = 0;
 		var levelValue = 0;
 			$('.stateCls').each(function(){
-				if($(this).hasClass("active"))
+				if($(this).hasClass("active"))  
 					levelValue = $(this).attr("attr_state_id");
 			});
 			
@@ -568,6 +568,8 @@ function getAlertAssignedCandidate()
 		$("#multiLocationId").html('<img style="margin-left:495px;width:30px;height:30px;" src="images/search.gif" />'); 
 		var stateId = $(this).attr("attr_state_Id");
 		globalStateId = stateId;
+		$("#stateId").val(stateId);
+		$("#stateId").trigger("chosen:updated");   
 		getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
 		getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate); 
 		getAlertCountGroupByLocationThenStatus(globalStateId,currentFromDate,currentToDate);
@@ -617,6 +619,7 @@ function getAlertAssignedCandidate()
 			if($(this).hasClass("active"))
 				levelValue = $(this).attr("attr_state_id");
 		});	
+
 		
 		var fromDate='';
 		 var toDate='';
