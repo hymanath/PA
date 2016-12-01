@@ -634,6 +634,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 
 					 alertVO.setCategoryId(params[27] != null ? (Long)params[27] : null);
 					 alertVO.setCategory(params[28] != null ? params[28].toString() : "");
+					 alertVO.setImageUrl(params[29] != null ? params[29].toString() : "");
+					 alertVO.setAlertCategoryTypeId(params[30] != null ? (Long)params[30] : null);
 					 
 					 String eleType = params[18] != null ? params[18].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
@@ -1635,7 +1637,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 //alert.setImpactLevelId(inputVO.getRegionScopeId());
 						 
 						 if(alert.getImpactLevelId() !=  null &&alert.getImpactLevelId().longValue() ==3L && 
-								  inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L){ //only new district ids
+						inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L){ //only new district ids
 							if(inputVO.getDistrictId().longValue() == IConstants.CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID)
 								inputVO.setDistrictId(517L);
 							if(inputVO.getDistrictId().longValue() == IConstants.CNP_MANCHERIAL_DISTRICT_ID)
@@ -1666,10 +1668,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						UA.setParliamentConstituency(inputVO.getParliamentId() !=null ? constituencyDAO.get(inputVO.getParliamentId()):null);
 						UA.setPanchayatId(inputVO.getPanchayatId() !=null ? inputVO.getPanchayatId():null);
 						 
-						UserAddress userAddressNew = userAddressDAO.save(UA); 
+						UserAddress userAddressNew = null;
+						if(alert.getImpactLevelId() !=null && alert.getImpactLevelId() >0l){
+							userAddressNew = userAddressDAO.save(UA); 
+						}
 						
-						alert.setAddressId(userAddressNew.getUserAddressId() !=null ?
-								userAddressNew.getUserAddressId().longValue():null);
+						if(userAddressNew !=null){
+							alert.setAddressId(userAddressNew.getUserAddressId() !=null ?
+									userAddressNew.getUserAddressId().longValue():null);
+						}						
+						
+						alert.setImageUrl(inputVO.getImageUrl() !=null ? inputVO.getImageUrl():null);
 						
 						 alert = alertDAO.save(alert);
 						 
