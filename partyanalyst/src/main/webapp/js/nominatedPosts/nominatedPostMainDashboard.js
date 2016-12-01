@@ -1235,11 +1235,11 @@ function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighCh
 }
 function buildLocatinWiseApplicationHighChartsRslt(applicationRslt,appHighChartId){
 var colorArr=[];
- colorArr.push('#E58D42');	
- colorArr.push('#E58D45');	
- colorArr.push('#DD665D');	
+ colorArr.push('#FED501');	
+ colorArr.push('#E68E46');	
+ colorArr.push('#DD675D');	
  colorArr.push('#65A7E1');	
- colorArr.push('#FDD501');	 
+ colorArr.push('#5C2D25');	 
  var jsonDataArr=[];
   jsonDataArr.push(['RECEIVED',parseFloat(applicationRslt[0].totalAppReceivedCnt)]);
   jsonDataArr.push(['REJECTED',parseFloat(applicationRslt[0].rejectedCnt)]);
