@@ -1094,6 +1094,7 @@ function clearAssignValues()
 	
 }
 $(document).on("click",".involveBlockNew",function(){
+	$("#searchMemberAjax").css("display","none");
 	$("#myModal").modal('show')
 	commontdpCadreIds = [];;
 	 $("#apptmemberDetailsDiv").html("");
@@ -1101,8 +1102,7 @@ $(document).on("click",".involveBlockNew",function(){
 	var select = new Dropkick("#advanceSearchTypeId");
 				select.refresh();	
 		showHideBySearchType();	
-					disableByLevel(1);
-					$("#searchMemberAjax").html('');
+					disableByLevel(1);			
 					
 });
 
