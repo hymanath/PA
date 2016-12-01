@@ -91,17 +91,32 @@
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div id="alertCatTabId"></div>
-							<div id="locWiseAltCntId" class="bg_EF" style="padding-top:20px;"></div>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
+								<div class="panel panel-default">
+									<div class="panel-heading panel-headingColor">
+										<div class="row">
+											<div class="col-md-3 col-xs-12 col-sm-3">
+												<h4 class="panel-title text_capital"><b>impacted region alerts</b></h4>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body bg_EF" style="padding-top:20px;">
+										<div id="locWiseAltCntId" class="" ></div>
+									</div>
+								</div>
+							</div>
+							
+						
+						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading bg_cc" role="tab" id="headingThree">
 									<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
-											<h4 class="panel-title text-capital">
+											<h4 class="panel-title text-capital undoIcon">
 												<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-												  location wise alerts 
-												<span class="glyphicon glyphicon-chevron-down pull-right undoIcon"></span></a>
+												  <b>location wise alerts</b> 
+												<span class="glyphicon glyphicon-chevron-down pull-right "></span></a>
 											</h4>
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12">
@@ -157,8 +172,8 @@
 											<label style="font-size:14px;" class="textcolor_black">State</label>
 											 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
 												 <option value="0">All</option>
-												 <option value="1" selected="selected">Andhra Pradesh</option>  
-												 <option value="36">Telangana</option>
+												 <option value="1" selected="selected">Andhra Pradesh</option>    
+												 <option value="36">Telangana</option>   
 											 </select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">
@@ -842,6 +857,9 @@ function getAlertAssignedCandidate()
 	$(document).on("click",".closedropdown",function(){
 		$(".filterBlockDiv").hide();
 	});
+	$(document).on("click",".undoIcon",function(){
+		$(this).find("span").toggleClass("glyphicon-chevron-up").toggleClass("glyphicon-chevron-down")
+	}); 
 </script>
 </body>
 </html>
