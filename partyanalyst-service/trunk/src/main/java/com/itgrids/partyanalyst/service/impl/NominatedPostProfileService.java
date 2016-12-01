@@ -4008,6 +4008,22 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 			}
+			List<Object[]> anyPositionData = nominatedPostApplicationDAO.getAnyPositionDetailsByLevelId(boardLevelId);
+			if(commonMethodsUtilService.isListOrSetValid(anyPositionData)){
+				for (Object[] param : anyPositionData) {
+					IdNameVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(deptVO != null){
+						if(commonMethodsUtilService.isListOrSetValid(deptVO.getIdnameList())){
+							IdNameVO boardVO = getMatchVO(commonMethodsUtilService.getLongValueForObject(param[0]), deptVO.getIdnameList());
+								if(boardVO != null){
+									boardVO.setApplicationsCount(boardVO.getApplicationsCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+								}
+						}
+						
+						finalList.add(deptVO);
+					}
+				}
+			}
 			/*if(deptBoardObj !=null && deptBoardObj.size()>0){
 				for (Object[] obj : deptBoardObj) {
 				
