@@ -1635,8 +1635,8 @@ $(document).on("click",".closeIcon",function(e){
 		var positionId = $(this).attr("attr_position_id");      
 		var status = gblStatus;    
 		if(status == "goPassed"){ 
-			//var redirectWindow=window.open('govtOrderIssuedAction.action?LocationLevelId='+globalLocationLevelId+'&locationLevelValueArr='+globalLocationLevelValueArr+'&deptId='+deptId+'&boardId='+boardId+'&positionId='+positionId+'&status='+status+'','_blank');  
-			var redirectWindow=window.location.replace('govtOrderIssuedAction.action?LocationLevelId='+globalLocationLevelId+'&locationLevelValueArr='+globalLocationLevelValueArr+'&deptId='+deptId+'&boardId='+boardId+'&positionId='+positionId+'&status='+status+'');  
+			var redirectWindow=window.open('govtOrderIssuedAction.action?LocationLevelId='+globalLocationLevelId+'&locationLevelValueArr='+globalLocationLevelValueArr+'&deptId='+deptId+'&boardId='+boardId+'&positionId='+positionId+'&status='+status+'','_blank');  
+			//var redirectWindow=window.location.replace('govtOrderIssuedAction.action?LocationLevelId='+globalLocationLevelId+'&locationLevelValueArr='+globalLocationLevelValueArr+'&deptId='+deptId+'&boardId='+boardId+'&positionId='+positionId+'&status='+status+'');  
 		}
 	});       
 function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,positionId){

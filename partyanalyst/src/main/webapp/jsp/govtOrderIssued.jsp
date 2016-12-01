@@ -85,8 +85,8 @@
 											<label>Position</label>
 											<select class="chosenSelect" id="positionId" multiple>   
 												<option value="0">ALL</option>
-												<option value="1">aaa</option>
-												<option value="2">bbb</option>										
+												<!--<option value="1">aaa</option>
+												<option value="2">bbb</option>	-->									
 											</select>
 											<div id="positionErrVid" style="color:red;"></div> 
 										</div>
@@ -122,9 +122,13 @@
 $('.chosenSelect').chosen({width: "100%"});  
 $(document).ready(function(){
 	getDepartmentList(globalLocationLevelId);
-	getBoardList([]);
-	getPositionList(); 
-	
+	getBoardList([deptId]);
+	//getPositionList(); 
+	var depts = [];
+	var brds = [];
+	depts.push(deptId);
+	brds.push(boardId);
+	getDepartmentBoardPositions(depts,brds);
 	//$("#globalHeadId").html(deptName+" - "+boardName+" - "+positionName);
 });
 
@@ -168,7 +172,7 @@ function buildPage(){
 	  data: {task:JSON.stringify(jsObj)}      
 	}).done(function(result){
 	if(result != null && result.length > 0){
-	   console.log(result);   
+	   //console.log(result);   
 	   buildModel(result);  
 	}else{
 		$("#bodyId").html("No Data Is Available...")
@@ -262,11 +266,11 @@ function buildPage(){
 			}
 		});
 	}
-	function getBoardList(deptId){  
+	function getBoardList(deptsId){  
 	$("#corporationId").empty();
 	$("#corporationId").trigger("chosen:updated");
 		var jsObj={
-			deptId : deptId
+			deptId : deptsId
 		}
 		$.ajax({
 			type:'GET',
@@ -275,13 +279,22 @@ function buildPage(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#corporationId").empty();
-			$('#corporationId').html('<option value="0">ALL</option>');
+			if(boardId == 0){
+				$('#corporationId').html('<option value="0" selected="selected">ALL</option>');
+			}else{
+				$('#corporationId').html('<option value="0" >ALL</option>');
+			}
 			if(result != null && result.length > 0){
 				for(var i in result){
 					if(result[i].id == boardId){ 
 						$('#corporationId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');  
 						boardName = result[i].name;
-						getPositionList();
+						//getPositionList();
+						var depts = [];
+						var brds = [];
+						depts.push(deptId);
+						brds.push(boardId);
+						getDepartmentBoardPositions(depts,brds)
 					}else{
 						$('#corporationId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');  
 					}
@@ -328,11 +341,12 @@ function buildPage(){
 	
 	$(document).on('change','#corporationId',function(){
 		var boardId = $("#corporationId").val();
+		var departmentId = $("#departmentId").val(); 
 		$("#positionId").empty();
 		$("#positionId").trigger("chosen:updated");
 		$("#bodyId").html("");
 		if(boardId != null)
-		getPositionList();
+		getDepartmentBoardPositions(departmentId,boardId);
 	});
 	 
 	$(document).on('click','#statusDetailsId',function(){
@@ -371,7 +385,7 @@ function buildPage(){
 		var dateArray = strDate.split("-");
 		var today = dateArray[0].trim();
 		var expireDate = dateArray[1].trim();  
-		console.log(deptIds+":"+boardIds+":"+positionIs+":"+today+":"+expireDate);
+		//console.log(deptIds+":"+boardIds+":"+positionIs+":"+today+":"+expireDate);
 		var jsObj = {
 		LocationLevelId : globalLocationLevelId, 
 		locationLevelValueArr : globalLocationLevelValueArr,              
@@ -389,7 +403,7 @@ function buildPage(){
 		  data: {task:JSON.stringify(jsObj)}        
 		}).done(function(result){
 		if(result != null && result.length > 0){
-		   console.log(result);   
+		   //console.log(result);   
 		   buildModel(result);  
 		}else{
 		$("#bodyId").html("No Data Is Available...")
@@ -399,8 +413,44 @@ function buildPage(){
 	function setDefaultImage(img){
     img.src = "images/User.png";
 }
-	
-	
+function getDepartmentBoardPositions(deptId,boardId){	
+//alert(globalLocationLevelValueArr)
+//var levelValue = globalLocationLevelValueArr[0];
+	var jsObj = {
+		
+		deptId : deptId,
+		boardId :boardId,
+		boardLevelId : globalLocationLevelId,
+		searchLevelValue:globalLocationLevelValueArr,
+		searchLevelId:0,
+		nominatedPostCandId:0
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getDepartmentBoardPositionsAction1.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){ 
+   if(positionId == 0){
+		$('#positionId').html('<option value="0" selected="selected">ALL</option>');
+   }else{
+	   $('#positionId').html('<option value="0">ALL</option>');
+   }
+			if(result != null && result.length > 0){
+				for(var i in result){
+					if(result[i].id == positionId){  
+						$('#positionId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');
+						positionName = result[i].name;
+					}else{
+						$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+					
+				}
+				$("#positionId").trigger("chosen:updated");  
+			}
+   
+   });
+  }
 	
 </script>
 </body>
