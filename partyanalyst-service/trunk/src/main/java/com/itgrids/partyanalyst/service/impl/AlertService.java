@@ -1664,7 +1664,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						UA.setLocalElectionBody(inputVO.getMunicipalCorpGmcId() !=null ? localElectionBodyDAO.get(inputVO.getMunicipalCorpGmcId()):null);
 						UA.setWard(inputVO.getWardId() !=null ? constituencyDAO.get(inputVO.getWardId()):null);
 						UA.setParliamentConstituency(inputVO.getParliamentId() !=null ? constituencyDAO.get(inputVO.getParliamentId()):null);
-						UA.setPanchayat(inputVO.getPanchayatId() !=null ? panchayatDAO.get(inputVO.getPanchayatId()):null);
+						UA.setPanchayatId(inputVO.getPanchayatId() !=null ? inputVO.getPanchayatId():null);
 						 
 						UserAddress userAddressNew = userAddressDAO.save(UA); 
 						
