@@ -476,7 +476,7 @@ $(document).on("click",".referenceCls",function(){
 		var positionId = $(this).attr("attr_position_id");
 		var positionName = $(this).attr("attr_position_name");
 		var modalStatus= $(this).attr("attr_status");
-		
+		$("#wishListCountId").html(0);//clearing wishList 
 		glFinalyeDeptId = departmentId;
 		glFinalyeboardId = boardId;
 		glFinalyePositionId = positionId;
@@ -757,10 +757,10 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					str+='</div>';
 					if(result.subList[i].isPrefered == "Y"){
 						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);//11111
-						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" id="wishListId'+i+'" attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
+						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" id="wishListId'+i+'" title="click here to remove from WishList." attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					else{
-						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
+						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" title="click here to add in WishList." attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
@@ -813,39 +813,46 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				
 }
 
+var isWishListAdding=false;
 $(document).on("click",".wishListCls",function(){
-
-	if(gblStatus != 'finaliZed' && gblStatus != 'goPassed'){
-		var postFinalId = $(this).attr("attr_final_id");
-		var remark = $(this).attr("attr_remark");
-		var id = $(this).attr("id");
-		
-		var jsObj={
-			postFinalId : postFinalId,
-			remark : remark
-		}
-		$.ajax({
-			  type:'GET',
-			  url: 'updateWishListForCandidateAction.action',
-			  dataType: 'json',
-			  data: {task:JSON.stringify(jsObj)}
-	   }).done(function(result){
-		   if(result != null && result == 'success'){
-			   if(remark == 'Y'){
-					$("#"+id).attr("src","dist/nominatedImages/Icon7.png");
-					$("#"+id).attr("attr_remark","N");
-					totalWishListCount = parseInt(totalWishListCount)-parseInt(1);
-					$("#wishListCountId").html(totalWishListCount);
-			   }
-			   else if(remark == 'N'){
-				   $("#"+id).attr("src","dist/nominatedImages/Icon4.png");
-				   $("#"+id).attr("attr_remark","Y");
-				   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
-					$("#wishListCountId").html(totalWishListCount);
-			   }
+	if(!isWishListAdding){
+		isWishListAdding = true;
+		if(gblStatus != 'finaliZed' && gblStatus != 'goPassed'){
+			var postFinalId = $(this).attr("attr_final_id");
+			var remark = $(this).attr("attr_remark");
+			var id = $(this).attr("id");
+			
+			var jsObj={
+				postFinalId : postFinalId,
+				remark : remark
 			}
-		});
+			$.ajax({
+				  type:'GET',
+				  url: 'updateWishListForCandidateAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   isWishListAdding = false;
+			   if(result != null && result == 'success'){
+				   if(remark == 'Y'){
+						$("#"+id).attr("src","dist/nominatedImages/Icon7.png");
+						$("#"+id).attr("attr_remark","N");
+						$("#"+id).attr("title","click here to add in WishList.");
+						totalWishListCount = parseInt(totalWishListCount)-parseInt(1);
+						$("#wishListCountId").html(totalWishListCount);
+				   }
+				   else if(remark == 'N'){
+					   $("#"+id).attr("src","dist/nominatedImages/Icon4.png");
+					   $("#"+id).attr("attr_remark","Y");
+					   $("#"+id).attr("title","click here to remove from WishList.");
+					   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
+						$("#wishListCountId").html(totalWishListCount);
+				   }
+				}
+			});
+		}
 	}
+	
 });
 
 $(document).on("click",".saveGoForCandidateCls",function(){
