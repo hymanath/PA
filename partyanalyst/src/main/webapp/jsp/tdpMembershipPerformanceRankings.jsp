@@ -95,7 +95,7 @@
 								<h4 style="padding:5px 0px 0px 10px;display:inline-block;text-transform:uppercase;">Andhra Pradesh</h4>
 								<img style="width:45px;display:inline-block" class="pull-right" src="images/AP.png"/>
 							</td>
-							<td class="text-center"><div id="ap2014CountId"><h4>4716975</h4></div></td>
+							<td class="text-center"><div id="ap2014CountId"><h4>4672124</h4></div></td>
 							<td class="text-center"><div id="ap2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							<td class="text-center"><div id="apTodayCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							<td class="text-center"><div id="apPercentageId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
@@ -105,7 +105,7 @@
 								<h4 style="padding:5px 0px 0px 10px;display:inline-block;text-transform:uppercase;">telangana</h4>
 								<img style="width:45px;display:inline-block" class="pull-right" src="images/TS.png">
 							</td>
-							<td class="text-center"><div id="ts2014CountId"><h4>794427</h4></div></td>
+							<td class="text-center"><div id="ts2014CountId"><h4>794130</h4></div></td>
 							<td class="text-center"><div id="ts2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							<td class="text-center"><div id="tsTodayCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							<td class="text-center"><div id="tsPercentageId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
@@ -114,7 +114,7 @@
 							<td>
 								<h4 style="padding-left: 10px;">TOTAL  <small><b>AP & TS</b></small></h4>
 							</td>
-							<td class="text-center"><div id="total2014CountId"><h4>5511402</h4></div></td>
+							<td class="text-center"><div id="total2014CountId"><h4>5466254</h4></div></td>
 							<td class="text-center"><div id="total2016CountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							<td class="text-center"><div id="totalTodayCountId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
 							<td class="text-center"><div id="totalPercentageId"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></td>
