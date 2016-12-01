@@ -769,6 +769,7 @@ label
 	color:#666;
 	right:-2px;
 	font-weight:400;
+	padding-left:5px;
 }
 .tabsCustomFinal > li.active > a, .tabsCustomFinal > li.active > a:hover, .tabsCustomFinal > li.active > a:focus
 {
@@ -778,14 +779,15 @@ label
 	border-bottom:1px solid #CCC;
 	border-top:1px solid #CCC;
 	border-left:1px solid #CCC;
-	right:-3px
+	right:-3px;
+	padding-left:5px;
 }
 .labelCustom
 {
 	background-color:#DFE0DF;
 	color:#EA6266;
 	font-size:16px;
-	width:60px;
+	width:50px;
 	text-align:center;
 }
 .labelCustomGo
@@ -816,6 +818,7 @@ label
 {
 	color:#666;
 	right:-2px;
+	padding-left:5px;
 }
 .tabsCustomFinal1 > li.active > a, .tabsCustomFinal1 > li.active > a:hover, .tabsCustomFinal1 > li.active > a:focus
 {
@@ -826,6 +829,7 @@ label
 	border-bottom:1px solid #CCC;
 	border-left:1px solid #CCC;
 	right:-3px;
+	padding-left:5px;
 }
 .positionsUl 
 {
