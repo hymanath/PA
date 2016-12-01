@@ -7529,4 +7529,25 @@ public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchT
 		}
 		return returnList;
 	}
+	//srujana
+	public List<IdNameVO> getDepartmentBoardPositions1(List<Long> deptIds,List<Long> boardIds,Long boardLevelId,List<Long> searchLevelValueIds,Long searchLevelId,Long nominatedPostCandId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		
+		try{
+			
+			List<Object[]>  list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition1(deptIds,boardIds,boardLevelId,searchLevelValueIds);
+			
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				String[] setterPropertiesList = {"id","name"};
+				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getDepartmentBoardPositions1()", e);
+		}
+		return returnList;
+	}
+
 }
