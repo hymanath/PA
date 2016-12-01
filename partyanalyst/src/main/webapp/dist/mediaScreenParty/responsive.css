@@ -1,0 +1,127 @@
+@media (min-width: 100px) and (max-width:500px) {
+	#mainheading
+	{
+		font-size:14px !important;
+		color:#F5D73B; !important; 
+		text-align:center;
+	}
+	.m_XSTop10
+	{
+		margin-top:10px;
+	}
+	.b_shadow
+	{
+		box-shadow:0px 10px 5px rgba(0,0,0,0.4) !important;
+		z-index:9;
+	}
+}
+@media (min-width: 500px) and (max-width:780px) {
+	#mainheading
+	{
+		font-size:20px !important;
+		color:#F5D73B; !important; 
+		text-align:center;
+	}
+	.m_XSTop10
+	{
+		margin-top:10px;
+	}
+	
+}
+#mainheading
+{
+	font-size:32px;
+	color:#F5D73B; !important; 
+	text-align:center;
+}
+.well
+{
+	margin-bottom:0px;
+	padding:17px;
+	border-radius:0px;
+	border:0px;
+}
+.m_MDTop5
+{
+	margin-top:5px;
+}
+.m_MDTop20
+{
+	margin-top:20px;
+}
+.b_shadow
+{
+	box-shadow:10px 0px 5px rgba(0,0,0,0.4);
+	z-index:9;
+}
+body
+{
+	background-image:url("../mediaScreenParty/background.png");
+}
+.text-capital
+{
+	text-transform:uppercase;
+}
+.count
+{
+	background-color:#ddd;
+	border-radius:50%;
+	height:25px;
+	width:25px;
+	display:block;
+	text-align:center;
+	font-size:16px;
+}
+h1,h2,h3,h4,h5,h6
+{
+	margin:0px;
+}
+
+.spinner {
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  text-align: center;
+  
+  -webkit-animation: sk-rotate 2.0s infinite linear;
+  animation: sk-rotate 2.0s infinite linear;
+}
+
+.dot1, .dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #1ABC9C;
+  border-radius: 100%;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
