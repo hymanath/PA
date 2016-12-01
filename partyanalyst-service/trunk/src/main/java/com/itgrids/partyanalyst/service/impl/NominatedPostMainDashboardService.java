@@ -1008,7 +1008,7 @@ public CastePositionVO setPositionCntDataToVO(Long totalPositionCnt,List<Object[
 				String status = commonMethodsUtilService.getStringValueForObject(param[1]);
 				Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
 				totalPostsCnt =totalPostsCnt+count;
-				if(status != null && status.equalsIgnoreCase("Open")){
+				if(status != null && status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("Final Review")){
 					resultVO.setOpenPostCnt(resultVO.getOpenPostCnt()+count);
 				}else if(status != null && status.equalsIgnoreCase("Confirmed")){
 					resultVO.setConfirmCntCnt(resultVO.getConfirmCntCnt()+count);
