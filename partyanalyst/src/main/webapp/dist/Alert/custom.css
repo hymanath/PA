@@ -1,6 +1,6 @@
 body
 {
-	background:#ebebeb
+	background:#fff
 }
 
 p,h1,h2,h3,h4,h5,h6,ul,.table
@@ -139,7 +139,7 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 }
 .bg_cc
 {
-	background:#ccc;
+	background:#ccc !important;
 }
 .bg_EF
 {
@@ -438,16 +438,23 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 .tableCounts tr td
 {
 	border-top: 4px solid #2E3560 !important;
+	border-left:1px solid #ccc !important;
+	border-right:1px solid #ccc !important;
+	border-bottom:1px solid #ccc !important;
 	padding: 14px;
 	background-color: #EAE9EF;
 	padding:15px 10px !important;
 	text-transform:uppercase;
 	text-align:center;
 }
+.bg_EA
+{
+	background-color:#EAE9EF;
+}
 .tableCounts
 {
 	border-collapse:separate;
-	border-spacing: 10px 0px;
+	border-spacing: 5px 0px;
 }
 .menuSelection
 {
@@ -516,4 +523,86 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 .b_1
 {
 	border:1px solid #ddd  !important;
+}
+.m_top20{
+margin-top:20px;
+}
+.alertheadingcolor{
+	padding: 10px;
+	background-color:#e8e8e8;
+}
+.textcolor_black{
+color:#686868;
+}
+.m_top10{
+	margin-top:10px;
+}
+.text_capital{
+text-transform:uppercase;
+}
+.pad_0{
+padding:0px;
+}
+.panel-headingColor{
+	background: #d1d1d1 !important ;
+    padding: 12px !important;
+}
+.iconcolor{
+	background-color: #fed607;
+    padding: 3px;
+    width: 35px;
+}
+.updateDropDown
+{
+	background:#fff;
+	width:300px;
+	right:30px;
+	z-index:10;
+	display:none;
+	position:absolute;
+	box-shadow:0px 0px 5px 3px rgba(0,0,0,0.4);
+    margin-top: 43px;
+    padding: 20px;
+	background-color:#EFF3F4;
+   
+}
+
+.updateDropDownArrow:after, .updateDropDownArrow:before {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	right:20px;
+	pointer-events: none;
+}
+
+.updateDropDownArrow:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #fff;
+	border-width: 8px;
+	margin-left: -8px;
+}
+.closedropdown
+{
+	position:absolute;
+	right:10px;
+	top:0px;
+}
+.High {
+    border-color: #ff8800;
+}
+.circle {
+    border: 2px solid #dddddd;
+    border-radius: 50%;
+    display: inline-block;
+    height: 15px;
+    margin-right: 2px;
+    margin-top: 2px;
+    padding: 1px 3px;
+    width: 15px;
+}
+.Low {
+    border-color: #96c22d;
 }

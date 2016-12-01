@@ -428,13 +428,13 @@ function buildAlertData(result,jsObj)
 	str+='<thead>';
 	//str+='<th>S.NO</th>';
 	//str+='<th>Desc</th>';
-	str+='<th>ALERT CATEGORY </th>';
-	str+='<th>ALERT TYPE </th>';
-	str+='<th>STATUS</th>';
-	str+='<th>INVOLVED NO OF CANDIDATES</th>';
-	str+='<th>CREATED DATE </th>'; 
-	str+='<th>INFORMATION SOURCE </th>';
-	str+='<th>SEVERITY</th>';
+	str+='<th>Alert Category </th>';
+	str+='<th>Alert Type </th>';
+	str+='<th>Status</th>';
+	str+='<th>Involved Candidates</th>';
+	str+='<th>Created Date</th>'; 
+	str+='<th>Information Source </th>';
+	str+='<th>Severity</th>';
 	/*
 	if(jsObj.levelId == 2)
 	{
