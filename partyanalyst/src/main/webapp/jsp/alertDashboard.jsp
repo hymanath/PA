@@ -157,7 +157,7 @@
 											<label style="font-size:14px;" class="textcolor_black">State</label>
 											 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
 												 <option value="0">All</option>
-												 <option value="1">Andhra Pradesh</option>
+												 <option value="1" selected="selected">Andhra Pradesh</option>  
 												 <option value="36">Telangana</option>
 											 </select>
 										</div>
