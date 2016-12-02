@@ -1139,7 +1139,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 					str+='<th>DISTRICT</th>';
 					str+='<th>TARGET</th>';
 					str+='<th>RENEWAL</th>';
+					str+='<th>RENEWAL.%</th>';
 					str+='<th>NEW</th>';
+					str+='<th>NEW.%</th>';
 					str+='<th>MAN POWER</th>';  
 					/* str+='<th>TOTAL REG</th>';
 					if(type == "total"){
@@ -1167,10 +1169,14 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						if(result[i].renewalCount == null || result[i].renewalCount == 0){
 						str+='<td>'+result[i].renewalCount+'</td>';
 						}else{
-							str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+							str+='<td>'+result[i].renewalCount+'</td>';
 						}
 					}
-					
+					if(result[i].renewalPerc == null || result[i].renewalPerc == 0 ){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].renewalPerc+'</td>';
+					}
 					
 					if(result[i].newPerc == null || result[i].newPerc == 0){
 						str+='<td> - </td>';
@@ -1178,8 +1184,13 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						if(result[i].newCount == null || result[i].newCount == 0){
 							str+='<td>'+result[i].newCount+'</td>';
 						}else{
-							str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+							str+='<td>'+result[i].newCount+'</td>';
 						}
+					}
+					if(result[i].newPerc == null || result[i].newPerc == 0){
+						str+='<td> - </td>';
+					}else{
+						str+='<td>'+result[i].newPerc+'</td>';
 					}
 					if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
 						str+='<td> - </td>';  
@@ -1263,7 +1274,9 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 					
 					str+='<th>TARGET</th>';
 					str+='<th>RENEWAL</th>';
+					str+='<th>RENEWAL.%</th>';
 					str+='<th>NEW</th>';
+					str+='<th>NEW.%</th>';
 					str+='<th>MAN POWER</th>';    
 					/* str+='<th>TOTAL REG</th>';
 					if(type == "total"){
@@ -1292,10 +1305,14 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 							if(result[i].renewalCount == null || result[i].renewalCount == 0){
 							str+='<td>'+result[i].renewalCount+'</td>';
 							}else{
-								str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+								str+='<td>'+result[i].renewalCount+'</td>';
 							}
 						}
-						
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].renewalPerc+'</td>';
+						}
 						
 						if(result[i].newPerc == null || result[i].newPerc == 0){
 							str+='<td> - </td>';
@@ -1303,8 +1320,13 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 							if(result[i].newCount == null || result[i].newCount == 0){
 								str+='<td>'+result[i].newCount+'</td>';
 							}else{
-								str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+								str+='<td>'+result[i].newCount+'</td>';
 							}
+						}
+						if(result[i].newPerc == null || result[i].newPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].newPerc+'</td>';
 						}
 						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
 							str+='<td> - </td>';
@@ -1415,16 +1437,17 @@ function getDistricts(locationType){
 			{
 				str+='<div class="table-responsive">';
 			}
-			
+			str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered " id="constituencyWise2016DataTableId">';
 				str+='<thead>';
 					str+='<th>AC_No</th>';
 					str+='<th>DISTRICT</th>';
-					str+='<th>CONSTITUENCY</th>';  
-					
+					str+='<th>CONSTITUENCY</th>'; 
 					str+='<th>TARGET</th>';
 					str+='<th>RENEWAL</th>';
+					str+='<th>RENEWAL.%</th>';
 					str+='<th>NEW</th>';
+					str+='<th>NEW.%</th>';
 					str+='<th>MAN POWER</th>';    
 					if(type == "total"){
 						str+='<th>TOTAL REG.  COUNT</th>';
@@ -1450,10 +1473,14 @@ function getDistricts(locationType){
 							if(result[i].renewalCount == null || result[i].renewalCount == 0){
 							str+='<td>'+result[i].renewalCount+'</td>';
 							}else{
-								str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+								str+='<td>'+result[i].renewalCount+'</td>';
 							}
 						}
-						
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].renewalPerc+'</td>';
+						}
 						
 						if(result[i].newPerc == null || result[i].newPerc == 0){
 							str+='<td> - </td>';
@@ -1461,8 +1488,13 @@ function getDistricts(locationType){
 							if(result[i].newCount == null || result[i].newCount == 0){
 								str+='<td>'+result[i].newCount+'</td>';
 							}else{
-								str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+								str+='<td>'+result[i].newCount+'</td>';
 							}
+						}
+						if(result[i].newPerc == null || result[i].newPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].newPerc+'</td>';
 						}
 						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
 							str+='<td> - </td>';
@@ -1505,10 +1537,14 @@ function getDistricts(locationType){
 							if(result[i].renewalCount == null || result[i].renewalCount == 0){
 							str+='<td>'+result[i].renewalCount+'</td>';
 							}else{
-								str+='<td>'+result[i].renewalCount+'<small>('+result[i].renewalPerc+' %)</small></td>';
+								str+='<td>'+result[i].renewalCount+'</td>';
 							}
 						}
-						
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].renewalPerc+'</td>';
+						}
 						
 						if(result[i].newPerc == null || result[i].newPerc == 0){
 							str+='<td> - </td>';
@@ -1516,8 +1552,13 @@ function getDistricts(locationType){
 							if(result[i].newCount == null || result[i].newCount == 0){
 								str+='<td>'+result[i].newCount+'</td>';
 							}else{
-								str+='<td>'+result[i].newCount+'<small>('+result[i].newPerc+' %)</small></td>';
+								str+='<td>'+result[i].newCount+'</td>';
 							}
+						}
+						if(result[i].newPerc == null || result[i].newPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].newPerc+'</td>';
 						}
 						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
 							str+='<td> - </td>';
@@ -1563,6 +1604,7 @@ function getDistricts(locationType){
 				}
 				str+='</tbody>';
 			str+='</table>';
+			str+='</div>';
 			if($(window).width > 768)
 			{
 				str+='</div>'; 
