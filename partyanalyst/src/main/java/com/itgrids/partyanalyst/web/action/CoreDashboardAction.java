@@ -3151,7 +3151,9 @@ public String getUserTrackingDtslBySurveyUserId(){
 		Long surveyUserId = jObj.getLong("surveyUserId");
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
-		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate,fieldUserId,constId);
+		Long fromTime = jObj.getLong("fromTime");
+		Long toTime = jObj.getLong("toTime");
+		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate,fieldUserId,constId,fromTime,toTime);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getUserTrackingDtslBySurveyUserId() method of CoreDashBoard", e);
 	}
@@ -3259,7 +3261,7 @@ public String getUserTrackingDtslBySurveyUserId1(){
 		Long surveyUserId = jObj.getLong("surveyUserId");
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
-		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate,null,null);
+		cadreVO = coreDashboardCadreRegistrationService.getUserTrackingDtslBySurveyUserId(surveyUserId,fromDate,toDate,null,null,null,null);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getUserTrackingDtslBySurveyUserId1() method of CoreDashBoard", e);
 	}

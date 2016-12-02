@@ -58,11 +58,35 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel-heading bg_cc">
 							<h4 class="panel-title">
-							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 20px;">Select User</label>
+							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 20px;">SELECT HOUR</label>
 							 <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
                     	    <option value="0">All</option>
-                             </select>&nbsp&nbsp<input type="checkbox" name="checkbox" value="2" id="checkboxId" style="margin-left: 10px;"><label style="margin-left: 10px;">WITH ROUTE</label>&nbsp&nbsp<input type="checkbox" name="timeCheckbox" id="timeCheckboxId"><label style="margin-left: 10px;">WITH ROUTE FOR EVERY 5 MINS</label></h4>
-							 <h5><span id="userTrackingId"></span>-USER TRACKING</h5>
+                             </select>&nbsp&nbsp<input type="checkbox" name="checkbox" value="2" id="checkboxId" style="margin-left: 10px;"><label style="margin-left: 10px;">WITH ROUTE &nbsp<img src="images/sample_rout.png" style="width: 20px; height: 20px;"/></label>&nbsp&nbsp<input type="checkbox" name="timeCheckbox" id="timeCheckboxId"><label style="margin-left: 10px;">WITH ROUTE FOR EVERY 10 MINS &nbsp<img src="images/user_rout.png" style="width: 20px; height: 20px;"/></label>
+							 </h4>
+							 <h5><span id="userTrackingId"></span>-USER TRACKING
+							 <label style="margin-left: 110px;">FROM HOUR</label>
+							 <select id="fromTimeId"> 
+								<option value="0">Select Hour</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+								<option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+								<option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
+								<option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+								<option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option>
+								<option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>
+								<option value="24">24</option>
+							 </select>
+							 <label style="margin-left: 30px;">TO HOUR</label>
+							 <select id="toTimeId"> 
+								<option value="0">Select Hour</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+								<option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+								<option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option>
+								<option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
+								<option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option>
+								<option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>
+								<option value="24">24</option>
+							 </select>
+							 <button class="btn btn-xs btn-info" style="margin-left: 30px;" onclick="getMapDetailsId();">Get Map</button>
+							 </h5>
+							 <div class="text-danger" id="errorDivId"></div>
 							</div>
 							<div id="map1" style="width: 100%; height: 800px;"></div>
 						</div>
@@ -93,6 +117,13 @@ var glblLat = 17.3700;
 var glblLon = 78.4800;
 	//inputs to build path
   var flightPlanCoordinates = [];
+
+$(document).ready(function(){
+	$("#fromTimeId").val(fromHour);
+	$("#toTimeId").val(toHour);
+});
+
+
   
   getUserTrackingDetails();
 	function getUserTrackingDetails(){
@@ -101,7 +132,9 @@ var glblLon = 78.4800;
 			fieldUserId : "${param.fieldUserId}",
 			surveyUserId:"${param.userId}",
 			fromDate:"",
-			toDate:""
+			toDate:"",
+			fromTime : "${param.fromHour}",
+			toTime : "${param.toHour}"
 		}
 		$('#map1').html('<div id=""><img class="ajaxImgStyle" src="images/icons/search.gif"/></div>');
 		$.ajax({
@@ -139,22 +172,23 @@ var glblLon = 78.4800;
 							if(searchTypeId==0){
 								//$('#checkboxId').prop('checked', false);
 								$('#checkboxId').prop("disabled", true);
-								temparr.push("<b>Last Sync Time </b> : "+result.subList2[i].surveyTime);
+								temparr.push("<b>Survey Time </b> : "+result.subList2[i].surveyTime);
 								
 							}	
 							else {
-								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/><b>Sync Time </b> : "+result.subList2[i].surveyTime);
+								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/><b>Survey Time </b> : "+result.subList2[i].surveyTime);
 							}
 							temparr.push(result.subList2[i].latitude);
 							temparr.push(result.subList2[i].longititude);
 							temparr.push(result.subList2[i].surveyTime);
+							temparr.push("route");
 							markersArr.push(temparr);
 							flightPlanCoordinates.push(temparr);
 							//displayLocation(result.subList1[i].latitude,result.subList1[i].longititude);
 						}
 					}
 				}
-				else if(result.subList1 != null && result.subList1.length > 0){
+				if(result.subList1 != null && result.subList1.length > 0){
 					for(var i in result.subList1){
 						var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
 						if(withRoute == "true"){
@@ -176,15 +210,16 @@ var glblLon = 78.4800;
 						if(searchTypeId==0){
 							//$('#checkboxId').prop('checked', false);
 							$('#checkboxId').prop("disabled", true);
-							temparr.push("<b>Tab User Name</b> : "+result.subList1[i].tdpCadreName+"<br/> <b>Mobile No </b> : "+result.subList1[i].tdpCadreMbl+"<br/> <b>Last Sync Time </b> : "+result.subList1[i].surveyTime);
+							temparr.push("<b>Tab User Name</b> : "+result.subList1[i].tdpCadreName+"<br/> <b>Mobile No </b> : "+result.subList1[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList1[i].surveyTime);
 							
 						}	
 						else {
-							temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList1[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList1[i].tdpCadreMbl+"<br/> <b>Sync Time </b> : "+result.subList1[i].surveyTime);
+							temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList1[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList1[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList1[i].surveyTime);
 						}
 						temparr.push(result.subList1[i].latitude);
 						temparr.push(result.subList1[i].longititude);
 						temparr.push(result.subList1[i].surveyTime);
+						temparr.push("sample");
 						markersArr.push(temparr);
 						flightPlanCoordinates.push(temparr);
 						//displayLocation(result.subList1[i].latitude,result.subList1[i].longititude);
@@ -222,6 +257,7 @@ function buildUserTrackingMap(markersArr,flightPlanCoordinates) {
 		glblLon = parseFloat(glblLon+"00");
 		//console.log(glblLat);
 		//console.log(glblLon);
+		
 		  var map1 = new google.maps.Map(document.getElementById('map1'), {
 			zoom: 12,
 			center: {lat: glblLat, lng: glblLon},
@@ -243,12 +279,24 @@ function buildUserTrackingMap(markersArr,flightPlanCoordinates) {
 	//logic to build markers  
 		var infowindow = new google.maps.InfoWindow();
 		var marker,i;
+		var pinColor = "AE6558";
 		for (i = 0; i < locations.length; i++) {
-			marker = new google.maps.Marker({
+			if(locations[i][4] == 'sample'){
+				pinColor = "A6BAFF";
+			}
+			
+			
+		var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+        new google.maps.Size(21, 34),
+        new google.maps.Point(0,0),
+        new google.maps.Point(10, 34));
+		marker = new google.maps.Marker({
+				icon: pinImage,
 				position: new google.maps.LatLng(locations[i][1], locations[i][2]),
 				map: map1
 			});
-			  
+			
+			
 			google.maps.event.addListener(marker, 'click', (function(marker, i) {
 				return function() {
 					infowindow.setContent(locations[i][0]);
@@ -312,7 +360,7 @@ function getFieldMonitoringMapReportDetails(){
 			if(result != null && result.length > 0){
 				for(var i in result){
 					if("${param.userId}" == ""){
-						var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+result[i].id+"&cadreName="+result[i].cadreName+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+						var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+result[i].id+"&cadreName="+result[i].cadreName+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
 						var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
 						$("#userTrackingId").text("${param.cadreName}");
 					}
@@ -326,16 +374,40 @@ function getFieldMonitoringMapReportDetails(){
 }
 var withRoute = "${param.withRoute}";
 var withTimeRoute = "${param.withTimeRoute}";
+var fromHour = "${param.fromHour}";
+var toHour = "${param.toHour}";
 function showMapDetails(value){
 	var withRoute = false;
 	var cadreUserId=$( "#mapId option:selected" ).text();
 	var userName = "${param.username}";
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
 	$("#userTrackingId").text("${param.userId}");
 }
+
+function getMapDetailsId(){
+	$("#errorDivId").html("");
+	if ($("#timeCheckboxId").is(':checked')){
+		withRoute = false;
+		withTimeRoute = true;
+		fromHour = $("#fromTimeId").val();
+		toHour = $("#toTimeId").val();
+		var cadreUserId=$( "#mapId option:selected" ).text();
+		var userName = "${param.username}";
+		var constitunecyId = "${param.constistuencyId}";
+		var fieldUserId ="${param.fieldUserId}";
+		var value ="${param.userId}";
+		var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
+		var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
+		$("#userTrackingId").text("${param.userId}");
+	}
+	else{
+		$("#errorDivId").html("Please check WITH ROUTE FOR EVERY 5 MINS");
+	}
+}
+
  $('#checkboxId').click(function() {
   if ($(this).is(':checked')) {
 	  $(this).prop('checked', true);
@@ -345,7 +417,7 @@ function showMapDetails(value){
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var value ="${param.userId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
  
   } else {
@@ -356,7 +428,7 @@ function showMapDetails(value){
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var value ="${param.userId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
   }
 });
@@ -377,7 +449,7 @@ $('#timeCheckboxId').click(function() {
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var value ="${param.userId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
  
   } else {
@@ -389,7 +461,7 @@ $('#timeCheckboxId').click(function() {
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var value ="${param.userId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute+"&fromHour="+fromHour+"&toHour="+toHour;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
   }
 });
@@ -399,6 +471,7 @@ if(withTimeRoute == "true")
 }else{
 		$('#timeCheckboxId').prop('checked', false);
 	}
+
 </script>
 </body>
 </html>
