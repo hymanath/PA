@@ -400,6 +400,38 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		     
 		     return query.list();
 	}
+	
+	public List<Object[]> getSurveyUserTrackingDtlsByFieldUser(Long fieldUserId,Long cadreSurveyUserId,Date fromDate,Date toDate){
+		   StringBuilder queryStr = new StringBuilder();
+		     queryStr.append("select distinct " +
+		     		         " model.surveyTime," +//0
+		     		         " model.longititude," +//1
+		     		         " model.latitude " +//2
+		     		         " from TabUserLocationDetails model,CadreRegUserTabUser model1 " +
+		     		         " where model.cadreSurveyUserId = model1.cadreSurveyUserId" +
+		     		         " and model1.isDeleted = 'N'");
+		     if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		    	 queryStr.append(" and model.cadreSurveyUserId = :cadreSurveyUserId ");
+		     if(fieldUserId != null && fieldUserId.longValue() > 0l)
+		    	 queryStr.append(" and model1.cadreRegUser.userId = :fieldUserId" +
+		    	 		" and model1.cadreRegUser.userType = 'FM'");
+		     if(fromDate != null && toDate != null){
+		    	 queryStr.append(" and date(model.surveyTime) between :fromDate and :toDate ");
+		     }
+		     queryStr.append("  order by date(model.surveyTime) ");
+		     Query query = getSession().createQuery(queryStr.toString());
+		     if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
+		    	 query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		     if(fieldUserId != null && fieldUserId.longValue() > 0l)
+		    	 query.setParameter("fieldUserId", fieldUserId);
+		     if(fromDate != null && toDate != null){
+		    	 query.setParameter("fromDate", fromDate);
+		    	 query.setParameter("toDate", toDate);
+		     }
+		     
+		     return query.list();
+	}
+	
   public List<Object[]> getSurveyUserLatestTimeLongitudeAndLatituedeLocationWise(String locationType,List<Long> locationValues,Date fromDate,Date toDate){
 	  
 	  StringBuilder queryStr = new StringBuilder();
