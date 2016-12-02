@@ -162,7 +162,8 @@ function getAlertStatusCommentsTrackingDetails()
 		  dataType : 'json',
 		  data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){ 
-		  buildAlertCommentsForTracking(result);
+			alertComments(result);
+			//buildAlertCommentsForTracking(result);
 		});
 		
 	}
@@ -839,4 +840,133 @@ function getTotalArticledetails(articleId){
 					
 		        
 		});    
+}
+function alertComments(result)
+{
+	var statusId = 0;
+	var length = result.length;
+	length = length - 1;
+	var str = '';
+	str+='<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+		statusId = result[i].statusId;
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+			if(length == i)  
+			{
+				str+='<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+			}else{
+				str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
+			}
+			if(length != i){
+				str+='<h4 class="panel-title">'+result[i].status+'';
+						str+='<i class="glyphicon glyphicon-ok"></i>';
+				str+='</h4>';
+			}else{
+				str+='<h4 class="panel-title">'+result[i].status+'';
+					str+='<i class="glyphicon glyphicon-hourglass"></i>';
+				str+='</h4>';
+			} 
+				str+='</a>';  
+			str+='</div>';
+			if(length == i)
+			{
+				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+			}else{
+				str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+			}
+				str+='<div class="panel-body" style="padding:5px;">';
+					str+='<div class="row">';
+						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+						for(var j in result[i].sublist2)
+						{
+							
+							var date = result[i].sublist2[j].date
+							var dateArr = date.split("-");
+							var year = dateArr[0];
+							var month = dateArr[1];
+							var day = dateArr[2];
+							str+='<table class="table tableCalendar">';
+								str+='<tr>';
+									str+='<td colspan="2">';
+										str+='<h3>'+day+'</h3>';
+									str+='</td>';
+								str+='</tr>';
+								str+='<tr>';
+									str+='<td>'+getMonth(month)+'</td>';
+									str+='<td>'+year+'</td>';
+								str+='</tr>';
+							str+='</table>';
+						}
+						str+='</div>';
+						str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+							str+='<ul class="alertStatusTracking">';
+								str+='<li>';
+									str+='<div class="arrow_box_left">';
+									for(var k in result[i].sublist2[j].sublist)
+									{	
+										str+='<div>';
+											str+='<p>';
+											for(var l in result[i].sublist2[j].sublist[k])
+											{
+												str+='<span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+' - '+result[i].sublist2[j].sublist[k][l].timeString+'</br>';
+											}
+											str+='</p>';
+											str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+											str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+											str+='<hr style="margin-top:20px;"/>';
+										str+='</div>';
+									}
+									str+='</div>';
+								str+='</li>';
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed","5":"Unable to Resolve","6":"Action Not Required"};
+	statusId = statusId + 1;
+	for(var i = statusId ; i <= 6 ; i++){
+		str+='<div class="panel panel-default" style="cursor:no-drop;pointer-events: none;">';
+		str+='<div class="panel-heading" role="tab" id="headingThree" style="cursor:no-drop;pointer-events: none;background-color:rgba(162, 134, 192,0.4)">';
+		str+='<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="cursor:no-drop;pointer-events: none;color:rgba(0,0,0,0.4)">';
+		str+='<h4 class="panel-title">'+statusArr[i]+'</h4>';
+		str+='</a>';     
+		str+='</div>';
+		str+='<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">';
+		str+='</div>';
+		str+='</div>';
+	}  
+	$("#alertCommentsDivIdNew").html(str)
+}
+
+function getMonth(month){
+	if(month=="01"){
+		return "Jan"
+	}else if(month=="02"){
+		return "Feb"
+	}else if(month=="03"){
+		return "Mar"
+	}else if(month=="04"){
+		return "Apr"
+	}else if(month=="05"){
+		return "May"
+	}else if(month=="06"){
+		return "Jun"
+	}else if(month=="07"){
+		return "Jul"
+	}else if(month=="08"){
+		return "Aug"
+	}else if(month=="09"){
+		return "Sep"
+	}else if(month=="10"){
+		return "Oct"
+	}else if(month=="11"){
+		return "Nov"
+	}else if(month=="12"){  
+		return "Dec"
+	}  
 }
