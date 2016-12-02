@@ -393,6 +393,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
+				$("#advanceSearchValueId").val('');
 				
 			}
 			else if(selectVal == "mobileno" || selectVal == "mebershipno" || selectVal == "votercardno")
