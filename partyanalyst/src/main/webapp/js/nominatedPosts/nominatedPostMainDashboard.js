@@ -1381,7 +1381,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		str+='<table class="table table-condensed" style="border:1px solid #ddd;background-color:#ECF1F5">';  
 		str+='<thead class="bg_ef text-capital">';
 			str+='<th style="width:200px;" id="locationHeadingId"></th>';
-			str+='<th style="width:200px;text-align:center">Finalised Positions Total</th>';  
+			str+='<th style="width:200px;text-align:center">Total</th>';  //Finalised Positions
 			str+='<th style="width:100px;">Male</th>';
 			str+='<th style="width:100px;">Female</th>';
 			str+='<th style="width:100px;">18-29 AGE</th>';        
