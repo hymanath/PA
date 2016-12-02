@@ -15,7 +15,7 @@
 	position: absolute;
 	overflow: hidden;
 	top: 0;
-	background: #EFEAE5;
+	background: #22272F;
 	width: auto;
 	min-height: 100%;
 	font-family: 'Open Sans Condensed', sans-serif;
@@ -35,21 +35,21 @@
 .mlpm_w .rtl {
 	margin-right: -100%;
 	right: 0;
-	-moz-box-shadow: 5px 0 5px 5px #5c2d25;
-	-webkit-box-shadow: 5px 0 5px 5px #5c2d25;
-	box-shadow: 5px 0 5px 5px #5c2d25;
+	-moz-box-shadow: 6px 0 5px 5px rgb(213, 217, 224);
+	-webkit-box-shadow: 6px 0 5px 5px rgb(213, 217, 224);
+	box-shadow: 6px 0 5px 5px rgb(213, 217, 224);
 	filter: progid:DXImageTransform.Microsoft.Shadow(color=#5c2d25,direction=270,strength=2);
 }
 
 .mlpm_w .mlpm_inactive {
-	background: #efeae5 ;
+	background: #22272F ;
 }
 
 .mlpm_w h2 {
 	font-size: 1.5em;
 	line-height: 2.3em;
 	font-weight: bold;
-	color: #5c2d25 ;
+	color: #777777;
 	padding: 0 .4em 0 .4em;
 }
 .mlpm_w ul {
@@ -60,15 +60,15 @@
 
 .mlpm_w li {
 	cursor: pointer;
-	border-top: 1px solid rgba(92, 45, 37, 0.3);
+	border-top: 1px solid rgba(225, 225, 225, 0.3);
 }
 
 .mlpm_w li:last-child {
-	border-bottom: 1px solid #fff;
+	border-bottom: 1px solid rgba(225,225,255,0.3);
 }
 
 .mlpm_w li:hover {
-	background-color: #5c2d25;
+	/*background-color: #5c2d25;*/
 	color:#fff !important
 }
 .mlpm_w a{
@@ -79,11 +79,11 @@
 	line-height: 1.4em;
 	padding: .6em .6em;
 	text-decoration: none;
-	color: #5c2d25;
+	color: #777777;
 }
 .mlpm_w a i 
 {
-	color: #5c2d25;
+	color: #777777;
 }
 .mlpm_w span {
 	float:left;
@@ -94,12 +94,12 @@
 
 .mlpm_w .backItemClass {
 	display: block;
-	background: #efeae5;
-	border-top: 1px solid #fff;
+	background: #22272F;
+	border-top: 1px solid rgba(225,225,255,0.3);
 }
 .mlpm_w .backItemClass:hover
 {
-	background:#5c2d25
+	/*background:#5c2d25*/
 }
 .mlpm_w .floatRight {
 	float: right;

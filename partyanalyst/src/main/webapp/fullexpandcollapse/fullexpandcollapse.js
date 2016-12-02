@@ -1,23 +1,23 @@
 $(document).ready(function(){
 	var windowWidth = $(window).width();
-	console.log("menu width from menuinitialisation file and the font size of the page are coming from the css/menuresponsive.css")
 	//alert(windowWidth)
-	var res = windowWidth * 40 / 100;
+	console.log("menu width from menuinitialisation file and the font size of the page are coming from the css/menuresponsive.css")
+	var res = windowWidth * 30 / 100;
 	//alert(res)
 	if(windowWidth < 767 &&  windowWidth > 500)
 	{
-		var res = windowWidth * 40 / 100;
+		var res = windowWidth * 30 / 100;
 		windowWidth = res+'px';	
 	}
 	else if(windowWidth < 400 )
 	{
-		var res = windowWidth * 60 / 100;
+		var res = windowWidth * 30 / 100;
 		windowWidth = res+'px';	
 		//alert(windowWidth)
 	}
 	else if(windowWidth > 767 )
 	{
-		var res = windowWidth * 35 / 100;
+		var res = windowWidth * 20 / 100;
 		windowWidth = res+'px';	
 		//alert(windowWidth)
 	}
@@ -43,6 +43,8 @@ $(document).ready(function(){
 	});
 	
 });
+	
+	
 	// Full collapse
 	$( '.fullcollapse' ).click(function(){
 	
@@ -73,4 +75,30 @@ $(document).ready(function(){
 	  });
 
 	
+	function loadScript( url, callback ) {
+	  var script = document.createElement( "script" )
+	  script.type = "text/javascript";
+	  if(script.readyState) {  //IE
+		script.onreadystatechange = function() {
+		  if ( script.readyState === "loaded" || script.readyState === "complete" ) {
+			script.onreadystatechange = null;
+			callback();
+		  }
+		};
+	  } else {  //Others
+		script.onload = function() {
+		  callback();
+		};
+	  }
+
+	  script.src = url;
+	  document.getElementsByTagName( "head" )[0].appendChild( script );
+	}
+
+
+	// call the function...
+	loadScript('../jquery.multilevelpushmenu.min.js', function() {
+	  $("#menu").css("display","none");
+	  $("#menu").find("li").css("text-align","left");
+	});
 
