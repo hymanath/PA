@@ -683,12 +683,12 @@ function getAlertAssignedCandidate()
 		var str = '';  
 		str+='<table class="table table-condensed b_1">';
 			str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
-				str+='<th>&nbsp;</th>';
+				str+='<th>ALERT STATUS</th>';    
 				for(var i in result[0].subList1){
 					str+='<th class="text-capital text-center" >'+result[0].subList1[i].category+'</th>';
 				}  
 			str+='</thead>';
-			for(var i in result){  
+			for(var i in result){       
 				str+='<tr>';
 				var appClr = colorArr[result[i].status];
 				var appClrHd = colorArrHead[result[i].status];
