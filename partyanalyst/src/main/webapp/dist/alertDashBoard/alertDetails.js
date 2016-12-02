@@ -144,7 +144,7 @@ function buildAlertData(result)
 				$("#imageUrlTrId").hide();
 			}
 			
-			buildAlertCandidateData(result[i].subList);
+			buildAlertCandidateData(result[i].subList,result[i].categoryId);
 		
 	}	
 }
@@ -257,7 +257,7 @@ function getAlertCandidatesData(alertId)
 			      buildAlertCandidateData(result);
 				});
 }*/
-function buildAlertCandidateData(result)
+function buildAlertCandidateData(result,categoryId)
 {
 	
 	if(result == null || result.length == 0)
@@ -266,32 +266,69 @@ function buildAlertCandidateData(result)
 		return;
 	}
 	var str='';
-	for(var i in result)
-	{
-	str+='<li>';
-		str+='<div class="media">';
-			str+='<div class="media-left">';
-			   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
-		   str+=' </div>';
-		   str+=' <div class="media-body">';
-			   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
-			   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
-			    str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
-			  str+='  <p>'+result[i].mobileNo+'</p>';
-			  str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
-			  if(result[i].impactId == 1)
-			  {
-				 str+=' <span class="label label-success">+ Ve</span>'; 
-			  }else{
-				  str+=' <span class="label label-danger">- Ve</span>';
-			  }
-			  
-		  str+='  </div>';
-		str+='</div>';
-   str+=' </li>';
+	
+	if(categoryId !=null && categoryId>1){
+		for(var i in result)
+		{
+			str+='<li>';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+					   str+=' <img src="CandidateImages/'+result[i].categoryId+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
+					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
+						//str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
+					str+='  <p><b class="text-capital text-danger">Designation : </b>'+result[i].committeePosition+' </p>';
+					 // str+='  <p>'+result[i].mobileNo+'</p>';
+					 // str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
+					  if(result[i].impactId == 1)
+					  {
+						 str+=' <span class="label label-success">+ Ve</span>'; 
+					  }else if(result[i].impactId == 2){
+						  str+=' <span class="label label-danger">- Ve</span>';
+					  }else{
+						  str+=' <span class="label label-neutral">N</span>';
+					  }
+					  
+					  if(result[i].organization !=null){
+						  str+='<p><b class="text-capital text-danger">Organization</b> : '+result[i].organization+'</p>';
+					  }
+					  
+				  str+='  </div>';
+				str+='</div>';
+		   str+=' </li>';
 
+		}
+	}else{
+		for(var i in result)
+		{
+			str+='<li>';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+					   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+				   str+=' </div>';
+				   str+=' <div class="media-body">';
+					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
+					   if(result[i].committeePosition != null && result[i].committeePosition.length > 0)
+						str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
+					  str+='  <p>'+result[i].mobileNo+'</p>';
+					  str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
+					  if(result[i].impactId == 1)
+					  {
+						 str+=' <span class="label label-success">+ Ve</span>'; 
+					  }else{
+						  str+=' <span class="label label-danger">- Ve</span>';
+					  }
+					  
+				  str+='  </div>';
+				str+='</div>';
+		   str+=' </li>';
+
+		}
 	}
-	$("#involvedCandidatesCnt").html('-' +result.length);
+
+	$("#involvedCandidatesCnt").html('-' +result.length);	
 	$("#alertCandidateDataId").html(str);
 	if(result.length > 3)
 	{
