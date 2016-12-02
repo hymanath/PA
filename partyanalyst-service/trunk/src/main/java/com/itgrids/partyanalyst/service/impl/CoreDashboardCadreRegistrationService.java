@@ -4757,7 +4757,7 @@ try{
 		 List<CadreBasicVO> eryFveMntsDtlsLstUsrTrckngLst = new ArrayList<CadreBasicVO>(0);
 		 
 		 List<Object[]> rtrnTrackingDtlsLst = tdpCadreDAO.getUserTrackingDetails(cadreSurveyUserId, fromDate, toDate);
-		 List<Object[]> rtrnEvry5MinutesUsrTrkngDtlList = tabUserLocationDetailsDAO.getSurveyUserTrackingDtls(cadreSurveyUserId, fromDate, toDate);
+		 List<Object[]> rtrnEvry5MinutesUsrTrkngDtlList = tabUserLocationDetailsDAO.getSurveyUserTrackingDtlsByFieldUser(fieldUserId, cadreSurveyUserId, fromDate, toDate);
 		 
 		 setDUserTrackingDtlsToList(rtrnTrackingDtlsLst,userTrackingDtlList,"samples");
 		 setDUserTrackingDtlsToList(rtrnEvry5MinutesUsrTrkngDtlList,eryFveMntsDtlsLstUsrTrckngLst,null);
@@ -4784,6 +4784,7 @@ try{
  		//between 8pm -> 8am
  		List<Long> hourList = new ArrayList<Long>(){{add(20l);add(21l);add(22l);add(23l);add(0l);add(1l);add(2l);add(3l);add(4l);add(5l);add(6l);add(7l);}};
 		//between 8am -> 8pm  
+ 		
 		Map<String,Long> labelAndPositionMap = new HashMap<String,Long>(){{  
 			put("8am-9am",8l);put("9am-10am",9l);put("10am-11am",10l);put("11am-12pm",11l);
 			put("12pm-1pm",12l);put("1pm-2pm",13l);put("2pm-3pm",14l);put("3pm-4pm",15l);
