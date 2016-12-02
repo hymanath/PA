@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.model.BaseModel;
 
@@ -43,6 +46,11 @@ public class ActionableVO extends BaseModel implements Serializable{
 	private String title;
 	
 	private List<ActionableVO> actionableVoList;
+	
+	private Long newsCandidateId;
+	private String newsCandidate;
+	private String organization;
+	private Set<String> designationList = new HashSet<String>(0);
 	
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -213,6 +221,30 @@ public class ActionableVO extends BaseModel implements Serializable{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public Set<String> getDesignationList() {
+		return designationList;
+	}
+	public void setDesignationList(Set<String> designationList) {
+		this.designationList = designationList;
+	}
+	public Long getNewsCandidateId() {
+		return newsCandidateId;
+	}
+	public void setNewsCandidateId(Long newsCandidateId) {
+		this.newsCandidateId = newsCandidateId;
+	}
+	public String getNewsCandidate() {
+		return newsCandidate;
+	}
+	public void setNewsCandidate(String newsCandidate) {
+		this.newsCandidate = newsCandidate;
+	}
+	public String getOrganization() {
+		return organization;
+	}
+	public void setOrganization(String organization) {
+		this.organization = organization;
 	}
 	
 	

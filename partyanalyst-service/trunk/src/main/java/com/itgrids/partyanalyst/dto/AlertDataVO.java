@@ -39,6 +39,7 @@ public class AlertDataVO {
 	private String category;
 	private String imageUrl;
 	private Long alertCategoryTypeId;
+	private String organization;
 	
 	public String getTitle() {
 		return title;
@@ -219,6 +220,12 @@ public class AlertDataVO {
 	}
 	public void setAlertCategoryTypeId(Long alertCategoryTypeId) {
 		this.alertCategoryTypeId = alertCategoryTypeId;
+	}
+	public String getOrganization() {
+		return organization;
+	}
+	public void setOrganization(String organization) {
+		this.organization = organization;
 	}
 	
 }

@@ -30,6 +30,13 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	private TdpCadre tdpCadre;
 	private AlertImpact alertImpact;
 	private Long candidateId;
+	
+	//News Portal Data Adding
+	private Long newsCandidateId;
+	private String newsCandidate;
+	private String designation;
+	private String organization;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -108,6 +115,42 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
 	}
+
+	@Column(name = "news_candidate_id")
+	public Long getNewsCandidateId() {
+		return newsCandidateId;
+	}
+
+	public void setNewsCandidateId(Long newsCandidateId) {
+		this.newsCandidateId = newsCandidateId;
+	}
+
+	@Column(name = "news_candidate")
+	public String getNewsCandidate() {
+		return newsCandidate;
+	}
+
+	public void setNewsCandidate(String newsCandidate) {
+		this.newsCandidate = newsCandidate;
+	}
+
+	@Column(name = "designation")
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	@Column(name = "organization")
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+	
 	
 
 }
