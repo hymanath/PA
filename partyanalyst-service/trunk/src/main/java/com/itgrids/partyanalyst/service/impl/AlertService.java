@@ -597,6 +597,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 List<Object[]> list = alertDAO.getAlertsData(alertId);
 			 if(list != null && list.size() > 0)
 			 {
+				 
+				 Map<Long,Long> alertCategoryMap = new HashMap<Long, Long>();
+				 
 				 for(Object[] params : list)
 				 {
 					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[0].toString());
@@ -604,8 +607,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 {
 						 alertVO = new AlertDataVO(); 
 						 returnList.add(alertVO);
-						 if(!alertIds.contains((Long)params[0]));
-						 alertIds.add((Long)params[0]);
+						 if(!alertIds.contains((Long)params[0]))
+							 alertIds.add((Long)params[0]);
 					 }
 					 alertVO.setId((Long)params[0]);
 					 alertVO.setTitle(params[25] != null ? params[25].toString() : "");
@@ -640,23 +643,45 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 
 					 String eleType = params[18] != null ? params[18].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
+					 
+					 //category
+					 alertCategoryMap.put((Long)params[0], alertVO.getCategoryId());
+					 
 					alertVO.setLocationVO(locationVO);
 					 
 					
 				 }
 				 if(alertIds != null && alertIds.size() > 0)
 				 {
-				 List<Object[]> candiateCnts = alertCandidateDAO.getAlertCandidateCount(alertIds);
-					 for(Object[] params : candiateCnts)
-					 {
-						 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString());
-							 if(alertVO != null)
-							 {
-								 alertVO.setCount((Long)params[0]);
-							 }
+					 List<Object[]> candiateCnts = null;
+					 if(alertCategoryMap.get(alertId) !=null && alertCategoryMap.get(alertId)>0l && alertCategoryMap.get(alertId) !=1l){
+						
+						 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId
+						 List<Object[]> newsAlertCandidates = alertCandidateDAO.getInvolvedCandidateDetailsOfAlert(alertId);
+						 setNewsAlertCandidateData(newsAlertCandidates,returnList);
+						 
+						 //total Involved Candidates
+						 candiateCnts = alertCandidateDAO.getAlertNewsCandidateCount(alertIds);
+						 
+					 }else{						 
+						 List<Object[]> alertCandidates = alertCandidateDAO.getAlertCandidatesData(alertIds);
+						 setAlertCandidateData(alertCandidates,returnList);
+						 
+						 //total Involved Candidates
+						 candiateCnts = alertCandidateDAO.getAlertCandidateCount(alertIds);
+						 
 					 }
-					 List<Object[]> alertCandidates = alertCandidateDAO.getAlertCandidatesData(alertIds);
-					 setAlertCandidateData(alertCandidates,returnList);
+					 	
+					if(candiateCnts !=null && candiateCnts.size()>0){
+						 for(Object[] params : candiateCnts)
+						 {
+							 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString());
+								 if(alertVO != null)
+								 {
+									 alertVO.setCount((Long)params[0]);
+								 }
+						 }
+					}					 
 				 }
 				 
 				 
@@ -669,6 +694,47 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
+	
+	 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId
+	public void setNewsAlertCandidateData(List<Object[]> list , List<AlertDataVO> dataList){
+		try{
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", params[0].toString());
+					if(alertVo == null)
+					{
+						alertVo = new AlertDataVO();
+						alertVo.setId((Long)params[0]);
+						dataList.add(alertVo);
+					}
+					AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+					if(candidateVO == null)
+					{
+						candidateVO = new AlertDataVO();
+						alertVo.getSubList().add(candidateVO);
+					}
+					
+					candidateVO.setId(params[1] !=null ? (Long)params[1]:null);
+					candidateVO.setName(params[2] !=null ? params[2].toString():"");
+					candidateVO.setCommitteePosition(params[3] !=null ? params[3].toString():"");//designation
+					
+					candidateVO.setOrganization(params[4] !=null ? params[4].toString():"");
+					candidateVO.setImpactId(params[5] !=null ? (Long)params[5]:null);
+					candidateVO.setImpact(params[6] !=null ? params[6].toString():"");
+					
+					candidateVO.setCategoryId(params[7] !=null ? (Long)params[7]:null);//PaCandidateId
+					
+				}
+			
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO)
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
@@ -1815,7 +1881,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									 candidateIds.add(vo.getCandidateId());
 								 }						
 							}
-							//candidateId,cadreId
+							//paCandidateId,cadreId
 							List<Object[]> tdpCadres = tdpCadreCandidateDAO.getTdpCadreIdsOfCandidates(candidateIds);
 							 
 							 Map<Long,Long> tdpcadreMap = new HashMap<Long, Long>(0);
@@ -1833,10 +1899,26 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									 AlertCandidate alertCandidate = new AlertCandidate();
 									 alertCandidate.setAlertId(alert.getAlertId());
 									 alertCandidate.setAlertImpactId(vo.getBenefitId());
-									 alertCandidate.setCandidateId(vo.getCandidateId());
+									 alertCandidate.setCandidateId(vo.getCandidateId());//pacandidate
 									 if(vo.getCandidateId() !=null && vo.getCandidateId()>0l){
 										 alertCandidate.setTdpCadreId(tdpcadreMap.get(vo.getCandidateId()));
-									 }							
+									 }
+									 
+									 alertCandidate.setNewsCandidateId(vo.getNewsCandidateId());
+									 alertCandidate.setNewsCandidate(vo.getNewsCandidate() !=null ? vo.getNewsCandidate():"");
+									 
+									 if(vo.getDesignationList() !=null && vo.getDesignationList().size()>0){
+										 for (String designation : vo.getDesignationList()) {
+											 if(alertCandidate.getDesignation() !=null && !alertCandidate.getDesignation().trim().isEmpty()){
+												 alertCandidate.setDesignation(alertCandidate.getDesignation()+","+designation);
+											 }else{
+												 alertCandidate.setDesignation(designation);
+											 }
+											
+										}										 
+									 }
+									 alertCandidate.setOrganization(vo.getOrganization());
+								
 									 alertCandidateDAO.save(alertCandidate);
 								 }						
 							 }
