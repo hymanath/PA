@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ActionableVO;
+import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
@@ -18,7 +19,7 @@ public interface IAlertService {
 	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String FromDate,String toDate);
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO);
 	public String updateAlertStatus(final Long userId,final AlertVO inputVo);
-	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId);
+	public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 	public List<BasicVO> getAlertType();
 	public List<BasicVO> getAlertSourceForUser(Long userId);
 	public List<AlertDataVO> getAlertCandidatesData(Long alertId);
