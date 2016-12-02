@@ -65,7 +65,7 @@ $(document).on("click",".casteGroupCls",function(){
 	
     $("#castePostionDivId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
 	var localLevelId = levelId;
-	console.log(index);
+	//console.log(index);
 	if(index == 0)
 		localLevelId = 0;
   var jsObj={
@@ -122,7 +122,7 @@ $(document).on("click",".casteGroupCls",function(){
         str+='</div>';
         str+='</div>';
        $("#castePostionDivId").html(str);
-         $(".dataTableCaste").dataTable({
+        $(".dataTableCaste").dataTable({
 	      "sDom": '<"top">rt<"bottom"><"clear"iflp>',
 			"scrollY":        "320px",
 			"scrollX":        "200px",
@@ -197,17 +197,19 @@ $(document).on("click",".casteGroupCls",function(){
 		str+='</div>';
 		str+='</div>';
 		$("#casteGroupPostionDivId").html(str);	
-		if(result.length > 10)
+		 if(result.length > 10)
 		{ 
 			$(".dataTableCasteGroup").dataTable({
 			 "sDom": '<"top">rt<"bottom"><"clear"iflp>',
-			 "scrollY": "380px"
+			 "scrollY":"380px",
+			 "scrollCollapse": true,
+			 "paging"	     : false
 			});	
 		}else{
 		  $(".dataTableCasteGroup").dataTable({
 			 "sDom": '<"top">rt<"bottom"><"clear"iflp>'
 			});		
-		}
+		} 
  }
  
  function getAllPositions(){
@@ -853,6 +855,10 @@ $(document).on("click",".postionliCls",function(){
 	$("#positionId").trigger("chosen:updated");
 	$('#statusDetailsId').trigger('click');
 	
+	 $(".casteWiseDetaislCls li").removeClass("active");
+	 $(".casteWiseDetaislCls li:first-child").addClass("active");
+	 $(".casteCategryWiseDetaislCls li").removeClass("active");
+	 $(".casteCategryWiseDetaislCls li:first-child").addClass("active");
 	 getPositionAndApplicationDetailsCntPositionWise(postionId,globalLocationLevelId,"position",globalStateId);
      getPositionAndApplicationDetailsCntLocationWise(postionId,globalLocationLevelId,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
 	 getLocationWiseCastePositionCount("overall",globalLocationLevelId,globalStateId,postionId,0);
