@@ -27,6 +27,9 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
 	<style type="text/css">
+		.label-neutral{
+			background:orange;
+		}
 		#searchedMembersId_length , #searchedMembersId_info
 		{
 			display:none;
