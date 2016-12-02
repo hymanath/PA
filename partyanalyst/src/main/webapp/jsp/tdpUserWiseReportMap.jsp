@@ -58,10 +58,10 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel-heading bg_cc">
 							<h4 class="panel-title">
-							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 230px;">Select User</label>
+							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 20px;">Select User</label>
 							 <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
                     	    <option value="0">All</option>
-                             </select>&nbsp&nbsp<input type="checkbox" name="checkbox" value="2" id="checkboxId" style="margin-left: 30px;"><label style="margin-left: 10px;">WITH ROUTE</label></h4>
+                             </select>&nbsp&nbsp<input type="checkbox" name="checkbox" value="2" id="checkboxId" style="margin-left: 10px;"><label style="margin-left: 10px;">WITH ROUTE</label>&nbsp&nbsp<input type="checkbox" name="timeCheckbox" id="timeCheckboxId"><label style="margin-left: 10px;">WITH ROUTE FOR EVERY 5 MINS</label></h4>
 							 <h5><span id="userTrackingId"></span>-USER TRACKING</h5>
 							</div>
 							<div id="map1" style="width: 100%; height: 800px;"></div>
@@ -116,7 +116,45 @@ var glblLon = 78.4800;
 			var searchTypeId = $('#mapId').val();
 			if(result != null){
 				$('#map1').html('');
-				if(result.subList1 != null && result.subList1.length > 0){
+				if($("#timeCheckboxId").is(':checked')){
+					if(result.subList2 != null && result.subList2.length > 0){
+						for(var i in result.subList2){
+							var obj={lat:parseFloat(result.subList2[i].latitude), lng:parseFloat(result.subList2[i].longititude)};
+							if(withTimeRoute == "true"){
+								pathArr.push(obj);
+							}else{
+								pathArr.push();
+							}
+							//pathArr.push(obj);
+							if(i == 0){
+								glblLat = parseFloat(result.subList2[i].latitude).toFixed(2);
+								glblLon = parseFloat(result.subList2[i].longititude).toFixed(2)
+							}
+							/*if((result.subList1.length-1)==i){
+								displayLocation(result.subList1[i],"last");
+							}else{
+								displayLocation(result.subList1[i],"");
+							}*/
+							var temparr=[];
+							if(searchTypeId==0){
+								//$('#checkboxId').prop('checked', false);
+								$('#checkboxId').prop("disabled", true);
+								temparr.push("<b>Last Sync Time </b> : "+result.subList2[i].surveyTime);
+								
+							}	
+							else {
+								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/><b>Sync Time </b> : "+result.subList2[i].surveyTime);
+							}
+							temparr.push(result.subList2[i].latitude);
+							temparr.push(result.subList2[i].longititude);
+							temparr.push(result.subList2[i].surveyTime);
+							markersArr.push(temparr);
+							flightPlanCoordinates.push(temparr);
+							//displayLocation(result.subList1[i].latitude,result.subList1[i].longititude);
+						}
+					}
+				}
+				else if(result.subList1 != null && result.subList1.length > 0){
 					for(var i in result.subList1){
 						var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
 						if(withRoute == "true"){
@@ -274,7 +312,7 @@ function getFieldMonitoringMapReportDetails(){
 			if(result != null && result.length > 0){
 				for(var i in result){
 					if("${param.userId}" == ""){
-						var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+result[i].id+"&cadreName="+result[i].cadreName+"&withRoute="+withRoute;
+						var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+result[i].id+"&cadreName="+result[i].cadreName+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
 						var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
 						$("#userTrackingId").text("${param.cadreName}");
 					}
@@ -287,13 +325,14 @@ function getFieldMonitoringMapReportDetails(){
 		});
 }
 var withRoute = "${param.withRoute}";
+var withTimeRoute = "${param.withTimeRoute}";
 function showMapDetails(value){
 	var withRoute = false;
 	var cadreUserId=$( "#mapId option:selected" ).text();
 	var userName = "${param.username}";
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
 	$("#userTrackingId").text("${param.userId}");
 }
@@ -306,7 +345,7 @@ function showMapDetails(value){
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var value ="${param.userId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
  
   } else {
@@ -317,7 +356,7 @@ function showMapDetails(value){
 	var constitunecyId = "${param.constistuencyId}";
 	var fieldUserId ="${param.fieldUserId}";
 	var value ="${param.userId}";
-	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute;
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
 	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
   }
 });
@@ -326,6 +365,39 @@ if(withRoute == "true")
 	$('#checkboxId').prop('checked', true);
 }else{
 		$('#checkboxId').prop('checked', false);
+	}
+	
+$('#timeCheckboxId').click(function() {
+  if ($(this).is(':checked')) {
+	  $(this).prop('checked', true);
+	 withTimeRoute = true;
+	// withRoute = $("#checkboxId").is(':checked');
+	var cadreUserId=$( "#mapId option:selected" ).text();
+	var userName = "${param.username}";
+	var constitunecyId = "${param.constistuencyId}";
+	var fieldUserId ="${param.fieldUserId}";
+	var value ="${param.userId}";
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
+ 
+  } else {
+	  withTimeRoute = false;
+	  $(this).prop('checked', false);
+	 // withRoute = $("#checkboxId").is(':checked');
+	var cadreUserId=$( "#mapId option:selected" ).text();
+	var userName = "${param.username}";
+	var constitunecyId = "${param.constistuencyId}";
+	var fieldUserId ="${param.fieldUserId}";
+	var value ="${param.userId}";
+	var urlStr = "tdpUserWiseReportMapAction.action?fieldUserId="+fieldUserId+"&username="+userName+"&constistuencyId="+constitunecyId+"&userId="+value+"&cadreName="+cadreUserId+"&withRoute="+withRoute+"&withTimeRoute="+withTimeRoute;
+	var browser2 = window.open(urlStr,"Survey Map","scrollbars=yes,height=650,width=1100,left=150,top=100");
+  }
+});
+if(withTimeRoute == "true")
+{
+	$('#timeCheckboxId').prop('checked', true);
+}else{
+		$('#timeCheckboxId').prop('checked', false);
 	}
 </script>
 </body>
