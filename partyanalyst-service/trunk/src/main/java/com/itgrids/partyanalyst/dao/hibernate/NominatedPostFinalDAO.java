@@ -669,8 +669,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	//aaaaa  
 	public List<Object[]> getNominatedCandidatePositionDetails(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, count(model.nominatedPostApplication.nominatedPostApplicationId) ");
-		queryStr.append(" from  NominatedPostFinal model " +
+		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, count(distinct model.nominatedPostApplication.nominatedPostApplicationId) ");
+		queryStr.append(" from  NominatedPostFinal model  " +
 				   		" where " );
 		if(!(positionId.equals(0l)) && positionId != null){
 			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and "); 
@@ -714,7 +714,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		
 		queryStr.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-						" model.nominatedPostApplication.isDeleted = 'N' ");  
+						" model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' " +
+						" and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");  
 		queryStr.append(" group by " +
 				        " model.nominatedPostMember.nominatedPostPosition.position.positionId " +
 				        " order by " +
@@ -748,7 +749,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	//bbbbb
 	public List<Object[]> getNominatedCandidateGroupByPositionAndGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, model.nominationPostCandidate.gender,count(model.nominatedPostApplication.nominatedPostApplicationId) ");
+		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, model.nominationPostCandidate.gender,count(distinct model.nominatedPostApplication.nominatedPostApplicationId) ");
 		queryStr.append(" from  NominatedPostFinal model " +
 				   		" where " );
 		if(!(positionId.equals(0l)) && positionId != null){
@@ -792,7 +793,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
 		}
 		queryStr.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-						" model.nominatedPostApplication.isDeleted = 'N' ");
+						" model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' " +
+						" and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		queryStr.append(" group by " +
 				        " model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominationPostCandidate.gender " +
 				        " order by " +
@@ -826,7 +828,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	//cccccc
 	public List<Object[]> getNominatedCandidateGroupByPositionAndAgeGroup(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId,count(model.nominatedPostApplication.nominatedPostApplicationId) ");
+		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId,count(distinct model.nominatedPostApplication.nominatedPostApplicationId) ");
 		queryStr.append(" from  NominatedPostFinal model " +
 				   		" where " );
 		if(!(positionId.equals(0l)) && positionId != null){
@@ -869,7 +871,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
 		}
 		queryStr.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-						" model.nominatedPostApplication.isDeleted = 'N' ");
+						" model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' " +
+						" and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		queryStr.append(" group by " +
 				        " model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " +
 				        " order by " +
@@ -947,7 +950,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   	          	   " from NominatedPostFinal model " +
 		   	          	   " where " +
 		   	          	   " model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N'" +
-		   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+")");
+		   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
+		   	          	   " and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+")");
 		              	      
 		              if(LocationLevelId != null && LocationLevelId > 0){
 				   	    queryStr.append("");
@@ -1027,7 +1031,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	   	          	   " from NominatedPostFinal model " +
 	   	          	   " where " +
 	   	          	   " model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N'" +
-	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+")");
+	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
+	   	          	   " and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+")");
 	               // and model.nominatedPostStatus.status in ('Confirmed','GO Issued')
 			      if(LocationLevelId != null && LocationLevelId > 0){
 			   	   // queryStr.append(" and model.nominatedPostMember.boardLevelId=:LocationLevelId ");
@@ -1164,14 +1169,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, ");
 		}
 		
-		strQuery.append(" count(model.nominatedPostApplication.nominatedPostApplicationId) " +
+		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
 				        " where ");
 		
 		
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  in (3,6,5,7) and ");
+			strQuery.append(" model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
@@ -1189,7 +1194,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
 		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-						" model.nominatedPostApplication.isDeleted = 'N' ");
+						" model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' ");
 		
 		strQuery.append(" group by " );
 		if(locationLevelName.equalsIgnoreCase("state")){
@@ -1274,13 +1279,13 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, model.nominationPostCandidate.gender, ");
 		}
 		
-		strQuery.append(" count(model.nominatedPostApplication.nominatedPostApplicationId) " +
+		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
 				        " where ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  in (3,6,5,7) and ");
+			strQuery.append(" model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}
 		else
 		{
@@ -1301,7 +1306,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
 		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-				" model.nominatedPostApplication.isDeleted = 'N' ");
+					   " model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' ");
 		strQuery.append(" group by " );
 		
 		if(locationLevelName.equalsIgnoreCase("state")){
@@ -1386,13 +1391,13 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
 		}
 		
-		strQuery.append(" count(model.nominatedPostApplication.nominatedPostApplicationId) " +
+		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
 				        " where ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  in (3,6,5,7) and ");
+			strQuery.append(" model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
@@ -1411,7 +1416,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
 		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
-				" model.nominatedPostApplication.isDeleted = 'N' ");
+						" model.nominatedPostApplication.isDeleted = 'N' and model.nominatedPostMember.isDeleted='N' ");
 		
 		strQuery.append(" group by " );
 		
