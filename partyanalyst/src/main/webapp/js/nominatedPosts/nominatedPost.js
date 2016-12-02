@@ -3239,7 +3239,8 @@ function getApplicationDocuments(cadreId,candiId,applicationId){
 				
   }
  $(document).on('click', '#advanceSearchBtnId', function(){
-	   $("#searchBy").val(""); 	   
+	   $("#searchBy").val(""); 
+       $("#searchErrDiv").html('');	   
 	   hideDetails();   
 	   $("#genderId").prop("checked",true);
 		  var str = '';
