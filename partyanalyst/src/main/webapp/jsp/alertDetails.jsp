@@ -80,29 +80,12 @@
 		{
 			margin:0px;
 		}
-		.alertStatusTracking
-		{
-			padding-left:20px;
-			border-left:1px solid #ddd;
-		}
 		.alertStatusTracking li
 		{
 			list-style:none;
 			border-radius:4px;
 			position:relative;
 			margin-top:5px;
-		}
-		.alertStatusTracking li:before
-		{
-			content:' ';
-			height:10px;
-			width:10px;
-			border-radius:50%;
-			background:#ddd;
-			top:10px;
-			padding:4px;
-			left:-26px;
-			position:absolute;
 		}
 		.arrow_box {
 			position: relative;
@@ -333,12 +316,125 @@ control.makeTransliteratable(['commentsId']);
 							</div>
 							<div class="col-md-8 col-xs-12 col-sm-6">
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
+								<div class="panel-group alertCommentsCollapse m_top10" id="accordion" role="tablist" aria-multiselectable="true">
+								  <div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingOne">
+										<a role="button" class="alertCommentColapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+											<h4 class="panel-title">pending <i class="glyphicon glyphicon-ok"></i></h4>
+										</a>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+									  <div class="panel-body" style="padding:5px;">
+										<div class="row">
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<table class="table tableCalendar">
+													<tr>
+														<td colspan="2">
+															<h3>23</h3>
+														</td>
+													</tr>
+													<tr>
+														<td>DEC</td>
+														<td>2016</td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">
+												<ul class="alertStatusTracking">
+													<li>
+														<div class="arrow_box_left">
+															<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> Ram Laxman - 5pm</p>
+															<p>Alert Description</p>
+															<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: TDP User2</span></p>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+											<h4 class="panel-title">Notified<i class="glyphicon glyphicon-ok"></i></h4>
+										</a>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<table class="table tableCalendar">
+													<tr>
+														<td colspan="2">
+															<h3>23</h3>
+														</td>
+													</tr>
+													<tr>
+														<td>DEC</td>
+														<td>2016</td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">
+												<ul class="alertStatusTracking">
+													<li>
+														<div class="arrow_box_left">
+															<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> Ram Laxman - 5pm</p>
+															<p>Alert Description</p>
+															<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: TDP User2</span></p>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<a class="collapsed alertCommentColapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+											<h4 class="panel-title">action in progress</h4>
+										</a>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<table class="table tableCalendar">
+													<tr>
+														<td colspan="2">
+															<h3>23</h3>
+														</td>
+													</tr>
+													<tr>
+														<td>DEC</td>
+														<td>2016</td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">
+												<ul class="alertStatusTracking">
+													<li>
+														<div class="arrow_box_left">
+															<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> Ram Laxman - 5pm</p>
+															<p>Alert Description</p>
+															<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: TDP User2</span></p>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								</div>
 								<div  id="alertCommentsDiv"></div>
 							</div>
 						</div>
 						<div class="row m_top10">
 							<div class="col-md-12 col-xs-12 col-sm-12">
-								<div class="bg_cc pad_10">
+								<div class="bg_cc pad_10" style="box-shadow: 0 -10px 8px rgba(0, 0, 0, 0.4);">
 									<div class="row">
 										<div class="col-md-4 col-xs-12 col-sm-6">
 											<div class="panel panel-default">
