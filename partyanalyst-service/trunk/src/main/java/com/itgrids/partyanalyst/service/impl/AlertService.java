@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
+import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
@@ -844,8 +845,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 
 	// Alert Status Flow Tracking Details
-	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId)
-			{
+	/*public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId){
 				LOG.info("Entered in getAlertStatusCommentsTrackingDetails() method");
 				List<StatusTrackingVO> resultList = null;
 				try{
@@ -859,7 +859,121 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					LOG.error("Entered in getAppointmentStatusFlowTrackingDetails() method");
 				}
 				return resultList;
+	}*/
+	public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId){
+		LOG.info("Entered in getAlertStatusCommentsTrackingDetails() method");
+		List<StatusTrackingVO> resultList = null;
+		try{
+			Map<Long,String> idAndNameMap = new HashMap<Long,String>();
+			
+			Map<Long,Set<String>> statusIdAndDateIdListMap = new HashMap<Long,Set<String>>();
+			Set<String> dateIdList = null;//new HashSet<String>();
+			
+			Map<String,Set<Long>> dateIdAndCmtListMap = new HashMap<String,Set<Long>>();
+			Set<Long> commentIdList = null;
+			
+			Map<Long,List<AlertCommentVO>> commentIdAndCommentDtlsMap = new HashMap<Long,List<AlertCommentVO>>();
+			List<AlertCommentVO>  alertCommentDtlsList = null;
+			AlertCommentVO alertCommentVO = null;
+			List<Object[]> list = alertTrackingDAO.getAlertTrackingDetailsList(alertId);
+			
+			
+			SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm:ss");
+			SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+			if(list != null && list.size() > 0){   
+				for(Object[] param : list){
+					
+					//for statusId and date list map
+					dateIdList = statusIdAndDateIdListMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(dateIdList != null){
+						dateIdList.add(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
+					}else{
+						dateIdList = new HashSet<String>();
+						dateIdList.add(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
+						statusIdAndDateIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), dateIdList);
+					}
+					//for dateId and list of comment id list
+					commentIdList = dateIdAndCmtListMap.get(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
+					if(commentIdList != null){
+						commentIdList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+					}else{
+						commentIdList = new HashSet<Long>();
+						commentIdList.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						dateIdAndCmtListMap.put(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]), commentIdList);
+					}  
+					
+					//for commentId and comment Dtls list map
+					alertCommentDtlsList = commentIdAndCommentDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[4]));
+					if(alertCommentDtlsList != null){   
+						alertCommentVO = new AlertCommentVO();
+						alertCommentVO.setCommentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						alertCommentVO.setComment(commonMethodsUtilService.getStringValueForObject(param[5]));
+						if(param[2] != null){
+							Date _24HourDt = _24HourSDF.parse(commonMethodsUtilService.getStringValueForObject(param[3]));
+							alertCommentVO.setTimeString(_12HourSDF.format(_24HourDt));
+						}
+						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						alertCommentDtlsList.add(alertCommentVO);
+					}else{
+						alertCommentVO = new AlertCommentVO();
+						alertCommentVO.setCommentId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						alertCommentVO.setComment(commonMethodsUtilService.getStringValueForObject(param[5]));
+						if(param[2] != null){
+							Date _24HourDt = _24HourSDF.parse(commonMethodsUtilService.getStringValueForObject(param[3]));
+							alertCommentVO.setTimeString(_12HourSDF.format(_24HourDt));
+						}
+						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						alertCommentDtlsList = new ArrayList<AlertCommentVO>();
+						alertCommentDtlsList.add(alertCommentVO);
+						commentIdAndCommentDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), alertCommentDtlsList);
+					}
+					idAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[9]));
+				}
 			}
+			AlertCommentVO commentVO = null;
+			//vo for each date
+			AlertCommentVO commentVOForDate = null;
+			List<AlertCommentVO> commentVOForDateList = null;
+			//for multiuser involvement
+			List<List<AlertCommentVO>> list2 = null;
+			//final vo 
+			List<AlertCommentVO> finalList = new ArrayList<AlertCommentVO>();
+			if(statusIdAndDateIdListMap.size() > 0){
+				for(Entry<Long,Set<String>> entry : statusIdAndDateIdListMap.entrySet()){
+					commentVO = new AlertCommentVO();
+					commentVO.setStatusId(entry.getKey());
+					commentVO.setStatus(idAndNameMap.get(entry.getKey()));
+					dateIdList = entry.getValue();
+					if(dateIdList != null && dateIdList.size() > 0){
+						commentVOForDateList = new ArrayList<AlertCommentVO>();
+						for(String dateId : dateIdList){
+							commentVOForDate = new AlertCommentVO();
+							commentVOForDate.setDate(dateId.split(":")[0]);
+							commentIdList = dateIdAndCmtListMap.get(dateId);
+							if(commentIdList != null && commentIdList.size() > 0){
+								list2 = new ArrayList<List<AlertCommentVO>>();
+								for(Long cmtId : commentIdList){
+									list2.add(commentIdAndCommentDtlsMap.get(cmtId));
+								}
+								commentVOForDate.setSublist(list2);  
+							}
+							commentVOForDateList.add(commentVOForDate);
+						}
+					}
+					commentVO.setSublist2(commentVOForDateList);
+					finalList.add(commentVO);
+				}
+			}
+			
+			return finalList;   		
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Entered in getAppointmentStatusFlowTrackingDetails() method");
+		}
+		return null;
+}
 	
 	public List<StatusTrackingVO> getAlertStatusCommentsList(List<Object[]> list,Long alertId)
 	{
