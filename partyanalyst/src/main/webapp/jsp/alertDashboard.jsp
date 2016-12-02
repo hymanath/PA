@@ -860,6 +860,30 @@ function getAlertAssignedCandidate()
 	$(document).on("click",".undoIcon",function(){
 		$(this).find("span").toggleClass("glyphicon-chevron-up").toggleClass("glyphicon-chevron-down")
 	}); 
+	getDistricts();  
+	function getDistricts() {
+		var jobj = {
+			stateId : 1  
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getDistrictsForStateAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jobj)} 
+		}).done(function(result){
+			if(result != null && result.length > 0){ 
+				var str = ""; 
+				str+='<option value="0">Select District</option>'; 
+				for(var i in result){
+					if(result[i].id > 0)
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#referdistrictId").html(str);
+				$("#referdistrictId").trigger('chosen:updated');
+				$("#referdistrictId").chosen();         
+			}  
+		});     
+	}      
 </script>
 </body>
 </html>
