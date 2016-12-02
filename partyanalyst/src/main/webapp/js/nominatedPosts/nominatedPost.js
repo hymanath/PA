@@ -2545,7 +2545,9 @@ function searchByApplicant()
          $("#addMemberDivId").hide();
          $("#searchBy").val(' ');
          $( "#membershipId" ).prop( "checked", true);
+		 if ($("#advanceSearchBtnId").is(":checked")){
 		 $("#advanceSearchBtnId").trigger("click");
+		 }
 	}
 	else {
 	 $("#searchMemberDiv").hide();
