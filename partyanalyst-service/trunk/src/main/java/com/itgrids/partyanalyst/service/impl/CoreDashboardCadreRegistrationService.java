@@ -4737,7 +4737,7 @@ try{
  }
   
  //srujana , srishailam 
- public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long fieldUserId,Long constitunecyId)
+ public CadreBasicVO getUserTrackingDtslBySurveyUserId(Long cadreSurveyUserId,String fromDateStr,String toDateStr,Long fieldUserId,Long constitunecyId,Long fromTime,Long toTime)
  {
 	  CadreBasicVO resultVO = new CadreBasicVO();
 	  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -4756,8 +4756,23 @@ try{
 		 List<CadreBasicVO> userTrackingDtlList = new ArrayList<CadreBasicVO>(0);
 		 List<CadreBasicVO> eryFveMntsDtlsLstUsrTrckngLst = new ArrayList<CadreBasicVO>(0);
 		 
+		 Date updatedFromDate = null;
+		 Date updatedToDate = null;
+		 
+		 if(fromTime != null && toTime != null && (fromTime > 0l || toTime > 0l)){
+			 Calendar cal = Calendar.getInstance();
+			 cal.setTime(today);
+			 cal.set(Calendar.HOUR_OF_DAY, fromTime.intValue());
+			 updatedFromDate = cal.getTime();
+			 
+			 Calendar cal1 = Calendar.getInstance();
+			 cal1.setTime(today);
+			 cal1.set(Calendar.HOUR_OF_DAY, toTime.intValue());
+			 updatedToDate = cal1.getTime();
+		 }
+		 
 		 List<Object[]> rtrnTrackingDtlsLst = tdpCadreDAO.getUserTrackingDetails(cadreSurveyUserId, fromDate, toDate);
-		 List<Object[]> rtrnEvry5MinutesUsrTrkngDtlList = tabUserLocationDetailsDAO.getSurveyUserTrackingDtlsByFieldUser(fieldUserId, cadreSurveyUserId, fromDate, toDate);
+		 List<Object[]> rtrnEvry5MinutesUsrTrkngDtlList = tabUserLocationDetailsDAO.getSurveyUserTrackingDtlsByFieldUser(fieldUserId, cadreSurveyUserId, fromDate, toDate,updatedFromDate,updatedToDate);
 		 
 		 setDUserTrackingDtlsToList(rtrnTrackingDtlsLst,userTrackingDtlList,"samples");
 		 setDUserTrackingDtlsToList(rtrnEvry5MinutesUsrTrkngDtlList,eryFveMntsDtlsLstUsrTrckngLst,null);
