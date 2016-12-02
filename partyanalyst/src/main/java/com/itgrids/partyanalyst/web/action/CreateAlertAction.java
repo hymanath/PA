@@ -15,6 +15,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
@@ -46,6 +47,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private Long alertId;
 	private List<IdNameVO> idNameVOList;
 	private List<AlertVO> alertVOs;
+	private List<AlertCommentVO> alertCommentVOs;
 	
 	
 	
@@ -185,6 +187,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 
 	public void setAlertVOs(List<AlertVO> alertVOs) {
 		this.alertVOs = alertVOs;
+	}
+	
+	public List<AlertCommentVO> getAlertCommentVOs() {
+		return alertCommentVOs;
+	}
+
+	public void setAlertCommentVOs(List<AlertCommentVO> alertCommentVOs) {
+		this.alertCommentVOs = alertCommentVOs;
 	}
 
 	public String execute()
@@ -377,12 +387,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(getTask());
 			Long alertId = jObj.getLong("alertId");
 			
-			statusTrackingVOList = alertService.getAlertStatusCommentsTrackingDetails(alertId);
+			alertCommentVOs = alertService.getAlertStatusCommentsTrackingDetails(alertId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getAlertStatusCommentsTrackingDetails() of AppointmentAction",e);
 		}
-		return Action.SUCCESS;
+		return Action.SUCCESS;  
 	}
 	public String getAlertType(){
 		try{
