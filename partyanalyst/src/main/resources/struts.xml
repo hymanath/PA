@@ -12840,7 +12840,7 @@
 		 		 
 		<action name="getAlertStatusCommentsTrackingDetails" class="createAlertAction" method="getAlertStatusCommentsTrackingDetails">
 		<result type="json" name="success">
-			<param name="root">statusTrackingVOList</param>
+			<param name="root">alertCommentVOs</param>        
 		</result>
 		</action>
 	<action name="getCadreLocationWiseEventAttendeeCountsAction" class="cadreDetailsAction" method="getCadreLocationWiseEventAttendeeCounts">
