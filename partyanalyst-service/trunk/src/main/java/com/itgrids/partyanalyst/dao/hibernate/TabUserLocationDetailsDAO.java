@@ -401,7 +401,7 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		     return query.list();
 	}
 	
-	public List<Object[]> getSurveyUserTrackingDtlsByFieldUser(Long fieldUserId,Long cadreSurveyUserId,Date fromDate,Date toDate){
+	public List<Object[]> getSurveyUserTrackingDtlsByFieldUser(Long fieldUserId,Long cadreSurveyUserId,Date fromDate,Date toDate,Date fromTime,Date toTime){
 		   StringBuilder queryStr = new StringBuilder();
 		     queryStr.append("select distinct " +
 		     		         " model.surveyTime," +//0
@@ -418,6 +418,9 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		     if(fromDate != null && toDate != null){
 		    	 queryStr.append(" and date(model.surveyTime) between :fromDate and :toDate ");
 		     }
+		     if(fromTime != null && toTime != null){
+		    	 queryStr.append(" and model.surveyTime between :fromTime and :toTime ");
+		     }
 		     queryStr.append("  order by date(model.surveyTime) ");
 		     Query query = getSession().createQuery(queryStr.toString());
 		     if(cadreSurveyUserId != null && cadreSurveyUserId.longValue() > 0l)
@@ -427,6 +430,10 @@ public List<Object[]> getLattitudeLangitudeOfTabUser(Long locationId,Date startD
 		     if(fromDate != null && toDate != null){
 		    	 query.setParameter("fromDate", fromDate);
 		    	 query.setParameter("toDate", toDate);
+		     }
+		     if(fromTime != null && toTime != null){
+		    	 query.setParameter("fromTime", fromTime);
+		    	 query.setParameter("toTime", toTime);
 		     }
 		     
 		     return query.list();

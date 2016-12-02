@@ -14,7 +14,7 @@ public interface ITabUserLocationDetailsDAO extends GenericDao<TabUserLocationDe
 	public List<Object[]> getLattitudLangitudeOfTabUser(GISVisualizationParameterVO inputVO,Date startDate,Date endDate);
 	//public List<Object[]> getLocationWiseTabUserTrackingDetails(GISVisualizationParameterVO inputVO,String type);
 	public List<Object[]> getSurveyUserTrackingDtls(Long cadreSurveyUserId,Date fromDate,Date toDate);
-	public List<Object[]> getSurveyUserTrackingDtlsByFieldUser(Long fieldUserId,Long cadreSurveyUserId,Date fromDate,Date toDate);
+	public List<Object[]> getSurveyUserTrackingDtlsByFieldUser(Long fieldUserId,Long cadreSurveyUserId,Date fromDate,Date toDate,Date fromTime,Date toTime);
 	public List<Object[]> getSurveyUserLatestTimeLongitudeAndLatituedeLocationWise(String locationType,List<Long> locationValues,Date fromDate,Date toDate);
 	public List<Object[]> getLattitudeLangitudeOfTabbUserByIds(List<Long> locationIsdList);
 	public List<Object[]> getLatestLattitudeAndLongitude(List<Long> cadreSurveyUserIds);
