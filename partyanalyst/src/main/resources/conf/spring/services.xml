@@ -3340,7 +3340,7 @@
 		<property name="appointmentTrackingDAO" ref="appointmentTrackingDAO" />
 		<property name="locationService" ref="locationService"/>
 		<property name="appointmentCommentDAO" ref="appointmentCommentDAO"/>
-		<property name="appointmentSmsSettingDAO" ref="appointmentSmsSettingDAO" />
+		<property name="appointmentSmsSettingDAO" ref="appointmentSmsSettingDAO" /> 
 		<property name="appointmentSmsHistoryDAO" ref="appointmentSmsHistoryDAO" />
 		<property name="smsSenderService" ref="smsSenderService" />
 		<property name="userAppointmentUserDAO" ref="userAppointmentUserDAO" />
@@ -3350,6 +3350,7 @@
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO" />
 		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />
+		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
 	</bean>
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>
