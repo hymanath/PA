@@ -252,11 +252,6 @@
                         </div>
                     </div>
 					
-					<!-- Assign -- >
-					  	<div class="row m_top10">
-                    		<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
-                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
-                        </div>
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
 						 <div class="row m_top10">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
