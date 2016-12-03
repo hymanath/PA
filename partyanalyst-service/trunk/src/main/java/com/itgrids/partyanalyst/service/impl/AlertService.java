@@ -404,7 +404,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 													alertAssignedDAO.save(alertAssigned);
 								 	}
 							 }
-				 		}
+				 	}
 				 rs = "success";
 				    AlertComment alertComment = new AlertComment();
 				    alertComment.setComments(inputVO.getDesc().toString());
@@ -417,7 +417,13 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alertTrackingVO.setUserId(userId);
 				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
 				 alertTrackingVO.setAlertUserTypeId(inputVO.getAlertSourceId());
-				 alertTrackingVO.setAlertStatusId(1l);
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 {
+					 alertTrackingVO.setAlertStatusId(2l);
+				 }else{
+					 alertTrackingVO.setAlertStatusId(1l);
+				 }
+				 
 				 alertTrackingVO.setAlertId(alert.getAlertId());
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 				 
