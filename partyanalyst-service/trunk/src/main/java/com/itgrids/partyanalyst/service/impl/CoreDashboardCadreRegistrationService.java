@@ -4675,7 +4675,7 @@ try{
 			//special for 12am -> 8am
 			twelveAmTo8AMVO = new FieldReportVO();
 			twelveAmTo8AMVO.setLabel("12am-8am");
-			twelveAmTo8AMVO.setOrder(21l);
+			twelveAmTo8AMVO.setOrder(7l);
 			twelveAmTo8AMVO.setTodayTotalReg(totalCadreReg12AmTo8AmRegCnt);
  			//add second
  			fieldReportVOs.add(twelveAmTo8AMVO);
