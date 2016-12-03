@@ -100,6 +100,11 @@ function disableByLevel(index)
 	 
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
+			if(selectVal == 1){
+				$(".requiredCls").hide();
+			}else{
+				$(".requiredCls").show();       
+			}
 			if(selectVal == "PR")
 			{
 				$(".advancePRCls,#searchBtnId").show();
@@ -107,7 +112,6 @@ function disableByLevel(index)
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
-				//$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
 				$("#cadreCommitteeDiv_chosen").hide();
 				$(".stateShowCls").show();
@@ -115,7 +119,6 @@ function disableByLevel(index)
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
-				//disableByLevel();
 			}
 			else if(selectVal == "committee")
 			{
@@ -124,7 +127,6 @@ function disableByLevel(index)
 				$(".advancePRCls").parent().hide();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee").show();
-				//$(".locationsFilterCls").show();
 				$(".advanceprcls").hide();
 				$(".stateShowCls").show();
 				$(".levelShowCls").show();
@@ -181,22 +183,17 @@ function disableByLevel(index)
 				$(".advanceprclsDiv").show();
 				$("#searchBtnId").show();
 				$("#cadreCommitteeDiv_chosen").hide();
-				//if(selectVal != "mebershipno" && selectVal != "votercardno")
-				//$("#searchNameLabel").text("Search By Mobile");
-				//else
-				//$("#searchNameLabel").text("Search By Name/Membership No*");
-			
 				if(selectVal == "mobileno")
 				{
-					$("#searchNameLabel").html("Search By Mobile No <span style='color:red;'> * </span> :");
+					$("#searchNameLabel").html("Search By Mobile No <span style='color:red;' class='requiredCls'> * </span> :");
 				}
 				else if(selectVal == "mebershipno")
 				{
-					$("#searchNameLabel").html("Search By Mebership No <span style='color:red;'> * </span> :");
+					$("#searchNameLabel").html("Search By Mebership No <span style='color:red;' class='requiredCls'> * </span> :");
 				}
 				else if(selectVal == "votercardno")
 				{
-					$("#searchNameLabel").html("Search By Voter Card No <span style='color:red;'> * </span> :");
+					$("#searchNameLabel").html("Search By Voter Card No <span style='color:red;' class='requiredCls'> * </span> :");
 				}
 			}
 				disableByLevel('');
