@@ -91,7 +91,7 @@ function buildAlertData(result)
 			$("#createdDate").html(''+result[i].date+'');
 			$("#levelId").html(''+result[i].regionScope+'');
 			var location ='';
-			if(result[i].regionScope == "STATE")
+			/* if(result[i].regionScope == "STATE")
 			{
 				location +='<p>S:'+result[i].locationVO.state+'</p>';
 			}
@@ -127,7 +127,32 @@ function buildAlertData(result)
 					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p><p> P : '+result[i].locationVO.villageName+'</p>';
 				}
 				
-			}	
+			}	 */
+			
+			if(result[i].locationVO.stateId !=null){
+				location +='<p>S:'+result[i].locationVO.state+' </p>';
+			}
+			if(result[i].locationVO.districtId !=null){
+				location +='<p>D:'+result[i].locationVO.districtName+' </p>';
+			}
+			if(result[i].locationVO.constituencyId !=null){
+				location +='<p>C:'+result[i].locationVO.constituencyName+' </p>';
+			}
+			
+			if(result[i].locationVO.localEleBodyName !=null && result[i].locationVO.localEleBodyName.length>0){
+				location +='<p>M:'+result[i].locationVO.localEleBodyName+' </p>';
+			}
+			if(result[i].locationVO.tehsilName !=null && result[i].locationVO.tehsilName.length>0){
+				location +='<p>T:'+result[i].locationVO.tehsilName+' </p>';
+			}
+			if(result[i].locationVO.wardName !=null && result[i].locationVO.wardName.length>0){
+				location +='<p>W:'+result[i].locationVO.wardName+' </p>';
+			}
+			if(result[i].locationVO.villageName !=null && result[i].locationVO.villageName.length>0){
+				location +='<p>P:'+result[i].locationVO.villageName+' </p>';
+			}
+			
+			
 			
 			$("#LocationId").html(''+location+'');
 			$("#statusId").val(''+result[i].statusId+'');
