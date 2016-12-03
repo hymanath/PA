@@ -446,7 +446,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				alertTracking.setAlertId(alertTrackingVO.getAlertId());
 				alertTracking.setAlertStatusId(alertTrackingVO.getAlertStatusId());
 				alertTracking.setAlertCommentId(alertTrackingVO.getAlertCommentId());
-				alertTracking.setAlertSourceId(alertTracking.getAlertUserTypeId());
+				alertTracking.setAlertSourceId(alertTrackingVO.getAlertUserTypeId());
 				alertTracking.setInsertedBy(alertTrackingVO.getUserId());
 				alertTracking.setInsertedTime(currentDateAndTime);
 				alertTracking.setAlertTrackingActionId(alertTrackingVO.getAlertTrackingActionId());
