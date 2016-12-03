@@ -966,7 +966,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
                       if(stateId != null && stateId.longValue() > 0){
            			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
            		      }
-		              queryStr.append(" group by model.nominationPostCandidate.casteState.caste.casteId," +
+		              queryStr.append(" group by model.nominationPostCandidate.casteState.casteStateId," +
 		              		          " model.nominatedPostMember.nominatedPostPosition.position.positionId " +
 		              		          " order by model.nominatedPostMember.nominatedPostPosition.position.positionId ");
 	         
