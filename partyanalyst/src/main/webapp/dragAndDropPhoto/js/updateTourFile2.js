@@ -1,56 +1,62 @@
-$(document).ready(function() {
- 
-	$('#filer_input3').filer({
+/*swadhin*/
+function initializeFile2() {
+	var itemStr = '';
+	var itemAppendStr = '';
+	itemStr+='<li class="jFiler-item">';
+                    itemStr+='<div class="jFiler-item-container">';
+                        itemStr+='<div class="jFiler-item-inner">';
+                           itemStr+='<div class="jFiler-item-thumb">';
+                                itemStr+='<div class="jFiler-item-status"></div>';
+                                itemStr+='<div class="jFiler-item-info">';
+                                    itemStr+='<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>';
+                                    itemStr+='<span class="jFiler-item-others">{{fi-size2}}</span>';
+                                itemStr+='</div>';
+                                itemStr+='{{fi-image}}';
+                            itemStr+='</div>';
+                            itemStr+='<div class="jFiler-item-assets jFiler-row">';
+                                itemStr+='<ul class="list-inline pull-left">';
+                                    itemStr+='<li>{{fi-progressBar}}</li>';
+                                itemStr+='</ul>';
+                                itemStr+='<ul class="list-inline pull-right">';
+                                    itemStr+='<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>';
+                                itemStr+='</ul>';
+                            itemStr+='</div>';
+                        itemStr+='</div>';
+                    itemStr+='</div>';
+                itemStr+='</li>';
+				
+				
+				itemAppendStr+='<li class="jFiler-item">';
+				itemAppendStr+='<div class="jFiler-item-container">';
+				itemAppendStr+='<div class="jFiler-item-inner">';
+					itemAppendStr+='<div class="jFiler-item-thumb">';
+						itemAppendStr+='<div class="jFiler-item-status"></div>';
+						itemAppendStr+='<div class="jFiler-item-info">';
+							itemAppendStr+='<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>';
+							itemAppendStr+='<span class="jFiler-item-others">{{fi-size2}}</span>';
+						itemAppendStr+='</div>';
+						itemAppendStr+='{{fi-image}}';
+					itemAppendStr+='</div>';       
+					itemAppendStr+='<div class="jFiler-item-assets jFiler-row">';
+						itemAppendStr+='<ul class="list-inline pull-left">';
+							itemAppendStr+='<li><span class="jFiler-item-others">{{fi-icon}}</span></li>';
+						itemAppendStr+='</ul>';
+						itemAppendStr+='<ul class="list-inline pull-right">';
+							itemAppendStr+='<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>';
+						itemAppendStr+='</ul>';
+					itemAppendStr+='</div>';
+				itemAppendStr+='</div>';
+			itemAppendStr+='</div>';
+		itemAppendStr+='</li>';  
+				
+	$('#update_TourFileId2').filer({      
     changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
     showThumbs: true,
-	extensions: ["jpg", "png","gif","doc","pdf","jpeg","docx"],
     theme: "dragdropbox",
-    templates: {
+    templates: {  
         box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
-        item: '<li class="jFiler-item">\
-                    <div class="jFiler-item-container">\
-                        <div class="jFiler-item-inner">\
-                            <div class="jFiler-item-thumb">\
-                                <div class="jFiler-item-status"></div>\
-                                <div class="jFiler-item-info">\
-                                    <span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
-                                    <span class="jFiler-item-others">{{fi-size2}}</span>\
-                                </div>\
-                                {{fi-image}}\
-                            </div>\
-                            <div class="jFiler-item-assets jFiler-row">\
-                                <ul class="list-inline pull-left">\
-                                    <li>{{fi-progressBar}}</li>\
-                                </ul>\
-                                <ul class="list-inline pull-right">\
-                                    <li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
-                                </ul>\
-                            </div>\
-                        </div>\
-                    </div>\
-                </li>',
-		itemAppend: '<li class="jFiler-item">\
-			<div class="jFiler-item-container">\
-				<div class="jFiler-item-inner">\
-					<div class="jFiler-item-thumb">\
-						<div class="jFiler-item-status"></div>\
-						<div class="jFiler-item-info">\
-							<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
-							<span class="jFiler-item-others">{{fi-size2}}</span>\
-						</div>\
-						{{fi-image}}\
-					</div>\
-					<div class="jFiler-item-assets jFiler-row">\
-						<ul class="list-inline pull-left">\
-							<li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
-						</ul>\
-						<ul class="list-inline pull-right">\
-							<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
-						</ul>\
-					</div>\
-				</div>\
-			</div>\
-		</li>',
+        item: itemStr,
+		itemAppend: itemAppendStr,   
 		progressBar: '<div class="bar"></div>',
 		itemAppendToEnd: true,
             removeConfirmation: true,
@@ -130,7 +136,7 @@ $(document).ready(function() {
             }
         }
 		
-});
-	/*var filerKit = $("#filer_input3").prop("jFiler");
-	filerKit.reset();*/    
-});
+	});
+	/* var filerKit = $("#filer_input3").prop("jFiler");
+	filerKit.reset(); */
+	} 
