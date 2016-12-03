@@ -915,50 +915,48 @@ function alertComments(result)
 			}
 				str+='<div class="panel-body" style="padding:5px;">';
 					str+='<div class="row">';
-						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						for(var j in result[i].sublist2)
-						{
-							
-							var date = result[i].sublist2[j].date
-							var dateArr = date.split("-");
-							var year = dateArr[0];
-							var month = dateArr[1];
-							var day = dateArr[2];
-							str+='<table class="table tableCalendar">';
-								str+='<tr>';
-									str+='<td colspan="2">';
-										str+='<h3>'+day+'</h3>';
-									str+='</td>';
-								str+='</tr>';
-								str+='<tr>';
-									str+='<td>'+getMonth(month)+'</td>';
-									str+='<td>'+year+'</td>';
-								str+='</tr>';
-							str+='</table>';
-						}
-						str+='</div>';
-						str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
-							str+='<ul class="alertStatusTracking">';
-								str+='<li>';
-									str+='<div class="arrow_box_left">';
-									for(var k in result[i].sublist2[j].sublist)
-									{	
-										str+='<div>';
-											str+='<p>';
-											for(var l in result[i].sublist2[j].sublist[k])
-											{
-												str+='<span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+' - '+result[i].sublist2[j].sublist[k][l].timeString+'</br>';
-											}
-											str+='</p>';
-											str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
-											str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
-											str+='<hr style="margin-top:20px;"/>';
-										str+='</div>';
-									}
-									str+='</div>';
-								str+='</li>';
-							str+='</ul>';
-						str+='</div>';
+						for(var j in result[i].sublist2){
+							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+								var date = result[i].sublist2[j].date
+								var dateArr = date.split("-");
+								var year = dateArr[0];
+								var month = dateArr[1];
+								var day = dateArr[2];
+								str+='<table class="table tableCalendar">';
+									str+='<tr>';
+										str+='<td colspan="2">';
+											str+='<h3>'+day+'</h3>';
+										str+='</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>'+getMonth(month)+'</td>';        
+										str+='<td>'+year+'</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+								str+='<ul class="alertStatusTracking">';
+									str+='<li>';
+										str+='<div class="arrow_box_left">';
+										for(var k in result[i].sublist2[j].sublist)
+										{	
+											str+='<div>';
+												str+='<p>';
+												for(var l in result[i].sublist2[j].sublist[k])
+												{
+													str+='<span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+' - '+result[i].sublist2[j].sublist[k][l].timeString+'</br>';
+												}
+												str+='</p>';
+												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+												str+='<hr style="margin-top:20px;"/>';
+											str+='</div>';
+										}
+										str+='</div>';    
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						}           
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
