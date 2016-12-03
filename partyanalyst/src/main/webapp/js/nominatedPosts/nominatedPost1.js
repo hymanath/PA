@@ -760,15 +760,22 @@ $(document).on("click","#addCandidateBtnId",function(){
 			levelStr ="";
 			 searchType = "name";
 			 searchValue = $("#advanceSearchValueId").val().trim();
-			 if(searchValue == null || searchValue.length ==0){
-				 errorStr='Please Enter Name';
-				 $("#errorDivId").html(errorStr);
-				 return;
-			 }else if(searchValue.length<3){
+			 if(searchValue == null || searchValue.length == 0 ){						 
+				       errorStr='Please Enter Name';
+				       $("#errorDivId").html(errorStr);
+				     return;
+			     }else if(searchValue.length<3){
 				 errorStr='Name should be minimum three characters.';
 				 $("#errorDivId").html(errorStr);
 				 return; 
 			 }
+			 var numericExpression =  /^[a-z,A-Z," "]+$/;
+					if(!$("#advanceSearchValueId").val().match(numericExpression)){
+						 errorStr='Enter characters Only';
+						  $("#errorDivId").html(errorStr);
+					 return;
+					 }
+	           
 		}
 		
 		
@@ -1374,9 +1381,9 @@ function getDetailsBySrch()
  }
  function getMandalsByConstituencyForReferPopup(index){
 	 var constituencyId = $('#referconstituencyId'+index).val();
-	var jobj = {
+	 var jobj = {
 		constituencyId : constituencyId
-	}
+	 }
 		$.ajax({
 			type : "POST",
 			url  : "getMandalsByConstituencyAction.action",
