@@ -464,9 +464,12 @@ public class GISVisualizationService implements IGISVisualizationService{
 					String rank = commonMethodsUtilService.getStringValueForObject(param[5]);
 					
 					GISVisualizationDetailsVO vo = locationsMap.get(locationId);
-					boolean flag = true;
+					boolean isAlreadySetPartyDetails = false;
 					if(vo != null){
-						if(flag){
+						if(vo.getFirstPositionPartyId() != null && vo.getFirstPositionPartyId().longValue()>0L )
+							isAlreadySetPartyDetails = true;
+						
+						if(!isAlreadySetPartyDetails){
 							String perc = (new BigDecimal(votersEarned*(100.0)/validVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 							vo.setIsYCPArea("false");
 							//vo.setValidVotes(validVotes.toString());
@@ -483,7 +486,6 @@ public class GISVisualizationService implements IGISVisualizationService{
 							    vo.setFirstPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
 							if(YCPMLAMap.get(locationId) != null)
 								vo.setIsYCPArea("true");	
-							flag = false;
 						}else{//This section will execute only in the case of assembly.
 							if(rank != null && rank.trim().equalsIgnoreCase("2")){
 								vo.setSecondPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
