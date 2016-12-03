@@ -163,15 +163,15 @@ $(document).ready(function(){
 					if(addressData != "undefined" && addressData !== undefined){
 						var addressStr = addressData.formatted_address;
 						if(userId == 0)
-							temparr.push(" 111 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
+							temparr.push(" <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
 						else
-							temparr.push("222 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList2[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList2[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList2[i].surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+							temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList2[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList2[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList2[i].surveyTime+" </br> <b>Location :</b>"+addressStr+"");
 					}
 					else{
 						if(userId == 0)							
-							temparr.push("333 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime);	
+							temparr.push("<b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime);	
 						else
-							temparr.push("444 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Voter Name</b> : "+result.tdpCadreName+"<br/> <b>Voter Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
+							temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Voter Name</b> : "+result.tdpCadreName+"<br/> <b>Voter Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
 					}
 				}	
 				else{
@@ -179,34 +179,34 @@ $(document).ready(function(){
 						if(addressData != "undefined" && addressData !== undefined){
 						var addressStr = addressData.formatted_address;
 						if(userId == 0)
-							temparr.push("555 <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
+							temparr.push("<b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
 						else
 							if(result.tdpCadreName != null && result.tdpCadreMbl != null)
-								temparr.push("666 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
 							else
-								temparr.push("666 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
 						}else{
 							if(userId == 0)
-								temparr.push("777 <b>Survey Time </b> : "+result.surveyTime);
+								temparr.push("<b>Survey Time </b> : "+result.surveyTime);
 							else
 								if(result.tdpCadreName != null && result.tdpCadreMbl != null)
-									temparr.push("888 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
+									temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
 								else
-									temparr.push("888 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
+									temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
 						}
 					}
 					else{
 						if(addressData != "undefined" && addressData !== undefined){
 						var addressStr = addressData.formatted_address;
 						if(userId == 0)
-							temparr.push("555 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
+							temparr.push("<b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
 						else
-							temparr.push("666 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>S.No  </b> : "+(parseInt(i)+1)+"<br/>  <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+							temparr.push("<b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>S.No  </b> : "+(parseInt(i)+1)+"<br/>  <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
 						}else{
 							if(userId == 0)
-								temparr.push("777 <b>Survey Time </b> : "+result.surveyTime);
+								temparr.push("<b>Survey Time </b> : "+result.surveyTime);
 							else
-								temparr.push("888 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");							
+								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");							
 						}
 					}
 				}
