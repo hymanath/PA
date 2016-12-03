@@ -104,7 +104,7 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 					
 			for(var i in result){
 				if(result[i].id == 0){
-							$("#notCadrePanchayatId").append('<option value='+result[i].id+'>Select Panchayat/Ward/Division/City</option>');
+							$("#notCadrePanchayatId").append('<option value='+result[i].id+'>Select Panchayat/Ward/Division</option>');
 						}
 						else{
 					$("#notCadrePanchayatId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
@@ -386,6 +386,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 				$("#searchBtnId").show();
 				$(".stateShowCls").show();
 				$(".advanceprclsDiv").show();
+				$(".advanceNameCls").attr("placeholder"," Search by Name");
 				$(".advanceNameCls").show();
 				$(".levelShowCls").show();
 				$(".advancePRCls").hide();
@@ -401,6 +402,12 @@ $(document).on("click","#addCandidateBtnId",function(){
 				$(".levelShowCls").hide();
 				$(".stateShowCls").hide();
 				$(".advanceprcls").show();
+				if(selectVal == "mobileno")
+				$(".advanceNameCls").attr("placeholder"," Search by MobileNo");
+			    if(selectVal == "mebershipno")
+			    $(".advanceNameCls").attr("placeholder","Search by MembershipNo");
+			    if(selectVal == "votercardno")
+					 $(".advanceNameCls").attr("placeholder","Search by VotercardNo");
 				$(".advanceNameCls").show();
 				$(".advancePRCls").hide();
 				$(".advanceCadreCommittee").hide();
