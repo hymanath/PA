@@ -296,7 +296,9 @@ function getDistrictsForStates(state,id,num){
 			   if(result[i].id == 0){
 				  $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
 			   }else{
+				   if(result[i].id != 517)
 				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				   
 			   }
 			   
 		 }else if(id == "notCadreStateId"){
