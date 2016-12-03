@@ -146,22 +146,7 @@
                         </div>
                     </div>
                     <div class="row m_top10">
-                    	<!--<div class="col-md-3 col-sm-3 col-xs-12">
-                        	<label>Alert Category</label>
-                            <select class="dropkickClass">
-                            	<option>Party</option>
-                            </select>
-                        </div>-->
-						<!-- <div class="col-md-3 col-sm-6 col-xs-12">
-                        	<label>Alert Category : </label><span class="text-danger">*</span>
-                            <select class="dropkickClass"  id="alertCategory" name="alertVO.categoryId" >
-                            	<option value="0"> Select Alert Category </option>
-                            	<option value="1"> Manual  </option>
-                            	<option value="2"> Print Media </option>
-                            	<option value="3"> Electronic Media </option>
-                            </select>
-                        </div>
-						-->
+                    	
                         <div class="col-md-3 col-sm-6 col-xs-12">
                         	<label>Information Source For Alert</label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertSourceId" name="alertVO.alertSourceId" >
@@ -237,18 +222,7 @@
 							</div> 
                         </div>
                     </div>
-					<!--
-                    <div class="row m_top10">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<label>Alert Description</label><span class="text-danger">*</span>
-                            <label class="radio-inline">
-                            	<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-                            </label>
-                            <label class="radio-inline">
-                            	<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-                            </label>
-                        </div>
-                    </div>-->
+					
                     <div class="row m_top10">
 						<label style="margin-left:15px;"> Description : </label><span class="text-danger">*</span>
                     	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -259,20 +233,7 @@
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
                         	<h4 class="text-success text-capital">Involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
-						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="membersBlock col-md-12" style="display:none;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>-->
+						
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="row membersBlock"></div>
 						</div>
@@ -292,25 +253,10 @@
                     </div>
 					
 					<!-- Assign -- >
-					  <div class="row m_top10">
-                    	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
+					  	<div class="row m_top10">
+                    		<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
                         	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
-						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="membersBlock col-md-12" style="display:none;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>-->
-						<!-- Assign Block Start -->
 						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
 						 <div class="row m_top10">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
@@ -376,22 +322,21 @@
 							<option value="votercardno">Voter Id Card No</option>
 							<option value="PR">Public Representative</option>
 							<option value="committee">Party Committee</option>
-						</select>
+						</select>  
 					</div>
 					
 					
-					 <div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
-						<label class="advanceNameCls" id="searchNameLabel">Search By NAME/MEMBERSHIP NO / VOTER ID CARD NO *<span class="text-danger">*</span></label>
+					 <div class="col-md-6 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">     
+						<label class="advanceNameCls" id="searchNameLabel">Search By <b>NAME / MEMBERSHIP NO / VOTER ID CARD NO</b></label>
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
-						
 					</div>
-					<div class="col-md-3 col-xs-12 col-sm-6 ">
+					<div class="col-md-3 col-xs-12 col-sm-6 ">  
 						<label class="advancePRCls">Search Designation</label>
 						 <select class="advancePRCls dropkickClass"  id="advanceDesignationId" onchange="getLevelByDesignation();">
 							<option value="0">Select Designation</option>
 						</select>
 						<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
-					</div>
+					</div>    
 					
 						
 						<div class="col-md-3 col-xs-12 col-sm-6  levelShowCls" >
