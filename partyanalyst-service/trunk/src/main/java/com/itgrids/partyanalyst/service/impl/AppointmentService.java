@@ -59,6 +59,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentHistoryDAO;
@@ -174,7 +175,7 @@ public class AppointmentService implements IAppointmentService{
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
-	
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	
 	
 	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
@@ -473,6 +474,13 @@ public class AppointmentService implements IAppointmentService{
 		this.appointmentCandidateTypeDAO = appointmentCandidateTypeDAO;
 	}
 	
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
+	}
 	public boolean checkisEligibleForAppt(List<String> membershipNoList,Long appointmentUserId){
 		
 		boolean flag = false;
@@ -4786,11 +4794,30 @@ public AppointmentScheduleVO getTdpCadreMatchVO(List<AppointmentScheduleVO> resu
 			}
 			return districtsList;
 		}
-	public List<IdNameVO> getConstituenciesByDistrict(Long districtId)
+	public List<IdNameVO> getConstituenciesByDistrict(Long districtId)//swadhin
 	{
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-			 List<Object[]> list = constituencyDAO.getConstituenciesByDistrictId(districtId);	
+			List<Object[]> list = null;
+			List<Long> constituencyList = null;
+			List<Long> oldConstituencyList = null;    
+			if(districtId.longValue() == 517L || districtId.longValue() == 518L){
+				constituencyList = districtConstituenciesDAO.getConstituenciesOfDistrictById(districtId);
+				list = constituencyDAO.getConstituenciesNamesByIds(constituencyList);
+			}else if(districtId.longValue() == 13L){
+				constituencyList = districtConstituenciesDAO.getConstituenciesOfDistrictById(517L);
+				oldConstituencyList = constituencyDAO.getConstituenciesInADistrict(districtId);
+				oldConstituencyList.removeAll(constituencyList);
+				list = constituencyDAO.getConstituenciesNamesByIds(oldConstituencyList);
+			}/*else if(districtId.longValue() == 1L){
+				constituencyList = districtConstituenciesDAO.getConstituenciesOfDistrictById(518L);
+				oldConstituencyList = constituencyDAO.getConstituenciesInADistrict(districtId);
+				oldConstituencyList.removeAll(constituencyList);
+				list = constituencyDAO.getConstituenciesNamesByIds(oldConstituencyList);
+			}*/else{  
+				list = constituencyDAO.getConstituenciesByDistrictId(districtId);
+			}    
+			 
 			 if(list != null && list.size() > 0)
 			 {
 				 for(Object[] params : list)
