@@ -250,7 +250,7 @@
 				 <div id="cadreById" style="display:none;">
 				 <div  class="row searchMemberCls m_top10">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
-					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
+					<label class="text-capitalize">Search member by voter id/mobile number/Name</label>
                         <div class="searchDiv">
                             <div class="row">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
@@ -880,7 +880,7 @@
 					
 					 <div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
 						<label class="advanceNameCls" id="searchNameLabel">Name/Membership No*<span class="text-danger">*</span></label>
-						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId" placeholder="Search By Name/Membership No">
+						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId" >
 						
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6" class="advancePRCls">
@@ -1096,6 +1096,7 @@ function clearAssignValues()
 $(document).on("click",".involveBlockNew",function(){
 	$("#searchMemberAjax").css("display","none");
 	$("#myModal").modal('show')
+	//$("#clearSerchDivId").hide();
 	commontdpCadreIds = [];;
 	 $("#apptmemberDetailsDiv").html("");
 	 $("#advanceSearchTypeId").val(0);
@@ -1323,7 +1324,7 @@ function getConstituenciesForDistrictsOfAddChnge(district,stateId){
    }).done(function(result){
 	 $("#filterManTowDivId  option").remove();
 	 $("#filterConstituencyId  option").remove();
-	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality</option>');
+	 $("#filterManTowDivId").append('<option value="0">Select Mandal/Muncipality/Corporation</option>');
 	 $("#filterConstituencyId").append('<option value="0">Select Constituency</option>');
 	 if(result !=null && result.length>0){
 		 for(var i in result){			  
