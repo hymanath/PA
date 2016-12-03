@@ -8,7 +8,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.NominatedPost;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1593,33 +1592,38 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
                                                              Long ageRangeTypeId,Long deptmentId,Long corptionId,
                                                              String genderType,List<Long> postStatusIds,Long locationId){
 	         StringBuilder sb = new StringBuilder();
-	       sb.append(" select model.nominationPostCandidate.nominationPostCandidateId," +
-	                 " model.nominationPostCandidate.candidateName," +
-			         " model.nominationPostCandidate.mobileNo,"+
+	       sb.append(" select model2.nominationPostCandidateId," +
+	                 " model2.candidateName," +
+			         " model2.mobileNo,"+
 	                 " tc.relativename," +
 			         " tc.memberShipNo," +
-	                 " model.nominationPostCandidate.imageurl," +
-			         " model.nominationPostCandidate.address.district.districtId,"+
-	                 " model.nominationPostCandidate.address.district.districtName," +
-			         " model.nominationPostCandidate.address.constituency.constituencyId," +
-	                 " model.nominationPostCandidate.address.constituency.name," +
+	                 " model2.imageurl," +
+			         " model2.address.district.districtId,"+
+	                 " model2.address.district.districtName," +
+			         " model2.address.constituency.constituencyId," +
+	                 " model2.address.constituency.name," +
 	                 " tc.tdpCadreId  "+
-	   		         " from NominatedPostFinal model " +
-			         " left outer join model.nominationPostCandidate.tdpCadre tc ");
+	   		         " from NominatedPostFinal model left join model.nominationPostCandidate model2 " +
+			         " left join model2.tdpCadre tc ");
 			        
 	   
 	          if(stateId != null && stateId.longValue() > 0){
 	       		sb.append(" where model.nominatedPostMember.address.state.stateId=:stateId");
    		      }
+	          
+	          sb.append(" and  model.isDeleted='N' and model2.isDeleted='N'" +
+		   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 	         // sb.append(" and tc.enrollmentYear = 2014 and tc.isDeleted = 'N' " );  
 	          if(postStatusIds != null && !postStatusIds.isEmpty()){
-	        	  sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
+	        	  //sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
+	        	  sb.append(" and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in(:postStatusIds)");
+	        	  //sb.append(" and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+") ");
 	          }
 	   		  if(casteStateId != null && casteStateId.longValue()>0l){
-	   		     sb.append(" and model.nominationPostCandidate.casteState.casteStateId =:casteStateId"); 
+	   		     sb.append(" and model2.casteState.casteStateId =:casteStateId"); 
 	   		  }
 	   		  if(ageRangeTypeId != null && ageRangeTypeId.longValue()>0l){
-	   		     sb.append(" and model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId =:ageRangeTypeId"); 
+	   		     sb.append(" and model2.nominatedPostAgeRange.nominatedPostAgeRangeId =:ageRangeTypeId"); 
 	   		  }
 	   		  if(deptmentId != null && deptmentId.longValue()>0l){
 	   		     sb.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deptmentId"); 
@@ -1628,13 +1632,13 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   		     sb.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId =:corptionId"); 
 	   		  }
 	   		  if(casteCategryId != null && casteCategryId.longValue()>0l){
-	   		     sb.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId  =:casteCategryId"); 
+	   		     sb.append(" and model2.casteState.casteCategoryGroup.casteCategory.casteCategoryId  =:casteCategryId"); 
 	   		  }
 	   		  if(positionId !=null && positionId.longValue()>0l){
 	   			  sb.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId =:positionId ");
 	   		  }
 	   		  if(genderType != null && !genderType.equalsIgnoreCase("")){
-	   			  sb.append(" and  model.nominationPostCandidate.gender =:genderType ");
+	   			  sb.append(" and  model2.gender =:genderType ");
 	   		  }
 	   		  if(boardLevelId >0L){
 	   		    if(boardLevelId != 5l){
@@ -1683,7 +1687,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   	  if(positionId !=null && positionId.longValue()>0l){
 	   		qry.setParameter("positionId", positionId);
 	     }
-	   	 if(boardLevelId !=null && boardLevelId.longValue()>0l){
+	   	 if(boardLevelId !=null && boardLevelId.longValue()>0l && boardLevelId != 5l){
 		   		qry.setParameter("boardLevelId", boardLevelId);
 		     }
 	   	if(ageRangeTypeId !=null && ageRangeTypeId.longValue()>0l){

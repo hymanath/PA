@@ -4014,9 +4014,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					IdNameVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
 					if(deptVO != null){
 						if(commonMethodsUtilService.isListOrSetValid(deptVO.getIdnameList())){
+							
 							IdNameVO boardVO = getMatchVO(commonMethodsUtilService.getLongValueForObject(param[0]), deptVO.getIdnameList());
 								if(boardVO != null){
-									boardVO.setApplicationsCount(boardVO.getApplicationsCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+									Long cnt = boardVO.getApplicationsCount() != null ?boardVO.getApplicationsCount().longValue():0l;
+									boardVO.setApplicationsCount(cnt+commonMethodsUtilService.getLongValueForObject(param[2]));
 								}
 						}
 						
