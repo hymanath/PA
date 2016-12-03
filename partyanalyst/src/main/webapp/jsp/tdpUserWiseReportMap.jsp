@@ -58,7 +58,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel-heading bg_cc">
 							<h4 class="panel-title">
-							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 20px;">SELECT HOUR</label>
+							<span id="usernameHeading"></span>-FIELD MONITORING USER <label style="margin-left: 20px;">SELECT USER</label>
 							 <select class="" id="mapId" onchange="showMapDetails(this.value);"> 
                     	    <option value="0">All</option>
                              </select>&nbsp&nbsp<input type="checkbox" name="checkbox" value="2" id="checkboxId" style="margin-left: 10px;"><label style="margin-left: 10px;">WITH ROUTE &nbsp<img src="images/sample_rout.png" style="width: 20px; height: 20px;"/></label>&nbsp&nbsp<input type="checkbox" name="timeCheckbox" id="timeCheckboxId"><label style="margin-left: 10px;">WITH ROUTE FOR EVERY 10 MINS &nbsp<img src="images/user_rout.png" style="width: 20px; height: 20px;"/></label>
@@ -126,6 +126,103 @@ $(document).ready(function(){
 
   
   getUserTrackingDetails();
+  
+  
+  function generateAddress(result,searchTypeId,i,type)
+  {
+	//  console.log(latitude+"  :  "+longitude);
+		var request = new XMLHttpRequest();
+	
+        var method = 'GET';
+        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+result.latitude+','+result.longititude+'&sensor=true';
+        var async = true;
+		
+        request.open(method, url, async);
+        request.onreadystatechange = function(){
+          if(request.readyState == 4 && request.status == 200){
+            var data = JSON.parse(request.responseText);
+            var addressData = data.results[0];
+			
+			
+				var temparr=[];	
+				var obj={lat:parseFloat(result.latitude), lng:parseFloat(result.longititude)};
+				if(withTimeRoute == "true" || withRoute == "true")
+				{
+					pathArr.push(obj);
+				}else{
+					pathArr.push();
+				}
+				var userId = "${param.userId}";
+				if(userId == null || userId == ''){
+					userId =$('#mapId').val();
+				}	
+					
+				if(searchTypeId==0){
+					$('#checkboxId').prop("disabled", true);
+					
+					if(addressData != "undefined" && addressData !== undefined){
+						var addressStr = addressData.formatted_address;
+						if(userId == 0)
+							temparr.push(" 111 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
+						else
+							temparr.push("222 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList2[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList2[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList2[i].surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+					}
+					else{
+						if(userId == 0)							
+							temparr.push("333 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime);	
+						else
+							temparr.push("444 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Voter Name</b> : "+result.tdpCadreName+"<br/> <b>Voter Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
+					}
+				}	
+				else{
+					if($("#timeCheckboxId").is(':checked')){
+						if(addressData != "undefined" && addressData !== undefined){
+						var addressStr = addressData.formatted_address;
+						if(userId == 0)
+							temparr.push("555 <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
+						else
+							if(result.tdpCadreName != null && result.tdpCadreMbl != null)
+								temparr.push("666 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+							else
+								temparr.push("666 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+						}else{
+							if(userId == 0)
+								temparr.push("777 <b>Survey Time </b> : "+result.surveyTime);
+							else
+								if(result.tdpCadreName != null && result.tdpCadreMbl != null)
+									temparr.push("888 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
+								else
+									temparr.push("888 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");
+						}
+					}
+					else{
+						if(addressData != "undefined" && addressData !== undefined){
+						var addressStr = addressData.formatted_address;
+						if(userId == 0)
+							temparr.push("555 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");	
+						else
+							temparr.push("666 <b>Tab User Name</b> : "+result.tdpCadreName+"<br/> <b>Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>S.No  </b> : "+(parseInt(i)+1)+"<br/>  <b>Survey Time </b> : "+result.surveyTime+" </br> <b>Location :</b>"+addressStr+"");
+						}else{
+							if(userId == 0)
+								temparr.push("777 <b>Survey Time </b> : "+result.surveyTime);
+							else
+								temparr.push("888 <b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b>Cadre Name</b> : "+result.tdpCadreName+"<br/> <b>Cadre Mobile No </b> : "+result.tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.surveyTime+" ");							
+						}
+					}
+				}
+				temparr.push(result.latitude);
+				temparr.push(result.longititude);
+				temparr.push(result.surveyTime);
+				temparr.push(type);
+				console.log(type);
+				markersArr.push(temparr);
+				flightPlanCoordinates.push(temparr);
+				
+          }
+        };
+        request.send();
+	}
+
 	function getUserTrackingDetails(){
 		var jsObj={
 			constId : "${param.constistuencyId}",
@@ -161,16 +258,12 @@ $(document).ready(function(){
 							//pathArr.push(obj);
 							if(i == 0){
 								glblLat = parseFloat(result.subList2[i].latitude).toFixed(2);
-								glblLon = parseFloat(result.subList2[i].longititude).toFixed(2)
+								glblLon = parseFloat(result.subList2[i].longititude).toFixed(2);
 							}
-							/*if((result.subList1.length-1)==i){
-								displayLocation(result.subList1[i],"last");
-							}else{
-								displayLocation(result.subList1[i],"");
-							}*/
+							 generateAddress(result.subList2[i],searchTypeId,i,"rout");
+							 /*
 							var temparr=[];
-							if(searchTypeId==0){
-								//$('#checkboxId').prop('checked', false);
+							if(searchTypeId==0){								
 								$('#checkboxId').prop("disabled", true);
 								temparr.push("<b>Survey Time </b> : "+result.subList2[i].surveyTime);
 								
@@ -184,47 +277,47 @@ $(document).ready(function(){
 							temparr.push("route");
 							markersArr.push(temparr);
 							flightPlanCoordinates.push(temparr);
-							//displayLocation(result.subList1[i].latitude,result.subList1[i].longititude);
+							*/
 						}
 					}
 				}
-				if(result.subList1 != null && result.subList1.length > 0){
-					for(var i in result.subList1){
-						var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
-						if(withRoute == "true"){
-							pathArr.push(obj);
-						}else{
-							pathArr.push();
+				//if($("#checkboxId").is(':checked')){
+					if(result.subList1 != null && result.subList1.length > 0){
+						for(var i in result.subList1){
+							var obj={lat:parseFloat(result.subList1[i].latitude), lng:parseFloat(result.subList1[i].longititude)};
+							if(withRoute == "true"){
+								pathArr.push(obj);
+							}else{
+								pathArr.push();
+							}
+							;
+							if(i == 0){
+								glblLat = parseFloat(result.subList1[i].latitude).toFixed(2);
+								glblLon = parseFloat(result.subList1[i].longititude).toFixed(2)
+							}
+							 generateAddress(result.subList1[i],searchTypeId,i,"sample");
+							 
+							 /*
+							var temparr=[];
+							if(searchTypeId==0){
+								$('#checkboxId').prop("disabled", true);
+								temparr.push("<b>Tab User Name</b> : "+result.subList1[i].tdpCadreName+"<br/> <b>Mobile No </b> : "+result.subList1[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList1[i].surveyTime);
+								
+							}	
+							else {
+								temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList1[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList1[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList1[i].surveyTime);
+							}
+							temparr.push(result.subList1[i].latitude);
+							temparr.push(result.subList1[i].longititude);
+							temparr.push(result.subList1[i].surveyTime);
+							temparr.push("sample");
+							markersArr.push(temparr);
+							flightPlanCoordinates.push(temparr);
+							*/
 						}
-						//pathArr.push(obj);
-						if(i == 0){
-							glblLat = parseFloat(result.subList1[i].latitude).toFixed(2);
-							glblLon = parseFloat(result.subList1[i].longititude).toFixed(2)
-						}
-						/*if((result.subList1.length-1)==i){
-							displayLocation(result.subList1[i],"last");
-						}else{
-							displayLocation(result.subList1[i],"");
-						}*/
-						var temparr=[];
-						if(searchTypeId==0){
-							//$('#checkboxId').prop('checked', false);
-							$('#checkboxId').prop("disabled", true);
-							temparr.push("<b>Tab User Name</b> : "+result.subList1[i].tdpCadreName+"<br/> <b>Mobile No </b> : "+result.subList1[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList1[i].surveyTime);
-							
-						}	
-						else {
-							temparr.push("<b>S.No  </b> : "+(parseInt(i)+1)+"<br/> <b> Cadre Name </b> : "+result.subList1[i].tdpCadreName+"<br/> <b> Cadre Mobile No </b> :"+result.subList1[i].tdpCadreMbl+"<br/> <b>Survey Time </b> : "+result.subList1[i].surveyTime);
-						}
-						temparr.push(result.subList1[i].latitude);
-						temparr.push(result.subList1[i].longititude);
-						temparr.push(result.subList1[i].surveyTime);
-						temparr.push("sample");
-						markersArr.push(temparr);
-						flightPlanCoordinates.push(temparr);
-						//displayLocation(result.subList1[i].latitude,result.subList1[i].longititude);
 					}
-				}
+				//}
+				
 				/*for(var i in result.subList1){
 					//var obj={lat:parseFloat(result[i].latitude), lng:parseFloat(result[i].longitude)};
 					//pathArr.push(obj);
@@ -246,7 +339,17 @@ $(document).ready(function(){
 			else{
 					//alert('No Registration staff are available in this Constituency.Please try later...');
 				}
-			buildUserTrackingMap(markersArr,pathArr);
+				if($("#timeCheckboxId").is(':checked') && $("#checkboxId").is(':checked')){
+					setTimeout(function(){
+						buildUserTrackingMap(markersArr,pathArr);
+					},10000);
+				}
+				else{
+					setTimeout(function(){
+						buildUserTrackingMap(markersArr,pathArr);
+					},5000);
+				}
+				
 			//initMap(markersArr,flightPlanCoordinates);
 		});
 	}
