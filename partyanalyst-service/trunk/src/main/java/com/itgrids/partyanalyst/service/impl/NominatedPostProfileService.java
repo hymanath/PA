@@ -5887,19 +5887,17 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
 						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null
-									&& !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("5") 
-									&& !nominatedPostFinal.getApplicationStatusId().toString().trim().equalsIgnoreCase("7") ){// finalyzed status id 5- confirmed, 7 -> G.O Passed
+							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null){// finalyzed status id
 								//List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
-								//if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-									NominatedPost nominatedPost1 = nominatedPostList.get(0);
-									nominatedPost1.setNominationPostCandidateId(candidateId);
-									nominatedPost1.setNominatedPostStatusId(3l);
-									nominatedPost1.setUpdatedBy(userId);
-									nominatedPost1.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									nominatedPost1 = nominatedPostDAO.save(nominatedPost1);
+								if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
+									NominatedPost nominatedPost = nominatedPostList.get(0);
+									nominatedPost.setNominationPostCandidateId(candidateId);
+									nominatedPost.setNominatedPostStatusId(3l);
+									nominatedPost.setUpdatedBy(userId);
+									nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPost = nominatedPostDAO.save(nominatedPost);
 									
-									nominatedPostFinal.setNominatedPostId(nominatedPost1.getNominatedPostId());
+									nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
 									nominatedPostFinal.setApplicationStatusId(statusId);
 									nominatedPostFinal.setUpdatedBy(userId);
 									nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -5914,19 +5912,18 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 									
 									changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
+								}
+								else{
 									
-								//}
-								//else{
-									
-								//	return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
+									return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
 									
 									/*nominatedPostFinal.setApplicationStatusId(statusId);
 									nominatedPostFinal.setUpdatedBy(userId);
 									nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);*/
-								//}
+								}
 							}
-						/*	else if(nominatedPostFinal != null){
+							else if(nominatedPostFinal != null){
 								
 								
 								NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
@@ -5937,7 +5934,6 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 								
-									
 								//Moving into OPEN Status if Applications Are less 
 								if(nominatedPostFinal !=null){							
 									Long memberId = nominatedPostFinal.getNominatedPostMemberId();
@@ -5980,7 +5976,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 										}
 									}
 								}
-							}*/
+							}
 												
 							NominatedPostComment nominatedPostComment = new NominatedPostComment();
 							nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
@@ -5991,7 +5987,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
 						}
 						else{
-							return 0L;// no open posts are available. so we are unable to assign this candidate to any post.
+							return 0L;
 						}
 					}
 					else{
@@ -6058,7 +6054,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			status = "success";
 		} catch (Exception e) {
 			status = "failure";
-			LOG.error("Exception raised at updateFinalyzationStatusForPost() method of NominatedPostProfileService", e);
+			LOG.error("Exception raised at updateWishListForCandidate() method of NominatedPostProfileService", e);
 		}
 		return status;
 	}
