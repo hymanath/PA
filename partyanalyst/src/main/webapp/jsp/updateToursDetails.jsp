@@ -149,8 +149,8 @@
 						<div class="row showDivCls" id="uploadFlDivId" style="display:none;"> 
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3>  
-								<input type="file" id="filer_input3" multiple="multiple"  name="files[]" class="m_top20"/>
-								<span id="errFileId" style="color:red;margin-left:470px;"></span>
+								<input type="file" id="update_TourFileId2" multiple="multiple"  name="files[]" class="m_top20"/>
+								<span id="errFileId" style="color:red;margin-left:470px;"></span>   
 							</div>
 						</div>            
 						
@@ -283,15 +283,17 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<!-- for file uploader -->
+<!-- for file uploader  -->              
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
-<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>  
-<script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>          
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>       
+<script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script> 
+<script type="text/javascript" src="dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
 <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>     
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>    
 <script type="text/javascript">
 //getting Dynamic Browser URL
+initializeFile2();     
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
