@@ -110,7 +110,7 @@ $("#toursDateRangePicker").daterangepicker({
 		$(".textErrCls").html("");
 		$("#errFileId").html("");
 		var flag = true;
-		var filerKit = $("#filer_input3").prop("jFiler");
+		var filerKit = $("#update_TourFileId2").prop("jFiler");
 		var monthValue = $("#monthSelectBoxId").val();
 		if(monthValue == 0){
 			$("#errMnthId").html("Please Select Month.");
@@ -135,7 +135,7 @@ $("#toursDateRangePicker").daterangepicker({
 		var childEleCount = $(".jFiler-items-list").children().length;
 		if(childEleCount > 1){
 			$("#errFileId").html("Please Select Only One Document."); 
-			filerKit.reset();
+			filerKit.reset();   
 			flag = false;         			
 		}
 		
@@ -156,9 +156,9 @@ $("#toursDateRangePicker").daterangepicker({
 			$(".clearFieldCls").val(' ');
 			$("#monthSelectBoxId").val(0);
 			$("#yearId").val(0);    
-			$("#filer_input3").val('');      
+			$("#update_TourFileId2").val('');        
 			$(".selectChosen").trigger("chosen:updated");
-			var filerKit = $("#filer_input3").prop("jFiler");
+			var filerKit = $("#update_TourFileId2").prop("jFiler");
 			//if(uploadResult != null && uploadResult == '<pre>"Saved"</pre>'){
 			setTimeout(function () {
 			$("#successSpanId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
@@ -870,7 +870,7 @@ $("#toursDateRangePicker").daterangepicker({
 			$(".clearFieldCls").val(' ');
 			$("#updateMonthId").val(0);
 			$("#updateYearId").val(0);    
-			$("#filer_input3").val('');      
+			$("#update_TourFileId2").val('');      
 			$(".selectChosen").trigger("chosen:updated");
 			var filerKit = $("#update_TourFileId").prop("jFiler");
 			console.log(uploadResult);    
@@ -907,7 +907,7 @@ $("#toursDateRangePicker").daterangepicker({
 			window.open('http://mytdp.com/Reports/tour_documents/'+dbFilePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 		}          
 	});      
-	/* $(document).on('click','#showPdfId',function(){
+	/* $(document).on('click','#showPdfId',function(){           
 		var dbFilePath = $(this).attr("attr_filePath");         
 		var str = ''; 
 		var fileNameArr = dbFilePath.split(".");
