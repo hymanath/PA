@@ -923,16 +923,16 @@ function alertComments(result)
 			}
 			if(length != i){
 				str+='<h4 class="panel-title">'+result[i].status+'';
-						str+='<i class="glyphicon glyphicon-ok"></i>';
+						str+='<i class="glyphicon glyphicon-ok"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';    
 				str+='</h4>';
 			}else{
 				str+='<h4 class="panel-title">'+result[i].status+'';
-					str+='<i class="glyphicon glyphicon-hourglass"></i>';
+					str+='<i class="glyphicon glyphicon-hourglass"></i><span class="pull-right" style="padding-right:20px;">'+result[i].sublist2[0].date+'</span>';
 				str+='</h4>';
 			} 
 				str+='</a>';  
 			str+='</div>';
-			if(length == i)
+			if(length == i)  
 			{
 				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
 			}else{
@@ -966,16 +966,17 @@ function alertComments(result)
 										for(var k in result[i].sublist2[j].sublist)
 										{	
 											str+='<div>';
-												str+='<p>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
 												for(var l in result[i].sublist2[j].sublist[k])
 												{
-													str+='<span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:</span> <img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+' - '+result[i].sublist2[j].sublist[k][l].timeString+'</br>';
+													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
 												}
 												str+='</p>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
 												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
 												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
 												str+='<hr style="margin-top:20px;"/>';
-											str+='</div>';
+											str+='</div>';   
 										}
 										str+='</div>';    
 									str+='</li>';
