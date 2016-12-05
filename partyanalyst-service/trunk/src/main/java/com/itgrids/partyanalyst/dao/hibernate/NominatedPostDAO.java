@@ -1590,21 +1590,43 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
     
    public List<Object[]> getStatusWiseNominatedProfileDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
                                                              Long ageRangeTypeId,Long deptmentId,Long corptionId,
-                                                             String genderType,List<Long> postStatusIds,Long locationId){
+                                                             String genderType,List<Long> postStatusIds,Long locationId,String type){
 	         StringBuilder sb = new StringBuilder();
-	       sb.append(" select model2.nominationPostCandidateId," +
+	         sb.append(" select model2.nominationPostCandidateId," +
 	                 " model2.candidateName," +
 			         " model2.mobileNo,"+
 	                 " tc.relativename," +
 			         " tc.memberShipNo," +
 	                 " model2.imageurl," +
 			         " model2.address.district.districtId,"+
-	                 " model2.address.district.districtName," +
-			         " model2.address.constituency.constituencyId," +
-	                 " model2.address.constituency.name," +
-	                 " tc.tdpCadreId  "+
-	   		         " from NominatedPostFinal model left join model.nominationPostCandidate model2 " +
-			         " left join model2.tdpCadre tc ");
+	                 " model2.address.district.districtName," );
+	         if(type.toString().equalsIgnoreCase("candidate")){
+	        	 sb.append(" const.constituencyId," +
+	                 " const.name," );
+	         }else if(type.toString().equalsIgnoreCase("application")){
+	        	 sb.append(" tc.userAddress.constituency.constituencyId,tc.userAddress.constituency.name, ");
+	         }
+	         sb.append(" tc.tdpCadreId,model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+	                 " model.nominatedPostMember.nominatedPostPosition.departments.deptName,model.nominatedPostMember.nominatedPostPosition.board.boardId," +
+	                 "model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+	                 "model.nominatedPostMember.nominatedPostPosition.position.positionName  ");
+	         
+	         if(postStatusIds != null && !postStatusIds.isEmpty()){
+	        	  
+	        	  if(type.toString().equalsIgnoreCase("candidate")){
+	        		  sb.append(" , model.nominatedPost.nominatedPostStatus.nominatedPostStatusId, model.nominatedPost.nominatedPostStatus.status ");
+	        	  }else if(type.toString().equalsIgnoreCase("application")){
+	        		  sb.append(" , model.applicationStatus.applicationStatusId, model.applicationStatus.status ");
+	        	  }
+	        	  
+	          }
+	                 sb.append("  from NominatedPostFinal model left join model.nominationPostCandidate model2 ");
+	                 if(type.toString().equalsIgnoreCase("candidate")){
+	                	 sb.append(" left join model2.tdpCadre tc " +
+			         " left join tc.userAddress addr left join addr.constituency const ");
+	                 }else if(type.toString().equalsIgnoreCase("application")){
+	                	 sb.append(" left join model2.tdpCadre tc " );
+	                 }
 			        
 	   
 	          if(stateId != null && stateId.longValue() > 0){
@@ -1612,63 +1634,71 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
    		      }
 	          
 	          sb.append(" and  model.isDeleted='N' and model2.isDeleted='N'" +
-		   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
+	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 	         // sb.append(" and tc.enrollmentYear = 2014 and tc.isDeleted = 'N' " );  
 	          if(postStatusIds != null && !postStatusIds.isEmpty()){
 	        	  //sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
-	        	  sb.append(" and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in(:postStatusIds)");
+	        	  if(type.toString().equalsIgnoreCase("candidate")){
+	        		  sb.append(" and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in(:postStatusIds)");
+	        	  }else if(type.toString().equalsIgnoreCase("application")){
+	        		  sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
+	        	  }
 	        	  //sb.append(" and model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_POST_FINALIZED_GOISSUED_STATUS+") ");
 	          }
-	   		  if(casteStateId != null && casteStateId.longValue()>0l){
-	   		     sb.append(" and model2.casteState.casteStateId =:casteStateId"); 
-	   		  }
-	   		  if(ageRangeTypeId != null && ageRangeTypeId.longValue()>0l){
-	   		     sb.append(" and model2.nominatedPostAgeRange.nominatedPostAgeRangeId =:ageRangeTypeId"); 
-	   		  }
-	   		  if(deptmentId != null && deptmentId.longValue()>0l){
-	   		     sb.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deptmentId"); 
-	   		  }
-	   		  if(corptionId != null && corptionId.longValue()>0l){
-	   		     sb.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId =:corptionId"); 
-	   		  }
-	   		  if(casteCategryId != null && casteCategryId.longValue()>0l){
-	   		     sb.append(" and model2.casteState.casteCategoryGroup.casteCategory.casteCategoryId  =:casteCategryId"); 
-	   		  }
-	   		  if(positionId !=null && positionId.longValue()>0l){
-	   			  sb.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId =:positionId ");
-	   		  }
-	   		  if(genderType != null && !genderType.equalsIgnoreCase("")){
-	   			  sb.append(" and  model2.gender =:genderType ");
-	   		  }
-	   		  if(boardLevelId >0L){
-	   		    if(boardLevelId != 5l){
-	   			  sb.append(" and model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
-	   		    }else {
-	   			 sb.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
-	   		    }
-	   		 }  
-	   		  
-	   		if(locationId !=null && locationId.longValue()>0l){
-	   			
-	   			if(boardLevelId.longValue() == 2l){
-	   				sb.append(" and  model.nominatedPostMember.address.state.stateId = :locationId ");
-	   			}
-	   			else if(boardLevelId.longValue() == 3l){
-	   				sb.append(" and  model.nominatedPostMember.address.district.districtId = :locationId  ");
-	   			}
-	   			else if(boardLevelId.longValue() == 4l){
-	   				sb.append(" and model.nominatedPostMember.address.constituency.constituencyId = :locationId ");
-	   			}
-	   			else if(boardLevelId.longValue() == 5l){
-	   				sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId = :locationId ");
-	   			}
-	   			else if(boardLevelId.longValue() == 7l){
-	   				sb.append(" and  model.nominatedPostMember.address.panchayat.localElectionBodyId = :locationId ");
-	   			}
-	   			else if(boardLevelId.longValue() == 6l){
-	   				sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :locationId ");
-	   			}
-	   		}
+	          if(casteStateId != null && casteStateId.longValue()>0l){
+	        	  if(type.toString().equalsIgnoreCase("candidate"))
+		   		     sb.append(" and model2.casteState.casteStateId =:casteStateId"); 
+	        	  else if(type.toString().equalsIgnoreCase("application"))
+	        		  sb.append(" and model2.casteState.caste.casteId =:casteStateId"); 
+	        	 
+		   		  }
+		   		  if(ageRangeTypeId != null && ageRangeTypeId.longValue()>0l){
+		   		     sb.append(" and model2.nominatedPostAgeRange.nominatedPostAgeRangeId =:ageRangeTypeId"); 
+		   		  }
+		   		  if(deptmentId != null && deptmentId.longValue()>0l){
+		   		     sb.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deptmentId"); 
+		   		  }
+		   		  if(corptionId != null && corptionId.longValue()>0l){
+		   		     sb.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId =:corptionId"); 
+		   		  }
+		   		  if(casteCategryId != null && casteCategryId.longValue()>0l){
+		   		     sb.append(" and model2.casteState.casteCategoryGroup.casteCategory.casteCategoryId  =:casteCategryId"); 
+		   		  }
+		   		  if(positionId !=null && positionId.longValue()>0l){
+		   			  sb.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId =:positionId ");
+		   		  }
+		   		  if(genderType != null && !genderType.equalsIgnoreCase("")){
+		   			  sb.append(" and  model2.gender =:genderType ");
+		   		  }
+		   		  if(boardLevelId >0L){
+		   		    if(boardLevelId != 5l){
+		   			  sb.append(" and model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
+		   		    }else {
+		   			 sb.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+		   		    }
+		   		 }  
+		   		  
+		   		if(locationId !=null && locationId.longValue()>0l){
+		   			
+		   			if(boardLevelId.longValue() == 2l){
+		   				sb.append(" and  model.nominatedPostMember.address.state.stateId = :locationId ");
+		   			}
+		   			else if(boardLevelId.longValue() == 3l){
+		   				sb.append(" and  model.nominatedPostMember.address.district.districtId = :locationId  ");
+		   			}
+		   			else if(boardLevelId.longValue() == 4l){
+		   				sb.append(" and model.nominatedPostMember.address.constituency.constituencyId = :locationId ");
+		   			}
+		   			else if(boardLevelId.longValue() == 5l){
+		   				sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId = :locationId ");
+		   			}
+		   			else if(boardLevelId.longValue() == 7l){
+		   				sb.append(" and  model.nominatedPostMember.address.panchayat.localElectionBodyId = :locationId ");
+		   			}
+		   			else if(boardLevelId.longValue() == 6l){
+		   				sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :locationId ");
+		   			}
+		   		}
 	   		  //sb.append("and model.nominationPostCandidate.tdpCadreId = tc.tdpCadreId");
 	   		 Query qry = getSession().createQuery(sb.toString());
 	   		 

@@ -58,6 +58,13 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String imageUrl;
 	private String relativeName;
 	private String membershipNo;
+	private Long departmentId;
+	private Long boardId;
+	private String deptName;
+	private String boardName;
+	private Long postionId;
+	private String positionName;
+	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
 		return o2.getOrderId().compareTo(o1.getOrderId());
@@ -446,6 +453,54 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setMembershipNo(String membershipNo) {
 		this.membershipNo = membershipNo;
+	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public Long getBoardId() {
+		return boardId;
+	}
+
+	public void setBoardId(Long boardId) {
+		this.boardId = boardId;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public String getBoardName() {
+		return boardName;
+	}
+
+	public void setBoardName(String boardName) {
+		this.boardName = boardName;
+	}
+
+	public Long getPostionId() {
+		return postionId;
+	}
+
+	public void setPostionId(Long postionId) {
+		this.postionId = postionId;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
 	}
 	
 	

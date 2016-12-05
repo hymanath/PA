@@ -1014,14 +1014,14 @@ public CastePositionVO setApplicationCntDataToVO(List<Object[]> rtrnApplicationD
 
 public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteStateId,Long positionId,Long boardLevelId,Long casteCategryId,
                                                        Long ageRangeTypeId,Long deptmentId,Long corptionId,
-                                                       String genderType,List<Long> postStatusIds,Long locationId){
+                                                       String genderType,List<Long> postStatusIds,Long locationId,String type){
 	List<IdNameVO>  finalList = new ArrayList<IdNameVO>();
 	List<Long> cadreIds = new ArrayList<Long>();
 	Map<Long,IdNameVO> cadreMap = new HashMap<Long,IdNameVO>();
 	try{
 		List<Object[]> candidateLst = nominatedPostDAO.getStatusWiseNominatedProfileDetils(stateId,casteStateId,positionId,boardLevelId,casteCategryId,
                                                                                           ageRangeTypeId,deptmentId,corptionId,
-                                                                                          genderType,postStatusIds,locationId);
+                                                                                          genderType,postStatusIds,locationId,type);
 		if(candidateLst !=null && !candidateLst.isEmpty()){
 			for(Object[] param : candidateLst){
 				IdNameVO idNameVO = new IdNameVO();
@@ -1040,6 +1040,14 @@ public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteSt
 					cadreIds.add(idNameVO.getCadreId());
 					cadreMap.put(idNameVO.getCadreId(), idNameVO);
 				}
+				idNameVO.setDepartmentId(param[11] != null ? (Long)param[11] : 0l);
+				idNameVO.setDeptName(param[12] != null ? param[12].toString() : "");
+				idNameVO.setBoardId(param[13] != null ? (Long)param[13] : 0l);
+				idNameVO.setBoardName(param[14] != null ? param[14].toString() : "");
+				idNameVO.setPostionId(param[15] != null ? (Long)param[15] : 0l);
+				idNameVO.setPositionName(param[16] != null ? param[16].toString() : "");
+				idNameVO.setApplicationStatusId(param[17] != null ? (Long)param[17] : 0l);
+				idNameVO.setApplicationStatus(param[18] != null ? param[18].toString() : "");
 				finalList.add(idNameVO);
 			}
 		}
