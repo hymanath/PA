@@ -1030,7 +1030,7 @@ $(document).on('click','.commentsDetailsCls',function(){
 });
 
 function getOverAllCommentDetails(candidateId,divId,aplicationId,postFinalId){
-	$("#"+divId).html("");
+	$("#"+divId).html(" ");
 	var jsObj=
 	   {				
 		candidateId:candidateId,
@@ -1058,11 +1058,11 @@ function buildOverAllComments(result,divId){
 			str+='<div class="panel-group" id="commentsAccordion12" role="tablist" aria-multiselectable="true">';
 			  str+='<div class="panel panel-default commentsPanel">';
 				str+='<div class="panel-heading" role="tab" id="CommentsCollapseHeading112">';
-					str+='<a class="CommentsModalIcon" role="button" data-toggle="collapse" data-parent="#commentsAccordion12" href="#CommentsCollapseHeading12" aria-expanded="false" aria-controls="CommentsCollapseHeading12">';
+					str+='<a class="CommentsModalIcon" role="button" data-toggle="collapse" data-parent="#commentsAccordion12" href="#CommentsCollapseHeading12'+divId+'" aria-expanded="false" aria-controls="CommentsCollapseHeading12'+divId+'">';
 						str+='<h4>Finalization</h4>';
 					str+='</a>';
 				str+='</div>';
-				str+='<div id="CommentsCollapseHeading12" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CommentsCollapseHeading112">';
+				str+='<div id="CommentsCollapseHeading12'+divId+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CommentsCollapseHeading112">';
 				  str+='<div class="panel-body">';
 				  if(result.idnameList != null && result.idnameList.length > 0){
 					  for(var i in result.idnameList){
@@ -1082,11 +1082,11 @@ function buildOverAllComments(result,divId){
 			str+='<div class="panel-group" id="commentsAccordion" role="tablist" aria-multiselectable="true">';
 			  str+='<div class="panel panel-default commentsPanel">';
 				str+='<div class="panel-heading" role="tab" id="CommentsCollapseHeading">';
-					str+='<a role="button" data-toggle="collapse" class="CommentsModalIcon collapsed" data-parent="#commentsAccordion" href="#CommentsCollapse" aria-expanded="true" aria-controls="CommentsCollapse">';
+					str+='<a role="button" data-toggle="collapse" class="CommentsModalIcon collapsed" data-parent="#commentsAccordion" href="#CommentsCollapse'+divId+'" aria-expanded="true" aria-controls="CommentsCollapse'+divId+'">';
 					  str+='<h4>Shortlisting</h4>';
 					str+='</a>';
 				str+='</div>';
-				str+='<div id="CommentsCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CommentsCollapseHeading">';
+				str+='<div id="CommentsCollapse'+divId+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CommentsCollapseHeading">';
 				  str+='<div class="panel-body">';
 				    if(result.subList1 != null && result.subList1.length > 0){
 					  for(var i in result.subList1){
