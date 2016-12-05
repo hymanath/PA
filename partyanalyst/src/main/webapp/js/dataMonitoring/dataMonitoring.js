@@ -577,12 +577,12 @@ function getUsers(constituencyId){
 								str2+='<td>'+result[1][i].name+'</td>';
 								str2+='<td>'+result[1][i].mobileNo+'</td>';
 								str2+='<td>'+result[1][i].gender+'</td>';
-								str2+='<td><input attr_position_id="'+i+'"  attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'" class="localSelectFamilyCls" type="checkbox"/></td>';
+								str2+='<td><input attr_position_id="'+i+'"  attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" attr_dist_id="'+result[1][i].districtid+'" attr_const_id="'+result[1][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[1][i].cadreUserId+'" attr_tab_user_id="'+result[1][i].tabUserId+'" class="localSelectFamilyCls" type="checkbox"/></td>';
 							str2+='</tr>'; 
 							str2+='<tr class="familyDeleteRow'+i+'">';
 								str2+='<td>';
-									str2+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Approve</button>';//familyHideSelectBoxId0
-									str2+='<button class="btn btn-danger singleRejectCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result[0][i].districtid+'" attr_const_id="'+result[0][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[0][i].cadreUserId+'" attr_tab_user_id="'+result[0][i].tabUserId+'">Reject</button>';
+									str2+='<button class="btn btn-success singleApproveCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_dist_id="'+result[1][i].districtid+'" attr_const_id="'+result[1][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[1][i].cadreUserId+'" attr_tab_user_id="'+result[1][i].tabUserId+'">Approve</button>';//familyHideSelectBoxId0
+									str2+='<button class="btn btn-danger singleRejectCls btn-sm" attr_position_id="'+i+'" attr_cadre_id="'+result[1][i].cadreId+'" attr_reason_id="familyHideSelectBoxId'+i+'" style="margin-left: 5px;" attr_dist_id="'+result[1][i].districtid+'" attr_const_id="'+result[1][i].constitunecyId+'" attr_cadre_survey_user_id="'+result[1][i].cadreUserId+'" attr_tab_user_id="'+result[1][i].tabUserId+'">Reject</button>';
 								str2+='</td>';
 								str2+='<td colspan="3">';
 									str2+='<select class="select" id="familyHideSelectBoxId'+i+'" style="display:none;">';      
