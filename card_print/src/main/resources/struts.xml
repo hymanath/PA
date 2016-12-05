@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	
+	<package name="myPackage" extends="struts-default,json-default,action-default">
+	
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="jasper" 
+	   			class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		
+		<default-action-ref name="homePageAction.action"/>
+		
+		<global-results>
+	 		<result name="error" type="redirect" >homePageAction.action</result>
+		</global-results>
+	
+	    <global-exception-mappings>
+	        <exception-mapping exception="java.lang.Exception" result="exception" />
+	    </global-exception-mappings>
+	    
+	    	
+		<action name="loginAction" class="loginAction">
+		    	<result name="success">jsp/login.jsp</result>
+		</action>
+		
+		<action name="logoutAction" class="loginAction"  method="logout">
+		    <result name="success" type="redirect">loginAction.action</result>
+		</action>
+		
+	</package>
+</struts>        

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+
+<log4j:configuration>
+	<appender name="file" class="org.apache.log4j.RollingFileAppender">
+		<param name="maxFileSize" value="10MB" />
+		<param name="maxBackupIndex" value="10" />
+		<param name="File" value="${catalina.home}/logs/cardPrint.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{ISO8601}]%5p%6.6r[%t]%x - %C.%M(%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{ISO8601}]%5p%6.6r[%t]%x - %C.%M(%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+ 	<appender name="RegistrationErrors" class="org.apache.log4j.RollingFileAppender">
+        <param name="Threshold" value="fatal"/>
+        <param name="file" value="${catalina.home}/logs/RegistrationErrors.log" />        	
+        <param name="MaxFileSize" value="10MB" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{ISO8601}]%5p%6.6r[%t]%x - %C.%M(%F:%L) - %m%n" />
+        </layout>
+    </appender>
+    
+	<category name="com.itgrids">
+		<priority value="DEBUG" />
+	</category>
+	
+	<category name="com.itgrids">
+		<priority value="INFO" />
+	</category>
+	
+	<category name="org.hibernate">
+		<priority value="WARN" />
+	</category>
+
+	<root>
+		<priority value="WARN"></priority>
+		<appender-ref ref="file" />
+		<appender-ref ref="console" />
+		<appender-ref ref="fatal" />
+	</root>
+</log4j:configuration>
