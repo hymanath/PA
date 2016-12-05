@@ -222,7 +222,11 @@ function buildPage(){
 					str+='<div class="panel-footer text-capitalize">';
 						str+='<p><b>'+result[i].govtOrderName+'</b></p>';
 						str+='<p class="text-muted">Dated : '+result[i].fromDate.substring(0,10)+' to '+result[i].toDate.substring(0,10)+'</p>';
-						str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
+							if(result[i].expireDate != null && result[i].expireDate.length > 0){
+									str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
+							}else{
+								str+='<p class="text-danger"><i>Going to expire : - </i></p>';    
+							}
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
