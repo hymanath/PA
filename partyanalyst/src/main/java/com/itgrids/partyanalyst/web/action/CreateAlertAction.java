@@ -201,8 +201,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	{
 		session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.CREATE_ALERT_ENTITLEMENT))
-		return Action.SUCCESS;
+		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.CREATE_ALERT_ENTITLEMENT) || 
+				 regVo.getEntitlements().contains("ALERT_DASHBOARD_USER_ENTITLEMENT") || 
+				  regVo.getEntitlements().contains("ALERT_DASHBOARD_ADMIN_ENTITLEMENT"))  
+			return Action.SUCCESS;
 		else
 			return Action.ERROR;	
 	}
@@ -210,10 +212,11 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	{
 		session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.ALERT_DASHBOARD_ENTITLEMENT))
-		return Action.SUCCESS;
+		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains("ALERT_DASHBOARD_USER_ENTITLEMENT") || 
+				 regVo.getEntitlements().contains("ALERT_DASHBOARD_ADMIN_ENTITLEMENT"))  
+			return Action.SUCCESS;
 		else
-			return Action.ERROR;	
+			return Action.ERROR;  	
 	}
 	
 	public String getCandidatesByName(){
