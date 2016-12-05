@@ -29,7 +29,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 		    sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId");
 			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'" +
-						" and model1.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
+						" and model1.isDeleted = 'N'" );
+			//sb.append("and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and model1.constituency.district.districtId = :districtId");
 		sb.append(" order by model1.constituency.name");
@@ -59,7 +60,7 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		  sb.append(" where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId ");
 		if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId");
-			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y'");
+			sb.append(" and model.isDeleted = 'N' and model.cadreSurveyUser.isDeleted = 'N'");// and model.cadreSurveyUser.isEnabled = 'Y'");
 		if(constituencyId != null && constituencyId.longValue() > 0l)
 				sb.append("and model1.constituency.constituencyId = :constituencyId and model1.isDeleted = 'N'");
 		sb.append(" order by model.cadreSurveyUser.userName");
@@ -129,7 +130,8 @@ public class CadreRegUserTabUserDAO extends GenericDaoHibernate<CadreRegUserTabU
 		 if(cadreRegUserId != null && cadreRegUserId.longValue() > 0l)
 			sb.append(	" and model.cadreRegUser.cadreRegUserId = :cadreRegUserId" +
 								" and model.isDeleted = 'N' and model1.isDeleted = 'N'" +
-								" and model.cadreSurveyUser.isDeleted = 'N' and model.cadreSurveyUser.isEnabled = 'Y' ");
+								" and model.cadreSurveyUser.isDeleted = 'N' " );
+								//sb.append("and model.cadreSurveyUser.isEnabled = 'Y' ");
 		 sb.append(" order by model1.constituency.district.districtName");
 		 
 		 Query query=getSession().createQuery(sb.toString());
