@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<decorators defaultdir="/WEB-INF/decorators">
+   
+    <excludes>   
+		<pattern>/excludeAction*</pattern>	
+	</excludes>  
+
+    <decorator name="newHome" page="homelayout.jsp">
+		<pattern>/exampleAction*</pattern>
+	</decorator>
+	
+</decorators>

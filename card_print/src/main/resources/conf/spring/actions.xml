@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+	
+<beans>
+	 <bean id="loginAction" class="com.itgrids.cardprint.action.LoginAction" singleton="false">
+	 	<property name="userService" ref="userService" />
+	 </bean>
+	 
+	 <bean id="homeAction" class="com.itgrids.cardprint.action.HomeAction" singleton="false">
+	 </bean>
+	 
+</beans>

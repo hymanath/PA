@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+
+<urlrewrite use-query-string="true">
+
+    <rule>
+        <note>
+            The rule means that requests to /test/status/ will be redirected to /rewrite-status
+            the url will be rewritten.
+        </note>
+        <from>/test/status/</from>
+        <to type="redirect">%{context-path}/rewrite-status</to>
+    </rule>
+
+
+    <outbound-rule>
+        <note>
+            The outbound-rule specifies that when response.encodeURL is called (if you are using JSTL c:url)
+            the url /rewrite-status will be rewritten to /test/status/.
+
+            The above rule and this outbound-rule means that end users should never see the
+            url /rewrite-status only /test/status/ both in thier location bar and in hyperlinks
+            in your pages.
+        </note>
+        <from>/rewrite-status</from>
+        <to>/test/status/</to>
+    </outbound-rule>
+	
+	<!-- States -->
+
+	<rule>
+		<from>/states/Andhra_Pradesh.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=1</to>
+	</rule>
+
+	<rule>
+		<from>/states/Tamil_Nadu.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=24</to>
+	</rule>
+
+	<rule>
+		<from>/states/Assam.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=3</to>
+	</rule>
+
+	<rule>
+		<from>/states/Karnataka.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=12</to>
+	</rule>
+
+	<rule>
+		<from>/states/Kerala.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=13</to>
+	</rule>
+
+	<rule>
+		<from>/states/Puducherry.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=35</to>
+	</rule>
+
+	<rule>
+		<from>/states/West_Bengal.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=28</to>
+	</rule>
+
+	<rule>
+		<from>/states/Goa.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=6</to>
+	</rule>
+
+	<rule>
+		<from>/states/Gujarat.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=7</to>
+	</rule>
+
+	<rule>
+		<from>/states/Himachal_Pradesh.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=9</to>
+	</rule>
+
+	<rule>
+		<from>/states/Manipur.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=16</to>
+	</rule>
+
+	<rule>
+		<from>/states/Punjab.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=21</to>
+	</rule>
+
+	<rule>
+		<from>/states/Uttar_Pradesh.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=27</to>
+	</rule>
+
+	<rule>
+		<from>/states/Uttaranchal.action</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=26</to>
+	</rule>
+
+	<!-- States Links End  -->
+	
+	<!-- Special Pages -->
+
+	<rule>
+		<from>/andhra_pradesh-2012-bi-elections-and-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=8</to>
+	</rule>
+	
+	<rule>
+		<from>/assembly-elections-2012-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=2</to>
+	</rule>
+
+	<rule>
+		<from>/uttar_pradesh-2012-assembly-election-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=3</to>
+	</rule>
+
+	<rule>
+		<from>/punjab-2012-assembly-election-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=4</to>
+	</rule>
+
+	<rule>
+		<from>/uttarakhand-2012-assembly-election-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=5</to>
+	</rule>
+
+	<rule>
+		<from>/manipur-2012-assembly-election-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=6</to>
+	</rule>
+
+	<rule>
+		<from>/goa-2012-assembly-election-results.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=7</to>
+	</rule>
+
+	<!-- Special Pages End -->
+
+	<!-- Party Pages -->
+
+	<rule>
+		<from>/telugu-desam-party-30-years-anniversary.action</from>
+		<to type="redirect">%{context-path}/partyPageAction.action?partyId=872</to>
+	</rule>
+
+	<rule>
+		<from>/CBI-cases-against-politians.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=9</to>
+	</rule>
+
+	<rule>
+		<from>/indian-presidential-elections-2012.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=10</to>
+	</rule>
+
+	<rule>
+		<from>/tamilnadu-congress-committee.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=11</to>
+	</rule>
+
+	<rule>
+		<from>/vastunna-meekosam-padayathra-by-nara-chandrababu-naidu.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=12</to>
+	</rule>
+
+	<rule>
+		<from>/gujarat-2012-vidhan-sabha-elections.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=13</to>
+	</rule>
+
+	<rule>
+		<from>/himachal-pradesh-2012-vidhan-sabha-elections.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=14</to>
+	</rule>
+
+	<rule>
+		<from>/indiramma-baata.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=15</to>
+	</rule>
+
+	<rule>
+		<from>/maro-praja-prasthanam-padayathra-by-ys-sharmila.action</from>
+		<to type="redirect">%{context-path}/specialPageAction.action?specialPageId=16</to>
+	</rule>
+
+	<!-- Party Pages End-->
+
+</urlrewrite>
+
