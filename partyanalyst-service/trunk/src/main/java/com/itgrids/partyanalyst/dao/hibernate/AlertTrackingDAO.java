@@ -38,7 +38,6 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" ALTT.alert_status_id as alert_status_id, ");
 		queryStr.append(" date(ALTT.inserted_time) as inserted_date, ");
 		queryStr.append(" time(ALTT.inserted_time) as inserted_time, ");
-		//queryStr.append(" ALTT.inserted_time as inserted_time, ");
 		queryStr.append(" ALTC.alert_comment_id as alert_comment_id,");
 		queryStr.append(" ALTC.comments as comments,");
 		queryStr.append(" ALTCA.assign_tdp_cadre_id as assign_tdp_cadre_id,");
@@ -68,5 +67,13 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 				.addScalar("alert_status", Hibernate.STRING);
 		query.setParameter("alertId", alertId); 
 		return query.list();
+	}
+	public List<Long> lastUpdatedstatus(Long alertId){
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" select model.alertStatus.alertStatusId from AlertTracking model " +
+						" where  model.alertId = :alertId order by model.insertedTime desc limit 1 ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("alertId", alertId);
+		return query.list();   
 	}
 }
