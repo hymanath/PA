@@ -1436,7 +1436,7 @@ $(document).on("click",".boardHrfCls",function(){
 		});
 		
 		$("#positionIdsHidden").val(positionIds);
-		
+	
 		var startDate = $('input:text[name=daterangepicker_start]').val();
 		var endDate = $('input:text[name=daterangepicker_end]').val();
 		
@@ -1455,7 +1455,7 @@ $(document).on("click",".boardHrfCls",function(){
 			}
 		}
 		$("#locationLevelValuesHidden").val(str);
-		
+	
 		var uploadHandler = {
 			upload: function(o) {
 				uploadResult = o.responseText;
@@ -1469,6 +1469,28 @@ $(document).on("click",".boardHrfCls",function(){
 	});
 	
 	function showSbmitStatus(result){
+		var levelId = boardLevelId;
+		var levelValue = 1;
+		var level = "Central";
+		/*if(levelId == 1){
+			levelValue = $("#stateId").val();	
+		}*/
+		if(levelId == 2){
+			levelValue = $("#stateId").val();	
+			level = "State";
+		}
+		else if(levelId == 3){	
+			levelValue = $("#districtId").val();
+			level = "District";
+		}
+		else if(levelId == 4){
+			levelValue = $("#constituencyId").val();
+			level = "Constituency";
+		}
+		else if(levelId >= 5){  
+			levelValue = $("#manTowDivId").val();
+			level = "Mandal";
+		}
 		if(result.indexOf("SUCCESS") > -1){
 			saveFlag =true;
 			$('#goStatusSelId').val(0).trigger("chosen:updated");
@@ -1480,7 +1502,10 @@ $(document).on("click",".boardHrfCls",function(){
 			$("#goRemarksTextAreaId").val('');
 			$(".jFiler-item").empty();
 			if (confirm('G.O Details Updated Successfully...')) {
-				$("#goAssignPopup").modal("hide");				
+				$("#goAssignPopup").modal("hide");
+                $(".updateDropDownArrow").hide();  	
+			   
+			   getReferralCandidateDetails(globalLocationLevelId,levelValue,globalDepartmentId,glFinalyeboardId,glFinalyePositionId,''); 		   
 			}
 		}else {
 			alert("Something goes wrong, Please try again....");
