@@ -335,7 +335,10 @@
                                 </div>
                                 <div style="border:1px solid #ddd;padding:10px" class="m_top20">
                                 	<h4 class="panel-title">CASTE</h4>
-	                                <div id="casteWisePositions"></div>
+									<div id="casteGrpDivIdScroll">
+										<div id="casteWisePositions"></div>
+									</div>
+									<div id="casteWisePositionsScrollDiv"></div>
                                 </div>
                             </div>
                         </div>   
