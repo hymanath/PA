@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.model.AlertUserType;
 public interface IAlertTrackingDAO extends GenericDao<AlertTracking, Long> {
 	public List<Object[]> getAlertTrackingDetails(Long alertId);
 	public List<Object[]> getAlertTrackingDetailsList(Long alertId);
+	public List<Long> lastUpdatedstatus(Long alertId);
 	
 
 }
