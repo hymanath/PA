@@ -53,8 +53,8 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" where ");
 		queryStr.append(" ALTCA.assign_tdp_cadre_id = TC.tdp_cadre_id ");
 		queryStr.append(" and ALTT.alert_id = :alertId ");
-		queryStr.append(" order by ALTT.alert_status_id, inserted_time,ALTC.alert_comment_id ;");
-		SQLQuery query = getSession().createSQLQuery(queryStr.toString())
+		queryStr.append(" order by ALTT.alert_status_id, date(ALTT.inserted_time) desc ,time(ALTT.inserted_time) desc ,ALTC.alert_comment_id ;");   
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString())  
 				.addScalar("alert_id", Hibernate.LONG)
 				.addScalar("alert_status_id", Hibernate.LONG) 
 				.addScalar("inserted_date", Hibernate.STRING)
