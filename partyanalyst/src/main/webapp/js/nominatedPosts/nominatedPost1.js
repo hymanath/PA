@@ -104,7 +104,7 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 					
 			for(var i in result){
 				if(result[i].id == 0){
-							$("#notCadrePanchayatId").append('<option value='+result[i].id+'>Select Panchayat/Ward/Division</option>');
+							$("#notCadrePanchayatId").append('<option value='+result[i].id+'>Select Panchayat/Ward/Division/City</option>');
 						}
 						else{
 					$("#notCadrePanchayatId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
