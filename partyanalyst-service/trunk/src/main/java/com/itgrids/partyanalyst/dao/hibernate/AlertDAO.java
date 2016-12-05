@@ -108,14 +108,6 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 					else
 						str.append(" and state.stateId in (1,36) ");
 				}
-				/*else{
-					if(inputVO.getLevelValue() != null && inputVO.getLevelValue().longValue() ==1L)
-						str.append(" and state.stateId in (1) ");
-					else if(inputVO.getLevelValue() != null && (inputVO.getLevelValue().longValue() ==36L || inputVO.getLevelValue().longValue() ==2L ))
-						str.append(" and district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-					else
-						str.append(" and district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
-				}*/
 				
 			}
 		}
@@ -133,7 +125,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
 		
 		Query query = getSession().createQuery(str.toString());
-		query.setParameterList("sourceIds", sourceIds);
+		if(sourceIds != null && sourceIds.size() > 0)
+			query.setParameterList("sourceIds", sourceIds);
 		if(fromDate != null)
 		{
 			query.setDate("fromDate", fromDate);
