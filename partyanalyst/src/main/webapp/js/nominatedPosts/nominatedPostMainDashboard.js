@@ -611,6 +611,7 @@ function buildOverAllTotalCountsByPosition(result){
 	
 	function buildCasteWiseCountsByPosition(result,positionId,levelId,deptId,boardId,casteGroupId,applStatusId){
 		var str='';
+		str+='<div id="scrollDiviD">';
 		str+='<table class="table table-bordered">';
 		str+='<thead class="bg_ef">';
 		str+='<tr>';
@@ -690,8 +691,8 @@ function buildOverAllTotalCountsByPosition(result){
 		$("#casteNameWiseTotlaCntsId").html(str);
 		if(result.length > 15 )
 		{ 
-			$("#casteNameWiseTotlaCntsId").mCustomScrollbar({setHeight: '440px'})
-			$("#casteWisePositions").parent().mCustomScrollbar({setHeight: '440px'})
+			$("#scrollDiviD").mCustomScrollbar({setHeight: '440px'})
+			$("#casteGrpDivIdScroll").mCustomScrollbar({setHeight: '440px'})
 		}
 	}
 	 $(document).on('click','.casteCls',function(){
@@ -1631,6 +1632,7 @@ function buildCasteGroupWiseChart(result){
 	}	
 }
 function buildCasteWiseCountsChart(result){
+	$("#casteWisePositions").html(' ');
 	if(result!= null && result.length > 10){
 	var highChartDivHight = result.length*30;
 	$("#casteWisePositions").height(highChartDivHight);	
