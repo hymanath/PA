@@ -700,7 +700,6 @@ function disableByLevel(index)
 	
 	
 	function getAdvancedSearchDetails(){
-		
 		$("#apptmemberDetailsDiv").html("");
 		var statusArr=[];
 		var tdpCadreIds=[];
@@ -973,7 +972,6 @@ function disableByLevel(index)
 	
 	function getDetailsBySrch()
 	{
-	
 		//clearing the Data Div
 		$("#apptmemberDetailsDiv").html("");
 		//clearing err Div
@@ -987,7 +985,7 @@ function disableByLevel(index)
 			 $("#errorDivId").html("Please Select Search Type");
 			 errStr=true;
 		}
-		else if($("#advanceSearchTypeId").val()=="mobileno"){			
+		else if($("#advanceSearchTypeId").val()=="mobileno"){	
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
 					  $("#errorDivId").html("Please enter Mobile No");
 					  errStr=true;
@@ -1009,15 +1007,17 @@ function disableByLevel(index)
 					  $("#errorDivId").html("Please Enter Votercardno ");
 					  errStr=true;
 			}
-		}
+		}  
 		
 		else
-		{
-			 if((searchValue.length >0 && searchValue.length < 10) || isNaN(searchValue)){
-								 
+		{   
+			if((searchValue.length >0 && searchValue.length < 10) || isNaN(searchValue)){
+				var searchTypeId = $("#advanceSearchTypeId").val();
+				if(searchTypeId != 1){
 					$("#errorDivId").html("Please Enter Valid Mobile Number");
-					 errStr=true;
-				}
+					errStr=true;
+				}    
+			}
 		}
 		if(errStr){
 			return;
