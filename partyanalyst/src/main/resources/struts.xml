@@ -236,6 +236,7 @@
 			<result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
 			<result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
 			<result type="redirect" name="cadreDemographicReports">cadreDemographicReportsAction.action</result>
+			<result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5696,6 +5697,7 @@
       <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
       <result type="redirect" name="coredashboarduser">coreDashboardAction1.action</result>
       <result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
+      <result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>   
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
