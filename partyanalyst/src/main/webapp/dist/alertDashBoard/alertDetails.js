@@ -382,6 +382,10 @@ function updateAlertStatus()
 	 $('#errorId').html(' Status required').css("color","red"); 
         return;	   
 	}
+	if(tdpCadreId == null){       
+	 $('#errorId').html(' Assigned Cadre required').css("color","red"); 
+        return;	       
+	}
 	$("#updateAlertajaxImg").html('<img src="images/search.gif"/>');
 	if(tdpCadreId == null)
 		tdpCadreIdarr = [];
@@ -988,7 +992,7 @@ function alertComments(result)
 			str+='</div>';
 		str+='</div>';
 	}
-	var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed","5":"Unable to Resolve","6":"Action Not Required"};
+	/* var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed","5":"Unable to Resolve","6":"Action Not Required"};
 	statusId = statusId + 1;
 	for(var i = statusId ; i <= 6 ; i++){
 		str+='<div class="panel panel-default" style="cursor:no-drop;pointer-events: none;">';
@@ -1000,7 +1004,7 @@ function alertComments(result)
 		str+='<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">';
 		str+='</div>';
 		str+='</div>';
-	}  
+	}   */      
 	$("#alertCommentsDivIdNew").html(str)
 }
 
