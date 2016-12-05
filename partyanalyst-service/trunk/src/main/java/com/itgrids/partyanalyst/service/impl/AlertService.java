@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -938,8 +940,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		try{
 			Map<Long,String> idAndNameMap = new HashMap<Long,String>();
 			
-			Map<Long,Set<String>> statusIdAndDateIdListMap = new HashMap<Long,Set<String>>();
-			Set<String> dateIdList = null;//new HashSet<String>();
+			Map<Long,Set<String>> statusIdAndDateIdListMap = new LinkedHashMap<Long,Set<String>>();
+			Set<String> dateIdList = null;//new HashSet<String>(); 
 			
 			Map<String,Set<Long>> dateIdAndCmtListMap = new HashMap<String,Set<Long>>();
 			Set<Long> commentIdList = null;
@@ -960,7 +962,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					if(dateIdList != null){
 						dateIdList.add(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
 					}else{
-						dateIdList = new HashSet<String>();
+						dateIdList = new LinkedHashSet<String>();  
 						dateIdList.add(commonMethodsUtilService.getStringValueForObject(param[2])+":"+commonMethodsUtilService.getStringValueForObject(param[1]));
 						statusIdAndDateIdListMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), dateIdList);
 					}
@@ -1011,13 +1013,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			//for multiuser involvement
 			List<List<AlertCommentVO>> list2 = null;
 			//final vo 
-			List<AlertCommentVO> finalList = new ArrayList<AlertCommentVO>();
-			if(statusIdAndDateIdListMap.size() > 0){
+			List<AlertCommentVO> finalList = new CopyOnWriteArrayList<AlertCommentVO>();  
+			if(statusIdAndDateIdListMap.size() > 0){  
 				for(Entry<Long,Set<String>> entry : statusIdAndDateIdListMap.entrySet()){
 					commentVO = new AlertCommentVO();
 					commentVO.setStatusId(entry.getKey());
 					commentVO.setStatus(idAndNameMap.get(entry.getKey()));
-					dateIdList = entry.getValue();
+					dateIdList = (LinkedHashSet)entry.getValue();    
 					if(dateIdList != null && dateIdList.size() > 0){
 						commentVOForDateList = new ArrayList<AlertCommentVO>();
 						for(String dateId : dateIdList){
@@ -1038,6 +1040,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					finalList.add(commentVO);
 				}
 			}
+			if(finalList != null && finalList.size() > 0){
+				List<Long> statusIdList = alertTrackingDAO.lastUpdatedstatus(alertId);
+				for(AlertCommentVO param : finalList){  
+					if(param.getStatusId().longValue() == statusIdList.get(0)){
+						finalList.remove(param);
+						finalList.add(param);  
+					}
+				}
+			}  
 			
 			return finalList;   		
 		}catch(Exception e){
