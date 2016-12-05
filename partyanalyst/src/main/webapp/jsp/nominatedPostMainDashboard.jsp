@@ -325,7 +325,7 @@
                                 	<table class="table table-bordered text-center text-capital" id="casteAndAgeWiseId">
                                     </table>
                                 </div>
-                                <div class="table-responsive m_top20" id="casteNameWiseTotlaCntsId" style="display:none;">
+                                <div class="table-responsive m_top20" id="casteNameWiseTotlaCntsId">
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-12 col-sm-4" id="casteGrpDivId" style="display:none;">
