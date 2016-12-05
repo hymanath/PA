@@ -557,7 +557,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	}
 
 
-	public String execute()
+	public String execute()  
 	{	
 	  try{
 		session = request.getSession();
@@ -566,6 +566,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			Long userId = user.getRegistrationID();
+			if(entitlements.contains("ALERT_DASHBOARD_USER_ENTITLEMENT"))    
+			{
+				return "ALERTDASHBOARDUSERENTITLEMENT";
+			}
 			if(entitlements.contains("CADRE_TAB_LOCKING_USER_ENTITLEMENT"))
 			{
 				return "cadresurveyuserassign";
@@ -579,7 +583,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				return "cadrewebregistration2016";
 			}
 			if(entitlements.contains("TOUR_USER_ENTITLEMENT")){
-				return "tourUserEntitlement";      
+				return "tourUserEntitlement";        
 			}
 			if(entitlements.contains("CADRE_REGISTRATION_2016_DASHBOARD_REDIRECT")){
 				return "cadre2016dashboard";
