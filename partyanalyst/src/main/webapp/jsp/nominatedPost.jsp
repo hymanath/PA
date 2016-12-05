@@ -180,10 +180,10 @@
                         </select>
                     </div>
                     <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10" id="panchayatDiv">
-                    	<label>Panchayat/Ward/Division</label>
+                    	<label>Panchayat/Ward/Division/City</label>
 						<span id="panchaytListImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="panchaytList"  onchange="getAllCadreInPanchayat();" class="chosenSelect">
-							<option value="0"> Select Panchayat </option>
+							<option value="0"> Select Panchayat/Ward/Division/City </option>
                         </select>
                     </div>
                 
@@ -359,7 +359,7 @@
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Village</label>
                                         <select class="chosenSelect" attr_id="addVillageId" id="changePanchyatId"  onchange="getAllCadreInPanchayat();" name="nominatedPostVO.addVillageName">
-                                        	<option value="0"> Select Panchayat </option>
+                                        	<option value="0"> Select Panchayat/Ward/Division/City </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
@@ -1096,7 +1096,7 @@ function clearAssignValues()
 $(document).on("click",".involveBlockNew",function(){
 	$("#searchMemberAjax").css("display","none");
 	$("#myModal").modal('show')
-	//$("#clearSerchDivId").hide();
+	$("#apptmemberDetailsDiv").html('');
 	commontdpCadreIds = [];;
 	 $("#apptmemberDetailsDiv").html("");
 	 $("#advanceSearchTypeId").val(0);
