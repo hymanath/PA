@@ -780,7 +780,8 @@
 				</c:if>	
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')
 				|| fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || 
-				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ENTITLEMENT')}">
+				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') ||
+				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT')}">
 									<li>
 										<a href="#"><i class="fa fa-bell-o ico-white"></i><span>&nbsp;&nbsp;Alert</span></a>
 										 <h2><i class="fa fa-bell-o ico-white line_heightDiv"></i> Alert</h2>
@@ -790,12 +791,12 @@
 										<a href="createAlertAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
 										</li>
 										</c:if>
-											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ENTITLEMENT')}">
-										  <li>
+										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT')}">
+										<li>
 										<a href="alertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
 										</li>
-				</c:if>
-										 </ul>
+										</c:if>  
+										</ul>
 									</li>
 									</c:if>	
 					 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_NOMINATED_POST_ENTITLEMENT') || 
