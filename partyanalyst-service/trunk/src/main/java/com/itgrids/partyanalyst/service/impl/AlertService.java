@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -2525,7 +2527,176 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured setAlertStatus() method of AlertService{}");
 		}
 	}
+    /*
+     * Santosh (non-Javadoc)
+     * @see com.itgrids.partyanalyst.service.IAlertService#getAlertOverviewDetails(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
+     */
+  public AlertOverviewVO getAlertOverviewDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr){
+	  
+	   AlertOverviewVO resultVO = new AlertOverviewVO();
+	   Set<Long> locationValues = new HashSet<Long>(0);
+	   Long locationAccessLevelId =0l;
+	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	   Date fromDate=null;
+	   Date toDate = null;
+	   try{
+		   if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+			   fromDate = sdf.parse(fromDateStr);
+			   toDate = sdf.parse(toDateStr);
+			 }
+		   	 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+		   List<Object[]> rtrnTtlAlrtObjLst = alertDAO.getAlertCntByAlertTypeBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+		   Long totalAlertCnt =0l;
+		   AlertOverviewVO overViewVO = new AlertOverviewVO();
+		   if(rtrnTtlAlrtObjLst != null && !rtrnTtlAlrtObjLst.isEmpty() ){
+			   for(Object[] param:rtrnTtlAlrtObjLst){
+				   Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				   Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[2]); 
+				   totalAlertCnt = totalAlertCnt + alertCnt;
+				   if(statusId == 1l){//Party
+					   overViewVO.setPartyAlertCnt(alertCnt);
+				   }else if(statusId == 3l){//Other
+					   overViewVO.setOtherAlertCnt(alertCnt);
+				   }
+			   }
+			   overViewVO.setTotalAlertCnt(totalAlertCnt);
+		   }
+		   overViewVO.setPartyAlertCntPer(calculatePercantage(overViewVO.getPartyAlertCnt(), totalAlertCnt));
+		   overViewVO.setOtherAlertCntPer(calculatePercantage(overViewVO.getOtherAlertCnt(), totalAlertCnt));
+		   
+		   Map<Long,AlertOverviewVO> alertStatusMap = new HashMap<Long, AlertOverviewVO>(0);
+		   List<Object[]> rtrnAlrtStatusObjLst = alertStatusDAO.getAllStatus();
+		   List<Object[]> rtrnAlrtSttsWsCntObjLst = alertDAO.getAlertCntByAlertStatusBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+		   prepareTemplateStatusWise(rtrnAlrtStatusObjLst,alertStatusMap);//Prepare Template 
+		   if(rtrnAlrtSttsWsCntObjLst != null && rtrnAlrtSttsWsCntObjLst.size() > 0){
+			   for(Object[] param:rtrnAlrtSttsWsCntObjLst){
+				    if(alertStatusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null ){
+				    	alertStatusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setStatusCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+				    	alertStatusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setStatusCntPer(calculatePercantage(alertStatusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getStatusCnt(), totalAlertCnt));
+				    }
+			   }
+		   }   
+		   Map<Long,AlertOverviewVO> alertCategoryMap = new HashMap<Long,AlertOverviewVO>();
+		   
+		   List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategory();
+		   prepareAlertCategoryTemplate(rtrnAlertCategoryObjLst,rtrnAlrtStatusObjLst,alertCategoryMap);//Prepare Template 
+		   
+		   List<Object[]> rtrnAlrCtgryCntobjLst = alertDAO.getAlertCntByAlertCategoryBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+		 
+		   if(rtrnAlrCtgryCntobjLst != null && !rtrnAlrCtgryCntobjLst.isEmpty() ){
+			  for(Object[] param:rtrnAlrCtgryCntobjLst)  {
+				  if(alertCategoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null ){
+					  alertCategoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setStatusCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+				    } 
+			  }
+		   }
+		   List<Object[]> rtrnAlrtCtgryAndSttsWseCntObjLst = alertDAO.getAlertCntByAlertCategoryAndAlertStatusWiseBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
+		 
+		   if(rtrnAlrtCtgryAndSttsWseCntObjLst != null && !rtrnAlrtCtgryAndSttsWseCntObjLst.isEmpty()){
+			   for(Object[] param:rtrnAlrtCtgryAndSttsWseCntObjLst){
+				   Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				   Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				   Long alertcnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+				   if(alertCategoryMap.get(categoryId) != null ){
+					   AlertOverviewVO statusVO = getMatchVO(alertCategoryMap.get(categoryId).getStatusList(),statusId);
+					   if(statusVO != null ){
+						   statusVO.setStatusCnt(alertcnt);  
+						   statusVO.setStatusCntPer(calculatePercantage(statusVO.getStatusCnt(), alertCategoryMap.get(categoryId).getStatusCnt()));
+					   }
+				   }
+			   }
+		   }
+		   // preparing final result
+		   resultVO.setOverAllVO(overViewVO);
+		   if(alertStatusMap != null && alertStatusMap.size() > 0){
+			   resultVO.getStatusList().addAll(alertStatusMap.values());
+			   alertStatusMap.clear();
+		   }
+		   if(alertCategoryMap != null && alertCategoryMap.size() > 0){
+			   resultVO.getCategoryList().addAll(alertCategoryMap.values());
+			   alertCategoryMap.clear();
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured getAlertOverviewDetails() method of AlertService{}",e);
+	   }
+	   return resultVO;
+   }	
+   public void prepareTemplateStatusWise(List<Object[]> objList,Map<Long,AlertOverviewVO> alertStatusMap){
+	   try{
+		   if(objList != null && objList.size() > 0){
+			   for(Object[] param:objList){
+				   AlertOverviewVO statusVO = new AlertOverviewVO();
+				   statusVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   statusVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   alertStatusMap.put(statusVO.getStatusTypeId(), statusVO);
+			   }
+		   }   
+	   }catch(Exception e){
+		   LOG.error("Error occured prepareTemplateStatusWise() method of AlertService{}",e);   
+	   }
 	
+   }
+   public void prepareAlertCategoryTemplate(List<Object[]> alertCategoryObjList,List<Object[]> alertStatusObjLst,Map<Long,AlertOverviewVO> alertCategoryMap){
+	   try{
+		   if(alertCategoryObjList != null && alertCategoryObjList.size() > 0){
+			   for(Object[] param:alertCategoryObjList){
+				   AlertOverviewVO categoryVO = new AlertOverviewVO();
+				   categoryVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   categoryVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   categoryVO.getStatusList().addAll(getStatutList(alertStatusObjLst));
+				   alertCategoryMap.put(categoryVO.getStatusTypeId(), categoryVO);
+			   }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured prepareAlertCategoryTemplate() method of AlertService{}",e);  
+	   }
+   }
+   public List<AlertOverviewVO> getStatutList(List<Object[]> alertObjList){
+	   List<AlertOverviewVO> statusList = new ArrayList<AlertOverviewVO>();
+	   try{
+		   if(alertObjList != null  && !alertObjList.isEmpty() ){
+			   for(Object[] param:alertObjList){
+				   AlertOverviewVO statusVO = new AlertOverviewVO();
+				   statusVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   statusVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   statusList.add(statusVO);
+			   }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured getStatutList() method of AlertService{}",e); 
+	   }
+	   return statusList;
+   }
+   public AlertOverviewVO getMatchVO(List<AlertOverviewVO> statusList,Long statusId){
+	   try{
+		   if(statusList == null || statusList.size() == 0)
+			   return null;
+		   for(AlertOverviewVO vo:statusList){
+			   if(vo.getStatusTypeId().equals(statusId)){
+				   return vo;
+			   }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured getMatchVO() method of AlertService{}",e);  
+	   }
+	   return null;
+   }
+  public Double calculatePercantage(Long subCount,Long totalCount){
+		Double d=0.0d;
+		if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+		if(totalCount.longValue() > 0l){
+			 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+		}
+		return d;
+		}
 }
 	
 
