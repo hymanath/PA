@@ -24,12 +24,70 @@ public class CadreDashboardVO {
 	private Long ok;
 	private Long poor;
 	private Long veryPoor;
+	
+	private Long renVeryGood;
+	private Long renGood;
+	private Long renOk;
+	private Long renPoor;
+	private Long renVeryPoor;
+	
 	private String levelPerformanceType;
 	private Long mapPowerCount;
 	private String districtname;
 	private String value;
+	private String renewalPerformanceStatus;
+	private Long totalRenewal;
+	private String totalRenPerc;
 	
-
+	
+	public Long getRenVeryGood() {
+		return renVeryGood;
+	}
+	public void setRenVeryGood(Long renVeryGood) {
+		this.renVeryGood = renVeryGood;
+	}
+	public Long getRenGood() {
+		return renGood;
+	}
+	public void setRenGood(Long renGood) {
+		this.renGood = renGood;
+	}
+	public Long getRenOk() {
+		return renOk;
+	}
+	public void setRenOk(Long renOk) {
+		this.renOk = renOk;
+	}
+	public Long getRenPoor() {
+		return renPoor;
+	}
+	public void setRenPoor(Long renPoor) {
+		this.renPoor = renPoor;
+	}
+	public Long getRenVeryPoor() {
+		return renVeryPoor;
+	}
+	public void setRenVeryPoor(Long renVeryPoor) {
+		this.renVeryPoor = renVeryPoor;
+	}
+	public Long getTotalRenewal() {
+		return totalRenewal;
+	}
+	public void setTotalRenewal(Long totalRenewal) {
+		this.totalRenewal = totalRenewal;
+	}
+	public String getTotalRenPerc() {
+		return totalRenPerc;
+	}
+	public void setTotalRenPerc(String totalRenPerc) {
+		this.totalRenPerc = totalRenPerc;
+	}
+	public String getRenewalPerformanceStatus() {
+		return renewalPerformanceStatus;
+	}
+	public void setRenewalPerformanceStatus(String renewalPerformanceStatus) {
+		this.renewalPerformanceStatus = renewalPerformanceStatus;
+	}
 	public String getValue() {
 		return value;
 	}
