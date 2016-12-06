@@ -605,7 +605,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
-		if(gblStatus=="finaliZed"){
+		if(gblStatus=="finaliZed" && result.subList.length != 1){
 			str+='<th style="" class="text-center"></th>';
 		}
 			str+='<th style="width:150px" class="text-center">Name</th>';
@@ -629,10 +629,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 	if(result.subList != null && result.subList.length > 0){		
 		for(var i in result.subList){
 			str+='<tr class="text-center">';
-			if(result.subList.length == 1){
-			 str+='<td></td>';
-			$(".candiCheckBoxCls").hide();
-		}else if(gblStatus=="finaliZed"){
+			 if(gblStatus=="finaliZed" && result.subList.length != 1){
 				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'"></td>';
 			}
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
