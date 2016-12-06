@@ -2786,18 +2786,7 @@
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
 							<h4><span class="headingColor text-capitalize">overall alerts</span></h4>
-							<h4 class="panel-title">Manual ALerts - 180</h4>
-							<table class="table table-condensed bg_ED">
-								<tbody>
-									<tr>
-										<td><p class="text-muted text-capitalize responsiveFont">Pending</p><p class="responsiveFont">14</p></td>
-										<td><p class="text-muted text-capitalize responsiveFont">Notified</p><p> - </p></td>
-										<td><p class="text-muted text-capitalize responsiveFont">Action InProgress</p><p class="responsiveFont">14<small class="text-success"> 100%</small></p></td>
-										<td><p class="text-muted text-capitalize responsiveFont">Completed</p><p class="responsiveFont">14<small class="text-success"> 100%</small></p></td>
-										<td><p class="text-muted text-capitalize responsiveFont">Unable To Resolve</p><p class="responsiveFont">14<small class="text-success"> 100%</small></p></td>
-									</tr>
-								</tbody>
-							</table>
+							<div id="alertOverview" class="m_top10"></div>
 						</div>
 					</div>
 				</div>
