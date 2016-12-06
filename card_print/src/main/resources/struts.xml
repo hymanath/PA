@@ -34,5 +34,11 @@
 		    <result name="success" type="redirect">loginAction.action</result>
 		</action>
 		
+		<action name="validateUserLogin" class="loginAction" method="validateUserLogin">
+	   		<result type="json" name="success">
+	       		<param name="root">resultStatus</param>
+	  		</result>
+		</action>
+		
 	</package>
 </struts>        
