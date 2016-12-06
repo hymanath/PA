@@ -1031,23 +1031,23 @@ public  List<IdNameVO> getNominatedPostCandidateDetils(Long stateId,Long casteSt
 				idNameVO.setRelativeName(param[3] != null ? param[3].toString() : "");//relative Name
 				idNameVO.setMembershipNo(param[4]!=null ? param[4].toString() : "");
 				idNameVO.setImageUrl(param[5] != null ? param[5].toString() : "");// imageUrl
-				idNameVO.setDistId(param[6] != null ? (Long)param[6] :"");
-				idNameVO.setDistrictName(param[7] != null ? param[7].toString() :"");
-				idNameVO.setConstitunecyId(param[8] != null ? (Long)param[8] : 0l);
-				idNameVO.setConstituencyName(param[9] != null ? param[9].toString() : "");
-				idNameVO.setCadreId(param[10] != null ? (Long)param[10] : 0l);
+				//idNameVO.setDistId(param[6] != null ? (Long)param[6] :"");
+				//idNameVO.setDistrictName(param[7] != null ? param[7].toString() :"");
+				//idNameVO.setConstitunecyId(param[8] != null ? (Long)param[8] : 0l);
+				//idNameVO.setConstituencyName(param[9] != null ? param[9].toString() : "");
+				idNameVO.setCadreId(param[6] != null ? (Long)param[6] : 0l);
 				if(idNameVO.getCadreId() != null && idNameVO.getCadreId().longValue() > 0l){
 					cadreIds.add(idNameVO.getCadreId());
 					cadreMap.put(idNameVO.getCadreId(), idNameVO);
 				}
-				idNameVO.setDepartmentId(param[11] != null ? (Long)param[11] : 0l);
-				idNameVO.setDeptName(param[12] != null ? param[12].toString() : "");
-				idNameVO.setBoardId(param[13] != null ? (Long)param[13] : 0l);
-				idNameVO.setBoardName(param[14] != null ? param[14].toString() : "");
-				idNameVO.setPostionId(param[15] != null ? (Long)param[15] : 0l);
-				idNameVO.setPositionName(param[16] != null ? param[16].toString() : "");
-				idNameVO.setApplicationStatusId(param[17] != null ? (Long)param[17] : 0l);
-				idNameVO.setApplicationStatus(param[18] != null ? param[18].toString() : "");
+				idNameVO.setDepartmentId(param[7] != null ? (Long)param[7] : 0l);
+				idNameVO.setDeptName(param[8] != null ? param[8].toString() : "");
+				idNameVO.setBoardId(param[9] != null ? (Long)param[9] : 0l);
+				idNameVO.setBoardName(param[10] != null ? param[10].toString() : "");
+				idNameVO.setPostionId(param[11] != null ? (Long)param[11] : 0l);
+				idNameVO.setPositionName(param[12] != null ? param[12].toString() : "");
+				idNameVO.setApplicationStatusId(param[13] != null ? (Long)param[13] : 0l);
+				idNameVO.setApplicationStatus(param[14] != null ? param[14].toString() : "");
 				finalList.add(idNameVO);
 			}
 		}

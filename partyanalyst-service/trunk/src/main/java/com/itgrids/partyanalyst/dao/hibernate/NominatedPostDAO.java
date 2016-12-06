@@ -1597,15 +1597,15 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			         " model2.mobileNo,"+
 	                 " tc.relativename," +
 			         " tc.memberShipNo," +
-	                 " model2.imageurl," +
-			         " model2.address.district.districtId,"+
-	                 " model2.address.district.districtName," );
-	         if(type.toString().equalsIgnoreCase("candidate")){
+	                 " model2.imageurl," );
+			         //" model2.address.district.districtId,"+
+	                 //" model2.address.district.districtName," );
+	        /* if(type.toString().equalsIgnoreCase("candidate")){
 	        	 sb.append(" const.constituencyId," +
 	                 " const.name," );
 	         }else if(type.toString().equalsIgnoreCase("application")){
 	        	 sb.append(" tc.userAddress.constituency.constituencyId,tc.userAddress.constituency.name, ");
-	         }
+	         }*/
 	         sb.append(" tc.tdpCadreId,model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 	                 " model.nominatedPostMember.nominatedPostPosition.departments.deptName,model.nominatedPostMember.nominatedPostPosition.board.boardId," +
 	                 "model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId," +
@@ -1620,21 +1620,34 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	        	  }
 	        	  
 	          }
-	                 sb.append("  from NominatedPostFinal model left join model.nominationPostCandidate model2 ");
-	                 if(type.toString().equalsIgnoreCase("candidate")){
+	        // if(casteCategryId != null && casteCategryId.longValue()>0l){
+	        	// sb.append(", model2.nominatedPostAgeRange.nominatedPostAgeRangeId is not null ");
+	         //}
+	         
+	         //if(casteStateId != null && casteStateId.longValue()>0l ){
+	        	// sb.append(", model2.casteState.casteStateId is not null,model2.nominatedPostAgeRange.nominatedPostAgeRangeId is not null  ");
+	         //}
+	         
+	         
+	                 sb.append(" from NominatedPostFinal model , NominationPostCandidate model2 left join model2.tdpCadre tc");
+	                 /*if(type.toString().equalsIgnoreCase("candidate")){
 	                	 sb.append(" left join model2.tdpCadre tc " +
 			         " left join tc.userAddress addr left join addr.constituency const ");
 	                 }else if(type.toString().equalsIgnoreCase("application")){
 	                	 sb.append(" left join model2.tdpCadre tc " );
-	                 }
+	                 }*/
 			        
 	   
 	          if(stateId != null && stateId.longValue() > 0){
 	       		sb.append(" where model.nominatedPostMember.address.state.stateId=:stateId");
    		      }
 	          
+	          if( locationId.longValue() == 0l && type.toString().equalsIgnoreCase("application") && (casteCategryId.longValue()>0l || casteStateId.longValue()>0l)){
+	        	  sb.append(" and  model2.nominatedPostAgeRange.nominatedPostAgeRangeId is not null  ");
+	          }
 	          sb.append(" and  model.isDeleted='N' and model2.isDeleted='N'" +
-	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
+	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and  " +
+	   	          	   " model.nominationPostCandidate.nominationPostCandidateId = model2.nominationPostCandidateId ");
 	         // sb.append(" and tc.enrollmentYear = 2014 and tc.isDeleted = 'N' " );  
 	          if(postStatusIds != null && !postStatusIds.isEmpty()){
 	        	  //sb.append(" and model.applicationStatus.applicationStatusId in(:postStatusIds)");
