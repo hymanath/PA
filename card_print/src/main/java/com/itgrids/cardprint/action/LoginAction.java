@@ -137,6 +137,32 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,Se
 		return Action.SUCCESS;
 	}
 	
+	
+	public String redirectToPage()
+	{
+		String url = "";
+		session = request.getSession();
+	    UserVO userDetails = (UserVO) session.getAttribute("USER");
+	    
+		/*if(userDetails.getEntitlements().contains(IConstants.CLAIM_DOCUMENT_UPLOAD_DASHBOARD_REDIRECT))
+			url = "claimDocumentUploadDashBoardAction.action";
+		else if(userDetails.getEntitlements().contains(IConstants.CLAIM_DOCUMENT_VERIFIER_DASHBOARD_REDIRECT))
+			url = "claimDocumentVerifierDashBoardAction.action";
+		else if(userDetails.getEntitlements().contains(IConstants.SUPPORT_CENTER_CALLER_REDIRECT))
+			url = "claimStatusSearchAction.action";
+		else if(userDetails.getEntitlements().contains(IConstants.REGISTRATION_USER))
+			url = "insuranceSearchAction.action";
+		else if(userDetails.getEntitlements().contains(IConstants.WEB_MONITERING_VERIFIER_REDIRECT))
+			url = "primaryVerificationStatusAction.action";
+		else if(userDetails.getEntitlements().contains(IConstants.INSURANCE_COMPANY_OFFICER_DASHBOARD_REDIRECT))
+			url = "insuranceOfficerDashBoardAction.action";
+		else if(userDetails.getEntitlements().contains(IConstants.LABOR_DEPT_OFFICER_DASHBOARD_REDIRECT))
+			url = "labourdeptOfficerDashBoardAction.action";*/
+		
+		return url;
+		
+	}
+	
 	public String logout(){
 		try{
 	       session = request.getSession();
