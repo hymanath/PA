@@ -14911,6 +14911,16 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="getTotalAlertGroupByDistAction" class="createAlertAction"  method="getTotalAlertGroupByDist">
+		<result type="json" name="success">    
+			<param name="root">alertCommentVOs</param>    
+		</result>
+	</action>
+	<action name="getAlertDtlsAction" class="createAlertAction"  method="getAlertDtls">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>     
+		</result>
+	</action>
 	<action name="getAlertOverviewDetailsAction" class="createAlertAction" method="getAlertOverviewDetails">
 		<result type="json" name="success">
    			<param name="root">alertOverviewVO</param>
