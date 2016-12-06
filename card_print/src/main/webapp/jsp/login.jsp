@@ -8,15 +8,15 @@
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">-->
-<link href="dist/registration/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/registration/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/registration/css/style.css" rel="stylesheet" type="text/css">
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/css/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-   <script src="js/sha512.js"></script>
+<script src="js/sha512.js"></script>
 <style type="text/css">
 body
 {
-	background:url(dist/registration/img/login-box.png);
+	background:url(dist/img/login-box.png);
 	background-size:cover;
 	bottom:0;
 }
@@ -31,7 +31,7 @@ body
 	<div class="headerpart1">
         <div class="container">
             <div class="row">
-                    <img src="dist/registration/img/AP_logo.png" class="img-responsive img-login" alt="LOGO">
+                    <img src="dist/img/AP_logo.png" class="img-responsive img-login" alt="LOGO">
                 <div class="col-md-12 col-xs-12 text-center col-sm-12 m_top10">
                     <h3 class="m_0  text-bold header_text_color">ANDHRA PRADESH STATE SOCIAL SECURITY BOARD</h3>
                     <h3 class="m_0 header_text_color">FOR UNORGANIZED WORKERS</h3>
@@ -44,7 +44,7 @@ body
 <section>
         <div class="container">
             <div class="row">
-                <img src="dist/registration/img/borderimage.png" class="img-responsive img-login" alt="border" >
+                <img src="dist/img/borderimage.png" class="img-responsive img-login" alt="border" >
                 <div class="col-md-12 col-xs-12 col-sm-12" style="padding:15px">
                 	<h4 class="m_0 text-bold text-center">WELCOME USER</h4>
                     <h4 class="m_0 text-center">PLEASE ENTER USERNAME AND PASSWORD</h4>
@@ -56,14 +56,14 @@ body
                                 <label>USER NAME  <span id="userNameError" style="color:red"></span></label>
                                 <div class="input-group input-g">
                                 	<span class="input-group-addon ">
-	                                    <img src="dist/registration/img/username.png" alt="user">
+	                                    <img src="dist/img/username.png" alt="user">
                                     </span>
                                 	<input type="text" class="form-control" id="uname" placeholder="Username">
                                 </div>
                                 <label>PASSWORD  <span id="passwordError" style="color:red"></span></label>
                                 <div class="input-group input-g">
                                 	<span class="input-group-addon ">
-	                                    <img src="dist/registration/img/password.png" alt="user">
+	                                    <img src="dist/img/password.png" alt="user">
                                     </span>
                                 	<input type="password" class="form-control" id="password" placeholder="******">
                                 </div>
@@ -72,7 +72,7 @@ body
                             <div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-8 col-sm-offset-2">
 							<div id="successDiv"></div>
                             	<button onclick="checkUserLogin()" class="btn btn-success btn-upload btn-block m_top10">
-                                	<img src="dist/registration/img/login.png">LOGIN
+                                	<img src="dist/img/login.png">LOGIN
 									<img src="images/ajax-loader.gif" style="padding-left:10px;display:none;" width="25" height="15" id="processingImg"/></button>
                             </div>
                         </div>
@@ -92,8 +92,8 @@ body
     </div>
  </footer>  	
 
-<script src="dist/registration/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="dist/registration/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <!--<script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>-->
 
@@ -165,10 +165,10 @@ function checkUserLogin()
 				  {
 					$("#successDiv").html("<b>Login Successful, Please Wait...</b>").css("color","green");
 					
-					if(result.redirectUrl != '')
-					window.location.href = result.redirectUrl ;
-				else
-					window.location.href = "insuranceDashBoardAction.action" ;
+					/* if(result.redirectUrl != '')
+					   window.location.href = result.redirectUrl ;
+				   else
+					   window.location.href = "insuranceDashBoardAction.action" ; */
 					
 				  }
 			  }
