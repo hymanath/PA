@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
@@ -49,6 +50,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<IdNameVO> idNameVOList;
 	private List<AlertVO> alertVOs;
 	private List<AlertCommentVO> alertCommentVOs;
+	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertOverviewVO alertOverviewVO;
 	
 	
@@ -198,12 +200,21 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public void setAlertCommentVOs(List<AlertCommentVO> alertCommentVOs) {
 		this.alertCommentVOs = alertCommentVOs;
 	}
+	
+	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOs() {
+		return alertCoreDashBoardVOs;
+	}
     public AlertOverviewVO getAlertOverviewVO() {
 		return alertOverviewVO;
 	}
 
 	public void setAlertOverviewVO(AlertOverviewVO alertOverviewVO) {
 		this.alertOverviewVO = alertOverviewVO;
+	}
+
+	public void setAlertCoreDashBoardVOs(
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs) {
+		this.alertCoreDashBoardVOs = alertCoreDashBoardVOs;
 	}
 
 	public String execute()
@@ -620,4 +631,41 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;  
 	}
-}//public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group);
+	public String getTotalAlertGroupByDist(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}  
+			alertCommentVOs = alertService.getTotalAlertGroupByDist(fromDate, toDate, stateId, scopeIdList, activityMemberId);   
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
+	public String getAlertDtls(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long alertStatusId = jObj.getLong("alertStatusId");
+			Long alertCategoryId = jObj.getLong("alertCategoryId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");  
+			Long activityMemberId = jObj.getLong("activityMemberId");   
+			
+			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, activityMemberId);   
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
+}//public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId)
