@@ -109,8 +109,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
     private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
     private ITabUserEnrollmentInfoDAO tabUserEnrollmentInfoDAO;
     private ITdpCadreDataSourceTypeInfoDAO tdpCadreDataSourceTypeInfoDAO;
-    
+    private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
+    
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
 	public ITdpCadreDataSourceTypeInfoDAO getTdpCadreDataSourceTypeInfoDAO() {
 		return tdpCadreDataSourceTypeInfoDAO;
 	}
@@ -6226,6 +6236,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
 		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCountsForConstituency(type,locationScopeId,locationType, null,districId);
+		 	List<Object[]> totalList = null;
+		 //	if(type != null && type.trim().equalsIgnoreCase("Today")){
+		 		totalList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCountsForConstituency("Total",locationScopeId,locationType, null,districId);
+		 //	}
 		 	List<Object[]> list2 = null;
 		 	if(type.equalsIgnoreCase("total")){
 		 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCountsForConstituency("Today",locationScopeId,locationType, null,districId);            
@@ -6238,7 +6252,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 	if(locationScopeId.longValue() == 4l){
 		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
 		 	}
-		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId);
+		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
@@ -6248,6 +6262,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 List<CadreDashboardVO> returnList = new ArrayList<CadreDashboardVO>();
 		 try {
 		 	List<Object[]> list = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,locationScopeId,locationType, null);
+		 	List<Object[]> totalList = null;
+		 	//if(type != null && type.trim().equalsIgnoreCase("Today")){
+		 		totalList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Total",locationScopeId,locationType, null);
+		 	//}
 		 	List<Object[]> list2 = null;
 		 	if(type.equalsIgnoreCase("total")){
 		 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",locationScopeId,locationType, null);            
@@ -6260,18 +6278,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		 	if(locationScopeId.longValue() == 4l){
 		 		list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
 		 	}
-		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId);
+		 	prepairReturnList(returnList,list,list2,list3,list4,type,locationScopeId,totalList);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in get2016StateWiseRegisteredCounts() method in CadreDashBoardService().",e);
 		}
 		 return returnList;    
 	}
-	public void prepairReturnList(List<CadreDashboardVO> returnList, List<Object[]> list, List<Object[]> list2, List<Object[]> list3, List<Object[]> list4, String type,Long locationScopeId){
+	public void prepairReturnList(List<CadreDashboardVO> returnList, List<Object[]> list, List<Object[]> list2, List<Object[]> list3, List<Object[]> list4,
+			 String type,Long locationScopeId,List<Object[]> totalList){
 		Map<Long,Long> targetMap = new LinkedHashMap<Long, Long>();
 		Map<Long,String> locationNameMap = new LinkedHashMap<Long, String>();
 		Map<Long,Long> locationIdAndTodayCountMap = new LinkedHashMap<Long,Long>();
 		Map<Long,Long> locationIdAndManPowerCountMap = new LinkedHashMap<Long,Long>();
 		Map<Long,Long> locIdAndLocNoMap = new LinkedHashMap<Long,Long>();
+		Map<Long,CadreDashboardVO> locationWise2014CountMap = new LinkedHashMap<Long,CadreDashboardVO>(0);
 		List<Long> locationIds = new ArrayList<Long>();
 		
 		Long veryGood =0l ;
@@ -6279,6 +6299,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Long ok = 0l ;
 		Long poor = 0l ;
 		Long veryPoor = 0l ;
+		
+		Long renVeryGood =0l ;
+		Long renGood = 0l ;
+		Long renOk = 0l ;
+		Long renPoor = 0l ;
+		Long renVeryPoor = 0l ;
+		
+		
 		//collect locaionId and today count
 		if(list2 != null && list2.size() > 0){
 			for(Object[] param : list2){
@@ -6298,12 +6326,36 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 		}
 		
+		if(commonMethodsUtilService.isListOrSetValid(totalList)){
+			for(Object[] param : totalList){
+				CadreDashboardVO vo = new CadreDashboardVO();
+				Long id = Long.valueOf(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setId(id);
+				vo.setCount2014(commonMethodsUtilService.getLongValueForObject(param[1]));
+				vo.setTotalRenewal(commonMethodsUtilService.getLongValueForObject(param[7]));
+				vo.setTotalRenPerc(commonMethodsUtilService.getStringValueForObject(param[8]));
+				
+				locationWise2014CountMap.put(id, vo);
+			}
+		}
+		
 		if(list != null && !list.isEmpty()){
 	 		for (Object[] obj : list) {
 	 			Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 				CadreDashboardVO vo = new CadreDashboardVO();
 				vo.setId(id);
-				vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+				if(locationWise2014CountMap.get(id) != null){
+					CadreDashboardVO vo1 = locationWise2014CountMap.get(id);
+					if(vo1 != null){
+						vo.setCount2014(vo1.getCount2014());
+						vo.setTotalRenewal(vo1.getTotalRenewal());
+						String perc = commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(vo1.getTotalRenewal()*100.00/vo1.getCount2014());
+						vo.setTotalRenPerc(perc);
+					}
+				}
+				else					
+					vo.setCount2014(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+				
 				vo.setPerc2014(obj[2] != null ? obj[2].toString():"");
 				vo.setCount2016(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
 				vo.setPerc2016(obj[4] != null ? obj[4].toString():"0.00");
@@ -6313,6 +6365,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				vo.setRenewalPerc(obj[8] != null ? obj[8].toString():"");
 				vo.setLocationScopeId(locationScopeId);
 				vo.setType(type);
+				
+				Long count2014=vo.getCount2014();
+				Long renewal2016 = (count2014 - vo.getRenewalCount());
+				
+				
 				locationIds.add(id);
 				returnList.add(vo);
 			}
@@ -6368,8 +6425,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						Long t3 = Long.valueOf(obj[3] != null ? obj[3].toString():"0");//districtId
 						name = t+"-"+t1+"-"+t3;
 				}
-					
-				
 				locationNameMap.put(id, name);
 			}
 	 	}
@@ -6438,6 +6493,30 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 			}
 		}
+		
+		if(returnList != null && !returnList.isEmpty()){
+			for(CadreDashboardVO vo : returnList){
+				Double totalRenPerc=Double.parseDouble(vo.getTotalRenPerc());	
+				
+				if(totalRenPerc > 100){
+					vo.setRenewalPerformanceStatus("VeryGood");
+					renVeryGood++;
+				}else if(totalRenPerc >= 90 && totalRenPerc < 100){
+					vo.setRenewalPerformanceStatus("Good");
+					renGood++;
+				}else if(totalRenPerc >= 80 && totalRenPerc < 90){
+					vo.setRenewalPerformanceStatus("Ok");
+					renOk++;
+				}else if(totalRenPerc >= 60 && totalRenPerc < 80){
+					vo.setRenewalPerformanceStatus("Poor"); 
+					renPoor++;
+				}else{
+					vo.setRenewalPerformanceStatus("VeryPoor");
+					renVeryPoor++;
+				}
+			}
+		}
+		
 		if(locationScopeId == 2l && type.trim().equalsIgnoreCase("Total")){
 			if(returnList != null && !returnList.isEmpty()){
 				for (CadreDashboardVO vo : returnList) {
@@ -6453,6 +6532,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			countList.setOk(ok);
 			countList.setPoor(poor);
 			countList.setVeryPoor(veryPoor);
+			
+			countList.setVeryGood(renVeryGood);
+			countList.setGood(renGood);
+			countList.setOk(renOk);
+			countList.setPoor(renPoor);
+			countList.setVeryPoor(renVeryPoor);
+			
 		}
 	}
 	
@@ -6779,7 +6865,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 //get data
 			 if(distIdList.size() > 0){
 				 List<Object[]> distResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,3l,null,new ArrayList<Long>(distIdList));
-				 //
+				 List<Object[]> totalList = null;
+				 //if(type != null && type.trim().equalsIgnoreCase("Today")){
+				 		totalList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Total",3l,null,new ArrayList<Long>(distIdList));
+				 //	}
 				 List<Object[]> list2 = null;
 			 	 if(type.equalsIgnoreCase("total")){
 			 		list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",3l,null, new ArrayList<Long>(distIdList));            
@@ -6789,9 +6878,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 
 			 	
 			 	 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
-			
+			 
 				 //  
-				 prepairReturnList(cadreDashboardVOList1,distResultList,list2,list3,null,type,3l);
+				 prepairReturnList(cadreDashboardVOList1,distResultList,list2,list3,null,type,3l,totalList);
 				 returnList.add(cadreDashboardVOList1);
 				 //get all the const belongs to above dist  
 				 List<Object[]> constList = constituencyDAO.getConstituenciesList(new ArrayList<Long>(distIdList));
@@ -6814,19 +6903,23 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 }
 				 list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType);
 				 list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);
-				 prepairReturnList(cadreDashboardVOList2,constResultList,list2,list3,list4,type,4l);
+				 prepairReturnList(cadreDashboardVOList2,constResultList,list2,list3,list4,type,4l,totalList);
 				 returnList.add(cadreDashboardVOList2);    
 				 return returnList;  
 			 } 
 			 if(constIdList.size() > 0){                
 				 List<Object[]> constResultList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts(type,4l,null,new ArrayList<Long>(constIdList));
+				 List<Object[]> totalList = null;
+				// if(type != null && type.trim().equalsIgnoreCase("Today")){
+				 		totalList = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Total",4l,null,new ArrayList<Long>(constIdList));
+				 //	}
 				 List<Object[]> list2 = null; 
 				 if(type.equalsIgnoreCase("total")){
 				 	list2 = tdpCadreLocationInfoDAO.get2016LocationWiseRegisteredCounts("Today",4l,null, new ArrayList<Long>(constIdList));            
 				 }
 				 List<Object[]> list3 = cadreSurveyUserAssignDetailsDAO.getMapPowerLocationWise(4l,locationType); 
 				 List<Object[]> list4 = delimitationConstituencyDAO.getConstituencyNo(locationType);    
-				 prepairReturnList(cadreDashboardVOList1,constResultList,list2,list3,list4,type,4l);     
+				 prepairReturnList(cadreDashboardVOList1,constResultList,list2,list3,list4,type,4l,totalList);     
 				 returnList.add(cadreDashboardVOList1);      
 				 return returnList;      
 			 }    
