@@ -1033,6 +1033,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								for(Long cmtId : commentIdList){
 									list2.add(commentIdAndCommentDtlsMap.get(cmtId));
 								}
+								//Collections.sort(list2, commentSort);
 								commentVOForDate.setSublist(list2);  
 							}
 							commentVOForDateList.add(commentVOForDate);
@@ -1058,7 +1059,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Entered in getAppointmentStatusFlowTrackingDetails() method");
 		}
 		return null;
-}
+	}
 	
 	public List<StatusTrackingVO> getAlertStatusCommentsList(List<Object[]> list,Long alertId)
 	{
@@ -2640,7 +2641,114 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	   }catch(Exception e){
 		   LOG.error("Error occured prepareTemplateStatusWise() method of AlertService{}",e);   
 	   }
-	
+	/* Swadhin Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByDist(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.lang.Long)
+	 */
+	public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId){
+		LOG.info("Entered in getTotalAlertGroupByDist() method of AlertService{}");
+		try{
+			Date fromDate = null;      
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//get access level id and access level value
+			Long userAccessLevelId = null;
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			
+			//convert parliament into constituency.
+			if(userAccessLevelId.longValue() == 4L){
+				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
+				userAccessLevelId = 5L;
+				userAccessLevelValues.clear();
+				userAccessLevelValues.addAll(parliamentAssemlyIds);      
+			}
+			
+			List<AlertCommentVO> alertCountList = new ArrayList<AlertCommentVO>();
+			AlertCommentVO alertCommentVO = null;
+			//get total alert group by district
+			List<Object[]> alertList = alertDAO.getTotalAlertGroupByDist(fromDate,toDate,stateId,scopeIdList,userAccessLevelId,userAccessLevelValues);
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList){
+					if(param[0] != null){
+						alertCommentVO = new AlertCommentVO();
+						alertCommentVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						alertCommentVO.setLocaitonName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						alertCommentVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						alertCountList.add(alertCommentVO);
+					}
+				}
+			}
+			return alertCountList;
+		}catch(Exception e){  
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByDist() method of AlertService{}");
+		}
+		return null;
+	}
+	/* Swadhin Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getAlertDtls(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
+	 */
+	public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId){
+		LOG.info("Entered in getAlertDtls() method of AlertService{}");
+		try{
+			Date fromDate = null;      
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			//get access level id and access level value
+			Long userAccessLevelId = null;
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){  
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			Long dist = 0l;  
+			DateUtilService dateUtilService = new DateUtilService();
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusId, alertCategoryId, userAccessLevelId, userAccessLevelValues);
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList ){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					alertCoreDashBoardVO.setCreatedDate(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10));
+					alertCoreDashBoardVO.setUpdatedDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+					alertCoreDashBoardVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					alertCoreDashBoardVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
+					if(param[1] != null && param[2] != null){
+						dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+						alertCoreDashBoardVO.setInterval(dist);
+					}
+					alertCoreDashBoardVO.setAlertLevel(commonMethodsUtilService.getStringValueForObject(param[8]));
+					alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
+				}
+			}
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			e.printStackTrace();  
+			LOG.error("Error occured getAlertDtls() method of AlertService{}");
+		}
+		return null;        
+	}
    }
    public void prepareAlertCategoryTemplate(List<Object[]> alertCategoryObjList,List<Object[]> alertStatusObjLst,Map<Long,AlertOverviewVO> alertCategoryMap){
 	   try{
