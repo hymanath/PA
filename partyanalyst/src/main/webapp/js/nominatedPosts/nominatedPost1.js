@@ -184,12 +184,12 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   if(result != null && result.length > 0){
-			   $("#casteId").append('<option value="0">Select Caste</option>');
+			   $("#notCadreCasteId").append('<option value="0">Select Caste</option>');
 			   for(var i in result){
-				   $("#casteId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				   $("#notCadreCasteId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			   }
 			  
-			   $("#casteId").trigger("chosen:updated");	
+			   $("#notCadreCasteId").trigger("chosen:updated");	
 		   }
 	   });
 	}
@@ -223,7 +223,7 @@ function validateAddNewCandidateFields(){
 	var gender = $("#genderId").val();
 	var dob=$("#DOBId").val();
 	var image = $("#imageurlId").val();
-	var casteId = $("#casteId").val();
+	var casteId = $("#notCadreCasteId").val();
 	var stateId = $("#notCadreStateId").val();
 	var districtId = $("#notCadreDistId").val();
 	var  constituencyId = $("#notCadreConstId").val();
