@@ -165,7 +165,14 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 			
 			queryStr.append(" where model.enrollmentYearId = 4 and ");
 			
-			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && 
+					 inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L ){
+				if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL) ){
+					queryStr.append("  model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
+					queryStr.append(" and booth.constituency.district.districtId = :districtId   ");
+				}
+			}
+			else if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
 			{
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 					queryStr.append("  model.locationScopeId = 3 and model.locationValue = district.districtId and district.state.stateId = :parentLocationTypeId ");
@@ -182,7 +189,8 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 					if(inputVO.getChildLocationTypeId().longValue()>0L){
 						queryStr.append(" and constituency.constituencyId = :childLocationTypeId ");
 					}
-				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
+				}
+				else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 					
 						queryStr.append(" booth.constituency.constituencyId = :parentLocationTypeId   ");
 						if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN)  || inputVO.getChildLocationType().equalsIgnoreCase("pollingstation")){
@@ -192,7 +200,7 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 							}
 						}
 						else if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.RURAL) ){
-							queryStr.append(" and model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
+							queryStr.append(" model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
 								queryStr.append(" and booth.tehsil.tehsilId = :childLocationTypeId ");
 							}
@@ -226,11 +234,13 @@ public List<Object[]> getTargetCountForLocationsWise(GISVisualizationParameterVO
 			queryStr.append(" and model.isDeleted = 'N' ");
 			
 			Query query = getSession().createQuery(queryStr.toString());
-			if( inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
+			if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
-			if( inputVO.getChildLocationTypeId().longValue()>0L)
+			if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
-			
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && 
+					 inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L )
+				query.setParameter("districtId", inputVO.getDistrictId());
 			
 			return query.list();
 		} catch (Exception e) {

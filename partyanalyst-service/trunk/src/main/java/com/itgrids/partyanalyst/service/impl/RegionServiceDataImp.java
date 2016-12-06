@@ -356,6 +356,36 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return mandalNames;
 	}
 	
+	public List<SelectOptionVO> getMandalsAndMuncipalitiesByConstituencyIDS(List<Long> constituencyID){
+		List<Long> delimitationConstituencyIds = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
+		
+		//Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationsConstituencyID(delimitationConstituencyIds);
+		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
+		/*Constituency constituency = constituencyDAO.get(constituencyID);
+		
+		
+		
+		if(constituency.getAreaType() == null)
+		return mandalNames;			
+		String areaType = constituency.getAreaType();
+				
+		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+		{
+			mandalNames = getLocalElectionBodies(constituencyID, IConstants.PRESENT_ELECTION_YEAR);
+		}*/
+		for(Tehsil tehsil : mandals){
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(tehsil.getTehsilId());
+			objVO.setName(tehsil.getTehsilName());
+			mandalNames.add(objVO);
+		}
+		if(mandalNames != null && mandalNames.size() > 0)
+			Collections.sort(mandalNames,sortByName);
+				
+		return mandalNames;
+	}
+	
 	
 	public List<SelectOptionVO> getMandalsAndMuncipalitiesByConstituencyID(Long constituencyID){
 		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);

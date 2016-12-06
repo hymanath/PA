@@ -106,4 +106,5 @@ public interface IRegionServiceData {
 	public List<BasicVO> areaCountListByAreaIdsOnScope(SearchAttributeVO searchAttributeVO,Long stateId);
 	
 	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue);
+	public List<SelectOptionVO> getMandalsAndMuncipalitiesByConstituencyIDS(List<Long> constituencyID);
 }

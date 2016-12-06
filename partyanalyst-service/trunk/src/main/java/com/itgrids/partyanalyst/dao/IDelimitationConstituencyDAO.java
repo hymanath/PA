@@ -82,4 +82,5 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	public List<Object[]> getConstituencyNumbersForConstituenctIds(List<Long> constIds);
 	public List<Object[]> getConstituenciesByDistrictId(Long districtID) ;
 	public List<Object[]> getConstituencyNo(String stateName);
+	public List<Long> findDelimitationConstituencyByConstituencyID(List<Long> constituencyIDS);
 }
