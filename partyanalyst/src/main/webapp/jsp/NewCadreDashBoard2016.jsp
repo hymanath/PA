@@ -1272,6 +1272,10 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 					str+='<th>DISTRICT</th>';
 					str+='<th>CONSTITUENCY</th>';  
 					
+					str+='<th>2014 REG. COUNT</th>'; 
+					str+='<th>TOTAL RENEWAL COUNT </th>'; 
+					str+='<th>TOTAL RENEWAL % </th>'; 
+					
 					str+='<th>TARGET</th>';
 					str+='<th>RENEWAL</th>';
 					str+='<th>RENEWAL.%</th>';
@@ -1297,6 +1301,13 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 						str+='<td>'+result[i].no+'</td>';    
 						str+='<td attr_district_name ='+result[i].districtname+'>'+result[i].districtname+'</td>';
 						str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
+						
+						
+						str+='<td>'+result[i].count2014+'</td>';
+						str+='<td>'+result[i].totalRenewal+'</td>';
+						str+='<td>'+result[i].totalRenPerc+'</td>';
+						
+						
 						
 						str+='<td>'+result[i].targetCount+'</td>';
 						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
@@ -1443,6 +1454,10 @@ function getDistricts(locationType){
 					str+='<th>AC_No</th>';
 					str+='<th>DISTRICT</th>';
 					str+='<th>CONSTITUENCY</th>'; 
+					str+='<th>2014 REG. COUNT</th>'; 
+					str+='<th>TOTAL RENEWAL COUNT </th>'; 
+					str+='<th>TOTAL RENEWAL % </th>'; 
+					
 					str+='<th>TARGET</th>';
 					str+='<th>RENEWAL</th>';
 					str+='<th>RENEWAL.%</th>';
@@ -1465,6 +1480,10 @@ function getDistricts(locationType){
 						str+='<td>'+result[i].no+'</td>';    
 						str+='<td attr_district_name ='+result[i].districtname+'>'+result[i].districtname+'</td>';
 						str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
+						
+						str+='<td>'+result[i].count2014+'</td>';
+						str+='<td>'+result[i].totalRenewal+'</td>';
+						str+='<td>'+result[i].totalRenPerc+'</td>';
 						
 						str+='<td>'+result[i].targetCount+'</td>';
 						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
@@ -1529,6 +1548,11 @@ function getDistricts(locationType){
 						str+='<td>'+result[i].no+'</td>';    
 						str+='<td attr_district_name ='+result[i].districtname+'>'+result[i].districtname+'</td>';
 						str+='<td attr_const_id="'+result[i].id+'" attr_const_name="'+result[i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[i].name+'</a></td>';
+						
+						str+='<td>'+result[i].count2014+'</td>';
+						str+='<td>'+result[i].totalRenewal+'</td>';
+						str+='<td>'+result[i].totalRenPerc+'</td>';
+						
 						
 						str+='<td>'+result[i].targetCount+'</td>';
 						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
