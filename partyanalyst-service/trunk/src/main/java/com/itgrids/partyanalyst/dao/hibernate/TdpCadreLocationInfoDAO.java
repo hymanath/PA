@@ -181,7 +181,12 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 			}
 			queryStr.append(" where  model.type ='Total' ");
 			
-			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && 
+					 inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L ){
+				queryStr.append(" and model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
+				queryStr.append(" and booth.constituency.district.districtId = :districtId   ");
+			}
+			else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
 			{
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 					queryStr.append(" and model.locationScopeId = 3 and model.locationValue = district.districtId and district.state.stateId = :parentLocationTypeId ");
@@ -271,10 +276,13 @@ public List<Object[]> getLocationsRegistrationsDetails(GISVisualizationParameter
 			}
 			
 			Query query = getSession().createQuery(queryStr.toString());
-			if( inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
+			if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
-			if( inputVO.getChildLocationTypeId().longValue()>0L)
+			if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && 
+					 inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L )
+				query.setParameter("districtId", inputVO.getDistrictId());
 			
 			return query.list();
 		} catch (Exception e) {

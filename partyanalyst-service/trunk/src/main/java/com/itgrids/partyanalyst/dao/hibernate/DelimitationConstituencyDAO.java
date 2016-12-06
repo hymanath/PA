@@ -31,6 +31,14 @@ IDelimitationConstituencyDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Long> findDelimitationConstituencyByConstituencyID(List<Long> constituencyIDS) {
+		Query query = getSession().createQuery(" select distinct model.delimitationConstituencyID from DelimitationConstituency model where " +
+				"model.constituency.constituencyId in (:constituencyID) ");
+		query.setParameterList("constituencyID", constituencyIDS);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(
 			Long constituencyID,Long year) {
 		

@@ -484,7 +484,12 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
 				queryStr.append("  (date(model.surveyDate) between :startDate and :endDate) ");
 			}
-			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationTypeId().longValue()>0L)
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && 
+					 inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L ){
+				queryStr.append(" and booth.constituency.district.districtId = :districtId ");
+				queryStr.append(" and model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
+			}
+			else if(inputVO.getParentLocationType() != null && inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
 			{
 				if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.STATE)){
 					queryStr.append("  and model.locationScopeId = 3 and model.locationValue = district.districtId and district.state.stateId = :parentLocationTypeId ");
@@ -503,20 +508,23 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 					}
 				}else if(inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE)){
 					
-						queryStr.append(" and booth.constituency.constituencyId = :parentLocationTypeId ");
+						
 						if(inputVO.getChildLocationType().equalsIgnoreCase(IConstants.URBAN)){
+							queryStr.append(" and booth.constituency.constituencyId = :parentLocationTypeId ");
 							queryStr.append(" and model.locationScopeId = 9  and model.locationValue = booth.boothId and booth.publicationDate.publicationDateId = "+IConstants.AFFILIATED_VOTER_PUBLICATION_ID+" ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
 								queryStr.append(" and booth.boothId = :childLocationTypeId ");
 							}
 						}
 						else if(inputVO.getAreaType().equalsIgnoreCase(IConstants.RURAL) ){
+							queryStr.append(" and booth.constituency.district.districtId = :districtId ");
 							queryStr.append(" and model.locationScopeId = 5 and model.locationValue = booth.tehsil.tehsilId  ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
 								queryStr.append(" and booth.tehsil.tehsilId = :childLocationTypeId ");
 							}
 						}
 						else if((inputVO.getAreaType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL) ) ){
+							queryStr.append(" and booth.constituency.constituencyId = :parentLocationTypeId ");
 							queryStr.append(" and model.locationScopeId = 7 and model.locationValue = booth.localBody.localElectionBodyId  ");
 							if(inputVO.getChildLocationTypeId().longValue()>0L){
 								queryStr.append("  and booth.localBody.localElectionBodyId = :childLocationTypeId ");
@@ -573,15 +581,18 @@ public List<Object[]> getDateWiseLocationsRegistrationsDetails(GISVisualizationP
 			}
 			
 			Query query = getSession().createQuery(queryStr.toString());
-			if( inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
+			if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L && !inputVO.getParentLocationType().equalsIgnoreCase(IConstants.DISTRICT))
 				query.setParameter("parentLocationTypeId", inputVO.getParentLocationTypeId());
-			if( inputVO.getChildLocationTypeId().longValue()>0L)
+			if(inputVO.getChildLocationTypeId() != null && inputVO.getChildLocationTypeId().longValue()>0L)
 				query.setParameter("childLocationTypeId", inputVO.getChildLocationTypeId());
 			if(inputVO.getStartDate() != null && inputVO.getEndDate() != null){
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				query.setDate("startDate", format.parse(inputVO.getStartDate()));
 				query.setDate("endDate", format.parse(inputVO.getEndDate()));
 			}
+			if(inputVO.getParentLocationType() != null &&  inputVO.getParentLocationType().equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE) && 
+					 inputVO.getDistrictId() != null && inputVO.getDistrictId().longValue()>0L )
+				query.setParameter("districtId", inputVO.getDistrictId());
 			
 			return query.list();
 		} catch (Exception e) {

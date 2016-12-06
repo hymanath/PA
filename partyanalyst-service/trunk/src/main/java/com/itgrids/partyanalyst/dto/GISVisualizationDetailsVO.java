@@ -49,6 +49,7 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	private String firstPartyImageLogo;
 	private String secondPartyImageLogo;
 	private String thirdPartyImageLogo;
+	private Long districtId;
 	
 	//VERY-GOOD, GOOD, OK, POOR, VERY_POOR / ISSSUES Status Details
 	private List<GISVisualizationBasicVO> statusList = new ArrayList<GISVisualizationBasicVO>(0);
@@ -324,6 +325,12 @@ public class GISVisualizationDetailsVO implements java.io.Serializable{
 	}
 	public void setThirdPartyImageLogo(String thirdPartyImageLogo) {
 		this.thirdPartyImageLogo = thirdPartyImageLogo;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 
 }

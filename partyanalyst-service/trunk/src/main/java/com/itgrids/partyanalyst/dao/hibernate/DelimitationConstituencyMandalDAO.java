@@ -43,6 +43,14 @@ IDelimitationConstituencyMandalDAO {
 				delimitationConstituencyID);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Tehsil> getTehsilsByDelimitationsConstituencyID(List<Long> delimitationConstituencyIDs) {
+		Query query = getSession().createQuery(" Select distinct model.tehsil from DelimitationConstituencyMandal model where " +
+				"model.delimitationConstituency.delimitationConstituencyID in (:delimitationConstituencyIDs)  order by model.tehsil.tehsilName ");
+		 query.setParameterList("delimitationConstituencyIDs", delimitationConstituencyIDs);
+		 return query.list();
+	}
+	
 	
 	public List<Tehsil> getTehsilsByDelimitationConstituencyIds(List<Long> delimitationConstituencyIds) {
 		

@@ -10,7 +10,15 @@ public class GISVisualizationParameterVO implements java.io.Serializable{
 	private String areaType;
 	private String startDate;
 	private String endDate;
+	private Long districtId;
 	
+	
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
 	public String getAreaType() {
 		return areaType;
 	}
