@@ -6,5 +6,5 @@ import com.itgrids.cardprint.model.User;
 
 public interface IUserDAO extends GenericDao<User,Long>
 {
-
+	public User checkUserHashKeyExists(String userHashKey);
 }
