@@ -429,7 +429,7 @@ var str = '';
 					}else{
 								str+='<div class="positionsCls"  attr_position_name="'+result[i].name+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
 							    str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'<i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" data-toggle="tooltip" data-placement="top" attr_report_type="Position" data-original-title="Get post details." ></i> </span>';
-								str+='<span class="label label-primary labelCustom pull-right" style="color:#333" title="Total Open Posts" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;">'+result[i].count+'</span>';
+								str+='<span class="label label-primary labelCustom pull-right" style="color:#333" title="Total Open Posts" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;">'+result[i].count+'</span>';		
 							}
 						str+='</div>';  
 					str+='</div>';
@@ -626,10 +626,13 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';	
 			}
 		str+='</thead>';
-	if(result.subList != null && result.subList.length > 0){
+	if(result.subList != null && result.subList.length > 0){		
 		for(var i in result.subList){
 			str+='<tr class="text-center">';
-			if(gblStatus=="finaliZed"){
+			if(result.subList.length == 1){
+			 str+='<td></td>';
+			$(".candiCheckBoxCls").hide();
+		}else if(gblStatus=="finaliZed"){
 				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'"></td>';
 			}
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
@@ -800,9 +803,11 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 	}
 	str+='</table>';
 	str+='<div class="row">';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		if(gblStatus=="finaliZed"){
-			str+='<button class="btn btn-success btnUpdateAll m_top20" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';  //srujana
+		if(result.subList.length == 1){
+			$(".updateButtonCls").hide();
+		}else if(gblStatus=="finaliZed"){
+			str+='<button class="btn btn-success btnUpdateAll m_top20 updateButtonCls" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
 		}
 			str+='<div class="updateDropDown updateAllShowPopup">';
 			str+='</div>';
