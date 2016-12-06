@@ -2641,6 +2641,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	   }catch(Exception e){
 		   LOG.error("Error occured prepareTemplateStatusWise() method of AlertService{}",e);   
 	   }
+   }
 	/* Swadhin Lenka
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getTotalAlertGroupByDist(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.lang.Long)
@@ -2648,7 +2649,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public List<AlertCommentVO> getTotalAlertGroupByDist(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId){
 		LOG.info("Entered in getTotalAlertGroupByDist() method of AlertService{}");
 		try{
-			Date fromDate = null;      
+			Date fromDate = null;           
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
@@ -2749,7 +2750,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return null;        
 	}
-   }
    public void prepareAlertCategoryTemplate(List<Object[]> alertCategoryObjList,List<Object[]> alertStatusObjLst,Map<Long,AlertOverviewVO> alertCategoryMap){
 	   try{
 		   if(alertCategoryObjList != null && alertCategoryObjList.size() > 0){
