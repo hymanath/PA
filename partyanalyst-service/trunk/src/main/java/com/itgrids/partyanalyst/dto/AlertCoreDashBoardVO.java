@@ -20,6 +20,14 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long categoryId;
 	private String category;
 	
+	private String createdDate;
+	private String updatedDate;
+	private Long statusId;
+	private String status;
+	private Long interval;
+	private String alertLevel;
+	
+	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
 	private Set<Long> setList = new HashSet<Long>(0);
@@ -120,5 +128,51 @@ public class AlertCoreDashBoardVO implements Serializable{
 		this.category = category;
 	}
 
-	
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(String updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Long getInterval() {
+		return interval;
+	}
+
+	public void setInterval(Long interval) {
+		this.interval = interval;
+	}
+
+	public String getAlertLevel() {
+		return alertLevel;
+	}
+
+	public void setAlertLevel(String alertLevel) {
+		this.alertLevel = alertLevel;
+	}
 }

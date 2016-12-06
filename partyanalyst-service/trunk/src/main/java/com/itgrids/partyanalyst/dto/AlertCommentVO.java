@@ -14,6 +14,9 @@ public class AlertCommentVO implements Serializable {
 	private List<String> nameList = new ArrayList<String>();
 	private String userName;
 	private String timeString;
+	private Long LocationId;
+	private String locaitonName;
+	private Long count;
 	private List<List<AlertCommentVO>> sublist = new ArrayList<List<AlertCommentVO>>();
 	private List<AlertCommentVO> sublist1 = new ArrayList<AlertCommentVO>();
 	private List<AlertCommentVO> sublist2 = new ArrayList<AlertCommentVO>();
@@ -90,6 +93,22 @@ public class AlertCommentVO implements Serializable {
 	public void setSublist(List<List<AlertCommentVO>> sublist) {
 		this.sublist = sublist;
 	}
-	
-	
+	public Long getLocationId() {
+		return LocationId;
+	}
+	public void setLocationId(Long locationId) {
+		LocationId = locationId;
+	}
+	public String getLocaitonName() {
+		return locaitonName;
+	}
+	public void setLocaitonName(String locaitonName) {
+		this.locaitonName = locaitonName;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 }
