@@ -2009,7 +2009,7 @@ if($("#positionStatusId").val() == 0){
 }
 var type="application";
 var statusName = $("#positionStatusId option:selected").text();
-var positionId = 0;
+var positionId = $("#positionId").val();;
 var positionName = "";
 var casteCategoryName = "";
 var casteCategoryId = $("#casteGroupId").val();
