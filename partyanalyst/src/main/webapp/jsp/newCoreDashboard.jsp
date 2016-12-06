@@ -3180,6 +3180,7 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script type="text/javascript">
 	//getting Dynamic Browser URL
 	var windowUrl = window.location.href;

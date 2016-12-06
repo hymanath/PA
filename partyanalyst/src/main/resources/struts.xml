@@ -14911,5 +14911,10 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="getAlertOverviewDetailsAction" class="createAlertAction" method="getAlertOverviewDetails">
+		<result type="json" name="success">
+   			<param name="root">alertOverviewVO</param>
+   		</result>
+	</action>
  </package>
 </struts>
