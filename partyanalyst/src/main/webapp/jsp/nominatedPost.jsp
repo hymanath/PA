@@ -706,7 +706,7 @@
 			<div class="col-md-3 col-xs-12 col-sm-6 m_top10">
 				<label class="text-capitalize">caste<span style="color:red;">*<span></label>
 				<!--<input type="text" id="casteId" class="form-control" name="addNotcadreRegistrationVO. castestateId"/> -->
-				 <select id="casteId" class="chosenSelect clearSelectClss" name="addNotcadreRegistrationVO.castestateId">
+				 <select id="notCadreCasteId" class="chosenSelect clearSelectClss" name="addNotcadreRegistrationVO.castestateId">
                  </select>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-6">
