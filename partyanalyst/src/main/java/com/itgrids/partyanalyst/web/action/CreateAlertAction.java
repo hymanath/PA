@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -48,6 +49,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<IdNameVO> idNameVOList;
 	private List<AlertVO> alertVOs;
 	private List<AlertCommentVO> alertCommentVOs;
+	private AlertOverviewVO alertOverviewVO;
 	
 	
 	
@@ -195,6 +197,13 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 
 	public void setAlertCommentVOs(List<AlertCommentVO> alertCommentVOs) {
 		this.alertCommentVOs = alertCommentVOs;
+	}
+    public AlertOverviewVO getAlertOverviewVO() {
+		return alertOverviewVO;
+	}
+
+	public void setAlertOverviewVO(AlertOverviewVO alertOverviewVO) {
+		this.alertOverviewVO = alertOverviewVO;
 	}
 
 	public String execute()
@@ -594,6 +603,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertVOs = alertService.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId,group);    
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
+	public String getAlertOverviewDetails(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			alertOverviewVO = alertService.getAlertOverviewDetails(activityMemberId,stateId,fromDate,toDate);    
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getAlertOverviewDetails() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
 	}
