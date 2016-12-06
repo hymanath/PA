@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -3767,6 +3768,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					Long applinCount  =  commonMethodsUtilService.getLongValueForObject(param[2]);
 					Long memberId  =  commonMethodsUtilService.getLongValueForObject(param[3]);
 					
+					if(memberId != null && memberId.longValue() ==864L)
+						System.out.println(memberId);
+					
 						Map<String,Long> movedPostsStatusMap = movedPostsStatusDetailsMap.get(memberId) != null ? movedPostsStatusDetailsMap.get(memberId):new HashMap<String, Long>(0);
 						
 						Long readyToFinalReviewPostsCount = movedPostsStatusMap.get("READY FOR FINAL REVIEW") != null?movedPostsStatusMap.get("READY FOR FINAL REVIEW"):0L;
@@ -3810,6 +3814,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							Long boardId = commonMethodsUtilService.getLongValueForObject(param[3]);
 							//String boardStr = commonMethodsUtilService.getStringValueForObject(param[4]);
 
+							if(memberId != null && memberId.longValue() ==864L)
+								System.out.println(memberId);
 							
 							Map<Long,Long> deptBoardIdssMap = new HashMap<Long, Long>();
 							if(memberDeptBoardMap.get(deptId) != null){
@@ -3888,6 +3894,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						Long applinCount  =  commonMethodsUtilService.getLongValueForObject(param[2]);
 						Long memberId  =  commonMethodsUtilService.getLongValueForObject(param[3]);
+						
+						if(memberId != null && memberId.longValue() ==864L)
+							System.out.println(memberId);
 						
 						Map<String,Long> movedPostsStatusMap = movedPostsStatusDetailsMap.get(memberId) != null ? movedPostsStatusDetailsMap.get(memberId):new HashMap<String, Long>(0);
 							
@@ -4026,6 +4035,27 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
+			
+			
+			
+			Map<Long,IdNameVO> deptBoardsMap = new HashMap<Long,IdNameVO>(0);
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (IdNameVO idNameVO : finalList) {
+					deptBoardsMap.put(idNameVO.getId(), idNameVO);
+				}
+				if(commonMethodsUtilService.isMapValid(deptBoardsMap)){
+					finalList.clear();
+					finalList.addAll(deptBoardsMap.values());
+				}
+			}
+			
+			Collections.sort(finalList, new Comparator<IdNameVO>() {
+				public int compare(IdNameVO o1, IdNameVO o2) {
+					return o1.getName().compareTo(o2.getName());
+				}
+			});
+			
+			
 			/*if(deptBoardObj !=null && deptBoardObj.size()>0){
 				for (Object[] obj : deptBoardObj) {
 				
@@ -4712,13 +4742,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						List<Object[]> applicationSttusObj = nominatedPostFinalDAO.getPositionDetaislOfEveryApplicationnStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"post");
 						
 						if(applicationSttusObj !=null && applicationSttusObj.size()>0){
-							finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
+							finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatusFromFinal");
 						}
 						
 						List<Object[]> applicationSttusObj1 = nominatedPostFinalDAO.getPositionDetaislOfEveryApplicationnStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"anyPost");
 						
 						if(applicationSttusObj1 !=null && applicationSttusObj1.size()>0){
-							finalMap = setDataToFinalMap(finalMap,applicationSttusObj1,"applicationStatus");
+							finalMap = setDataToFinalMap(finalMap,applicationSttusObj1,"applicationStatusFromFinal");
 						}
 						
 						//List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"anyPost");
@@ -4785,7 +4815,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				if(mainVo !=null){
 					if(type !=null && type.trim().equalsIgnoreCase("nominatedStatus")){
 						statusList = mainVo.getIdNameVoList();	
-					}else if(type !=null && type.trim().equalsIgnoreCase("applicationStatus")){
+					}else if(type !=null && (type.trim().equalsIgnoreCase("applicationStatus") || type.trim().equalsIgnoreCase("applicationStatusFromFinal"))){
 						statusList = mainVo.getDistList();	
 					}
 				}
@@ -4794,8 +4824,21 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				if(statusList !=null && statusList.size()>0){						
 					for (IdNameVO idNameVO : statusList) {							
 						if(idNameVO.getId() == (obj[2] !=null ? (Long)obj[2]:0l)){
-							idNameVO.setCount(idNameVO.getCount() + (obj[4] !=null ? (Long)obj[4]:0l));
-						}							
+							idNameVO.setCount((obj[4] !=null ? (Long)obj[4]:0l));//idNameVO.setCount(idNameVO.getCount() + (obj[4] !=null ? (Long)obj[4]:0l));
+						}					
+						/*
+						 * if(type !=null && type.trim().equalsIgnoreCase("applicationStatus")){
+							if(idNameVO.getName() != null && idNameVO.getName().trim().equalsIgnoreCase("Shortlisted"))
+								idNameVO.setCount(idNameVO.getCount() + (obj[4] !=null ? (Long)obj[4]:0l));
+						}else if(idNameVO.getName() != null && !idNameVO.getName().trim().equalsIgnoreCase("Shortlisted")){
+							if(idNameVO.getId() == (obj[2] !=null ? (Long)obj[2]:0l)){
+								idNameVO.setCount(idNameVO.getCount() + (obj[4] !=null ? (Long)obj[4]:0l));
+							}
+						}
+						else{
+							idNameVO.setCount((obj[4] !=null ? (Long)obj[4]:0l));
+						}
+						*/
 					}						
 				}
 			}
