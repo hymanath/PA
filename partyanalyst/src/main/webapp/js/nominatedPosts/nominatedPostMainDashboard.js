@@ -1821,6 +1821,7 @@ $("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;' 
 function buildNominatedCandidateDetails(result){
 $("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;display:none;' src='images/icons/loading.gif'>");
 	var str ='';
+	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered nomtedPstCndteId" id ="nomtedPstCndteId">';
 	str +='<thead>';
 	str +='<th>IMAGE</th>';
@@ -1828,8 +1829,8 @@ $("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;di
 	str +='<th>MOBILE NO</th>';
 	//str +='<th>RELATIVE NAME</th>';
 	str +='<th>MEMBERSHIPNO</th>';
-	str +='<th>DISTRICT NAME</th>';
-	str +='<th>CONSTITUENCY NAME</th>';
+	//str +='<th>DISTRICT NAME</th>';
+	//str +='<th>CONSTITUENCY NAME</th>';
 	str +='<th>DESIGNATION</th>';
 	str +='<th>DEPT-BOARD-POSITION</th>';
 	str +='<th>STATUS</th>';
@@ -1867,7 +1868,7 @@ $("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;di
 			str +='<td>-</td>';
 		}
 		
-		if(result[i].districtName != null){
+		/*if(result[i].districtName != null){
 			str+='<td>'+result[i].districtName+'</td>';
 		}else{
 			str +='<td>-</td>';
@@ -1878,7 +1879,7 @@ $("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;di
 		}else{
 			str +='<td>-</td>';
 		}
-		
+		*/
 		if(result[i].publicRepr != null){
 			str+='<td>'+result[i].publicRepr+'</td>';
 		}else{
@@ -1899,6 +1900,7 @@ $("#loadingImgId").html("<img style='margin-left: 85px;widht:30px;height:30px;di
 	}
 	str+='</tbody>';
 	str +='</table>';
+	str+='</div>';
 	
 	$("#nominatedPostCandidateDetailsId").html(str);
 	$(".nomtedPstCndteId").dataTable();
