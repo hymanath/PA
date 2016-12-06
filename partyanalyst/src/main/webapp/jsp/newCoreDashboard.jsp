@@ -2742,7 +2742,68 @@
 			</div>	
 	
 		<!--Events End -->
-	 
+	 <!-- Alerts Start-->
+	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+								Alerts <small class="text-muted"><span id="dateEventsHeadingId">  </span></small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-5">
+							<span class="notesIconEvents pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+							</span>
+							<span class="alertsIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<!--<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>-->
+						</div>
+					</div>
+					<div class="notesDropDown notesArrow" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesEventsId"></div>
+						<hr/>
+						<div id="eventsUpId" style="color:red;"></div>
+						<label>Create Notes</label>
+						<textarea class="form-control notesAreaEvents"></textarea>
+						<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
+							<h4><span class="headingColor text-capitalize">overall alerts</span></h4>
+							<h4 class="panel-title">Manual ALerts - 180</h4>
+							<table class="table table-condensed bg_ED">
+								<tbody>
+									<tr>
+										<td><p class="text-muted text-capitalize responsiveFont">Pending</p><p class="responsiveFont">14</p></td>
+										<td><p class="text-muted text-capitalize responsiveFont">Notified</p><p> - </p></td>
+										<td><p class="text-muted text-capitalize responsiveFont">Action InProgress</p><p class="responsiveFont">14<small class="text-success"> 100%</small></p></td>
+										<td><p class="text-muted text-capitalize responsiveFont">Completed</p><p class="responsiveFont">14<small class="text-success"> 100%</small></p></td>
+										<td><p class="text-muted text-capitalize responsiveFont">Unable To Resolve</p><p class="responsiveFont">14<small class="text-success"> 100%</small></p></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	 	<!-- Alerts End -->
 	</div>
 </div> 
 <!--model start -->
