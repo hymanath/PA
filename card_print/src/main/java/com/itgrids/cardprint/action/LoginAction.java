@@ -11,6 +11,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
 
+import com.itgrids.cardprint.dto.ResultStatus;
+import com.itgrids.cardprint.dto.UserVO;
 import com.itgrids.cardprint.service.IUserService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,7 +29,9 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,Se
 	private JSONObject jobj;
 	private HttpSession session;
 	private IUserService userService;
-
+	private ResultStatus resultStatus;
+	private UserVO userDetails;
+	
 	public IUserService getUserService() {
 		return userService;
 	}
@@ -72,7 +76,21 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,Se
 	public void setJobj(JSONObject jobj) {
 		this.jobj = jobj;
 	}
-
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	
+	public UserVO getUserDetails() {
+		return userDetails;
+	}
+	public void setUserDetails(UserVO userDetails) {
+		this.userDetails = userDetails;
+	}
+	
 	public String execute()
 	{
 		
@@ -82,6 +100,51 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,Se
 		}
 		catch (Exception e) {
 			 LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String validateUserLogin()
+	{
+		try{
+			resultStatus = new ResultStatus();
+			jobj = new JSONObject(getTask());
+			session = request.getSession();
+		     String uniqueyKey = (String) session.getAttribute("uniqueKey");
+		     userDetails = userService.validateUserLogin(jobj.getString("username"), jobj.getString("password"),jobj.getString("key"));
+			if (userDetails == null || userDetails.getUserId() == null)
+			{
+				
+				session.setAttribute("loginStatus", "out");
+				resultStatus.setResultCode(1);
+				return Action.SUCCESS;
+				
+			}	
+			if(userDetails != null && userDetails.getUserId() != null)
+			{
+				
+				session.setAttribute("loginStatus", "in");
+				session.setAttribute("USER", userDetails);
+				//resultStatus.setRedirectUrl(redirectToPage());
+				resultStatus.setResultCode(0);
+			}
+			
+			
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String logout(){
+		try{
+	       session = request.getSession();
+	       session.removeAttribute("USER");
+	       session.invalidate();
+		   return Action.SUCCESS;
+		}catch(Exception e){
+			LOG.error("Exception occured in logout() in LoginAction class"+e);
 		}
 		return Action.SUCCESS;
 	}
