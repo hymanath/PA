@@ -6,6 +6,7 @@
 <beans>
 
   	<bean name="userService" class="com.itgrids.cardprint.service.impl.UserService">
+  	  <property name="userDAO" ref="userDAO" />
  	</bean>  
  	
 </beans>		
