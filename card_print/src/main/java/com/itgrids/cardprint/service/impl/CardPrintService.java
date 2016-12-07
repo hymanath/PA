@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.cardprint.dao.ICardPrintVendorDAO;
@@ -14,7 +14,9 @@ import com.itgrids.cardprint.dao.IConstituencyDAO;
 import com.itgrids.cardprint.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.cardprint.dao.IConstituencyPrintStatusTrackDAO;
 import com.itgrids.cardprint.dao.IPrintStatusDAO;
+import com.itgrids.cardprint.dao.IUserPrintVendorDAO;
 import com.itgrids.cardprint.dto.BasicVO;
+import com.itgrids.cardprint.dto.PrintStatusUpdateVO;
 import com.itgrids.cardprint.dto.ResultStatus;
 import com.itgrids.cardprint.model.ConstituencyPrintStatus;
 import com.itgrids.cardprint.model.ConstituencyPrintStatusTrack;
@@ -33,6 +35,7 @@ public class CardPrintService implements ICardPrintService{
 	private IConstituencyPrintStatusDAO constituencyPrintStatusDAO;
 	private IConstituencyPrintStatusTrackDAO constituencyPrintStatusTrackDAO;
 	private IConstituencyDAO constituencyDAO ;
+	private IUserPrintVendorDAO userPrintVendorDAO;
 	
     //setters and getters
 	public void setCardPrintVendorDAO(ICardPrintVendorDAO cardPrintVendorDAO) {
@@ -65,6 +68,10 @@ public class CardPrintService implements ICardPrintService{
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
+	
+	public void setUserPrintVendorDAO(IUserPrintVendorDAO userPrintVendorDAO) {
+		this.userPrintVendorDAO = userPrintVendorDAO;
+	}
 
 	//Business methods
 	public List<BasicVO>  getAllVendors(){
@@ -72,7 +79,7 @@ public class CardPrintService implements ICardPrintService{
 		try{
 			
 			List<Object[]> dataList = cardPrintVendorDAO.getAllVendors();
-			setBasicDataToVO( dataList , finalList );
+			finalList = setBasicDataToVO( dataList );
 			
 		}catch(Exception e){
 			LOG.error("exception Occurred at getAllVendors() in CardPrintService class ", e); 
@@ -84,7 +91,7 @@ public class CardPrintService implements ICardPrintService{
 		try{
 			
 			List<Object[]> dataList = printStatusDAO.getAllPrintStatus();
-			setBasicDataToVO( dataList , finalList );
+			finalList = setBasicDataToVO( dataList);
 			
 		}catch(Exception e){
 			LOG.error("exception Occurred at getAllPrintStatus() in CardPrintService class ", e); 
@@ -96,7 +103,7 @@ public class CardPrintService implements ICardPrintService{
 		try{
 			
 			List<Object[]> dataList = constituencyDAO.getAllAssemblyConstituencies();
-			setBasicDataToVO( dataList , finalList );
+			finalList = setBasicDataToVO(dataList);
 			
 		}catch(Exception e){
 			LOG.error("exception Occurred at getAllAssemblyConstituencies() in CardPrintService class ", e); 
@@ -104,8 +111,8 @@ public class CardPrintService implements ICardPrintService{
 		return finalList;
 	}
 	
-	public void setBasicDataToVO(List<Object[]> dataList , List<BasicVO> finalList){
-		
+	public List<BasicVO> setBasicDataToVO(List<Object[]> dataList){
+		List<BasicVO> finalList = null;
 		try{
 			 if(dataList != null && dataList.size() > 0){
 				 finalList = new ArrayList<BasicVO>();
@@ -119,26 +126,40 @@ public class CardPrintService implements ICardPrintService{
 		}catch(Exception e){
 			LOG.error("exception Occurred at setBasicDataToVO() in CardPrintService class ", e); 
 		}
+		return finalList;
 	}
 	
-	public ResultStatus saveConstituencyPrintStatus(final Long constituencyId , final Long printVendorId , final Long printStatusId,final String remarks,final Long userId){
+	public ResultStatus saveConstituencyPrintStatus(final PrintStatusUpdateVO inputVO){
 		
-		 final ResultStatus rs = new ResultStatus();
+		ResultStatus status = new ResultStatus();
 		try{
-				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus arg0) {
 			        	
 			        	Date currentTime = dateUtilService.getCurrentDateAndTime();
-			        	
+			        	ResultStatus rs = new ResultStatus();
+			        	 
 			        	//Constituency Print Status saving
 			        	ConstituencyPrintStatus constituencyPrintStatus = new ConstituencyPrintStatus();
-			        	constituencyPrintStatus.setConstituencyId(constituencyId);
-			        	constituencyPrintStatus.setPrintVendorId(printVendorId);
-			        	constituencyPrintStatus.setPrintStatusId(printStatusId);
-			        	if(remarks != null && !remarks.isEmpty()){
-			        		constituencyPrintStatus.setRemarks(remarks);
+			        	constituencyPrintStatus.setConstituencyId(inputVO.getConstituencyId());
+			        	
+			        	if(inputVO.getUserId() != null && inputVO.getUserId() > 0l){
+			        		List<Long> printVendorsList = userPrintVendorDAO.getPrintVendorIdByUserId(inputVO.getUserId());
+			        		if(printVendorsList != null && printVendorsList.size() > 0){
+			        			Long vendorId = printVendorsList.get(0);
+			        			constituencyPrintStatus.setPrintVendorId(vendorId);
+			        		}else{
+			        			rs.setResultCode(0);
+			        			rs.setExceptionMsg("Vendor Is Not Mapped to This User.");
+			        			return rs;
+			        		}
 			        	}
-			        	constituencyPrintStatus.setUpdatedBy(userId);
+			        	
+			        	constituencyPrintStatus.setPrintStatusId(inputVO.getPrintStatusId());
+			        	if(inputVO.getRemarks() != null && !inputVO.getRemarks().isEmpty()){
+			        		constituencyPrintStatus.setRemarks(inputVO.getRemarks());
+			        	}
+			        	constituencyPrintStatus.setUpdatedBy(inputVO.getUserId());
 			        	constituencyPrintStatus.setUpdatedTime(currentTime);
 			        	
 			        	constituencyPrintStatus = constituencyPrintStatusDAO.save(constituencyPrintStatus);
@@ -154,15 +175,16 @@ public class CardPrintService implements ICardPrintService{
 			        	constituencyPrintStatusTrack.setUpdatedTime(constituencyPrintStatus.getUpdatedTime());
 			        	constituencyPrintStatusTrackDAO.save(constituencyPrintStatusTrack);
 			        	
-			        	rs.setResultCode(1);
-			        	rs.setMessage("success");
+			        	rs.setExceptionMsg("success");
+						rs.setResultCode(1);
+						return rs;
 					}
 			   });
 		}catch(Exception e){
 			LOG.error("exception Occurred at saveConstituencyPrintStatus() in CardPrintService class ", e); 
-			rs.setResultCode(0);
-			rs.setMessage("failure");
+			status.setResultCode(0);
+			status.setExceptionMsg("failure");
 		}
-		return rs;
+		return status;
 	}
 }
