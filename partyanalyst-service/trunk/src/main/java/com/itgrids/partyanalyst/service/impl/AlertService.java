@@ -2762,7 +2762,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			   for(Object[] param:alertCategoryObjList){
 				   AlertOverviewVO categoryVO = new AlertOverviewVO();
 				   categoryVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
-				   categoryVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   categoryVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1])+" Alerts");
 				   categoryVO.getStatusList().addAll(getStatutList(alertStatusObjLst));
 				   alertCategoryMap.put(categoryVO.getStatusTypeId(), categoryVO);
 			   }
@@ -2864,6 +2864,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					  entry.getValue().getSubList().add(villageWardVO);//adding VillageWard Merge Data
 			      }
 			  }
+			  //remove alert category which does not contain any alert count in all impact level.
+			  if(categoryMap != null && categoryMap.size() > 0){
+				  for(Entry<Long,AlertOverviewVO> entry:categoryMap.entrySet()){
+					  boolean isAlertCount = false;
+					  if(entry.getValue().getSubList() != null && entry.getValue().getSubList().size()> 0){
+						  for(AlertOverviewVO locationVO:entry.getValue().getSubList()){
+							  if(locationVO.getAlertCount() > 0l){
+								  isAlertCount = true;
+							  }
+							  
+						  }
+					  }  
+					  if(isAlertCount==false){
+						  categoryMap.remove(entry.getKey());  
+					  }
+				 }
+			  }
 			  if(categoryMap != null && categoryMap.size() > 0){
 				  resultList.addAll(categoryMap.values());  
 			  }
@@ -2899,9 +2916,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					  }
 				  }
 			  }
+			  
 			  if(overAllAlrtDtlsMap != null && overAllAlrtDtlsMap.size() > 0){
 				  AlertOverviewVO overAllAlertVO = new AlertOverviewVO();
-				  overAllAlertVO.setName("All Categories");
+				  overAllAlertVO.setName("All Categories Alerts");
 				  List<AlertOverviewVO> overAllAlertCntList = new ArrayList<AlertOverviewVO>(overAllAlrtDtlsMap.values());
 				  overAllAlertVO.getSubList().addAll(overAllAlertCntList);
 				  resultList.add(0, overAllAlertVO);
@@ -2919,7 +2937,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 for(Object[] param:objList){
 				 AlertOverviewVO categoryVO = new AlertOverviewVO();
 				 categoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-				 categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				 categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[1])+" Alerts");
 				 categoryVO.getSubList().addAll(getImpactLevelList(impactLevelLst));
 				 categoryMap.put(categoryVO.getId(), categoryVO);
 			 }
