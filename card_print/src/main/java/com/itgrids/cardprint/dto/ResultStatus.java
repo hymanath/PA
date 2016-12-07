@@ -12,6 +12,7 @@ public class ResultStatus implements Serializable{
     private boolean isResultPartial;	
     private String exceptionClass;
     private String exceptionMsg;
+    private String message;
     
 	public Long getId() {
 		return id;
@@ -49,4 +50,11 @@ public class ResultStatus implements Serializable{
 	public void setResultPartial(boolean isResultPartial) {
 		this.isResultPartial = isResultPartial;
 	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
 }
