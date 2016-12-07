@@ -2789,7 +2789,7 @@
 							<div id="alertOverview" class="m_top10"></div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6 alertLocationDiv" style="display:none;">
-							<h4><span class="headingColor text-capitalize">Location Level</span></h4>
+							<h4><span class="headingColor text-capitalize">Impact Scope Level</span></h4>
 							<div id="locationWiseAlertDivId"></div>
 						</div>    
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="display:none;">
