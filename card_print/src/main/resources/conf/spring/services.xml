@@ -9,5 +9,9 @@
   	  <property name="userDAO" ref="userDAO" />
  	</bean>  
  	
+ 	<bean name="cardPrintService" class="com.itgrids.cardprint.service.impl.CardPrintService">
+  	  <property name="cardPrintVendorDAO" ref="cardPrintVendorDAO" />
+ 	</bean>
+ 	
 </beans>		
 	
