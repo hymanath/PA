@@ -30,4 +30,25 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="electionScopeDAO" class="com.itgrids.cardprint.dao.impl.ElectionScopeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="electionTypeDAO" class="com.itgrids.cardprint.dao.impl.ElectionTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="stateDAO" class="com.itgrids.cardprint.dao.impl.StateDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="countryDAO" class="com.itgrids.cardprint.dao.impl.CountryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="districtDAO" class="com.itgrids.cardprint.dao.impl.DistrictDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		
