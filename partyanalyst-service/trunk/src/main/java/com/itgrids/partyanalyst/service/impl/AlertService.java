@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
@@ -106,7 +108,8 @@ private IPanchayatDAO panchayatDAO;
 
 private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
-private IParliamentAssemblyDAO parliamentAssemblyDAO;      
+private IParliamentAssemblyDAO parliamentAssemblyDAO; 
+private IAlertImpactScopeDAO alertImpactScopeDAO;
 
 
 
@@ -299,6 +302,9 @@ public void setActivityMemberAccessLevelDAO(
 public void setParliamentAssemblyDAO(
 		IParliamentAssemblyDAO parliamentAssemblyDAO) {
 	this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+}
+public void setAlertImpactScopeDAO(IAlertImpactScopeDAO alertImpactScopeDAO) {
+	this.alertImpactScopeDAO = alertImpactScopeDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -2804,7 +2810,225 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
 		}
 		return d;
-		}
+ }
+  /*
+   * santosh (non-Javadoc)
+   * @see com.itgrids.partyanalyst.service.IAlertService#getAlertCategoryDtlsLocationWise(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
+   */
+ public List<AlertOverviewVO> getAlertCategoryDtlsLocationWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr) {
+	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
+	 Map<Long,AlertOverviewVO> categoryMap = new ConcurrentHashMap<Long, AlertOverviewVO>(0);
+	 Set<Long> locationValues = new HashSet<Long>(0);
+     Long locationAccessLevelId =0l;
+     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+     Date fromDate=null;
+     Date toDate = null;
+	 try{
+		 if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+			   fromDate = sdf.parse(fromDateStr);
+			   toDate = sdf.parse(toDateStr);
+			 }
+		   	 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+			  List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategory();
+			  List<Object[]> rtrnAlertImpactLevelObjLst = alertImpactScopeDAO.getAllAlertImpactLevel();
+			  prepareTemplate(rtrnAlertCategoryObjLst,rtrnAlertImpactLevelObjLst,categoryMap);////Prepare Template 
+			  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate);
+			  setAlertImpactLevelWiseAlertCnt(rtrnImpactLevelCntObjLst,categoryMap);
+			  List<Object[]> rtrnImpctLvlSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate);
+			  setStatusWiseAlertCnt(rtrnImpctLvlSttusWsCntObjLst,categoryMap);
+			  
+			  // merge mandal,muncipality,Village And Ward data 
+			  if(categoryMap != null && categoryMap.size() > 0){
+				  for(Entry<Long, AlertOverviewVO> entry : categoryMap.entrySet()){
+					  AlertOverviewVO mandalMuncipalityVO = new AlertOverviewVO();
+					  AlertOverviewVO villageWardVO = new AlertOverviewVO();
+					  AlertOverviewVO mandalVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 5l);
+					  AlertOverviewVO MuncipalityVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 8l);
+					  mergeRequiredData(mandalMuncipalityVO,mandalVO,4l,"Mandal/Muncipality");
+					  mergeRequiredData(mandalMuncipalityVO,MuncipalityVO,4l,"Mandal/Muncipality");
+					  AlertOverviewVO villageVO = getImpactLevelMatchVO(entry.getValue().getSubList(), 7l);
+					  AlertOverviewVO wardVO = getImpactLevelMatchVO(entry.getValue().getSubList(),9l);
+					  mergeRequiredData(villageWardVO,villageVO,5l,"Village/Ward");
+					  mergeRequiredData(villageWardVO,wardVO,5l,"Village/Ward");
+					  entry.getValue().getSubList().remove(mandalVO);//removeMandalData
+					  entry.getValue().getSubList().remove(MuncipalityVO);//removemuncipalityData
+					  entry.getValue().getSubList().add(mandalMuncipalityVO);//adding mandalMucipality Merge Data
+					  entry.getValue().getSubList().remove(villageVO);//removeVillageData
+					  entry.getValue().getSubList().remove(wardVO);//removeWardData
+					  entry.getValue().getSubList().add(villageWardVO);//adding VillageWard Merge Data
+			      }
+			  }
+			  if(categoryMap != null && categoryMap.size() > 0){
+				  resultList.addAll(categoryMap.values());  
+			  }
+			  //Calculating overall Category Data
+			  Map<Long,AlertOverviewVO> overAllAlrtDtlsMap = new HashMap<Long, AlertOverviewVO>();
+			  if(categoryMap != null && categoryMap.size() > 0){
+				  for(Entry<Long, AlertOverviewVO> entry : categoryMap.entrySet()){
+					  if(entry.getValue().getSubList() != null && entry.getValue().getSubList().size() > 0){
+						  for(AlertOverviewVO locationVO:entry.getValue().getSubList()){
+							  AlertOverviewVO overAllVO = overAllAlrtDtlsMap.get(locationVO.getLocationTypeId());
+							   if(overAllVO == null){
+								   overAllVO = new AlertOverviewVO();
+								   overAllVO.setLocationTypeId(locationVO.getLocationTypeId());
+								   overAllVO.setLocationType(locationVO.getLocationType());
+								   overAllVO.setAlertCount(locationVO.getAlertCount());
+								   overAllVO.setPendingCnt(locationVO.getPendingCnt());
+								   overAllVO.setNotifiedCnt(locationVO.getNotifiedCnt());
+								   overAllVO.setActionInProgessCnt(locationVO.getActionInProgessCnt());
+								   overAllVO.setCompletedCnt(locationVO.getCompletedCnt());
+								   overAllVO.setUnabletoResolveCnt(locationVO.getUnabletoResolveCnt());
+								   overAllVO.setActionNotRequiredCnt(locationVO.getActionNotRequiredCnt());
+								   overAllAlrtDtlsMap.put(overAllVO.getLocationTypeId(), overAllVO);
+							   }else{
+							   overAllVO.setAlertCount(overAllVO.getAlertCount()+locationVO.getAlertCount());
+							   overAllVO.setPendingCnt(overAllVO.getPendingCnt()+locationVO.getPendingCnt());
+							   overAllVO.setNotifiedCnt(overAllVO.getNotifiedCnt()+locationVO.getNotifiedCnt());
+							   overAllVO.setActionInProgessCnt(overAllVO.getActionInProgessCnt()+locationVO.getActionInProgessCnt());
+							   overAllVO.setCompletedCnt(overAllVO.getCompletedCnt()+locationVO.getCompletedCnt());
+							   overAllVO.setUnabletoResolveCnt(overAllVO.getUnabletoResolveCnt()+locationVO.getUnabletoResolveCnt());
+							   overAllVO.setActionNotRequiredCnt(overAllVO.getActionNotRequiredCnt()+locationVO.getActionNotRequiredCnt());
+						   }
+						  }
+					  }
+				  }
+			  }
+			  if(overAllAlrtDtlsMap != null && overAllAlrtDtlsMap.size() > 0){
+				  AlertOverviewVO overAllAlertVO = new AlertOverviewVO();
+				  overAllAlertVO.setName("All Categories");
+				  List<AlertOverviewVO> overAllAlertCntList = new ArrayList<AlertOverviewVO>(overAllAlrtDtlsMap.values());
+				  overAllAlertVO.getSubList().addAll(overAllAlertCntList);
+				  resultList.add(0, overAllAlertVO);
+				  overAllAlrtDtlsMap.clear();
+			  }
+			
+	 }catch(Exception e){
+		 LOG.error("Error occured getAlertCategoryDtlsLocationWise() method of AlertService{}",e); 
+	 }
+	 return resultList;
+ }
+ public void prepareTemplate(List<Object[]> objList,List<Object[]> impactLevelLst,Map<Long,AlertOverviewVO> categoryMap) {
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 AlertOverviewVO categoryVO = new AlertOverviewVO();
+				 categoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				 categoryVO.getSubList().addAll(getImpactLevelList(impactLevelLst));
+				 categoryMap.put(categoryVO.getId(), categoryVO);
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Error occured prepareTemplate() method of AlertService{}",e); 
+	 }
+ }
+ public List<AlertOverviewVO> getImpactLevelList(List<Object[]> impactLevlLst){
+	 List<AlertOverviewVO> locationList = new CopyOnWriteArrayList<AlertOverviewVO>();
+	   try{
+		   if(impactLevlLst != null  && !impactLevlLst.isEmpty() ){
+			   for(Object[] param:impactLevlLst){
+				   AlertOverviewVO locationVO = new AlertOverviewVO();
+				   locationVO.setLocationTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   locationVO.setLocationType(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   locationList.add(locationVO);
+			   }
+		   }
+	   }catch(Exception e){
+		   LOG.error("Error occured getImpactLevelList() method of AlertService{}",e); 
+	   }
+	   return locationList; 
+ }
+ public void setAlertImpactLevelWiseAlertCnt(List<Object[]> objList,Map<Long,AlertOverviewVO> categoryMap){
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 Long alrtCtgryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				 Long impactLevelId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				 Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+				 if(categoryMap.get(alrtCtgryId) != null){
+					 AlertOverviewVO impactLevelVO = getImpactLevelMatchVO(categoryMap.get(alrtCtgryId).getSubList(),impactLevelId);
+					 	if(impactLevelVO != null ){
+					 		impactLevelVO.setAlertCount(alertCnt);
+					 	}
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Error occured setAlertImpactLevelWiseAlertCnt() method of AlertService{}",e); 
+	 }
+ }
+ public void setStatusWiseAlertCnt(List<Object[]> statusWiseAlertCntObjLst,Map<Long,AlertOverviewVO> categoryMap){
+	 try{
+		 if(statusWiseAlertCntObjLst != null && !statusWiseAlertCntObjLst.isEmpty()){
+			 for(Object[] param:statusWiseAlertCntObjLst){
+				 Long alrtCtgryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				 Long impactLevelId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				 Long statusId = commonMethodsUtilService.getLongValueForObject(param[4]);
+				 Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[6]);
+				 if(categoryMap.get(alrtCtgryId) != null){
+					 AlertOverviewVO impactLevelVO = getImpactLevelMatchVO(categoryMap.get(alrtCtgryId).getSubList(),impactLevelId);
+					 	if(impactLevelVO != null ){
+							 		if(statusId == 1l){ //Pending
+							 			impactLevelVO.setPendingCnt(alertCnt);
+							 		}else if(statusId == 2l){//Notified
+							 			impactLevelVO.setNotifiedCnt(alertCnt);
+							 		}else if(statusId == 3l){//Action In Progess
+							 			impactLevelVO.setActionInProgessCnt(alertCnt);
+							 		}else if(statusId == 4l){//Completed
+							 			impactLevelVO.setCompletedCnt(alertCnt);
+							 		}else if(statusId == 5l){//Unable to Resolve
+							 			impactLevelVO.setUnabletoResolveCnt(alertCnt);
+							 		}else if(statusId == 6l){//Action Not Required
+							 			impactLevelVO.setActionNotRequiredCnt(alertCnt);
+							 		}
+					 }
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Error occured setStatusWiseAlertCnt() method of AlertService{}",e); 
+	 }
+ }
+ public AlertOverviewVO getImpactLevelMatchVO(List<AlertOverviewVO> impactLevelList,Long impactLevelId){
+	 try{
+	 	 if(impactLevelList == null || impactLevelList.size() == 0)
+	 		 return null;
+	 	 for(AlertOverviewVO impactLevelVO:impactLevelList){
+	 		if(impactLevelVO.getLocationTypeId().equals(impactLevelId)){
+	 			return impactLevelVO;
+	 		}
+	 	 }
+	 	}catch(Exception e){
+	 		 LOG.error("Error occured getImpactLevelMatchVO() method of AlertService{}",e);
+	 	}	 
+	 return null;
+ }
+ public void mergeRequiredData(AlertOverviewVO resutlVO,AlertOverviewVO VO,Long impactLevelId,String impactLevel){
+	 try{
+		 if(VO != null){
+			 if(resutlVO.getLocationTypeId() == null){
+				 resutlVO.setLocationTypeId(impactLevelId);
+				 resutlVO.setLocationType(impactLevel);
+			 }
+			 resutlVO.setAlertCount(resutlVO.getAlertCount()+VO.getAlertCount());
+			 resutlVO.setPendingCnt(resutlVO.getPendingCnt()+VO.getPendingCnt());
+			 resutlVO.setNotifiedCnt(resutlVO.getNotifiedCnt()+VO.getNotifiedCnt());
+			 resutlVO.setActionInProgessCnt(resutlVO.getActionInProgessCnt()+VO.getActionInProgessCnt());
+			 resutlVO.setCompletedCnt(resutlVO.getCompletedCnt()+VO.getCompletedCnt());
+			 resutlVO.setUnabletoResolveCnt(resutlVO.getUnabletoResolveCnt()+VO.getUnabletoResolveCnt());
+			 resutlVO.setActionNotRequiredCnt(resutlVO.getActionNotRequiredCnt()+VO.getActionNotRequiredCnt());
+	 }
+	 }catch(Exception e){
+		 LOG.error("Error occured mergeRequiredData() method of AlertService{}",e);
+	 }
+ }
+ 	
 }
 	
 

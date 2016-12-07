@@ -2,8 +2,13 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AlertOverviewVO {
+	
+	private Long id;
+	private String name;
+	private Long alertCount = 0l;
 	
 	private Long totalAlertCnt = 0l;
 	private Long partyAlertCnt = 0l;
@@ -20,6 +25,17 @@ public class AlertOverviewVO {
 	private AlertOverviewVO overAllVO;
 	private List<AlertOverviewVO> statusList;
 	private List<AlertOverviewVO> categoryList;
+	private List<AlertOverviewVO> subList;
+	
+    private Long locationTypeId;
+	private String locationType;
+	
+	private Long pendingCnt = 0l;
+	private Long notifiedCnt = 0l;
+	private Long actionInProgessCnt = 0l;
+	private Long completedCnt = 0l;
+	private Long unabletoResolveCnt = 0l;
+	private Long actionNotRequiredCnt = 0l;
 	
 	public Long getTotalAlertCnt() {
 		return totalAlertCnt;
@@ -30,7 +46,7 @@ public class AlertOverviewVO {
 	public Long getPartyAlertCnt() {
 		return partyAlertCnt;
 	}
-	public void setPartyAlertCnt(Long partyAlertCnt) {
+	public void setPartyAlertCnt(Long partlyAlertCnt) {
 		this.partyAlertCnt = partyAlertCnt;
 	}
 	public Long getOtherAlertCnt() {
@@ -94,5 +110,67 @@ public class AlertOverviewVO {
 		}
 		return categoryList;
 	}
+	public List<AlertOverviewVO> getSubList() {
+	if(subList == null){                               
+	   	 subList = new CopyOnWriteArrayList<AlertOverviewVO>();  	                 
+	 }                                                
+      return subList;           
+   }
+   public Long getLocationTypeId() {		return locationTypeId;	}	public void setLocationTypeId(Long locationTypeId) {		this.locationTypeId = locationTypeId;	}	public String getLocationType() {		return locationType;	}	public void setLocationType(String locationType) {		this.locationType = locationType;	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getAlertCount() {
+		return alertCount;
+	}
+	public void setAlertCount(Long alertCount) {
+		this.alertCount = alertCount;
+	}
+	public Long getPendingCnt() {
+		return pendingCnt;
+	}
+	public void setPendingCnt(Long pendingCnt) {
+		this.pendingCnt = pendingCnt;
+	}
+	public Long getNotifiedCnt() {
+		return notifiedCnt;
+	}
+	public void setNotifiedCnt(Long notifiedCnt) {
+		this.notifiedCnt = notifiedCnt;
+	}
+	public Long getActionInProgessCnt() {
+		return actionInProgessCnt;
+	}
+	public void setActionInProgessCnt(Long actionInProgessCnt) {
+		this.actionInProgessCnt = actionInProgessCnt;
+	}
+	public Long getCompletedCnt() {
+		return completedCnt;
+	}
+	public void setCompletedCnt(Long completedCnt) {
+		this.completedCnt = completedCnt;
+	}
+	public Long getUnabletoResolveCnt() {
+		return unabletoResolveCnt;
+	}
+	public void setUnabletoResolveCnt(Long unabletoResolveCnt) {
+		this.unabletoResolveCnt = unabletoResolveCnt;
+	}
+	public Long getActionNotRequiredCnt() {
+		return actionNotRequiredCnt;
+	}
+	public void setActionNotRequiredCnt(Long actionNotRequiredCnt) {
+		this.actionNotRequiredCnt = actionNotRequiredCnt;
+	}
 	
-}
+    
+}                                                          
