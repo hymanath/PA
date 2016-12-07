@@ -18,7 +18,8 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 		
 		Query query = getSession().createQuery("" +
 		" select model.constituencyId , model.name from Constituency model " +
-		" where  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null " +
+		" where  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null and " +
+		"        model.state.stateId = 1 " +
 		" order by model.name");
 		
 		return query.list();
