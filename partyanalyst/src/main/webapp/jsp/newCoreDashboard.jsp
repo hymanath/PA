@@ -2742,7 +2742,7 @@
 			</div>	
 	
 		<!--Events End -->
-	 <!-- Alerts Start -->
+	 <!-- Alerts Start
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2857,7 +2857,7 @@
 				</div>
 			</div>
 		</div>	
-	 	<!--Alerts End -->
+	 	Alerts End -->
 	</div>
 </div> 
 <!--model start -->
