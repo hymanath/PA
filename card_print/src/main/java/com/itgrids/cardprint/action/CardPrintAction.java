@@ -84,6 +84,16 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		return Action.SUCCESS;
 	}
 	
+	public String  getAllAssemblyConstituencies(){
+		try{
+			basicVOList = cardPrintService.getAllAssemblyConstituencies();
+			
+		}catch(Exception e){
+			LOG.error("Exception Occurred At getAllAssemblyConstituencies() in CardPrintAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getCardPrintUpdationDetails(){
 		return Action.SUCCESS;
 	}
