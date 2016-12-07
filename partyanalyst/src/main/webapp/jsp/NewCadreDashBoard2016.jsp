@@ -1273,26 +1273,33 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 					str+='<th>CONSTITUENCY</th>';  
 					
 					str+='<th>2014 REG. COUNT</th>'; 
-					str+='<th>TOTAL RENEWAL COUNT </th>'; 
-					str+='<th>TOTAL RENEWAL % </th>'; 
+					str+='<th> 2014 TOTAL RENEWAL COUNT </th>'; 
+					str+='<th> 2014 TOTAL RENEWAL % </th>'; 
 					
 					str+='<th>TARGET</th>';
+					
+					if(type == "total"){
+						str+='<th>TOTAL REG.  COUNT</th>';
+						//str+='<th>TODAY REG.  COUNT</th>';    
+					}else if(type == "today"){
+						str+='<th>TODAY REG.  COUNT</th>';   
+					}
+					str+='<th>TARGET ACHIEVED %</th>'; 
+					
+					
 					str+='<th>RENEWAL</th>';
 					str+='<th>RENEWAL.%</th>';
 					str+='<th>NEW</th>';
 					str+='<th>NEW.%</th>';
+					if(type == "total"){
+						str+='<th>TODAY REG.  COUNT</th>';    
+					}
 					str+='<th>MAN POWER</th>';    
 					/* str+='<th>TOTAL REG</th>';
 					if(type == "total"){
 						str+='<th>TODAY REG</th>';    
 					} */
-					if(type == "total"){
-						str+='<th>TOTAL REG.  COUNT</th>';
-						str+='<th>TODAY REG.  COUNT</th>';    
-					}else if(type == "today"){
-						str+='<th>TODAY REG.  COUNT</th>';   
-					}
-					str+='<th>REG.%</th>';    
+					   
 				str+='</thead>';
 				str+='<tbody>';
 				for(var i in result){
@@ -1310,6 +1317,20 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 						
 						
 						str+='<td>'+result[i].targetCount+'</td>';
+						if(result[i].count2016 == null || result[i].count2016 == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016+'</td>';
+						}
+						
+						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+							str+='<td> - </td>';
+						}else{
+							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
+							
+						}
+						
 						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
 							str+='<td> - </td>';
 						}else{
@@ -1339,17 +1360,7 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 						}else{
 							str+='<td>'+result[i].newPerc+'</td>';
 						}
-						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].mapPowerCount+'</td>';
-						}
 						
-						if(result[i].count2016 == null || result[i].count2016 == 0){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].count2016+'</td>';
-						}
 						if(type == "total"){
 							if(result[i].count2016Today == null || result[i].count2016Today == 0){
 								str+='<td> - </td>';
@@ -1358,13 +1369,14 @@ function inBuild2016LocationWiseRegisteredCountsConstituencyWise(result,type,mat
 							}
 						}  
 						
-						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+						
+						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
 							str+='<td> - </td>';
 						}else{
-							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
-							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
-							
+							str+='<td>'+result[i].mapPowerCount+'</td>';
 						}
+						
+						
 						
 						str+='</tr>';
 					}
@@ -1455,22 +1467,28 @@ function getDistricts(locationType){
 					str+='<th>DISTRICT</th>';
 					str+='<th>CONSTITUENCY</th>'; 
 					str+='<th>2014 REG. COUNT</th>'; 
-					str+='<th>TOTAL RENEWAL COUNT </th>'; 
-					str+='<th>TOTAL RENEWAL % </th>'; 
+					str+='<th>2014 TOTAL RENEWAL COUNT </th>'; 
+					str+='<th>2014 TOTAL RENEWAL % </th>'; 
 					
 					str+='<th>TARGET</th>';
+					
+					if(type == "total"){
+						str+='<th>TOTAL REG.  COUNT</th>'; 
+					}else if(type == "today"){
+						str+='<th>TODAY REG.  COUNT</th>';   
+					}
+					str+='<th>TARGET ACHIEVED %</th>'; 
+					
+					
 					str+='<th>RENEWAL</th>';
 					str+='<th>RENEWAL.%</th>';
 					str+='<th>NEW</th>';
 					str+='<th>NEW.%</th>';
-					str+='<th>MAN POWER</th>';    
 					if(type == "total"){
-						str+='<th>TOTAL REG.  COUNT</th>';
 						str+='<th>TODAY REG.  COUNT</th>';    
-					}else if(type == "today"){
-						str+='<th>TODAY REG.  COUNT</th>';   
 					}
-					str+='<th>REG.%</th>';    
+					str+='<th>MAN POWER</th>';    
+					   
 				str+='</thead>';
 				str+='<tbody>';
 				
@@ -1486,6 +1504,22 @@ function getDistricts(locationType){
 						str+='<td>'+result[i].totalRenPerc+'</td>';
 						
 						str+='<td>'+result[i].targetCount+'</td>';
+						
+						if(result[i].count2016 == null || result[i].count2016 == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].count2016+'</td>';
+						}
+						
+						
+						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+							str+='<td> - </td>';
+						}else{
+							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
+							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
+							
+						}
+						
 						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
 							str+='<td> - </td>';
 						}else{
@@ -1515,17 +1549,7 @@ function getDistricts(locationType){
 						}else{
 							str+='<td>'+result[i].newPerc+'</td>';
 						}
-						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].mapPowerCount+'</td>';
-						}
 						
-						if(result[i].count2016 == null || result[i].count2016 == 0){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].count2016+'</td>';
-						}
 						if(type == "total"){
 							if(result[i].count2016Today == null || result[i].count2016Today == 0){
 								str+='<td> - </td>';
@@ -1534,13 +1558,13 @@ function getDistricts(locationType){
 							}
 						}  
 						
-						if(result[i].perc2016 == null || result[i].perc2016 == 0 || result[i].perc2016 == ""){
+						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
 							str+='<td> - </td>';
 						}else{
-							var colorStatus = getColorCodeByStatus(result[i].levelPerformanceType)
-							str+='<td style="color:'+colorStatus+';">'+result[i].perc2016+'</td>';
-							
+							str+='<td>'+result[i].mapPowerCount+'</td>';
 						}
+						
+						
 						
 						str+='</tr>';
 					}else if(matchedId == result[i].value){
@@ -1555,53 +1579,13 @@ function getDistricts(locationType){
 						
 						
 						str+='<td>'+result[i].targetCount+'</td>';
-						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
-							str+='<td> - </td>';
-						}else{
-							if(result[i].renewalCount == null || result[i].renewalCount == 0){
-							str+='<td>'+result[i].renewalCount+'</td>';
-							}else{
-								str+='<td>'+result[i].renewalCount+'</td>';
-							}
-						}
-						if(result[i].renewalPerc == null || result[i].renewalPerc == 0 ){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].renewalPerc+'</td>';
-						}
-						
-						if(result[i].newPerc == null || result[i].newPerc == 0){
-							str+='<td> - </td>';
-						}else{
-							if(result[i].newCount == null || result[i].newCount == 0){
-								str+='<td>'+result[i].newCount+'</td>';
-							}else{
-								str+='<td>'+result[i].newCount+'</td>';
-							}
-						}
-						if(result[i].newPerc == null || result[i].newPerc == 0 ){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].newPerc+'</td>';
-						}
-						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
-							str+='<td> - </td>';
-						}else{
-							str+='<td>'+result[i].mapPowerCount+'</td>';
-						}
 						
 						if(result[i].count2016 == null || result[i].count2016 == 0){
 							str+='<td> - </td>';
 						}else{
 							str+='<td>'+result[i].count2016+'</td>';
 						}
-						if(type == "total"){
-							if(result[i].count2016Today == null || result[i].count2016Today == 0){
-								str+='<td> - </td>';
-							}else{
-								str+='<td>'+result[i].count2016Today+'</td>';
-							}
-						}  
+						
 						 
 						 
 						
@@ -1622,6 +1606,52 @@ function getDistricts(locationType){
 								buildVeryPoorCount = buildVeryPoorCount+1;
 							}
 						}
+						
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].renewalCount == null || result[i].renewalCount == 0){
+							str+='<td>'+result[i].renewalCount+'</td>';
+							}else{
+								str+='<td>'+result[i].renewalCount+'</td>';
+							}
+						}
+						if(result[i].renewalPerc == null || result[i].renewalPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].renewalPerc+'</td>';
+						}
+						
+						if(result[i].newPerc == null || result[i].newPerc == 0){
+							str+='<td> - </td>';
+						}else{
+							if(result[i].newCount == null || result[i].newCount == 0){
+								str+='<td>'+result[i].newCount+'</td>';
+							}else{
+								str+='<td>'+result[i].newCount+'</td>';
+							}
+						}
+						if(result[i].newPerc == null || result[i].newPerc == 0 ){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].newPerc+'</td>';
+						}
+						
+						if(type == "total"){
+							if(result[i].count2016Today == null || result[i].count2016Today == 0){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[i].count2016Today+'</td>';
+							}
+						}  
+						
+						if(result[i].mapPowerCount == null || result[i].mapPowerCount == 0){
+							str+='<td> - </td>';
+						}else{
+							str+='<td>'+result[i].mapPowerCount+'</td>';
+						}
+						
+						
 						
 						str+='</tr>';
 					}
