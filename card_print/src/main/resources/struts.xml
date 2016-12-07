@@ -43,5 +43,11 @@
 		    	<result name="success">jsp/cardPrintUpdation.jsp</result>
 		</action>
 		
+		<action name="getAllPrintStatusDetailsAction" class="cardPrintAction" method ="getAllPrintStatus">
+		    	<result type="json" name="success">  
+			    <param name="root">basicVOList</param>
+		        </result>
+		</action>
+		
 	</package>
 </struts>        
