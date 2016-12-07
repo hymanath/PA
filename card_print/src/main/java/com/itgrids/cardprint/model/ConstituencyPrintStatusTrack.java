@@ -29,7 +29,7 @@ public class ConstituencyPrintStatusTrack extends BaseModel implements java.io.S
 	private Long printVendorId;
 	private Long printStatusId;
 	private String remarks;
-	private Long updatedUserId;
+	private Long updatedBy;
 	private Date updatedTime;
 	
 	private ConstituencyPrintStatus constituencyPrintStatus;
@@ -83,18 +83,18 @@ public class ConstituencyPrintStatusTrack extends BaseModel implements java.io.S
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	
 	@Column(name = "updated_by")
-	public Long getUpdatedUserId() {
-		return updatedUserId;
+	public Long getUpdatedBy() {
+		return updatedBy;
 	}
-	public void setUpdatedUserId(Long updatedUserId) {
-		this.updatedUserId = updatedUserId;
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 	@Column(name = "updated_time")
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
-	
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
