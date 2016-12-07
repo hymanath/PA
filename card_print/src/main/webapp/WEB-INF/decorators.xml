@@ -8,6 +8,7 @@
 
     <decorator name="newHome" page="homelayout.jsp">
 		<pattern>/exampleAction*</pattern>
+		<pattern>/cardPrintUpdationAction*</pattern>
 	</decorator>
 	
 </decorators>

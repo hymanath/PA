@@ -83,4 +83,8 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCardPrintUpdationDetails(){
+		return Action.SUCCESS;
+	}
 }
