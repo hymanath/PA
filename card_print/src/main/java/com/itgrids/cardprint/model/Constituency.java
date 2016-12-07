@@ -1,17 +1,22 @@
 package com.itgrids.cardprint.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "constituency")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -30,6 +35,11 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private String areaType;
 	private String constituencyImage;
 	private String nameLocal;
+	
+	private ElectionScope electionScope; 
+	private State state;
+	private Country country;
+	private District district;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -125,5 +135,47 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.nameLocal = nameLocal;
 	}
 	
-
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "election_scope_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ElectionScope getElectionScope() {
+		return electionScope;
+	}
+	public void setElectionScope(ElectionScope electionScope) {
+		this.electionScope = electionScope;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "state_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "country_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Country getCountry() {
+		return country;
+	}
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "district_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
+	}
 }
