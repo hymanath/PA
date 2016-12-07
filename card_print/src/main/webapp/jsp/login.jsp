@@ -164,7 +164,7 @@ function checkUserLogin()
 				  else if(result.resultCode == 0)
 				  {
 					$("#successDiv").html("<b>Login Successful, Please Wait...</b>").css("color","green");
-					
+					window.location.href = "cardPrintUpdationAction.action" ;
 					/* if(result.redirectUrl != '')
 					   window.location.href = result.redirectUrl ;
 				   else
