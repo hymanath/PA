@@ -11,7 +11,8 @@
 		}else{
 			console.log("closing")
 			$("#districtWiseAlertCountId").html("");    
-			$(".districtAltCtnCls").toggle();       			
+			$(".districtAltCtnCls").toggle();     
+            $(".alertLocationDiv").hide();  			
 		}
 		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".dateRangePickerClsForTraining").addClass("hide");
@@ -93,7 +94,7 @@
 					str+='</td>';
 					str+='<td>';
 						if(result.overAllVO.partyAlertCnt == 0){
-							str+='<h3>'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'</small> </h3>';
+							str+='<h3>'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
 						}else{
 							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="1" attr_count="'+result.overAllVO.partyAlertCnt+'">'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
 						}
@@ -101,7 +102,7 @@
 					str+='</td>';
 					str+='<td>';
 						if(result.overAllVO.otherAlertCnt == 0){
-							str+='<h3>'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'</small></h3>';
+							str+='<h3>'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
 						}else{
 							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="0" attr_alert_type_id="3" attr_count="'+result.overAllVO.otherAlertCnt+'">'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
 						}
@@ -118,7 +119,7 @@
 				str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top10">';
 					str+='<div class="bg_ED pad_5">';
 						if(result.statusList[i].statusCnt == 0){
-							str+='<h3>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'</small></h3>';
+							str+='<h3>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'%</small></h3>';
 						}else{
 							str+='<h3 class="alertDtlsCls" style="cursor:pointer;" attr_category_id="0" attr_status_id="'+result.statusList[i].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.statusList[i].statusCnt+'">'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'%</small></h3>';
 						}
@@ -132,7 +133,7 @@
 		for(var i in result.categoryList)  
 		{
 			if(result.categoryList[i].statusCnt == 0){
-				str+='<h4 class="panel-title m_top10">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
+				str+='<h4 class="panel-title m_top10">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'%</h4>';
 			}else{
 				str+='<h4 class="panel-title m_top10 alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusCnt+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
 			}  
