@@ -157,8 +157,8 @@
 		  var str='';
 		  for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			  str+='<h5 class="text-capital m_top10">'+result[i].name+'</h5>';      
-			  str+='<div id="alertCategory'+i+'" style="height:80px;"></div>';
+			  str+='<h5 class="text-capital m_top10 alertCategoryCls">'+result[i].name+'</h5>';      
+			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" class="dddddd" style="height:130px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -170,7 +170,8 @@
 			  if(result[i].subList !=null && result[i].subList.length>0){
 					for(var j in result[i].subList){
 						locationNameArr.push(result[i].subList[j].locationType);
-						alertCntArr.push(result[i].subList[j].alertCount);	
+						//alertCntArr.push(result[i].subList[j].alertCount);
+						alertCntArr.push({"y":result[i].subList[j].alertCount,"extra":result[i].name});
 					}
 				}
 		//if(result[i][0].totalTour!=0){
@@ -213,13 +214,25 @@
 					},
 					labels: {
 						overflow: 'justify',
-						enabled: false,
+						enabled: true,
 					}
 				},
-			 tooltip: {formatter: function(){
-					return '<b>Total Alerts:'+ Highcharts.numberFormat(this.y, 0) +'</b><br/>';
-                }      
-				}, 
+				tooltip: {
+				 useHTML: true,
+				 backgroundColor: '#FCFFC5',
+				 formatter: function() {
+						 var categoryName = this.point.extra;
+						 var obj1 = result.filter(function ( obj1 ) {
+							 	return obj1.name.toUpperCase().trim() === categoryName.toUpperCase().trim();
+							})[0];
+						 var locationList = obj1.subList;
+						 var _locationName = this.x;
+						 var obj = locationList.filter(function ( obj ) {
+								return obj.locationType.toUpperCase().trim() === _locationName.toUpperCase().trim();
+							})[0];
+							return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"";     
+					}
+				},
 				plotOptions: {
 					column: {  
 						stacking: 'normal',
@@ -237,6 +250,7 @@
 					}
 				},
 				legend: {
+					enabled: false,
 					layout: 'vertical',
 					align: 'right',
 					verticalAlign: 'top',
