@@ -16,6 +16,7 @@
   	  <property name="transactionTemplate" ref="transactionTemplate" />
   	  <property name="constituencyPrintStatusDAO" ref="constituencyPrintStatusDAO" />
   	  <property name="constituencyPrintStatusTrackDAO" ref="constituencyPrintStatusTrackDAO" />
+  	  <property name="constituencyDAO" ref="constituencyDAO" />
  	</bean>
  	
  	<bean name="dateUtilService" class="com.itgrids.cardprint.util.DateUtilService">
