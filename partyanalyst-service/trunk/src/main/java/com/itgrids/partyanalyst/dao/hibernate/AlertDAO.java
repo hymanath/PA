@@ -885,7 +885,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  " + 
-						" where model.isDeleted ='N'  ");
+						" where model.isDeleted ='N' and model.alertType.alertTypeId != 2  ");             
 		if(fromDate != null && toDate != null){ 
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
@@ -937,7 +937,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" alertCategory.alertCategoryId, " +//5
 						" alertCategory.category, " +//6
 						" alertImpactScope.alertImpactScopeId, " +//7
-						" alertImpactScope.impactScope ");//8
+						" alertImpactScope.impactScope ");//8       
 		queryStr.append(" from Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -949,16 +949,16 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  ");  
 		queryStr.append(" left join model.alertCategory alertCategory ");
 		queryStr.append(" left join model.alertStatus alertStatus ");
-		queryStr.append(" left join model.alertImpactScope alertImpactScope ");
+		queryStr.append(" left join model.alertImpactScope alertImpactScope ");  
 		queryStr.append(" left join model.alertType alertType ");
-		queryStr.append(" where model.isDeleted ='N'  ");
+		queryStr.append(" where model.isDeleted ='N' and alertType.alertTypeId != 2 ");
 		if(fromDate != null && toDate != null){ 
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
-		}   
+		}     
 		
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
-				queryStr.append(" and state.stateId = 1 ");
+				queryStr.append(" and state.stateId = 1 ");  
 			}else if(stateId.longValue() == 36L){
 				queryStr.append(" and state.stateId = 36 ");
 			}else if(stateId.longValue() == 0L){
