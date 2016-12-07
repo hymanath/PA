@@ -1,8 +1,5 @@
 package com.itgrids.cardprint.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import com.itgrids.cardprint.dao.IUserDAO;
@@ -72,6 +69,7 @@ public class UserService implements IUserService{
 		}
 		return userVO;
 	}
+	
 }
 
 
