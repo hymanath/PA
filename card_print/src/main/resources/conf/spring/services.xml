@@ -11,6 +11,14 @@
  	
  	<bean name="cardPrintService" class="com.itgrids.cardprint.service.impl.CardPrintService">
   	  <property name="cardPrintVendorDAO" ref="cardPrintVendorDAO" />
+  	  <property name="printStatusDAO" ref="printStatusDAO" />
+  	  <property name="dateUtilService" ref="dateUtilService" />
+  	  <property name="transactionTemplate" ref="transactionTemplate" />
+  	  <property name="constituencyPrintStatusDAO" ref="constituencyPrintStatusDAO" />
+  	  <property name="constituencyPrintStatusTrackDAO" ref="constituencyPrintStatusTrackDAO" />
+ 	</bean>
+ 	
+ 	<bean name="dateUtilService" class="com.itgrids.cardprint.util.DateUtilService">
  	</bean>
  	
 </beans>		
