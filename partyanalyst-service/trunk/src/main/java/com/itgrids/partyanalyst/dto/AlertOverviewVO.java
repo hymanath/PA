@@ -46,7 +46,7 @@ public class AlertOverviewVO {
 	public Long getPartyAlertCnt() {
 		return partyAlertCnt;
 	}
-	public void setPartyAlertCnt(Long partlyAlertCnt) {
+	public void setPartyAlertCnt(Long partyAlertCnt) {
 		this.partyAlertCnt = partyAlertCnt;
 	}
 	public Long getOtherAlertCnt() {
