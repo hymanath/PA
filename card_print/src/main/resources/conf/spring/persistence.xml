@@ -27,6 +27,12 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.itgrids.cardprint.model.User</value>
+				<value>com.itgrids.cardprint.model.UserType</value>
+				<value>com.itgrids.cardprint.model.CardPrintVendor</value>
+				<value>com.itgrids.cardprint.model.UserPrintVendor</value>
+				<value>com.itgrids.cardprint.model.Constituency</value>
+				<value>com.itgrids.cardprint.model.PrintStatus</value>
+				<value>com.itgrids.cardprint.model.ConstituencyPrintStatus</value>
 		 	</list>
 		</property>
 	</bean>
