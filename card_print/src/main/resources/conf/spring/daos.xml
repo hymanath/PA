@@ -8,5 +8,23 @@
 	<bean id="userDAO" class="com.itgrids.cardprint.dao.impl.UserDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="userTypeDAO" class="com.itgrids.cardprint.dao.impl.UserTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cardPrintVendorDAO" class="com.itgrids.cardprint.dao.impl.CardPrintVendorDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userPrintVendorDAO" class="com.itgrids.cardprint.dao.impl.UserPrintVendorDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="constituencyDAO" class="com.itgrids.cardprint.dao.impl.ConstituencyDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="printStatusDAO" class="com.itgrids.cardprint.dao.impl.PrintStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="printStatusDAO" class="com.itgrids.cardprint.dao.impl.PrintStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		
