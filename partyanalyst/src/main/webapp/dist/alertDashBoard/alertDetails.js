@@ -382,7 +382,7 @@ function updateAlertStatus()
 	 $('#errorId').html(' Status required').css("color","red"); 
         return;	   
 	}
-	if(tdpCadreId == null){       
+	if(tdpCadreId == null || tdpCadreId == 0 ){	
 	 $('#errorId').html(' Assigned Cadre required').css("color","red"); 
         return;	       
 	}
