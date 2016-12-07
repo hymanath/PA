@@ -14926,5 +14926,10 @@
    			<param name="root">alertOverviewVO</param>
    		</result>
 	</action>
+	<action name="getAlertCategoryDtlsLocationWiseAction" class="createAlertAction" method="getAlertCategoryDtlsLocationWise">
+		<result type="json" name="success">
+   			<param name="root">resultList</param>
+   		</result>
+	</action>
  </package>
 </struts>

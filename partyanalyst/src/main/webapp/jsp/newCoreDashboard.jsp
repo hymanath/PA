@@ -2788,12 +2788,11 @@
 							<h4><span class="headingColor text-capitalize">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6">
+						<div class="col-md-6 col-xs-12 col-sm-6 alertLocationDiv" style="display:none;">
 							<h4><span class="headingColor text-capitalize">Location Level</span></h4>
-							<h4 class="m_top10 panel-title">All Categories</h4>
-							<div id="alerts"></div>
+							<div id="locationWiseAlertDivId"></div>
 						</div>    
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="display:none;">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
@@ -2828,7 +2827,7 @@
 								</div>
 							</div>
 						</div>  
-						<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading pad_5">
 									<div class="row">
@@ -3427,6 +3426,8 @@
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
+		/* Alert Default Call */
+		getAlertOverviewDetails();
 	}
 	$(document).on("click",".userStructureClass",function(){
 		

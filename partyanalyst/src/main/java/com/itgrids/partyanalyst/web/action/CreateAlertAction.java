@@ -52,6 +52,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<AlertCommentVO> alertCommentVOs;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertOverviewVO alertOverviewVO;
+	private List<AlertOverviewVO> resultList;
 	
 	
 	
@@ -211,10 +212,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public void setAlertOverviewVO(AlertOverviewVO alertOverviewVO) {
 		this.alertOverviewVO = alertOverviewVO;
 	}
-
+	public List<AlertOverviewVO> getResultList() {
+		return resultList;
+	}
 	public void setAlertCoreDashBoardVOs(
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs) {
 		this.alertCoreDashBoardVOs = alertCoreDashBoardVOs;
+	}
+	public void setResultList(List<AlertOverviewVO> resultList) {
+		this.resultList = resultList;
 	}
 
 	public String execute()
@@ -628,6 +634,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertOverviewVO = alertService.getAlertOverviewDetails(activityMemberId,stateId,fromDate,toDate);    
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getAlertOverviewDetails() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
+	public String getAlertCategoryDtlsLocationWise(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			resultList = alertService.getAlertCategoryDtlsLocationWise(activityMemberId,stateId,fromDate,toDate);    
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getAlertCategoryDtlsLocationWise() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
 	}

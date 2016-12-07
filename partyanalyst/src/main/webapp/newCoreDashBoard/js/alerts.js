@@ -3,7 +3,8 @@
 		$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".alertsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			//getUserTypeWiseNewsCounts(1);
+			$(".alertLocationDiv").show();
+			getAlertCategoryDtlsLocationWise();
 			console.log("opening")
 		}else{
 			//$(".newsHiddenMoreBlock,.moreAttBlocks").hide();
@@ -50,11 +51,10 @@
 			$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}
 		});
-    getAlertOverviewDetails();
-	function getAlertOverviewDetails(){
+  function getAlertOverviewDetails(){
 		$("#alertOverview").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={  
-			activityMemberId : 44,      
+			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
 			fromDate :"",        
 			toDate :""    
@@ -65,58 +65,205 @@
 			dataType : 'json',  
 			data : {task :JSON.stringify(jsObj)}          
 		}).done(function(result){
-           console.log(result);
-		   buildAlertOverviewDetails(result);
-		});	
+			if(result != null){
+			  buildAlertOverviewDetails(result);
+			}else{
+			  $("#alertOverview").html("NO DATA AVAILABLE.");	
+			}
+      });	
 	}
 	
 	function buildAlertOverviewDetails(result)
 	{
 		var str='';
-		str+='<div class="pad_15 bg_ED">';
-			str+='<table class="table table-bordered alertOverviewTable bg_ED">';
-				str+='<tr>';
-					str+='<td>';
-						str+='<h3>'+result.overAllVO.totalAlertCnt+'</h3>';
-						str+='<p class="text-capital">TOTAL ALERTS</p>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h3>'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'</small> </h3>';
-						str+='<p class="text-capital">party</p>';
-					str+='</td>';
-					str+='<td>';
-						str+='<h3>'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'</small></h3>';
-						str+='<p class="text-capital">others</p>';
-					str+='</td>';
-				str+='</tr>';
-			str+='</table>';
-		str+='</div>';
-		str+='<div class="row">';
-			for(var i in result.statusList)
-			{
-				str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top10">';
-					str+='<div class="bg_ED pad_5">';
-						str+='<h3>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'</small></h3>';
-						str+='<p class="text-capital text-muted">'+result.statusList[i].statusType+'</p>';
-					str+='</div>';
-				str+='</div>';
-			}
-		str+='</div>';
-		
-		for(var i in result.categoryList)
-		{
-			str+='<h4 class="panel-title m_top10">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
-			str+='<table class="table table-condensed bg_ED">';
-				str+='<tbody>';
+		if(result.overAllVO != null){
+				str+='<div class="pad_15 bg_ED">';
+				str+='<table class="table table-bordered alertOverviewTable bg_ED">';
 					str+='<tr>';
-					for(var j in result.categoryList[i].statusList)
-					{
-						str+='<td><p class="text-muted text-capitalize responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p><p class="responsiveFont">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p></td>';
-					}
+						str+='<td>';
+							str+='<h3>'+result.overAllVO.totalAlertCnt+'</h3>';
+							str+='<p class="text-capital">TOTAL ALERTS</p>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h3>'+result.overAllVO.partyAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.partyAlertCntPer+'%</small> </h3>';
+							str+='<p class="text-capital">party</p>';
+						str+='</td>';
+						str+='<td>';
+							str+='<h3>'+result.overAllVO.otherAlertCnt+'&nbsp;&nbsp;<small class="text-success">'+result.overAllVO.otherAlertCntPer+'%</small></h3>';
+							str+='<p class="text-capital">others</p>';
+						str+='</td>';
 					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
+				str+='</table>';
+			 str+='</div>';
+		}
+		if(result.statusList != null && result.statusList.length > 0){
+		  str+='<div class="row">';
+			 for(var i in result.statusList)
+				{
+					str+='<div class="col-md-4 col-xs-12 col-sm-4 m_top10">';
+						str+='<div class="bg_ED pad_5">';
+						str+='<h3>'+result.statusList[i].statusCnt+'&nbsp;&nbsp;<small class="text-success" style="font-size:13px">'+result.statusList[i].statusCntPer+'%</small></h3>';
+							str+='<p class="text-capital text-muted">'+result.statusList[i].statusType+'</p>';
+						str+='</div>';
+					str+='</div>';
+				}	
+		   str+='</div>';
+		}
+		if(result.categoryList != null && result.categoryList.length > 0){
+			for(var i in result.categoryList)
+			{
+				str+='<h4 class="panel-title m_top10">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
+				str+='<table class="table table-condensed bg_ED">';
+					str+='<tbody>';
+						str+='<tr>';
+						for(var j in result.categoryList[i].statusList)
+						{
+							str+='<td><p class="text-muted text-capitalize responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p><p class="responsiveFont">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p></td>';
+						}
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			}	
 		}
 		$("#alertOverview").html(str)
 			
+	}
+
+	function getAlertCategoryDtlsLocationWise(){
+		$("#locationWiseAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj={  
+			activityMemberId : globalActivityMemberId,      
+			stateId : globalStateId,           
+			fromDate :"",        
+			toDate :""    
+		};
+		$.ajax({
+			type : 'POST',
+			url : 'getAlertCategoryDtlsLocationWiseAction.action',
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+           if(result != null && result.length > 0){
+			   buildAlertCategoriesDlsHIghchart(result);
+		   }else{
+			   $("#locationWiseAlertDivId").html("NO DATA AVAILABLE.");
+		   }
+		});	
+	}
+	
+	function buildAlertCategoriesDlsHIghchart(result){
+		var str='';
+		if(result != null && result.length > 0){
+		  var str='';
+		  for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			  str+='<h5 class="text-capital m_top10">'+result[i].name+'</h5>';      
+			  str+='<div id="alertCategory'+i+'" style="height:80px;"></div>';
+			str+='</div>'
+		  }
+		}
+		$("#locationWiseAlertDivId").html(str);
+	   if(result != null && result.length > 0){
+			for(var i in result){
+				var locationNameArr = [];
+				var alertCntArr = [];
+			  if(result[i].subList !=null && result[i].subList.length>0){
+					for(var j in result[i].subList){
+						locationNameArr.push(result[i].subList[j].locationType);
+						alertCntArr.push(result[i].subList[j].alertCount);	
+					}
+				}
+		//if(result[i][0].totalTour!=0){
+			var getWidth = $("#alertCategory"+i).parent().width()+'px';
+				$("#alertCategory"+i).width(getWidth);
+		     $(function () {
+			$('#alertCategory'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNameArr,
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+			 tooltip: {formatter: function(){
+					return '<b>Total Alerts:'+ Highcharts.numberFormat(this.y, 0) +'</b><br/>';
+                }      
+				}, 
+				plotOptions: {
+					column: {  
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y, 0) +""; 
+								}
+							}
+						  
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				
+				series: [{
+					name: 'Number Of Alert',
+					data: alertCntArr
+				}]
+			});
+		});
+		//}else{
+		//$("#alertCategory"+i).html("No Data Available");
+		//$("#alertCategory"+i).css("height","35px");
+		//$("#alertCategory"+i).hide();
+		//} 
+	}
+	}else{
+    $("#locationWiseAlertDivId").html('NO DATA AVAILABLE.');
+	}
 	}
