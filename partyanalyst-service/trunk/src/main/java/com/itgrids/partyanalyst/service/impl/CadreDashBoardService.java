@@ -6478,13 +6478,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				if(perCount2016 > 100){
 					vo.setLevelPerformanceType("VeryGood");
 					veryGood++;
-				}else if(perCount2016 >= 90 && perCount2016 < 100){
+				}else if(perCount2016 > 90 && perCount2016 <= 100){
 					vo.setLevelPerformanceType("Good");
 					good ++;
-				}else if(perCount2016 >= 80 && perCount2016 < 90){
+				}else if(perCount2016 > 80 && perCount2016 <= 90){
 					vo.setLevelPerformanceType("Ok");
 					ok++;
-				}else if(perCount2016 >= 60 && perCount2016 < 80){
+				}else if(perCount2016 > 60 && perCount2016 <= 80){
 					vo.setLevelPerformanceType("Poor");  
 					poor++;
 				}else{
@@ -6501,13 +6501,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					if(totalRenPerc > 100){
 						vo.setRenewalPerformanceStatus("VeryGood");
 						renVeryGood++;
-					}else if(totalRenPerc >= 90 && totalRenPerc < 100){
+					}else if(totalRenPerc > 90 && totalRenPerc <= 100){
 						vo.setRenewalPerformanceStatus("Good");
 						renGood++;
-					}else if(totalRenPerc >= 80 && totalRenPerc < 90){
+					}else if(totalRenPerc > 80 && totalRenPerc <= 90){
 						vo.setRenewalPerformanceStatus("Ok");
 						renOk++;
-					}else if(totalRenPerc >= 60 && totalRenPerc < 80){
+					}else if(totalRenPerc > 60 && totalRenPerc <= 80){
 						vo.setRenewalPerformanceStatus("Poor"); 
 						renPoor++;
 					}else{
