@@ -461,12 +461,23 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	        	Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
 				AlertTracking alertTracking=new AlertTracking();
 				alertTracking.setAlertId(alertTrackingVO.getAlertId());
-				alertTracking.setAlertStatusId(alertTrackingVO.getAlertStatusId());
-				alertTracking.setAlertCommentId(alertTrackingVO.getAlertCommentId());
-				alertTracking.setAlertSourceId(alertTrackingVO.getAlertUserTypeId());
-				alertTracking.setInsertedBy(alertTrackingVO.getUserId());
+				if(alertTrackingVO.getAlertStatusId() !=null){
+					alertTracking.setAlertStatusId(alertTrackingVO.getAlertStatusId());
+				}				
+				if(alertTrackingVO.getAlertCommentId() !=null){
+					alertTracking.setAlertCommentId(alertTrackingVO.getAlertCommentId());
+				}
+				if(alertTrackingVO.getAlertUserTypeId() !=null && alertTrackingVO.getAlertUserTypeId().longValue()>0l){
+					alertTracking.setAlertSourceId(alertTrackingVO.getAlertUserTypeId());
+				}				
+				if(alertTrackingVO.getUserId() !=null){
+					alertTracking.setInsertedBy(alertTrackingVO.getUserId());
+				}				
 				alertTracking.setInsertedTime(currentDateAndTime);
-				alertTracking.setAlertTrackingActionId(alertTrackingVO.getAlertTrackingActionId());
+				if(alertTrackingVO.getAlertTrackingActionId() !=null && alertTrackingVO.getAlertTrackingActionId().longValue()>0l){
+					alertTracking.setAlertTrackingActionId(alertTrackingVO.getAlertTrackingActionId());
+				}
+				
 				alertTrackingDAO.save(alertTracking);
 			 }
 		});
@@ -674,7 +685,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 if(alertCategoryMap.get(alertId) !=null && alertCategoryMap.get(alertId)>0l && alertCategoryMap.get(alertId) !=1l){
 						
 						 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId
-						 List<Object[]> newsAlertCandidates = alertCandidateDAO.getInvolvedCandidateDetailsOfAlert(alertId);
+						 List<Long> aleds = new ArrayList<Long>();
+						 aleds.add(alertId);
+						 List<Object[]> newsAlertCandidates = alertCandidateDAO.getInvolvedCandidateDetailsOfAlert(aleds);
 						 setNewsAlertCandidateData(newsAlertCandidates,returnList);
 						 
 						 //total Involved Candidates
@@ -727,7 +740,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertVo.setId((Long)params[0]);
 						dataList.add(alertVo);
 					}
-					AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+					AlertDataVO candidateVO = null;
+					if(params[1] !=null){
+						candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+					}
+					
 					if(candidateVO == null)
 					{
 						candidateVO = new AlertDataVO();
@@ -801,6 +818,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public void setAlertLocationWiseData(List<Object[]> list,List<AlertDataVO> returnList)
 	{
 		List<Long> alertIds = new ArrayList<Long>();
+		List<Long> alertIdsNews = new ArrayList<Long>();
 		 if(list != null && list.size() > 0)
 		 {
 			 for(Object[] params : list)
@@ -810,8 +828,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 {
 					 alertVO = new AlertDataVO(); 
 					 returnList.add(alertVO);
-					 if(!alertIds.contains((Long)params[0]));
-					 alertIds.add((Long)params[0]);
+					 
+					 alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
+					 
+					 if(alertVO.getAlertCategoryId() !=null && alertVO.getAlertCategoryId().longValue()>1l){
+						 if(!alertIdsNews.contains((Long)params[0]));
+						 alertIdsNews.add((Long)params[0]);
+					 }else{
+						 if(!alertIds.contains((Long)params[0]));
+						 alertIds.add((Long)params[0]);
+					 }
+					
 				 }
 				 alertVO.setId((Long)params[0]);
 				 alertVO.setDesc(params[1].toString());
@@ -823,7 +850,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 alertVO.setRegionScope(params[7] != null ?params[7].toString() : "");
 				 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 				 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
-				 alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
+				// alertVO.setAlertCategoryId(commonMethodsUtilService.getLongValueForObject(params[25]));
 				 alertVO.setAlertCategoryName(commonMethodsUtilService.getStringValueForObject(params[26]));
 				 
 				 LocationVO locationVO = new LocationVO();
@@ -861,6 +888,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 List<Object[]> alertCandidates = alertCandidateDAO.getAlertCandidatesData(alertIds);
 				 setAlertCandidateData(alertCandidates,returnList);
 			 }
+			 if(alertIdsNews !=null && alertIdsNews.size()>0){
+				 //total Involved Candidates
+				 List<Object[]> candiateCnts = alertCandidateDAO.getAlertNewsCandidateCount(alertIdsNews);
+				 for(Object[] params : candiateCnts)
+				 {
+					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString());
+						 if(alertVO != null)
+						 {
+							 alertVO.setCount((Long)params[0]);
+						 }
+				 }
+				 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId
+				 List<Object[]> newsAlertCandidates = alertCandidateDAO.getInvolvedCandidateDetailsOfAlert(alertIdsNews);
+				 setNewsAlertCandidateData(newsAlertCandidates,returnList);
+			 }
+			 			 
 		 }
 	}
 
@@ -1863,6 +1906,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alert.setIsDeleted("N");
 						 alert.setAlertCategoryTypeId(inputVO.getId());
 						 alert.setImpactScopeId(inputVO.getImpactScopeId());
+						 alert.setAlertSeverityId(2l);
 						 
 						UserAddress UA = new UserAddress();
 							 
@@ -1955,7 +1999,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				});
 			}
 		} catch (Exception e) {
-			LOG.error("error in updateAlertForNewsInUpdateStatus() method");
+			LOG.error("error in updateAlertForNewsInUpdateStatus() method",e);
 		}
 	}
 	

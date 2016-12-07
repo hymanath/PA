@@ -128,7 +128,7 @@ public class AlertCandidateDAO extends
 		return query.list();
 	}
 	
-	public List<Object[]> getInvolvedCandidateDetailsOfAlert(Long alertId){
+	public List<Object[]> getInvolvedCandidateDetailsOfAlert(List<Long> alertIds){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -136,12 +136,12 @@ public class AlertCandidateDAO extends
 				" model.alertImpact.alertImpactId,model.alertImpact.impact,model.candidateId " +
 				" FROM AlertCandidate model " +
 				" WHERE model.alert.isDeleted ='N' " +
-				" AND model.alertId = :alertId " +
+				" AND model.alertId in (:alertIds) " +
 				" GROUP BY  model.newsCandidateId " +
 				" ORDER BY model.newsCandidate ");
 		
 		Query query = getSession().createQuery(str.toString());		
-		query.setParameter("alertId", alertId);		
+		query.setParameterList("alertIds", alertIds);		
 		
 		return query.list();
 	}

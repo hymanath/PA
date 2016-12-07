@@ -25,7 +25,7 @@ public class AlertDataVO {
 	private String image;
 	private Long impactId;
 	private String mobileNo;
-	private List<AlertDataVO> subList = new ArrayList<AlertDataVO>();
+	private List<AlertDataVO> subList = new ArrayList<AlertDataVO>(0);
 	private Long voterId;
 	private String committeeLocation;
 	private String committeePosition;
