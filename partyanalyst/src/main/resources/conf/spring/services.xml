@@ -3491,6 +3491,8 @@
 	<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
 	<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
 	<property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
+	<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO"></property>
+	
 	</bean>
 	<!-- Debate End -->
 	
@@ -3850,6 +3852,7 @@
 	 <property name="transactionTemplate" ref="transactionTemplate" />
 	 <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
 	 <property name="tabLogInAuthDAO" ref="tabLogInAuthDAO" />
+	
 	</bean>
 	
 </beans>			
