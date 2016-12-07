@@ -2760,13 +2760,13 @@
 							<span class="alertsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<!--<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+							<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
 								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
-								</span> -->
-							</span>
-						</div>
+								</span>
+							</span>  
+						</div>     
 					</div>
 					<div class="notesDropDown notesArrow" >
 						<h4 class="text-capital">notes
@@ -2787,6 +2787,71 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
 							<h4><span class="headingColor text-capitalize">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h4><span class="headingColor text-capitalize">Location Level</span></h4>
+							<h4 class="m_top10 panel-title">All Categories</h4>
+							<div id="alerts"></div>
+						</div>    
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-4">   
+											<h4 class="panel-title"><span class="headingColor text-capitalize">District Wise Alerts</span></h4>
+										</div>
+										<div class="col-md-8 col-xs-12 col-sm-8">
+											<ul class="activeUlCls list-inline pull-right">
+												<li class="active">Overview</li>
+												<li>Categories</li>
+												<li>Status</li>
+												<i class="fa fa-gears" style="cursor:pointer;" id="alertSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+											</ul>
+										</div>
+										<div class="specialAlertDropDown" style="right:13px;top:30px;display:none;">  
+											<ul class="list-inline">  
+												<li><h4>Sorting Type</h4></li><span class="glyphicon glyphicon-remove-circle pull-right" style="cursor:pointer;"></span><br> 
+												<li><label><input type="checkbox" checked/>&nbsp&nbsp2016 Target Achieved</label></li><br>
+												<li><label><input type="checkbox" />&nbsp&nbsp2016 Registrations Count</label></li>
+											</ul>        
+											<button type="button" class="btn btn-success">Get Details</button>   
+											<span id="" style="color:red;"></span>  
+										</div>   
+									</div>
+								</div>  
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="districtWiseAlertCountId"></div>     
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>  
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading pad_5">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<h4 class="panel-title"><span class="headingColor text-capitalize">Alert Assigned Group Members - Status</span></h4>
+										</div>
+										<div class="col-md-8 col-xs-12 col-sm-8">
+											<ul class="activeUlCls list-inline">
+												<li class="active">Overview</li>
+												<li>Categories</li>
+												<li>Status</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-4">
+									  
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -3232,6 +3297,9 @@
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script type="text/javascript">
+	$(document).on('click','#alertSettingsId',function(){
+		$(".specialAlertDropDown").toggle();          
+	});      
 	//getting Dynamic Browser URL
 	var windowUrl = window.location.href;
 	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
