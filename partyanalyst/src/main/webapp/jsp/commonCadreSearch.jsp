@@ -145,7 +145,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<h4 class="panel-title">INVOVLED CANDIDATES</h4>
+										<h4 class="panel-title">ASSIGN CANDIDATES</h4>
 									</div>
 									<div class="panel-body">
 										<div class="row">
