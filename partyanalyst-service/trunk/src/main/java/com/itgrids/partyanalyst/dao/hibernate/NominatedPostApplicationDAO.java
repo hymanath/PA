@@ -29,12 +29,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" FROM NominatedPostApplication model  left join model.position position " +
 				" left join model.departments department " +
 				" left join model.board board  " +
-				" WHERE ");
+				" WHERE   model.isDeleted ='N'   ");
 				//" AND model.locationValue = :locationValue ");
 		if(boardLevelId.longValue() !=5L)
-			str.append("  model.boardLevel.boardLevelId=:boardLevelId ");
+			str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
 		else 
-			str.append(" model.boardLevel.boardLevelId  in (5,6) ");
+			str.append(" and model.boardLevel.boardLevelId  in (5,6) ");
 		
 			if(searchLevelId != null && searchLevelId.longValue()>0L){
 				if((searchLevelId.longValue() == 1L))
@@ -148,7 +148,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostFinal model1,NominatedPostApplication model left join model.position position " +
 				" left join model.departments department left join model.board board  " +
-				" WHERE " +
+				" WHERE   model.isDeleted ='N' and   model1.isDeleted ='N' and " +
 				" model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
 				" " +
 				//" AND model.locationValue = :locationValue" +
@@ -277,13 +277,13 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" FROM NominatedPostApplication model left join model.position position " +
 				" left join model.departments department " +
 				" left join model.board board   " +
-				" WHERE " );
+				" WHERE   model.isDeleted ='N'   " );
 				//" AND model.locationValue = :locationValue" );
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() !=5L)
-				str.append(" model.boardLevel.boardLevelId=:boardLevelId ");
+				str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
 			else
-				str.append(" model.boardLevel.boardLevelId in (5,6) ");
+				str.append(" and model.boardLevel.boardLevelId in (5,6) ");
 		}
 		
 				if(searchLevelId != null && searchLevelId.longValue()>0L){
@@ -406,12 +406,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		//Query
 		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.age, count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model left join model.position position left join model.departments department left join model.board board   " +
-				" WHERE " );
+				" WHERE   model.isDeleted ='N'  " );
 				if(boardLevelId != null && boardLevelId.longValue()>0L){
 					if(boardLevelId.longValue() !=5L)
-						str.append(" model.boardLevel.boardLevelId=:boardLevelId ");
+						str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
 					else
-						str.append(" model.boardLevel.boardLevelId in (5,6) ");
+						str.append(" and model.boardLevel.boardLevelId in (5,6) ");
 				}
 		
 				//" AND model.locationValue = :locationValue" );
@@ -584,7 +584,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select district model.boardLevelId, count(model.nominationPostCandidateId) from NominatedPostApplication model where " +
-				"  model.nominationPostCandidate.isDeleted ='N'  ");
+				"    model.isDeleted ='N' and  model.nominationPostCandidate.isDeleted ='N'  ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
 		queryStr.append(" and model.applicationStatusId = 1 ");//applied
@@ -727,7 +727,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" select distinct model.boardLevelId, count( distinct model.nominatedPostApplicationId), " +
 				" count(distinct nominatedPostPosition.departmentId), " +
 				" count(distinct nominatedPostPosition.boardId),nominatedPostMember.nominatedPostMemberId , " +
-				"nominatedPostPosition.departmentId,nominatedPostPosition.boardId  " +
+				"nominatedPostPosition.departmentId,nominatedPostPosition.boardId,model.applicationStatusId  " +
 				" from NominatedPostApplication model ");
 		if(levelId != null && levelId.longValue()>1L && stateId != null){
 			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
@@ -819,7 +819,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" select district model.boardLevelId, count(model.nominationPostCandidateId) from NominatedPostApplication model where " +
-				"  model.nominationPostCandidate.isDeleted ='N'  and model.nominationPostCandidateId not in ( " +
+				"    model.isDeleted ='N' and model.nominationPostCandidate.isDeleted ='N'  and model.nominationPostCandidateId not in ( " +
 				" select distinct model1.nominationPostCandidateId from NominatedPostFinal model1 ) ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
@@ -1338,7 +1338,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" select count( model.nominatedPostApplicationId), model.nominatedPostMember.nominatedPostMemberId ");
 		queryStr.append(" from NominatedPostApplication model   " );
 		queryStr.append(" where ");
-		queryStr.append(" model.isDeleted='N'  and model.nominatedPostMember.isDeleted='N'  ");	// for total 
+		queryStr.append(" model.isDeleted='N'  and model.nominatedPostMember.isDeleted='N'  and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");	// for total 
 						
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() != 5L)
@@ -1772,7 +1772,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getTotalAvaiableApplicationsDetails(Long boardLevelId,Long stateId,Long applicationStatusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.applicationStatusId, count(distinct model.nominatedPostApplicationId)  from NominatedPostApplication model " +
-				" where model.boardLevelId=:boardLevelId ");
+				" where model.boardLevelId=:boardLevelId and model.isDeleted ='N' ");
 		if(stateId != null && stateId>0L)
 			queryStr.append(" and model.address.state.stateId=:stateId ");
 		if(applicationStatusId != null && applicationStatusId>0L)
