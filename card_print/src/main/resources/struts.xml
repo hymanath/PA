@@ -39,6 +39,9 @@
 	       		<param name="root">resultStatus</param>
 	  		</result>
 		</action>
+		<action name="cardPrintUpdationAction" class="cardPrintAction" method ="getCardPrintUpdationDetails">
+		    	<result name="success">jsp/cardPrintUpdation.jsp</result>
+		</action>
 		
 	</package>
 </struts>        
