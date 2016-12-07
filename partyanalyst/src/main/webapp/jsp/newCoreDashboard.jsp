@@ -2742,7 +2742,7 @@
 			</div>	
 	
 		<!--Events End -->
-	 <!-- Alerts Start
+	 <!-- Alerts Start -->
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2764,7 +2764,7 @@
 								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
+								</span> -->
 							</span>
 						</div>
 					</div>
@@ -2792,7 +2792,7 @@
 				</div>
 			</div>
 		</div>	
-	 	Alerts End -->
+	 	<!--Alerts End -->
 	</div>
 </div> 
 <!--model start -->
