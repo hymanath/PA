@@ -23,7 +23,10 @@
 	<bean id="printStatusDAO" class="com.itgrids.cardprint.dao.impl.PrintStatusDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="printStatusDAO" class="com.itgrids.cardprint.dao.impl.PrintStatusDAO">
+	<bean id="constituencyPrintStatusDAO" class="com.itgrids.cardprint.dao.impl.ConstituencyPrintStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="constituencyPrintStatusTrackDAO" class="com.itgrids.cardprint.dao.impl.ConstituencyPrintStatusTrackDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

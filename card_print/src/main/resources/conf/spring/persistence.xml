@@ -33,6 +33,7 @@
 				<value>com.itgrids.cardprint.model.Constituency</value>
 				<value>com.itgrids.cardprint.model.PrintStatus</value>
 				<value>com.itgrids.cardprint.model.ConstituencyPrintStatus</value>
+				<value>com.itgrids.cardprint.model.ConstituencyPrintStatusTrack</value>
 		 	</list>
 		</property>
 	</bean>
