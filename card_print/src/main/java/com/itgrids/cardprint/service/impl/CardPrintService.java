@@ -10,6 +10,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.cardprint.dao.ICardPrintVendorDAO;
+import com.itgrids.cardprint.dao.IConstituencyDAO;
 import com.itgrids.cardprint.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.cardprint.dao.IConstituencyPrintStatusTrackDAO;
 import com.itgrids.cardprint.dao.IPrintStatusDAO;
@@ -31,6 +32,7 @@ public class CardPrintService implements ICardPrintService{
     private TransactionTemplate transactionTemplate;
 	private IConstituencyPrintStatusDAO constituencyPrintStatusDAO;
 	private IConstituencyPrintStatusTrackDAO constituencyPrintStatusTrackDAO;
+	private IConstituencyDAO constituencyDAO ;
 	
     //setters and getters
 	public void setCardPrintVendorDAO(ICardPrintVendorDAO cardPrintVendorDAO) {
@@ -58,6 +60,11 @@ public class CardPrintService implements ICardPrintService{
 			IConstituencyPrintStatusTrackDAO constituencyPrintStatusTrackDAO) {
 		this.constituencyPrintStatusTrackDAO = constituencyPrintStatusTrackDAO;
 	}
+	
+	
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
 
 	//Business methods
 	public List<BasicVO>  getAllVendors(){
@@ -81,6 +88,18 @@ public class CardPrintService implements ICardPrintService{
 			
 		}catch(Exception e){
 			LOG.error("exception Occurred at getAllPrintStatus() in CardPrintService class ", e); 
+		}
+		return finalList;
+	}
+	public List<BasicVO>  getAllAssemblyConstituencies(){
+		List<BasicVO> finalList = null;
+		try{
+			
+			List<Object[]> dataList = constituencyDAO.getAllAssemblyConstituencies();
+			setBasicDataToVO( dataList , finalList );
+			
+		}catch(Exception e){
+			LOG.error("exception Occurred at getAllAssemblyConstituencies() in CardPrintService class ", e); 
 		}
 		return finalList;
 	}
