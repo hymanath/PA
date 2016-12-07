@@ -9,6 +9,7 @@ public interface ICardPrintService {
 	
 	public List<BasicVO>  getAllVendors();
 	public List<BasicVO>  getAllPrintStatus();
+	public List<BasicVO>  getAllAssemblyConstituencies();
 	
 	public ResultStatus saveConstituencyPrintStatus(final Long constituencyId , final Long printVendorId , final Long printStatusId,final String remarks,final Long userId);
 }
