@@ -168,7 +168,7 @@
 						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="targetWiseId" attr_sort_type="TargetWise" checked/>&nbsp&nbsp2016 Target Achieved</label></li><br>
 						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="2016CadreWiseId" attr_sort_type="2016CadreWise" />&nbsp&nbsp2016 Registrations Count</label></li>
 					</ul>        
-					<button type="button" class="btn btn-success specialCadreBtncls">Get Details</button>   
+					<button type="button" class="btn btn-success">Get Details</button>   
 					<span id="checkErrId" style="color:red;"></span>  
 				</div>    
                 <div class="panel-body">
@@ -330,13 +330,13 @@
 												<li id="settingsCadre" class="text-capital"><i class="fa fa-gears" title="filter result"></i></li>
 											</ul>
                                         	<ul class="activeUlCls list-inline  apConstituencyUlCls m_top20">
-                                            	<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All">All - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_filter_value="verygood">Very Good - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyverlGoodCntId"  attr_filter_value="good">Good - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyOkCntId"  attr_filter_value="ok">Ok - 0</li>
-												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId"  attr_filter_value="poor">poor - 0</li>
-                                                <li class="constituencyFilterCls" id="cnsttncyveryPoorCntId"  attr_filter_value="verypoor">Very Poor - 0</li>
-                                            </ul>
+												<li class="active constituencyFilterCls"  id="cnsttncyverlAllCntId" attr_filter_value="All">All - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyveryGoodCntId" attr_filter_value="verygood" data-toggle="tooltip" data-placement="top" title="More than 100% of target">Very Good - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyverlGoodCntId"  attr_filter_value="good" data-toggle="tooltip" data-placement="top" title="91%-100% of target">Good - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyOkCntId"  attr_filter_value="ok" data-toggle="tooltip" data-placement="top" title="81%-90% of target">Ok - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyverlPoorCntId"  attr_filter_value="poor" data-toggle="tooltip" data-placement="top" title="61%-80% of target">poor - 0</li>
+												<li class="constituencyFilterCls" id="cnsttncyveryPoorCntId"  attr_filter_value="verypoor" data-toggle="tooltip" data-placement="top" title="<=60% of target">Very Poor - 0</li>      
+											</ul>  
 											<div class="cadreRDD documentCloseClass" style="z-index:999;margin-top: -3px;width:200px;display:none;" >
 												<i class="glyphicon glyphicon-remove newsSetClose pull-right closePopUpCls"></i>
 												<div class="row">
@@ -389,11 +389,11 @@
 											</ul>
                                         	<ul class="activeUlCls list-inline tsConstituencyUlCls m_top20">
                                             <li class="active tsConstituencyFilterCls"  id="tsCnsttncyverlAllCntId" attr_filter_value="All"  >All - 0</li>
-                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyveryGoodCntId"  attr_filter_value="verygood">Very Good - 0</li>
-                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyverlGoodCntId"  attr_filter_value="good">Good - 0</li>
-                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyOkCntId"  attr_filter_value="ok">Ok - 0</li>
-												<li class="tsConstituencyFilterCls" id="tsCnsttncyverlPoorCntId"  attr_filter_value="poor">poor - 0</li>
-                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyveryPoorCntId"  attr_filter_value="verypoor">Very Poor - 0</li>
+                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyveryGoodCntId"  attr_filter_value="verygood" data-toggle="tooltip" data-placement="top" title="More than 100% of target">Very Good - 0</li>
+                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyverlGoodCntId"  attr_filter_value="good" data-toggle="tooltip" data-placement="top" title="91%-100% of target">Good - 0</li>
+                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyOkCntId"  attr_filter_value="ok" data-toggle="tooltip" data-placement="top" title="81%-90% of target">Ok - 0</li>
+												<li class="tsConstituencyFilterCls" id="tsCnsttncyverlPoorCntId"  attr_filter_value="poor" data-toggle="tooltip" data-placement="top" title="61%-80% of target">poor - 0</li>
+                                                <li class="tsConstituencyFilterCls" id="tsCnsttncyveryPoorCntId"  attr_filter_value="verypoor" data-toggle="tooltip" data-placement="top" title="<=60% of target">Very Poor - 0</li>
                                             </ul>
 											<div class="cadreRDD documentCloseClass" style="z-index:999;margin-top: -3px;width:200px;display:none;" >
 												<i class="glyphicon glyphicon-remove newsSetClose pull-right closePopUpCls"></i>
@@ -2792,7 +2792,7 @@
 							<h4><span class="headingColor text-capitalize">Impact Scope Level</span></h4>
 							<div id="locationWiseAlertDivId"></div>
 						</div>    
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" style="display:none;">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
@@ -2809,16 +2809,17 @@
 										</div>
 										<div class="specialAlertDropDown" style="right:13px;top:30px;display:none;">  
 											<ul class="list-inline">  
-												<li><h4>Sorting Type</h4></li><span class="glyphicon glyphicon-remove-circle pull-right" style="cursor:pointer;"></span><br> 
-												<li><label><input type="checkbox" checked/>&nbsp&nbsp2016 Target Achieved</label></li><br>
-												<li><label><input type="checkbox" />&nbsp&nbsp2016 Registrations Count</label></li>
+												<li><label><input name="locationLevel" type="radio" attr_val="All" checked/>&nbsp&nbspAll</label></li><br>
+												<li><label><input name="locationLevel" type="radio" attr_val="District"/>&nbsp&nbspDistrict Level</label></li><br>
+												<li><label><input name="locationLevel" type="radio" attr_val="Constituency" />&nbsp&nbspConstituency Level</label></li><br>
+												<li><label><input name="locationLevel" type="radio" attr_val="Village"/>&nbsp&nbspVillage/ward Level</label></li><br>     
 											</ul>        
-											<button type="button" class="btn btn-success">Get Details</button>   
+											<button type="button" class="btn btn-success">Get Details</button>      
 											<span id="" style="color:red;"></span>  
-										</div>   
+										</div>        
 									</div>
 								</div>  
-								<div class="panel-body">
+								<div class="panel-body">  
 									<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div id="districtWiseAlertCountId"></div>     
@@ -3072,26 +3073,7 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 <!--end-->
-<!-- Model for Debate Start-->
-		<div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
-		  <div class="modal-dialog modal-lg">       
-			<div class="modal-content" style="border-radius:0px">
-			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="tourDocHeadingId">Cadre Registration Comparison Details</h4>  
-			  </div>
-			  <div class="modal-body">   
-				<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12"> <div id="cdrModelId"></div></div>
-				</div>
-			  </div>
-			  <div class="modal-footer">     
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			  </div>
-			</div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-<!--end-->
+
 <!-- Model for Cadre  Start-->
 		<div class="modal" tabindex="-1" role="dialog" id="noOfSamplesModal">
 		  <div class="modal-dialog modal-lg" style="width:65%">
@@ -3105,7 +3087,7 @@
 				  <div class="col-md-12 col-xs-12 col-sm-12">
 					<div id="noOfSamplesDetailsDiv" ></div>	
 				  </div>
-				   <div class="col-md-12 col-xs-12 col-sm-12">
+				  <div class="col-md-12 col-xs-12 col-sm-12">
 					<div id="tabUserInfoDivId" ></div>	
 				  </div>
 				</div>
@@ -3244,7 +3226,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Tour Document</h4>
+				<h4 class="modal-title" id="alertCntTitId">Tour Document</h4>  
 			</div>
 			<div class="modal-body" id="tourDocumentBodyId">
 			</div>
@@ -3254,6 +3236,37 @@
 		</div><!--  /.modal-content -->  
 	</div><!--  /.modal-dialog -->
 </div><!--  /.modal -->
+<!-- Model for Debate Start-->           
+		<div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
+		  <div class="modal-dialog modal-lg">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="tourDocHeadingId">Cadre Registration Comparison Details</h4>  
+			  </div>
+			  <div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="cdrModelId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDestId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+						<div id="alertAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertAttachImgId"></div>  
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<!--end-->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
@@ -3297,7 +3310,7 @@
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).on('click','#alertSettingsId',function(){
-		$(".specialAlertDropDown").toggle();          
+		$(".specialAlertDropDown").toggle();            
 	});      
 	//getting Dynamic Browser URL
 	var windowUrl = window.location.href;
