@@ -196,7 +196,7 @@ function disableByLevel(index)
 					$("#searchNameLabel").html("Search By Voter Card No <span style='color:red;' class='requiredCls'> * </span> :");
 				}else if(selectVal == 1)
 				{
-					$("#searchNameLabel").html("Search By Mobile No <span style='color:red;' class='requiredCls'> * </span> :");
+					$("#searchNameLabel").html("Search By Mobile No <span  class='requiredCls'> </span> :");
 				}
 			}
 				disableByLevel('');
