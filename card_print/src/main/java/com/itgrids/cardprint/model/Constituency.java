@@ -16,22 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "constituency")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Constituency extends BaseModel implements java.io.Serializable {
-	/*
-	 * constituency_id,
-	 * name,
-	 * election_scope_id,
-	 * start_date,
-	 * deform_date,
-	 * state_id,
-	 * district_id,
-	 * country_id,
-	 * tehsil_id,
-	 * local_election_body_id,
-	 * area_type,
-	 * constituency_image,
-	 * name_local
-	 */
-	
+		
 	private Long constituencyId;
 	private String name;
 	private Long electionScopeId;
@@ -132,14 +117,13 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setConstituencyImage(String constituencyImage) {
 		this.constituencyImage = constituencyImage;
 	}
-	@Column(name = "area_type")
+	@Column(name = "name_local")
 	public String getNameLocal() {
 		return nameLocal;
 	}
 	public void setNameLocal(String nameLocal) {
 		this.nameLocal = nameLocal;
 	}
-	
 	
 
 }

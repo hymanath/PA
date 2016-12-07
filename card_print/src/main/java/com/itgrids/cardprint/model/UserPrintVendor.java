@@ -21,13 +21,8 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "user_print_vendor")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserPrintVendor extends BaseModel implements Serializable {
-/*
- * user_print_vendor_id,
- * user_id,
- * print_vendor_id//cardPrintVendorId
- */
-	
-	
+
+
 	private Long userPrintVendorId;
 	private Long userId;
 	private Long printVendorId;
