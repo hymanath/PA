@@ -2218,12 +2218,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			if(commonMethodsUtilService.isListOrSetValid(levelWiseRunningApplicatinStatusDetailsList)){
 				for (Object[] param : levelWiseRunningApplicatinStatusDetailsList) {
 					
+					Long applicationStatusId = commonMethodsUtilService.getLongValueForObject(param[7]);
+					
 					Long deptCount = commonMethodsUtilService.getLongValueForObject(param[2]);
 					Long corpCount = commonMethodsUtilService.getLongValueForObject(param[3]);
 					
 					Long deptId = commonMethodsUtilService.getLongValueForObject(param[5]);
 					Long boardId = commonMethodsUtilService.getLongValueForObject(param[6]);
-					
+					if(applicationStatusId.toString().contains("2") || applicationStatusId.toString().contains("4") ||
+							 applicationStatusId.toString().contains("8") ){//2,4,8 are rejected status ids , we are showing only not rejected dept counts and boards counts.
+						deptCount = 0L;
+						corpCount=0L;
+					}
+						
 						NominatedPostVO vo = applicationsStatusDtlsMap.get("RUNNING".trim());//"RUNNING"
 						if(vo != null){
 							vo.setTotalPositions(runningStatusPostsCount);
