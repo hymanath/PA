@@ -17,4 +17,11 @@ public class AlertImpactScopeDAO extends GenericDaoHibernate<AlertImpactScope, L
 											   "  where model.alertImpactScopeId not in (4,6,10,11) order by model.orderNo  ");
 		return query.list();
 	}
+	
+	public List<Object[]> getAlertImpactScope()
+	{
+		Query query = getSession().createQuery("select model.alertImpactScopeId,model.impactScope from AlertImpactScope model order by model.orderNo ");
+		return query.list();
+	}	
+	
 }

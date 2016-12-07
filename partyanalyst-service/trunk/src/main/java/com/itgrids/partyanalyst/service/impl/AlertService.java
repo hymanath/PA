@@ -351,6 +351,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setDescription(inputVO.getDesc().toString());
 				 alert.setCreatedBy(userId);
 				 alert.setUpdatedBy(userId);
+				 alert.setImpactScopeId(inputVO.getAlertImpactId());
 
 				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
 					 alert.setAlertStatusId(2l);// if assign list given default status is notified
@@ -3055,7 +3056,30 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		 LOG.error("Error occured mergeRequiredData() method of AlertService{}",e);
 	 }
  }
- 	
+ public List<BasicVO> getAlertImpactScope()
+ {
+ 	List<BasicVO> returnList = new ArrayList<BasicVO>();
+ 	try{
+ 		 List<Object[]> list = alertImpactScopeDAO.getAlertImpactScope();	
+ 		 if(list != null && list.size() > 0)
+ 		 {
+ 			 for(Object[] params : list)
+ 			 {
+ 				 BasicVO vo = new BasicVO();
+ 				 vo.setId((Long)params[0]);
+ 				 vo.setName(params[1].toString());
+ 				 returnList.add(vo);
+ 			 }
+ 			 
+ 		 }
+ 	}
+ 	catch (Exception e) {
+ 		LOG.error("Exception in getAlertImpactScope()",e);	
+ 	}
+ 	return returnList;
+ }
+	    
 }
+
 	
 
