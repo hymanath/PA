@@ -2589,7 +2589,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				    }
 			   }
 		   }   
-		   Map<Long,AlertOverviewVO> alertCategoryMap = new HashMap<Long,AlertOverviewVO>();
+		   Map<Long,AlertOverviewVO> alertCategoryMap = new ConcurrentHashMap<Long,AlertOverviewVO>();
 		   
 		   List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategory();
 		   prepareAlertCategoryTemplate(rtrnAlertCategoryObjLst,rtrnAlrtStatusObjLst,alertCategoryMap);//Prepare Template 
@@ -2625,6 +2625,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			   resultVO.getStatusList().addAll(alertStatusMap.values());
 			   alertStatusMap.clear();
 		   }
+		   //remove alert category which does not contain alert count
+            if(alertCategoryMap != null && alertCategoryMap.size() > 0){
+            	for(Entry<Long,AlertOverviewVO> entry:alertCategoryMap.entrySet()){
+            		 if(entry.getValue().getStatusCnt() == 0l){
+            			 alertCategoryMap.remove(entry.getKey());
+            		 }
+            	}
+            }
+		   
 		   if(alertCategoryMap != null && alertCategoryMap.size() > 0){
 			   resultVO.getCategoryList().addAll(alertCategoryMap.values());
 			   alertCategoryMap.clear();
