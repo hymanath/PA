@@ -144,6 +144,12 @@
                             	<option value="0">Select Alert</option>
                             </select>
                         </div>
+						<div class="col-md-4 col-sm-6 col-xs-12">
+                        	<label>Select Alert Impact</label><span class="text-danger">*</span>
+                            <select class="dropkickClass" id="alertImpactId" name="alertVO.alertImpactId">
+                            	<option value="0">Select Alert Impact</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="row m_top10">
                     	
@@ -714,6 +720,7 @@ function createAlert()
   
   //var categoryId=$("#alertCategory").val();
   var title=$("#alertTitleId").val().trim();
+  var alertImpact =$("#alertImpactId").val();
 
   $("#errorDiv1").html('');
   $("#errorDiv1").css("color","red");
@@ -721,6 +728,11 @@ function createAlert()
   if(alertType==0)
   {
     $("#errorDiv1").html(" Please select Alert Type ");
+        return;
+  }
+  if(alertImpact==0)
+  {
+    $("#errorDiv1").html(" Please select Alert Impact ");
         return;
   }
  /* if(categoryId == 0){
@@ -952,6 +964,10 @@ function clearFields()
 	
 	$("#alertSourceId").val(0);
 	var select = new Dropkick("#alertSourceId");
+	select.refresh();
+	
+	$("#alertImpactId").val(0);
+	var select = new Dropkick("#alertImpactId");
 	select.refresh();
 	
 }
@@ -1213,12 +1229,38 @@ showHideSearch("advanceSearch");
 showHideBySearchType();
 disableByLevel(1);
 getAlertsource();
+getAlertImpactScope();
 
 $("#apptmemberDetailsDiv").html("");
 
 //showHideSearch("advanceSearch");
 //showHideBySearchType();
 getMemberTypes();
+function getAlertImpactScope(){
+		$("#alertImpactId").html('');
+		var jsObj =
+		        {
+			task:""
+		          }
+				$.ajax({
+					  type:'GET',
+					  url: 'getAlertImpactScopeAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					$('#alertImpactId').append('<option value="0"> Select Alert Impact </option>');
+					if(result != null)
+					{
+						for(var i in result)
+						{			
+							$('#alertImpactId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						}
+						$("#alertImpactId").dropkick();
+							var select1 = new Dropkick("#alertImpactId");
+							select1.refresh();
+					}
+				  
+				});
+		}
 </script>
 </body>
 </html>

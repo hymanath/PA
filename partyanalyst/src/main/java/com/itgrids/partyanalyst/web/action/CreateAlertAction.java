@@ -688,4 +688,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;  
 	}
+	public String getAlertImpactScope(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			basicVO = alertService.getAlertImpactScope();
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertImpactScope()",e);
+		}
+		return Action.SUCCESS;
+	}
 }//public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId)
+
