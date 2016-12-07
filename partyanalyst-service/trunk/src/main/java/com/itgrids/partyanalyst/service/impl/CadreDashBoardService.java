@@ -6293,7 +6293,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Map<Long,Long> locIdAndLocNoMap = new LinkedHashMap<Long,Long>();
 		Map<Long,CadreDashboardVO> locationWise2014CountMap = new LinkedHashMap<Long,CadreDashboardVO>(0);
 		List<Long> locationIds = new ArrayList<Long>();
-		
+		try{
 		Long veryGood =0l ;
 		Long good = 0l ;
 		Long ok = 0l ;
@@ -6366,8 +6366,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				vo.setLocationScopeId(locationScopeId);
 				vo.setType(type);
 				
-				Long count2014=vo.getCount2014();
-				Long renewal2016 = (count2014 - vo.getRenewalCount());
+				//Long count2014=vo.getCount2014();
+				//Long renewal2016 = (count2014 - vo.getRenewalCount());
 				
 				
 				locationIds.add(id);
@@ -6496,23 +6496,24 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 		if(returnList != null && !returnList.isEmpty()){
 			for(CadreDashboardVO vo : returnList){
-				Double totalRenPerc=Double.parseDouble(vo.getTotalRenPerc());	
-				
-				if(totalRenPerc > 100){
-					vo.setRenewalPerformanceStatus("VeryGood");
-					renVeryGood++;
-				}else if(totalRenPerc >= 90 && totalRenPerc < 100){
-					vo.setRenewalPerformanceStatus("Good");
-					renGood++;
-				}else if(totalRenPerc >= 80 && totalRenPerc < 90){
-					vo.setRenewalPerformanceStatus("Ok");
-					renOk++;
-				}else if(totalRenPerc >= 60 && totalRenPerc < 80){
-					vo.setRenewalPerformanceStatus("Poor"); 
-					renPoor++;
-				}else{
-					vo.setRenewalPerformanceStatus("VeryPoor");
-					renVeryPoor++;
+				if(vo.getTotalRenPerc() != null ){
+				Double totalRenPerc=Double.parseDouble(vo.getTotalRenPerc());					
+					if(totalRenPerc > 100){
+						vo.setRenewalPerformanceStatus("VeryGood");
+						renVeryGood++;
+					}else if(totalRenPerc >= 90 && totalRenPerc < 100){
+						vo.setRenewalPerformanceStatus("Good");
+						renGood++;
+					}else if(totalRenPerc >= 80 && totalRenPerc < 90){
+						vo.setRenewalPerformanceStatus("Ok");
+						renOk++;
+					}else if(totalRenPerc >= 60 && totalRenPerc < 80){
+						vo.setRenewalPerformanceStatus("Poor"); 
+						renPoor++;
+					}else{
+						vo.setRenewalPerformanceStatus("VeryPoor");
+						renVeryPoor++;
+					}
 				}
 			}
 		}
@@ -6533,12 +6534,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			countList.setPoor(poor);
 			countList.setVeryPoor(veryPoor);
 			
-			countList.setVeryGood(renVeryGood);
-			countList.setGood(renGood);
-			countList.setOk(renOk);
-			countList.setPoor(renPoor);
-			countList.setVeryPoor(renVeryPoor);
+			countList.setRenVeryGood(renVeryGood);
+			countList.setRenGood(renGood);
+			countList.setRenOk(renOk);
+			countList.setRenPoor(renPoor);
+			countList.setRenVeryPoor(renVeryPoor);
 			
+		}
+		}catch(Exception e){
+			LOG.error("Error Occured while setting the coutn details in CadreDashBoardService  ",e);
 		}
 	}
 	
