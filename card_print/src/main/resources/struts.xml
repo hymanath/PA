@@ -18,7 +18,7 @@
 		<default-action-ref name="homePageAction.action"/>
 		
 		<global-results>
-	 		<result name="error" type="redirect" >homePageAction.action</result>
+	 		<result name="error" type="redirect" >loginAction.action</result>
 		</global-results>
 	
 	    <global-exception-mappings>
@@ -48,6 +48,19 @@
 			    <param name="root">basicVOList</param>
 		        </result>
 		</action>
+		
+		<action name="getAllAssemblyConstituenciesAction" class="cardPrintAction" method ="getAllAssemblyConstituencies">
+		    	<result type="json" name="success">  
+			       <param name="root">basicVOList</param>
+		        </result>
+		</action>
+		
+		<action name="saveConstituencyPrintStatusAction" class="cardPrintAction" method ="saveConstituencyPrintStatus">
+		    	<result type="json" name="success">  
+			       <param name="root">resultStatus</param>
+		        </result>
+		</action>
+		
 		
 	</package>
 </struts>        
