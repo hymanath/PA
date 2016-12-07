@@ -73,4 +73,14 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String  getAllPrintStatus(){
+		try{
+			basicVOList = cardPrintService.getAllPrintStatus();
+			
+		}catch(Exception e){
+			LOG.error("Exception Occurred At getAllPrintStatus() in CardPrintAction class",e) ;
+		}
+		return Action.SUCCESS;
+	}
 }
