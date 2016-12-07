@@ -482,6 +482,21 @@ table.dataTable tr.odd {
 </div>
 <!-- end--> 
 </div>
+<div class="modal fade" tabindex="-1" id="perModalDivId" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" style="width:45%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">PERCENTAGES INFORMATION</h4>
+			</div>
+			<div class="modal-body" id="perInfmaDetailsDivId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script type="text/javascript" src="newCoreDashBoard/js/bootstrap.min.js"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
@@ -1109,6 +1124,9 @@ function get2016LocationWiseRegisteredCounts(typeId){
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="table-responsive" style="margin-top:20px;">';
+			str+='<div class="span12 pull-right">';
+			str+='<i class="glyphicon glyphicon-info-sign" id="percentageId" title="Click to how to calculating percentages" style="margin-left: 20px;margin-bottom:9px;;cursor:pointer;cursor:pointer;"></i>';
+			str+='</div>';
 			str+='<table class="table table-bordered " >';
 				str+='<thead>';
 					str+='<th>VERY GOOD</th>';
@@ -1124,10 +1142,10 @@ function get2016LocationWiseRegisteredCounts(typeId){
 						str+='<td><div class="cCodeDiv" style="background-color:darkolivegreen;"/>'+result[0].ok+'</td>';
 						str+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+result[0].poor+'</td>';
 						str+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+result[0].veryPoor+'</td>';
+						
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
-			
 			if($(window).width > 768)
 			{
 				str+='<div class="table-responsive">';
@@ -1438,6 +1456,9 @@ function getDistricts(locationType){
 		if(result !=null && result.length >0){
 			str1+='<div class="table-responsive" style="margin-top:20px;">';
 			str1+='<table class="table table-bordered" >';
+			str+='<div class="span12 pull-right">';
+			str+='<i class="glyphicon glyphicon-info-sign" id="percentageId" title="Click to how to calculating percentages" style="margin-left: 20px;margin-bottom:9px;;cursor:pointer;cursor:pointer;"></i>';
+			str+='</div>';
 				str1+='<thead>';
 					str1+='<th>VERY GOOD</th>';
 					str1+='<th>GOOD</th>';
@@ -1842,6 +1863,7 @@ function getDistricts(locationType){
 						str1+='<td><div class="cCodeDiv" style="background-color:darkolivegreen;"/>'+buildOkCount+'</td>';
 						str1+='<td ><div class="cCodeDiv" style="background-color:orange;"/>'+buildPoorCount+'</td>';
 						str1+='<td ><div class="cCodeDiv" style="background-color:#C43C35;"/>'+buildVeryPoorCount+'</td>';
+						
 					str1+='</tr>';
 				str1+='</tbody>';
 			str1+='</table>';
@@ -1852,6 +1874,39 @@ function getDistricts(locationType){
 /* $(document).on("click",".clearSubTr",function(){
 	$(".subDistTrCls").html("");
 }); */
+$(document).on("click","#percentageId",function(){
+	$("#perModalDivId").modal('show');
+	var str="";
+	str+='<table class="table table-bordered">';
+	str+='<thead>';
+		str+='<th>PERCENTAGE</th>';
+		str+='<th>PERFORMANCE TYPE</th>';
+	str+='</thead>';
+	str+='<tbody>';
+				str+='<tr>';
+						str+='<td> >100% </td>';
+						str+='<td> VERY GOOD </td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td> 91-100% </td>';
+						str+='<td> GOOD </td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td> 81-90%  </td>';
+						str+='<td> OK</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td>  61-80% </td>';
+						str+='<td> POOR</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td>  <=60% </td>';
+						str+='<td> VERY POOR </td>';
+				str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+			$("#perInfmaDetailsDivId").html(str);
+});
 </script>
 <script>
 	$(document).on("click","#constExcelExpBtnId",function(){
