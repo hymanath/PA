@@ -34,6 +34,13 @@
 				<value>com.itgrids.cardprint.model.PrintStatus</value>
 				<value>com.itgrids.cardprint.model.ConstituencyPrintStatus</value>
 				<value>com.itgrids.cardprint.model.ConstituencyPrintStatusTrack</value>
+				
+				<value>com.itgrids.cardprint.model.ElectionScope</value>
+				<value>com.itgrids.cardprint.model.ElectionType</value>
+				<value>com.itgrids.cardprint.model.State</value>
+				<value>com.itgrids.cardprint.model.Country</value>
+				<value>com.itgrids.cardprint.model.District</value>
+				
 		 	</list>
 		</property>
 	</bean>
