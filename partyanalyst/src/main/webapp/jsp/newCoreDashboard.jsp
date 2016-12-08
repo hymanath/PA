@@ -168,7 +168,7 @@
 						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="targetWiseId" attr_sort_type="TargetWise" checked/>&nbsp&nbsp2016 Target Achieved</label></li><br>
 						<li><label><input type="checkbox" class="selectOneSpecialCadre" id="2016CadreWiseId" attr_sort_type="2016CadreWise" />&nbsp&nbsp2016 Registrations Count</label></li>
 					</ul>        
-					<button type="button" class="btn btn-success">Get Details</button>   
+					<button type="button" class="btn btn-success specialCadreBtncls">Get Details</button>   
 					<span id="checkErrId" style="color:red;"></span>  
 				</div>    
                 <div class="panel-body">
@@ -286,11 +286,11 @@
                                         <div class="col-md-7 col-xs-12 col-sm-12 m_XsTop10">
                                         	<ul class="activeUlCls districtFilterUlCls list-inline pull-right">
                                                 <li class="active districtFilterCls" id="dstrctOverlAllCntId" attr_over_all_cnt="0"  attr_filter_value="All">All - 0</li>
-                                                <li class="districtFilterCls"  id="dstrctyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood">Very Good - 0</li>
-                                                <li class="districtFilterCls"  id="dstrctGoodCntId" attr_good_cnt="0" attr_filter_value="good">Good - 0</li>
-                                                <li class="districtFilterCls"   id="dstrctOkCntId" attr_ok_cnt="0" attr_filter_value="ok">Ok - 0</li>
-												<li class="districtFilterCls"   id="dstrctPoorCntId" attr_poor_cnt="0"  attr_filter_value="poor">Poor - 0</li>
-                                                <li class="districtFilterCls"  id="dstrctVeryPoorCntId" attr_very_poor_cnt="0" attr_filter_value="verypoor">Very Poor - 0</li>
+                                                <li class="districtFilterCls"  id="dstrctyveryGoodCntId" attr_very_good_cnt="0" attr_filter_value="verygood" data-toggle="tooltip" data-placement="top" title="More than 100% of target">Very Good - 0</li>
+                                                <li class="districtFilterCls"  id="dstrctGoodCntId" attr_good_cnt="0" attr_filter_value="good" data-toggle="tooltip" data-placement="top" title="91%-100% of target">Good - 0</li>
+                                                <li class="districtFilterCls"   id="dstrctOkCntId" attr_ok_cnt="0" attr_filter_value="ok" data-toggle="tooltip" data-placement="top" title="81%-90% of target">Ok - 0</li>
+												<li class="districtFilterCls"   id="dstrctPoorCntId" attr_poor_cnt="0"  attr_filter_value="poor" data-toggle="tooltip" data-placement="top" title="61%-80% of target">Poor - 0</li>
+                                                <li class="districtFilterCls"  id="dstrctVeryPoorCntId" attr_very_poor_cnt="0" attr_filter_value="verypoor" data-toggle="tooltip" data-placement="top" title="<=60% of target">Very Poor - 0</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -372,11 +372,11 @@
 												<div class="col-md-4 col-xs-12 col-sm-4">
 													<select attr_filter_value="All" class="form-control" id="apConstituencySelectBoxId"></select>
 												</div>
-												<div class="col-md-4 col-xs-12 col-sm-4">
+												<!--<div class="col-md-4 col-xs-12 col-sm-4">
 												<label class="checkbox-inline">
 													<input id="kuppamConstituencyCheckBoxId" checked type="checkbox">Exclude Kuppam 
 												</label>
-												</div>
+												</div>-->  
 											</div>
 											<div Id="apscrollBarDivId">
 											<div id="apConstituencyRegistrationReportDivId" class="m_top20"></div>
@@ -470,11 +470,11 @@
 										  <div class="col-md-5 col-xs-12 col-sm-7">
 											<ul class="activeUlCls list-inline usrWseCnsttuncyUlCls pull-right">
                                                 <li class="active consFilterCls" id="usrWseCnsttuncyAllCntId" attr_filter_value="All">All-0</li>
-                                                <li class="consFilterCls" id="usrWseCnsttuncyVryGdCntId" attr_filter_value="verygood">Very Good-0</li>
-                                                <li class="consFilterCls" id="usrWseCnsttuncyGdCntId" attr_filter_value="good">Good-0</li>
-                                                <li class="consFilterCls" id="usrWseCnsttuncyOkCntId" attr_filter_value="ok">Ok-0</li>
-												<li class="consFilterCls" id="usrWseCnsttuncyPoorCntId" attr_filter_value="poor">Poor-0</li>
-                                                <li class="consFilterCls" id="usrWseCnsttuncyVryPoorCntId" attr_filter_value="verypoor">Very Poor-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyVryGdCntId" attr_filter_value="verygood" data-toggle="tooltip" data-placement="top" title="More than 100% of target">Very Good-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyGdCntId" attr_filter_value="good" data-toggle="tooltip" data-placement="top" title="91%-100% of target">Good-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyOkCntId" attr_filter_value="ok" data-toggle="tooltip" data-placement="top" title="81%-90% of target">Ok-0</li>
+												<li class="consFilterCls" id="usrWseCnsttuncyPoorCntId" attr_filter_value="poor" data-toggle="tooltip" data-placement="top" title="61%-80% of target">Poor-0</li>
+                                                <li class="consFilterCls" id="usrWseCnsttuncyVryPoorCntId" attr_filter_value="verypoor" data-toggle="tooltip" data-placement="top" title="<=60% of target">Very Poor-0</li>
                                             </ul>
 										  </div>
 										  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
