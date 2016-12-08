@@ -640,7 +640,7 @@
 				for(var i in result[1]){       
 					str+='<tr>';
 					str+='<td>'+result[1][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls" attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
-					str+='<td attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[1][i].name+'</td>';  
+					str+='<td attr_const_id="'+result[1][i].id+'" attr_const_name="'+result[1][i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[1][i].name+'</a></td>';  
 					str+='<td>'+result[1][i].targetCount+'</td>';
 					if(result[1][i].renewalPerc == null || result[1][i].renewalPerc == 0){       
 						str+='<td> - </td>';  
