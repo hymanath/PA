@@ -1059,6 +1059,11 @@
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreCasteStateInfo</value>
 	                  <value>com.itgrids.partyanalyst.model.TdpCadreAgeInfo</value>
 	                  <value>com.itgrids.partyanalyst.model.AlertImpactScope</value>
+	                  
+	                  <!-- CARD PRINTING COPY FROM CARDPRINT PROJECT -->
+	                  <value>com.itgrids.partyanalyst.model.PrintStatus</value>
+	                  <value>com.itgrids.partyanalyst.model.ConstituencyPrintStatus</value>
+	                  <value>com.itgrids.partyanalyst.model.ConstituencyPrintStatusTrack</value>
 				 </list>
 			
 		</property>
