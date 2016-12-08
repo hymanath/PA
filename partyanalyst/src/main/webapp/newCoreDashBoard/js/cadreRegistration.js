@@ -2227,7 +2227,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 				 todate : getTodayDate(),
 				 accessLevelId:accessLevelId, 
 				 accessLevelValues:accessLevelValues,
-				 isKuppamExcluded:isKuppamExcluded,
+				 isKuppamExcluded:"False",
 				 sortingType:sortingType
 			  }
 		$.ajax({
@@ -4334,7 +4334,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
         globalTotalCnt=0;
         globalTodayTotalCnt=0;
 	}    
-  $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
+  /* $(document).on("click","#kuppamConstituencyCheckBoxId",function(){
 	  var isKuppamExcluded;
 	  if($(this).prop("checked")){
 		  isKuppamExcluded="True";
@@ -4348,7 +4348,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	var new2016CheckboxIsChecked="Y";
 	var cadre2014CheckboxIsChecked="Y";  
 	getApConstituencyCadreRegistrationDetails(accessLevelId,accessLevelValues,renewal2016CheckboxIsChecked,new2016CheckboxIsChecked,cadre2014CheckboxIsChecked,is2014Active,isKuppamExcluded);
-   });	
+   }); */      	
    
   $(document).on("click",".getConstituencyCls",function(){
 	  $("#cadreExcelExpBtnId").hide();
