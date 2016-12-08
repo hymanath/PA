@@ -16,9 +16,15 @@
 <div class="container" style="margin-top:20px;">
     
 	<div class ="row" >
+	     <div id="errDivId" style="color:red; margin-left:13px;"></div>
 		<div class="col-md-3 col-sm-6 col-xs-12">
 			  <label>Constituency</label><span class="text-danger">*</span>
 			  <select class="form-control"  id="constituencyId">
+			  <option value="0">Please Select Constituency</option>
+			  <option value="1">Nandigama</option>
+			  <option value="2">Jaggaya Peta</option>
+			  <option value="3">Vijayawada Central</option>
+			  <option value="4">Kavali</option>
 			  </select>
 		 </div>
 		 
@@ -37,7 +43,7 @@
 	</div>
 	<div class ="row" style="margin-top:10px;">
 		 <div class="col-md-3 col-sm-6 col-xs-12">
-		  <input type="button" class="buttonCls btn btn-success" value="submit" id="submitButtnId">
+		  <input type="button" class="buttonCls btn btn-success" value="submit" id="submitButtnId"><span id="successMsgId"></span></input>
 		</div>
 	</div>
 		
@@ -87,7 +93,26 @@ function getAllPrintStatusDetails(){
 		
 		var constituencyId = $('#constituencyId').val();
 		var printStatusId = $('#printStatusId').val();
-		var remarks = $('#remarksId').val();
+		var remarks = $('#remarksId').val().trim();
+		
+		if(constituencyId ==0){
+			$("#errDivId").html('Please Select Constituency');
+			return;
+		}
+		   $("#errDivId").html(' ');
+			
+		if(printStatusId ==0){
+			$("#errDivId").html('Please Select Print Status');
+			return;
+		 }	
+		 $("#errDivId").html(' ');
+		 
+		 if(remarks == '' || remarks ==""){
+		  $("#errDivId").html('Please Write Some Description');
+		  return ;
+	    }	
+		 $("#errDivId").html(' ');
+		 
 		var jsObj = {
 			constituencyId:constituencyId,
 			printStatusId : printStatusId,
@@ -100,8 +125,25 @@ function getAllPrintStatusDetails(){
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
+		  
+		  $('#constituencyId').val(0);
+		  $('#printStatusId').val(0);
+		  $('#remarksId').val(' ');
+		    
 		  if(result != null){
-			alert(result.exceptionMsg);
+			if(result.exceptionMsg =='success'){
+			setTimeout(function () {
+			$("#successMsgId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+			}, 500);  
+			 $("#successMsgId").show();
+		     $("#successMsgId").html("");
+			}else{
+			setTimeout(function () {
+			$("#successMsgId").html("<center style='color: green; font-size: 16px;'>Failed</center>").fadeOut(3000);
+			}, 500);  
+			$("#successMsgId").show();
+			$("#successMsgId").html("");
+			}
 		  }
 	  })
 		
