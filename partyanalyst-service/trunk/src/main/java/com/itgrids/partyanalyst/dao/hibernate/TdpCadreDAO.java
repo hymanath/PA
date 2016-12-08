@@ -6599,7 +6599,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder str=new StringBuilder();
 			
-			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model2.userAddress.constituency.name," +
+			str.append(" select distinct model.tdpCadreId ,model.firstname,model.mobileNo,model2.userAddress.constituency.name," +
 					"   model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type,model.image " +
 					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
