@@ -870,14 +870,15 @@
 									</li>
 									</c:if>
 									
-							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD') || fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD_ADMIN_ENTITLEMENT')}">
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD') || fn:contains(sessionScope.USER.entitlements, 'CADRE_REGISTRATION_2016_DASHBOARD_ADMIN_ENTITLEMENT') || not fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">
+								<!--<c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD')}">-->
 								<li>
 									<a href="newCadreDashBoard2016Action.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;2016 Cadre Dashboard</span></a>
 								</li>
-								
 								 <li>
 									<a href="cadreDemographicReportsAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Cadre Demographic Reports</span></a>
 								</li> 
+							<!--</c:if>-->
 							</c:if>
 							
 							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_USER') || fn:contains(sessionScope.USER.entitlements, 'CORE_DASHBOARD_ADMIN_USER')}">
