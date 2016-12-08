@@ -753,7 +753,7 @@
 				for(var i in result[0]){  
 					str+='<tr>';
 					str+='<td>'+result[0][i].no+'<i style="cursor:pointer;margin-left:7px;" class="glyphicon glyphicon-info-sign tabUserDtlsCls"  attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tab User Detailed Report"></i></td>';
-					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;">'+result[0][i].name+'</td>';     
+					str+='<td attr_const_id="'+result[0][i].id+'" attr_const_name="'+result[0][i].name+'" class="getDtlsCls" style="cursor:pointer;"><a>'+result[0][i].name+'</a></td>';     
 					str+='<td>'+result[0][i].targetCount+'</td>';
 					if(result[0][i].renewalPerc == null || result[0][i].renewalPerc == 0){  
 						str+='<td> - </td>';
@@ -916,13 +916,13 @@
           str+='<table class="table table-bordered" id="regCadreCountTableId">';
             str+='<thead class="text-capital text-center">';
               str+='<tr>';
-                str+='<th rowspan="2">MANDAL</th>';
+                str+='<th rowspan="2">MANDAL/MUNICIPALITY</th>';
 				if(location == "panchayat"){
 					str+='<th rowspan="2">PANCHAYAT</th>';
 				}
                 if(location == "booth"){
 					str+='<th rowspan="2">PANCHAYAT</th>';
-					str+='<th rowspan="2">MUNICIPALITY</th>';
+					//str+='<th rowspan="2">MUNICIPALITY</th>';
 					str+='<th rowspan="2">BOOTH NO</th>';
 				}
                 str+='<th rowspan="2">TOTAL VOTERS</th>';
@@ -948,13 +948,15 @@
             str+='</thead>';
 			for(var i in result){  
 				str+='<tr>';
-				if(result[i].mandalName == null || result[i].mandalName.trim().length < 1){
-					str+='<td>-</td> ';
+				if(location == "mandal"){
+					str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;Mandal</td> ';
 				}else{
-					str+='<td>'+result[i].mandalName+'</td> ';
+					if(result[i].panchayatName != null){
+						str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;Mandal</td> ';
+					}else{
+						str+='<td>'+result[i].localElectionBody+'&nbsp;&nbsp;Muncipality</td> ';
+					}
 				}
-				
-				
 				if(location == "panchayat"){
 					str+='<td>'+result[i].panchayatName+'</td>';
 				}
@@ -966,11 +968,11 @@
 						str+='<td>'+result[i].panchayatName+'</td> ';
 					}
 					
-					if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
+					/*if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
 						str+='<td>-</td> ';
 					}else{
 						str+='<td>'+result[i].localElectionBody+'</td> ';
-					}
+					}*/
 					
 					str+='<td>'+result[i].boothName+'</td>';   
 				}
