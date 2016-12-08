@@ -8,6 +8,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.service.ICardPrintService;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CardPrintAction extends ActionSupport implements ServletRequestAware{
@@ -52,5 +53,12 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	}
 	public void setTask(String task) {
 		this.task = task;
+	}
+	
+	public String execute(){
+		return Action.SUCCESS;
+	}
+	public String cardPrintDashboard(){
+		return Action.SUCCESS;
 	}
 }
