@@ -3255,8 +3255,14 @@
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
 						<div id="alertAttachTitId"></div>    
 					</div> 
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
 						<div id="alertAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAssignedCandidates"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+						<div id="alertCommentsDiv"></div>  
 					</div>
 				</div>
 			  </div>
@@ -3440,7 +3446,7 @@
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
 		/* Alert Default Call */
-		getAlertOverviewDetails();
+		//getAlertOverviewDetails();
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
