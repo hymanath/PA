@@ -720,5 +720,7 @@
 		<pattern>/cadreSurveyUsersAssignAction*</pattern>
 		<pattern>/cadreDemographicReportsAction*</pattern>
 		<!--<pattern>/tdpMembershipPerformanceAction*</pattern>-->
+		<pattern>/cardPrintDispatchAction*</pattern>
+		<pattern>/cardPrintDashboardAction*</pattern>
 	</decorator> 
 </decorators>
