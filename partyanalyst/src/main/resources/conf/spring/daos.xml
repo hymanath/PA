@@ -3438,4 +3438,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />  
 	</bean>
 	
+	<bean id="printStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.PrintStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="constituencyPrintStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyPrintStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="constituencyPrintStatusTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyPrintStatusTrackDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
