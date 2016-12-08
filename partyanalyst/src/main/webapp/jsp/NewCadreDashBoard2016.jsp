@@ -1753,13 +1753,13 @@ function getDistricts(locationType){
           str+='<table class="table table-bordered" id="regCadreCountTableId">';
             str+='<thead class="text-capital text-center">';
               str+='<tr>';
-                str+='<th rowspan="2">MANDAL</th>';
+                str+='<th rowspan="2">MANDAL/MUNICIPALITY</th>';
 				if(location == "panchayat"){
 					str+='<th rowspan="2">PANCHAYAT</th>';
 				}
                 if(location == "booth"){
 					str+='<th rowspan="2">PANCHAYAT</th>';
-					str+='<th rowspan="2">MUNICIPALITY</th>';
+					//str+='<th rowspan="2">MUNICIPALITY</th>';
 					str+='<th rowspan="2">BOOTH NO</th>';
 				}
                 str+='<th rowspan="2">TOTAL VOTERS</th>';
@@ -1785,13 +1785,15 @@ function getDistricts(locationType){
             str+='</thead>';
 			for(var i in result){  
 				str+='<tr>';
-				if(result[i].mandalName == null || result[i].mandalName.trim().length < 1){
-					str+='<td>-</td> ';
+				if(location == "mandal"){
+					str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;Mandal</td> ';
 				}else{
-					str+='<td>'+result[i].mandalName+'</td> ';
+				if(result[i].panchayatName != null){
+					str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;Mandal</td> ';
+				}else{
+					str+='<td>'+result[i].localElectionBody+'&nbsp;&nbsp;Muncipality</td> ';
 				}
-				
-				
+				}
 				if(location == "panchayat"){
 					str+='<td>'+result[i].panchayatName+'</td>';
 				}
@@ -1803,11 +1805,11 @@ function getDistricts(locationType){
 						str+='<td>'+result[i].panchayatName+'</td> ';
 					}
 					
-					if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
+					/*if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
 						str+='<td>-</td> ';
 					}else{
 						str+='<td>'+result[i].localElectionBody+'</td> ';
-					}
+					}*/
 					
 					str+='<td>'+result[i].boothName+'</td>';   
 				}
