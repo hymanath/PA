@@ -1,0 +1,69 @@
+*, select {
+    outline: 0 none !important;
+}
+body {
+    background: rgb(236, 240, 241);
+    color: rgb(74, 88, 99) !important;
+    font-family: "Roboto",sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+}
+h1, h2, h3, h4, h5, h6, p, ul, .table , table {
+    margin: 0 !important;
+}
+.pad_10
+{
+	padding: 10px;
+}
+.text-capital {
+	text-transform: uppercase;
+}
+
+.m_top10 {
+	margin-top: 10px;
+}
+
+.bg_ff {
+	background-color: #fff;
+}
+
+.tablePrinting tr td{
+	padding:20px !important;
+}
+
+.bg_EE {
+	background-color: #EEEEEE;
+}
+
+.arrowTOp {
+    background: #EEE;
+    border: 1px solid #EEE;
+}
+.arrowTOp::after, .arrowTOp::before {
+    border: medium solid rgba(0, 0, 0, 0);
+    bottom: 100%;
+    content: " ";
+    height: 0;
+    pointer-events: none;
+    position: absolute;
+    left: 30px;
+    width: 0;
+}
+.arrowTOp::after {
+    border-color: rgba(136, 183, 213, 0) rgba(136, 183, 213, 0) #EEE;
+    border-width: 10px;
+    margin-left: -10px;
+}
+.arrowTOp::before {
+    border-color: rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) #ccc;
+    border-width: 11px;
+    margin-left: -11px;
+}
+.pos_relative
+{
+	position: relative;
+}
+.panelWhite .panel-heading
+{
+	background-color: #fff
+}
