@@ -788,7 +788,7 @@
 										 <ul>
 										 	<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')}">
 										  <li>
-										<a href="createAlertAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
+										<a href="http://mytdp.com/createAlertAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
 										</li>
 										</c:if>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ADMIN_ENTITLEMENT')}">
