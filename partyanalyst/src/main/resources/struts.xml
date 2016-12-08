@@ -14936,5 +14936,11 @@
 					<param name="root">basicVO</param>
 				</result>
 	</action>
+	<action name="cardPrintDispatchAction" class="cardPrintAction">
+			 <result name="success">/jsp/cardPrintDispatch.jsp</result>
+	</action>
+	<action name="cardPrintDashboardAction" class="cardPrintAction" method="cardPrintDashboard">
+			 <result name="success">/jsp/cardPrintDashboard.jsp</result>
+	</action>
  </package>
 </struts>
