@@ -684,7 +684,7 @@
 	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
 	   <pattern>/coreDashboardAction*</pattern>
 	   <pattern>/partyAndLeaderActivitiesAndPerformanceTracking*</pattern>
-	   <pattern>/coreDashboardNewAction*</pattern>
+	   <pattern>/dailyMonthlyPartyActivities*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>
 		<pattern>/birthDayAction*</pattern>
 		<pattern>/govtOrderIssuedAction*</pattern> 
