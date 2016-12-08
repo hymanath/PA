@@ -1455,10 +1455,10 @@ function getDistricts(locationType){
 		 buildVeryPoorCount = 0;
 		if(result !=null && result.length >0){
 			str1+='<div class="table-responsive" style="margin-top:20px;">';
+			str1+='<div class="span12 pull-right">';
+			str1+='<i class="glyphicon glyphicon-info-sign" id="percentageId" title="Click to how to calculating percentages" style="margin-left: 20px;margin-bottom:9px;;cursor:pointer;cursor:pointer;"></i>';
+			str1+='</div>';
 			str1+='<table class="table table-bordered" >';
-			str+='<div class="span12 pull-right">';
-			str+='<i class="glyphicon glyphicon-info-sign" id="percentageId" title="Click to how to calculating percentages" style="margin-left: 20px;margin-bottom:9px;;cursor:pointer;cursor:pointer;"></i>';
-			str+='</div>';
 				str1+='<thead>';
 					str1+='<th>VERY GOOD</th>';
 					str1+='<th>GOOD</th>';
