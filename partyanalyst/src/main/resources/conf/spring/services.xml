@@ -3855,5 +3855,9 @@
 	
 	</bean>
 	
+	<bean name="cardPrintService" class="com.itgrids.partyanalyst.service.impl.CardPrintService">
+		
+	</bean>
+	
 </beans>			
 	

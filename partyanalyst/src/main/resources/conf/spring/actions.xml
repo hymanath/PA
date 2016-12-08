@@ -1729,5 +1729,9 @@
 	<bean id="cadreDemographicReportsAction" class="com.itgrids.partyanalyst.web.action.CadreDemographicReportsAction" singleton="false">
 		 <property name="cadreRegistrationServiceNew" ref="cadreRegistrationServiceNew" />	
 	</bean>	
+	
+	<bean id="cardPrintAction" class="com.itgrids.partyanalyst.web.action.CardPrintAction" singleton="false">
+			<property name="cardPrintService" ref="cardPrintService" />  
+	</bean>	
 </beans>	
 	
