@@ -404,6 +404,21 @@
   </div>
 </div>
 <!-- end-->   
+<div class="modal fade" tabindex="-1" id="perModalDivId" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" style="width:45%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">PERCENTAGES INFORMATION</h4>
+			</div>
+			<div class="modal-body" id="perInfmaDetailsDivId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!--  /.modal-content -->  
+	</div><!--  /.modal-dialog -->
+</div>
 <body>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -465,6 +480,9 @@
 			if(result[0] !=null && result[0].length > 0 ){
 				//debugger;
 				str1+='<div class="table-responsive" style="margin-top:20px;">';
+				str1+='<div class="span12 pull-right">';
+				str1+='<i class="glyphicon glyphicon-info-sign" id="percentageId" title="Click to how to calculating percentages" style="margin-left: 20px;margin-bottom:9px;;cursor:pointer;cursor:pointer;"></i>';
+				str1+='</div>';
 				str1+='<table class="table table-bordered" >';
 				str1+='<thead>';
 					str1+='<th>VERY GOOD</th>';
@@ -579,6 +597,9 @@
 			var str='';
 			if(result[1] !=null && result[1].length >0){
 				str+='<div class="table-responsive" style="margin-top:20px;">';
+				str+='<div class="span12 pull-right">';
+				str+='<i class="glyphicon glyphicon-info-sign" id="percentageId" title="Click to how to calculating percentages" style="margin-left: 20px;margin-bottom:9px;;cursor:pointer;cursor:pointer;"></i>';
+				str+='</div>';
 				str+='<table class="table table-bordered" >';
 				str+='<thead>';
 					str+='<th>VERY GOOD</th>';
@@ -691,7 +712,7 @@
 			$(".constCls").show();    
 			var str='';
 			if(result !=null && result.length >0){
-				str+='<div class="table-responsive" style="margin-top:20px;">';
+			str+='<div class="table-responsive" style="margin-top:20px;">';
 				str+='<table class="table table-bordered" >';
 				str+='<thead>';
 					str+='<th>VERY GOOD</th>';
@@ -1098,6 +1119,39 @@
 		img.src = "images/cadre_images/human.jpg";
 		return true;
 	}  
+$(document).on("click","#percentageId",function(){
+	$("#perModalDivId").modal('show');
+	var str="";
+	str+='<table class="table table-bordered">';
+	str+='<thead>';
+		str+='<th>PERCENTAGE</th>';
+		str+='<th>PERFORMANCE TYPE</th>';
+	str+='</thead>';
+	str+='<tbody>';
+				str+='<tr>';
+						str+='<td> >100% </td>';
+						str+='<td> VERY GOOD </td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td> 91-100% </td>';
+						str+='<td> GOOD </td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td> 81-90%  </td>';
+						str+='<td> OK</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td>  61-80% </td>';
+						str+='<td> POOR</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td>  <=60% </td>';
+						str+='<td> VERY POOR </td>';
+				str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+			$("#perInfmaDetailsDivId").html(str);
+});
 </script>
 <script>  
 	$(document).on("click","#constExcelExpBtnId",function(){
