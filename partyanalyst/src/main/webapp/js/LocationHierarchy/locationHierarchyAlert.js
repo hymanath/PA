@@ -13,7 +13,7 @@ function getDistrictsForReferPopup(index) {
 		var str='';
 		if(index == "")
 		{
-			    str +='<option value="0">ALL</option>';	
+			    str +='<option value="0">Select District</option>';	
 		}
 		else
 		str+='<option value="0">Select District</option>';
