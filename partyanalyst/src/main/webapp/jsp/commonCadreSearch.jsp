@@ -365,4 +365,4 @@ function buildapptmemberDetails(result){
 $("#apptmemberDetailsDiv").html("");
 
 </script>
-<script src="dist/commonCadreSearch/commonCadreSearch.js" type="text/javascript"></script>
+<!--<script src="dist/commonCadreSearch/commonCadreSearch.js" type="text/javascript"></script>-->

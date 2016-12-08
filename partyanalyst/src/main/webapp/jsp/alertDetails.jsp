@@ -23,6 +23,7 @@
 	<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+	<script src="dist/CreateAlert/alertCommonCadreSearch.js" type="text/javascript"></script>
 	
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	
@@ -578,6 +579,7 @@ function buildAlertAssignedCandidateData(result)
 	 getConfirmation(tdpCadreId);
 	// deleteAlertAssignedCandidates(tdpCadreId);
 });*/
+getMemberTypes();
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
