@@ -189,7 +189,7 @@ function disableByLevel(index)
 				}
 				else if(selectVal == "mebershipno")
 				{
-					$("#searchNameLabel").html("Search By Mebership No <span style='color:red;' class='requiredCls'> * </span> :");
+					$("#searchNameLabel").html("Search By Membership No <span style='color:red;' class='requiredCls'> * </span> :");
 				}
 				else if(selectVal == "votercardno")
 				{
@@ -441,7 +441,7 @@ function disableByLevel(index)
  }
  
  function getPanchayatsForReferPopup(index){
-	
+ 
 	 $("#referpanchayatId"+index).find('option').not(':first').remove();
 	 var mandalId = $('#refermandalNameId'+index).val();
 	 var  type = $("#refermandalNameId"+index+" option:selected").text();
@@ -744,6 +744,12 @@ function disableByLevel(index)
 				 $("#errorDivId").html(errorStr);
 				 return; 
 			 }
+			  var numericExpression =  /^[a-z,A-Z," "]+$/;
+					if(!$("#advanceSearchValueId").val().match(numericExpression)){
+						 errorStr='Enter characters Only';
+						  $("#errorDivId").html(errorStr);
+					 return;
+					 }
 		}
 		
 		
@@ -1119,6 +1125,3 @@ function buildMemberTypes(result)
 	
 	
 }
- 
-	
-  
