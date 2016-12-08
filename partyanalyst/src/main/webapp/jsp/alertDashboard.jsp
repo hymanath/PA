@@ -179,7 +179,7 @@
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label style="font-size:14px;" class="textcolor_black">District</label>
 												<select class="chosen-select " id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
-												<option value="0">All</option></select>
+												<option value="0">Select District</option></select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label style="font-size:14px;" class="textcolor_black">Assembly</label>
@@ -495,7 +495,7 @@ function getAlertAssignedCandidate()
 	}).done(function(result){ 
 	  //buildAlertCommentsForTracking(result,"");
 	  var str='';
-	   str+='<option value="0">ALL</option>';
+	   str+='<option value="0">All</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
 				if(result[i].id > 0)
@@ -851,12 +851,20 @@ function getAlertAssignedCandidate()
 	$("#referpanchayatId").chosen();
 	
 	$(".datatableId").dataTable();
-		$(document).on("click",".showfilterBlock",function(){
+		$(document).on("click",".showfilterBlock",function(){  
 			$("#assignedCadreId").val(0).trigger('chosen:updated');
 			$("#stateId").val(globalStateId).trigger('chosen:updated');
+			//$('#referdistrictId').empty(); 
 	        $("#referdistrictId").val(0).trigger('chosen:updated');
-			$("#referconstituencyId").val(0).trigger('chosen:updated');
+			//$('#referdistrictId').append('<option value="0">Select District</option>'); 
+			$('#referconstituencyId').empty(); 
+			$('#referconstituencyId').append('<option value="0">All</option>'); 
+			$("#referconstituencyId").trigger('chosen:updated');
+			$('#refermandalNameId').empty(); 
+			$('#refermandalNameId').append('<option value="0">All</option>'); 
 			$("#refermandalNameId").val(0).trigger('chosen:updated');
+			$('#referpanchayatId').empty();
+            $('#referpanchayatId').append('<option value="0">All</option>'); 			
 			$("#referpanchayatId").val(0).trigger('chosen:updated');
 		$(".filterBlockDiv").toggle();  
 	});
