@@ -852,6 +852,12 @@ function getAlertAssignedCandidate()
 	
 	$(".datatableId").dataTable();
 		$(document).on("click",".showfilterBlock",function(){
+			$("#assignedCadreId").val(0).trigger('chosen:updated');
+			$("#stateId").val(globalStateId).trigger('chosen:updated');
+	        $("#referdistrictId").val(0).trigger('chosen:updated');
+			$("#referconstituencyId").val(0).trigger('chosen:updated');
+			$("#refermandalNameId").val(0).trigger('chosen:updated');
+			$("#referpanchayatId").val(0).trigger('chosen:updated');
 		$(".filterBlockDiv").toggle();  
 	});
 	$(document).on("click",".closedropdown",function(){
