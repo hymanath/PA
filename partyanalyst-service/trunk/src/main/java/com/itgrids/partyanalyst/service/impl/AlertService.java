@@ -467,9 +467,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				if(alertTrackingVO.getAlertCommentId() !=null){
 					alertTracking.setAlertCommentId(alertTrackingVO.getAlertCommentId());
 				}
-				if(alertTrackingVO.getAlertUserTypeId() !=null && alertTrackingVO.getAlertUserTypeId().longValue()>0l){
+				/*if(alertTrackingVO.getAlertUserTypeId() !=null && alertTrackingVO.getAlertUserTypeId().longValue()>0l){
 					alertTracking.setAlertSourceId(alertTrackingVO.getAlertUserTypeId());
-				}				
+				}*/				
 				if(alertTrackingVO.getUserId() !=null){
 					alertTracking.setInsertedBy(alertTrackingVO.getUserId());
 				}				
