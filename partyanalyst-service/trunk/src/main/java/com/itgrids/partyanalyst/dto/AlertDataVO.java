@@ -41,6 +41,8 @@ public class AlertDataVO {
 	private Long alertCategoryTypeId;
 	private String organization;
 	
+	private String comment;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -227,5 +229,13 @@ public class AlertDataVO {
 	public void setOrganization(String organization) {
 		this.organization = organization;
 	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	
 	
 }
