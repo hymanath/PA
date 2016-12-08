@@ -1192,7 +1192,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		queryStr.append(" select count( model.nominatedPostId), model.nominatedPostMember.nominatedPostMemberId ");
 		queryStr.append(" from NominatedPost model   " );
 		queryStr.append(" where ");
-		queryStr.append(" model.isDeleted='N' and  model.nominatedPostMember.isDeleted ='N' ");	// for total 
+		queryStr.append(" model.isDeleted='N' and  model.nominatedPostMember.isDeleted ='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");	// for total 
 						
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() != 5L)
