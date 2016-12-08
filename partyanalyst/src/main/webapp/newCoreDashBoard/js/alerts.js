@@ -81,7 +81,7 @@
 	{
 		var str='';
 		if(result.overAllVO != null){
-		str+='<div class="pad_15 bg_ED">';
+		str+='<div class="pad_5 bg_ED">';
 			str+='<table class="table table-bordered alertOverviewTable bg_ED">';
 				str+='<tr>';
 					str+='<td>';
@@ -350,6 +350,8 @@
 	}
 	var globalStr1 = '';  
 	$(document).on("click",".descAlertCls",function(){
+		$("#cdrModelDivId").find(".close").addClass("modalClose");
+		$("#cdrModelDivId").find(".modal-footer .btn").addClass("modalClose");
 		$("#tourDocHeadingId").html("ALERT TITLE <br>");
 		$("#cdrModelDivId").modal("show");
 		var alertId = $(this).attr("attr_alert_id");
@@ -358,6 +360,11 @@
 		getAlertAssignedCandidates(alertId);    
 		getAlertStatusCommentsTrackingDetails(alertId);
 	});
+	$(document).on("click",".modalClose",function(){
+		$(this).removeClass("modalClose");
+		$("body").addClass("modal-open");
+	});
+	
 	function getAlertAssignedCandidates(alertId){
 		GlobalAlertData = [];
 		var jsObj ={
@@ -369,6 +376,7 @@
 			url: 'getAlertAssignedCandidatesAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			buildAlertAssignedCandidates(result);
 		});
 	}
 	function getAlertData(alertId){  
@@ -385,10 +393,10 @@
 		});
 	}
 	function buildAlertData(result){
-		$("#tourDocHeadingId").html("<span style='color:#FFFFFF;'>ALERT TITLE</span><br><span class='text-capital'>"+result[0].title+"</span>");
-		$("#cdrModelId").html("<span>ALERT DESCRIPTION</span><br>");
+		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><br><h5 class='text-capital'>"+result[0].title+"</h5>");
+		$("#cdrModelId").html("<h5 class='text-muted'>ALERT DESCRIPTION</h5>");
 		$("#alertDestId").html(result[0].desc);
-		$("#alertAttachTitId").html("<span style='margin-left: 11px;'>ALERT ATTACHMENTS</span>");
+		$("#alertAttachTitId").html("<h5  class='text-muted'>ALERT ATTACHMENTS</h5>");
 		var imgStr = '';
 		
 		imgStr+='<ul class="list-inline imageUrlUlCls">';
@@ -409,6 +417,7 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			buildAlertStatusCommentsTrackingDetails(result);
 		});
 	}
 	function getAlertCategoryDtlsLocationWise(){
@@ -459,107 +468,275 @@
 		//if(result[i][0].totalTour!=0){
 			var getWidth = $("#alertCategory"+i).parent().width()+'px';
 				$("#alertCategory"+i).width(getWidth);
-		     $(function () {
-			$('#alertCategory'+i).highcharts({
-				colors: ['#0066DC'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: locationNameArr,
+		    $(function () {
+				$('#alertCategory'+i).highcharts({
+					colors: ['#0066DC'],
+					chart: {
+						type: 'column'
+					},
 					title: {
 						text: null
 					},
-					labels: {
-							formatter: function() {
-								return this.value.toString().substring(0, 10)+'...';
-							},
-							
-						}
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null,
-						align: 'high'
+					subtitle: {
+						text: null
 					},
-					labels: {
-						overflow: 'justify',
-						enabled: true,
-					}
-				},
-				tooltip: {
-				 useHTML: true,
-				 backgroundColor: '#FCFFC5',
-				 formatter: function() {
-						 var categoryName = this.point.extra;
-						 var obj1 = result.filter(function ( obj1 ) {
-							 	return obj1.name.toUpperCase().trim() === categoryName.toUpperCase().trim();
-							})[0];
-						 var locationList = obj1.subList;
-						 var _locationName = this.x;
-						 var obj = locationList.filter(function ( obj ) {
-								return obj.locationType.toUpperCase().trim() === _locationName.toUpperCase().trim();
-							})[0];
-							return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"";     
-					}
-				},
-				plotOptions: {
-					column: {  
-						stacking: 'normal',
-						dataLabels: {
-							enabled: true,
-							 formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return Highcharts.numberFormat(this.y, 0) +""; 
-								}
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: locationNameArr,
+						title: {
+							text: null
+						},
+						labels: {
+								formatter: function() {
+									return this.value.toString().substring(0, 10)+'...';
+								},
+								
 							}
-						  
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: null,
+							align: 'high'
+						},
+						labels: {
+							overflow: 'justify',
+							enabled: true,
 						}
-					}
-				},
-				legend: {
-					enabled: false,
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -40,
-					y: 80,
-					floating: true,
-					borderWidth: 1,
-					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-					shadow: true
-				},
-				credits: {
-					enabled: false
-				},
-				
-				series: [{
-					name: 'Number Of Alert',
-					data: alertCntArr
-				}]
+					},
+					tooltip: {
+					 useHTML: true,
+					 backgroundColor: '#FCFFC5',
+					 formatter: function() {
+							 var categoryName = this.point.extra;
+							 var obj1 = result.filter(function ( obj1 ) {
+									return obj1.name.toUpperCase().trim() === categoryName.toUpperCase().trim();
+								})[0];
+							 var locationList = obj1.subList;
+							 var _locationName = this.x;
+							 var obj = locationList.filter(function ( obj ) {
+									return obj.locationType.toUpperCase().trim() === _locationName.toUpperCase().trim();
+								})[0];
+								return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"";     
+						}
+					},
+					plotOptions: {
+						column: {  
+							stacking: 'normal',
+							dataLabels: {
+								enabled: true,
+								 formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.y, 0) +""; 
+									}
+								}
+							  
+							}
+						}
+					},
+					legend: {
+						enabled: false,
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'top',
+						x: -40,
+						y: 80,
+						floating: true,
+						borderWidth: 1,
+						backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+						shadow: true
+					},
+					credits: {
+						enabled: false
+					},
+					
+					series: [{
+						name: 'Number Of Alert',
+						data: alertCntArr
+					}]
+				});
 			});
-		});
 		//}else{
 		//$("#alertCategory"+i).html("No Data Available");
 		//$("#alertCategory"+i).css("height","35px");
 		//$("#alertCategory"+i).hide();
 		//} 
+			}
+		}else{
+			$("#locationWiseAlertDivId").html('NO DATA AVAILABLE.');
+		}
 	}
-	}else{
-    $("#locationWiseAlertDivId").html('NO DATA AVAILABLE.');
+	
+function buildAlertAssignedCandidates(result)
+{
+	var str='';
+	str+='<h5 class="text-muted text-capital">Assigned Candidates</h5>';
+	str+='<ul class="list-inline assignedCandidatesUl">';
+	for(var i in result)
+	{
+		for(var j in result[i].subList)
+		{
+			str+='<li>';
+				str+='<p><b>'+result[i].subList[j].name+'</b></p>';
+				str+='<p><i> - '+result[i].subList[j].committeePosition+'</i></p>';
+				str+='<p>'+result[i].subList[j].mobileNo+'</p>';
+				str+='<p>'+result[i].subList[j].locationVO.districtName+'</p>';
+			str+='</li>';
+		}
 	}
-	}
+	str+='</ul>';
+	
+	$("#alertAssignedCandidates").html(str);
+	$(".assignedCandidatesUl").slick({
+		 slide: 'li',
+		 slidesToShow: 5,
+		 slidesToScroll: 3,
+		 infinite: false,
+		  responsive: [
+			{
+			  breakpoint: 1024,
+			  settings: {
+				slidesToShow: 5,
+				slidesToScroll: 3,
+				infinite: false,
+				dots: false
+			  }
+			},
+			{
+			  breakpoint: 800,
+			  settings: {
+				slidesToShow: 3,
+				slidesToScroll: 2
+			  }
+			},
+			{
+			  breakpoint: 600,
+			  settings: {
+				slidesToShow: 2,
+				slidesToScroll: 1
+			  }
+			},
+			{
+			  breakpoint: 480,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			}
+			// You can unslick at a given breakpoint now by adding:
+			// settings: "unslick"
+			// instead of a settings object
+		  ]
+	});  
+}
+function buildAlertStatusCommentsTrackingDetails(result)
+{
+	var str='';
+	
+	str+='<div>';
+		str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
+		for(var i in result)
+		{
+			if(i==0)
+			{
+				str+='<li role="presentation" class="active"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
+			}else{
+				str+='<li role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
+			}
+			
+		}
+		str+='</ul>';
+		str+='<div class="tab-content alertComment">';
+			for(var i in result)
+			{
+				if(i==0)
+				{
+					str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
+				}else{
+					str+='<div role="tabpanel" class="tab-pane" id="commentStatus'+i+'">';
+				}
+				for(var j in result[i].sublist2)
+				{
+					str+='<div class="row m_top10">';
+						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+							var date = result[i].sublist2[0].date
+							var dateArr = date.split("-");
+							var year = dateArr[0];
+							var month = dateArr[1];
+							var day = dateArr[2];
+							str+='<table class="table tableCalendar">';
+								str+='<tr>';
+									str+='<td colspan="2">';
+										str+='<h3>'+day+'</h3>';
+									str+='</td>';
+								str+='</tr>';
+								str+='<tr>';
+									str+='<td>'+getMonth(month)+'</td>';        
+									str+='<td>'+year+'</td>';
+								str+='</tr>';
+							str+='</table>';
+						str+='</div>';
+						str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+							str+='<ul class="alertStatusTracking">';
+								str+='<li>';
+									str+='<div class="arrow_box_left">';
+									for(var k in result[i].sublist2[j].sublist)
+									{	
+										str+='<div>';
+											str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+											for(var l in result[i].sublist2[j].sublist[k])
+											{
+												str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+											}
+											str+='</p>';
+											str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+											str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+											str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+											str+='<hr style="margin-top:20px;"/>';
+										str+='</div>';   
+									}
+									str+='</div>';    
+								str+='</li>';
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';
+				}           
+			str+='</div>';
+			}
+		str+='</div>';
+	str+='</div>';
+	$("#alertCommentsDiv").html(str);
+}
+function getMonth(month){
+	if(month=="01"){
+		return "Jan"
+	}else if(month=="02"){
+		return "Feb"
+	}else if(month=="03"){
+		return "Mar"
+	}else if(month=="04"){
+		return "Apr"
+	}else if(month=="05"){
+		return "May"
+	}else if(month=="06"){
+		return "Jun"
+	}else if(month=="07"){
+		return "Jul"
+	}else if(month=="08"){
+		return "Aug"
+	}else if(month=="09"){
+		return "Sep"
+	}else if(month=="10"){
+		return "Oct"
+	}else if(month=="11"){
+		return "Nov"
+	}else if(month=="12"){  
+		return "Dec"
+	}  
+}
