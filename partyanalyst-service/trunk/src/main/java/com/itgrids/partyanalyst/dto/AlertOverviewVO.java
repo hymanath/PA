@@ -26,6 +26,7 @@ public class AlertOverviewVO {
 	private List<AlertOverviewVO> statusList;
 	private List<AlertOverviewVO> categoryList;
 	private List<AlertOverviewVO> subList;
+	private List<AlertOverviewVO> subList1;
 	
     private Long locationTypeId;
 	private String locationType;
@@ -36,6 +37,8 @@ public class AlertOverviewVO {
 	private Long completedCnt = 0l;
 	private Long unabletoResolveCnt = 0l;
 	private Long actionNotRequiredCnt = 0l;
+	
+	private Double alertCountPer=0.0d;
 	
 	public Long getTotalAlertCnt() {
 		return totalAlertCnt;
@@ -171,6 +174,16 @@ public class AlertOverviewVO {
 	public void setActionNotRequiredCnt(Long actionNotRequiredCnt) {
 		this.actionNotRequiredCnt = actionNotRequiredCnt;
 	}
-	
-    
+	public Double getAlertCountPer() {
+		return alertCountPer;
+	}
+	public void setAlertCountPer(Double alertCountPer) {
+		this.alertCountPer = alertCountPer;
+	}
+	public List<AlertOverviewVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<AlertOverviewVO> subList1) {
+		this.subList1 = subList1;
+	}
 }                                                          
