@@ -168,6 +168,7 @@ public class TdpCadre {
 	private String isNomineeChanged;
 	private CadreVerificationStatus cadreVerificationStatus;
 	private Long cadreVerificationStatusId;
+	private String isCsd;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -1213,6 +1214,14 @@ public class TdpCadre {
 	public void setCadreVerificationStatus(
 			CadreVerificationStatus cadreVerificationStatus) {
 		this.cadreVerificationStatus = cadreVerificationStatus;
+	}
+	
+	@Column(name="is_csd")
+	public String getIsCsd() {
+		return isCsd;
+	}
+	public void setIsCsd(String isCsd) {
+		this.isCsd = isCsd;
 	}
 	
 }

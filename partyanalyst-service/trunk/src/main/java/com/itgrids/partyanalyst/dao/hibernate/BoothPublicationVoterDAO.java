@@ -8492,7 +8492,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 												" model.tdpCadre.memberShipNo," +
 												" model.tdpCadre.mobileNo," +
 												" model.enrollmentYearId," +
-												" model.tdpCadre.image" +
+												" model.tdpCadre.image," +
+												" model.tdpCadre.isCsd" +
 												" from TdpCadreEnrollmentYear model" +
 												" where model.isDeleted = 'N'" +
 												" and model.tdpCadre.isDeleted = 'N'" +

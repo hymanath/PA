@@ -20,7 +20,7 @@ public class IdAndNameVO {
 	private String startTime;
 	private String endTime;
 	private Double per2016 = 0.00;
-	
+	private String isCsd;
 	
 	public IdAndNameVO(){}
 	public IdAndNameVO(Long id,String name){
@@ -130,5 +130,11 @@ public class IdAndNameVO {
 	}
 	public void setPer2016(Double per2016) {
 		this.per2016 = per2016;
+	}
+	public String getIsCsd() {
+		return isCsd;
+	}
+	public void setIsCsd(String isCsd) {
+		this.isCsd = isCsd;
 	}
 }

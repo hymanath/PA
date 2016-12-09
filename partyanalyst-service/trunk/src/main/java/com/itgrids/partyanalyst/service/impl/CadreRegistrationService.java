@@ -13652,12 +13652,14 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							vo.setMobileNumber(obj[3] != null ? obj[3].toString().trim():"" );
 							vo.setInviteeAttendeeCnt(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
 							vo.setImagePathStr("http://mytdp.com/images/cadre_images/"+(obj[5] != null ? obj[5].toString():""));
+							vo.setIsCsd(obj[6] != null ? obj[6].toString():"");
 							voterCadreMap.put(vId, vo);
 						}
 						else{
 							Long enrid = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
 							if(enrid.longValue() > vo.getInviteeAttendeeCnt().longValue())
 								vo.setInviteeAttendeeCnt(enrid);
+							vo.setIsCsd(obj[6] != null ? obj[6].toString():"");
 						}
 					}
 				}
@@ -13672,7 +13674,15 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							voterVO.setEnrollmentYearId(vo.getInviteeAttendeeCnt());
 							voterVO.setTotalImagePathStr(vo.getImagePathStr());
 							voterVO.setMobileNumber(vo.getMobileNumber());
+							voterVO.setIsCsd(vo.getIsCsd());
 						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					for (VoterSearchVO vo : returnList) {
+						if(vo.getIsCsd() != null && vo.getIsCsd().trim().equalsIgnoreCase("Y"))
+							vo.setEnrollmentYearId(3l);
 					}
 				}
 				
@@ -13744,17 +13754,27 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						vo.setFamilyVoterId(Long.valueOf(obj[12] != null ? obj[12].toString():"0"));
 						vo.setFamilyVoterCardNo(obj[13] != null ? obj[13].toString():"");
 						vo.setEnrollmentYearId(Long.valueOf(obj[14] != null ? obj[14].toString():"0"));
+						vo.setIsCsd(obj[15] != null ? obj[15].toString():"");
 						vo.setTotalImagePathStr("http://mytdp.com/"+vo.getImageURL());
 						
 						cadreMap.put(cadreId, vo);
 					}
-					else
+					else{
 						vo.setEnrollmentYearId(Long.valueOf(obj[14] != null ? obj[14].toString():"0"));
+						vo.setIsCsd(obj[15] != null ? obj[15].toString():"");
+					}
 				}
 			}
 			
 			if(cadreMap != null)
 				returnList = new ArrayList<TdpCadreVO>(cadreMap.values());
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (TdpCadreVO vo : returnList) {
+					if(vo.getIsCsd() != null && vo.getIsCsd().trim().equalsIgnoreCase("Y"))
+						vo.setEnrollmentYearId(3l);
+				}
+			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(returnList)){
 				for (TdpCadreVO tdpCadreVO : returnList) {

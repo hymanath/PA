@@ -22,8 +22,15 @@ public class VoterSearchVO implements Serializable{
 	private String totalImagePathStr;
 	private String mobileNumber;
 	private String actualMobiNumber; 
+	private String isCsd;
 	
 	
+	public String getIsCsd() {
+		return isCsd;
+	}
+	public void setIsCsd(String isCsd) {
+		this.isCsd = isCsd;
+	}
 	public String getTotalImagePathStr() {
 		return totalImagePathStr;
 	}
