@@ -2742,7 +2742,7 @@
 			</div>	
 	
 		<!--Events End -->
-	 <!-- Alerts Start
+	 <!-- Alerts Start-->
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2801,20 +2801,21 @@
 										</div>
 										<div class="col-md-8 col-xs-12 col-sm-8">
 											<ul class="activeUlCls list-inline pull-right">
-												<li class="active">Overview</li>
-												<li>Categories</li>
-												<li>Status</li>
+												<li class="active optionsCls" attr_id="1">Overview</li>
+												<li class="optionsCls" attr_id="2">Categories</li>  
+												<li class="optionsCls" attr_id="3">Status</li> 
 												<i class="fa fa-gears" style="cursor:pointer;" id="alertSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 											</ul>
 										</div>
-										<div class="specialAlertDropDown" style="right:13px;top:30px;display:none;">  
-											<ul class="list-inline">  
-												<li><label><input name="locationLevel" type="radio" attr_val="All" checked/>&nbsp&nbspAll</label></li><br>
-												<li><label><input name="locationLevel" type="radio" attr_val="District"/>&nbsp&nbspDistrict Level</label></li><br>
-												<li><label><input name="locationLevel" type="radio" attr_val="Constituency" />&nbsp&nbspConstituency Level</label></li><br>
-												<li><label><input name="locationLevel" type="radio" attr_val="Village"/>&nbsp&nbspVillage/ward Level</label></li><br>     
+										<div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
+											<ul class="list-inline">
+												<span class="glyphicon glyphicon-remove-circle pull-right alertSettingCloseCls" style="cursor:pointer;"></span>
+												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="All" checked/>&nbsp&nbspAll</label></li><br>
+												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="District"/>&nbsp&nbspDistrict Level</label></li><br>
+												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="Constituency" />&nbsp&nbspConstituency Level</label></li><br>
+												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="Village"/>&nbsp&nbspVillage/ward Level</label></li><br>     
 											</ul>        
-											<button type="button" class="btn btn-success">Get Details</button>      
+											<button type="button" class="btn btn-success alertDtlsBtnCls">Get Details</button>          
 											<span id="" style="color:red;"></span>  
 										</div>        
 									</div>
@@ -2839,8 +2840,8 @@
 											<ul class="activeUlCls list-inline">
 												<li class="active">Overview</li>
 												<li>Categories</li>
-												<li>Status</li>
-											</ul>
+												<li>Status</li>              
+											</ul>            
 										</div>
 									</div>
 								</div>
@@ -2857,7 +2858,7 @@
 				</div>
 			</div>
 		</div>	
-	 	Alerts End -->
+	 	<!--Alerts End -->
 	</div>
 </div> 
 <!--model start -->
@@ -3446,7 +3447,7 @@
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
 		/* Alert Default Call */
-		//getAlertOverviewDetails();
+		getAlertOverviewDetails();
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
