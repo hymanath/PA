@@ -358,6 +358,7 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 			   }).done(function(result){
 			       GlobalAlertData = result;
 					buildAlertData(result,jsObj);
+					getDistrictsForReferPopup('');
 				});
 }
 

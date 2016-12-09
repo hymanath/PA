@@ -162,7 +162,7 @@
 									<div class="row">
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label style="font-size:14px;" class="textcolor_black">Assigned Cadre</label>
-											<select class="form-control chosen-select" id="assignedCadreId" >
+											<select class="form-control chosen-select" id="assignedCadreId" onChange="assignCadreDetailsAllLevel();">
 												<option value="0" selected="selected">Select Assigned Cadre</option>
 												<option value="1">Party</option>
 												<option value="2">Govt</option>
@@ -897,7 +897,24 @@ function getAlertAssignedCandidate()
 				$("#referdistrictId").chosen();         
 			}  
 		});     
-	}      
+	}  
+function assignCadreDetailsAllLevel(){
+	
+            $('#referdistrictId').empty(); 
+			$('#referdistrictId').append('<option value="0">Select District</option>'); 
+			$("#referdistrictId").trigger('chosen:updated');
+			$('#refermandalNameId').empty();
+            $("#stateId").val(globalStateId).trigger('chosen:updated');			
+			$('#refermandalNameId').append('<option value="0">All</option>'); 
+			$("#refermandalNameId").trigger('chosen:updated');
+			$('#referpanchayatId').empty(); 
+			$('#referpanchayatId').append('<option value="0">All</option>'); 
+			$("#referpanchayatId").trigger('chosen:updated');
+			$('#referconstituencyId').empty(); 
+			$('#referconstituencyId').append('<option value="0">All</option>'); 
+			$("#referconstituencyId").trigger('chosen:updated');
+	
+}    
 </script>
 </body>
 </html>

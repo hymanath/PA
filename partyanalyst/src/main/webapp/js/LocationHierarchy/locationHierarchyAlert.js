@@ -1,6 +1,16 @@
 function getDistrictsForReferPopup(index) {
 {
-	var stateId = $("#stateId"+index).val();
+	       var stateId = $("#stateId"+index).val();
+		   $("#assignedCadreId").val(0).trigger('chosen:updated');
+	        $('#referconstituencyId').empty(); 
+			$('#referconstituencyId').append('<option value="0">All</option>'); 
+			$("#referconstituencyId").trigger('chosen:updated');
+			$('#refermandalNameId').empty(); 
+			$('#refermandalNameId').append('<option value="0">All</option>'); 
+			$("#refermandalNameId").trigger('chosen:updated');
+			$('#referpanchayatId').empty(); 
+			$('#referpanchayatId').append('<option value="0">All</option>'); 
+			$("#referpanchayatId").trigger('chosen:updated');
 	var jobj = {
 		stateId : stateId
 	}
@@ -32,6 +42,12 @@ function getDistrictsForReferPopup(index) {
  }
   }
  function getConstituenciesBydistrictForReferPopup(index){
+	 $('#refermandalNameId').empty(); 
+			$('#refermandalNameId').append('<option value="0">All</option>'); 
+			$("#refermandalNameId").trigger('chosen:updated');
+			$('#referpanchayatId').empty(); 
+			$('#referpanchayatId').append('<option value="0">All</option>'); 
+			$("#referpanchayatId").trigger('chosen:updated');
 	 var districtId = $("#referdistrictId"+index).val();
 	var jobj = {
 		districtId : districtId
@@ -61,6 +77,9 @@ function getDistrictsForReferPopup(index) {
  }
 
  function getMandalsByConstituencyForReferPopup(index){
+	 $('#referpanchayatId').empty(); 
+	 $('#referpanchayatId').append('<option value="0">All</option>'); 
+	 $("#referpanchayatId").trigger('chosen:updated'); 
 	 var constituencyId = $('#referconstituencyId'+index).val();
 	var jobj = {
 		constituencyId : constituencyId
@@ -90,7 +109,9 @@ function getDistrictsForReferPopup(index) {
  }
  
  function getPanchayatsForReferPopup(index){
-	
+	 $('#referpanchayatId').empty(); 
+	 $('#referpanchayatId').append('<option value="0">All</option>'); 
+	 $("#referpanchayatId").trigger('chosen:updated');
 	 $("#referpanchayatId"+index).find('option').not(':first').remove();
 	 var mandalId = $('#refermandalNameId'+index).val();
 	 var  type = $("#refermandalNameId"+index+" option:selected").text();
