@@ -489,7 +489,7 @@ $(document).on("click",".involveBlockNew",function(){
 	var cloneCount=0;
 	var involvedCadreIds = [];
 	var assignCadreIds = [];
-	var globalSelectedMemberIdsArr = [];
+	/* var globalSelectedMemberIdsArr = []; */
    $(document).on("click",".apptDetailsDiv",function(){
 		console.log($(this).attr("attr_name"));
 		 if($(this).is(':checked')){
@@ -503,8 +503,10 @@ $(document).on("click",".involveBlockNew",function(){
 			   var mobile = $(this).attr("attr_mobile");
 			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
 			var str ='';
-				str+='<div id="involveBlockParent'+attrId+'"  class="col-md-3 col-xs-12 col-sm-6">';
-				str+='<div class="involveBlock" attr_cadreId="'+attrId+'">';
+				/* str+='<div id="involveBlockParent'+attrId+'"  class="col-md-3 col-xs-12 col-sm-6">';
+				str+='<div class="involveBlock" attr_cadreId="'+attrId+'">'; */
+				str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+				str+='<div class="involveBlock">';
 				str+='<div class="media"><div class="media-left">';
 				str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 				str+='</div>';
@@ -616,11 +618,11 @@ $(document).on("click",".involveBlockNew",function(){
 				 
 						 
 				  cloneCount = cloneCount+1;
-				  globalSelectedMemberIdsArr.push(attrId);
+				  /* globalSelectedMemberIdsArr.push(attrId); */
 				   $('html, body').animate({
 						scrollTop: $('.membersBlock').offset().bottom
 					}, 2000);
-		 }else{ 
+		 }/* else{ 
 			var attrId = $(this).attr("attr_id");
 			cloneCount = cloneCount-1;
 			var index = involvedCadreIds.indexOf(attrId);
@@ -631,15 +633,15 @@ $(document).on("click",".involveBlockNew",function(){
 			$("#involveBlockParent"+attrId).remove();
 			
 			removeParticularValue(globalSelectedMemberIdsArr,attrId);
-		 }
+		 } */
    });
-    function removeParticularValue(arr, item) {
+    /* function removeParticularValue(arr, item) {
 	      for(var i = arr.length; i--;) {
 	          if(arr[i] === item) {
 	              arr.splice(i, 1);
 	          }
 	      }
-	  }
+	  } */
    function onLoad() {
 	
        lang = $("input[name=language]:checked").val();
@@ -1221,12 +1223,12 @@ function buildapptmemberDetails(result){
 		
 		$("#apptmemberDetailsDiv").html(str);
 		/* Make Selected People next time who has already selected for referral in first search */
-		if(globalSelectedMemberIdsArr != null && globalSelectedMemberIdsArr.length > 0){
+		/* if(globalSelectedMemberIdsArr != null && globalSelectedMemberIdsArr.length > 0){
 			for(var i=0;i<globalSelectedMemberIdsArr.length;i++){
 				$(".close"+globalSelectedMemberIdsArr[i]).prop("checked",true);
 				$(".searhMemberCls"+globalSelectedMemberIdsArr[i]).css("background-color", "lightgrey"); 
 			}	
-		}
+		} */
 		$('[data-toggle="tooltip"]').tooltip()
 		$('.check').tooltip()
 		
