@@ -1238,5 +1238,70 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalAlertGroupByPubRepThenStatus(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate, String step){
+	    StringBuilder queryStr = new StringBuilder();    
+	    queryStr.append(" select distinct " +
+	    				" model1.publicRepresentativeType.publicRepresentativeTypeId, " +
+	    				" model1.publicRepresentativeType.type, ");
+	    if(step.equalsIgnoreCase("two")){
+	    	queryStr.append(" model.alert.alertStatus.alertStatusId, " +
+    						" model.alert.alertStatus.alertStatus, ");
+	    }
+	    				
+	    queryStr.append(" count(distinct model.alert.alertId) " +     
+	                	" from " +
+	                	" AlertAssigned model, " +
+	                	" PublicRepresentative model1, " +
+	                	" TdpCadreCandidate model2, " +
+	                	" where  " +
+	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
+	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+	                	" and model.alert.isDeleted='N' " +
+	    				" and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
+	    if(stateId != null && stateId.longValue() > 0l){
+	    	queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+	    }
+	    if(fromDate !=null && toDate !=null){
+	       queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	      queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	    	queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	          queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	         queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+	          queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+	    }
+	    if(step.equalsIgnoreCase("two")){
+	    	queryStr.append(" group by model1.publicRepresentativeType.publicRepresentativeTypeId, model.alert.alertStatus.alertStatusId " +
+    						" order by model1.publicRepresentativeType.publicRepresentativeTypeId, model.alert.alertStatus.alertStatusId ");
+	    }else{
+	    	queryStr.append(" group by model1.publicRepresentativeType.publicRepresentativeTypeId " +
+    						" order by model1.publicRepresentativeType.publicRepresentativeTypeId ");
+	    }
+	    
+	    Query query = getSession().createQuery(queryStr.toString());
+	    if(stateId != null && stateId.longValue() > 0l){            
+	    	query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+	    	query.setDate("startDate", fromDate);
+	    query.setDate("endDate", toDate);
+	    }
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	    	query.setParameterList("impactLevelIds", impactLevelIds); 
+	    }
+	    return query.list();
+	  }     
 }
 
