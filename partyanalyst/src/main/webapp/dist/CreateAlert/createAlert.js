@@ -1081,7 +1081,7 @@ function disableByLevel(index)
    $(document).on("click",".closeIcon",function(){
 	//$(this).parent().remove();
 	$(this).closest(".col-md-3").remove();
-	var id = 0;
+	/* var id = 0;
 	//var id=$(this).attr("id");
 	 var retVal = confirm("Are you sure want to remove this refer ?");
       //var retVal = $("#memberConfirmation").html("already added member to this alert");
@@ -1105,7 +1105,12 @@ function disableByLevel(index)
                }
                else{
                   return false;
-               }	
+               } */	
+			   
+	var id=$(this).attr("id");
+	$(".candidatecls"+id).prop('checked', false); 
+	$(".close"+id).prop('checked', false); 
+	
 	if($(this).attr("btn-type") == "involve")
 	{
 	involvedCadreIds.pop(id);	
