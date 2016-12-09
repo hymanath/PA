@@ -579,7 +579,6 @@ function buildAlertAssignedCandidateData(result)
 	 getConfirmation(tdpCadreId);
 	// deleteAlertAssignedCandidates(tdpCadreId);
 });*/
-getMemberTypes();
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
