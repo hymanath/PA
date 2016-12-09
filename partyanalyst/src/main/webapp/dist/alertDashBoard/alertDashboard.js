@@ -319,7 +319,7 @@ function initSelectBoxForSecondPos(statusId,category){
 var GlobalAlertData;
 function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,locationBlock)
 {
-	 
+	 $("#assignedCadreId").val(0).trigger('chosen:updated'); 
 	 $('html, body').animate({
         scrollTop: $('#locationLevelDataId').offset().top
     }, 2000);
@@ -496,7 +496,7 @@ GlobalalertId = $(this).attr("attr-id");
 	 	$("#descriptionTitleId").html(globalAlertName);
 	getAlertStatusCommentsTrackingDetails();*/
 	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
-window.open("http://mytdp.com/alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
 });
 
 $(document).on("click",".alertCandidate",function(){
