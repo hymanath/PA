@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AlertOverviewVO {
@@ -27,7 +29,7 @@ public class AlertOverviewVO {
 	private List<AlertOverviewVO> categoryList;
 	private List<AlertOverviewVO> subList;
 	private List<AlertOverviewVO> subList1;
-	
+	private Set<Long> alertIdSet;
     private Long locationTypeId;
 	private String locationType;
 	
@@ -186,4 +188,11 @@ public class AlertOverviewVO {
 	public void setSubList1(List<AlertOverviewVO> subList1) {
 		this.subList1 = subList1;
 	}
+	public Set<Long> getAlertIdSet() {
+		if(alertIdSet == null){
+			alertIdSet = new HashSet<Long>(0);
+		}
+		return alertIdSet;
+	}
+	
 }                                                          

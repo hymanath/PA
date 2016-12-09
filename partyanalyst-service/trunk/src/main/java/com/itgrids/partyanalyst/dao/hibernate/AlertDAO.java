@@ -1209,7 +1209,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " where  " +
 		  				  " model2.candidate.candidateId=model1.candidate.candidateId " +
 		  				  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-		  				  " and model.alert.isDeleted='N' " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
 		  				  " and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
 		 if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
@@ -1253,8 +1253,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " from AlertAssigned model,TdpCommitteeMember model1 " +
 		  				  " where  " +
 		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-		  				  " and model.alert.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
+		  				  " and model.alert.alertType.alertTypeId not in ('') " +
 		  				  " and model.alert.alertStatus.alertStatusId not in (1) ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
@@ -1298,7 +1298,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " from AlertAssigned model,TdpMember model1 " +
 		  				  " where  " +
 		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-		  				  " and model.alert.isDeleted='N' " +
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
 		  				  " and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
@@ -1338,10 +1338,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	}
 	public List<Object[]> getAllAlertDtls(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
-		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId " +
+		  queryStr.append(" select distinct model.alert.alertStatus.alertStatusId,model.alert.alertId,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname " +
 		  				  " from AlertAssigned model" +
 		  				  " where  " +
-		  				  " model.alert.isDeleted='N' " +
+		  				  " model.alert.isDeleted='N' and model.isDeleted='N' " +
 		  				  " and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
