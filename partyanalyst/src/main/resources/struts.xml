@@ -14957,5 +14957,10 @@
 					<param name="root">status</param>
 				</result>
 	</action>
+	<action name="getOtherTypeAlertCandiateDtlsAction" class="createAlertAction" method="getOtherTypeAlertCandiateDtls">
+		<result type="json" name="success">
+   			<param name="root">resultList</param>
+   		</result>
+	</action>
  </package>
 </struts>
