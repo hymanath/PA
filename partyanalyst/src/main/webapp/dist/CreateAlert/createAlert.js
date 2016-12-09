@@ -1081,9 +1081,31 @@ function disableByLevel(index)
    $(document).on("click",".closeIcon",function(){
 	//$(this).parent().remove();
 	$(this).closest(".col-md-3").remove();
-	var id=$(this).attr("id");
-	$(".candidatecls"+id).prop('checked', false); 
-	$(".close"+id).prop('checked', false); 
+	var id = 0;
+	//var id=$(this).attr("id");
+	 var retVal = confirm("Are you sure want to remove this refer ?");
+      //var retVal = $("#memberConfirmation").html("already added member to this alert");
+               if( retVal == true ){
+				    id=$(this).attr("id");
+					  $(".involveBlock").each(function(){
+						  alert(40);
+						var cadreId = $(this).attr("attr_cadreId") ; 
+							if(id == cadreId)
+							{
+								alert(890);
+								$("#involveBlockParent"+id).remove();
+							}
+					  }); 
+	  $(".candidatecls"+id).prop('checked', false); 
+	  $(".close"+id).prop('checked', false);
+	              removeParticularValue(globalSelectedMemberIdsArr,id);
+				  removeParticularValue(involvedCadreIds,id);
+				  $("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+            return true;
+               }
+               else{
+                  return false;
+               }	
 	if($(this).attr("btn-type") == "involve")
 	{
 	involvedCadreIds.pop(id);	
