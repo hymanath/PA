@@ -2759,7 +2759,7 @@ function getAdvanceSearchDetails(){
 	
 	var manMunId = $("#mandalList").val();
 	if(manMunId == 0){
-		$("#searchErrDiv").html("Select Mandal/Muncipality");
+		$("#searchErrDiv").html("Select Mandal/Muncipality/Corporation");
 		return;
 	}
 	
