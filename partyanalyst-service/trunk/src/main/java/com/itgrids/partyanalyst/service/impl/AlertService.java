@@ -3429,7 +3429,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	}
  	return returnList;
  }
- 	public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId){
+ 
+ public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
 			Date fromDate = null;        
@@ -3535,6 +3536,32 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 			}
 			return null;  
- 		}
+		}
+ 
+ public String updateCandidateStatusOfAlert(Long alertId,Long userId){
+	 try{
+		 
+		int count =  alertDAO.updateCandidateStatusOfAlert(alertId,userId);
+		
+		if(count>0){			
+			 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+			 alertTrackingVO.setUserId(userId);
+			 alertTrackingVO.setAlertStatusId(1l);
+			 alertTrackingVO.setAlertId(alertId);
+			 alertTrackingVO.setAlertTrackingActionId(1l);
+			 
+			 //tracking saving method
+			 saveAlertTrackingDetails(alertTrackingVO)	;
+			 
+			 return "success";
+		}
+		
+	 }catch(Exception e){		 
+		 LOG.error("Exception in updateCandidateStatusOfAlert()",e);	
+		 return "failure";
+	 }
+	 return "failure";
+ }
 	    
-	}
+}
+
