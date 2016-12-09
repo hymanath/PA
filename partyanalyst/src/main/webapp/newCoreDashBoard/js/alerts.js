@@ -12,6 +12,7 @@
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9); 
 			getTotalAlertGroupByDist(scopeIdsArr);
+			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 			$(".districtAltCtnCls").toggle();
 		}else{
 			console.log("closing")
@@ -173,7 +174,7 @@
 		}else if(selectionType == "District"){
 			scopeIdsArr.push(2);
 		}else if(selectionType == "Constituency"){
-			scopeIdsArr.push(2);
+			scopeIdsArr.push(3);
 		}else{
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9);
@@ -191,6 +192,7 @@
 		}else{
 			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
 		}
+		getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 	});     
 	$(document).on("click",".alertSettingCloseCls",function(){      
 		$(".specialAlertDropDown").toggle();                    
@@ -237,7 +239,7 @@
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}     
 		}).done(function(result){       
-			
+			$("#districtWiseAlertCountId").html(' ');
 			if(result != null && result.length > 0){
 				buildTotalAlertGroupByDist(result);       
 			}  
@@ -651,7 +653,7 @@
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}    
 		}).done(function(result){
-			
+				$("#districtWiseAlertCountId").html(' ');
 			if(result != null && result.length > 0){
 				buildTotalAlertGroupByLocationThenCategory(result);
 			}
@@ -825,8 +827,8 @@
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}    
 		}).done(function(result){
+			$("#districtWiseAlertCountId").html(' ');
 			if(result != null && result.length > 0){  
-				
 				buildTotalAlertGroupByLocationThenStatus(result);
 			}
 		});  
@@ -860,7 +862,7 @@
 							var uniqCnt = {};
 							categoryName.push(result[i].subList1[j].category);
 							countAlert.push(result[i].subList1[j].categoryCount);
-							var uniqCnt = {y:parseInt(result[i].count)-parseInt(result[i].subList1[j].categoryCount),color:"#66728C"};
+							var uniqCnt = {y:parseInt(result[i].count)-parseInt(result[i].subList1[j].categoryCount),color:"#D3D3D3"};
 							count.push(uniqCnt);
 						}
 						console.log(count);
@@ -1161,3 +1163,145 @@ function getMonth(month){
 		return "Dec"
 	}  
 }
+
+function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
+	 $("#groupAssignAlertDlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj = { 
+			stateId : globalStateId,             
+			fromDate : '',        
+			toDate : '',             
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : globalActivityMemberId                                 
+		}                  
+		$.ajax({
+			type : 'POST',      
+			url : 'getAssignGroupTypeAlertDtlsByImpactLevelWiseAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}     
+		}).done(function(result){       
+			if(result != null && result.length > 0){
+				buildAlertAssignGroupAlertsDtls(result);
+			}else{
+				$("#groupAssignAlertDlsDivId").html('NO DATA AVAILABLE.');
+			}
+		});  
+	}
+	function buildAlertAssignGroupAlertsDtls(result){  
+		$("#groupAssignAlertDlsDivId").html("");
+		var str ='';
+		if(result !=null && result.length >0){
+			     str+='<div class="row">';
+				   for(var i in result){
+		              if(result[i].totalAlertCnt > 0){
+					  str+='<div class="col-md-3 col-xs-6 col-sm-12">';
+						str+='<h4 style="text-align:center;">'+result[i].name+" - "+result[i].totalAlertCnt+'</h4>';
+						str+='<div id="groupAssign'+i+'" style="height:300px;width:250px"></div>'; 
+					  str+='</div>';
+			         }
+			      }
+		 	str+='</div>';			
+		}
+		$("#groupAssignAlertDlsDivId").html(str);
+			if(result !=null && result.length >0){
+				for(var i in result){
+					var groupAssingName;
+					groupAssingName = result[i].name+"["+result[i].totalAlertCnt+"]";
+					if(result[i].subList1 !=null && result[i].subList1.length >0){
+						var groupAssignTypeName =[];
+						var alertCnt = [];
+						var count = [];
+						for(var j in result[i].subList1){
+							var uniqCnt = {};
+							if(result[i].totalAlertCnt > 0){
+								groupAssignTypeName.push(result[i].subList1[j].statusType);
+								alertCnt.push(result[i].subList1[j].alertCount);
+								var uniqCnt = {y:parseInt(result[i].totalAlertCnt)-parseInt(result[i].subList1[j].alertCount),color:"#D3D3D3"};
+								count.push(uniqCnt);
+							}
+						}
+						if(alertCnt.length != 0){
+						$(function () {
+									$('#groupAssign'+i+'').highcharts({
+										colors: ['#A185BF','#0166FF','#32CCFE','#019966','#FF6600','#CC0001'],     
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: null
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: groupAssignTypeName,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '11px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											formatter: function () {
+												var s = '<b>' + this.x + '</b>';
+
+													$.each(this.points, function () {
+													if(this.series.name != "Series 1")  
+													s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+														this.y+' - ' +
+														(Highcharts.numberFormat(this.percentage,1)+'%');
+												});
+
+												return s;
+											},
+											shared: true
+										},
+										legend: {   
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												stacking: 'percent',  
+												dataLabels:{
+													enabled: false,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.percentage,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											data: count  
+										}, {
+											name: "Number of alerts",
+											data: alertCnt,
+											colorByPoint: true
+										}]
+									});
+								});	
+						}else{
+						 $("#groupAssign"+i).css("height","35px");
+						}
+					}
+				}
+			}else{
+				$("#groupAssignAlertDlsDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+	}

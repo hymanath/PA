@@ -14942,6 +14942,11 @@
 	<action name="cardPrintDashboardAction" class="cardPrintAction" method="cardPrintDashboard">
 			 <result name="success">/jsp/cardPrintDashboard.jsp</result>
 	</action>
+	<action name="getAssignGroupTypeAlertDtlsByImpactLevelWiseAction" class="createAlertAction" method="getAssignGroupTypeAlertDtlsByImpactLevelWise">
+		<result type="json" name="success">
+   			<param name="root">resultList</param>
+   		</result>
+	</action>
 	<action name="getTotalAlertGroupByPubRepThenStatusAction" class="createAlertAction"  method="getTotalAlertGroupByPubRepThenStatus">
 		<result type="json" name="success">    
 			<param name="root">alertVOs</param>
