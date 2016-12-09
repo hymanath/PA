@@ -1253,7 +1253,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" from " +
 	                	" AlertAssigned model, " +
 	                	" PublicRepresentative model1, " +
-	                	" TdpCadreCandidate model2, " +
+	                	" TdpCadreCandidate model2 " +
 	                	" where  " +
 	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
 	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
