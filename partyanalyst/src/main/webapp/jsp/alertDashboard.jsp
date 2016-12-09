@@ -45,11 +45,11 @@
 	<div class="row">
 		
     	<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-			
-           		
+			<div class="panel panel-default">
+				<div class="panel-heading panel-headingColor">
 					<div class="row">
 						<div class="col-md-5 col-xs-12 col-sm-6">    
-							<h4 class="panel-title text-capital">alert dashboard</h4>
+							<h3 class="text-capital" style="margin-top:5px !important;"><b>alert dashboard</b></h3>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">
 							<div class="input-group">
@@ -75,42 +75,55 @@
 							</div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-3">
-								<select class="form-control" id="alertTypeId">
-									<option value="0">All</option>
-									<option value="1" selected="selected">Party</option>            
-									<option value="2">Govt</option>
-									<option value="3">Others</option>
-								</select>
-							</div>
-					</div>  
-                
+							<select class="form-control" id="alertTypeId">
+								<option value="0">All</option>
+								<option value="1" selected="selected">Party</option>            
+								<option value="2">Govt</option>
+								<option value="3">Others</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
 					<div class="row m_top20">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="overAllCount"></div>
 							
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-							<div id="alertCatTabId"></div>
-						</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
-								<div class="panel panel-default">
-									<div class="panel-heading panel-headingColor">
-										<div class="row">
-											<div class="col-md-3 col-xs-12 col-sm-3">
-												<h4 class="panel-title text_capital"><b>impacted region alerts</b></h4>
-											</div>
+							<div class="panel panel-default">
+								<div class="panel-heading panel-headingColor">
+									<div class="row">
+										<div class="col-md-3 col-xs-12 col-sm-3">
+											<h4 class="panel-title text_capital"><b>alert status</b></h4>
 										</div>
 									</div>
-									<div class="panel-body bg_EF" style="padding-top:20px;">
-										<div id="locWiseAltCntId" class="" ></div>
-									</div>
+								</div>
+								<div class="panel-body bg_EF">
+									<div id="alertCatTabId"></div>
 								</div>
 							</div>
+						</div>
+							
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
+							<div class="panel panel-default">
+								<div class="panel-heading panel-headingColor">
+									<div class="row">
+										<div class="col-md-3 col-xs-12 col-sm-3">
+											<h4 class="panel-title text_capital"><b>impacted region alerts</b></h4>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body bg_EF" style="padding-top:20px;">
+									<div id="locWiseAltCntId" class="" ></div>
+								</div>
+							</div>
+						</div>
 							
 						
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
-								<div class="panel-heading bg_cc" role="tab" id="headingThree">
+								<div class="panel-heading panel-headingColor" role="tab" id="headingThree">
 									<div class="row">
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<h4 class="panel-title text-capital undoIcon">
@@ -147,114 +160,131 @@
 							</div>
 						</div>
 					</div>
-
-			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12">
+					
+					
+				</div>
+			</div>
+           	<div class="panel panel-default">
+				<div class="panel-heading panel-headingColor">
 					<div class="row">
-						<div class="col-md-3 col-xs-12 col-sm-4">
-							<h4>VIEW / ASSIGN ALERT</h4>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-4">
+									<h3 style="margin-top:5px"><b>VIEW / ASSIGN ALERT</b></h3>
+								</div>
+								<div class="col-md-8 col-xs-12 col-sm-8">
+									<button type="button" class="btn btn-default showfilterBlock pull-right" >Show Filters</button>
+									<div class="filterBlockDiv updateDropDown" style="width:100%" >
+										<div class="updateDropDownArrow">
+											<button type="button" class="closedropdown close"  data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+											<div class="row">
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<label style="font-size:14px;" class="textcolor_black">Assigned Cadre</label>
+													<select class="form-control chosen-select" id="assignedCadreId" onChange="assignCadreDetailsAllLevel();">
+														<option value="0" selected="selected">Select Assigned Cadre</option>
+														<option value="1">Party</option>
+														<option value="2">Govt</option>
+													</select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<label style="font-size:14px;" class="textcolor_black">State</label>
+													 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
+														 <option value="0">All</option>
+														 <option value="1" selected="selected">Andhra Pradesh</option>    
+														 <option value="36">Telangana</option>   
+													 </select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<label style="font-size:14px;" class="textcolor_black">District</label>
+														<select class="chosen-select " id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
+														<option value="0">Select District</option></select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<label style="font-size:14px;" class="textcolor_black">Assembly</label>
+													<select class=" form-control chosen-select " id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
+													<option value="0">All</option>
+													</select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<label style="font-size:14px;" class="textcolor_black">Mandal/Municipality</label>
+													<select class=" form-control chosen-select " id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
+														<option value="0">All</option>
+													 </select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<label style="font-size:14px;" class="textcolor_black">Panchayat/Ward</label>
+													<select class=" form-control chosen-select " id="referpanchayatId" >
+														<option value="0">All</option>
+													</select>
+												</div>
+												<div class="col-md-3 col-xs-12 col-sm-6">
+													<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
+												</div>
+											</div>
+										</div>
+									</div>	
+								</div>
+							</div>
 						</div>
-						<div class="col-md-9 col-xs-12 col-sm-8">
-							<button type="button" class="btn btn-default showfilterBlock pull-right" >Show Filters</button>
-							<div class="filterBlockDiv updateDropDown" style="width:100%" >
-								<div class="updateDropDownArrow">
-									<button type="button" class="closedropdown close"  data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row m_top10">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="alertheadingcolor">
+								<div class="row">
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Category</label>
+										<select class="form-control" id="alertCategoryId">           
+											<option value="0" selected="selected">All</option>
+											<option value="1">Manual</option>
+											<option value="2">Print Media</option>
+											<option value="3">Electronic Media</option>  
+										</select>  
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
+										<select class="form-control chosen-select" id="alertStatusId" >
+											<option value="0" selected="selected">All</option>
+											<option value="1">Pending</option>
+											<option value="2">Notified</option>
+											<option value="3">Action In Progess</option>
+											<option value="4">Completed</option>
+											<option value="5">Unable to Resolve</option>
+											<option value="6">Action Not Required</option>
+										</select>
+									</div>
+									
+									<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn  btn-success m_top20 " type="button"  >View</button>
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<h4 class="panel-title text_capital"><b><u>alert details</u></b></h4>
+							<div id="locationLevelDataId" class="m_top20"></div>
+							<!--<div class="panel panel-default">
+								<div class="panel-heading panel-headingColor">
 									<div class="row">
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label style="font-size:14px;" class="textcolor_black">Assigned Cadre</label>
-											<select class="form-control chosen-select" id="assignedCadreId" onChange="assignCadreDetailsAllLevel();">
-												<option value="0" selected="selected">Select Assigned Cadre</option>
-												<option value="1">Party</option>
-												<option value="2">Govt</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label style="font-size:14px;" class="textcolor_black">State</label>
-											 <select class=" form-control chosen-select " id="stateId" onChange="getDistrictsForReferPopup('');">
-												 <option value="0">All</option>
-												 <option value="1" selected="selected">Andhra Pradesh</option>    
-												 <option value="36">Telangana</option>   
-											 </select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label style="font-size:14px;" class="textcolor_black">District</label>
-												<select class="chosen-select " id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
-												<option value="0">Select District</option></select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label style="font-size:14px;" class="textcolor_black">Assembly</label>
-											<select class=" form-control chosen-select " id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
-											<option value="0">All</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label style="font-size:14px;" class="textcolor_black">Mandal/Municipality</label>
-											<select class=" form-control chosen-select " id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
-												<option value="0">All</option>
-											 </select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<label style="font-size:14px;" class="textcolor_black">Panchayat/Ward</label>
-											<select class=" form-control chosen-select " id="referpanchayatId" >
-												<option value="0">All</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6">
-											<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button"  >Apply Filters</button>
+										<div class="col-md-3 col-xs-12 col-sm-3">
+											
 										</div>
 									</div>
 								</div>
-							</div>	
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row m_top10">
-				<div class="col-md-12 col-xs-12 col-sm-12">
-					<div class="alertheadingcolor">
-						<div class="row">
-							<div class="col-md-3 col-xs-12 col-sm-3">
-								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Category</label>
-								<select class="form-control" id="alertCategoryId">           
-									<option value="0" selected="selected">All</option>
-									<option value="1">Manual</option>
-									<option value="2">Print Media</option>
-									<option value="3">Electronic Media</option>  
-								</select>  
-							</div>
-							<div class="col-md-3 col-xs-12 col-sm-3">
-								<label style="font-size:14px;" class="textcolor_black text_capital">Alert Status</label>
-								<select class="form-control chosen-select" id="alertStatusId" >
-									<option value="0" selected="selected">All</option>
-									<option value="1">Pending</option>
-									<option value="2">Notified</option>
-									<option value="3">Action In Progess</option>
-									<option value="4">Completed</option>
-									<option value="5">Unable to Resolve</option>
-									<option value="6">Action Not Required</option>
-								</select>
-							</div>
-							
-							<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn  btn-success m_top20 " type="button"  >View</button>
-							
-						</div>
-					</div>
-				</div>
-				<div class="col-md-12 col-xs-12 col-sm-12">
-					<div class="panel panel-default">
-						<div class="panel-heading panel-headingColor">
-							<div class="row">
-								<div class="col-md-3 col-xs-12 col-sm-3">
-									<h4 class="panel-title text_capital"><b>alert details</b></h4>
+								<div class="panel-body bg_ff">
+									
 								</div>
-							</div>
-						</div>
-						<div class="panel-body bg_ff">
-							<div id="locationLevelDataId"></div>
+							</div>-->
 						</div>
 					</div>
-                </div>
-            </div>
+				</div>
+			</div>	
+					
+                
+					
+
+			
+			
         </div>
     </div>
 </div>
@@ -395,7 +425,10 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
-
+if($(window).width() < 500)
+{
+	$("table").wrap( "<div class='table-responsive'></div>" );
+}
 $(document).on("click",".menuSelection li",function(){
 	$(this).parent(".menuSelection").find("li").removeClass("active");
 	$(this).addClass("active");
@@ -681,9 +714,13 @@ function getAlertAssignedCandidate()
 		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
 		//var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 		var str = '';  
+		if($(window).width() < 500)
+		{
+			str+='<div class="table-responsive">';
+		}
 		str+='<table class="table table-condensed b_1">';
 			str+='<thead class="bg_CD" style="background-color:#CDCDD9;">';
-				str+='<th>ALERT STATUS</th>';    
+				str+='<th></th>';    
 				for(var i in result[0].subList1){
 					str+='<th class="text-capital text-center" >'+result[0].subList1[i].category+'</th>';
 				}  
@@ -706,6 +743,10 @@ function getAlertAssignedCandidate()
 				str+='</tr>';   
 			}
 		str+='</table>';
+		if($(window).width() < 500)
+		{
+			str+='</div>';
+		}
 		$("#alertCatTabId").html(str);  
 	}
 	 
