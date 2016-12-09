@@ -944,10 +944,20 @@ $(document).on("change","#boothsList",function(){
 						str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNo+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
 					  str += '</div>';
 				  }else{
-					 str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
-						str += '</p>';
-					  str += '<div class="checkboxAlign">';
-						str += ' <span style="color:green;font-weight:bold" title="Already Registered for 2016-2018. " alt="Already Registered for 2016-2018. ">&nbsp;&nbsp; Already Registered </span></div>';
+					  if(result[i].isCsd != null && result[i].isCsd == 'Y'){
+						  str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
+							str += '</p>';
+						  str += '<div class="checkboxAlign">';
+							str += '<input type="radio" id="checkbox'+i+'" class="checkbox-custom"/>';
+							str += '<label for="checkbox'+i+'" class="checkbox-custom-label searchChkboxClsR" name="renewalRadioBtn" attr_voterId="'+result[i].voterId+'" attr_tdpCadre_id="'+result[i].id+'" attr_enrol_yId="'+result[i].enrollmentYearId+'" attr_relative_voter="'+result[i].familyVoterId+'" attr_number="'+i+'" attr_mobile_no="'+result[i].mobileNo+'" attr_act_mbl_no="'+result[i].occupation+'" attr_img1="'+result[i].imageURL+'" style="font-size:13px;font-weight:200;text-transform:uppercase">&nbsp;</label>';
+						  str += '</div>';
+					  }
+					  else{
+						  str += '<span>&nbsp;&nbsp;AGE :<span  id="profileAge'+i+'">'+result[i].age+'</span></span>';
+							str += '</p>';
+						  str += '<div class="checkboxAlign">';
+							str += ' <span style="color:green;font-weight:bold" title="Already Registered for 2016-2018. " alt="Already Registered for 2016-2018. ">&nbsp;&nbsp; Already Registered </span></div>';
+					  }
 				  }
 				  str += '<p class="hide" id="mobileNo'+i+'">'+result[i].mobileNo+'</p>';
 			  str += '</div>';
