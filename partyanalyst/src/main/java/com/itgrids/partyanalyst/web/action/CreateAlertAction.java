@@ -700,6 +700,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String updateCandidateStatusOfAlert(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			
+			status = alertService.updateCandidateStatusOfAlert(jObj.getLong("alertId"),regVo.getRegistrationID());
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in updateCandidateStatusOfAlert()",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
 	public String getTotalAlertGroupByPubRepThenStatus(){
 		try{
 			session = request.getSession();
