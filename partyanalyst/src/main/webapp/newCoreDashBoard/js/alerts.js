@@ -6,7 +6,12 @@
 			$(".alertLocationDiv").show();
 			getAlertCategoryDtlsLocationWise();
 			console.log("opening")
-			getTotalAlertGroupByDist();   
+			var scopeIdsArr = [];
+			scopeIdsArr.push(2);  
+			scopeIdsArr.push(3);  
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9); 
+			getTotalAlertGroupByDist(scopeIdsArr);
 			$(".districtAltCtnCls").toggle();
 		}else{
 			console.log("closing")
@@ -156,12 +161,69 @@
 		$("#alertOverview").html(str)
 			
 	}
-	function getTotalAlertGroupByDist(){
+	$(document).on("click",".alertDtlsBtnCls",function(){
+		$(".specialAlertDropDown").toggle(); 
+		var scopeIdsArr = [];		
+		var selectionType=$("input:radio[name=locationLevel]:checked").attr("attr_val");
+		if(selectionType == "All"){
+			scopeIdsArr.push(2);  
+			scopeIdsArr.push(3);  
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9); 
+		}else if(selectionType == "District"){
+			scopeIdsArr.push(2);
+		}else if(selectionType == "Constituency"){
+			scopeIdsArr.push(2);
+		}else{
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9);
+		}//optionsCls
+		var locVal ='';
+		$( "li.optionsCls" ).each(function() {
+			if($( this ).hasClass( "active" )){
+				locVal = $(this).attr("attr_id");
+			}
+		});
+		if(locVal == "1"){  
+			getTotalAlertGroupByDist(scopeIdsArr);      
+		}else if(locVal == "2"){
+			getTotalAlertGroupByLocationThenCategory(scopeIdsArr);
+		}else{
+			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
+		}
+	});     
+	$(document).on("click",".alertSettingCloseCls",function(){      
+		$(".specialAlertDropDown").toggle();                    
+	});
+	
+	
+	$(document).on("click",".optionsCls",function(){
 		var scopeIdsArr = [];
-		scopeIdsArr.push(2);  
-		scopeIdsArr.push(3);  
-		scopeIdsArr.push(7);  
-		scopeIdsArr.push(9);              
+		var option = $(this).attr("attr_id");
+		var selectionType=$("input:radio[name=locationLevel]:checked").attr("attr_val");
+		if(selectionType == "All"){
+			scopeIdsArr.push(2);  
+			scopeIdsArr.push(3);  
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9); 
+		}else if(selectionType == "District"){
+			scopeIdsArr.push(2);
+		}else if(selectionType == "Constituency"){
+			scopeIdsArr.push(2);
+		}else{
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9);
+		}
+		if(option == "1"){
+			getTotalAlertGroupByDist(scopeIdsArr);
+		}else if(option == "2"){
+			getTotalAlertGroupByLocationThenCategory(scopeIdsArr);
+		}else{
+			getTotalAlertGroupByLocationThenStatus(scopeIdsArr);
+		}
+	});
+	function getTotalAlertGroupByDist(scopeIdsArr){ 
+		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = { 
 			stateId : 1,             
 			fromDate : '',        
@@ -193,7 +255,7 @@
 			};
 			distWiseArticlesRelated.push(obj1);
 		}
-		$("#districtWiseAlertCountId").html(str)
+		$("#districtWiseAlertCountId").html(str);
 		$(function () {
 			 $("#districtAlertCountId").highcharts({  
 				colors: ['#53BF8B'],    
@@ -256,7 +318,7 @@
 					data: distWiseArticlesRelated
 				}],
 			 
-			});
+			});  
 		});
 	}
 	$(document).on("click",".alertDtlsCls",function(){
@@ -573,7 +635,366 @@
 		}
 	}
 	
-function buildAlertAssignedCandidates(result)
+	function getTotalAlertGroupByLocationThenCategory(scopeIdsArr){
+		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj = { 
+			stateId : 1,             
+			fromDate : '',      
+			toDate : '',  
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : 44,       
+			group : ""
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getTotalAlertGroupByLocationThenCategoryAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			
+			if(result != null && result.length > 0){
+				buildTotalAlertGroupByLocationThenCategory(result);
+			}
+		});  
+	}
+	function buildTotalAlertGroupByLocationThenCategory(result){  
+		$("#districtWiseAlertCountId").html("");
+		var str ='';
+		if(result !=null && result.length >0){
+			str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-ms-12">';
+			str+='<ul class="distWiseSlickApply">';
+			for(var i in result){
+				str+='<li style="border-right:1px solid #ccc"><div id="distwisegraph'+i+'"  style="height:200px;width:220px"></div></li>';
+				
+			}
+			str+='</ul>'; 			
+			str+='</div>'; 
+			str+='</div>';			
+		}
+		
+		
+		$("#districtWiseAlertCountId").html(str);
+			if(result !=null && result.length >0){
+				for(var i in result){
+					var districtName;
+					districtName = result[i].status;
+					if(result[i].subList1 !=null && result[i].subList1.length >0){
+						var categoryName =[];
+						var count =[];
+						for(var j in result[i].subList1){
+							categoryName.push(result[i].subList1[j].category);   
+							count.push(result[i].subList1[j].categoryCount);
+						}
+							if(categoryName.length !=0 && count.length !=0  && districtName != 0 && districtName != null){
+								$(function () {
+									$('#distwisegraph'+i+'').highcharts({
+										colors: ['#808000','#00FFFF','#FF00FF'],     
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: districtName
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: categoryName,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											formatter: function () {
+												var s = '<b>' + this.x + '</b>';
+
+												$.each(this.points, function () {
+													s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :'+(this.y);
+												});
+
+												return s;
+											},
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {        
+												dataLabels:{
+													enabled: false,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.percentage,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Number of alert',
+											data: count,
+											colorByPoint: true
+										}]
+									});
+								});
+							}else{
+								$('#distwisegraph'+i+'').html("No Data Available");
+								$('#distwisegraph'+i+'').css("height","20px");
+							}
+					}
+				}
+			}	  
+			else{
+				$("#districtWiseAlertCountId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+			
+		$(".distWiseSlickApply").slick({      
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+			  ]
+		}); 
+	}
+	//getTotalAlertGroupByLocationThenStatusAction  
+	function getTotalAlertGroupByLocationThenStatus(scopeIdsArr){
+		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj = { 
+			stateId : 1,             
+			fromDate : '',      
+			toDate : '',  
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : 44,       
+			group : ""
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getTotalAlertGroupByLocationThenStatusAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			if(result != null && result.length > 0){  
+				
+				buildTotalAlertGroupByLocationThenStatus(result);
+			}
+		});  
+	}
+	function buildTotalAlertGroupByLocationThenStatus(result){  
+		$("#districtWiseAlertCountId").html("");
+		var str ='';
+		if(result !=null && result.length >0){
+			str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-ms-12">';
+			str+='<ul class="distWiseSlickApply">';
+			for(var i in result){
+				str+='<li style="border-right:1px solid #ccc"><div id="distwisegraph'+i+'"  style="height:300px;width:250px"></div></li>';        
+			}
+			str+='</ul>';			  
+			str+='</div>'; 
+			str+='</div>';			
+		}
+		
+		
+		$("#districtWiseAlertCountId").html(str);
+			if(result !=null && result.length >0){
+				for(var i in result){
+					var districtName;
+					districtName = result[i].status+"["+result[i].count+"]";
+					if(result[i].subList1 !=null && result[i].subList1.length >0){
+						var categoryName =[];
+						var countAlert = [];
+						var count = [];
+						for(var j in result[i].subList1){
+							var uniqCnt = {};
+							categoryName.push(result[i].subList1[j].category);
+							countAlert.push(result[i].subList1[j].categoryCount);
+							var uniqCnt = {y:parseInt(result[i].count)-parseInt(result[i].subList1[j].categoryCount),color:"#66728C"};
+							count.push(uniqCnt);
+						}
+						console.log(count);
+						console.log(countAlert);
+							if(categoryName.length !=0 && count.length !=0  && districtName != 0 && districtName != null){
+								$(function () {
+									$('#distwisegraph'+i+'').highcharts({
+										colors: ['#A185BF','#0166FF','#32CCFE','#019966','#FF6600','#CC0001'],     
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: districtName
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: categoryName,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											formatter: function () {
+												var s = '<b>' + this.x + '</b>';
+
+												$.each(this.points, function () {
+													if(this.series.name != "Series 1")  
+													s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+														Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+														(this.y);
+												});
+
+												return s;
+											},
+											shared: true
+										},
+										legend: {   
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												stacking: 'percent',  
+												dataLabels:{
+													enabled: false,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.percentage,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											data: count  
+										}, {
+											name: "Number of alerts",
+											data: countAlert,
+											colorByPoint: true
+										}]
+									});
+								});
+							}else{
+								$('#distwisegraph'+i+'').html("No Data Available");
+								$('#distwisegraph'+i+'').css("height","20px");
+							}
+					}
+				}
+			}	  
+			else{
+				$("#districtWiseAlertCountId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+			
+		$(".distWiseSlickApply").slick({    
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+			  ]
+		}); 
+	}
+	
+	function buildAlertAssignedCandidates(result)
 {
 	var str='';
 	str+='<h5 class="text-muted text-capital">Assigned Candidates</h5>';
