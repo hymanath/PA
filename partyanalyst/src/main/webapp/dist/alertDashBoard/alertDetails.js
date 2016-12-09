@@ -455,7 +455,7 @@ function getConfirmation(tdpCadreId){
 
 
 // $("#assignedCadreId").multiselect({ noneSelectedText:"Select Assign Cadre"}).multiselectfilter({});
-function getAlertAssignedCandidate(alertId)
+function getAlertAssignedCandidate(alertId,type)
 {
 	
 	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
@@ -484,8 +484,31 @@ function getAlertAssignedCandidate(alertId)
 		//$("#assignedCadreId").multiselect('refresh'); 
 		
 		$("#assignedCadreId").trigger("chosen:updated");
+		
+		if(type !=null && type=="updateStatus"){
+			if(result == null || result.length <= 0){
+				updateCandidateStatusOfAlert(alertId);								
+			}
+		}
+		
+	});	
+}
+function updateCandidateStatusOfAlert(alertId){
+	var jsObj={
+    			alertId:alertId,
+				task:""
+    		}
+	$.ajax({
+	  type : 'GET',
+	  url : 'updateCandidateStatusOfAlertAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result=="success"){
+			$("#statusId").val(1);
+			$("#statusId").dropkick('refresh')
+		}
 	});
-	
 }
 
 $("#assignedCadreId").chosen();

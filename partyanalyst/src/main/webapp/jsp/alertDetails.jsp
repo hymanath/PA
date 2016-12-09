@@ -498,9 +498,9 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 	$("#deleteProcessing"+tdpCadreId).show();
    	var jsObj =
 		     {
-			alertId  : alertId,
-			tdpCadreId: tdpCadreId,
-			task : ""
+				alertId  : alertId,
+				tdpCadreId: tdpCadreId,
+				task : ""
 		      }
 			$.ajax({
 					  type:'GET',
@@ -509,7 +509,7 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 			   }).done(function(result){
 				   $("#deleteProcessing"+tdpCadreId).hide();
 				   getAlertAssignedCandidates(alertId);
-				   getAlertAssignedCandidate(alertId);
+				   getAlertAssignedCandidate(alertId,"updateStatus");
 			      //buildAlertAssignedCandidateData(result);
 				});
 }
@@ -524,29 +524,33 @@ function buildAlertAssignedCandidateData(result)
 	}
 	var str='';
 	for(var i in result)
-				{
-	for(var j in result[i].subList)  
 	{
-		str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
-		str+='<div class="media-left">';
-        str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
-        str+='</div>';
-		str+='<div class="media-body" style="position:relative;">';
-		str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">';
-		str+='<span id="deleteProcessing'+result[i].subList[j].id+'" style="display:none;"><img src="images/search.gif" /></span>';
-        str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash" title="Click here to Delete"></i></span>';
-		str+='</c:if>';  
-		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
-		if(result[i].subList[j].committeePosition != null && result[i].subList[j].committeePosition.length > 0)
-		str+='<p class="text-capital"><b>'+result[i].subList[j].committeeName+' Committee '+result[i].subList[j].committeePosition+'</b></p>';  
-		//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
-        //str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
-        str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
-        str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
-		 str+=' </div>';
-		 str+=' </div>';
-	}
-	$("#assignCandidatesCnt").html(result[0].subList.length);
+		for(var j in result[i].subList)  
+		{
+			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
+			str+='<div class="media-left">';
+			str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+			str+='</div>';
+			str+='<div class="media-body" style="position:relative;">';
+			str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT')}">';
+			str+='<span id="deleteProcessing'+result[i].subList[j].id+'" style="display:none;"><img src="images/search.gif" /></span>';
+			
+			if(result[i].subList[j].comment == null || result[i].subList[j].comment.length<=0){
+				str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash" title="Click here to Delete"></i></span>';
+			}
+			
+			str+='</c:if>';  
+			str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
+			if(result[i].subList[j].committeePosition != null && result[i].subList[j].committeePosition.length > 0)
+			str+='<p class="text-capital"><b>'+result[i].subList[j].committeeName+' Committee '+result[i].subList[j].committeePosition+'</b></p>';  
+			//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
+			//str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
+			str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
+			str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
+			 str+=' </div>';
+			 str+=' </div>';
+		}
+		$("#assignCandidatesCnt").html(result[0].subList.length);
 	}
 	$("#alertAssignedCandidateDataId").html(str);
 	if(result[0].subList.length > 3)
