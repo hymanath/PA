@@ -558,7 +558,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>G.O  Passed Applications</th>';
 							str+='<th style="font-weight:bold">Rejected Applications </th>';
 							str+='<th style="font-weight:bold">Rejected in Final Review </th>';
-							str+='<th style="font-weight:bold">Rejected in Finalized </th>';
+							//str+='<th style="font-weight:bold">Rejected in Finalized </th>';
 
 							
 					str+='</thead>';
@@ -591,7 +591,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					var finalized = 0;
 					var goPassed = 0;
 					var rejectedInFinalRev = 0;
-					var rejectedInFinalized = 0;
+					//var rejectedInFinalized = 0;
 					
 						if(result[i].distList !=null && result[i].distList.length>0){
 								for(var j in result[i].distList){
@@ -601,9 +601,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 											rejected  = rejected+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Rejected in Final Review" ){
 											rejectedInFinalRev  = rejectedInFinalRev+result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="Rejected in Finalized" ){
+										}/*else if(result[i].distList[j].name =="Rejected in Finalized" ){
 											rejectedInFinalized  = rejectedInFinalized+result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="Shortlisted"){
+										}*/else if(result[i].distList[j].name =="Shortlisted"){
 											shortListed = shortListed+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Final Review"){
 											readyForFinalReview = readyForFinalReview+result[i].distList[j].count;
@@ -694,11 +694,11 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}else{
 									str+='<td> - </td>';
 								}
-								if(rejectedInFinalized >0){
+								/*if(rejectedInFinalized >0){
 									str+='<td>'+rejectedInFinalized+'</td>';
 								}else{
 									str+='<td> - </td>';
-								}
+								}*/
 								
 								
 						str+='</tr>';
@@ -748,7 +748,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>G.O  Passed Applications</th>';
 							str+='<th style="font-weight:bold">Rejected Applications </th>';
 							str+='<th style="font-weight:bold">Rejected in Final Review </th>';
-							str+='<th style="font-weight:bold">Rejected in Finalized </th>';							
+							//str+='<th style="font-weight:bold">Rejected in Finalized </th>';							
 					str+='</thead>';
 					
 				str+='<tbody>';
@@ -782,7 +782,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					var shortListed = 0;
 					var rejected =0;
 					var rejectedInFinalRev =0;
-					var rejectedInFinalized =0;
+					//var rejectedInFinalized =0;
 					
 						if(result[i].distList !=null && result[i].distList.length>0){
 								for(var j in result[i].distList){
@@ -792,9 +792,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 											rejected  = result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Rejected in Final Review" ){
 											rejectedInFinalRev  = rejectedInFinalRev+result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="Rejected in Finalized" ){
+										}/*else if(result[i].distList[j].name =="Rejected in Finalized" ){
 											rejectedInFinalized  = rejectedInFinalized+result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="Shortlisted"){
+										}*/else if(result[i].distList[j].name =="Shortlisted"){
 											shortListed = result[i].distList[j].count;
 										}
 								}
@@ -871,11 +871,11 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}else{
 									str+='<td> - </td>';
 								}
-								if(rejectedInFinalized >0){
+								/*if(rejectedInFinalized >0){
 									str+='<td> <span title="Rejected in Finalized count ">'+rejectedInFinalized+' </span></td>';
 								}else{
 									str+='<td> - </td>';
-								}
+								}*/
 								
 							str+='</tr>';								
 						}	
