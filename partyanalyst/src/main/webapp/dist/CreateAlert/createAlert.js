@@ -276,7 +276,7 @@ function disableByLevel(index)
   
   
   
-  function getDistrictsForReferPopup(index) {
+   function getDistrictsForReferPopup(index) {
 	var stateId = $("#stateId"+index).val();
 	var jobj = {
 		stateId : stateId  
