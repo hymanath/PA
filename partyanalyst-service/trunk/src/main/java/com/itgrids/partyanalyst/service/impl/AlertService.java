@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -3563,7 +3562,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 return "failure";
  }
 /*
- * Autor :Santosh
+ * santosh (non-Javadoc)
+ * @see com.itgrids.partyanalyst.service.IAlertService#getAssignGroupTypeAlertDtlsByImpactLevelWise(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
  */
  public List<AlertOverviewVO> getAssignGroupTypeAlertDtlsByImpactLevelWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds){
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
@@ -3584,30 +3584,24 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-			  Set<Long> pblcRprsnttvTypTdpCdrIdSt = new HashSet<Long>();
-			  Set<Long> prtyCmmttTypTdpCdrIdSt = new HashSet<Long>();
-			  Set<Long> prgrmCmmttypTdpCdrIdSt = new HashSet<Long>();
 			  Set<Long> allTypeTdpCadreIds = new HashSet<Long>(0);
 			  Map<Long,Set<Long>> statusWiseAlertCntMap = new HashMap<Long, Set<Long>>();
 			  Set<Long> totalAletCntSt = new HashSet<Long>(0);
 			  //Calculating public representative type alert count
 			  List<Object[]> rtrnPblcRprsnttvTypAlrtDtlsObjLst = alertDAO.getPublicRepresentativeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  mergeStatusWiseAlertCnt(rtrnPblcRprsnttvTypAlrtDtlsObjLst,statusWiseAlertCntMap,pblcRprsnttvTypTdpCdrIdSt,totalAletCntSt,null);
+			  mergeStatusWiseAlertCnt(rtrnPblcRprsnttvTypAlrtDtlsObjLst,statusWiseAlertCntMap,allTypeTdpCadreIds,totalAletCntSt,null);
 			  setDatatoFinalList(prepareTempalate(),statusWiseAlertCntMap,totalAletCntSt,resultList,"Public Representative");
 			  //Calculating party committee type alert count
 			  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  mergeStatusWiseAlertCnt(rtrnPrtyCmmttAlrtDtlsObjLst,statusWiseAlertCntMap,prtyCmmttTypTdpCdrIdSt,totalAletCntSt,null);
+			  mergeStatusWiseAlertCnt(rtrnPrtyCmmttAlrtDtlsObjLst,statusWiseAlertCntMap,allTypeTdpCadreIds,totalAletCntSt,null);
 			  setDatatoFinalList(prepareTempalate(),statusWiseAlertCntMap,totalAletCntSt,resultList,"Party Committee");
 			  //Calculating program type alert count
 			  List<Object[]> rtrnPrgrmCmmttAlrtDtlsOblLst = alertDAO.getProgramCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  mergeStatusWiseAlertCnt(rtrnPrgrmCmmttAlrtDtlsOblLst,statusWiseAlertCntMap,prgrmCmmttypTdpCdrIdSt,totalAletCntSt,null);
+			  mergeStatusWiseAlertCnt(rtrnPrgrmCmmttAlrtDtlsOblLst,statusWiseAlertCntMap,allTypeTdpCadreIds,totalAletCntSt,null);
 			  setDatatoFinalList(prepareTempalate(),statusWiseAlertCntMap,totalAletCntSt,resultList,"Program Committee");
 			  //Calculating other type alert count
 			  List<Object[]> rtrnAllAlertCntDls = alertDAO.getAllAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  allTypeTdpCadreIds.addAll(pblcRprsnttvTypTdpCdrIdSt);
-			  allTypeTdpCadreIds.addAll(prtyCmmttTypTdpCdrIdSt);
-			  allTypeTdpCadreIds.addAll(prgrmCmmttypTdpCdrIdSt);
-			  mergeStatusWiseAlertCnt(rtrnAllAlertCntDls,statusWiseAlertCntMap,prgrmCmmttypTdpCdrIdSt,totalAletCntSt,allTypeTdpCadreIds);
+			  mergeStatusWiseAlertCnt(rtrnAllAlertCntDls,statusWiseAlertCntMap,null,totalAletCntSt,allTypeTdpCadreIds);
 			  setDatatoFinalList(prepareTempalate(),statusWiseAlertCntMap,totalAletCntSt,resultList,"Other");
 			  
 	 }catch(Exception e){
@@ -3615,7 +3609,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 }
 	 return resultList;
  }
- public void mergeStatusWiseAlertCnt(List<Object[]> objLst,Map<Long,Set<Long>> statusWiseAlertCntMap, Set<Long> tdpCadreIdSet,Set<Long> totalAletCntSt,Set<Long> allTdpCadreIds){
+ public void mergeStatusWiseAlertCnt(List<Object[]> objLst,Map<Long,Set<Long>> statusWiseAlertCntMap, Set<Long> allTypeTdpCadreIds,Set<Long> totalAletCntSt,Set<Long> allTdpCadreIds){
 	 try{
 		 if(objLst != null && objLst.size() > 0){
 			 for(Object[] param:objLst){
@@ -3628,7 +3622,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							    	statusWiseAlertCntMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), alertCntSet);
 							    }
 							    alertCntSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));//alert id
-							    tdpCadreIdSet.add(tdpCadreId);
 							    totalAletCntSt.add(commonMethodsUtilService.getLongValueForObject(param[1]));   
 				    	   }
 				     }else{
@@ -3638,7 +3631,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					    	statusWiseAlertCntMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), alertCntSet);
 					    }
 					    alertCntSet.add(commonMethodsUtilService.getLongValueForObject(param[1]));//alert id
-					    tdpCadreIdSet.add(tdpCadreId);
+					    allTypeTdpCadreIds.add(tdpCadreId);
 					    totalAletCntSt.add(commonMethodsUtilService.getLongValueForObject(param[1])); 
 				     }
 			 }
@@ -3692,6 +3685,93 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		 LOG.error("Exception in prepareTempalate()",e);  
 	 }
 	 return alertStatusMap;
+ }
+ /*
+  * santosh (non-Javadoc)
+  * @see com.itgrids.partyanalyst.service.IAlertService#getOtherTypeAlertCandiateDtls(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
+  */
+ public List<AlertOverviewVO> getOtherTypeAlertCandiateDtls(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds){
+	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
+	 Set<Long> locationValues = new HashSet<Long>(0);
+     Long locationAccessLevelId =0l;
+     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+     Date fromDate=null;
+     Date toDate = null;
+	 try{
+		    if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+			   fromDate = sdf.parse(fromDateStr);
+			   toDate = sdf.parse(toDateStr);
+			 } 
+		      List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+			   Set<Long> allTypeTdpCadreIds = new HashSet<Long>(0);
+			   Map<Long,AlertOverviewVO> candiateDtsMap = new HashMap<Long, AlertOverviewVO>();
+			  List<Object[]> rtrnPblcRprsnttvTypAlrtDtlsObjLst = alertDAO.getPublicRepresentativeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+			  setTdpCadreId(rtrnPblcRprsnttvTypAlrtDtlsObjLst,allTypeTdpCadreIds);
+			  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+			  setTdpCadreId(rtrnPrtyCmmttAlrtDtlsObjLst,allTypeTdpCadreIds);
+			  List<Object[]> rtrnPrgrmCmmttAlrtDtlsOblLst = alertDAO.getProgramCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+			  setTdpCadreId(rtrnPrgrmCmmttAlrtDtlsOblLst,allTypeTdpCadreIds);
+			  List<Object[]> rtrnAllAlertCntDls = alertDAO.getAllAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+			  setOtherCandiateAlertCnt(rtrnAllAlertCntDls,candiateDtsMap,allTypeTdpCadreIds);
+			  if(candiateDtsMap != null && candiateDtsMap.size() > 0){
+				  resultList.addAll(candiateDtsMap.values());
+				  candiateDtsMap.clear();
+			  }
+			 }catch(Exception e){
+				 LOG.error("Exception in getOtherTypeAlertCandiateDtls()",e);  
+			 }
+	         return resultList;
+ }
+ public void setTdpCadreId(List<Object[]> objList,Set<Long> allTypeTdpCadreIds){
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 allTypeTdpCadreIds.add(commonMethodsUtilService.getLongValueForObject(param[2])); 
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception in setTdpCadreId()",e); 
+	 }
+ }
+ public void setOtherCandiateAlertCnt(List<Object[]> obList,Map<Long,AlertOverviewVO> candiateDtsMap,Set<Long> allTypeTdpCadreIds){
+	 try{
+		 if(obList != null && obList.size() > 0){
+			   for(Object[] param:obList){
+				   Long tdpCadreId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				   Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				   if(!allTypeTdpCadreIds.contains(tdpCadreId)){
+					   AlertOverviewVO candiateVO = candiateDtsMap.get(tdpCadreId);
+					    if(candiateVO == null){
+					    	candiateVO = new AlertOverviewVO();
+					    	candiateVO.setId(tdpCadreId);
+					    	candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					    	candiateDtsMap.put(candiateVO.getId(), candiateVO);
+					    }
+					    candiateVO.setTotalAlertCnt(candiateVO.getTotalAlertCnt()+1);
+					    candiateVO.getAlertIdSet().add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					    if(statusId == 2l){//Notified
+				 			candiateVO.setNotifiedCnt(candiateVO.getNotifiedCnt()+1);
+				 		}else if(statusId == 3l){//Action In Progess
+				 			candiateVO.setActionInProgessCnt(candiateVO.getActionInProgessCnt()+1);
+				 		}else if(statusId == 4l){//Completed
+				 			candiateVO.setCompletedCnt(candiateVO.getCompletedCnt()+1);
+				 		}else if(statusId == 5l){//Unable to Resolve
+				 			candiateVO.setUnabletoResolveCnt(candiateVO.getUnabletoResolveCnt()+1);
+				 		}else if(statusId == 6l){//Action Not Required
+				 			candiateVO.setActionNotRequiredCnt(candiateVO.getActionNotRequiredCnt()+1);
+				 		}
+				   }
+			   }
+		   }
+	 }catch(Exception e){
+		 LOG.error("Exception in setOtherCandiateAlertCnt()",e); 
+	 }
  }
 }
 
