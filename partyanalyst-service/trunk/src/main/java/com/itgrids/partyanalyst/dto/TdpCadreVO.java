@@ -66,8 +66,16 @@ public class TdpCadreVO implements java.io.Serializable
 	private Long enrollmentYearId;
 	private String status;
 	private String totalImagePathStr;
+	private String isCsd;
 	
 	
+	
+	public String getIsCsd() {
+		return isCsd;
+	}
+	public void setIsCsd(String isCsd) {
+		this.isCsd = isCsd;
+	}
 	public String getTotalImagePathStr() {
 		return totalImagePathStr;
 	}
