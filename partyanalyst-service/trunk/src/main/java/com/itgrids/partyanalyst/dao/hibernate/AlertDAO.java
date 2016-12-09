@@ -656,16 +656,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getTotalAlertGroupByLocation(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
-		if(userAccessLevelId.longValue() == 2L){
-			queryStr.append(" state.stateId, " +//0
-					" state.stateName, ");//1
-		}else if(userAccessLevelId.longValue() == 3L){
-			queryStr.append(" district.districtId, " +//0
+		
+		queryStr.append(" district.districtId, " +//0
 					" district.districtName, ");//1
-		}else if(userAccessLevelId.longValue() == 5L){
-			queryStr.append(" constituency.constituencyId, " +//0
-							" constituency.name, ");//1
-		}
 		
 		if(step.equalsIgnoreCase("two")){
 			queryStr.append(" model.alertCategory.alertCategoryId," +//2
@@ -683,7 +676,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " + 
 						" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) and model.alertType.alertTypeId != 2 ");
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -707,21 +700,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		
 		if(step.equalsIgnoreCase("one")){
-			if(userAccessLevelId.longValue() == 2L){
-				queryStr.append(" group by state.stateId order by state.stateId ");
-			}else if(userAccessLevelId.longValue() == 3L){
-				queryStr.append(" group by district.districtId order by district.districtId ");
-			}else if(userAccessLevelId.longValue() == 5L){
-				queryStr.append(" group by constituency.constituencyId order by constituency.constituencyId ");
-			}
+			queryStr.append(" group by district.districtId order by district.districtId ");
 		}else{
-			if(userAccessLevelId.longValue() == 2L){
-				queryStr.append(" group by state.stateId, model.alertCategory.alertCategoryId order by state.stateId, model.alertCategory.alertCategoryId ");
-			}else if(userAccessLevelId.longValue() == 3L){
-				queryStr.append(" group by district.districtId, model.alertCategory.alertCategoryId order by district.districtId, model.alertCategory.alertCategoryId ");
-			}else if(userAccessLevelId.longValue() == 5L){
-				queryStr.append(" group by constituency.constituencyId, model.alertCategory.alertCategoryId order by constituency.constituencyId, model.alertCategory.alertCategoryId ");
-			}      
+			queryStr.append(" group by district.districtId, model.alertCategory.alertCategoryId order by district.districtId, model.alertCategory.alertCategoryId ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -735,21 +716,14 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(scopeIdList != null && scopeIdList.size() > 0){
 			query.setParameterList("scopeIdList", scopeIdList);
 		}
-		return query.list();   
+		return query.list();       
 	}  
 	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
-		if(userAccessLevelId.longValue() == 2L){
-			queryStr.append(" state.stateId, " +//0
-					" state.stateName, ");//1
-		}else if(userAccessLevelId.longValue() == 3L){
-			queryStr.append(" district.districtId, " +//0
+		queryStr.append(" district.districtId, " +//0
 					" district.districtName, ");//1
-		}else if(userAccessLevelId.longValue() == 5L){
-			queryStr.append(" constituency.constituencyId, " +//0
-							" constituency.name, ");//1
-		}
+		
 		if(step.equalsIgnoreCase("two")){
 			queryStr.append(" model.alertStatus.alertStatusId," +//2
 							" model.alertStatus.alertStatus,");//3
@@ -766,7 +740,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.ward ward  " + 
 						" where model.isDeleted ='N'  ");
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) and model.alertType.alertTypeId != 2 ");  
 		}
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
@@ -789,22 +763,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
 		}
 		if(step.equalsIgnoreCase("one")){
-			if(userAccessLevelId.longValue() == 2L){
-				queryStr.append(" group by state.stateId order by state.stateId ");
-			}else if(userAccessLevelId.longValue() == 3L){
-				queryStr.append(" group by district.districtId order by district.districtId ");
-			}else if(userAccessLevelId.longValue() == 5L){
-				queryStr.append(" group by constituency.constituencyId order by constituency.constituencyId ");
-			}
+			queryStr.append(" group by district.districtId order by district.districtId ");
 		}else{
-			if(userAccessLevelId.longValue() == 2L){
-				queryStr.append(" group by state.stateId, model.alertStatus.alertStatusId order by state.stateId, model.alertStatus.alertStatusId ");
-			}else if(userAccessLevelId.longValue() == 3L){
-				queryStr.append(" group by district.districtId, model.alertStatus.alertStatusId order by district.districtId, model.alertStatus.alertStatusId ");
-			}else if(userAccessLevelId.longValue() == 5L){
-				queryStr.append(" group by constituency.constituencyId, model.alertStatus.alertStatusId order by constituency.constituencyId, model.alertStatus.alertStatusId ");
-			}      
-		}
+			queryStr.append(" group by district.districtId, model.alertStatus.alertStatusId order by district.districtId, model.alertStatus.alertStatusId ");
+		}  
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -818,7 +780,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(scopeIdList != null && scopeIdList.size() > 0){
 			query.setParameterList("scopeIdList", scopeIdList);  
 		}
-		return query.list(); 
+		return query.list();   
 	}
 	
 	public List<Object[]> getOverAllAlertDetailsForCoreDashBoard(Date startDate,Date endDate,Long locationLevelId,List<Long> levelValues,
