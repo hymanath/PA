@@ -496,7 +496,7 @@ GlobalalertId = $(this).attr("attr-id");
 	 	$("#descriptionTitleId").html(globalAlertName);
 	getAlertStatusCommentsTrackingDetails();*/
 	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
-window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+window.open("http://mytdp.com/alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
 });
 
 $(document).on("click",".alertCandidate",function(){
