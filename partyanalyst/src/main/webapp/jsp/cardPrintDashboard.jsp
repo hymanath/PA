@@ -3,18 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Workspace</title>
-<link href="dist/CardPrint/Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/CardPrint/Assests/css/custom.css" rel="stylesheet" type="text/css">
+<title>Cards Print Dashboard</title>
+<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="dist/CardPrint/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/CardPrint/dropkick.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<!--<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="dist/WebMonitoring/custom.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
-<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
-<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
-<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>-->
-
 </head>
 <body>
 	<div class="container">
@@ -31,7 +24,7 @@
 				</label>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
-				<select>
+				<select class="select">
 					<option>ALL VENDORS</option>
 				</select>
 			</div>
@@ -264,19 +257,27 @@
 							<div class="row">
 								<div class="col-md-3 col-xs-12 col-sm-3">
 									<label>print Data Ready</label>
-									<select class="form-control"></select>
+									<select class="select">
+										<option>Select</option>
+									</select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-3">
 									<label>print Data Ready</label>
-									<select class="form-control"></select>
+									<select class="select">
+										<option>Select</option>
+									</select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-3">
 									<label>print Data Ready</label>
-									<select class="form-control"></select>
+									<select class="select">
+										<option>Select</option>
+									</select>
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-3">
 									<label>print Data Ready</label>
-									<select class="form-control"></select>
+									<select class="select">
+										<option>Select</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -430,16 +431,16 @@
 			</div>
 		</div>
 	</div>
-<script src="dist/CardPrint/Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="dist/CardPrint/Assests/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/CardPrint/Assests/js/highcharts.js" type="text/javascript"></script>
-<!--<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>-->
+<script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(".select").dropkick();
+if($(window).width() < 500)
+{
+	$("table").wrap( "<div class='table-responsive'></div>" );
+}
 	$("#distWiseCards").highcharts({
 		colors:['#B091BB','#9CCBCC','#C8CA92','#71F0CC','#FF6F9B'],
         chart: {
