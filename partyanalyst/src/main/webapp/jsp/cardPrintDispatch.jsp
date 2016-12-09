@@ -3,17 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Workspace</title>
-<link href="dist/CardPrint/Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/CardPrint/Assests/css/custom.css" rel="stylesheet" type="text/css">
+<title>Cards Print Dispatch</title>
+<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="dist/CardPrint/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/CardPrint/dropkick.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<!--<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="dist/WebMonitoring/custom.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/WebMonitoring/responsive.css" rel="stylesheet" type="text/css"/>
-<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
-<link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css"/>
-<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>-->
 </head>
 <body>
 	<div class="container">
@@ -27,19 +21,19 @@
 						<div class="row">
 							<div class="col-md-4 col-xs-12 col-sm-4">
 								<label>Select Vendor</label>
-								<select>
+								<select class="select">
 									<option>Vendor 1</option>
 								</select>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-4">
 								<label>Select DIstrict</label>
-								<select>
+								<select class="select">
 									<option>Distrct 1</option>
 								</select>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-4">
 								<label>Select Constituency</label>
-								<select>
+								<select class="select">
 									<option>Cons 1</option>
 								</select>
 							</div>
@@ -105,14 +99,15 @@
 			</div>
 		</div>
 	</div>
-<script src="dist/CardPrint/Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="dist/CardPrint/Assests/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/CardPrint/Assests/js/highcharts.js" type="text/javascript"></script>
-<!--<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js" type="text/javascript"></script>-->
+<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(".select").dropkick();
+if($(window).width() < 500)
+{
+	$("table").wrap( "<div class='table-responsive'></div>" );
+}
+</script>
 </body>
 </html>
