@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -27,4 +28,36 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		return query.list();
 	}
 	
+	public List<Object[]> getStatusWisePrintingCardsCounts(Long stateId,Long vendorId,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model1.printStatus.printStatusId," +
+					" count(distinct model.tdpCadreCardPrintId)" +
+					" from TdpCadreCardPrint model,ConstituencyPrintStatus model1" +
+					" where model.constituency.constituencyId = model1.constituency.constituencyId");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model1.updatedTime) between :fromDate and :toDate");
+		
+		if(stateId != null && stateId.longValue() == 1l)
+			sb.append(" and model1.constituency.district.districtId between 11 and 23");
+		else if(stateId != null && stateId.longValue() == 36l)
+			sb.append(" and model1.constituency.district.districtId between 1 and 10");
+		
+		if(vendorId != null && vendorId.longValue() > 0l)
+			sb.append(" and model1.cardPrintVendor.cardPrintVendorId = :vendorId");
+		
+		sb.append(" group by model1.printStatus.printStatusId" +
+					" order by model1.printStatus.printStatusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(stateId != null && stateId.longValue() > 0l)
+			query.setParameter("stateId", stateId);
+		if(vendorId != null && vendorId.longValue() > 0l)
+			query.setParameter("vendorId", vendorId);
+		
+		return query.list();
+	}
  }
