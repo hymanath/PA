@@ -593,7 +593,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String group = jObj.getString("group");
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
-			List<Long> scopeIdList = new ArrayList<Long>();
+			List<Long> scopeIdList = new ArrayList<Long>();    
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
 			}  
@@ -700,5 +700,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-}//public List<AlertCoreDashBoardVO> getAlertDtls(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long alertStatusId, Long alertCategoryId, Long activityMemberId)
-
+	public String getTotalAlertGroupByPubRepThenStatus(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}  
+			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId);   
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;    
+	}
+}//public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId)
