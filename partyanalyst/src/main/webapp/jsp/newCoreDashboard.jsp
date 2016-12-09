@@ -2742,7 +2742,7 @@
 			</div>	
 	
 		<!--Events End -->
-	 <!-- Alerts Start-->
+	 <!-- Alerts Start
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2826,6 +2826,12 @@
 											<div id="districtWiseAlertCountId"></div>     
 										</div>
 									</div>
+									<div class="row m_top20">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="panel-title"><span class="headingColor text-capitalize">Alert Assigned Group Members - Status</span></h4>
+											<div id="groupAssignAlertDlsDivId" class="m_top10"></div>     
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>  
@@ -2858,7 +2864,7 @@
 				</div>
 			</div>
 		</div>	
-	 	<!--Alerts End -->
+	 	Alerts End -->
 	</div>
 </div> 
 <!--model start -->
@@ -3447,7 +3453,7 @@
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
 		/* Alert Default Call */
-		getAlertOverviewDetails();
+		//getAlertOverviewDetails();
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
