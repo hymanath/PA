@@ -1302,6 +1302,19 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    	query.setParameterList("impactLevelIds", impactLevelIds); 
 	    }
 	    return query.list();
-	  }     
+	  }
+	
+	public int updateCandidateStatusOfAlert(Long alertId,Long userId){
+	
+		Query query = getSession().createQuery(" update Alert model set model.alertStatusId =1,model.updatedTime =:updatedTime, " +
+				" model.updatedBy =:updatedBy " +
+				" where model.alertId=:alertId ");
+		
+		query.setParameter("alertId", alertId);
+		query.setParameter("updatedTime", new DateUtilService().getCurrentDateAndTime());
+		query.setParameter("updatedBy", userId);
+		
+		return query.executeUpdate();
+	}	
 }
 
