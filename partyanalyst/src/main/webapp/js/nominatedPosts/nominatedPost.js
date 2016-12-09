@@ -1012,7 +1012,7 @@ function getNominatedPostApplication(startIndex)
 				str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
 				str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'"><b>VOTERID : </b> '+result[i].voterCardNo+'</p>';
 				if(result[i].memberShipCardId != null && result[i].memberShipCardId != "")
-				str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'"><b> MEMBERSHIP : </b> '+result[i].memberShipCardId+'</p>';
+				str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'"><b> MID : </b> '+result[i].memberShipCardId+'</p>';
 				str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'"><b>MOBILE : </b> '+result[i].mobileNo+'</p>';
 				str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'"/>';
 				
