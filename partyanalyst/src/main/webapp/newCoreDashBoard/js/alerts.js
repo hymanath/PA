@@ -13,6 +13,7 @@
 			scopeIdsArr.push(9); 
 			getTotalAlertGroupByDist(scopeIdsArr);
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
+			getOtherTypeAlertCandiateDtls(scopeIdsArr);
 			$(".districtAltCtnCls").toggle();
 		}else{
 			console.log("closing")
@@ -1304,4 +1305,23 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 			}else{
 				$("#groupAssignAlertDlsDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
+	}
+	
+	function getOtherTypeAlertCandiateDtls(scopeIdsArr){
+	 //$("#groupAssignAlertDlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj = { 
+			stateId : globalStateId,             
+			fromDate : '',        
+			toDate : '',             
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : globalActivityMemberId                                 
+		}                  
+		$.ajax({
+			type : 'POST',      
+			url : 'getOtherTypeAlertCandiateDtlsAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}     
+		}).done(function(result){       
+			console.log(result);
+		});  
 	}
