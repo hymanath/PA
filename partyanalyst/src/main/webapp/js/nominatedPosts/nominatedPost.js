@@ -767,7 +767,7 @@ function getNominatedPostApplication(startIndex)
 			}
 			if(searchBy.trim().length != 8||searchBy.trim().length > 8)
 			{
-				$('#searchErrDiv').html('Invalid memberShipCardNo No.');
+				$('#searchErrDiv').html('Invalid memberShipCardNo.');
 				return;	
 			}
 			else if(searchRadioType=="membershipId"){
