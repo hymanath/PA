@@ -3,35 +3,6 @@ buildLevelsByIndex('');
 getMemberTypes();
 //showHideSearch("advanceSearch");
 showHideBySearchType();
-function getMemberTypes()
-{
-	
-	var jsObj =
-		     {
-			task : ""
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'getMemberTypesAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-				   
-				   buildMemberTypes(result);
-			   })
-}
-
-function buildMemberTypes(result)
-{
-
-	for(var i in result)
-	{
-	$("#advanceSearchTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');	
-	}
-	   var select = new Dropkick("#advanceSearchTypeId");
-				select.refresh();
-	
-	
-}
 function disableByLevel(index)
   {
 
