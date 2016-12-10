@@ -754,7 +754,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
-	public String getOtherTypeAlertCandiateDtls(){
+	public String getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(){
 		try{
 			session = request.getSession();
 			jObj = new JSONObject(getTask());
@@ -763,13 +763,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String toDate = jObj.getString("toDate");
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			String resultType = jObj.getString("resultType");
 			List<Long> scopeIdList = new ArrayList<Long>();
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
 			}  
-			resultList = alertService.getOtherTypeAlertCandiateDtls(activityMemberId,stateId,fromDate,toDate,scopeIdList);   
+			resultList = alertService.getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(activityMemberId,stateId,fromDate,toDate,scopeIdList,resultType);   
 		}catch(Exception e) {  
-			LOG.error("Exception occured in getAssignGroupTypeAlertDtlsByImpactLevelWise() of CreateAlertAction",e);
+			LOG.error("Exception occured in getOtherAndPrgrmCmmtteeTypeAlertCndtDtls() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
 	}

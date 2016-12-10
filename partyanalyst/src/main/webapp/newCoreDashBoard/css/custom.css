@@ -1890,3 +1890,45 @@ assignedCandidatesUl li:last-child
 {
 	border-right: 0px;
 }
+
+.tablePopup thead th:first-child
+{
+  background-color: #DED9C3
+}
+.tablePopup thead th:nth-child(2),.tablePopup tr td:nth-child(2)
+{
+  background-color: #808080
+}
+.tablePopup thead th:nth-child(3),.tablePopup tr td:nth-child(3)
+{
+  background-color: #B1A1C6
+}
+.tablePopup thead th:nth-child(4),.tablePopup tr td:nth-child(4)
+{
+  background-color: #538ED4
+}
+.tablePopup thead th:nth-child(5),.tablePopup tr td:nth-child(5)
+{
+  background-color: #94CDDE
+}
+.tablePopup thead th:nth-child(6),.tablePopup tr td:nth-child(6)
+{
+  background-color: #C2D699
+}
+.tablePopup thead th:nth-child(7) , .tablePopup tr td:nth-child(7)
+{
+  background-color: #FAC090
+}
+.tablePopup thead th:nth-child(8) , .tablePopup tr td:nth-child(8) 
+{
+  background-color: #D89795
+}
+.expandIcon
+{
+  background-color: #CBCBCB;
+  float: right;
+  font-size: 9px;
+  padding: 5px;
+  border-radius: 3px;
+  cursor: pointer
+}
