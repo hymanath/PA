@@ -154,7 +154,7 @@
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span> 
 							<span class="input-group pull-right  m_XsTop10 hide">  
-								<input type="text" id="dateRangeId"	 class="form-control" />
+								<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -2742,7 +2742,7 @@
 			</div>	
 	
 		<!--Events End -->
-	 <!-- Alerts Start
+	 <!-- Alerts Start 
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2750,7 +2750,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-								Alerts <small class="text-muted"><span id="dateEventsHeadingId">  </span></small>
+								Alerts <small class="text-muted"><span id="alertDateHeadingId">  </span></small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
@@ -2760,8 +2760,8 @@
 							<span class="alertsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
-								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:200px; margin-right: 12px; margin-top: -7px;"">
+								<input type="text" id="dateRangeIdForAlert" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -2808,12 +2808,13 @@
 											</ul>
 										</div>
 										<div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
-											<ul class="list-inline">
+											<ul class="list-inline" id="impactLevelULId">
 												<span class="glyphicon glyphicon-remove-circle pull-right alertSettingCloseCls" style="cursor:pointer;"></span>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="All" checked/>&nbsp&nbspAll</label></li><br>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="District"/>&nbsp&nbspDistrict Level</label></li><br>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="Constituency" />&nbsp&nbspConstituency Level</label></li><br>
-												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="Village"/>&nbsp&nbspVillage/ward Level</label></li><br>     
+												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="mandalMuncipality" />&nbsp&nbspMandal/Municipality Level</label></li><br>
+												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="VillageWard"/>&nbsp&nbspVillage/ward Level</label></li><br>     
 											</ul>        
 											<button type="button" class="btn btn-success alertDtlsBtnCls">Get Details</button>          
 											<span id="" style="color:red;"></span>  
@@ -2864,7 +2865,7 @@
 				</div>
 			</div>
 		</div>	
-	 	Alerts End -->
+	 Alerts End -->
 	</div>
 </div> 
 <!--model start -->

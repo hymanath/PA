@@ -1,7 +1,55 @@
+	var customStartDateAlert = moment().startOf('month').format('DD/MM/YYYY')
+	var customEndDateAlert = moment().format('DD/MM/YYYY');
+
+	$("#dateRangeIdForAlert").daterangepicker({
+		opens: 'left',
+	     startDate: moment(),
+         endDate: moment(),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'Today': [moment(), moment()],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+        }
+	})
+	
+	var dates= $("#dateRangeIdForAlert").val();
+	//$("#alertDateHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
+	$("#alertDateHeadingId").html(" Today ( "+dates+" )");
+	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
+	var singleBlockDateEnd = moment().format('MMM YY');
+	$('#dateRangeIdForAlert').on('apply.daterangepicker', function(ev, picker) {
+	  customStartDateAlert = picker.startDate.format('DD/MM/YYYY');
+	  customEndDateAlert = picker.endDate.format('DD/MM/YYYY');
+	  var scopeIdsArr = [];
+		scopeIdsArr.push(2);  
+		scopeIdsArr.push(3);  
+		scopeIdsArr.push(7);  
+		scopeIdsArr.push(9); 
+		scopeIdsArr.push(5); 
+		scopeIdsArr.push(8);  
+	 getAlertOverviewDetails();
+	 getAlertCategoryDtlsLocationWise();
+	 getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
+	 getTotalAlertGroupByDist(scopeIdsArr);
+	 var dates= $("#dateRangeIdForAlert").val();
+	 $("#alertDateHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
+	});
+
 	$(document).on("click",".alertsIconExpand",function(){
+		$(".dateRangePickerClsForAlert").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".alertsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".alertLocationDiv").show();
 			getAlertCategoryDtlsLocationWise();
@@ -11,6 +59,8 @@
 			scopeIdsArr.push(3);  
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9); 
+			scopeIdsArr.push(5); 
+			scopeIdsArr.push(8); 
 			getTotalAlertGroupByDist(scopeIdsArr);
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
 			$(".districtAltCtnCls").toggle();
@@ -63,11 +113,19 @@
 		});
   function getAlertOverviewDetails(){
 		$("#alertOverview").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
-			fromDate :"",        
-			toDate :""    
+			fromDate:fromDateStr,        
+			toDate :toDateStr    
 		};
 		$.ajax({
 			type : 'GET',
@@ -171,14 +229,19 @@
 			scopeIdsArr.push(3);  
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9); 
+			scopeIdsArr.push(5); 
+			scopeIdsArr.push(8); 
 		}else if(selectionType == "District"){
 			scopeIdsArr.push(2);
 		}else if(selectionType == "Constituency"){
 			scopeIdsArr.push(3);
-		}else{
+		}else if(selectionType == "mandalMuncipality"){
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
+		}else if(selectionType == "VillageWard"){
 			scopeIdsArr.push(7);  
-			scopeIdsArr.push(9);
-		}//optionsCls
+			scopeIdsArr.push(9);	
+		}
 		var locVal ='';
 		$( "li.optionsCls" ).each(function() {
 			if($( this ).hasClass( "active" )){
@@ -208,13 +271,18 @@
 			scopeIdsArr.push(3);  
 			scopeIdsArr.push(7);  
 			scopeIdsArr.push(9); 
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
 		}else if(selectionType == "District"){
 			scopeIdsArr.push(2);
 		}else if(selectionType == "Constituency"){
-			scopeIdsArr.push(2);
-		}else{
+			scopeIdsArr.push(3);
+		}else if(selectionType == "mandalMuncipality"){
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
+		}else if(selectionType == "VillageWard"){
 			scopeIdsArr.push(7);  
-			scopeIdsArr.push(9);
+			scopeIdsArr.push(9);	
 		}
 		if(option == "1"){
 			getTotalAlertGroupByDist(scopeIdsArr);
@@ -226,12 +294,20 @@
 	});
 	function getTotalAlertGroupByDist(scopeIdsArr){ 
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dates=$("#dateRangeIdForAlert").val();
+	    var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj = { 
-			stateId : 1,             
-			fromDate : '',        
-			toDate : '',             
+			stateId : globalStateId,             
+			fromDate : fromDateStr,        
+			toDate : toDateStr,             
 			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : 44                                 
+			activityMemberId : globalActivityMemberId                                 
 		}                  
 		$.ajax({
 			type : 'POST',      
@@ -337,14 +413,22 @@
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");  
 		$("#alertCntTitId").html("TOTAL ALERTS-"+alertCount);
+		var dates=$("#dateRangeIdForAlert").val();
+		 var fromDateStr;
+		 var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj = { 
 			alertTypeId : alertTypeId,    
 			alertStatusId : alertStatusId,
 			alertCategoryId : alertCategoryId,  
-			stateId : 1,             
-			fromDate : '',                
-			toDate : '',                
-			activityMemberId : 44                                 
+			stateId : globalStateId,             
+			fromDate : fromDateStr,                
+			toDate : toDateStr,                
+			activityMemberId : globalActivityMemberId                                 
 		}                          
 		$.ajax({
 			type : 'POST',      
@@ -352,7 +436,6 @@
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}     
 		}).done(function(result){       
-			
 			if(result != null && result.length > 0){
 				buildAlertDtls(result);   
 			}
@@ -486,11 +569,19 @@
 	}
 	function getAlertCategoryDtlsLocationWise(){
 		$("#locationWiseAlertDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dates=$("#dateRangeIdForAlert").val();
+		 var fromDateStr;
+		 var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj={  
 			activityMemberId : globalActivityMemberId,      
 			stateId : globalStateId,           
-			fromDate :"",        
-			toDate :""    
+			fromDate :fromDateStr,        
+			toDate :toDateStr   
 		};
 		$.ajax({
 			type : 'POST',
@@ -639,12 +730,20 @@
 	
 	function getTotalAlertGroupByLocationThenCategory(scopeIdsArr){
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dates=$("#dateRangeIdForAlert").val();
+		 var fromDateStr;
+		 var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj = { 
-			stateId : 1,             
-			fromDate : '',      
-			toDate : '',  
+			stateId : globalStateId,             
+			fromDate : fromDateStr,      
+			toDate : toDateStr,  
 			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : 44,       
+			activityMemberId : globalActivityMemberId,       
 			group : ""
 		}                  
 		$.ajax({
@@ -813,12 +912,20 @@
 	//getTotalAlertGroupByLocationThenStatusAction  
 	function getTotalAlertGroupByLocationThenStatus(scopeIdsArr){
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dates=$("#dateRangeIdForAlert").val();
+		 var fromDateStr;
+		 var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj = { 
-			stateId : 1,             
-			fromDate : '',      
-			toDate : '',  
+			stateId : globalStateId,             
+			fromDate : fromDateStr,      
+			toDate : toDateStr,  
 			scopeIdsArr : scopeIdsArr,              
-			activityMemberId : 44,       
+			activityMemberId : globalActivityMemberId,       
 			group : ""
 		}                  
 		$.ajax({
@@ -847,8 +954,6 @@
 			str+='</div>'; 
 			str+='</div>';			
 		}
-		
-		
 		$("#districtWiseAlertCountId").html(str);
 			if(result !=null && result.length >0){
 				for(var i in result){
@@ -865,8 +970,6 @@
 							var uniqCnt = {y:parseInt(result[i].count)-parseInt(result[i].subList1[j].categoryCount),color:"#D3D3D3"};
 							count.push(uniqCnt);
 						}
-						console.log(count);
-						console.log(countAlert);
 							if(categoryName.length !=0 && count.length !=0  && districtName != 0 && districtName != null){
 								$(function () {
 									$('#distwisegraph'+i+'').highcharts({
@@ -1166,10 +1269,18 @@ function getMonth(month){
 
 function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 	 $("#groupAssignAlertDlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 	var dates=$("#dateRangeIdForAlert").val();
+	     var fromDateStr;
+		 var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : '',        
-			toDate : '',             
+			fromDate : fromDateStr,        
+			toDate : toDateStr,             
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId                                 
 		}                  
@@ -1307,32 +1418,55 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 	}
 	
 	$(document).on("click",".alertAssignCls",function(){
-		 var groupAssignType = $(this).html().split("-")[0].trim();
+		   var groupAssignType = $(this).html().split("-")[0].trim();
+		   var selectLevel=$("input:radio[name=locationLevel]:checked").attr("attr_val");
+			var scopeIdsArr = [];
+			if(selectLevel == "All"){
+			scopeIdsArr.push(2);  
+			scopeIdsArr.push(3);  
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9); 
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
+		}else if(selectLevel == "District"){
+			scopeIdsArr.push(2);
+		}else if(selectLevel == "Constituency"){
+			scopeIdsArr.push(3);
+		}else if(selectLevel == "mandalMuncipality"){
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
+		}else if(selectLevel == "VillageWard"){
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9);	
+		}
 		  if(groupAssignType == "Public Representative"){
-			  getTotalAlertGroupByPubRepThenStatus(groupAssignType,0,"alertDetailsDivId")
+			  getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,0,"alertDetailsDivId")
 		  }else if(groupAssignType == "Party Committee"){
 			  
 		  }else if(groupAssignType == "Program Committee"){
-			  getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(groupAssignType,"alertDetailsDivId")
+			  getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(scopeIdsArr,groupAssignType,"alertDetailsDivId")
 		  }else if(groupAssignType == "Other"){
-			  getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(groupAssignType,"alertDetailsDivId");
+			  getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(scopeIdsArr,groupAssignType,"alertDetailsDivId");
 		  }
 		
 	});
 	
-function getTotalAlertGroupByPubRepThenStatus(groupAssignType,publicRepresentativeTypeId,divId){
+function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,publicRepresentativeTypeId,divId){
   $("#alertModalHeadingId").html(groupAssignType+" Alert Details")
   $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
   $("#alertModalId").modal("show");
-  var scopeIdsArr = [];
-  scopeIdsArr.push(2);
-  scopeIdsArr.push(3);
-  scopeIdsArr.push(7);
-  scopeIdsArr.push(9);
+  	var dates=$("#dateRangeIdForAlert").val();
+	var fromDateStr;
+	var toDateStr;
+	if(dates != null && dates!=undefined){
+		var datesArr = dates.split("-");
+		fromDateStr = datesArr[0]; 
+		toDateStr = datesArr[1]; 
+	}
   var jsObj = { 
     stateId : globalStateId,             
-    fromDate : '',      
-    toDate : '',  
+    fromDate : fromDateStr,      
+    toDate : toDateStr,  
     scopeIdsArr : scopeIdsArr,                       
     activityMemberId : globalActivityMemberId,
     publicRepresentativeTypeId :publicRepresentativeTypeId      
@@ -1381,19 +1515,22 @@ function getTotalAlertGroupByPubRepThenStatus(groupAssignType,publicRepresentati
 	}
 		
 		
- function getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(groupAssignType,divId){
+ function getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(scopeIdsArr,groupAssignType,divId){
 	  $("#alertModalHeadingId").html(groupAssignType+" Alert Details")
 	  $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  $("#alertModalId").modal("show");
-	 	var scopeIdsArr = [];
-			scopeIdsArr.push(2);  
-			scopeIdsArr.push(3);  
-			scopeIdsArr.push(7);  
-			scopeIdsArr.push(9); 
+	  	var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj = { 
 			stateId : globalStateId,             
-			fromDate : '',        
-			toDate : '',             
+			fromDate : fromDateStr,        
+			toDate : toDateStr,             
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
             resultType:groupAssignType			
