@@ -3429,7 +3429,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	return returnList;
  }
  
- public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId){
+ public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
 			Date fromDate = null;        
@@ -3465,19 +3465,29 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			    
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
 			//Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
-			if(alertCountList != null && alertCountList.size() > 0){
+			List<Object[]> alertCountList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
+			if(publicRepresentativeTypeId.longValue() == 0L){
+				alertCountList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
+			}else{
+				alertCountList = alertDAO.getTotalAlertGroupByCandThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one",publicRepresentativeTypeId);
+			}
+			if(alertCountList != null && alertCountList.size() > 0){  
 				for(Object[] param : alertCountList){
 					if(param[0] != null)
 						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
 			}  
 			//get all the alert count group by status then category.
-			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();       
 			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
-			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");    
-			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){
+			List<Object[]> alertCountGrpByLocList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");    
+			if(publicRepresentativeTypeId.longValue() == 0L){
+				alertCountGrpByLocList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");
+			}else{  
+				alertCountGrpByLocList = alertDAO.getTotalAlertGroupByCandThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two",publicRepresentativeTypeId);
+			}
+			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){  
 				for(Object[] param : alertCountGrpByLocList){  
 					if(param[0] != null){
 						statusIdAndCountMap = locationIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -3489,7 +3499,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							locationIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),statusIdAndCountMap);
 						}  
 						locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-					}
+					}  
 				}
 			}
 			//build final vo to sent to ui
