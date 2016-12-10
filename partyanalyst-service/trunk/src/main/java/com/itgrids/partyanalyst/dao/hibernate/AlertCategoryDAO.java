@@ -14,7 +14,11 @@ public class AlertCategoryDAO extends GenericDaoHibernate<AlertCategory, Long>
 		super(AlertCategory.class);
 	}
 	public List<Object[]> getAllCategory(){
-		Query query = getSession().createQuery("select model.alertCategoryId, model.category from AlertCategory model ");
+		Query query = getSession().createQuery("select model.alertCategoryId, model.category from AlertCategory model   ");
+		return query.list();
+	}
+	public List<Object[]> getAllCategoryOrderBy(){
+		Query query = getSession().createQuery("select model.alertCategoryId, model.category from AlertCategory model order by model.order  ");
 		return query.list();
 	}
 }
