@@ -3436,15 +3436,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  		 }
  	}
  	catch (Exception e) {
- 		LOG.error("Exception in getAlertImpactScope()",e);	
+ 		LOG.error("Exception in getAlertImpactScope()",e);  	
  	}
  	return returnList;
  }
  
- public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId){
+ public List<AlertVO> getTotalAlertGroupByPubRepThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId,List<Long> commitLvlIdList, String groupAssignType, String position, Long designationId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
-			Date fromDate = null;        
+			Date fromDate = null;          
 			Date toDate = null; 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
@@ -3455,7 +3455,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
 			Map<Long,Long> locationIdAndCountMap = new HashMap<Long,Long>();
 			//get all the alert status for  building the template
-			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();  
 			
 			Long userAccessLevelId = null;
 			List<Long> userAccessLevelValues = new ArrayList<Long>();
@@ -3463,20 +3463,29 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
 				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
 				for(Object[] param : accessLvlIdAndValuesList){
-					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);  
 				}
 			}
 			
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
 			//Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues
 			List<Object[]> alertCountList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
-			if(publicRepresentativeTypeId.longValue() == 0L){
-				alertCountList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
-			}else{
-				alertCountList = alertDAO.getTotalAlertGroupByCandThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one",publicRepresentativeTypeId);
+			if(groupAssignType.equalsIgnoreCase("Party Committee")){
+				if(position.equalsIgnoreCase("bellow")){
+					alertCountList = alertDAO.getTdpCommitteeRolesByAlertCnt(userAccessLevelId,userAccessLevelValues,stateId,scopeIdList,fromDate,toDate,commitLvlIdList,designationId,"one");
+				}else{  
+					alertCountList = alertDAO.getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate,commitLvlIdList, "one");
+				}
+			}else{  
+				if(publicRepresentativeTypeId.longValue() == 0L){
+					alertCountList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
+				}else{
+					alertCountList = alertDAO.getTotalAlertGroupByCandThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one",publicRepresentativeTypeId);
+				}
 			}
+			
 			if(alertCountList != null && alertCountList.size() > 0){  
-				for(Object[] param : alertCountList){
+				for(Object[] param : alertCountList){  
 					if(param[0] != null)
 						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
@@ -3486,11 +3495,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
 			List<Object[]> alertCountGrpByLocList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");    
-			if(publicRepresentativeTypeId.longValue() == 0L){
-				alertCountGrpByLocList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");
-			}else{  
-				alertCountGrpByLocList = alertDAO.getTotalAlertGroupByCandThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two",publicRepresentativeTypeId);
+			if(groupAssignType.equalsIgnoreCase("Party Committee")){
+				if(position.equalsIgnoreCase("bellow")){
+					alertCountGrpByLocList = alertDAO.getTdpCommitteeRolesByAlertCnt(userAccessLevelId,userAccessLevelValues,stateId,scopeIdList,fromDate,toDate,commitLvlIdList,designationId,"two");
+				}else{
+					alertCountGrpByLocList = alertDAO.getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate,commitLvlIdList, "two");
+
+				}
+			}else{
+				if(publicRepresentativeTypeId.longValue() == 0L){
+					alertCountGrpByLocList = alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two");
+				}else{  
+					alertCountGrpByLocList = alertDAO.getTotalAlertGroupByCandThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "two",publicRepresentativeTypeId);
+				}
 			}
+			
 			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){  
 				for(Object[] param : alertCountGrpByLocList){  
 					if(param[0] != null){
