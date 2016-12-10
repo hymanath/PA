@@ -2906,7 +2906,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	   AlertOverviewVO resultVO = new AlertOverviewVO();
 	   Set<Long> locationValues = new HashSet<Long>(0);
 	   Long locationAccessLevelId =0l;
-	   SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   Date fromDate=null;
 	   Date toDate = null;
 	   try{
@@ -2954,7 +2954,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   }   
 		   Map<Long,AlertOverviewVO> alertCategoryMap = new ConcurrentHashMap<Long,AlertOverviewVO>();
 		   
-		   List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategory();
+		   List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
 		   prepareAlertCategoryTemplate(rtrnAlertCategoryObjLst,rtrnAlrtStatusObjLst,alertCategoryMap);//Prepare Template 
 		   
 		   List<Object[]> rtrnAlrCtgryCntobjLst = alertDAO.getAlertCntByAlertCategoryBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId, fromDate, toDate);
@@ -3192,7 +3192,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 Map<Long,AlertOverviewVO> categoryMap = new ConcurrentHashMap<Long, AlertOverviewVO>(0);
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
-     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
      Date fromDate=null;
      Date toDate = null;
 	 try{
@@ -3207,7 +3207,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-			  List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategory();
+			  List<Object[]> rtrnAlertCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
 			  List<Object[]> rtrnAlertImpactLevelObjLst = alertImpactScopeDAO.getAllAlertImpactLevel();
 			  prepareTemplate(rtrnAlertCategoryObjLst,rtrnAlertImpactLevelObjLst,categoryMap);////Prepare Template 
 			  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate);
@@ -3585,7 +3585,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
-     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
      Date fromDate=null;
      Date toDate = null;
 	 try{
@@ -3710,7 +3710,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
-     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
      Date fromDate=null;
      Date toDate = null;
 	 try{

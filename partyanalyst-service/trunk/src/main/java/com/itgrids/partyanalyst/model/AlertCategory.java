@@ -19,7 +19,7 @@ public class AlertCategory implements Serializable{
 
 	private Long alertCategoryId;
 	private String category;
-	
+	private Long order;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,6 +36,13 @@ public class AlertCategory implements Serializable{
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	@Column(name = "order")
+	public Long getOrder() {
+		return order;
+	}
+	public void setOrder(Long order) {
+		this.order = order;
 	}
 	
 	
