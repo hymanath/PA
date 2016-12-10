@@ -506,11 +506,18 @@
 	$(document).on("click",".descAlertCls",function(){
 		$("#cdrModelDivId").find(".close").addClass("modalClose");
 		$("#cdrModelDivId").find(".modal-footer .btn").addClass("modalClose");
+		$("#tourDocHeadingId").html("");
+		$("#cdrModelId").html("");
+		$("#alertDestId").html("");
+		$("#alertAttachTitId").html("");
+		$("#alertAttachImgId").html("");
+		$("#alertInvolvedCandidates").html("");
+		$("#alertAssignedCandidates").html("");
+		$("#alertCommentsDiv").html("");
 		$("#tourDocHeadingId").html("ALERT TITLE <br>");
 		$("#cdrModelDivId").modal("show");
-		var alertId = $(this).attr("attr_alert_id");
-		alertId = 76;    
-		getAlertData(604);
+		var alertId = $(this).attr("attr_alert_id");           
+		getAlertData(alertId);
 		getAlertAssignedCandidates(alertId);    
 		getAlertStatusCommentsTrackingDetails(alertId);
 	});
@@ -558,7 +565,74 @@
 		imgStr+='<img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 150px; height: 150px;">';
 		imgStr+='</li>';
 		imgStr+='</ul> '; 
-		$("#alertAttachImgId").html(imgStr);          
+		$("#alertAttachImgId").html(imgStr);
+
+		var str='';
+		if(result[0].subList.length > 0){
+			str+='<h5 class="text-muted text-capital">Involved Candidates-'+result[0].subList.length+'</h5>';
+			str+='<ul class="list-inline assignedCandidatesUl1">';
+			for(var i in result)
+			{
+				for(var j in result[i].subList)
+				{
+					str+='<li style="border-right:1px solid #ccc">';    
+						str+='<p><b>'+result[i].subList[j].name+'</b></p>';
+						if(result[i].subList[j].committeePosition == null){
+							str+='<p> - </p>';           
+						}else{
+							str+='<p> - '+result[i].subList[j].committeePosition+'</p>';
+						}
+						
+						//str+='<p>'+result[i].subList[j].mobileNo+'</p>';
+						//str+='<p>'+result[i].subList[j].locationVO.districtName+'</p>';
+					str+='</li>';  
+				}    
+			}
+			str+='</ul>';  
+			
+			$("#alertInvolvedCandidates").html(str);    
+		}else{
+			$("#alertInvolvedCandidates").html('');        
+		}
+		$(".assignedCandidatesUl1").slick({    
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+			  ]
+		}); 
 	}
 	function getAlertStatusCommentsTrackingDetails(alertId){  
 		var jsObj={
@@ -1107,25 +1181,35 @@
 	}
 	
 	function buildAlertAssignedCandidates(result)
-{
-	var str='';
-	str+='<h5 class="text-muted text-capital">Assigned Candidates</h5>';
-	str+='<ul class="list-inline assignedCandidatesUl">';
-	for(var i in result)
 	{
-		for(var j in result[i].subList)
+	var str='';
+	if(result[0].subList.length > 0){  
+		str+='<h5 class="text-muted text-capital">Assigned Candidates-'+result[0].subList.length+'</h5>';
+		str+='<ul class="list-inline assignedCandidatesUl">';
+		for(var i in result)
 		{
-			str+='<li>';
-				str+='<p><b>'+result[i].subList[j].name+'</b></p>';
-				str+='<p><i> - '+result[i].subList[j].committeePosition+'</i></p>';
-				str+='<p>'+result[i].subList[j].mobileNo+'</p>';
-				str+='<p>'+result[i].subList[j].locationVO.districtName+'</p>';
-			str+='</li>';
+			for(var j in result[i].subList)
+			{
+				str+='<li>';
+					str+='<p><b>'+result[i].subList[j].name+'</b></p>';
+					if(result[i].subList[j].committeePosition == null){
+						str+='<p><i> - </i></p>';       
+					}else{
+						str+='<p><i> - '+result[i].subList[j].committeePosition+'</i></p>';
+					}
+					
+					str+='<p>'+result[i].subList[j].mobileNo+'</p>';
+					str+='<p>'+result[i].subList[j].locationVO.districtName+'</p>';
+				str+='</li>';
+			}
 		}
+		str+='</ul>';
+		
+		$("#alertAssignedCandidates").html(str);
+	}else{
+		$("#alertAssignedCandidates").html('');      
 	}
-	str+='</ul>';
 	
-	$("#alertAssignedCandidates").html(str);
 	$(".assignedCandidatesUl").slick({
 		 slide: 'li',
 		 slidesToShow: 5,
@@ -1162,9 +1246,7 @@
 				slidesToScroll: 1
 			  }
 			}
-			// You can unslick at a given breakpoint now by adding:
-			// settings: "unslick"
-			// instead of a settings object
+			
 		  ]
 	});  
 }
@@ -1198,9 +1280,9 @@ function buildAlertStatusCommentsTrackingDetails(result)
 				{
 					str+='<div class="row m_top10">';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							var date = result[i].sublist2[0].date
+							var date = result[i].sublist2[j].date      
 							var dateArr = date.split("-");
-							var year = dateArr[0];
+							var year = dateArr[0];  
 							var month = dateArr[1];
 							var day = dateArr[2];
 							str+='<table class="table tableCalendar">';
@@ -1217,7 +1299,7 @@ function buildAlertStatusCommentsTrackingDetails(result)
 						str+='</div>';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
 							str+='<ul class="alertStatusTracking">';
-								str+='<li>';
+								str+='<li>';  
 									str+='<div class="arrow_box_left">';
 									for(var k in result[i].sublist2[j].sublist)
 									{	
@@ -1227,7 +1309,7 @@ function buildAlertStatusCommentsTrackingDetails(result)
 											{
 												str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
 											}
-											str+='</p>';
+											str+='</p>';  
 											str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
 											str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
 											str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
