@@ -1,14 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -8664,6 +8662,64 @@ public List<Object[]> getTotalVoterGroupByLocation(String location, Long constId
 	query.setParameter("constId", constId);
 	query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID); 
 	query.setParameter("electionScopeId", IConstants.ELECTION_SCOPE_ID); 
+	
+	return query.list();
+}
+public List<Object[]> getTotalVoterGroupByLocationUrb(String location, Long constId ){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" select localBody.localElectionBodyId, localBody.name, count(distinct voter.voterId)  ");
+	
+	queryStr.append(" from  BoothPublicationVoter BPV " +   
+					" left join BPV.voter voter " +
+					" left join BPV.booth booth " +
+					" left join booth.panchayat panchayat " +
+					" left join panchayat.tehsil tehsil " +
+					" left join booth.localBody localBody " +
+					" left join booth.constituency constituency, " +
+					" AssemblyLocalElectionBody ALEB " +
+					" where " +
+					" constituency.constituencyId = :constId and " +
+					" constituency.electionScope.electionScopeId = :electionScopeId and " +
+					" constituency.deformDate is null and " +
+					" booth.publicationDate.publicationDateId = :publicationDateId and " +
+					" localBody.localElectionBodyId = ALEB.localElectionBody.localElectionBodyId and " +
+					" localBody.localElectionBodyId is not null ");   
+	if(location.equalsIgnoreCase("mandal")){  
+		queryStr.append(" group by localBody.localElectionBodyId order by localBody.localElectionBodyId ");
+	}	
+	
+	Query query = getSession().createQuery(queryStr.toString());  
+	query.setParameter("constId", constId);
+	query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID); 
+	query.setParameter("electionScopeId", IConstants.ELECTION_SCOPE_ID); 
+	
+	return query.list();
+}
+public List<Object[]> getTotalVoterGroupByLocationUrbWard(String location, Long constId ){  
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" SELECT B.local_election_body_id as local_election_body_id, " +
+			        " L.name as municipalName, " +
+			        " ALBW.local_election_body_ward_id as local_election_body_ward_id, " +
+			        " C.name as wardName, " +
+			        " 0 as count ");
+	queryStr.append(" FROM assembly_local_election_body ALB,booth B,assembly_local_election_body_ward ALBW,constituency C,local_election_body L ");
+	queryStr.append(" WHERE "); 
+	queryStr.append(" B.local_election_body_id = L.local_election_body_id and ");
+	queryStr.append(" B.local_election_body_id = ALB.local_election_body_id AND ");
+	queryStr.append(" ALB.assembly_local_election_body_id = ALBW.assembly_local_election_body_id AND ");
+	queryStr.append(" ALBW.local_election_body_ward_id = C.constituency_id AND ");
+	queryStr.append(" B.publication_date_id = :publicationDateId AND ");
+	queryStr.append(" B.constituency_id = :constId ");
+	queryStr.append(" GROUP BY B.local_election_body_id,ALBW.local_election_body_ward_id; ");
+	
+	Query query = getSession().createSQLQuery(queryStr.toString())  
+			.addScalar("local_election_body_id", Hibernate.LONG)
+			.addScalar("municipalName", Hibernate.STRING)
+			.addScalar("local_election_body_ward_id", Hibernate.LONG)
+			.addScalar("wardName", Hibernate.STRING)
+			.addScalar("count", Hibernate.LONG);     
+	query.setParameter("constId", constId);  
+	query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID); 
 	
 	return query.list();
 }
