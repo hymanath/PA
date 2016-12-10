@@ -1113,12 +1113,25 @@ function disableByLevel(index)
 	
 	if($(this).attr("btn-type") == "involve")
 	{
-	involvedCadreIds.pop(id);	
+	//involvedCadreIds.pop(id);	
+	
+		//deleting element from array
+		var i = $.inArray(id,involvedCadreIds)
+		if(i>=0){
+			involvedCadreIds.splice(i, 1);
+		}
+	
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');	
 	}
 	else{
-	assignCadreIds.pop(id);	
-	$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');	
+		//assignCadreIds.pop(id);
+
+		//deleting element from array
+		var i = $.inArray(id,assignCadreIds)
+		if(i>=0){
+			assignCadreIds.splice(i, 1);
+		}
+		$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');	
 	}
 	
 });
