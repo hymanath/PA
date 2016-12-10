@@ -158,4 +158,32 @@ public class AlertCandidateDAO extends
 		query.setParameterList("alertIds", alertIds);
 		return query.list();
 	}
+	public List<Long> getAlertCandidatesForUpdate(Long alertId){
+	
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.alertCandidateId from AlertCandidate model " +
+				" where " +
+				" model.alertId=:alertId " +
+				" and model.alert.isDeleted='N' ");		
+		Query query = getSession().createQuery(str.toString());		
+		
+		query.setParameter("alertId", alertId);
+		
+		return query.list();
+	}
+	public int deleteAlertCandidatesForUpdate(List<Long> alertCandidateIds){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("  delete from AlertCandidate model " +
+				" where " +
+				" model.alertCandidateId in (:alertCandidateIds) ");
+	
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameterList("alertCandidateIds", alertCandidateIds);
+		
+		return query.executeUpdate();
+	}
 }
