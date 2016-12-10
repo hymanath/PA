@@ -996,7 +996,13 @@ function showHideSearch(type)
 		 }
 		 else
    {
-	   commontdpCadreIds.pop(attrId);	
+	  // commontdpCadreIds.pop(attrId);	
+	  
+	  var i = $.inArray(attrId,commontdpCadreIds)
+		if(i>=0){
+			commontdpCadreIds.splice(i, 1);
+		}
+	  
 	   $(".closeIcon"+attrId).closest(".col-md-4").remove();
 	
    }
@@ -1007,7 +1013,15 @@ $(document).on("click",".closeIcon",function(){
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
-	commontdpCadreIds.pop(id);	
+	//commontdpCadreIds.pop(id);
+	
+	//deleting element from array
+	var i = $.inArray(id,commontdpCadreIds)
+	if(i>=0){
+		commontdpCadreIds.splice(i, 1);
+	}
+	
+	
 });
 function getMemberTypes()
 {
