@@ -861,6 +861,7 @@
 				for(var i in result){
 					var districtName;
 					districtName = result[i].status;
+					districtName+='-'+result[i].count+'';     
 					if(result[i].subList1 !=null && result[i].subList1.length >0){
 						var categoryName =[];
 						var count =[];
