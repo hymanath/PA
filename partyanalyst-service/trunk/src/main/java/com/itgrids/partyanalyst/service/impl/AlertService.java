@@ -683,7 +683,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 List<Object[]> candiateCnts = null;
 					 if(alertCategoryMap.get(alertId) !=null && alertCategoryMap.get(alertId)>0l && alertCategoryMap.get(alertId) !=1l){
 						
-						 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId
+						 //0.alertId,1.candidateId,2.candidateName,3.designation,4.organization,5.impactId,6.impact,7.paCandidateId,
+						 //8.membershipNo,9.image
 						 List<Long> aleds = new ArrayList<Long>();
 						 aleds.add(alertId);
 						 List<Object[]> newsAlertCandidates = alertCandidateDAO.getInvolvedCandidateDetailsOfAlert(aleds);
@@ -759,7 +760,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					candidateVO.setImpact(params[6] !=null ? params[6].toString():"");
 					
 					candidateVO.setCategoryId(params[7] !=null ? (Long)params[7]:null);//PaCandidateId
-					
+					candidateVO.setMembershipNo(params[8] !=null ? params[8].toString():"");
+					candidateVO.setImage(params[9] !=null ? params[9].toString():"");
 				}
 			
 			}
@@ -1304,6 +1306,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 candidateVO.setImpact(params[19] != null ? params[19].toString() : "");
 				 candidateVO.setImage(params[20] != null ? params[20].toString() : "");
 				 candidateVO.setMobileNo(params[21] != null ? params[21].toString() : "");
+				 candidateVO.setMembershipNo(params[22] != null ? params[22].toString() : "");
 				 if(dataList != null && dataList.size() > 0)
 				 setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
 			}
