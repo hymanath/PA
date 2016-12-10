@@ -732,8 +732,49 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			List<Long> scopeIdList = new ArrayList<Long>();
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
-			}  
-			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId);   
+			}
+			
+			JSONArray commitLvlIdArr = jObj.getJSONArray("commitLvlIdArr");
+			List<Long> commitLvlIdList = new ArrayList<Long>();
+			for (int i = 0; i < commitLvlIdArr.length(); i++){
+				commitLvlIdList.add(Long.parseLong(commitLvlIdArr.getString(i)));  
+			}
+			String groupAssignType = jObj.getString("groupAssignType");
+			if(groupAssignType.equalsIgnoreCase("Party Committee")){
+				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,commitLvlIdList,groupAssignType,"",null);
+			}else{
+				alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, publicRepresentativeTypeId,null,groupAssignType,"",null);
+			}
+			   
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;    
+	}
+	public String getDesigWiseTdpCommitAlertCount(){  
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long designationId = jObj.getLong("designationId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}
+			
+			JSONArray commitLvlIdArr = jObj.getJSONArray("commitLvlIdArr");
+			List<Long> commitLvlIdList = new ArrayList<Long>();
+			for (int i = 0; i < commitLvlIdArr.length(); i++){
+				commitLvlIdList.add(Long.parseLong(commitLvlIdArr.getString(i)));  
+			}
+			String groupAssignType = jObj.getString("groupAssignType");
+			String position = jObj.getString("position");
+			alertVOs = alertService.getTotalAlertGroupByPubRepThenStatus(fromDate, toDate, stateId, scopeIdList, activityMemberId, null,commitLvlIdList,groupAssignType,position,designationId);
+			
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryLocationWise() of CreateAlertAction",e);
 		}
