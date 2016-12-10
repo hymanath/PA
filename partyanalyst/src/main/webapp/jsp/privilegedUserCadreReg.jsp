@@ -918,10 +918,10 @@
               str+='<tr>';
                 str+='<th rowspan="2">MANDAL/MUNICIPALITY</th>';
 				if(location == "panchayat"){
-					str+='<th rowspan="2">PANCHAYAT</th>';
+					str+='<th rowspan="2">PANCHAYAT/WARD</th>';    
 				}
                 if(location == "booth"){
-					str+='<th rowspan="2">PANCHAYAT</th>';
+					str+='<th rowspan="2">PANCHAYAT/WARD</th>';     
 					//str+='<th rowspan="2">MUNICIPALITY</th>';
 					str+='<th rowspan="2">BOOTH NO</th>';
 				}
@@ -949,12 +949,12 @@
 			for(var i in result){  
 				str+='<tr>';
 				if(location == "mandal"){
-					str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;Mandal</td> ';
+					str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;</td> ';
 				}else{
 					if(result[i].panchayatName != null){
-						str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;Mandal</td> ';
+						str+='<td>'+result[i].mandalName+'&nbsp;&nbsp;</td> ';
 					}else{
-						str+='<td>'+result[i].localElectionBody+'&nbsp;&nbsp;Muncipality</td> ';
+						str+='<td>'+result[i].localElectionBody+'&nbsp;&nbsp;</td> ';
 					}
 				}
 				if(location == "panchayat"){
