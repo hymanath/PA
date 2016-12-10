@@ -297,8 +297,12 @@ function buildAlertCandidateData(result,categoryId)
 		{
 			str+='<li>';
 				str+='<div class="media">';
-					str+='<div class="media-left">';
-					   str+=' <img src="CandidateImages/'+result[i].categoryId+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
+					str+='<div class="media-left">';						
+					if(result[i].image !=null && result[i].image.length>0){
+						str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
+					}else{
+						str+=' <img src="dist/Appointment/img/thumb.jpg"  onerror="setDefaultImage(this);" alt="dist/Appointment/img/thumb.jpg" style="width:50px;"/>';
+					}					   					  
 				   str+=' </div>';
 				   str+=' <div class="media-body">';
 					   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
@@ -318,6 +322,9 @@ function buildAlertCandidateData(result,categoryId)
 					  
 					  if(result[i].organization !=null){
 						  str+='<p><b class="text-capital text-danger">Organization</b> : '+result[i].organization+'</p>';
+					  }
+					  if(result[i].membershipNo !=null && result[i].membershipNo.length>0){
+						  str+='<p><b class="text-capital text-danger">Membership No </b> : '+result[i].membershipNo+'</p>';
 					  }
 					  
 				  str+='  </div>';
@@ -339,11 +346,17 @@ function buildAlertCandidateData(result,categoryId)
 						str+='  <p>'+result[i].committeeName+' Committee '+result[i].committeePosition+' </p>';
 					  str+='  <p>'+result[i].mobileNo+'</p>';
 					  str+='  <p>'+result[i].locationVO.constituencyName+' </p>';
+					  
+					  if(result[i].membershipNo !=null && result[i].membershipNo.length>0){
+						  str+='<p><a>'+result[i].membershipNo+'</a></p>';
+					  }
 					  if(result[i].impactId == 1)
 					  {
 						 str+=' <span class="label label-success">+ Ve</span>'; 
-					  }else{
+					  }else if(result[i].impactId == 2){
 						  str+=' <span class="label label-danger">- Ve</span>';
+					  }else{
+						  str+=' <span class="label label-neutral">N</span>';
 					  }
 					  
 				  str+='  </div>';
