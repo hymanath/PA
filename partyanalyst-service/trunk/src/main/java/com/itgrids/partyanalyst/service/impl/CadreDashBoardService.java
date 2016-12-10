@@ -6938,38 +6938,68 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		try{
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			Map<Long,RegistrationCountVO> locationIdAndLocationDtlsMap = new HashMap<Long,RegistrationCountVO>();
+			Map<Long,RegistrationCountVO> locationIdAndLocationDtlsMap2 = new HashMap<Long,RegistrationCountVO>();
 			Map<Long,Long> locationIdAndCdrCount2014Map = new HashMap<Long,Long>();
+			Map<Long,Long> locationIdAndCdrCount2014Map2 = new HashMap<Long,Long>();
 			Map<Long,Long> locationIdAndCdrCount2016Map = new HashMap<Long,Long>();
-			Map<Long,Long> locationIdAndCdrCount2016MapToday = new HashMap<Long,Long>();
+			Map<Long,Long> locationIdAndCdrCount2016Map2 = new HashMap<Long,Long>();
 			RegistrationCountVO registrationCountVO = null;
 			
-			List<Long> locationIdList = new ArrayList<Long>();
+			List<Long> locationIdList = new ArrayList<Long>();  
+			List<Long> locationIdList2 = new ArrayList<Long>();
 			Long locationScopeId = 0l;
-			List<Object[]> getTotalVtrList = boothPublicationVoterDAO.getTotalVoterGroupByLocation(location, constId);
+			Long locationScopeId2 = 0l;
+			List<Object[]> getTotalVtrList = null;
+			List<Object[]> getTotalVtrListUrb = null;
+			if(location.equalsIgnoreCase("mandal")){
+				getTotalVtrList = boothPublicationVoterDAO.getTotalVoterGroupByLocation(location, constId);
+				getTotalVtrListUrb = boothPublicationVoterDAO.getTotalVoterGroupByLocationUrb(location, constId);
+			}else if(location.equalsIgnoreCase("panchayat")){
+				getTotalVtrList = boothPublicationVoterDAO.getTotalVoterGroupByLocation(location, constId);
+				getTotalVtrListUrb = boothPublicationVoterDAO.getTotalVoterGroupByLocationUrbWard(location, constId);
+			}else{
+				getTotalVtrList = boothPublicationVoterDAO.getTotalVoterGroupByLocation(location, constId);
+			}       
+			
 			/*List<Object[]> getTotalVtrForEleBdyList = null;
 			if(location.equalsIgnoreCase("booth")){
 				getTotalVtrForEleBdyList = boothPublicationVoterDAO.getTotalVoterGroupByLocation("localElectionBody", constId);
 			}*/           
-			if(getTotalVtrList != null && getTotalVtrList.size() > 0){
-				if(location.equalsIgnoreCase("mandal")){
-					locationScopeId = 5l;//for Tehsil
+			
+			if(location.equalsIgnoreCase("mandal")){
+				if(getTotalVtrList != null && getTotalVtrList.size() > 0){
+					locationScopeId = 5l;//for Tehsil  
 					for(Object[] param : getTotalVtrList){
 						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-					}  
-				}else if(location.equalsIgnoreCase("panchayat")){
-					locationScopeId = 6l;//for village
-					for(Object[] param : getTotalVtrList){
-						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
-					}
-				}else{
-					locationScopeId = 9l;//for booth
-					for(Object[] param : getTotalVtrList){
-						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[6]));
 					}
 				}
-				
+				if(getTotalVtrListUrb != null && getTotalVtrListUrb.size() > 0){
+					locationScopeId2 = 7l;//for MUNICIPAL-CORP-GMC
+					for(Object[] param : getTotalVtrListUrb){
+						locationIdList2.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+				}  
+			}else if(location.equalsIgnoreCase("panchayat")){
+				if(getTotalVtrList != null && getTotalVtrList.size() > 0){
+					locationScopeId = 6l;//for village  
+					for(Object[] param : getTotalVtrList){
+						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+				}
+				if(getTotalVtrListUrb != null && getTotalVtrListUrb.size() > 0){
+					locationScopeId2 = 8l;//for ward
+					for(Object[] param : getTotalVtrListUrb){
+						locationIdList2.add(commonMethodsUtilService.getLongValueForObject(param[2]));    
+					}
+				}
+			}else{
+				locationScopeId = 9l;//for booth
+				for(Object[] param : getTotalVtrList){
+					locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[6]));
+				}
 			}
-			List<Object[]> getTotalEnrledCadreCnt2014 = null;  
+			List<Object[]> getTotalEnrledCadreCnt2014 = null; 
+			List<Object[]> getTotalEnrledCadreCnt20142 = null; 
 			Long year = 3l;//for 2014
 			/*if(location.equalsIgnoreCase("booth")){
 				getTotalEnrledCadreCnt2014 =  boothPublicationVoterDAO.getTotalCadreLocationWiseForBooth2014(location, constId, year,"all");
@@ -6977,20 +7007,68 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				getTotalEnrledCadreCnt2014 =  boothPublicationVoterDAO.getTotalCadreLocationWise(location, constId, year,"all");
 			}*/
 			
-			
-			getTotalEnrledCadreCnt2014 = tdpCadreLocationInfoDAO.get2014CadreBasedOnLocationIds(locationScopeId,locationIdList);    
+			if(location.equalsIgnoreCase("mandal")){
+				if(locationIdList.size() > 0){
+					getTotalEnrledCadreCnt2014 = tdpCadreLocationInfoDAO.get2014CadreBasedOnLocationIds(locationScopeId,locationIdList);
+				}
+				if(locationIdList2.size() > 0){
+					getTotalEnrledCadreCnt20142 = tdpCadreLocationInfoDAO.get2014CadreBasedOnLocationIds(locationScopeId2,locationIdList2);
+				}
+			}else if(location.equalsIgnoreCase("panchayat")){
+				if(locationIdList.size() > 0){
+					getTotalEnrledCadreCnt2014 = tdpCadreLocationInfoDAO.get2014CadreBasedOnLocationIds(locationScopeId,locationIdList);
+				}
+				if(locationIdList2.size() > 0){
+					getTotalEnrledCadreCnt20142 = tdpCadreLocationInfoDAO.get2014CadreBasedOnLocationIds(locationScopeId2,locationIdList2);
+				}
+			}else{
+				getTotalEnrledCadreCnt2014 = tdpCadreLocationInfoDAO.get2014CadreBasedOnLocationIds(locationScopeId,locationIdList);
+			}
+			    
 			
 			year = 4l;//for 2016
+			List<Object[]> getTotalEnrledCadreCnt2016 = null;
+			List<Object[]> getTotalEnrledCadreCnt20162 = null;
 			//List<Object[]> getTotalEnrledCadreCnt2016 =  boothPublicationVoterDAO.getTotalCadreLocationWise(location, constId, year,"all");
-			List<Object[]> getTotalEnrledCadreCnt2016 =  tdpCadreLocationInfoDAO.getTotalCadreLocationWise(locationScopeId, locationIdList,scope);  
+			
+			if(location.equalsIgnoreCase("mandal")){
+				if(locationIdList.size() > 0){
+					getTotalEnrledCadreCnt2016 =  tdpCadreLocationInfoDAO.getTotalCadreLocationWise(locationScopeId, locationIdList,scope);
+				}
+				if(locationIdList2.size() > 0){
+					getTotalEnrledCadreCnt20162 =  tdpCadreLocationInfoDAO.getTotalCadreLocationWise(locationScopeId2, locationIdList2,scope);
+				}
+			}else if(location.equalsIgnoreCase("panchayat")){
+				if(locationIdList.size() > 0){
+					getTotalEnrledCadreCnt2016 =  tdpCadreLocationInfoDAO.getTotalCadreLocationWise(locationScopeId, locationIdList,scope);
+				}
+				if(locationIdList2.size() > 0){
+					getTotalEnrledCadreCnt20162 =  tdpCadreLocationInfoDAO.getTotalCadreLocationWise(locationScopeId2, locationIdList2,scope);
+				}
+			}else{
+				getTotalEnrledCadreCnt2016 =  tdpCadreLocationInfoDAO.getTotalCadreLocationWise(locationScopeId, locationIdList,scope);
+			}
 			if(location.equalsIgnoreCase("mandal")){
 				if(getTotalVtrList != null && getTotalVtrList.size() > 0){
-					for(Object[] param : getTotalVtrList){  
-						registrationCountVO = new RegistrationCountVO();
-						registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
-						registrationCountVO.setMandalName(param[1] != null ? param[1].toString() : "");
-						registrationCountVO.setTotalVoter(param[2] != null ? (Long)param[2] : 0l);
-						locationIdAndLocationDtlsMap.put(param[0] != null ? (Long)param[0] : 0l, registrationCountVO);
+					for(Object[] param : getTotalVtrList){
+						if(param[0] != null){
+							registrationCountVO = new RegistrationCountVO();
+							registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
+							registrationCountVO.setMandalName(param[1] != null ? param[1].toString() : "");
+							registrationCountVO.setTotalVoter(param[2] != null ? (Long)param[2] : 0l);
+							locationIdAndLocationDtlsMap.put(param[0] != null ? (Long)param[0] : 0l, registrationCountVO);
+						}
+					}
+				}
+				if(getTotalVtrListUrb != null && getTotalVtrListUrb.size() > 0){
+					for(Object[] param : getTotalVtrListUrb){
+						if(param[0] != null){
+							registrationCountVO = new RegistrationCountVO();
+							registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
+							registrationCountVO.setMandalName(param[1] != null ? param[1].toString().split(" ")[0]+" Town" : "");
+							registrationCountVO.setTotalVoter(param[2] != null ? (Long)param[2] : 0l);
+							locationIdAndLocationDtlsMap2.put(param[0] != null ? (Long)param[0] : 0l, registrationCountVO);
+						}
 					}
 				}
 			}    
@@ -6998,13 +7076,28 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			if(location.equalsIgnoreCase("panchayat")){
 				if(getTotalVtrList != null && getTotalVtrList.size() > 0){  
 					for(Object[] param : getTotalVtrList){
-						registrationCountVO = new RegistrationCountVO();
-						registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
-						registrationCountVO.setMandalName(param[1] != null ? param[1].toString() : "");
-						registrationCountVO.setPanchayatId(param[2] != null ? (Long)param[2] : 0l);
-						registrationCountVO.setPanchayatName(param[3] != null ? param[3].toString() : "");  
-						registrationCountVO.setTotalVoter(param[4] != null ? (Long)param[4] : 0l);
-						locationIdAndLocationDtlsMap.put(param[2] != null ? (Long)param[2] : 0l, registrationCountVO);
+						if(param[0] != null){
+							registrationCountVO = new RegistrationCountVO();    
+							registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
+							registrationCountVO.setMandalName(param[1] != null ? param[1].toString() : "");
+							registrationCountVO.setPanchayatId(param[2] != null ? (Long)param[2] : 0l);
+							registrationCountVO.setPanchayatName(param[3] != null ? param[3].toString() : "");  
+							registrationCountVO.setTotalVoter(param[4] != null ? (Long)param[4] : 0l);
+							locationIdAndLocationDtlsMap.put(param[2] != null ? (Long)param[2] : 0l, registrationCountVO);
+						}
+					}
+				}
+				if(getTotalVtrListUrb != null && getTotalVtrListUrb.size() > 0){  
+					for(Object[] param : getTotalVtrListUrb){
+						if(param[0] != null){
+							registrationCountVO = new RegistrationCountVO();
+							registrationCountVO.setMandalId(param[0] != null ? (Long)param[0] : 0l);
+							registrationCountVO.setMandalName(param[1] != null ? param[1].toString().split(" ")[0]+" Town" : "");   
+							registrationCountVO.setPanchayatId(param[2] != null ? (Long)param[2] : 0l);
+							registrationCountVO.setPanchayatName(param[3] != null ? param[3].toString() : "");  
+							registrationCountVO.setTotalVoter(param[4] != null ? (Long)param[4] : 0l);
+							locationIdAndLocationDtlsMap2.put(param[2] != null ? (Long)param[2] : 0l, registrationCountVO);        
+						}
 					}
 				}
 			}
@@ -7030,7 +7123,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 			}
-			//push cadre count  
+			//push cadre count  2014
 			if(getTotalEnrledCadreCnt2014 != null && getTotalEnrledCadreCnt2014.size() > 0){
 				for(Object[] param : getTotalEnrledCadreCnt2014){
 					locationIdAndCdrCount2014Map.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
@@ -7042,6 +7135,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 			}
+			
+			if(getTotalEnrledCadreCnt20142 != null && getTotalEnrledCadreCnt20142.size() > 0){
+				for(Object[] param : getTotalEnrledCadreCnt20142){
+					locationIdAndCdrCount2014Map2.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
+				}
+				for(Entry<Long,Long> entry : locationIdAndCdrCount2014Map2.entrySet()){
+					registrationCountVO = locationIdAndLocationDtlsMap2.get(entry.getKey());
+					if(registrationCountVO != null){
+						registrationCountVO.setCadreCount2014(entry.getValue());  
+					}
+				}
+			}
+			
+			
+			//push cadre count  2016
 			if(getTotalEnrledCadreCnt2016 != null && getTotalEnrledCadreCnt2016.size() > 0){
 				for(Object[] param : getTotalEnrledCadreCnt2016){
 					locationIdAndCdrCount2016Map.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
@@ -7052,14 +7160,47 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						registrationCountVO.setCadreCount2016OverAll(entry.getValue());
 					}
 				}
+			}  
+			
+			if(getTotalEnrledCadreCnt20162 != null && getTotalEnrledCadreCnt20162.size() > 0){
+				for(Object[] param : getTotalEnrledCadreCnt20162){
+					locationIdAndCdrCount2016Map2.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
+				}
+				for(Entry<Long,Long> entry : locationIdAndCdrCount2016Map2.entrySet()){
+					registrationCountVO = locationIdAndLocationDtlsMap2.get(entry.getKey());
+					if(registrationCountVO != null){
+						registrationCountVO.setCadreCount2016OverAll(entry.getValue());
+					}
+				}
 			}
+			
 			
 			Long renewalCount = 0l;
 			Long newCount = 0l;
 			Map<Long,Long> locationIdAndRenewalCountMap = new HashMap<Long,Long>();
+			Map<Long,Long> locationIdAndRenewalCountMap2 = new HashMap<Long,Long>();
 			
 			//List<Object[]> locationWiseRenewalCdr = tdpCadreEnrollmentYearDAO.getTotalRenewlCadreLocationWise(location, constId);
-			List<Object[]> locationWiseRenewalCdr = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId, locationIdList,scope);
+			List<Object[]> locationWiseRenewalCdr = null;//tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId, locationIdList,scope);
+			List<Object[]> locationWiseRenewalCdr2 = null;
+			if(location.equalsIgnoreCase("mandal")){
+				if(locationIdList.size() > 0){
+					locationWiseRenewalCdr = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId, locationIdList,scope);
+				}
+				if(locationIdList2.size() > 0){
+					locationWiseRenewalCdr2 = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId2, locationIdList2,scope);
+				}
+			}else if(location.equalsIgnoreCase("panchayat")){
+				if(locationIdList.size() > 0){
+					locationWiseRenewalCdr = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId, locationIdList,scope);
+				}
+				if(locationIdList2.size() > 0){
+					locationWiseRenewalCdr2 = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId2, locationIdList2,scope);
+				}
+			}else{
+				locationWiseRenewalCdr = tdpCadreLocationInfoDAO.getTotalRenewlCadreLocationWiseCount(locationScopeId, locationIdList,scope);
+			}
+			//push renewal cadre count  2016
 			if(locationWiseRenewalCdr != null && locationWiseRenewalCdr.size() > 0){   
 				for(Object[] param : locationWiseRenewalCdr){
 					locationIdAndRenewalCountMap.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
@@ -7071,9 +7212,25 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						renewalCount = entry.getValue();
 						newCount = registrationCountVO.getCadreCount2016OverAll()-renewalCount;
 						registrationCountVO.setNewCount(newCount);
+					}  
+				}
+			}
+			
+			if(locationWiseRenewalCdr2 != null && locationWiseRenewalCdr2.size() > 0){   
+				for(Object[] param : locationWiseRenewalCdr2){
+					locationIdAndRenewalCountMap2.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
+				}
+				for(Entry<Long,Long> entry : locationIdAndRenewalCountMap2.entrySet()){
+					registrationCountVO = locationIdAndLocationDtlsMap2.get(entry.getKey());
+					if(registrationCountVO != null){
+						registrationCountVO.setRenewalCount(entry.getValue());
+						renewalCount = entry.getValue();
+						newCount = registrationCountVO.getCadreCount2016OverAll()-renewalCount;
+						registrationCountVO.setNewCount(newCount);
 					}
 				}
 			}
+			
 			
 			if(locationIdAndLocationDtlsMap.size() > 0){
 				for(Entry<Long,RegistrationCountVO> entry : locationIdAndLocationDtlsMap.entrySet()){
@@ -7084,10 +7241,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					
 				}
 			}
+			
+			if(locationIdAndLocationDtlsMap2.size() > 0){
+				for(Entry<Long,RegistrationCountVO> entry : locationIdAndLocationDtlsMap2.entrySet()){
+					registrationCountVO = locationIdAndLocationDtlsMap2.get(entry.getKey());
+					if(registrationCountVO.getRenewalCount() == 0l){
+						registrationCountVO.setNewCount(registrationCountVO.getCadreCount2016OverAll());
+					}
+					
+				}
+			}
 			List<RegistrationCountVO> countVOs = new ArrayList<RegistrationCountVO>(locationIdAndLocationDtlsMap.values());
+			countVOs.addAll(new ArrayList<RegistrationCountVO>(locationIdAndLocationDtlsMap2.values()));    
 			return countVOs;  
 				
-		}catch(Exception e){  
+		}catch(Exception e){    
 			e.printStackTrace();
 			LOG.error("exception occured in getRegistrationCountDtls of WebServiceHandlerService", e);
 		}
