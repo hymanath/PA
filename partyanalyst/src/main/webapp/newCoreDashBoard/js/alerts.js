@@ -1583,7 +1583,27 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 		  var divId = $(this).attr("attr_div_id");
 		  var selectTypeId = $(this).attr("attr_selected_type");
 		  var designationId = $(this).attr("attr_designation_id");
-		   getTotalAlertGroupByPubRepThenStatus(selectTypeId,designationId,divId);
+		     var selectLevel=$("input:radio[name=locationLevel]:checked").attr("attr_val");
+			var scopeIdsArr = [];
+			if(selectLevel == "All"){
+			scopeIdsArr.push(2);  
+			scopeIdsArr.push(3);  
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9); 
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
+		}else if(selectLevel == "District"){
+			scopeIdsArr.push(2);
+		}else if(selectLevel == "Constituency"){
+			scopeIdsArr.push(3);
+		}else if(selectLevel == "mandalMuncipality"){
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);
+		}else if(selectLevel == "VillageWard"){
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9);	
+		}
+		   getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,selectTypeId,designationId,divId);
         $(".expandIcon").addClass("glyphicon-plus").removeClass("glyphicon-minus");
         $(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
         $(".subElement").hide();
