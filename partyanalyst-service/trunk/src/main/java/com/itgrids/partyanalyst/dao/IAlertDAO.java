@@ -44,4 +44,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getAllAlertDtls(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate);
 	
 	public int updateCandidateStatusOfAlert(Long alertId,Long userId);
+	public List<Object[]> getTotalAlertGroupByCandThenStatus(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate, String step, Long publicRepresentativeTypeId);
 }
