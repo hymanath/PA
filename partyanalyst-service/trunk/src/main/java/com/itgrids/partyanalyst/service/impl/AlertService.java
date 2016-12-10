@@ -3455,14 +3455,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 			
-			//convert parliament into constituency.
-			if(userAccessLevelId.longValue() == 4L){
-				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
-				userAccessLevelId = 5L;
-				userAccessLevelValues.clear();
-				userAccessLevelValues.addAll(parliamentAssemlyIds);      
-			}
-			    
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
 			//Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues
 			List<Object[]> alertCountList = null;//alertDAO.getTotalAlertGroupByPubRepThenStatus(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, "one");
@@ -3514,9 +3506,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							innerListAlertVO = new AlertVO();
 							for(Object[] param : statusList){
 								alertVO = new AlertVO();
-								alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
-								alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
-								alertVOs.add(alertVO);  
+								if(commonMethodsUtilService.getLongValueForObject(param[0]) != 1l){
+									alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
+									alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
+									alertVOs.add(alertVO);  
+								}
 							}
 						}
 						for(AlertVO param : alertVOs){
@@ -3700,7 +3694,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   * santosh (non-Javadoc)
   * @see com.itgrids.partyanalyst.service.IAlertService#getOtherTypeAlertCandiateDtls(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
   */
- public List<AlertOverviewVO> getOtherTypeAlertCandiateDtls(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds){
+ public List<AlertOverviewVO> getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,String resultType){
 	 List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
 	 Set<Long> locationValues = new HashSet<Long>(0);
      Long locationAccessLevelId =0l;
@@ -3719,16 +3713,25 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				 }
 			 }
-			   Set<Long> allTypeTdpCadreIds = new HashSet<Long>(0);
 			   Map<Long,AlertOverviewVO> candiateDtsMap = new HashMap<Long, AlertOverviewVO>();
-			  List<Object[]> rtrnPblcRprsnttvTypAlrtDtlsObjLst = alertDAO.getPublicRepresentativeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  setTdpCadreId(rtrnPblcRprsnttvTypAlrtDtlsObjLst,allTypeTdpCadreIds);
-			  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  setTdpCadreId(rtrnPrtyCmmttAlrtDtlsObjLst,allTypeTdpCadreIds);
-			  List<Object[]> rtrnPrgrmCmmttAlrtDtlsOblLst = alertDAO.getProgramCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  setTdpCadreId(rtrnPrgrmCmmttAlrtDtlsOblLst,allTypeTdpCadreIds);
-			  List<Object[]> rtrnAllAlertCntDls = alertDAO.getAllAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
-			  setOtherCandiateAlertCnt(rtrnAllAlertCntDls,candiateDtsMap,allTypeTdpCadreIds);
+			   List<Object[]> rtrnStatusLst = alertStatusDAO.getAllStatus();
+			   List<Object[]> rtrnPrgrmCmmttAlrtDtlsOblLst = alertDAO.getProgramCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+			   Set<Long> allTypeTdpCadreIds = new HashSet<Long>(0);
+			   if(resultType != null && resultType.trim().equalsIgnoreCase("Program Committee")){
+				   
+				   setCandiateAlertCnt(rtrnPrgrmCmmttAlrtDtlsOblLst,candiateDtsMap,allTypeTdpCadreIds,rtrnStatusLst); // in this case allTypeTdpCadreIds set is empty
+			  
+			   }else if(resultType != null && resultType.trim().equalsIgnoreCase("Other")){
+				   
+				  List<Object[]> rtrnPblcRprsnttvTypAlrtDtlsObjLst = alertDAO.getPublicRepresentativeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+				  setTdpCadreId(rtrnPblcRprsnttvTypAlrtDtlsObjLst,allTypeTdpCadreIds);
+				  List<Object[]> rtrnPrtyCmmttAlrtDtlsObjLst = alertDAO.getPartyCommitteeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+				  setTdpCadreId(rtrnPrtyCmmttAlrtDtlsObjLst,allTypeTdpCadreIds);
+				  setTdpCadreId(rtrnPrgrmCmmttAlrtDtlsOblLst,allTypeTdpCadreIds);
+				  List<Object[]> rtrnAllAlertCntDls = alertDAO.getAllAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
+				  setCandiateAlertCnt(rtrnAllAlertCntDls,candiateDtsMap,allTypeTdpCadreIds,rtrnStatusLst);
+				  
+			   }
 			  if(candiateDtsMap != null && candiateDtsMap.size() > 0){
 				  resultList.addAll(candiateDtsMap.values());
 				  candiateDtsMap.clear();
@@ -3749,7 +3752,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		 LOG.error("Exception in setTdpCadreId()",e); 
 	 }
  }
- public void setOtherCandiateAlertCnt(List<Object[]> obList,Map<Long,AlertOverviewVO> candiateDtsMap,Set<Long> allTypeTdpCadreIds){
+ public void setCandiateAlertCnt(List<Object[]> obList,Map<Long,AlertOverviewVO> candiateDtsMap,Set<Long> allTypeTdpCadreIds,List<Object[]> statusList){
 	 try{
 		 if(obList != null && obList.size() > 0){
 			   for(Object[] param:obList){
@@ -3761,27 +3764,40 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					    	candiateVO = new AlertOverviewVO();
 					    	candiateVO.setId(tdpCadreId);
 					    	candiateVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					    	candiateVO.setSubList1(getStatusList(statusList));
 					    	candiateDtsMap.put(candiateVO.getId(), candiateVO);
 					    }
 					    candiateVO.setTotalAlertCnt(candiateVO.getTotalAlertCnt()+1);
 					    candiateVO.getAlertIdSet().add(commonMethodsUtilService.getLongValueForObject(param[1]));
-					    if(statusId == 2l){//Notified
-				 			candiateVO.setNotifiedCnt(candiateVO.getNotifiedCnt()+1);
-				 		}else if(statusId == 3l){//Action In Progess
-				 			candiateVO.setActionInProgessCnt(candiateVO.getActionInProgessCnt()+1);
-				 		}else if(statusId == 4l){//Completed
-				 			candiateVO.setCompletedCnt(candiateVO.getCompletedCnt()+1);
-				 		}else if(statusId == 5l){//Unable to Resolve
-				 			candiateVO.setUnabletoResolveCnt(candiateVO.getUnabletoResolveCnt()+1);
-				 		}else if(statusId == 6l){//Action Not Required
-				 			candiateVO.setActionNotRequiredCnt(candiateVO.getActionNotRequiredCnt()+1);
-				 		}
+					    AlertOverviewVO statusVO = getMatchVO(candiateVO.getSubList1(),statusId);
+					    if(statusVO != null){
+					    	statusVO.setStatusCnt(statusVO.getStatusCnt()+1);	
+					    }
 				   }
 			   }
 		   }
 	 }catch(Exception e){
 		 LOG.error("Exception in setOtherCandiateAlertCnt()",e); 
 	 }
+ }
+ public List<AlertOverviewVO> getStatusList(List<Object[]> rtrnStatusLst){
+	 List<AlertOverviewVO> alertStatusMap = new ArrayList<AlertOverviewVO>();
+	 try{
+		 if(rtrnStatusLst != null && rtrnStatusLst.size() > 0){
+			 for(Object[] param:rtrnStatusLst){
+				 Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				 if(statusId != 1l){//except pending
+					 AlertOverviewVO statusVO = new AlertOverviewVO();
+					 statusVO.setStatusTypeId(statusId);
+					 statusVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 alertStatusMap.add(statusVO);
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception in getStatusList()",e);  
+	 }
+	 return alertStatusMap;
  }
 }
 
