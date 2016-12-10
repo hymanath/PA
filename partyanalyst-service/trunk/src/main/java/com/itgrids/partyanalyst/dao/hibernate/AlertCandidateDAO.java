@@ -83,7 +83,8 @@ public class AlertCandidateDAO extends
 		str.append(" ,ward.constituencyId,ward.name");
 		str.append(",model.alertImpact.alertImpactId,model.alertImpact.impact");
 		str.append(" ,model.tdpCadre.image");
-		str.append(" ,model.tdpCadre.mobileNo");
+		str.append(" ,model.tdpCadre.mobileNo," +
+				" model.tdpCadre.memberShipNo ");
 		str.append(" from AlertCandidate model left join model.tdpCadre.userAddress.panchayat panc ");
 		str.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
 		str.append(" left join model.tdpCadre.userAddress.constituency constituency ");
@@ -133,8 +134,9 @@ public class AlertCandidateDAO extends
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" SELECT model.alertId,model.newsCandidateId,model.newsCandidate,model.designation,model.organization," +
-				" model.alertImpact.alertImpactId,model.alertImpact.impact,model.candidateId " +
+				" model.alertImpact.alertImpactId,model.alertImpact.impact,model.candidateId,tdpCadre.memberShipNo,tdpCadre.image " +
 				" FROM AlertCandidate model " +
+				" left join model.tdpCadre tdpCadre " +
 				" WHERE model.alert.isDeleted ='N' " +
 				" AND model.alertId in (:alertIds) " +
 				" GROUP BY  model.newsCandidateId " +
