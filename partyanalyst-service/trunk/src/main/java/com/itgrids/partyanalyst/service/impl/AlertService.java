@@ -2026,11 +2026,19 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 alert = alertDAO.save(alert);
 						 
 						 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
-						 alertTrackingVO.setAlertUserTypeId(alert.getAlertSourceId());
+						// alertTrackingVO.setAlertUserTypeId(alert.getAlertSourceId());
 						 alertTrackingVO.setAlertStatusId(alert.getAlertStatusId());
 						 alertTrackingVO.setAlertId(alert.getAlertId());
 						 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 						 saveAlertTrackingDetails(alertTrackingVO)	;
+						 
+						 
+						 //Deleting Candidates If Already there for Alert
+							List<Long> alertCandidateIds = alertCandidateDAO.getAlertCandidatesForUpdate(alert.getAlertId());
+							
+							if(alertCandidateIds !=null && alertCandidateIds.size()>0){
+								alertCandidateDAO.deleteAlertCandidatesForUpdate(alertCandidateIds);
+							}
 						 
 						 
 						 //Saving into Alert Candidate For Print and Electronic Media
@@ -2054,7 +2062,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								}
 							 }
 							 
-							 
+							//Adding Involved candidates For alert
 							for(ActionableVO vo : inputVO.getActionableVoList())
 							 {
 								 if(vo != null && vo.getId()!= null && vo.getId() > 0)
@@ -2080,11 +2088,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 											
 										}										 
 									 }
+									 
 									 alertCandidate.setOrganization(vo.getOrganization());
 								
 									 alertCandidateDAO.save(alertCandidate);
 								 }						
-							 }
+							 }														
 						 }
 					return "success";
 			      }
