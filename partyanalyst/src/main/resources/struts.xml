@@ -14957,7 +14957,7 @@
 					<param name="root">status</param>
 				</result>
 	</action>
-	<action name="getOtherTypeAlertCandiateDtlsAction" class="createAlertAction" method="getOtherTypeAlertCandiateDtls">
+	<action name="getOtherAndPrgrmCmmtteeTypeAlertCndtDtlsAction" class="createAlertAction" method="getOtherAndPrgrmCmmtteeTypeAlertCndtDtls">
 		<result type="json" name="success">
    			<param name="root">resultList</param>
    		</result>

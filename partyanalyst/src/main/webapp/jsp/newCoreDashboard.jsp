@@ -3280,6 +3280,29 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 <!--end-->
+<!-- Modal For Alert Start -->
+<div class="modal fade" id="alertModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:75%"> 
+    <div class="modal-content" style="border-radius:0px">
+      <div class="modal-header" style="background-color:#CCC">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-capital" id="alertModalHeadingId"></h4>
+      </div>
+       <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="alertProcessingImgId"></center></div>
+			<div id="alertDetailsDivId"></div> 
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End -->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
