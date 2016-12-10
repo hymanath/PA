@@ -1525,12 +1525,17 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		query.setParameter("updatedBy", userId);
 		
 		return query.executeUpdate();
-	}	
-	public List<Object[]> getTdpBasicCommiteeTypeByAlertCnt(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpBasicCommiteeIds){
+	}
+	public List<Object[]> getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpBasicCommiteeIds,String step){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select  model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
-		  				  " model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
-		  				  " count(distinct model.alert.alertId) " +
+		  				  " model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,");
+		  if(step.equalsIgnoreCase("two")){
+			  queryStr.append(" model.alert.alertStatus.alertStatusId," +
+	  				          " model.alert.alertStatus.alertStatus,");
+		  }
+		  				  
+		  queryStr.append(" count(distinct model.alert.alertId) " +
 		  				  " from AlertAssigned model,TdpCommitteeMember model1 " +
 		  				  " where  " +
 		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
@@ -1560,7 +1565,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
 		      queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 		}
-	    queryStr.append(" group  by model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
+	    if(step.equalsIgnoreCase("two")){
+	    	queryStr.append(" group  by model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.alert.alertStatusId ");
+		}else{
+			queryStr.append(" group  by model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
+		}
+	    
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
 	     query.setParameter("stateId", stateId);
@@ -1578,63 +1588,78 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(tdpBasicCommiteeIds != null && tdpBasicCommiteeIds.size() > 0){
 			query.setParameterList("tdpBasicCommiteeIds", tdpBasicCommiteeIds);
 		}
-		return query.list();
+		return query.list();  
 	}
-	public List<Object[]> getTdpBasicCommiteeTypeAndAlertStatusByAlertCnt(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpBasicCommiteeIds){
-		StringBuilder queryStr = new StringBuilder();
-		  queryStr.append(" select  model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
-		  				  " model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
-		  				  " model.alert.alertStatusId," +
-		  				  " model.alert.alertStatus," +
-		  				  " count(distinct model.alert.alertId) " +
-		  				  " from AlertAssigned model,TdpCommitteeMember model1 " +
-		  				  " where  " +
-		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) " +
-		  				  " and model.alert.alertStatus.alertStatusId not in (1) ");
-		  if(stateId != null && stateId.longValue() > 0l){
-			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
-		  }
-		  if(fromDate !=null && toDate !=null){
-			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
-		 }
-		 if(impactLevelIds != null && impactLevelIds.size() > 0){
-			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
-		 }
-		 if(tdpBasicCommiteeIds != null && tdpBasicCommiteeIds.size() > 0){
-			 queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(:tdpBasicCommiteeIds)");
-		 }
-	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		  queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-		      queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-	      queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-	       queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
-		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
-		      queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
-		}
-	    queryStr.append(" group  by model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
-	    Query query = getSession().createQuery(queryStr.toString());
-	    if(stateId != null && stateId.longValue() > 0l){
-	     query.setParameter("stateId", stateId);
+	public List<Object[]> getTdpCommitteeRolesByAlertCnt(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> tdpCommitteeLevelIds,Long tdpBasicCommitteeId,String step){
+	      
+	    StringBuilder queryStr = new StringBuilder();
+	      queryStr.append(" select  model1.tdpCommitteeRole.tdpRoles.tdpRolesId," +
+	                	  " model1.tdpCommitteeRole.tdpRoles.role,");
+	      if(step.equalsIgnoreCase("two")){
+	    	  queryStr.append(" model.alert.alertStatus.alertStatusId," +
+		                	  " model.alert.alertStatus.alertStatus,");  
+	      }
+	                
+	      queryStr.append(" count(distinct model.alert.alertId) " +  
+	                " from AlertAssigned model,TdpCommitteeMember model1 " +
+	                " where  " +
+	                " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+	                " and model.alert.isDeleted='N' and model.isDeleted='N' " +
+	                " and model.alert.alertType.alertTypeId not in (2) " +
+	                " and model.alert.alertStatus.alertStatusId not in (1) ");
+	      if(stateId != null && stateId.longValue() > 0l){
+	        queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
+	      }
+	      if(fromDate !=null && toDate !=null){
+	        queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
+	     }
+	     if(impactLevelIds != null && impactLevelIds.size() > 0){
+	       queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+	     }
+	     if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
+	       queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(:tdpCommitteeLevelIds)");
+	     }
+	     if(tdpBasicCommitteeId != null && tdpBasicCommitteeId.longValue() > 0){
+	        queryStr.append(" and model1.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId=:tdpBasicCommitteeId");   
+	     }
+	      if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	      queryStr.append(" and model.alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	          queryStr.append(" and model.alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	         queryStr.append(" and model.alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+	          queryStr.append(" and model.alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 	    }
-	    if(fromDate !=null && toDate !=null){
-			query.setDate("startDate", fromDate);
-			query.setDate("endDate", toDate);
-		}
-		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
-			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-		}
-		if(impactLevelIds != null && impactLevelIds.size() > 0){
-			query.setParameterList("impactLevelIds", impactLevelIds); 
-		}
-		if(tdpBasicCommiteeIds != null && tdpBasicCommiteeIds.size() > 0){
-			query.setParameterList("tdpBasicCommiteeIds", tdpBasicCommiteeIds);
-		}
-		return query.list();
-	}
+	      if(step.equalsIgnoreCase("two")){
+	    	  queryStr.append(" group  by model1.tdpCommitteeRole.tdpRoles.tdpRolesId,model.alert.alertStatusId ");
+	      }else{
+	    	  queryStr.append(" group  by model1.tdpCommitteeRole.tdpRoles.tdpRolesId ");
+	      }
+	      
+	      Query query = getSession().createQuery(queryStr.toString());
+	      if(stateId != null && stateId.longValue() > 0l){
+	       query.setParameter("stateId", stateId);
+	      }
+	      if(fromDate !=null && toDate !=null){
+	      query.setDate("startDate", fromDate);
+	      query.setDate("endDate", toDate);
+	    }
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	      query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	      query.setParameterList("impactLevelIds", impactLevelIds); 
+	    }
+	    if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
+	      query.setParameterList("tdpCommitteeLevelIds", tdpCommitteeLevelIds);
+	    }
+	    if(tdpBasicCommitteeId != null && tdpBasicCommitteeId.longValue() > 0){
+	       query.setParameter("tdpBasicCommitteeId", tdpBasicCommitteeId);  
+	    }
+	    return query.list();  
+	  }
 }
 
