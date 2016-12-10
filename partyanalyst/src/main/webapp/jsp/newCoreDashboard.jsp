@@ -2742,7 +2742,7 @@
 			</div>	
 	
 		<!--Events End -->
-	 <!-- Alerts Start 
+	 <!-- Alerts Start -->
 	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2865,7 +2865,7 @@
 				</div>
 			</div>
 		</div>	
-	 Alerts End -->
+	 <!--Alerts End -->
 	</div>
 </div> 
 <!--model start -->
@@ -3283,11 +3283,32 @@
 <!--end-->
 <!-- Modal For Alert Start -->
 <div class="modal fade" id="alertModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="width:75%"> 
+  <div class="modal-dialog modal-lg" role="document"> 
     <div class="modal-content" style="border-radius:0px">
       <div class="modal-header" style="background-color:#CCC">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-capital" id="alertModalHeadingId"></h4>
+       <div class="row">
+			<div class="col-md-5 col-xs-12 col-sm-4">
+				<h4 class="text-capital" id="alertModalHeadingId"></h4>
+			</div>
+			<div class="col-md-7 col-xs-12 col-sm-4" id="commitLvlId" style="display:none;">        
+				<label class="radio-inline">
+					<input class="commitLvlCls" type="radio" name="commitLvlName" id="commitLvlId1" value="All" checked> All
+				</label>
+				<label class="radio-inline">
+					<input class="commitLvlCls" type="radio" name="commitLvlName" id="commitLvlId2" value="State"> State
+				</label>    
+				<label class="radio-inline">       
+					<input class="commitLvlCls" type="radio" name="commitLvlName" id="commitLvlId3" value="District"> District
+				</label>
+				<label class="radio-inline">
+					<input class="commitLvlCls" type="radio" name="commitLvlName" id="commitLvlId4" value="Mandal"> Mandal/Municipality
+				</label>
+				<label class="radio-inline">
+					<input class="commitLvlCls" type="radio" name="commitLvlName" id="commitLvlId5" value="Village"> Village/Ward
+				</label>
+			</div>
+		</div>
       </div>
        <div class="modal-body">
         <div class="row">
@@ -3477,7 +3498,7 @@
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
 		/* Alert Default Call */
-		//getAlertOverviewDetails();
+		getAlertOverviewDetails();  
 	}
 	$(document).on("click",".userStructureClass",function(){
 		
@@ -3540,7 +3561,7 @@ var loginUserId ='${sessionScope.USER.registrationID}';
 function manageHeader(){
 	if(loginUserId == null || loginUserId =='' || loginUserId.length ==0){
 
-		$(".navbarHeader").show();
+		$(".navbarHeader").show();  
 		$(".eventsheader").hide();
 	}else {
 
