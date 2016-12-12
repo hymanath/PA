@@ -77,8 +77,7 @@ public class ConstituencyPrintStatusDAO extends GenericDaoHibernate<Constituency
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(stateId != null && stateId.longValue() > 0l)
-			query.setParameter("stateId", stateId);
+		
 		if(vendorId != null && vendorId.longValue() > 0l)
 			query.setParameter("vendorId", vendorId);
 		
@@ -87,7 +86,7 @@ public class ConstituencyPrintStatusDAO extends GenericDaoHibernate<Constituency
 	
 	public List<Object[]> getStatusWiseDistrictWisePrintingConstituencyDetails(Long stateId,Long vendorId,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.district.districtId,model.district.districtName," +
+		sb.append("select distinct model.constituency.district.districtId,model.constituency.district.districtName," +
 					" model.printStatus.printStatusId," +
 					" count(distinct model.constituency.constituencyId)" +
 					" from ConstituencyPrintStatus model" +
@@ -103,16 +102,15 @@ public class ConstituencyPrintStatusDAO extends GenericDaoHibernate<Constituency
 		if(vendorId != null && vendorId.longValue() > 0l)
 			sb.append(" and model.cardPrintVendor.cardPrintVendorId = :vendorId");
 		
-		sb.append(" group by model.printStatus.printStatusId,model.district.districtId" +
-					" order by model.district.districtId,model.printStatus.printStatusId");
+		sb.append(" group by model.printStatus.printStatusId,model.constituency.district.districtId" +
+					" order by model.constituency.district.districtId,model.printStatus.printStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(stateId != null && stateId.longValue() > 0l)
-			query.setParameter("stateId", stateId);
+		
 		if(vendorId != null && vendorId.longValue() > 0l)
 			query.setParameter("vendorId", vendorId);
 		
