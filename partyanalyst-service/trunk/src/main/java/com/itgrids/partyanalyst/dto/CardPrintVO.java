@@ -8,6 +8,7 @@ public class CardPrintVO {
 	private String name;
 	private Long count = 0l;
 	private Long cardsCount = 0l;
+	private String todayDate;
 	
 	private List<CardPrintVO> overAllList;
 	private List<CardPrintVO> todayList;
@@ -53,5 +54,11 @@ public class CardPrintVO {
 	}
 	public void setCardsCount(Long cardsCount) {
 		this.cardsCount = cardsCount;
+	}
+	public String getTodayDate() {
+		return todayDate;
+	}
+	public void setTodayDate(String todayDate) {
+		this.todayDate = todayDate;
 	}
 }

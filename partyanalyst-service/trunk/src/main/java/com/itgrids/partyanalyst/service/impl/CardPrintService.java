@@ -73,6 +73,14 @@ public class CardPrintService implements ICardPrintService{
 				toDate = sdf.parse(endDateStr);
 			}
 			
+			List<Object[]> statusList = printStatusDAO.getAllPrintStatus();
+			List<CardPrintVO> tempList = getAllPrintStatus(statusList);
+			if(tempList != null && !tempList.isEmpty()){
+				for (CardPrintVO vo : tempList) {
+					statusWiseMap.put(vo.getId(), vo);
+				}
+			}
+			
 			List<Object[]> list = constituencyPrintStatusDAO.getStatusWisePrintingConstituencyDetails(stateId, vendorId, fromDate, toDate);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
@@ -122,6 +130,12 @@ public class CardPrintService implements ICardPrintService{
 				statusWiseMap = new LinkedHashMap<Long, CardPrintVO>();
 			}
 			
+			List<CardPrintVO> tempListForToday = getAllPrintStatus(statusList);
+			if(tempListForToday != null && !tempListForToday.isEmpty()){
+				for (CardPrintVO vo : tempListForToday) {
+					statusWiseMap.put(vo.getId(), vo);
+				}
+			}
 			fromDate = dateUtilService.getCurrentDateAndTime();
 			toDate = dateUtilService.getCurrentDateAndTime();
 			
@@ -169,6 +183,7 @@ public class CardPrintService implements ICardPrintService{
 				}
 			}
 			
+			returnvo.setTodayDate(dateUtilService.getCurrentDateInStringFormat());
 			if(statusWiseMap != null)
 				returnvo.setTodayList(new ArrayList<CardPrintVO>(statusWiseMap.values()));
 			
@@ -296,8 +311,8 @@ public class CardPrintService implements ICardPrintService{
 		try {
 			if(id != null && id.longValue() > 0l && list != null && !list.isEmpty()){
 				for (CardPrintVO vo : list) {
-					if(vo.getId().longValue() == id.longValue())
-						return returnvo;
+					if(vo.getId().equals(id))
+						return vo;
 				}
 			}
 		} catch (Exception e) {

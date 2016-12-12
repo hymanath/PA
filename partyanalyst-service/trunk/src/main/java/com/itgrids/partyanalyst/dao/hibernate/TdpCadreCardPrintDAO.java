@@ -53,8 +53,7 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(stateId != null && stateId.longValue() > 0l)
-			query.setParameter("stateId", stateId);
+		
 		if(vendorId != null && vendorId.longValue() > 0l)
 			query.setParameter("vendorId", vendorId);
 		
