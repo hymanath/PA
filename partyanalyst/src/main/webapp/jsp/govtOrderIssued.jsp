@@ -61,50 +61,66 @@
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="pad_15" style="background-color:#F5F5F5">
-									<div class="row">
-										<div class="col-md-3 col-sm-6 col-xs-12">
-									
-											<label>Department</label>
-											<select class="chosenSelect" id="departmentId" multiple>   
-												<option value="0">ALL</option>
-												<option value="1">aaa</option>
-												<option value="2">bbb</option>
-											</select>
-											<div id="deptErrVid" style="color:red;"></div>
-										</div>
-										<div class="col-md-3 col-sm-6 col-xs-12">
-											<label>Board</label>
-											<select class="chosenSelect" id="corporationId" multiple> 
-												<option value="0">ALL</option>
-												<option value="1">aaa</option>
-												<option value="2">bbb</option>
-											</select>
-											<div id="boardErrVid" style="color:red;"></div>
-										</div>
-										<div class="col-md-3 col-sm-6 col-xs-12">  
-											<label>Position</label>
-											<select class="chosenSelect" id="positionId" multiple>   
-												<option value="0">ALL</option>
-												<!--<option value="1">aaa</option>
-												<option value="2">bbb</option>	-->									
-											</select>
-											<div id="positionErrVid" style="color:red;"></div> 
-										</div>
-										<div class="col-md-3 col-sm-6 col-xs-12">
+									<div class="row" >
+										<div class="col-md-4 col-sm-6 col-xs-12" style="float:right;">
 											<label>Expire Date</label>  
 											<div class="input-group"><input type="text" id="DateRanges" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div> 
 										</div>
-								</div>
+									</div>
+									<div class="row">
+									
+										<div class="col-md-3 col-xs-12 col-sm-6 levelShowCls" >
+											<label>Board Level</label>
+											<select class="chosenSelect"  id="boardsLevelId" onchange="getDepartmentDetails(this.value,1);">
+												<option value="2">State</option>
+												<option value="3">District</option>
+												<option value="4">Constituency</option>
+												<option value="5">Mandal/Muncipality</option>
+												<option value="6">Village/Ward</option>
+											</select>
+										</div>
+											
+											<div class="col-md-3 col-sm-6 col-xs-12">
+										
+												<label>Department</label>
+												<select class="chosenSelect" id="departmentId" multiple>   
+													<option value="0">ALL</option>
+													<option value="1">aaa</option>
+													<option value="2">bbb</option>
+												</select>
+												<div id="deptErrVid" style="color:red;"></div>
+											</div>
+											<div class="col-md-3 col-sm-6 col-xs-12">
+												<label>Board</label>
+												<select class="chosenSelect" id="corporationId" multiple> 
+													<option value="0">ALL</option>
+													<option value="1">aaa</option>
+													<option value="2">bbb</option>
+												</select>
+												<div id="boardErrVid" style="color:red;"></div>
+											</div>
+											<div class="col-md-3 col-sm-6 col-xs-12">  
+												<label>Position</label>
+												<select class="chosenSelect" id="positionId" multiple>   
+													<option value="0">ALL</option>
+													<!--<option value="1">aaa</option>
+													<option value="2">bbb</option>	-->									
+												</select>
+												<div id="positionErrVid" style="color:red;"></div> 
+											</div>
+									</div>
+								
 									<div class="row">
 										<div class="col-md-3 col-sm-2 col-xs-12 m_top20">      
-											<button type="button" value="getDetails" class="btn btn-success m_top10"  id="statusDetailsId">SUBMIT</button>
+											<!--<button type="button" value="getDetails" class="btn btn-success m_top10"  id="statusDetailsId">SUBMIT</button>-->
+											<button type="button" value="getDetails" class="btn btn-success m_top10" style="width: 500px;margin-left: 300px;" onclick="buildPage(1);">GET MEMBER DETAILS </button>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="row m_top10" id="bodyId">
-						</div>
+						
+						<div class="row m_top10" id="bodyId"></div>
 					</div>
 				</div>
 			</div>
@@ -121,9 +137,13 @@
 <script type="text/javascript">
 $('.chosenSelect').chosen({width: "100%"});  
 $(document).ready(function(){
-	getDepartmentList(globalLocationLevelId);
-	getBoardList([deptId]);
+	$("#boardsLevelId").val(globalLocationLevelId);
+	$("#boardsLevelId").trigger("chosen:updated");
+	getDepartmentDetails(globalLocationLevelId,0);
+	getBoardList(deptId,globalLocationLevelId)
+	//getBoardList([deptId]);
 	//getPositionList(); 
+	//getDepartmentBoardPositions(deptId,boardId);
 	var depts = [];
 	var brds = [];
 	depts.push(deptId);
@@ -143,7 +163,7 @@ var deptName = '';
 var boardName = '';
 var positionName = '';
 $(document).on("click",".selectBox",function(){
-	$(this).toggleClass("active")
+	$(this).toggleClass("active");
 });
 
 var globalLocation = '';
@@ -154,100 +174,263 @@ if(globalLocationLevelId == 2){
 }else if(globalLocationLevelId == 4){
 	globalLocation = "Constituency";
 }
-$("#globalLocationId").html(globalLocation+"  Level")
-buildPage();
-function buildPage(){       
-	var jsObj = {
-	LocationLevelId : globalLocationLevelId, 
-	locationLevelValueArr : globalLocationLevelValueArr,              
-	departmentId : deptId,
-	boardId : boardId,
-	positionId : positionId,  
-	status : status
-	}
-	$.ajax({
-	  type:'GET',
-	  url: 'getFinalReviewCandidateCountForLocationAction.action',    
-	  dataType: 'json',
-	  data: {task:JSON.stringify(jsObj)}      
-	}).done(function(result){
-	if(result != null && result.length > 0){
-	   //console.log(result);   
-	   buildModel(result);  
-	}else{
-		$("#bodyId").html("No Data Is Available...")
-	}
+$("#globalLocationId").html(globalLocation+"  Level");
+
+  
+	$(document).on('click','.applyBtn',function(){
+		buildPage(1);
 	});
-}
+	
+	$("#DateRanges").daterangepicker({
+		opens:'left',
+	 ranges: {
+		   'Next One Month': [moment(), moment().add(1, 'month')],
+		   'Next two Month': [moment(), moment().add(2, 'month')],
+		   'Next Three Month': [moment(), moment().add(3, 'month')],   
+		   'Next Six Month': [moment(), moment().add(6, 'month')],
+		   'Next One Year': [moment(), moment().add(1, 'year')],  
+		}  
+	
+	});
+				
+				
+	buildPage(0);
+	function buildPage(typeId){       
+		/*var jsObj = {
+		LocationLevelId : globalLocationLevelId, 
+		locationLevelValueArr : globalLocationLevelValueArr,              
+		departmentId : deptId,
+		boardId : boardId,
+		positionId : positionId,  
+		status : status
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getFinalReviewCandidateCountForLocationAction.action',    
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}      
+		}).done(function(result){
+		if(result != null && result.length > 0){
+		   //console.log(result);   
+		   buildModel(result);  
+		}else{
+			$("#bodyId").html("No Data Is Available...")
+		}
+		});
+		*/
+			$("#bodyId").html('<img id="" src="images/Loading-data.gif" style="width:60px;height:50px;margin:auto;margin-left:500px;"/>'); 
+			var deptIds = [];			
+			var boardIds = [];
+			var positionIs = [];
+			var strDate = $("#DateRanges").val();
+			var dateArray = strDate.split("-");
+			var fromDate = "";
+			var expireDate = "";
+			var levelId = $("#boardsLevelId").val(); 
+		var jsObj = {};
+		if(typeId == 0){
+			deptIds.push(deptId);
+			boardIds.push(boardId);
+			positionIs.push(positionId);
+			jsObj = {
+			LocationLevelId : globalLocationLevelId, 
+			locationLevelValueArr : globalLocationLevelValueArr,              
+			departmentIds : deptIds,
+			boardIds : boardIds,
+			positionIds : positionIs,  
+			fromDate : fromDate,
+			expireDate : expireDate,
+			status : status
+			
+			}
+			
+		}else{
+			$("#deptErrVid").html("");
+			$("#boardErrVid").html("");
+			$("#positionErrVid").html("");
+			var deptIds = [];
+			deptIds = $("#departmentId").val();
+			
+			if(deptIds == null){
+				$("#deptErrVid").html("Please  select atleast one department");
+				return;
+			}
+			if(deptIds == null){
+				deptIds=[0];
+			}
+			var boardIds = [];
+			boardIds = $("#corporationId").val();
+			if(boardIds == null){
+				$("#boardErrVid").html("Please  select atleast one board");
+				return;
+			}
+			if(boardIds == null){
+				boardIds=[0];
+			}
+			var positionIs = [];
+			positionIs = $("#positionId").val(); 
+			if(positionIs == null){
+				$("#positionErrVid").html("Please  select atleast one position");
+				return;
+			}
+			if(positionIs == null){
+				positionIs=[0];
+			}  
+			var strDate = $("#DateRanges").val();
+			var dateArray = strDate.split("-");
+			var fromDate = dateArray[0].trim();
+			var expireDate = dateArray[1].trim();  
+			//console.log(deptIds+":"+boardIds+":"+positionIs+":"+fromDate+":"+expireDate);
+			var levelId = $("#boardsLevelId").val(); 
+			var locationsArr=[];
+			if(levelId == globalLocationLevelId)
+				locationsArr = globalLocationLevelValueArr;
+			jsObj = {
+			LocationLevelId : levelId, 
+			locationLevelValueArr : locationsArr,              
+			departmentIds : deptIds,
+			boardIds : boardIds,
+			positionIds : positionIs,  
+			fromDate : fromDate,
+			expireDate : expireDate,
+			status : status
+			};
+		}
+			
+
+			$.ajax({
+			  type:'GET',
+			  url: 'getFinalReviewCandidateCountForLocationFilterAction.action',    
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}        
+			}).done(function(result){
+				$("#boardsLevelId").trigger("chosen:updated");
+			if(result != null && result.length > 0){
+			   //console.log(result);   
+			   buildModel(result);  
+			}else{
+			$("#bodyId").html("No Data Is Available...")
+			}
+			});   
+			
+	}
 	function buildModel(result){      
 		var str = '';
-		for(var i in result){
-			str+='<div class="col-md-4 col-sm-6 col-xs-12">';
-				str+='<div class="panel panel-default panelGO">';
-					str+='<div class="panel-heading" style="min-height:130px;">';
-						str+='<div class="media">';
-							str+='<div class="media-left">';
-							if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
-								
-								if(result[i].imageURL != null && result[i].imageURL.length>0){
-								str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';
-								str+='<img src="https://mytdp.com/images/cadre_images/'+result[i].imageURL+'"  class=" img-circle" alt="Profile" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"/></a>';
+		var strDate = $("#DateRanges").val();
+			var dateArray = strDate.split("-");
+			var fromDate = dateArray[0].trim();
+			var expireDate = dateArray[1].trim();  
+			if( result[0].uiFromDateStr != null && result[0].uiToDateStr != null  ){
+					fromDate= result[0].uiFromDateStr;
+					expireDate= result[0].uiToDateStr;
+			}
+		if(result != null && result.length>0){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20" >'; 
+			str+='<h4 class="panel-title" style="background-color:#F5F5F5;padding:10px;"> BETWEEN <b><u>'+fromDate+'</u></b> and <b> <u>'+expireDate+'</u></b> NOMINATED POST MEMBER DETAILS </h4></div>';
+				for(var i in result){
+				str+='<div class="col-md-4 col-sm-6 col-xs-12 m_top20">';
+					str+='<div class="panel panel-default panelGO">';
+						str+='<div class="panel-heading" style="min-height:130px;">';
+							str+='<div class="media">';
+								str+='<div class="media-left">';
+								if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
+									
+									if(result[i].imageURL != null && result[i].imageURL.length>0){
+									str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';
+									str+='<img src="https://mytdp.com/images/cadre_images/'+result[i].imageURL+'"  class=" img-circle" alt="Profile" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"/></a>';
+									}
+								}else{
+									str +='<img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/'+ result[i].imageURL+'" class="img-circle" onerror="setDefaultImage(this);" alt="Profile" style="width: 50px; height: 50px;"/>';
+									}
+								str+='</div>';
+								str+='<div class="media-body">';
+								if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
+									str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';
+									str+='<p>'+result[i].name+'</p></a>';
+								}else{
+									str+='<p>'+result[i].name+'</p></a>';
 								}
-							}else{
-								str +='<img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/'+ result[i].imageURL+'" class="img-circle" onerror="setDefaultImage(this);" alt="Profile" style="width: 50px; height: 50px;"/>';
-								}
+									str+='<p>Ph: '+result[i].cadreMobile+'</p>';
+									str+='<p>M.ID: '+result[i].membershipNO+'</p>';
+								str+='</div>';
 							str+='</div>';
-							str+='<div class="media-body">';
-							if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
-								str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';
-								str+='<p>'+result[i].name+'</p></a>';
-							}else{
-								str+='<p>'+result[i].name+'</p></a>';
-							}
-								str+='<p>Ph: '+result[i].cadreMobile+'</p>';
-								str+='<p>M.ID: '+result[i].membershipNO+'</p>';
-							str+='</div>';
+							str+='<p>';
+								str+='<span>Male '+result[i].age+' years Old</span>';
+								str+='<span class="pull-right">'+result[i].castCategoryName+' - '+result[i].casteName+'</span>';
+							str+='</p>';
 						str+='</div>';
-						str+='<p>';
-							str+='<span>Male '+result[i].age+' years Old</span>';
-							str+='<span class="pull-right">'+result[i].castCategoryName+' - '+result[i].casteName+'</span>';
-						str+='</p>';
-					str+='</div>';
-					str+='<div class="panel-body text-capitalize"  style="min-height:100px;">';
-						str+='<b>';
-							str+='<p>'+result[i].boardName+'</p>';
-							str+='<p> - '+result[i].positionName+'</p>';                    
-						str+='</b>';   
-					str+='</div>';
-					str+='<div class="panel-footer text-capitalize">';
-						str+='<p><b>'+result[i].govtOrderName+'</b></p>';
-						str+='<p class="text-muted">Dated : '+result[i].fromDate.substring(0,10)+' to '+result[i].toDate.substring(0,10)+'</p>';
-							if(result[i].expireDate != null && result[i].expireDate.length > 0){
-									str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
-							}else{
-								str+='<p class="text-danger"><i>Going to expire : - </i></p>';    
-							}
+						str+='<div class="panel-body text-capitalize"  style="min-height:100px;">';
+							str+='<b>';
+								str+='<p>'+result[i].boardName+'</p>';
+								str+='<p> - '+result[i].positionName+'</p>';                    
+							str+='</b>';   
+						str+='</div>';
+						str+='<div class="panel-footer text-capitalize">';
+							str+='<p><b>'+result[i].govtOrderName+'</b></p>';
+							str+='<p class="text-muted">Dated : '+result[i].fromDate.substring(0,10)+' to '+result[i].toDate.substring(0,10)+'</p>';
+								if(result[i].expireDate != null && result[i].expireDate.length > 0){
+										str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
+								}else{
+									str+='<p class="text-danger"><i>Going to expire : - </i></p>';    
+								}
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';
-	}
-						
+			}
+			if( result[0].uiFromDateStr != null && result[0].uiToDateStr != null  ){
+					$("#DateRanges").val(result[0].uiFromDateStr+"-"+result[0].uiToDateStr);			
+					$("#DateRanges").daterangepicker({
+					opens:'left',
+					startDate: result[0].uiFromDateStr,
+					endDate: result[0].uiToDateStr,
+					 ranges: {
+						   'Next One Month': [moment(), moment().add(1, 'month')],
+						   'Next two Month': [moment(), moment().add(2, 'month')],
+						   'Next Three Month': [moment(), moment().add(3, 'month')],   
+						   'Next Six Month': [moment(), moment().add(6, 'month')],
+						   'Next One Year': [moment(), moment().add(1, 'year')],  
+						}  
+					
+				});
+			}
+			else{
+				
+				$("#DateRanges").daterangepicker({
+				opens:'left',
+				startDate: new Date(),
+				endDate: new Date(),
+				 ranges: {
+					   'Next One Month': [moment(), moment().add(1, 'month')],
+					   'Next two Month': [moment(), moment().add(2, 'month')],
+					   'Next Three Month': [moment(), moment().add(3, 'month')],   
+					   'Next Six Month': [moment(), moment().add(6, 'month')],
+					   'Next One Year': [moment(), moment().add(1, 'year')],  
+					}  
+				
+				});
+			}
+			
+		}		
 		$("#bodyId").html(str);  
 	} 
-	$("#DateRanges").daterangepicker({
-			opens:'left',
-			 ranges: {
-				   'Next One Month': [moment(), moment().add(1, 'month')],
-				   'Next two Month': [moment(), moment().add(2, 'month')],
-				   'Next Three Month': [moment(), moment().add(3, 'month')],   
-				   'Next Six Month': [moment(), moment().add(6, 'month')],
-				   'Next One Year': [moment(), moment().add(1, 'year')],  
-				}  
-			
-		});
-	function getDepartmentList(boardLevelId){
+	
+
+	function getDepartmentDetails(boardLevelId,typeId){
+		$("#bodyId").html('');
+		$("#departmentId").empty();
+		$("#corporationId").empty();
+		$("#positionId").empty();
+		if(typeId == 1){
+			$('#departmentId').html('<option value="0"  selected="selected">All</option>');
+			$('#corporationId').html('<option value="0" selected="selected">All</option>');
+			$('#positionId').html('<option value="0" selected="selected">All</option>');
+		}
+		$("#departmentId").trigger("chosen:updated");
+		$("#corporationId").trigger("chosen:updated");
+			$("#positionId").trigger("chosen:updated"); 
+			var levelId = $("#boardsLevelId").val(); 
 		var jsObj={
-			boardLevelId : boardLevelId  
+			boardLevelId : levelId  
 		}  
 		$.ajax({
 			type:'GET',
@@ -255,26 +438,35 @@ function buildPage(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$('#departmentId').html('<option value="0">ALL</option>');
+			if(typeId == 1){
+				$('#departmentId').html('<option value="0"  selected="selected">All</option>');
+			}else{
+					$('#departmentId').html('<option value="0" >All</option>');
+			}
+			
 			if(result != null && result.length > 0){
 				for(var i in result){
-					if(result[i].id == deptId){
+					if(boardLevelId == globalLocationLevelId && result[i].id == deptId){
 						$('#departmentId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');  
 						deptName = result[i].name;
 					}else{
 						$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					}
-					
 				}
 				$("#departmentId").trigger("chosen:updated");
 			}
 		});
-	}
-	function getBoardList(deptsId){  
+	} 
+	
+	function getBoardList(deptsId,boardsLevelId){  
 	$("#corporationId").empty();
-	$("#corporationId").trigger("chosen:updated");
+	$("#corporationId").trigger("chosen:updated");	
+		 $("#bodyId").html('');
+var levelId = $("#boardsLevelId").val(); 
 		var jsObj={
-			deptId : deptsId
+			
+			deptId : deptsId,
+			boardLevelId:levelId
 		}
 		$.ajax({
 			type:'GET',
@@ -284,9 +476,9 @@ function buildPage(){
 		}).done(function(result){
 			$("#corporationId").empty();
 			if(boardId == 0){
-				$('#corporationId').html('<option value="0" selected="selected">ALL</option>');
+				$('#corporationId').html('<option value="0" selected="selected">All</option>');
 			}else{
-				$('#corporationId').html('<option value="0" >ALL</option>');
+				$('#corporationId').html('<option value="0" >All</option>');
 			}
 			if(result != null && result.length > 0){
 				for(var i in result){
@@ -308,52 +500,60 @@ function buildPage(){
 			}
 		});
 	}
-	function getPositionList(){
+	/*function getPositionList(){
 		var jsObj={}
-		$.ajax({
-			type:'GET',
-			url:'getPositionListAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$('#positionId').html('<option value="0">ALL</option>');
-			if(result != null && result.length > 0){
-				for(var i in result){
-					if(result[i].id == positionId){  
-						$('#positionId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');
-						positionName = result[i].name;
-					}else{
-						$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			$.ajax({
+				type:'GET',
+				url:'getPositionListAction.action',
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				$('#positionId').html('<option value="0">ALL</option>');
+				if(result != null && result.length > 0){
+					for(var i in result){
+						if(result[i].id == positionId){  
+							$('#positionId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');
+							positionName = result[i].name;
+						}else{
+							$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+						}
+						
 					}
-					
+					$("#positionId").trigger("chosen:updated");  
 				}
-				$("#positionId").trigger("chosen:updated");  
-			}
-		});
+			});
 	}
-	
+	*/
 	$(document).on('change','#departmentId',function(){
+		$("#bodyId").html('');
 		var departmentId = $("#departmentId").val();  
+		var levelId = $("#boardsLevelId").val();  
 		$("#corporationId").empty();
 		$("#corporationId").trigger("chosen:updated");
 		$("#positionId").empty();
-		$("#positionId").trigger("chosen:updated");
+		$('#positionId').html('<option value="0" selected="seleted">All</option>');
+		$("#positionId").trigger("chosen:updated"); 
 		$("#bodyId").html("");
 		if(departmentId != null)
-		getBoardList(departmentId);
+			getBoardList(departmentId,levelId);
 	});
 	
 	$(document).on('change','#corporationId',function(){
-		var boardId = $("#corporationId").val();
+		$("#bodyId").html('');
+		var bardId = $("#corporationId").val();
 		var departmentId = $("#departmentId").val(); 
 		$("#positionId").empty();
 		$("#positionId").trigger("chosen:updated");
 		$("#bodyId").html("");
+		
+		
 		if(boardId != null)
-		getDepartmentBoardPositions(departmentId,boardId);
+			getDepartmentBoardPositions(departmentId,bardId);
+	
 	});
 	 
 	$(document).on('click','#statusDetailsId',function(){
+		$("#bodyId").html('');
 		$("#deptErrVid").html("");
 		$("#boardErrVid").html("");
 		$("#positionErrVid").html("");
@@ -387,16 +587,20 @@ function buildPage(){
 		}  
 		var strDate = $("#DateRanges").val();
 		var dateArray = strDate.split("-");
-		var today = dateArray[0].trim();
+		var fromDate = dateArray[0].trim();
 		var expireDate = dateArray[1].trim();  
-		//console.log(deptIds+":"+boardIds+":"+positionIs+":"+today+":"+expireDate);
+		//console.log(deptIds+":"+boardIds+":"+positionIs+":"+fromDate+":"+expireDate);
+		var levelId = $("#boardsLevelId").val();
+		var locationsArr=[];
+		if(levelId == globalLocationLevelId)
+			locationsArr = globalLocationLevelValueArr;
 		var jsObj = {
-		LocationLevelId : globalLocationLevelId, 
-		locationLevelValueArr : globalLocationLevelValueArr,              
+		LocationLevelId : levelId, 
+		locationLevelValueArr : locationsArr,              
 		departmentIds : deptIds,
 		boardIds : boardIds,
 		positionIds : positionIs,  
-		today : today,
+		fromDate : fromDate,
 		expireDate : expireDate,
 		status : status
 		}
@@ -420,12 +624,17 @@ function buildPage(){
 function getDepartmentBoardPositions(deptId,boardId){	
 //alert(globalLocationLevelValueArr)
 //var levelValue = globalLocationLevelValueArr[0];
+$("#bodyId").html('');
+var levelId = $("#boardsLevelId").val();
+var locationsArr=[];
+	if(levelId == globalLocationLevelId)
+		locationsArr = globalLocationLevelValueArr;
 	var jsObj = {
 		
 		deptId : deptId,
 		boardId :boardId,
-		boardLevelId : globalLocationLevelId,
-		searchLevelValue:globalLocationLevelValueArr,
+		boardLevelId : levelId,
+		searchLevelValue:locationsArr,
 		searchLevelId:0,
 		nominatedPostCandId:0
 	}
@@ -436,9 +645,9 @@ function getDepartmentBoardPositions(deptId,boardId){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){ 
    if(positionId == 0){
-		$('#positionId').html('<option value="0" selected="selected">ALL</option>');
+		$('#positionId').html('<option value="0" selected="selected">All</option>');
    }else{
-	   $('#positionId').html('<option value="0">ALL</option>');
+	   $('#positionId').html('<option value="0">All</option>');
    }
 			if(result != null && result.length > 0){
 				for(var i in result){
