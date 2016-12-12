@@ -200,7 +200,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 											   " from NominatedPostMember model " +
 											   " where " +
 											   " model.isDeleted = 'N' and " +
-											   " model.nominatedPostPosition.isDeleted = 'N' ");
+											   " model.nominatedPostPosition.isDeleted = 'N' order by model.nominatedPostPosition.departments.deptName ");
 		return query.list();
 	}
 	/*
@@ -238,7 +238,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	/* 
 	 * Swadhin
 	 */
-	public List<Object[]> getBoardList(List<Long> deptId){
+	public List<Object[]> getBoardsList(List<Long> deptId,Long boardLevelId){
 		StringBuilder str = new StringBuilder(); 
 		str.append(" select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
 				   " from NominatedPostMember model " +
@@ -247,11 +247,14 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 			str.append(" model.nominatedPostPosition.departments.departmentId in (:deptId) and ");
 		}
 		str.append(" model.isDeleted = 'N' and " +
-				   " model.nominatedPostPosition.isDeleted = 'N' ");  
+				   " model.nominatedPostPosition.isDeleted = 'N' and model.boardLevelId=:boardLevelId order by model.nominatedPostPosition.board.boardName ");  
 		Query query = getSession().createQuery(str.toString());
 		if(deptId != null && deptId.size() > 0l){
 			query.setParameterList("deptId", deptId);   
 		}		  
+		if(boardLevelId != null && boardLevelId.longValue()>0L)
+			query.setParameter("boardLevelId", boardLevelId);
+		
 		return query.list();  
 	}
 	
