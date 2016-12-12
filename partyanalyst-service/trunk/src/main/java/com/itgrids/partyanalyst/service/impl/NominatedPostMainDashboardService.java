@@ -573,11 +573,11 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 		return null;
 	}
-	public List<IdAndNameVO> getBoardList(List<Long> deptId){
+	public List<IdAndNameVO> getBoardsList(List<Long> deptId,Long boardLevelId){
 		LOG.info("Entered into getboardList() of NominatedPostMainDashboardService.");
 		try{
 			List<IdAndNameVO> brdList = new ArrayList<IdAndNameVO>();
-			List<Object[]> boardList = nominatedPostMemberDAO.getBoardList(deptId);
+			List<Object[]> boardList = nominatedPostMemberDAO.getBoardsList(deptId,boardLevelId);
 			if(boardList != null && boardList.size() > 0){
 				setDataToVO(boardList, brdList);
 			}

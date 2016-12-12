@@ -7297,7 +7297,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						 nominatedPostMemberVO.setExpireDate(expairStr);
 					 }
 					 nominatedPostMemberVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(candidate[26]));
-					 if(nominatedPostMemberVO.getTdpCadreId() != null && nominatedPostMemberVO.getTdpCadreId().longValue() > 0l )  {
+					 if(nominatedPostMemberVO.getTdpCadreId() != null && nominatedPostMemberVO.getTdpCadreId().longValue() > 0l ){
 						 nominatedPostMemberVO.setImageURL(commonMethodsUtilService.getStringValueForObject(candidate[24]));
 					 }else{
 						 nominatedPostMemberVO.setImageURL(commonMethodsUtilService.getStringValueForObject(candidate[25]));
@@ -7316,22 +7316,27 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		 return null; 
 	 }
 @SuppressWarnings("deprecation")
-public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String tday, String expireDate, String status){ 
+public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String fromDateStr, String expireDate, String status){ 
 	 try{
-		 Date lowerRange = null;
+		 Date fromDate = null;
 		 Date expDate = null;
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		 SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");   
-		 if(expireDate != null){
-			 String dt = expireDate;
-			 lowerRange = sdf2.parse(tday);
+		 SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy"); 
+		 
+		 if(fromDateStr !=null && fromDateStr.trim().length()>0 && expireDate != null &&  expireDate.trim().length()>0 ){
+			 fromDate = sdf2.parse(fromDateStr);
 			 expDate = sdf2.parse(expireDate); 
 			 //expDate.setMonth( expDate.getMonth() + 1 );     
 		 } 
+		 
 		 DateUtilService dateUtilService = new DateUtilService();
 		 List<NomintedPostMemberVO> nominatedPostMemberVOs = new ArrayList<NomintedPostMemberVO>(0);
 		 NomintedPostMemberVO nominatedPostMemberVO = null;
-		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, lowerRange, expDate, status);
+		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate, expDate, status);
+		 
+		 fromDate = null;
+		 expDate = null;
+		 
 		 if(candidateList != null && candidateList.size() > 0){
 			 for(Object[] candidate : candidateList){
 				 nominatedPostMemberVO = new NomintedPostMemberVO();
@@ -7369,19 +7374,53 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 				 nominatedPostMemberVO.setGovtOrderName(commonMethodsUtilService.getStringValueForObject(candidate[21]));
 				 nominatedPostMemberVO.setFromDate(commonMethodsUtilService.getStringValueForObject(candidate[22]));
 				 nominatedPostMemberVO.setToDate(commonMethodsUtilService.getStringValueForObject(candidate[23])); 
-				 Date today = new Date();
-				 String toDate = commonMethodsUtilService.getStringValueForObject(candidate[23]); 
-				 if(toDate.length() > 10){
-					 toDate = toDate.substring(0, 10);
-					 Date lastDate = sdf.parse(toDate);
+				 Date today = new DateUtilService().getCurrentDateAndTime();
+				 
+				 String tempFromDate = commonMethodsUtilService.getStringValueForObject(candidate[22]);
+				 String tempToDateStr = commonMethodsUtilService.getStringValueForObject(candidate[23]); 
+
+				 Date frmDate = null;
+				 Date lastDate = null;
+				 if(tempFromDate.length() > 10){
+					 tempFromDate = tempFromDate.substring(0, 10);
+					 frmDate = sdf.parse(tempFromDate);
+				 }
+				 if(tempToDateStr.length() > 10){
+					 tempToDateStr = tempToDateStr.substring(0, 10);
+					 lastDate = sdf.parse(tempToDateStr);
 					 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
 					 nominatedPostMemberVO.setExpireDate(expairStr);
 				 }
 				 
+				 if(frmDate != null && lastDate != null){
+					 if(frmDate.before(lastDate)){ //frmDate <lastDate
+						 fromDate = frmDate;
+						 expDate = lastDate;
+					 }else{//frmDate > lastDate
+						 fromDate = lastDate;
+						 expDate = frmDate;
+					 }
+				 }
 				
+				 
+				
+				 if(nominatedPostMemberVO.getTdpCadreId() != null && nominatedPostMemberVO.getTdpCadreId().longValue() > 0l ){
+					 nominatedPostMemberVO.setImageURL(commonMethodsUtilService.getStringValueForObject(candidate[24]));
+				 }else{
+					 nominatedPostMemberVO.setImageURL(commonMethodsUtilService.getStringValueForObject(candidate[25]));
+				 }
+				 nominatedPostMemberVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(candidate[26]));
+				 
 				 nominatedPostMemberVOs.add(nominatedPostMemberVO);
 			 }
 		 }
+		 
+		 if(commonMethodsUtilService.isListOrSetValid(nominatedPostMemberVOs) && fromDate != null && expDate != null) {
+			 NomintedPostMemberVO vo =  nominatedPostMemberVOs.get(0);
+			 vo.setUiFromDateStr(sdf2.format(fromDate));
+			 vo.setUiToDateStr(sdf2.format(expDate));
+		 }
+		 
 		 return nominatedPostMemberVOs;
 		 
 	 }catch(Exception e){
