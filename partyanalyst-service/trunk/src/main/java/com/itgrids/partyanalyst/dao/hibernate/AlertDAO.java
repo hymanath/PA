@@ -152,16 +152,37 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getAlertsData(Long alertId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.alertId,model.description,date(model.createdTime)," +//2
-				"  alertType.alertType,alertSource.source,alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +//7
-				" alertStatus.alertStatusId,alertStatus.alertStatus");//9
-		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");//18
-		str.append(" ,constituency.constituencyId,constituency.name");//20
-		str.append(" ,state.stateId,state.stateName");//22
-		str.append(" ,ward.constituencyId,ward.name");//24
-		str.append(" ,model.title,alertImpactScope.impactScope," + //25-26
-				" model.alertCategory.alertCategoryId,model.alertCategory.category," + //27-28
-				" model.imageUrl,model.alertCategoryTypeId ");//29-30
+		str.append("select model.alertId," +
+				   " model.description, " +
+				   " date(model.createdTime)," +//2
+				   " alertType.alertType, " +
+				   " alertSource.source, " +
+				   " alertSeverity.severity, " +
+				   " model.regionScopes.regionScopesId, " +
+				   " model.regionScopes.scope," +//7
+				   " alertStatus.alertStatusId, " +
+				   " alertStatus.alertStatus");//9
+		str.append(" ,tehsil.tehsilId, " +
+				   " tehsil.tehsilName , " +
+				   " panc.panchayatId, " +
+				   " panc.panchayatName, " +
+				   " localElectionBody.localElectionBodyId, " +
+				   " localElectionBody.name, " +
+				   " district.districtId, " +
+				   " district.districtName, " +
+				   " electionType.electionType ");//18
+		str.append(" ,constituency.constituencyId, " +
+				   " constituency.name");//20
+		str.append(" ,state.stateId, " +
+				  " state.stateName");//22
+		str.append(" ,ward.constituencyId, " +
+				   " ward.name");//24
+		str.append(" ,model.title, " +  
+				  " alertImpactScope.impactScope," + //25-26
+				  " model.alertCategory.alertCategoryId, " +
+				  " model.alertCategory.category," + //27-28
+				  " model.imageUrl, " +
+				  " model.alertCategoryTypeId ");//29-30
 		str.append(" from Alert model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 		str.append(" left join model.userAddress.constituency constituency ");
@@ -900,7 +921,10 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" alertCategory.alertCategoryId, " +//5
 						" alertCategory.category, " +//6
 						" alertImpactScope.alertImpactScopeId, " +//7
-						" alertImpactScope.impactScope ");//8       
+						" alertImpactScope.impactScope, " +//8
+						" model.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName");//11       
 		queryStr.append(" from Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -1661,6 +1685,97 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    }
 	    return query.list();  
 	  }
+	public List<Object[]> getAlertDtlsForPubRep(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate, Long publicRepresentativeTypeId, Long cadreId, Long statusId){
+	    StringBuilder queryStr = new StringBuilder();      
+	    queryStr.append(" select distinct ");     
+		queryStr.append(" alert.alertId, " +//0
+						" alert.createdTime, " +//1
+						" alert.updatedTime, " +//2  
+						" alertStatus.alertStatusId, " +//3  
+						" alertStatus.alertStatus, " +//4
+						" alertCategory.alertCategoryId, " +//5
+						" alertCategory.category, " +//6
+						" alertImpactScope.alertImpactScopeId, " +//7
+						" alertImpactScope.impactScope, " +//8
+						" alert.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName ");//11         
+	   			
+	    queryStr.append(" from " +
+	                	" AlertAssigned model " +
+	                	" left join model.alert alert " +
+	                	" left join alert.alertStatus alertStatus " +
+	                	" left join alert.alertCategory alertCategory " +
+	                	" left join alert.alertImpactScope alertImpactScope " +
+	                	" left join alert.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency  " +
+						" left join userAddress.tehsil tehsil  " +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat " +
+						" left join userAddress.ward ward, "+
+	                	" PublicRepresentative model1, " +
+	                	" TdpCadreCandidate model2 " +
+	                	" where  " +
+	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
+	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
+	                	" and alert.isDeleted='N' and model.isDeleted = 'N' " +
+	                	" and model.tdpCadre.tdpCadreId = :cadreId " +
+	    				" and alert.alertType.alertTypeId != 2 and alert.alertStatus.alertStatusId != 1 ");
+	    if(statusId.longValue() != 0L){
+	    	queryStr.append(" and alertStatus.alertStatusId = :statusId ");  
+	    }
+	    if(publicRepresentativeTypeId != null){
+	    	queryStr.append(" and model1.publicRepresentativeType.publicRepresentativeTypeId = :publicRepresentativeTypeId "); 
+	    }
+	    if(stateId != null && stateId.longValue() > 0l){
+	    	queryStr.append(" and alert.userAddress.state.stateId=:stateId ");  
+	    }
+	    if(fromDate !=null && toDate !=null){
+	       queryStr.append(" and date(alert.createdTime) between :startDate and :endDate  ");
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){  
+	      queryStr.append(" and alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	    	queryStr.append(" and alert.userAddress.state.stateId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	          queryStr.append(" and alert.userAddress.district.districtId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and alert.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	         queryStr.append(" and alert.userAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+	          queryStr.append(" and alert.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+	    }
+	   
+	    Query query = getSession().createQuery(queryStr.toString());
+	    
+	    if(publicRepresentativeTypeId != null){
+	    	query.setParameter("publicRepresentativeTypeId", publicRepresentativeTypeId);     
+	    }
+	    if(stateId != null && stateId.longValue() > 0l){            
+	    	query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+	    	query.setDate("startDate", fromDate);
+	    	query.setDate("endDate", toDate);
+	    }
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	    	query.setParameterList("impactLevelIds", impactLevelIds); 
+	    }
+	    if(statusId.longValue() != 0L && statusId != null){
+	    	query.setParameter("statusId", statusId);
+	    }
+	    if(cadreId.longValue() != 0L && cadreId != null){
+	    	query.setParameter("cadreId", cadreId);
+	    }
+	    return query.list();  
+	}
 	
 	public List<Object[]> getStateImpactLevelAlertCnt(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,String groupType){
 		StringBuilder queryStr = new StringBuilder();
