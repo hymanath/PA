@@ -1,4 +1,9 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -7,6 +12,7 @@
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/CardPrint/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/CardPrint/dropkick.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -24,13 +30,11 @@
 				</label>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
-				<select class="select">
-					<option>ALL VENDORS</option>
-				</select>
+					<s:select theme="simple" cssClass="select" id="vendorId" list="vendorList" listKey="id" listValue="name"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<div class="input-group">
-					<input type="text" class="form-control"/>
+					<input type="text" class="form-control singleDate"/>
 					<span class="input-group-addon">
 						<i class="glyphicon glyphicon-calendar"></i>
 					</span>
@@ -434,9 +438,12 @@
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".select").dropkick();
+$(".singleDate").daterangepicker();
 if($(window).width() < 500)
 {
 	$("table").wrap( "<div class='table-responsive'></div>" );
