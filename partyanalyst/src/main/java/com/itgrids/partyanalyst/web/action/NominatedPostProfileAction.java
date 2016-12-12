@@ -1227,8 +1227,8 @@ return Action.SUCCESS;
 				Long deptId = jObj.getLong("deptId");
 				deptIds.add(deptId);
 			}
-			
-			idAndNameVOList = nominatedPostMainDashboardService.getBoardList(deptIds);      
+			Long boardLevelId =  jObj.getLong("boardLevelId");
+			idAndNameVOList = nominatedPostMainDashboardService.getBoardsList(deptIds,boardLevelId);      
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
@@ -1621,7 +1621,7 @@ public String execute()
 				    	for(int i = 0;i<locationLevelValueArr.length();i++){
 				    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
 				    	}
-				    }
+				    }///1111
 				    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, positionId, status);
 		 }catch(Exception e) {
 			 LOG.error("Exception Occured in getFinalReviewCandidateCountForLocation() in NominatedPostProfileAction ",e);
@@ -1685,7 +1685,7 @@ public String execute()
 	   return Action.SUCCESS;	
 	 }  
 	public String getFinalReviewCandidateCountForLocationFilter(){
-		 try{
+		 try{//222
 			    jObj = new JSONObject(getTask());
 			    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 
 			    List<Long> deptList = new ArrayList<Long>(0);
@@ -1716,11 +1716,28 @@ public String execute()
 			    		positionList.add(new Long(positionIdArray.getInt(i)));
 			    	}
 			    }
-			    String today = jObj.getString("today");
+			    String fromDate = jObj.getString("fromDate");
 			    String expireDate = jObj.getString("expireDate");
 			    Long LocationLevelId = jObj.getLong("LocationLevelId");  
 			    String status = jObj.getString("status");
-			    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, today, expireDate, status);
+			    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate, expireDate, status);
+			    
+			  /*  jObj = new JSONObject(getTask());
+			    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 
+			    Long LocationLevelId = jObj.getLong("LocationLevelId");
+				Long departmentId = jObj.getLong("departmentId");
+				Long boardId = jObj.getLong("boardId");
+				Long positionId = jObj.getLong("positionId");
+				String status = jObj.getString("status");
+				JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
+				    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
+				    	for(int i = 0;i<locationLevelValueArr.length();i++){
+				    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
+				    	}
+				    }///1111
+				    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, positionId, status);
+		*/
+				    
 		 }catch(Exception e) {
 			 LOG.error("Exception Occured in getFinalReviewCandidateCountForLocationFilter() in NominatedPostProfileAction ",e);
 		}
