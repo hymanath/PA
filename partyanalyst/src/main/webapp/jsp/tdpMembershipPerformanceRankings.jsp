@@ -285,7 +285,7 @@ function get2016LocationWiseRegisteredCounts(type){
 				$("#tsPercentageId").html('<h4>'+result[1].percentage+' %</h4>');
 				totalRegCount=result[0].count2016+result[1].count2016;
 				$("#total2016CountId").html('<h4>'+totalRegCount+'<h4>');
-				$('#totalPercentageId').html('<h4>'+((totalRegCount * 100) / 5511402).toFixed(2)+' %</h4>');
+				$('#totalPercentageId').html('<h4>'+((totalRegCount * 100) / 5466254).toFixed(2)+' %</h4>');
 			}
 			else{
 				var totalRegCount=0;
