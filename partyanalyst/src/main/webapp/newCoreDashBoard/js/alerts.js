@@ -1373,6 +1373,7 @@ function getMonth(month){
 }
 
 function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
+	 $(".groupAssignCls").show();
 	 $("#groupAssignAlertDlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 	var dates=$("#dateRangeIdForAlert").val();
 	     var fromDateStr;
@@ -1394,8 +1395,8 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 			url : 'getAssignGroupTypeAlertDtlsByImpactLevelWiseAction.action',
 			dataType : 'json',      
 			data : {task:JSON.stringify(jsObj)}     
-		}).done(function(result){       
-			if(result != null && result.length > 0){
+		}).done(function(result){    
+           if(result != null && result.length > 0){
 				buildAlertAssignGroupAlertsDtls(result);
 			}else{
 				$("#groupAssignAlertDlsDivId").html('NO DATA AVAILABLE.');
@@ -1520,6 +1521,9 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr){
 				}
 			}else{
 				$("#groupAssignAlertDlsDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+			if ($('#groupAssignAlertDlsDivId').is(':empty')){ // hiding heading if highchart is not building
+				$(".groupAssignCls").hide();
 			}
 	}
 	
