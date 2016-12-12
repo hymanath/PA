@@ -387,20 +387,23 @@ public class GISVisualizationService implements IGISVisualizationService{
 			}
 		   
 		 if(parentLocationVO != null){
-			 Long todayTarget = parentLocationVO.getTargetCount()/IConstants.CADRE_REGISTRATION_2016_DAYS;
-			 Double perc  = parentLocationVO.getTodayNewRegCount()*100.0/ todayTarget;
-			 parentLocationVO.setTodayTarget(todayTarget);
-			 parentLocationVO.setTodayRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(perc));
-			 Double newPerc = 0.0;
-			 if(parentLocationVO.getTodayRegCount().longValue() > 0l)
-			 newPerc = parentLocationVO.getTodayNewRegCount()*100.0/parentLocationVO.getTodayRegCount();
-			 Double renPerc = 0.0;
-			 
-			 if(parentLocationVO.getTodayRegCount().longValue() > 0l)
-			 renPerc = parentLocationVO.getTodayRenewalCount()*100.0/parentLocationVO.getTodayRegCount();
-			 parentLocationVO.setTodayNewRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(newPerc));
-			 parentLocationVO.setTodayRenewalPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(renPerc));
-			 
+			 try {
+				 Long todayTarget = parentLocationVO.getTargetCount()/IConstants.CADRE_REGISTRATION_2016_DAYS;
+				 Double perc  = parentLocationVO.getTodayNewRegCount()*100.0/ todayTarget;
+				 parentLocationVO.setTodayTarget(todayTarget);
+				 parentLocationVO.setTodayRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(perc));
+				 Double newPerc = 0.0;
+				 if(parentLocationVO.getTodayRegCount().longValue() > 0l)
+				 newPerc = parentLocationVO.getTodayNewRegCount()*100.0/parentLocationVO.getTodayRegCount();
+				 Double renPerc = 0.0;
+				 
+				 if(parentLocationVO.getTodayRegCount().longValue() > 0l)
+				 renPerc = parentLocationVO.getTodayRenewalCount()*100.0/parentLocationVO.getTodayRegCount();
+				 parentLocationVO.setTodayNewRegPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(newPerc));
+				 parentLocationVO.setTodayRenewalPerc(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(renPerc));
+			} catch (Exception e) {
+				LOG.error(" Error occured while setting registration details...",e);
+			}
 		 }
 		 	
 	} catch (Exception e) {
