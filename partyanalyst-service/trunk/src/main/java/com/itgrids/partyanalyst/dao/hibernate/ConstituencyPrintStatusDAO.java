@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,42 @@ public class ConstituencyPrintStatusDAO extends GenericDaoHibernate<Constituency
 
 	public ConstituencyPrintStatusDAO(){
 		super(ConstituencyPrintStatus.class);
+	}
+	
+	public List<Object[]> getConstListByVendorId(Long vendorId,Long districtId){
+		StringBuilder sb = new StringBuilder();
+			sb.append("select  distinct model.constituency.constituencyId," +
+				" model.constituency.name" +
+				" from ConstituencyPrintStatus model");
+		if((vendorId != null && vendorId.longValue() > 0l) || (districtId != null && districtId.longValue() > 0l))
+				sb.append(" where");
+		if(vendorId != null && vendorId.longValue() > 0l){
+				sb.append(" model.printVendorId = :vendorId");
+		}
+		if((vendorId != null && vendorId.longValue() > 0l) && (districtId != null && districtId.longValue() > 0l))
+			sb.append(" and");
+		if(districtId != null && districtId.longValue() > 0l)
+			sb.append(" model.constituency.district.districtId = :districtId");
+		Query query = getSession().createQuery(sb.toString());
+		if(vendorId != null && vendorId.longValue() > 0l)
+			query.setParameter("vendorId", vendorId);
+		if(districtId != null && districtId.longValue() > 0l)
+			query.setParameter("districtId", districtId);
+		return query.list();
+		
+	}
+	public List<Object[]> getDstrListByVendorId(Long vendorId){
+		StringBuilder sb = new StringBuilder();
+		  		sb.append("select  distinct model.constituency.district.districtId," +
+		  		" model.constituency.district.districtName" +
+		  		" from  ConstituencyPrintStatus model ");
+		  if(vendorId != null && vendorId.longValue() > 0l){
+				sb.append(" where model.printVendorId = :vendorId");
+		  }
+		  Query query = getSession().createQuery(sb.toString());
+			if(vendorId != null && vendorId.longValue() > 0l)
+				query.setParameter("vendorId", vendorId);
+			return query.list();
 	}
 
 	public List<Object[]> getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,Date fromDate,Date toDate){
