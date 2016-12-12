@@ -14987,5 +14987,10 @@
    			<param name="root">cardPrintVO</param>
    		</result>
 	</action>
+	<action name="getStateImpactLevelAlertDtlsCntAction" class="createAlertAction"  method="getStateImpactLevelAlertDtlsCnt">
+		<result type="json" name="success">    
+			<param name="root">alertOverviewVO</param>  
+		</result>  
+	</action>
  </package>
 </struts>
