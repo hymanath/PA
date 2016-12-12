@@ -14947,6 +14947,16 @@
    			<param name="root">resultList</param>
    		</result>
 	</action>
+	<action name="getConstencyListAction" class="cardPrintAction" method="getConstencyList">
+		<result type="json" name="success">
+   			<param name="root">vendorList</param>
+   		</result>
+	</action>
+	<action name="getDistrictListAction" class="cardPrintAction" method="getDistrictList">
+		<result type="json" name="success">
+   			<param name="root">vendorList</param>
+   		</result>
+	</action>
 	<action name="getTotalAlertGroupByPubRepThenStatusAction" class="createAlertAction"  method="getTotalAlertGroupByPubRepThenStatus">
 		<result type="json" name="success">    
 			<param name="root">alertVOs</param>

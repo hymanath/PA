@@ -3855,7 +3855,8 @@
 	
 	</bean>
 	
-	<bean name="cardPrintService" class="com.itgrids.partyanalyst.service.impl.CardPrintService" >
+	<bean name="cardPrintService" class="com.itgrids.partyanalyst.service.impl.CardPrintService">
+		<property name="cardPrintVendorDAO" ref="cardPrintVendorDAO" />
 		<property name="constituencyPrintStatusDAO" ref="constituencyPrintStatusDAO" />
 		<property name="dateUtilService" ref="dateUtilService"/>
 		<property name="tdpCadreCardPrintDAO" ref="tdpCadreCardPrintDAO"/>

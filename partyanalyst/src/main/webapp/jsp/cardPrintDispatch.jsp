@@ -1,4 +1,9 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -21,20 +26,18 @@
 						<div class="row">
 							<div class="col-md-4 col-xs-12 col-sm-4">
 								<label>Select Vendor</label>
-								<select class="select">
-									<option>Vendor 1</option>
-								</select>
+								<s:select theme="simple" cssClass="select" name="vendorTypes" id="vendorId" list="vendorList" listKey="id" listValue="name" onchange="getDistrictList(this.value)"/>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-4">
-								<label>Select DIstrict</label>
-								<select class="select">
-									<option>Distrct 1</option>
+								<label>Select District</label>
+								<select class="select" id="districtListId" onchange="getConstituenciesForDistrict()">
+									<option value="0">Select District</option>
 								</select>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-4">
 								<label>Select Constituency</label>
-								<select class="select">
-									<option>Cons 1</option>
+								<select class="select" id="constencyListId">
+									<option value="0">Select Constituency</option>
 								</select>
 							</div>
 						</div>
@@ -102,6 +105,7 @@
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
+<script src="js/CardPrint/cardPrintDispatch.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".select").dropkick();
 if($(window).width() < 500)
