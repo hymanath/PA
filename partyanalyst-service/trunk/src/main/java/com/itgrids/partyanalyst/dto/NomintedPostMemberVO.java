@@ -72,6 +72,23 @@ public class NomintedPostMemberVO {
 	
 	private Long appliedCount=0l;
 	private Long shortListedCount=0l;
+	
+	private String uiFromDateStr;
+	private String uiToDateStr;
+	
+	
+	public String getUiFromDateStr() {
+		return uiFromDateStr;
+	}
+	public void setUiFromDateStr(String uiFromDateStr) {
+		this.uiFromDateStr = uiFromDateStr;
+	}
+	public String getUiToDateStr() {
+		return uiToDateStr;
+	}
+	public void setUiToDateStr(String uiToDateStr) {
+		this.uiToDateStr = uiToDateStr;
+	}
 	public String getPublicReprStr() {
 		return publicReprStr;
 	}
