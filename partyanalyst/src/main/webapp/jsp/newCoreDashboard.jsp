@@ -2785,19 +2785,41 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
-							<h4><span class="headingColor text-capitalize">overall alerts</span></h4>
+							<h4><span class="headingColor text-capital">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6 alertLocationDiv" style="display:none;">
-							<h4><span class="headingColor text-capitalize">Impact Scope Level</span></h4>
+							<h4><span class="headingColor text-capital">Impact Scope Level</span></h4>
 							<div id="locationWiseAlertDivId"></div>
 						</div>    
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
+									<h4 class="panel-title"><span class="headingColor text-capital">State Level Alerts</span></h4>
+								</div>
+								<div class="panel-body">
+									 <div class="row">
+										  <div class="col-md-12 col-xs-12 col-sm-12">
+										      <div id="processingImgDivId"></div>
+											  <div class="col-md-2 col-xs-12 col-sm-12">
+												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
+											  </div>	
+											 <div class="col-md-4 col-xs-12 col-sm-12">
+												<div id="categoryWiseAlertDiv" style="height:200px;"></div>     
+											  </div>											
+											  <div class="col-md-6 col-xs-12 col-sm-12">
+												<div id="statusWiseAlertDiv" style="height:200px;"></div>     
+											  </div>											
+										  </div>
+									</div>
+								</div>
+								</div>
+									
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
 										<div class="col-md-4 col-xs-12 col-sm-4">   
-											<h4 class="panel-title"><span class="headingColor text-capitalize">District Wise Alerts</span></h4>
+											<h4 class="panel-title"><span class="headingColor text-capital">District Wise Alerts</span></h4>
 										</div>
 										<div class="col-md-8 col-xs-12 col-sm-8">
 											<ul class="activeUlCls list-inline pull-right">
@@ -2807,60 +2829,76 @@
 												<i class="fa fa-gears" style="cursor:pointer;" id="alertSettingsId" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 											</ul>
 										</div>
-										<div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
-											<ul class="list-inline" id="impactLevelULId">
+								       <div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
+										<i class="glyphicon glyphicon-remove alertSetClose pull-right" style="cursor:pointer;"></i>
+											<div role="tabpanel" class="tab-pane" id="alertImpactScope">
+												<h4 class="text-capital" style="color:#99A0A5;">Select Impact</h4>
+												<hr style ="margin-bottom:0px;" />
+												<div class="">
+													<ul class="alertSettingsUl" style="list-style:none;">
+														<li>
+															<label class="checkbox-inline">
+														<input type="checkbox" attr_scope_type="All" class="alertImpactCheckCls" id="alertImpactSelectAllId" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="District" class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
+															</label>
+														</li>
+														<li>												
+															<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="Constituency" class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
+															</label>	
+														</li>	
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" attr_scope_type="mandalMuncipality" class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal/Municipality</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+															<input type="checkbox" attr_scope_type="VillageWard"  class="alertImpactCheckCls" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Village/ward</h5></div>
+															</label>
+														</li>	
+													</ul>
+												</div>
+											<button type="button" class="btn btn-success alertDtlsBtnCls btn-sm pull-right">Get Details</button> 
+										   </div>
+									  <!--<ul class="list-inline" id="impactLevelULId">
 												<span class="glyphicon glyphicon-remove-circle pull-right alertSettingCloseCls" style="cursor:pointer;"></span>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="All" checked/>&nbsp&nbspAll</label></li><br>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="District"/>&nbsp&nbspDistrict Level</label></li><br>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="Constituency" />&nbsp&nbspConstituency Level</label></li><br>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="mandalMuncipality" />&nbsp&nbspMandal/Municipality Level</label></li><br>
 												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="VillageWard"/>&nbsp&nbspVillage/ward Level</label></li><br>     
-											</ul>        
+										</ul>        
 											<button type="button" class="btn btn-success alertDtlsBtnCls">Get Details</button>          
-											<span id="" style="color:red;"></span>  
-										</div>        
+											<span id="" style="color:red;"></span>  -->
+									   </div> 
 									</div>
 								</div>  
 								<div class="panel-body">  
+								   
 									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
+									  <div class="col-md-12 col-xs-12 col-sm-12">
 											<div id="districtWiseAlertCountId"></div>     
 										</div>
 									</div>
 									<div class="row m_top20">
 										<div class="col-md-12 col-xs-12 col-sm-12">
-											<h4 class="panel-title"><span class="headingColor text-capitalize">Alert Assigned Group Members - Status</span></h4>
+											<h4 class="panel-title"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
 											<div id="groupAssignAlertDlsDivId" class="m_top10"></div>     
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>  
-						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading pad_5">
-									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-4">
-											<h4 class="panel-title"><span class="headingColor text-capitalize">Alert Assigned Group Members - Status</span></h4>
-										</div>
-										<div class="col-md-8 col-xs-12 col-sm-8">
-											<ul class="activeUlCls list-inline">
-												<li class="active">Overview</li>
-												<li>Categories</li>
-												<li>Status</li>              
-											</ul>            
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-4">
-									  
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
