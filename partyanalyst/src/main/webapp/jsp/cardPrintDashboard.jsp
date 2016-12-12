@@ -14,19 +14,65 @@
 <link href="dist/CardPrint/dropkick.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<style>
+
+.slick-prev {
+	margin-left : 35px !important;
+}
+.slick-next{
+	margin-right:35px !important;
+}
+.printDataReadyColor {
+    background-color: #B091BB;
+
+    display: inline-block;
+    height: 10px;
+    width: 15px;
+}
+.printPending {
+    background-color: #9CCBCC;
+
+    display: inline-block;
+    height: 10px;
+    width: 15px;
+}
+.printCompleted {
+    background-color: #C8CA92;
+
+    display: inline-block;
+    height: 10px;
+    width: 15px;
+}
+.printPassed {
+    background-color: #71F0CC;
+
+    display: inline-block;
+    height: 10px;
+    width: 15px;
+}
+.printFailed {
+    background-color: #FF6F9B;
+
+    display: inline-block;
+    height: 10px;
+    width: 15px;
+}
+</style>
 </head>
 <body>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-0">
 				<label class="radio-inline">
-					<input type="radio"/>AP
+					<input type="radio" name="radio" class="stateClass" value="1"/>AP
 				</label>
 				<label class="radio-inline">
-					<input type="radio"/>TS
+					<input type="radio" name="radio" class="stateClass" value="36"/>TS
 				</label>
 				<label class="radio-inline">
-					<input type="radio"/>ALL
+					<input type="radio" name="radio" checked class="stateClass" value="0"/>ALL
 				</label>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
@@ -46,49 +92,7 @@
 						<h4 class="panel-title"><b>DISPATCH OF SMART CARD</b></h4>
 					</div>
 					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
+						<div class="row" id="statusWisePrintingDiv">
 						</div>
 					</div>
 				</div>
@@ -96,52 +100,10 @@
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default panelWhite">
 					<div class="panel-heading">
-						<h4 class="panel-title text-capital"><b>today(17 Nov 106) complete print overview</b></h4>
+						<h4 class="panel-title text-capital"><b>today (<span id="todayHeadingId"></span>) complete print overview</b></h4>
 					</div>
 					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
-							<div class="col-md-2 col-xs-12 col-sm-4">
-								<div class="pad_10">
-									<p><b>Print Data Ready Constituencies</b></p>
-									<h3>100</h3>
-									<small>(100000 Records)</small>
-								</div>
-							</div>
+						<div class="row" id="todayStatusWisePrintingDiv">
 						</div>
 					</div>
 				</div>
@@ -154,12 +116,42 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h4>Andhra Pradesh</h4>
-								<div id="distWiseCards" style="height: 300px"></div>
+								<div class="row">
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h4>Andhra Pradesh</h4>
+									</div>
+									<div class="col-md-9 col-xs-12 col-sm-3">
+										<ul class="list-inline">
+											
+											<li ><span class="printDataReadyColor"></span> Print Data Ready</li>
+											<li class=""><span class="printPending"></span> Print Pending</li>
+											<li class=""><span class="printCompleted"></span> Print Completed</li>
+											<li class=""><span class="printPassed"></span> QA Passed</li>
+											<li class=""><span class="printFailed"></span> QA Failed</li>
+										</ul>
+									</div>
+								</div>
+								
+								<div id="distWiseCards" ></div>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-								<h4>Telangana</h4>
-								<div id="distWiseCards1" style="height: 300px"></div>
+								<div class="row">
+									<div class="col-md-3 col-xs-12 col-sm-3">
+										<h4>Telangana</h4>
+									</div>
+									<div class="col-md-9 col-xs-12 col-sm-3">
+										<ul class="list-inline">
+											
+											<li ><span class="printDataReadyColor"></span> Print Data Ready</li>
+											<li class=""><span class="printPending"></span> Print Pending</li>
+											<li class=""><span class="printCompleted"></span> Print Completed</li>
+											<li class=""><span class="printPassed"></span> QA Passed</li>
+											<li class=""><span class="printFailed"></span> QA Failed</li>
+										</ul>
+									</div>
+								</div>
+								
+								<div id="distWiseCards1" ></div>
 							</div>
 						</div>
 						
@@ -441,155 +433,25 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="js/CardPrint/cardPrintDashboard.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".select").dropkick();
-$(".singleDate").daterangepicker();
+$(".singleDate").daterangepicker({
+			opens: 'left',
+			locale: {
+			  format: 'MM/DD/YYYY'
+			},
+			
+		});
+$(document).ready(function(){
+	getStatusWisePrintingConstituencyDetails();
+	getDistrictWiseStatusWiseConstituenciesCounts();
+});
 if($(window).width() < 500)
 {
 	$("table").wrap( "<div class='table-responsive'></div>" );
 }
-	$("#distWiseCards").highcharts({
-		colors:['#B091BB','#9CCBCC','#C8CA92','#71F0CC','#FF6F9B'],
-        chart: {
-            type: 'column'
-        },
-
-        title: {
-            text: null
-        },
-
-        xAxis: {
-			 min: 0,
-			 gridLineWidth: 0,
-			 minorGridLineWidth: 0,
-            categories: ['Srikakulam', 'Vijayanagaram', 'East Godavari', 'West Godavari', 'Guntur','Prakasham']
-        },
-
-        yAxis: {
-			min: 0,
-			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			allowDecimals: false,
-            min: 0,
-            title: {
-                text: null
-            },
-			stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
-            }
-        },
-
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '<br/>' +
-                    'Total: ' + this.point.stackTotal;
-            }
-        },
-
-        plotOptions: {
-            column: {
-                stacking: 'normal'
-            }
-        },
-
-        series: [{
-            name: 'PDRC',
-            data: [5, 3, 4, 7, 2,1],
-            stack: 'PDRC'
-        }, {
-            name: 'PCC',
-            data: [3, 4, 4, 2, 5, 8],
-            stack: 'PCC'
-        }, {
-            name: 'DC',
-            data: [2, 5, 6, 2, 1, 4],
-            stack: 'DC'
-        }, {
-            name: 'QAPC',
-            data: [3, 0, 4, 4, 3,4],
-            stack: 'QAPC'
-        }, {
-            name: 'QAFC',
-            data: [3, 0, 4, 4, 3,7],
-            stack: 'QAFC'
-        }]
-    });
-	$("#distWiseCards1").highcharts({
-		colors:['#B091BB','#9CCBCC','#C8CA92','#71F0CC','#FF6F9B'],
-        chart: {
-            type: 'column'
-        },
-
-        title: {
-            text: null
-        },
-
-        xAxis: {
-			 min: 0,
-			 gridLineWidth: 0,
-			 minorGridLineWidth: 0,
-            categories: ['Srikakulam', 'Vijayanagaram', 'East Godavari', 'West Godavari', 'Guntur','Prakasham']
-        },
-
-        yAxis: {
-			min: 0,
-			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			allowDecimals: false,
-            min: 0,
-            title: {
-                text: null
-            },
-			stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
-            }
-        },
-
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '<br/>' +
-                    'Total: ' + this.point.stackTotal;
-            }
-        },
-
-        plotOptions: {
-            column: {
-                stacking: 'normal'
-            }
-        },
-
-        series: [{
-            name: 'PDRC',
-            data: [5, 3, 4, 7, 2,1],
-            stack: 'PDRC'
-        }, {
-            name: 'PCC',
-            data: [3, 4, 4, 2, 5, 8],
-            stack: 'PCC'
-        }, {
-            name: 'DC',
-            data: [2, 5, 6, 2, 1, 4],
-            stack: 'DC'
-        }, {
-            name: 'QAPC',
-            data: [3, 0, 4, 4, 3,4],
-            stack: 'QAPC'
-        }, {
-            name: 'QAFC',
-            data: [3, 0, 4, 4, 3,7],
-            stack: 'QAFC'
-        }]
-    });
 </script>
 </body>
 </html>

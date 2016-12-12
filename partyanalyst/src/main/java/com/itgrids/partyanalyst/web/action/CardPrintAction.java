@@ -28,6 +28,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	//Attributes
 	private ICardPrintService cardPrintService;
 	private List<CardPrintVO> vendorList;
+	private CardPrintVO cardPrintVO;
 	
 	
 	//implementation methods
@@ -67,6 +68,14 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	public void setVendorList(List<CardPrintVO> vendorList) {
 		this.vendorList = vendorList;
 	}
+	public CardPrintVO getCardPrintVO() {
+		return cardPrintVO;
+	}
+	public void setCardPrintVO(CardPrintVO cardPrintVO) {
+		this.cardPrintVO = cardPrintVO;
+	}
+	
+	
 	public String execute(){
 		try{
 			//jObj = new JSONObject(getTask());
@@ -104,6 +113,35 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			vendorList = cardPrintService.getDstrListByVendor(jObj.getLong("vendorId"));
 		}catch(Exception e){
 			LOG.error("Exception raised in getDistrictList() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStatusWisePrintingConstituencyDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			Long vendorId = jObj.getLong("vendorId");
+			String fromDateStr = jObj.getString("startDate");
+			String toDateStr = jObj.getString("endDate");
+			
+			cardPrintVO = cardPrintService.getStatusWisePrintingConstituencyDetails(stateId, vendorId, fromDateStr, toDateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getStatusWisePrintingConstituencyDetails() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDistrictWiseStatusWiseConstituenciesCounts(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long vendorId = jObj.getLong("vendorId");
+			String fromDateStr = jObj.getString("startDate");
+			String toDateStr = jObj.getString("endDate");
+			
+			cardPrintVO = cardPrintService.getDistrictWiseStatusWiseConstituenciesCounts(vendorId, fromDateStr, toDateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getDistrictWiseStatusWiseConstituenciesCounts() in CardPrintAction ",e);
 		}
 		return Action.SUCCESS;
 	}
