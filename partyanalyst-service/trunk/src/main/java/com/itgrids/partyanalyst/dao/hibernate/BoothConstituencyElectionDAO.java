@@ -988,8 +988,10 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 		queryStr.append(" BCE.booth_constituency_election_id = BR.booth_constituency_election_id AND ");
 		queryStr.append(" BCE.booth_id = B.booth_id AND ");
 		queryStr.append(" B.local_election_body_id IS null   ");
-		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L)
-			queryStr.append(" and B.constituency_id = "+inputVO.getParentLocationTypeId().toString()+"  ");
+		if(inputVO.getParentLocationTypeId() != null && inputVO.getParentLocationTypeId().longValue()>0L){
+			//queryStr.append(" and B.constituency_id = "+inputVO.getParentLocationTypeId().toString()+"  ");
+			queryStr.append(" and B.district_id = "+inputVO.getDistrictId().toString()+" ");
+		}
 		queryStr.append(" GROUP BY B.tehsil_id ");
 		
 		Query query = getSession().createSQLQuery(queryStr.toString());
