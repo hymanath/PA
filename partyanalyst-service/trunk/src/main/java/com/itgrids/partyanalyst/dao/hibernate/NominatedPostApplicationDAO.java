@@ -1788,33 +1788,33 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		  
 		  return query.list();
 	}
-	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, Date lowerRange, Date expDate, String status){
+	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, Date fromDate, Date expDate, String status){
 		
 	       StringBuilder queryStr = new StringBuilder();  
 	       queryStr.append(" select distinct " +
-	       				   " D.departmentId,D.deptName," +
+	       				   " D.departmentId,D.deptName," +//0,1
 	       				   " NPS.nominatedPostStatusId, " +
 	       				   " NPS.status, " +
 	       				   " model.nominatedPostId, " +
 	       				   " NPC.candidateName, " + 
-	       				   " TC.firstname, " +
+	       				   " TC.firstname, " +//6
 	       				   " NPC.mobileNo, " +
 	       				   " TC.mobileNo, " +
 	       				   " TC.memberShipNo, " +
 	       				   " NPC.age, " +
-	       				   " TC.age, " +
+	       				   " TC.age, " +//11
 	       				   " B.boardId, " +
 	       				   " B.boardName, " +
 	       				   " P.positionId, " +
 	       				   " P.positionName, " +  
-	       				   " C.casteId, " +
+	       				   " C.casteId, " +//16
 	       				   " C.casteName, " +
 	       				   " CC.casteCategoryId, " +
 	       				   " CC.categoryName, " +
 	       				   " GO.govtOrderId, " +
-	       				   " GO.orderName, " +  
+	       				   " GO.orderName, " + //21 
 	       				   " GO.fromDate, " +
-	       				   " GO.toDate ");   
+	       				   " GO.toDate ,TC.image,NPC.imageurl,TC.tdpCadreId ");//26   
 	  
 	       
 	       queryStr.append(" from  " +  
@@ -1859,11 +1859,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       }
 	       
 	       if(deptList != null && deptList.size() > 0 && deptList.get(0) != 0l){
-	    	   queryStr.append(" and D.departmentId in (:deptList) ");        
-	    	   
+	    	   if(deptList.size() == 1 && deptList.get(0).longValue() >0L)
+	    		   queryStr.append(" and D.departmentId in (:deptList) ");  
+	    	   else if(deptList.size() > 1)
+	    		   queryStr.append(" and D.departmentId in (:deptList) ");  
 	       }
 	     
-	       if(lowerRange != null && expDate != null){
+	       if(fromDate != null && expDate != null){
 	    	   queryStr.append(" and (date(NPGO.govtOrder.toDate) between :lowerRange and :expDate ) ");        
 	       }  
 	       queryStr.append(" and model.nominatedPostId = NPOST.nominatedPostId " +   
@@ -1873,10 +1875,16 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       		           " and NPP.isDeleted = 'N' " +  
 	       		           " ");
 	       if(boardList != null && boardList.size() > 0  && boardList.get(0) != 0l){
-	    	   queryStr.append(" and B.boardId in (:boardList) ");  
+	    	   if(boardList.size() == 1 && boardList.get(0).longValue() >0L)
+	    		   queryStr.append(" and B.boardId in (:boardList) "); 	
+        	   else if(boardList.size() > 1)
+        		   queryStr.append(" and B.boardId in (:boardList) "); 
 	       }
 	       if(positionList != null && positionList.size() > 0 && positionList.get(0) != 0l){ 
-	    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
+	    	   if(positionList.size() == 1 && positionList.get(0).longValue() >0L)
+	    		   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
+	    	   else if(positionList.size() > 1)
+	    		   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
 	       }
 	       /*if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() ==  0l){
 	    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
@@ -1892,16 +1900,26 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
 	       }
 	       if(deptList != null && deptList.size() > 0 && deptList.get(0) != 0l){
-	    	   query.setParameterList("deptList", deptList);  
+	    	   if(deptList.size() == 1 && deptList.get(0).longValue() >0L)
+	    		   query.setParameterList("deptList", deptList);
+	    	   else if(deptList.size() > 1)
+	    		   query.setParameterList("deptList", deptList);
 	       }
 	       if(boardList != null && boardList.size() > 0  && boardList.get(0) != 0l){
-	    	   query.setParameterList("boardList", boardList);  
+	    	   if(boardList.size() == 1 && boardList.get(0).longValue() >0L)
+	    		   query.setParameterList("boardList", boardList);  
+	    	   else if(boardList.size() > 1)
+	    		   query.setParameterList("boardList", boardList);  
 	       }
+	       
 	       if(positionList != null && positionList.size() > 0 && positionList.get(0) != 0l){  
-	    	   query.setParameterList("positionList", positionList); 
+	    	   if(positionList.size() == 1 && positionList.get(0).longValue() >0L)
+	    		   query.setParameterList("positionList", positionList); 
+	    	   else if(positionList.size() > 1)
+	    		   query.setParameterList("positionList", positionList); 
 	       }
-	       if(lowerRange != null && expDate != null){
-	    	   query.setDate("lowerRange", lowerRange);
+	       if(fromDate != null && expDate != null){
+	    	   query.setDate("lowerRange", fromDate);
 	    	   query.setDate("expDate", expDate);
 	       }
 	       
