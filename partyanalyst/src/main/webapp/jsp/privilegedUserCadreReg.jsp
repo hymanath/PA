@@ -968,23 +968,22 @@
 						str+='<td>'+result[i].panchayatName+'</td> ';
 					}
 					
-					/*if(result[i].localElectionBody == null || result[i].localElectionBody.trim().length < 1){
-						str+='<td>-</td> ';
-					}else{
-						str+='<td>'+result[i].localElectionBody+'</td> ';
-					}*/
-					
 					str+='<td>'+result[i].boothName+'</td>';   
 				}
 				
-			   str+='<td>'+result[i].totalVoter+'</td>';  
+				if(result[i].totalVoter == 0){
+					str+='<td>-</td>';    
+				}else{
+					str+='<td>'+result[i].totalVoter+'</td>';
+				}
+			     
 			   str+='<td>'+result[i].cadreCount2014+'</td>';
 			   str+='<td>'+result[i].renewalCount+'</td>';
 			   if(result[i].cadreCount2014 > 0){
 				   var precent = (result[i].renewalCount*(100/result[i].cadreCount2014)).toFixed(0);
 				   str+='<td>'+precent+'</td>';
 			   }else{
-				   str+='<td>0</td>';
+				   str+='<td>0</td>';    
 			   }
 			   str+='<td>'+result[i].cadreCount2016OverAll+'</td>';
 			   if(scope == "today"){
