@@ -1890,6 +1890,21 @@ assignedCandidatesUl li:last-child
 {
 	border-right: 0px;
 }
+.assignedCandidatesUl1
+{
+	border:1px solid #eee;
+	padding: 5px 0px;
+}
+.assignedCandidatesUl1 li  
+{
+	padding:5px;
+	padding-right: 20px;
+	border-right: 1px solid #ddd;
+}
+assignedCandidatesUl1 li:last-child
+{
+	border-right: 0px;
+}
 
 .tablePopup thead th:first-child
 {
