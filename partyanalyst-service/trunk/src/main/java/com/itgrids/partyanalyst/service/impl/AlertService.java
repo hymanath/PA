@@ -3637,7 +3637,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			  //Calculating other type alert count
 			  List<Object[]> rtrnAllAlertCntDls = alertDAO.getAllAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
 			  mergeStatusWiseAlertCnt(rtrnAllAlertCntDls,statusWiseAlertCntMap,null,totalAletCntSt,allTypeTdpCadreIds);
-			  setDatatoFinalList(prepareTempalate(),statusWiseAlertCntMap,totalAletCntSt,resultList,"Other");
+			  setDatatoFinalList(prepareTempalate(),statusWiseAlertCntMap,totalAletCntSt,resultList,"Others");
 			  
 	 }catch(Exception e){
 		 LOG.error("Exception in getAssignGroupTypeAlertDtlsByImpactLevelWise()",e);	 
@@ -3752,7 +3752,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				   
 				   setCandiateAlertCnt(rtrnPrgrmCmmttAlrtDtlsOblLst,candiateDtsMap,allTypeTdpCadreIds,rtrnStatusLst); // in this case allTypeTdpCadreIds set is empty
 			  
-			   }else if(resultType != null && resultType.trim().equalsIgnoreCase("Other")){
+			   }else if(resultType != null && resultType.trim().equalsIgnoreCase("Others")){
 				   
 				  List<Object[]> rtrnPblcRprsnttvTypAlrtDtlsObjLst = alertDAO.getPublicRepresentativeTypeAlertDtls(locationAccessLevelId,locationValues,stateId,impactLevelIds, fromDate, toDate);
 				  setTdpCadreId(rtrnPblcRprsnttvTypAlrtDtlsObjLst,allTypeTdpCadreIds);
@@ -3830,5 +3830,98 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 }
 	 return alertStatusMap;
  }
+ /*]
+  * Santosh (non-Javadoc)
+  * @see com.itgrids.partyanalyst.service.IAlertService#getStateImpactLevelAlertDtlsCnt(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.util.List)
+  */
+ public AlertOverviewVO getStateImpactLevelAlertDtlsCnt(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds){
+	 AlertOverviewVO resultVO = new AlertOverviewVO();
+	 Set<Long> locationValues = new HashSet<Long>(0);
+     Long locationAccessLevelId =0l;
+     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+     Date fromDate=null;
+     Date toDate = null;
+	 try{
+		   if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+			   fromDate = sdf.parse(fromDateStr);
+			   toDate = sdf.parse(toDateStr);
+			 } 
+		      List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+				 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+				 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			 }
+			 List<Object[]> rtrnCategoryObjLst = alertCategoryDAO.getAllCategoryOrderBy();
+			 prepareRquiredTemplate(rtrnCategoryObjLst,resultVO.getCategoryList());
+			 List<Object[]> rtrnStatusObjLst = alertStatusDAO.getAllStatus();
+			 prepareRquiredTemplate(rtrnStatusObjLst,resultVO.getStatusList());
+			 
+			 List<Object[]> rtrnObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "State");
+			 if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+				 for(Object[] param:rtrnObjLst){
+					 AlertOverviewVO stateVO = new AlertOverviewVO();
+					 stateVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 stateVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 stateVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					 resultVO.getSubList().add(stateVO);
+				 }
+			 }
+			  List<Object[]> rtrnCtgryObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "Category");
+			 	if(rtrnCtgryObjLst != null && rtrnCtgryObjLst.size() > 0){
+			 		for(Object[] param:rtrnCtgryObjLst){
+			 			Long categoryId = commonMethodsUtilService.getLongValueForObject(param[0]);
+			 			AlertOverviewVO categoryVO = getRequiredMatchVO(resultVO.getCategoryList(),categoryId);
+			 			if(categoryVO != null){
+			 				categoryVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+			 			}
+			 		}
+			 	}
+			  List<Object[]> rtrnStatusWiseCntObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate, "Status");	
+			  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+				  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+				 		for(Object[] param:rtrnStatusWiseCntObjLst){
+				 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				 			AlertOverviewVO statusVO = getRequiredMatchVO(resultVO.getStatusList(),statusId);
+				 			if(statusVO != null){
+				 				statusVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+				 			}
+				 		}
+				 	} 
+			  }
+	 }catch(Exception e){
+		 LOG.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertService class ",e);  
+	 }
+	 return resultVO;
+ }
+ public void prepareRquiredTemplate(List<Object[]> objList,List<AlertOverviewVO> list){
+	 try{
+		 if(objList != null && objList.size() > 0){
+			 for(Object[] param:objList){
+				 AlertOverviewVO VO = new AlertOverviewVO();
+				 VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				 list.add(VO);
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception occured  in getStateImpactLevelAlertDtlsCnt() in AlertService class ",e);
+	 }
+ }
+ public AlertOverviewVO getRequiredMatchVO(List<AlertOverviewVO> list,Long id){
+	 try{
+		 if(list == null || list.size() == 0)
+			 return null;
+		 for(AlertOverviewVO VO:list){
+			 if(VO.getId().equals(id)){
+				 return VO;
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception occured  in getRequiredMatchVO() in AlertService class ",e); 
+	 }
+	 return null;
+	 }
 }
 
