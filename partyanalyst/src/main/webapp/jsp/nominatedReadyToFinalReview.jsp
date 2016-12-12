@@ -9,7 +9,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
-<link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
@@ -283,8 +283,8 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
-<script src="dist/activityDashboard/Date/moment.js" type="text/javascript"></script>
-<script src="dist/activityDashboard/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript">
 
@@ -330,11 +330,7 @@ $(document).on("click",".updateBtnDrop",function(e){
 		$(document).find(".saveGoForCandidateCls").attr("attr_doard_id",b);
 		$(document).find(".saveGoForCandidateCls").attr("attr_position_id",p);
 		
-		e.stopPropagation();
-		$(".chosenSelect").chosen();
-		$(".dateR").daterangepicker({
-			opens:'left'
-		});
+		
 		$('#filer_input').filer({
 			changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
 			showThumbs: true,
@@ -428,8 +424,13 @@ $(document).on("click",".updateBtnDrop",function(e){
 					}
 				}
 				
-		});
-	}
+		});	
+	}	
+	//e.stopPropagation();
+	$(".chosenSelect").chosen();
+	$(".dateR").daterangepicker({
+		opens:'left'
+	});
 	
 });
 $(document).on("click",".btnUpdateAll",function(e){
@@ -545,7 +546,7 @@ $(document).on("click",".btnUpdateAll",function(e){
 $(document).on("click",function(){
 	$(".commentsDiv,.updateDropDown").hide();
 });
-$(document).on("click",".updateDropDown,.commentsDiv,.dateR,.table-condensed tr td,.prev,.next,.applyBtn,.cancelBtn",function(e){
+$(document).on("click",".updateDropDown,.commentsDiv,.table-condensed tr td,.prev,.next,.applyBtn,.cancelBtn",function(e){
   e.stopPropagation()
 });
 var boardLevelId = '${param.lId}';

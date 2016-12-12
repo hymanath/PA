@@ -327,7 +327,7 @@ label
 }
 .appliedPostPopupArrow:after, .appliedPostPopupArrow:before {
 	bottom: 100%;
-	right: 50%;
+	right: 60%;
 	border: solid transparent;
 	content: " ";
 	height: 0;
@@ -348,6 +348,7 @@ label
 	border-width: 9px;
 	margin-left: -9px;
 }
+
 .iconClose
 {
 	background:#ddd;
@@ -1029,7 +1030,7 @@ label
 }
 .commentDropDownArrow:after, .commentDropDownArrow:before {
 	bottom: 100%;
-	right: 100px;
+	right: 40px;
 	border: solid transparent;
 	content: " ";
 	height: 0;
