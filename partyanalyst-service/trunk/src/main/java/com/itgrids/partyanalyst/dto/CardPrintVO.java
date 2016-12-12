@@ -12,6 +12,12 @@ public class CardPrintVO {
 	private List<CardPrintVO> overAllList;
 	private List<CardPrintVO> todayList;
 	
+	public CardPrintVO(){}
+	public CardPrintVO(Long id,String name){
+		this.id=id;
+		this.name=name;
+	}
+	
 	public Long getId() {
 		return id;
 	}

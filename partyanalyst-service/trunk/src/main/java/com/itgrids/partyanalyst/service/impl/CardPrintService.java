@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICardPrintVendorDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
@@ -20,25 +23,17 @@ public class CardPrintService implements ICardPrintService{
 
 	private static final Logger LOG = Logger.getLogger(FieldMonitoringService.class);
 	
-	
+	private ICardPrintVendorDAO cardPrintVendorDAO;
 	private IConstituencyPrintStatusDAO constituencyPrintStatusDAO;
 	private DateUtilService dateUtilService;
 	private ITdpCadreCardPrintDAO tdpCadreCardPrintDAO;
 	private IPrintStatusDAO printStatusDAO;
-	
 	
 	public IPrintStatusDAO getPrintStatusDAO() {
 		return printStatusDAO;
 	}
 	public void setPrintStatusDAO(IPrintStatusDAO printStatusDAO) {
 		this.printStatusDAO = printStatusDAO;
-	}
-	public IConstituencyPrintStatusDAO getConstituencyPrintStatusDAO() {
-		return constituencyPrintStatusDAO;
-	}
-	public void setConstituencyPrintStatusDAO(
-			IConstituencyPrintStatusDAO constituencyPrintStatusDAO) {
-		this.constituencyPrintStatusDAO = constituencyPrintStatusDAO;
 	}
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
@@ -52,7 +47,18 @@ public class CardPrintService implements ICardPrintService{
 	public void setTdpCadreCardPrintDAO(ITdpCadreCardPrintDAO tdpCadreCardPrintDAO) {
 		this.tdpCadreCardPrintDAO = tdpCadreCardPrintDAO;
 	}
-	
+	public ICardPrintVendorDAO getCardPrintVendorDAO() {
+		return cardPrintVendorDAO;
+	}
+	public void setCardPrintVendorDAO(ICardPrintVendorDAO cardPrintVendorDAO) {
+		this.cardPrintVendorDAO = cardPrintVendorDAO;
+	}
+	public IConstituencyPrintStatusDAO getConstituencyPrintStatusDAO() {
+		return constituencyPrintStatusDAO;
+	}
+	public void setConstituencyPrintStatusDAO(IConstituencyPrintStatusDAO constituencyPrintStatusDAO) {
+		this.constituencyPrintStatusDAO = constituencyPrintStatusDAO;
+	}
 	
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
@@ -298,5 +304,53 @@ public class CardPrintService implements ICardPrintService{
 			LOG.error("Exception Occured in getMatchedVOById method in CardPrintService", e);
 		}
 		return returnvo;
+	}	
+public List<CardPrintVO> getVendorNames(){
+		List<CardPrintVO> returnList = new ArrayList<CardPrintVO>();
+		try{
+			List<Object[]> vendorList = cardPrintVendorDAO.getVendorNames();
+			for (Object[] objects : vendorList) {
+				CardPrintVO vo = new CardPrintVO();
+				vo.setId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+				vo.setName(objects[1] != null ? objects[1].toString():"");
+				returnList.add(vo);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getVendorNames() in CardPrintService",e);
+		}
+		return returnList;
 	}
+	
+public List<CardPrintVO> getConstListByVendor(Long vendorId,Long districtId){
+	List<CardPrintVO> returnList = new ArrayList<CardPrintVO>();
+	try{
+		List<Object[]> constuncyList = constituencyPrintStatusDAO.getConstListByVendorId(vendorId,districtId);
+		for (Object[] objects : constuncyList) {
+			CardPrintVO vo = new CardPrintVO();
+			vo.setId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+			vo.setName(objects[1] != null ? objects[1].toString():"");
+			returnList.add(vo);
+		}
+	}catch(Exception e){
+		LOG.error("Exception raised in getConstListByVendor() in CardPrintService ",e);
+	}
+	return returnList;
+}
+public List<CardPrintVO> getDstrListByVendor(Long vendorId){
+	List<CardPrintVO> returnList = new ArrayList<CardPrintVO>();
+	try{
+		List<Object[]> distrList = constituencyPrintStatusDAO.getDstrListByVendorId(vendorId);
+		for (Object[] objects : distrList) {
+			CardPrintVO vo = new CardPrintVO();
+			vo.setId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+			vo.setName(objects[1] != null ? objects[1].toString():"");
+			returnList.add(vo);
+		}
+	}catch(Exception e){
+		LOG.error("Exception raised in getDstrListByVendor() in CardPrintService ",e);
+	}
+	return returnList;
+}
+
 }
