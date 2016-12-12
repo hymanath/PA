@@ -640,7 +640,12 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
 					else
 						str+='<i class="glyphicon glyphicon-user"></i> ';
-						str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
+						if(result.subList[i].cadreName!=null && result.subList[i].cadreName.length>10){
+						  str+='<div class="media-body" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].cadreName+'" >'+result.subList[i].cadreName.substring(0,10)+'..</div>';
+						}else if(result.subList[i].cadreName!=null && result.subList[i].cadreName.length>0){
+						  str+='<div class="media-body">'+result.subList[i].cadreName+' </div>';
+						}
+						//str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
 				}else{
 					str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
 				}
@@ -655,12 +660,22 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					str+='<td>'+result.subList[i].caste+'</td>';
 					str+='<td>'+result.subList[i].casteName+'</td>';
 					str+='<td>';
-					if(result.subList[i].publicReprStr != null && result.subList[i].publicReprStr.length > 0)
-						str+='<p>'+result.subList[i].publicReprStr+'</p>';
-					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.length > 0)
-						str+='<p>'+result.subList[i].partyPosition+'</p>';
-					if(result.subList[i].publicReprStr == null && result.subList[i].partyPosition == null)
+					if(result.subList[i].publicReprStr!=null && result.subList[i].publicReprStr.length>4){
+					  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].publicReprStr+'" >'+result.subList[i].publicReprStr.substring(0,3)+'..</p>';
+					}else if(result.subList[i].publicReprStr!=null && result.subList[i].publicReprStr.length>0){
+					  str+='<p>'+result.subList[i].publicReprStr+' </p>';
+					}
+					
+					if(result.subList[i].partyPosition!=null && result.subList[i].partyPosition.length>4){
+					  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].partyPosition+'" >'+result.subList[i].partyPosition.substring(0,3)+'..</p>';
+					}else if(result.subList[i].partyPosition!=null && result.subList[i].partyPosition.length>0){
+					  str+='<p>'+result.subList[i].partyPosition+' </p>';
+					}
+					
+					if(result.subList[i].publicReprStr == null && result.subList[i].partyPosition == null){
 						str+=' - ';
+					}
+						
 					str+='</td>';
 					str+='<td>';
 					if(result.subList[i].idNamevoList != null && result.subList[i].idNamevoList.length > 0){
@@ -712,7 +727,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0){
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
 					str+='<div class="appliedPostPopup">';
-						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;>';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:10px;>';
 						str+='</div>';
 					str+='</div>';
 				}
@@ -738,7 +753,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount > 0){
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
 						str+='<div class="appliedPostPopup">';
-							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 30px;">';
 							str+='</div>';
 						str+='</div>';
 					}
@@ -806,13 +821,14 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 		}else if(gblStatus=="finaliZed"){
 			str+='<button class="btn btn-success btnUpdateAll m_top20 updateButtonCls" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
 		}
-			str+='<div class="updateDropDown updateAllShowPopup">';
+			str+='<div class="updateDropDown updateAllShowPopup" style="width:1100px;">';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
 	$(".updateDropDown").css("right","0px");
+	$('[data-toggle="tooltip"]').tooltip();
 	/* if(result.subList.length > 10)
 	{
 		$("#resultDivId").css("height","400px");
@@ -1542,7 +1558,7 @@ $(document).on("click",".boardHrfCls",function(){
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>Positions Duration</label>';
-				strglob+='<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span><input type="text" class="form-control dateR"/></div>';
+				strglob+='<div class="input-group inputGCustom"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span><input type="text" class="form-control dateR"/></div>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-12 col-xs-12 col-sm-6">';
 				strglob+='<label>Comments</label>';
@@ -1704,7 +1720,13 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
 					else
 						str+='<i class="glyphicon glyphicon-user"></i> ';
-						str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
+					
+					if(result.subList[i].cadreName!=null && result.subList[i].cadreName.length>10){
+					  str+='<div class="media-body" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].cadreName+'" >'+result.subList[i].cadreName.substring(0,10)+'..</div>';
+					}else if(result.subList[i].cadreName!=null && result.subList[i].cadreName.length>0){
+					  str+='<div class="media-body">'+result.subList[i].cadreName+' </div>';
+					}
+						//str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
 				}else{
 					str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
 				}
@@ -1719,12 +1741,23 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 					str+='<td>'+result.subList[i].caste+'</td>';
 					str+='<td>'+result.subList[i].casteName+'</td>';
 					str+='<td>';
-					if(result.subList[i].publicReprStr != null && result.subList[i].publicReprStr.length > 0)
-						str+='<p>'+result.subList[i].publicReprStr+'</p>';
-					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.length > 0)
-						str+='<p>'+result.subList[i].partyPosition+'</p>';
-					if(result.subList[i].publicReprStr == null && result.subList[i].partyPosition == null)
+					
+					if(result.subList[i].publicReprStr!=null && result.subList[i].publicReprStr.length>3){
+					  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].publicReprStr+'" >'+result.subList[i].publicReprStr.substring(0,3)+'..</p>';
+					}else if(result.subList[i].publicReprStr!=null && result.subList[i].publicReprStr.length>0){
+					  str+='<p>'+result.subList[i].publicReprStr+' </p>';
+					}
+					
+					if(result.subList[i].partyPosition!=null && result.subList[i].partyPosition.length>3){
+					  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].partyPosition+'" >'+result.subList[i].partyPosition.substring(0,3)+'..</p>';
+					}else if(result.subList[i].partyPosition!=null && result.subList[i].partyPosition.length>0){
+					  str+='<p>'+result.subList[i].partyPosition+' </p>';
+					}
+					
+					if(result.subList[i].publicReprStr == null && result.subList[i].partyPosition == null){
 						str+=' - ';
+					}
+						
 					str+='</td>';
 					str+='<td>';
 					if(result.subList[i].idNamevoList != null && result.subList[i].idNamevoList.length > 0){
@@ -1764,7 +1797,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0){
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
 					str+='<div class="appliedPostPopup">';
-						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;">';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:10px;>';
 						str+='</div>';
 					str+='</div>';
 				}
@@ -1777,7 +1810,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0){
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
 						str+='<div class="appliedPostPopup">';
-							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 30px;">';
 							str+='</div>';
 						str+='</div>';
 					}
@@ -1849,6 +1882,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
 	$(".updateDropDown").css("right","0px");
+	$('[data-toggle="tooltip"]').tooltip();
 	/* if(result.subList.length > 10)
 	{
 		$("#resultDivId").css("height","400px");

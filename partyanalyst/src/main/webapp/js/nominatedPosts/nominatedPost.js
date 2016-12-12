@@ -1018,7 +1018,7 @@ function getNominatedPostApplication(startIndex)
 				
 					if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 					{
-						str +='<p class="text-center m_0"><b> ASSEMBLY : </b> '+result[i].addressVO.constituencyName+'</p>';
+						str +='<p class="text-center m_0"><b> ASSEMBLY : </b><span style="white-space: pre-wrap;"> '+result[i].addressVO.constituencyName+'</span></p>';
 						str +='</li>';
 					}else if(result[i].constituency != null && result[i].constituency.length > 0){
 						 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
@@ -2903,7 +2903,7 @@ function buildAdvancedSearchDetails(result){
 				
 					//if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 					//{
-						str +='<p class="text-center m_0"><b> ASSEMBLY : </b> '+result[i].constituency+'</p>';
+						str +='<p class="text-center m_0"><b> ASSEMBLY : </b><span style="white-space: pre-wrap;"> '+result[i].constituency+'</span></p>';
 						str +='</li>';
 					/*}else if(result[i].constituency != null && result[i].constituency.length > 0){
 						 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
