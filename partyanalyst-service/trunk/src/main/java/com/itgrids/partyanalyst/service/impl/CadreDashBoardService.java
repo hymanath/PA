@@ -6983,7 +6983,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				if(getTotalVtrList != null && getTotalVtrList.size() > 0){
 					locationScopeId = 6l;//for village  
 					for(Object[] param : getTotalVtrList){
-						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
 					}
 				}
 				if(getTotalVtrListUrb != null && getTotalVtrListUrb.size() > 0){
