@@ -14997,10 +14997,20 @@
 			<param name="root">alertOverviewVO</param>  
 		</result>  
 	</action>
-	<action name="getPrintingDispatchDetailsAction" class="cardPrintAction" method="getPrintingDispatchDetails">
+    <action name="getPrintingDispatchDetailsAction" class="cardPrintAction" method="getPrintingDispatchDetails">
 		<result type="json" name="success">
    			<param name="root">cardPrintingDispatchVOList</param>
    		</result>
+	 </action>	
+	 <action name="getAlertDetailsTdpCadreWiseAction" class="createAlertAction"  method="getAlertDetailsTdpCadreWise">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>  
+		</result>  
+	</action>
+	 <action name="getDistrictAndStateImpactLevelWiseAlertDtlsAction" class="createAlertAction"  method="getDistrictAndStateImpactLevelWiseAlertDtls">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>  
+		</result>  
 	</action>
  </package>
 </struts>

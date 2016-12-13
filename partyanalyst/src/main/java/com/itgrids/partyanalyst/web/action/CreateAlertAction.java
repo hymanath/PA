@@ -857,4 +857,48 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;    
 	}
+	public String getAlertDetailsTdpCadreWise(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long cadreId = jObj.getLong("cadreId");
+			Long statusId = jObj.getLong("statusId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}   
+			String resultType = jObj.getString("resultType");
+			alertCoreDashBoardVOs = alertService.getAlertDetailsTdpCadreWise(fromDate,toDate,stateId,scopeIdList,activityMemberId,cadreId,statusId,resultType);   
+		}catch(Exception e) {    
+			LOG.error("Exception occured in getAlertDetailsTdpCadreWise() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;    
+	}
+	public String getDistrictAndStateImpactLevelWiseAlertDtls(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long districtId = jObj.getLong("districtId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}   
+			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtId);   
+		}catch(Exception e) {    
+			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;    
+	}
 }//public List<AlertCoreDashBoardVO> getAlertDtlsForPubRep(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId, Long cadreId, Long statusId)
