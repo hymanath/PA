@@ -2795,19 +2795,22 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
 							<div class="panel panel-default panelNew hideStateLevelAlertCls">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
-									<h4 class="panel-title"><span class="headingColor text-capital">State Impact Level Alerts</span></h4>
+									<h4 class="panel-title"><span class="headingColor text-capital">State Impact Scope Level Alerts</span></h4>
 								</div>
 								<div class="panel-body">
 									 <div class="row">
 										  <div class="col-md-12 col-xs-12 col-sm-12">
 										      <div id="processingImgDivId"></div>
 											  <div class="col-md-2 col-xs-12 col-sm-12">
+											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>;
 												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
 											  </div>	
 											 <div class="col-md-4 col-xs-12 col-sm-12">
+											    <h4 class="text-capital stateImpactScopeCls" id="categoryWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>;
 												<div id="categoryWiseAlertDiv" style="height:200px;"></div>     
 											  </div>											
 											  <div class="col-md-6 col-xs-12 col-sm-12">
+											     <h4 class="text-capital stateImpactScopeCls" id="statusWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>;
 												<div id="statusWiseAlertDiv" style="height:200px;"></div>     
 											  </div>											
 										  </div>
@@ -2831,7 +2834,7 @@
 								       <div class="specialAlertDropDown" style="right:13px;top:30px;display:none;z-index:999">  
 										<i class="glyphicon glyphicon-remove alertSetClose pull-right" style="cursor:pointer;"></i>
 											<div role="tabpanel" class="tab-pane" id="alertImpactScope">
-												<h4 class="text-capital" style="color:#99A0A5;">Select Impact</h4>
+												<h4 class="text-capital" style="color:#99A0A5;">Select Impact Scope</h4>
 												<hr style ="margin-bottom:0px;" />
 												<div class="">
 													<ul class="alertSettingsUl" style="list-style:none;">
