@@ -1612,64 +1612,72 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
     data : {task:JSON.stringify(jsObj)}      
   }).done(function(result){
    if(result != null && result.length > 0){
-       buildAlertGroupAssignDtlsRlst(result,divId,groupAssignType,level,publicRepresentativeTypeId);
+       buildAlertGroupAssignDtlsRlst(result,divId,groupAssignType,level,publicRepresentativeTypeId,0);
     }else{
 	  $("#"+divId).html("NO DATA AVAILABLE.");	  
 	}
   });  
 }  
-   function buildAlertGroupAssignDtlsRlst(result,divId,groupAssignType,level,publicRepresentativeTypeId){
+	function buildAlertGroupAssignDtlsRlst(result,divId,groupAssignType,level,publicRepresentativeTypeId,commitTypeId){
 		var str = '';
 		str+='<div class="table-responsive">';
-		 str+='<table class="table table-bordered tablePopup">';
-			 str+='<thead>';
-			   str+='<th>public representative</th>';
-			   str+='<th>total alerts</th>';
-			   if(result[0].subList1 != null && result[0].subList1.length > 0){
-				   for(var i in result[0].subList1){
-					   str+='<th>'+result[0].subList1[i].category+'</th>';
-				   }  
-			   }
-			 str+='</thead>';
-			 str+='<tbody>';
-			 for(var i in result){
-				   str+='<tr>';
-				   if(groupAssignType == "Public Representative" && level == "bellow"){
-					   str+='<td>'+result[i].status+'</td>';
-				   }else{
-					   str+='<td>'+result[i].status+'<i class="glyphicon glyphicon-plus expandIcon" attr_designation_id="'+result[i].statusId+'"  attr_selected_type=\''+groupAssignType+'\' attr_div_id="memberTblId'+result[i].statusId+'"></i></td>';
-				   }
-				   if(groupAssignType == "Public Representative" && level == "bellow"){
-					   str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="0">'+result[i].count+'</td>';
-				   }else{
-					   str+='<td>'+result[i].count+'</td>';
-				   }
+		str+='<table class="table table-bordered tablePopup">';
+			str+='<thead>';
+				str+='<th>'+groupAssignType+'</th>';
+				str+='<th>total alerts</th>';
+				if(result[0].subList1 != null && result[0].subList1.length > 0){
+					for(var i in result[0].subList1){
+						str+='<th>'+result[0].subList1[i].category+'</th>';
+					}  
+				}
+				str+='</thead>';
+				str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+				if(groupAssignType == "Public Representative" && level == "bellow"){
+					str+='<td>'+result[i].status+'</td>';
+				}else if(groupAssignType == "Party Committee" && level == "bellow"){  
+					str+='<td>'+result[i].status+'<i class="glyphicon glyphicon-plus expandIcon2" attr_designation_id="'+result[i].statusId+'" attr_commit_id="'+commitTypeId+'" attr_selected_type=\''+groupAssignType+'\' attr_div_id="memberTblId_'+result[i].statusId+'"></i></td>';       
+				}else{      
+					str+='<td>'+result[i].status+'<i class="glyphicon glyphicon-plus expandIcon" attr_designation_id="'+result[i].statusId+'"  attr_selected_type=\''+groupAssignType+'\' attr_div_id="memberTblId'+result[i].statusId+'"></i></td>';
+				} 
+				if(groupAssignType == "Public Representative" && level == "bellow"){
+					str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="0">'+result[i].count+'</td>';
+				}else{
+					str+='<td>'+result[i].count+'</td>';
+				}  
 					   
-					 if(result[i].subList1 != null && result[i].subList1.length > 0){
-						 for(var j in result[i].subList1){
-							if(result[i].subList1[j].categoryCount == 0){
-								str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+				if(result[i].subList1 != null && result[i].subList1.length > 0){
+					for(var j in result[i].subList1){
+						if(result[i].subList1[j].categoryCount == 0){
+							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+						}else{
+							if(groupAssignType == "Public Representative" && level == "bellow"){
+								str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</td>';
 							}else{
-								if(groupAssignType == "Public Representative" && level == "bellow"){
-									str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</td>';
-								}else{
-									str+='<td>'+result[i].subList1[j].categoryCount+'</td>';      
-								}
+								str+='<td>'+result[i].subList1[j].categoryCount+'</td>';      
 							}
-							
 						}
-					 }
-				  str+='</tr>';
-				  str+='<tr class="subElement" style="display: none">';
-				  str+='<td id="memberTblId'+result[i].statusId+'" colspan="7">';
-				  str+='</td>';
+							
+					}
+				}
 				str+='</tr>';
-			 }
-			 str+='</tbody>';
-			 str+='</table>';
-			 str+='</div>';
-			 $("#"+divId).html(str);
-	}
+				//str+='<tr class="subElement" style="display: none">';
+				if(groupAssignType == "Party Committee" && level == "bellow"){
+					str+='<tr class="subElement_" style="display: none">';
+					str+='<td id="memberTblId_'+result[i].statusId+'" colspan="7">';     
+				}else{
+					str+='<tr class="subElement" style="display: none">';
+					str+='<td id="memberTblId'+result[i].statusId+'" colspan="7">';
+				}
+				str+='</td>';      
+				str+='</tr>';
+			}
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#"+divId).html(str);
+	}  
 		
 		
  function getOtherAndPrgrmCmmtteeTypeAlertCndtDtls(scopeIdsArr,groupAssignType,divId){
@@ -1738,31 +1746,30 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 	}
 
 	$(document).on("click",".expandIcon",function(){
-      if($(this).hasClass("glyphicon-minus") == true)
-      {
-	    $(".expandIcon").addClass("glyphicon-plus").removeClass("glyphicon-minus");
-        $(this).closest("tr").next("tr.subElement").hide();
-      }else{
-		  var divId = $(this).attr("attr_div_id");
-		  var selectTypeId = $(this).attr("attr_selected_type");
-		  var designationId = $(this).attr("attr_designation_id");
-		  var scopeIdsArr = [];
+		if($(this).hasClass("glyphicon-minus") == true){
+			$(".expandIcon").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+			$(this).closest("tr").next("tr.subElement").hide();
+		}else{
+			var divId = $(this).attr("attr_div_id");
+			var selectTypeId = $(this).attr("attr_selected_type");
+			var designationId = $(this).attr("attr_designation_id");
+			var scopeIdsArr = [];
 		  	$(".alertSettingsUl li").each(function() {
-			  if($(this).find("input").is(":checked")){
-				 var selectionType = $(this).find("input").attr("attr_scope_type").trim();
-				 if(selectionType == "District"){
-					scopeIdsArr.push(2);
-				}else if(selectionType == "Constituency"){
-					scopeIdsArr.push(3);
-				}else if(selectionType == "mandalMuncipality"){
-					scopeIdsArr.push(5);  
-					scopeIdsArr.push(8);
-				}else if(selectionType == "VillageWard"){
-					scopeIdsArr.push(7);  
-					scopeIdsArr.push(9);	
+				if($(this).find("input").is(":checked")){
+					var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+					if(selectionType == "District"){
+						scopeIdsArr.push(2);
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+						scopeIdsArr.push(8);
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+					}
 				}
-			  }
-		   });
+			});
 			var commitLvlIdArr = [];
 			var commitLvlVal = $("input:radio[name=commitLvlName]:checked").val();
 			if(commitLvlVal == "All"){
@@ -1794,9 +1801,64 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
 			$(".subElement").hide();
 			$(this).closest("tr").next("tr.subElement").show();
-		}
-    });
-	
+		}  
+	});
+	$(document).on("click",".expandIcon2",function(){     
+		if($(this).hasClass("glyphicon-minus") == true){
+			$(".expandIcon2").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+			$(this).closest("tr").next("tr.subElement_").hide();
+		}else{
+			var designationId = $(this).attr("attr_designation_id");
+			var commitTypeId = $(this).attr("attr_commit_id");
+			var selectionType = $(this).attr("attr_selected_type");
+			var divId = $(this).attr("attr_div_id");
+			var commitLvlIdArr = [];
+			var commitLvlVal = $("input:radio[name=commitLvlName]:checked").val();
+			if(commitLvlVal == "All"){
+				commitLvlIdArr.push(10);
+				commitLvlIdArr.push(11);
+				commitLvlIdArr.push(5);
+				commitLvlIdArr.push(7);
+				commitLvlIdArr.push(6);
+				commitLvlIdArr.push(8);
+			}else if(commitLvlVal == "State"){
+				 commitLvlIdArr.push(10);
+			}else if(commitLvlVal == "District"){
+				commitLvlIdArr.push(11);
+			}else if(commitLvlVal == "Mandal"){
+				commitLvlIdArr.push(5);
+				commitLvlIdArr.push(7);
+			}else if(commitLvlVal == "Village"){
+				commitLvlIdArr.push(6);
+				commitLvlIdArr.push(8);
+			} 
+			var scopeIdsArr = [];
+		  	$(".alertSettingsUl li").each(function() {
+				if($(this).find("input").is(":checked")){
+					var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+					if(selectionType == "District"){
+						scopeIdsArr.push(2);
+					}else if(selectionType == "Constituency"){
+						scopeIdsArr.push(3);
+					}else if(selectionType == "mandalMuncipality"){
+						scopeIdsArr.push(5);  
+						scopeIdsArr.push(8);
+					}else if(selectionType == "VillageWard"){
+						scopeIdsArr.push(7);  
+						scopeIdsArr.push(9);	
+					}
+				}
+			});
+			getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId);
+			alert(commitTypeId+":"+designationId+":"+commitLvlIdArr+":"+scopeIdsArr+":"+selectionType+":"+divId);
+			//1:1:10,11,5,7,6,8:2,3,5,8,7,9:Party Committee:memberTblId_1
+			$(".expandIcon2").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+			$(".subElement_").hide();    
+			$(this).closest("tr").next("tr.subElement_").show();    
+		}             
+	}); 
+
 	$(document).on("click",".commitLvlCls",function(){
 		var scopeIdsArr = [];
 		$(".alertSettingsUl li").each(function() {
@@ -1841,7 +1903,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,"Party Committee",0,"alertDetailsDivId",commitLvlIdArr,"");
 		}
 	});
-	function getTotalAlertGroupByPubRepThenStatusBellow(commitLvlIdArr,designationId,divId,selectTypeId){
+	function getTotalAlertGroupByPubRepThenStatusBellow(commitLvlIdArr,commitTypeId,divId,selectTypeId){
 		  var scopeIdsArr = [];		
 		  $(".alertSettingsUl li").each(function() {
 			  if($(this).find("input").is(":checked")){
@@ -1874,7 +1936,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
 			commitLvlIdArr : commitLvlIdArr,
-			designationId : designationId,
+			designationId : commitTypeId,
 			groupAssignType : selectTypeId,      
 			position : "bellow"
 		}                  
@@ -1885,7 +1947,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			data : {task:JSON.stringify(jsObj)}     
 		}).done(function(result){       
 			if(result != null && result.length > 0){
-				buildAlertGroupAssignDtlsRlst(result,divId,selectTypeId,"",0);
+				buildAlertGroupAssignDtlsRlst(result,divId,selectTypeId,"bellow",0,commitTypeId);
 			}else{
 			  $("#"+divId).html("NO DATA AVAILABLE.");	  
 			}
