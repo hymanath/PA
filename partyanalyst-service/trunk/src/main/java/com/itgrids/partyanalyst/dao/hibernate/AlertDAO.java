@@ -869,7 +869,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.localElectionBody localElectionBody  " +
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  " + 
-						" where model.isDeleted ='N' and model.alertType.alertTypeId != 2  ");             
+						" where model.isDeleted ='N' and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")  ");             
 		if(fromDate != null && toDate != null){ 
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}
@@ -938,7 +938,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		queryStr.append(" left join model.alertStatus alertStatus ");
 		queryStr.append(" left join model.alertImpactScope alertImpactScope ");  
 		queryStr.append(" left join model.alertType alertType ");
-		queryStr.append(" where model.isDeleted ='N' and alertType.alertTypeId != 2 ");
+		queryStr.append(" where model.isDeleted ='N' and alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		if(fromDate != null && toDate != null){ 
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
 		}     
@@ -995,7 +995,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getAlertCntByAlertTypeBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertType.alertTypeId,model.alertType.alertType,count(distinct model.alertId) from Alert model where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1030,7 +1030,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	public List<Object[]> getAlertCntByAlertStatusBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(distinct model.alertId) from Alert model where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1069,7 +1069,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " count(distinct model.alertId) " +
 		  				  " from Alert model " +
 		  				  " where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1110,7 +1110,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " count(distinct model.alertId) " +
 		  				  " from Alert model " +
 		  				  " where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1151,7 +1151,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " count(distinct model.alertId) " +
 		  				  " from Alert model " +
 		  				  " where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) and model.alertImpactScope.alertImpactScopeId not in (4,6,10,11) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+		  				  " and model.alertImpactScope.alertImpactScopeId not in ("+IConstants.ALERT_IMPACT_SCOPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1194,7 +1195,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " count(distinct model.alertId) " +
 		  				  " from Alert model " +
 		  				  " where model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) and model.alertImpactScope.alertImpactScopeId not in (4,6,10,11) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+		  				  " and model.alertImpactScope.alertImpactScopeId not in ("+IConstants.ALERT_IMPACT_SCOPE_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1234,7 +1236,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " model2.candidate.candidateId=model1.candidate.candidateId " +
 		  				  " and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 		 if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 		 }
@@ -1278,8 +1281,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " where  " +
 		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) " +
-		  				  " and model.alert.alertStatus.alertStatusId not in (1) ");
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1322,8 +1325,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " from AlertAssigned model,TdpMember model1 " +
 		  				  " where  " +
 		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
-		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
+		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' and model1.isDeleted='N' " +
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1366,7 +1370,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " from AlertAssigned model" +
 		  				  " where  " +
 		  				  " model.alert.isDeleted='N' and model.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
+		  				  " and model.alert.alertType.alertTypeId  in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1422,7 +1427,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
 	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 	                	" and model.alert.isDeleted='N' " +
-	    				" and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
+	    				" and model.alert.alertType.alertTypeId  in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
+	    				" and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 	    if(stateId != null && stateId.longValue() > 0l){
 	    	queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 	    }
@@ -1487,7 +1493,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" model2.candidate.candidateId=model1.candidate.candidateId " +
 	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 	                	" and model.alert.isDeleted='N' " +
-	    				" and model.alert.alertType.alertTypeId not in (2) and model.alert.alertStatus.alertStatusId not in (1) ");
+	    				" and model.alert.alertType.alertTypeId  in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
+	    				" and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 	    if(publicRepresentativeTypeId != null){
 	    	queryStr.append(" and model1.publicRepresentativeType.publicRepresentativeTypeId = :publicRepresentativeTypeId "); 
 	    }
@@ -1564,8 +1571,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " where  " +
 		  				  " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 		  				  " and model.alert.isDeleted='N' and model.isDeleted='N' " +
-		  				  " and model.alert.alertType.alertTypeId not in (2) " +
-		  				  " and model.alert.alertStatus.alertStatusId not in (1) ");
+		  				  " and model.alert.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+		  				  " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 		  if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 		  }
@@ -1629,8 +1636,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                " where  " +
 	                " model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 	                " and model.alert.isDeleted='N' and model.isDeleted='N' " +
-	                " and model.alert.alertType.alertTypeId not in (2) " +
-	                " and model.alert.alertStatus.alertStatusId not in (1) ");
+	                " and model.alert.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+	                " and model.alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 	      if(stateId != null && stateId.longValue() > 0l){
 	        queryStr.append(" and model.alert.userAddress.state.stateId=:stateId ");  
 	      }
@@ -1722,7 +1729,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	                	" and model2.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId " +
 	                	" and alert.isDeleted='N' and model.isDeleted = 'N' " +
 	                	" and model.tdpCadre.tdpCadreId = :cadreId " +
-	    				" and alert.alertType.alertTypeId != 2 and alert.alertStatus.alertStatusId != 1 ");
+	    				" and alert.alertType.alertTypeId in("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")" +
+	    				" and alert.alertStatus.alertStatusId not in ("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
 	    if(statusId.longValue() != 0L){
 	    	queryStr.append(" and alertStatus.alertStatusId = :statusId ");  
 	    }
@@ -1791,7 +1799,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		  				  " from Alert model" +
 		  				  " where  " +
 		  				  " model.isDeleted='N' " +
-		  				  " and model.alertType.alertTypeId not in (2) ");
+		  				  " and model.alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		 if(stateId != null && stateId.longValue() > 0l){
 			  queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 		 }
@@ -1835,6 +1843,173 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setParameterList("impactLevelIds", impactLevelIds); 
 		}
 		return query.list();
+	}
+	public List<Object[]> getAlertDetailsByCadreWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long tdpCadreId,Long statusId,String resultType){
+		
+		StringBuilder queryStr = new StringBuilder();      
+	    queryStr.append(" select distinct ");     
+		queryStr.append(" alert.alertId, " +//0
+						" alert.createdTime, " +//1
+						" alert.updatedTime, " +//2  
+						" alertStatus.alertStatusId, " +//3  
+						" alertStatus.alertStatus, " +//4
+						" alertCategory.alertCategoryId, " +//5
+						" alertCategory.category, " +//6
+						" alertImpactScope.alertImpactScopeId, " +//7
+						" alertImpactScope.impactScope, " +//8
+						" alert.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName ");//11         
+	   			
+	    queryStr.append(" from " +
+	                	" AlertAssigned model " +
+	                	" left join model.alert alert " +
+	                	" left join alert.alertStatus alertStatus " +
+	                	" left join alert.alertCategory alertCategory " +
+	                	" left join alert.alertImpactScope alertImpactScope " +
+	                	" left join alert.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency" +
+						" left join userAddress.tehsil tehsil" +
+						" left join userAddress.parliamentConstituency parliamentConstituency  " );
+				       if(resultType != null && resultType.equalsIgnoreCase("Program Committee")){
+			            queryStr.append(" ,TdpMember model1");	 
+			           }
+			        	queryStr.append(" where  " +
+	                	" alert.isDeleted='N' and model.isDeleted = 'N' " +
+	    				" and alert.alertType.alertTypeId in("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") " +
+	    				" and alert.alertStatus.alertStatusId not in("+IConstants.ALERT_PENDING_STATUS_IDS+") ");
+                	 if(resultType != null && resultType.equalsIgnoreCase("Program Committee")){
+	                     queryStr.append(" and model1.isDeleted='N' and model1.tdpCadre.tdpCadreId=model.tdpCadre.tdpCadreId ");	 
+	                   }
+                	
+	    if(tdpCadreId != null && tdpCadreId.longValue() > 0){
+	    	queryStr.append(" and model.tdpCadre.tdpCadreId =:tdpCadreId");
+	    }
+	    if(statusId.longValue() != 0L){
+	    	queryStr.append(" and alertStatus.alertStatusId = :statusId ");  
+	    }
+	    if(stateId != null && stateId.longValue() > 0l){
+	    	queryStr.append(" and alert.userAddress.state.stateId=:stateId ");  
+	    }
+	    if(fromDate !=null && toDate !=null){
+	       queryStr.append(" and date(alert.createdTime) between :startDate and :endDate  ");
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){  
+	      queryStr.append(" and alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	    	queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	          queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	         queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+	          queryStr.append(" and tehsil.tehsilId in (:userAccessLevelValues)");  
+	    }
+	   
+	    Query query = getSession().createQuery(queryStr.toString());
+	    
+	    if(stateId != null && stateId.longValue() > 0l){            
+	    	query.setParameter("stateId", stateId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+	    	query.setDate("startDate", fromDate);
+	    	query.setDate("endDate", toDate);
+	    }
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	    	query.setParameterList("impactLevelIds", impactLevelIds); 
+	    }
+	    if(statusId.longValue() != 0L && statusId != null){
+	    	query.setParameter("statusId", statusId);
+	    }
+	    if(tdpCadreId.longValue() != 0L && tdpCadreId != null){
+	    	query.setParameter("tdpCadreId", tdpCadreId);
+	    }
+	    return query.list();  
+	}
+public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long districtId){
+		
+		StringBuilder queryStr = new StringBuilder();      
+	    queryStr.append(" select distinct ");     
+		queryStr.append(" model.alertId, " +//0
+						" model.createdTime, " +//1
+						" model.updatedTime, " +//2  
+						" alertStatus.alertStatusId, " +//3  
+						" alertStatus.alertStatus, " +//4
+						" alertCategory.alertCategoryId, " +//5
+						" alertCategory.category, " +//6
+						" alertImpactScope.alertImpactScopeId, " +//7
+						" alertImpactScope.impactScope, " +//8
+						" model.title, " +//9
+						" constituency.name, " +//10
+						" district.districtName ");//11         
+	   			
+	    queryStr.append(" from " +
+	                	" Alert model " +
+	                	" left join model.alertStatus alertStatus " +
+	                	" left join model.alertCategory alertCategory " +
+	                	" left join model.alertImpactScope alertImpactScope " +
+	                	" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district " +
+						" left join userAddress.constituency constituency " +
+						" left join userAddress.tehsil tehsil " +
+						" left join userAddress.parliamentConstituency parliamentConstituency " +
+						" where  " +
+	                	" model.isDeleted='N' " +
+	    				" and model.alertType.alertTypeId in("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")  ");
+                	
+                	
+	    if(districtId != null && districtId.longValue() > 0){
+	    	queryStr.append(" and district.districtId=:districtId");
+	    }
+	    if(stateId != null && stateId.longValue() > 0l){
+	    	queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
+	    }
+	    if(fromDate !=null && toDate !=null){
+	       queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){  
+	      queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
+	    }
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	    	queryStr.append(" and state.stateId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	          queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	         queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues) ");  
+	    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+	          queryStr.append(" and tehsil.tehsilId in (:userAccessLevelValues)");  
+	    }
+	   
+	    Query query = getSession().createQuery(queryStr.toString());
+	    
+	    if(stateId != null && stateId.longValue() > 0l){            
+	    	query.setParameter("stateId", stateId);
+	    }
+	    if(districtId != null && districtId.longValue() > 0){
+	    	query.setParameter("districtId", districtId);
+	    }
+	    if(fromDate !=null && toDate !=null){
+	    	query.setDate("startDate", fromDate);
+	    	query.setDate("endDate", toDate);
+	    }
+	    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	    	query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	    }
+	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	    	query.setParameterList("impactLevelIds", impactLevelIds); 
+	    }
+	    return query.list();  
 	}
 }
 

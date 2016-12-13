@@ -1240,4 +1240,7 @@ public interface IConstants {
 	
 	public static final Long CNP_VISHAKAPATTANAM_RURAL_DISTRICT_ID=334L;
 	public static final Long CNP_MANCHERIAL_DISTRICT_ID=0L;
+	public static final String ALERT_PARTY_AND_OTHERS_TYPE_IDS="1,3";
+	public static final String ALERT_PENDING_STATUS_IDS="1";
+	public static final String ALERT_IMPACT_SCOPE_IDS="4,6,10,11";
 }
