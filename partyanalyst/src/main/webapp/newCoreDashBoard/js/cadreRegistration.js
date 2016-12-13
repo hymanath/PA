@@ -4537,6 +4537,13 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	  $("#todayperc1").html("<span style='font-size:12px;'>"+((globalTodayTotalCnt*100)/globalTargetCount).toFixed(2)+"%</span>");	
  }
  $(document).on('click','.compCls',function(){ 
+	 $("#tourDocHeadingId").html("Cadre Registration Comparison Details");
+	 $("#alertDestId").html("");
+	 $("#alertAttachTitId").html("");
+	 $("#alertAttachImgId").html("");
+	 $("#alertInvolvedCandidates").html("");
+	 $("#alertAssignedCandidates").html("");
+	 $("#alertCommentsDiv").html("");      
 	 $("#cdrModelDivId").modal("show");
 	 $("#cdrModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 	 var stateId = $(this).attr("attr_state_id");
