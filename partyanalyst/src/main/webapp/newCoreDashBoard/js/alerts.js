@@ -1637,7 +1637,8 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
   });  
 }  
 	function buildAlertGroupAssignDtlsRlst(result,divId,groupAssignType,level,publicRepresentativeTypeId,commitTypeId){
-		var str = '';
+		$("#"+divId).html('<div style="width:30px;height:30px;text-align:center;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var str = '';      
 		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered tablePopup">';
 			str+='<thead>';
@@ -1874,17 +1875,171 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						scopeIdsArr.push(9);	
 					}
 				}
-			});
+			});  
 			getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId);
-			alert(commitTypeId+":"+designationId+":"+commitLvlIdArr+":"+scopeIdsArr+":"+selectionType+":"+divId);
-			//1:1:10,11,5,7,6,8:2,3,5,8,7,9:Party Committee:memberTblId_1
+			
 			$(".expandIcon2").addClass("glyphicon-plus").removeClass("glyphicon-minus");
 			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
 			$(".subElement_").hide();    
 			$(this).closest("tr").next("tr.subElement_").show();    
 		}             
-	}); 
-
+	});
+	function getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId){
+		var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){   
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj = { 
+			stateId : globalStateId,               
+			fromDate : fromDateStr,        
+			toDate : toDateStr,                
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : globalActivityMemberId,
+            commitTypeId : commitTypeId,
+			designationId : designationId,
+			commitLvlIdArr : commitLvlIdArr  
+		}                  
+		$.ajax({
+			type : 'POST',      
+			url : 'getMemForPartyCommitDesgAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}     
+		}).done(function(result){       
+			if(result != null && result.length > 0){       
+				buildMemForPartyCommitDesg(result,selectionType,commitTypeId,designationId,divId);
+			}else{
+			  $("#"+divId).html("NO DATA AVAILABLE.");  	
+			}
+		});  
+	}
+	function buildMemForPartyCommitDesg(result,selectionType,commitTypeId,designationId,divId){
+		var str = '';
+		str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered tablePopup">';
+			str+='<thead>';
+				str+='<th>'+selectionType+'</th>';
+				str+='<th>total alerts</th>';
+				if(result[0].subList1 != null && result[0].subList1.length > 0){
+					for(var i in result[0].subList1){
+						str+='<th>'+result[0].subList1[i].category+'</th>';
+					}  
+				}
+				str+='</thead>';
+				str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+				
+				str+='<td>'+result[i].status+'</td>';
+				if(result[i].count != 0){
+					str+='<td style="cursor:pointer;" class="commettDtlsCls" attr_commit_id="'+commitTypeId+'" attr_designation_id="'+designationId+'" attr_cadre_id="'+result[i].statusId+'" attr_status_id="0">'+result[i].count+'</td>';
+				}else{
+					str+='<td>'+result[i].count+'</td>';
+				}  
+					   
+				if(result[i].subList1 != null && result[i].subList1.length > 0){
+					for(var j in result[i].subList1){
+						if(result[i].subList1[j].categoryCount == 0){
+							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
+						}else{
+							str+='<td style="cursor:pointer;" class="commettDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_commit_id="'+commitTypeId+'" attr_designation_id="'+designationId+'" attr_status_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</td>';
+						}        	
+					}
+				}      
+				str+='</tr>';
+			}
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#"+divId).html(str);  
+	}
+	$(document).on("click",".commettDtlsCls",function(){
+		$("#tourDocumentBodyId").html("");           
+		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
+		$("#tourDocumentId").modal("show");  
+		$("#alertCntTitId").html("TOTAL ALERTS");
+		
+		var cadreId = $(this).attr("attr_cadre_id");
+		var designationId = $(this).attr("attr_designation_id");
+		var commitTypeId = $(this).attr("attr_commit_id");
+		var statusId = $(this).attr("attr_status_id");
+		var commitLvlIdArr = [];
+		var commitLvlVal = $("input:radio[name=commitLvlName]:checked").val();
+		if(commitLvlVal == "All"){
+			commitLvlIdArr.push(10);
+			commitLvlIdArr.push(11);
+			commitLvlIdArr.push(5);
+			commitLvlIdArr.push(7);
+			commitLvlIdArr.push(6);
+			commitLvlIdArr.push(8);
+		}else if(commitLvlVal == "State"){
+			 commitLvlIdArr.push(10);
+		}else if(commitLvlVal == "District"){
+			commitLvlIdArr.push(11);
+		}else if(commitLvlVal == "Mandal"){
+			commitLvlIdArr.push(5);
+			commitLvlIdArr.push(7);
+		}else if(commitLvlVal == "Village"){
+			commitLvlIdArr.push(6);
+			commitLvlIdArr.push(8);
+		} 
+		var scopeIdsArr = [];
+		$(".alertSettingsUl li").each(function() {
+			if($(this).find("input").is(":checked")){
+				var selectionType = $(this).find("input").attr("attr_scope_type").trim();
+				if(selectionType == "District"){
+					scopeIdsArr.push(2);
+				}else if(selectionType == "Constituency"){
+					scopeIdsArr.push(3);
+				}else if(selectionType == "mandalMuncipality"){
+					scopeIdsArr.push(5);  
+					scopeIdsArr.push(8);
+				}else if(selectionType == "VillageWard"){
+					scopeIdsArr.push(7);  
+					scopeIdsArr.push(9);	
+				}
+			}
+		});
+		getAlertDtlsAssignedByPartyCommite(scopeIdsArr,commitTypeId,designationId,commitLvlIdArr,cadreId,statusId);  
+		
+	});
+	function getAlertDtlsAssignedByPartyCommite(scopeIdsArr,commitTypeId,designationId,commitLvlIdArr,cadreId,statusId){
+		var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj = { 
+			stateId : globalStateId,               
+			fromDate : fromDateStr,        
+			toDate : toDateStr,                
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : globalActivityMemberId,
+            commitTypeId : commitTypeId,
+			designationId : designationId,
+			commitLvlIdArr : commitLvlIdArr,
+			cadreId : cadreId,
+			statusId : statusId     
+		}                  
+		$.ajax({
+			type : 'POST',      
+			url : 'getAlertDtlsAssignedByPartyCommiteAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}           
+		}).done(function(result){       
+			if(result != null && result.length > 0){       
+				buildAlertDtls(result);      
+			}else{  
+			  	
+			}
+		});  
+	}
 	$(document).on("click",".commitLvlCls",function(){
 		var scopeIdsArr = [];
 		$(".alertSettingsUl li").each(function() {
