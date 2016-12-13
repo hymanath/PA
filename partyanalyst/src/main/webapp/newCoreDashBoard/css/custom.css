@@ -483,6 +483,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     cursor: pointer;
     font-size: 16px;
 }
+.expandIcon2 {
+    cursor: pointer;
+    font-size: 16px;
+}
 .profieViewCollapse, .profieViewCollapse:active, .profieViewCollapse:hover {
     color: rgb(102, 102, 102) !important;
 }
@@ -1939,6 +1943,15 @@ assignedCandidatesUl1 li:last-child
   background-color: #D89795
 }
 .expandIcon
+{
+  background-color: #CBCBCB;
+  float: right;
+  font-size: 9px;
+  padding: 5px;
+  border-radius: 3px;  
+  cursor: pointer
+}
+.expandIcon2
 {
   background-color: #CBCBCB;
   float: right;
