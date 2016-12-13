@@ -50,6 +50,8 @@
 		scopeIdsArr.push(5); 
 		scopeIdsArr.push(8);  
 	  $(".alertImpactCheckCls").prop('checked', true); //checked all scope level
+	  $(".alertFilterCls li").removeClass("active");
+	  $(".alertFilterCls li:first-child").addClass("active");
 	 getAlertOverviewDetails();
 	 getAlertCategoryDtlsLocationWise();
 	 getAssignGroupTypeAlertDtlsByImpactLevelWise(scopeIdsArr);
@@ -722,12 +724,12 @@
 		var str='';
 		if(result != null && result.length > 0){
 		  var str='';
+		  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		  for(var i in result){
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			  str+='<h5 class="text-capital m_top10 alertCategoryCls">'+result[i].name+'</h5>';      
 			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" class="dddddd" style="height:130px;"></div>';
-			str+='</div>'
 		  }
+		  str+='</div>';
 		}
 		$("#locationWiseAlertDivId").html(str);
 	   if(result != null && result.length > 0){
@@ -900,9 +902,9 @@
 		$("#districtWiseAlertCountId").html(str);
 			if(result !=null && result.length >0){
 				for(var i in result){
-					var districtName;
-					districtName = (result[i].status).toUpperCase();
-					districtName+='-'+result[i].count+'';     
+					//var districtName;
+					//districtName = (result[i].status).toUpperCase();
+					//districtName+='-'+result[i].count+'';     
 					if(result[i].subList1 !=null && result[i].subList1.length >0){
 						var categoryName =[];
 						var count =[];
@@ -910,7 +912,7 @@
 							categoryName.push(result[i].subList1[j].category);   
 							count.push(result[i].subList1[j].categoryCount);
 						}
-							if(categoryName.length !=0 && count.length !=0  && districtName != 0 && districtName != null){
+							if(categoryName.length !=0 && count.length !=0){
 								$(function () {
 									$('#distwisegraph'+i+'').highcharts({
 										colors: ['#808000','#00FFFF','#FF00FF'],     
@@ -1083,8 +1085,8 @@
 		$("#districtWiseAlertCountId").html(str);
 			if(result !=null && result.length >0){
 				for(var i in result){
-					var districtName;
-					districtName = (result[i].status).toUpperCase()+"-"+result[i].count+"";
+				//	var districtName;
+				//	districtName = (result[i].status).toUpperCase()+"-"+result[i].count+"";
 					if(result[i].subList1 !=null && result[i].subList1.length >0){
 						var categoryName =[];
 						var countAlert = [];
@@ -1096,7 +1098,7 @@
 							var uniqCnt = {y:parseInt(result[i].count)-parseInt(result[i].subList1[j].categoryCount),color:"#D3D3D3"};
 							count.push(uniqCnt);
 						}
-							if(categoryName.length !=0 && count.length !=0  && districtName != 0 && districtName != null){
+							if(categoryName.length !=0 && count.length !=0){
 								$(function () {
 									$('#distwisegraph'+i+'').highcharts({
 										colors: ['#A185BF','#0166FF','#32CCFE','#019966','#FF6600','#CC0001'],     
@@ -2139,14 +2141,14 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				},	
 				plotOptions: {
 					column: {
-						stacking: 'normal',
+						//stacking: 'normal',
 						dataLabels: {
 							enabled: true,
 							 formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,0);      
+									return '<b>' + this.y + '</b>';      
 								}
 							}
 						}
@@ -2233,12 +2235,12 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 								plotOptions: {
 									column: {        
 										dataLabels:{
-											enabled: false,
+											enabled: true,
 											formatter: function() {
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.percentage,1) + '%';
+													return '<b>' + this.y + '</b>';
 												}
 											}
 										},
@@ -2315,7 +2317,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 							},
 							
 						},
-						tooltip: {
+					 	tooltip: {
 							formatter: function () {
 								var s = '<b>' + this.x + '</b>';
 
@@ -2329,29 +2331,29 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 								return s;
 							},
 							shared: true
-						},
+						}, 
 						
 						legend: {   
 												
 								enabled: false,				
 												
 							},				
-						plotOptions: {
-							column: {
-								stacking: 'percent',  
-								dataLabels:{
-									enabled: false,
-									formatter: function() {
-										if (this.y === 0) {
-											return null;
-										} else {
-											return Highcharts.numberFormat(this.percentage,1) + '%';
+							plotOptions: {
+								column: {
+									stacking: 'percent',  
+									dataLabels:{
+										enabled: false,
+										formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
+												return Highcharts.numberFormat(this.percentage,1) + '%';
+											}
 										}
-									}
+									},
+									
 								},
-								
 							},
-						},
 						series: [{
 							data: count    
 						}, {
