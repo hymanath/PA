@@ -2802,15 +2802,15 @@
 										  <div class="col-md-12 col-xs-12 col-sm-12">
 										      <div id="processingImgDivId"></div>
 											  <div class="col-md-2 col-xs-12 col-sm-12">
-											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>;
+											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>
 												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
 											  </div>	
 											 <div class="col-md-4 col-xs-12 col-sm-12">
-											    <h4 class="text-capital stateImpactScopeCls" id="categoryWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>;
+											    <h4 class="text-capital stateImpactScopeCls" id="categoryWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>
 												<div id="categoryWiseAlertDiv" style="height:200px;"></div>     
 											  </div>											
 											  <div class="col-md-6 col-xs-12 col-sm-12">
-											     <h4 class="text-capital stateImpactScopeCls" id="statusWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>;
+											     <h4 class="text-capital stateImpactScopeCls" id="statusWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>
 												<div id="statusWiseAlertDiv" style="height:200px;"></div>     
 											  </div>											
 										  </div>
@@ -2824,7 +2824,7 @@
 											<h4 class="panel-title"><span class="headingColor text-capital">District Wise Alerts</span></h4>
 										</div>
 										<div class="col-md-8 col-xs-12 col-sm-8">
-											<ul class="activeUlCls list-inline pull-right">
+											<ul class="activeUlCls alertFilterCls list-inline pull-right">
 												<li class="active optionsCls" attr_id="1">Overview</li>
 												<li class="optionsCls" attr_id="2">Categories</li>  
 												<li class="optionsCls" attr_id="3">Status</li> 
@@ -2872,16 +2872,6 @@
 												</div>
 											<button type="button" class="btn btn-success alertDtlsBtnCls btn-sm pull-right">Get Details</button> 
 										   </div>
-									  <!--<ul class="list-inline" id="impactLevelULId">
-												<span class="glyphicon glyphicon-remove-circle pull-right alertSettingCloseCls" style="cursor:pointer;"></span>
-												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="All" checked/>&nbsp&nbspAll</label></li><br>
-												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="District"/>&nbsp&nbspDistrict Level</label></li><br>
-												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="Constituency" />&nbsp&nbspConstituency Level</label></li><br>
-												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="mandalMuncipality" />&nbsp&nbspMandal/Municipality Level</label></li><br>
-												<li><label><input class="alertLocCls" name="locationLevel" type="radio" attr_val="VillageWard"/>&nbsp&nbspVillage/ward Level</label></li><br>     
-										</ul>        
-											<button type="button" class="btn btn-success alertDtlsBtnCls">Get Details</button>          
-											<span id="" style="color:red;"></span>  -->
 									   </div> 
 									</div>
 								</div>  
