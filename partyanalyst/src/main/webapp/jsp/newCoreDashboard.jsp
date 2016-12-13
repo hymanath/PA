@@ -2749,7 +2749,7 @@
 					<div class="row">
 						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
 								Alerts <small class="text-muted"><span id="alertDateHeadingId">  </span></small>
 							</h4>
 						</div>
