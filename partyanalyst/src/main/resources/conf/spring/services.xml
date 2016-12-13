@@ -3861,6 +3861,7 @@
 		<property name="dateUtilService" ref="dateUtilService"/>
 		<property name="tdpCadreCardPrintDAO" ref="tdpCadreCardPrintDAO"/>
 		<property name="printStatusDAO" ref="printStatusDAO"/>
+		<property name="cardPrintValidationDAO" ref="cardPrintValidationDAO"/>
 	</bean>
 	
 </beans>			

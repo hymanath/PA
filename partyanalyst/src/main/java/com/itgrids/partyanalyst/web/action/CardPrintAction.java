@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CardPrintVO;
+import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,7 +30,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 	private ICardPrintService cardPrintService;
 	private List<CardPrintVO> vendorList;
 	private CardPrintVO cardPrintVO;
-	
+	private List<CardPrintingDispatchVO> cardPrintingDispatchVOList;
 	
 	//implementation methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -42,7 +43,15 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		this.session = session;
 	}
 	
+	
 	//setters and getters.
+	public List<CardPrintingDispatchVO> getCardPrintingDispatchVOList() {
+		return cardPrintingDispatchVOList;
+	}
+	public void setCardPrintingDispatchVOList(
+			List<CardPrintingDispatchVO> cardPrintingDispatchVOList) {
+		this.cardPrintingDispatchVOList = cardPrintingDispatchVOList;
+	}
 	public ICardPrintService getCardPrintService() {
 		return cardPrintService;
 	}
@@ -80,7 +89,7 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		try{
 			//jObj = new JSONObject(getTask());
 			vendorList = cardPrintService.getVendorNames();
-			vendorList.add(0, new CardPrintVO(0l, "ALL"));
+			vendorList.add(0, new CardPrintVO(0l, "Select Vendor"));
 			
 		}catch(Exception e){
 			LOG.error("Exception raised in cardPrintDashboard() in CardPrintAction",e);
@@ -142,6 +151,20 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 			cardPrintVO = cardPrintService.getDistrictWiseStatusWiseConstituenciesCounts(vendorId, fromDateStr, toDateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised in getDistrictWiseStatusWiseConstituenciesCounts() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPrintingDispatchDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long vendorId = jObj.getLong("vendorId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			cardPrintingDispatchVOList = cardPrintService.getPrintingDispatchDetails(vendorId, districtId, constituencyId);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintAction ",e);
 		}
 		return Action.SUCCESS;
 	}
