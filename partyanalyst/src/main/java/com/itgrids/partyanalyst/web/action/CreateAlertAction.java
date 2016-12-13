@@ -901,4 +901,61 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;    
 	}
-}//public List<AlertCoreDashBoardVO> getAlertDtlsForPubRep(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, Long publicRepresentativeTypeId, Long cadreId, Long statusId)
+	public String getMemForPartyCommitDesg(){    
+		try{
+			session = request.getSession(); 
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long commitTypeId = jObj.getLong("commitTypeId");
+			Long designationId = jObj.getLong("designationId");
+			
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}
+			
+			JSONArray commitLvlIdArr = jObj.getJSONArray("commitLvlIdArr");
+			List<Long> commitLvlIdList = new ArrayList<Long>();
+			for (int i = 0; i < commitLvlIdArr.length(); i++){
+				commitLvlIdList.add(Long.parseLong(commitLvlIdArr.getString(i)));    
+			}
+			alertVOs = alertService.getMemForPartyCommitDesg(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId);   
+		}catch(Exception e) {      
+			LOG.error("Exception occured in getAlertDtlsForPubRep() of CreateAlertAction",e);  
+		}
+		return Action.SUCCESS;    
+	}
+	public String getAlertDtlsAssignedByPartyCommite(){    
+		try{
+			session = request.getSession(); 
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long commitTypeId = jObj.getLong("commitTypeId");
+			Long designationId = jObj.getLong("designationId");
+			Long cadreId = jObj.getLong("cadreId");
+			Long statusId = jObj.getLong("statusId");  
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}
+			
+			JSONArray commitLvlIdArr = jObj.getJSONArray("commitLvlIdArr");  
+			List<Long> commitLvlIdList = new ArrayList<Long>();
+			for (int i = 0; i < commitLvlIdArr.length(); i++){
+				commitLvlIdList.add(Long.parseLong(commitLvlIdArr.getString(i)));        
+			}      
+			alertCoreDashBoardVOs = alertService.getAlertDtlsAssignedByPartyCommite(fromDate,toDate,stateId,scopeIdList,activityMemberId,commitLvlIdList,commitTypeId,designationId,cadreId,statusId);   
+		}catch(Exception e) {        
+			LOG.error("Exception occured in getAlertDtlsForPubRep() of CreateAlertAction",e);  
+		}
+		return Action.SUCCESS;    
+	}
+}//public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId);
