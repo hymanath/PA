@@ -1226,8 +1226,8 @@ public interface IConstants {
 	
 	public static final String HYDERABAD_PARY_OFFICE = "HYD PARTY OFFICE";
 	public static final String VIJAYAWADA_PARY_OFFICE = "VIJ PARTY OFFICE";
-	public static final String LATEST_HYD_PARTY_OFFICE_USER_IDS = "11252,11253,11254,11270,11271";
-	public static final String LATEST_VIJ_PARTY_OFFICE_USER_IDS = "11255,11256,11257,11258,11259";
+	public static final String LATEST_VIJ_PARTY_OFFICE_USER_IDS = "11252,11253,11254,11270,11271";
+	public static final String LATEST_HYD_PARTY_OFFICE_USER_IDS = "11255,11256,11257,11258,11259";
 	//TOUR SUB LEVEL
 	public static final Long GENERAL_SECRETARY_SUB_LEVEL_DESIG_IDS[] = {4L,5L,7L,8L};
 	public static final Long ORGANIZING_SECRETARY_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
