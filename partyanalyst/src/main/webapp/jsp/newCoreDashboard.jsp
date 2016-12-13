@@ -2793,7 +2793,7 @@
 							<div id="locationWiseAlertDivId"></div>
 						</div>    
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
-							<div class="panel panel-default panelNew">
+							<div class="panel panel-default panelNew hideStateLevelAlertCls">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<h4 class="panel-title"><span class="headingColor text-capital">State Impact Level Alerts</span></h4>
 								</div>
@@ -2813,7 +2813,7 @@
 										  </div>
 									</div>
 								</div>
-								</div>
+							</div>
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
