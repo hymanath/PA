@@ -3558,8 +3558,106 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			return null;  
 		}
+ 	public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId){
+ 		try{
+ 			Date fromDate = null;              
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			AlertVO alertVO = null;    
+			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
+			Map<Long,Long> locationIdAndCountMap = new HashMap<Long,Long>();  
+			//get all the alert status for  building the template
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();  
+			
+			Long userAccessLevelId = null;
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);  
+				}
+			}
+			List<Object[]> alertCountList = alertDAO.getMemForPartyCommitDesg(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdArr, commitTypeId, designationId, "one");
+			if(alertCountList != null && alertCountList.size() > 0){  
+				for(Object[] param : alertCountList){  
+					if(param[0] != null)
+						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}  
+			//get all the alert count group by status then category.
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();       
+			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
+			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			List<Object[]> alertCountGrpByLocList = null;
+			alertCountGrpByLocList = alertDAO.getMemForPartyCommitDesg(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdArr, commitTypeId, designationId, "two");
+			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){  
+				for(Object[] param : alertCountGrpByLocList){  
+					if(param[0] != null){
+						statusIdAndCountMap = locationIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(statusIdAndCountMap != null){
+							statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						}else{
+							statusIdAndCountMap = new HashMap<Long, Long>();
+							statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+							locationIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),statusIdAndCountMap);
+						}  
+						locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}  
+				}
+			}
+			//build final vo to sent to ui
+			List<AlertVO> finalList = new ArrayList<AlertVO>();
+			AlertVO innerListAlertVO = null;
+			if(locationIdAndStatusIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> entry : locationIdAndStatusIdAndCountMap.entrySet()){
+					statusIdAndCountMap = entry.getValue();
+					if(statusIdAndCountMap.size() > 0){
+						if(statusList != null && statusList.size() > 0){
+							alertVOs = new ArrayList<AlertVO>();
+							innerListAlertVO = new AlertVO();
+							for(Object[] param : statusList){
+								alertVO = new AlertVO();
+								if(commonMethodsUtilService.getLongValueForObject(param[0]) != 1l){
+									alertVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(param[0]));
+									alertVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[1]));
+									alertVOs.add(alertVO);  
+								}
+							}
+						}
+						for(AlertVO param : alertVOs){
+							if(statusIdAndCountMap.get(param.getCategoryId()) != null){
+								param.setCategoryCount(statusIdAndCountMap.get(param.getCategoryId()));  
+							}else{
+								param.setCategoryCount(0l);  
+							}
+						}
+						innerListAlertVO.setSubList1(alertVOs);
+						if(locationIdAndNameMap.get(entry.getKey()) != null){
+							innerListAlertVO.setStatusId(entry.getKey());
+							innerListAlertVO.setStatus(locationIdAndNameMap.get(entry.getKey()));
+							
+						}
+						if(locationIdAndCountMap.get(entry.getKey()) != null){
+							innerListAlertVO.setCount(locationIdAndCountMap.get(entry.getKey()));
+						}
+						finalList.add(innerListAlertVO);     
+					}
+				}
+			}  
+			return finalList; 
+ 		}catch(Exception e){
+ 			e.printStackTrace(); 
+ 			LOG.error("Error occured getMemForPartyCommitDesg() method of AlertService{}");
+ 		}  
+ 		return null;
+ 	}
  
- public String updateCandidateStatusOfAlert(Long alertId,Long userId){
+ 	public String updateCandidateStatusOfAlert(Long alertId,Long userId){
 	 try{
 		 
 		int count =  alertDAO.updateCandidateStatusOfAlert(alertId,userId);
@@ -3970,6 +4068,35 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	 }
 	 return null;
 	 }
+ 	public List<AlertCoreDashBoardVO> getAlertDtlsAssignedByPartyCommite(String fromDateStr,String toDateStr,Long stateId,List<Long> scopeIdList,Long activityMemberId,List<Long> commitLvlIdList,Long commitTypeId,Long designationId,Long cadreId, Long statusId){
+ 		try{
+ 			Date fromDate = null;          
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			Long userAccessLevelId = null;        
+			List<Long> userAccessLevelValues = new ArrayList<Long>();
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);  
+				}
+			}  
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = alertDAO.getAlertDtlsAssignedByPartyCommite(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdList, cadreId, commitTypeId,designationId,statusId);
+			setAlertDtls(alertCoreDashBoardVOs, alertList);    
+			return alertCoreDashBoardVOs;
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 			LOG.error("Exception occured  in getAlertDtlsAssignedByPartyCommite() in AlertService class ",e);
+ 		}
+ 		return null;
+ 	}
  /*
   * santosh (non-Javadoc)
   * @see com.itgrids.partyanalyst.service.IAlertService#getAlertDetailsTdpCadreWise(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String)
