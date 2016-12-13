@@ -1947,7 +1947,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			}
 		});  
 	});  
-		 function getStateImpactLevelAlertDtlsCnt(){
+	 function getStateImpactLevelAlertDtlsCnt(){
+		 $(".hideStateLevelAlertCls").show();
 		$("#processingImgDivId").show();
 		$("#processingImgDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#stateWiseAlertDtlsDiv").html(' ');
@@ -1979,6 +1980,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			$("#processingImgDivId").hide();
 			if(result != null && result.subList.length > 0){
 				buildStateWiseAlertCnt(result.subList);
+			}else{
+				$(".hideStateLevelAlertCls").hide();
 			}
 			if(result != null && result.categoryList.length > 0){
 				buildCategoryWiseAlertCnt(result.categoryList);
@@ -1986,7 +1989,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			if(result != null && result.statusList.length > 0){
 				buildStatusWiseAlertCnt(result.statusList);
 			}
-			
       });	
 	}
 	
@@ -2003,7 +2005,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			totalAlertCnt = totalAlertCnt+parseInt(result[i].alertCount);
 			stateWiseAlertCnt.push(obj1);
 		}
-		var heading = "OVERVIEW-"+(totalAlertCnt)
+		var heading = "OVERVIEW-"+(totalAlertCnt);
 		$(function () {
 			 $("#stateWiseAlertDtlsDiv").highcharts({  
 				colors: ['#53BF8B'],    
@@ -2074,80 +2076,90 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 			if(result !=null && result.length >0){
 				var categoryName =[];
 				var alertCounArr =[];	
-                    var totalAlertCnt = 0;				
+                var totalAlertCnt = 0;				
 					for(var i in result){
 							categoryName.push(result[i].name);   
 							alertCounArr.push(result[i].alertCount);
 							totalAlertCnt = totalAlertCnt + parseInt(result[i].alertCount);
 				     }
-					     var heading = "CATEGORY WISE - "+totalAlertCnt
-							$(function () {
-									$('#categoryWiseAlertDiv').highcharts({
-										colors: ['#808000','#00FFFF','#FF00FF'],     
-										chart: {
-											type: 'column'
-										},
-										title: {
-											text: heading
-										},
-									   
-										xAxis: {
-											 min: 0,
-												 gridLineWidth: 0,
-												 minorGridLineWidth: 0,
-												 categories: categoryName,
-											labels: {
-													//rotation: -45,
-													style: {
-														fontSize: '11px',
-														fontFamily: 'Verdana, sans-serif'
-													},
-													formatter: function() {
-														return this.value.toString().substring(0, 8)+'...';
-													},
+					 if(totalAlertCnt == 0){
+						 return ;
+					 }
+					var heading = "CATEGORY WISE - "+totalAlertCnt
+					$(function () {
+							$('#categoryWiseAlertDiv').highcharts({
+								colors: ['#808000','#00FFFF','#FF00FF'],     
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: heading
+								},
+							   
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										 categories: categoryName,
+									labels: {
+											//rotation: -45,
+											style: {
+												fontSize: '11px',
+												fontFamily: 'Verdana, sans-serif'
+											},
+											formatter: function() {
+												return this.value.toString().substring(0, 8)+'...';
+											},
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									}
+								},
+								tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :'+(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},
+								legend: {
+														
+										enabled: false,				
+														
+									},				
+								plotOptions: {
+									column: {        
+										dataLabels:{
+											enabled: false,
+											formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.percentage,1) + '%';
 												}
-										},
-										yAxis: {
-											min: 0,
-												   gridLineWidth: 0,
-													minorGridLineWidth: 0,
-											title: {
-												text: ''
 											}
 										},
-										tooltip: {
-											headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-											pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
-										},
-										legend: {
-																
-												enabled: false,				
-																
-											},				
-										plotOptions: {
-											column: {        
-												dataLabels:{
-													enabled: false,
-													formatter: function() {
-														if (this.y === 0) {
-															return null;
-														} else {
-															return Highcharts.numberFormat(this.percentage,1) + '%';
-														}
-													}
-												},
-												
-											},
-										},
-										series: [{
-											name: 'Number of alert',
-											data: alertCounArr,
-											colorByPoint: true
-										}]
-									});
-								});
-			
-			}	  
+										
+									},
+								},
+								series: [{
+									name: 'Number of alert',
+									data: alertCounArr,
+									colorByPoint: true
+								}]
+							});
+						});
+			    }	  
 			else{
 				$("#categoryWiseAlertDiv").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
@@ -2159,16 +2171,19 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId){
 				var alertCnt = [];
 				var count = [];
 				var totalAlertCnt = 0;
-				  for(var i in result){
+				   for(var i in result){
 					  totalAlertCnt = totalAlertCnt+parseInt(result[i].alertCount);
 					}
-				for(var i in result){
-							 var uniqCnt = {};
-								statusNameArr.push(result[i].name);
-								alertCnt.push(result[i].alertCount);
-								var uniqCnt = {y:parseInt(totalAlertCnt)-parseInt(result[i].alertCount),color:"#D3D3D3"};
-								count.push(uniqCnt);
-				}
+					if(totalAlertCnt == 0){
+						return;
+					}
+					for(var i in result){
+								 var uniqCnt = {};
+									statusNameArr.push(result[i].name);
+									alertCnt.push(result[i].alertCount);
+									var uniqCnt = {y:parseInt(totalAlertCnt)-parseInt(result[i].alertCount),color:"#D3D3D3"};
+									count.push(uniqCnt);
+					}
 				    var heading = "STATUS WISE - "+totalAlertCnt
 				             $(function () {
 									$('#statusWiseAlertDiv').highcharts({
