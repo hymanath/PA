@@ -14997,5 +14997,10 @@
 			<param name="root">alertOverviewVO</param>  
 		</result>  
 	</action>
+	<action name="getPrintingDispatchDetailsAction" class="cardPrintAction" method="getPrintingDispatchDetails">
+		<result type="json" name="success">
+   			<param name="root">cardPrintingDispatchVOList</param>
+   		</result>
+	</action>
  </package>
 </struts>

@@ -23,54 +23,32 @@
 						<h3 class="panel-title text-capital">dispatch of smart card</h3>
 					</div>
 					<div class="panel-body">
+						<div class="text-capital" id="errorDivId" style="color:red"></div>
 						<div class="row">
-							<div class="col-md-4 col-xs-12 col-sm-4">
+							<div class="col-md-3 col-xs-12 col-sm-4">
 								<label>Select Vendor</label>
 								<s:select theme="simple" cssClass="select" name="vendorTypes" id="vendorId" list="vendorList" listKey="id" listValue="name" onchange="getDistrictList(this.value)"/>
 							</div>
-							<div class="col-md-4 col-xs-12 col-sm-4">
+							<div class="col-md-3 col-xs-12 col-sm-4">
 								<label>Select District</label>
 								<select class="select" id="districtListId" onchange="getConstituenciesForDistrict()">
 									<option value="0">Select District</option>
 								</select>
 							</div>
-							<div class="col-md-4 col-xs-12 col-sm-4">
+							<div class="col-md-3 col-xs-12 col-sm-4">
 								<label>Select Constituency</label>
 								<select class="select" id="constencyListId">
 									<option value="0">Select Constituency</option>
 								</select>
 							</div>
+							<div class="col-md-3 col-xs-12 col-sm-4" style="margin-top: 30px;">
+								<button class="btn btn-success btn-xs text-capital" style="padding: 6px 12px;" onclick="getDispatchDetails();"><b>submit</b></button>
+							</div>
 						</div>
-						<div class="row">
+						<div class="row" id="boxWiseDivId" style="display:none;">
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-								<table class="table tablePrinting text-capital">
-									<thead>
-										<th>Select</th>
-										<th>BOX ID</th>
-										<th>mandal/town/division</th>
-										<th>village/ward</th>
-										<th>no of cards</th>
-										<th>qa passed</th>
-										<th>error %</th>
-										<th>validated cards</th>
-										<th>status</th>
-									</thead>
-									<tbody>
-										<tr>
-											<td>
-												<input type="checkbox"/>
-											</td>
-											<td>52522</td>
-											<td>kavali</td>
-											<td>kavali</td>
-											<td>200</td>
-											<td>yes</td>
-											<td>1%</td>
-											<td>12</td>
-											<td>ready to dispatch</td>
-										</tr>
-									</tbody>
-								</table>
+								<div id="dispatchingDiv"></div>
+								<span id="dispatchDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
 								<button class="btn btn-success btn-lg text-capital">update & generate tracking agent</button>
 							</div>
 						</div>
