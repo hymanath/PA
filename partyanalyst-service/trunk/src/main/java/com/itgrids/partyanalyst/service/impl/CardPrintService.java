@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,11 +12,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICardPrintValidationDAO;
 import com.itgrids.partyanalyst.dao.ICardPrintVendorDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
+import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -28,7 +31,17 @@ public class CardPrintService implements ICardPrintService{
 	private DateUtilService dateUtilService;
 	private ITdpCadreCardPrintDAO tdpCadreCardPrintDAO;
 	private IPrintStatusDAO printStatusDAO;
+	private ICardPrintValidationDAO cardPrintValidationDAO;
 	
+	
+	
+	public ICardPrintValidationDAO getCardPrintValidationDAO() {
+		return cardPrintValidationDAO;
+	}
+	public void setCardPrintValidationDAO(
+			ICardPrintValidationDAO cardPrintValidationDAO) {
+		this.cardPrintValidationDAO = cardPrintValidationDAO;
+	}
 	public IPrintStatusDAO getPrintStatusDAO() {
 		return printStatusDAO;
 	}
@@ -59,6 +72,8 @@ public class CardPrintService implements ICardPrintService{
 	public void setConstituencyPrintStatusDAO(IConstituencyPrintStatusDAO constituencyPrintStatusDAO) {
 		this.constituencyPrintStatusDAO = constituencyPrintStatusDAO;
 	}
+	
+	
 	
 	public CardPrintVO getStatusWisePrintingConstituencyDetails(Long stateId,Long vendorId,String startDateStr,String endDateStr){
 		CardPrintVO returnvo = new CardPrintVO();
@@ -368,4 +383,89 @@ public List<CardPrintVO> getDstrListByVendor(Long vendorId){
 	return returnList;
 }
 
+	public List<CardPrintingDispatchVO> getPrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
+		List<CardPrintingDispatchVO> returnList = new ArrayList<CardPrintingDispatchVO>();
+		try {
+			List<String> boxNos = new ArrayList<String>();
+			
+			List<Object[]> list = tdpCadreCardPrintDAO.getBoxWisePrintingDispatchDetails(vendorId, districtId, constituencyId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					CardPrintingDispatchVO vo = new CardPrintingDispatchVO();
+					
+					vo.setBoxNo(obj[0] != null ? obj[0].toString():"");
+					vo.setMandalId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					vo.setMandalName(obj[2] != null ? obj[2].toString():"");
+					if(vo.getMandalId() == null || vo.getMandalId().longValue() == 0l){
+						vo.setMandalId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+						vo.setMandalName(obj[4] != null ? obj[4].toString():"");
+					}
+					vo.setPanchayatId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					vo.setPanchayatName(obj[6] != null ? obj[6].toString():"");
+					if(vo.getPanchayatId() == null || vo.getPanchayatId().longValue() == 0l){
+						vo.setPanchayatId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						vo.setPanchayatName(obj[8] != null ? obj[8].toString():"");
+					}
+					vo.setNoOfCards(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					
+					boxNos.add(vo.getBoxNo());
+					returnList.add(vo);
+				}
+			}
+			
+			if(boxNos != null && !boxNos.isEmpty()){
+				List<Object[]> list1 = cardPrintValidationDAO.getValidatedCardsCountsForBoxNos(boxNos);
+				if(list1 != null && !list1.isEmpty()){
+					for (Object[] obj : list1) {
+						String boxNo = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
+						if(vo != null)
+							vo.setValidatedCardsCount(count);
+					}
+				}
+				
+				List<Object[]> list2 = cardPrintValidationDAO.getErrorCardsCountsForBoxNos(boxNos);
+				if(list2 != null && !list2.isEmpty()){
+					for (Object[] obj : list2) {
+						String boxNo = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						CardPrintingDispatchVO vo = getMatchedVOByString(boxNo, returnList);
+						if(vo != null){
+							vo.setErrorCount(count);
+							vo.setErrorPerc((new BigDecimal((vo.getErrorCount() * 100.0)/vo.getValidatedCardsCount()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+							float fl_perc = Float.parseFloat(vo.getErrorPerc());
+							if(fl_perc < 50f){
+								vo.setIsQAPassed("YES");
+								vo.setStatus("READY TO DISPATCH");
+							}
+							else{
+								vo.setIsQAPassed("NO");
+								vo.setStatus("RE-PRINT REQUIRED");
+							}
+						}
+					}
+				}
+ 			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getPrintingDispatchDetails() in CardPrintService ",e);
+		}
+		return returnList;
+	}
+	
+	public CardPrintingDispatchVO getMatchedVOByString(String boxNo,List<CardPrintingDispatchVO> list){
+		CardPrintingDispatchVO returnvo = null;
+		try {
+			if(boxNo != null && boxNo.trim().length() > 0l && list != null && !list.isEmpty()){
+				for (CardPrintingDispatchVO vo : list) {
+					if(vo.getBoxNo().trim().equalsIgnoreCase(boxNo.trim()))
+						return vo;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMatchedVOByString() in CardPrintService ",e);
+		}
+		return returnvo;
+	}
 }

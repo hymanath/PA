@@ -63,7 +63,12 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	
 	private TdpCadre tdpCadre;
 	private CardPrintVendor cardPrintVendor;
+	private District district;
 	private Constituency constituency;
+	private Tehsil tehsil;
+	private LocalElectionBody localElectionBody;
+	private Panchayat panchayat;
+	private Constituency ward;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -351,5 +356,60 @@ public class TdpCadreCardPrint extends BaseModel implements Serializable{
 	}
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "mandal_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Tehsil getTehsil() {
+		return tehsil;
+	}
+	public void setTehsil(Tehsil tehsil) {
+		this.tehsil = tehsil;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "muncipality_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public LocalElectionBody getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "panchayat_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Panchayat getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "ward_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getWard() {
+		return ward;
+	}
+	public void setWard(Constituency ward) {
+		this.ward = ward;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "district_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 }

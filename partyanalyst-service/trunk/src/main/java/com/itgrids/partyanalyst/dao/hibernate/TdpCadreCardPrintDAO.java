@@ -59,4 +59,38 @@ public class TdpCadreCardPrintDAO extends GenericDaoHibernate<TdpCadreCardPrint,
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getBoxWisePrintingDispatchDetails(Long vendorId,Long districtId,Long constituencyId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.boxNo," +
+						" tehsil.tehsilId,tehsil.tehsilName," +
+						" leb.localElectionBodyId,leb.name," +
+						" panchayat.panchayatId,panchayat.panchayatName," +
+						" ward.constituencyId,ward.name," +
+						" count(model.tdpCadreCardPrintId)" +
+						" from TdpCadreCardPrint model" +
+						" left join model.tehsil tehsil" +
+						" left join model.localElectionBody leb" +
+						" left join model.panchayat panchayat" +
+						" left join model.ward ward" +
+						" where");
+		if(vendorId != null && vendorId > 0l)
+			sb.append(" model.cardPrintVendor.cardPrintVendorId = :vendorId");
+		if(districtId != null && districtId > 0l)
+			sb.append(" and model.district.districtId = :districtId");
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			sb.append(" and model.constituency.constituencyId = :constituencyId");
+		
+		sb.append(" group by model.boxNo");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(vendorId != null && vendorId > 0l)
+			query.setParameter("vendorId", vendorId);
+		if(districtId != null && districtId > 0l)
+			query.setParameter("districtId", districtId);
+		if(constituencyId != null && constituencyId.longValue() > 0l)
+			query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
  }
