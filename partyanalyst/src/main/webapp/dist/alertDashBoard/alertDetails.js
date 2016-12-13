@@ -385,19 +385,22 @@ function updateAlertStatus()
 	 $('#errorId').html('');
 	 var tdpCadreIdarr =[];
 	 var tdpCadreId = $("#assignedCadreId").val();
-	if(comments.length==0||comments=='')
-	{
-		  $('#errorId').html(' comments required').css("color","red");
-		  return; 
-	}
+	 
 	if(statusId==0)
 	{
-	 $('#errorId').html(' Status required').css("color","red"); 
+	 $('#errorId').html(' Please Select Status ').css("color","red"); 
         return;	   
+	}	
+	if(statusId !=6 ){
+		if(tdpCadreId == null || tdpCadreId == 0){	
+			 $('#errorId').html(' Please Assign Cadre ').css("color","red"); 
+				return;	       
+		}
 	}
-	if(tdpCadreId == null || tdpCadreId == 0 ){	
-	 $('#errorId').html(' Assigned Cadre required').css("color","red"); 
-        return;	       
+	if(comments.length==0||comments=='')
+	{
+		  $('#errorId').html(' Please Enter Valid Comment ').css("color","red");
+		  return; 
 	}
 	$("#updateAlertajaxImg").html('<img src="images/search.gif"/>');
 	if(tdpCadreId == null)
