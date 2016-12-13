@@ -938,6 +938,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		queryStr.append(" left join model.alertStatus alertStatus ");
 		queryStr.append(" left join model.alertImpactScope alertImpactScope ");  
 		queryStr.append(" left join model.alertType alertType ");
+		queryStr.append(" left join userAddress.parliamentConstituency parliamentConstituency");
 		queryStr.append(" where model.isDeleted ='N' and alertType.alertTypeId in ("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+") ");
 		if(fromDate != null && toDate != null){ 
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");
@@ -971,6 +972,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			queryStr.append(" and district.districtId in (:userAccessLevelValues)");  
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");       
+		}if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 queryStr.append(" and parliamentConstituency.constituencyId in (:userAccessLevelValues) "); 
 		}
 		Query query = getSession().createQuery(queryStr.toString());   
 		
