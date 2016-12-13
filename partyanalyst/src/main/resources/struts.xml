@@ -14997,6 +14997,16 @@
 			<param name="root">alertOverviewVO</param>  
 		</result>  
 	</action>
+	<action name="getMemForPartyCommitDesgAction" class="createAlertAction"  method="getMemForPartyCommitDesg">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>  
+		</result>  
+	</action>
+	<action name="getAlertDtlsAssignedByPartyCommiteAction" class="createAlertAction"  method="getAlertDtlsAssignedByPartyCommite">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>    
+		</result>  
+	</action>
     <action name="getPrintingDispatchDetailsAction" class="cardPrintAction" method="getPrintingDispatchDetails">
 		<result type="json" name="success">
    			<param name="root">cardPrintingDispatchVOList</param>
