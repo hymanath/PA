@@ -2804,16 +2804,16 @@
 									 <div class="row">
 										  <div class="col-md-12 col-xs-12 col-sm-12">
 										      <div id="processingImgDivId"></div>
-											  <div class="col-md-2 col-xs-12 col-sm-12">
-											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>
+											  <div class="col-md-1 col-xs-12 col-sm-12" style="padding:0px;">
+											    <h4 class="text-capital stateImpactScopeCls" id="stateWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
 												<div id="stateWiseAlertDtlsDiv" style="height:200px;"></div>     
 											  </div>	
-											 <div class="col-md-4 col-xs-12 col-sm-12">
-											    <h4 class="text-capital stateImpactScopeCls" id="categoryWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>
+											 <div class="col-md-4 col-xs-12 col-sm-12" style="padding:0px;">
+											    <h4 class="text-capital stateImpactScopeCls" id="categoryWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
 												<div id="categoryWiseAlertDiv" style="height:200px;"></div>     
 											  </div>											
-											  <div class="col-md-6 col-xs-12 col-sm-12">
-											     <h4 class="text-capital stateImpactScopeCls" id="statusWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183)"></h4>
+											  <div class="col-md-7 col-xs-12 col-sm-12">
+											     <h4 class="text-capital stateImpactScopeCls" id="statusWiseHeadingId" attr_impact_level="1" style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;"></h4>
 												<div id="statusWiseAlertDiv" style="height:200px;"></div>     
 											  </div>											
 										  </div>
