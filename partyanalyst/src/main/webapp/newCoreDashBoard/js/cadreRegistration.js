@@ -4641,6 +4641,7 @@ $(document).on("click",".getManalMuncipalityCls",function(){
 	 $("#alertInvolvedCandidates").html("");
 	 $("#alertAssignedCandidates").html("");
 	 $("#alertCommentsDiv").html("");      
+	 $("#alertStatusDiv").html("");          
 	 $("#cdrModelDivId").modal("show");
 	 $("#cdrModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 	 var stateId = $(this).attr("attr_state_id");
