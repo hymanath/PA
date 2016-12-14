@@ -433,6 +433,10 @@ $(document).on("click",".updateBtnDrop",function(e){
 	});
 	
 });
+$(document).on("click",".input-mini",function(e){
+	e.stopPropagation();
+	
+});	
 $(document).on("click",".btnUpdateAll",function(e){
 	if(gblStatus=="finaliZed"){
 		$(".updateDropDown").hide().html(' ');
