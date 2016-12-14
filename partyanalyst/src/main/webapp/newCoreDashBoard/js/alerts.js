@@ -736,7 +736,7 @@
 		  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		  for(var i in result){
 			  str+='<h5 class="text-capital m_top10 alertCategoryCls">'+result[i].name+'</h5>';      
-			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" style="height:130px;"></div>';
+			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" style="height:145px;"></div>';
 		  }
 		  str+='</div>';
 		}
@@ -806,7 +806,7 @@
 							 var obj = locationList.filter(function ( obj ) {
 									return obj.locationType.toUpperCase().trim() === _locationName.toUpperCase().trim();
 								})[0];
-								return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"";     
+							return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"<br/>Duplicates - "+obj.duplicatesStatusCnt+"";     
 						}
 					},
 					plotOptions: {
