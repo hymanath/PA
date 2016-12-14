@@ -1960,3 +1960,14 @@ assignedCandidatesUl1 li:last-child
   border-radius: 3px;
   cursor: pointer
 }
+.tablePrintMedia tr td , .tablePrintMedia tr:first-child td
+{
+	border-bottom:1px solid #EDEEF0!important;
+	border-top:1px solid #EDEEF0!important;
+	border:1px solid #EDEEF0!important;
+}
+.tablePrintMedia tr td
+{
+	border-bottom:1px solid #EDEEF0!important;
+	padding:2px 8px 1px 8px !important;
+}

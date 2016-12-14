@@ -226,15 +226,25 @@
 				str+='<h4 class="panel-title m_top10 alertDtlsCls text-capital" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="0" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusCnt+'">'+result.categoryList[i].statusType+' - '+result.categoryList[i].statusCnt+'</h4>';
 			}
 					
-			str+='<table class="table table-condensed bg_ED">';
+			str+='<table class="table tablePrintMedia bg_ED">';
 				str+='<tbody>';
 					str+='<tr>';
 					for(var j in result.categoryList[i].statusList)
 					{
 						if(result.categoryList[i].statusList[j].statusCnt == 0){
-							str+='<td><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p><p class="responsiveFont">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p></td>';
+							str+='<td style="border-bottom:0px !important"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
 						}else{
-							str+='<td><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p><p class="responsiveFont alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p></td>';
+							str+='<td style="border-bottom:0px !important"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
+						}             
+					}
+					str+='</tr>';
+					str+='<tr>';
+					for(var j in result.categoryList[i].statusList)
+					{
+						if(result.categoryList[i].statusList[j].statusCnt == 0){
+							str+='<td><h4 class="responsiveFont">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
+						}else{
+							str+='<td><h4 class="responsiveFont alertDtlsCls" style="cursor:pointer;" attr_category_id="'+result.categoryList[i].statusTypeId+'" attr_status_id="'+result.categoryList[i].statusList[j].statusTypeId+'" attr_alert_type_id="0" attr_count="'+result.categoryList[i].statusList[j].statusCnt+'">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></h4></td>';
 						}             
 					}
 					str+='</tr>';
@@ -727,7 +737,7 @@
 		  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		  for(var i in result){
 			  str+='<h5 class="text-capital m_top10 alertCategoryCls">'+result[i].name+'</h5>';      
-			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" class="dddddd" style="height:130px;"></div>';
+			  str+='<div id="alertCategory'+i+'" attr_category_name='+result[i].name+' attr_id="alertCategory'+i+'" style="height:130px;"></div>';
 		  }
 		  str+='</div>';
 		}
@@ -744,9 +754,7 @@
 					}
 				}
 		//if(result[i][0].totalTour!=0){
-			var getWidth = $("#alertCategory"+i).parent().width()+'px';
-				$("#alertCategory"+i).width(getWidth);
-		    $(function () {
+			$(function () {
 				$('#alertCategory'+i).highcharts({
 					colors: ['#0066DC'],
 					chart: {
