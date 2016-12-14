@@ -35,7 +35,6 @@
 	})
 	
 	var dates= $("#dateRangeIdForAlert").val();
-	//$("#alertDateHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
 	$("#alertDateHeadingId").html(" Today ( "+dates+" )");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
