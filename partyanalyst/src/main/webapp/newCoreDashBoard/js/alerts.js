@@ -2675,4 +2675,22 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			}
 		});  
 	}); 	
-	
+	getAlertLastUpdatedTime();
+	window.setInterval(function(){
+		getAlertLastUpdatedTime(); 
+	},10*60*1000);/*every 10 minutes .this method will update time  */
+	function getAlertLastUpdatedTime(){
+	 	$.ajax({
+			type : 'POST',
+			url : 'getAlertLastUpdatedTimeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify( )}
+		}).done(function(result){
+			if(result != null){
+			 setAlertLastUpdatedTime(result)	
+			}
+		});
+	}
+	function setAlertLastUpdatedTime(lastUpdatedTime){
+	 $("#lastAlertUpdatedTimeId").html(" Last Updated : "+lastUpdatedTime+"");
+	}

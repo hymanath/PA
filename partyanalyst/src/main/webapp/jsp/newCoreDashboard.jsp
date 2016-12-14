@@ -2784,6 +2784,9 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+								<h6 id="lastAlertUpdatedTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
+						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
 							<h4><span class="headingColor text-capital">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
