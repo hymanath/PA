@@ -231,9 +231,9 @@
 					for(var j in result.categoryList[i].statusList)
 					{
 						if(result.categoryList[i].statusList[j].statusCnt == 0){
-							str+='<td style="border-bottom:0px !important"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
+							str+='<td style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
 						}else{
-							str+='<td style="border-bottom:0px !important"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
+							str+='<td style="border-bottom:0px !important;font-size:10px;"><p class="text-muted text-capital responsiveFont">'+result.categoryList[i].statusList[j].statusType+'</p></td>';
 						}             
 					}
 					str+='</tr>';
@@ -806,7 +806,7 @@
 							 var obj = locationList.filter(function ( obj ) {
 									return obj.locationType.toUpperCase().trim() === _locationName.toUpperCase().trim();
 								})[0];
-							return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"<br/>Duplicates - "+obj.duplicatesStatusCnt+"";     
+							return "Total Alerts - "+obj.alertCount+"<br/>Pending - " + obj.pendingCnt + "<br/>Notified - " + obj.notifiedCnt + " <br/>Action In Progess - " + obj.actionInProgessCnt+"<br/>Completed - " + obj.completedCnt + "<br/>Unable to Resolve - " + obj.unabletoResolveCnt + "<br/>Action Not Required - " + obj.actionNotRequiredCnt+"<br/>Duplicate - "+obj.duplicatesStatusCnt+"";     
 						}
 					},
 					plotOptions: {
