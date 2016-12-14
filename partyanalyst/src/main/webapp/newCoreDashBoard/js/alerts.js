@@ -503,7 +503,7 @@
 		 for(var i in result){
 			str+='<tr>';
 			if(result[i].title != null && result[i].title.length > 0){
-				str+='<td class="descAlertCls" style="cursor:pointer;" attr_alert_id="'+result[i].id+'"><strong><u>'+result[i].title+'</u></strong></td>';         
+				str+='<td class="descAlertCls" style="cursor:pointer;" attr_alert_status="'+result[i].status+'" attr_alert_id="'+result[i].id+'"><strong><u>'+result[i].title+'</u></strong></td>';         
 			}else{
 				str+='<td> - </td>';     
 			}
@@ -565,14 +565,20 @@
 		$("#alertCommentsDiv").html("");
 		$("#tourDocHeadingId").html("ALERT TITLE <br>");
 		$("#cdrModelDivId").modal("show");
-		var alertId = $(this).attr("attr_alert_id");           
+		var alertId = $(this).attr("attr_alert_id");
+		var alertStatus = $(this).attr("attr_alert_status");
 		getAlertData(alertId);
 		getAlertAssignedCandidates(alertId);    
-		getAlertStatusCommentsTrackingDetails(alertId);
+		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
 	});
 	$(document).on("click",".modalClose",function(){  
 		$(this).removeClass("modalClose");
 		$("body").addClass("modal-open");
+	});
+	$(document).on("click",".topModalClose",function(){
+		setTimeout(function(){
+		$('body').addClass("modal-open");
+		}, 1000);                     
 	});
 	
 	function getAlertAssignedCandidates(alertId){
@@ -586,8 +592,12 @@
 			url: 'getAlertAssignedCandidatesAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null && result.length > 0){
+			if(result != null && result.length > 0){   
 				buildAlertAssignedCandidates(result);  
+			}else{
+				var str = '';
+				str+='<h5 class="text-muted text-capital">Assigned Candidates-<strong>0</strong></h5>';  
+				$("#alertAssignedCandidates").html(str);    
 			}
 		});
 	}
@@ -614,11 +624,11 @@
 		var imgStr = '';
 		
 		imgStr+='<ul class="list-inline imageUrlUlCls">';
-		imgStr+='<li class="articleDetailsCls" attr_articleid="414441" style="cursor:pointer">';
-		imgStr+='<img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 150px; height: 150px;">';
-		imgStr+='</li>';
-		imgStr+='</ul> '; 
-		$("#alertAttachImgId").html(imgStr);
+		
+		imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
+		
+		imgStr+='</ul> ';                   
+		$("#alertAttachImgId").html(imgStr);  
 
 		var str='';
 		if(result[0].subList.length > 0){
@@ -642,7 +652,8 @@
 			
 			$("#alertInvolvedCandidates").html(str);    
 		}else{
-			$("#alertInvolvedCandidates").html('');        
+			str+='<h5 class="text-muted text-capital">Involved Candidates-<strong>0</strong></h5>'; 
+			$("#alertInvolvedCandidates").html(str);        
 		}
 		$(".assignedCandidatesUl1").slick({          
 			 slide: 'li',
@@ -684,7 +695,7 @@
 			  ]  
 		}); 
 	}
-	function getAlertStatusCommentsTrackingDetails(alertId){  
+	function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){  
 		var jsObj={
 			alertId:alertId,
 			task:""
@@ -695,8 +706,8 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){
-			if(result != null && result.length > 0)        
-				buildAlertStatusCommentsTrackingDetails(result);    
+			if(result != null)           
+				buildAlertStatusCommentsTrackingDetails(result,alertStatus);    
 		});
 	}
 	function getAlertCategoryDtlsLocationWise(){  
@@ -749,7 +760,7 @@
 					for(var j in result[i].subList){
 						locationNameArr.push(result[i].subList[j].locationType);
 						//alertCntArr.push(result[i].subList[j].alertCount);
-						alertCntArr.push({"y":result[i].subList[j].alertCount,"extra":result[i].name});
+						alertCntArr.push({"y":result[i].subList[j].alertCount,"extra":result[i].name,"id":result[i].subList[j].locationTypeId,"catId":result[i].id});   
 					}
 				}
 		//if(alertCntArr !=null && alertCntArr.length > 0 ){
@@ -823,7 +834,20 @@
 								}
 							  
 							}
-						}
+						},
+						series: {
+							cursor: 'pointer',
+							point: {
+								events: {
+									click: function () {
+										var locationId = this.id;
+										var totalAlertCnt = this.y;
+										var catId = this.catId;
+										buildLocationWiseAlertCnt(locationId,totalAlertCnt,catId);
+									}  
+								}
+							}
+						 }    
 					},
 					legend: {
 						enabled: false,
@@ -857,7 +881,60 @@
 			$("#locationWiseAlertDivId").html('NO DATA AVAILABLE.');
 		}
 	}
-	
+	//ssss
+	function buildLocationWiseAlertCnt(locationId,totalAlertCnt,catId){
+		
+		$("#tourDocumentBodyId").html("");           
+		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
+		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
+		$("#tourDocumentId").modal("show");
+		var dates=$("#dateRangeIdForAlert").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){    
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var scopeIdsArr = [];		
+		
+		if(locationId == 1){
+			scopeIdsArr.push(1);
+		}else if(locationId == 2){
+			scopeIdsArr.push(2);
+		}else if(locationId == 3){
+			scopeIdsArr.push(3);
+		}else if(locationId == 4){
+			scopeIdsArr.push(5);  
+			scopeIdsArr.push(8);	
+		}else if(locationId == 5){
+			scopeIdsArr.push(7);  
+			scopeIdsArr.push(9);
+		}
+		
+		var jsObj = { 
+			stateId : globalStateId,             
+			fromDate : fromDateStr,        
+			toDate : toDateStr,                  
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : globalActivityMemberId,
+			districtId : 0,       
+			catId : catId
+		
+		}                  
+		$.ajax({   
+			type : 'POST',                
+			url : 'getDistrictAndStateImpactLevelWiseAlertDtlsAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}     
+		}).done(function(result){    
+            if(result != null && result.length > 0){
+				buildAlertDtls(result);    
+			}else{
+			$("#tourDocumentBodyId").html("NO DATA AVAILABLE.");	
+			}
+		}); 
+	}
 	function getTotalAlertGroupByLocationThenCategory(scopeIdsArr){
 		$("#districtWiseAlertCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var dates=$("#dateRangeIdForAlert").val();
@@ -1261,7 +1338,8 @@
 		
 		$("#alertAssignedCandidates").html(str);
 	}else{
-		$("#alertAssignedCandidates").html('');      
+		str+='<h5 class="text-muted text-capital">Assigned Candidates-<strong>0</strong></h5>';  
+		$("#alertAssignedCandidates").html(str);                    
 	}
 	
 	$(".assignedCandidatesUl").slick({
@@ -1304,83 +1382,103 @@
 		  ]
 	});  
 }
-function buildAlertStatusCommentsTrackingDetails(result)
+function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
-	var str='';
-	
-	str+='<div class="col-md-12 col-xs-12 col-sm-3">';
-		str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
-		for(var i in result)
-		{
-			if(i==0)
-			{
-				str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
-			}else{
-				str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
-			}
-			
-		}
-		str+='</ul>';
-		str+='<div class="tab-content alertComment">';
+	$("#alertStatusDiv").html("<h4 class='text-muted'>ALERT STATUS</h4>");          
+	if(result != null && result.length > 0){  
+		var length = result.length;
+		length = length - 1;
+		var str='';  
+		str+='<div class="col-md-12 col-xs-12 col-sm-3">';
+			str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
 			for(var i in result)
 			{
-				if(i==0)
-				{
-					str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
+				
+				if(length != i){
+					str+='<li class="m_top10" role="presentation"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<span class="glyphicon glyphicon-ok"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'</span></a></li>';
 				}else{
-					str+='<div role="tabpanel" class="tab-pane" id="commentStatus'+i+'">';
-				}
-				for(var j in result[i].sublist2)
-				{
-					str+='<div class="row m_top10">';
-						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							var date = result[i].sublist2[j].date      
-							var dateArr = date.split("-");
-							var year = dateArr[0];  
-							var month = dateArr[1];
-							var day = dateArr[2];
-							str+='<table class="table tableCalendar">';
-								str+='<tr>';
-									str+='<td colspan="2">';
-										str+='<h3>'+day+'</h3>';
-									str+='</td>';
-								str+='</tr>';
-								str+='<tr>';
-									str+='<td>'+getMonth(month)+'</td>';        
-									str+='<td>'+year+'</td>';
-								str+='</tr>';
-							str+='</table>';
-						str+='</div>';
-						str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
-							str+='<ul class="alertStatusTracking">';
-								str+='<li>';  
-									str+='<div class="arrow_box_left">';
-									for(var k in result[i].sublist2[j].sublist)
-									{	
-										str+='<div>';
-											str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
-											for(var l in result[i].sublist2[j].sublist[k])
-											{
-												str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
-											}
-											str+='</p>';  
-											str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
-											str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
-											str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
-											str+='<hr style="margin-top:20px;"/>';
-										str+='</div>';   
-									}
-									str+='</div>';    
-								str+='</li>';
-							str+='</ul>';
-						str+='</div>';
-					str+='</div>';
-				}           
-			str+='</div>';
+					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+result[i].status+'<span class="glyphicon glyphicon-hourglass"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
+				}        
+				
 			}
+			str+='</ul>';
+			str+='<div class="tab-content alertComment">';
+				for(var i in result)
+				{
+					if(i==0)
+					{
+						str+='<div role="tabpanel" class="tab-pane active" id="commentStatus'+i+'">';
+					}else{
+						str+='<div role="tabpanel" class="tab-pane" id="commentStatus'+i+'">';
+					}
+					for(var j in result[i].sublist2)
+					{
+						str+='<div class="row m_top10">';
+							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+								var date = result[i].sublist2[j].date      
+								var dateArr = date.split("-");
+								var year = dateArr[0];  
+								var month = dateArr[1];
+								var day = dateArr[2];
+								str+='<table class="table tableCalendar">';
+									str+='<tr>';
+										str+='<td colspan="2">';
+											str+='<h3>'+day+'</h3>';
+										str+='</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>'+getMonth(month)+'</td>';        
+										str+='<td>'+year+'</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+								str+='<ul class="alertStatusTracking">';
+									str+='<li>';  
+										str+='<div class="arrow_box_left">';
+										for(var k in result[i].sublist2[j].sublist)
+										{	
+											str+='<div>';
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+												for(var l in result[i].sublist2[j].sublist[k])
+												{
+													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+												}
+												str+='</p>';  
+												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+												str+='<hr style="margin-top:20px;"/>';
+											str+='</div>';   
+										}
+										str+='</div>';    
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					}           
+				str+='</div>';
+				}
+			str+='</div>';
 		str+='</div>';
-	str+='</div>';
-	$("#alertCommentsDiv").html(str);
+		$("#alertCommentsDiv").html(str);
+	}else{
+		var str = '';
+		var statusArr = {"1":"Pending","2":"Notified","3":"Action In Progess","4":"Completed"};            
+		str+='<div class="col-md-12 col-xs-12 col-sm-3">';
+		str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
+		for(var i = 1 ; i <= 4 ; i++){
+			if(alertStatus == statusArr[i]){
+				str+='<li class="m_top10" role="presentation" style="pointer-events: none;"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+statusArr[i]+'<span class="glyphicon glyphicon-ok"></span><br/></a></li>';
+			}else{
+				str+='<li class="m_top10" role="presentation" style="pointer-events: none;"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab">'+statusArr[i]+'<br/></a></li>';
+			}
+		}
+		str+='</ul>';       
+		str+='<div class="tab-content alertComment">';    
+		$("#alertCommentsDiv").html(str);       
+	}//glyphicon glyphicon-ok
+	//alertStatus
 }
 function getMonth(month){
 	if(month=="01"){
@@ -1644,8 +1742,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
   });  
 }  
 	function buildAlertGroupAssignDtlsRlst(result,divId,groupAssignType,level,publicRepresentativeTypeId,commitTypeId){
-		$("#"+divId).html('<div style="width:30px;height:30px;text-align:center;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		var str = '';      
+		var str = '';            
 		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered tablePopup">';
 			str+='<thead>';
@@ -1691,10 +1788,10 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 				//str+='<tr class="subElement" style="display: none">';
 				if(groupAssignType == "Party Committee" && level == "bellow"){
 					str+='<tr class="subElement_" style="display: none">';
-					str+='<td id="memberTblId_'+result[i].statusId+'" colspan="7">';     
+					str+='<td id="memberTblId_'+result[i].statusId+'" colspan="8">';     
 				}else{
 					str+='<tr class="subElement" style="display: none">';
-					str+='<td id="memberTblId'+result[i].statusId+'" colspan="7">';
+					str+='<td id="memberTblId'+result[i].statusId+'" colspan="8">';     
 				}
 				str+='</td>';      
 				str+='</tr>';
@@ -1826,7 +1923,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			}  
 			if(selectTypeId == "Party Committee"){    
 				getTotalAlertGroupByPubRepThenStatusBellow(commitLvlIdArr,designationId,divId,selectTypeId);
-			} 
+				$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
+			}    
 			if(selectTypeId == "Public Representative"){           
 				getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,selectTypeId,designationId,divId,[0],"bellow");   
 			}
@@ -1884,8 +1982,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				}
 			});  
 			getMemForPartyCommitDesg(commitTypeId,designationId,commitLvlIdArr,scopeIdsArr,selectionType,divId);
-			
-			$(".expandIcon2").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+			$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			$(".expandIcon2").addClass("glyphicon-plus").removeClass("glyphicon-minus");   
 			$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
 			$(".subElement_").hide();    
 			$(this).closest("tr").next("tr.subElement_").show();    
@@ -2634,7 +2732,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			toDate : toDateStr,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
-			districtId : districtId
+			districtId : districtId,
+			catId : 0
 		
 		}                  
 		$.ajax({
@@ -2674,7 +2773,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			toDate : toDateStr,                  
 			scopeIdsArr : scopeIdsArr,              
 			activityMemberId : globalActivityMemberId,
-			districtId : 0
+			districtId : 0,
+			catId : 0
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -2688,7 +2788,258 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			 $("#tourDocumentBodyId").html("NO DATA AVAILABLE.");
 			}
 		});  
-	}); 	
+	});
+$(document).on("click",".articleImgDetailsCls",function(){
+	var articleId= $(this).attr("attr_articleId");
+	getTotalArticledetails(articleId);
+});
+
+function getTotalArticledetails(articleId){
+	$("#myModalShowNew").modal('show');
+	$("#myModalShowNewId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({       
+		  type : 'GET',      
+		  url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""          
+		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""     
+	}).then(function(results){
+			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
+				var result = results[0];
+				var str = '';
+					//str+='<div class="modal-dialog modal-lg" role="document">';
+					//str+='<div class="modal-content">';
+					//str+='<div class="modal-header">';
+					//str+='<button type="button" class="close topModalCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+					str+='<h4 class="modal-title" id="myModalLabel">';
+					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
+					str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
+					str+='</h4>';
+					str+='</div>';
+					str+='<div class="modal-body">';
+					str+='<div class="row">';
+					str+='<div class="col-md-12">';
+					str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
+					str+='</div>';
+					str+='<div class="col-md-12 m_top10">';
+					str+='<h4 class="panel-title text-success">Description</h4>';
+					str+='<p class="m_0 f_14">'+result.description+'</p>';
+					str+='</div>';
+					str+='<div class="col-md-12">';
+					if( result.subList != null && result.subList.length > 0){
+						for(var i in result.subList){
+							/* Candidate*/
+							str+='<div class="row ">';
+							str+='<div class="col-md-6">';
+							str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">FROM WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* From Table*/
+								if(result.subList[i].fromList != null && result.subList[i].fromList.length > 0){
+									for( var j in result.subList[i].fromList){
+										str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+										if( result.subList[i].fromList[j].organizationName != null && $.trim(result.subList[i].fromList[j].organizationName).length > 0 ){
+											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
+										}
+										str+='<td><img class="img-circle" src="images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										var candidataExist = false;
+										if( result.subList[i].fromList[j].candidateName != null && $.trim(result.subList[i].fromList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+											str+=''+result.subList[i].fromList[j].candidateName;
+										}
+										if( result.subList[i].fromList[j].designation != null && $.trim(result.subList[i].fromList[j].designation).length > 0 ){
+											candidataExist = true; 
+											str+=' ('+result.subList[i].fromList[j].designation + ")";
+										}
+										if(!candidataExist){
+											str+=' - ';
+										}
+										str+='</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										if(result.subList[i].fromList[j].impactLevel != null && $.trim(result.subList[i].fromList[j].impactLevel).length > 0){
+											str+='<p class="m_0">Impact Level : '+result.subList[i].fromList[j].impactLevel+'</p>';	
+										}else{ 
+											str+='<p class="m_0">Impact Level : - </p>';	
+										}
+										if(result.subList[i].fromList[j].categories != null && $.trim(result.subList[i].fromList[j].categories).length > 0){
+											str+='<p class="m_0">Category : '+result.subList[i].fromList[j].categories+'</p>';	
+										}else{ 
+											str+='<p class="m_0">Category : - </p>';	
+										}
+										if(result.subList[i].fromList[j].newsActivity != null && $.trim(result.subList[i].fromList[j].newsActivity).length > 0){
+											str+='<p class="m_0">News Activity : '+result.subList[i].fromList[j].newsActivity+' </p>';
+										}else{ 
+											str+='<p class="m_0">News Activity : - </p>';	
+										}
+										if(result.subList[i].fromList[j].newsType != null && $.trim(result.subList[i].fromList[j].newsType).length > 0){
+											str+='<p class="m_0">News type : '+result.subList[i].fromList[j].newsType+' </p>';
+										}else{ 
+											str+='<p class="m_0">News type : - </p>';	
+										}
+										if( result.subList[i].fromList[j].newsType != null && result.subList[i].fromList[j].newsType == "Problems"){
+											if(result.subList[i].fromList[j].newsRelated != null && $.trim(result.subList[i].fromList[j].newsRelated).length > 0){
+												str+='<p class="m_0">News Related : '+result.subList[i].fromList[j].newsRelated+' </p>';
+											}else{ 
+												str+='<p class="m_0">News Related : - </p>';	
+											}
+											if(result.subList[i].fromList[j].priority != null && $.trim(result.subList[i].fromList[j].priority).length > 0){
+												str+='<p class="m_0">Priority : '+result.subList[i].fromList[j].priority+' </p>';
+											}else{ 
+												str+='<p class="m_0">Priority : - </p>';	
+											}
+											if(result.subList[i].fromList[j].solution != null && $.trim(result.subList[i].fromList[j].solution).length > 0){
+												str+='<p class="m_0">Solution : '+result.subList[i].fromList[j].solution+' </p>';
+											}else{ 
+												str+='<p class="m_0">Solution : - </p>';	
+											}
+										}
+										str+='</td>';
+										str+='</tr>';
+										str+='</table>';
+									}
+								}
+							str+='</div>';//panel-body
+							str+='</div>';//panel
+							str+='</div>';//colmd6
+							str+='<div class="col-md-6">';
+							str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">TO WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* TO Table*/
+								if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
+									for( var j in result.subList[i].toList){
+										str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+										if( result.subList[i].toList[j].organizationName != null && $.trim(result.subList[i].toList[j].organizationName).length > 0 ){
+											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].toList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].toList[j].organizationName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										str+='<td><img class="img-circle" src="images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+										str+='<td colspan="2">';
+										var candidataExist = false;
+										if( result.subList[i].toList[j].candidateName != null && $.trim(result.subList[i].toList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+											str+=''+result.subList[i].toList[j].candidateName;
+																			}
+																			if( result.subList[i].toList[j].designation != null && $.trim(result.subList[i].toList[j].designation).length > 0 ){
+																				candidataExist = true; 
+																				str+=' ('+result.subList[i].toList[j].designation + ")";
+																			}
+																			if(!candidataExist){
+																				str+=' - ';
+																			}
+																		   str+='</td>';
+																	str+='</tr>';
+																	str+='<tr>';
+																		str+='<td colspan="2">';
+																		    
+																			if(result.subList[i].toList[j].impactLevel != null && $.trim(result.subList[i].toList[j].impactLevel).length > 0){
+																			  str+='<p class="m_0">Impact Level : '+result.subList[i].toList[j].impactLevel+'</p>';	
+																			}else{ 
+																			  str+='<p class="m_0">Impact Level : - </p>';	
+																			}
+																		
+																		    if(result.subList[i].toList[j].categories != null && $.trim(result.subList[i].toList[j].categories).length > 0){
+																			  str+='<p class="m_0">Category : '+result.subList[i].toList[j].categories+'</p>';	
+																			}else{ 
+																			  str+='<p class="m_0">Category : - </p>';	
+																			}
+																			if(result.subList[i].toList[j].newsActivity != null && $.trim(result.subList[i].toList[j].newsActivity).length > 0){
+																			  str+='<p class="m_0">News Activity : '+result.subList[i].toList[j].newsActivity+' </p>';
+																			}else{ 
+																			  str+='<p class="m_0">News Activity : - </p>';	
+																			}
+																			if(result.subList[i].toList[j].newsType != null && $.trim(result.subList[i].toList[j].newsType).length > 0){
+																			  str+='<p class="m_0">News type : '+result.subList[i].toList[j].newsType+' </p>';
+																			}else{ 
+																			  str+='<p class="m_0">News type : - </p>';	
+																			}
+																			if( result.subList[i].toList[j].newsType != null && result.subList[i].toList[j].newsType == "Problems"){
+																				
+																				if(result.subList[i].toList[j].newsRelated != null && $.trim(result.subList[i].toList[j].newsRelated).length > 0){
+																				  str+='<p class="m_0">News Related : '+result.subList[i].toList[j].newsRelated+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">News Related : - </p>';	
+																				}
+																				if(result.subList[i].toList[j].priority != null && $.trim(result.subList[i].toList[j].priority).length > 0){
+																				  str+='<p class="m_0">Priority : '+result.subList[i].toList[j].priority+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">Priority : - </p>';	
+																				}
+																				if(result.subList[i].toList[j].solution != null && $.trim(result.subList[i].toList[j].solution).length > 0){
+																				  str+='<p class="m_0">Solution : '+result.subList[i].toList[j].solution+' </p>';
+																				}else{ 
+																				  str+='<p class="m_0">Solution : - </p>';	
+																				}
+																			}
+																		str+='</td>';
+																	str+='</tr>';
+																str+='</table>';
+															}
+														}
+														
+													str+='</div>';//panelbody
+												str+='</div>';//panel
+											str+='</div>';//colmd6
+											
+										str+='</div>';//row
+								  }
+								}
+								
+								str+='</div>';//colmd12
+							str+='</div>';//row
+								/* Article Scope Location */
+								str+='<div class="col-md-12">';
+									str+='<div class="panel panel-default panelArticleGroup">';
+										str+='<div class="panel-heading">';
+											str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<table class="table table-condensed">';
+												str+='<tr>';
+													str+='<td>Impact Scope : </td>';
+													if(result.impactScopeId!=null){
+														str+='<td>'+obj[result.impactScopeId]+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+												str+='</tr>';
+												str+='<tr>';
+													str+='<td>Location : </td>';
+													if(result.scopeLocation!=null){
+														str+='<td>'+result.scopeLocation+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+												str+='</tr>';
+											str+='</table>';       
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							
+							str+='<div class="row">';
+							/*Lnking*/
+							str+='</div>';  
+							
+						  //str+='</div>';
+						//str+='</div>';
+					 //str+='</div>';
+					 
+					$("#myModalShowNewId").html(str);
+		});    
+} 	
 	getAlertLastUpdatedTime();
 	window.setInterval(function(){
 		getAlertLastUpdatedTime(); 
