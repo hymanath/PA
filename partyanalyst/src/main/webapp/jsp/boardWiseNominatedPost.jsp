@@ -86,7 +86,7 @@
 							<h4 class="panel-title"  id="postMembersId">APPLIED THIS POST - MEMBERS DETAILS</h4>
 						</div>
 						<div class="panel-body" style="background-color:#f4f4f4;">
-							<div class="table-responsive">
+							<div class="">
 								<div id="resultDivId"></div>
 							</div>
 							<!--<button class="btn btn-success appleNewPostBtn">APPLY HERE</button>-->
