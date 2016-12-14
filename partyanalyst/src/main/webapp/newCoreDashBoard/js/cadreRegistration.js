@@ -2185,7 +2185,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 					})[0];
 					var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
 					newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
-					cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+					cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+obj.total2014CadrePer + "%":'';
 							  
 					return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+'%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%"+cadre2014; 
 				}
@@ -3128,7 +3128,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 									})[0];
 								 var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
 								  newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
-								  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+								  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+obj.total2014CadrePer + "%":'';
 								 
 								 /* return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt + '<br/>2016 New Cadre:' + obj.total2016NewCadreCount + newPer +'<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+renewalPer + cadre2014; */
 							return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+ '%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%"+cadre2014; 
@@ -4071,7 +4071,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 							})[0];
 						 var renewalPer = this.series.name=="2016 Renewal Cadre"? " - " + this.y + "%":'',
 						  newPer = this.series.name=="2016 New Cadre"? " - " + this.y + "%":'',
-						  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+this.y + "%":'';
+						  cadre2014 = this.series.name=="2014 Cadre"?"<br/>"+this.series.name +": " +obj.total2014CadreCnt +" - "+obj.total2014CadrePer + "%":'';
 						  return '<b>'+this.x +'<br/>2016 Total Registrations:' + obj.total2016CadreCnt+" - "+obj.total2016CadrePer+ '%<br/>2016 New Cadre:' + obj.total2016NewCadreCount +" - "+obj.total2016NewCadrePer+'%<br/>2016 Renewal Cadre:'+ obj.total2016RenewalCadreCount+" - "+obj.total2016RenewalCadrePer+"%" +cadre2014; 
 					}
 				},

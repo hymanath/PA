@@ -958,4 +958,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;    
 	}
+	public String getAlertLastUpdatedTime(){
+		try{
+			status = alertService.getAlertLastUpdatedTime();
+		}catch(Exception e){
+			LOG.error("Exception raised at getAlertLastUpdatedTime() method of CoreDashBoard", e);	
+		}
+		return Action.SUCCESS;
+	}
 }//public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId);
