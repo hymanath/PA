@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IPrintStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCardPrintDAO;
 import com.itgrids.partyanalyst.dto.CardPrintVO;
 import com.itgrids.partyanalyst.dto.CardPrintingDispatchVO;
+import com.itgrids.partyanalyst.model.CardPrintVendor;
 import com.itgrids.partyanalyst.service.ICardPrintService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -293,6 +294,96 @@ public class CardPrintService implements ICardPrintService{
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getDistrictWiseStatusWiseConstituenciesCounts method in CardPrintService", e);
+		}
+		return returnvo;
+	}
+	
+	public CardPrintVO getVendorWiseStatusWiseConstituenciesDetails(Long stateId,String fromDateStr,String toDateStr){
+		CardPrintVO returnvo = new CardPrintVO();
+		try {
+			Map<Long,CardPrintVO> vendorMap = new LinkedHashMap<Long, CardPrintVO>();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<Object[]> statusList = printStatusDAO.getAllPrintStatus();
+			
+			List<CardPrintVendor> vendorList = cardPrintVendorDAO.getAll();
+			if(vendorList != null && !vendorList.isEmpty()){
+				for (CardPrintVendor cardPrintVendor : vendorList) {
+					CardPrintVO vo = new CardPrintVO();
+					vo.setId(cardPrintVendor.getCardPrintVendorId());
+					vo.setName(cardPrintVendor.getVendorName());
+					vo.setOverAllList(getAllPrintStatus(statusList));
+					vendorMap.put(vo.getId(), vo);
+				}
+			}
+			
+			List<Object[]> list = constituencyPrintStatusDAO.getStatusWiseVendorWiseConstituencyDetails(stateId, fromDate, toDate);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long vendorId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					if(statusId != null && (statusId.longValue() == 1l || statusId.longValue() == 2l || statusId.longValue() == 3l))
+						statusId = 1l;
+					
+					CardPrintVO vo = vendorMap.get(vendorId);
+					if(vo != null){
+						CardPrintVO statusvo = getMatchedVOById(statusId, vo.getOverAllList());
+						if(statusvo != null)
+							statusvo.setCount(statusvo.getCount()+count);
+					}
+				}
+			}
+			
+			if(vendorMap != null){
+				returnvo.setOverAllList(new ArrayList<CardPrintVO>(vendorMap.values()));
+				vendorMap = new LinkedHashMap<Long, CardPrintVO>();
+			}
+			
+			fromDate = dateUtilService.getCurrentDateAndTime();
+			toDate = dateUtilService.getCurrentDateAndTime();
+			
+			if(vendorList != null && !vendorList.isEmpty()){
+				for (CardPrintVendor cardPrintVendor : vendorList) {
+					CardPrintVO vo = new CardPrintVO();
+					vo.setId(cardPrintVendor.getCardPrintVendorId());
+					vo.setName(cardPrintVendor.getVendorName());
+					vo.setOverAllList(getAllPrintStatus(statusList));
+					vendorMap.put(vo.getId(), vo);
+				}
+			}
+			
+			List<Object[]> list1 = constituencyPrintStatusDAO.getStatusWiseVendorWiseConstituencyDetails(stateId, fromDate, toDate);
+			if(list1 != null && !list1.isEmpty()){
+				for (Object[] obj : list1) {
+					Long vendorId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					if(statusId != null && (statusId.longValue() == 1l || statusId.longValue() == 2l || statusId.longValue() == 3l))
+						statusId = 1l;
+					
+					CardPrintVO vo = vendorMap.get(vendorId);
+					if(vo != null){
+						CardPrintVO statusvo = getMatchedVOById(statusId, vo.getOverAllList());
+						if(statusvo != null)
+							statusvo.setCount(statusvo.getCount()+count);
+					}
+				}
+			}
+			
+			returnvo.setTodayDate(dateUtilService.getCurrentDateInStringFormat());
+			if(vendorMap != null)
+				returnvo.setTodayList(new ArrayList<CardPrintVO>(vendorMap.values()));
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getVendorWiseStatusWiseConstituenciesDetails method in CardPrintService", e);
 		}
 		return returnvo;
 	}
