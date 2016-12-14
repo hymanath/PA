@@ -752,7 +752,7 @@
 						alertCntArr.push({"y":result[i].subList[j].alertCount,"extra":result[i].name});
 					}
 				}
-		//if(result[i][0].totalTour!=0){
+		//if(alertCntArr !=null && alertCntArr.length > 0 ){
 			$(function () {
 				$('#alertCategory'+i).highcharts({
 					colors: ['#0066DC'],
@@ -1609,7 +1609,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 	}else{
 		$("#commitLvlId").hide();        
 	}
-  $("#alertModalHeadingId").html(groupAssignType+" Alert Details")
+  $("#alertModalHeadingId").html(groupAssignType+" Alert Details");
   $("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
   $("#alertModalId").modal("show");
   	var dates=$("#dateRangeIdForAlert").val();
@@ -2255,6 +2255,13 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				y: result[i].alertCount,
 				extra:result[i].alertCount       
 			};
+			if(obj1.name == 'Andhra Pradesh')
+			{
+				obj1.name = 'A.P'
+			}else if(obj1.name == 'Telangana')
+			{
+				obj1.name = 'TS'
+			}
 			totalAlertCnt = totalAlertCnt+parseInt(result[i].alertCount);
 			stateWiseAlertCnt.push(obj1);
 		}
@@ -2280,7 +2287,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					minorGridLineWidth: 0,
 					type: 'category',
 					labels: {
-						//rotation: -45,
+						rotation: 0,
 						style: {
 							fontSize: '11px',
 							fontFamily: 'Verdana, sans-serif'
@@ -2317,11 +2324,11 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 					}
 				},
 				tooltip: {
-					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+					headerFormat: '<span style="font-size:11px">No Of<br/> Alerts</span><br>',
 					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.extra}</b>'
 				},
 				series: [{    
-					name: 'Number Of Alerts',    
+					name: 'No Of Alerts',
 					data: stateWiseAlertCnt
 				}],
 			});  
