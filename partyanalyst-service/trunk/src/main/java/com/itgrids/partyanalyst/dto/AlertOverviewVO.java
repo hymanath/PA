@@ -39,7 +39,14 @@ public class AlertOverviewVO {
 	private Long completedCnt = 0l;
 	private Long unabletoResolveCnt = 0l;
 	private Long actionNotRequiredCnt = 0l;
+	private Long duplicatesStatusCnt = 0l; 
 	
+	public Long getDuplicatesStatusCnt() {
+		return duplicatesStatusCnt;
+	}
+	public void setDuplicatesStatusCnt(Long duplicatesStatusCnt) {
+		this.duplicatesStatusCnt = duplicatesStatusCnt;
+	}
 	private Double alertCountPer=0.0d;
 	
 	public Long getTotalAlertCnt() {

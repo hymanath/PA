@@ -3261,6 +3261,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 								   overAllVO.setCompletedCnt(locationVO.getCompletedCnt());
 								   overAllVO.setUnabletoResolveCnt(locationVO.getUnabletoResolveCnt());
 								   overAllVO.setActionNotRequiredCnt(locationVO.getActionNotRequiredCnt());
+								   overAllVO.setDuplicatesStatusCnt(locationVO.getDuplicatesStatusCnt());
 								   overAllAlrtDtlsMap.put(overAllVO.getLocationTypeId(), overAllVO);
 							   }else{
 							   overAllVO.setAlertCount(overAllVO.getAlertCount()+locationVO.getAlertCount());
@@ -3270,6 +3271,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							   overAllVO.setCompletedCnt(overAllVO.getCompletedCnt()+locationVO.getCompletedCnt());
 							   overAllVO.setUnabletoResolveCnt(overAllVO.getUnabletoResolveCnt()+locationVO.getUnabletoResolveCnt());
 							   overAllVO.setActionNotRequiredCnt(overAllVO.getActionNotRequiredCnt()+locationVO.getActionNotRequiredCnt());
+							   overAllVO.setDuplicatesStatusCnt(overAllVO.getDuplicatesStatusCnt()+locationVO.getDuplicatesStatusCnt());
 						   }
 						  }
 					  }
@@ -3363,6 +3365,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							 			impactLevelVO.setUnabletoResolveCnt(alertCnt);
 							 		}else if(statusId == 6l){//Action Not Required
 							 			impactLevelVO.setActionNotRequiredCnt(alertCnt);
+							 		}else if(statusId == 7l){
+							 			impactLevelVO.setDuplicatesStatusCnt(alertCnt);
 							 		}
 					 }
 				 }
@@ -3400,6 +3404,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 resutlVO.setCompletedCnt(resutlVO.getCompletedCnt()+VO.getCompletedCnt());
 			 resutlVO.setUnabletoResolveCnt(resutlVO.getUnabletoResolveCnt()+VO.getUnabletoResolveCnt());
 			 resutlVO.setActionNotRequiredCnt(resutlVO.getActionNotRequiredCnt()+VO.getActionNotRequiredCnt());
+			 resutlVO.setDuplicatesStatusCnt(resutlVO.getDuplicatesStatusCnt()+VO.getDuplicatesStatusCnt());
 	 }
 	 }catch(Exception e){
 		 LOG.error("Error occured mergeRequiredData() method of AlertService{}",e);
