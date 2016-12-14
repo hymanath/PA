@@ -391,7 +391,7 @@ function updateAlertStatus()
 	 $('#errorId').html(' Please Select Status ').css("color","red"); 
         return;	   
 	}	
-	if(statusId !=6 ){
+	if(statusId !=6 && statusId !=7){
 		if(tdpCadreId == null || tdpCadreId == 0){	
 			 $('#errorId').html(' Please Assign Cadre ').css("color","red"); 
 				return;	       
@@ -399,7 +399,7 @@ function updateAlertStatus()
 	}
 	if(comments.length==0||comments=='')
 	{
-		  $('#errorId').html(' Please Enter Valid Comment ').css("color","red");
+		  $('#errorId').html(' Please Enter Comment ').css("color","red");
 		  return; 
 	}
 	$("#updateAlertajaxImg").html('<img src="images/search.gif"/>');

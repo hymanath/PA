@@ -355,6 +355,7 @@ control.makeTransliteratable(['commentsId']);
 												<option value='4'>Completed</option>
 												<option value='5'>Unable to Resolve</option>
 												<option value='6'>Action Not Required</option>
+												<option value='7'>Duplicates</option>
 											</select>
 											
 											<label>Assigned Cadre</label>
