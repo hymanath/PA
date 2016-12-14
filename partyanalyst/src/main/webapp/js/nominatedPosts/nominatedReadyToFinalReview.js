@@ -1974,10 +1974,10 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	 $(document).on("click","#dropDownButnId",function(){
 		$(".updateDropDownArrow").hide();
 	}); 
-	 $(document).on("click",".statusUpdateBntCls",function(){
+	 /* $(document).on("click",".statusUpdateBntCls",function(){
 		$(".updateDropDownArrow").show();
 		$(".updateDropDown").hide();
-	}); 
+	});  */
 	 $(document).on("click","#commentsPopUpId",function(){
 		$(".commentsDiv").hide();
 	});
