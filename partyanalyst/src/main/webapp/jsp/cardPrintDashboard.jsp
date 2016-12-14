@@ -323,104 +323,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<table class="table table-bordered" style="border: 0px;">
-									<tr>
-										<td><h4>Vendor - 1</h4></td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Total Avg Per Day Print Capacity</small>
-											<h4>10000</h4>
-											<span class="text-success">View Day Wise</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="bg_EE pos_relative"><div class="arrowTOp">Today <br/><small>17 Nov 2016</small></div></td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-									</tr>
-									<tr>
-										<td>Vendor - 1</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Print Data Ready Constituencies</small>
-											<h4>10</h4>
-										</td>
-										<td>
-											<small>Total Avg Per Day Print Capacity</small>
-											<h4>10000</h4>
-											<span class="text-success">View Day Wise</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="bg_EE pos_relative"><div class="arrowTOp">Today <br/><small>17 Nov 2016</small></div></td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-										<td class="bg_EE">01</td>
-									</tr>
-								</table>
-							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12" id="vendorWiseDivId"></div>
 						</div>
 					</div>
 				</div>
@@ -447,6 +350,7 @@ $(".singleDate").daterangepicker({
 $(document).ready(function(){
 	getStatusWisePrintingConstituencyDetails();
 	getDistrictWiseStatusWiseConstituenciesCounts();
+	getStatusWiseVendorWisePrintingConstituencyDetails();
 });
 if($(window).width() < 500)
 {

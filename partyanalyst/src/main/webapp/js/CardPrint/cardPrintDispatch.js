@@ -76,7 +76,7 @@ function getConstituenciesForDistrict(){
 }
 
 function getDispatchDetails(){
-	
+	$("#dispatchingDiv").html("");
 	$("#errorDivId").html("");
 	var vendorId = $("#vendorId").val();
 	var districtId = $("#districtListId").val();
@@ -113,6 +113,7 @@ function getDispatchDetails(){
 		}
 		else{
 			$("#dispatchDivIdImg").hide();
+			$("#updateBtnId").hide();
 			$("#dispatchingDiv").html('<h4 style="color:red">NO DATA AVAILABLE...</h4>');
 		}
 	});
@@ -155,6 +156,7 @@ function buildDispatchingDetails(result){
 		str+='</tbody>';
 	str+='</table>';
 	
+	$("#updateBtnId").show();
 	$("#dispatchDivIdImg").hide();
 	$("#dispatchingDiv").html(str);
 }

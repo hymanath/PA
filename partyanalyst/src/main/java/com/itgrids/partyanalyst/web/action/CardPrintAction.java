@@ -168,4 +168,18 @@ public class CardPrintAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getVendorWiseStatusWiseConstituenciesDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			
+			cardPrintVO = cardPrintService.getVendorWiseStatusWiseConstituenciesDetails(stateId, fromDate, toDate);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVendorWiseStatusWiseConstituenciesDetails() in CardPrintAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

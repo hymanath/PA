@@ -1,6 +1,7 @@
 $(document).on("click",".stateClass",function(){
 	getStatusWisePrintingConstituencyDetails();
 	getDistrictWiseStatusWiseConstituenciesCounts();
+	getStatusWiseVendorWisePrintingConstituencyDetails();
 });
 
 $(document).on("change","#vendorId",function(){
@@ -11,6 +12,7 @@ $(document).on("change","#vendorId",function(){
 $(document).on("click",".applyBtn",function(){
 	getStatusWisePrintingConstituencyDetails();
 	getDistrictWiseStatusWiseConstituenciesCounts();
+	getStatusWiseVendorWisePrintingConstituencyDetails();
 });
 
 function getStatusWisePrintingConstituencyDetails(){
@@ -331,4 +333,76 @@ function buildTsDistrictWisePrintingDetails(result){
 	}
 	else
 		$("#distWiseCards1").html('<h4 style="color:red"> NO DATA AVAILABLE...</h4>');
+}
+
+function getStatusWiseVendorWisePrintingConstituencyDetails(){
+	
+	var stateId = $("input[name='radio']:checked").val();
+	var dates = $(".singleDate").val();
+	var dateArr = dates.split("-");
+	var fromDate;
+	var toDate;
+	if(dateArr != null){
+		fromDate = dateArr[0];
+		toDate = dateArr[1];
+	}
+	var jsObj = { 
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getVendorWiseStatusWiseConstituenciesDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){
+		if(result != null){
+			buildStatusWiseVendorWisePrintingDetails(result);
+		}
+	});
+}
+
+function buildStatusWiseVendorWisePrintingDetails(result){
+	var str='';
+	
+	str+='<table class="table table-bordered" style="border: 0px;">';
+	if(result.overAllList != null && result.overAllList.length > 0){
+		for(var i in result.overAllList){
+			str+='<tr>';
+				str+='<td><h4>'+result.overAllList[i].name+'</h4></td>';
+				if(result.overAllList[i].overAllList != null && result.overAllList[i].overAllList.length > 0){
+					for(var j in result.overAllList[i].overAllList){
+						if(result.overAllList[i].overAllList[j].id != 8 && result.overAllList[i].overAllList[j].id != 9){
+							str+='<td>';
+								str+='<small>'+result.overAllList[i].overAllList[j].name+' Constituencies</small>';
+								str+='<h4>'+result.overAllList[i].overAllList[j].count+'</h4>';
+							str+='</td>';
+						}
+					}
+					str+='<td>';
+						str+='<small>Total Avg Per Day Print Capacity</small>';
+						str+='<h4>10000</h4>';
+						str+='<span class="text-success">View Day Wise</span>';
+					str+='</td>';
+				}
+			str+='</tr>';
+			
+			str+='<tr>';
+				str+='<td class="bg_EE pos_relative"><div class="arrowTOp">Today <br/><small>'+result.todayDate+'</small></div></td>';
+				if(result.todayList != null && result.todayList.length > 0){
+					if(result.todayList[i].overAllList != null && result.todayList[i].overAllList.length > 0){
+						for(var j in result.todayList[i].overAllList){
+							if(result.todayList[i].overAllList[j].id != 8 && result.todayList[i].overAllList[j].id != 9)
+								str+='<td class="bg_EE">'+result.todayList[i].overAllList[j].count+'</td>';
+						}
+						str+='<td class="bg_EE">1000</td>';
+					}
+				}
+			str+='</tr>';
+		}
+	}
+	str+='</table>';
+	
+	$("#vendorWiseDivId").html(str);
 }
