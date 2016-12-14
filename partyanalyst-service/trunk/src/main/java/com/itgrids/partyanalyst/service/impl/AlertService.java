@@ -4164,5 +4164,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		return null;
 	}
+  public String getAlertLastUpdatedTime(){
+	  String lastUpdatedTimeStr="";
+	  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
+	  try{
+		  Date lastUpdatedTime = alertDAO.getAlertLastUpdatedTime();
+		  if(lastUpdatedTime != null){
+			  lastUpdatedTimeStr= sdf.format(lastUpdatedTime);
+		  }
+	  }catch(Exception e){
+		  LOG.error("Error occured at getAlertLastUpdatedTime() in AlertService {}",e);  
+	  }
+	  return lastUpdatedTimeStr;
+}
 }
 
