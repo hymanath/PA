@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AlertOverviewVO {
 	
-	private Long id;
+	private Long id = 0L;
 	private String name;
 	private Long alertCount = 0l;
 	
