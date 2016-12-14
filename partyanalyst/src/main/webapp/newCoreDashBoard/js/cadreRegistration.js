@@ -3882,7 +3882,13 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 	}
 	$(document).on("click",".consFilterCls",function(){
      var filterApplyType = $(this).attr("attr_filter_value");
-      buildDtlsOfBellowLvlMember(globalSubLevelRslt,"individualDtls",filterApplyType);
+	 var sortingType = '';
+	   $(".selectOneSpecialCadre").each(function() {
+		  if($(this).is(":checked")){  
+			sortingType = $(this).attr("attr_sort_type");
+		  }
+		});  
+      buildDtlsOfBellowLvlMember(globalSubLevelRslt,"individualDtls",filterApplyType,sortingType);
   });
 	function getDtlsOfBellowLvlMember(globalActivityMemberId,selectedMemberName,selectedUserType){
 		$("#individualDtls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
@@ -3920,7 +3926,7 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){        
-		   buildDtlsOfBellowLvlMember(result,"individualDtls",flterApplyType);
+		   buildDtlsOfBellowLvlMember(result,"individualDtls",flterApplyType,sortingType);
 		   globalSubLevelRslt = result;
 		   if(result != null && result.length > 0){
 			   var overAllCntRlst = result[0]; 
@@ -3933,105 +3939,196 @@ $(document).on("click","#getTsCadreRegistrationDetailsBtnId",function(){
 		   }
 		});
 	}  
-	function buildDtlsOfBellowLvlMember(result,divId,filterApplyType){
+	function buildDtlsOfBellowLvlMember(result,divId,filterApplyType,sortingType){
 		var locationNameArr = [];
 		var renewalArr = [];
 		var newCadreArr = []; 
 		var cadre2014ArrPer = [];
+		var newCadre2016CntArr = [];
+		var renewalCadre2016CntArr = [];
+		var cadre2014CntArr = [];
 		var colorArr=[];
 		var jsonDataArr=[];
 		if(result != null && result.length > 0){
 		  for(var i in result){
 				if(filterApplyType != null && filterApplyType=="All" || filterApplyType =="No"){
 						locationNameArr.push(result[i].locationName);
-						if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+						if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 				 }else if(filterApplyType=="verygood"){
 				 if(result[i].total2016CadrePer > 100){
 					  locationNameArr.push(result[i].locationName);
-					   if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+					  if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 				 }	
 				}else if(filterApplyType=="good"){
 				  if(result[i].total2016CadrePer > 90 && result[i].total2016CadrePer<=100){
 					   locationNameArr.push(result[i].locationName);
-					   if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
-						}
+					  if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+					  }else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
+					  }
 				  }
 				}else if(filterApplyType=="ok"){
-					  if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
+					if(result[i].total2016CadrePer > 80 && result[i].total2016CadrePer<=90){
 					   locationNameArr.push(result[i].locationName);
-				       if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
+				       if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
-						}
-				      }
+				    }
 				}else if(filterApplyType=="poor"){
 				  if(result[i].total2016CadrePer > 60 && result[i].total2016CadrePer <= 80){
 					 locationNameArr.push(result[i].locationName);
-					   if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+					   if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 				  }
 				}else if(filterApplyType == "verypoor"){
 					if(result[i].total2016CadrePer < 60){
 				      locationNameArr.push(result[i].locationName);
-				      if(result[i].total2014CadrePer > 0){
-						  cadre2014ArrPer.push(result[i].total2014CadrePer);
-						}
-						if(result[i].total2016RenewalCadrePer > 0){
-						 renewalArr.push(result[i].total2016RenewalCadrePer);
-						}
-						if(result[i].total2016NewCadrePer > 0){
-						 newCadreArr.push(result[i].total2016NewCadrePer);
+				      if(sortingType == "2016CadreWise"){
+							if(result[i].total2014CadreCnt > 0){
+							  cadre2014CntArr.push(result[i].total2014CadreCnt);
+							}
+							if(result[i].total2016NewCadreCount > 0){
+							 newCadre2016CntArr.push(result[i].total2016NewCadreCount);
+							}
+							if(result[i].total2016RenewalCadreCount > 0){
+							 renewalCadre2016CntArr.push(result[i].total2016RenewalCadreCount);
+							}
+						}else if(sortingType == "TargetWise"){
+							if(result[i].total2014CadrePer > 0){
+							  cadre2014ArrPer.push(result[i].total2014CadrePer);
+							}
+							if(result[i].total2016RenewalCadrePer > 0){
+							 renewalArr.push(result[i].total2016RenewalCadrePer);
+							}
+							if(result[i].total2016NewCadrePer > 0){
+							 newCadreArr.push(result[i].total2016NewCadrePer);
+							}
 						}
 					}
 				}
 			}
-			if(renewalArr.length > 0){
-			jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
-			colorArr.push('#30AA74');      
+			if(sortingType == "2016CadreWise"){
+				 if(renewalCadre2016CntArr.length > 0){
+				  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalCadre2016CntArr,stack: '2016'});
+				  colorArr.push('#30AA74');		  
+				  }
+				  if(newCadre2016CntArr.length > 0){
+				  jsonDataArr.push({name: '2016 New Cadre',data: newCadre2016CntArr,stack: '2016'});
+				  colorArr.push('#F36800');		  
+				  }
+				  if(cadre2014CntArr.length > 0){
+				  jsonDataArr.push({name: '2014 Cadre',data: cadre2014CntArr,stack: '2014'});
+				  colorArr.push('#FFCA00');		  
+				  }
+			}else if(sortingType == "TargetWise"){ 
+				 if(renewalArr.length > 0){
+				  jsonDataArr.push({name: '2016 Renewal Cadre',data: renewalArr,stack: '2016'});
+				  colorArr.push('#30AA74');		  
+				  }
+				  if(newCadreArr.length > 0){
+				  jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
+				  colorArr.push('#F36800');		  
+				  }
+				  if(cadre2014ArrPer.length > 0){
+				  jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
+				  colorArr.push('#FFCA00');		  
+				  }
 			}
-			if(newCadreArr.length > 0){
-			jsonDataArr.push({name: '2016 New Cadre',data: newCadreArr,stack: '2016'});
-			colorArr.push('#F36800');      
-			}
-			if(cadre2014ArrPer.length > 0){
-			jsonDataArr.push({name: '2014 Cadre',data: cadre2014ArrPer,stack: '2014'});
-			colorArr.push('#FFCA00');      
-			}
+			
 			if(result!= null && result.length > 10){
 			var highChartDivHight = result.length*25;
 			$("#"+divId).height(highChartDivHight);  

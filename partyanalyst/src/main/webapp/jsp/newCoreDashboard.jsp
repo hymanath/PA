@@ -2760,7 +2760,7 @@
 							<span class="alertsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:200px; margin-right: 12px; margin-top: -7px;"">
+							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:200px; margin-right: 12px; margin-top: -7px;">
 								<input type="text" id="dateRangeIdForAlert" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -2793,7 +2793,7 @@
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6 alertLocationDiv" style="display:none;">
 							<h4><span class="headingColor text-capital">Impact Scope Level</span></h4>
-							<div id="locationWiseAlertDivId"></div>
+							<div id="locationWiseAlertDivId" class="row"></div>
 						</div>    
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
 							<div class="panel panel-default panelNew hideStateLevelAlertCls">
