@@ -2112,7 +2112,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    }
 	    return query.list();  
 	}
-public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long districtId){
+public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,Long districtId,Long catId){
 		
 		StringBuilder queryStr = new StringBuilder();      
 	    queryStr.append(" select distinct ");     
@@ -2145,13 +2145,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	    				" and model.alertType.alertTypeId in("+IConstants.ALERT_PARTY_AND_OTHERS_TYPE_IDS+")  ");
                 	
                 	
+	    if(catId != null && catId.longValue() > 0){
+	    	queryStr.append(" and alertCategory.alertCategoryId=:catId");
+	    }
 	    if(districtId != null && districtId.longValue() > 0){
 	    	queryStr.append(" and district.districtId=:districtId");
 	    }
 	    if(stateId != null && stateId.longValue() > 0l){
 	    	queryStr.append(" and model.userAddress.state.stateId=:stateId ");  
 	    }
-	    if(fromDate !=null && toDate !=null){
+	    if(fromDate !=null && toDate !=null){  
 	       queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 	    }
 	    if(impactLevelIds != null && impactLevelIds.size() > 0){  
@@ -2186,6 +2189,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	    }
 	    if(impactLevelIds != null && impactLevelIds.size() > 0){
 	    	query.setParameterList("impactLevelIds", impactLevelIds); 
+	    }
+	    if(catId != null && catId.longValue() > 0){
+	    	query.setParameter("catId", catId);
 	    }
 	    return query.list();  
 	}
