@@ -3350,8 +3350,11 @@
 						<div id="alertAssignedCandidates"></div>  
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
-						<div id="alertCommentsDiv"></div>  
+						<div id="alertStatusDiv"></div>    
 					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+						<div id="alertCommentsDiv"></div>  
+					</div>  
 				</div>
 			  </div>
 			  <div class="modal-footer">     
@@ -3360,7 +3363,17 @@
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-<!--end-->  
+<!--end-->
+<div class="modal fade" id="myModalShowNew">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close topModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div id="myModalShowNewId"></div>                   
+			</div>    
+		</div>
+	</div>  
+</div>      
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
