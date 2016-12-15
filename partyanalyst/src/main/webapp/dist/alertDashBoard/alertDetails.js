@@ -885,7 +885,7 @@ function getTotalArticledetails(articleId){
 							
 							str+='<div class="row">';
 							     /*Lnking*/
-							/* 	str+='<div class="col-md-6">';
+								str+='<div class="col-md-6">';
 									str+='<div class="panel panel-default panelArticleGroup">';
 										str+='<div class="panel-heading">';
 											str+='<h4 class="panel-title">LINKED ARTICLES</h4>';
@@ -896,7 +896,7 @@ function getTotalArticledetails(articleId){
 												for( var i in result.linkedList){
 													if(result.linkedList[i].articleId !=articleId ){
 														str+='<div class="col-md-4" style="margin-top:5px;">';
-															str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="http://mytdp.com/NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;"/>';
+															str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="http://mytdp.com/NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
 														str+='</div>';
 													}
 												}
@@ -907,7 +907,7 @@ function getTotalArticledetails(articleId){
 											
 										str+='</div>';
 									str+='</div>';
-								str+='</div>';  */
+								str+='</div>';  
 								/*Grouping*/
 								/* str+='<div class="col-md-6">';
 									str+='<div class="panel panel-default panelArticleGroup">';
@@ -946,6 +946,11 @@ function getTotalArticledetails(articleId){
 		        
 		});    
 }
+$(document).on("click",".linkedArticlesClickId",function(){	 
+		var temp=$(this).attr('src');
+		$(this).attr('src',$(".mainImage").attr('src'));
+		$(".mainImage").attr('src',temp);
+	});
 function alertComments(result)
 {
 	var statusId = 0;
