@@ -134,7 +134,7 @@ public class AlertCandidateDAO extends
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" SELECT model.alertId,model.newsCandidateId,model.newsCandidate,model.designation,model.organization," +
-				" model.alertImpact.alertImpactId,model.alertImpact.impact,model.candidateId,tdpCadre.memberShipNo,tdpCadre.image " +
+				" model.alertImpact.alertImpactId,model.alertImpact.impact,model.candidateId,tdpCadre.memberShipNo,tdpCadre.image,tdpCadre.mobileNo " +
 				" FROM AlertCandidate model " +
 				" left join model.tdpCadre tdpCadre " +
 				" WHERE model.alert.isDeleted ='N' " +
