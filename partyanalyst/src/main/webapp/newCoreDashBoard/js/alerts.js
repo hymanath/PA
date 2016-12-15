@@ -523,12 +523,12 @@
 				str+='<td> - </td>';  
 			}
 			if(result[i].interval != null){
-				str+='<td>'+result[i].interval+'</td>';      
+				str+='<td>'+(parseInt(result[i].interval)-parseInt(1))+'</td>';
 			}else{
 				str+='<td> - </td>';  
 			}
 			if(result[i].alertLevel != null && result[i].alertLevel.length > 0){
-				str+='<td>'+result[i].alertLevel+'</td>';      
+				str+='<td>'+result[i].alertLevel+'</td>';               
 			}else{
 				str+='<td> - </td>';  
 			}
@@ -625,9 +625,9 @@
 		
 		imgStr+='<ul class="list-inline imageUrlUlCls">';
 		
-		imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
+		imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 90px; height: 90px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
 		
-		imgStr+='</ul> ';                   
+		imgStr+='</ul> ';                          
 		$("#alertAttachImgId").html(imgStr);  
 
 		var str='';
@@ -1384,13 +1384,13 @@
 }
 function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
-	$("#alertStatusDiv").html("<h4 class='text-muted' style='font-size:15px;padding-left: 13px;'>ALERT STATUS</h4>");          
+	$("#alertStatusDiv").html("<h4 class='text-muted' style='font-size:15px;'>ALERT STATUS</h4>");          
 	if(result != null && result.length > 0){  
 		var length = result.length;
 		length = length - 1;
 		var str='';  
 		str+='<div class="col-md-12 col-xs-12 col-sm-3">';
-			str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';
+			str+='<ul class="nav nav-tabs alertCommentUl" role="tablist">';  
 			for(var i in result)
 			{
 				
@@ -2813,10 +2813,6 @@ function getTotalArticledetails(articleId){
 			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
 				var result = results[0];
 				var str = '';
-					//str+='<div class="modal-dialog modal-lg" role="document">';
-					//str+='<div class="modal-content">';
-					//str+='<div class="modal-header">';
-					//str+='<button type="button" class="close topModalCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 					str+='<h4 class="modal-title" id="myModalLabel">';
 					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
 					str+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
@@ -2867,7 +2863,7 @@ function getTotalArticledetails(articleId){
 											str+=' - ';
 										}
 										str+='</td>';
-										str+='</tr>';
+										str+='</tr>';  
 										str+='<tr>';
 										str+='<td colspan="2">';
 										if(result.subList[i].fromList[j].impactLevel != null && $.trim(result.subList[i].fromList[j].impactLevel).length > 0){
@@ -2920,7 +2916,7 @@ function getTotalArticledetails(articleId){
 							str+='<div class="panel-heading">';
 							str+='<h4 class="panel-title">TO WHOM</h4>';
 							str+='</div>';
-							str+='<div class="panel-body">';
+							str+='<div class="panel-body">';  
 								/* TO Table*/
 								if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
 									for( var j in result.subList[i].toList){
@@ -3039,12 +3035,7 @@ function getTotalArticledetails(articleId){
 							
 							str+='<div class="row">';
 							/*Lnking*/
-							str+='</div>';  
-							
-						  //str+='</div>';
-						//str+='</div>';
-					 //str+='</div>';
-					 
+							str+='</div>'; 
 					$("#myModalShowNewId").html(str);
 		});    
 } 	
