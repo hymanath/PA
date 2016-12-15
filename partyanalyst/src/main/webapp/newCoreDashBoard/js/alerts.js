@@ -1384,7 +1384,7 @@
 }
 function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
-	$("#alertStatusDiv").html("<h4 class='text-muted'>ALERT STATUS</h4>");          
+	$("#alertStatusDiv").html("<h4 class='text-muted' style='font-size:15px;padding-left: 13px;'>ALERT STATUS</h4>");          
 	if(result != null && result.length > 0){  
 		var length = result.length;
 		length = length - 1;
