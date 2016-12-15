@@ -2797,9 +2797,17 @@ $(document).on("click",".articleImgDetailsCls",function(){
 function getTotalArticledetails(articleId){
 	$("#myModalShowNew").modal('show');
 	$("#myModalShowNewId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	
+	var url = window.location.href;
+	  var wurl = url.substr(0,(url.indexOf(".com")+4));
+	  if(wurl.length == 3)
+	    wurl = url.substr(0,(url.indexOf(".in")+3));
+	  
+	
 	$.ajax({       
 		  type : 'GET',      
-		  url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""          
+		  url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		  //url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""          
 		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""     
 	}).then(function(results){
 			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
