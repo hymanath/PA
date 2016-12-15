@@ -762,6 +762,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					candidateVO.setCategoryId(params[7] !=null ? (Long)params[7]:null);//PaCandidateId
 					candidateVO.setMembershipNo(params[8] !=null ? params[8].toString():"");
 					candidateVO.setImage(params[9] !=null ? params[9].toString():"");
+					candidateVO.setMobileNo(params[10] !=null ? params[10].toString():"");     
+					
 				}
 			
 			}
@@ -3952,8 +3954,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	}
  public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){
 		try{
+			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = dateUtilService.getCurrentDateAndTime();
+			String td = myFormat.format(today);
 			Long dist = 0l;
-			AlertCoreDashBoardVO alertCoreDashBoardVO = null;  
+			Long statusId = 0L;
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;    
 			if(alertList != null && alertList.size() > 0){  
 				for(Object[] param : alertList ){
 					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
@@ -3962,8 +3968,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertCoreDashBoardVO.setUpdatedDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
 					alertCoreDashBoardVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
 					alertCoreDashBoardVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
+					statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
 					if(param[1] != null && param[2] != null){
-						dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+						if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
+							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+						}else{
+							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),td);
+						}  
 						alertCoreDashBoardVO.setInterval(dist);
 					}
 					alertCoreDashBoardVO.setAlertLevel(commonMethodsUtilService.getStringValueForObject(param[8]));
