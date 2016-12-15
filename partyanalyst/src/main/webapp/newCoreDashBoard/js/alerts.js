@@ -1763,7 +1763,13 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered tablePopup">';
 			str+='<thead>';
-				str+='<th>'+groupAssignType+'</th>';
+				if(groupAssignType == "Party Committee" && level == "bellow"){
+					str+='<th>Designation</th>';       
+				}else if(groupAssignType == "Public Representative" && level == "bellow"){
+					str+='<th>Candidate Name</th>';            
+				}else{
+					str+='<th>'+groupAssignType+'</th>';  
+				}  
 				str+='<th>total alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
@@ -2043,7 +2049,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered tablePopup">';
 			str+='<thead>';
-				str+='<th>'+selectionType+'</th>';
+				str+='<th>Candidate Name</th>';        
 				str+='<th>total alerts</th>';
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var i in result[0].subList1){
