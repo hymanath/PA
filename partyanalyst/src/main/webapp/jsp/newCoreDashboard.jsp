@@ -3352,7 +3352,7 @@
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
 						<div id="alertStatusDiv"></div>    
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
+					<div style="margin-left:-15px" class="col-md-12 col-xs-12 col-sm-12 m_top20"> 
 						<div id="alertCommentsDiv"></div>  
 					</div>  
 				</div>
@@ -3595,7 +3595,7 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	//$("#switchButtonId").removeClass("showCls");
 	//$("#switchButtonId").addClass("hdCls");
 	if($("#switchButtonId").hasClass("showCls")){ 
-		$(".trainingDetailedBlock").hide();
+		$(".trainingDetailedBlock").hide();  
 		$("#switchButtonId").addClass("hdCls");
 		$("#switchButtonId").removeClass("showCls");    
 	}else{
