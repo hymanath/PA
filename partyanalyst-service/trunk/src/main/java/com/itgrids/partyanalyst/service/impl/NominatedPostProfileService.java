@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1111,13 +1112,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedPostFinal.setInsertedBy(userId);
 						nominatedPostFinal.setNominatedPostApplicationId(nominatePostApplicationId);
 						nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						
-						nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
-						if(nominatedPostFinal != null && nominatedPostMemberId.longValue() > 0l){
-							List<NominatedPost> nominatedPostObjList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
-							if(commonMethodsUtilService.isListOrSetValid(nominatedPostObjList))
-								nominatedPostFinal.setNominatedPostId(nominatedPostObjList.get(0).getNominatedPostId());
-							nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
+						if(statusId != null && (statusId.longValue() == 3L || statusId.longValue() == 5L ||  statusId.longValue() == 6L ||  statusId.longValue() == 7L)){
+							nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
+							if(nominatedPostFinal != null && nominatedPostMemberId.longValue() > 0l){
+								List<NominatedPost> nominatedPostObjList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
+								if(commonMethodsUtilService.isListOrSetValid(nominatedPostObjList))
+									nominatedPostFinal.setNominatedPostId(nominatedPostObjList.get(0).getNominatedPostId());
+								nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
+							}
 						}
 					}
 					
@@ -1133,8 +1135,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(nominatePostApplicationId);
 						 
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
-						
-						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
+						if(statusId != null && (statusId.longValue() == 3L || statusId.longValue() == 5L ||  statusId.longValue() == 6L ||  statusId.longValue() == 7L)){
+							nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
+						}
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -1948,24 +1951,29 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							
 					List<Long> totalDeptIsList = nominatedPostDAO.getTotalDeptsCount(levelId);
 					List<Long> applRecievedDeptIsList = nominatedPostDAO.getTotalApplicationsDeptsCount(levelId);
+					List<Long> applRecievedAnyBoardsDeptIdsList = nominatedPostDAO.getTotalApplicationsDeptsCountforAnyBoards(levelId);
 					List<Long> remainingDeptIdsList = new ArrayList<Long>(0);
 					
 					if(commonMethodsUtilService.isListOrSetValid(totalDeptIsList) && 
 							 commonMethodsUtilService.isListOrSetValid(applRecievedDeptIsList)){
-						for (Long deptIid : totalDeptIsList) {
-							if(!applRecievedDeptIsList.contains(deptIid))
-								remainingDeptIdsList.add(deptIid);
-						}
+						if(commonMethodsUtilService.isListOrSetValid(applRecievedAnyBoardsDeptIdsList))
+							applRecievedDeptIsList.addAll(applRecievedAnyBoardsDeptIdsList);
+						
+							for (Long deptIid : totalDeptIsList) {
+								if(!applRecievedDeptIsList.contains(deptIid))
+									remainingDeptIdsList.add(deptIid);
+							}
 					}
 					
 					
 					List<Object[]> totalCorpsIdsList = nominatedPostDAO.getTotalCorpsIdsCount(levelId);
 					List<Object[]> applRecievedCorpsIdList = nominatedPostDAO.getTotalApplicationsCorpsIdsCount(levelId);
+					List<Object[]> applRecievedCorpsIdandAnyPostList = nominatedPostDAO.getTotalApplicationsCorpsIdsForAnyPostsCount(levelId);
 					
 					
-					List<String> totalCorpList = new ArrayList<String>(0);
-					List<String> applnRecvdCorpList = new ArrayList<String>(0);
-					List<String> remainingCorpsIdsList = new ArrayList<String>(0);
+					Set<String> totalCorpList = new HashSet<String>(0);
+					Set<String> applnRecvdCorpList = new HashSet<String>(0);
+					Set<String> remainingCorpsIdsList = new HashSet<String>(0);
 					if(commonMethodsUtilService.isListOrSetValid(totalCorpsIdsList)){
 						for (Object[] param : totalCorpsIdsList) {
 							totalCorpList.add(commonMethodsUtilService.getStringValueForObject(param[0]+"-"+commonMethodsUtilService.getStringValueForObject(param[1])));
@@ -1974,6 +1982,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 					if(commonMethodsUtilService.isListOrSetValid(applRecievedCorpsIdList)){
 						for (Object[] param : applRecievedCorpsIdList) {
+							applnRecvdCorpList.add(commonMethodsUtilService.getStringValueForObject(param[0]+"-"+commonMethodsUtilService.getStringValueForObject(param[1])));
+						}
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(applRecievedCorpsIdandAnyPostList)){
+						for (Object[] param : applRecievedCorpsIdandAnyPostList) {
 							applnRecvdCorpList.add(commonMethodsUtilService.getStringValueForObject(param[0]+"-"+commonMethodsUtilService.getStringValueForObject(param[1])));
 						}
 					}
