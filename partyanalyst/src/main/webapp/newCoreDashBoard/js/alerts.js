@@ -523,7 +523,7 @@
 				str+='<td> - </td>';  
 			}
 			if(result[i].interval != null){
-				str+='<td>'+(parseInt(result[i].interval)-parseInt(1))+'</td>';
+				str+='<td>'+(parseInt(result[i].interval)-parseInt(1))+'</td>';            
 			}else{
 				str+='<td> - </td>';  
 			}
@@ -620,32 +620,41 @@
 		$("#tourDocHeadingId").html("<h5 style='color:#FFFFFF;font-size:14px;'>ALERT TITLE</h5><br><h5 class='text-capital'>"+result[0].title+"</h5>");
 		$("#cdrModelId").html("<h5 class='text-muted'>ALERT DESCRIPTION</h5>");
 		$("#alertDestId").html(result[0].desc);
-		$("#alertAttachTitId").html("<h5  class='text-muted'>ALERT ATTACHMENTS</h5>");
-		var imgStr = '';
-		
-		imgStr+='<ul class="list-inline imageUrlUlCls">';
-		
-		imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 90px; height: 90px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
-		
-		imgStr+='</ul> ';                          
-		$("#alertAttachImgId").html(imgStr);  
-
+		if(result[0].imageUrl != null && result[0].imageUrl.length > 1){    
+			$("#alertAttachTitId").html("<h5  class='text-muted'>ALERT ATTACHMENTS</h5>");
+			var imgStr = '';
+			imgStr+='<ul class="list-inline imageUrlUlCls">';
+			imgStr+='<li><img src="http://mytdp.com/NewsReaderImages/'+result[0].imageUrl+'" style="width: 90px; height: 90px;cursor:pointer;" class="articleImgDetailsCls" attr_articleId="'+result[0].alertCategoryTypeId+'"></img></li>';
+			imgStr+='</ul> ';                          
+			$("#alertAttachImgId").html(imgStr);  
+		}
 		var str='';
+		var invCandCnt = 0;
 		if(result[0].subList.length > 0){
-			str+='<h5 class="text-muted text-capital">Involved Candidates-'+result[0].subList.length+'</h5>';
+			for(var i in result){
+				for(var j in result[i].subList){
+					if(result[i].subList[j].name != null && result[i].subList[j].name.length > 1){    
+						invCandCnt+=1;
+					}
+				}    
+			}
+			str+='<h5 class="text-muted text-capital">Involved Candidates-'+invCandCnt+'</h5>';           
 			str+='<ul class="list-inline assignedCandidatesUl1">';     
-			for(var i in result)
-			{
-				for(var j in result[i].subList)
-				{
-					str+='<li>';      
-						str+='<p><b>'+result[i].subList[j].name+'</b></p>';
-						if(result[i].subList[j].committeePosition == null){
-							str+='<p><i> - </i></p>';           
-						}else{
-							str+='<p><i> - </i>'+result[i].subList[j].committeePosition+'</p>';
-						}
-					str+='</li>';  
+			for(var i in result){
+				for(var j in result[i].subList){   
+					if(result[i].subList[j].name != null && result[i].subList[j].name.length > 1){
+						str+='<li>';      
+							str+='<p><b>'+result[i].subList[j].name+'</b></p>';
+							if(result[i].subList[j].mobileNo.length <= 1  || result[i].subList[j].mobileNo == null){
+							}else{
+								str+='<p><i> - </i>'+result[i].subList[j].mobileNo+'</p>';      
+							}
+							if(result[i].subList[j].committeePosition.length <= 1 || result[i].subList[j].committeePosition == null){
+							}else{
+								str+='<p><i> - </i>'+result[i].subList[j].committeePosition+'</p>';  
+							}      
+						str+='</li>';      
+					}
 				}    
 			}
 			str+='</ul>';  
@@ -993,8 +1002,10 @@
 						var categoryName =[];
 						var count =[];
 						for(var j in result[i].subList1){
-							categoryName.push(result[i].subList1[j].category);   
-							count.push(result[i].subList1[j].categoryCount);
+							categoryName.push(result[i].subList1[j].category);
+							var percent = (parseInt(result[i].subList1[j].categoryCount)/((parseInt(result[i].count))/100));      
+							count.push({"y":percent,"locName":result[i].status,"catName":result[i].subList1[j].category});     
+							//count.push(percent);    
 						}
 							if(categoryName.length !=0 && count.length !=0){
 								$(function () {
@@ -1028,38 +1039,41 @@
 												text: ''
 											}
 										},
-										tooltip: {
-											formatter: function () {
-												var s = '<b>' + this.x + '</b>';
-
-												$.each(this.points, function () {
-													s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :'+(this.y);
-												});
-
-												return s;
-											},
-											shared: true
+										tooltip: {//ssss
+												useHTML: true,
+												backgroundColor: '#FCFFC5',
+												formatter: function() {
+													 var locName = this.point.locName;
+													 var locationObj = result.filter(function ( obj1 ) {
+															return obj1.status.toUpperCase().trim() === locName.toUpperCase().trim();
+														})[0];
+													 var categoryName = this.point.catName;
+													 var catObj = locationObj.subList1.filter(function ( obj1 ) {
+															return obj1.category.toUpperCase().trim() === categoryName.toUpperCase().trim();
+														})[0];
+													 return "Total Alerts - "+catObj.categoryCount+"";
+												}
 										},
-										legend: {
+										legend: {  
 																
 												enabled: false,				
 																
 											},				
 										plotOptions: {
-											column: {        
+											column: { 
+												stacking: 'normal',    
 												dataLabels:{
-													enabled: false,
-													formatter: function() {
+													enabled: true,
+													 formatter: function() {
 														if (this.y === 0) {
 															return null;
 														} else {
-															return Highcharts.numberFormat(this.percentage,1) + '%';
+															return Highcharts.numberFormat(this.y,2) +"%";
 														}
 													}
-												},
-												
-											},
-										},
+												}
+											}
+										},   
 										series: [{
 											name: 'Number of alert',
 											data: count,
@@ -1233,23 +1247,22 @@
 																
 												enabled: false,				
 																
-											},				
+											},   				
 										plotOptions: {
 											column: {
 												stacking: 'percent',  
-												dataLabels:{
-													enabled: false,
+												dataLabels:{    
+													enabled: true,      
 													formatter: function() {
 														if (this.y === 0) {
 															return null;
 														} else {
-															return Highcharts.numberFormat(this.percentage,1) + '%';
+															//return Highcharts.numberFormat(this.y,0);
 														}
 													}
-												},
-												
-											},
-										},
+												}  
+											}
+										},      
 										series: [{
 											data: count  
 										}, {
@@ -1323,14 +1336,18 @@
 			{
 				str+='<li>';
 					str+='<p><b>'+result[i].subList[j].name+'</b></p>';
-					if(result[i].subList[j].committeePosition == null){
-						str+='<p><i> - </i></p>';       
+					if(result[i].subList[j].committeePosition == null || result[i].subList[j].committeePosition.length <= 1){     
 					}else{
 						str+='<p><i> - '+result[i].subList[j].committeePosition+'</i></p>';
 					}
-					
-					str+='<p>'+result[i].subList[j].mobileNo+'</p>';
-					str+='<p>'+result[i].subList[j].locationVO.districtName+'</p>';
+					if(result[i].subList[j].mobileNo == null || result[i].subList[j].mobileNo.length <= 1){     
+					}else{
+						str+='<p><i> - '+result[i].subList[j].mobileNo+'</i></p>';
+					}
+					if(result[i].subList[j].locationVO.districtName == null || result[i].subList[j].locationVO.districtName.length <= 1){     
+					}else{
+						str+='<p><i> - '+result[i].subList[j].locationVO.districtName+'</i></p>';
+					}  
 				str+='</li>';
 			}
 		}
@@ -2863,7 +2880,7 @@ function getTotalArticledetails(articleId){
 											str+=' - ';
 										}
 										str+='</td>';
-										str+='</tr>';  
+										str+='</tr>';
 										str+='<tr>';
 										str+='<td colspan="2">';
 										if(result.subList[i].fromList[j].impactLevel != null && $.trim(result.subList[i].fromList[j].impactLevel).length > 0){
@@ -2916,7 +2933,7 @@ function getTotalArticledetails(articleId){
 							str+='<div class="panel-heading">';
 							str+='<h4 class="panel-title">TO WHOM</h4>';
 							str+='</div>';
-							str+='<div class="panel-body">';  
+							str+='<div class="panel-body">';
 								/* TO Table*/
 								if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
 									for( var j in result.subList[i].toList){
@@ -3035,7 +3052,7 @@ function getTotalArticledetails(articleId){
 							
 							str+='<div class="row">';
 							/*Lnking*/
-							str+='</div>'; 
+							str+='</div>';  
 					$("#myModalShowNewId").html(str);
 		});    
 } 	
