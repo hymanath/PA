@@ -8153,7 +8153,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 						" drr.reject_reason as reason," +//10 
 						" ua.constituency_id as constituencyId," +//11 
 						" ua.district_id as districtId," +//12 
-						" tc.created_by as cadreSurveyUserId," +//13
+						" tc.updated_by as cadreSurveyUserId," +//13
 						" tc.tab_user_info_id as tabUserInfoId "+//14  
 						" from   " +
 						" tdp_cadre tc "+
@@ -8188,7 +8188,7 @@ public List<Object[]> getTotalCadreCountSourceWise(Long userAccessLevelId,List<L
 		}
 		
 		//if(webUserId != null && webUserId.equals(0l)){
-			queryStr.append(" and tc.created_by = :surveyUserId "+
+			queryStr.append(" and tc.updated_by = :surveyUserId "+
 							" and tc.tab_user_info_id = :tabUserId ");
 		//}else{
 			//queryStr.append(" and tc.inserted_web_user_id = :webUserId ");
