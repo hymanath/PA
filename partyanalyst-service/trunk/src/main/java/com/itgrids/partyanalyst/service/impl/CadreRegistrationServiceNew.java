@@ -3592,6 +3592,7 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		    	 }
 		     }
 		     
+		     
 		     //per
 		     if(locationMap!= null && locationMap.size() > 0)
 		     {
@@ -3812,35 +3813,15 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 	   }
 	   return finalList;
      }
-     public void getCastWisereport(Long userId){
-    	 try{
-    		 Set<Long> distIdList = new HashSet<Long>();
-    		 Map<Long,String> distIdAndNameMap = new HashMap<Long,String>();
-    		 
-    		 Set<Long> totalConstIdList = new HashSet<Long>();
-    		 Map<Long,String> totalConstIdAndNameMap = new HashMap<Long,String>();
-    		 //getLocationInfoByUserId(userId,distIdList,totalConstIdList, distIdAndNameMap,totalConstIdAndNameMap);
-    		 
-    		 //distIdList may or may not contain some value
-    		 //if contain then we need to build 4 table on ui other wise 3 table  
-    		 if(distIdList.size() > 0){
-    			 //1. CASTE CATEGORY WISE SUMMARY
-    			 List<CadreCountsVO> finalList1 = null;
-    			 privilegedDistrictWiseTdpCadreCasteCounts(finalList1,distIdList);
-    			 
-    		 }
-    		 
-    	 }catch(Exception e){
-    		 e.printStackTrace();
-    		 LOG.error("Exception occur in getCastWisereport()  Of CadreRegistrationServiceNew class - ",e);
-    	 }
-     }
-     public void privilegedDistrictWiseTdpCadreCasteCounts(List<CadreCountsVO> finalList1, Set<Long> distIdList){ 
+    //cast3
+     public List<CadreCountsVO> privilegedDistrictWiseTdpCadreCasteCounts(List<Long> locationIdList, Double limit,String accessType){ 
   	   
-  	   try{
-  		   	Double limit = 1D;
+  	   try{    
+  		   	List<CadreCountsVO> finalList = null;   
   		     Map<Long,CadreCountsVO> locationMap = new LinkedHashMap<Long, CadreCountsVO>(0);
-  		     List<Object[]> data =  tdpCadreCasteStateInfoDAO.privilegedDistrictWiseTdpCadreCasteCounts(distIdList, IConstants.CADRE_NEW_MINORITY_CASTE_IDS);
+  		     List<Object[]> data = null;
+  		     data =  tdpCadreCasteStateInfoDAO.privilegedDistrictWiseTdpCadreCasteCounts(locationIdList, IConstants.CADRE_NEW_MINORITY_CASTE_IDS);
+  		    
   		     if(data != null && data.size() > 0){
   	  			   for(Object[] obj : data){
   	  				   
@@ -3882,8 +3863,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   	  				   } 
   	  			   }
   	  		   }
-  		     
-  		     List<Object[]>  minorityData =  tdpCadreCasteStateInfoDAO.privilegedDistrictWiseTdpCadreMinorityCasteCounts(distIdList, IConstants.CADRE_NEW_MINORITY_CASTE_IDS);
+  		   List<Object[]>  minorityData = null;
+  		   minorityData =  tdpCadreCasteStateInfoDAO.privilegedDistrictWiseTdpCadreMinorityCasteCounts(locationIdList, IConstants.CADRE_NEW_MINORITY_CASTE_IDS);
+  		    
   		     if(minorityData != null && minorityData.size() > 0){  
   		        for(Object[] obj : minorityData){
   		       
@@ -4015,13 +3997,394 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   		    			 locationVO.getSubMap().clear();
   		    		 }
   		    	 }
-  		    	finalList1 = new ArrayList<CadreCountsVO>(locationMap.values());
+  		    	finalList = new ArrayList<CadreCountsVO>(locationMap.values());
   		     }
+  		   return finalList;
   	   }catch(Exception e) {
   		   LOG.error("Exception occur in districtWiseTdpCadreCasteCounts()  Of CadreRegistrationServiceNew class - ",e);
   	   }
-  	   //return finalList;
+  	   return null;
+  	   
   	}
+     //cast4
+     public List<CadreCountsVO> privilegedConstituencyWiseTdpCadreCasteCounts(List<Long> locationIdList, Double limit,String accessType){
+  	   
+  	   List<CadreCountsVO> finalList = null;
+  	   
+  	   try{
+  		     Map<Long,CadreCountsVO> locationMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+  		   
+  		     List<Object[]> data =  tdpCadreCasteStateInfoDAO.privilegedConstituencyWiseTdpCadreCasteCounts(locationIdList);
+  		     if(data != null && data.size() > 0){
+  		    	 for(Object[] obj : data){
+  		    		 
+  		    		 if(obj[0]!=null && (Long)obj[0] > 0l){
+  		    			 CadreCountsVO locationVO = locationMap.get((Long)obj[0]);
+  		    			 if(locationVO == null){
+  		    				 locationVO = new CadreCountsVO((Long)obj[0],obj[1]!=null?obj[1].toString():"" , obj[2]!=null?(Long)obj[2]:0l, obj[3]!=null?obj[3].toString():"");
+  		    				 locationVO.setSubMap(new LinkedHashMap<Long, CadreCountsVO>(0));
+  		    				 locationMap.put(locationVO.getId(), locationVO);
+  		    			 }
+  		    			 locationVO = locationMap.get((Long)obj[0]);
+  		    			 Map<Long,CadreCountsVO> casteMap = locationVO.getSubMap();
+  		    			 if(obj[4]!=null && (Long)obj[4] > 0l){
+  		    				 
+  		    				 CadreCountsVO casteVO = new CadreCountsVO((Long)obj[4] , obj[5]!=null?obj[5].toString() : "");
+  		    				 
+  		    				 casteVO.setPreviousCadreCount(obj[6]!=null ?(Long)obj[6]:0l);
+  		    				 casteVO.setCadreCount(obj[7]!=null ?(Long)obj[7]:0l);
+  		    				 casteVO.setNewCadre(obj[8]!=null ?(Long)obj[8]:0l);
+  		    				 casteVO.setRenewalCadre(obj[9]!=null ?(Long)obj[9]:0l);
+    							
+    							locationVO.setPreviousCadreTotalCount(locationVO.getPreviousCadreTotalCount() + casteVO.getPreviousCadreCount());
+    							locationVO.setCadreTotalCount( locationVO.getCadreTotalCount() + casteVO.getCadreCount() );
+    							
+    							casteMap.put(casteVO.getId(), casteVO);
+  		    			 }
+  		    		 }
+  		    	 }
+  		     }
+  		     
+  		     //per
+  		     if(locationMap!= null && locationMap.size() > 0)
+  		     {
+  		    	 for(Map.Entry<Long, CadreCountsVO> locationEntry : locationMap.entrySet())
+  		    	 {
+  		    		 CadreCountsVO locationVO = locationEntry.getValue();
+  		    		 if(locationVO != null && locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0)
+  		    		 {
+  		    			 for (Map.Entry<Long, CadreCountsVO> casteEntry : locationVO.getSubMap().entrySet())
+  		    			 {	
+  		 	 	    		calculateCastePercantages(casteEntry.getValue() , locationVO.getPreviousCadreTotalCount() , locationVO.getCadreTotalCount() );
+  		    			 }
+  		    		 }
+  		    	 }
+  		     }
+  		 	 	    		
+  		   //FINDING OTHRS SCENARIO.
+  	  		 if(locationMap != null && locationMap.size() > 0){
+  	  	    	for (Map.Entry<Long, CadreCountsVO> locationEntry : locationMap.entrySet()){
+  	  	    		CadreCountsVO locationVO = locationEntry.getValue();
+  	  	    		if(locationVO != null && locationVO.getSubMap() != null && locationVO.getSubMap().size() > 0){
+  	  	    			CadreCountsVO othersVO = null;
+  	  	    			for (Map.Entry<Long, CadreCountsVO> casteEntry : locationVO.getSubMap().entrySet()){
+  	  	    				CadreCountsVO casteVO = casteEntry.getValue();
+  	  	    				
+  	  	    					if(casteVO.getPreviousCadrePercent() != null && casteVO.getPreviousCadrePercent() >= limit){
+  	  	  	    					
+  	  	  	    					if(locationVO.getSubMap1() == null){
+  	  	  	    					    locationVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+  	  	  	    					}
+  	  	  	    				     locationVO.getSubMap1().put(casteEntry.getKey(), casteEntry.getValue());
+  	  	  	    				}else{
+  	  	  	    					
+  	  	  	    					if(othersVO == null){
+  	  	  	    						othersVO = new CadreCountsVO(0L,"OTHERS");
+  	  	  	    					}
+  	  	  	    					othersVO.setPreviousCadreCount( othersVO.getPreviousCadreCount() + casteVO.getPreviousCadreCount());
+  	  	  	    					othersVO.setCadreCount(othersVO.getCadreCount() + casteVO.getCadreCount() );
+  	  	  	    					othersVO.setNewCadre(othersVO.getNewCadre() + casteVO.getNewCadre());
+  	  	  	    					othersVO.setRenewalCadre(othersVO.getRenewalCadre() + casteVO.getRenewalCadre());
+  	  	  	    				}
+  	  	    				
+  	  	    			}
+  	  	    			locationVO.getSubMap().clear();
+  	  	    			calculateCastePercantages(othersVO , locationVO.getPreviousCadreTotalCount() , locationVO.getCadreTotalCount() );
+  	  	    			if(othersVO != null){
+  	  	    				if(locationVO.getSubMap1() == null){
+  	  	    					locationVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+  		    				}
+  	  	    				locationVO.getSubMap1().put(othersVO.getId(), othersVO);
+  	  	    			}
+  	  	    		}
+  	  			}
+  	  	    }	    		
+  	        
+  	  		 //con
+  	  		if(locationMap!= null && locationMap.size() > 0)
+  		     {
+  		    	 for(Map.Entry<Long, CadreCountsVO> locationEntry : locationMap.entrySet())
+  		    	 {
+  		    		 CadreCountsVO locationVO = locationEntry.getValue();
+  		    		 if(locationVO != null && locationVO.getSubMap1() != null && locationVO.getSubMap1().size() > 0)
+  		    		 { 
+  		    			 locationVO.setSubList(new ArrayList<CadreCountsVO>(locationVO.getSubMap1().values()));
+  		    			 locationVO.getSubMap1().clear();
+  		    		 }
+  		    	 }
+  		    	 finalList = new ArrayList<CadreCountsVO>(locationMap.values());
+  		     }
+  	   }catch(Exception e) {
+  		   LOG.error("Exception occur in constituencyWiseTdpCadreCasteCounts()  Of CadreRegistrationServiceNew class - ",e);
+  	   }
+  	   return finalList;
+  	}
+     //cast1
+     public CadreCountsVO priviledgedCasteCategoryWiseTdpCadreSummaryReport(List<Long> locationIdList, String accessType){
+     	   
+     	   CadreCountsVO finalVO = new CadreCountsVO();
+     	   
+     	   try{
+     		   
+     		   //TOTAL COUNTS
+     		   Long previousCadreTotalCount = 0l;
+     		   Long cadreTotalCount = 0l;
+     		   Long newCadreTotalCount = 0l;
+     		   Long renewalCadreTotalCount = 0l;
+     		   List<Object[]> data = null;
+     		   Object[] minorityData = null;
+     		   	Map<Long,CadreCountsVO> finalMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+     		   	if(accessType.equalsIgnoreCase("district")){
+     		   		data =  tdpCadreCasteStateInfoDAO.privilegedCasteCategoryWiseTdpCadreCounts(locationIdList , IConstants.CADRE_NEW_MINORITY_CASTE_IDS, accessType);
+     		   		minorityData =  tdpCadreCasteStateInfoDAO.privilegedMinorityCastesTdpCadreCounts(locationIdList , IConstants.CADRE_NEW_MINORITY_CASTE_IDS, accessType);
+     		   	}else{
+     		   		data =  tdpCadreCasteStateInfoDAO.privilegedCasteCategoryWiseTdpCadreCounts(locationIdList , IConstants.CADRE_NEW_MINORITY_CASTE_IDS, accessType);
+     		   		minorityData =  tdpCadreCasteStateInfoDAO.privilegedMinorityCastesTdpCadreCounts(locationIdList , IConstants.CADRE_NEW_MINORITY_CASTE_IDS, accessType);
+     		   	}
+     		   	
+     		   	
+     		    if( data != null && data.size() > 0){
+     		    	for(Object[] obj : data){
+     		    		
+     		    		if(obj[0] != null && (Long)obj[0] > 0l){
+     		    			
+     		    			CadreCountsVO casteCategoryVO = finalMap.get((Long)obj[0]);
+     		    			if(casteCategoryVO == null){
+     		    				casteCategoryVO = new CadreCountsVO();
+     		    				casteCategoryVO.setId((Long)obj[0]);
+     		    				casteCategoryVO.setName(obj[1] != null ? obj[1].toString() : "");
+     		    				finalMap.put(casteCategoryVO.getId(), casteCategoryVO);
+     		    			}
+     		    			casteCategoryVO = finalMap.get((Long)obj[0]);
+     		    				
+     		    			casteCategoryVO.setPreviousCadreCount(obj[2] != null ? (Long)obj[2] : 0l);
+     		    			previousCadreTotalCount = previousCadreTotalCount + casteCategoryVO.getPreviousCadreCount();
+     		    				
+     		    			casteCategoryVO.setCadreCount(obj[3] != null ? (Long)obj[3] : 0l);
+     		    		    cadreTotalCount = cadreTotalCount + casteCategoryVO.getCadreCount();
+     		    				
+     		    		    casteCategoryVO.setNewCadre(obj[4] != null ? (Long)obj[4] : 0l);
+     		    			newCadreTotalCount = newCadreTotalCount + casteCategoryVO.getNewCadre();
+     		    				
+     		    			casteCategoryVO.setRenewalCadre(obj[5] != null ? (Long)obj[5] : 0l);
+     		    			renewalCadreTotalCount = renewalCadreTotalCount + casteCategoryVO.getRenewalCadre();
+     		    		}
+     		    	}
+     		    }	    
+     		   
+     		 if(minorityData != null && minorityData.length > 0){
+      			
+     			CadreCountsVO casteCategoryVO = new CadreCountsVO();
+     			casteCategoryVO.setId(0L);
+     			casteCategoryVO.setName("Minority");	
+     			
+     			casteCategoryVO.setPreviousCadreCount(minorityData[0] != null ? (Long)minorityData[0] : 0l);
+     			previousCadreTotalCount = previousCadreTotalCount + casteCategoryVO.getPreviousCadreCount();
+     			
+     			casteCategoryVO.setCadreCount(minorityData[1] != null ? (Long)minorityData[1] : 0l);
+  		    cadreTotalCount = cadreTotalCount + casteCategoryVO.getCadreCount();
+  				
+  		    casteCategoryVO.setNewCadre(minorityData[2] != null ? (Long)minorityData[2] : 0l);
+  			newCadreTotalCount = newCadreTotalCount + casteCategoryVO.getNewCadre();
+  				
+  			casteCategoryVO.setRenewalCadre(minorityData[3] != null ? (Long)minorityData[3] : 0l);
+  			renewalCadreTotalCount = renewalCadreTotalCount + casteCategoryVO.getRenewalCadre();
+     			
+     			finalMap.put(casteCategoryVO.getId(), casteCategoryVO);
+  		 }
+     		    
+     		    
+     		    //perc
+     		    List<CadreCountsVO> finalList = null ; 
+     		    if(finalMap != null && finalMap.size() > 0){
+     		    	for (Map.Entry<Long, CadreCountsVO> entry : finalMap.entrySet()){
+     				
+     		    		CadreCountsVO dataVO =  entry.getValue();
+     		    		
+     		    		if(previousCadreTotalCount != null && previousCadreTotalCount > 0l){
+     		    			dataVO.setPreviousCadrePercent( calcPercantage( dataVO.getPreviousCadreCount() , previousCadreTotalCount ) );
+     		    		}
+     		    		if(cadreTotalCount != null && cadreTotalCount > 0l){
+     		    			dataVO.setCadrePercent( calcPercantage( dataVO.getCadreCount() , cadreTotalCount ) );
+     		    		}
+     		    		
+     		    		if(dataVO.getCadreCount() != null && dataVO.getCadreCount() > 0l){
+     		    			dataVO.setNewCadrePercent(calcPercantage( dataVO.getNewCadre() , dataVO.getCadreCount() ));
+     		    			dataVO.setRenewalCadrePercent(calcPercantage( dataVO.getRenewalCadre() , dataVO.getCadreCount() ));
+     		    		}
+     				    if(dataVO.getPreviousCadreCount() != null && dataVO.getPreviousCadreCount() > 0l){
+     				    	dataVO.setPreviousCadreRenewalPercent(calcPercantage( dataVO.getRenewalCadre() , dataVO.getPreviousCadreCount() ));
+     				    }
+     		    		
+     				}
+     		    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
+     		    	finalVO.setSubList(finalList);
+     		    }
+  			
+     		    //Total Counts Perc
+     		    finalVO.setPreviousCadreTotalCount(previousCadreTotalCount);
+     		    finalVO.setCadreTotalCount(cadreTotalCount);
+     		    finalVO.setNewCadreTotalCount(newCadreTotalCount);
+     		    finalVO.setRenewalCadreTotalCount(renewalCadreTotalCount);
+     		    
+     		    if(finalVO.getCadreTotalCount() != null && finalVO.getCadreTotalCount() > 0l){
+     		    	finalVO.setNewCadrePercent(calcPercantage( finalVO.getNewCadreTotalCount() , finalVO.getCadreTotalCount() ));
+     		    	finalVO.setRenewalCadrePercent(calcPercantage( finalVO.getRenewalCadreTotalCount() , finalVO.getCadreTotalCount() ));
+  	    	}
+     		    if(finalVO.getPreviousCadreTotalCount() != null && finalVO.getPreviousCadreTotalCount() > 0l){
+     		    	finalVO.setPreviousCadreRenewalPercent(calcPercantage( finalVO.getRenewalCadreTotalCount() , finalVO.getPreviousCadreTotalCount() ));
+  			}
+     		    
+  		  }catch(Exception e){
+  			  LOG.error("Exception occur in casteCategoryWiseTdpCadreSummaryReport()  Of CadreRegistrationServiceNew class - ",e);
+  		  }
+     	   return finalVO;
+     }
+     //cast2
+     public List<CadreCountsVO> privilegedStateWiseTdpCadreCasteCounts(List<Long> locationIdList, String accessType,Double limit){
+     	   
+     	   List<CadreCountsVO> finalList = null;
+     	   
+     	   try{
+     		    Map<Long,CadreCountsVO> finalMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+     		    Long previousCadreTotalcount = 0l;
+     		    Long cadreTotalcount = 0l;
+     		    List<Object[]> data = null;
+     		   
+     		   data =  tdpCadreCasteStateInfoDAO.privilegedStateWiseTdpCadreCasteCounts(locationIdList , IConstants.CADRE_NEW_MINORITY_CASTE_IDS, accessType );
+     		   
+     		   
+     		   
+      		   if(data != null && data.size() > 0){
+      			   for(Object[] obj : data){
+      				   if(obj[0] != null && (Long)obj[0] > 0l){
+      					 CadreCountsVO mainVO = finalMap.get((Long)obj[0]);
+      					 if(mainVO == null){
+      						mainVO = new CadreCountsVO((Long)obj[0] , obj[1]!=null?obj[1].toString() : "");
+      						mainVO.setSubMap(new LinkedHashMap<Long, CadreCountsVO>(0));
+      						finalMap.put(mainVO.getId(), mainVO);
+      					 }
+      					 mainVO = finalMap.get((Long)obj[0]);
+      					 if(obj[2]!=null){
+      						Map<Long,CadreCountsVO> subMap = mainVO.getSubMap();
+      						CadreCountsVO subVO = subMap.get((Long)obj[2]);
+      						if(subVO == null){
+      							subVO =  new CadreCountsVO((Long)obj[2] , obj[3]!=null?obj[3].toString() : "");
+      							
+      							subVO.setPreviousCadreCount(obj[4]!=null ?(Long)obj[4]:0l);
+      							subVO.setCadreCount(obj[5]!=null ?(Long)obj[5]:0l);
+      							subVO.setNewCadre(obj[6]!=null ?(Long)obj[6]:0l);
+      							subVO.setRenewalCadre(obj[7]!=null ?(Long)obj[7]:0l);
+      							
+      							previousCadreTotalcount = previousCadreTotalcount  + subVO.getPreviousCadreCount() ;
+      							cadreTotalcount =  cadreTotalcount + subVO.getCadreCount() ;
+      							
+      							subMap.put(subVO.getId(), subVO);
+      						}
+      					 }
+      				   }
+      			   }
+      		   }
+      		   
+      		    //MINORITY DATA
+        		 List<Object[]> minorityData =  tdpCadreCasteStateInfoDAO.privilegedStateWiseTdpCadreMinorityCasteCounts(locationIdList , IConstants.CADRE_NEW_MINORITY_CASTE_IDS, accessType);
+        		 if(minorityData != null && minorityData.size() > 0){
+        			CadreCountsVO mainVO =  new CadreCountsVO(0L , "Minority");
+        			Map<Long,CadreCountsVO> subMap = new LinkedHashMap<Long, CadreCountsVO>(0);
+        			 for(Object[] obj : minorityData){
+        				 if(obj[0] != null){
+        					CadreCountsVO subVO =  new CadreCountsVO((Long)obj[0] , obj[1]!=null?obj[1].toString():"");
+        					
+    	    				subVO.setPreviousCadreCount(obj[2]!=null ?(Long)obj[2]:0l);
+    	  				    subVO.setCadreCount(obj[3]!=null ?(Long)obj[3]:0l);
+    	  				    subVO.setNewCadre(obj[4]!=null ?(Long)obj[4]:0l);
+    	  				    subVO.setRenewalCadre(obj[5]!=null ?(Long)obj[5]:0l);
+    	    				
+    	  					previousCadreTotalcount = previousCadreTotalcount  + subVO.getPreviousCadreCount() ;
+    						cadreTotalcount =  cadreTotalcount + subVO.getCadreCount() ;
+    							
+    	  					subMap.put(subVO.getId(), subVO);
+        				 }
+        			 }
+        			 mainVO.setSubMap(subMap);
+        			 
+        			finalMap.put(mainVO.getId(),mainVO);
+        		 }
+      		   
+      		   
+      		//percantages
+      		 if(finalMap != null && finalMap.size() > 0){  
+     	    	for (Map.Entry<Long, CadreCountsVO> mainEntry : finalMap.entrySet()){
+     	    		CadreCountsVO mainVO = mainEntry.getValue();
+     	    		if(mainVO != null && mainVO.getSubMap() != null && mainVO.getSubMap().size() > 0){
+     	    			for (Map.Entry<Long, CadreCountsVO> subEntry : mainVO.getSubMap().entrySet()){
+     	    				calculateCastePercantages(subEntry.getValue() , previousCadreTotalcount , cadreTotalcount );
+     	    			}
+     	    		}
+     			}
+     	    }
+      		   
+      		 //FINDING OTHRS SCENARIO.
+      		 if(finalMap != null && finalMap.size() > 0){
+      	    	for (Map.Entry<Long, CadreCountsVO> mainEntry : finalMap.entrySet()){
+      	    		CadreCountsVO mainVO = mainEntry.getValue();
+      	    		if(mainVO != null && mainVO.getSubMap() != null && mainVO.getSubMap().size() > 0){
+      	    			CadreCountsVO othersVO = null;
+      	    			for (Map.Entry<Long, CadreCountsVO> subEntry : mainVO.getSubMap().entrySet()){
+      	    				CadreCountsVO subVO = subEntry.getValue();
+    	  	    				/*if(mainVO.getName().equalsIgnoreCase("Minority")){
+    	  	    					if(mainVO.getSubMap1() == null){
+    	  	    						mainVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+    	  	    					}
+    	  	    					mainVO.getSubMap1().put(subEntry.getKey(), subEntry.getValue());
+    	  	    				}else{*/
+      	    					if(subVO.getPreviousCadrePercent() != null && subVO.getPreviousCadrePercent() >= limit){
+      	  	    					
+      	  	    					if(mainVO.getSubMap1() == null){
+      	  	    						mainVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+      	  	    					}
+      	  	    					mainVO.getSubMap1().put(subEntry.getKey(), subEntry.getValue());
+      	  	    				}else{
+      	  	    					
+      	  	    					if(othersVO == null){
+      	  	    						othersVO = new CadreCountsVO(0L,"OTHERS");
+      	  	    					}
+      	  	    					othersVO.setPreviousCadreCount( othersVO.getPreviousCadreCount() + subVO.getPreviousCadreCount());
+      	  	    					othersVO.setCadreCount(othersVO.getCadreCount() + subVO.getCadreCount() );
+      	  	    					othersVO.setNewCadre(othersVO.getNewCadre() + subVO.getNewCadre());
+      	  	    					othersVO.setRenewalCadre(othersVO.getRenewalCadre() + subVO.getRenewalCadre());
+      	  	    				}
+      	    				/*}*/
+      	    			}
+      	    			mainVO.getSubMap().clear();
+      	    			calculateCastePercantages(othersVO , previousCadreTotalcount , cadreTotalcount );
+      	    			if(othersVO != null){  
+      	    				if(mainVO.getSubMap1() == null){
+    	    				   mainVO.setSubMap1(new LinkedHashMap<Long, CadreCountsVO>(0));
+    	    				}
+      	    				mainVO.getSubMap1().put(othersVO.getId(), othersVO);
+      	    			}
+      	    		}
+      			}
+      	    }
+      		 
+      		
+    	   //con
+    	    if(finalMap != null && finalMap.size() > 0){
+     	    	for (Map.Entry<Long, CadreCountsVO> mainEntry : finalMap.entrySet()){
+     	    		CadreCountsVO mainVO = mainEntry.getValue();
+     	    		if(mainVO != null && mainVO.getSubMap1() != null && mainVO.getSubMap1().size() > 0){
+     	    			mainVO.setSubList(new ArrayList<CadreCountsVO>(mainVO.getSubMap1().values()));
+     	    			mainVO.getSubMap1().clear();
+     	    		}
+     			}
+     	    	finalList = new ArrayList<CadreCountsVO>(finalMap.values());
+     	    }
+     	  }catch(Exception e){
+    		  LOG.error("Exception occur in stateWiseTdpCadreCasteCounts()  Of CadreRegistrationServiceNew class - ",e);
+    	  }
+    	   return finalList;
+      }
      public IdAndNameVO getLocationInfoByUserId(Long userId){
     	try{
     		IdAndNameVO idAndNameVO = new IdAndNameVO();
@@ -4067,8 +4430,9 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     		e.printStackTrace();
     		LOG.error("Exception occur in getCastWisereport()  Of CadreRegistrationServiceNew class - ",e);
     	}
-    	return null;
+    	return null;  
     	
      }
+     
   	   
 }
