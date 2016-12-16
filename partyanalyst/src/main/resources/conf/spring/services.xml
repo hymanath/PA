@@ -3814,6 +3814,8 @@
 	   <property name="tdpCadreCasteStateInfoDAO" ref="tdpCadreCasteStateInfoDAO" />
 	   <property name="tdpCadreAgeInfoDAO" ref="tdpCadreAgeInfoDAO" />
 	   <property name="voterAgeRangeDAO" ref="voterAgeRangeDAO" />
+	   <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
+	   <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
