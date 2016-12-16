@@ -156,8 +156,9 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		try{
 			jobj = new JSONObject(getTask());
 			 Long stateId = jobj.getLong("stateId");
+			 Double limit = jobj.getDouble("limit");
 				
-			 cadreCountsVOList = cadreRegistrationServiceNew.stateWiseTdpCadreCasteCounts(stateId);
+			 cadreCountsVOList = cadreRegistrationServiceNew.stateWiseTdpCadreCasteCounts(stateId,limit);  
 		}catch(Exception e){
 			LOG.error("Exception raised at stateWiseTdpCadreCasteCounts() in cadreDemographicReportsAction", e);
 		}
@@ -169,7 +170,8 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 			jobj = new JSONObject(getTask());
 			 Long stateId = jobj.getLong("stateId");
 			 Long districtId = jobj.getLong("districtId");
-			 cadreCountsVOList = cadreRegistrationServiceNew.districtWiseTdpCadreCasteCounts(stateId,districtId);
+			 Double limit = jobj.getDouble("limit");
+			 cadreCountsVOList = cadreRegistrationServiceNew.districtWiseTdpCadreCasteCounts(stateId,districtId,limit);
 		}catch(Exception e){
 			LOG.error("Exception raised at districtWiseTdpCadreCasteCounts() in cadreDemographicReportsAction", e);
 		}
@@ -182,7 +184,8 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 			jobj = new JSONObject(getTask());
 			 Long stateId = jobj.getLong("stateId");
 			 Long districtId = jobj.getLong("districtId");
-			 cadreCountsVOList = cadreRegistrationServiceNew.constituencyWiseTdpCadreCasteCounts(stateId,districtId);
+			 Double limit = jobj.getDouble("limit");
+			 cadreCountsVOList = cadreRegistrationServiceNew.constituencyWiseTdpCadreCasteCounts(stateId,districtId,limit);
 		}catch(Exception e){
 			LOG.error("Exception raised at constituencyWiseTdpCadreCasteCounts() in cadreDemographicReportsAction", e);
 		}
