@@ -150,7 +150,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" left join model.departments department left join model.board board  " +
 				" WHERE   model.isDeleted ='N' and   model1.isDeleted ='N' and " +
 				" model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
-				" " +
+				" and model1.nominatedPostMember.isDeleted='N' and "+
+				 " model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
 				//" AND model.locationValue = :locationValue" +
 				" AND model1.applicationStatus.status = :status  ");
 		if(boardLevelId.longValue() !=5L)
@@ -548,7 +549,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					" left join NPA.nominationPostCandidate.tdpCadre TC" +
 					" where " +
 					"  NPA.locationValue = :levelValue" +
-					" and NPA.departments.departmentId = :departmentId");
+					" and NPA.departments.departmentId = :departmentId and NPA.isDeleted='N' ");
 		
 		if(levelId != null && levelId.longValue()>0L){
 			if(levelId.longValue() !=5L)
@@ -651,9 +652,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				queryStr.append(" and  ( model3.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
 		}
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
-			queryStr.append(" and  model3.state.stateId=:stateId ");
+			queryStr.append(" and  model3.state.stateId=:stateId  ");
 		
-		queryStr.append(" group  by model.boardLevelId, nominatedPostMember.nominatedPostMemberId  order by model.boardLevelId ");
+		queryStr.append("" +
+				" and  model.isDeleted='N' and "+
+				" nominatedPostMember.isDeleted='N' and "+
+				" nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				
+				" group  by model.boardLevelId, nominatedPostMember.nominatedPostMemberId  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(levelId.longValue() != 5L)
@@ -757,7 +763,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.boardLevelId,nominatedPostMember.nominatedPostMemberId order by model.boardLevelId ");
+		queryStr.append(" " +
+				" and model.isDeleted='N' and "+
+				" nominatedPostMember.isDeleted='N' and "+
+				" nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				" group  by model.boardLevelId,nominatedPostMember.nominatedPostMemberId order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(levelId != null && levelId.longValue()>0L)
@@ -820,7 +830,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		queryStr.append(" select district model.boardLevelId, count(model.nominationPostCandidateId) from NominatedPostApplication model where " +
 				"    model.isDeleted ='N' and model.nominationPostCandidate.isDeleted ='N'  and model.nominationPostCandidateId not in ( " +
-				" select distinct model1.nominationPostCandidateId from NominatedPostFinal model1 ) ");
+				" select distinct model1.nominationPostCandidateId from NominatedPostFinal model1 " +
+				" where model1.isDeleted='N' and "+
+				" model1.nominatedPostMember.isDeleted='N' and "+
+				" model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				" ) ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
 		
@@ -900,7 +914,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 						" count(distinct model.nominatedPostApplicationId) " +
 						" FROM NominatedPostFinal model left join model.nominatedPostMember.nominatedPostPosition.position position" +
 						" WHERE " +
-						" model.isDeleted = 'N' " );
+						" model.isDeleted='N' and "+
+						" model.nominatedPostMember.isDeleted='N' and "+
+						" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+						"" );
 				if(boardLevelId !=null && boardLevelId>0){
 						str.append(" AND model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId");		
 				}
@@ -1017,7 +1034,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 
 			       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId), model.nominatedPostMemberId "); 
 			       
-			       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' ");
+			       queryStr.append(" from  NominatedPost model where " +
+			    		   "  model.isDeleted='N' and "+
+							" model.nominatedPostMember.isDeleted='N' and "+
+							" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+			       		"");
+			       
 			       if(status != null && status.equalsIgnoreCase("finalReview"))
 			    	   queryStr.append(" and model.nominatedPostStatusId = 2 ");
 			       else if(status != null && status.equalsIgnoreCase("finaliZed"))
@@ -1086,7 +1108,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				    	   queryStr.append(" model.nominatedPost.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(model.nominatedPost.nominatedPostId)"); 
 				       }
 				       
-				       queryStr.append(", model.nominatedPostMemberId from  NominatedPostFinal model where model.nominatedPost.isDeleted = 'N' ");
+				       queryStr.append(", model.nominatedPostMemberId from  NominatedPostFinal model where model.nominatedPost.isDeleted = 'N' " +
+				    		    "  and model.isDeleted='N' and "+
+								" model.nominatedPostMember.isDeleted='N' and "+
+								" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				       		"");
 				       if(status != null && status.equalsIgnoreCase("finalReview"))
 				    	   queryStr.append(" and model.applicationStatusId = 6 ");
 				       else if(status != null && status.equalsIgnoreCase("finaliZed"))
@@ -1140,8 +1166,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
  public List<Object[]> getApplicationStatusCntByPositionId(Long positionId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.applicationStatus.applicationStatusId, model.applicationStatus.status,count(distinct model.nominatedPostFinalId)  from NominatedPostFinal model,NominatedPostApplication model1  " +
-				"where model.isDeleted = 'N'  and model1.isDeleted = 'N' and model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId ");
-		
+				" where model.isDeleted = 'N'  and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				" and model1.isDeleted = 'N' and model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId ");
 		
 		 if(positionId != null && positionId.longValue() > 0l){
 			queryStr.append(" and model1.position.positionId = :positionId ");
@@ -1273,12 +1301,16 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 									" left join model.nominatedPostMember.nominatedPostPosition.departments department " +
 								 	" left join model.nominatedPostMember.boardLevel boardLevel " +
 								 	" left join model.nominatedPostMember.address address "+					
-						" where boardLevel.boardLevelId = :boardLevelId");
+						" where boardLevel.boardLevelId = :boardLevelId " +
+						" and model.isDeleted='N' and "+
+						" model.nominatedPostMember.isDeleted='N' and "+
+						" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+						" ");
 					else{
 						 sb.append(" from NominatedPostApplication model " +
 									" left join model.departments department " +
 									" left join model.board board " +
-									" where model.boardLevelId = :boardLevelId");
+									" where model.boardLevelId = :boardLevelId and model.isDeleted='N' ");
 					}
 		
 		if(statusId != null && statusId.longValue()==3L){
@@ -1708,7 +1740,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       		           " where " +
 	       		           " model.isDeleted = 'N' " +  
 	       		           " and NPGO.isDeleted = 'N' " +
-	       		           " and NPGO.govtOrder.isDeleted = 'N'");    
+	       		           " and NPGO.govtOrder.isDeleted = 'N' " +
+	       		           " and model.isDeleted='N' and "+
+	       		           " model.nominatedPostMember.isDeleted='N' and "+
+	       		           " model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+	       		           " ");    
 	       
 	       if(status != null && status.equalsIgnoreCase("finalReview"))
 	    	   queryStr.append(" and NPS.nominatedPostStatusId = 2 ");
@@ -1838,7 +1874,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       		           " where " +
 	       		           " model.isDeleted = 'N' " +  
 	       		           " and NPGO.isDeleted = 'N' " +
-	       		           " and NPGO.govtOrder.isDeleted = 'N'");    
+	       		           " and NPGO.govtOrder.isDeleted = 'N' " +
+	       		           " and model.isDeleted='N' and "+
+	       		           " model.nominatedPostMember.isDeleted='N' and "+
+	       		           " model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+	       		           " ");    
 	       
 	       if(status != null && status.equalsIgnoreCase("finalReview"))
 	    	   queryStr.append(" and NPS.nominatedPostStatusId = 2 ");
@@ -1946,7 +1986,11 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		}
 		
 		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
-		queryStr.append(" and  model.applicationStatusId is not null  ");
+		queryStr.append(" and  model.applicationStatusId is not null " +
+				" and model1.isDeleted='N' and "+
+				" model1.nominatedPostMember.isDeleted='N' and "+
+				" model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				"  ");
 		if(levelId.longValue() != 5L)
 			queryStr.append("   and model.boardLevelId =:levelId ");
 		else
@@ -2007,7 +2051,11 @@ public List<Object[]> getNominatedPostsAppliedApplcitionsDetalsNew(Long levelId,
 			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition where model.isDeleted='N' ");
 		}
 		
-		queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
+		queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null " +
+				" and model1.isDeleted='N' and "+
+				" model1.nominatedPostMember.isDeleted='N' and "+
+				" model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				" ");
 		if(levelId.longValue() != 5L)
 			queryStr.append("   and model.boardLevelId =:levelId ");
 		else
