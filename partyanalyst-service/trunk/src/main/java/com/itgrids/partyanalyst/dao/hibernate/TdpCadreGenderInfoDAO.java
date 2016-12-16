@@ -93,4 +93,61 @@ public class TdpCadreGenderInfoDAO extends GenericDaoHibernate<TdpCadreGenderInf
     	}
     	return query.list();
     }
+	public List<Object[]> privilegedStateWiseCadreGenderCounts(List<Long> locationIdList, String accessType){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select info.gender , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
+				"   from   TdpCadreGenderInfo info where ");
+		if(accessType.equalsIgnoreCase("district")){
+			sb.append(" info.districtId in (:locationIdList) ");
+		}else{
+			sb.append(" info.locationScopeId = 4 and info.locationValue in (:locationIdList) ");
+		}
+		sb.append(" group by info.gender");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("locationIdList",locationIdList);
+		
+		return query.list();
+	}
+	public List<Object[]> privilegedDistrictWiseCadreGenderCounts(List<Long> districtIdList ){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		
+		sb.append(" select  info.gender , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre), " +//4
+				"           info.district.districtId,info.district.districtName,info.state.stateId,info.state.stateName " +//8
+				"   from   TdpCadreGenderInfo info " +
+				"   where  ");
+		
+		
+		if(districtIdList != null && districtIdList.size() > 0){
+			sb.append(" info.districtId in (:districtIdList) ");
+		}
+		sb.append(" group by info.districtId , info.gender " +
+				"   order by info.state.stateName ,info.district.districtName ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		
+		if(districtIdList != null && districtIdList.size() > 0){
+			query.setParameterList("districtIdList",districtIdList);
+		}
+		return query.list();
+	}
+	public List<Object[]> privilegedConstituencyWiseCadreGenderCounts(List<Long> locationIdList ){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	
+    	sb.append("select info.gender , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) ," +
+    			"         C.constituencyId,C.name,info.districtId ,info.district.districtName" +
+    			"  from   TdpCadreGenderInfo info , Constituency C " +
+    			"  where  info.locationValue = C.constituencyId and " +
+    			"         info.locationScopeId = 4 and info.locationValue in (:locationIdList) ");
+    	
+    	sb.append(" group by C.constituencyId, info.gender ");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	query.setParameterList("locationIdList",locationIdList);
+    	return query.list();  
+    }
 }
