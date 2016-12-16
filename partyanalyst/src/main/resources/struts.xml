@@ -15037,5 +15037,27 @@
 		<result name="input">/jsp/loginForm.jsp?src=userWiseCadreDemographicReportAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
+	
+	<action name="casteCategoryWiseCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="casteCategoryWiseCadreSummaryReport">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVO</param>
+		</result>
+	</action>
+	<action name="stateWiseCadreCasteCountsAction" class="cadreDemographicReportsAction"  method="stateWiseCadreCasteCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
+	<action name="districtWiseCadreCasteCountsAction" class="cadreDemographicReportsAction"  method="districtWiseCadreCasteCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
+	<action name="constituencyWiseCadreCasteCountsAction" class="cadreDemographicReportsAction"  method="constituencyWiseCadreCasteCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
+	
  </package>
 </struts>
