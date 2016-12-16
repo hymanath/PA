@@ -1725,6 +1725,7 @@
 	<bean id="privilegedUserCadreRegAction" class="com.itgrids.partyanalyst.web.action.PrivilegedUserCadreRegAction" singleton="false">
 		  <property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService" />
 		  <property name="cadreDashBoardService" ref="cadreDashBoardService" />     
+		  <property name="cadreRegistrationServiceNew" ref="cadreRegistrationServiceNew" />    
 	</bean>	
 	<bean id="cadreDemographicReportsAction" class="com.itgrids.partyanalyst.web.action.CadreDemographicReportsAction" singleton="false">
 		 <property name="cadreRegistrationServiceNew" ref="cadreRegistrationServiceNew" />	
