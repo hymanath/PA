@@ -14438,7 +14438,7 @@
    			<param name="root">successMsg</param>        
    		</result>
 	</action>
-	<action name="updateToursAction" class="toursAction">
+	<action name="updateToursAction" class="toursAction" method="getUpdatedToursDetails">
 		<result name="success">/jsp/toursDetails.jsp</result>   
 	</action>
 	<action name="getDesignationDtlsAction" class="toursAction" method="getDesignationDtls">  

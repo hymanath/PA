@@ -437,4 +437,7 @@ public class ToursAction extends ActionSupport implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	public String getUpdatedToursDetails(){
+		return Action.SUCCESS;
+	}
 }
