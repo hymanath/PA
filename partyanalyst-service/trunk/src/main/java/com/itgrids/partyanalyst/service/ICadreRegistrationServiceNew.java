@@ -46,4 +46,9 @@ public interface ICadreRegistrationServiceNew {
 	public List<CadreCountsGenderVO> locationWiseCadreGenderCounts(Long stateId,Long districtId,String searchType);
 	public IdAndNameVO getLocationInfoByUserId(Long userId);  
 	
+	public CadreCountsVO priviledgedCasteCategoryWiseTdpCadreSummaryReport(List<Long> locationIdList, String accessType);
+	public List<CadreCountsVO> privilegedStateWiseTdpCadreCasteCounts(List<Long> locationIdList, String accessType,Double limit);
+	public List<CadreCountsVO> privilegedDistrictWiseTdpCadreCasteCounts(List<Long> locationIdList, Double limit,String accessType);
+	public List<CadreCountsVO> privilegedConstituencyWiseTdpCadreCasteCounts(List<Long> locationIdList, Double limit,String accessType);
+	
 }
