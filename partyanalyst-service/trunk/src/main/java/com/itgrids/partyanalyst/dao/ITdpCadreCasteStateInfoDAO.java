@@ -20,8 +20,14 @@ public interface ITdpCadreCasteStateInfoDAO extends GenericDao<TdpCadreCasteStat
 	public List<Object[]> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId,String minorityCasteIds);
 	public List<Object[]> districtWiseTdpCadreMinorityCasteCounts(Long stateId , Long districtId,String minorityCasteIds);
 	public List<Object[]> constituencyWiseTdpCadreCasteCounts(Long stateId , Long districtId );
-	public List<Object[]> privilegedDistrictWiseTdpCadreCasteCounts(Set<Long> distIdList,String minorityCasteIds);
-	public List<Object[]> privilegedDistrictWiseTdpCadreMinorityCasteCounts(Set<Long> distIdList, String minorityCasteIds);
+	public List<Object[]> privilegedDistrictWiseTdpCadreCasteCounts(List<Long> distIdList,String minorityCasteIds);
+	
+	public List<Object[]> privilegedDistrictWiseTdpCadreMinorityCasteCounts(List<Long> distIdList, String minorityCasteIds);
+	public List<Object[]> privilegedConstituencyWiseTdpCadreCasteCounts(List<Long> locationIdList);
+	public List<Object[]> privilegedCasteCategoryWiseTdpCadreCounts(List<Long> locationIdList , String minorityCasteIds, String accessType);
+	public Object[] privilegedMinorityCastesTdpCadreCounts(List<Long> locationIdList , String minorityCasteIds, String accessType);
+	public List<Object[]> privilegedStateWiseTdpCadreCasteCounts(List<Long> locationIdList , String minorityCasteIds, String accessType);
+	public List<Object[]> privilegedStateWiseTdpCadreMinorityCasteCounts(List<Long> locationIdList , String minorityCasteIds, String accessType);
 	
 	
 }
