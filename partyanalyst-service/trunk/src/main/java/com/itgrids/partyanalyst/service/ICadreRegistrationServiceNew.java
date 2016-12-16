@@ -54,4 +54,7 @@ public interface ICadreRegistrationServiceNew {
 	public CadreCountsVO privilegedAgeWiseTdpCadreSummaryReport(List<Long> locationIdList, String accessType);
 	public List<CadreCountsVO> privilegedLocationWisegeWiseTdpCadreCounts(List<Long> locationIdList , String searchType);
 	
+	public CadreCountsGenderVO privilegedStateWiseCadreGenderCounts(List<Long> locationIdList, String accessType);
+	public List<CadreCountsGenderVO> privilegedLocationWiseCadreGenderCounts(List<Long> locationIdList, String searchType);
+	
 }
