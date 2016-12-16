@@ -31,9 +31,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		else
 			queryStr.append(" where ");
 		
-		queryStr.append(" model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and  " +
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
-				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' ");		
+		queryStr.append(" model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");		
 		if(new CommonMethodsUtilService().isListOrSetValid(statusList))
 			queryStr.append(" and model.nominatedPostStatusId in (:statusList) ");			
 		if(boardLevelId != null && boardLevelId.longValue()>0L)
@@ -54,7 +52,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model2.state.stateId=:stateId ");
 		
-		queryStr.append(" group by model.nominatedPostMemberId, model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
+		queryStr.append(" group by model.nominatedPostMemberId, model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMemberId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() !=5L)
