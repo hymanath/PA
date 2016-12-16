@@ -138,6 +138,7 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 			}   
 		}
 		idAndNameVO = cadreRegistrationServiceNew.getLocationInfoByUserId(userId);
+		session.setAttribute("idAndNameVO", idAndNameVO);
 		return Action.SUCCESS;          
 	}
 	public String get2016LocationWiseRegisteredCountsForPreviligedUser(){
