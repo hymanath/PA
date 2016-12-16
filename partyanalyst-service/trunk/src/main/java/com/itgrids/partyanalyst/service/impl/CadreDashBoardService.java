@@ -6406,12 +6406,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 		}
 	 	List<Object[]> list1 = null;
-	 	if(locationScopeId != null && locationScopeId.longValue() == 2l)
-	 		list1 = stateDAO.getStatesForList(locationIds);
-	 	else if(locationScopeId != null && locationScopeId.longValue() == 3l)
-	 		list1 = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
-	 	else if(locationScopeId != null && locationScopeId.longValue() == 4l)
-	 		list1 = constituencyDAO.getConstituenctNamesByIds(locationIds);
+	 	if(locationIds != null && locationIds.size() > 0){
+	 		if(locationScopeId != null && locationScopeId.longValue() == 2l){
+		 		list1 = stateDAO.getStatesForList(locationIds);
+		 	}
+		 	else if(locationScopeId != null && locationScopeId.longValue() == 3l ){
+		 		list1 = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
+		 	}
+		 	else if(locationScopeId != null && locationScopeId.longValue() == 4l){
+		 		list1 = constituencyDAO.getConstituenctNamesByIds(locationIds);
+		 	}
+	 	}
+	 		
 	 	
 	 	if(list1 != null && !list1.isEmpty()){
 	 		for (Object[] obj : list1) {
