@@ -4641,6 +4641,78 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		  }
   	   return finalList;
      }
+     //gender1
+     public CadreCountsGenderVO privilegedStateWiseCadreGenderCounts(List<Long> locationIdList, String accessType){
+    	   
+    	 CadreCountsGenderVO finalVO = new CadreCountsGenderVO();
+  	   
+  	   try{
+  		   
+  		    List<Object[]> data = tdpCadreGenderInfoDAO.privilegedStateWiseCadreGenderCounts(locationIdList, accessType);
+  		   
+  		    if(data != null && data.size() > 0){
+  		    	for(Object[] obj : data){
+  		    		if(obj[0] != null && !obj[0].toString().isEmpty()){
+  		    			setGenderDataToVO(obj[0].toString() , finalVO, obj);
+  		    		}
+  		    	}
+  		    	calcGenderPerc(finalVO);
+  		    }
+  		    
+		  }catch(Exception e){
+			  LOG.error("Exception occur in genderWiseTdpCadreSummaryReport()  Of CadreRegistrationServiceNew class - ",e);
+		  }
+  	   return finalVO;
+     }
+     //gender2
+     public List<CadreCountsGenderVO> privilegedLocationWiseCadreGenderCounts(List<Long> locationIdList, String searchType){
+  	   
+    	 List<CadreCountsGenderVO> finalList = null;  
+  	   
+  	   try{
+  		   
+  		   Map<Long ,CadreCountsGenderVO> finalMap = new LinkedHashMap<Long, CadreCountsGenderVO>(0);
+  		   
+  		   List<Object[]> data = null; 
+  		   if(searchType.equalsIgnoreCase("district")){
+  			 data = tdpCadreGenderInfoDAO.privilegedDistrictWiseCadreGenderCounts(locationIdList);
+  		   }else{
+  			 data = tdpCadreGenderInfoDAO.privilegedConstituencyWiseCadreGenderCounts(locationIdList);
+  		   }
+  		   
+  		   if(data != null && data.size() > 0){
+  			   
+  			   for(Object[] obj : data){
+  				   if( obj[5] != null && (Long)obj[5] > 0l && obj[0] != null){
+  					  CadreCountsGenderVO locationVO =  finalMap.get((Long)obj[5]);
+  					  if(locationVO == null){ 
+  						 locationVO = new CadreCountsGenderVO();
+  						 locationVO.setId((Long)obj[5]);
+  						 locationVO.setName(obj[6]!=null?obj[6].toString() : "");
+  						 locationVO.setSuperLocationId(obj[7]!=null ? (Long)obj[7] : 0l);
+  						 locationVO.setSuperlocationName(obj[8]!=null ? obj[8].toString() :"");
+  						 finalMap.put(locationVO.getId(), locationVO);
+  					 }
+  					 locationVO =  finalMap.get((Long)obj[5]);
+  					 setGenderDataToVO(obj[0].toString() , locationVO, obj);
+  				   }
+  			   }
+  			   //percantages
+  			    if(finalMap != null && finalMap.size() > 0){
+  			    	for (Map.Entry<Long, CadreCountsGenderVO> entry : finalMap.entrySet()){
+  			    		CadreCountsGenderVO locationVO = entry.getValue();
+  			    		if(locationVO != null){
+  			    			calcGenderPerc(locationVO);
+  			    		}
+  					}
+  			    	finalList = new ArrayList<CadreCountsGenderVO>(finalMap.values());
+  			    }
+  		   }
+  	   }catch(Exception e){
+		  LOG.error("Exception occur in locationWiseCadreGenderCounts()  Of CadreRegistrationServiceNew class - ",e);
+	   }
+	   return finalList;
+     }  
      
   	   
 }
