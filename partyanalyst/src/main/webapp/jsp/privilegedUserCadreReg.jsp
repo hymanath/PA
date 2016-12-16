@@ -742,7 +742,7 @@
 					str+='<th>Target Cadres</th>';
 					str+='<th>Renewal</th>';
 					str+='<th>New</th>';
-					str+='<th>Map Power</th>';
+					str+='<th>Man Power</th>';        
 					str+='<th>Total Count</th>';
 					if(type == "Total"){
 						str+='<th>Today Count</th>';    
