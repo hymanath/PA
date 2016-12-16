@@ -365,10 +365,9 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		
 		try{
 			jobj = new JSONObject(getTask());
-			 String accessType = jobj.getString("accessType");
-		     List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
-				
-			 //cadreCountsGenderVO = cadreRegistrationServiceNew.stateWiseCadreGenderCounts(stateId);
+			String accessType = jobj.getString("accessType");
+		    List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
+			cadreCountsGenderVO = cadreRegistrationServiceNew.privilegedStateWiseCadreGenderCounts(locationIds,accessType);
 		}catch(Exception e){
 			LOG.error("Exception raised at getGenderSummaryCountsByUser() in cadreDemographicReportsAction", e);
 		}
@@ -379,9 +378,9 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		try{
 			jobj = new JSONObject(getTask());
 			List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
-			 String searchType  = jobj.getString("searchType");
-			 //cadreCountsGenderVOList = cadreRegistrationServiceNew.locationWiseCadreGenderCounts(stateId,districtId,searchType);
-		}catch(Exception e){
+			String searchType  = jobj.getString("searchType");
+			cadreCountsGenderVOList = cadreRegistrationServiceNew.privilegedLocationWiseCadreGenderCounts(locationIds,searchType);
+		}catch(Exception e){  
 			LOG.error("Exception raised at locationWiseCadreGenderCountsByUser() in cadreDemographicReportsAction", e);
 		}
 		
