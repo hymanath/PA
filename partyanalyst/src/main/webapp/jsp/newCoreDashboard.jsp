@@ -2899,6 +2899,261 @@
 			</div>
 		</div>	
 	 <!--Alerts End -->
+	  <!--Tours New Start -->
+	<!-- <div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
+								TOURS <small class="text-muted"><span id="">  </span></small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-5">
+							<span class="alertsIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h4><span class="headingColor text-capital">Leaders</span></h4>
+							<div id="" class="m_top10">
+								<div class="pad_10 bg_ED">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="pad_10">
+												<h3>278</h3>
+												<p class="text-muted text-capital">total leaders</p>
+											</div>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="pad_10">
+												<h3>278
+												<small class="text-success" style="font-size:13px">100%</small></h3>
+												<p class="text-muted text-capital">Submitted leaders</p>
+											</div>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="pad_10">
+												<h3>278
+												<small class="text-success" style="font-size:13px">100%</small></h3>
+												<p class="text-muted text-capital">Not Submitted leaders</p>
+											</div>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="pad_10">
+												<h3>278</h3>
+												<p class="text-muted text-capital">Submitted leaders</p>
+											</div>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="pad_10">
+												<h3>278</h3>
+												<p class="text-muted text-capital">Complaince</p>
+											</div>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="pad_10">
+												<h3>278</h3>
+												<p class="text-muted text-capital">Non-Complaince</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<h4><span class="text-capital">Minister</span></h4>
+							<div class="bg_ED m_top10">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="table-responsive">
+											<table class="table border_top_none">
+												<tr>
+													<td class="text-muted f_14">Total Leaders</td>
+													<td class="text-muted f_14">Not Submitted</td>
+													<td class="text-muted f_14">Submitted</td>
+													<td class="text-muted f_14">Complaince</td>
+													<td class="text-muted f_14">Non-Complaince</td>
+												</tr>
+												<tr>
+													<td><h4 class="responsiveFont">17</h4></td>
+													<td><h4 class="responsiveFont">17 <small class="text-success">20%</small></h4></td>
+													<td><h4 class="responsiveFont">17 <small class="text-success">20%</small></h4></td>
+													<td><h4 class="responsiveFont">17</h4></td>
+													<td><h4 class="responsiveFont">17</h4></td>
+												</tr>
+											</table>
+										</div>
+										<hr style="margin: 10px 0 0;border-top: 1px solid #ccc"/>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="table-responsive">
+										<table class="table tableEMN ">
+											<thead>
+												<th style="border-bottom:none !important"></th>
+												<th class="text-muted f_14">Submited</th>
+												<th class="text-muted f_14">Compliance</th>
+												<th class="text-muted f_14">Non-Compliance</th>
+											</thead>
+											<tbody>
+												<tr>
+													<td style="border-top:none !important">Own Constitency/District</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+												<tr>
+													<td>Incharge District</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+												<tr>
+													<td>Govt Works</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									</div>
+								</div>
+							</div>
+					
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<h4><span class="text-capital">District President</span></h4>
+							<div class="bg_ED m_top10">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="table-responsive">
+											<table class="table border_top_none">
+												<tr>
+													<td class="text-muted f_14">Total Leaders</td>
+													<td class="text-muted f_14">Not Submitted</td>
+													<td class="text-muted f_14">Submitted</td>
+													<td class="text-muted f_14">Complaince</td>
+													<td class="text-muted f_14">Non-Complaince</td>
+												</tr>
+												<tr>
+													<td><h4 class="responsiveFont">17</h4></td>
+													<td><h4 class="responsiveFont">17 <small class="text-success">20%</small></h4></td>
+													<td><h4 class="responsiveFont">17 <small class="text-success">20%</small></h4></td>
+													<td><h4 class="responsiveFont">17</h4></td>
+													<td><h4 class="responsiveFont">17</h4></td>
+												</tr>
+											</table>
+										</div>
+										<hr style="margin: 10px 0 0;border-top: 1px solid #ccc"/>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="table-responsive">
+										<table class="table tableEMN ">
+											<thead>
+												<th style="border-bottom:none !important"></th>
+												<th class="text-muted f_14">Submited</th>
+												<th class="text-muted f_14">Compliance</th>
+												<th class="text-muted f_14">Non-Compliance</th>
+											</thead>
+											<tbody>
+												<tr>
+													<td style="border-top:none !important">Own Constitency/District</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+												<tr>
+													<td>Incharge District</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+												<tr>
+													<td>Govt Works</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									</div>
+								</div>
+							</div>
+					
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<h4><span class="text-capital">General Secretary</span></h4>
+							<div class="bg_ED m_top10">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="table-responsive">
+											<table class="table border_top_none">
+												<tr>
+													<td class="text-muted f_14">Total Leaders</td>
+													<td class="text-muted f_14">Not Submitted</td>
+													<td class="text-muted f_14">Submitted</td>
+													<td class="text-muted f_14">Complaince</td>
+													<td class="text-muted f_14">Non-Complaince</td>
+												</tr>
+												<tr>
+													<td><h4 class="responsiveFont">17</h4></td>
+													<td><h4 class="responsiveFont">17 <small class="text-success">20%</small></h4></td>
+													<td><h4 class="responsiveFont">17 <small class="text-success">20%</small></h4></td>
+													<td><h4 class="responsiveFont">17</h4></td>
+													<td><h4 class="responsiveFont">17</h4></td>
+												</tr>
+											</table>
+										</div>
+										<hr style="margin: 10px 0 0;border-top: 1px solid #ccc"/>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="table-responsive">
+										<table class="table tableEMN ">
+											<thead>
+												<th style="border-bottom:none !important"></th>
+												<th class="text-muted f_14">Submited</th>
+												<th class="text-muted f_14">Compliance</th>
+												<th class="text-muted f_14">Non-Compliance</th>
+											</thead>
+											<tbody>
+												<tr>
+													<td style="border-top:none !important">Own Constitency/District</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+												<tr>
+													<td>Incharge District</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+												<tr>
+													<td>Govt Works</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+													<td class="bg_D8">26</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									</div>
+								</div>
+							</div>
+					
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+		<!--Tours New End -->
 	</div>
 </div> 
 <!--model start -->
