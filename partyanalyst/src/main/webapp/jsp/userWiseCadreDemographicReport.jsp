@@ -48,8 +48,8 @@
 					</div>  
 				</div>	
 			</div>
-	</div>
-
+	    </div>
+    </div>
 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -64,6 +64,6 @@
 	
 	var loggedInUser = '${USER.registrationID}';
 	var loggedInUserName = '${UserName}';
-	
+</script>	
 </body>
 </html>
