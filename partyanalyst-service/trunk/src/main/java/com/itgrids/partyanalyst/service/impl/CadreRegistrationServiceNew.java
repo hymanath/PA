@@ -4420,7 +4420,10 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
     		totalConstIdAndNameMap.putAll(constIdAndNameMap);
     		idAndNameVO.setDistIdList(new ArrayList<Long>(distIdList));
     		idAndNameVO.setConstIdList(new ArrayList<Long>(totalConstIdList));
-    		if(distIdList.size() > 0){
+    		if( distIdList.size() > 0  && constIdList.size() > 0){
+    			idAndNameVO.setName("districtAndConstituency");
+    		}
+    		else if( distIdList.size() > 0  && constIdList.size() == 0){
     			idAndNameVO.setName("district");
     		}else{
     			idAndNameVO.setName("constituency");
