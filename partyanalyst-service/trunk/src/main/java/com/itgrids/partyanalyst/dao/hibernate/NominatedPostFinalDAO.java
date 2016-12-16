@@ -23,7 +23,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	public List getFinalShortListedApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.nominatedPost.nominatedPostMember.boardLevelId, count(model.nominatedPostFinalId)  from NominatedPostFinal model where  " +
-				" model.applicationStatus.status ='Shortlisted'  ");
+				" model.applicationStatus.status ='Shortlisted'  " +
+				" and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				"");
 		
 		if(boardLevelId != null && boardLevelId.longValue()>0){
 			if(boardLevelId.longValue() != 5L)
@@ -170,9 +174,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	public Long getNominatedPostFinalDetails(Long nominatedPostId,Long nominationPostCandidateId){
 		Query query = getSession().createQuery("select model.nominatedPostFinalId" +
 										" from NominatedPostFinal model" +
-										" where model.nominatedPostId = :nominatedPostId" +
-										" and model.nominationPostCandidateId = :nominationPostCandidateId" +
-										" and model.isDeleted = 'N'");
+										" where model.nominatedPostId = :nominatedPostId " +
+										" and model.nominationPostCandidateId = :nominationPostCandidateId " +
+										" and model.isDeleted='N' and "+
+										" model.nominatedPostMember.isDeleted='N' and "+
+										" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		
 		query.setParameter("nominatedPostId", nominatedPostId);
 		query.setParameter("nominationPostCandidateId", nominationPostCandidateId);
@@ -358,7 +364,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
 		}
 		 
-		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' ");
+		sb.append(" model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
+				" and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				"");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(positionId != null && positionId.longValue() > 0l)
@@ -405,7 +415,10 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
 		  }
-		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
+		sb.append(" model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and  "+				
+				" model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
 					" group by model.nominationPostCandidate.gender ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -456,7 +469,10 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
 		}
-		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
+		sb.append(" model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				" and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
 					" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -507,7 +523,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
 		}
-		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
+		sb.append(" model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
 					" group by model.nominationPostCandidate.nominatedPostAgeRangeId");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -570,7 +588,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		/*if(applStatusId != null && applStatusId.longValue() > 0l)
 			sb.append(" model.applicationStatusId = :applStatusId and");*/
 		
-		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
+		sb.append(" model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
 					" group by");
 		if(type != null && type.equalsIgnoreCase("casteCategory"))
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId,");
@@ -638,7 +658,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(casteId != null && casteId.longValue() > 0l)
 			sb.append(" model.nominationPostCandidate.casteState.caste.casteId = :casteId and");
 		
-		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
+		sb.append(" model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and model.nominationPostCandidate.isDeleted = 'N' and model.nominatedPostApplication.isDeleted='N' " +
 					" group by");
 		sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId," +
 					" model.nominationPostCandidate.nominatedPostAgeRangeId," +
@@ -923,7 +945,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   if(stateId != null && stateId.longValue() > 0){
 			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
 		   }
-		   queryStr.append(" order by model.nominationPostCandidate.casteState.caste.casteName ");
+		   queryStr.append(" " +
+				   " and model.isDeleted='N' and "+
+					" model.nominatedPostMember.isDeleted='N' and "+
+					" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+		   		" order by model.nominationPostCandidate.casteState.caste.casteName ");
 		 
 		 Query query = getSession().createQuery(queryStr.toString());
 		 
@@ -1005,7 +1031,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
    			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
    		    }
 		   
-		   queryStr.append(" order by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName ");
+		   queryStr.append(" and model.isDeleted='N' and "+
+					" model.nominatedPostMember.isDeleted='N' and "+
+					" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' order by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName ");
 		 
 		 Query query = getSession().createQuery(queryStr.toString());
 	 	 
@@ -1043,14 +1071,16 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					   }
 			      }
                  if(positionId != null && positionId.longValue() > 0){
-                 	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId");  
+                 	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");  
                  }
                  if(stateId != null && stateId.longValue() > 0){
          			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
          		  }
       		   
                  
-	              queryStr.append(" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+	              queryStr.append(" and model.isDeleted='N' and "+
+	      				" model.nominatedPostMember.isDeleted='N' and "+
+	    				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 	              		          " model.nominatedPostMember.nominatedPostPosition.position.positionId " +
 	              		          " order by model.nominatedPostMember.nominatedPostPosition.position.positionId ");
         
@@ -1076,7 +1106,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		Query query = getSession().createQuery(" select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status " +
 											   " from NominatedPostFinal model" +
 											   " where " +
-											   " model.isDeleted = 'N' ");  
+											   " model.isDeleted='N' and "+
+												" model.nominatedPostMember.isDeleted='N' and "+
+												" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");  
 		return query.list(); 
 	}
 	public List<Object[]> getPositionCountForGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId,String type){
@@ -1096,7 +1128,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				   " where model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and " +
 				   " model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and " +
 				   " model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castegroupId and  model.applicationStatusId = :positionStatusId  and " +
-				   " model.nominationPostCandidate.address.district.districtId = :districtId and model.isDeleted = 'N' ");
+				   " model.nominationPostCandidate.address.district.districtId = :districtId and  model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
 		   
 		   if(type.toString().equalsIgnoreCase("Gender")){
 			   queryStr.append(" group by model.nominationPostCandidate.gender ");
@@ -1123,7 +1157,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		  
 		    queryStr.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPostApplication.nominatedPostApplicationId) from NominatedPostFinal model " +
 		    		        " where" +
-		    		        " model.isDeleted='N' and model.nominatedPost.isExpired='N' and model.nominatedPost.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostApplication.isDeleted='N' and model.applicationStatus.status =:shortListed "); //ShortListed
+		    		        " model.isDeleted='N' and "+
+		    				" model.nominatedPostMember.isDeleted='N' and "+
+		    				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and model.nominatedPost.isExpired='N' and model.nominatedPost.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostApplication.isDeleted='N' and model.applicationStatus.status =:shortListed "); //ShortListed
 		  
 		     if(positionId != null && positionId.longValue() > 0){
 		    	 queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
@@ -1172,7 +1208,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
-				        " where ");
+				        " where model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and ");
 		
 		
 		if(positionStatusId.equals(0l)){
@@ -1282,27 +1320,29 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
-				        " where ");
+				        " where  model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}
 		else
 		{
-			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
 		
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
 			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
-			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+			strQuery.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
 		}
 		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
 		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
@@ -1394,24 +1434,26 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
-				        " where ");
+				        " where model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
 		  
 		if(positionStatusId.equals(0l)){
-			strQuery.append(" model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
-			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+			strQuery.append(" and model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
+			strQuery.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
-			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+			strQuery.append(" and model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
 		}
 		
 		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
@@ -1492,7 +1534,10 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	 	   }
 	       queryStr.append(" count(model.nominatedPostFinalId)");
 	       
-	       queryStr.append(" from  NominatedPostFinal model where model.isDeleted = 'N' and model.isPrefered = 'Y' and model.applicationStatus.applicationStatusId = 6 ");
+	       queryStr.append(" from  NominatedPostFinal model where" +
+	       		" model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.isPrefered = 'Y' and model.applicationStatus.applicationStatusId = 6 ");
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 	    	   if(LocationLevelId.longValue() != 5L)
@@ -1536,8 +1581,10 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" select model.nominatedPostFinalId from NominatedPostFinal model " +
-				" WHERE  model.isDeleted = 'N' " +
-				" AND model.nominatedPostMember.isDeleted = 'N' " +
+				" WHERE   " +
+				"  model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
 					" AND model.applicationStatusId = :shortListId ");
 				
 				if(deptId !=null && deptId>0){
@@ -1761,7 +1808,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			}
 		}
 		
-		str.append("GROUP BY position.positionId ");
+		str.append(" and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' GROUP BY position.positionId ");
 		
 		//Query Calling
 		Query query = getSession().createQuery(str.toString());
@@ -1816,7 +1865,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	        " left join model.nominatedPostApplication.position position " +
 	        " where model.nominationPostCandidateId = :candidateId " +
 	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
-	        " and model.applicationStatus.applicationStatusId in (:shortListed) ");
+	        " and model.applicationStatus.applicationStatusId in (:shortListed)  and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 	        
 	        query.setParameter("candidateId", candidateId);
 	        query.setParameterList("shortListed",IConstants.NOMINATED_SHORTLISTED_STATUS_IDS);
@@ -1826,7 +1877,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	public List<Object[]> getNPCAndNpForApplication(List<Long> applicationIds){
 		Query query = getSession().createQuery(" select model.nominatedPostId,model.nominationPostCandidateId " +
 				" from NominatedPostFinal model " +
-				" where model.nominatedPostApplicationId in (:applicationIds) and model.isDeleted='N' ");
+				" where model.nominatedPostApplicationId in (:applicationIds) and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		
 		query.setParameterList("applicationIds", applicationIds);
 		
@@ -1850,7 +1903,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 		" where model.nominatedPostMemberId = :memberId " +
 		 		" and model.isDeleted = 'N'" +
 		 		" and model.nominatedPostApplication.isDeleted ='N'  " +
-		 		" and model.applicationStatusId = :finalReview ");
+		 		" and model.applicationStatusId = :finalReview  and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		
 		 query.setParameter("finalReview", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
 		 query.setParameter("memberId", memberId);
@@ -1864,7 +1919,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 		" where model.nominatedPostMemberId = :memberId " +
 		 		" and model.isDeleted = 'N'" +
 		 		" and model.nominatedPostApplication.isDeleted ='N'  " +
-		 		" and model.nominatedPostApplication.applicationStatusId = :finalReview ");
+		 		" and model.nominatedPostApplication.applicationStatusId = :finalReview and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		
 		 query.setParameter("finalReview", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
 		 query.setParameter("memberId", memberId);
@@ -1905,7 +1962,9 @@ public List<Object[]> getPositionDetaislOfEveryApplicationnStatus(Long boardLeve
 				" left join nominatedPostPosition.board board " +
 				" left join nominatedPostPosition.departments departments " +
 				" WHERE " +
-				" model.isDeleted = 'N' " );
+				"  model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		
 		if(boardLevelId !=null && boardLevelId>0){
 			//if(boardLevelId.longValue() != 5L)
@@ -1976,7 +2035,9 @@ public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevel
 				" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
 				" FROM NominatedPostFinal model left join model.nominatedPostApplication.position position " +
 				" WHERE " +
-				" model.isDeleted = 'N' " );
+				"  model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " );
 		
 		if(boardLevelId !=null && boardLevelId>0){
 			//if(boardLevelId.longValue() != 5L)
@@ -2067,7 +2128,10 @@ public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
 			" model.nominatedPostMember.nominatedPostPosition.departments.deptName, model.nominatedPostMember.nominatedPostPosition.board.boardId ," +
 			" model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId, " +
 			" model.nominatedPostMember.nominatedPostPosition.position.positionName,model.nominatedPostApplication.postType.postTypeId from NominatedPostFinal model where " +
-			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' ");
+			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' " +
+			" and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 	
 	Query query = getSession().createQuery(queryStr.toString());
 	if(applicationIds !=null && applicationIds.size()>0){
@@ -2080,7 +2144,11 @@ public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
 public List<Object[]> getUpdatedPositionsForCandidate(List<Long> applicationIds){
 	StringBuilder queryStr = new StringBuilder();
 	queryStr.append(" select model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostApplication.nominatedPostApplicationId from NominatedPostFinal model where " +
-			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8) "); 
+			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8) " +
+			" and model.isDeleted='N' and "+
+			" model.nominatedPostMember.isDeleted='N' and "+
+			" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+			""); 
 	
 	Query query = getSession().createQuery(queryStr.toString());
 	if(applicationIds !=null && applicationIds.size()>0){
@@ -2095,7 +2163,9 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId){
 	
 	queryStr.append(" select model.nominatedPostFinalId  from NominatedPostFinal model where model.nominatedPostMember.nominatedPostMemberId = :memberId " +
 			" and model.nominationPostCandidate.nominationPostCandidateId = :candId and  model.applicationStatus.applicationStatusId not in (2,4,8) and model.nominatedPostApplication.isDeleted = 'N' and model.isDeleted = 'N' " +
-			" and model.nominationPostCandidate.isDeleted = 'N' " );
+			" and model.nominationPostCandidate.isDeleted = 'N'  and  "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " );
 	
 	Query query = getSession().createQuery(queryStr.toString());
 	
@@ -2121,7 +2191,9 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId){
 	 }
 	 		queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and " +
 	 		" model.nominationPostCandidate.nominationPostCandidateId = :nominatedPostCandId " +
-	 		" and model.nominatedPostMember.locationValue = :searchLevelValue and model.isDeleted = 'N' ");
+	 		" and model.nominatedPostMember.locationValue = :searchLevelValue and model.isDeleted = 'N'  and model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 	 
 	 Query query = getSession().createQuery(queryStr.toString());
 	    query.setParameter("boardLevelId", boardLevelId);
