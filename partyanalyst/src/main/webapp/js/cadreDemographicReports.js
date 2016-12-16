@@ -497,7 +497,6 @@
 		}).done(function(result){
 			 $("#overAllCasteWiseSummaryDetails").html('');
 			 buildCasteCategoryWiseTdpCadreSummaryReport(result,stateId);
-			
 		});
 	}
 	
@@ -650,10 +649,11 @@
 	//caste wise overAll reports End
 	
 	//caste Category state wise  reports start
-	function getstateWiseTdpCadreCasteCounts(stateId){
+	function getstateWiseTdpCadreCasteCounts(stateId,limit){
 		 $("#CasteCategoryStateWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
-			         stateId:stateId
+			         stateId : stateId,
+					 limit : limit
 					}
 		
 		$.ajax({
@@ -682,9 +682,22 @@
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="CasteCategoryStateWiseReportExcel" >Export To Excel</button></h4>';
 					str+='</div>';
-				  str+='</div>';
-				  str+='</div>';
-				  str+='<div class="panel-body">';
+				  	str+='</div>';
+				  	str+='</div>';
+				  	str+='<div class="panel-body">';
+					/*str+='<div class="row m_top">';
+						str+='<div class="col-md-12">';
+							str+='<div style="width:480px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >';
+								str+='<h5 style="text-align:center;">Drag Slider for 2014 cast Percentage </h5>';	
+								str+='<div id="sliderFrCstPrcntgWsId" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">';
+									str+='<a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>';
+								str+='</div>';
+								str+='<p style="padding-bottom:2px;">';
+									str+='<input type="text" id="amountFrCstPrcntage" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />';
+								str+='</p>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';*/
 					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered table-condensed CasteCategoryStateWiseDataTableId" id="">';
 						str+='<thead>';
@@ -863,11 +876,12 @@
 	
 	
 	//caste Category district wise  reports start
-	function getdistrictWiseTdpCadreCasteCounts(stateId,districtId){
+	function getdistrictWiseTdpCadreCasteCounts(stateId,districtId,limit){
 		 $("#CasteCategoryDistrictWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
-			         stateId:stateId,
-					 districtId:districtId
+			         stateId : stateId,   
+					 districtId : districtId,
+					 limit : limit
 					}
 		
 		$.ajax({
@@ -1098,11 +1112,12 @@
 	
 	
 	//caste Category Constituency wise  reports start
-	function getConstituencyWiseTdpCadreCasteCountsAction(stateId,districtId){
+	function getConstituencyWiseTdpCadreCasteCountsAction(stateId,districtId,limit){
 		 $("#CasteCategoryConstituencyWiseSummaryDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
-			         stateId:stateId,
-					 districtId:districtId
+			         stateId : stateId,
+					 districtId : districtId,
+					 limit : limit
 					}
 		
 		$.ajax({
