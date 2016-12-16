@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -19,6 +20,8 @@ public interface ITdpCadreCasteStateInfoDAO extends GenericDao<TdpCadreCasteStat
 	public List<Object[]> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId,String minorityCasteIds);
 	public List<Object[]> districtWiseTdpCadreMinorityCasteCounts(Long stateId , Long districtId,String minorityCasteIds);
 	public List<Object[]> constituencyWiseTdpCadreCasteCounts(Long stateId , Long districtId );
+	public List<Object[]> privilegedDistrictWiseTdpCadreCasteCounts(Set<Long> distIdList,String minorityCasteIds);
+	public List<Object[]> privilegedDistrictWiseTdpCadreMinorityCasteCounts(Set<Long> distIdList, String minorityCasteIds);
 	
 	
 }
