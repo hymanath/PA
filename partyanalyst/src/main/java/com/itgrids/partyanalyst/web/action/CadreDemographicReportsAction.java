@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCountsGenderVO;
@@ -220,9 +222,100 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		return Action.SUCCESS;
 	}
 	
+	//USER WISE DEMOGRAPHIC REPORTS..
 	public String userWiseCadreDemographicReport(){
 		return Action.SUCCESS;
 	}
+	public String casteCategoryWiseCadreSummaryReport(){
+	    try{
+	        jobj = new JSONObject(getTask());
+	        String accessType = jobj.getString("accessType");
+	        
+	        List<Long> locationIds = new ArrayList<Long>(0);
+	        JSONArray locationArray=jobj.getJSONArray("locationArray");
+			if(locationArray!=null &&  locationArray.length()>0){
+				for( int i=0;i<locationArray.length();i++){
+					String locationIdString = locationArray.getString(i);
+					if(locationIdString!=null && Long.valueOf(locationIdString) > 0l){
+						locationIds.add(Long.valueOf(Long.valueOf(locationIdString)));
+					}
+				}
+			}
+			cadreCountsVO = cadreRegistrationServiceNew.priviledgedCasteCategoryWiseTdpCadreSummaryReport(locationIds ,accessType );
+	    }catch(Exception e){
+	      LOG.error("Exception raised at casteCategoryWiseCadreSummaryReport() in cadreDemographicReportsAction", e);
+	    }
+	    return Action.SUCCESS;
+   }
+	public String stateWiseCadreCasteCounts(){
+	    try{
+	        jobj = new JSONObject(getTask());
+	        String accessType = jobj.getString("accessType");
+	        
+	        List<Long> locationIds = new ArrayList<Long>(0);
+	        JSONArray locationArray=jobj.getJSONArray("locationArray");
+			if(locationArray!=null &&  locationArray.length()>0){
+				for( int i=0;i<locationArray.length();i++){
+					String locationIdString = locationArray.getString(i);
+					if(locationIdString!=null && Long.valueOf(locationIdString) > 0l){
+						locationIds.add(Long.valueOf(Long.valueOf(locationIdString)));
+					}
+				}
+			}
+			
+			Double limit = jobj.getDouble("limit");
+	       cadreCountsVOList = cadreRegistrationServiceNew.privilegedStateWiseTdpCadreCasteCounts(locationIds, accessType,limit);
+	    }catch(Exception e){
+	      LOG.error("Exception raised at stateWiseCadreCasteCounts() in cadreDemographicReportsAction", e);
+	    }
+	    return Action.SUCCESS;
+   }
+	
+	public String districtWiseCadreCasteCounts(){
+	    try{
+	        jobj = new JSONObject(getTask());
+	        
+	        List<Long> locationIds = new ArrayList<Long>(0);
+	        JSONArray locationArray=jobj.getJSONArray("locationArray");
+			if(locationArray!=null &&  locationArray.length()>0){
+				for( int i=0;i<locationArray.length();i++){
+					String locationIdString = locationArray.getString(i);
+					if(locationIdString!=null && Long.valueOf(locationIdString) > 0l){
+						locationIds.add(Long.valueOf(Long.valueOf(locationIdString)));
+					}
+				}
+			}
+			
+			Double limit = jobj.getDouble("limit");
+	       cadreCountsVOList = cadreRegistrationServiceNew.privilegedDistrictWiseTdpCadreCasteCounts(locationIds , limit , "district");  
+	    }catch(Exception e){
+	      LOG.error("Exception raised at districtWiseCadreCasteCounts() in cadreDemographicReportsAction", e);
+	    }
+	    return Action.SUCCESS;
+   }
+	
+	public String constituencyWiseCadreCasteCounts(){
+	    try{
+	        jobj = new JSONObject(getTask());
+	        
+	        List<Long> locationIds = new ArrayList<Long>(0);
+	        JSONArray locationArray=jobj.getJSONArray("locationArray");
+			if(locationArray!=null &&  locationArray.length()>0){
+				for( int i=0;i<locationArray.length();i++){
+					String locationIdString = locationArray.getString(i);
+					if(locationIdString!=null && Long.valueOf(locationIdString) > 0l){
+						locationIds.add(Long.valueOf(Long.valueOf(locationIdString)));
+					}
+				}
+			}
+			
+			Double limit = jobj.getDouble("limit");
+	       cadreCountsVOList = cadreRegistrationServiceNew.privilegedConstituencyWiseTdpCadreCasteCounts(locationIds , limit , "constituency");
+	    }catch(Exception e){
+	      LOG.error("Exception raised at constituencyWiseCadreCasteCounts() in cadreDemographicReportsAction", e);
+	    }
+	    return Action.SUCCESS;
+   }
 	
 }
 
