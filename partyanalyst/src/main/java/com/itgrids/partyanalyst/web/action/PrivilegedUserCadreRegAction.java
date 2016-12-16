@@ -117,6 +117,13 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 			ICadreRegistrationServiceNew cadreRegistrationServiceNew) {
 		this.cadreRegistrationServiceNew = cadreRegistrationServiceNew;
 	}
+	
+	public IdAndNameVO getIdAndNameVO() {
+		return idAndNameVO;
+	}
+	public void setIdAndNameVO(IdAndNameVO idAndNameVO) {
+		this.idAndNameVO = idAndNameVO;
+	}
 	//Business method
 	public String execute(){
 		session = request.getSession();
