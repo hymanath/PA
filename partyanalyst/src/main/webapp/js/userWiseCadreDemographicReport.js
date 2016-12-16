@@ -1307,7 +1307,7 @@
 			data : {task:JSON.stringify(jobj)}
 		}).done(function(result){
 			$("#overAllGenderWiseSummaryDetails").html('');
-			buildGenderSummaryCounts();
+			buildGenderSummaryCounts(result);
 			
 		});
 	}
@@ -1321,7 +1321,7 @@
 				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital">GENDER WISE REPORT</h3>';
+					str+='<h3 class="panel-title text-capital">GENDER WISE  Summary REPORT</h3>';
 						
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
