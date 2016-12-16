@@ -209,7 +209,7 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre)," +//5
 				"           model.districtId ,model.district.districtName " +//7
 				"   from TdpCadreCasteStateInfo model " +
-				"   where ");
+				"   where model.casteState.caste.casteId is not null ");
 		
 		if(distIdList != null && distIdList.size() > 0){
 			sb.append(" and model.districtId in (:distIdList) ");
