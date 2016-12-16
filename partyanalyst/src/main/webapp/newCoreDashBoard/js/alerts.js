@@ -1788,7 +1788,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 					str+='<td>'+result[i].status+'<i class="glyphicon glyphicon-plus expandIcon" attr_designation_id="'+result[i].statusId+'"  attr_selected_type=\''+groupAssignType+'\' attr_div_id="memberTblId'+result[i].statusId+'"></i></td>';
 				} 
 				if(groupAssignType == "Public Representative" && level == "bellow"){
-					str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="0">'+result[i].count+'</td>';
+					str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="0" attr_alert_count="'+result[i].count+'">'+result[i].count+'</td>';
 				}else{
 					str+='<td>'+result[i].count+'</td>';
 				}  
@@ -1799,7 +1799,7 @@ function getTotalAlertGroupByPubRepThenStatus(scopeIdsArr,groupAssignType,public
 							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 						}else{
 							if(groupAssignType == "Public Representative" && level == "bellow"){
-								str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</td>';
+								str+='<td style="cursor:pointer;" class="pubRepDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_pub_rep_type_id="'+publicRepresentativeTypeId+'" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_alert_count="'+result[i].subList1[j].categoryCount+'">'+result[i].subList1[j].categoryCount+'</td>';
 							}else{
 								str+='<td>'+result[i].subList1[j].categoryCount+'</td>';      
 							}
@@ -2063,7 +2063,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				
 				str+='<td>'+result[i].status+'</td>';
 				if(result[i].count != 0){
-					str+='<td style="cursor:pointer;" class="commettDtlsCls" attr_commit_id="'+commitTypeId+'" attr_designation_id="'+designationId+'" attr_cadre_id="'+result[i].statusId+'" attr_status_id="0">'+result[i].count+'</td>';
+					str+='<td style="cursor:pointer;" class="commettDtlsCls" attr_commit_id="'+commitTypeId+'" attr_designation_id="'+designationId+'" attr_cadre_id="'+result[i].statusId+'" attr_status_id="0" attr_alert_count="'+result[i].count+'">'+result[i].count+'</td>';
 				}else{
 					str+='<td>'+result[i].count+'</td>';
 				}  
@@ -2073,7 +2073,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 						if(result[i].subList1[j].categoryCount == 0){
 							str+='<td>'+result[i].subList1[j].categoryCount+'</td>';
 						}else{
-							str+='<td style="cursor:pointer;" class="commettDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_commit_id="'+commitTypeId+'" attr_designation_id="'+designationId+'" attr_status_id="'+result[i].subList1[j].categoryId+'">'+result[i].subList1[j].categoryCount+'</td>';
+							str+='<td style="cursor:pointer;" class="commettDtlsCls" attr_cadre_id="'+result[i].statusId+'" attr_commit_id="'+commitTypeId+'" attr_designation_id="'+designationId+'" attr_status_id="'+result[i].subList1[j].categoryId+'" attr_alert_count="'+result[i].subList1[j].categoryCount+'">'+result[i].subList1[j].categoryCount+'</td>';
 						}        	
 					}
 				}      
@@ -2088,8 +2088,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");  
-		$("#alertCntTitId").html("TOTAL ALERTS");
-		
+		var alertCount = $(this).attr("attr_alert_count");
+		$("#alertCntTitId").html("TOTAL ALERTS-"+alertCount);
 		var cadreId = $(this).attr("attr_cadre_id");
 		var designationId = $(this).attr("attr_designation_id");
 		var commitTypeId = $(this).attr("attr_commit_id");
@@ -2266,10 +2266,11 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");
-		$("#alertCntTitId").html("TOTAL ALERTS");
 		var publicRepresentativeTypeId = $(this).attr("attr_pub_rep_type_id");
 		var cadreId = $(this).attr("attr_cadre_id");
 		var statusId = $(this).attr("attr_status_id");
+		var alertCount = $(this).attr("attr_alert_count");
+		$("#alertCntTitId").html("TOTAL ALERTS-"+alertCount);  
 		var dates=$("#dateRangeIdForAlert").val();
 		var fromDateStr;
 		var toDateStr;
@@ -2824,12 +2825,11 @@ function getTotalArticledetails(articleId){
 	var url = window.location.href;
 	  var wurl = url.substr(0,(url.indexOf(".com")+4));
 	  if(wurl.length == 3)
-	    wurl = url.substr(0,(url.indexOf(".in")+3));
-	  
-	
-	$.ajax({       
+	  wurl = url.substr(0,(url.indexOf(".in")+3));
+	  $.ajax({       
 		  type : 'GET',      
 		  url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		  
 		  //url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""          
 		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""     
 	}).then(function(results){
