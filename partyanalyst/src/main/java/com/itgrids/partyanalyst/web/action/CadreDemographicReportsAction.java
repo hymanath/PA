@@ -317,5 +317,77 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	    return Action.SUCCESS;
    }
 	
+  public String ageWiseCadreSummaryReport(){
+		try{
+			 jobj = new JSONObject(getTask());
+			 String accessType = jobj.getString("accessType");
+		     List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
+		     
+			 cadreCountsVO = cadreRegistrationServiceNew.privilegedAgeWiseTdpCadreSummaryReport(locationIds , accessType);
+		}catch(Exception e){
+			LOG.error("Exception raised at ageWiseCadreSummaryReport() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+    
+    public String getLocationWisegeWiseCadreCounts(){
+		
+		try{
+			 jobj = new JSONObject(getTask());
+			 List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
+			 String searchType  = jobj.getString("searchType");
+			
+			cadreCountsVOList = cadreRegistrationServiceNew.privilegedLocationWisegeWiseTdpCadreCounts(locationIds,searchType);
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationWisegeWiseTdpCadreCounts() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+    public List<Long>  getLocationIds(JSONArray locationArray){
+    	List<Long> locationIds = new ArrayList<Long>(0);
+    	try{
+ 			if(locationArray!=null &&  locationArray.length()>0){
+ 				for( int i=0;i<locationArray.length();i++){
+ 					String locationIdString = locationArray.getString(i);
+ 					if(locationIdString!=null && Long.valueOf(locationIdString) > 0l){
+ 						locationIds.add(Long.valueOf(Long.valueOf(locationIdString)));
+ 					}
+ 				}
+ 			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getLocationIds() in cadreDemographicReportsAction", e);
+		}
+    	return locationIds;
+    }
+    
+    
+    public String getGenderSummaryCountsByUser(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			 String accessType = jobj.getString("accessType");
+		     List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
+				
+			 //cadreCountsGenderVO = cadreRegistrationServiceNew.stateWiseCadreGenderCounts(stateId);
+		}catch(Exception e){
+			LOG.error("Exception raised at getGenderSummaryCountsByUser() in cadreDemographicReportsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String locationWiseCadreGenderCountsByUser(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			List<Long> locationIds = getLocationIds(jobj.getJSONArray("locationArray"));
+			 String searchType  = jobj.getString("searchType");
+			 //cadreCountsGenderVOList = cadreRegistrationServiceNew.locationWiseCadreGenderCounts(stateId,districtId,searchType);
+		}catch(Exception e){
+			LOG.error("Exception raised at locationWiseCadreGenderCountsByUser() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+    
+    
 }
 
