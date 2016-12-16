@@ -72,13 +72,27 @@
 	var constituencyArray = getConstituenciesList();
 	var locationArray =  finalLocationIds(accessType ,districtArray , constituencyArray );
 	
-	//CASTE WISE BASCIC CALLS.
+	//CASTE WISE  CALLS.
 	getCasteCategoryWiseTdpCadreSummaryReport();
 	getstateWiseTdpCadreCasteCounts();
 	if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
 		getdistrictWiseTdpCadreCasteCounts();
 	}
 	getConstituencyWiseTdpCadreCasteCountsAction();
+	
+	//AGE WISE  CALLS.
+	getAgeWiseTdpCadreSummaryReport();
+	if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
+		getDistrictWisegeWiseTdpCadreCounts();
+	}
+	getConstituencyWisegeWiseTdpCadreCounts();
+	//gender wise calls
+	getGenderSummaryCounts();
+	if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
+	  getDistrictWiseCadreGenderCounts();
+	}
+	getConstituencyWiseCadreGenderCounts();
+	
 	
 	function finalLocationIds(accessType ,districtArray ,constituencyArray ){
 		if(accessType != null && accessType.trim().length > 0){
