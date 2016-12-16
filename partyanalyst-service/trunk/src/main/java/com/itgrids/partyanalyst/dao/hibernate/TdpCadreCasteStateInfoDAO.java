@@ -178,7 +178,7 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		}
     	return query.list();
     }
-	public List<Object[]> privilegedDistrictWiseTdpCadreCasteCounts(Set<Long> distIdList,String minorityCasteIds){
+	public List<Object[]> privilegedDistrictWiseTdpCadreCasteCounts(List<Long> distIdList,String minorityCasteIds){
     	
     	StringBuilder sb = new StringBuilder();
     	
@@ -203,7 +203,7 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		}
     	return query.list();
     }
-	public List<Object[]> privilegedDistrictWiseTdpCadreMinorityCasteCounts(Set<Long> distIdList, String minorityCasteIds){
+	public List<Object[]> privilegedDistrictWiseTdpCadreMinorityCasteCounts(List<Long> distIdList, String minorityCasteIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.casteState.caste.casteId , model.casteState.caste.casteName," +//1
 				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre)," +//5
@@ -222,6 +222,103 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		if(distIdList != null && distIdList.size() > 0){
 			query.setParameterList("distIdList",distIdList);
 		}
+		return query.list();
+	}
+	public List<Object[]> privilegedConstituencyWiseTdpCadreCasteCounts(List<Long> locationIdList){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select C.constituencyId,C.name,model.districtId ,model.district.districtName ," +//3
+    			"         model.casteState.caste.casteId , model.casteState.caste.casteName, " +//5
+    			"         sum(model.cadre2014) , sum(model.cadre2016) , sum(model.newCadre) , sum(model.renewalCadre) " +//9
+    			"  from   TdpCadreCasteStateInfo model , Constituency C" +
+    			"  where  model.locationValue = C.constituencyId and model.locationScopeId = 4 ");
+    	
+    	if(locationIdList != null && locationIdList.size() > 0){
+			sb.append(" and model.locationValue in (:locationIdList) ");
+		}
+    	sb.append(" group by C.constituencyId , model.casteState.caste.casteId " +
+    			"   order by model.district.districtName ,C.name, sum(model.cadre2014) desc");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	
+    	if(locationIdList != null && locationIdList.size() > 0){
+			  query.setParameterList("locationIdList",locationIdList);    
+		}
+    	return query.list();  
+    }
+	public List<Object[]> privilegedCasteCategoryWiseTdpCadreCounts(List<Long> locationIdList , String minorityCasteIds, String accessType){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName, " +//1
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//5
+				"   from   TdpCadreCasteStateInfo model ");
+		
+		sb.append(" where model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
+		if(accessType.equalsIgnoreCase("district")){
+			sb.append(" and model.districtId in (:locationIdList) ");
+		}else{
+			sb.append(" and model.locationScopeId = 4 and  model.locationValue in (:locationIdList) ");
+		}
+		
+		sb.append(" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameterList("locationIdList",locationIdList); 
+		
+		return query.list();
+	}
+	public Object[] privilegedMinorityCastesTdpCadreCounts(List<Long> locationIdList , String minorityCasteIds, String accessType){
+		
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//3
+				"    from   TdpCadreCasteStateInfo model " +
+				"    where  model.casteState.caste.casteId  in ("+minorityCasteIds+")");
+		 if(accessType.equalsIgnoreCase("district")){
+			sb.append(" and model.districtId in (:locationIdList) ");
+		}else{
+			sb.append(" and model.locationScopeId = 4 and  model.locationValue in (:locationIdList) ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("locationIdList",locationIdList);
+		return (Object[])query.uniqueResult();
+	}
+	public List<Object[]> privilegedStateWiseTdpCadreCasteCounts(List<Long> locationIdList , String minorityCasteIds, String accessType){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName," +//1
+				"          model.casteState.caste.casteId , model.casteState.caste.casteName," +//3
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//7
+				"   from TdpCadreCasteStateInfo model " +
+				"   where ");
+		if(accessType.equalsIgnoreCase("district")){
+			sb.append(" model.districtId in (:locationIdList) ");
+		}else{
+			sb.append(" model.locationScopeId = 4 and  model.locationValue in (:locationIdList) ");
+		}  
+		sb.append(" and model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
+		sb.append(" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId ,model.casteState.caste.casteId " +
+				"   order by sum(model.cadre2014) desc");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("locationIdList",locationIdList);
+		return query.list();
+	}
+	public List<Object[]> privilegedStateWiseTdpCadreMinorityCasteCounts(List<Long> locationIdList , String minorityCasteIds, String accessType){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.caste.casteId , model.casteState.caste.casteName," +//1
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre) " +//5
+				"   from TdpCadreCasteStateInfo model " +
+				"   where ");
+		if(accessType.equalsIgnoreCase("district")){
+			sb.append(" model.districtId in (:locationIdList) ");
+		}else{
+			sb.append(" model.locationScopeId = 4 and  model.locationValue in (:locationIdList) ");
+		}
+		sb.append(" and model.casteState.caste.casteId  in ("+minorityCasteIds+") ");
+		sb.append(" group by model.casteState.caste.casteId " +
+				"   order by sum(model.cadre2014) desc ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("locationIdList",locationIdList);
 		return query.list();
 	}
 }
