@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreCountsGenderVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationUserVO;
 import com.itgrids.partyanalyst.dto.CardPrintValidationVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageCadreVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadrePrintDetailsVO;
@@ -37,11 +38,12 @@ public interface ICadreRegistrationServiceNew {
 	public List<CadreCountsVO> getLocationWisegeWiseTdpCadreCounts(Long stateId , Long districtId , String searchType);
 	
 	public CadreCountsVO casteCategoryWiseTdpCadreSummaryReport(Long stateId);
-	public List<CadreCountsVO> stateWiseTdpCadreCasteCounts(Long stateId);
-	public List<CadreCountsVO> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId);
-	public List<CadreCountsVO> constituencyWiseTdpCadreCasteCounts(Long stateId , Long districtId);
+	public List<CadreCountsVO> stateWiseTdpCadreCasteCounts(Long stateId,Double limit);
+	public List<CadreCountsVO> districtWiseTdpCadreCasteCounts(Long stateId , Long districtId,Double limit);
+	public List<CadreCountsVO> constituencyWiseTdpCadreCasteCounts(Long stateId , Long districtId,Double limit);
 	
 	public CadreCountsGenderVO stateWiseCadreGenderCounts(Long stateId);
 	public List<CadreCountsGenderVO> locationWiseCadreGenderCounts(Long stateId,Long districtId,String searchType);
+	public IdAndNameVO getLocationInfoByUserId(Long userId);  
 	
 }
