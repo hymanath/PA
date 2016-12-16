@@ -722,5 +722,6 @@
 		<!--<pattern>/tdpMembershipPerformanceAction*</pattern>-->
 		<pattern>/cardPrintDispatchAction*</pattern>
 		<pattern>/cardPrintDashboardAction*</pattern>
+		<pattern>/userWiseCadreDemographicReportAction*</pattern>
 	</decorator> 
 </decorators>

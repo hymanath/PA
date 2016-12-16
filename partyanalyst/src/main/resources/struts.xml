@@ -15032,5 +15032,10 @@
    			<param name="root">cardPrintVO</param>
    		</result>
 	</action>
+	<action name="userWiseCadreDemographicReportAction" class="cadreDemographicReportsAction" method="userWiseCadreDemographicReport">
+		<result name="success">/jsp/userWiseCadreDemographicReport.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=userWiseCadreDemographicReportAction</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+	</action>
  </package>
 </struts>

@@ -216,5 +216,10 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		
 		return Action.SUCCESS;
 	}
+	
+	public String userWiseCadreDemographicReport(){
+		return Action.SUCCESS;
+	}
+	
 }
 
