@@ -106,6 +106,56 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
 		
 		return query.list();
 	}
+	public List<Object[]> privilegedGetStateWiseAgeWiseCadreCounts(List<Long> locationIdList, String accessType){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select info.ageRangeId , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
+		         " from   TdpCadreAgeInfo info " +
+		         " where ");
+		
+		if(accessType.equalsIgnoreCase("district")){
+			sb.append(" info.districtId in (:locationIdList) ");
+		}else{
+			sb.append(" info.locationScopeId = 4 and  info.locationValue in (:locationIdList) ");
+		}
+		sb.append(" group by info.ageRangeId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("locationIdList",locationIdList);
+		return query.list();    
+	}
+	public List<Object[]> privilegedDistrictwiseAgeWiseCadreCounts(List<Long> distIdList ){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	
+    	sb.append("select info.districtId ,info.district.districtName,info.stateId,info.state.stateName,info.ageRangeId, " +//4
+    			"         sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +//8
+    			"  from   TdpCadreAgeInfo info " +
+    			"  where  info.districtId in (:distIdList) ");
+    	
+    	sb.append(" group by info.districtId , info.ageRangeId " +
+    			"   order by info.state.stateName , info.district.districtName ");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	query.setParameterList("distIdList",distIdList);
+    	return query.list();
+    }
+	public List<Object[]> privilegedConstituencyWiseAgeWiseCadreCounts(List<Long> constIdList ){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	
+    	sb.append("select C.constituencyId,C.name,info.districtId ,info.district.districtName," +
+    			"         info.ageRangeId , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
+    			"  from   TdpCadreAgeInfo info , Constituency C " +
+    			"  where  info.locationValue = C.constituencyId and " +
+    			"         info.locationScopeId = 4 ");
+    	sb.append(" and info.locationValue in (:constIdList) ");
+    	sb.append(" group by C.constituencyId, info.ageRangeId ");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	query.setParameterList("constIdList",constIdList);
+    	return query.list();
+    }
 	
 	
 	
