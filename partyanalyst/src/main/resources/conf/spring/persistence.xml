@@ -1064,7 +1064,15 @@
 	                  <value>com.itgrids.partyanalyst.model.PrintStatus</value>
 	                  <value>com.itgrids.partyanalyst.model.ConstituencyPrintStatus</value>
 	                  <value>com.itgrids.partyanalyst.model.ConstituencyPrintStatusTrack</value>
-				 </list>
+	                  
+	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalTourCategory</value>
+	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalDesignationTarget</value>
+	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDayTour</value>
+	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateDocument</value>
+	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocationNew</value>
+	                  <value>com.itgrids.partyanalyst.model.TourType</value>
+	                  
+	             </list>
 			
 		</property>
 	</bean>

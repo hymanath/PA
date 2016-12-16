@@ -3450,4 +3450,28 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="selfAppraisalTourCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalTourCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalDesignationTargetDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalDesignationTargetDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalCandidateDayTourDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateDayTourDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalCandidateDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateDocumentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="selfAppraisalCandidateLocationNewDAO" class="com.itgrids.partyanalyst.dao.hibernate.SelfAppraisalCandidateLocationNewDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tourTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TourTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
