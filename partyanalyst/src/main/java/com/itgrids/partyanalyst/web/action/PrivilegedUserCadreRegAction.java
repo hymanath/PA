@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -29,11 +30,13 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 	
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	private ICadreDashBoardService cadreDashBoardService;
+	private ICadreRegistrationServiceNew cadreRegistrationServiceNew;
 	
 	
 	private List<List<CadreDashboardVO>> listOfListOfCadreDashboardVO;
 	private List<RegistrationCountVO> registrationCountVOs;
 	private List<IdAndNameVO> idAndNameVOs;
+	private IdAndNameVO idAndNameVO;
 	
 	private Long userId;
 	private String stateName;
@@ -106,6 +109,14 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 	public void setIdAndNameVOs(List<IdAndNameVO> idAndNameVOs) {
 		this.idAndNameVOs = idAndNameVOs;
 	}
+	
+	public ICadreRegistrationServiceNew getCadreRegistrationServiceNew() {
+		return cadreRegistrationServiceNew;
+	}
+	public void setCadreRegistrationServiceNew(
+			ICadreRegistrationServiceNew cadreRegistrationServiceNew) {
+		this.cadreRegistrationServiceNew = cadreRegistrationServiceNew;
+	}
 	//Business method
 	public String execute(){
 		session = request.getSession();
@@ -119,7 +130,8 @@ public class PrivilegedUserCadreRegAction extends ActionSupport implements Servl
 				return Action.ERROR;    
 			}   
 		}
-		return Action.SUCCESS;        
+		idAndNameVO = cadreRegistrationServiceNew.getLocationInfoByUserId(userId);
+		return Action.SUCCESS;          
 	}
 	public String get2016LocationWiseRegisteredCountsForPreviligedUser(){
 		try{
