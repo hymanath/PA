@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -60,10 +61,52 @@
 <script src="newCoreDashBoard/Plugins/Rating/bootstrap-rating.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
-<script type="text/javascript">
-	
+<script src="js/userWiseCadreDemographicReport.js" type="text/javascript"></script>
+
+ <script type="text/javascript">
 	var loggedInUser = '${USER.registrationID}';
-	var loggedInUserName = '${UserName}';
-</script>	
+    var loggedInUserName = '${UserName}';
+	var accessType = '${idAndNameVO.name}';
+	
+	var districtArray = getdistrictsList();
+	var constituencyArray = getConstituenciesList();
+	var locationArray =  finalLocationIds(accessType ,districtArray , constituencyArray );
+	
+	//CASTE WISE BASCIC CALLS.
+	getCasteCategoryWiseTdpCadreSummaryReport();
+	getstateWiseTdpCadreCasteCounts();
+	if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
+		getdistrictWiseTdpCadreCasteCounts();
+	}
+	getConstituencyWiseTdpCadreCasteCountsAction();
+	
+	function finalLocationIds(accessType ,districtArray ,constituencyArray ){
+		if(accessType != null && accessType.trim().length > 0){
+			if(accessType.toUpperCase() == "CONSTITUENCY" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY" ){
+				return constituencyArray;
+			}else if(accessType.toUpperCase() == "DISTRICT"  ){
+				return districtArray;
+			}
+		}
+	}
+	function getdistrictsList(){
+		var distIds = [];
+		<c:if test="${idAndNameVO.distIdList != null && fn:length(idAndNameVO.distIdList) gt 0}">  
+		   <c:forEach var="distId" items="${idAndNameVO.distIdList}"> 
+			  distIds.push(${distId});
+		  </c:forEach>
+		 </c:if> 
+		 return distIds;
+	 }
+	 function getConstituenciesList(){
+		 var constitIds= [];
+		 <c:if test="${idAndNameVO.constIdList != null && fn:length(idAndNameVO.constIdList) gt 0}">  
+		   <c:forEach var="constId" items="${idAndNameVO.constIdList}"> 
+			  constitIds.push(${constId});
+		  </c:forEach>
+		 </c:if>
+		 return constitIds;
+	 }
+ </script>	
 </body>
 </html>
