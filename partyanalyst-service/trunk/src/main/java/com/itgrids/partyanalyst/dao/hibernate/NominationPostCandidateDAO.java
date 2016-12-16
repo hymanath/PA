@@ -109,7 +109,7 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
         }
         else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
         	//str.append(" where model.nominationPostCandidateId = :nominateCandId ");
-        	str.append(" where model.nominatedPostApplicationId = :applicationId ");
+        	str.append(" where model.nominatedPostApplicationId = :applicationId and model.isDeleted='N' ");
         }
 		Query query = getSession().createQuery(str.toString());
         if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
