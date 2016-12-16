@@ -222,7 +222,7 @@
 		<div class="row m_top10" id="fadeInDown">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
-				<!--<button type="button" class="btn btn-primary pull-right text-capital userWiseReport">User Wise Cadre Demographics Report</button>-->
+				<button type="button" class="btn btn-primary pull-right text-capital userWiseReport">User Wise Cadre Demographics Report</button>
 				<div style="padding:5px;">
 					<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" checked="true" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> TODAY</span>
