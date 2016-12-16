@@ -148,9 +148,9 @@
 			
 			//caste Wise Calls
 			getCasteCategoryWiseTdpCadreSummaryReport(stateId);
-			getstateWiseTdpCadreCasteCounts(stateId);
-			getdistrictWiseTdpCadreCasteCounts(stateId,0);
-			getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
+			getstateWiseTdpCadreCasteCounts(stateId,1.0);//default range 1.0  
+			getdistrictWiseTdpCadreCasteCounts(stateId,0,1.0);//default range 1.0  
+			getConstituencyWiseTdpCadreCasteCountsAction(stateId,0,1.0);//default range 1.0
 			
 			//Gender Wise Calls
 			getstateWiseCadreGenderCounts(stateId);
@@ -186,9 +186,9 @@
 		$(".casteWiseBlock").show();
 		$(".genderWiseBlock").hide();
 		getCasteCategoryWiseTdpCadreSummaryReport(stateId);
-		getstateWiseTdpCadreCasteCounts(stateId);
-		getdistrictWiseTdpCadreCasteCounts(stateId,0);
-		getConstituencyWiseTdpCadreCasteCountsAction(stateId,0);
+		getstateWiseTdpCadreCasteCounts(stateId,1.0);//default range 1.0    
+		getdistrictWiseTdpCadreCasteCounts(stateId,0,1.0);//default range 1.0  
+		getConstituencyWiseTdpCadreCasteCountsAction(stateId,0,1.0);//default range 1.0              
 		
 	});	
 	$(document).on("click","#genderWiseReport",function(){
