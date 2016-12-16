@@ -15059,5 +15059,28 @@
 		</result>
 	</action>
 	
+	 <action name="ageWiseCadreSummaryReportAction" class="cadreDemographicReportsAction"  method="ageWiseCadreSummaryReport">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVO</param>
+		</result>
+	</action>
+	
+	<action name="getLocationWisegeWiseCadreCountsAction" class="cadreDemographicReportsAction"  method="getLocationWisegeWiseCadreCounts">
+			<result type="json" name="success">
+			<param name="root">cadreCountsVOList</param>
+		</result>
+	</action>
+	
+	<action name="getGenderSummaryCountsByUserAction" class="cadreDemographicReportsAction"  method="getGenderSummaryCountsByUser">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVO</param>
+		</result>
+	</action>
+	<action name="locationWiseCadreGenderCountsByUserAction" class="cadreDemographicReportsAction"  method="locationWiseCadreGenderCountsByUser">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVOList</param>
+		</result>
+	</action>
+	
  </package>
 </struts>
