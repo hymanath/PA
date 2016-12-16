@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -177,4 +178,51 @@ public class TdpCadreCasteStateInfoDAO extends GenericDaoHibernate<TdpCadreCaste
 		}
     	return query.list();
     }
+	public List<Object[]> privilegedDistrictWiseTdpCadreCasteCounts(Set<Long> distIdList,String minorityCasteIds){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	
+    	sb.append("select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName,"+//1
+    			"         model.casteState.caste.casteId , model.casteState.caste.casteName, " +//3
+    			"         sum(model.cadre2014) , sum(model.cadre2016) , sum(model.newCadre) , sum(model.renewalCadre)," +//7
+    			"         model.districtId ,model.district.districtName  " +//9
+    			"  from   TdpCadreCasteStateInfo model " +
+    			"  where  ");
+    	
+    	if(distIdList != null && distIdList.size() > 0){
+			sb.append(" model.districtId in (:distIdList) ");
+		}
+    	sb.append(" and model.casteState.caste.casteId not in ("+minorityCasteIds+") ");
+    	sb.append(" group by model.districtId  , model.casteState.casteCategoryGroup.casteCategory.casteCategoryId , model.casteState.caste.casteId " +
+    			"   order by model.district.districtName , sum(model.cadre2014) desc");
+    	
+    	Query query = getSession().createQuery(sb.toString());
+    	
+    	if(distIdList != null && distIdList.size() > 0){
+			  query.setParameterList("distIdList",distIdList);
+		}
+    	return query.list();
+    }
+	public List<Object[]> privilegedDistrictWiseTdpCadreMinorityCasteCounts(Set<Long> distIdList, String minorityCasteIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.casteState.caste.casteId , model.casteState.caste.casteName," +//1
+				"          sum(model.cadre2014), sum(model.cadre2016),sum(model.newCadre),sum(model.renewalCadre)," +//5
+				"           model.districtId ,model.district.districtName " +//7
+				"   from TdpCadreCasteStateInfo model " +
+				"   where ");
+		
+		if(distIdList != null && distIdList.size() > 0){
+			sb.append(" and model.districtId in (:distIdList) ");
+		}
+		sb.append(" and model.casteState.caste.casteId  in ("+minorityCasteIds+") ");
+		sb.append(" group by model.districtId , model.casteState.caste.casteId  " +
+				 "  order by model.district.districtName , sum(model.cadre2014) desc");
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(distIdList != null && distIdList.size() > 0){
+			query.setParameterList("distIdList",distIdList);
+		}
+		return query.list();
+	}
 }
+
