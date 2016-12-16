@@ -2030,7 +2030,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					Long count = commonMethodsUtilService.getLongValueForObject(param[3]);
 					Long deptId = commonMethodsUtilService.getLongValueForObject(param[8]);
 					Long boardId = commonMethodsUtilService.getLongValueForObject(param[9]);
-					
+					//System.out.println(memberId +" "+count);
 						Map<String,Long> posionwiseMovedMap = new HashMap<String, Long>(0);
 						 if(statusStr.trim().equalsIgnoreCase("2")){// nominatedPostStatusid
 							NominatedPostVO vo = applicationsStatusDtlsMap.get("READY FOR FINAL REVIEW".trim());
@@ -2375,6 +2375,29 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								}
 							}
 						}
+				}
+			}
+			
+			
+
+			vo2 = applicationsStatusDtlsMap.get("APPLICATIONS NOT RECIEVED".trim());
+			if(vo2 != null){
+				if(levelId != null && levelId.longValue()>0L){
+					vo2.setTotalPositions(0L);
+					vo2.setTotalCorp(0L);
+					vo2.setTotalDept(0L);
+					
+					if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
+						for (String type : applicationsStatusDtlsMap.keySet()) {
+							if(type != null && !type.trim().equalsIgnoreCase("APPLICATIONS NOT RECIEVED") && !type.trim().equalsIgnoreCase("TOTAL AVAILABLE") && !type.trim().equalsIgnoreCase("TOTAL")){
+								NominatedPostVO vo1 = applicationsStatusDtlsMap.get(type.trim());
+								vo2.setTotalPositions(vo2.getTotalPositions()+vo1.getTotalPositions());
+							}
+						}
+						
+						NominatedPostVO vo1 = applicationsStatusDtlsMap.get("TOTAL".trim());
+						vo2.setTotalPositions(vo1.getTotalPositions()-vo2.getTotalPositions());
+					}
 				}
 			}
 			
