@@ -2,6 +2,10 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
+/**
+ * @author Swadhin
+ *
+ */
 public class IdAndNameVO {
 	private Long id;
 	private String name;
@@ -13,6 +17,8 @@ public class IdAndNameVO {
 	private List<IdAndNameVO> issueTypes ;
 	private String actualMobNumber;
 	private List<IdAndNameVO> distList ;
+	private List<Long> distIdList;
+	private List<Long> constIdList;
 	private Long apTotal = 0l;
 	private Long tsTotal = 0l;
 	private Long apNow = 0l;
@@ -137,4 +143,17 @@ public class IdAndNameVO {
 	public void setIsCsd(String isCsd) {
 		this.isCsd = isCsd;
 	}
+	public List<Long> getDistIdList() {
+		return distIdList;
+	}
+	public void setDistIdList(List<Long> distIdList) {
+		this.distIdList = distIdList;
+	}
+	public List<Long> getConstIdList() {
+		return constIdList;
+	}
+	public void setConstIdList(List<Long> constIdList) {
+		this.constIdList = constIdList;
+	}
+	
 }
