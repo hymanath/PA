@@ -78,7 +78,9 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 					" FROM NominatedPostFinal model " +
 					" left join model.nominatedPostMember.nominatedPostPosition.board board " +
 					" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
-					" WHERE model.isDeleted = 'N'" );
+					" WHERE  model.isDeleted='N' and "+
+				" model.nominatedPostMember.isDeleted='N' and "+
+				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " );
 			if(boardLevelId !=null && boardLevelId.longValue()>0L){
 				str.append(" and model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
 		}
@@ -189,7 +191,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		Query query = getSession().createQuery("select distinct model.boardLevel.boardLevelId, model.boardLevel.level " +
 											   " from NominatedPostMember model " +
 											   " where " +
-											   " model.isDeleted = 'N' ");
+											   " model.isDeleted = 'N' and model.nominatedPostPosition.isDeleted = 'N' ");
 		return query.list();
 	}
 	/*
@@ -261,7 +263,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	public List<Object[]> getTotalBoardsAndCorpIdsByMembrIdsList (List<Long> memberIdsList){
 		Query query = getSession().createQuery("select distinct model.nominatedPostMemberId, model.nominatedPostPosition.departments.departmentId, " +
 				" model.nominatedPostPosition.departments.deptName,  model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
-				   " from NominatedPostMember model where model.isDeleted='N' and model.nominatedPostMemberId in (:memberIdsList)");
+				   " from NominatedPostMember model where model.isDeleted='N' amd model.nominatedPostPosition.isDeleted = 'N' and model.nominatedPostMemberId in (:memberIdsList)");
 		query.setParameterList("memberIdsList", memberIdsList);
 		return query.list();
 	}
