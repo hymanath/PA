@@ -16,4 +16,8 @@ public interface ITdpCadreAgeInfoDAO extends GenericDao<TdpCadreAgeInfo,Long>{
 	
 	public List<Object[]> getStateWiseAgeWiseCadreCountsByConstituencies(Long stateId);
 	
+	public List<Object[]> privilegedGetStateWiseAgeWiseCadreCounts(List<Long> locationIdList, String accessType);
+	public List<Object[]> privilegedDistrictwiseAgeWiseCadreCounts(List<Long> distIdList );
+	public List<Object[]> privilegedConstituencyWiseAgeWiseCadreCounts(List<Long> constIdList );
+	
 }
