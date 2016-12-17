@@ -55,7 +55,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="background-color:#CCC">
 						<h3 class="text-capital">G.O.issued / completed</h3>
-						<p><span id="globalLocationId" style="font-weight:bold"></span> / <span style="font-style:italic" id="globalHeadId"></span></p>    
+						<!-- <p><span id="globalLocationId" style="font-weight:bold"></span> / <span style="font-style:italic" id="globalHeadId"></span></p>    -->
 					</div>
 					<div class="panel-body">
 						<div class="row">
@@ -152,7 +152,7 @@ $(document).ready(function(){
 	//$("#globalHeadId").html(deptName+" - "+boardName+" - "+positionName);
 });
 
-setTimeout(function(){ $("#globalHeadId").html(" "+deptName+" - "+boardName+" - "+positionName); }, 3000);
+//setTimeout(function(){ $("#globalHeadId").html(" "+deptName+" - "+boardName+" - "+positionName); }, 3000);
 var globalLocationLevelId = ${param.LocationLevelId};
 var globalLocationLevelValueArr = [${param.locationLevelValueArr}];      
 var deptId = ${param.deptId};
@@ -174,7 +174,7 @@ if(globalLocationLevelId == 2){
 }else if(globalLocationLevelId == 4){
 	globalLocation = "Constituency";
 }
-$("#globalLocationId").html(globalLocation+"  Level");
+//$("#globalLocationId").html(globalLocation+"  Level");
 
   
 	$(document).on('click','.applyBtn',function(){
@@ -307,14 +307,14 @@ $("#globalLocationId").html(globalLocation+"  Level");
 				$("#boardsLevelId").trigger("chosen:updated");
 			if(result != null && result.length > 0){
 			   //console.log(result);   
-			   buildModel(result);  
+			   buildModel(result,typeId);  
 			}else{
 			$("#bodyId").html("No Data Is Available...")
 			}
 			});   
 			
 	}
-	function buildModel(result){      
+	function buildModel(result,typeId){      
 		var str = '';
 		var strDate = $("#DateRanges").val();
 			var dateArray = strDate.split("-");
@@ -378,6 +378,7 @@ $("#globalLocationId").html(globalLocation+"  Level");
 				str+='</div>';
 			}
 			if( result[0].uiFromDateStr != null && result[0].uiToDateStr != null  ){
+				if(typeId == 0){
 					$("#DateRanges").val(result[0].uiFromDateStr+"-"+result[0].uiToDateStr);			
 					$("#DateRanges").daterangepicker({
 					opens:'left',
@@ -391,7 +392,8 @@ $("#globalLocationId").html(globalLocation+"  Level");
 						   'Next One Year': [moment(), moment().add(1, 'year')],  
 						}  
 					
-				});
+					});
+				}
 			}
 			else{
 				
@@ -416,7 +418,7 @@ $("#globalLocationId").html(globalLocation+"  Level");
 	
 
 	function getDepartmentDetails(boardLevelId,typeId){
-		$("#bodyId").html('');
+		//$("#bodyId").html('');
 		$("#departmentId").empty();
 		$("#corporationId").empty();
 		$("#positionId").empty();
@@ -461,7 +463,7 @@ $("#globalLocationId").html(globalLocation+"  Level");
 	function getBoardList(deptsId,boardsLevelId){  
 	$("#corporationId").empty();
 	$("#corporationId").trigger("chosen:updated");	
-		 $("#bodyId").html('');
+		 //$("#bodyId").html('');
 var levelId = $("#boardsLevelId").val(); 
 		var jsObj={
 			
@@ -624,7 +626,7 @@ var levelId = $("#boardsLevelId").val();
 function getDepartmentBoardPositions(deptId,boardId){	
 //alert(globalLocationLevelValueArr)
 //var levelValue = globalLocationLevelValueArr[0];
-$("#bodyId").html('');
+//$("#bodyId").html('');
 var levelId = $("#boardsLevelId").val();
 var locationsArr=[];
 	if(levelId == globalLocationLevelId)
