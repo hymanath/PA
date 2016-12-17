@@ -13,8 +13,10 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCountsGenderVO;
 import com.itgrids.partyanalyst.dto.CadreCountsVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -32,6 +34,7 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	private List<CadreCountsVO> cadreCountsVOList;
 	private CadreCountsGenderVO cadreCountsGenderVO;
 	private List<CadreCountsGenderVO> cadreCountsGenderVOList;
+	private IdAndNameVO idAndNameVO;
 	
 	//Attributes
 	private ICadreRegistrationServiceNew cadreRegistrationServiceNew; 
@@ -84,6 +87,13 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	public void setCadreCountsGenderVOList(
 			List<CadreCountsGenderVO> cadreCountsGenderVOList) {
 		this.cadreCountsGenderVOList = cadreCountsGenderVOList;
+	}
+	
+	public IdAndNameVO getIdAndNameVO() {
+		return idAndNameVO;
+	}
+	public void setIdAndNameVO(IdAndNameVO idAndNameVO) {
+		this.idAndNameVO = idAndNameVO;
 	}
 	//implementation methods
 	public void setServletRequest(HttpServletRequest request) {
@@ -223,9 +233,28 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 	}
 	
 	//USER WISE DEMOGRAPHIC REPORTS..
+	
 	public String userWiseCadreDemographicReport(){
-		return Action.SUCCESS;
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		if(user == null || user.getRegistrationID() == null){
+			return INPUT;
+		}
+		List<String> entitlements = null;
+		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(!(entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_DASHBOARD") || entitlements.contains("ACCESS_USERS_CADRE_REGISTRATION_2016_ADMIN_DASHBOARD_ENTITLEMENT"))){
+				return Action.ERROR;    
+			}   
+		}
+		IdAndNameVO idAndNameVO= (IdAndNameVO)session.getAttribute("idAndNameVO");
+		if(idAndNameVO == null){
+			idAndNameVO = cadreRegistrationServiceNew.getLocationInfoByUserId(user.getRegistrationID());
+			session.setAttribute("idAndNameVO", idAndNameVO);
+		}
+		return Action.SUCCESS;          
 	}
+	
 	public String casteCategoryWiseCadreSummaryReport(){
 	    try{
 	        jobj = new JSONObject(getTask());
