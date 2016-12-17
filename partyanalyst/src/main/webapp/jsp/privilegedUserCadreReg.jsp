@@ -216,19 +216,24 @@
 		{
 			background-color:#fff;
 		}
+		.text_capital{text-transform:uppercase !important}
 	</style>
 	<div class="container">    
 		<!-- Title Row -->
 		<div class="row m_top10" id="fadeInDown">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
-				<button type="button" class="btn btn-primary pull-right text-capital userWiseReport">Cadre Demographics Report</button>
-				<div style="padding:5px;">
-					<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" checked="true" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> TODAY</span>
-					<input type="radio" class="radiobuttonSelectedWise" id="totalId" name="compareC" value="Total" style="margin-top:0px;"/>
-					<span style="margin-right:10px;"> OVER ALL </span>      
-				</div>  
+				<div class="row">
+					<div class="col-md-4 col-xs-12 col-sm-6" style="margin-top: 15px;">
+						<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" checked="true" style="margin-top:0px;"/>
+						<span style="margin-right:10px;"> TODAY</span>
+						<input type="radio" class="radiobuttonSelectedWise" id="totalId" name="compareC" value="Total" style="margin-top:0px;"/>
+						<span style="margin-right:10px;"> OVER ALL </span> 
+					</div>
+					<div class="col-md-8 col-xs-12 col-sm-3">
+						<button type="button" class="btn btn-primary pull-right text_capital userWiseReport">Cadre Demographics Report</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -593,6 +598,7 @@
 				"iDisplayLength" : 10,
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]	
 			});
+			//$("#districtWise2016DataTableId").removeClass("dataTable")
 			//table one ends
 			//table two starts
 			var str='';
@@ -706,6 +712,7 @@
 				"iDisplayLength" : 10,
 				"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
 			});
+			//$("#constituencyWise2016DataTableId").removeClass("dataTable");
 			//table two ends
 			$('[data-toggle="tooltip"]').tooltip();
 			

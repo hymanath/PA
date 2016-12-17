@@ -189,27 +189,16 @@
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
 					str+='<h3 class="panel-title text-capital">state Wise caste report </h3>';
-						
 					str+='</div>';
+					/* str+='<div class="col-md-4 col-xs-12 col-sm-2">';
+						str+='<input id="stateWiseSlider" data-slider-id="stateWiseSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
+					str+='</div>'; */
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="stateWiseCasteExcelReportId" >Export To Excel</button></h4>';
 					str+='</div>';
 				  	str+='</div>';
 				  	str+='</div>';
 				  	str+='<div class="panel-body">';
-					/*str+='<div class="row m_top">';
-						str+='<div class="col-md-12">';
-							str+='<div style="width:480px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >';
-								str+='<h5 style="text-align:center;">Drag Slider for 2014 cast Percentage </h5>';	
-								str+='<div id="sliderFrCstPrcntgWsId" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">';
-									str+='<a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>';
-								str+='</div>';
-								str+='<p style="padding-bottom:2px;">';
-									str+='<input type="text" id="amountFrCstPrcntage" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />';
-								str+='</p>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';*/
 					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered table-condensed stateWiseCasteDetailsDataTableCls" id="">';
 						str+='<thead>';
@@ -289,7 +278,11 @@
 						str+='</table>';
 						
 						str1+='<table class="table table-bordered table-condensed" id="stateWiseCasteTableToExcelDivId">';
+						
 						str1+='<thead>';
+						str1+='<tr>';
+							str1+='<th><h3 class="panel-title text-capital">state Wise caste report </h3></th>';
+						str1+='</tr>';
 							str1+='<tr>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Group</th></b>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Name</th></b>';
@@ -380,6 +373,18 @@
 		$(".stateWiseCasteDetailsDataTableCls").dataTable();
 		$(".stateWiseCasteDetailsDataTableCls").removeClass("dataTable");
 		
+		/* var stateWiseSliderValue;
+			var slider = new Slider('#stateWiseSlider', {
+		   formatter: function(value) {
+			   stateWiseSliderValue=value;
+			 return 'Current value: ' + value;
+		   }
+		});
+		$( "#stateWiseSlider" ).mouseup(function() {
+			alert(stateWiseSliderValue)
+		});
+	 */
+
 		$(document).on("click","#stateWiseCasteExcelReportId",function(){
 		   tableToExcel(stateWiseCasteTableToExcelDivId, 'STATE WISE CASTE REPORT');      
 		});
@@ -411,8 +416,11 @@
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
 					str+='<h3 class="panel-title text-capital"> DISTRICT WISE CASTE REPORT</h3>';
-						
 					str+='</div>';
+					/* str+='<div class="col-md-4 col-xs-12 col-sm-2">';
+						str+='<input id="districtWiseSlider" data-slider-id="districtWiseSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
+					str+='</div>'; */
+					
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="districtWiseCasteExcelReportId" >Export To Excel</button></h4>';
 					str+='</div>';
@@ -609,6 +617,17 @@
 		$(".districtWiseCasteDataTableCls").dataTable();//{"aaSorting": [ [0,'asc'], [4,'desc'] ] }
 		$(".districtWiseCasteDataTableCls").removeClass("dataTable");
 		
+		/* var districtWiseSliderValue;
+			var slider = new Slider('#districtWiseSlider', {
+		   formatter: function(value) {
+			   districtWiseSliderValue=value;
+			 return 'Current value: ' + value;
+		   }
+		});
+		$( "#districtWiseSlider" ).mouseup(function() {
+			alert(districtWiseSliderValue)
+		}); */
+		
 		$(document).on("click","#districtWiseCasteExcelReportId",function(){
 		  tableToExcel(districtWiseCasteTableToExcelDivId, 'DISTRICT WISE CASTE REPORT'); 
 		});
@@ -641,8 +660,10 @@
 				  str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
 					str+='<h3 class="panel-title text-capital">CONSTITUENCY WISE CASTE REPORT</h3>';
-						
 					str+='</div>';
+					/* str+='<div class="col-md-4 col-xs-12 col-sm-2">';
+						str+='<input id="constituencyWiseSlider" data-slider-id="constituencyWiseSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
+					str+='</div>'; */
 					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						str+='<button class="btn btn-success btn-xs" id="constituencyWiseCasteExcelReportId" >Export To Excel</button></h4>';
 					str+='</div>';
@@ -735,7 +756,7 @@
 						str1+='<thead>';
 							str1+='<tr>';
 								str1+='<th class="text-capital "><b class="f_14">District</th></b>';
-								str1+='<th class="text-capital "><b class="f_14">Caste Group</th></b>';
+								str1+='<th class="text-capital "><b class="f_14">Constituency</th></b>';
 								str1+='<th class="text-capital "><b class="f_14">Caste Name</th></b>';
 								str1+='<th class="text-capital " ><b class="f_14">2014 cadre</th></b>';
 								str1+='<th class="text-capital "><b class="f_14">2014 cadre&nbsp;%</th></b>';
@@ -749,10 +770,9 @@
 							str1+='</tr>';
 						str1+='</thead>';
 						str1+='<tbody>';
-						for(var i in result){
-							if(result[i].subList !=null && result[i].subList.length>0){
-								for(var j in result[i].subList){
-									
+							for(var i in result){
+								if(result[i].subList !=null && result[i].subList.length>0){
+									for(var j in result[i].subList){
 											str1+='<tr>';
 											str1+='<td>'+result[i].superlocationName+'</td>';
 											str1+='<td>'+result[i].name+'</td>';
@@ -804,14 +824,11 @@
 											}
 										
 										str1+='</tr>';
-									
-									
-									
-									
-									
+										
+									}
 								}
 							}
-						}
+						
 						
 						str1+='</tbody>';
 						str1+='</table>';
@@ -830,6 +847,17 @@
 		$("#constituencyWiseCasteDetailsExcelReport").html(str1);
 		$(".constituencyWiseCasteDataTableCls").dataTable();
 		$(".constituencyWiseCasteDataTableCls").removeClass("dataTable");
+		
+		/* var constituencyWiseSliderValue;
+			var slider = new Slider('#constituencyWiseSlider', {
+		   formatter: function(value) {
+			   constituencyWiseSliderValue=value;
+			 return 'Current value: ' + value;
+		   }
+		});
+		$( "#constituencyWiseSlider" ).mouseup(function() {
+			alert(constituencyWiseSliderValue);
+		}); */
 		
 		$(document).on("click","#constituencyWiseCasteExcelReportId",function(){
 			tableToExcel(constituencyWiseCasteTableToExcelDivId, 'CONSTITUENCY WISE CASTE REPORT');   
@@ -1235,7 +1263,8 @@
 						str1+='<table class="table table-bordered tableHeaderStyle " id="constituencyWiseTableExcelDivId" >';
 						str1+='<thead>';
 							str1+='<tr>';
-								str1+='<th class="text-capital "><b>DISTRICT</th></b>';
+								str1+='<th class="text-capital "><b>District</th></b>';
+								str1+='<th class="text-capital "><b>Constituency</th></b>';
 								str1+='<th class="text-capital " ><b>Age Range</th></b>';
 								str1+='<th class="text-capital "><b>2014 Cadre</th></b>';
 								str1+='<th class="text-capital "><b>2014 Cadre %</th></b>';
@@ -1250,9 +1279,12 @@
 						str1+='</thead>';
 						str1+='<tbody>';
 						for(var i in result){
+							
+								
 								 if(result[i].subList !=null && result[i].subList.length>0){
 									for(var j in result[i].subList){
 										str1+='<tr>';
+										str1+='<td>'+result[i].superlocationName+'</td>';
 										str1+='<td>'+result[i].name+'</td>';
 										str1+='<td>'+result[i].subList[j].name+'</td>';
 										str1+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
@@ -1267,6 +1299,8 @@
 										str1+='</tr>';
 									}
 								} 
+								
+							
 						}
 						str1+='</tbody>';
 						str1+='</table>';
@@ -1333,7 +1367,7 @@
 					 str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note: M - Male & F - Female</label>';
 					str+='<div class="table-responsive m_top20">';
 					str+='<table class="table table-bordered tableHeaderStyle table-condensed" id="overAllGenderWiseTableToExcel">';
-						str+='<thead>';
+					 	str+='<thead>';
 							str+='<tr>';
 
 								str+='<th class="text-capital " colspan="5" style="text-align:center;"><b class="f_14">2014 cadre</b></th>';
@@ -1440,7 +1474,7 @@
 				  str+='<div class="panel-body">';
 				  str+='<label class="pull-right text-muted" style="margin-top: -10px;">Note:R - Renewal & N-New Cadre & M - Male & F - Female</label>';
 					str+='<div class="table-responsive m_top20">';
-					str+='<table class="table table-bordered tableHeaderStyle table-condensed " id="districtGenderWiseTableToExcel">';
+					str+='<table class="table table-bordered tableHeaderStyle table-condensed districtGenderWiseDataTableCls" id="districtGenderWiseTableToExcel">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th class="text-capital " rowspan="2" ><b>District</b></th>';
@@ -1511,6 +1545,8 @@
 		}
 		
 		$("#genderWiseDistrictDetails").html(str);
+		$('.districtGenderWiseDataTableCls').DataTable();
+		$('.districtGenderWiseDataTableCls').removeClass("dataTable")
 	}
 	$(document).on("click","#districtGenderWiseExcelId",function(){
 		tableToExcel(districtGenderWiseTableToExcel, 'DISRTICT WISE GENDER REPORT');    
@@ -1628,23 +1664,23 @@
 							str1+='</tr>';
 							str1+='<tr>';
 								str1+='<th class="text-capital " ><b>Total</b></th>';
-								str1+='<th class="text-capital " ><b >M</b></th>';
-								str1+='<th class="text-capital " ><b>M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Male</b></th>';
+								str1+='<th class="text-capital " ><b>Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
 							
 								str1+='<th class="text-capital " ><b >Total</b></th>';
-								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >R</th></b>';
-								str1+='<th class="text-capital " ><b >R&nbsp;%&nbsp; (From 2014)</b></th>';
-								str1+='<th class="text-capital " ><b >R&nbsp;%&nbsp; (From 2016)</b></th>';
-								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >N</b></th>';
-								str1+='<th class="text-capital " ><b >N&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >M&nbsp;%</b></th>';
-								str1+='<th class="text-capital " ><b >F&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Renewal</th></b>';
+								str1+='<th class="text-capital " ><b >Renewal (From 2014)</b></th>';
+								str1+='<th class="text-capital " ><b >Renewal (From 2016)</b></th>';
+								str1+='<th class="text-capital " ><b >Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >New</b></th>';
+								str1+='<th class="text-capital " ><b >New&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Male&nbsp;%</b></th>';
+								str1+='<th class="text-capital " ><b >Female&nbsp;%</b></th>';
 							str1+='</tr>';
 							
 						str1+='</thead>';
