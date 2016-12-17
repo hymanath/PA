@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Privileged User Access</title>
+<title>2016-2018 Cadre Registration Details</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="tourDetails/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -222,7 +222,7 @@
 		<div class="row m_top10" id="fadeInDown">
 			<div class="col-md-12 col-xs-12 col-sm-12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
 				<h3 class="text-center text-uppercase">2016 Cadre Admin Dashboard</h3>
-				<button type="button" class="btn btn-primary pull-right text-capital userWiseReport">User Wise Cadre Demographics Report</button>
+				<button type="button" class="btn btn-primary pull-right text-capital userWiseReport">Cadre Demographics Report</button>
 				<div style="padding:5px;">
 					<input type="radio" class="radiobuttonSelectedWise" id="todayId" name="compareC" value="Today" checked="true" style="margin-top:0px;"/>
 					<span style="margin-right:10px;"> TODAY</span>
