@@ -22,6 +22,8 @@ public class SessionType extends BaseModel implements Serializable{
 	private String type;
 	private Time startTime;
 	private Time endTime;
+	private Time lateTime;
+	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -53,6 +55,14 @@ public class SessionType extends BaseModel implements Serializable{
 	}
 	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
+	}
+	
+	@Column(name="late_time")
+	public Time getLateTime() {
+		return lateTime;
+	}
+	public void setLateTime(Time lateTime) {
+		this.lateTime = lateTime;
 	}
 	
 	

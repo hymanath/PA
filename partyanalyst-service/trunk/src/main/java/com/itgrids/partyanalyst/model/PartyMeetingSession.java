@@ -21,6 +21,10 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+/**
+ * @author Administrator
+ *
+ */
 @Entity
 @Table(name = "party_meeting_session")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -28,8 +32,8 @@ public class PartyMeetingSession extends BaseModel implements Serializable {
 	
 	private Long partyMeetingSessionId;
 	private Long partyMeetingId;
-	private String sessionName;
-	private String description;
+//	private String sessionName;
+//	private String description;
 	private Time startTime;
 	private Time endTime;
 	private Time lateTime;
@@ -38,7 +42,11 @@ public class PartyMeetingSession extends BaseModel implements Serializable {
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long orderNo;
 	
+	private Long sessionTypeId;
+	
+	private SessionType sessionType;
 	private PartyMeeting partyMeeting;
 
 	@Id
@@ -61,23 +69,23 @@ public class PartyMeetingSession extends BaseModel implements Serializable {
 		this.partyMeetingId = partyMeetingId;
 	}
 
-	@Column(name = "session_name")
+	/*@Column(name = "session_name")
 	public String getSessionName() {
 		return sessionName;
 	}
 
 	public void setSessionName(String sessionName) {
 		this.sessionName = sessionName;
-	}
+	}*/
 
-	@Column(name = "description")
+	/*@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
+	}*/
 
 	@Column(name = "start_time")
 	public Time getStartTime() {
@@ -162,8 +170,34 @@ public class PartyMeetingSession extends BaseModel implements Serializable {
 	public void setPartyMeeting(PartyMeeting partyMeeting) {
 		this.partyMeeting = partyMeeting;
 	}
-	
-	
-	
 
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	@Column(name="session_type_id")
+	public Long getSessionTypeId() {
+		return sessionTypeId;
+	}
+
+	public void setSessionTypeId(Long sessionTypeId) {
+		this.sessionTypeId = sessionTypeId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="session_type_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SessionType getSessionType() {
+		return sessionType;
+	}
+
+	public void setSessionType(SessionType sessionType) {
+		this.sessionType = sessionType;
+	}
 }
