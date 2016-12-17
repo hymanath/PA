@@ -3474,4 +3474,7 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="partyMeetingSessionDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingSessionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
