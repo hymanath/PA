@@ -708,7 +708,7 @@
 		<pattern>/updateToursAction*</pattern>
 		<pattern>/newCadreDashBoard2016Action*</pattern>
 		<pattern>/fieldMonitoringReportAction*</pattern>
-		<pattern>/privilegedUserCadreRegAction*</pattern> 
+		<pattern>/cadreRegistrationDetailsAction*</pattern> 
 		<pattern>/tdpMembershipPerformanceForAPAction*</pattern>
 		<pattern>/tdpUserWiseMapAction*</pattern>
 		<pattern>/tdpMembershipPerformanceForTSAction*</pattern>
