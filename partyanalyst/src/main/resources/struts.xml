@@ -237,6 +237,7 @@
 			<result type="redirect" name="cadresurveyuserassign">cadreSurveyUsersAssignAction.action</result>
 			<result type="redirect" name="cadreDemographicReports">cadreDemographicReportsAction.action</result>
 			<result type="redirect" name="ALERTDASHBOARDUSERENTITLEMENT">alertDashboardAction.action</result>
+			<result type="redirect" name="userWiseCadreDemographicReports">userWiseCadreDemographicReportAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -15034,7 +15035,7 @@
 	</action>
 	<action name="userWiseCadreDemographicReportAction" class="cadreDemographicReportsAction" method="userWiseCadreDemographicReport">
 		<result name="success">/jsp/userWiseCadreDemographicReport.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=userWiseCadreDemographicReportAction</result>
+		<result name="input">/jsp/loginForm.jsp?src=userWiseCadreDemographicReports</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 	</action>
 	
