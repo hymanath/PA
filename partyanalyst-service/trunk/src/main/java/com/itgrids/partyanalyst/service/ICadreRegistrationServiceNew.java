@@ -56,5 +56,6 @@ public interface ICadreRegistrationServiceNew {
 	
 	public CadreCountsGenderVO privilegedStateWiseCadreGenderCounts(List<Long> locationIdList, String accessType);
 	public List<CadreCountsGenderVO> privilegedLocationWiseCadreGenderCounts(List<Long> locationIdList, String searchType);
+	public List<CadreCountsVO> getBellowLevelLocationWiseAgeReport(Long constituecnyId, String searchType);
 	
 }
