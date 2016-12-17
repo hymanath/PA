@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
@@ -22,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceTabUserDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceTabUserDAO;
@@ -54,6 +57,7 @@ import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class AttendanceService implements IAttendanceService{
@@ -79,8 +83,29 @@ public class AttendanceService implements IAttendanceService{
 	private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
 	private IActivityService activityService;
 	private IActivityTabUserAnswerDAO activityTabUserAnswerDAO; 
-
+	private IPartyMeetingSessionDAO partyMeetingSessionDAO;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
+	
+	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
+	public IPartyMeetingSessionDAO getPartyMeetingSessionDAO() {
+		return partyMeetingSessionDAO;
+	}
+
+	public void setPartyMeetingSessionDAO(
+			IPartyMeetingSessionDAO partyMeetingSessionDAO) {
+		this.partyMeetingSessionDAO = partyMeetingSessionDAO;
+	}
+
 	public IActivityTabUserAnswerDAO getActivityTabUserAnswerDAO() {
 		return activityTabUserAnswerDAO;
 	}
@@ -254,6 +279,8 @@ public class AttendanceService implements IAttendanceService{
 				partyMeetingAttendance.setAttendance(attendance);
 				partyMeetingAttendance.setPartyMeetingId(attendanceVO.getPartyMeetingId());
 				partyMeetingAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				if(attendanceVO.getSessionId() != null && attendanceVO.getSessionId().longValue()>0L)
+					partyMeetingAttendance.setPartyMeetingSessionId(attendanceVO.getSessionId());
 				partyMeetingAttendance = partyMeetingAttendanceDAO.save(partyMeetingAttendance);
 			}
 			else if(attendanceVO.getType().equalsIgnoreCase("Training"))
@@ -391,6 +418,7 @@ public class AttendanceService implements IAttendanceService{
 			{
 				partyMeetings = new ArrayList<UserPartyMeetingVO>(0);
 				UserPartyMeetingVO userPartyMeetingVO = null;
+				Map<Long,UserPartyMeetingVO> partyMeetingsMap = new HashMap<Long,UserPartyMeetingVO>(0);
 				
 				for(PartyMeeting partyMeeting : meetingsList)
 				{
@@ -407,6 +435,7 @@ public class AttendanceService implements IAttendanceService{
 						userPartyMeetingVO.setUserId(userId);
 						userPartyMeetingVO.setPartyMeetingTypeId(partyMeeting.getPartyMeetingType().getPartyMeetingTypeId());
 						userPartyMeetingVO.setPartyMeetingStatusId(1l);
+						userPartyMeetingVO.setIsSessionsAvailable("false");//default no sessions available
 						
 						if(partyMeeting.getMeetingAddress() != null)
 						{
@@ -436,11 +465,63 @@ public class AttendanceService implements IAttendanceService{
 								}
 							}
 						}
-						partyMeetings.add(userPartyMeetingVO);
+						//partyMeetings.add(userPartyMeetingVO);
+						partyMeetingsMap.put(userPartyMeetingVO.getPartyMeetingId(), userPartyMeetingVO);
 					}catch(Exception e)
 					{
 						LOG.error(e);
 					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(partyMeetingsMap)){
+					List<Object[]> sessionsDetails= partyMeetingSessionDAO.getSessionDetailsForPartyMeetings(partyMeetingsMap.keySet());
+					Map<Long,List<UserPartyMeetingVO>> partyMeetingSesssionsMap = new HashMap<Long,List<UserPartyMeetingVO>>(0);
+					if(commonMethodsUtilService.isListOrSetValid(sessionsDetails)){
+						for (Object[] param : sessionsDetails) {
+							try {
+									List<UserPartyMeetingVO> subList = new ArrayList<UserPartyMeetingVO>(0);
+									Long partyMeetingId = commonMethodsUtilService.getLongValueForObject(param[0]);
+									
+									if(partyMeetingSesssionsMap.get(partyMeetingId) != null){
+										subList = partyMeetingSesssionsMap.get(partyMeetingId);
+									}
+									
+									userPartyMeetingVO = new UserPartyMeetingVO();
+									userPartyMeetingVO.setSessionId(commonMethodsUtilService.getLongValueForObject(param[1]));
+									userPartyMeetingVO.setSessionName(commonMethodsUtilService.getStringValueForObject(param[2]));
+									
+									userPartyMeetingVO.setDailyStartTime(commonMethodsUtilService.getStringValueForObject(param[4]));//startTime
+									userPartyMeetingVO.setDailyEndTime(commonMethodsUtilService.getStringValueForObject(param[5]));//endTime
+									userPartyMeetingVO.setDailyLateTime(commonMethodsUtilService.getStringValueForObject(param[6]));//lateTime
+									
+									if(userPartyMeetingVO.getDailyStartTime().length() ==0)
+										userPartyMeetingVO.setDailyStartTime(commonMethodsUtilService.getStringValueForObject(param[7]));//startTime
+									if(userPartyMeetingVO.getDailyEndTime().length() ==0)
+										userPartyMeetingVO.setDailyEndTime(commonMethodsUtilService.getStringValueForObject(param[8]));//endTime
+									if(userPartyMeetingVO.getDailyLateTime().length() ==0)
+										userPartyMeetingVO.setDailyLateTime(commonMethodsUtilService.getStringValueForObject(param[9]));//lateTime
+									
+									subList.add(userPartyMeetingVO);
+									partyMeetingSesssionsMap.put(partyMeetingId, subList);
+								} catch (Exception e) {
+									Log.error("Exception occured in getAttendanceTabUsersMeetings() Details while sessions updating- ",e);
+								}
+						}
+						
+						if(commonMethodsUtilService.isMapValid(partyMeetingSesssionsMap)){
+							for (Long partyMeetingId : partyMeetingSesssionsMap.keySet()) {
+								UserPartyMeetingVO meetingVO = partyMeetingsMap.get(partyMeetingId);
+								if(meetingVO != null){
+									meetingVO.getSubList().addAll(partyMeetingSesssionsMap.get(partyMeetingId));
+									if(commonMethodsUtilService.isListOrSetValid(meetingVO.getSubList())){
+										meetingVO.setIsSessionsAvailable("true");
+									}
+								}
+							}
+						}
+					}
+					
+					partyMeetings.addAll(partyMeetingsMap.values());
 				}
 			}
 		}catch(Exception e)
