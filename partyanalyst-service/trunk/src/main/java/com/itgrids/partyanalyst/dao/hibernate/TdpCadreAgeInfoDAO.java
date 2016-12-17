@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreAgeInfoDAO;
 import com.itgrids.partyanalyst.model.TdpCadreAgeInfo;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long> implements ITdpCadreAgeInfoDAO {
 	
@@ -144,11 +143,11 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
     	
     	StringBuilder sb = new StringBuilder();
     	
-    	sb.append("select C.constituencyId,C.name,info.districtId ,info.district.districtName," +
-    			"         info.ageRangeId , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
-    			"  from   TdpCadreAgeInfo info , Constituency C " +
-    			"  where  info.locationValue = C.constituencyId and " +
-    			"         info.locationScopeId = 4 ");
+    	sb.append(" select C.constituencyId, C.name, info.districtId , info.district.districtName," +
+    			  " info.ageRangeId , sum(info.cadre2014) , sum(info.cadre2016) , sum(info.newCadre) , sum(info.renewalCadre) " +
+    			  " from TdpCadreAgeInfo info , Constituency C " + 
+    			  " where info.locationValue = C.constituencyId and " +
+    			  " info.locationScopeId = 4 ");
     	sb.append(" and info.locationValue in (:constIdList) ");
     	sb.append(" group by C.constituencyId, info.ageRangeId ");
     	
@@ -156,7 +155,39 @@ public class TdpCadreAgeInfoDAO extends GenericDaoHibernate<TdpCadreAgeInfo,Long
     	query.setParameterList("constIdList",constIdList);
     	return query.list();
     }
-	
-	
+	public List<Object[]> getTehsilWiseAgeReport(Long constituecnyId, Long locationScopeId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		if(locationScopeId.longValue() == 5L){
+			sb.append(" info.tehsil.tehsilId, " +//0
+					  " info.tehsil.tehsilName, ");//1
+		}else{
+			sb.append(" info.localElectionBody.localElectionBodyId, " +//0
+					  " info.localElectionBody.name, ");//1
+		}
+		
+		sb.append(" info.ageRangeId, " +//2
+				  " sum(info.cadre2014), " +//3
+				  " sum(info.cadre2016), " +//4
+				  " sum(info.newCadre), " +//5
+				  " sum(info.renewalCadre) " +//6
+				  " from TdpCadreAgeInfo info " +
+				  " where " +
+				  " info.constituencyId = :constituecnyId and " +
+				  " info.locationScopeId = :locationScopeId " +
+				  " group by ");
+		if(locationScopeId.longValue() == 5L){
+			sb.append(" info.tehsil.tehsilId, info.ageRangeId " +
+					  " order by info.tehsil.tehsilId, info.ageRangeId ");
+		}else{
+			sb.append(" info.localElectionBody.localElectionBodyId, info.ageRangeId " +
+					  " order by info.localElectionBody.localElectionBodyId, info.ageRangeId ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("constituecnyId",constituecnyId);
+		query.setParameter("locationScopeId",locationScopeId);
+		
+		return query.list();      
+	}
 	
 }
