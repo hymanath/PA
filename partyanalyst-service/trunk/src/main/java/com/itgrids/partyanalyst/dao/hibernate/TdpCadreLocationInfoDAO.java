@@ -446,20 +446,20 @@ public int insertTdpCadreLocationInfoUpToConstituencyLevel(){
     	
     	if(locationScopeId != null && (locationScopeId.longValue() == 3l || locationScopeId.longValue() == 4l)){
     		if(locationType != null && locationType.equalsIgnoreCase("AP"))
-    			sb.append(" and C.district.districtId between 11 and 23");
+    			sb.append(" and C.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");
     		else if(locationType != null && locationType.equalsIgnoreCase("TS"))
-    			sb.append(" and C.district.districtId between 1 and 10");
+    			sb.append(" and C.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
     	}
     	
     	if(!(locationType != null)){
-    		sb.append(" and C.district.districtId between 1 and 23");    
+    		sb.append(" and C.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");    
     	}  
     	
     	if(locationScopeId != null && (locationScopeId.longValue() == 3l || locationScopeId.longValue() == 4l)){
     		sb.append(" and C.deformDate is null and C.electionScope.electionScopeId = 2");
     	}
     		
-    	if(type != null && type.equalsIgnoreCase("Total"))
+    	if(type != null && type.equalsIgnoreCase("Total"))   
     		sb.append(" and model.type = 'Total'");
     	else if(type != null && type.equalsIgnoreCase("Today"))
     		sb.append(" and model.type = 'Today'");
