@@ -6845,7 +6845,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 Long locationId = null;
 			 if(distList != null && distList.size() > 0){
 				 locationId = (Long)distList.get(0)[0];
-				 if(locationId >= 11l){
+				 if(locationId > 11L && locationId <= 517L){
 					 locationType = "AP";
 				 }else{
 					 locationType = "TS";  
@@ -6861,10 +6861,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 List<Object[]> constList = userConstituencyAccessInfoDAO.getLocationIdList(userId);  
 				 locationId = (Long)constList.get(0)[0];
 				 Long dstId = constituencyDAO.getDistId(locationId);
-				 if(dstId >= 11l){
+				 if(dstId > 11L && dstId <= 517L){
 					 locationType = "AP";
 				 }else{
-					 locationType = "TS";    
+					 locationType = "TS";          
 				 }  
 				 for(Object[] param : constList){
 					 constIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
