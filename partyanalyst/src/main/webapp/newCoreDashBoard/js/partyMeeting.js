@@ -2096,14 +2096,75 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 						 str+='</td>';
 						 str+='<td>';
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
-							  str+='<p class="text-muted text-capital">Attended</p>';
+							  str+='<p class="text-muted text-capital text-success">Attended</p>';
 						 str+='</td>';
+						/*   str+='<td>';
+							 str+='<h4  class="" style="cursor:pointer;" >200<span class="font-10 text-success"> 50%</span></h4>';
+							  str+='<p class="text-muted text-capital text_oragane">Late</p>';
+						 str+='</td>'; */
 						 str+='<td>';  
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].notAttendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital">Absent</p>';    
 						 str+='</td>';        
 					 str+='</tr>';
+					/* str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
+					  str+='<tr>';
+						 str+='<td >';
+							  str+='<p class="text-muted f_12"><span class="specialMeeColor"></span> DEC-16 (Total Sessions)</p>';
+						 str+='</td>';
+						 str+='<td>';
+							str+='<h5>200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5 class="text-success">200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5 class="text_oragane">200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5>200</h5>';
+						 str+='</td>';
+						     
+					 str+='</tr>';
+					  str+='<tr>';
+						 str+='<td style="padding:0px;">';
+							  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:17px !important;">Session- ||</p>';
+						 str+='</td>';
+						 str+='<td>';
+							str+='<h5>200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5 class="text-success">200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5 class="text_oragane">200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5>200</h5>';
+						 str+='</td>';
+						     
+					 str+='</tr>';
+					 
+					  str+='<tr>';
+						 str+='<td style="padding:0px;">';
+							  str+='<p class="text-muted f_12 specialMeeColorA" style="margin-left:17px !important;">Session- ||</p>';
+						 str+='</td>';
+						 str+='<td>';
+							str+='<h5>200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5 class="text-success">200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5 class="text_oragane">200</h5>';
+						 str+='</td>';
+						  str+='<td>';
+							str+='<h5>200</h5>';
+						 str+='</td>';
+						     
+					 str+='</tr>'; */
 				 str+='</tbody></table>';
+				
 				if($(window).width() < 300)
 				{
 					str+='</div>';
