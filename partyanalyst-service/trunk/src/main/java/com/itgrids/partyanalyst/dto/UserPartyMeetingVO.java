@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserPartyMeetingVO implements Serializable{
 
@@ -15,11 +17,55 @@ public class UserPartyMeetingVO implements Serializable{
 	private String endDate;
 	private String dailyStartTime;
 	private String dailyEndTime;
+	private String dailyLateTime;
 	private Long userId;
 	private Long partyMeetingTypeId;
 	private Long partyMeetingStatusId;
 	private PartyMeetingLocationVO partyMeetingLocation;
 	
+	private String isSessionsAvailable;
+	private Long sessionId ;
+	private String sessionName;
+	private String description;
+	
+	private List<UserPartyMeetingVO> subList = new ArrayList<UserPartyMeetingVO>(0);
+	
+	public Long getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+	public String getSessionName() {
+		return sessionName;
+	}
+	public void setSessionName(String sessionName) {
+		this.sessionName = sessionName;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getDailyLateTime() {
+		return dailyLateTime;
+	}
+	public void setDailyLateTime(String dailyLateTime) {
+		this.dailyLateTime = dailyLateTime;
+	}
+	public String getIsSessionsAvailable() {
+		return isSessionsAvailable;
+	}
+	public void setIsSessionsAvailable(String isSessionsAvailable) {
+		this.isSessionsAvailable = isSessionsAvailable;
+	}
+	public List<UserPartyMeetingVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<UserPartyMeetingVO> subList) {
+		this.subList = subList;
+	}
 	public PartyMeetingLocationVO getPartyMeetingLocation() {
 		return partyMeetingLocation;
 	}

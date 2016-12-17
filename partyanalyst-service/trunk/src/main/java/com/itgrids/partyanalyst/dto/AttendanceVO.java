@@ -27,7 +27,14 @@ public class AttendanceVO implements Serializable{
 	private Long tdpCadreId;
 	private Long tabPrimaryKey;
 	private Long serverPrimaryKey;
+	private Long sessionId;
 	
+	public Long getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
 	public Long getTabPrimaryKey() {
 		return tabPrimaryKey;
 	}
