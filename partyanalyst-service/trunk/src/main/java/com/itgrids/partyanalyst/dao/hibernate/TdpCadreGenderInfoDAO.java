@@ -124,7 +124,7 @@ public class TdpCadreGenderInfoDAO extends GenericDaoHibernate<TdpCadreGenderInf
 			sb.append(" info.districtId in (:districtIdList) ");
 		}
 		sb.append(" group by info.districtId , info.gender " +
-				"   order by info.state.stateName ,info.district.districtName ");
+				 "  order by info.state.stateName ,info.district.districtName ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
