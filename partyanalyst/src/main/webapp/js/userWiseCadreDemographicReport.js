@@ -695,7 +695,7 @@
 									
 											str+='<tr>';
 											str+='<td>'+result[i].superlocationName+'</td>';
-											str+='<td>'+result[i].name+'</td>';
+											str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
 											str+='<td>'+result[i].subList[j].name+'</td>';
 											if(result[i].subList[j].previousCadreCount !=null && result[i].subList[j].previousCadreCount>0){
 											str+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
@@ -1238,7 +1238,7 @@
 									for(var j in result[i].subList){
 										str+='<tr>';
 										str+='<td>'+result[i].superlocationName+'</td>';
-										str+='<td>'+result[i].name+'</td>';
+										str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
 										str+='<td>'+result[i].subList[j].name+'</td>';
 										str+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
 										str+='<td>'+result[i].subList[j].previousCadrePercent+'</td>';
@@ -1624,7 +1624,7 @@
 							for(var i in result){
 								str+='<tr>';
 									str+='<td >'+result[i].superlocationName+'</td>';
-									str+='<td >'+result[i].name+'</td>';
+									str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
 									str+='<td>'+result[i].previousCadreTotalCount+'</td>';
 									str+='<td>'+result[i].previousCadreMaleCount+'</td>';
 									str+='<td>'+result[i].previousCadreMalePerc+'</td>';
@@ -1737,3 +1737,76 @@
 		tableToExcel(constituencyGenderWiseTableToExcel, 'CONSTITUENCY WISE GENDER REPORT ');   
 	});
 	
+	
+	//low level Functions
+	function getLowLevelDetailsByAge(searchType){
+	 $("#lowLevelDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jobj = {
+			           constituencyId :globalConstituencyId,
+                       searchType : searchType 
+ 		           }
+		$.ajax({
+			type : 'POST',
+			url : 'getLowLevelDetailsByAgeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			 $("#lowLevelDetailsDiv").html('');
+			 $("#constituencyNameId").html(globalConstituencyName);
+			buildLowLevelDetailsByAge(result);
+		});
+  }
+  function buildLowLevelDetailsByAge(result){
+	   $(".showDivLowLevel").show();
+	  var str='';
+	  str+='<p>age</p>';
+	  $("#lowLevelDetailsDiv").html(str);
+  }
+  
+  function getLowLevelDetailsByCaste(searchType){
+	 $("#lowLevelDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jobj = {
+			           constituencyId :globalConstituencyId,
+                       searchType : searchType 
+ 		           }
+		$.ajax({
+			type : 'POST',
+			url : 'getLowLevelDetailsByCasteAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			 $("#lowLevelDetailsDiv").html('');
+			 $("#constituencyNameId").html(globalConstituencyName);
+			buildLowLevelDetailsByCaste(result);
+		});
+  }
+  function buildLowLevelDetailsByCaste(result){
+	   $(".showDivLowLevel").show();
+	  var str='';
+	  str+='<p>caste</p>';
+	  $("#lowLevelDetailsDiv").html(str);
+  }
+  
+  function getLowLevelDetailsByGender(searchType){
+	 $("#lowLevelDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jobj = {
+			           constituencyId :globalConstituencyId,
+                       searchType : searchType 
+ 		           }
+		$.ajax({
+			type : 'POST',
+			url : 'getLowLevelDetailsByGenderAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			 $("#lowLevelDetailsDiv").html('');
+			 $("#constituencyNameId").html(globalConstituencyName);
+			buildLowLevelDetailsByGender(result);
+		});
+  }
+  function buildLowLevelDetailsByGender(result){
+	  $(".showDivLowLevel").show();
+	  var str='';
+	  str+='<p>gender</p>';
+	  $("#lowLevelDetailsDiv").html(str);
+  }

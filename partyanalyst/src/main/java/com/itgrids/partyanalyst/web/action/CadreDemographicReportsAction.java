@@ -416,6 +416,47 @@ public class CadreDemographicReportsAction  extends ActionSupport implements Ser
 		return Action.SUCCESS;
 	}
     
-    
+	public String getLowLevelDetailsByAge(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			Long constituencyId = jobj.getLong("constituencyId");
+			String searchType  = jobj.getString("searchType");
+			
+			//cadreCountsGenderVOList = cadreRegistrationServiceNew.privilegedLocationWiseCadreGenderCounts(locationIds,searchType);
+		}catch(Exception e){  
+			LOG.error("Exception raised at getLowLevelDetailsByAge() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getLowLevelDetailsByCaste(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			Long constituencyId = jobj.getLong("constituencyId");
+			String searchType  = jobj.getString("searchType");
+			
+			//cadreCountsGenderVOList = cadreRegistrationServiceNew.privilegedLocationWiseCadreGenderCounts(locationIds,searchType);
+		}catch(Exception e){  
+			LOG.error("Exception raised at getLowLevelDetailsByCaste() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getLowLevelDetailsByGender(){
+		
+		try{
+			jobj = new JSONObject(getTask());
+			Long constituencyId = jobj.getLong("constituencyId");
+			String searchType  = jobj.getString("searchType");
+			
+			//cadreCountsGenderVOList = cadreRegistrationServiceNew.privilegedLocationWiseCadreGenderCounts(locationIds,searchType);
+		}catch(Exception e){  
+			LOG.error("Exception raised at getLowLevelDetailsByGender() in cadreDemographicReportsAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
 

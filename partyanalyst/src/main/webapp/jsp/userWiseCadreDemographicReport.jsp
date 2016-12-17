@@ -32,6 +32,7 @@
 	font-size:12px;
 }
 .tableHeaderStyle thead th{ padding:5px !important;font-size:12px !important;}
+
 </style>
 </head>
 <body>  
@@ -47,13 +48,13 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="col-md-10 col-xs-12 col-sm-8">
 									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="ageWiseReport" value="option11" checked="checked"><h4 class="text-capital">age wise report</h4>
+									  <input type="radio" name="inlineRadioOptions" id="ageWiseReport" value="age" checked="checked" class="searchReportCls"><h4 class="text-capital">age wise report</h4>
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="casteWiseReport" value="option22" ><h4 class="text-capital">caste Wise Report</h4>
+									  <input type="radio" name="inlineRadioOptions" id="casteWiseReport" value="caste" class="searchReportCls"><h4 class="text-capital">caste Wise Report</h4>
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="genderWiseReport" value="option33" ><h4 class="text-capital"> gender Wise Report</h4>
+									  <input type="radio" name="inlineRadioOptions" id="genderWiseReport" value="gender" class="searchReportCls"><h4 class="text-capital"> gender Wise Report</h4>
 									</label>
 								</div>
 							</div>
@@ -70,6 +71,7 @@
 								<div id="ageWiseConstituencyDetails" class="ageWiseBlock"></div>
 								<div id="excelDivageWiseConstituencyDetails" style="display:none;"></div>
 							</div>
+							
 						</div>
 						
 						<div class="row">
@@ -103,7 +105,34 @@
 								<div id="excelDivGenderWiseConstituencyDetails" class="" style="display:none;"></div>
 							</div>
 						</div>
-						
+						<div class="col-md-12 col-xs-12 col-sm-12 showDivLowLevel" style="display:none;" >
+							<div class="panel panel-default" >
+								<div class="panel-heading" style="background-color: #f3f3f3 ! important;">
+									 <h3 class="panel-title text-capital"><span id="constituencyNameId"></span> CONSTITUENCY DETAILED REPORT</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">  
+											<label class="radio-inline">
+												<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;" checked><h5 style="margin-top:-1px">Mandal Wise</h5>
+											</label>
+											<label class="radio-inline">
+												<input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5 style="margin-top:-1px">Panchayat Wise</h5>
+											</label>
+											<label class="radio-inline">
+												<input type="radio" class="locationRadioCls" name="selectionType" id="boothRadio1" value="booth" style="margin-top: 0px;"><h5 style="margin-top:-1px">Booth Wise</h5>
+											</label>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">  
+											<div id="lowLevelDetailsDiv"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
 					</div>  
 				</div>	
 			</div>
@@ -123,8 +152,11 @@
 	var districtArray = getdistrictsList();
 	var constituencyArray = getConstituenciesList();
 	var locationArray =  finalLocationIds(accessType ,districtArray , constituencyArray );
+	var globalConstituencyId;
+	var globalConstituencyName;
 	
 	$("#loggedInUserName").html(loggedInUserName);
+	
 	onLoadCalls();
 	
 	function onLoadCalls(){
@@ -147,7 +179,8 @@
 			getDistrictWisegeWiseTdpCadreCounts();
 		}
 		getConstituencyWisegeWiseTdpCadreCounts();
-		
+		 $(".showDivLowLevel").hide();
+		 $("#lowLevelDetailsDiv").html('');
 	});	
 	
 	//CASTE WISE BASIC CALLS.
@@ -161,7 +194,8 @@
 			getdistrictWiseTdpCadreCasteCounts();
 		}
 		getConstituencyWiseTdpCadreCasteCountsAction();           
-		
+		 $(".showDivLowLevel").hide();
+		 $("#lowLevelDetailsDiv").html('');
 	});
 	
 	//gender wise calls
@@ -175,8 +209,62 @@
 		  getDistrictWiseCadreGenderCounts();
 		}
 		getConstituencyWiseCadreGenderCounts();
-		
+		 $(".showDivLowLevel").hide();
+		 $("#lowLevelDetailsDiv").html('');
 	});	
+	function getReportType(){
+		 var searchReportValue = ''; 
+		$('.searchReportCls').each(function(i, obj){
+          if($(this).is(':checked')){
+			  searchReportValue = $(this).val();
+		  }
+		});
+		return searchReportValue;
+	}
+	//Low Level Calls
+	/* $(document).on("click",".locationWiseDetails",function(){
+		
+		 var myoffset = $('#lowLevelDetailsDiv').offset().top;
+		$('html, body').animate({
+			scrollTop: myoffset+"px"
+		}, 2000);
+		
+		globalConstituencyId = $(this).attr("attr_constituency_id");
+		globalConstituencyName = $(this).attr("attr_constituency_name");
+		
+		var searchReportValue=getReportType();
+		
+		if(searchReportValue == "age"){
+			getLowLevelDetailsByAge("mandal");
+		}
+		if(searchReportValue == "caste"){
+			getLowLevelDetailsByCaste("mandal");
+		}
+		if(searchReportValue == "gender"){
+			 getLowLevelDetailsByGender("mandal");
+		}
+		
+	});		 */
+	$(document).on('click','.locationRadioCls',function(){
+		 var searchType = ''; 
+		 var searchReportValue=getReportType();
+		$('.locationRadioCls').each(function(i, obj){
+          if($(this).is(':checked')){
+			  searchType = $(this).val();
+		  }
+		});
+		
+		if(searchReportValue == "age"){
+			getLowLevelDetailsByAge(searchType);
+		}
+		if(searchReportValue == "caste"){
+			getLowLevelDetailsByCaste(searchType);
+		}
+		if(searchReportValue == "gender"){
+			 getLowLevelDetailsByGender(searchType);
+		}
+		
+	});
 	
 	function finalLocationIds(accessType ,districtArray ,constituencyArray ){
 		if(accessType != null && accessType.trim().length > 0){
