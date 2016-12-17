@@ -15082,6 +15082,20 @@
 			<param name="root">cadreCountsGenderVOList</param>
 		</result>
 	</action>
-	
+	<action name="getLowLevelDetailsByAgeAction" class="cadreDemographicReportsAction"  method="getLowLevelDetailsByAge">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVOList</param>
+		</result>
+	</action>
+	<action name="getLowLevelDetailsByCasteAction" class="cadreDemographicReportsAction"  method="getLowLevelDetailsByCaste">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVOList</param>
+		</result>
+	</action>
+	<action name="getLowLevelDetailsByGenderAction" class="cadreDemographicReportsAction"  method="getLowLevelDetailsByGender">
+			<result type="json" name="success">
+			<param name="root">cadreCountsGenderVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
