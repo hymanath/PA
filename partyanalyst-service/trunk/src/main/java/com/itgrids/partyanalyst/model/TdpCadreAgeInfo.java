@@ -41,10 +41,20 @@ public class TdpCadreAgeInfo extends BaseModel implements Serializable {
 	private Long renewalCadre;
 	private String renewalCadrePercent;
 	private Date insertedTime;
+	private Long constituencyId;
+	private Long tehsilId;
+	private Long localElectionBodyId;
+	private Long panchayatId;
+	private Long boothId;
 	
     private VoterAgeRange voterAgeRange;
     private State state;
     private District district;
+    private Constituency constituency;
+    private Tehsil tehsil;
+    private LocalElectionBody localElectionBody;
+    private Panchayat panchayat;
+    private Booth booth;
     
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -209,5 +219,107 @@ public class TdpCadreAgeInfo extends BaseModel implements Serializable {
 	public void setDistrict(District district) {
 		this.district = district;
 	}
+
+	@Column(name = "constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	@Column(name = "tehsil_id")
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	@Column(name = "local_election_body_id")
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	@Column(name = "panchayat_id")
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	@Column(name = "booth_id")
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="constituency_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tehsil_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Tehsil getTehsil() {
+		return tehsil;
+	}
+
+	public void setTehsil(Tehsil tehsil) {
+		this.tehsil = tehsil;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="local_election_body_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public LocalElectionBody getLocalElectionBody() {
+		return localElectionBody;
+	}
+
+	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="panchayat_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Panchayat getPanchayat() {
+		return panchayat;
+	}
+
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="booth_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Booth getBooth() {
+		return booth;
+	}
+
+	public void setBooth(Booth booth) {
+		this.booth = booth;
+	}
     
+	
 }
