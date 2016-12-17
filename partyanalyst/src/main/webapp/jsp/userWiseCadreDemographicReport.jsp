@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <style type="text/css">
 .text-capital{
 	
@@ -95,6 +96,7 @@
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div id="genderWiseDistrictDetails" class="genderWiseBlock" style="display:none;"></div>
+								
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div id="genderWiseConstituencyDetails" class="genderWiseBlock" style="display:none;"></div>
@@ -112,7 +114,7 @@
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/userWiseCadreDemographicReport.js" type="text/javascript"></script>
-
+<script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
  <script type="text/javascript">
 	var loggedInUser = '${USER.registrationID}';
     var loggedInUserName = '${UserName}';
