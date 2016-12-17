@@ -19,9 +19,9 @@ public class PartyMeetingAttendanceTabUserDAO extends GenericDaoHibernate<PartyM
 	@SuppressWarnings("unchecked")
 	public List<PartyMeeting> getPartyMeetingsOfAttendanceTabUser(Long attendanceTabUserId)
 	{
-		Query query = getSession().createQuery("SELECT model.partyMeeting FROM PartyMeetingAttendanceTabUser model where model.attendanceTabUser.attendanceTabUserId = :attendanceTabUserId and model.attendanceTabUser.isEnabled = 'Y'");
+		Query query = getSession().createQuery("SELECT model.partyMeeting FROM PartyMeetingAttendanceTabUser model where " +
+				" model.isDeleted = 'N' and model.attendanceTabUser.attendanceTabUserId = :attendanceTabUserId and model.attendanceTabUser.isEnabled = 'Y'");
 		query.setParameter("attendanceTabUserId",attendanceTabUserId);
-		
 		return query.list(); 
 	}
 }
