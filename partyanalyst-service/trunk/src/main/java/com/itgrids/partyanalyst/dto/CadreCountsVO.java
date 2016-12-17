@@ -29,6 +29,9 @@ public class CadreCountsVO implements Serializable{
 	private Long cadreTotalCount = 0l;
 	private Long newCadreTotalCount = 0l;
 	private Long renewalCadreTotalCount = 0l;
+	
+	private Long ageRangeId;
+	private String ageRange;
 	   
 	private List<CadreCountsVO> subList;
 	private Map<Long,CadreCountsVO> subMap;
@@ -169,5 +172,18 @@ public class CadreCountsVO implements Serializable{
 	public void setSubMap1(Map<Long, CadreCountsVO> subMap1) {
 		this.subMap1 = subMap1;
 	}
+	public Long getAgeRangeId() {
+		return ageRangeId;
+	}
+	public void setAgeRangeId(Long ageRangeId) {
+		this.ageRangeId = ageRangeId;
+	}
+	public String getAgeRange() {
+		return ageRange;
+	}
+	public void setAgeRange(String ageRange) {
+		this.ageRange = ageRange;
+	}
+	
 	
 }
