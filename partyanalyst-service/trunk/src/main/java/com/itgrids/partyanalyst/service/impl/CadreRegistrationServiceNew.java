@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -4527,14 +4528,14 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
   		    
   		    
 		  }catch(Exception e){
-			  LOG.error("Exception occur in ageWiseSummaryReport()  Of CadreRegistrationServiceNew class - ",e);
+			  LOG.error("Exception occur in ageWiseSummaryReport()  Of CadreRegistrationServiceNew class - ",e); 
 		  }
   	   return finalVO;
      }
      //age2,3
-     public List<CadreCountsVO> privilegedLocationWisegeWiseTdpCadreCounts(List<Long> locationIdList , String searchType){
-  	   List<CadreCountsVO> finalList = null;
-  	   try{  
+	public List<CadreCountsVO> privilegedLocationWisegeWiseTdpCadreCounts(List<Long> locationIdList , String searchType){
+		List<CadreCountsVO> finalList = null;
+  	   	try{  
   		   
   		    List<Object[]> ageRangeList = voterAgeRangeDAO.getSpecificAgeRangeList();
   		   
@@ -4712,7 +4713,128 @@ public class CadreRegistrationServiceNew implements ICadreRegistrationServiceNew
 		  LOG.error("Exception occur in locationWiseCadreGenderCounts()  Of CadreRegistrationServiceNew class - ",e);
 	   }
 	   return finalList;
-     }  
+    }
+	public List<CadreCountsVO> getBellowLevelLocationWiseAgeReport(Long constituecnyId, String searchType){
+		try{
+			List<CadreCountsVO> finalList = new ArrayList<CadreCountsVO>();  
+			
+			List<Object[]> data = null;
+			if(searchType.equalsIgnoreCase("tehsil")){
+				getTehsilWiseAgeReport(constituecnyId,searchType,finalList);
+			}else if(searchType.equalsIgnoreCase("panchayat")){
+				getPanchayatWiseAgeReport(constituecnyId,searchType,finalList);
+			}else{
+				
+			}
+			return finalList;
+		}catch(Exception e){  
+			e.printStackTrace();
+			LOG.error("Exception occur in getBellowLevelLocationWiseAgeReport()  Of CadreRegistrationServiceNew class - ",e);
+		}
+		return null;
+	}
+	public void getPanchayatWiseAgeReport(Long constituecnyId, String searchType,List<CadreCountsVO> finalList){
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occur in getPanchayatWiseAgeReport()  Of CadreRegistrationServiceNew class - ",e);
+		}
+	}
+	public void getTehsilWiseAgeReport(Long constituecnyId, String searchType,List<CadreCountsVO> finalList){
+		try{
+			//List<CadreCountsVO> fianlList = new ArrayList<CadreCountsVO>();
+			Map<Long,String> ageRangeIdAndNameMap = new HashMap<Long,String>();
+			List<Object[]> ageRangeList = voterAgeRangeDAO.getSpecificAgeRangeList();
+			if(ageRangeList != null && ageRangeList.size() > 0){
+				for(Object[] param : ageRangeList){
+					ageRangeIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			//for rural
+			Long locationScopeId = 5L;
+			List<Object[]> dataList1 = tdpCadreAgeInfoDAO.getTehsilWiseAgeReport(constituecnyId, locationScopeId);
+			prepairFinalList(dataList1,ageRangeIdAndNameMap,finalList);
+			//for urban;
+			locationScopeId = 7L;
+			List<Object[]> dataList2 = tdpCadreAgeInfoDAO.getTehsilWiseAgeReport(constituecnyId, locationScopeId);
+			prepairFinalList(dataList2,ageRangeIdAndNameMap,finalList);  
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occur in getTehsilWiseAgeReport()  Of CadreRegistrationServiceNew class - ",e);
+		}
+	}
+	public void prepairFinalList(List<Object[]> dataList1,Map<Long,String> ageRangeIdAndNameMap,List<CadreCountsVO> finalList){
+		try{
+			List<CadreCountsVO> cadreCountsVOs = null;
+			Map<Long,List<CadreCountsVO>> locIdAndLocDtlsListMap = new HashMap<Long,List<CadreCountsVO>>();
+			Map<Long,Long> locIdAndTot2014CdrMap = new HashMap<Long,Long>();
+			Map<Long,Long> locIdAndTot2016CdrMap = new HashMap<Long,Long>();
+			Map<Long,Long> locIdAndTotNewCdrMap = new HashMap<Long,Long>();
+			Map<Long,Long> locIdAndTotRenCdrMap = new HashMap<Long,Long>();
+			Long tot2014Cdr = 0L;
+			Long tot2016Cdr = 0L;
+			Long totNewCdr = 0L;
+			Long totRenCdr = 0L;
+			CadreCountsVO cadreCountsVO = null;
+			if(dataList1 != null && dataList1.size() > 0){
+				for(Object[] param : dataList1){
+					if(param[0] != null){
+						cadreCountsVOs  = locIdAndLocDtlsListMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(cadreCountsVOs == null){
+							cadreCountsVOs = new ArrayList<CadreCountsVO>();
+						}
+						cadreCountsVO = new CadreCountsVO();
+						cadreCountsVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						cadreCountsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						cadreCountsVO.setAgeRangeId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						cadreCountsVO.setAgeRange(ageRangeIdAndNameMap.get(commonMethodsUtilService.getLongValueForObject(param[2])));
+						cadreCountsVO.setPreviousCadreCount(commonMethodsUtilService.getLongValueForObject(param[3]));//2014 cadre count
+						cadreCountsVO.setCadreCount(commonMethodsUtilService.getLongValueForObject(param[4]));//2016 cadre count
+						cadreCountsVO.setNewCadre(commonMethodsUtilService.getLongValueForObject(param[5]));//new cadre
+						cadreCountsVO.setRenewalCadre(commonMethodsUtilService.getLongValueForObject(param[5]));//ren cadre
+						cadreCountsVOs.add(cadreCountsVO);
+						locIdAndLocDtlsListMap.put(cadreCountsVO.getId(), cadreCountsVOs);
+						tot2014Cdr = locIdAndTot2014CdrMap.get(cadreCountsVO.getId());
+						if(tot2014Cdr == null){
+							tot2014Cdr = cadreCountsVO.getPreviousCadreCount();
+							locIdAndTot2014CdrMap.put(cadreCountsVO.getId(), tot2014Cdr);
+							
+							tot2016Cdr = cadreCountsVO.getCadreCount();
+							locIdAndTot2016CdrMap.put(cadreCountsVO.getId(), tot2016Cdr);
+							
+							totNewCdr = cadreCountsVO.getNewCadre();
+							locIdAndTotNewCdrMap.put(cadreCountsVO.getId(), totNewCdr);
+							
+							totRenCdr = cadreCountsVO.getRenewalCadre();
+							locIdAndTotRenCdrMap.put(cadreCountsVO.getId(), totRenCdr);
+						}else{
+							locIdAndTot2014CdrMap.put(cadreCountsVO.getId(), locIdAndTot2014CdrMap.get(cadreCountsVO.getId()) + cadreCountsVO.getPreviousCadreCount());
+							locIdAndTot2016CdrMap.put(cadreCountsVO.getId(), locIdAndTot2016CdrMap.get(cadreCountsVO.getId()) + cadreCountsVO.getCadreCount());
+							locIdAndTotNewCdrMap.put(cadreCountsVO.getId(), locIdAndTotNewCdrMap.get(cadreCountsVO.getId()) + cadreCountsVO.getNewCadre());
+							locIdAndTotRenCdrMap.put(cadreCountsVO.getId(), locIdAndTotRenCdrMap.get(cadreCountsVO.getId()) + cadreCountsVO.getRenewalCadre());
+						}
+					}
+				}
+			}
+			if(locIdAndLocDtlsListMap.size() > 0){
+				for(Entry<Long,List<CadreCountsVO>> entry : locIdAndLocDtlsListMap.entrySet()){
+					cadreCountsVOs = entry.getValue();
+					for(CadreCountsVO countsVO : cadreCountsVOs){
+						countsVO.setPreviousCadrePercent(calcPercantage(countsVO.getPreviousCadreCount(),locIdAndTot2014CdrMap.get(entry.getKey())));
+						countsVO.setCadrePercent(calcPercantage(countsVO.getCadreCount(),locIdAndTot2016CdrMap.get(entry.getKey())));
+						countsVO.setPreviousCadreRenewalPercent(calcPercantage(countsVO.getRenewalCadre(),countsVO.getPreviousCadreCount()));
+						countsVO.setRenewalCadrePercent(calcPercantage(countsVO.getRenewalCadre(),countsVO.getCadreCount()));
+						countsVO.setNewCadrePercent(calcPercantage(countsVO.getNewCadre(),countsVO.getCadreCount()));
+					}
+					finalList.addAll(entry.getValue());
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occur in prepairFinalList()  Of CadreRegistrationServiceNew class - ",e);
+		}
+	}
      
   	   
 }
