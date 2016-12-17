@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ public class SessionType extends BaseModel implements Serializable{
 	
 	private Long sessionTypeId;
 	private String type;
+	private Time startTime;
+	private Time endTime;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -37,6 +40,21 @@ public class SessionType extends BaseModel implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
+	@Column(name="start_time")
+	public Time getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
+	}
+	@Column(name="end_time")
+	public Time getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+	
 	
 	
 
