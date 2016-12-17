@@ -31,7 +31,7 @@ public class PartyMeetingAttendanceTabUser extends BaseModel implements Serializ
 	private AttendanceTabUser attendanceTabUser;
 	private User insertedBy;
 	private Date insertedTime;
-	
+	private String isDeleted;
 	private Long partyMeetingId;
 	private Long attendanceTabUserId;
 	private Long insertedById;
@@ -121,5 +121,15 @@ public class PartyMeetingAttendanceTabUser extends BaseModel implements Serializ
 	public void setInsertedById(Long insertedById) {
 		this.insertedById = insertedById;
 	}
+
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	
 }

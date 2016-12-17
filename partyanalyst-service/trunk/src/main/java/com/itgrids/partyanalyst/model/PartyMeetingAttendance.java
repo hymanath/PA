@@ -32,7 +32,9 @@ public class PartyMeetingAttendance extends BaseModel implements Serializable{
 	private PartyMeeting partyMeeting;
 	private Date insertedTime;
 	private Long partyMeetingId;
+	private Long partyMeetingSessionId;
 	
+	private PartyMeetingSession partyMeetingSession;
 	public PartyMeetingAttendance(){}
 
 	@Id
@@ -87,5 +89,26 @@ public class PartyMeetingAttendance extends BaseModel implements Serializable{
 	public void setPartyMeetingId(Long partyMeetingId) {
 		this.partyMeetingId = partyMeetingId;
 	}
+
 	
+	@Column(name="party_meeting_session_id")
+	public Long getPartyMeetingSessionId() {
+		return partyMeetingSessionId;
+	}
+
+	public void setPartyMeetingSessionId(Long partyMeetingSessionId) {
+		this.partyMeetingSessionId = partyMeetingSessionId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_meeting_session_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeetingSession getPartyMeetingSession() {
+		return partyMeetingSession;
+	}
+
+	public void setPartyMeetingSession(PartyMeetingSession partyMeetingSession) {
+		this.partyMeetingSession = partyMeetingSession;
+	}
 }
