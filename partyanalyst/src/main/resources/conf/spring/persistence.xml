@@ -1072,6 +1072,7 @@
 	                  <value>com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocationNew</value>
 	                  <value>com.itgrids.partyanalyst.model.TourType</value>
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingSession</value>
+	                  <value>com.itgrids.partyanalyst.model.SessionType</value>
 	                  
 	             </list>
 			
