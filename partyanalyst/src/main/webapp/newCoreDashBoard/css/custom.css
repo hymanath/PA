@@ -1982,3 +1982,18 @@ assignedCandidatesUl1 li:last-child
 .bg_D8 {
 	background-color: #DBDFE2 !important;
 }
+.text_oragane{color:#FF3232;}
+
+.specialMeeColor {
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+    height: 6px;
+    width: 6px;
+}
+
+.specialMeeColorA::before {
+    
+    content: "---- ";
+   
+}
