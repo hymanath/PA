@@ -229,7 +229,7 @@
 			<result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
 			<result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardNewAction.action</result>
 			<result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>
-			<result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>
+			<result type="redirect" name="accessUsersCadreDashboard">cadreRegistrationDetailsAction.action</result>
 			<result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
 			<result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
 			<result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
@@ -5692,7 +5692,7 @@
       <result type="redirect" name="cadreFiledMonitoring">fieldMonitoringNewAction.action</result>
       <result type="redirect" name="cadreDataMonitoringDashboard">dataMonitoringDashboardNewAction.action</result>
       <result type="redirect" name="cadreDataMonitoring">dataMonitoringAction.action</result>    
-      <result type="redirect" name="accessUsersCadreDashboard">privilegedUserCadreRegAction.action</result>   
+      <result type="redirect" name="accessUsersCadreDashboard">cadreRegistrationDetailsAction.action</result>   
       <result type="redirect" name="cadrewebregistration2016">cadreWebRegistrationAction.action</result>
       <result type="redirect" name="cadre2016dashboard">newCadreDashBoard2016Action.action</result>
       <result type="redirect" name="tourUserEntitlement">updateToursDetailsAction.action</result>
@@ -14582,9 +14582,9 @@
 			<param name="root">cadreDtlsList</param>
 		</result>
 	</action>
-	<action name="privilegedUserCadreRegAction" class="privilegedUserCadreRegAction">
+	<action name="cadreRegistrationDetailsAction" class="privilegedUserCadreRegAction">
 		<result name="success">/jsp/privilegedUserCadreReg.jsp</result>
-		<result name="input">/jsp/loginForm.jsp?src=privilegedUserCadreRegAction</result>
+		<result name="input">/jsp/loginForm.jsp?src=cadreRegistrationDetailsAction</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
 	<action name="get2016LocationWiseRegisteredCounts" class="privilegedUserCadreRegAction" method="get2016LocationWiseRegisteredCountsForPreviligedUser">
