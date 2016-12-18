@@ -8,7 +8,9 @@ import com.itgrids.partyanalyst.model.TdpCadreAgeInfo;
 
 public interface ITdpCadreAgeInfoDAO extends GenericDao<TdpCadreAgeInfo,Long>{
 	
+	public int deleteAllRecords(List<Long> locationScopeIds);
 	public int pushCadreCountsLocationWiseByAge();
+	public int insertTdpCadreLocationInfoUpToLowLevelByAgeRange();
 	
 	public List<Object[]> getStateWiseAgeWiseCadreCounts(Long stateId);
 	public List<Object[]> getDistrictwiseAgeWiseCadreCounts(Long stateId );
