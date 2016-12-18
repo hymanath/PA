@@ -1864,6 +1864,21 @@
 									
 								</ul>
 							</div>
+							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<span class="headingColor text-capitalize">Special meetings performance cohort</span>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div id="specialMeetingsPerformanceOverViewDiv"></div>
+									</div>
+								</div>
+							</div>-->
+							
 							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"></div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default panelNew">
@@ -3837,7 +3852,6 @@
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
 	});
-
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
