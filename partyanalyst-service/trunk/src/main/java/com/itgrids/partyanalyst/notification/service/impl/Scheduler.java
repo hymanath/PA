@@ -684,4 +684,26 @@ public class Scheduler {
 		}
 		return rs;  
 	}
+	
+	public ResultStatus pushCadreCountsLocationWiseByAgeByLowLevel(){
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){  
+			return rs;
+		}
+		log.error(" Entered In To -  Pushing Location wise Age Data to Intermediate Table By Low Level.. "); 
+		log.fatal(" Entered In To -  Pushing Location wise Age Data to Intermediate Table  By Low Level.. ");
+		try{  
+			rs = cadreRegistrationServiceNew.pushTdpCadreDataToIntermediateByLowLevelByAgeRange();
+			if(rs != null && rs.getMessage() != null && rs.getMessage().trim().length() > 0){
+				if(rs.getMessage().equalsIgnoreCase("Failure")){
+					log.error(" Exception Occurred While Pushing Location wise Age Data to Intermediate Table By Low Level .. "); 
+				    log.fatal(" Exception Occurred While Pushing Location wise Age Data to Intermediate Table By Low Level .. ");
+				}
+			}
+		}catch(Exception e){
+			log.error("\n\n pushCadreCountsLocationWiseByAgeByLowLevel() "); 
+			log.fatal("\n\n pushCadreCountsLocationWiseByAgeByLowLevel() "); 
+		}
+		return rs;  
+	}
 }
