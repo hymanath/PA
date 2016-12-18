@@ -498,4 +498,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getUserTrackingDetails(Long cadreSurveyUserId,Date fromDate,Date toDate);
 	  public List<Object[]> getActualCountOfCadreSurveyUserWiseCount(Set<Long> cadreSurveyUsers,Date fromDate,Date toDate);
 	  
+	 
+	  public List<Object[]> levelWiseRenewalTdpCareDataByAgeRange(String levelType);
+	  public List<Object[]> levelWiseTdpCadreDataByAgeRange(String levelType,Long enrollmentYearId);
+	  
 } 
