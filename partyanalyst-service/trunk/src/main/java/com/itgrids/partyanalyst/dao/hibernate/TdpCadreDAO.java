@@ -8839,4 +8839,78 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			return query.list();
 			
 		}
+	   
+	   //AGE WISE
+	   public List<Object[]> levelWiseTdpCadreDataByAgeRange(String levelType,Long enrollmentYearId){
+			
+			StringBuilder sbS = new StringBuilder();
+			
+			sbS.append(" select ");
+			StringBuilder sbE = new StringBuilder();
+			if(levelType.equalsIgnoreCase("tehsil")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.tehsil.tehsilId,model1.voterAgeRangeId ,model1.ageRange ");//3
+				sbE.append(" group by model.tdpCadre.userAddress.tehsil.tehsilId ,model1.voterAgeRangeId ");
+			}else if(levelType.equalsIgnoreCase("leb")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.localElectionBody.localElectionBodyId, model1.voterAgeRangeId  ,model1.ageRange  ");
+				sbE.append(" group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,model1.voterAgeRangeId ");
+			}else if(levelType.equalsIgnoreCase("panchayat")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.panchayat.panchayatId, model1.voterAgeRangeId  , model1.ageRange  ");
+				sbE.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId,model1.voterAgeRangeId ");
+			}else if(levelType.equalsIgnoreCase("ward")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId , model.tdpCadre.userAddress.ward.constituencyId , model1.voterAgeRangeId  ,model1.ageRange  ");
+				sbE.append(" group by model.tdpCadre.userAddress.ward.constituencyId , model1.voterAgeRangeId");
+			}else if(levelType.equalsIgnoreCase("booth")){
+				sbS.append(" model.tdpCadre.userAddress.constituency.constituencyId  , model.tdpCadre.userAddress.booth.boothId , model1.voterAgeRangeId  ,model1.ageRange ");
+				sbE.append(" group by model.tdpCadre.userAddress.booth.boothId ,model1.voterAgeRangeId ");
+			}
+			sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId ) " +//4
+					"   from  TdpCadreEnrollmentYear model , VoterAgeRange model1" +
+					"   where model.tdpCadre.age between model1.minValue and model1.maxValue and " +
+					"         model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' and " +
+					"         model.tdpCadre.enrollmentYear = 2014 and model1.voterAgeRangeId not in (1,7) and model.enrollmentYearId = :enrollmentYearId" );
+			
+			Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+			
+			query.setParameter("enrollmentYearId",enrollmentYearId);
+			
+			return query.list();
+		}
+	   
+	   public List<Object[]> levelWiseRenewalTdpCareDataByAgeRange(String levelType){
+			
+			StringBuilder sbS = new StringBuilder();
+			sbS.append(" select ");
+			StringBuilder sbE = new StringBuilder();
+			if(levelType.equalsIgnoreCase("tehsil")){
+				sbS.append(" tc.userAddress.tehsil.tehsilId, range.voterAgeRangeId ");
+				sbE.append(" group by tc.userAddress.tehsil.tehsilId ,  range.voterAgeRangeId");
+			}else if(levelType.equalsIgnoreCase("leb")){
+				sbS.append(" tc.userAddress.localElectionBody.localElectionBodyId , range.voterAgeRangeId");
+				sbE.append(" group by tc.userAddress.localElectionBody.localElectionBodyId ,  range.voterAgeRangeId");
+			}else if(levelType.equalsIgnoreCase("panchayat")){
+				sbS.append(" tc.userAddress.panchayat.panchayatId ,  range.voterAgeRangeId");
+				sbE.append(" group by tc.userAddress.panchayat.panchayatId ,  range.voterAgeRangeId");
+			}else if(levelType.equalsIgnoreCase("ward")){
+				sbS.append(" tc.userAddress.ward.constituencyId ,  range.voterAgeRangeId");
+				sbE.append(" group by tc.userAddress.ward.constituencyId ,  range.voterAgeRangeId");
+			}else if(levelType.equalsIgnoreCase("booth")){
+				sbS.append(" tc.userAddress.booth.boothId ,  range.voterAgeRangeId");
+				sbE.append(" group by tc.userAddress.booth.boothId ,  range.voterAgeRangeId");
+			}
+			sbS.append("      ,count(distinct tc.tdpCadreId) " +
+					"   from  TdpCadre tc , TdpCadreEnrollmentYear year1, TdpCadreEnrollmentYear year2, VoterAgeRange range " +
+					"   where tc.tdpCadreId = year1.tdpCadre.tdpCadreId and  tc.tdpCadreId = year2.tdpCadre.tdpCadreId and " +
+					"         tc.age between range.minValue and range.maxValue and " +
+					"         tc.isDeleted = 'N' and tc.enrollmentYear = 2014 and " +
+					"         year1.isDeleted = 'N' and year1.enrollmentYear.enrollmentYearId = :previousEnrollmentYear and " +
+					"         year2.isDeleted = 'N' and range.voterAgeRangeId not in (1,7) and year2.enrollmentYear.enrollmentYearId = :presentEnrollmentYear ");
+					  
+			
+			Query query = getSession().createQuery(new StringBuilder(sbS.toString()).append(sbE.toString()).toString());
+			
+			query.setParameter("previousEnrollmentYear",IConstants.PREVIOUS_CADRE_ENROLLMENT_YEAR);
+			query.setParameter("presentEnrollmentYear",IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			
+			return query.list();
+		}
 	}
