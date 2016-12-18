@@ -796,6 +796,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".moreMeetingsBlocksDetailed").show();
 		$(".moreMeetingsBlocks1").show();
 		}
+		//buildStatelevelSpecialMeetingsPerformanceReport();
 	});
 	$(document).on("click",".unExpandBlock",function(){
 		$(this).removeClass("unExpandBlock");
@@ -3560,5 +3561,123 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   }
    }
    
+    function buildStatelevelSpecialMeetingsPerformanceReport(){
+	   
+	   var str='';
+	   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="row">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-8" style="margin-top: 6px;">';
+				str+='<h4>State Co-Ordination Meetings with CBN - DEC - 16</h4>';
+			str+='</div>';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<ul class="activeUlCls  list-inline pull-right">';
+					str+='<li class="active " id="" attr_over_all_cnt="0"  attr_filter_value="All">All Sessions</li>';
+					str+='<li class="">Session-|</li>';
+					str+='<li class="">Session-||</li>';
+				str+='</ul>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row m_top10">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+			str+='<div class="panel panel-default">';
+			 str+=' <div class="panel-heading">All Sessions</div>';
+			  str+='<div class="panel-body">';
+				str+='<table class="table border_top_noneCoh tablenthChild">';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td class="text-success">Total&nbsp;Attended<br>2500</td>';
+								str+='<td class="text_oragane">Late&nbsp;Attended<br>2500</td>';
+									str+='<td>Absent<br>2500</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+			str+='<div class="panel panel-default">';
+			 str+=' <div class="panel-heading" style="color:#35009B;">Session-|</div>';
+			  str+='<div class="panel-body">';
+				str+='<table class="table border_top_noneCoh tablenthChild">';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td class="text-success">Total&nbsp;Attended<br>2500</td>';
+								str+='<td class="text_oragane">Late&nbsp;Attended<br>2500</td>';
+									str+='<td>Absent<br>2500</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+			str+='<div class="panel panel-default">';
+			 str+=' <div class="panel-heading" style="color:#630134;">Session-||</div>';
+			  str+='<div class="panel-body">';
+				str+='<table class="table border_top_noneCoh tablenthChild">';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td class="text-success">Total&nbsp;Attended<br>2500</td>';
+								str+='<td class="text_oragane">Late&nbsp;Attended<br>2500</td>';
+									str+='<td>Absent<br>2500</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row m_top10">';
+			str+='<table class="table border_top_apply">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>District Name</th>';
+						str+='<th>Leader Name</th>';
+						str+='<th>Designation</th>';
+						str+='<th>Contact Number</th>';
+						str+='<th>All Sessions</th>';
+						str+='<th>Sessions-|</th>';
+						str+='<th>Sessions-||</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td>Srikakulam</td>';
+						str+='<td>Srikakulam</td>';
+						str+='<td>MLA</td>';
+						str+='<td>98856322852</td>';
+						str+='<td>01</td>';
+						str+='<td>Y</td>';
+						str+='<td>N</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>Srikakulam</td>';
+						str+='<td>Srikakulam</td>';
+						str+='<td>MLA</td>';
+						str+='<td>98856322852</td>';
+						str+='<td>01</td>';
+						str+='<td>Y</td>';
+						str+='<td>N</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td>Srikakulam</td>';
+						str+='<td>Srikakulam</td>';
+						str+='<td>MLA</td>';
+						str+='<td>98856322852</td>';
+						str+='<td>01</td>';
+						str+='<td>Y</td>';
+						str+='<td>N</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	   str+='</div>';
+	   
+	   $("#specialMeetingsPerformanceOverViewDiv").html(str);
+   }
+  
   /* Meeting Comment Block end */
   

@@ -1997,3 +1997,14 @@ assignedCandidatesUl1 li:last-child
     content: "---- ";
    
 }
+.border_top_noneCoh tbody tr td{
+	border-top:none !important;
+	border-right:1px solid #d3d3d3 !important;
+}
+.tablenthChild tbody tr td:nth-child(3) {
+border-right:none !important;
+}
+.border_top_apply thead tr th{
+	border-top:1px solid #d3d3d3 !important;
+	
+}
