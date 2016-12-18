@@ -253,11 +253,11 @@
 		$(".casteWiseBlock").show();
 		$(".genderWiseBlock").hide();
 		getCasteCategoryWiseTdpCadreSummaryReport();
-		getstateWiseTdpCadreCasteCounts(1);
+		getstateWiseTdpCadreCasteCounts(0.5);
 		if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
-			getdistrictWiseTdpCadreCasteCounts(1);
+			getdistrictWiseTdpCadreCasteCounts(0.5);
 		}
-		getConstituencyWiseTdpCadreCasteCountsAction(1);
+		getConstituencyWiseTdpCadreCasteCountsAction(0.5);
 		 $(".showDivLowLevel").hide();
 		 $("#lowLevelDetailsDiv").html('');
 		 $("#stateSliderValue").text(0.5);
