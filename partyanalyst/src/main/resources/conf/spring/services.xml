@@ -1722,6 +1722,16 @@
 	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByAge"/> 
 	</bean>
 	
+	<bean name="pushAgeWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.CronTriggerBean">  
+    	<property name="jobDetail" ref="triggerAgeWiseTdpCadreCountsByLowLevel" />
+        <property name="cronExpression" value="0 13 19 * * ?" /> 
+	</bean>
+    <bean name="triggerAgeWiseTdpCadreCountsByLowLevel" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushCadreCountsLocationWiseByAgeByLowLevel"/> 
+	</bean>
+	
+	
      <!-- TDPCADRE 2016 INTERMEDIATE TABLES SCHEDULERS END -->
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -1771,7 +1781,7 @@
 		    <ref bean="pushGenderWiseTdpCadreCounts"/> 
 		    <ref bean="pushCasteStateWiseTdpCadreCounts"/> 
 		    <ref bean="pushAgeWiseTdpCadreCounts"/> 
-		    
+		    <ref bean="pushAgeWiseTdpCadreCountsByLowLevel"/> 
         </list>
     	</property>
 	</bean>
@@ -3817,6 +3827,7 @@
 	   <property name="voterAgeRangeDAO" ref="voterAgeRangeDAO" />
 	   <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 	   <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+	   <property name="tdpCadreAgeInfoTempDAO" ref="tdpCadreAgeInfoTempDAO" />
 	</bean>
 	
 	<bean name="imageAndStringConverter" class="com.itgrids.partyanalyst.utils.ImageAndStringConverter" >
