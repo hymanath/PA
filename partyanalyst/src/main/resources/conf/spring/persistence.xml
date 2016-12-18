@@ -1074,6 +1074,8 @@
 	                  <value>com.itgrids.partyanalyst.model.PartyMeetingSession</value>
 	                  <value>com.itgrids.partyanalyst.model.SessionType</value>
 	                  
+	                  <value>com.itgrids.partyanalyst.model.TdpCadreAgeInfoTemp</value>
+	                  
 	             </list>
 			
 		</property>
