@@ -58,4 +58,6 @@ public interface ICadreRegistrationServiceNew {
 	public List<CadreCountsGenderVO> privilegedLocationWiseCadreGenderCounts(List<Long> locationIdList, String searchType);
 	public List<CadreCountsVO> getBellowLevelLocationWiseAgeReport(Long constituecnyId, String searchType);
 	
+	public ResultStatus pushTdpCadreDataToIntermediateByLowLevelByAgeRange();
+	
 }
