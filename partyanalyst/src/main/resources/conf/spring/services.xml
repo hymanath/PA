@@ -2706,6 +2706,7 @@
           <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
           <property name="tabUserEnrollmentInfoDAO"  ref="tabUserEnrollmentInfoDAO"></property>
           <property name="tdpCadreDataSourceTypeInfoDAO"  ref="tdpCadreDataSourceTypeInfoDAO"></property>
+             <!--<property name="districtConstituenciesDAO"  ref="districtConstituenciesDAO"></property>-->
      </bean>
     <bean name="ctpCasteReportService"  class="com.itgrids.partyanalyst.service.impl.CtpCasteReportService">
      
@@ -3139,7 +3140,7 @@
 		<property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO"></property>
 		<property name="activityService" ref="activityService"></property>
 		<property name="activityTabUserAnswerDAO" ref="activityTabUserAnswerDAO"></property>
-		
+		<property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO"></property>
 	</bean>
 	
 	<bean name="partyMeetingService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingService">
