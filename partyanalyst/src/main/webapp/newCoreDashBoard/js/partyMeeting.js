@@ -751,7 +751,44 @@ $(document).on("click",".meetingLiCls",function(){
 			
 		}
 	});
-	
+	/* $(document).on("click",".statelevelSessionMeeting",function(){
+		//var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+		//var meetingTypeId = $(this).attr("attr_meeting_type_id");
+		$(".stateLevelMeetingsExpand,.specialMeetings").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		
+		//$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+		//$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+		$(".moreMeetingsBlocksIcon").removeClass("unExpandBlock");
+		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksDetailed,.moreMeetingsBlocksComparision,moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
+		
+		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+		{
+			
+			$(".stateLevelMeetingBlock").hide();
+			$(".dateRangePickerClsForMeetings").addClass("hide");
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		}else{
+			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".stateLevelMeetingBlock").show();
+			$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+			$(".dateRangePickerClsForMeetings").removeClass("hide");
+			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+			getstatelevelSessionMettings();
+			
+		}
+	}); */
 	$(document).on("click",".specialMeetings",function(){
 		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
 		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
@@ -2099,18 +2136,19 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="attended" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].attendedCount+' <span class="font-10 text-success"> '+result[i].attendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital text-success">Attended</p>';
 						 str+='</td>';
-						/*   str+='<td>';
+						  /*  str+='<td>';
 							 str+='<h4  class="" style="cursor:pointer;" >200<span class="font-10 text-success"> 50%</span></h4>';
 							  str+='<p class="text-muted text-capital text_oragane">Late</p>';
-						 str+='</td>'; */
+						 str+='</td>';  */
 						 str+='<td>';  
 							 str+='<h4 attr_meeting_id="'+result[i].id+'" class="meetingMemberDtlsCls" style="cursor:pointer;" attr_state="'+state+'" attr_status="absent" attr_main_type_id="'+mainTypeMeetingId+'" attr_meeting_type_arr="'+partyMeetingTypeArr+'" attr_start_date="'+fromDateStr+'" attr_end_date="'+toDateStr+'">'+result[i].notAttendedCount+' <span class="font-10 text-danger"> '+result[i].notAttendedPerc+'%</span></h4>';
 							  str+='<p class="text-muted text-capital">Absent</p>';    
 						 str+='</td>';        
 					 str+='</tr>';
-					/* str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
+					/*  str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
 					  str+='<tr>';
 						 str+='<td >';
+							str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
 							  str+='<p class="text-muted f_12"><span class="specialMeeColor"></span> DEC-16 (Total Sessions)</p>';
 						 str+='</td>';
 						 str+='<td>';
@@ -2163,7 +2201,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 							str+='<h5>200</h5>';
 						 str+='</td>';
 						     
-					 str+='</tr>'; */
+					 str+='</tr>';  */
 				 str+='</tbody></table>';
 				
 				if($(window).width() < 300)
@@ -3678,6 +3716,312 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   
 	   $("#specialMeetingsPerformanceOverViewDiv").html(str);
    }
+	/* function getstatelevelSessionMettings(){
+		var str='';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+    
+			    str+='<h5 class="text-capital">State Committee</h5>'; 
+				str+='<div class="row">';
+					str+='<div class="col-md-2 col-xs-12 col-sm-3">';
+						str+='<div id="stateLevelMeetingBlockIdGr" style="height:120px;"></div>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+						str+='<div id="stateLevelMeetingBlockIdGr1" style="height:120px;min-width: 129px;"></div>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+						str+='<div id="stateLevelMeetingBlockIdGr2" style="height:120px;min-width: 129px;"></div>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+						str+='<div id="stateLevelMeetingBlockIdGr3" style="height:120px;min-width: 129px;"></div>';
+					str+='</div>';
+				str+='</div>';
+				
+    
+     str+='</div>'
+
+  $("#stateLevelMeetingBlockId").html(str);
   
+		$(function () {
+			var chart;
+			$('#stateLevelMeetingBlockIdGr').highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,	
+					categories: ['Inv']
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '{series.name}: {point.y}',
+						
+				},
+				plotOptions: {
+					column: {
+						
+						dataLabels: {
+							align: 'top',
+							enabled: true,
+							//rotation: 270,
+							x: 0,
+							y: 0
+						}
+					}
+				},
+				series: [{
+					name: 'John',
+					data: [15]
+				}]
+			});
+		});
+		
+		$(function () {
+			$('#stateLevelMeetingBlockIdGr1').highcharts({
+				colors: ['#0066DC','#320199','#660032'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,	
+					categories: ['Attended']
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '{series.name}: {point.y}',
+						
+				},
+				plotOptions: {
+					column: {
+						
+						dataLabels: {
+							align: 'top',
+							enabled: true,
+							//rotation: 270,
+							x: 0,
+							y: 0
+						}
+					}
+				},
+				series: [{
+					name: 'John',
+					data: [15]
+				},{
+					name: 'John',
+					data: [6]
+				},{
+					name: 'John',
+					data: [12]
+				}]
+			});
+		});
+		$(function () {
+			$('#stateLevelMeetingBlockIdGr2').highcharts({
+				colors: ['#0066DC','#320199','#660032'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,	
+					categories: ['Late']
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '{series.name}: {point.y}',
+						
+				},
+				plotOptions: {
+					column: {
+						
+						dataLabels: {
+							align: 'top',
+							enabled: true,
+							//rotation: 270,
+							x: 0,
+							y: 0
+						}
+					}
+				},
+				series: [{
+					name: 'John',
+					data: [15]
+				},{
+					name: 'John',
+					data: [5]
+				},{
+					name: 'John',
+					data: [9]
+				}]
+			});
+		});
+		$(function () {
+			$('#stateLevelMeetingBlockIdGr3').highcharts({
+				colors: ['#0066DC','#320199','#660032'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,	
+					categories: ['Absent']
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '{series.name}: {point.y}',
+						
+				},
+				plotOptions: {
+					column: {
+						
+						dataLabels: {
+							align: 'top',
+							enabled: true,
+							//rotation: 270,
+							x: 0,
+							y: 0
+						}
+					}
+				},
+				series: [{
+					name: 'John',
+					data: [15]
+				},{
+					name: 'John',
+					data: [7]
+				},{
+					name: 'John',
+					data: [3]
+				}]
+			});
+		});
+	} */
+	
   /* Meeting Comment Block end */
   
