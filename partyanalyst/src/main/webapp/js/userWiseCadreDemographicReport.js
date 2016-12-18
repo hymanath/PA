@@ -162,12 +162,12 @@
 		tableToExcel(overaAllCasteWiseTableExcelDivId, 'CASTE CATEGORY WISE SUMMARY');       
 	});
 	
-  function getstateWiseTdpCadreCasteCounts(){
+  function getstateWiseTdpCadreCasteCounts(limit){
 		 $("#stateWiseCasteDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{  
 			           accessType : accessType,
                        locationArray : locationArray,
-                       limit : 1.0				   
+                       limit : limit				   
 					}
 		$.ajax({
 			type : 'POST',
@@ -183,22 +183,7 @@
 		var str='';
 		var str1='';
 		if(result !=null &&  result.length>0){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
-				  str+='<div class="row">';
-					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital">state Wise caste report </h3>';
-					str+='</div>';
-					/* str+='<div class="col-md-4 col-xs-12 col-sm-2">';
-						str+='<input id="stateWiseSlider" data-slider-id="stateWiseSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
-					str+='</div>'; */
-					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						str+='<button class="btn btn-success btn-xs" id="stateWiseCasteExcelReportId" >Export To Excel</button></h4>';
-					str+='</div>';
-				  	str+='</div>';
-				  	str+='</div>';
-				  	str+='<div class="panel-body">';
+			
 					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered table-condensed stateWiseCasteDetailsDataTableCls" id="">';
 						str+='<thead>';
@@ -359,11 +344,7 @@
 						str1+='</table>';
 						
 					str+='</div>';
-				  str+='</div>';
-				str+='</div>';
-				
-					str+='</div>';
-				str+='</div>';
+				  
 		}else{
 			$("#stateWiseCasteDetails").html("NO DATA AVAILABLE");
 		}
@@ -373,28 +354,16 @@
 		$(".stateWiseCasteDetailsDataTableCls").dataTable();
 		$(".stateWiseCasteDetailsDataTableCls").removeClass("dataTable");
 		
-		/* var stateWiseSliderValue;
-			var slider = new Slider('#stateWiseSlider', {
-		   formatter: function(value) {
-			   stateWiseSliderValue=value;
-			 return 'Current value: ' + value;
-		   }
-		});
-		$( "#stateWiseSlider" ).mouseup(function() {
-			alert(stateWiseSliderValue)
-		});
-	 */
-
 		$(document).on("click","#stateWiseCasteExcelReportId",function(){
 		   tableToExcel(stateWiseCasteTableToExcelDivId, 'STATE WISE CASTE REPORT');      
 		});
-	}
-	
-	function getdistrictWiseTdpCadreCasteCounts(){
+		
+	}	
+	function getdistrictWiseTdpCadreCasteCounts(limit){
 		 $("#districtWiseCasteDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{ 
 					 locationArray : districtArray,
-					 limit : 1.0
+					 limit : limit
 					}
 		$.ajax({
 			type : 'POST',
@@ -410,23 +379,7 @@
 		var str='';
 		var str1='';
 		if(result !=null &&  result.length>0){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
-				  str+='<div class="row">';
-					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital"> DISTRICT WISE CASTE REPORT</h3>';
-					str+='</div>';
-					/* str+='<div class="col-md-4 col-xs-12 col-sm-2">';
-						str+='<input id="districtWiseSlider" data-slider-id="districtWiseSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
-					str+='</div>'; */
-					
-					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						str+='<button class="btn btn-success btn-xs" id="districtWiseCasteExcelReportId" >Export To Excel</button></h4>';
-					str+='</div>';
-				  str+='</div>';
-				  str+='</div>';
-				  str+='<div class="panel-body">';
+				
 					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered table-condensed districtWiseCasteDataTableCls" id="">';
 						str+='<thead>';
@@ -603,11 +556,7 @@
 						str1+='</table>';
 						//for fetching all records end
 					str+='</div>';
-				  str+='</div>';
-				str+='</div>';
-				
-					str+='</div>';
-				str+='</div>';
+				  
 		}else{
 			$("#districtWiseCasteDetails").html("NO DATA AVAILABLE");
 		}
@@ -617,16 +566,7 @@
 		$(".districtWiseCasteDataTableCls").dataTable();//{"aaSorting": [ [0,'asc'], [4,'desc'] ] }
 		$(".districtWiseCasteDataTableCls").removeClass("dataTable");
 		
-		/* var districtWiseSliderValue;
-			var slider = new Slider('#districtWiseSlider', {
-		   formatter: function(value) {
-			   districtWiseSliderValue=value;
-			 return 'Current value: ' + value;
-		   }
-		});
-		$( "#districtWiseSlider" ).mouseup(function() {
-			alert(districtWiseSliderValue)
-		}); */
+			
 		
 		$(document).on("click","#districtWiseCasteExcelReportId",function(){
 		  tableToExcel(districtWiseCasteTableToExcelDivId, 'DISTRICT WISE CASTE REPORT'); 
@@ -634,11 +574,11 @@
 		
 	}
 	
-	function getConstituencyWiseTdpCadreCasteCountsAction(){
+	function getConstituencyWiseTdpCadreCasteCountsAction(limit){
 		 $("#constituencyWiseCasteDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jobj =	{ 
 					 locationArray : constituencyArray,
-					 limit : 1.0
+					 limit : limit
 					}
 		$.ajax({
 			type : 'POST',
@@ -654,22 +594,7 @@
 		var str='';
 		var str1='';
 		if(result !=null &&  result.length>0){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-				str+='<div class="panel panel-default">';
-				  str+='<div class="panel-heading" style="background-color: #f3f3f3 ! important;">';
-				  str+='<div class="row">';
-					str+='<div class="col-md-10 col-xs-12 col-sm-4">';
-					str+='<h3 class="panel-title text-capital">CONSTITUENCY WISE CASTE REPORT</h3>';
-					str+='</div>';
-					/* str+='<div class="col-md-4 col-xs-12 col-sm-2">';
-						str+='<input id="constituencyWiseSlider" data-slider-id="constituencyWiseSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="1"/>';
-					str+='</div>'; */
-					str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-						str+='<button class="btn btn-success btn-xs" id="constituencyWiseCasteExcelReportId" >Export To Excel</button></h4>';
-					str+='</div>';
-				  str+='</div>';
-				  str+='</div>';
-				  str+='<div class="panel-body">';
+				
 					str+='<div class="table-responsive">';
 					str+='<table class="table table-bordered table-condensed constituencyWiseCasteDataTableCls" id="">';
 						str+='<thead>';
@@ -695,7 +620,8 @@
 									
 											str+='<tr>';
 											str+='<td>'+result[i].superlocationName+'</td>';
-											str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+											//str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+											str+='<td >'+result[i].name+'</td>';
 											str+='<td>'+result[i].subList[j].name+'</td>';
 											if(result[i].subList[j].previousCadreCount !=null && result[i].subList[j].previousCadreCount>0){
 											str+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
@@ -834,11 +760,7 @@
 						str1+='</table>';
 						//for fetching all records end
 					str+='</div>';
-				  str+='</div>';
-				str+='</div>';
-				
-					str+='</div>';
-				str+='</div>';
+				  
 		}else{
 			$("#constituencyWiseCasteDetails").html("NO DATA AVAILABLE");
 		}
@@ -848,16 +770,7 @@
 		$(".constituencyWiseCasteDataTableCls").dataTable();
 		$(".constituencyWiseCasteDataTableCls").removeClass("dataTable");
 		
-		/* var constituencyWiseSliderValue;
-			var slider = new Slider('#constituencyWiseSlider', {
-		   formatter: function(value) {
-			   constituencyWiseSliderValue=value;
-			 return 'Current value: ' + value;
-		   }
-		});
-		$( "#constituencyWiseSlider" ).mouseup(function() {
-			alert(constituencyWiseSliderValue);
-		}); */
+		
 		
 		$(document).on("click","#constituencyWiseCasteExcelReportId",function(){
 			tableToExcel(constituencyWiseCasteTableToExcelDivId, 'CONSTITUENCY WISE CASTE REPORT');   
@@ -1238,7 +1151,8 @@
 									for(var j in result[i].subList){
 										str+='<tr>';
 										str+='<td>'+result[i].superlocationName+'</td>';
-										str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+										//str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+										str+='<td >'+result[i].name+'</td>';
 										str+='<td>'+result[i].subList[j].name+'</td>';
 										str+='<td>'+result[i].subList[j].previousCadreCount+'</td>';
 										str+='<td>'+result[i].subList[j].previousCadrePercent+'</td>';
@@ -1624,7 +1538,8 @@
 							for(var i in result){
 								str+='<tr>';
 									str+='<td >'+result[i].superlocationName+'</td>';
-									str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+									//str+='<td ><a class="locationWiseDetails" attr_constituency_id="'+result[i].id+'" attr_constituency_name="'+result[i].name+'">'+result[i].name+'</a></td>';
+									str+='<td >'+result[i].name+'</td>';
 									str+='<td>'+result[i].previousCadreTotalCount+'</td>';
 									str+='<td>'+result[i].previousCadreMaleCount+'</td>';
 									str+='<td>'+result[i].previousCadreMalePerc+'</td>';

@@ -78,19 +78,80 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div id="overAllCasteWiseSummaryDetails" class="casteWiseBlock" style="display:none;"></div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<div id="stateWiseCasteDetails" class="casteWiseBlock" style="display:none;"></div>
-								<div id="stateWiseCasteDetailsExcelReport" class="" style="display:none;"></div>
+							<div class="col-md-12 col-xs-12 col-sm-12 casteWiseBlock" style="display:none;">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+									<div class="panel panel-default">
+										 <div class="panel-heading" style="background-color: #f3f3f3 ! important;">
+											  <div class="row">
+													<div class="col-md-6 col-xs-12 col-sm-4">
+														<h3 class="panel-title text-capital">state Wise caste report </h3>
+													</div>
+													<div class="col-md-4 col-xs-12 col-sm-2">
+														<input id="stateWiseSlider" data-slider-id="stateWiseSlider" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="0.5" data-slider-value="0.5"/>
+														<span>Caste Percentage : <span id="stateSliderValue"></span></span>
+													</div>
+													<div class="col-md-2 col-xs-12 col-sm-2">
+														<button class="btn btn-success btn-xs" id="stateWiseCasteExcelReportId" >Export To Excel</button></h4>
+													</div>
+												</div>
+											</div>
+										<div class="panel-body">
+											<div id="stateWiseCasteDetails" ></div>
+											<div id="stateWiseCasteDetailsExcelReport" class="" style="display:none;"></div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<div id="districtWiseCasteDetails" class="casteWiseBlock" style="display:none;"></div>
-								<div id="districtWiseCasteDetailsExcelReport" class="" style="display:none;"></div>
+							<div class="col-md-12 col-xs-12 col-sm-12 casteWiseBlock" style="display:none;">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+									<div class="panel panel-default">
+										  <div class="panel-heading" style="background-color: #f3f3f3 ! important;">
+											  <div class="row">
+													<div class="col-md-6 col-xs-12 col-sm-4">
+														<h3 class="panel-title text-capital"> DISTRICT WISE CASTE REPORT</h3>
+													</div>
+													 <div class="col-md-4 col-xs-12 col-sm-2">
+														<input id="districtWiseSlider" data-slider-id="districtWiseSlider" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="0.5" data-slider-value="0.5"/>
+														<span>Caste Percentage : <span id="districtSliderValue"></span></span>
+													</div>
+													
+													<div class="col-md-2 col-xs-12 col-sm-2">
+														<button class="btn btn-success btn-xs" id="districtWiseCasteExcelReportId" >Export To Excel</button></h4>
+													</div>
+											  </div>
+										  </div>
+										  <div class="panel-body">
+											<div id="districtWiseCasteDetails" ></div>
+											<div id="districtWiseCasteDetailsExcelReport" class="" style="display:none;"></div>
+										  </div>
+									</div>
+								</div>
+								
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<div id="constituencyWiseCasteDetails" class="casteWiseBlock" style="display:none;"></div>
-								<div id="constituencyWiseCasteDetailsExcelReport" class="" style="display:none;"></div>
+							<div class="col-md-12 col-xs-12 col-sm-12 casteWiseBlock" style="display:none;">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+									<div class="panel panel-default">
+										 <div class="panel-heading" style="background-color: #f3f3f3 ! important;">
+											  <div class="row">
+												<div class="col-md-6 col-xs-12 col-sm-4">
+													<h3 class="panel-title text-capital">CONSTITUENCY WISE CASTE REPORT</h3>
+												</div>
+												 <div class="col-md-4 col-xs-12 col-sm-2">
+													<input id="constituencyWiseSlider" data-slider-id="constituencyWiseSlider" type="text" data-slider-min="0" data-slider-max="10" data-slider-step="0.5" data-slider-value="0.5"/>
+													<span>Caste Percentage : <span id="constituencySliderValue"></span></span>
+												</div> 
+												<div class="col-md-2 col-xs-12 col-sm-2">
+													<button class="btn btn-success btn-xs" id="constituencyWiseCasteExcelReportId" >Export To Excel</button></h4>
+												</div>
+											  </div>
+										  </div>
+										  <div class="panel-body">
+											<div id="constituencyWiseCasteDetails"></div>
+											<div id="constituencyWiseCasteDetailsExcelReport" class="" style="display:none;"></div>
+										  </div>
+									</div>
+								</div>
 							</div>
-							
 						</div>
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
@@ -155,6 +216,7 @@
 	var globalConstituencyId;
 	var globalConstituencyName;
 	
+	
 	$("#loggedInUserName").html(loggedInUserName);
 	
 	onLoadCalls();
@@ -185,18 +247,32 @@
 	
 	//CASTE WISE BASIC CALLS.
 	$(document).on("click","#casteWiseReport",function(){
+		
+		 
 		$(".ageWiseBlock").hide();
 		$(".casteWiseBlock").show();
 		$(".genderWiseBlock").hide();
 		getCasteCategoryWiseTdpCadreSummaryReport();
-		getstateWiseTdpCadreCasteCounts();
+		getstateWiseTdpCadreCasteCounts(1);
 		if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
-			getdistrictWiseTdpCadreCasteCounts();
+			getdistrictWiseTdpCadreCasteCounts(1);
 		}
-		getConstituencyWiseTdpCadreCasteCountsAction();           
+		getConstituencyWiseTdpCadreCasteCountsAction(1);
 		 $(".showDivLowLevel").hide();
 		 $("#lowLevelDetailsDiv").html('');
+		 $("#stateSliderValue").text(0.5);
+		 $("#districtSliderValue").text(0.5);
+		 $("#constituencySliderValue").text(0.5);
+		 
+		 $("#stateWiseSlider").remove();
+		  stateWiseSliderBar();
+		 $("#districtWiseSlider").remove();
+		 districtWiseSliderBar();
+		 $("#constituencyWiseSlider").remove();
+		 constituencySliderBar();
+		
 	});
+	
 	
 	//gender wise calls
 	$(document).on("click","#genderWiseReport",function(){
@@ -266,6 +342,55 @@
 		
 	});
 	
+	stateWiseSliderBar();
+	districtWiseSliderBar();
+	constituencySliderBar();
+	function stateWiseSliderBar(){
+		var stateSliderval;
+			var slider = new Slider('#stateWiseSlider', {
+		   formatter: function(value) {
+			   stateSliderval=value;
+			   $("#stateSliderValue").text(value);
+			 return 'Current value: ' + value;
+		   }
+		});
+		
+		$( "#stateWiseSlider" ).mouseup(function() {
+			getstateWiseTdpCadreCasteCounts(stateSliderval);
+		});
+	}
+	function districtWiseSliderBar(){	
+		var districtSliderVal;
+		var slider = new Slider('#districtWiseSlider', {
+		   formatter: function(value) {
+			   $("#districtSliderValue").text(value);
+			   districtSliderVal=value;
+			 return 'Current value: ' + value;
+		   }
+		});
+	
+		$( "#districtWiseSlider" ).mouseup(function() {
+			if(accessType.toUpperCase() == "DISTRICT" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY"){
+				getdistrictWiseTdpCadreCasteCounts(districtSliderVal);
+			}
+		});
+	}
+	function constituencySliderBar(){
+		var constituencySliderVa1;
+			var slider = new Slider('#constituencyWiseSlider', {
+		   formatter: function(value) {
+			   $("#constituencySliderValue").text(value);
+			   constituencySliderVa1=value;
+			 return 'Current value: ' + value;
+		   }
+		});
+		
+		$( "#constituencyWiseSlider" ).mouseup(function() {
+			getConstituencyWiseTdpCadreCasteCountsAction(constituencySliderVa1);
+		});
+		
+	}
+		
 	function finalLocationIds(accessType ,districtArray ,constituencyArray ){
 		if(accessType != null && accessType.trim().length > 0){
 			if(accessType.toUpperCase() == "CONSTITUENCY" || accessType.toUpperCase() == "DISTRICTANDCONSTITUENCY" ){
