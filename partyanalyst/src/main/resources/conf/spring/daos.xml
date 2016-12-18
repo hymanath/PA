@@ -3481,4 +3481,9 @@
 	<bean id="sessionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SessionTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tdpCadreAgeInfoTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreAgeInfoTempDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
