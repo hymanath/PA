@@ -1487,7 +1487,7 @@ public List<IdAndNameVO> getAllIssueTypesTemplate(List<CadreRegIssueType> typesL
 				}
 			}
 			List<Long> tabUserInfoIds = new ArrayList<Long>();
-			List<Object[]> list3 = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecordNew(null, null, null, null, stateId);
+			List<Object[]> list3 = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecordNew(null, null, null, null, stateId,null,null);
 			if(list3 != null && !list3.isEmpty()){
 				for (Object[] obj : list3) {
 					
@@ -2494,7 +2494,7 @@ public FieldMonitoringVO getDataCollectorsPerformanceDetails(Long loginUserId,Lo
 			Long  uptoTarget = eachHourTarget*workingHrs;
 			
 			//List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecord(tabUserInfoIds);
-			List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecordNew(cadreRegUserId, constituencyId, cadreSurveyUserId, districtId, stateId);
+			List<Object[]> list = tabUserEnrollmentInfoDAO.getTabUserFirstLastRecordNew(cadreRegUserId, constituencyId, cadreSurveyUserId, districtId, stateId , startDate , endDate);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					
