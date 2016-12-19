@@ -716,7 +716,7 @@ $(document).on("click",".meetingLiCls",function(){
 	$(document).on("click",".stateGeneralMeeting",function(){
 		var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 		var meetingTypeId = $(this).attr("attr_meeting_type_id");
-		$(".stateLevelMeetingsExpand,.specialMeetings").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		$(".stateLevelMeetingsExpand,.specialMeetings,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
 		$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
@@ -753,7 +753,7 @@ $(document).on("click",".meetingLiCls",function(){
 	 $(document).on("click",".statelevelSessionMeeting",function(){
 		//var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 		//var meetingTypeId = $(this).attr("attr_meeting_type_id");
-		$(".stateLevelMeetingsExpand,.specialMeetings").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		$(".stateLevelMeetingsExpand,.specialMeetings,.stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		
 		
 		//$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
@@ -781,20 +781,21 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
-			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+			$(".statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".stateLevelMeetingBlock").show();
 			$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
 			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 			//getstatelevelSessionMettings();
+			setSessioncolorsForStatus();
 		}
 		
 	}); 
 	$(document).on("click",".specialMeetings",function(){
 		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
 		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
-		$(".stateLevelMeetingsExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		$(".stateLevelMeetingsExpand,.statelevelSessionMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
 	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -2235,8 +2236,7 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 										 str+='<tr style="border-top: 1px solid rgb(211, 211, 211);"><td style="padding:0px;"><hr class="m_0" ></td></tr>';
 										  str+='<tr>';
 											 str+='<td >';
-//												str+='<span class="statelevelSessionMeeting pull-right" style="background-color:#fff;" party_meetingId="'+result[i].subList1[k].id+'" ><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'" style="cursor:pointer;"></i></span></h4>';
-												str+='<span class="statelevelSessionMeeting pull-right" party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen  specialMeetingCls" party_meetingId="'+result[i].subList1[k].id+'"  party_meeting_type_id="'+result[i].id+'" style="cursor:pointer;"></i></span></h4>';
+												str+='<span class="statelevelSessionMeeting pull-right" party_meetingId="'+result[i].subList1[k].id+'" style="background-color:#fff;padding:4px"><i class="glyphicon glyphicon-fullscreen" party_meetingId="'+result[i].subList1[k].id+'"  party_meeting_type_id="'+result[i].id+'" style="cursor:pointer;"></i></span></h4>';
 												  str+='<p data-toggle="tooltip" data-placement="top" title="Total Available Sessions('+result[i].subList1[k].subList1.length+')" style="cursor:default;font-weight:bold; class="text-muted f_12" style="font-size: 15px;" ><span class="specialMeeColor"></span> '+result[i].subList1[0].name+'</p>';
 											 str+='</td>';
 											 str+='<td>';
@@ -3794,9 +3794,7 @@ function getMandalByConstituency(meetingStatus,meetingLevel,isComment,constituen
 	   
 	   $("#specialMeetingsPerformanceOverViewDiv").html(str);
    }
-  /* Meeting Comment Block end */
-  
-  
+    /* Meeting Comment Block end */
   function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeIdsString,partyMeetingId){
 	$("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html(' ');
 	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -3842,11 +3840,9 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
 					for(var j in result[0].subList1){
-						if(result[0].subList1[j].name == "Session - 1"){
-							str+='<li class="" ><span class="sessiononeColor"></span> '+result[0].subList1[j].name+'</li>'; 
-						}else if(result[0].subList1[j].name == "Session - 2"){
-							str+='<li class="" ><span class="sessiontwoColor"></span> '+result[0].subList1[j].name+'</li>'; 
-						}
+						var color = getColorCodeBySessionStatus(result[0].subList1[j].name);
+						str+='<li class="" ><span class="sessionColor" style="background-color:'+color+'"></span> '+result[0].subList1[j].name+'</li>'; 
+						
 						
 					}
 				}
@@ -3868,15 +3864,15 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				str+='</div>';
 				
 				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr1'+i+'" style="height:120px;min-width: 129px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr1'+i+'" style="height:120px;min-width: 160px;"></div>';
 				str+='</div>';
 				
 				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr2'+i+'" style="height:120px;min-width: 129px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr2'+i+'" style="height:120px;min-width: 160px;"></div>';
 				str+='</div>';
 				
 				str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-					str+='<div id="stateLevelMeetingBlockIdGr3'+i+'" style="height:120px;min-width: 129px;"></div>';
+					str+='<div id="stateLevelMeetingBlockIdGr3'+i+'" style="height:120px;min-width:160px;"></div>';
 				str+='</div>';
 			str+='</div>';
      str+='</div>'	
@@ -3898,14 +3894,16 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 	   
 	  if(sessionList != null && sessionList.length > 0){
 		  for(var j in sessionList){
+			  var color = getColorCodeBySessionStatus(sessionList[j].name);
+			  var color1 = getColorCodeBySessionStatus('All Sessions');
 			  if(j == 0){
-			    attendedArr.push({name:'All - Sessions',data:[sessionList[j].allSessionAttendedCnt]});	  
-			    lateAttendedArr.push({name:'All - Sessions',data:[sessionList[j].allSessionLateAttendedCnt]});	  
-			    absentArr.push({name:'All - Sessions',data:[sessionList[j].allSessionAbsentCnt]});	  
+			    attendedArr.push({name:'All Sessions',data:[sessionList[j].allSessionAttendedCnt],color:color1});	  
+			    lateAttendedArr.push({name:'All Sessions',data:[sessionList[j].allSessionLateAttendedCnt],color:color1});	  
+			    absentArr.push({name:'All Sessions',data:[sessionList[j].allSessionAbsentCnt],color:color1});	  
 			  }
-			    attendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].invitteeAttendedCount]});	  
-			    lateAttendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].lateAttendedCnt]});	  
-			    absentArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].notAttendedCount]});	  
+			    attendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].invitteeAttendedCount],color:color});	  
+			    lateAttendedArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].lateAttendedCnt],color:color});	  
+			    absentArr.push({name:''+sessionList[j].name+'',data:[sessionList[j].notAttendedCount],color:color});		  
 			  
 		  }
 	  }
@@ -3963,24 +3961,24 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 					shadow: false
 				},
 				tooltip: {
-					headerFormat: '<b>All<br/>Session</b><br/>',
+					headerFormat: '<b>All</b><br/>',
 					pointFormat: '{series.name}<br/>({point.y})',
 						
 				},
 				plotOptions: {
+					useHTML: true,
 					column: {
-						
 						dataLabels: {
-							align: 'top',
+							//align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: -10,
-							y: -10,
+							//x: -10,
+							//y: -10,
 							formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return (this.y);
+									return '<span style="text-align:center">'+(this.y)+'</span>';
 								}
 							},
 						},
@@ -3997,7 +3995,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		 
 		$(function () {
 			$('#stateLevelMeetingBlockIdGr1'+i).highcharts({
-				colors: ['#0066DC','#320199','#660032'],
+				//colors: ['#0066DC','#320199','#660032'],
 				chart: {
 					type: 'column'
 				},
@@ -4039,23 +4037,23 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				},
 				tooltip: {
 					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}({point.y})',
+					pointFormat: '{series.name}<br/>({point.y})',
 						
 				},
 				plotOptions: {
+					useHTML: true,
 					column: {
-						
 						dataLabels: {
-							align: 'top',
+							//align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: -10,
-							y: -10,
+						//	x: -10,
+							//y: -10,
 							formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return (this.y);
+									return '<span style="text-align:center">'+(this.y)+'</span>';
 								}
 							},
 						},
@@ -4070,7 +4068,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 			
 		$(function () {
 			$('#stateLevelMeetingBlockIdGr2'+i).highcharts({
-				colors: ['#0066DC','#320199','#660032'],
+				//colors: ['#0066DC','#320199','#660032'],
 				chart: {
 					type: 'column'
 				},
@@ -4112,23 +4110,23 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 				},
 				tooltip: {
 					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}({point.y})',
+					pointFormat: '{series.name}<br/>({point.y})',
 						
 				},
 				plotOptions: {
+					useHTML: true,
 					column: {
-						
 						dataLabels: {
-							align: 'top',
+							//align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: -10,
-							y: -10,
+							//x: -10,
+							//y: -10,
 							formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return (this.y);
+									return '<span style="text-align:center">'+(this.y)+'</span>';
 								}
 							},
 						},
@@ -4142,7 +4140,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 		
 		$(function () {
 			$('#stateLevelMeetingBlockIdGr3'+i).highcharts({
-				colors: ['#0066DC','#320199','#660032'],
+				//colors: ['#0066DC','#320199','#660032'],
 				chart: {
 					type: 'column'
 				},
@@ -4188,19 +4186,19 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 						
 				},
 				plotOptions: {
+					useHTML: true,
 					column: {
-						
 						dataLabels: {
-							align: 'top',
+							//align: 'top',
 							enabled: true,
 							//rotation: 270,
-							x: -10,
-							y: -10,
+							//x: -10,
+							//y: -10,
 							formatter: function() {
 								if (this.y === 0) {
 									return null;
 								} else {
-									return (this.y);
+									return '<span style="text-align:center">'+(this.y)+'</span>';
 								}
 							},
 						},
@@ -4321,6 +4319,8 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 									shared: true
 								},
 								plotOptions: {
+									useHTML: true,
+									//text-align:'center',
 									column: {
 										stacking: 'percent',
 										dataLabels: {
@@ -4329,7 +4329,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result){
 												if (this.y === 0) {
 													return null;
 												} else {
-													return (this.y);
+													return '<span style="text-align:center">'+(this.y)+'</span>';
 												}
 											}
 										  
